@@ -4,6 +4,8 @@ on:
     paths:
       - 'src/crop/mod_b111_nfixation_policy.f90'
       - 'tests/fwof/pp02/test_b111_nfixation_policy.f90'
+      - 'tests/fwof/pp02/verify_b111_nfixation_successor.py'
+      - 'tests/fwof/pp02/test_b111_nfixation_successor_controls.py'
       - 'tests/fwof/pp02/run_b111_nfixation_policy.sh'
       - 'tools/audits/probe_swap431_b111_nfix_policy.py'
       - 'integration/audits/MC_NUT_SOL_OWNER_DECISION.md'
@@ -12,9 +14,15 @@ on:
   workflow_dispatch:
 jobs:
   qualify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: B1.11 fixation policy and literal source oracle
         run: bash tests/fwof/pp02/run_b111_nfixation_policy.sh
+      - name: Exact component source, incumbent authority and rejection controls
+        run: |
+          python3 -B tests/fwof/pp02/verify_b111_nfixation_successor.py
+          python3 -B tests/fwof/pp02/test_b111_nfixation_successor_controls.py

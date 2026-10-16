@@ -1,0 +1,234 @@
+{
+  "base": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+  "scope": "Exact default-OFF source projection only; numerical claim additionally requires unchanged incumbent evidence plus fresh declared owners. Analytical family absent and power flagfalse.",
+  "files": {
+    "src/solver/mod_b110_default_mvg_provider.f90": [
+      {
+        "start": 18,
+        "end": 19,
+        "postimage": "     logical :: conductivity_power_tail_enabled = .false.\n",
+        "preimage": ""
+      },
+      {
+        "start": 41,
+        "end": 43,
+        "postimage": "                                                      enable_elastic_storage, specific_elastic_storage_input, &\n                                                      enable_conductivity_power_tail)\n",
+        "preimage": "                                                      enable_elastic_storage, specific_elastic_storage_input)\n"
+      },
+      {
+        "start": 48,
+        "end": 49,
+        "postimage": "    logical, intent(in), optional :: enable_conductivity_power_tail\n",
+        "preimage": ""
+      },
+      {
+        "start": 60,
+        "end": 62,
+        "postimage": "    parameters%conductivity_power_tail_enabled = .false.\n    if (present(enable_conductivity_power_tail)) parameters%conductivity_power_tail_enabled = enable_conductivity_power_tail\n",
+        "preimage": ""
+      },
+      {
+        "start": 64,
+        "end": 66,
+        "postimage": "    if (parameters%elastic_storage_active .and. parameters%conductivity_power_tail_enabled) &\n         error stop 'B1.11 MvG power tail: elastic storage combination is not qualified'\n",
+        "preimage": ""
+      },
+      {
+        "start": 86,
+        "end": 93,
+        "postimage": "       if (parameters%conductivity_power_tail_enabled) then\n          if (.not. ieee_is_finite(parameters%cofgen(22,i)) .or. parameters%cofgen(22,i) >= 0.0_real64 .or. &\n              parameters%cofgen(22,i) > parameters%cofgen(9,i)) &\n               error stop 'B1.11 MvG power tail: invalid h_power'\n          if (.not. ieee_is_finite(parameters%cofgen(23,i)) .or. parameters%cofgen(23,i) <= 0.0_real64) &\n               error stop 'B1.11 MvG power tail: invalid k_power'\n       end if\n",
+        "preimage": ""
+      },
+      {
+        "start": 178,
+        "end": 179,
+        "postimage": "         parameters%ksatexm_extension_enabled, parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "         parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 231,
+        "end": 232,
+        "postimage": "         self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "         self%parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 280,
+        "end": 281,
+        "postimage": "               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "               self%parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 290,
+        "end": 291,
+        "postimage": "               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "               self%parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 313,
+        "end": 314,
+        "postimage": "               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "               self%parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 346,
+        "end": 347,
+        "postimage": "            self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)\n",
+        "preimage": "            self%parameters%ksatexm_extension_enabled)\n"
+      },
+      {
+        "start": 489,
+        "end": 490,
+        "postimage": "  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension, enable_power_tail) result(hconduc)\n",
+        "preimage": "  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension) result(hconduc)\n"
+      },
+      {
+        "start": 492,
+        "end": 493,
+        "postimage": "    logical, intent(in), optional :: enable_power_tail\n",
+        "preimage": ""
+      },
+      {
+        "start": 494,
+        "end": 495,
+        "postimage": "    logical :: ksatexm_applied, power_tail\n",
+        "preimage": "    logical :: ksatexm_applied\n"
+      },
+      {
+        "start": 497,
+        "end": 499,
+        "postimage": "    power_tail = .false.\n    if (present(enable_power_tail)) power_tail = enable_power_tail\n",
+        "preimage": ""
+      },
+      {
+        "start": 508,
+        "end": 510,
+        "postimage": "       else if (power_tail .and. head <= c(22)) then\n          hconduc = c(23)*(abs(c(22))/abs(head))**c(33)\n",
+        "preimage": ""
+      },
+      {
+        "start": 520,
+        "end": 522,
+        "postimage": "          else if (power_tail .and. head <= c(22)) then\n             hconduc = c(23)*(abs(c(22))/abs(head))**c(33)\n",
+        "preimage": ""
+      },
+      {
+        "start": 534,
+        "end": 691,
+        "postimage": "\nmodule mod_b111_analytical_hydraulic_provider\n  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite\n  use, intrinsic :: iso_fortran_env, only: real64\n  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t\n  implicit none\n  private\n  integer, parameter, public :: B111_HYD_EXPONENTIAL = 2\n  integer, parameter, public :: B111_HYD_BIMODAL_MVG = 3\n  integer, parameter, public :: B111_HYD_BIMODAL_MVG_WCK = 6\n\n  type, public :: b111_analytical_hydraulic_parameters_t\n    integer :: active_nodes = 0\n    integer, allocatable :: model_kind(:)\n    real(real64), allocatable :: theta_r(:), theta_s(:), ksat(:), alpha_1(:), lambda(:), n_1(:), m_1(:)\n    real(real64), allocatable :: alpha_2(:), n_2(:), m_2(:), omega_1(:)\n  end type\n\n  type, extends(constitutive_hydraulics_provider_t), public :: b111_analytical_hydraulic_provider_t\n    type(b111_analytical_hydraulic_parameters_t), pointer :: parameters => null()\n  contains\n    procedure :: evaluate => b111_analytical_evaluate\n    procedure :: supports_point_conductivity => b111_analytical_supports_point_conductivity\n    procedure :: evaluate_point_conductivity => b111_analytical_evaluate_point_conductivity\n  end type\n\n  public :: initialize_b111_analytical_hydraulic_parameters\n  public :: bind_b111_analytical_hydraulic_provider\ncontains\n  subroutine initialize_b111_analytical_hydraulic_parameters(parameters, model_kind, cofgen)\n    type(b111_analytical_hydraulic_parameters_t), intent(out) :: parameters\n    integer, intent(in) :: model_kind(:)\n    real(real64), intent(in) :: cofgen(:,:)\n    integer :: n, i\n    n=size(model_kind)\n    if(n<=0 .or. size(cofgen,1)<16 .or. size(cofgen,2)/=n) error stop 'B1.11 analytical hydraulics: shape mismatch'\n    if(any(model_kind/=B111_HYD_EXPONENTIAL .and. model_kind/=B111_HYD_BIMODAL_MVG .and. &\n           model_kind/=B111_HYD_BIMODAL_MVG_WCK)) &\n      error stop 'B1.11 analytical hydraulics: unsupported model kind'\n    if(any(.not.ieee_is_finite(cofgen(1:16,:)))) error stop 'B1.11 analytical hydraulics: non-finite parameter'\n    if(any(cofgen(2,:)<=cofgen(1,:)) .or. any(cofgen(3,:)<=0.0_real64) .or. any(cofgen(4,:)<=0.0_real64)) &\n      error stop 'B1.11 analytical hydraulics: invalid primary parameters'\n    parameters%active_nodes=n\n    allocate(parameters%model_kind(n),parameters%theta_r(n),parameters%theta_s(n),parameters%ksat(n), &\n      parameters%alpha_1(n),parameters%lambda(n),parameters%n_1(n),parameters%m_1(n), &\n      parameters%alpha_2(n),parameters%n_2(n),parameters%m_2(n),parameters%omega_1(n))\n    parameters%model_kind=model_kind\n    parameters%theta_r=cofgen(1,:); parameters%theta_s=cofgen(2,:); parameters%ksat=cofgen(3,:)\n    parameters%alpha_1=cofgen(4,:); parameters%lambda=cofgen(5,:); parameters%n_1=cofgen(6,:); parameters%m_1=cofgen(7,:)\n    parameters%alpha_2=cofgen(13,:); parameters%n_2=cofgen(14,:); parameters%m_2=cofgen(15,:); parameters%omega_1=cofgen(16,:)\n    do i=1,n\n      if(model_kind(i)==B111_HYD_BIMODAL_MVG .or. model_kind(i)==B111_HYD_BIMODAL_MVG_WCK) then\n        if(parameters%n_1(i)<=1.0_real64 .or. parameters%m_1(i)<=0.0_real64 .or. &\n          parameters%alpha_2(i)<=0.0_real64 .or. parameters%n_2(i)<=1.0_real64 .or. &\n          parameters%m_2(i)<=0.0_real64 .or. parameters%omega_1(i)<0.0_real64 .or. parameters%omega_1(i)>1.0_real64) &\n          error stop 'B1.11 analytical hydraulics: invalid bimodal parameters'\n      end if\n    end do\n  end subroutine\n\n  subroutine bind_b111_analytical_hydraulic_provider(provider,parameters)\n    type(b111_analytical_hydraulic_provider_t),intent(out)::provider\n    type(b111_analytical_hydraulic_parameters_t),target,intent(in)::parameters\n    if(parameters%active_nodes<=0) error stop 'B1.11 analytical hydraulics: invalid parameter set'\n    provider%parameters=>parameters\n  end subroutine\n\n  subroutine b111_analytical_evaluate(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)\n    class(b111_analytical_hydraulic_provider_t),intent(in)::self\n    real(real64),intent(in)::pressure_head(:)\n    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)\n    integer::i,n\n    if(.not.associated(self%parameters)) error stop 'B1.11 analytical hydraulics: parameters not bound'\n    n=self%parameters%active_nodes\n    if(size(pressure_head)/=n.or.size(water_content)/=n.or.size(conductivity)/=n.or.size(capacity)/=n.or.size(dconductivity_dhead)/=n) &\n      error stop 'B1.11 analytical hydraulics: shape mismatch'\n    do i=1,n\n      call evaluate_node(self%parameters,i,pressure_head(i),water_content(i),conductivity(i),capacity(i),dconductivity_dhead(i))\n    end do\n  end subroutine\n\n  pure subroutine evaluate_node(p,i,h,theta,k,cap,dkdh)\n    type(b111_analytical_hydraulic_parameters_t),intent(in)::p\n    integer,intent(in)::i\n    real(real64),intent(in)::h\n    real(real64),intent(out)::theta,k,cap,dkdh\n    real(real64)::delta,s1,s2,relsat,a1,a2,term1,term2,scomb,denom,q\n    real(real64)::ds1,ds2,dscomb,df1,df2,dtcond,dq\n    delta=p%theta_s(i)-p%theta_r(i)\n    select case(p%model_kind(i))\n    case(B111_HYD_EXPONENTIAL)\n      ! B1.11 watcon uses a default-real literal, promoted only after its\n      ! single-precision rounding. Preserve that dry-floor value exactly.\n      theta=max(real(1.0000001,real64)*p%theta_r(i),p%theta_r(i)+delta*exp(p%alpha_1(i)*h))\n      cap=p%alpha_1(i)*delta*exp(p%alpha_1(i)*h)\n      relsat=(theta-p%theta_r(i))/delta\n      k=p%ksat(i)*relsat\n      dkdh=p%alpha_1(i)*p%ksat(i)*exp(p%alpha_1(i)*h)\n    case(B111_HYD_BIMODAL_MVG,B111_HYD_BIMODAL_MVG_WCK)\n      if(h>=0.0_real64) then\n        theta=p%theta_s(i)\n        cap=0.0_real64\n        k=p%ksat(i)\n        dkdh=1.0e-12_real64\n      else\n        s1=(1.0_real64+abs(p%alpha_1(i)*h)**p%n_1(i))**(-p%m_1(i))\n        s2=(1.0_real64+abs(p%alpha_2(i)*h)**p%n_2(i))**(-p%m_2(i))\n        scomb=p%omega_1(i)*s1+(1.0_real64-p%omega_1(i))*s2\n        theta=p%theta_r(i)+delta*scomb\n        cap=delta*(p%omega_1(i)*p%alpha_1(i)*p%n_1(i)*p%m_1(i)* &\n          abs(p%alpha_1(i)*h)**(p%n_1(i)-1.0_real64)*(1.0_real64+abs(p%alpha_1(i)*h)**p%n_1(i))**(-p%m_1(i)-1.0_real64) + &\n          (1.0_real64-p%omega_1(i))*p%alpha_2(i)*p%n_2(i)*p%m_2(i)* &\n          abs(p%alpha_2(i)*h)**(p%n_2(i)-1.0_real64)*(1.0_real64+abs(p%alpha_2(i)*h)**p%n_2(i))**(-p%m_2(i)-1.0_real64))\n        a1=1.0_real64-s1**(1.0_real64/p%m_1(i))\n        a2=1.0_real64-s2**(1.0_real64/p%m_2(i))\n        term1=p%omega_1(i)*p%alpha_1(i)*a1**p%m_1(i)\n        term2=(1.0_real64-p%omega_1(i))*p%alpha_2(i)*a2**p%m_2(i)\n        denom=p%omega_1(i)*p%alpha_1(i)+(1.0_real64-p%omega_1(i))*p%alpha_2(i)\n        q=1.0_real64-(term1+term2)/denom\n        k=p%ksat(i)*scomb**p%lambda(i)*q*q\n        ds1=p%alpha_1(i)*p%n_1(i)*p%m_1(i)*abs(p%alpha_1(i)*h)**(p%n_1(i)-1.0_real64)* &\n          (1.0_real64+abs(p%alpha_1(i)*h)**p%n_1(i))**(-p%m_1(i)-1.0_real64)\n        ds2=p%alpha_2(i)*p%n_2(i)*p%m_2(i)*abs(p%alpha_2(i)*h)**(p%n_2(i)-1.0_real64)* &\n          (1.0_real64+abs(p%alpha_2(i)*h)**p%n_2(i))**(-p%m_2(i)-1.0_real64)\n        dscomb=p%omega_1(i)*ds1+(1.0_real64-p%omega_1(i))*ds2\n        df1=-a1**(p%m_1(i)-1.0_real64)*s1**(1.0_real64/p%m_1(i)-1.0_real64)*ds1\n        df2=-a2**(p%m_2(i)-1.0_real64)*s2**(1.0_real64/p%m_2(i)-1.0_real64)*ds2\n        dtcond=p%omega_1(i)*p%alpha_1(i)*df1+(1.0_real64-p%omega_1(i))*p%alpha_2(i)*df2\n        dq=-dtcond/denom\n        dkdh=p%ksat(i)*(p%lambda(i)*scomb**(p%lambda(i)-1.0_real64)*dscomb*q*q + &\n          2.0_real64*scomb**p%lambda(i)*q*dq)\n      end if\n    end select\n  end subroutine\n\n  logical function b111_analytical_supports_point_conductivity(self) result(supported)\n    class(b111_analytical_hydraulic_provider_t),intent(in)::self\n    supported=associated(self%parameters)\n  end function\n\n  subroutine b111_analytical_evaluate_point_conductivity(self,node_index,pressure_head,water_content,conductivity,available)\n    class(b111_analytical_hydraulic_provider_t),intent(in)::self\n    integer,intent(in)::node_index\n    real(real64),intent(in)::pressure_head,water_content\n    real(real64),intent(out)::conductivity\n    logical,intent(out)::available\n    real(real64)::theta,cap,dk\n    available=.false.\n    conductivity=0.0_real64\n    if(.not.associated(self%parameters))return\n    if(node_index<1.or.node_index>self%parameters%active_nodes)return\n    if(.not.ieee_is_finite(pressure_head).or..not.ieee_is_finite(water_content))return\n    call evaluate_node(self%parameters,node_index,pressure_head,theta,conductivity,cap,dk)\n    available=ieee_is_finite(conductivity).and.conductivity>=0.0_real64\n  end subroutine\nend module\n\n",
+        "preimage": ""
+      }
+    ],
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": [
+      {
+        "start": 62,
+        "end": 66,
+        "postimage": "  use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &\n       b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &\n       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &\n       B111_HYD_BIMODAL_MVG_WCK\n",
+        "preimage": ""
+      },
+      {
+        "start": 299,
+        "end": 302,
+        "postimage": "    ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.\n    integer, allocatable :: hydraulic_model_kind(:)\n    logical :: conductivity_power_tail_active = .false.\n",
+        "preimage": ""
+      },
+      {
+        "start": 666,
+        "end": 667,
+        "postimage": "    type(b111_analytical_hydraulic_parameters_t), pointer :: analytical_hydraulic_parameters => null()\n",
+        "preimage": ""
+      },
+      {
+        "start": 669,
+        "end": 671,
+        "postimage": "    type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()\n    logical :: analytical_hydraulics_active = .false.\n",
+        "preimage": ""
+      },
+      {
+        "start": 1222,
+        "end": 1224,
+        "postimage": "          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &\n          parameters%conductivity_power_tail_active .or. allocated(parameters%hydraulic_model_kind)) return\n",
+        "preimage": "          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return\n"
+      },
+      {
+        "start": 1242,
+        "end": 1244,
+        "postimage": "           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &\n           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)\n",
+        "preimage": "           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))\n"
+      },
+      {
+        "start": 1246,
+        "end": 1248,
+        "postimage": "           enable_ksatexm_extension=parameters%ksatexm_extension_active, &\n           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)\n",
+        "preimage": "           enable_ksatexm_extension=parameters%ksatexm_extension_active)\n"
+      },
+      {
+        "start": 1277,
+        "end": 1279,
+        "postimage": "    if (parameters%prepared_default_mvg%conductivity_power_tail_enabled .neqv. &\n        parameters%conductivity_power_tail_active) return\n",
+        "preimage": ""
+      },
+      {
+        "start": 2872,
+        "end": 2906,
+        "postimage": "      if (allocated(parameters%hydraulic_model_kind)) then\n        ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &\n             all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &\n                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &\n                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &\n             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &\n             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &\n             .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &\n             .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &\n             .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &\n             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &\n             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &\n             .not. parameters%soil_temperature_active .and. .not. parameters%snow_active .and. &\n             .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active\n      end if\n      if (parameters%conductivity_power_tail_active) then\n        ! HYD-POWER is admitted first as a narrow default-MvG / Reference-Richards\n        ! constitutive extension. Broader optional-physics compositions require\n        ! separate evidence and therefore fail closed here.\n        ok = ok .and. .not. allocated(parameters%hydraulic_model_kind) .and. &\n             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &\n             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &\n             .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &\n             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%frost_active .and. &\n             .not. parameters%macropore_active .and. .not. parameters%root_extraction_active .and. &\n             .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &\n             .not. parameters%boesten_evaporation_active .and. .not. parameters%soil_temperature_active .and. &\n             .not. parameters%snow_active .and. .not. self%rfm_configuration%enabled .and. &\n             .not. self%fixed_weir_surface_water_active .and. &\n             all(ieee_is_finite(parameters%cofgen(22:23,:))) .and. &\n             all(parameters%cofgen(22,:) < 0.0_real64) .and. &\n             all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &\n             all(parameters%cofgen(23,:) > 0.0_real64)\n      end if\n",
+        "preimage": ""
+      },
+      {
+        "start": 3165,
+        "end": 3166,
+        "postimage": "      if (.not. associated(self%analytical_hydraulic_parameters)) allocate(self%analytical_hydraulic_parameters)\n",
+        "preimage": ""
+      },
+      {
+        "start": 3167,
+        "end": 3168,
+        "postimage": "      if (.not. associated(self%analytical_constitutive)) allocate(self%analytical_constitutive)\n",
+        "preimage": ""
+      },
+      {
+        "start": 3199,
+        "end": 3201,
+        "postimage": "                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &\n                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)\n",
+        "preimage": "                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))\n"
+      },
+      {
+        "start": 3203,
+        "end": 3205,
+        "postimage": "                 enable_ksatexm_extension=parameters%ksatexm_extension_active, &\n                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)\n",
+        "preimage": "                 enable_ksatexm_extension=parameters%ksatexm_extension_active)\n"
+      },
+      {
+        "start": 3208,
+        "end": 3213,
+        "postimage": "      end if\n      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind)\n      if (self%analytical_hydraulics_active) then\n        call initialize_b111_analytical_hydraulic_parameters(self%analytical_hydraulic_parameters, &\n             parameters%hydraulic_model_kind, parameters%cofgen)\n",
+        "preimage": ""
+      },
+      {
+        "start": 4091,
+        "end": 4094,
+        "postimage": "    if (self%analytical_hydraulics_active) then\n      call bind_b111_analytical_hydraulic_provider(self%analytical_constitutive, self%analytical_hydraulic_parameters)\n    else if (self%direct_retention_active) then\n",
+        "preimage": "    if (self%direct_retention_active) then\n"
+      },
+      {
+        "start": 4617,
+        "end": 4619,
+        "postimage": "    else if (self%analytical_hydraulics_active) then\n      request%evaluation%constitutive => self%analytical_constitutive\n",
+        "preimage": ""
+      }
+    ],
+    "src/solver/mod_reference_richards_temporal_indicator.f90": [
+      {
+        "start": 11,
+        "end": 13,
+        "postimage": "  use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_provider_t, &\n       B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, B111_HYD_BIMODAL_MVG_WCK\n",
+        "preimage": ""
+      },
+      {
+        "start": 213,
+        "end": 253,
+        "postimage": "    type is (b111_analytical_hydraulic_provider_t)\n       if (.not. associated(constitutive%parameters)) then\n          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE\n          indicator_result%route = 'constitutive-policy-deferred'\n          return\n       end if\n       if (constitutive%parameters%active_nodes /= n) then\n          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED\n          indicator_result%route = 'constitutive-size-mismatch'\n          return\n       end if\n       if (any(constitutive%parameters%model_kind /= B111_HYD_EXPONENTIAL .and. &\n            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG .and. &\n            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG_WCK)) then\n          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE\n          indicator_result%route = 'constitutive-policy-deferred'\n          return\n       end if\n       ! Stateless analytical retention: no dt-dependent storage. Keep the\n       ! incumbent certificate restricted to smooth positive-storage branches.\n       call constitutive%evaluate(request%base_state%pressure_head, &\n            water_base, conductivity_base, capacity_base, dkdh_base)\n       call constitutive%evaluate(solve_result%candidate_state%pressure_head, &\n            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)\n       do i = 1, n\n          if (constitutive%parameters%model_kind(i) == B111_HYD_EXPONENTIAL) then\n             scale = real(1.0000001,real64)*constitutive%parameters%theta_r(i)\n             if (water_base(i) <= scale .or. water_candidate(i) <= scale) exit\n          else\n             if (water_base(i) <= constitutive%parameters%theta_r(i) .or. &\n                  water_candidate(i) <= constitutive%parameters%theta_r(i) .or. &\n                  water_base(i) >= constitutive%parameters%theta_s(i) .or. &\n                  water_candidate(i) >= constitutive%parameters%theta_s(i)) exit\n          end if\n       end do\n       if (i <= n) then\n          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE\n          indicator_result%route = 'constitutive-branch-deferred'\n          return\n       end if\n",
+        "preimage": ""
+      }
+    ]
+  }
+}

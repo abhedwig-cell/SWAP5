@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "work_unit": "MC-IRR01",
+  "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
+  "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
+  "last_reconciled_head": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+  "last_reconciled_upstream": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "scope": [
+    "SW431-IRR-FIXED-SPRINK",
+    "SW431-IRR-SCHED-SURF",
+    "SW431-IRR-FREQ",
+    "SW431-IRR-RATE-DAILY",
+    "SW431-IRR-RATE-CAP"
+  ],
+  "preserved_scope": [
+    "SW431-IRR-TCS1",
+    "SW431-IRR-FIXED-SURF",
+    "SW431-IRR-MININTERVAL"
+  ],
+  "relevant_paths": [
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90",
+    "src/process/mod_irrigation_process.f90",
+    "src/process/mod_irrigation_root_zone_summary.f90",
+    "src/process/mod_scheduled_irrigation_management_policy.f90",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90",
+    "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
+    "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+    "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+    "tests/f-app07/test_scheduled_tcs7_ssdi_runtime_binding.f90",
+    "tests/mc-irr01/run_mc_irr01_management_policy.sh",
+    "tests/mc-irr01/run_mc_irr01_source_reconstruction.sh",
+    "tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh",
+    "tests/f-app07/test_mc_irr01_sensor_ssdi_runtime_mass.f90",
+    "src/process/mod_irrigation_availability_policy.f90",
+    "src/runtime/mod_fmr_irrigation_management_restart.f90",
+    ".github/workflows/f-app07-hupsel-tcs1-dcs2-irrigation.yml"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/architecture/invariants.md",
+    "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+    "integration/f-app/F-APP07_PREREGISTRATION.json"
+  ],
+  "dependency_surface": [
+    "irrigation scheduled-event state",
+    "irrigation application routing",
+    "Rutter interception input",
+    "dynamic-top irrigation input",
+    "transactional retry/restart persistence of active scheduled events"
+  ],
+  "invariants_affected": [
+    3,
+    7,
+    9,
+    13,
+    21,
+    23,
+    29
+  ],
+  "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+  "recovery_point": "integration/f-ci-canonical@cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+  "blockers": [
+    "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+  ],
+  "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
+  "qualification": {
+    "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+    "run_id": 37625736830,
+    "job_id": 112806892095,
+    "conclusion": "success",
+    "O0": "PASS",
+    "O2": "PASS",
+    "O0_O2_stable": "PASS",
+    "exact_active_intervals": 110,
+    "composition_error": 0,
+    "process_output_sha256": "8c8bb9f7d6a7b9084ce1aed1708916db99b3b4f677311c8c98c5d916a0c38b98",
+    "composition_output_sha256": "cf6581cb6f0907352133b4acb9b2743446916315f47e53092f642b106ba8b88c"
+  },
+  "phase_status": {
+    "event_routing_slice": {
+      "tested": true,
+      "qualified": true,
+      "evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json"
+    },
+    "tcs7_ssdi_runtime_binding": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "owner": "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
+      "source_science": "F-VQ20 exact production blob c0755c1e0d0b7ca1a35e73cf26158c29e9940aec",
+      "owner_workflow_pass": true
+    },
+    "tcs8_sensor_candidate": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "theory_binding": "SWAP theory equation 11.6 and B1.11 source authority",
+      "owner": "src/process/mod_irrigation_process.f90",
+      "owner_workflow_pass": true
+    },
+    "sensor_salinity_rate": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "scope": [
+        "SW431-IRR-SALTEXCESS",
+        "SW431-IRR-RATE-DAILY",
+        "SW431-IRR-RATE-CAP"
+      ],
+      "owner_workflow_pass": true
+    },
+    "root_zone_management_application": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "scope": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS6",
+        "SW431-IRR-DCS1",
+        "SW431-IRR-LIMIT"
+      ],
+      "owner": "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+      "owner_workflow_pass": true
+    },
+    "availability_finite_guard": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "paths": [
+        "src/process/mod_irrigation_availability_policy.f90",
+        "tests/mc-irr01/test_mc_irr01_availability_nonfinite.f90",
+        "tests/mc-irr01/run_mc_irr01_management_policy.sh"
+      ],
+      "notes": "NaN finite check precedes ordered comparisons under -ffpe-trap=invalid; do not promote until same-postimage O0/O2 pass.",
+      "owner_workflow_pass": true
+    },
+    "management_nonfinite_guard": {
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "paths": [
+        "src/process/mod_scheduled_irrigation_management_policy.f90",
+        "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+        "tests/mc-irr01/test_mc_irr01_management_policy.f90",
+        "tests/mc-irr01/test_mc_irr01_management_application.f90"
+      ],
+      "notes": "Finite requests and interval endpoints validated before ordered comparisons; six-field rejected-candidate weekly state preservation covered by new regression cases. Full postimage O0/O2 pending.",
+      "owner_workflow_pass": true
+    }
+  },
+  "reconciliation_20261008": {
+    "canonical_head": "d2fdd2bb2f8f3dd9167415cd36abefcc3fecf1b8",
+    "work_head": "3e8414d8e2dae8e761e8b0f0dd58c43a0a86bf0c",
+    "pr": 1097,
+    "pr_draft": true,
+    "branches_diverged": true,
+    "pr_workflow_runs_at_head": 0,
+    "qualification_gap": "Owner O0/O2 workflow PASSED on 694f476; canonical composition/admission still unqualified.",
+    "local_execution": "Local Git clone inaccessible: DNS could not resolve github.com. No full exact-postimage O0/O2 qualification recorded.",
+    "status": "owner qualified; canonical not admitted"
+  },
+  "qualified_owner_postimage": {
+    "sha": "694f47635b7942f95c90cf0dc49b1cc0f9ecd338",
+    "run_id": 37768355395,
+    "job_id": 113281436898,
+    "conclusion": "success",
+    "evidence": "integration/audits/MC_IRR01_COMBINED_OWNER_QUALIFICATION_20261008.json"
+  },
+  "admission_reconciliation_20261011": {
+    "canonical_base": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+    "candidate_head": "d1875355b2bc83514c0852c0caac2b98703c3810",
+    "source_candidate": "origin/integration/mc-irr01-isolated-20261008@90923773e30cb11bac88677d74d94cc58778b5dd",
+    "qualified_integration_head": "4ed0a6d62eae82f46d9f79d06b764e141474c9e2",
+    "owner_production_and_test_blobs": "BYTE_IDENTICAL",
+    "changed_candidate_paths_modified_on_canonical_since_prior_base": [],
+    "shared_dependency_drift": {
+      "rutter_interception": false,
+      "dynamic_top_boundary": false,
+      "irrigation_transaction_restart": false
+    },
+    "production_physics_changed_by_regie": false,
+    "canonical_admission": true,
+    "canonical_merge": "cadcc63d3296e12e6a0634ee7095693454b60005",
+    "status": "CANONICALLY_ADMITTED"
+  },
+  "preservation_reconciliation_20261011": {
+    "owner_run": 38114644489,
+    "owner_job": 114397011546,
+    "owner_conclusion": "success",
+    "owner_checks": "F-APP07 exact source, O0/O2 process/composition, management policy, retry/restart and nonfinite guards PASS",
+    "fci_run": 38114644478,
+    "fci_first_attempt": "14 frozen jobs PASS; moving-current guard failed closed on first previously unknown MC-IRR01 source path",
+    "repair": "Exact-pin all eleven qualified MC-IRR01 production blobs and rerun the existing complete F-APP07 O0/O2 gate inside moving preservation; no wildcard source allowance",
+    "next_action": "Completed by exact-head runs and canonical squash admission."
+  },
+  "canonical_admission_20261011": {
+    "pull_request": 1195,
+    "admission_head": "4ed4fa44c05b93c44d53c2f62a97d2307e29cca9",
+    "canonical_merge": "cadcc63d3296e12e6a0634ee7095693454b60005",
+    "merge_method": "squash",
+    "owner_gate": {
+      "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+      "run_id": 38115056270,
+      "conclusion": "success",
+      "O0_O2": "PASS"
+    },
+    "canonical_preservation": {
+      "workflow": "F-CI canonical qualification",
+      "run_id": 38115056145,
+      "moving_job_id": 114398715430,
+      "conclusion": "success",
+      "frozen_jobs": "ALL_PASS",
+      "moving_current": "PASS"
+    },
+    "qualified_blob_reconciliation": "All production and test blobs in the isolated candidate are byte-identical to qualified integration head 4ed0a6d62eae82f46d9f79d06b764e141474c9e2; only admission metadata and bounded F-CI preservation were advanced.",
+    "coverage_reconciliation": "Bounded capability scope is admitted. The independently owned moving functional-coverage master in PR #1072 must recompute from this canonical merge before publishing fresh global counts.",
+    "production_physics_changed_by_regie": false,
+    "superseded_prs": [
+      1097,
+      1126
+    ],
+    "status": "CANONICALLY_ADMITTED_AND_VERIFIED"
+  },
+  "closure_successor_20261011": {
+    "pull_request": 1198,
+    "baseline": "24a69ee415366c4c9d508806bd48bf14c002ea86",
+    "record": "integration/audits/MC_IRR01_CLOSURE_PLAN_20261011.json",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_FULL_COVERAGE_OPEN",
+    "implemented": true,
+    "persisted": true,
+    "scientific_owner_qualified": true,
+    "owner_run": 38122332488,
+    "fci_run": 38122332557,
+    "canonical_admitted": true,
+    "full_functional_coverage_closed": false,
+    "retained_admitted_capabilities": 5,
+    "retained_active_migration_capabilities": 11,
+    "shared_admission_dependency": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+    "new_fullcap_promotions": 0,
+    "canonical_merge": "122866c17fbdc62f29bdc7521736bb559a68ee91",
+    "canonical_tree_verified": "0215eacafd2421cd504a39f514be4ad76d473f43",
+    "master_reconciliation_checkpoint": "0990b105c871bf2d082d8ba20787a14b61de877b"
+  },
+  "runtime_successor_20261011": {
+    "pull_request": 1199,
+    "record": "integration/audits/MC_IRR01_RUNTIME_ENVELOPE_20261011.json",
+    "canonical_merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "admission_head": "54683938c5b41322b11ca99be6adde53e7986551",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "bounded_scope_qualified": true,
+    "canonical_admitted": true,
+    "owner_run": 38125769643,
+    "fci_run": 38125769591,
+    "full_functional_coverage_closed": false,
+    "retained_admitted_capabilities": 5,
+    "retained_active_migration_capabilities": 11,
+    "new_fullcap_promotions": 0,
+    "realistic_event_envelope": "FAIL O0 first profile: 291252 temporal rejects, zero mass rejects, despite increased effort; O2 unqualified",
+    "next_action": "Five fullcaps remain admitted; eleven remain ACTIVE_MIGRATION. Bounded #1198/#1199 source/runtime/restart routes admitted. Continue from runtime envelope record for central retained-history numerical qualification, authoritative root/lifecycle and solute/allocation bindings."
+  },
+  "sensor_depth_master_reconciliation_20261011": {
+    "owner_pr": 1072,
+    "checkpoint": "f2cfaa1c8d46e7025d7d46a891b92288d5b94e55",
+    "tree": "a970970541ac4733d9afe6618c8f348654ca5d3e",
+    "bounded_integrity": "PASS: eleven capability annotations and their queue reasons only, all dispositions/dependencies/unrelated rows/global counts retained",
+    "global_master_qualification": "Not renewed: pre-existing inheritance baseline/backend gate remains with master owner",
+    "capabilities": 16,
+    "retained_admitted": 5,
+    "retained_active_migration": 11,
+    "promotions": 0
+  },
+  "stable_storage_admission": {
+    "pull_request": 1200,
+    "qualified_head": "5155c3df427fbb91fd391a9aa98f85ffad75b10b",
+    "qualified_tree": "846d71ce63efd4f5f5d3e8061a62a3f0bf996d36",
+    "canonical_merge": "ea4759a0633011f26e8ee43126db2484c0def8b3",
+    "canonical_paths_verified": 11,
+    "owner_run": 38132433330,
+    "owner_job": 114449349641,
+    "owner_result": "PASS_O0_O2_THREE_PROFILES_TWELVE_ROOT_CASES",
+    "fci_run": 38132433375,
+    "fci_moving_job": 114449871342,
+    "fci_result": "PASS_ALL_14_FROZEN_HISTORICAL_AND_MOVING",
+    "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+    "local_fci": "PASS",
+    "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  },
+  "root_salt_source_off_admission": {
+    "pull_request": 1201,
+    "qualified_head": "70eedcd157d1f0874823f350293a145ca26ae4c2",
+    "admission_head": "bdf81672804b3e453dca0630b1ea0cb736848b23",
+    "canonical_merge": "73796d85ba8de962673390a40d1be54e9c152d53",
+    "canonical_paths_verified": 15,
+    "qualified_scientific_surface_inheritance": "PASS src/tests/tools/.github exact subtree identity",
+    "science": "PASS O0/O2 literal 48; realistic root 12; sensor 12; source-off three profiles",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0
+  },
+  "accepted_salt_admission": {
+    "pull_request": 1203,
+    "qualified_head": "3b9223720e4fea58ba4256c10be2faaf686011c8",
+    "admission_head": "1ec4b281da27fefade4b3fd4a6b68bac8aca982f",
+    "canonical_merge": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
+    "canonical_paths_verified": 11,
+    "science": "PASS sensor12/root24 actual salt/water physical/event restart O0/O2 plus typed negative guards",
+    "F_CI": "PASS full local lineage-aware preservation",
+    "fullcap_promotions": 0,
+    "evidence": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json"
+  },
+  "persistent_allocation_admission": {
+    "pull_request": 1205,
+    "admission_head": "075a30421c6ec24e682e01a3d5edb042d4bac61e",
+    "canonical_merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "production_and_test_postimages": "BYTE_VERIFIED",
+    "fullcap_promotions": 0,
+    "qualified": true,
+    "evidence": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+  },
+  "current_fullcap_dispositions": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+  "latest_master_reconciliation": {
+    "owner_pr": 1072,
+    "branch": "work/swap431-master-coverage-20261006",
+    "checkpoint": "8dbed749f062c3fba2547e9e998dc438a18c0cef",
+    "tree": "92989c9c512f325fbba92480e063ccfdaaf1d542",
+    "bounded_integrity": "PASS eleven owned capability rows and queue reasons, obsolete salt-to-sensor dependency and workunit sequencing removed, five admitted IDs moved out of active workunit list with original16 preserved; canonical root/source evidence snapshots byte-identical; all unrelated rows/dispositions/summary counts retained",
+    "global_integrity": "Not renewed: pre-existing stale inheritance baseline before and after bounded update remains with master owner",
+    "fullcap_promotions": 0
+  },
+  "current_claim": "Independent source/runtime/event/accepted-salt/provider allocation closure admitted. PR1207 now admits bounded rooted authentic crop/weather execution. Full MC-IRR01 remains blocked on shared managed-weather publication/continuation decision and precise evolving-root/material/calendar/salt profile gates; a missing crop/weather owner is no longer the claim.",
+  "shared_application_review_20261011": {
+    "canonical_base": "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
+    "crop_successor_head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
+    "contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#shared_interface_review_20261011",
+    "state": "READY_FOR_CENTRAL_SHARED_INTERFACE_DECISION",
+    "root_free_cluster_can_precede_grown_root_authority": true,
+    "new_production_implementation": false,
+    "new_scientific_qualification": false,
+    "new_fullcap_admissions": 0,
+    "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+  },
+  "current_weather_authority_reconciliation": {
+    "record": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
+    "canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+    "crop_admission_pr": 1207,
+    "source_policy_oracle": "PASS_O0_O2_288_CASES",
+    "shared_management_interface_accepted": false,
+    "fullcap_promotions": 0
+  },
+  "existing_weather_publication_boundary": {
+    "record": "integration/audits/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.json",
+    "qualification": "PASS_ONE_COLUMN_ROOT_FREE_O0_O2_INCOMPLETE_INTERNAL_PROGRESS_COMMON_ACCEPTED_PREFIX_RESTART",
+    "shared_management_interface_accepted": false,
+    "fullcap_promotions": 0,
+    "requalified_crop_pr": 1209,
+    "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7"
+  }
+}

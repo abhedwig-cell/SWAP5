@@ -1,0 +1,52 @@
+name: PUB-GC GMD finalization gate
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/publication/PUB_GC_GMD_FINALIZATION_*'
+      - 'docs/publication/PUB_GC_GMD_PREARCHIVE_INVENTORY.json'
+      - 'docs/publication/PUB_GC_GMD_SUBMISSION_METADATA_DRAFT.md'
+      - 'docs/publication/PUB_GC_GMD_CODE_DATA_AVAILABILITY_TEMPLATE.md'
+      - 'docs/publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md'
+      - 'docs/publication/PUB_GC_COUPLE_MANUSCRIPT_DRAFT.md'
+      - 'docs/publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.json'
+      - 'tools/publication/finalize_pub_gc_gmd_release.py'
+      - '.github/workflows/pub-gc-gmd-finalization.yml'
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Validation stage'
+        required: true
+        default: 'pre-authority'
+        type: choice
+        options:
+          - pre-authority
+          - authority-ready
+          - archive-ready
+          - submission-ready
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate pre-authority package
+        if: ${{ github.event_name == 'pull_request' || inputs.stage == 'pre-authority' }}
+        run: python tools/publication/finalize_pub_gc_gmd_release.py
+      - name: Validate authority-ready package
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.stage == 'authority-ready' }}
+        run: python tools/publication/finalize_pub_gc_gmd_release.py --authority-ready
+      - name: Validate archive-ready package
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.stage == 'archive-ready' }}
+        run: python tools/publication/finalize_pub_gc_gmd_release.py --archive-ready
+      - name: Validate submission-ready package
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.stage == 'submission-ready' }}
+        run: python tools/publication/finalize_pub_gc_gmd_release.py --submission-ready

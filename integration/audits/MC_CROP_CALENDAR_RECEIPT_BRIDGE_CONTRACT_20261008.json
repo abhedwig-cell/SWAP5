@@ -1,0 +1,78 @@
+{
+  "schema": "swap431.crop_calendar_receipt_binding.v1",
+  "canonical_baseline": "ff2116b72403d7da4df616c694b4973c23c11c25",
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+  "component": "src/runtime/mod_fmr_crop_rotation_receipt_binding.f90",
+  "admitted_dependencies": [
+    "src/crop/mod_crop_rotation_calendar.f90",
+    "src/crop/mod_crop_rotation_transition.f90",
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90"
+  ],
+  "allowed_publication": "Only derived crop-calendar checkpoint and retired accepted-window cache after matching committed crop-event receipt",
+  "never_mutate": [
+    "F-KT committed crop physical state",
+    "F-KT kernel/checkpoint",
+    "hydraulic state/forcing",
+    "crop owner",
+    "transport/state-owner interfaces"
+  ],
+  "fail_closed": [
+    "invalid calendar",
+    "unready/unbound committed kernel",
+    "nonforward current time",
+    "invalid calendar transition",
+    "missing/mismatched committed event receipt",
+    "duplicate window retirement",
+    "stale accept"
+  ],
+  "test_requirements": [
+    "accepted matching event -> calendar/window publication once",
+    "mismatched/absent receipt -> both unchanged",
+    "duplicate receipt -> no calendar time/revision advance",
+    "reject/retry -> candidate/no changes",
+    "physical committed state unchanged bit-exact",
+    "restart on physical crop checkpoint plus calendar snapshot -> same successor",
+    "O0/O2 and canonical preservation"
+  ],
+  "qualification": "QUALIFIED_BOUNDED_O0_O2_FCI",
+  "admission": "CANONICALLY_ADMITTED_BOUNDED_DERIVED_STATE",
+  "limit": "This is not full rotation, harvest/reset, sowing/germination or durable restart serialization; does not itself prove physical production execution",
+  "evidence": {
+    "receipt_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302612",
+    "receipt_workflow_conclusion": "success",
+    "canonical_fci_workflow_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37790302751",
+    "canonical_fci_workflow_conclusion": "success",
+    "tested_case": "Historical initial unready-kernel and invalid-calendar guards; supplemented by exact-head F-WOF38/F-WOF39 committed event, retirement, duplicate receipt, derived checkpoint replay O0/O2 gates in latest_evidence.",
+    "initial_precommit_only_gaps": [
+      "matching committed receipt acceptance and atomic publication",
+      "missing or mismatched receipt no-mutation",
+      "duplicate receipt strict no-op",
+      "reject/retry",
+      "physical committed state bit-exact invariance",
+      "restart successor equivalence"
+    ],
+    "scope_limits_after_admission": [
+      "Checkpoint-value replay is not durable serialized physical restart",
+      "Physical crop state unchanged checked at owner/revision/receipt boundaries; no broader bit-exact physical serialization claim",
+      "Full sowing, germination, harvest and multi-crop rotation execution remain separate"
+    ]
+  },
+  "next_action": "Preserve admitted derived receipt bridge; reconcile MC-CROP01 successor against active crop owner PRs and B1.11 source before bounded implementation; no duplicate calendar selector/transition.",
+  "latest_evidence": {
+    "head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
+    "receipt_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314002",
+    "receipt": "PASS_O0_O2_POSITIVE_NEGATIVE_REPLAY",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37797314299",
+    "fci": "PASS",
+    "scope": "Derived calendar checkpoint and retired accepted-window cache only; not physical sow/harvest/rotation or durable serialized restart.",
+    "root_cause": "Frozen F-WOF34 toy donor lacked explicit mass accounting; generated toy fixture corrected without changing production F-KT."
+  },
+  "blockers": [],
+  "canonical_admission": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1132",
+    "merge_commit": "b37b4217fda096307059ebed41ad7bd1e2ff1676",
+    "qualified_science_head": "756ec778768fb94d51e60fbc5d6809ac9ecc307f",
+    "qualification_basis": "Source/tests unchanged after qualified head; only audit metadata changed before merge.",
+    "scope": "Matching committed F-KT crop-event receipt atomically publishes derived calendar checkpoint and retires source accepted-window cache."
+  }
+}

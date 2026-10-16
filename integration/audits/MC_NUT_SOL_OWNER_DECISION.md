@@ -1,10 +1,14 @@
 # MC-NUT01 / MC-SOL01 state and owner decision
 
-Status: WORKSTREAM_CONTRACT_PREREGISTRATION  
-Baseline: `integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413`
+Status: SOURCE_POLICY_COMPONENT_QUALIFICATION_ONLY, NOT_RUNTIME_ADMISSION
+Baseline: `integration/f-ci-canonical@be8a49cd59815b537b46e0dac2b3d0161366c796`
 
-This record narrows the remaining B1.11 nutrient and solute work. It does not
-admit new production physics by itself.
+PR #1098 completes only its separate pure B1.11 request/fixation component.
+The original ownership and sequencing proposal below is historical navigation;
+current admitted Soil-N, crop-N, matrix/age and surface routes are owned by their
+later canonical status records, including `MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
+This component has no production caller and creates no runtime N-input receipt.
+It does not replace or alter the admitted WOFOST81 request/apply semantics.
 
 ## Ownership decomposition
 
@@ -57,20 +61,12 @@ This policy is a crop-N input calculation only. It does not establish Soil-N
 supply, full-season crop-N limitation or nonzero production admission until the
 crop/Soil-N exchange owner is bound and qualified.
 
-## Aquifer defect decision boundary
+## Aquifer exclusion
 
-The B1.11 SWBR aquifer block has a reproduced bounds defect: after the node
-loop, source code indexes a node-sized carrier with the completed-loop index
-`numnod+1`. No replacement node or coefficient is source-qualified.
-
-Therefore `SW431-SALT-AQUIFER` is blocked at an explicit architecture/reference
-decision. Before production implementation the project must approve a corrected
-aquifer reservoir coefficient/storage contract with declared dimensions and
-rate-versus-accumulated units. The correction must then be qualified as a B1
-reference correction, not hidden as an implementation convenience.
-
-Until that decision, sorption/decay work may proceed only in matrix storage and
-must not guess aquifer semantics.
+The historical aquifer correction prerequisite is retained in the original
+preregistration inside `MC_NUT_SOL_STATUS.json`. Current trajectory3 and surface
+routes exclude aquifer mutation, and the programme master records aquifer as
+REJECTED. This component adds no aquifer implementation or correction authority.
 
 ## Mass contract
 
@@ -93,3 +89,25 @@ This record establishes owner and mass-contract sequencing and preregisters the
 separate B1.11 fixation policy. It does not yet close organic pools, mineral
 pools, reactions, crop exchange, management additions, sorption, decay, pond,
 aquifer or age-tracer production admission.
+
+## Component qualification and preservation
+
+593 independent input vectors retain the original six cases and cover strict
+DVS/RELTR next-representable boundaries, zero/complete NFIXF partition, differing
+vegetative deficits and ignored storage-organ demand. All three literal demand,
+fixation and soil-request outputs match binary64 bits at O0/O2. The original
+expanded preimage's157 one/few-ulp algebra-order differences are retained; the
+port now preserves the literal addition and partition order.39 nonfinite/domain
+inputs reject with cleared results under IEEE invalid/zero/overflow traps.
+
+The original WOFOST81 nitrogen1806-case numerical oracle and edge owner pass
+freshly at both optimizations. The exact source guard permits only this added,
+unused production module; an explicit owner-dispatch island reconstructs the
+entire incumbent F-CI workflow byte-for-byte. The original canonical hydraulic,
+root and application evidence proof runs unchanged at its immutable baseline.
+None of those inherited gates is relabelled as production admission of this
+source policy. A future crop/Soil-N binding must select the policy explicitly,
+qualify the real accepted mass/state and restart, and book fixation exactly once.
+
+Exact inputs, outputs, retained differences, source pins and selection are in
+`MC_NUT_SOL_STATUS.json`, field `component_closeout_20261016`.

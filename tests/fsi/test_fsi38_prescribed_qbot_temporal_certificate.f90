@@ -194,7 +194,8 @@ contains
          'indicator does not alter solver retry counter')
 
     unsupported_request = request
-    unsupported_request%boundary%bottom_mode = 8
+    ! LOW08-A admitted mode8 at10d80799. Mode1 remains explicitly excluded.
+    unsupported_request%boundary%bottom_mode = 1
     call solver%evaluate_temporal_indicator(unsupported_request, result, indicator_request, workspace, unsupported)
     call require(unsupported%status == SW_TEMPORAL_INDICATOR_UNAVAILABLE .and. .not. unsupported%available, &
          'still-unowned bottom mode remains unavailable')

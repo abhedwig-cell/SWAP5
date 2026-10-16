@@ -1,0 +1,73 @@
+{
+  "schema": "swap431.crop_meteo_tav_accepted_owner_reconciliation.v1",
+  "workstream": "MC-CROP01",
+  "canonical": "e13324f822f391c3f58e4b243d02db72729103e2",
+  "status": {
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "admitted_predecessors": [
+    {
+      "pr": 1160,
+      "scope": "F-KT certified B110 geometry and committed soil hydrothermal view"
+    },
+    {
+      "pr": 1162,
+      "scope": "read-only daily prep/sow/SWGERM2 moisture + caller-provided air temperature"
+    }
+  ],
+  "owner_traces": [
+    {
+      "path": "src/crop/mod_wofost_two_phase_crop_window.f90",
+      "finding": "Inputs include wofost_one_day_forcing_t. Phase A maps daytime_average_temperature to daytime_mean_temperature, phase B maps forcing.average_temperature to phase_b_forcing.average_temperature; no accepted meteorological source token."
+    },
+    {
+      "path": "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "finding": "fmr_wofost_accepted_interval_certificate_t binds F-KT lineage, origin/committed revision and t0/t1; no weather variable, daily tav or forcing-content digest."
+    },
+    {
+      "path": "src/runtime/mod_fmr_crop_certified_daily_preflight.f90",
+      "finding": "propose_certified_crop_daily_preflight takes explicitly caller supplied air_temperature; physically certified hprep,hsow,hgerm,soil_temperature only. Cannot publish accepted crop event."
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "finding": "B110 runtime stores soil heat forcing and crop oxygen air_temperature input as optional model forcing; neither constitutes accepted one-day crop air-temperature receipt tied to F-KT commit."
+    }
+  ],
+  "scientific_risk": "A caller can pair a truly accepted F-KT hydraulic/heat snapshot with an unrelated but plausible weather temperature. Matching lineage/revision/t0/t1 at time of sampling cannot prove the air temperature used for SWGERM=1/2 came from the same accepted forcing interval. It could silently alter germination date and subsequent crop development.",
+  "required_contract": [
+    "Identify the actual atmospheric forcing owner and distinguish SWAP B1.11 tav from WOFOST phase A daytime_average_temperature and phase B average_temperature; do not equate them without source proof.",
+    "A trial-produced weather observation must bind the exact source dataset identity, physical column lineage, trial interval [t0,t1], value/units, and trial generation; rejected/retried trials must not publish observation.",
+    "The F-KT commit or already-admitted accepted window owner must atomically mint or attest the accepted meteo observation only after acceptance, including shortened accepted intervals.",
+    "For an accumulated daily tav, insist on exact contiguous coverage, no gaps/overlap, correct daily aggregation rule and no duplicate accepted interval or mixed source identities.",
+    "Bind the resulting accepted one-day tav to the same day and lineage/revision chain as certified soil head sample, with restart serialization plus anti-replay checks. The time of the sampled soil state must be explicit (day-start, day-end) and faithful to the historical B1.11 event ordering.",
+    "Gate physical germination event publication on accepted weather receipt plus existing calendar, lifecycle and F-KT accepted crop event receipt. No bypass for caller provided temperature."
+  ],
+  "negative_tests": [
+    "Correct F-KT revision/time but caller substitutes different air temperature",
+    "Trial rejected or retried with different weather, followed by accepted shorter interval",
+    "Daily gaps, overlaps, wrong day boundary, duplicate contribution",
+    "Wrong meteorological source ID, crop-column lineage or stale F-KT revision",
+    "Swap WOFOST daytime-average and full-day-average temperatures",
+    "Restart with changed persisted tav and identical soil state",
+    "SWHEA=0 with SWGERM2 moisture still valid but SWHEA=1 sow temperature required"
+  ],
+  "preservation": [
+    "Historical B1.11 4.3.1 source oracle and crop event order",
+    "O0/O2 local compilation before Actions",
+    "B19/MICRO root, balance and F-KT/restart frozen preservation",
+    "No shared F-KT or weather owner edits until parallel owner interfaces reconciled"
+  ],
+  "next_action": "Trace implementation of atmosphere_interface.tav in original SWAP 4.3.1 source archive and the F-KT production atmospheric forcing owner. Authenticate its source and accepted day interval before publishing SWGERM1/2; WOFOST average_temperature is not an admitted substitute.",
+  "owner_boundary": "No production implementation in this recovery artifact; do not confuse with scientific qualification or admission.",
+  "byte_verified_historical_trace": {
+    "file": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "module_and_binding": "germination(task) at source line 647 imports use atmosphere_interface, only: tav at line 651",
+    "germination_temperature": "Historical line 755 tests tav > tbasem; lines 756-760 use (tav - tbasem) in germination temperature sum, capped by teffmx in subsequent branch.",
+    "critical_disambiguation": "The historical B1.11 germination model reads tav from atmosphere_interface, NOT automatically from WOFOST one-day forcing average_temperature/daytime_average_temperature. Any bridge must prove exactly which atmosphere_interface.tav is populated and how it is temporally accepted."
+  }
+}

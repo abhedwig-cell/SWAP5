@@ -8,7 +8,7 @@ module mod_fmr_serialized_reference_backend
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
-  use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
+  use mod_kernel_transactions, only: kernel_parameter_identity_t, kernel_parameters_t, kernel_model_t, kernel_committed_state_t, &
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
        KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
@@ -60,6 +60,10 @@ module mod_fmr_serialized_reference_backend
        rossfast_d3r_full_duration_for_index
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider, evaluate_b110_default_mvg_conductivity
+  use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &
+       b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
+       bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &
+       B111_HYD_BIMODAL_MVG_WCK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -131,7 +135,8 @@ module mod_fmr_serialized_reference_backend
   use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, soil_temperature_parameters_t, &
        soil_temperature_numerical_config_t, soil_temperature_forcing_t, soil_temperature_state_t, &
        soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t, &
-       trial_restricted_soil_temperature, commit_soil_temperature_state
+       trial_restricted_soil_temperature, commit_soil_temperature_state, SOIL_TEMP_SOLUTION_NUMERIC, &
+       SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE, SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
   use mod_frost_hydraulic_effect, only: frost_hydraulic_parameters_t, FROST_EFFECT_OK, &
        evaluate_frost_hydraulic_factor
   use mod_frost_hydraulic_provider, only: frost_constitutive_provider_t, &
@@ -168,6 +173,7 @@ module mod_fmr_serialized_reference_backend
   implicit none
   private
   public :: fmr_frost_response_drainage_configuration_valid
+  public :: fmr_b110_certified_candidate_layout_matches
   public :: fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
@@ -291,6 +297,9 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: dz(:)
     real(real64), allocatable :: node_distance(:)
     real(real64), allocatable :: cofgen(:,:)
+    ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.
+    integer, allocatable :: hydraulic_model_kind(:)
+    logical :: conductivity_power_tail_active = .false.
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
@@ -365,6 +374,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
+  contains
+    procedure :: capture_identity => fmr_b110_capture_parameter_identity
+    procedure :: matches_physical_identity => fmr_b110_matches_physical_identity
   end type fmr_b110_physical_parameters_t
 
   type, public :: fmr_black_evaporation_runtime_forcing_t
@@ -584,6 +596,7 @@ module mod_fmr_serialized_reference_backend
     logical :: soil_temperature_energy_accounting_complete = .false.
     real(real64) :: soil_temperature_energy_residual_j_cm2 = 0.0_real64
     real(real64) :: soil_temperature_top_heat_flux_j_cm2_day = 0.0_real64
+    real(real64) :: soil_temperature_bottom_heat_flux_j_cm2_day = 0.0_real64
     real(real64) :: soil_temperature_storage_change_j_cm2 = 0.0_real64
     real(real64) :: soil_temperature_boundary_energy_j_cm2 = 0.0_real64
     logical :: fixed_weir_surface_water_active = .false.
@@ -651,8 +664,11 @@ module mod_fmr_serialized_reference_backend
     type(soil_water_parameter_set_t), pointer :: soil_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: owned_hydraulic_parameters => null()
     type(b110_default_mvg_parameters_t), pointer :: hydraulic_parameters => null()
+    type(b111_analytical_hydraulic_parameters_t), pointer :: analytical_hydraulic_parameters => null()
     type(fmr_b110_physical_parameters_t), pointer :: trusted_parameter_source => null()
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
+    type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()
+    logical :: analytical_hydraulics_active = .false.
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     integer :: direct_retention_slot = 0
@@ -807,6 +823,7 @@ module mod_fmr_serialized_reference_backend
     logical :: accepted_water_flux_trace_failed = .false.
     type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
   contains
+    procedure :: matches_committed_parameter_identity => fmr_serialized_matches_committed_identity
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
     procedure :: prepare_interval => fmr_serialized_prepare_interval
@@ -868,6 +885,51 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  subroutine fmr_b110_capture_parameter_identity(self,identity,available)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    integer :: i
+    real(real64) :: bottom
+    identity=kernel_parameter_identity_t()
+    available=.false.
+    if(self%parameter_set_id<=0_int64.or.self%active_nodes<1) return
+    if(.not.allocated(self%z).or..not.allocated(self%dz)) return
+    if(size(self%z)/=self%active_nodes.or.size(self%dz)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%z)).or..not.all(ieee_is_finite(self%dz))) return
+    if(any(self%dz<=0.0_real64)) return
+    bottom=0.0_real64
+    do i=1,self%active_nodes
+      if(self%z(i)/=bottom-0.5_real64*self%dz(i)) return
+      bottom=bottom-self%dz(i)
+      if(.not.ieee_is_finite(bottom)) return
+    end do
+    identity%parameter_set_id=self%parameter_set_id
+    identity%active_nodes=self%active_nodes
+    identity%heat_enabled=self%soil_temperature_active
+    identity%z=self%z
+    identity%dz=self%dz
+    identity%valid=.true.
+    available=.true.
+  end subroutine
+
+  logical function fmr_b110_matches_physical_identity(self,state) result(ok)
+    class(fmr_b110_physical_parameters_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=self%active_nodes.or.state%active_nodes<=0) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=self%active_nodes.or. &
+           size(state%water_content)/=self%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.self%soil_temperature_active) return
+      ok=.true.
+    class default
+      return
+    end select
+  end function
 
   pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
@@ -1158,7 +1220,8 @@ contains
 
     if (parameters%elasticity_active) then
       if (parameters%ksatexm_extension_active .or. parameters%direct_retention_active .or. &
-          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active) return
+          parameters%tabulated_hydraulics_active .or. parameters%hysteresis_active .or. &
+          parameters%conductivity_power_tail_active .or. allocated(parameters%hydraulic_model_kind)) return
       if (any(.not. ieee_is_finite(parameters%cofgen(24,:)))) return
       if (any(parameters%cofgen(24,:) < 0.0_real64)) return
     end if
@@ -1177,10 +1240,12 @@ contains
     if (parameters%elasticity_active) then
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
            enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+           enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
     else
       call initialize_b110_default_mvg_parameters(parameters%prepared_default_mvg, parameters%cofgen, &
-           enable_ksatexm_extension=parameters%ksatexm_extension_active)
+           enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+           enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
     end if
     parameters%prepared_default_mvg_available = .true.
 
@@ -1210,6 +1275,8 @@ contains
     if (parameters%prepared_default_mvg%active_nodes /= parameters%active_nodes) return
     if (parameters%prepared_default_mvg%ksatexm_extension_enabled .neqv. parameters%ksatexm_extension_active) return
     if (parameters%prepared_default_mvg%elastic_storage_active .neqv. parameters%elasticity_active) return
+    if (parameters%prepared_default_mvg%conductivity_power_tail_enabled .neqv. &
+        parameters%conductivity_power_tail_active) return
     if (parameters%elasticity_active) then
       if (.not. allocated(parameters%prepared_default_mvg%specific_elastic_storage)) return
       if (size(parameters%prepared_default_mvg%specific_elastic_storage) /= parameters%active_nodes) return
@@ -1465,15 +1532,25 @@ contains
     call move_alloc(initialized%macro_mass_mg_cm2, state%salt%macro_mass_mg_cm2)
   end subroutine fmr_initialize_mobile_macro_salt_profile
 
-  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm)
+  subroutine fmr_new_b110_committed_state(committed, lineage_id, state, initial_time, ok, initial_rutter_storage_cm, parameters)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
     real(real64), intent(in), optional :: initial_rutter_storage_cm
+    type(fmr_b110_physical_parameters_t), intent(in), optional :: parameters
+    type(kernel_parameter_identity_t) :: checked_identity
+    logical :: certified
     class(transaction_state_t), allocatable :: carrier
     integer :: rutter_status
+    if(present(parameters)) then
+      ok=.false.
+      call parameters%capture_identity(checked_identity,certified)
+      if(.not.certified) return
+      if(state%active_nodes/=checked_identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.checked_identity%heat_enabled) return
+    end if
     allocate(fmr_b110_physical_state_t :: carrier)
     select type (typed_carrier => carrier)
     type is (fmr_b110_physical_state_t)
@@ -1488,7 +1565,11 @@ contains
         end if
       end if
     end select
-    call committed%initialize(lineage_id, carrier, ok, initial_time)
+    if(present(parameters)) then
+      call committed%initialize(lineage_id, carrier, ok, initial_time, parameters)
+    else
+      call committed%initialize(lineage_id, carrier, ok, initial_time)
+    end if
   end subroutine fmr_new_b110_committed_state
 
   subroutine fmr_new_b110_macropore_reduction_committed_state(committed,lineage_id,state,reduction,initial_time,ok)
@@ -2149,7 +2230,7 @@ contains
 
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
-                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps)
+                                               trusted_prepared_parameters, trace_accepted_water_flux_substeps,trace_accepted_soil_n_heat)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
@@ -2164,6 +2245,8 @@ contains
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     logical, intent(in), optional :: trusted_prepared_parameters
     logical, intent(in), optional :: trace_accepted_water_flux_substeps
+    logical, intent(in), optional :: trace_accepted_soil_n_heat
+    logical :: soil_n_heat_trace
     logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
     integer :: salt_active_domains
     logical :: rutter_snapshot_available
@@ -2196,9 +2279,20 @@ contains
     if (present(trace_accepted_water_flux_substeps)) &
          self%model%accepted_water_flux_trace_enabled = trace_accepted_water_flux_substeps
     if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
+    soil_n_heat_trace=.false.
+    if(present(trace_accepted_soil_n_heat))soil_n_heat_trace=trace_accepted_soil_n_heat
+    if(soil_n_heat_trace)then
+      if(.not.self%model%accepted_water_flux_trace_enabled.or..not.parameters%soil_temperature_active.or. &
+         parameters%frost_active.or.template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.or. &
+         template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
     if (self%model%accepted_water_flux_trace_enabled) then
       if (parameters%snow_active .or. parameters%drainage_response_active .or. &
-          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED) .or. &
+          (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
+           .not.soil_n_heat_trace) .or. &
           parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
           .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
@@ -2776,6 +2870,40 @@ contains
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
            size(parameters%cofgen,1) >= 24 .and. size(parameters%cofgen,2) == parameters%active_nodes
+      if (allocated(parameters%hydraulic_model_kind)) then
+        ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
+             all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
+             .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%snow_active .and. &
+             .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active
+      end if
+      if (parameters%conductivity_power_tail_active) then
+        ! HYD-POWER is admitted first as a narrow default-MvG / Reference-Richards
+        ! constitutive extension. Broader optional-physics compositions require
+        ! separate evidence and therefore fail closed here.
+        ok = ok .and. .not. allocated(parameters%hydraulic_model_kind) .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%root_extraction_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &
+             .not. parameters%boesten_evaporation_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%snow_active .and. .not. self%rfm_configuration%enabled .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
+             all(ieee_is_finite(parameters%cofgen(22:23,:))) .and. &
+             all(parameters%cofgen(22,:) < 0.0_real64) .and. &
+             all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &
+             all(parameters%cofgen(23,:) > 0.0_real64)
+      end if
       if (parameters%macropore_active) then
         ! Admission precedes configure_parameters(). Validate the immutable
         ! production config from the parameter carrier here; configure_parameters
@@ -2985,6 +3113,45 @@ contains
     fmr_serialized_execution_admitted = ok
   end function fmr_serialized_execution_admitted
 
+  logical function fmr_serialized_matches_committed_identity(self,identity,state) result(ok)
+    class(fmr_serialized_reference_model_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=fmr_b110_certified_candidate_layout_matches(identity,state)
+  end function
+
+  logical function fmr_b110_certified_candidate_layout_matches(identity,state) result(ok)
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    if(.not.identity%valid.or.identity%active_nodes<=0.or.identity%parameter_set_id<=0_int64) return
+    if(.not.allocated(identity%z).or..not.allocated(identity%dz)) return
+    if(size(identity%z)/=identity%active_nodes.or.size(identity%dz)/=identity%active_nodes) return
+    select type(state)
+    class is(fmr_b110_physical_state_t)
+      if(state%active_nodes/=identity%active_nodes) return
+      if(.not.allocated(state%pressure_head).or..not.allocated(state%water_content)) return
+      if(size(state%pressure_head)/=identity%active_nodes.or. &
+           size(state%water_content)/=identity%active_nodes) return
+      if(allocated(state%soil_temperature).neqv.identity%heat_enabled) return
+      if(.not.all(ieee_is_finite(state%pressure_head))) return
+      if(.not.all(ieee_is_finite(state%water_content))) return
+      if(identity%heat_enabled) then
+        block
+          type(soil_temperature_field_view_t) :: field
+          integer :: field_status
+          call build_soil_temperature_field_view(state%soil_temperature,field,field_status)
+          if(field_status/=SOIL_TEMP_OK) return
+          if(field%active_nodes/=identity%active_nodes) return
+          if(.not.all(ieee_is_finite(field%temperature_c))) return
+        end block
+      end if
+      ok=.true.
+    class default
+      return
+    end select
+  end function
+
   subroutine fmr_serialized_configure_parameters(self, parameters)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     class(kernel_parameters_t), intent(in) :: parameters
@@ -2996,7 +3163,9 @@ contains
       if (.not. associated(self%soil_parameters)) allocate(self%soil_parameters)
       if (.not. associated(self%owned_hydraulic_parameters)) allocate(self%owned_hydraulic_parameters)
       nullify(self%hydraulic_parameters)
+      if (.not. associated(self%analytical_hydraulic_parameters)) allocate(self%analytical_hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
+      if (.not. associated(self%analytical_constitutive)) allocate(self%analytical_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3028,13 +3197,20 @@ contains
           if (parameters%elasticity_active) then
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
                  enable_ksatexm_extension=parameters%ksatexm_extension_active, &
-                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:))
+                 enable_elastic_storage=.true., specific_elastic_storage_input=parameters%cofgen(24,:), &
+                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
           else
             call initialize_b110_default_mvg_parameters(self%owned_hydraulic_parameters, parameters%cofgen, &
-                 enable_ksatexm_extension=parameters%ksatexm_extension_active)
+                 enable_ksatexm_extension=parameters%ksatexm_extension_active, &
+                 enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
           end if
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
+      end if
+      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind)
+      if (self%analytical_hydraulics_active) then
+        call initialize_b111_analytical_hydraulic_parameters(self%analytical_hydraulic_parameters, &
+             parameters%hydraulic_model_kind, parameters%cofgen)
       end if
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
@@ -3405,6 +3581,12 @@ contains
         if (.not. allocated(forcing%soil_temperature)) return
         if (.not. allocated(self%soil_temperature_forcing)) allocate(self%soil_temperature_forcing)
         self%soil_temperature_forcing = forcing%soil_temperature
+        if (self%frost_active) then
+          if (self%soil_temperature_parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC .or. &
+              self%soil_temperature_forcing%top_boundary_mode/=SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE .or. &
+              self%soil_temperature_forcing%bottom_boundary_mode/=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX .or. &
+              self%soil_temperature_forcing%snow_water_storage_cm/=0.0_real64) return
+        end if
       else
         if (allocated(forcing%soil_temperature)) return
         if (allocated(self%soil_temperature_forcing)) deallocate(self%soil_temperature_forcing)
@@ -3907,7 +4089,9 @@ contains
         return
       end select
     end if
-    if (self%direct_retention_active) then
+    if (self%analytical_hydraulics_active) then
+      call bind_b111_analytical_hydraulic_provider(self%analytical_constitutive, self%analytical_hydraulic_parameters)
+    else if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
            step_duration, self%direct_retention_slot, direct_retention_ok)
       if (.not. direct_retention_ok) return
@@ -4126,11 +4310,16 @@ contains
                self%boesten_evaporation_forcing%runoff_resistance_day, &
                self%boesten_evaporation_forcing%runoff_exponent, fixed_top_conductivity)
           boesten_top_provider%matrix_source_area_partition = self%macropore_top_input_forcing%supplied
-          if(self%macropore_config%surface_pond_inflow_enabled)then
-            boesten_top_provider%macropore_pond_donor_active=.true.
-            boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
-            boesten_top_provider%macropore_surface_conductivity= &
-                 self%macropore_config%surface_macropore_conductivity_cm_per_day
+          ! Boesten is valid without macropores. The optional configuration is
+          ! allocated only for active macropores; Fortran does not guarantee
+          ! short-circuit evaluation of a combined ALLOCATED/.AND. condition.
+          if (allocated(self%macropore_config)) then
+            if(self%macropore_config%surface_pond_inflow_enabled)then
+              boesten_top_provider%macropore_pond_donor_active=.true.
+              boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+              boesten_top_provider%macropore_surface_conductivity= &
+                   self%macropore_config%surface_macropore_conductivity_cm_per_day
+            end if
           end if
           request%evaluation%dynamic_top_boundary => boesten_top_provider
         class default
@@ -4426,6 +4615,8 @@ contains
         return
       end if
       request%evaluation%constitutive => self%frost_constitutive
+    else if (self%analytical_hydraulics_active) then
+      request%evaluation%constitutive => self%analytical_constitutive
     else if (self%direct_retention_active) then
       request%evaluation%constitutive => self%direct_retention_constitutive
     else
@@ -4770,6 +4961,8 @@ contains
         self%last_observation%soil_temperature_energy_residual_j_cm2 = soil_temperature_result%energy_residual_j_cm2
         self%last_observation%soil_temperature_top_heat_flux_j_cm2_day = &
              soil_temperature_result%top_heat_flux_into_soil_j_cm2_day
+        self%last_observation%soil_temperature_bottom_heat_flux_j_cm2_day = &
+             soil_temperature_result%bottom_heat_flux_into_soil_j_cm2_day
         self%last_observation%soil_temperature_storage_change_j_cm2 = soil_temperature_result%sensible_storage_change_j_cm2
         self%last_observation%soil_temperature_boundary_energy_j_cm2 = soil_temperature_result%boundary_energy_into_soil_j_cm2
         if (soil_temperature_result%status /= SOIL_TEMP_OK .or. .not. soil_temperature_result%produced) return

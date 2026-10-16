@@ -1,0 +1,13 @@
+{
+  "baseline": "f158d5ded6a1b0af9b0d615d867130c078c2a2c0",
+  "workstream": "MC-CROP01",
+  "change": "Read-only staging composition from current local weather day and certified F-KT soil through historical crop order to existing F-WOF38 physical event forcing constructor. No independent state owner, no event commit; real accepted window demanded.",
+  "source_blob": "0913cff3695e1045598cc513f04324d167f57c00",
+  "negative_tests": [
+    "invalid/missing accepted WOFOST crop event window refuses forcing",
+    "stale weather revision refuses forcing",
+    "existing certified soil and historical order tests preserved"
+  ],
+  "qualification": "PENDING",
+  "limitations": "Caller may initialize weather_day_owner_t; no external meteorological production proof or trusted restart source. Does not authenticate consumed physical forcing. A valid accepted-window positive end-to-end F-KT event is not exercised by the new bridge test. No physical crop capability promoted."
+}

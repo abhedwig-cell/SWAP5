@@ -1,0 +1,235 @@
+{
+  "work_unit": "MC-IRR01",
+  "phase": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+  "canonical_base": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
+  "owner_dependency": {
+    "work_unit": "MC-CROP01",
+    "pull_request": 1207,
+    "observed_head": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+    "state": "PR1207_BOUNDED_ROOTED_WEATHER_ADMITTED_MANAGEMENT_HOOK_NOT_ADMITTED",
+    "overlap": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_serialized_multiswap_runtime.f90",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "canonical_merge": "23787767ec9d0ed2c88cdf5ed37229ff4647da60",
+    "prior_weather_api": {
+      "pull_request": 1204,
+      "observed_head": "e906bcee1adf4d1f6a1717ce12a5c87fdd8e1b6c",
+      "state": "PR1204_BOUNDED_ROOT_FREE_WEATHER_API_ADMITTED_FULL_ROOTED_MANAGEMENT_PROFILE_NOT_ADMITTED",
+      "canonical_merge": "43b912d44f7c5a22c205e0bc55c4cdfb76ae860d"
+    }
+  },
+  "finding": "PR1204 root-free weather API was superseded by admitted PR1207 opt-in rooted AIR/no-snow/default-MVG bottom7 ROOT_COMP_OFF production. Current weather interval authenticates accepted crop lineage/revision, derives canopy/DVS-dependent root uptake and dispatches real hydrology. It still constructs forcing internally and has no irrigation-management input. Configured root geometry is not evolving root-growth authority for management FC/stress/wilting thresholds; no bottom7 matrix-salt managed profile is admitted.",
+  "proposed_contract": "Add a bounded bootstrap entry preparing irrigation forcing from each internal committed state and immutable same-window owner weather/crop inputs. Reuse irrigation preparation, accepted CML and availability receipts; execute via existing run_standalone_with_forcing, publish management only for completed committed physical results. Retain existing per-column/multiswap transaction semantics. Joint continuation includes weather/crop daystart and irrigation event/weekly/allocation state.",
+  "held_fixed": [
+    "one accepted hydraulic/salt/crop state owner",
+    "existing weather event ordering",
+    "irrigation algorithms and source ordering",
+    "mass and temporal thresholds",
+    "existing ordinary bottom and optional-state profile admission checks"
+  ],
+  "required_owner_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+  "required_proofs": [
+    "same authenticated rain/TAV/ET/crop weather input",
+    "accepted root extent and hydraulic material-consistent FC/stress/wilting values",
+    "TCS2/3/4/6/7/8 and DCS1/limits through the actual application bootstrap",
+    "rain/evaporation/event composition and daystart ordering",
+    "repeated weekly/event selection and restart",
+    "O0/O2 and affected existing application/crop/F-CI preservation"
+  ],
+  "implemented": false,
+  "persisted": true,
+  "qualified": false,
+  "canonical_admitted": false,
+  "fullcap_promotions": 0,
+  "owner_observed_interfaces": [
+    "begin_weather_day",
+    "run_weather_interval",
+    "copy_committed_for_crop"
+  ],
+  "owner_reuse_rule": "Rediscover these exact owner interfaces after admission and reuse them. The weather interval currently constructs effective forcing internally and exposes no irrigation-management input.",
+  "last_reconciled_head": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "independent_irrigation_authority": {
+    "accepted_salt_pr": 1203,
+    "persistent_allocation_pr": 1205,
+    "allocation_merge": "cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
+    "allocation_record": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+  },
+  "shared_interface_review_20261011": {
+    "state": "PROPOSED_READY_FOR_CENTRAL_INTERFACE_DECISION_NOT_IMPLEMENTED",
+    "canonical_base": "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
+    "crop_successor": {
+      "branch": "integration/f-ci-canonical",
+      "head": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+      "canonically_admitted": true,
+      "admission_pr": 1207,
+      "observation": "Bounded rooted daily uptake and active growth admitted. Historical day-end/harvest/rotation/fallow and external disk restart remain open; no management hook is inherited."
+    },
+    "exact_source_postimages": [
+      {
+        "path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "canonical_blob": "851cb80954e1be909f6ec54661c0b12b80f225cd",
+        "crop_successor_blob": "bc04a4239b2b0d8ef21f962af14be6ef28fbe436",
+        "prior_canonical_blob": "7b6904941b72c87fe82c032c1a80c15b5e7c6562"
+      },
+      {
+        "path": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "canonical_blob": "39b4f75c92ea44d6b4e4be326ddf731f54522dfd",
+        "crop_successor_blob": "0f7fccc714a908083f4550394ca1fdd28f354d47",
+        "prior_canonical_blob": "3c6fea3ca43b35b563f25f5dbbd24e90e89b4509"
+      },
+      {
+        "path": "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+        "canonical_blob": "14b8d5e07c7abb08416a3d64e05fc06e9737af4a",
+        "crop_successor_blob": "14b8d5e07c7abb08416a3d64e05fc06e9737af4a",
+        "prior_canonical_blob": "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7"
+      },
+      {
+        "path": "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+        "canonical_blob": "ab5ac97c5017da9ba0560e674fb5888e422de5e5",
+        "crop_successor_blob": null,
+        "prior_canonical_blob": "ab5ac97c5017da9ba0560e674fb5888e422de5e5"
+      },
+      {
+        "path": "src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90",
+        "canonical_blob": "649143a63dd29df8e1ec5b15ac75e8244d05c87f",
+        "crop_successor_blob": "649143a63dd29df8e1ec5b15ac75e8244d05c87f",
+        "prior_canonical_blob": "649143a63dd29df8e1ec5b15ac75e8244d05c87f"
+      },
+      {
+        "path": "src/runtime/mod_fmr_accepted_salt_irrigation_binding.f90",
+        "canonical_blob": "a9ba5313efc564fd26d3951457aa40f1d92cb214",
+        "crop_successor_blob": "a9ba5313efc564fd26d3951457aa40f1d92cb214",
+        "prior_canonical_blob": "a9ba5313efc564fd26d3951457aa40f1d92cb214"
+      }
+    ],
+    "routing": {
+      "canonical_admission_owner": "central SWAP5 regie",
+      "application_owner": "central RT/HY with MC-CROP01",
+      "irrigation_owner": "MC-IRR01",
+      "rule_authority": "docs/development/quality-governance-a-aa.md#5-parallel-development-rule",
+      "required_decision": "Accept or return the preparation/dispatch/publication and joint continuation contract before shared application code changes. No second crop/root owner or broad historical branch replay."
+    },
+    "clusters": [
+      {
+        "id": "ROOT_FREE_SENSOR_APPLICATION",
+        "scope": "Existing one-column bottom7 root-free MVG weather profile; TCS7/TCS8 with DCS2, SSDI1/3nodes, depth limits and typed availability. Reuse accepted crop owner emergence/DVS for management gating; this does not require positive transpiration or evolving root uptake.",
+        "capabilities": [
+          "SW431-IRR-TCS7",
+          "SW431-IRR-TCS8",
+          "SW431-IRR-SSDI",
+          "SW431-IRR-LIMIT",
+          "SW431-IRR-AVAIL"
+        ],
+        "dependencies": [
+          "Central shared management-hook and joint continuation interface decision",
+          "MC-CROP01 overlap reconciliation against admitted PR1207 and any later live owner day-end successor"
+        ],
+        "not_a_dependency": [
+          "New root-growth physics for this DCS2/root-free bounded cluster",
+          "Missing source archives",
+          "Missing allocation or accepted matrix salt algorithms"
+        ],
+        "limits": "No DCS1/rooted criteria, positive transpiration, salinity activation, or full-capability promotion solely from this bounded cluster."
+      },
+      {
+        "id": "ROOTED_SALINE_WEEKLY_APPLICATION",
+        "scope": "Later rooted material-consistent TCS2/3/4,DCS1 and calendar TCS6; accepted matrix CML salt modifier and external allocation in authentic rain/ET/crop daystart execution.",
+        "capabilities": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-TCS6",
+          "SW431-IRR-DCS1",
+          "SW431-IRR-SALTEXCESS"
+        ],
+        "dependencies": [
+          "Shared management hook from first cluster",
+          "PR1207 supplies bounded emergence/growth/physical uptake; derive evolving accepted rooted extent and material thresholds from existing owners before rooted management qualification",
+          "RT/HY material threshold and joint bottom7 matrix-salt temporal-policy authority",
+          "Calendar owner weekly progression and joint restart"
+        ],
+        "limits": "Existing root summaries, policy and accepted salt are reused. Matrix-salt bottom2 evidence is not qualification for bottom7 authenticated weather. Surface/prescribed/other mode envelopes remain explicit per-capability gates."
+      }
+    ],
+    "interface_proposal": {
+      "bootstrap": "Add a typed optional management configuration/input or dedicated managed-weather entry delegating to the existing run_weather_interval. Keep the unmanaged entry and its current profile checks unchanged. A new managed profile must be explicit, not a guard waiver.",
+      "owner_inputs": "Snapshot fmr_wofost_crop_transaction_state_t through the passed committed crop kernel; require lineage/revision equal accepted_crop_lineage/accepted_crop_revision. Use public snapshot_owner and snapshot_root_growth plus owner crop_is_emerged/current_development_stage. Caller booleans, caller DVS and caller root extent must not become independent authority.",
+      "prepare_seam": "Expose a preparation-only helper from mod_fmr_irrigation_allocation_binding that reuses existing receipt_matches, provider-at-selection logic and frozen event receipt update. Reuse fmr_prepare_sensor_depth_ssdi_forcing / existing root management preparation; do not copy the allocation algorithm into bootstrap.",
+      "forcing_order": "Authenticate same weather record and derive ordinary rain/ET/TAV with current common-forcing owner. Resolve accepted irrigation inputs, then add SSDI as its separately accounted spatial source to this already materialized effective forcing. DCS1 rain subtraction must use the historical daily selection amount, not an arbitrary subinterval amount; source-time interpretation requires a literal B1.11 oracle before admission. Literal daily-rain oracle now passes288 cases at O0/O2 with strict-threshold equality and daily-vs-quarter-window negative witness; record integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json. This removes the source-arithmetic unknown, not the shared publication/profile gate.",
+      "execution": "Use existing run_standalone_with_forcing/model-bound dispatcher. Calling fmr_run_allocated_* directly instead would bypass the application-owned weather window and dispatcher; existing standalone wrapper success does not qualify the application hook.",
+      "publication": "Keep management/event/weekly/receipt candidates private. Before physical dispatch, prevalidate weather and management admission. Publish both only from an actual completed accepted physical revision and its certificate. Resolve the dispatcher partial-progress/failure case explicitly: reject inconsistent weather/irrigation prefixes or stage the complete joint application through the existing owner checkpoint/continuation mechanisms. Never restore only management after physical state has advanced. Existing single-column dispatcher atomicity is now physically witnessed at O0/O2: incomplete internally progressed candidates are discarded, while a completed earlier segment remains committed across later segment failure and joint restart. For this profile no extra detached whole-application transaction is justified merely by incomplete one-column dispatch. Managed event splitting still requires irrigation/weather receipts to publish at each completed segment and return the common accepted prefix on later failure. Multi-column batch atomicity is not inherited.",
+      "time": "Split intervals at active event end and required owner weather/calendar boundaries using existing scheduler semantics. A request spanning event expiry must neither stretch the source nor lose its tail. Event selection, retry and external-provider freshness occur once at the correct accepted opportunity.",
+      "continuation": "Extend fmr_weather_crop_application_continuation_t with schema-tagged irrigation configuration and fmr_allocated_irrigation_restart_t. Capture soil/crop/weather/window/event/weekly/provider identity at a common accepted boundary. Restore and validate all candidate objects before publishing any owner; existing active-object overwrite rejection remains. Opaque joint continuation and external disk codec remain separate claims.",
+      "shared_paths_allowed_after_decision": [
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "src/runtime/mod_fmr_crop_weather_physical_event_composition.f90",
+        "src/runtime/mod_fmr_irrigation_allocation_binding.f90"
+      ],
+      "held_fixed": [
+        "Historical irrigation formulas and salt-after-depth-limit/TASK4 order",
+        "Soil/crop/salt ownership and lineage authority",
+        "Mass thresholds and numerical/temporal policy",
+        "Existing bottom/profile fail-closed admission",
+        "Existing immutable preservation manifests; successor exact pins require owning gates"
+      ]
+    },
+    "qualification_plan": [
+      {
+        "gate": "Existing-profile preservation",
+        "cases": "Unmanaged actual file-weather and historical task2 owner fixture, source-census exact pins and affected PPA-WU03/FCI93 plus full current moving F-CI; inherit only byte-identical relevant closures."
+      },
+      {
+        "gate": "Sensor weather production O0/O2",
+        "cases": "TCS7/8 x sensor at1/3 x authentic rain present/absent x continuous/joint-restored; source ledger and water balance include separate rain, evaporation, lower flux, storage and spatial SSDI. Assert actual bootstrap dispatch and owner lineage, not standalone helper only."
+      },
+      {
+        "gate": "Temporal and selection O0/O2",
+        "cases": "Event endpoint inside a requested interval, event across day boundary, complete event then fresh selection, repeated calendar weeks for TCS6, actual immutable weather record and delivered daystart exactly once."
+      },
+      {
+        "gate": "Failure/continuation O0/O2",
+        "cases": "Rejected physical trial, retry, incomplete dispatch, stale crop revision, invalid allocation, provider change/expiry during active event, fresh provider required next event, corrupt joint restart schema/identity. All committed owners and ledger remain jointly consistent; compare continuous and restored numerical histories."
+      },
+      {
+        "gate": "Rooted/salt production O0/O2",
+        "cases": "Source-backed TCS2/3/4/6,DCS1/limits with accepted evolving roots and material FC/stress/wilting thresholds; literal rain and salt scaling order; matrix CML from same accepted water/salt revision; genuine bottom7 rain/ET/salt and joint continuation before any broader promotion."
+      }
+    ],
+    "qualification": {
+      "implemented": false,
+      "tested": false,
+      "qualified": false,
+      "canonical_admitted": false,
+      "fullcap_promotions": 0,
+      "scope": "Exact source/interface reconciliation and reviewable design only."
+    },
+    "prior_crop_successor_observation": {
+      "branch": "work/mc-crop01-historical-task2-20261011",
+      "head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
+      "canonically_admitted": false,
+      "observation": "Source comparison only; no qualification inheritance from unadmitted branch. Historical task2 initializer changes the bootstrap and lifecycle persistence. Daystart explicitly refuses delayed emergence once historical prep/sow/germination flags are complete."
+    },
+    "existing_publication_boundary_qualification_20261011": {
+      "record": "integration/audits/MC_IRR01_WEATHER_PUBLICATION_BOUNDARY_20261011.json",
+      "scope": "Actual admitted one-column root-free weather application; no inserted irrigation",
+      "result": "PASS internal accepted incomplete rollback, complete common-prefix preservation, joint opaque restart and clean retry O0/O2",
+      "does_not_accept_shared_interface": true,
+      "requalified_crop_pr": 1209,
+      "test_head": "09c6bfc6d37ba586217160d0354123779aaf32c7",
+      "file_weather_dayend": false
+    }
+  },
+  "current_owner_reconciliation_20261011": {
+    "record": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
+    "canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+    "crop_pr": 1207,
+    "admitted_rooted_crop_weather": true,
+    "shared_management_hook_accepted": false,
+    "management_hook_implemented": false,
+    "source_rain_policy_oracle": "PASS_O0_O2_288_CASES",
+    "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+  }
+}

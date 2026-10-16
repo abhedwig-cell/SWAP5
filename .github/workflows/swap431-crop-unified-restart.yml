@@ -1,0 +1,30 @@
+name: SW431 crop unified physical calendar restart qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - src/crop/mod_crop_rotation_transition.f90
+      - src/runtime/mod_fmr_crop_physical_calendar_restart_coherence.f90
+      - tests/fmig431/patch_crop_unified_restart_bundle_fixture.py
+      - tests/fmig431/run_crop_unified_restart_bundle.sh
+      - integration/audits/MC_CROP_UNIFIED_RESTART_BUNDLE_20261009.json
+      - .github/workflows/swap431-crop-unified-restart.yml
+permissions:
+  contents: read
+jobs:
+  paired-restart-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: gfortran --version
+      - name: Admitted source calendar selector and transition
+        run: |
+          bash tests/fmig431/run_crop_rotation_calendar.sh
+          bash tests/fmig431/run_crop_rotation_transition.sh
+      - name: Committed receipt-derived calendar preservation
+        run: bash tests/fmig431/run_crop_rotation_receipt_full_gate.sh
+      - name: Accepted physical and calendar restart bundle O0 O2
+        run: bash tests/fmig431/run_crop_unified_restart_bundle.sh

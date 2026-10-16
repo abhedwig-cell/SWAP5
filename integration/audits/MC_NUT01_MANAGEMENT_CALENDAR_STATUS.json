@@ -1,0 +1,142 @@
+{
+  "work_unit": "MC-NUT01-MANAGEMENT-CALENDAR",
+  "baseline": "3b661766dc59298a7f541c970c2d3a55602d926c",
+  "branch": "work/nut-management-calendar-20261015",
+  "contract": "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_CONTRACT_20261015.md",
+  "reference_decision": "docs/science/MC_NUT01_CALENDAR_REFERENCE_DECISION_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "reference_status": "B0 original same-date stall witnessed; exact one-line B1-R2 correction PASS native O0/O2 before B2",
+  "small_feedback": "Actual three-provider calendar producer PASS O0/O2: exact corrected B1 daily selection, kg/ha conversion, source order,20 invalid paths, no-event and A/B/A",
+  "reference_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
+  "process_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
+  "scope": "Typed daily amendment plan with same-day source-order application into existing senescence, whole-N crop/soil and actual Richards day; existing clocks/restart only",
+  "interfaces_affected": "Three additive production modules; no existing provider, private state, solver, WOFOST81 equation/fixation or codec modified",
+  "next_safe_step": "Verify final fetched postimage, exact live canonical and expected PR head, safely merge then verify canonical tree/source. No repeat full for metadata-only closeout.",
+  "test_selection": {
+    "reference": "Original B0 defect and corrected B1 before B2; tiny standalone literal grouping and trigger O0/O2",
+    "process": "Actual3 production providers, fresh O0/O2 PASS",
+    "day": "Actual46-provider crop/soil/calendar driver fresh O0/O2 PASS; extra no-event actual-state identity driver PASS with hash-audited same-session build",
+    "physical": "Actual Richards plus3 additive providers, about266 total. Fresh isolated builds and all drivers/native assertions; manual/scheduled byte-identical complete native/opaque/fresh-process endpoints, expected220..300s; no unrelated original provider requalification because bytes/ABI unchanged",
+    "full": "One stable local moving OFF selected under AGENTS/protocol four-level physical forcing/publication boundary, expected1616s; compile/link/native full split UNKNOWN",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "remaining": "File/date-string parsing and default activation, accepted heat/profile coupling, harvest/reset/rotation and simultaneous solute companions open. Existing surface-input PR1234 remains owned separately. Pond/source open; aquifer rejected. No fullcap/master-count promotion",
+  "pr": 1242,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1242",
+  "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+  "primary_execution": "9f226f2e25ebfd555d2d1cf668cbd6b03d5d31c7",
+  "direct_execution": "7c13b1dc33e5b24164f0dd5a7f3480e2bf053254",
+  "empty_execution": "3f4e611afa9f63e26eab24d0bb949f7a0b627d44",
+  "physical_provider_count": 266,
+  "direct_provider_count": 46,
+  "process_provider_count": 3,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_MANAGEMENT_CALENDAR_20261015.tar.xz.b64",
+    "sha256": "983e0b58addd4ffa9014ab3c2f1e4c71f6561dad157b3a2becbc35b4c97bdfcf",
+    "decoded_bytes": 132076,
+    "members": 1587
+  },
+  "physical_cost_seconds": {
+    "compile": 132.77958916702482,
+    "driver_compile": 13.869315663992893,
+    "link": 0.679646201984724,
+    "native": 108.5682312319841
+  },
+  "direct_cost_seconds": {
+    "compile": 12.90476297812711,
+    "driver_compile": 3.3754503630043473,
+    "link": 0.16576301299210172,
+    "native": 0.01212862998363562
+  },
+  "process_cost_seconds": {
+    "compile": 0.9837004829896614,
+    "driver_compile": 0.21641211898531765,
+    "link": 0.05926300100691151,
+    "native": 0.003593464003643021
+  },
+  "reference_cost_seconds": {
+    "compile_link": 0.39688769199710805,
+    "native": 0.014002691998030059
+  },
+  "empty_cost_seconds": {
+    "driver_compile": 1.1130302189994836,
+    "link": 0.25149674898420926,
+    "native": 0.0047111790045164526
+  },
+  "qualification_status": "BOUNDED_CALENDAR_R2_QUALIFIED_PRESERVED_PREMERGE",
+  "recovery": "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_RECOVERY_20261015.md",
+  "negative_controls": {
+    "status": "PASS",
+    "count": 183,
+    "baseline_controls": 138,
+    "current_controls": 45
+  },
+  "documentation_source": "PASS",
+  "strict_mkdocs": "PASS",
+  "added_blobs": {
+    "src/crop/mod_crop_soil_n_calendar_day.f90": "528b6c77a6a3ccaa03e3d2064ae9fedfa2dd59fd",
+    "src/process/mod_soil_n_amendment_calendar.f90": "19dcedb0babc89b21c2fbcc65122c1ff709b3cc1",
+    "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": "15491852eada4aa20679d203f394cb171a9b2003",
+    "tests/nut-calendar/check_calendar_controls.py": "1d86415624a4e0e40b1418456976e53826782da8",
+    "tests/nut-calendar/run_calendar.py": "a9924ed811e0fb719c623a9d959c62c68c19706d",
+    "tests/nut-calendar/run_empty_day.py": "9348ac616d87cd6007d99f563696c3dd36275d0e",
+    "tests/nut-calendar/run_reference.py": "e28a64309a52a4e8b169360ff111f66346a5762e",
+    "tests/nut-calendar/test_calendar.f90": "d25411a829df49a7f314166ce2d1f0670f69a357",
+    "tests/nut-calendar/test_calendar_day.f90": "06dfa6b568ed7c78e45f975249e2997912038329",
+    "tests/nut-calendar/test_calendar_empty_day.f90": "746197bdc0067b4cf356a008ec38bed36a86da01",
+    "tests/nut-calendar/test_calendar_joint.f90": "9858d030b030c000951bc93ff326117b5ec787b3",
+    "tests/nut-calendar/verify_calendar_successor.py": "b9cab74c961bb80fe55b976d18d185a59705697b"
+  },
+  "changed_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "92471b1492f41eb03d75aa25fcf1d470552a09e5",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "5a9ef80658b3301a43fe75bc6b3141372c435ce1",
+    "tests/nut-senescence/check_senescence_controls.py": "176530786f94660e8c12fc017bc9f99a4787dcdd",
+    "tests/nut-senescence/verify_senescence_successor.py": "135b811e6ecc59582402b61247e168133a24cd62"
+  },
+  "full_preservation": {
+    "execution_commit": "47ad7871cf48937e17e1e20e9a57c13a1df633c1",
+    "tree": "2fa2bf8d33964afcdec3b5dee813d5af9955250f",
+    "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6382,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1676.7066751130042,
+    "changed_inputs": [],
+    "stdout_sha256": "af99fa0f5c84aadabdaed510ebc76f9b31937b7dfccab3f43769a41673ce5cd9",
+    "stderr_sha256": "2b4ffab3de07ccea0643ac1b86a667d4c39e33c2fdfd69671b7fe18a55812f3d",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_MANAGEMENT_CALENDAR_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "2f057ba08f057d902244a5ced2bd19d7e8f1f8042630989fb990bcad8f85fb30",
+      "decoded_bytes": 462128,
+      "members": 15
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "47ad7871cf48937e17e1e20e9a57c13a1df633c1",
+    "original_tree": "2fa2bf8d33964afcdec3b5dee813d5af9955250f",
+    "source_tree": "8cf09f7be1c21693b7e50c62c4e6b37ed3c71d28",
+    "changed_scientific_inputs": [],
+    "closeout_only": [
+      "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/science/MC_NUT01_MANAGEMENT_CALENDAR_RECOVERY_20261015.md",
+      "integration/audits/evidence/MC_NUT01_MANAGEMENT_CALENDAR_ADMISSION_20261015.tar.xz.b64"
+    ],
+    "reason": "Terminal full preservation executed against frozen persisted source, scientific inputs, drivers, oracles and guards. Final changes record result and raw evidence only; no duplicate science/full run for metadata-only closeout."
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1242 expected-head merge and exact canonical tree/source establish bounded admission."
+}

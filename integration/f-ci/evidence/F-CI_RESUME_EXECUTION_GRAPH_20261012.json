@@ -1,0 +1,1091 @@
+{
+  "baseline": "a1b4bb432827149872445161fbcb775bba5c4cb1",
+  "kind": "STATIC_BOUNDED_RECONSTRUCTION_NOT_A_SELECTION_REGISTER",
+  "source_files": {
+    "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh": "95ecc393eb584b921fb7b3b249560e7ae78c505d4a68356537087e168a0454a0",
+    "tests/f-app07/run_mc_irr01_accepted_salt_restart.sh": "492d2e77c02de0203314c47e80bec9d5787f5a2049da8b224e5c4eba9945f0ab",
+    "tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh": "15e3f60fac9e3241f5fb4c35bab9bb066e6d76c8cc90e9cad364a17ae7a9854d",
+    "tests/f-app07/run_mc_irr01_allocated_root_restart.sh": "d6a1eef42f2b99217c4b7d311cdb46a673a473542d187154a9c457ecb73324b7",
+    "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh": "6501ce22f64bde2d2c264e2159eaaa82ffb153276ea942929cbef7a94a6b4db6",
+    "tests/f-app07/run_mc_irr01_management_physical_runtime.sh": "aec3c3910879fa8fe4ff97e16604419fa76981e6910db80b90659b64da62513f",
+    "tests/f-app07/run_mc_irr01_root_salt_realistic.sh": "e055db73daf4b317079994162951c8e763aef2ae536763de72b456e33d39eb59",
+    "tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh": "996bbc56cf662ae09fa54792a54e7f5037dbabf4131cc88507a4a6ec3b3bc46d",
+    "tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh": "8564ae1a2c40bfab866ab013b3c2055cd3feb2c492415db9cf7c929e24df0a7b",
+    "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh": "b9a78bc99199836cc4e7e69bfe5cf887ab478e162ca0cf8aa0712a0056d43596",
+    "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh": "e7218b14dda9407dfbd57d5df4cbbd5e8efcfc8e90a6b0cf13a1f1e8ad1ad81a",
+    "tests/fapp/run_ppa_wu03_independent.sh": "aa8c3bfe6b8f9515f9455f8d11017187a9d130a762552198da4de333c43cd410",
+    "tests/fci/run_crop_file_weather_production_successor.sh": "374abe83d6093f449b0e3ae5b50fe396ef2fb0248ba2196ae2a1aad0d709a9a3",
+    "tests/fci/run_crop_fkt_b110_exact_source_successor.sh": "cae7615c11eda4675a1ea973a70f740bed64baa0155d5907844864068c47c952",
+    "tests/fci/run_fci107_fross17_cache_successor_preservation.sh": "8d5d7a4e63455e944eca1e7f8bf610230672fcafc14099cbb15795ee666b58ef",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh": "77d390923bb2ff10c550d5e65cd9ec4867939e8ebcacb87e1ec04875fad41c53",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "e464443fab4f978180f8a7cbedfbcd73cb032bee7655fa076b20d4a133d9eaa5",
+    "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh": "77d568758914d51359865d9941669569a32c8e6ec5e85ff58390cbbc73ceaca7",
+    "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh": "131d2b4cc45e1b72b8e05d0fa85a82d9b6f4a6fa688645c34341074e6ae38ed3",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "b49c90c404001e8b8f9bb0c0936036ebaaa83447f829292390ea1f32ea1f6e67",
+    "tests/fci/run_fci_fross22_tiered_successor_preservation.sh": "bd47347c857943007cba242a84646ddca48da5ada0001dbeecca26800dddca11",
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh": "40c7508ea2dd5e8d95ca2813dbac43dc35839f6c919e29c5b54dac762e841d8a",
+    "tests/fmig431/run_crop_accepted_head_depth_binding.sh": "5b25406670d6b5e7c1f58cf114ab8c55fd28a74bd4ba7117452739f770972530",
+    "tests/fmig431/run_crop_accepted_hydraulic_provenance.sh": "76f63d9c653a14cf799e8dbffb9d281f4de27be61a87f24b5a1fd5c32bfd20a2",
+    "tests/fmig431/run_crop_accepted_soil_temperature.sh": "99362f4cf2c40721f529b6a2006b5a3151cb01e4cc605061efcdca71b23429fc",
+    "tests/fmig431/run_crop_atomic_accepted_hydroheat.sh": "b667dba1ab2d0fe0e8cf2594b7d86221fde8e88e163a4d63e2a8252665a858bb",
+    "tests/fmig431/run_crop_b110_grid_sowing_preflight.sh": "3d2b03f07243510c08c09340b26d197d3be6af05f2af0fb7b62479fd94329d48",
+    "tests/fmig431/run_crop_b111_germination_boundaries.sh": "403ff15fcad6b5e2e3aaebfbe55d0e33771271b76eb1b80ffbea2c6237a01ecb",
+    "tests/fmig431/run_crop_b111_germination_source_oracle.sh": "0967e6683bb5893b46d59b9eef818f5bbfa64f986e0f6a775b8578dffa1c1e6f",
+    "tests/fmig431/run_crop_b111_germination_sum_candidate.sh": "25b3bb34cd3b6e0a46c3e430317cb722346ef307d38ac3ba11770778cf69cdc5",
+    "tests/fmig431/run_crop_b111_meteo_loading_candidate.sh": "ffeae6fc845441897fba9ee8c75e9d1f5a7b4dca0c066e90a3a2602d5fa166ac",
+    "tests/fmig431/run_crop_b111_preflight_source_order.sh": "2bb0ae028b7ae15d2bacad0c07547c63b33b3605cd025487005823e1568eb9ff",
+    "tests/fmig431/run_crop_b111_pressure_head_average.sh": "ede84d7b60e2239bc25053a1636d56796dd94ba0c68610ec2be401c8894a15cb",
+    "tests/fmig431/run_crop_b111_sowing_node.sh": "9cc0d2761b2f587be93a01138e05d15c92a710204fd6501c90f806a9191aea31",
+    "tests/fmig431/run_crop_certified_daily_preflight.sh": "b39fd291e6dadff43dc0a049bb25c5aa852c477229be44366f698ed4d061d28a",
+    "tests/fmig431/run_crop_certified_hydrothermal_forcing.sh": "1fca00ada98a60567b857a972d09614e4dbb2be998a22bb767771db7f11ae5b0",
+    "tests/fmig431/run_crop_certified_sowing_source.sh": "8ff87bbbcfa926634549c1eb0b50ddca00682efc654938e645613258f9aa4c63",
+    "tests/fmig431/run_crop_file_weather_production.sh": "0c917af9dc7b1096f6aa454cf8edb29a69282301e12e5c8cb031b78182ae21c4",
+    "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh": "e9e09e3fce7d14dafb0931840f536dd5a6cb772ca94f7bf01d3b7f2d0ed7bc68",
+    "tests/fmig431/run_crop_fkt_parameter_identity.sh": "2570486f9fa2f691056a377ea8f7623223e3ce1617d4252a3309227b6c71d77a",
+    "tests/fmig431/run_crop_germination_preflight.sh": "01823e9f0e6290dc92b78e270befd8a54cd1a7236dbb5a276d339d3654d43c8d",
+    "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh": "097e8af3c9e87ba2cff60c39d5b6e0ae0308523524d0d7029853843e05d5d0a8",
+    "tests/fmig431/run_crop_lifecycle_continuation.sh": "7322af253d467122116f778ccac671e0f811065e991e21fab71800503d0a5e34",
+    "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh": "77f418a592e74a9fc8fc57ae96c79bf590cde9b9952f9a0485b09ad49073c053",
+    "tests/fmig431/run_crop_physical_calendar_restart_coherence.sh": "3546629a54df1e2dc14c3e95a230dcca6dfe810ab907e1e69b8f64303d8595af",
+    "tests/fmig431/run_crop_preparation_sowing_preflight.sh": "344eb2eaefa452871c3b8f4d33eae37a2507c2538aaa5ae0a3d61c099915b2af",
+    "tests/fmig431/run_crop_previous_day_emergence_gate.sh": "a6a533074c5d66c62bf003e6f1e1e37f9eaefe326355a91c483a6fa76e3e15c9",
+    "tests/fmig431/run_crop_rooted_weather_frost_successor.py": "64bd05cd9f8cbe64da4e5ebfd7b1f17264ea40028e8071c7f331a5d5d72fd8f6",
+    "tests/fmig431/run_crop_rotation_calendar.sh": "a43b0cec5299d9c82b58d00f3e4686dffce5d35b0c195c62ef1eb18e5e404ba9",
+    "tests/fmig431/run_crop_rotation_receipt_full_gate.sh": "ead2a5d5ce948bf43d11aef3a12f12ad6e56a59b31602577b6fd7c17e78fe1dc",
+    "tests/fmig431/run_crop_rotation_transition.sh": "c28262c5bad0e9bc636d93ddf9b929900885b0c0deae1a17b7c1cf1abba93a74",
+    "tests/fmig431/run_crop_task2_frost_successor.py": "dd5fb3b3055125049fce858cbceeb9e769d5244404d908e06636c5ab19dba639",
+    "tests/fmig431/run_crop_tav_day_window.sh": "123c76dae982850c0dfe9714229966aa95de53d4184358dfef8af1c9ccdd97c0",
+    "tests/fmig431/run_crop_tav_detailed_period_candidate.sh": "afeaa85a44bf9a0d1c7b6f5383fd983f17364c718afb6a7902d102619320902e",
+    "tests/fmig431/run_crop_tav_meteorological_candidate.sh": "1f7c88cc9e606bd9b00d08991fab294ea3dc163f631105e9949e8656e5253f45",
+    "tests/fmig431/run_crop_unified_restart_bundle.sh": "6e8e4b9b4cf820b58e4e90706dcaf2888169612e13f5411414197be714e9bbfa",
+    "tests/fmig431/run_crop_weather_day_owner.sh": "a65b9df192394237394eb97baf8ded7166702639ed52e5c4e147ea190a3621da",
+    "tests/fmig431/run_crop_weather_preflight_read_boundary.sh": "eca8a5d01dce146d2fa82670cb0c976bfca97485d6a559371cbf62eba64aece8",
+    "tests/fmig431/run_mc_heat01_runtime.sh": "bd1615dc2307603f0c7372b3a1b346e3d3fb5f5374372a25de6afb2fe5bff308",
+    "tests/fmig431/run_mc_heat01_thermal_boundary.sh": "ab64088dc76354784ad94be8305da692d9a1799387932dc732a5749d442e2ffe",
+    "tests/fpe/run_fpe_nlglob14z47.sh": "53941d8f273e71602fb3623332782dfb911b30705f9cc46b59280411543b56fa",
+    "tests/frost/build_ppa_wu05b19_runtime.py": "1257e9e8bcee030e0964caa711a98047fe529f303c3245d2c504234b1c691e35",
+    "tests/frost/run_frost_invalid_input_preservation.sh": "f632ddeb5521e22b7d6a1bf563516cba40c6f3ec0eb3f106d012c5430c0e17be",
+    "tests/frost/run_frost_nan_guard_highest_successor.py": "041e013eb57f35e1bb02c93a70f087b8944592bb40f9363f0e8bba1822723303",
+    "tests/frost/run_frost_nan_guard_independent.sh": "54584496c6c5f9487abbf4e5965eb62a50658bb9e4ccc36c3062f7c370df7e2a",
+    "tests/frost/run_ppa_wu05b_frost_runtime.sh": "b22896bc2dffbd08c59510057b241869074b48e8c689a9c45e2d664a57af6d72",
+    "tests/mc-irr01/run_mc_irr01_literal_availability.sh": "6537a1b528a20e9cd75f88b341f90457b31db571df29d63160987166e07b65b2",
+    "tests/mc-irr01/run_mc_irr01_literal_management.sh": "4a5069826caa8925bb8ef49d892e1b1b99016a732569e839287acad69fb1909b",
+    "tests/mc-irr01/run_mc_irr01_literal_root_salt.sh": "3c9f32034ec65e47850650fb1b0e1c5c15208016ed376b86d3567eec56266c0f",
+    "tests/mc-irr01/run_mc_irr01_management_policy.sh": "3dbbece278187d296fbf9836064919430e3ac4f100e4c3fa9292ce9ef19fa913",
+    "tests/mc-met01/verify_daily_demand_successor.py": "4df54a625f22da95aa3f071a072d840db4ed5aba0fcb2edd29a595a3a433c0bb",
+    "tests/mc-met01/verify_raintb_successor.py": "621f59870aab4b420216c49c792e2415f18163c93c70a34701eb2deaf186ca18",
+    "tests/physics/run_ppa_micro02_de_willigen.py": "d6c2ef8449f0f5ca93969af040ed88628a1294d11d95cef9bc9df6c96c908eb5",
+    "tests/physics/run_ppa_micro03_runtime.py": "a382269f497e72d81a7c65c7b7c7c98fbaf70deade1c3fa44cb1ecff5a7eb40b",
+    "tests/publication/run_pub_p2e01_e0_paired_pilot.sh": "de27600139d49b77e903c10e38b67787fa6759984fa289c050a3f0d0e22e6aa6",
+    "tests/rom/compile_f_rom0_fortran_closure.py": "8df84fe75c57c8fc0f51ca25cc4d25ceb445dea81b89d8086e000eaf078efdfd",
+    "tests/rom/materialize_f_rom0_headcalc_stubs.py": "3a9e5a1139d352703397ac031ff124524cdf18f68020fc43bd5ac9def59138e5",
+    "tests/ross/run_fross22_admission_all_material.sh": "e38b1fdb6503be374de3300dcd99770739e4057997493573a19bdc344d8b882a",
+    "tests/ross/run_ross12_serialized_production_wiring.sh": "a7609a21d365d27355262b8656ca65ebf38706d9588bd5a898474fc88b407b9c",
+    "tests/ross/run_ross12_soil_water_solver_adapter.sh": "02782aa576c955063f3bb421506447c379b18b6fc907b889f92549e70028430f",
+    "tests/ross/run_ross12_solver_selection_binding.sh": "c2a7b0df83fa5622b31b154a384dbcb00033e248e02da1f23af275d28bfbd14e",
+    "tests/ross/run_ross13_36_material_production_envelope.sh": "bd41ee1c6bff6d8bf2a6545f2f3aefe1b082cd8f81a1ce33c6c2a3aa962a1003",
+    "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh": "b76879809527482efe6a8493cfaa5499b906d42a5bd6d902df62ca27fc4ff187",
+    "tests/support/augment_bartholomeus_backend_sources.py": "42e6b4c366e03fd728e00e62064bb1d691e2a727f14b03a4d77c93a2ed066127"
+  },
+  "edges": [
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 105,
+      "target": "tests/mc-met01/verify_daily_demand_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_daily_demand_successor.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 109,
+      "target": "tests/mc-met01/verify_raintb_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_raintb_successor.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 113,
+      "target": "tests/fmig431/run_crop_rooted_weather_frost_successor.py",
+      "exact_callsite": "python3 tests/fmig431/run_crop_rooted_weather_frost_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 115,
+      "target": "tests/fmig431/run_crop_task2_frost_successor.py",
+      "exact_callsite": "python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 117,
+      "target": "tests/frost/run_frost_nan_guard_highest_successor.py",
+      "exact_callsite": "python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 127,
+      "target": "tests/frost/run_frost_invalid_input_preservation.sh",
+      "exact_callsite": "fci_group frost-invalid bash tests/frost/run_frost_invalid_input_preservation.sh || fail 'frost NaN guard original invalid-input O0/O2'",
+      "disposition": "QUALIFIED_LEAF_CANDIDATE"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 128,
+      "target": "tests/frost/run_frost_nan_guard_independent.sh",
+      "exact_callsite": "fci_group frost-independent bash tests/frost/run_frost_nan_guard_independent.sh || fail 'frost NaN guard independent nonfinite bit-preservation O0/O2'",
+      "disposition": "QUALIFIED_LEAF_CANDIDATE"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 133,
+      "target": "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+      "exact_callsite": "bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh || fail 'F-CI93 non-M1 fixed-K immutable preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 161,
+      "target": "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_shared_storage_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 190,
+      "target": "tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+      "exact_callsite": "bash tests/fmig431/run_mc_heat01_thermal_boundary.sh || fail 'MC-HEAT01 process/default F-VQ58 O0/O2 preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 191,
+      "target": "tests/fmig431/run_mc_heat01_runtime.sh",
+      "exact_callsite": "bash tests/fmig431/run_mc_heat01_runtime.sh || fail 'MC-HEAT01 original runtime/transaction/restart O0/O2 preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 192,
+      "target": "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+      "exact_callsite": "bash tests/fkt/run_fkt22_fmr_runtime_gate.sh || fail 'MC-HEAT01 FKT22 serialized trajectory preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 193,
+      "target": "tests/frost/run_ppa_wu05b_frost_runtime.sh",
+      "exact_callsite": "bash tests/frost/run_ppa_wu05b_frost_runtime.sh || fail 'MC-HEAT01 bounded frost runtime preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 297,
+      "target": "tests/mc-met01/verify_daily_demand_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_daily_demand_successor.py || fail 'daily demand complete highest evidence missing'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 304,
+      "target": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "exact_callsite": "bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only || fail 'unqualified file-weather production successor'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 405,
+      "target": "tests/fci/run_crop_fkt_b110_exact_source_successor.sh",
+      "exact_callsite": "bash tests/fci/run_crop_fkt_b110_exact_source_successor.sh --verify-only ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 472,
+      "target": "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+      "exact_callsite": "bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 474,
+      "target": "tests/mc-irr01/run_mc_irr01_management_policy.sh",
+      "exact_callsite": "bash tests/mc-irr01/run_mc_irr01_management_policy.sh || fail 'MC-IRR01 management preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 475,
+      "target": "tests/mc-irr01/run_mc_irr01_literal_management.sh",
+      "exact_callsite": "bash tests/mc-irr01/run_mc_irr01_literal_management.sh || fail 'MC-IRR01 exact B1.11 management oracle'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 476,
+      "target": "tests/mc-irr01/run_mc_irr01_literal_availability.sh",
+      "exact_callsite": "bash tests/mc-irr01/run_mc_irr01_literal_availability.sh || fail 'MC-IRR01 exact B1.11 TASK4 oracle'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 477,
+      "target": "tests/f-app07/run_mc_irr01_management_physical_runtime.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_management_physical_runtime.sh || fail 'MC-IRR01 physical binding and rollback'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 478,
+      "target": "tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_sensor_depth_runtime.sh || fail 'MC-IRR01 sensor depth physical/restart composition'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 484,
+      "target": "tests/mc-irr01/run_mc_irr01_literal_root_salt.sh",
+      "exact_callsite": "bash tests/mc-irr01/run_mc_irr01_literal_root_salt.sh || fail 'root salt source semantics preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 485,
+      "target": "tests/f-app07/run_mc_irr01_root_salt_realistic.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_root_salt_realistic.sh || fail 'root salt physical source/depth/availability preservation'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 496,
+      "target": "tests/f-app07/run_mc_irr01_accepted_salt_restart.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_accepted_salt_restart.sh || fail 'accepted salt sensor physical/restart'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 497,
+      "target": "tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_accepted_salt_root_restart.sh || fail 'accepted salt root physical/restart'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 506,
+      "target": "tests/f-app07/run_mc_irr01_allocated_root_restart.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_allocated_root_restart.sh || fail 'allocation root/repeated-event/restart'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 507,
+      "target": "tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_allocated_sensor_restart.sh || fail 'allocation sensor/restart'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 560,
+      "target": "tests/mc-met01/verify_daily_demand_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_daily_demand_successor.py ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 661,
+      "target": "tests/fpe/run_fpe_nlglob14z47.sh",
+      "exact_callsite": "bash tests/fpe/run_fpe_nlglob14z47.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 674,
+      "target": "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh",
+      "exact_callsite": "bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 676,
+      "target": "tests/fapp/run_ppa_wu03_independent.sh",
+      "exact_callsite": "bash tests/fapp/run_ppa_wu03_independent.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 683,
+      "target": "tests/fmig431/run_crop_b111_germination_sum_candidate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_germination_sum_candidate.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 685,
+      "target": "tests/fmig431/run_crop_b111_germination_source_oracle.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_germination_source_oracle.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 687,
+      "target": "tests/fmig431/run_crop_b111_germination_boundaries.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_germination_boundaries.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 696,
+      "target": "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 713,
+      "target": "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 722,
+      "target": "tests/fmig431/run_crop_weather_preflight_read_boundary.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 733,
+      "target": "tests/fmig431/run_crop_weather_preflight_read_boundary.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_weather_preflight_read_boundary.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 741,
+      "target": "tests/fmig431/run_crop_weather_day_owner.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_weather_day_owner.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 750,
+      "target": "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh",
+      "exact_callsite": "bash tests/fapp/run_ppa_wu03_common_forcing_adapter.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 759,
+      "target": "tests/fmig431/run_crop_weather_day_owner.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_weather_day_owner.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 768,
+      "target": "tests/fmig431/run_crop_b111_meteo_loading_candidate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_meteo_loading_candidate.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 776,
+      "target": "tests/fmig431/run_crop_tav_detailed_period_candidate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_tav_detailed_period_candidate.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 781,
+      "target": "tests/fmig431/run_crop_tav_meteorological_candidate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_tav_meteorological_candidate.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 785,
+      "target": "tests/fmig431/run_crop_tav_day_window.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_tav_day_window.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 791,
+      "target": "tests/fmig431/run_crop_germination_preflight.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_germination_preflight.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 793,
+      "target": "tests/fmig431/run_crop_b111_preflight_source_order.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_preflight_source_order.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 801,
+      "target": "tests/fmig431/run_crop_certified_daily_preflight.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_certified_daily_preflight.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 803,
+      "target": "tests/fmig431/run_crop_germination_preflight.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_germination_preflight.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 805,
+      "target": "tests/fmig431/run_crop_preparation_sowing_preflight.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_preparation_sowing_preflight.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 809,
+      "target": "tests/fmig431/run_crop_fkt_parameter_identity.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_parameter_identity.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 811,
+      "target": "tests/fmig431/run_crop_certified_sowing_source.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_certified_sowing_source.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 813,
+      "target": "tests/fmig431/run_crop_certified_hydrothermal_forcing.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 816,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh ||",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 819,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 824,
+      "target": "tests/fmig431/run_crop_atomic_accepted_hydroheat.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_atomic_accepted_hydroheat.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 826,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 830,
+      "target": "tests/fmig431/run_crop_accepted_soil_temperature.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_accepted_soil_temperature.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 832,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 836,
+      "target": "tests/fmig431/run_crop_accepted_head_depth_binding.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_accepted_head_depth_binding.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 838,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 842,
+      "target": "tests/fmig431/run_crop_b111_pressure_head_average.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_pressure_head_average.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 844,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 848,
+      "target": "tests/fmig431/run_crop_b110_grid_sowing_preflight.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b110_grid_sowing_preflight.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 850,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 854,
+      "target": "tests/fmig431/run_crop_b111_sowing_node.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_b111_sowing_node.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 856,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 870,
+      "target": "tests/fmig431/run_crop_previous_day_emergence_gate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_previous_day_emergence_gate.sh || fail 'previous-day emergence failed'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 871,
+      "target": "tests/fmig431/run_crop_lifecycle_continuation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_continuation.sh || fail 'lifecycle continuation failed'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 872,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh || fail 'current lifecycle B19/MICRO preservation failed'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 874,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 882,
+      "target": "tests/fmig431/run_crop_accepted_hydraulic_provenance.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 884,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 894,
+      "target": "tests/fmig431/run_crop_physical_calendar_restart_coherence.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_physical_calendar_restart_coherence.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 896,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 903,
+      "target": "tests/fmig431/run_crop_accepted_hydraulic_provenance.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_accepted_hydraulic_provenance.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 905,
+      "target": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 911,
+      "target": "tests/fmig431/run_crop_rotation_calendar.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_rotation_calendar.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 913,
+      "target": "tests/fmig431/run_crop_rotation_transition.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_rotation_transition.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 915,
+      "target": "tests/fmig431/run_crop_rotation_receipt_full_gate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_rotation_receipt_full_gate.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 917,
+      "target": "tests/fmig431/run_crop_unified_restart_bundle.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_unified_restart_bundle.sh || \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 921,
+      "target": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "exact_callsite": "bash tests/fci/run_crop_file_weather_production_successor.sh || fail 'file-weather integrated owner/scientific preservation failed'",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 1491,
+      "target": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "exact_callsite": "PPA_WU05B_MOVING_CANONICAL_PRESERVATION=1 bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 1494,
+      "target": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "exact_callsite": "bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 1497,
+      "target": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "exact_callsite": "bash tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": 1501,
+      "target": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "exact_callsite": "bash tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": 78,
+      "target": "tests/ross/run_ross12_soil_water_solver_adapter.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_soil_water_solver_adapter.sh > \"$BUILD/adapter.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": 81,
+      "target": "tests/ross/run_ross12_solver_selection_binding.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_solver_selection_binding.sh > \"$BUILD/selection.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": 84,
+      "target": "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_serialized_production_wiring.sh > \"$BUILD/production.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": 87,
+      "target": "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+      "exact_callsite": "bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh > \"$BUILD/p2e01.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+      "line": 162,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "line": 166,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": 65,
+      "target": "tests/ross/run_ross13_36_material_production_envelope.sh",
+      "exact_callsite": "bash tests/ross/run_ross13_36_material_production_envelope.sh > \"$BUILD/ross13-provider.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": 68,
+      "target": "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+      "exact_callsite": "bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh > \"$BUILD/ross12-successor.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": 71,
+      "target": "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_serialized_production_wiring.sh > \"$BUILD/serialized.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": 74,
+      "target": "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+      "exact_callsite": "bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh > \"$BUILD/p2e01.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": 96,
+      "target": "tests/ross/run_ross13_36_material_production_envelope.sh",
+      "exact_callsite": "bash tests/ross/run_ross13_36_material_production_envelope.sh > \"$BUILD/provider.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": 99,
+      "target": "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+      "exact_callsite": "EXPECTED_ROSSFAST_KERNEL_BLOB=\"$CACHE_KERNEL\"   bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh > \"$BUILD/ross12-successor.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": 102,
+      "target": "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_serialized_production_wiring.sh > \"$BUILD/serialized.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": 105,
+      "target": "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+      "exact_callsite": "bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh > \"$BUILD/p2e01.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": 109,
+      "target": "tests/ross/run_ross13_36_material_production_envelope.sh",
+      "exact_callsite": "bash tests/ross/run_ross13_36_material_production_envelope.sh > \"$BUILD/provider.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": 112,
+      "target": "tests/ross/run_fross22_admission_all_material.sh",
+      "exact_callsite": "bash tests/ross/run_fross22_admission_all_material.sh > \"$BUILD/allmat.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": 116,
+      "target": "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+      "exact_callsite": "bash tests/ross/run_ross13_ross12_semantic_successor_preservation.sh > \"$BUILD/semantic.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": 119,
+      "target": "tests/ross/run_ross12_serialized_production_wiring.sh",
+      "exact_callsite": "bash tests/ross/run_ross12_serialized_production_wiring.sh > \"$BUILD/serialized.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": 122,
+      "target": "tests/publication/run_pub_p2e01_e0_paired_pilot.sh",
+      "exact_callsite": "bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh > \"$BUILD/p2e01.txt\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/ross/run_fross22_admission_all_material.sh",
+      "line": 163,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 7,
+      "target": "tests/mc-met01/verify_daily_demand_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_daily_demand_successor.py --owner-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 10,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 22,
+      "target": "tests/mc-met01/verify_raintb_successor.py",
+      "exact_callsite": "python3 tests/mc-met01/verify_raintb_successor.py || exit 1",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 28,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 36,
+      "target": "tests/fmig431/run_crop_rooted_weather_frost_successor.py",
+      "exact_callsite": "python3 tests/fmig431/run_crop_rooted_weather_frost_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 38,
+      "target": "tests/fmig431/run_crop_task2_frost_successor.py",
+      "exact_callsite": "python3 tests/fmig431/run_crop_task2_frost_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 40,
+      "target": "tests/frost/run_frost_nan_guard_highest_successor.py",
+      "exact_callsite": "python3 tests/frost/run_frost_nan_guard_highest_successor.py --verify-only",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 96,
+      "target": "tests/fmig431/run_crop_file_weather_production.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_file_weather_production.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": 97,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 9,
+      "target": "tests/fmig431/run_crop_fkt_parameter_identity.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_parameter_identity.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 10,
+      "target": "tests/fmig431/run_crop_certified_sowing_source.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_certified_sowing_source.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 11,
+      "target": "tests/fmig431/run_crop_certified_hydrothermal_forcing.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_certified_hydrothermal_forcing.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 12,
+      "target": "tests/fmig431/run_crop_lifecycle_continuation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_continuation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 13,
+      "target": "tests/fmig431/run_crop_rotation_calendar.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_rotation_calendar.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 14,
+      "target": "tests/fmig431/run_crop_rotation_transition.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_rotation_transition.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 17,
+      "target": "tests/physics/run_ppa_micro02_de_willigen.py",
+      "exact_callsite": "MICRO02_RESULT=\"${TMPDIR:-/tmp}/crop-owner-micro02-$$.json\" python3 tests/physics/run_ppa_micro02_de_willigen.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 18,
+      "target": "tests/physics/run_ppa_micro03_runtime.py",
+      "exact_callsite": "MICRO03_RESULT=\"${TMPDIR:-/tmp}/crop-owner-micro03-$$.json\" python3 tests/physics/run_ppa_micro03_runtime.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "line": 21,
+      "target": "tests/frost/build_ppa_wu05b19_runtime.py",
+      "exact_callsite": "python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build \"$BUILD\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_file_weather_production.sh",
+      "line": 196,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t SOURCES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 24,
+      "target": "tests/fmig431/run_crop_previous_day_emergence_gate.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_previous_day_emergence_gate.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 25,
+      "target": "tests/fmig431/run_crop_lifecycle_continuation.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_continuation.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 26,
+      "target": "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 31,
+      "target": "tests/physics/run_ppa_micro02_de_willigen.py",
+      "exact_callsite": "python3 tests/physics/run_ppa_micro02_de_willigen.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 33,
+      "target": "tests/physics/run_ppa_micro03_runtime.py",
+      "exact_callsite": "python3 tests/physics/run_ppa_micro03_runtime.py",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh",
+      "line": 40,
+      "target": "tests/frost/build_ppa_wu05b19_runtime.py",
+      "exact_callsite": "python3 tests/frost/build_ppa_wu05b19_runtime.py --route low_air --build \"$B19_BUILD\"",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fapp/run_ppa_wu03_common_forcing_adapter.sh",
+      "line": 147,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fapp/run_ppa_wu03_independent.sh",
+      "line": 132,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/f-app07/run_fapp07_tcs1_dcs2_process.sh",
+      "line": 119,
+      "target": "tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh",
+      "exact_callsite": "bash tests/f-app07/run_mc_irr01_sensor_ssdi_runtime_mass.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_crop_fkt_b110_exact_source_successor.sh",
+      "line": 26,
+      "target": "tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "exact_callsite": "bash tests/fmig431/run_crop_fkt_b110_scientific_successor.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+      "line": 76,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fmig431/run_mc_heat01_runtime.sh",
+      "line": 86,
+      "target": "tests/support/augment_bartholomeus_backend_sources.py",
+      "exact_callsite": "mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py \"${MODULE_SRC[@]}\")",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh",
+      "line": 11,
+      "target": "tests/rom/materialize_f_rom0_headcalc_stubs.py",
+      "exact_callsite": "python3 tests/rom/materialize_f_rom0_headcalc_stubs.py \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh",
+      "line": 16,
+      "target": "tests/rom/compile_f_rom0_fortran_closure.py",
+      "exact_callsite": "python3 tests/rom/compile_f_rom0_fortran_closure.py --root \"$ROOT\" \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/f-app07/run_mc_irr01_shared_storage_preservation.sh",
+      "line": 33,
+      "target": "tests/rom/compile_f_rom0_fortran_closure.py",
+      "exact_callsite": "python3 tests/rom/compile_f_rom0_fortran_closure.py --root \"$ROOT\" \\",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    },
+    {
+      "caller": "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+      "line": 11,
+      "target": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "exact_callsite": "bash tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "disposition": "RUN_ONLY_NOT_REUSE_QUALIFIED"
+    }
+  ],
+  "limitations": [
+    "Includes all statically named conditional routes, not a claim all execute on this head",
+    "Variable-generated paths/commands, inline code and compile products are governed by original subrunners and remain RUN",
+    "Only the two explicit no-output frost leaves may inherit; no inferred eligibility from this graph"
+  ]
+}

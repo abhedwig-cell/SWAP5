@@ -41,11 +41,12 @@ contains
     ndeml = max(0.0_real64, nmaxlv*wlv - anlv)
     ndems = max(0.0_real64, nmaxst*wst - anst)
     ndemr = max(0.0_real64, nmaxrt*wrt - anrt)
-    result%vegetative_demand = ndeml + ndems + ndemr
+    ! Preserve literal B1.11 addition and partition order.
+    result%vegetative_demand = max(0.0_real64, ndemr + ndems + ndeml)
 
     if (dvs < dvsnlt .and. reltr > 0.01_real64) then
       result%fixation = nfixf*result%vegetative_demand
-      result%soil_demand = max(0.0_real64, result%vegetative_demand-result%fixation)
+      result%soil_demand = (1.0_real64-nfixf)*result%vegetative_demand
     end if
   end subroutine evaluate_b111_nfixation
 

@@ -1,16 +1,12 @@
 name: PPA-WU05B19 source-bound runtime admission
 
 on:
-  pull_request:
-    branches: [integration/f-ci-canonical]
-    paths:
-      - 'src/process/mod_frost_divdra_drainage_effect.f90'
-      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
-      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
-      - 'tests/frost/*ppa_wu05b19*'
-      - 'integration/audits/PPA_WU05B19*.json'
-      - '.github/workflows/ppa-wu05b19-runtime-admission.yml'
   workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing work-unit JSON selecting exceptional highest_low_air and full_fci
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -21,12 +17,18 @@ concurrency:
 
 jobs:
   source-bound-runtime-admission:
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Select exceptional research before compilation
+        run: |
+          python3 tests/modularity/run_modular_tests.py --check-selection highest_low_air
+          python3 tests/modularity/run_modular_tests.py --check-selection full_fci
       - name: Verify complete inherited evidence and fail-closed verifier
         run: |
           mkdir -p "$RUNNER_TEMP/b19-admission-evidence"

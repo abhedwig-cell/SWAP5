@@ -1,0 +1,351 @@
+{
+  "work_unit": "MC-NUT01-REACTIVE-DAY",
+  "baseline": "eb03024d99ef9256335eb6e2f3f74bccce8145f0",
+  "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+  "branch": "work/nut-reactive-day-20261015",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "contract": "docs/science/MC_NUT01_REACTIVE_DAY_CONTRACT.md",
+  "reference_decision": "docs/science/MC_NUT01_ORGANIC_REFERENCE_DECISION_20261015.md",
+  "next_safe_step": "Publish final evidence/recovery metadata in PR1232, verify exact source and admission-only delta, mark ready and safely merge if canonical remains compatible. Do not repeat qualification for metadata-only closeout.",
+  "pilot": {
+    "execution": "5ff8d978",
+    "status": "SCOPED_LOCAL_PASS_BEFORE_TRANSFER_DOMAIN_GUARD",
+    "direct_provider_count": 13,
+    "physical_provider_count": 250,
+    "result_path": "reactive-physical-first/result.json",
+    "cost_seconds": {
+      "direct_compile": 3.5158666179922875,
+      "direct_link": 0.06606113399902824,
+      "direct_native": 0.0030067340121604502,
+      "incumbent_compile": 4.422038516990142,
+      "incumbent_link": 0.18610346598143224,
+      "incumbent_native": 17.357358153982204,
+      "physical_compile": 113.80632945901016,
+      "physical_link": 0.22066453100705985,
+      "physical_native": 30.58992157704779,
+      "reference_compile": 0.2694428629911272,
+      "reference_link": 0.11802353999519255,
+      "reference_native": 0.005063143995357677
+    },
+    "next": "Fresh stable qualification selected after public transfer bounds added, plus successful immobilisation and physics-config decoder controls. No broad run repeated."
+  },
+  "added_blobs": {
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": "b2b3af4103d21a4d5eedb021346bc49101d52333",
+    "src/process/mod_b111_soil_n_daily_candidate.f90": "4689c60057eefd7469d10eed9a61d919e9a81083",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "4415651ba6d3f60234a362a48abb6ee1f3411eb2",
+    "src/process/mod_b111_soil_n_organic_mineralization_transfer.f90": "028f11eba1fb01bb7a2b2aff2041bf7f9327f24f",
+    "src/process/mod_b111_soil_n_organic_rate_environment.f90": "defce5904978b5d70e1522cf9f0d668cf1ce346c",
+    "src/process/mod_b111_soil_n_organic_turnover_transfer.f90": "7cc260cf8480c9af5740aa52c445ddc3798dd899",
+    "src/process/mod_b111_soil_n_rate_factors.f90": "6edccab65ccc66114d563eb73fdb341e2720f464",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "e3495335b9c891dbd32b0fb5efd5895a16a710bd",
+    "src/process/mod_b111_soil_organic_dissimilation.f90": "b9501e9e958fb4f20970929b89276d1890fef1ce",
+    "src/process/mod_b111_soil_organic_turnover.f90": "b6138c1ef6a69755af4c061dc04681e4a8bfe85b",
+    "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90": "e504d18cf7dd9a0ebaa78f793297a8c45afb8249",
+    "src/runtime/mod_fmr_b111_reactive_n_route.f90": "a931ec6ccca46850403575511e7858da9705c5e0",
+    "tests/nut-reactive/check_reactive_evidence_controls.py": "f4015cb3af56d0e34bc8ff11d644e62f7b4c12c7",
+    "tests/nut-reactive/reactive_oracle.inc": "b34641bb246ce69ce162b56df39caf1798d79594",
+    "tests/nut-reactive/reactive_parameters.inc": "4f09c08c92ebd67bb50af11c1ec7339d82a9d196",
+    "tests/nut-reactive/run_reactive.py": "3da189ee090ae241189a6330cc82095135b69da3",
+    "tests/nut-reactive/run_reactive_edges.py": "d136fe3d245513afdd08fd2d6b77cc93346751a0",
+    "tests/nut-reactive/test_organic_reference.f90": "4ea09c901ee340bd7e9f05899b716e2a187ec1ca",
+    "tests/nut-reactive/test_reactive_edges.f90": "a11b080c5a732e502e8b64dda52fae8bfb58f15c",
+    "tests/nut-reactive/test_reactive_joint.f90": "c48f1262dba9ebb5c8c0f14bfe227afdb841bc20",
+    "tests/nut-reactive/test_reactive_owner.f90": "063e52a75f879857d99cf27f8f6ded2faf683513",
+    "tests/nut-reactive/verify_reactive_successor.py": "0488eec9b454e45d7ee1457ca239f558b41b2ed1"
+  },
+  "changed_blobs": {
+    "src/process/mod_b111_soil_n_mineral_owner.f90": "1268d9e45e58047e2a252bdba3f771a273a87b55",
+    "src/runtime/mod_fmr_b111_mineral_route.f90": "d69cb53ab063d6521dcd53e93ba2e2ccc0671fea",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "18d4e2a1efc5e327e553f7d4231a37bb48174fc4",
+    "tests/nut-mineral/verify_mineral_successor.py": "46af097c96af79460e8b6503af9e9846a97bd368",
+    "tests/crop-co2/verify_co2_successor.py": "40bcfa8d15fbd096e3dce94e51ed84c56cb6ad3b"
+  },
+  "test_selection": {
+    "level1_2": "13-provider O0/O2 exact corrected-source process driver; original 4-provider mineral driver retained. Original B1 defect witness and corrected B1 qualification execute before production, with pinned one-line transform. Small independent successful-immobilisation/internal-nitrification/transfer-bound controls.",
+    "level3": "Actual two-day Richards reaction/transport/opaque/disk route; explicit off mode and original admitted mineral physical driver on same controlled provider build; ten decoder negatives each, plus three process-configuration negatives. Source-bound original endpoints must remain byte-identical.",
+    "level4": "Select once on stable candidate under execution-protocol local contract/four-level admission requirements. Complete local moving FCI, RESUME_MODE=OFF, expected1400..1900s based on1411.227s prior run. Shared N owner/carrier and exact admission dispatch changed; unchanged water/crop/source physics preserved. Compile/link/native split UNKNOWN for full shell gate.",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "master_reconciliation": {
+    "master_pr": 1072,
+    "master_head": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+    "master_blob": "d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+    "denominator": 243,
+    "dispositions_before": {
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "disposition_delta": 0,
+    "master_branch_modified": false,
+    "receipt": "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_REACTIVE_DAY_20261015.tar.xz.b64",
+    "sha256": "3f0db3f950e76f848d791c484defb717955f919959b17217240b1c0a6c4d07f3",
+    "decoded_bytes": 120756,
+    "members": 2743
+  },
+  "execution_commit": "970e5297c57bda992e2511a5604c72d5c6f36f64",
+  "source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+  "cost_seconds": {
+    "direct_compile": 3.237762274031411,
+    "direct_link": 0.06966466399899218,
+    "direct_native": 0.004089285008376464,
+    "incumbent_compile": 4.212886538996827,
+    "incumbent_link": 0.20525152099435218,
+    "incumbent_native": 17.3996008910035,
+    "physical_compile": 106.9787998272077,
+    "physical_link": 0.18213723998633213,
+    "physical_native": 28.920346541053732,
+    "reference_compile": 0.3141144389810506,
+    "reference_link": 0.11680129599699285,
+    "reference_native": 0.006630482981563546
+  },
+  "edge_cost_seconds": {
+    "compile": 2.797566681969329,
+    "link": 0.06171590700978413,
+    "native": 0.002862790002836846,
+    "decoder_native": 0.00916892901295796
+  },
+  "reference_correction": {
+    "reference": "MC-NUT01-R1",
+    "preimage_sha256": "85146e95249b41ed9b5202b507cb1647784592a313e36e75010da9bbf9a733f6",
+    "postimage_sha256": "a17a727e35c453a17be599eede2c501b36baf921b9937edd6b0309dcb26d9696",
+    "exact_preimage": "NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Bio(fn) * NFracBio",
+    "exact_postimage": "NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Hum(fn) * NFracHum",
+    "replacement_count": 1,
+    "global_reference_manifest_changed": false
+  },
+  "test_results": {
+    "O0": {
+      "reference": {
+        "legacy": "ORIGINAL_NMINER_DEFECT_RESIDUAL= -5.8815841271517549E-04\nORIGINAL_ORGANIC_REFERENCE_DEFECT_WITNESS=PASS\n",
+        "corrected": "CORRECTED_ORGANIC_REFERENCE_WHOLE_N=PASS\n"
+      },
+      "direct_stdout": "REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS\n",
+      "direct_production_provider_count": 13,
+      "incumbent_stdout": "MINERAL_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nMINERAL_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "incumbent_fresh_stdout": "MINERAL_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "incumbent_endpoint_sha256": "1688a196da4e4b1086911055b676a5b9716c8d6e1b2f7a28c0cbc7f304a18d52",
+      "incumbent_admitted_byte_identity": true,
+      "incumbent_decoder_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "chemical_revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ],
+      "off_endpoint_sha256": "03c13e11dc066bc7bce0a2b88933367864e850b1d566a09994e2656b3c67c8ee",
+      "physical_stdout": "REACTIVE_OFF_ACTUAL_MINERAL_EQUIVALENCE=PASS\nREACTIVE_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nREACTIVE_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "fresh_stdout": "REACTIVE_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "fresh_endpoint_sha256": "81310902a7fa17ec38f5dfe8940de2fe6c5670e04caf8ad3abd7db15f83e3470",
+      "physical_provider_count": 250,
+      "corruption_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ]
+    },
+    "O2": {
+      "reference": {
+        "legacy": "ORIGINAL_NMINER_DEFECT_RESIDUAL= -5.8815841271517549E-04\nORIGINAL_ORGANIC_REFERENCE_DEFECT_WITNESS=PASS\n",
+        "corrected": "CORRECTED_ORGANIC_REFERENCE_WHOLE_N=PASS\n"
+      },
+      "direct_stdout": "REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS\n",
+      "direct_production_provider_count": 13,
+      "incumbent_stdout": "MINERAL_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nMINERAL_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "incumbent_fresh_stdout": "MINERAL_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "incumbent_endpoint_sha256": "1688a196da4e4b1086911055b676a5b9716c8d6e1b2f7a28c0cbc7f304a18d52",
+      "incumbent_admitted_byte_identity": true,
+      "incumbent_decoder_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "chemical_revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ],
+      "off_endpoint_sha256": "03c13e11dc066bc7bce0a2b88933367864e850b1d566a09994e2656b3c67c8ee",
+      "physical_stdout": "REACTIVE_OFF_ACTUAL_MINERAL_EQUIVALENCE=PASS\nREACTIVE_ACTUAL_LITERAL_AND_NINE_CARRIER_NEGATIVES=PASS\nREACTIVE_ACTUAL_RICHARDS_DAILY_ATOMIC_OPAQUE_DISK=PASS\n",
+      "fresh_stdout": "REACTIVE_FRESH_PROCESS_CONTINUATION=PASS\n",
+      "fresh_endpoint_sha256": "81310902a7fa17ec38f5dfe8940de2fe6c5670e04caf8ad3abd7db15f83e3470",
+      "physical_provider_count": 250,
+      "corruption_negatives": [
+        "truncated",
+        "crc_corrupt",
+        "water_clock",
+        "node_count",
+        "revision",
+        "chemical_clock",
+        "parameter_nan",
+        "water_nan",
+        "negative_N",
+        "oversized_N"
+      ]
+    }
+  },
+  "edge_results": {
+    "O0": {
+      "stdout": "REACTIVE_SUCCESSFUL_IMMOBILISATION_INTERNAL_NITRIFICATION_WATER_COUNTER=PASS\n",
+      "process_provider_count": 13,
+      "physics_configuration_negatives": [
+        "organic_rate",
+        "reaction_temperature",
+        "enabled_mode"
+      ]
+    },
+    "O2": {
+      "stdout": "REACTIVE_SUCCESSFUL_IMMOBILISATION_INTERNAL_NITRIFICATION_WATER_COUNTER=PASS\n",
+      "process_provider_count": 13,
+      "physics_configuration_negatives": [
+        "organic_rate",
+        "reaction_temperature",
+        "enabled_mode"
+      ]
+    }
+  },
+  "evidence_controls": {
+    "status": "PASS",
+    "negative_count": 26,
+    "controls": [
+      "unfinished",
+      "wrong_source",
+      "different_reference",
+      "nonlocal_reference_transform",
+      "reference_correction_missing",
+      "legacy_witness_missing",
+      "large_direct_closure",
+      "carrier_oracle_missing",
+      "incumbent_not_preserved",
+      "missing_decoder_case",
+      "stale_input",
+      "optimization_drift",
+      "tampered_restart",
+      "tampered_incumbent",
+      "off_drift",
+      "tampered_reference",
+      "wrong_primary_binding",
+      "missing_physics_config_control",
+      "edge_science_absent",
+      "missing_native",
+      "missing_reference_native",
+      "failed_event",
+      "false_raw_digest",
+      "foreign_source",
+      "foreign_test",
+      "foreign_reference"
+    ]
+  },
+  "canonical_peer_reconciliation": {
+    "canonical": "9ed5efc773b28f44b16b8922730b3fd9b8892b60",
+    "peer_pr": 1230,
+    "science_input_delta": [],
+    "scope": "Exact canonical-relative reactive delta, unchanged matrix postimages and complete nonlinear raw qualification; original canonical CO2/mineral owners execute at exact peer baseline, new reactive physical and original mineral driver independently rerun. All 253 reactive primary inputs remain identical; no simultaneous matrix and N execution claim. Full moving actual execution remains recorded separately, not relabeled a combined run."
+  },
+  "qualification_status": "BOUNDED_REACTIVE_DAILY_ROUTE_QUALIFIED_AND_PRESERVED_PREMERGE",
+  "pr": 1232,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1232",
+  "full_preservation": {
+    "execution_commit": "3b60b7e1ee3bfea72fd5fac99a000dda8c2e4020",
+    "tree": "d0eae7733f7e30dcc65d52e59fe2b31e05ce6283",
+    "source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "returncode": 0,
+    "wall_seconds": 1423.3613627060113,
+    "tracked_inputs": 6258,
+    "changed_inputs": [],
+    "stdout_sha256": "af85f19554866454ff88cbdf404205b33ef75708fc27672420b767d1f9c4f40a",
+    "stderr_sha256": "8f294a304da8eaf9055bde98ec4a7aead6d2d1543de071492bcc6e3e985acc93",
+    "terminal_marker": true,
+    "highest": "NOT_SELECTED_POLICY",
+    "status": "PASS",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_REACTIVE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "defe22fcb89bad7a7c396d968e1c3ad5a8b9448c48a1323efa60bb80aa552130",
+      "decoded_bytes": 1838312,
+      "members": 278
+    }
+  },
+  "incumbent_owner_verification": {
+    "baseline": "82209d0df68d14c5ebe707e9b6303f9b150488ca",
+    "source_tree": "9257e714cc5c16b8d198ce2ff30d03c4a191e4a5",
+    "postimages": {
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": "5a93008ed2fb18d0798ec0c967729815d156ec26",
+      "src/adapter/mod_crop_atmospheric_co2_forcing.f90": "86f8c7770b15dcd63f3c22295c81f0f7073cd993"
+    },
+    "co2_successor": true,
+    "qualified": false,
+    "admitted": false,
+    "physical_programs": 28,
+    "highest": "NOT_SELECTED_POLICY",
+    "reactive_successor": true,
+    "reactive_source_tree": "1c7be316f404f6d75881e14393fe00634f6885f7",
+    "reactive_baseline": "eb03024d99ef9256335eb6e2f3f74bccce8145f0"
+  },
+  "canonical_admission_authority": "This is an immutable premerge qualification record. Actual admission requires PR1232 merge receipt and canonical source/tree verification in its final PR body.",
+  "final_dependency_rebind": {
+    "execution": "3b60b7e1ee3bfea72fd5fac99a000dda8c2e4020",
+    "physical_source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+    "existing_inputs_verified": 6258,
+    "changed_existing_inputs": [
+      "docs/science/MC_NUT_SOL_TRAJECTORY3_MATRIX_CONTRACT.md",
+      "docs/verification/theory-code-discrepancy-register.md",
+      "integration/audits/MC_NUT01_MINERAL_TRANSPORT_STATUS.json",
+      "integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+      "tests/crop-co2/verify_co2_successor.py",
+      "tests/nut-mineral/verify_mineral_successor.py",
+      "tests/nut-reactive/verify_reactive_successor.py",
+      "tests/nut-sol/run_matrix_route.py",
+      "tests/nut-sol/test_matrix_joint.f90",
+      "tests/nut-sol/test_matrix_route.f90"
+    ],
+    "status_projection_equal": [
+      "baseline",
+      "evidence"
+    ],
+    "new_paths": [
+      "integration/audits/evidence/MC_NUT01_REACTIVE_ADMISSION_20261015.tar.xz.b64",
+      "docs/science/MC_NUT01_REACTIVE_DAY_RECOVERY_20261015.md"
+    ],
+    "additional_closeout_metadata": [
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json"
+    ],
+    "reason": "Exact independently admitted nonlinear peer delta plus three source-dispatch guard changes and metadata. All253 reactive science inputs byte-identical; full nonlinear capsule validates all240 inputs on this tree. Both original full runs retain exact execution/input/source identities. Fresh source/evidence controls, original incumbent owner CLIs and small actual N/matrix O0/O2 execute on combined candidate. No new combined full execution or simultaneous NUT+SOL physics claimed.",
+    "current_source_tree": "1c7be316f404f6d75881e14393fe00634f6885f7",
+    "canonical_peer": "9ed5efc773b28f44b16b8922730b3fd9b8892b60"
+  }
+}
