@@ -1,9 +1,10 @@
   ! Qualification-only fixed-flux receiver. This is a real committed FMR
   ! endpoint witness, not the broader dynamic-top/crop application admission.
-  subroutine verify_int12c_real_endpoint(certificate_profile)
+  subroutine verify_int12c_real_endpoint(certificate_profile, refined_profile)
     use mod_pmdirect_swetr0_process
     use mod_fmr_interception_source_window_binding
     logical, intent(in) :: certificate_profile
+    logical, intent(in), optional :: refined_profile
     type(pmdirect_swetr0_weather_t) :: weather
     type(pmdirect_swetr0_site_t) :: site
     type(pmdirect_swetr0_canopy_t) :: canopy
@@ -76,6 +77,14 @@
       ! Explicit test-only budget. This is not an application accuracy default.
       config%model_temporal_indicator_budget=1.0e-6_real64
     end if
+    if (present(refined_profile)) then
+      if (refined_profile) then
+        call require(certificate_profile,'refinement requires unchanged certificate accuracy')
+        config%transaction%max_retries=24
+        config%max_committed_substeps=4096
+        p%min_step_duration=1.0e-12_real64
+      end if
+    end if
     call initialize_forcing(forcing,-interval%net_rain_cm_per_day,0.0_real64,-999.0_real64)
     t0=0.0_real64;accepted_sum=0.0_real64;net_input=0.0_real64
     do i=1,4
@@ -119,6 +128,16 @@
       write(*,'(A,A,A,6I8)') 'INT12C_REAL_DIAGNOSTICS=',trim(result%admission_status), &
            ' attempts/retries/temporal/mass/headcalc/solver-status=',diag%attempts,diag%retries, &
            result%temporal_rejections,result%mass_rejections,result%solver_headcalc_calls,result%solver_status
+      ! Observe the real attempted certificate before a failed positive gate.
+      ! Read-only diagnostics distinguish unavailable history from budget excess.
+      observation=backend%observation()
+      write(*,'(A,I2,5L2,I6,3(1X,ES23.15),2A)') 'INT12C_REAL_CERTIFICATE_ATTEMPT=',i, &
+           observation%temporal_indicator_enabled,observation%temporal_previous_derivative_available, &
+           observation%temporal_indicator_available,observation%temporal_head_budget_valid, &
+           observation%temporal_certificate_available,observation%temporal_indicator_status, &
+           observation%temporal_head_inf_bound,observation%temporal_head_budget, &
+           observation%temporal_normalized_indicator,' reason=', &
+           trim(observation%temporal_certificate_unavailable_reason)
       if(.not.result%committed)then
         call accept_fmr_interception_source_window_result(owner,result%column_id,result%requested_t0, &
              result%requested_t1,result%committed,result%accepted_substeps,result%initial_revision, &

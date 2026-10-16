@@ -98,6 +98,9 @@ module mod_fmr_production_application_bootstrap
        FMR_GW_APP_C_API_CONTEXT_BUSY
   use mod_fmr_biomass_root_uptake_input, only: bind_committed_biomass_root_uptake_input
   use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, CROP_ROOT_RATE_OK
+  use mod_fmr_interception_source_window_binding, only: fmr_interception_source_window_t, &
+       fmr_interception_source_window_restart_t, export_fmr_interception_source_window_restart, &
+       prepare_fmr_interception_source_window_trial, accept_fmr_interception_source_window_result, FMR_INTWIN_OK
   implicit none
   private
 
@@ -117,6 +120,7 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE = 13
   integer, parameter, public :: FMR_APP_BOOT_CROP_TRANSACTION_FAILED = 14
   integer, parameter, public :: FMR_APP_BOOT_CROP_EVENT_DELIVERED = 15
+  integer, parameter, public :: FMR_APP_BOOT_INTERCEPTION_REJECTED = 16
 
   ! Physical controls only. Live continuation is read exclusively from the
   ! existing committed crop owner; creation starts with zero continuation.
@@ -249,6 +253,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: ready => production_application_ready
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: groundwater_worker_count => production_application_groundwater_worker_count
+    procedure, public :: run_interception_window_interval => production_application_run_interception_window_interval
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: begin_weather_day => production_application_begin_weather_day
@@ -1574,6 +1579,76 @@ contains
     crop_committed=pending_crop
     status=FMR_APP_BOOT_OK
   end subroutine
+
+  ! Explicit source-window application: both physical and companion changes
+  ! remain private until this call succeeds. Existing standalone calls retain
+  ! their own partial-progress semantics.
+  subroutine production_application_run_interception_window_interval(self, owners, t0, t1, &
+       effective_forcing, results, accepted_interception, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(fmr_interception_source_window_t), intent(inout) :: owners(:)
+    real(real64), intent(in) :: t0, t1
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    real(real64), allocatable, intent(out) :: accepted_interception(:)
+    integer, intent(out) :: status
+    type(fmr_interception_source_window_t), allocatable :: trial_owners(:)
+    type(kernel_committed_state_t), allocatable :: before(:)
+    type(fmr_interception_source_window_restart_t) :: record
+    real(real64) :: proposed_amount
+    integer :: i, local_status
+
+    allocate(accepted_interception(size(owners)))
+    accepted_interception=0.0_real64
+    status=FMR_APP_BOOT_NOT_READY
+    if (.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if (associated(self%active_context).or.self%weather_epoch_day/=0) return
+    ! This is the qualified explicit root-inactive fixed-flux receiver. Do not
+    ! silently acquire optional-process or automatic crop/weather semantics.
+    if (any(self%parameters%bottom_mode/=2).or.any(self%parameters%root_extraction_active).or. &
+        any(self%parameters%black_evaporation_active).or.any(self%parameters%boesten_evaporation_active).or. &
+        any(self%parameters%macropore_active).or. &
+        any(self%parameters%snow_active).or.any(self%parameters%frost_active).or. &
+        any(self%parameters%soil_temperature_active)) return
+    if (any(self%templates%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE).or. &
+        any(self%templates%solute_state_layout_id/=0_int64).or. &
+        self%numerical%transaction%temporal_mode/=TX_TEMPORAL_MODEL_CERTIFICATE) return
+    status=FMR_APP_BOOT_INTERCEPTION_REJECTED
+    if (size(owners)/=size(self%columns).or.size(effective_forcing)/=size(self%columns)) return
+    trial_owners=owners
+    do i=1,size(owners)
+      call export_fmr_interception_source_window_restart(owners(i),t0,record,local_status)
+      if (local_status/=FMR_INTWIN_OK) return
+      if (record%column_id/=self%columns(i)%column_id) return
+      call prepare_fmr_interception_source_window_trial(trial_owners(i),t1,proposed_amount,local_status)
+      if (local_status/=FMR_INTWIN_OK) return
+    end do
+    before=self%committed
+    call self%run_standalone_with_forcing(t0,t1,effective_forcing,results,status)
+    if (status/=FMR_APP_BOOT_OK) then
+      self%committed=before
+      if (allocated(results)) deallocate(results)
+      return
+    end if
+    status=FMR_APP_BOOT_INTERCEPTION_REJECTED
+    do i=1,size(owners)
+      if (.not.results(i)%mass%complete) exit
+      call accept_fmr_interception_source_window_result(trial_owners(i),results(i)%column_id, &
+           results(i)%requested_t0,results(i)%requested_t1,results(i)%committed,results(i)%accepted_substeps, &
+           results(i)%initial_revision,results(i)%final_revision,results(i)%final_committed_time, &
+           results(i)%final_committed_time_bound,accepted_interception(i),local_status)
+      if (local_status/=FMR_INTWIN_OK) exit
+    end do
+    if (i<=size(owners)) then
+      self%committed=before
+      accepted_interception=0.0_real64
+      if (allocated(results)) deallocate(results)
+      return
+    end if
+    owners=trial_owners
+    status=FMR_APP_BOOT_OK
+  end subroutine production_application_run_interception_window_interval
 
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self

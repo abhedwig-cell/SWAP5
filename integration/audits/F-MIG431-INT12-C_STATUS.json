@@ -1,0 +1,175 @@
+{
+  "schema": "swap5.f_mig431_int12_c.status.v1",
+  "workunit": "F-MIG431-INT12-C",
+  "parent_workunit": "PPA-WU04-C",
+  "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
+  "state": "IMPLEMENTED_APPLICATION_QUALIFICATION_IN_PROGRESS",
+  "branch": "work/f-mig431-int12-c-vonhhbraden",
+  "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+  "authorities": {
+    "current_canonical_head": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
+    "ppa_wu04_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "ppa_wu04_status": "integration/audits/PPA_WU04_STATUS.json",
+    "source_snapshot": "B1.11",
+    "legacy_source_member": "SWAP/MOD_meteo.f90",
+    "legacy_source_member_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "p0_status": "integration/audits/F-MIG431-INT12-P0_STATUS.json",
+    "p0_canonical_merge": "4d7be05313336e437461f05642affe80bb9bb129",
+    "independent_trace": "SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9"
+  },
+  "gap": {
+    "restricted_SWINTER1_provider": "F-APP03 admitted Hupsel SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0, SWINTER=1, SWCF=1",
+    "restricted_provider_oracle": "Exact-source independent qualification: 384 daily and 14,062 interval records, zero mismatches",
+    "typed_application_binding": "F-APP04 admitted net_rain_cm_per_day -> dynamic-top precipitation by identity mapping",
+    "p0_runtime_seam": "CANONICALLY_ADMITTED",
+    "missing": "P0 accepted progress/restart is not yet composed with the admitted F-APP03/F-APP04 route and FMR committed endpoint",
+    "event_weighting_boundary": "P0 linear time apportionment is qualified here only for uniform daily SWRAIN=0/SWMETDETAIL=0 forcing"
+  },
+  "scope": [
+    "P0 source-window progress/restart composition for the already admitted F-APP03/F-APP04 Hupsel SWINTER=1 profile"
+  ],
+  "exclusions": [
+    "SWINTER=2 Gash (INT12-D)",
+    "SWINTER=3 Rutter",
+    "legacy meteo parser/calendar",
+    "solver/timestep policy",
+    "groundwater coupling semantics"
+  ],
+  "persistent_physical_state": [],
+  "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
+  "production_admission": "NO_NEW_ADMISSION_YET",
+  "qualification": "Historical restricted composition PASS retained; current real receiving positive gate FAIL O0/O2, not production admission.",
+  "next_safe_step": "Complete O0/O2 atomic multi-column rollback and unchanged WU01/WU03/Black/Boesten/Rutter preservation, bind evidence, review original ten gates before any canonical admission.",
+  "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
+  "production_process_present": "RESTRICTED_HUPSEL_ONLY",
+  "qualification_evidence": {
+    "workflow_run": 37131283115,
+    "owner_job": 111226737659,
+    "tested_head": "fdbbadfdaf3983eecac312a5402a0cf8709f9209",
+    "result": "PASS",
+    "checks": [
+      "O0 compile/run",
+      "O2 compile/run",
+      "O0/O2 output identity",
+      "A/B/A replay preserves admitted Hupsel daily and interval vectors",
+      "invalid day fails closed and valid retry preserves Hupsel result",
+      "rejected hydraulic result leaves source-window progress unchanged",
+      "partial accepted FMR endpoint advances only accepted source-window amount",
+      "mid-window restart and resumed remainder close aggregate bitwise",
+      "F-APP04 net-rain binding preserves value by identity",
+      "accepted gross/interception/net precipitation mass identity"
+    ],
+    "output_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717"
+  },
+  "current_canonical_recovery_20261016": {
+    "baseline": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "tested_local_postimage": "dc168c0a",
+    "candidate_head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+    "candidate_source_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
+    "status": "FAILED_POSITIVE_GATE_CERTIFICATE_AVAILABLE_OVER_BUDGET",
+    "scope": "Same existing four unequal-span fixed-flux, root-inactive receiving witness. Added read-only output of existing backend observation before failure; original FMR44R assertions, physical forcing, retries and tolerances unchanged. Not full dynamic-top/crop application.",
+    "observed_each_optimization": {
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "exit_code": 1,
+      "certificate_enabled": true,
+      "previous_derivative_available": true,
+      "indicator_available": true,
+      "budget_valid": true,
+      "certificate_available": true,
+      "reason": "available",
+      "head_inf_bound_cm": 0.003291913255370477,
+      "budget_cm": 1e-06,
+      "normalized_indicator": 3291.913255370477,
+      "attempts": 9,
+      "retries": 8,
+      "temporal_rejections": 9,
+      "mass_rejections": 0,
+      "solver_rejections": 0,
+      "headcalc_calls": 9,
+      "accepted_substeps": 0,
+      "committed": false
+    },
+    "retained_passing_checks": [
+      "All original FMR44R equilibrium, positive-qbot certificate and unowned-mode assertions",
+      "Actual unsupported-mode preflight rejection preserves progress",
+      "Failed temporal endpoint preserves source progress, physical revision and time",
+      "O0/O2 semantic marker lines byte-identical"
+    ],
+    "unqualified": [
+      "First real accepted endpoint in this witness",
+      "Unequal accepted aggregate allocation",
+      "Companion progress restore after actual commit",
+      "Accepted gross/interception/net mass accounting",
+      "Full dynamic-top/crop and original ten-gate admission"
+    ],
+    "interpretation": "Availability/history propagation is not the failure in this configuration. The available certificate rejects a head-error bound approximately3292 times the unchanged test-only budget. This is a conservative temporal estimate, not a measured solution error; it does not establish a general solver defect or required application budget.",
+    "next_safe_step": "F-KT/RT and PPA-WU04-C/MC-CROP01 must reconcile physical onset/predecessor history, allowed timestep/retry envelope and application accuracy for the real receiving profile. No budget increase, forced acceptance, forcing reduction or shared temporal policy change is authorized by this restricted diagnostic. Then execute actual accepted endpoint, dynamic-top/crop and all ten existing gates.",
+    "production_source_changed": false,
+    "reference_changed": false,
+    "existing_assertions_or_tolerances_changed": false,
+    "numerical_admission": "NONE",
+    "cost": {
+      "providers": 163,
+      "generation_through_results_seconds": 123.914,
+      "expected_seconds": 180,
+      "compile_link_native_breakdown": "UNKNOWN: original runner does not split timings"
+    },
+    "execution_recovery": {
+      "initial_attempt": "NOT_EXECUTED: missing gfortran",
+      "environment_recovery": "Extracted package SHA256-verified GNU Fortran13.3.0 and development library in task workspace; system apt attempt was interrupted before install. No numerical result inferred from failed environment setup."
+    },
+    "archive": {
+      "path": "integration/audits/evidence/F-MIG431-INT12-C_CERTIFICATE_CURRENT_20261016.tar.gz.b64",
+      "decoded_sha256": "bc896da2b230a580d4cc00b9fafebd298764221709b7a4736971a745cb4d7597",
+      "members": {
+        "REPRODUCE.txt": "579cdd33e645f7753740c9bb3b241f0dbb06a9c2f0a659ae916c79bccbed9626",
+        "compile-run.log": "6ef8bf8593d8c4d1e62bc1a90050308b6203b0f597d014c518f041581425ea22",
+        "compile_sources.json": "4116c66b02656e66ee916a78982440aa450c4a24becc7fe1e05d72a028db3298",
+        "compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "diagnostic.inc": "4aa1a03ea713412e9bd714317c8be9e4ff6b8225ce9379fcba8efa6caacdee97",
+        "driver.f90": "aeeecb189ee874288e1bbd75622456dadb30c119061753e20513fa70245527a4",
+        "o0.txt": "d44a3b2d23d1230cfda2f36f864dbdac9bd573af5db6df6ff470b9d5cc369aef",
+        "o2.txt": "73b3eab49b112549c807a7b4195e5e58a927405e7282721cae9dc895802e3c44",
+        "results.json": "32102aeeab7b3ded144c02328af0b6ae81d75d716163b0de6a010d1bcd37df23",
+        "runner.py": "5f8a21fe7934e1ed7818c49a7c8c9770a2c0eafda6d61838e7ea6f5637c81fea"
+      }
+    },
+    "validation": {
+      "archive_and_all_member_hashes": "PASS",
+      "both_failed_positive_gates_preserved": "PASS",
+      "semantic_marker_identity": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "whitespace": "PASS",
+      "physical_positive_gate": "FAIL O0/O2"
+    }
+  },
+  "application_recovery_20261016": {
+    "baseline": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "implementation_checkpoint": "7d6c9004",
+    "contract": "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md",
+    "implementation": "Additive opt-in production application owner, exact original adapter, atomic physical/source commit across columns. Existing bootstrap body byte-exact after removing additive entrypoint.",
+    "scope": "Explicit uniform SWINTER1 Hupsel fixed-flux mode2 root-inactive receiver only. No automatic weather/crop/dynamic-top admission.",
+    "tests": "Refined endpoint witness O0/O2 PASS. Atomic application O0 PASS, O2 pending. Existing component/FAPP03/FAPP04/P0 drivers PASS O0/O2. Owner preservation pending.",
+    "head_budget_cm": 1e-06,
+    "mass_gate_cm": 1e-12,
+    "execution_limits": {
+      "max_retries": 24,
+      "max_committed_substeps": 4096,
+      "min_step_days": 1e-12
+    },
+    "prior_failure_preserved": true,
+    "failed_test_fixture": "NaN rollback fixture trips enabled floating-point exception O0/O2 before status return. Replaced with shape-invalid source vector, unchanged production and assertions. Not qualified by the failed attempt.",
+    "dependency_surface": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_interception_source_window_binding.f90",
+      "tests/fpm/run_int12c_real_endpoint.py",
+      "tests/fpm/test_int12c_application.inc",
+      "tests/fpm/run_f_mig431_int12_c.sh"
+    ],
+    "qualification": "PENDING; no full capability closure"
+  }
+}

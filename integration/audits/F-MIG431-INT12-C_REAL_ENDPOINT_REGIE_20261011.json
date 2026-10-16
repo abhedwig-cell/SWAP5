@@ -10,7 +10,12 @@
   "test_status": "O0/O2 compilation completed; positive endpoint gate failed at first requested span with9 temporal rejections and8 retries. Result and complete failure evidence persisted separately.",
   "qualification_status": "not admitted; original ten admission gates remain authoritative",
   "scope": "Admitted PMdirect SWINTER1 daily vector apportioned to 0.01 day, four unequal spans, fixed-flux net-rain receiver, root inactive. Actual FMR committed-result fields feed byte-exact recovered candidate adapter.",
-  "endpoints_days": [0.002, 0.004, 0.007, 0.01],
+  "endpoints_days": [
+    0.002,
+    0.004,
+    0.007,
+    0.01
+  ],
   "gates": [
     "Original FMR44R physical assertions unchanged and executed",
     "Actual mode4 preflight rejection, no source progress or physical revision, same-origin retry mode2",
@@ -21,9 +26,64 @@
     "Net-rain physical input plus accepted interception equals apportioned gross rain",
     "O0/O2 byte-identical stdout"
   ],
-  "not_qualified": ["full dynamic-top application", "crop/root uptake and wet/dry transpiration execution", "joint physical restart or process restart", "full Hupsel source coverage", "partial physical acceptance", "candidate-wide ten-gate admission"],
+  "not_qualified": [
+    "full dynamic-top application",
+    "crop/root uptake and wet/dry transpiration execution",
+    "joint physical restart or process restart",
+    "full Hupsel source coverage",
+    "partial physical acceptance",
+    "candidate-wide ten-gate admission"
+  ],
   "interfaces_changed": [],
-  "invariants_affected": [7, 9, 13, 23, 29, 30],
+  "invariants_affected": [
+    7,
+    9,
+    13,
+    23,
+    29,
+    30
+  ],
   "recovery": "Qualification branch qualification/regie-int12c-physical-endpoint-20261011; run python3 tests/fpm/run_int12c_real_endpoint.py --evidence-dir /tmp/unique-int12c-evidence with stdout/stderr captured outside repository.",
-  "next_expensive_action": "Compile unchanged current physical dependencies and recovered adapter at O0/O2; retain failure evidence without weakening gates."
+  "next_expensive_action": "Compile unchanged current physical dependencies and recovered adapter at O0/O2; retain failure evidence without weakening gates.",
+  "current_recovery_20261016": {
+    "baseline": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "candidate_pr": 1009,
+    "scope": "Read-only existing observation at the failed positive endpoint; unchanged forcing, budgets, assertions, runner and production. Diagnose certificate unavailable versus over budget on current canonical.",
+    "expected_seconds": 180,
+    "existing_evidence": "Historical 11 October negative result does not record Binf/availability at failure. No duplicate broad qualification; this diagnostic answers the explicitly recorded next question.",
+    "test_command": "python -B tests/fpm/run_int12c_real_endpoint.py --profile certificate --evidence-dir /workspace/scratch/50173826d83b/int12c-certificate-current",
+    "implementation": "persisted read-only test output extension",
+    "tests": "PENDING",
+    "qualification": "NONE"
+  },
+  "refinement_preregistration_20261016": {
+    "research_question": "Can the unchanged real net-rain source and head/mass accuracy admit all four physical endpoints when the existing configurable refinement envelope allows more than8 retries?",
+    "baseline": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "scope": "Separate additive certificate_refined test profile. The original identity/certificate profiles and their negative results are retained. No production algorithm change.",
+    "held_fixed": {
+      "weather_and_net_rain": "Exact original Hupsel vector,0.405938742948784959cm/day net",
+      "endpoints_days": [
+        0.002,
+        0.004,
+        0.007,
+        0.01
+      ],
+      "head_budget_cm": 1e-06,
+      "mass_gate_cm": 1e-12,
+      "root_inactive": true,
+      "all_original_assertions": true,
+      "original_FMR44R_oracles": true
+    },
+    "execution_parameters": {
+      "max_retries": 24,
+      "max_committed_substeps": 4096,
+      "min_solver_step_days": 1e-12
+    },
+    "rationale": "Last available bound was3292x budget after8 retries. More allowed refinement strengthens the opportunity to meet existing accuracy; it neither raises budget nor forces acceptance. Configurable limits use admitted APIs without shared numerical-policy implementation changes.",
+    "expected_seconds": 180,
+    "compile_link_native_breakdown": "UNKNOWN before run",
+    "stop_condition": "Preserve complete negative output if gates still fail. No accuracy, forcing or assertion reduction to obtain PASS.",
+    "admission": "None from fixed-flux witness alone; original ten gates and owning application composition remain required.",
+    "test_status": "PENDING"
+  }
 }
