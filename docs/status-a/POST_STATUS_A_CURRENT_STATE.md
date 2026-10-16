@@ -662,3 +662,11 @@ The existing SW431-IRR-TCS6 closure is traced by the [weekly irrigation and join
 ## MC-IRR01 external availability continuation, 16 October 2026
 
 [External availability and joint continuation](../science/MC_IRR01_AVAIL_CONTINUATION_20261016.md) records the existing AVAIL full-capability closure contract and qualification. The MC-IRR01 recovery admission receipt identifies the exact qualified source, canonical merge and current admission status. Existing TCS6 admission remains unchanged.
+
+## Existing irrigation depth-limit closure
+
+[Minimum and maximum irrigation depth](../science/MC_IRR01_DEPTH_LIMIT_20261016.md)
+records the existing `SW431-IRR-LIMIT` source contract and qualification. Exact
+scientific, admission and master receipts are held in the existing MC-IRR01
+recovery field `limit_completion_20261016`. Other irrigation capabilities retain
+their independent admission conditions; the frozen Status-A denominator is unchanged.
