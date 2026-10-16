@@ -1,13 +1,21 @@
 # MC-NUT01 reproductive, translocation and death assessment
 
-Status: source assessment canonically recorded through PR1259 at
-`a0cbac6a14b952bc4a34dd105b7251803c77f445`, with bounded executable discriminators;
-**no reproductive production admission**. Baseline canonical
+Current successor: the bounded reproductive/death option is admitted through
+PR1260 at `dd3e78dfc005c11221c6d049c5fcee4ef8cd2280`.
+See the [production contract](MC_NUT01_REPRODUCTIVE_PROCESS_CONTRACT_20261016.md)
+and `MC_NUT_SOL_STATUS.json#reproductive_process_20261016` for its scope and evidence.
+Full historical activation, partial-leaf return and full crop trajectories remain open.
+
+Historical source assessment: PR1259 at
+`a0cbac6a14b952bc4a34dd105b7251803c77f445` recorded the bounded discriminators
+before reproductive production admission. Its baseline canonical was
 `1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8`, after SOL PR1258.
-The existing vegetative B1.11 request admitted through PR1253 at
+The vegetative B1.11 request admitted through PR1253 at
 `c9e5efad50cf6cf18342a57efbee398260fdce82` is preserved. Its request binding,
-configuration, day application and WOFOST81 nitrogen provider remain byte-identical
-to that admission. Recovery and evidence: `MC_NUT_SOL_STATUS.json`, section
+configuration, day application and WOFOST81 nitrogen provider were byte-identical
+at the assessment checkpoint. PR1260 subsequently extends configuration and day
+dispatch; default/1253 native bytes and original scientific bodies are preserved.
+Recovery and historical evidence: `MC_NUT_SOL_STATUS.json`, section
 `reproductive_review_20261016` under `integration/audits`.
 
 ## Source and scope
@@ -53,7 +61,7 @@ not a claim that the complete legacy model reaches those states or that its
 scientific reference has been formally declared defective. No tolerance is
 relaxed and no donor clipping or invented correction is admitted by this review.
 
-## Dependency-ordered implementation decision
+## Historical dependency-ordered implementation decision
 
 ### Independent crop-level balance identity
 
@@ -119,7 +127,7 @@ only after the policy is executable. No full FCI, alternative solver, highest
 low-air or unrelated numerical qualification is selected for this read-only source
 assessment. Full master coverage and capability dispositions do not change.
 
-## Independent bounded candidate review
+## Independent bounded candidate review before admission
 
 An explicit reproductive/death candidate is implemented at `7e28752086ee32e26b40f67ca08304a974c04e55`,
 outside the admitted canonical production tree at this review checkpoint.
@@ -153,6 +161,8 @@ both small corpora were rerun cold against the current process identity.
 
 Actual coupled Richards/soil/crop/pending integration, native and opaque
 fresh-process continuation, policy-identity/no-overwrite negatives, original
-default/1253 preservation and owning source/evidence controls are still admission
-conditions. No canonical reproductive production, historical capability/count
-promotion or full-master qualification follows from this independent review.
+default/1253 preservation and owning source/evidence controls were the remaining
+admission conditions at this independent review checkpoint. Their bounded closure
+is recorded by PR1260 and its production contract. This earlier independent review
+alone establishes no production admission, historical capability/count promotion
+or full-master qualification.
