@@ -287,3 +287,47 @@ The existing mastercoverage receipt
 counts are101 ADMITTED and106 unresolved of243. The global denominator remains
 incomplete. The admitted component remains isolated from the prior immutable
 references and changes no frost-ON capability claim.
+
+## Native ordinary DRAMET3 continuation (16 October 2026)
+
+The existing MC-DRAIN01 recovery record, field `dramet3_phase_20261016`, freezes
+closure of `SW431-DRAIN-DRAMET3`, `SW431-DRAIN-ALLOCATION` and
+`SW431-DRAIN-INF-LIMIT`. Qualification and actual canonical admission are separate
+fields in that record. The production response variant
+`FMR_DRAIN_VARIANT_DRAMET3` uses the existing serialized Reference trial owner,
+current trial-start groundwater view, bottom compartment placement (`SWDIVD=0`)
+and single external water ledger. Positive exchange leaves soil; negative
+exchange enters soil. A level aggregate is a derived view, never another transfer.
+
+Immutable typed channel parameters map the existing actual full/half/retry trial
+endpoint to the source query `t1900 + dt - 1`. In
+`initialize_dramet3_channel_control`, `legacy_t1900_origin` is the table query at
+`canonical_origin_time`; for a legacy trial starting there it equals the source
+`t1900 - 1`. OWLTAB interpolation and endpoint clamping precede the ZBOTDR clamp.
+DRARES applies at nonnegative head difference, INFRES at negative difference.
+SWALLO2 suppresses drainage, SWALLO3 suppresses infiltration, and SWDTYP2 with
+SWLIMINF limits negative head to channel depth. No independently advancing
+process clock or persistent channel state is introduced.
+
+The source reader permits zero INFRES. Its unused nonnegative-head branch stays
+available. Active negative-head division by zero is source-undefined and fails
+closed before arithmetic; this includes source cases whose later SWALLO3 would
+otherwise overwrite an undefined division. Valid resistance branches, including
+zero and tiny head differences, retain the original source arithmetic. Invalid
+or nonfinite tables, controls and parameters reject before solver publication.
+
+The unchanged B1.11 `drainflux_basic` and original AFGEN are independent native
+oracles. The real binder matrix, actual time-varying Richards composition,
+rejected-trial exact replay, two-column isolation and committed restart into an
+empty registry are checked at O0/O2. Restart continues with the same immutable
+parameter registry and epoch mapping. All nine incumbent response variants are
+compared byte-for-byte with the pinned preceding canonical binder. The existing
+signed and DISLAYER runtime assertions remain active. Source-bound successor
+verification is `tests/fmig431/verify_dramet3_successor.py` and the targeted
+moving entry is `--drain-dramet3-owner-only`.
+
+Highest interflow redistribution, macropore rapid-drainage basis, frost response
+and automatic legacy disk input activation retain their separate contracts.
+Existing SWDIVD1 algebra and all admitted default response variants are unchanged.
+The recovery receipt identifies any actual ledger promotion; this section alone
+is not an admission assertion.

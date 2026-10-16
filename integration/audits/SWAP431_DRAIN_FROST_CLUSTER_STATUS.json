@@ -77,7 +77,7 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Preserve the four ordinary drainage admissions. Remaining native DRAMET3,allocation,infiltration-limit and highest-interflow rows remain independently open; no new route started by this closeout.",
+  "next_action": "Complete the three frozen native DRAMET3/ALLOCATION/INF-LIMIT rows on the existing candidate; retain four prior ordinary drainage admissions.",
   "recovery_point": "PR1269 merge218d2425612408b8ae451cdda54c0e1e3d3d6a63; existing master receipt4235e1dc6f3d7d96a29a4e7bf80ebac100949239. Qualified original-source/runtime proof and prior signed,multilevel,INF,AVAIL admissions retained.",
   "blockers": [],
   "last_reconciled_upstream": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
@@ -2079,6 +2079,265 @@
       "source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
       "ledger_rows": [
         "SW431-DRAIN-DISLAYER"
+      ]
+    }
+  },
+  "dramet3_phase_20261016": {
+    "baseline": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+    "existing_candidate": "093bf9e6ab38bb736b5e09c63d77eba6f33fde70",
+    "existing_branch": "work/swap431-drain-dramet3-r2-20261007",
+    "ledger_rows": [
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT"
+    ],
+    "conditions_frozen": [
+      "Execute the real source-faithful ordinary DRAMET3 process at O0/O2 first; compare complete original B1.11 drainflux_basic and original AFGEN over native t1900+dt-1 endpoint mapping, interpolation/knots/clamps, unequal positive DRARES/INFRES, positive/negative/zero and tiny heads, per-level SWALLO1/2/3, SWDTYP1/2 and SWLIMINF off/on, singleton and invalid/nonfinite controls with atomic rejection.",
+      "Connect as additive explicit variant in the existing response binding and serialized Reference trial owner. Resolve immutable OWLTAB at each actual trial endpoint using the existing t0/t1, and evaluate signed resistance from the current trial-start hydraulic view. No externally frozen interval scalar or second clock/state owner. Source-equivalent SWDIVD0 level bottom placement and existing derived aggregate are sufficient for these three scalar-response rows; admitted SWDIVD1 is unchanged.",
+      "Run O0/O2 actual Richards multilevel signed mass and type/allocation/cap compositions, time-varying head, full/half/retry endpoint observations, rejection with exact committed-state nonmutation, clean replay, two-column isolation and committed restart into empty registry with exact continuation. Preserve 1e-12 cm hard mass, 1e-14 nodal scalar closure and single existing external mass booking.",
+      "Run affected incumbent response and signed/DISLAYER runtime default preservation only. Preserve unrelated source/evidence by exact dependency identity and complete reverse body projections; original immutable predecessor admission guard must still pass. No broad FCI, RossFast or highest-low-air runs.",
+      "Qualify frozen conditions against persisted exact source/toolchain/flags/raw native outputs, negative admission controls, source/docs checks. Reconcile current canonical and parallel work immediately before safe merge; update existing master/recovery with exact admitted commits and only the three named full rows."
+    ],
+    "excluded": [
+      "SW431-DRAIN-DIV-TOPINTERFLOW",
+      "highest surface scalar laws already separately owned",
+      "macropore rapid-drainage basis",
+      "frost and low-air response",
+      "new restart codec or state owner",
+      "automatic legacy disk input activation"
+    ],
+    "invariants": [
+      "ordinary frost OFF",
+      "positive soil-to-drain, negative external infiltration",
+      "level flux booked exactly once by existing trial ledger",
+      "immutable table/origin parameters, no persistent process state",
+      "rejected trials never modify committed physical state",
+      "default response and DIVDRA algebra unchanged"
+    ],
+    "owned_surface": [
+      "src/process/mod_drainage_dramet3_response.f90",
+      "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "interfaces_allowed_to_change": [
+      "new explicit DRAMET3 response variant with immutable typed parameters/control",
+      "optional actual-trial endpoint argument to existing response evaluator",
+      "additive source-bound successor delegation"
+    ],
+    "interfaces_held_fixed": [
+      "solver equations",
+      "transaction accept/retry authority",
+      "mass ledger",
+      "committed/restart state layouts",
+      "existing response variant arithmetic",
+      "DIVDRA process and binder formulas"
+    ],
+    "qualification_state": "FULLY_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "next_action": "Reconfirm live canonical and master, integrate qualified existing branch using exact-head normal PR merge, record actual tree and three-row master receipt.",
+    "blockers": [],
+    "cost_selection": {
+      "process": "seconds; small independent production module then literal native source/binding",
+      "runtime": "expected 2-4 minutes cold O0/O2 build using one verified within-session module closure per optimization; no expensive broad selection",
+      "unavailable_categories": "UNKNOWN until measured",
+      "not_selected": [
+        "broad FCI",
+        "RossFast",
+        "highest low-air"
+      ]
+    },
+    "persisted": true,
+    "checkpoint_commit": "911560fae05c46e71d3d288df204cb7061c4c480",
+    "local_findings": [
+      "Original unchanged source/native real binder:3888 complete-source cases per optimization plus16 invalid/undefined controls pass. All three rows remain unadmitted pending the full frozen qualification.",
+      "The original source input reader permits INFRES=0. The finite nonnegative-head drainage branch remains executable; active negative-head zero-INFRES division is source-undefined and is held before arithmetic. Source branch condition is >=0, including exact zero. No reference correction.",
+      "Preliminary runtime driver incorrectly demanded three evaluations even when the existing model certificate legitimately accepts a zero/suppressed step with one evaluation. A diagnostic external-full-half attempt was incompatible with the fixture temporal-history contract; reverted. Final driver retains the existing certificate and independently executes original and half endpoints. Original real rejection/retry and explicit split endpoints remain required. Failed executions retained, not PASS.",
+      "Diagnostic O0 actual runtime:144 physical cases plus2 reject/replay/empty-registry restart,2 two-column isolation and4 fail-closed pre-solver controls pass. This is diagnostic only until final fresh O0/O2 postimage qualification.",
+      "Final code review ordered both resistance finiteness guards before comparisons; added NaN and positive infinity for both resistance fields. No finite-source arithmetic or frozen condition changes. Requalify exact current postimage before admission."
+    ],
+    "qualification_evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64",
+      "sha256": "8f59c41a2cfb2538fd9a6ed3f3ed240f5f71828e1b2ddf409dd71c06a111a58e"
+    },
+    "remaining": [
+      "safe exact-head canonical merge",
+      "existing master104/103 and canonical recovery receipts"
+    ],
+    "qualification_inputs_sha256": {
+      "tests/fmig431/verify_dramet3_successor.py": "de55678becce49dd3e2df67b99992c5a5da1de750d0bd1b5a87674c9474159a7",
+      "tests/fmig431/run_swap431_dramet3.py": "bbb3a3072d1d27a5aaae371d14702bb11e12664b07944a5bf5d04f9b8cee65c9",
+      "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
+      "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2",
+      "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json": "164628daaa52f44254c1cc4f845324f4ac3f4582d166063ed08ab1445570ad7d"
+    },
+    "successor_postimages": {
+      "src/process/mod_drainage_dramet3_response.f90": {
+        "status": "A",
+        "blob": "c7479ab87dcbdf429ca4a304e411a5e724507397"
+      },
+      "src/runtime/mod_fmr_drainage_response_binding.f90": {
+        "status": "M",
+        "blob": "e42634aa1cbdf5091a0b0ccd5f5f7882e8c5e616"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "d4833742ca1d846174f573d8bf07df4f31428948"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "7cc32370ce5927605387af8d4173582c14595f68"
+      },
+      "tests/fmig431/dramet3_native_globals.f90": {
+        "status": "A",
+        "blob": "fd292e81e4b4f5adfdfc1bcc2de082711a68507a"
+      },
+      "tests/fmig431/run_swap431_drain_dramet3.sh": {
+        "status": "A",
+        "blob": "888076179eda7beb768b62227a0cfc6c65efd0a9"
+      },
+      "tests/fmig431/run_swap431_dramet3.py": {
+        "status": "A",
+        "blob": "aa7f5b9d0e773e5c08c455919cd88d221b9e8495"
+      },
+      "tests/fmig431/test_swap431_drain_dramet3.f90": {
+        "status": "A",
+        "blob": "6cc6c98e44b844e257fc1293efc4dd5454cb9e81"
+      },
+      "tests/fmig431/test_swap431_dramet3_contract.f90": {
+        "status": "A",
+        "blob": "3875e6335aad2f5c204b8301c11c9be95759aa20"
+      },
+      "tests/fmig431/test_swap431_dramet3_runtime.f90": {
+        "status": "A",
+        "blob": "cc3d8e3add842b47843ae996c8f8892f655bb82c"
+      },
+      "tests/fmig431/test_swap431_response_preservation.f90": {
+        "status": "A",
+        "blob": "e7952c9186e03b4d469d84bab7aa71cf8ab68a90"
+      },
+      "tests/fmig431/verify_dislayer_successor.py": {
+        "status": "M",
+        "blob": "1c7c028b28313659f00ddd8aaed637203c36e53e"
+      },
+      "tests/fmig431/verify_dramet3_successor.py": {
+        "status": "A",
+        "blob": "e6b1fdd676d301a40f5244f6bc1da8a288bfec9d"
+      }
+    },
+    "measured_current": {
+      "native_executions": 12,
+      "source_cases_per_optimization": 3888,
+      "invalid_source_controls_per_optimization": 20,
+      "native_runtime_configurations_per_optimization": 144,
+      "lifecycle_per_optimization": 2,
+      "column_isolation_per_optimization": 2,
+      "invalid_runtime_controls_per_optimization": 4,
+      "original_response_cases_per_variant_and_optimization": 297,
+      "dislayer_preservation_cases_per_optimization": 288,
+      "signed_preservation_cases_per_optimization": 24,
+      "hard_mass_cm": 1e-12,
+      "nodal_scalar_cm_per_day": 1e-14,
+      "compile_seconds": 94.01285405801354,
+      "link_seconds": 0.6184305109982233,
+      "native_seconds": 78.37383476000286,
+      "artifact_reuse": "verified identical ordered module prefix within one live Session, isolated O0/O2; every native executable ran fresh",
+      "docs": "source checks and mkdocs --strict PASS"
+    },
+    "prior_completed_qualification": {
+      "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64",
+      "sha256": "f8fb2a378f7f507165201edcec677ec484145cc91173360906d5209f7e2cc365",
+      "at_commit": "65a060ea78532c4c2c2b8dbfd3d4583e82242435"
+    },
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_ADMISSION_20261016.json.gz.b64",
+      "sha256": "fd891625431c365470975340235438017c6332406bdd492a0e700c4348942fcc"
+    },
+    "parallel_reconciliation": {
+      "canonical": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+      "master": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+      "open_prs": [
+        {
+          "number": 1268,
+          "title": "MC-IRR01: complete source depth-limit qualification [skip ci]",
+          "head": "83402264f4ac7e3bcfcae494b121165472c262bf",
+          "branch": "work/mc-irr01-limit-20261016",
+          "base": "c9231e1b102f9666865ced5604ef04d135b3931e",
+          "draft": true
+        },
+        {
+          "number": 1072,
+          "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)",
+          "head": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+          "branch": "work/swap431-master-coverage-20261006",
+          "base": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+          "draft": true
+        },
+        {
+          "number": 956,
+          "title": "SW-RIB-TOP03: transactional top-surface exchange",
+          "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+          "branch": "work/sw-rib-top03-transactional-top-exchange",
+          "base": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+          "draft": true
+        },
+        {
+          "number": 953,
+          "title": "SW-RIB-TOP02: external surface-water head candidate",
+          "head": "76067cced09715e42220301d2410656851ec7013",
+          "branch": "work/sw-rib-top02-external-head-candidate",
+          "base": "2a0b23a2c4e547f6de2613884207d10b2fce462e",
+          "draft": true
+        },
+        {
+          "number": 740,
+          "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study",
+          "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+          "branch": "work/f-pe-elastic01-soil-storage",
+          "base": "044e686d1899adf3a631716d09743aa4fce0818f",
+          "draft": true
+        },
+        {
+          "number": 528,
+          "title": "Research: fixed-interface dummy SWAP coupling qualification",
+          "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+          "branch": "work/f-gc-dummy-swap-shared-storage",
+          "base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+          "draft": true
+        },
+        {
+          "number": 486,
+          "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB",
+          "head": "2f919cb095c0b581664d8c261fb10586670caa45",
+          "branch": "work/f-gc-coupling-semantics-reconciliation",
+          "base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+          "draft": false
+        },
+        {
+          "number": 365,
+          "title": "DIFFICULTY: preregister Phase-0 falsification experiment",
+          "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
+          "branch": "research/difficulty-phase0-preregistration",
+          "base": "187e30153c890151768e929170d14bb22af1d86d",
+          "draft": true
+        }
+      ],
+      "parallel_1268_files": [
+        "docs/science/MC_IRR01_DEPTH_LIMIT_20261016.md",
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/MC_IRR01_STATUS.json",
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_scheduled_irrigation_management_policy.f90",
+        "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+        "tests/mc-irr01/check_depth_limit_controls.py",
+        "tests/mc-irr01/depth_limit_cycle_driver.py",
+        "tests/mc-irr01/run_depth_limit_application.py",
+        "tests/mc-irr01/run_depth_limit_contract.py",
+        "tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "tests/mc-irr01/verify_availability_successor.py",
+        "tests/mc-irr01/verify_depth_limit_successor.py"
       ]
     }
   }
