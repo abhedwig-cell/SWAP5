@@ -17420,7 +17420,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "76cb15e1adfa53a12c452887012ed1b025d11fad",
+  "canonical_locator_head": "040eb47783286763c4eb82df8ea07746ae3e977c",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -18019,5 +18019,218 @@
     },
     "structural_absence_flags": 87,
     "canonical_closeout": "76cb15e1adfa53a12c452887012ed1b025d11fad"
+  },
+  "latest_historical_nutsol_carrier_closeout_20261016": {
+    "donor_pr": 1117,
+    "donor": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+    "donor_parent_baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+    "canonical_review": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+    "files": 131,
+    "production_files": 44,
+    "production_identity": {
+      "ABSENT": 20,
+      "EXACT": 14,
+      "CHANGED": 10
+    },
+    "families": {
+      "CROP_N_ALTERNATE_OWNER": [
+        "src/crop/mod_b111_crop_n_fixation_policy.f90",
+        "src/crop/mod_b111_crop_n_harvest_continuation.f90",
+        "src/crop/mod_b111_crop_n_owner.f90"
+      ],
+      "SHARED_RUNTIME_OR_ROOT": [
+        "src/crop/mod_crop_root_depth_dvs.f90",
+        "src/crop/mod_crop_root_profile_static.f90",
+        "src/crop/mod_wofost_crop_owner_state.f90",
+        "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_runtime_core.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "AGE_CARRIER_OWNER": [
+        "src/process/mod_b111_age_tracer_production.f90",
+        "src/process/mod_b111_age_tracer_substep.f90",
+        "src/process/mod_b111_age_tracer_transfer.f90"
+      ],
+      "SURFACE_POND_OWNER": [
+        "src/process/mod_b111_pond_solute_exchange.f90",
+        "src/process/mod_b111_pond_solute_transfer.f90"
+      ],
+      "MATRIX_CHEMICAL_OWNER": [
+        "src/process/mod_b111_reactive_solute_substep.f90",
+        "src/process/mod_b111_solute_decay.f90",
+        "src/process/mod_b111_solute_decay_transfer.f90",
+        "src/process/mod_b111_solute_sorption.f90",
+        "src/process/mod_b111_solute_sorption_equilibrium_transfer.f90",
+        "src/process/mod_solute_compartment_state.f90",
+        "src/process/mod_solute_sorption_transfer.f90"
+      ],
+      "SOIL_N_PROCESS_AND_OWNER": [
+        "src/process/mod_b111_soil_n_addition.f90",
+        "src/process/mod_b111_soil_n_daily_candidate.f90",
+        "src/process/mod_b111_soil_n_daily_exchange.f90",
+        "src/process/mod_b111_soil_n_denitrification_coupling.f90",
+        "src/process/mod_b111_soil_n_nitrification_coupling.f90",
+        "src/process/mod_b111_soil_n_organic_mineralization_transfer.f90",
+        "src/process/mod_b111_soil_n_organic_turnover_transfer.f90",
+        "src/process/mod_b111_soil_n_rate_factors.f90",
+        "src/process/mod_b111_soil_n_storage_conversion.f90",
+        "src/process/mod_b111_soil_n_transport.f90",
+        "src/process/mod_b111_soil_organic_dissimilation.f90",
+        "src/process/mod_b111_soil_organic_turnover.f90",
+        "src/process/mod_soil_n_pool_state.f90",
+        "src/process/mod_soil_n_reaction_transfer.f90"
+      ],
+      "HISTORICAL_TRANSACTION_LAYOUT": [
+        "src/runtime/mod_fmr_b111_reactive_solute_transaction.f90",
+        "src/runtime/mod_fmr_b111_reactive_water_carrier.f90",
+        "src/runtime/mod_fmr_b111_soil_crop_n_transaction.f90",
+        "src/runtime/mod_fmr_b111_soil_n_amendment_calendar.f90",
+        "src/runtime/mod_fmr_b111_soil_n_daily_transaction.f90",
+        "src/runtime/mod_fmr_b111_soil_n_management_event.f90",
+        "src/runtime/mod_fmr_b111_soil_n_transaction.f90",
+        "src/runtime/mod_fmr_b111_solute_transaction.f90"
+      ]
+    },
+    "historical_qualification": {
+      "id": 37778763469,
+      "name": "SWAP431 nutrient-solute owner qualification",
+      "head_sha": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37778763469",
+      "created_at": "2026-10-08T12:42:11Z",
+      "updated_at": "2026-10-08T12:46:04Z",
+      "scope": "Historical component/transaction candidate only; not current canonical runtime admission."
+    },
+    "current_owner_receipts": [
+      {
+        "pr": 1232,
+        "merged": true,
+        "merge_commit": "26ddf94e58133acd413c2b2738b873a92f43f1da",
+        "qualified_head": "cc6af12aba7be476f8935517493af90ac375cecf",
+        "title": "MC-NUT01: reactive organic/mineral N day with atomic Richards restart",
+        "url": "https://github.com/abhedwig-cell/SWAP5/pull/1232"
+      },
+      {
+        "pr": 1235,
+        "merged": true,
+        "merge_commit": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
+        "qualified_head": "8c4e02dff8482600d0d432a0448b8b284684eb44",
+        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water\u2013soil\u2013crop restart",
+        "url": "https://github.com/abhedwig-cell/SWAP5/pull/1235"
+      },
+      {
+        "pr": 1239,
+        "merged": true,
+        "merge_commit": "3b661766dc59298a7f541c970c2d3a55602d926c",
+        "qualified_head": "60dc821181cedfe55123e09d3907a9d002b7cc08",
+        "title": "MC-NUT01: delayed WOFOST81 senescence incorporation and complete restart",
+        "url": "https://github.com/abhedwig-cell/SWAP5/pull/1239"
+      },
+      {
+        "pr": 1247,
+        "merged": true,
+        "merge_commit": "31ff3158b956183c8af19f85bd3361847f60309b",
+        "qualified_head": "15c218d17ac4e19ed3206e2a8eefb37743328e37",
+        "title": "Atomic crop-soil harvest, compact retirement and fallow/successor native continuation",
+        "url": "https://github.com/abhedwig-cell/SWAP5/pull/1247"
+      }
+    ],
+    "claim_ceiling": "Historical qualification completed; close qualification carrier without merge. Source donor remains recoverable at immutable SHA and retained branch. No assertion that30 changed/absent modules are semantically replaced or fully migrated.",
+    "remaining_open": [
+      "NFIX explicit runtime request/receipt binding",
+      "Persistent surface/pond and pond-age state",
+      "Full source/default/selector/application envelopes",
+      "Aquifer remains rejected/excluded"
+    ],
+    "production_reference_test_tool_workflow_changes": false,
+    "new_actions": false,
+    "new_migration_route": false,
+    "capability_promotions": 0,
+    "phase": "CLOSED_WITHOUT_MERGE_HISTORICAL_QUALIFICATION_COMPLETED",
+    "source_branch": "work/swap431-nut-sol-binding-20261007",
+    "branch_preserved": true,
+    "merged": false,
+    "current_runtime_admission_created": false,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT_SOL_DONOR_CLOSEOUT_20261016.tar.xz.b64",
+      "decoded_sha256": "61d9c6cda869bd7cd3ea21f01281046baff8e573d12488bbd94efbf30d890251",
+      "decoded_bytes": 36720,
+      "members": 10,
+      "member_sha256": {
+        "historical/owner.log": "4243e2aa6f484ef1832cc9856ce6f0f7b790c18770f89fd5c1afd61456c1e67a",
+        "historical/owner_job.json": "caf1d265cbf67a75bdd1778048c9d3cec9a1c3d38b1037585c9feec43c987634",
+        "historical/owner_run.json": "58db2d4d902f017f40cf4b3723a14fc3700c7e358053e6ec7d726311e1b48c0f",
+        "inventory.json": "5daf2069e0e397a01b29f619fd945d6b1c3974c2fc3288a52eebfa854a511843",
+        "review/canonical/src/crop/mod_crop_soil_n_day.f90": "cd09aa43741d4ef8a9a2631d9a5930c198dcd7fcb6fbdef57061e601d9ef8024",
+        "review/canonical/src/runtime/mod_fmr_restart_state_contract.f90": "48ce88132d2a821642dc5e0d3604f42da23de7fc04bcad4b9c0c24e8f7258790",
+        "review/current_locator_inputs.json": "233598e26eda2c5cbfc0cbc13c25b382c6cb9e335a6cac32b30e7ef670e26b4f",
+        "review/donor/src/crop/mod_b111_crop_n_owner.f90": "3218ea7358b9b465e1fb465dd0bd8f350823faf805b62224f519b7c43b4b2936",
+        "review/donor/src/runtime/mod_fmr_b111_soil_crop_n_transaction.f90": "0b02b18151dc964acf9325820990b43aab817cebda08d6caada2b2ae6af53958",
+        "review/summary.json": "cf9799985678813576fddfad671e527e12288fe59908d689d65624c18c73a1b8"
+      }
+    },
+    "next_action": "Original qualification carrier1117 is closed without merge; retain immutable donor/branch for selective owner-controlled reuse. Existing current production authorities and unresolved NFIX/pond/full envelopes remain authoritative. No new numerical gate is selected for this metadata-only closeout.",
+    "closed_pr": {
+      "number": 1117,
+      "head": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+      "closed_at": "2026-10-16T09:30:08Z",
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1117"
+    },
+    "published_disposition": "6f503c0ea340efe097f2b163672b5de7629fe7dc",
+    "canonical_record": "040eb47783286763c4eb82df8ea07746ae3e977c",
+    "full_capability": false,
+    "capability_disposition_changes": 0,
+    "remaining_pr_navigation": {
+      "canonical": "040eb47783286763c4eb82df8ea07746ae3e977c",
+      "count": 10,
+      "pagination_complete": true,
+      "rows": [
+        {
+          "number": 1072,
+          "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)"
+        },
+        {
+          "number": 987,
+          "title": "PPA-WU05-A28: opt-in approximate RFM sorptivity mode"
+        },
+        {
+          "number": 956,
+          "title": "SW-RIB-TOP03: transactional top-surface exchange"
+        },
+        {
+          "number": 953,
+          "title": "SW-RIB-TOP02: external surface-water head candidate"
+        },
+        {
+          "number": 740,
+          "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study"
+        },
+        {
+          "number": 700,
+          "title": "PPA-RECONCILE01: reconcile local SWAP4.3.1 migration with current canonical"
+        },
+        {
+          "number": 528,
+          "title": "Research: fixed-interface dummy SWAP coupling qualification"
+        },
+        {
+          "number": 486,
+          "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB"
+        },
+        {
+          "number": 365,
+          "title": "DIFFICULTY: preregister Phase-0 falsification experiment"
+        },
+        {
+          "number": 58,
+          "title": "F-CI canonical integration: F-CI02-F-CI13"
+        }
+      ],
+      "scope": "Current navigation only.1072/58 are umbrella work;700 retains distinct historical donor scopes; remaining candidates are research/authority-bound and not automatically production-ready."
+    }
   }
 }
