@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "7c85247afaeaba4f96b86324d58ef575851b5310",
+  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -140,8 +140,8 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Reconcile existing historical selector/parameter activation and complete crop-N trajectory/partial-leaf-return/harvest envelope against the admitted bounded reproductive source policy. Preserve1253/default and sole crop/soil/pending owners; do not rebuild the admitted process or repeat unrelated qualification.",
-  "recovery_point": "Actual1260 bounded reproductive source/day/pending and native restart is merged and canonically receipted. Preserve existing1253/default and SOL1258. All243 dispositions unchanged; full historical activation/trajectory/partial return/harvest remain open. PR1072 remains draft.",
+  "next_action": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
+  "recovery_point": "Actual1260 bounded reproductive process stays admitted. Separate1261 source review is merged: literal daily/harvest dead-leaf DM overlap needs a B1 reference decision before partial-return runtime; retained leaf/stem DM/N and native semantics remain prerequisites. All243 dispositions unchanged; PR1072 stays draft.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
     "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
@@ -2843,6 +2843,67 @@
         "decoded_sha256": "e70d5b82e8bc172b2bd1bd4765bd619937e6c9e4b4a4cedd2a58fa84dd1e9b00",
         "decoded_bytes": 11324,
         "members": 11
+      }
+    }
+  },
+  "latest_leaf_return_review_20261016": {
+    "stage": "SOURCE_CHAIN_REVIEW_PASS_REFERENCE_DECISION_REQUIRED",
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "18c1ce8455d67c5755838ad5f2e63838d617f8361a72b2d2b13259e652ac52b4",
+      "decoded_bytes": 29188,
+      "members": 38
+    },
+    "case_counts_per_optimization": {
+      "day_harvest_cases": 27,
+      "leaf_DM_return_exceeds_death": 9
+    },
+    "counterexample": {
+      "leaf_death_DM_kg_ha": 10,
+      "daily_leaf_fraction": 1,
+      "harvest_leaf_fraction": 1,
+      "daily_leaf_soil_DM_kg_ha": 10,
+      "harvest_dead_leaf_soil_DM_kg_ha": 10,
+      "total_leaf_soil_N_kg_ha": 0.1
+    },
+    "scope": "Immutable literal source blocks plus real current pending/material constructors; no full historical crop/calendar reachability claim, corrected reference or partial-return runtime admission.",
+    "scientific_prerequisite": "Adjudicate ordinary source growth/daily-return/harvest timing and DM overlap; if confirmed, correct and qualify B1 before changing SWAP5 partial-return semantics.",
+    "next_safe_step": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
+    "production_admitted": false,
+    "formal_reference_defect_status": "UNADJUDICATED_SOURCE_CHAIN_COUNTEREXAMPLE",
+    "canonical_assessment": {
+      "pr": 1261,
+      "merge_commit": "7dc1adb594c4091d7df60229af4b779485ca9558",
+      "reviewed_head": "74f8ec335a7eb7efcdb01b98b362da6d2115640a",
+      "actual_tree": "85364309d66b291213abf62a44c831d59edbf7af",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "scientific_surface": "src/tests/tools/reference/.github unchanged from d27c6abe",
+      "post_merge_source_proof": "PASS actual GitHub merge object and admitted1260 source guard",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_admitted": false,
+      "reference_correction_admitted": false
+    },
+    "canonical_receipt": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "capability_disposition_changes": 0,
+    "master_validation": {
+      "historical_source_and_pinned_authorities": "PASS",
+      "inheritance_controls": "20PASS",
+      "source_and_strict_docs": "PASS",
+      "entire_capability_ledger": "BYTE_IDENTICAL_TO_988b46c3",
+      "capability_disposition_changes": 0,
+      "canonical_source_and_docs": "PASS",
+      "full_numerical": "NOT_SELECTED_IMPACT",
+      "archive": {
+        "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_MASTER_CLOSEOUT_20261016.tar.xz.b64",
+        "decoded_sha256": "107801701c1efa5d331f0baa7480d46397d1dc299f0c8423816753a167506e9c",
+        "decoded_bytes": 11240,
+        "members": 12
       }
     }
   }

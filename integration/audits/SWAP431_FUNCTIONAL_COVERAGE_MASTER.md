@@ -1,6 +1,17 @@
 # SWAP431 functional coverage master: recoverable review
 
 
+Latest separate partial-return source assessment (2026-10-16): PR1261 merged at
+`7dc1adb594c4091d7df60229af4b779485ca9558`, receipt `9b05521b`.
+The literal growth/daily-return/harvest source chain can return20kg leaf DM from
+10kg death while leaf N still closes;9 of27 bounded algebraic cases per O0/O2
+exceed supplied dead-leaf DM. Actual current pending/material mappings also pass.
+This is a source-block discriminator, not full-trajectory reachability or a formal
+reference correction. Resolve that B1 reference/retained-stock decision before
+partial-return runtime. Existing1260/1253/default/full-return/irrigation/SOL
+scientific postimages remain unchanged; all243 dispositions/census are preserved.
+
+
 Latest bounded crop-N process admission (2026-10-16): PR1260 merged at
 `dd3e78dfc005c11221c6d049c5fcee4ef8cd2280`, canonical receipt `7c85247afaeaba4f96b86324d58ef575851b5310`.
 Explicit source-order translocation and residual-concentration death now execute
