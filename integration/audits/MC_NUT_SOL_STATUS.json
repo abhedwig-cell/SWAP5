@@ -4,7 +4,7 @@
   "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
   "branch": "work/swap431-nutsol-20261007",
   "pull_request": 1098,
-  "phase": "B111_SOURCE_POLICY_COMPONENT_LOCALLY_QUALIFIED_PENDING_STABLE_CI",
+  "phase": "SOURCE_POLICY_COMPONENT_CANONICAL_RUNTIME_BINDING_OPEN",
   "implemented": {
     "b111_nfixation_policy": true,
     "this_pr_changes_soil_n_owner": false,
@@ -141,7 +141,181 @@
       "highest": "NOT_SELECTED_POLICY",
       "solver": "NOT_SELECTED_IMPACT",
       "expected_seconds": 60
-    }
+    },
+    "record_scope": "Pre-merge component qualification; actual canonical component integration is recorded separately. Runtime admission remains false."
   },
-  "next_safe_step": "Observe existing PR1098 owning component, FCI selection/modular proof and documentation CI. Merge only qualified source component; record runtime and full NFIX capability unadmitted. Existing Soil-N/crop-N request/receipt binding remains a separate owner task; aquifer remains excluded/rejected."
+  "next_safe_step": "PR1098 source-policy prerequisite is integrated. Preserve existing WOFOST81 and aquifer exclusion. Bind this policy only under existing crop/Soil-N owner contract with actual accepted mass/state, exactly-once fixation, rollback and restart qualification before runtime NFIX admission.",
+  "canonical_component_integration_20261016": {
+    "pr": 1098,
+    "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+    "qualified_head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "kind": "QUALIFIED_SOURCE_COMPONENT_CANONICAL_NOT_RUNTIME_ADMISSION",
+    "component_qualified": true,
+    "canonically_integrated": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "production_reachability": false,
+    "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+    "remaining": "Explicit selection in existing crop/Soil-N request owner, accepted mass/state, exactly-once fixation receipt, rollback and restart qualification. Existing WOFOST81 remains unchanged; no second fixation booking.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24
+    },
+    "sources": [
+      "src/crop/mod_b111_nfixation_policy.f90"
+    ],
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json",
+    "records": [
+      "integration/audits/MC_NUT_SOL_STATUS.json",
+      "integration/audits/MC_NUT_SOL_OWNER_DECISION.md"
+    ],
+    "selected_ci": [
+      {
+        "id": 38877128708,
+        "name": "F-CI canonical qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754395,
+            "name": "selection-preflight",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894969180,
+            "name": "modular-feedback",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894970427,
+            "name": "frozen-fci24-reference-et-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970493,
+            "name": "frozen-fci19-source-lineage",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970556,
+            "name": "historical-fci03-through-fci18",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970830,
+            "name": "frozen-fci27-reference-et-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970855,
+            "name": "frozen-fci34-root-attribution-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970947,
+            "name": "frozen-fci36-divdra-active-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971151,
+            "name": "frozen-fci29-ptra-ownership-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971157,
+            "name": "frozen-fci28-restart-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971282,
+            "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971315,
+            "name": "frozen-fci40-effective-forcing-executor-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971494,
+            "name": "frozen-fci37-parallel-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971684,
+            "name": "frozen-fci31-reference-et-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972028,
+            "name": "frozen-fci19-candidate-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972306,
+            "name": "frozen-fci30-restricted-parallel-v1-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972984,
+            "name": "current-restricted-canonical-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "id": 38877128695,
+        "name": "SWAP431 nutrient fixation qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754050,
+            "name": "qualify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "local_checks": {
+      "literal_cases": 593,
+      "quantities_per_case": 3,
+      "invalid_input_cases": 39,
+      "WOFOST81_original_cases": 1806,
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "rejection_controls": 6,
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS_15.38s"
+    },
+    "post_merge": "Actual merge tree equals exact CI qualified candidate; source/capsule proof repeated at actual canonical merge.",
+    "full_fci": "NOT_SELECTED_IMPACT_COMPONENT_ONLY",
+    "highest": "NOT_SELECTED_POLICY",
+    "solver": "NOT_SELECTED_IMPACT"
+  }
 }
