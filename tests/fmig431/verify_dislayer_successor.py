@@ -95,13 +95,24 @@ def incumbent(source_only=False):
  require(cp.returncode==0,'original immutable availability owner rejected '+cp.stderr[-2500:]);old_result=json.loads(cp.stdout)
  if not source_only:require(old_result['qualified']and old_result['availability_successor']and old_result['inf_split_successor'],'unqualified incumbent')
  return old_result
+def native_successor():
+ path=ROOT/'tests/fmig431/verify_dramet3_successor.py'
+ status=json.loads((ROOT/STATUS).read_text())
+ if not path.exists()or not status.get('dramet3_phase_20261016',{}).get('qualified'):return None
+ spec=importlib.util.spec_from_file_location('native_dramet3',path);v=importlib.util.module_from_spec(spec);spec.loader.exec_module(v);return v
 def verify_source(git_reader=None):
+ successor=native_successor()
+ if successor:return successor.verify_source(git_reader)
  require(git_reader is None,'unregistered projected reader');loaded();prior=incumbent(True)
  return {**prior,'dislayer_successor':True,'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
 def verify_qualification():
+ successor=native_successor()
+ if successor:return successor.verify_qualification()
  loaded();prior=incumbent(False)
  return {**prior,'incumbent':prior,'dislayer_successor':True,'qualified':True,'full_capability':True,'drainage_ledger_rows':['SW431-DRAIN-DIV-SIGNED','SW431-DRAIN-DIV-MULTI','SW431-DRAIN-INF-SPLIT','SW431-DRAIN-DISLAYER'],'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+ successor=native_successor()
+ if successor:return successor.main()
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');args=ap.parse_args();s,r=loaded()
  if args.self_test:
   names=[]

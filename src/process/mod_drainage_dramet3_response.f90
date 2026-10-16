@@ -195,10 +195,10 @@ contains
     type(dramet3_level_parameters_t), intent(in) :: parameters
     ok = .false.
     if (.not. ieee_is_finite(parameters%drain_bottom_cm)) return
-    if (.not. ieee_is_finite(parameters%drainage_resistance_day) .or. &
-        parameters%drainage_resistance_day <= 0.0_real64) return
-    if (.not. ieee_is_finite(parameters%infiltration_resistance_day) .or. &
-        parameters%infiltration_resistance_day < 0.0_real64) return
+    if (.not. ieee_is_finite(parameters%drainage_resistance_day)) return
+    if (.not. ieee_is_finite(parameters%infiltration_resistance_day)) return
+    if (parameters%drainage_resistance_day <= 0.0_real64) return
+    if (parameters%infiltration_resistance_day < 0.0_real64) return
     if (parameters%allocation_mode < DRAMET3_ALLOW_BOTH .or. parameters%allocation_mode > DRAMET3_DRAINAGE_ONLY) return
     if (parameters%drain_type /= DRAMET3_TUBE .and. parameters%drain_type /= DRAMET3_OPEN_CHANNEL) return
     ok = .true.

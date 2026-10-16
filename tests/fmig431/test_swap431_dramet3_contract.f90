@@ -1,6 +1,6 @@
 program test_native_dramet3
  use iso_fortran_env,only:real64
- use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
+ use ieee_arithmetic,only:ieee_value,ieee_quiet_nan,ieee_positive_inf
  use variables,only:gwl,t1900,dt
  use MOD_drain
  use mod_drainage_dramet3_response
@@ -80,7 +80,7 @@ program test_native_dramet3
  call evaluate_fmr_drainage_response_bottom_lumped(p,c,v,q,d,100d0)
  call require(d%status/=0.and.all(q==0d0),'unready channel binder');neg=neg+1
  call initialize_dramet3_channel_control(p(1)%dramet3_channel,0d0,0d0,[0d0],[-50d0],st)
- do a=1,7
+ do a=1,11
   p(1)%dramet3%drainage_resistance_day=100d0;p(1)%dramet3%infiltration_resistance_day=200d0
   p(1)%dramet3%allocation_mode=1;p(1)%dramet3%drain_type=1;v%groundwater_level=-60d0
   select case(a)
@@ -91,6 +91,10 @@ program test_native_dramet3
   case(5);v%groundwater_level=ieee_value(0d0,ieee_quiet_nan)
   case(6);p(1)%dramet3%drain_bottom_cm=ieee_value(0d0,ieee_quiet_nan)
   case(7);c(1)%drain_head_supplied=.true.
+  case(8);p(1)%dramet3%drainage_resistance_day=ieee_value(0d0,ieee_quiet_nan)
+  case(9);p(1)%dramet3%infiltration_resistance_day=ieee_value(0d0,ieee_quiet_nan)
+  case(10);p(1)%dramet3%drainage_resistance_day=ieee_value(0d0,ieee_positive_inf)
+  case(11);p(1)%dramet3%infiltration_resistance_day=ieee_value(0d0,ieee_positive_inf)
   end select
   call evaluate_fmr_drainage_response_bottom_lumped(p,c,v,q,d,100d0)
   call require(d%status/=0.and.all(q==0d0),'invalid atomic binder');neg=neg+1
