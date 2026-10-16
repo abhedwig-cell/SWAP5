@@ -77,8 +77,8 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Signed, interacting multilevel and INF-SPLIT ordinary rows are closed. Remaining DISLAYER, DRAMET3, allocation, infiltration-limit, highest-interflow and frost rows retain their separate contracts; no broader admission.",
-  "recovery_point": "PR1266 merge09bd5913394e5e263d414b50d29f720e3ab1e21f; master receiptce855e2760a97ce5e41d05126b386629847b0bc5. Original signed PR1099 and multilevel PR1109 admissions preserved.",
+  "next_action": "DISLAYER source preflight blocked: qualify isolated B1 Paragraph12 mass correction under ADR-0005 before correcting existing candidate and binding runtime. Signed, multilevel and INF-SPLIT admissions remain unchanged.",
+  "recovery_point": "Existing DISLAYER branch, frozen2ea0795f57ebcf8aad49e7e82d803c887957292b; actual B1.11/03 and candidate four native O0/O2 witnesses. No new ledger closure.",
   "blockers": [],
   "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "closure_conditions_frozen_20261016": {
@@ -1421,9 +1421,9 @@
     "ledger_rows": [
       "SW431-DRAIN-DISLAYER"
     ],
-    "state": "CONDITIONS_FROZEN_SOURCE_PREFLIGHT_PENDING",
+    "state": "BLOCKED_QUALIFIED_REFERENCE_CORRECTION_REQUIRED",
     "qualified": false,
-    "tested": false,
+    "tested": true,
     "conditions_frozen": [
       "Close the complete existing SWDISLAY1/2;SWTOPDISLAY1 row. Cover supplied absolute tops and dynamic DRAMET2 shape and other-method groundwater/head-difference formulas, per-level opt-in, grid boundaries, heterogeneous dz/K/anisotropy and interacting signed levels, including admitted separate infiltration; no implicit positive-only or normal-rate restriction.",
       "Use existing candidate transform and admitted ordinary signed/multilevel/INF partition and existing scalar/view/state owners. Compare actual complete unchanged B1.11 and already admitted corrected03 DIVDRA at O0/O2 before implementation or runtime binding. A demonstrated source defect requires explicit qualified B1 correction before production is required to reproduce corrected behavior.",
@@ -1457,6 +1457,92 @@
       "runtime binding and transactional integration",
       "affected preservation and owner controls",
       "canonical merge/master receipt"
-    ]
+    ],
+    "admitted": false,
+    "ledger_rows_closed": [],
+    "frozen_conditions_commit": "2ea0795f57ebcf8aad49e7e82d803c887957292b",
+    "blocker": {
+      "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md and docs/verification/principles.md",
+      "source": "DIVDRA Paragraph12",
+      "source_versions": [
+        "immutable B1.11",
+        "unchanged admitted FROST-DIVDRA-03"
+      ],
+      "defect": "When abs(retained sum)<1e-8, ratio is1. Small authoritative rates lose water after truncation; large rates replace the top node by the full scalar while nonzero deeper rates remain and are double-booked.",
+      "counterexample": {
+        "dz_cm": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "gwl_cm": 0,
+        "drain_spacing_cm": 40000,
+        "ksat_cm_per_day": [
+          1,
+          1e-07,
+          1e-07,
+          1e-07,
+          1e-07,
+          1e-07,
+          1e-07,
+          1e-07
+        ],
+        "cofani": 1,
+        "top_cm": -1.5,
+        "authoritative_cm_per_day": 0.003,
+        "actual_nodal_sum_cm_per_day": 0.0030000017999987413,
+        "rate_residual_cm_per_day": 1.799998741204567e-09
+      },
+      "ordinary_small_rate_counterexample": {
+        "uniform_K": 1,
+        "authoritative_cm_per_day": 2e-09,
+        "actual_nodal_sum_cm_per_day": 1.625e-09,
+        "lost_fraction": 0.1875
+      },
+      "no_domain_restriction_or_tolerance_relaxation": true,
+      "existing_candidate_reproduces_source_defect": true,
+      "source_bytes_changed": false,
+      "runtime_integration_selected": false,
+      "ledger_admission": false
+    },
+    "reference_correction_preregistration": {
+      "state": "REQUIRED_NOT_IMPLEMENTED_NOT_QUALIFIED",
+      "audit_identifier": "MC-DRAIN01-DISLAYER-MASS01",
+      "prior_admitted_component": "FROST-DIVDRA-03",
+      "scope": "Only Paragraph12 SWDISLAY1/2 post-partition normalization; original snapshots remain immutable. No new drain response, clock or state owner.",
+      "expected_difference": "For nonzero retained support, normalize the retained distribution to the authoritative scalar regardless of the arbitrary1e-8 threshold. For exactly zero retained support, preserve the existing top-node fallback placement and book the scalar exactly once.",
+      "acceptance_frozen": [
+        "Unmodified complete03 versus minimal corrected complete DIVDRA O0/O2 plus independent per-level conductivity/thickness and conservation oracle.",
+        "Absolute and both dynamic top formulas, single/interacting mixed-sign levels, separate-infiltration combination, heterogeneous grids and boundary placement. Both sides/exact1e-8 retained threshold and existing1e-10 activation seam, zero/very small rates and exact/nonzero retained support.",
+        "Per-level scalar closure<=1e-14cm/day; no silent held valid domain. Bit-identical outside affected small-retained enabled branch, and all disabled SWDISLAY0 reference bytes/behavior unchanged.",
+        "Hash-guarded minimal patch/applicator rejects wrong baseline/occupied destination; independent corruption controls; preserve B20 and existing admitted reference authority.",
+        "Persist qualified B1 correction before correcting the existing candidate or materializing runtime effects; then discharge all original frozen DISLAYER conditions."
+      ]
+    },
+    "measured": {
+      "native_variants": 2,
+      "optimizations": [
+        0,
+        2
+      ],
+      "cases_per_execution": 24,
+      "conservative_controls_per_execution": 6,
+      "defects_per_execution": 18,
+      "stdout_identical_across_all4": true,
+      "provider_count": 3,
+      "compiler_requests_per_execution": 5,
+      "total_seconds": 2.2578046689741313,
+      "runtime_FCI_RossFast_low_air": "NOT_SELECTED_SOURCE_PREFLIGHT_BLOCKED"
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_PREFLIGHT_20261016.json.gz.b64",
+      "sha256": "bc9c362b477e9dd637b18f84075550589cfeb74ad6ebed9090fcbb2600c73dec",
+      "claim": "SOURCE_DEFECT_REPRODUCED_ONLY;NO_PRODUCTION_ADMISSION"
+    }
   }
 }
