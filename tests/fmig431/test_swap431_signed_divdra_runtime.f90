@@ -6,13 +6,14 @@ program test_swap431_signed_divdra_runtime
   use MOD_drain, only: legacy_qdra => qdra
   use MOD_irrigation, only: legacy_qssdi => qssdi
   use variables, only: legacy_qrot => qrot
-  use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE
+  use mod_transaction_reference, only: transaction_state_t, TX_MASS_MISSING_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
-       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE
+       fmr_aggregate_diagnostics_t, FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_physical_parameters_t, &
-       fmr_b110_physical_forcing_t, fmr_new_b110_committed_state
+       fmr_b110_physical_forcing_t, fmr_new_b110_temporal_indicator_committed_state, &
+       fmr_b110_temporal_indicator_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK, FMR_SERIAL_DISPATCH_INVALID_REQUEST
   use mod_fmr_divdra_serialized_runtime, only: fmr_divdra_serialized_column_request_t, &
@@ -25,7 +26,9 @@ program test_swap431_signed_divdra_runtime
        fmr_bind_single_level_signed_divdra, FMR_DIVDRA_BIND_OK
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
-  use mod_fmr04_fixed_top_provider, only: fmr04_fixed_flux_top_provider_t
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart,FMR_RESTART_OK
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   implicit none
@@ -37,15 +40,21 @@ program test_swap431_signed_divdra_runtime
   integer(int64), parameter :: id1 = 510001_int64, id2 = 510002_int64
   real(real64), parameter :: gwls(3) = [-0.20_real64, -0.85_real64, -1.80_real64]
   real(real64), parameter :: transfers(4) = [-3.25e-3_real64, -2.0e-4_real64, 2.0e-4_real64, 3.25e-3_real64]
-  integer :: i, j, valid_cases
+  integer :: i, j, valid_cases,test_bottom_mode
 
   valid_cases = 0
-  do i = 1, size(gwls)
-    do j = 1, size(transfers)
-      call verify_single_active(gwls(i), transfers(j))
-      valid_cases = valid_cases + 1
+  do test_bottom_mode=2,7,5
+    call verify_inactive_identity()
+    do i = 1, size(gwls)
+      do j = 1, size(transfers)
+        call verify_single_active(gwls(i), transfers(j))
+        valid_cases = valid_cases + 1
+      end do
     end do
+    call verify_lifecycle(-3.25e-3_real64)
+    call verify_lifecycle(3.25e-3_real64)
   end do
+  test_bottom_mode=7
   call verify_two_active_columns()
   call verify_fail_closed_matrix()
 
@@ -53,6 +62,98 @@ program test_swap431_signed_divdra_runtime
   write(*,'(A)') 'SW431_SIGNED_INDEPENDENT_ACTIVE_RUNTIME_CALLSITE PASS'
 
 contains
+
+  subroutine verify_lifecycle(q)
+    real(real64),intent(in)::q
+    type(fmr_logical_column_t)::c(1)
+    type(fmr_template_t)::t(1)
+    type(fmr_b110_physical_parameters_t)::p(1)
+    type(fmr_b110_physical_forcing_t)::f(1)
+    type(kernel_committed_state_t)::s(1),clean(1),restored(1)
+    type(canonical_numerical_config_t)::cfg,badcfg
+    type(fmr_serialized_column_result_t),allocatable::r(:),fresh(:),continued(:)
+    type(fmr_column_diagnostics_t),allocatable::d(:)
+    type(fmr_aggregate_diagnostics_t)::a
+    type(fmr_divdra_serialized_column_request_t)::req(1)
+    type(fmr_divdra_serialized_binding_record_t),allocatable::records(:)
+    type(drainage_distribution_parameters_t)::dp(1)
+    type(process_hydraulic_view_t)::hv(1)
+    type(fixed_flux_top_boundary_provider_t),target::top
+    type(fmr_committed_restart_bundle_t)::bundle
+    integer::dispatch,compose,status
+    logical::ok
+    call initialize_one(c,t,p,f,s,cfg);clean=s
+    deallocate(f(1)%drainage_flux_by_level)
+    call configure_distribution(dp(1));call configure_view(hv(1),-.85_real64)
+    call make_request(req(1),id1,q)
+    ! Full/half physical discrepancy rejects a real candidate. No accepted
+    ! substep or changed forcing is allowed to survive this failed interval.
+    badcfg=cfg;badcfg%transaction%temporal_tolerance=1.e-30_real64;badcfg%transaction%max_retries=0
+    badcfg%model_temporal_indicator_budget_available=.true.
+    badcfg%model_temporal_indicator_budget=1.e-30_real64
+    call reset_legacy()
+    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,badcfg,top,qa_t0,qa_t1,1, &
+         req,dp,hv,r,d,a,dispatch,compose,records)
+    call require(.not.r(1)%committed.and.r(1)%solver_executed,'real rejected physical candidate')
+    call require(r(1)%temporal_rejections>0,'real temporal rejection')
+    call require(s(1)%current_revision()==0_int64.and.states_equal(s(1),clean(1)),'rollback state')
+    call require(.not.allocated(f(1)%drainage_flux_by_level),'reject forcing cleanup')
+    call reset_legacy()
+    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,1, &
+         req,dp,hv,r,d,a,dispatch,compose,records)
+    call require(r(1)%committed,'retry valid accepted')
+    call reset_legacy()
+    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,clean,cfg,top,qa_t0,qa_t1,1, &
+         req,dp,hv,fresh,d,a,dispatch,compose,records)
+    call require(fresh(1)%committed.and.same_result(r(1),fresh(1)),'fresh/retry result')
+    call require(states_equal(s(1),clean(1)),'fresh/retry exact physical state')
+    call fmr_export_committed_restart(c,t,s,p(1)%parameter_set_id,bundle,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'committed export')
+    call fmr_restore_committed_restart(bundle,p(1)%parameter_set_id,c,t,restored,ok,status)
+    call require(ok.and.status==FMR_RESTART_OK,'empty-registry restore')
+    call reset_legacy()
+    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t1,qa_t1+qa_t1-qa_t0,1, &
+         req,dp,hv,r,d,a,dispatch,compose,records)
+    call reset_legacy()
+    call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,restored,cfg,top,qa_t1,qa_t1+qa_t1-qa_t0,1, &
+         req,dp,hv,continued,d,a,dispatch,compose,records)
+    call require(r(1)%committed.and.continued(1)%committed,'continued commits')
+    call require(same_result(r(1),continued(1)).and.states_equal(s(1),restored(1)),'restart exact continuation')
+    call require(abs(r(1)%mass%residual)<=mass_gate.and.abs(continued(1)%mass%residual)<=mass_gate,'restart mass')
+    print '(A,ES14.6)','SW431_SIGNED_REJECT_REPLAY_RESTART=PASS Q=',q
+  end subroutine
+
+  logical function states_equal(a,b) result(ok)
+    type(kernel_committed_state_t),intent(in)::a,b
+    class(transaction_state_t),allocatable::sa,sb
+    logical::got,ha,hb
+    real(real64),allocatable::da(:),db(:)
+    call a%snapshot(sa,got);call require(got,'snapshot A')
+    call b%snapshot(sb,got);call require(got,'snapshot B')
+    ok=.false.
+    select type(x=>sa)
+    class is(fmr_b110_physical_state_t)
+      select type(y=>sb)
+      class is(fmr_b110_physical_state_t)
+        ok=x%active_nodes==y%active_nodes.and.all(x%pressure_head==y%pressure_head).and. &
+             all(x%water_content==y%water_content).and.x%ponding_depth==y%ponding_depth.and. &
+             x%groundwater_level==y%groundwater_level
+      end select
+    end select
+    select type(x=>sa)
+    type is(fmr_b110_temporal_indicator_state_t)
+      select type(y=>sb)
+      type is(fmr_b110_temporal_indicator_state_t)
+        call x%temporal_history_snapshot(da,ha);call y%temporal_history_snapshot(db,hb)
+        ok=ok.and.(ha.eqv.hb)
+        if(ha.and.hb)ok=ok.and.all(da==db)
+      class default
+        ok=.false.
+      end select
+    class default
+      ok=.false.
+    end select
+  end function
 
   subroutine verify_inactive_identity()
     type(fmr_logical_column_t) :: c1(1), c2(1)
@@ -68,7 +169,7 @@ contains
     type(fmr_divdra_serialized_binding_record_t), allocatable :: records(:)
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(1)
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: dispatch1, dispatch2, compose
 
     call initialize_one(c1,t1,p1,f1,s1,cfg1)
@@ -88,7 +189,7 @@ contains
     call require(r1(1)%committed .and. r2(1)%committed,'inactive committed')
     call require(compose==FMR_DIVDRA_COMPOSE_OK .and. size(records)==0,'inactive sparse composition')
     call require(same_result(r1(1),r2(1)),'inactive result identity')
-    call require(state_fingerprint(s1(1))==state_fingerprint(s2(1)),'inactive state identity')
+    call require(states_equal(s1(1),s2(1)),'inactive state identity')
     call require(allocated(f2(1)%drainage_flux_by_level),'inactive drainage allocation retained')
     call require(all(f2(1)%drainage_flux_by_level==0.0_real64),'inactive forcing unchanged')
     write(*,'(A)') 'SW431_SIGNED_INACTIVE_EXACT_IDENTITY=PASS'
@@ -110,7 +211,7 @@ contains
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(1)
     type(fmr_divdra_binding_diagnostics_t) :: bd
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     real(real64), allocatable :: row(:)
     integer :: dispatch1, dispatch2, compose
 
@@ -123,7 +224,7 @@ contains
     call fmr_bind_single_level_signed_divdra(dp(1),hv(1),transfer_rate,f1(1)%drainage_flux_by_level,bd)
     call require(bd%status==FMR_DIVDRA_BIND_OK .and. bd%published,'manual binding accepted')
     allocate(row(numnod)); row=f1(1)%drainage_flux_by_level(1,:)
-    call require(same_bits(sum(row),transfer_rate),'manual scalar closure')
+    call require(abs(sum(row)-transfer_rate)<=1.e-14_real64,'admitted nodal scalar closure')
 
     req(1)=fmr_divdra_serialized_column_request_t()
     req(1)%column_id=id1; req(1)%active=.true.
@@ -142,12 +243,18 @@ contains
     call require(r2(1)%committed .and. size(records)==1 .and. records(1)%binding%published,'active commit publication')
     call require(same_bits(records(1)%binding%authoritative_scalar_transfer,transfer_rate),'scalar retained')
     call require(same_result(r1(1),r2(1)),'manual/callsite result equivalence')
-    call require(state_fingerprint(s1(1))==state_fingerprint(s2(1)),'manual/callsite state equivalence')
+    call require(states_equal(s1(1),s2(1)),'manual/callsite state equivalence')
     call require(r2(1)%mass%complete .and. r2(1)%mass%missing_contribution_mask==TX_MASS_MISSING_NONE,'mass complete')
     call require(abs(r2(1)%mass%residual)<=mass_gate,'hard mass gate')
+    if (test_bottom_mode==2) then
+      call require(abs(r2(1)%mass%storage_change+transfer_rate*(qa_t1-qa_t0))<=mass_gate,'external signed storage')
+      call require(abs(r2(1)%mass%total_out-r2(1)%mass%total_in-transfer_rate*(qa_t1-qa_t0))<=mass_gate, &
+           'nodal redistribution no double external booking')
+    end if
+
     call require(.not.allocated(f2(1)%drainage_flux_by_level),'caller forcing restored')
     write(*,'(A,ES18.10,A,ES18.10,A,I0)') 'SW431_SIGNED_SINGLE GWL=',gwl,' Q=',transfer_rate,' WT=', &
-         records(1)%binding%active_nodes
+         records(1)%binding%process%water_table_node
   end subroutine verify_single_active
 
   subroutine verify_two_active_columns()
@@ -165,7 +272,7 @@ contains
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(2)
     type(fmr_divdra_binding_diagnostics_t) :: bd
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     real(real64), parameter :: q(2)=[0.011_real64,0.023_real64]
     real(real64), allocatable :: row(:)
     integer :: dispatch1,dispatch2,compose,k
@@ -198,10 +305,10 @@ contains
       call require(records(k)%column_id==c2(k)%column_id .and. records(k)%column_index==k,'record column identity')
       call require(same_bits(records(k)%binding%authoritative_scalar_transfer,q(k)),'record scalar identity')
       call require(same_result(r1(k),r2(k)),'two-column result equivalence')
-      call require(state_fingerprint(s1(k))==state_fingerprint(s2(k)),'two-column state equivalence')
+      call require(states_equal(s1(k),s2(k)),'two-column state equivalence')
       call require(.not.allocated(f2(k)%drainage_flux_by_level),'two-column forcing restored')
     end do
-    call require(records(1)%binding%active_nodes /= records(2)%binding%process%water_table_node, &
+    call require(records(1)%binding%process%water_table_node /= records(2)%binding%process%water_table_node, &
          'two-column distinct explicit views retained')
     write(*,'(A)') 'SW431_SIGNED_TWO_ACTIVE_COLUMNS_NO_CROSS_CONTAMINATION=PASS'
   end subroutine verify_two_active_columns
@@ -220,13 +327,14 @@ contains
     type(fmr_divdra_serialized_binding_record_t), allocatable :: records(:)
     type(drainage_distribution_parameters_t) :: dp(1)
     type(process_hydraulic_view_t) :: hv(1)
-    type(fmr04_fixed_flux_top_provider_t), target :: top
+    type(fixed_flux_top_boundary_provider_t), target :: top
     integer :: dispatch,compose
 
     call configure_distribution(dp(1)); call configure_view(hv(1),-0.45_real64)
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
+    if (allocated(req)) deallocate(req)
     allocate(req(1)); call make_request(req(1),c(1)%column_id,0.01_real64)
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
          r,d,a,dispatch,compose,records)
@@ -236,6 +344,7 @@ contains
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),999999_int64,0.01_real64); req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -244,6 +353,7 @@ contains
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),c(1)%column_id,1.0e-10_real64); req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -251,6 +361,7 @@ contains
     call require(compose==FMR_DIVDRA_COMPOSE_BIND_REJECTED .and. all_zero_revisions(s),'restricted seam premutation reject')
 
     call initialize_two(c,t,p,f,s,cfg)
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),c(1)%column_id,0.01_real64); req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -261,6 +372,7 @@ contains
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
     c(2)%forcing_handle=1_int64
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),c(1)%column_id,0.01_real64); req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -270,6 +382,7 @@ contains
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),c(1)%column_id,0.01_real64); req(1)%distribution_parameter_ref=2_int64; req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -278,6 +391,7 @@ contains
 
     call initialize_two(c,t,p,f,s,cfg)
     deallocate(f(1)%drainage_flux_by_level)
+    if (allocated(req)) deallocate(req)
     allocate(req(2)); req=fmr_divdra_serialized_column_request_t()
     call make_request(req(1),c(1)%column_id,0.01_real64); req(1)%hydraulic_view_ref=2_int64; req(2)%column_id=c(2)%column_id
     call fmr_run_serialized_physical_multiswap_with_divdra(c,t,p,f,s,cfg,top,qa_t0,qa_t1,2,req,dp,hv, &
@@ -300,7 +414,7 @@ contains
     call configure_parameters(p(1),state,k0)
     call configure_template(t(1)); call configure_column(c(1),id1,1_int64,t(1))
     call configure_forcing(f(1),k0); call configure_config(cfg)
-    call fmr_new_b110_committed_state(s(1),id1,state,qa_t0,ok); call require(ok,'one state init')
+    call fmr_new_b110_temporal_indicator_committed_state(s(1),id1,state,qa_t0,ok,[0._real64,0._real64,0._real64,0._real64]); call require(ok,'one state init')
   end subroutine initialize_one
 
   subroutine initialize_two(c,t,p,f,s,cfg)
@@ -316,14 +430,15 @@ contains
     call configure_parameters(p(1),state,k0); call configure_template(t(1)); call configure_config(cfg)
     call configure_column(c(1),id1,1_int64,t(1)); call configure_column(c(2),id2,2_int64,t(1))
     call configure_forcing(f(1),k0); call configure_forcing(f(2),k0)
-    call fmr_new_b110_committed_state(s(1),id1,state,qa_t0,ok); call require(ok,'two state 1')
-    call fmr_new_b110_committed_state(s(2),id2,state,qa_t0,ok); call require(ok,'two state 2')
+    call fmr_new_b110_temporal_indicator_committed_state(s(1),id1,state,qa_t0,ok,[0._real64,0._real64,0._real64,0._real64]); call require(ok,'two state 1')
+    call fmr_new_b110_temporal_indicator_committed_state(s(2),id2,state,qa_t0,ok,[0._real64,0._real64,0._real64,0._real64]); call require(ok,'two state 2')
   end subroutine initialize_two
 
   subroutine configure_template(t)
     type(fmr_template_t), intent(out) :: t
     t%template_id=510_int64; t%physics_topology_id=51011_int64; t%vertical_layout_id=51012_int64
-    t%state_layout_id=51013_int64; t%solver_interface_id=51014_int64; t%optional_state_layout_id=51015_int64
+    t%state_layout_id=51013_int64; t%solver_interface_id=51014_int64; t%optional_state_layout_id=0_int64
+    t%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     t%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   end subroutine configure_template
 
@@ -353,7 +468,7 @@ contains
       p%cofgen(9,k)=0.0_real64; p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64
       p%cofgen(12,k)=0.99_real64*p%cofgen(3,k); p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0; p%root_extraction_active=.true.
+    p%bottom_mode=test_bottom_mode;p%max_iterations=40;p%min_step_duration=1.e-10_real64; p%swkimpl=0; p%swkmean=1; p%swsophy=0; p%root_extraction_active=.true.
     p%macropore_active=.false.; p%snow_active=.false.; p%hysteresis_active=.false.
     p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.; p%frost_active=.false.
     call initialize_b110_default_mvg_parameters(hp,p%cofgen)
@@ -397,9 +512,11 @@ contains
 
   subroutine configure_config(cfg)
     type(canonical_numerical_config_t), intent(out) :: cfg
+    cfg%model_temporal_indicator_budget_available=.true.;cfg%model_temporal_indicator_budget=1.e-6_real64
+    cfg%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
     cfg%transaction%temporal_tolerance=0.0_real64; cfg%transaction%mass_tolerance=mass_gate
-    cfg%transaction%retry_scale=0.5_real64; cfg%transaction%max_retries=2
-    cfg%max_committed_substeps=8; cfg%progress_tolerance=0.0_real64
+    cfg%transaction%retry_scale=0.5_real64; cfg%transaction%max_retries=24
+    cfg%max_committed_substeps=2048; cfg%progress_tolerance=0.0_real64
   end subroutine configure_config
 
   subroutine make_request(req,id,q)
@@ -429,12 +546,12 @@ contains
   logical function same_result(a,b) result(equal)
     type(fmr_serialized_column_result_t), intent(in) :: a,b
     equal=a%column_id==b%column_id .and. a%kernel_status==b%kernel_status .and. a%commit_status==b%commit_status .and. &
-      a%completed.eqv.b%completed .and. a%committed.eqv.b%committed .and. a%solver_executed.eqv.b%solver_executed .and. &
+      (a%completed.eqv.b%completed) .and. (a%committed.eqv.b%committed) .and. (a%solver_executed.eqv.b%solver_executed) .and. &
       a%solver_iterations==b%solver_iterations .and. a%initial_revision==b%initial_revision .and. &
       a%final_revision==b%final_revision .and. same_bits(a%final_committed_time,b%final_committed_time) .and. &
-      a%actual_transpiration_available.eqv.b%actual_transpiration_available .and. &
+      (a%actual_transpiration_available.eqv.b%actual_transpiration_available) .and. &
       same_bits(a%actual_transpiration_amount,b%actual_transpiration_amount) .and. &
-      a%mass%complete.eqv.b%mass%complete .and. a%mass%missing_contribution_mask==b%mass%missing_contribution_mask .and. &
+      (a%mass%complete.eqv.b%mass%complete) .and. a%mass%missing_contribution_mask==b%mass%missing_contribution_mask .and. &
       a%mass%origin_lineage_id==b%mass%origin_lineage_id .and. a%mass%origin_revision==b%mass%origin_revision .and. &
       a%mass%accepted_transaction_count==b%mass%accepted_transaction_count .and. &
       same_bits(a%mass%interval_t0,b%mass%interval_t0) .and. same_bits(a%mass%interval_t1,b%mass%interval_t1) .and. &
@@ -442,25 +559,6 @@ contains
       same_bits(a%mass%storage_change,b%mass%storage_change) .and. same_bits(a%mass%total_in,b%mass%total_in) .and. &
       same_bits(a%mass%total_out,b%mass%total_out) .and. same_bits(a%mass%residual,b%mass%residual)
   end function same_result
-
-  integer(int64) function state_fingerprint(state) result(fp)
-    type(kernel_committed_state_t), intent(in) :: state
-    class(transaction_state_t), allocatable :: snapshot
-    logical :: got
-    integer :: k
-    call state%snapshot(snapshot,got); call require(got,'state snapshot')
-    fp=1469598103934665603_int64
-    select type (physical=>snapshot)
-    type is (fmr_b110_physical_state_t)
-      fp=ieor(fp,int(physical%active_nodes,int64))
-      do k=1,physical%active_nodes
-        fp=ieor(fp,transfer(physical%pressure_head(k),fp)); fp=ieor(fp,transfer(physical%water_content(k),fp))
-      end do
-      fp=ieor(fp,transfer(physical%ponding_depth,fp)); fp=ieor(fp,transfer(physical%groundwater_level,fp))
-    class default
-      error stop 'SW431_SIGNED unexpected state type'
-    end select
-  end function state_fingerprint
 
   logical function same_bits(a,b) result(equal)
     real(real64), intent(in) :: a,b

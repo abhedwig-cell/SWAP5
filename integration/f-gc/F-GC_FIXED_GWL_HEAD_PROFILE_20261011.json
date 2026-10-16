@@ -1,0 +1,243 @@
+{
+  "work_unit": "F-GC-FIXED-GWL-HEAD-PROFILE-20261011",
+  "baseline": "767503dfeac3ea5f550a2925a02ef2a906262865",
+  "status": "SIX_CASE_CURRENT_SOURCE_HELD_GWL_HEAD_COMPONENT_PASS_SHARED_CONTRACT_PROPOSED",
+  "owner": "central F-GC diagnostic; RT/HY retains physical drainage response authority",
+  "invariants": [
+    7,
+    12,
+    13,
+    14,
+    23,
+    28,
+    30
+  ],
+  "production_delta": "NONE",
+  "interfaces_changed": "NONE",
+  "relevant_authorities": [
+    "integration/f-gc/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.json",
+    "integration/f-ci/F-CI98_STATUS.json",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json"
+  ],
+  "test_paths": [
+    "tests/fgc/run_fixed_gwl_head_drainage_probe.py",
+    "tests/fgc/test_fixed_gwl_head_drainage_probe.inc"
+  ],
+  "configuration": {
+    "bottom_mode": 5,
+    "smooth_qbot_projection": false,
+    "reported_gwl_carriers_cm": [
+      -0.3,
+      -1.5
+    ],
+    "head_offsets_m": [
+      -0.00001,
+      0,
+      0.00001
+    ],
+    "window_day": 0.01,
+    "pressure_state_and_two_drainage_tables": "Original F-GC31 fixture unchanged; GWL is deliberately an independent held carrier, not an inferred water table or actual application assignment",
+    "expected_integrated_drainage_cm": [
+      0.00006,
+      0.00003
+    ]
+  },
+  "preregistered_gates": [
+    "All six actual Reference trials complete at O0/O2",
+    "Complete component mass with unchanged 1e-10 native tolerance",
+    "Accepted window drainage equals original table law times duration, independent of head perturbation",
+    "Separate bottom exchange changes with head",
+    "Changing held GWL carrier changes drainage",
+    "Each trial preserves committed physical origin/revision/time",
+    "Original F-GC31 and smooth-head negative controls preserved",
+    "Exact O0/O2 stdout identity"
+  ],
+  "stop_rule": "Report failures without changing production or old fixture/thresholds. Do not classify held-GWL drainage as dynamic phreatic feedback or broaden NONE admission.",
+  "tested": true,
+  "qualified": "Six-case research component discriminator at O0/O2 only; no dynamic phreatic feedback or application admission",
+  "next_action": "RT/HY review of the now concrete proposed lagged-head projection/response contract. No additional held-carrier scan or dummy extension is needed to establish the observed limitation.",
+  "exclusions": [
+    "Live MODFLOW",
+    "New drainage physics",
+    "Actual field storage/path mapping",
+    "Mixed-path production admission",
+    "Joint restart qualification",
+    "Analytic head/drainage tangent qualification"
+  ],
+  "scientific_checkpoint": "38c8026efd44c90fc0e679a51a76230d91ef3761",
+  "checkpoint_tree": "b7ad76b144019ca39f8ef67c90acbd43b0e68268",
+  "recovery_branch": "qualification/regie-drainage-fixed-gwl-head-20261011",
+  "validation": {
+    "command": "python tests/fgc/run_fixed_gwl_head_drainage_probe.py",
+    "exit_code": 0,
+    "optimization_modes": [
+      "O0",
+      "O2"
+    ],
+    "exact_stdout_identity": true,
+    "hard_mass_tolerance_cm": 1e-10,
+    "head_to_drainage_finite_difference": "Zero for explicitly held carrier in both tested GWL cases",
+    "bottom_native_rate_slope_cm_per_day_per_m": [
+      -5.726905493164124,
+      -5.725488201324679
+    ],
+    "accepted_step_analytic_head_drainage_tangent": "NOT_REQUESTED_NOT_QUALIFIED",
+    "archive_path": "integration/f-gc/evidence/F-GC_FIXED_GWL_HEAD_PROFILE_20261011.tar.gz.b64",
+    "cases": [
+      {
+        "gwl_case": 1,
+        "head_case": 1,
+        "head_m": 0.012922896258567,
+        "held_reported_gwl_cm": -0.3,
+        "drainage_out_cm": 0.00006,
+        "bottom_out_cm": -0.00005523457248007397,
+        "storage_change_cm": -0.000004765427519926035,
+        "reported_mass_residual_cm": 6.776263578034403e-21,
+        "independent_storage_plus_drainage_plus_bottom_cm": -6.776263578034403e-21
+      },
+      {
+        "gwl_case": 1,
+        "head_case": 2,
+        "head_m": 0.012932896258567,
+        "held_reported_gwl_cm": -0.3,
+        "drainage_out_cm": 0.00006,
+        "bottom_out_cm": -0.00005580748735894531,
+        "storage_change_cm": -0.000004192512641054691,
+        "reported_mass_residual_cm": 6.776263578034403e-21,
+        "independent_storage_plus_drainage_plus_bottom_cm": 0
+      },
+      {
+        "gwl_case": 1,
+        "head_case": 3,
+        "head_m": 0.012942896258567,
+        "held_reported_gwl_cm": -0.3,
+        "drainage_out_cm": 0.00006,
+        "bottom_out_cm": -0.00005637995357870679,
+        "storage_change_cm": -0.00000362004642129321,
+        "reported_mass_residual_cm": 6.776263578034403e-21,
+        "independent_storage_plus_drainage_plus_bottom_cm": 0
+      },
+      {
+        "gwl_case": 2,
+        "head_case": 1,
+        "head_m": 0.012922896258567,
+        "held_reported_gwl_cm": -1.5,
+        "drainage_out_cm": 0.00003,
+        "bottom_out_cm": -0.00002541554138082766,
+        "storage_change_cm": -0.000004584458619172338,
+        "reported_mass_residual_cm": 0,
+        "independent_storage_plus_drainage_plus_bottom_cm": 3.3881317890172014e-21
+      },
+      {
+        "gwl_case": 2,
+        "head_case": 2,
+        "head_m": 0.012932896258567,
+        "held_reported_gwl_cm": -1.5,
+        "drainage_out_cm": 0.00003,
+        "bottom_out_cm": -0.00002598831468028415,
+        "storage_change_cm": -0.000004011685319715852,
+        "reported_mass_residual_cm": 0,
+        "independent_storage_plus_drainage_plus_bottom_cm": 0
+      },
+      {
+        "gwl_case": 2,
+        "head_case": 3,
+        "head_m": 0.012942896258567,
+        "held_reported_gwl_cm": -1.5,
+        "drainage_out_cm": 0.00003,
+        "bottom_out_cm": -0.0000265606390210926,
+        "storage_change_cm": -0.000003439360978907402,
+        "reported_mass_residual_cm": 0,
+        "independent_storage_plus_drainage_plus_bottom_cm": 0
+      }
+    ],
+    "archive_sha256": "0f1cbaef974c39981a39c1ab956d8519b88c873c3c5c268980df012b13f3547e",
+    "members": {
+      "current_replay.log": {
+        "bytes": 102569,
+        "sha256": "f4d2502ef69dc29d45fd4e7d9c4d754d681c5a0e23804efee0cbfdba32ccd0d5"
+      },
+      "scientific_stdout.txt": {
+        "bytes": 2148,
+        "sha256": "a8c9fcb3d083071b88194fd44454db53f32e3371cf49ce91572f4bd656af2c88"
+      },
+      "dependency_manifest.json": {
+        "bytes": 34018,
+        "sha256": "6baae9c932c2e80802f933d4c86b2fab1c28ece4407b44b6dddda33ccce1dd8c"
+      },
+      "generated_driver.f90": {
+        "bytes": 32053,
+        "sha256": "60fb8702058d3be67c6a53cb334bfab3128d69a8bfd92b26307a5055f0074d1d"
+      },
+      "compiler.txt": {
+        "bytes": 254,
+        "sha256": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222"
+      },
+      "preregistered_status.json": {
+        "bytes": 2211,
+        "sha256": "d7963f54ba75d630883d5c0f63f12eebf1ab7146f58a2f8f701334f8aaa96a77"
+      }
+    },
+    "compiled_dependencies": 160,
+    "scientific_stdout": "FGC31_ACTIVE_DRAINAGE_PRODUCTION_O0=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_O2=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_O0_O2_EXACT_IDENTITY=PASS\nFGC31_ACTIVE_DRAINAGE_ACCEPTED_SUBSTEPS=2\nFGC31_ACTIVE_DRAINAGE_RETRIES=3\nFGC31_ACTIVE_DRAINAGE_FACE_FD_ERROR=   2.711697E-05\nFGC31_ACTIVE_DRAINAGE_HEAD_FD_MAX_ERROR=   2.711697E-05\nFGC31_ACTIVE_DRAINAGE_MULTI_SUBSTEP=PASS\nFGC31_ACTIVE_DRAINAGE_COVERAGE_PROVENANCE=PASS\nFGC31_ACTIVE_DRAINAGE_TANGENT_PHYSICAL_IDENTITY=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_FD=PASS\nFGC31_ACTIVE_DRAINAGE_NO_EXTRA_NONLINEAR_SOLVE=PASS\nFGC31_ACTIVE_DRAINAGE_ENDPOINT_AUTHORITATIVE=PASS\nFGC31_CURRENT_HEAD_PROFILE_STATUS=101\nFGC31_CURRENT_HEAD_PROFILE_PRETRANSACTION_REJECTION=PASS\nFGC31_CURRENT_HEAD_PROFILE_ORIGIN_IMMUTABILITY=PASS\nFGC_FIXED_GWL_CASE=  1  1   1.292289625856700E-02  -3.000000000000000E-01   6.000000000000000E-05  -5.523457248007397E-05  -4.765427519926035E-06   6.776263578034403E-21\nFGC_FIXED_GWL_CASE=  1  2   1.293289625856700E-02  -3.000000000000000E-01   6.000000000000000E-05  -5.580748735894531E-05  -4.192512641054691E-06   6.776263578034403E-21\nFGC_FIXED_GWL_CASE=  1  3   1.294289625856700E-02  -3.000000000000000E-01   6.000000000000000E-05  -5.637995357870679E-05  -3.620046421293210E-06   6.776263578034403E-21\nFGC_FIXED_GWL_BOTTOM_NATIVE_SLOPE_PER_METRE= 1  -5.726905493164124E+00\nFGC_FIXED_GWL_CASE=  2  1   1.292289625856700E-02  -1.500000000000000E+00   3.000000000000000E-05  -2.541554138082766E-05  -4.584458619172338E-06   0.000000000000000E+00\nFGC_FIXED_GWL_CASE=  2  2   1.293289625856700E-02  -1.500000000000000E+00   3.000000000000000E-05  -2.598831468028415E-05  -4.011685319715852E-06   0.000000000000000E+00\nFGC_FIXED_GWL_CASE=  2  3   1.294289625856700E-02  -1.500000000000000E+00   3.000000000000000E-05  -2.656063902109260E-05  -3.439360978907402E-06   0.000000000000000E+00\nFGC_FIXED_GWL_BOTTOM_NATIVE_SLOPE_PER_METRE= 2  -5.725488201324679E+00\nFGC_FIXED_GWL_HEAD_SIX_PHYSICAL_TRIALS=PASS\nFGC_FIXED_GWL_HEAD_COMPONENT_MASS=PASS\nFGC_FIXED_GWL_HEAD_DRAINAGE_RESPONSE_SEPARATION=PASS\nFGC_FIXED_GWL_HEAD_ORIGIN_IMMUTABILITY=PASS\nF-GC31 ACTIVE DRAINAGE PRODUCTION TANGENT GATE PASS\n",
+    "maximum_reported_mass_residual_cm": 6.776263578034403e-21,
+    "maximum_independently_reconstructed_budget_residual_cm": 6.776263578034403e-21,
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "archive_verified_members": 6,
+    "current_dependency_identities_verified": 160,
+    "synthetic_route_contract_checks": 13
+  },
+  "interpretation": "Head forcing and actual drainage can coexist in this component envelope when reported GWL is held fixed. Different held GWL changes D; head perturbation changes separate bottom exchange but not D. Numerical mass closure does not establish an evolving phreatic state, actual field mapping, analytic drainage response or production coupling admission.",
+  "proposed_shared_contract": {
+    "path": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+    "status": "PROPOSED_PENDING_RT_HY_RESPONSE_REVIEW_AND_F_GC_APPLICATION_ADMISSION",
+    "configuration": "Distinguish held carrier, admitted projected qbot, and proposed projected lagged head profile explicitly",
+    "response": "Project from accepted substep origin, existing laws unchanged and lagged within Newton; compose complete head-control drainage direction along accepted trajectory",
+    "branch_limit": "Qualified smooth branches and fixed accepted duration sequence only; no fabricated zero for excluded branch or missing coverage",
+    "storage": "Native HEAD_STATE_CAPACITANCE is not an additional physical drainage donor; independent MODFLOW route requires actual physical storage/path authority",
+    "implementation_surface": [
+      "src/solver/mod_b110_smooth_freatic_projection.f90",
+      "src/runtime/mod_fmr_drainage_qbot_directional_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90"
+    ],
+    "held_fixed": [
+      "Existing qbot admission",
+      "Drainage laws/distribution",
+      "Lower-face signs and hard mass",
+      "Retry/commit semantics",
+      "Other active physics owners",
+      "Production NONE guard"
+    ],
+    "next_owner_gate": "Review explicit profile and complete head direction, then selective RT/HY implementation and component/affected F-KT preservation. Joint mixed-path live MODFLOW budgets, accepted receipts and restart remain separate application gates."
+  },
+  "preservation": "No production/reference/workflow/assets/testbank or incumbent test changes versus 767503df; new standalone qualification wrapper/probe and evidence only.",
+  "carrier_actions": {
+    "pr486": "OPEN_UNCHANGED",
+    "pr528": "OPEN_UNCHANGED",
+    "hupsel_rerun": false,
+    "new_actions": 0,
+    "verified_pr_states": [
+      {
+        "number": 486,
+        "state": "open",
+        "head": "2f919cb095c0b581664d8c261fb10586670caa45"
+      },
+      {
+        "number": 528,
+        "state": "open",
+        "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda"
+      }
+    ]
+  },
+  "dependency_surface": "Archived exact160 compile paths plus original runner/driver, current probe/wrapper, augmentation helper and governing component/profile contracts; future reuse requires relevant delta reconciliation.",
+  "last_reconciled_upstream": "9932c71581e468b311595f7c224f39b7c6cf2ab8",
+  "overlap_reconciliation": {
+    "owner": "MC-IRR01 PR1208 admission",
+    "delta": "Eight paths: new daily-rain diagnostic/evidence plus irrigation records, shared registry and PROJECT-CONTROL",
+    "scientific_dependency_overlap": "NONE; no production, existing test, augmented compile dependency or governing drainage contract changes",
+    "resolution": "Retain both appended PROJECT-CONTROL sections and both registry entries. All irrigation-owned admitted postimages retained; rerun archive160 dependency and source/docs checks after reconciliation.",
+    "no_current_source_requalification_waiver": "Reuse only exact unchanged tested driver/probe, compile helper and160 source/support postimages. New irrigation runner is outside the invoked source envelope."
+  }
+}

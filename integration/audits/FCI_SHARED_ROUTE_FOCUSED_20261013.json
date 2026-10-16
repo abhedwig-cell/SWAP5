@@ -1,0 +1,113 @@
+{
+  "scope": "Fresh focused SHARED and SEPARATE routing, actual negatives, partial checkpoint; full F-CI RUNNING",
+  "science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "equivalent": true,
+  "root_science_sha256": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+  "sensor_science_sha256": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e",
+  "archive": "integration/audits/evidence/FCI_SHARED_ROUTE_FOCUSED_20261013.tar.gz.b64",
+  "decoded_sha256": "7d727b3c89876ce03e9d962bb36914c92fdb11112a7b0970e180312098e491a8",
+  "decoded_bytes": 12789,
+  "members": {
+    "CONTROL.json": {
+      "bytes": 3960,
+      "sha256": "6215e96fc3ad0b09d8694634bf92fe9d51388668f95c14090a8ed8ea150fb344"
+    },
+    "HOST_OVERLAP.json": {
+      "bytes": 503,
+      "sha256": "9efbf2c4557c0feb53c3b0c047ef9e9492bcd347fb8dd0b1061d8a58281b40ee"
+    },
+    "NON_ALLOCATION_PRESERVATION.json": {
+      "bytes": 477,
+      "sha256": "e5292cb1f48f249e0d814b9115149623e7520635ffc2f3245642146c1cbc7959"
+    },
+    "SOURCE_IDENTITY_NEGATIVES.json": {
+      "bytes": 782,
+      "sha256": "67e1a4d89f72f3daa8d157ff4ff96a6320f2b11d67cafdd2dc28d8ecca066883"
+    },
+    "TOOLCHAIN.json": {
+      "bytes": 593,
+      "sha256": "108083652f20019b4c648a6a82ae1aa60b2948897a4fe003c8025a0ceed8eb45"
+    },
+    "compiler-failure-SEPARATE.stderr": {
+      "bytes": 174,
+      "sha256": "b413628d4c0daa318fcc5ba7f0d448ecdbd490c435170f17d56cc4ee74cf6190"
+    },
+    "compiler-failure-SEPARATE.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "compiler-failure-SHARED.stderr": {
+      "bytes": 180,
+      "sha256": "f7d0c51a91d3bb9853e6cfe390f64ddb35fc40876f55436ebf170a9c65fb55e4"
+    },
+    "compiler-failure-SHARED.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs.stdout": {
+      "bytes": 36,
+      "sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
+    },
+    "focused-separate.stderr": {
+      "bytes": 750,
+      "sha256": "b3895ad4d68845aeee2a005330c63fc93ad3cfaf09dd9b10d31b8d680288058f"
+    },
+    "focused-separate.stdout": {
+      "bytes": 3364,
+      "sha256": "d8706abe1c4dd8ff6a0990540510a3440ccdcec4fe8a680f08f304cee6d02625"
+    },
+    "focused-shared.stderr": {
+      "bytes": 684,
+      "sha256": "644dfe3224c595b4dd82e7988425f09fe02db76ca35392ba5764207c1b0b051f"
+    },
+    "focused-shared.stdout": {
+      "bytes": 3204,
+      "sha256": "bb6000066f0f7ffc7ba0ae765f2f87704ba7437d8d14c8a034c1177e457879a2"
+    },
+    "invalid-mode.stderr": {
+      "bytes": 48,
+      "sha256": "7b501126615919747553503bf53e1b8429e15126d88e28840eb7e5bd20b7c5c9"
+    },
+    "invalid-mode.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mkdocs.stderr": {
+      "bytes": 60601,
+      "sha256": "4847cd8618e32a41fab8ff7eb4a7225b9b34960d441a05e2e54c7fd50d47eedb"
+    },
+    "mkdocs.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "runner-drift.stderr": {
+      "bytes": 75,
+      "sha256": "81e6027d135358305b5df63756656c452751c9f7e810b8de63d5a2cce681fc33"
+    },
+    "runner-drift.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "selector-drift.stderr": {
+      "bytes": 77,
+      "sha256": "42bbcc4c1b30ee6f77326a93e426ccb1b8eb7264e1a1fe5c55ad880c75917b7a"
+    },
+    "selector-drift.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "tooling.stderr": {
+      "bytes": 115,
+      "sha256": "930ce329e3b6240d3d4660d34058440c64feb283aa97790e3b8076351e65b819"
+    },
+    "tooling.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "timing_caveat": "Shared host with competing backend-owner qualification; no exclusive/portable or whole-F-CI speed claim."
+}

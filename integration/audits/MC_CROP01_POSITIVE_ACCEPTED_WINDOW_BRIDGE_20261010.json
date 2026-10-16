@@ -1,0 +1,31 @@
+{
+  "workstream": "MC-CROP01",
+  "baseline": "ae75bcf7ca3bf442122ff53f785ccbe480daf415",
+  "scope": "Positive combined existing FWO38 accepted physical interval certificate and independently owner-certified real B110 soil at t=101, local weather source/day, producing a ready read-only crop event proposal. Does NOT commit this composed proposal or attest upstream weather origin.",
+  "files": [
+    "tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py",
+    "tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "expected": [
+    "physical accepted interval lineage 38001 from t=100 to t=101, final revision=1",
+    "trusted reconstructed certified B110 soil on lineage 38001 revision 1 t=101",
+    "local weather source 91 epoch 4 day 101 TAV=12",
+    "positive weather-to-event composition returns ready FWO38 event forcing",
+    "existing FKT lifecycle atomic accept/restart and negative cases preserved"
+  ],
+  "limitations": [
+    "source IDs self-declared, not trusted meteorological producer",
+    "positive composed event only ready, not newly committed",
+    "trusted B110 snapshot in test reconstructed from controlled fixture; not same actual physical state as underlying accepted FWO34 interval",
+    "no full source-true crop-lifecycle scientific admission"
+  ],
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false
+  },
+  "next": "Run exact-head true-transitive FWO38 owner O0/O2 gate and FCI, correct build/acceptance problems without relaxing contract."
+}

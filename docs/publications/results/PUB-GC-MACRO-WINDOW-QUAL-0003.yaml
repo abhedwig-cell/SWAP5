@@ -1,0 +1,75 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0003
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_ENVELOPE_QUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  result: PASS
+
+chronology:
+  native_time_0002_result_commit: ec36883372c0870319ade7574e206459671a23bc
+  refinement_decision_commit: f55b87322a04977b342e00057b3bd47375580233
+  refinement_decision_blob: 9e74a021185befcbcd89b98bb26228777b0d5ea0
+  high_count_spec_commit: e6cfc6f23e169e6941c3bae405f2ac92c71cc392
+  high_count_spec_blob: b23448e53365a7cae2239b7519439169963d476c
+  frozen_manifest_commit: 0f896ab1fb41af8fe8bd8971fe2fc5873dc07748
+  frozen_manifest_blob: 575211b3dcc1e1e443e36cffb044f4d50589338d
+  frozen_before_execution: true
+
+authority:
+  research_head: 2189109de15df92d6712b5a3f5b27c1a922edd42
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  macro_module_unchanged_from_QUAL_0002: true
+  test_blob: a5af0b7b653e512ef36f44e43b536a3c26153f85
+  runner_blob: 1338b06f1c085812a57f01145660b634ce19fd7d
+  workflow_blob: 67c44aa3fff3ca8386682fdb89e3908769270e2c
+
+execution:
+  github_actions_run: 35292747628
+  github_actions_job: 105438904261
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 454868e0bd6ae5576212ded5bcd9866cab34196c98b3334b2b0fb98d7fcf73f4
+  artifact_id: 10526527496
+  artifact_digest: sha256:21ef3f7f6ad109c35a12664abc2b239971020f7d1a39ea31dbedbcdf2b90114e
+
+qualification:
+  legacy_Q0_through_Q8: PASS
+  Q9A_64_contributions:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 5.82076596124248002e-13
+  Q9B_128_contributions:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 6.18456403710804237e-13
+  Q9C_128_contributions_shifted_10000_day:
+    result: PASS
+    max_abs_nominal_actual_dt_difference_day: 1.52795110548373247e-12
+
+invalid_predecessor_attempt:
+  github_actions_run: 35292701637
+  github_actions_job: 105438761445
+  research_head: 80c4d3f6ab3aec92c6486683292caf059b3e23cb
+  classification: INVALID_QUALIFICATION_RUNNER_BASE
+  scientific_execution_reached: false
+  reason: copied runner still diffed against pre-QUAL-0002 base and rejected the already-qualified prior workflow as an out-of-scope mutation
+  permitted_repair: bind runner BASE to 2fad7bb01f7d7d9b55dfca752efd02c502548389
+  scientific_fixture_or_criterion_changed: false
+
+interpretation:
+  admitted:
+    - unchanged research macro response is qualified for 64 and 128 native contributions under the frozen envelope
+    - prior Q0-Q8 invariants remain preserved
+    - high-count temporal closure remains valid after +10000 day absolute-time translation
+  nonclaims:
+    - no H2 or H3 inference
+    - no native timestep policy
+    - no production admission
+    - no universal SWAP timestep recommendation
+
+next_permitted_action:
+  - preregister PUB-GC-NATIVE-TIME-0003
+  - retain the five cases and four adequacy tolerances unchanged
+  - use N0 through N5 with N4-vs-N5 as the fine-level guard
+  - accept the mechanical outcome without retuning

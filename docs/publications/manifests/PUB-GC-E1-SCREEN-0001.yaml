@@ -1,0 +1,143 @@
+experiment:
+  experiment_id: PUB-GC-E1-SCREEN-0001
+  run_family_id: PUB-GC-E1
+  title: Real-SWAP transient history-sensitivity screening before primary E1 freeze
+  evidence_class: PROSPECTIVE_SUPPORTING
+  screening_only: true
+  eligible_for_primary_h1_inference: false
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  thesis_synthesis_relevance: [TS3]
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  hypothesis_declared_before_run: true
+  design_declared_before_run: true
+  scientific_contract_commit: f49182c940d2aa161dd2f1ab3beb0344fa547fcf
+  origin_harness_specification_commit: 2d0a9ea26dbb6048e60e67dcf6882a1b03664d61
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  origin_harness_qualified_head: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  qualified_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  manifest_commit: RESOLVE_FROM_GIT_HISTORY_AT_RUN_TIME
+  screening_code_commit: FREEZE_BEFORE_EXECUTION
+  created_utc: 2026-09-17T23:03:00Z
+
+question:
+  hypothesis_id: H1
+  screening_question: >
+    Within a predeclared bounded transient grid, which admitted prescribed-head
+    stress regime produces a measurable history-contamination signal while
+    preserving real-SWAP completion, finite whole-window exchange, mass
+    accounting and the qualified origin-policy semantics?
+  primary_claim_if_supported: null
+  null_or_falsifying_result: >
+    None for H1. A screen with no admitted case showing a nonzero
+    history-contamination signal is retained as screening evidence and may
+    motivate a broader separately preregistered screen or a narrowed H1. It
+    does not by itself falsify or establish H1.
+
+system:
+  repository: abhedwig-cell/SWAP5
+  research_base_commit: 14ee1be3c221c973973a3fb3dcb450ff40d3f96a
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  capability_authorities:
+    - PUB-GC-E1-HARNESS-QUAL-0001
+    - PUB-GC-GW-A-QUAL-0001
+    - F-VQ26@9b967d033be7c95690de621b2cb1768ba9224c7f
+  compiler: gfortran-on-github-hosted-ubuntu
+  build_mode: O2
+  platform: github-hosted-ubuntu-24.04
+
+case:
+  case_id: PUB-GC-E1-SCREEN-UNIFORM-MVG-V1
+  initial_pressure_head_cm: -75.0
+  top_forcing: stationary_reference_flux_at_initial_head
+  prescribed_head_a_cm: -75.0
+  candidate_b_heads_cm: [-90.0, -82.5, -70.0, -60.0]
+  coupling_window_days: [0.0001, 0.001, 0.005, 0.02, 0.05]
+  soil_hydraulics: B1.10 default MVG fixture used by the qualified E1 harness
+  bottom_mode: 5
+  root_extraction_active: false
+  macropore_active: false
+  snow_active: false
+  drainage_response_active: false
+
+method:
+  same_origin_policy: GC-ORIGIN-SAME
+  diagnostic_policy: GC-ORIGIN-HISTORY-DIAG
+  sequence_per_case:
+    - A_from_accepted_origin
+    - B_from_same_accepted_origin
+    - A_from_synthetic_B_endpoint_at_nominal_t0
+  temporal_acceptance:
+    route: TX_TEMPORAL_MODEL_CERTIFICATE
+    continuation_layout: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+    qualification_head_budget_cm: 100.0
+    note: technical screening budget only; not a primary accuracy tolerance
+  comparator: same prescribed A head from accepted origin versus synthetic B-endpoint origin
+  numerical_reference: NOT_REQUIRED_FOR_SCREENING_CASE_SELECTION
+
+outcomes:
+  screening_metrics:
+    - admitted_A_same
+    - admitted_B_same
+    - admitted_A_history
+    - whole_window_exchange_A_same
+    - whole_window_exchange_B_same
+    - whole_window_exchange_A_history
+    - abs_delta_Q_A_history_minus_same
+    - max_abs_endpoint_head_delta_A_history_minus_same
+    - max_abs_endpoint_water_content_delta_A_history_minus_same
+    - mass_residual_each_admitted_trial
+    - retries_each_trial
+  failure_metrics:
+    - admission_or_solver_failure
+    - unavailable_temporal_certificate
+    - mass_rejection
+    - unavailable_or_nonfinite_whole_window_exchange
+
+analysis:
+  predeclared_transform: none
+  aggregation_rule: one deterministic row per full Cartesian product of B head and window duration
+  repeat_count: 1
+  inclusion_rule: >
+    A row is eligible for stress-regime selection only if all three trials
+    complete, expose finite whole-window exchange, expose complete finite mass
+    accounting, and the B endpoint differs physically from the accepted origin.
+  selection_rule: >
+    Among eligible rows, select the row with the largest absolute
+    whole-window exchange difference |Q_A_history-Q_A_same|. Break an exact
+    tie by the larger maximum absolute endpoint pressure-head difference, then
+    by shorter coupling-window duration, then by candidate_b_heads_cm numeric
+    order. Selection is for later primary-case freezing only.
+  exclusion_rule: no failed row is deleted; all grid rows and failure reasons are preserved
+  stopping_rule: execute exactly the 4 x 5 predeclared grid once; do not add grid points after inspecting this screen
+
+execution:
+  branch: research/pub-gc-e1-screening
+  workflow_trigger: workflow_dispatch_only
+  workflow_path: .github/workflows/pub-gc-e1-screening.yml
+  expected_scope:
+    - research-only screening executable
+    - screening runner
+    - workflow
+  forbidden_scope:
+    - src/**
+    - changes to qualified origin-harness bytes
+    - changes to qualified GW-A bytes
+    - production commit or trusted state reconstruction
+  code_head_lock: FREEZE_BEFORE_EXECUTION
+
+artifacts:
+  raw_output: artifacts/PUB-GC-E1-SCREEN-0001/screening.log
+  telemetry: artifacts/PUB-GC-E1-SCREEN-0001/screening.tsv
+  logs: artifacts/PUB-GC-E1-SCREEN-0001/screening.log
+  derived_table: null
+  candidate_figure: null
+
+result:
+  status: NOT_RUN
+  conclusion: null
+  deviations_from_plan: null

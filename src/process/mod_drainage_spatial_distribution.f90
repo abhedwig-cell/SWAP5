@@ -57,21 +57,6 @@ contains
     type(drainage_node_transfer_t), intent(out) :: node_transfer
     type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
 
-    diagnostics = drainage_distribution_diagnostics_t()
-    if (.not. ieee_is_finite(scalar_transfer) .or. scalar_transfer < 0.0_real64) then
-      diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
-      return
-    end if
-    call distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
-  end subroutine distribute_single_level_positive_divdra
-
-  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
-    type(drainage_distribution_parameters_t), intent(in) :: parameters
-    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
-    real(real64), intent(in) :: scalar_transfer
-    type(drainage_node_transfer_t), intent(out) :: node_transfer
-    type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
-
     real(real64), allocatable :: khor(:), kver(:)
     real(real64) :: wlev, dz_top_sat, kd_hor, kd_ver, saturated_depth
     real(real64) :: khor_avg, kver_avg, fac_aniso, dmax, discharge_bottom
@@ -90,18 +75,18 @@ contains
     allocate(node_transfer%soil_to_drain_rate(n))
     node_transfer%soil_to_drain_rate = 0.0_real64
 
-    if (.not. ieee_is_finite(scalar_transfer)) then
+    if (.not. ieee_is_finite(scalar_transfer) .or. scalar_transfer < 0.0_real64) then
       diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
       return
     end if
 
-    if (scalar_transfer == 0.0_real64) then
+    if (scalar_transfer <= 0.0_real64) then
       diagnostics%evaluated = .true.
       diagnostics%zero_transfer = .true.
       return
     end if
 
-    if (abs(scalar_transfer) <= LEGACY_ACTIVE_MAGNITUDE) then
+    if (scalar_transfer <= LEGACY_ACTIVE_MAGNITUDE) then
       diagnostics%status = DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE
       return
     end if
@@ -213,7 +198,7 @@ contains
     diagnostics%profile_anisotropy_factor = fac_aniso
     diagnostics%discharge_layer_bottom_depth = discharge_bottom
     diagnostics%discharge_transmissivity = kd_drain
-  end subroutine distribute_single_level_signed_divdra
+  end subroutine distribute_single_level_positive_divdra
 
   logical function valid_parameters(parameters) result(valid)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
@@ -245,5 +230,28 @@ contains
     end do
     valid = .true.
   end function valid_parameters
+
+  ! SWDIVDINF=0 uses exactly the admitted positive conductivity weights for
+  ! either direction. This adapter changes only orientation, never the law.
+  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+    type(drainage_distribution_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    real(real64), intent(in) :: scalar_transfer
+    type(drainage_node_transfer_t), intent(out) :: node_transfer
+    type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
+
+    if (.not. ieee_is_finite(scalar_transfer)) then
+      diagnostics = drainage_distribution_diagnostics_t()
+      diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
+      return
+    end if
+    call distribute_single_level_positive_divdra(parameters, hydraulic_view, abs(scalar_transfer), node_transfer, diagnostics)
+    if (diagnostics%status /= DRAIN_DIST_OK) return
+    if (scalar_transfer < 0.0_real64) then
+      node_transfer%soil_to_drain_rate = -node_transfer%soil_to_drain_rate
+      diagnostics%raw_partition_sum = -diagnostics%raw_partition_sum
+      diagnostics%closure_correction = -diagnostics%closure_correction
+    end if
+  end subroutine distribute_single_level_signed_divdra
 
 end module mod_drainage_spatial_distribution

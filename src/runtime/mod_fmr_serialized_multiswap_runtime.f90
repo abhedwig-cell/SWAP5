@@ -882,8 +882,11 @@ contains
            kernel_diag, did_commit, commit_receipt, receipt_status, commit_status)
     else
       receipt_status = FMR_COMMIT_RECEIPT_OK
-      call fmr_commit_candidate(transaction_control, committed_state, candidate, kernel_diag, &
-           did_commit, commit_status)
+      ! Commit through the same model-bound F-KT executor that ran the trial.
+      ! The orchestration-only executor has no model and cannot validate a
+      ! certified physical parameter identity. The backend owns this check;
+      ! lineage, time, revision, mass and candidate guards remain in F-KT.
+      call backend%commit_trial_candidate(committed_state, candidate, kernel_diag, did_commit, commit_status)
     end if
     output%commit_status = commit_status
     if (.not. did_commit) then

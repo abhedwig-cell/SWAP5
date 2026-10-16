@@ -1,0 +1,31 @@
+{
+  "work_unit": "F-CI-SHARED-IRR01-ROUTE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "admission_pr": 1221,
+  "admission_commit": "fa24a8a1aa387d35775fe45530c5dc2c4ff9f49b",
+  "qualified_science_head": "f18bd1837795f239910bd14b332cf779a40bea08",
+  "qualified_final_pr_head": "3122f94256054922f22629fcbb6255cd8c0e0fa1",
+  "admission_authority": "Delegated central SWAP5 regie; all required actual local owner and moving preservation gates PASS",
+  "post_merge_dependency_verification": "PASS",
+  "unchanged_qualified_blobs_and_trees": {
+    "src": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+    "reference": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "tests/f-app07": "9e1224f9ee9fdd219f8ba91ae846f55ef71702cb",
+    "tests/mc-irr01": "abf7c6e57ae973e7159b95b358fcbddeac21a719",
+    "tests/fmr/mod_fmr04_fixed_top_provider.f90": "942c56e3ba2b1739506e1d5b0ac889e6fd163ea7",
+    "tools/performance": "779ef6587076eb31eea3fb2a1a433c3458f01bc7",
+    "tests/performance": "5f86f82a15006e216093d66a259e8b7efe36adda",
+    "tools/fci/resume_group.py": "fb1c04d3ffd3dc45063662ee7e6f184e3a7fc5f7",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "ee110f13018f979f67ce7a2195809e6462438c98"
+  },
+  "full_fci": "PASS resume OFF; terminal marker and actual default SHARED marker present",
+  "full_fci_wall_seconds": 10328.762760195,
+  "evidence": "integration/audits/FCI_SHARED_ROUTE_FINAL_20261013.json",
+  "original_evidence_unchanged": true,
+  "science_coverage": "PRESERVED; same drivers, assertions and other owner routes; no model capability addition",
+  "merge_review": "Live expected-head and unchanged base verified; mergeable true; reviews and threads empty; no new Actions",
+  "performance_authority": "Original 3 alternating A/B rounds: 354/712 compilations avoided and mean318.562 seconds saved per root/sensor pair",
+  "whole_fci_speed_ratio": "UNKNOWN",
+  "richards_scope": "No demonstrated regression versus 11 October in measured fixtures; September strict comparison FAIL; legacy matched runtime UNKNOWN",
+  "admission_docs_source_and_strict": "PASS; no executable or scientific change in receipt"
+}

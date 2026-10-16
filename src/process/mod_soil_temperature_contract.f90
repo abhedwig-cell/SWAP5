@@ -17,10 +17,21 @@ module mod_soil_temperature_contract
   integer, parameter, public :: SOIL_TEMP_INVALID_RESTART = 9
   integer, parameter, public :: SOIL_TEMP_INVALID_NODE = 10
 
+  integer, parameter, public :: SOIL_TEMP_SOLUTION_NUMERIC = 1
+  integer, parameter, public :: SOIL_TEMP_SOLUTION_ANALYTIC = 2
+  integer, parameter, public :: SOIL_TEMP_TOP_AIR_TEMPERATURE = 1
+  integer, parameter, public :: SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE = 2
+  integer, parameter, public :: SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX = 3
+  integer, parameter, public :: SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION = 4
+  integer, parameter, public :: SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX = 1
+  integer, parameter, public :: SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE = 2
+
   type, public :: soil_temperature_parameters_t
     integer :: active_nodes = 0
+    integer :: solution_mode = SOIL_TEMP_SOLUTION_NUMERIC
     real(real64), allocatable :: dz_cm(:)
     real(real64), allocatable :: distance_above_cm(:)
+    real(real64), allocatable :: node_depth_cm(:)
     real(real64), allocatable :: theta_sat(:)
     real(real64), allocatable :: f_quartz(:)
     real(real64), allocatable :: f_clay(:)
@@ -29,6 +40,10 @@ module mod_soil_temperature_contract
     real(real64), allocatable :: fk_qco_dry(:)
     real(real64), allocatable :: fkk_qco_wet(:)
     real(real64), allocatable :: fk_qco_wet(:)
+    real(real64) :: analytic_mean_temperature_c = 0.0_real64
+    real(real64) :: analytic_amplitude_c = 0.0_real64
+    real(real64) :: analytic_reference_day = 0.0_real64
+    real(real64) :: analytic_damping_depth_cm = 0.0_real64
     logical :: initialized = .false.
   contains
     procedure, public :: node_count => soil_temperature_parameter_node_count
@@ -40,7 +55,14 @@ module mod_soil_temperature_contract
   end type soil_temperature_numerical_config_t
 
   type, public :: soil_temperature_forcing_t
+    integer :: top_boundary_mode = SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE
+    integer :: bottom_boundary_mode = SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
     real(real64) :: prescribed_surface_temperature_c = 0.0_real64
+    real(real64) :: prescribed_top_heat_flux_j_cm2_day = 0.0_real64
+    real(real64) :: prescribed_bottom_temperature_c = 0.0_real64
+    real(real64) :: air_temperature_c = 0.0_real64
+    real(real64) :: snow_water_storage_cm = 0.0_real64
+    integer :: day_number = 1
   end type soil_temperature_forcing_t
 
   type, extends(transaction_state_t), public :: soil_temperature_state_t
@@ -81,6 +103,7 @@ module mod_soil_temperature_contract
     logical :: produced = .false.
     real(real64) :: surface_temperature_c = 0.0_real64
     real(real64) :: top_heat_flux_into_soil_j_cm2_day = 0.0_real64
+    real(real64) :: bottom_heat_flux_into_soil_j_cm2_day = 0.0_real64
     real(real64) :: sensible_storage_change_j_cm2 = 0.0_real64
     real(real64) :: boundary_energy_into_soil_j_cm2 = 0.0_real64
     real(real64) :: energy_residual_j_cm2 = 0.0_real64
@@ -95,6 +118,11 @@ module mod_soil_temperature_contract
     integer :: tridiagonal_solves = 0
     logical :: committed_state_mutated = .false.
     logical :: prescribed_surface_temperature_used = .false.
+    logical :: prescribed_top_heat_flux_used = .false.
+    logical :: surface_temperature_flux_correction_used = .false.
+    logical :: prescribed_bottom_temperature_used = .false.
+    logical :: analytical_profile_used = .false.
+    logical :: snow_thermal_resistance_used = .false.
     logical :: zero_bottom_heat_flux_used = .false.
     logical :: frost_active = .false.
     logical :: snow_active = .false.
@@ -117,7 +145,7 @@ contains
     n = self%active_nodes
   end function soil_temperature_parameter_node_count
 
-  logical function soil_temperature_parameters_ready(self) result(ready)
+  pure logical function soil_temperature_parameters_ready(self) result(ready)
     class(soil_temperature_parameters_t), intent(in) :: self
     integer :: n
     n = self%active_nodes
@@ -132,6 +160,24 @@ contains
             size(self%f_quartz) == n .and. size(self%f_clay) == n .and. size(self%f_organic) == n .and. &
             size(self%fkk_qco_dry) == n .and. size(self%fk_qco_dry) == n .and. &
             size(self%fkk_qco_wet) == n .and. size(self%fk_qco_wet) == n
+    if (.not. ready) return
+    ready = allocated(self%node_depth_cm) .and. size(self%node_depth_cm) == n
+    if (.not. ready) return
+    ready = self%solution_mode == SOIL_TEMP_SOLUTION_NUMERIC .or. &
+            self%solution_mode == SOIL_TEMP_SOLUTION_ANALYTIC
+    if (.not. ready) return
+    if (self%solution_mode == SOIL_TEMP_SOLUTION_ANALYTIC) then
+      ready = ieee_is_finite(self%analytic_mean_temperature_c) .and. &
+              ieee_is_finite(self%analytic_amplitude_c) .and. &
+              ieee_is_finite(self%analytic_reference_day) .and. &
+              ieee_is_finite(self%analytic_damping_depth_cm) .and. &
+              self%analytic_mean_temperature_c >= -10.0_real64 .and. &
+              self%analytic_mean_temperature_c <= 30.0_real64 .and. &
+              self%analytic_amplitude_c >= 0.0_real64 .and. self%analytic_amplitude_c <= 50.0_real64 .and. &
+              self%analytic_reference_day >= 0.0_real64 .and. self%analytic_reference_day <= 366.0_real64 .and. &
+              self%analytic_damping_depth_cm >= 1.0_real64 .and. &
+              self%analytic_damping_depth_cm <= 500.0_real64
+    end if
   end function soil_temperature_parameters_ready
 
   subroutine initialize_soil_temperature_state(initial_temperature_c, state, status)

@@ -1,0 +1,31 @@
+{
+  "work_unit": "MC-NUT01-CROP-SUPPLY",
+  "master_pr": 1072,
+  "master_head": "aae2b8d207b13453be45dd1773d39f8eae855831",
+  "master_blob": "8521082fa78fb32a481b6343036529307566a549",
+  "master_sha256": "196aec8e1e06296480b709fb87a030f5e6dc33e3300a874a5faf52e639eec430",
+  "denominator": 243,
+  "dispositions_before": {
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "disposition_delta": 0,
+  "master_branch_modified": false,
+  "global_master_integrity": "NOT_CLAIMED; exact structural recount and row receipt only",
+  "row": {
+    "capability_id": "SW431-NUT-CROP",
+    "prior_row_sha256": "1557ab94ee2b8bfc6ba1ff5fe18001b095b3782369e03b36a22d7a466644f505",
+    "row_hash_encoding": "UTF8 json.dumps(sort_keys=True,separators=(comma,colon))",
+    "unchanged_disposition": "ACTIVE_MIGRATION",
+    "stale_claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange.",
+    "correction": "Canonical PR1231 already supplies mineral owner/transport and PR1232 organic reactions. This successor adds bounded actual Richards -> real WOFOST81 N request -> actual soil supply -> crop apply -> atomic water/soil/crop commit and complete opaque/fresh-process restart. Original unlimited WOFOST81 application remains unchanged; new limited application is explicit.",
+    "bounded_implementation_absence_proven": false,
+    "remaining": "Full default SWCROPSNM application, authentic file/calendar/root forcing, wider soil/environment profiles, harvest/rotation and residue-event return; retain WOFOST81 fixation rather than substituting historical B1.11.",
+    "admission_authority": "Candidate receipt requires this work-unit PR merge and exact canonical source/tree verification."
+  },
+  "predecessor_reactive_receipt": "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json"
+}

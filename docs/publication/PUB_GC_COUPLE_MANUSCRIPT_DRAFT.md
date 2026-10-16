@@ -1,3 +1,5 @@
+> **Internal draft — current submission hold (2026-10-11).** Central F-GC #486 retains CSR-B1 storage partition and CSR-B2 drainage ownership. This historical manuscript and fixed-interface editorial handoff do not discharge those shared physical authorities or authorize a Hupsel rerun, external submission or novelty claim. Release/governance/editorial metadata remain owner gates.
+
 # COUPLE — manuscript draft
 
 ## Title
@@ -1141,3 +1143,8 @@ Current method text should remain reconciled with:
 - `docs/publication/PUB_RC_ACCELERATE_RESEARCH_DESIGN.md`
 - `docs/publication/PUB_RC_ACCELERATE_LITERATURE_REGISTER.md`
 - `docs/publication/PUB_COUPLING_BROADER_PUBLISHABILITY_REVIEW.md`
+
+
+### Preserved historical fixed-interface editorial handoff (2026-10-11)
+
+[The original dated theory handoff](PUB_GC_COUPLE_FIXED_INTERFACE_THEORY_HANDOFF.md) is preserved for the next owner-controlled Methods revision. Its source chronology and conditional novelty wording remain historical. Current physical storage/drainage interpretation and any shared-semantic repair require central F-GC #486; the handoff adds no qualification or production scope.

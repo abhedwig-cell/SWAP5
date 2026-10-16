@@ -1,0 +1,47 @@
+{
+  "schema": "swap431.mc_crop01.historical_tav_exchange_order.v1",
+  "baseline": "2881d134738b13669e7fd61767ef0ab8dcedb274",
+  "scope": "Exact retained SWAP 4.3.1/B1.11 exchange meteorology writer and crop event ordering; NO claim for internal MOD_meteo normal writer",
+  "historical_blobs": {
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/swap.f90": "831a345db0ba9dc4ef2fdfe09e1bbf011b4027a5",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90": "6f587310c7b9e9ba5e79f22d988bddd5feead133"
+  },
+  "observations": [
+    {
+      "file": "swap.f90",
+      "lines": "354-376",
+      "proof": "Main day-start loop calls TimeControl(2), then Meteo(2) if iCaller/=2 or handle_exchange(22) if iCaller==2, then croprotation(2) if swcrop==1."
+    },
+    {
+      "file": "swap.f90",
+      "lines": "682-696",
+      "proof": "DLL external exchange task22 assigns tmn=toswap%tmin; tmx=toswap%tmax; tav=(tmx+tmn)*0.5d0; tavd=(tmx+tav)*0.5d0; temperature in deg C."
+    },
+    {
+      "file": "MOD_cropdevelopment.f90",
+      "lines": "647-652,727-777",
+      "proof": "germination(task=3) imports atmosphere_interface:tav; SWGERM1/2 uses tav in daily temperature sum; default SWGERM0 does not execute germination temperature sum."
+    },
+    {
+      "file": "MOD_cropdevelopment.f90",
+      "lines": "377-449",
+      "proof": "cropemergence checks previous-day prep/sow/germ then initializes and updates daily; preparation and sowing gate germination; no proof that current-day full hydraulic trajectory is accepted before event evaluation."
+    }
+  ],
+  "hard_constraints": [
+    "Never label a caller-declared daily TAV as committed F-KT-accepted weather without owner-issued evidence.",
+    "Never substitute WOFOST daytime_average_temperature for atmosphere_interface:tav; daytime average is semantically distinct.",
+    "Maintain daystart ordering of weather acquisition and crop rotation. A design that requires the accepted END of the SAME day before computing daystart germination is not source-faithful.",
+    "Separate day-start weather record provenance, preceding accepted hydraulic state provenance, and eventual accepted daily crop state publication; no time-travel future acceptance.",
+    "Normal iCaller/=2 route uses MOD_meteo:Meteo(2); its exact writer is not in the checked-in B1.11 retained snapshot and must remain OPEN.",
+    "Uncertified source and abbreviated/different accepted intervals fail closed. Reject/retry semantics must distinguish weather-day record from trial-generated rates."
+  ],
+  "qualification": {
+    "historical_source_identity": "exact recorded Git blob SHA pair",
+    "tested": "source-line audit only",
+    "production_implemented": false,
+    "qualified": false,
+    "canonically_admitted": false
+  },
+  "next": "Recover B1.11 MOD_meteo routine source from official SWAP_4.3.1.zip source archive, reconcile both branches, then implement owner-verified daystart record and preceding accepted snapshot binding without changing F-KT commit protocol or crop event semantics prematurely."
+}

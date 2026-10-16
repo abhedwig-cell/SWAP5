@@ -1,0 +1,112 @@
+{
+  "scope": "READ_ONLY_OBSERVATION_NOT_PILOT_QUALIFICATION",
+  "measurements": {
+    "ab-o0": {
+      "raw_results_sha256": "cd16350eb032c6b71ad0297fd5373759bff7c5239994831db66962c3560d8912",
+      "executed_head": "7d3d99f07be4e2eed9fe742639d32ee9ede2369f",
+      "complete_native_cases": 24,
+      "failed_cases": 0,
+      "complete_single_optimization_ab": true,
+      "full_o0_o2_qualified": false,
+      "admitted": false,
+      "batches": [
+        {
+          "round": 0,
+          "policy": "baseline",
+          "wall_seconds": 945.715175673,
+          "cpu_seconds": 2824.113692
+        },
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 102.2730037070005,
+          "cpu_seconds": 302.496376
+        },
+        {
+          "round": 1,
+          "policy": "candidate",
+          "wall_seconds": 114.19473212699995,
+          "cpu_seconds": 341.43760499999996
+        },
+        {
+          "round": 1,
+          "policy": "baseline",
+          "wall_seconds": 944.7645691779999,
+          "cpu_seconds": 2817.604263
+        }
+      ],
+      "rounds": [
+        {
+          "baseline": {
+            "wall_sum_seconds": 2824.5088137489993,
+            "child_cpu_seconds": 2824.113692
+          },
+          "candidate": {
+            "wall_sum_seconds": 302.5748250159995,
+            "child_cpu_seconds": 302.496376
+          },
+          "native_wall_sum_ratio": 9.334910178332402
+        },
+        {
+          "baseline": {
+            "wall_sum_seconds": 2818.208732051,
+            "child_cpu_seconds": 2817.604263
+          },
+          "candidate": {
+            "wall_sum_seconds": 341.4897948529979,
+            "child_cpu_seconds": 341.43760499999996
+          },
+          "native_wall_sum_ratio": 8.252687999839534
+        }
+      ]
+    },
+    "ab-o2": {
+      "raw_results_sha256": "dcf7e3a9fb761b2bdb1637daaa241f30a3897f5616a1bf9a499ca69aedda38a5",
+      "executed_head": "ba7546f5deeed83813c1999e8cfdcb70e73bc1ed",
+      "complete_native_cases": 24,
+      "failed_cases": 0,
+      "complete_single_optimization_ab": true,
+      "full_o0_o2_qualified": false,
+      "admitted": false,
+      "batches": [],
+      "rounds": [
+        {
+          "baseline": {
+            "wall_sum_seconds": 1149.7140190969994,
+            "child_cpu_seconds": 1149.3718669999998
+          },
+          "candidate": {
+            "wall_sum_seconds": 122.29588660800073,
+            "child_cpu_seconds": 122.0574270000001
+          },
+          "native_wall_sum_ratio": 9.401084950487483
+        },
+        {
+          "baseline": {
+            "wall_sum_seconds": 1146.9031184869991,
+            "child_cpu_seconds": 1146.4596569999999
+          },
+          "candidate": {
+            "wall_sum_seconds": 121.1138800780036,
+            "child_cpu_seconds": 120.92088099999984
+          },
+          "native_wall_sum_ratio": 9.469625758404687
+        }
+      ]
+    }
+  },
+  "pilot_inheritance": "NONE",
+  "ten_x_end_to_end_claim": false,
+  "public_owner_pr": 1226,
+  "public_owner_head": "252af5565f9baca698019fa5f7c06edf797bb470",
+  "admission_effect": "NO_INHERITANCE: completed native A/B is not full owner/PPA/F-CI qualification. Pilot precise source check rejects unapproved extra numerical runtime edits. Preserve draft.",
+  "next_safe_action": "MC-MET01/RT adoption of exact source successor and mandatory preservation on an explicitly reconciled stable numerical boundary. Do not automatically launch a duplicate highest-low-air qualification or alter protected central runner.",
+  "owner_negative_evidence": {
+    "published_owner_head": "252af5565f9baca698019fa5f7c06edf797bb470",
+    "v1_scientific_source": "1d5515057",
+    "guarded_v2_source": "519f7ee34",
+    "finding": "Owner reports actual SIGFPE for an extreme finite indicator ratio in V1 direct contract. Clamp before division is the proposed V2 repair.",
+    "required_followup": "Fresh O0/O2 direct extreme-ratio contract and all original highest V2 candidates, complete scientific output comparison against V1, governed shared successor and applicable preservation. V1 terminal results do not qualify V2.",
+    "scope": "Owner-reported negative evidence; no competing source changed or tests inherited by this pilot."
+  }
+}

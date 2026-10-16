@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MC-DRAIN01-FOUNDATION",
+  "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "branch": "work/swap431-drain-frost-coverage-20261007",
+  "checkpoint_commit": "2a3b88f7abefeeae520f32859ac2b7adb64925f4",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "implemented_capabilities": [
+    "SW431-DRAIN-DIV-SIGNED"
+  ],
+  "scope": "Resume PR1099 signed single-level ordinary DIVDRA SWDIVDINF=0 only. PR1109 multilevel postimage remains branch-only and excluded.",
+  "authority_paths": [
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
+  ],
+  "relevant_paths": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "tests/fmig431/test_swap431_drain_signed_divdra.f90",
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+  ],
+  "dependency_surface": [
+    "src/process/mod_drainage_spatial_distribution.f90",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90",
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/solver/mod_process_hydraulic_view.f90"
+  ],
+  "invariants": [
+    "scalar transfer remains authoritative mass object",
+    "publication occurs only after process success",
+    "preallocated drainage target fails closed",
+    "serialized runtime cleans transient forcing materialization",
+    "no new persistent/restart state",
+    "B19 frost physics is not duplicated or changed"
+  ],
+  "current_test_state": {
+    "execution": "PROCESS_O0_O2_PASS_RUNTIME_O0_DIAGNOSTIC_PASS_FINAL_O0_O2_PENDING",
+    "focused_runner": "tests/fmig431/run_swap431_signed_divdra_runtime.py",
+    "expected_optimizations": [
+      "O0",
+      "O2"
+    ],
+    "observations": [
+      "Original unpublished harness did not call inactive control; repeated allocated requests; incorrect .eqv. precedence and distinct-view assertion repaired.",
+      "Nonfinite signed inputs trapped in incumbent ordered comparison. Additive signed adapters now reject these before calling unchanged positive implementation.",
+      "Unqualified old fixture used a custom top provider unavailable to temporal history and exact full/half identity for evolving states. Uses existing fixed_flux_top_boundary_provider_t and admitted numerical-continuation history/certificate owner.",
+      "Actual temporal history requires known predecessor; uniform gravity equilibrium derivative zero is seeded. Discontinuous signed forcing refines using min timestep 1e-10 day, 24 retries, head budget 1e-6 cm; production defaults unchanged.",
+      "Exact bitwise sum assertion was inconsistent with incumbent floating-point partition. Uses admitted B19 nodal closure 1e-14 and unchanged hard total mass 1e-12 cm.",
+      "Diagnostic retain-step-proposal was rejected by existing certificate compatibility guard; removed without changing production policy.",
+      "Mode2 explicit water balance and mode7 free drainage both execute 24 signed cases; four actual reject/replay/empty-registry restart controls pass in O0 diagnostic."
+    ]
+  },
+  "active_ci_observation": {
+    "status": "NO_CURRENT_HEAD_RUN_STARTED"
+  },
+  "next_action": "Remote persist current postimage through connector because local Git push has no credentials, then execute final O0/O2 selected gates and source-bound admission evidence.",
+  "recovery_point": "work/swap431-drain-frost-coverage-20261007",
+  "blockers": [],
+  "last_reconciled_upstream": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "closure_conditions_frozen_20261016": {
+    "ledger_rows": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "conditions": [
+      "O0/O2 real process and binder drivers: independent reference/positive-path preservation; positive, negative, zero; tiny and nonfinite rejection; sign and nodal closure; preallocated target nonmutation",
+      "O0/O2 actual serialized Richards: signed input/output water amounts, hard 1e-12 cm mass closure, inactive and positive preservation, distinct columns, rejected candidate rollback and clean replay, committed restart into empty registry with exact continuation",
+      "No new state/mass owner, no double booking of nodal redistribution as external water; final accepted nodes only",
+      "Reconcile live canonical and parallel source delta; docs and source-bound evidence valid; safe normal merge of existing PR1099"
+    ],
+    "excluded": [
+      "SW431-DRAIN-DIV-MULTI",
+      "SW431-DRAIN-INF-SPLIT",
+      "SW431-DRAIN-DRAMET3",
+      "frost/low-air",
+      "RossFast/full-FCI blanket execution"
+    ],
+    "authority": "Existing SW431-DRAIN-DIV-SIGNED ledger definition and PR1099 scope. PR1109 is a separate later multilevel candidate, not prerequisite for this row."
+  },
+  "test_selection": {
+    "candidate": "2a3b88f7abefeeae520f32859ac2b7adb64925f4",
+    "process": "small real distribution/binding drivers O0/O2; four production providers",
+    "integration": "24 real signed cases across bottom modes 2/7; four reject/replay/native committed restart controls; two-column isolation; O0+O2 cold closure expected 100 s based on first O0 compile 28 s and native diagnostic 6 s. All original source tolerances retained.",
+    "not_selected": {
+      "full_fci": "No changed solver/runtime/state owner. Targeted actual Richards mass/rollback/restart covers changed sign binding; no blanket new whole-model claim.",
+      "highest_low_air": "NOT_SELECTED_POLICY, frost OFF",
+      "rossfast": "NOT_SELECTED_IMPACT, unchanged implementation and input contract"
+    }
+  },
+  "prior_recovery": "PR1109 record carried forward for retrieval, narrowed explicitly to earlier PR1099. No prior qualified claim exists."
+}

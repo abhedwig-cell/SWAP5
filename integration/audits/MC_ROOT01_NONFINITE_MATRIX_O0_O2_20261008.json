@@ -1,0 +1,21 @@
+{
+  "schema": "swap431.mc_root01.nonfinite_matrix.v1",
+  "work_unit": "MC-ROOT01",
+  "tested_commit": "900638706eb55f484feb05cd9fa88480e8fd8ffb",
+  "exact_source_blobs": {
+    "src/crop/mod_crop_root_extension_supply_limit.f90": "677ca2766e18d47cf908d81c146eacce77977162",
+    "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "7f4503648a4979b200764b94e90a4605e5355410",
+    "tests/fmig431/test_root_invalid_edge_local.f90": "46ed3c982a57da35cd848fc234b9eeec75a26493"
+  },
+  "test": "O0/O2 strict gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+  "cases": "2 nonfinite values (quiet NaN, +infinity) across all 9 supply inputs, plus both oxygen threshold inputs, and degenerate geometry",
+  "observed": {
+    "O0": "ROOT_INVALID_EDGE_MATRIX=PASS",
+    "O2": "ROOT_INVALID_EDGE_MATRIX=PASS",
+    "compiler_warnings": 0
+  },
+  "scope": "Bounded fail-closed component regression. Not integrated SWRD2/3, rollback or restart evidence.",
+  "qualified": false,
+  "canonical_admission": false,
+  "actions_dispatched": 0
+}

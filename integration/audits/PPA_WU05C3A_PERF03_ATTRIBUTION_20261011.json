@@ -1,0 +1,283 @@
+{
+  "head": "b7a8f26277411eed1d2fc34ab68819fa46b02434",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "fixture": {
+    "nodes": 3,
+    "head_cm": -75,
+    "water_content": 0.4,
+    "temperature_K": 293,
+    "ctop": 0.27
+  },
+  "source_sha256": {
+    "src/solver/mod_soil_water_solver_contract.f90": "0fc4d1ba94451697754e3b93a54bf47ae2d6f852301e59ad35f1db36dad08905",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
+    "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+    "src/process/mod_bartholomeus_runtime_input.f90": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+    "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+    "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+    "src/physics/oxygen/mod_bartholomeus_temperature.f90": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+    "src/physics/oxygen/mod_bartholomeus_waterfilm.f90": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+    "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": "566bf63d98deb4b080c4a73ea11f3acc3c7531d6dfb49d4193130fd0dc02ba7b",
+    "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": "489736b45944486921068de06fd3e41d495f090dab29f10a4b1e7582a71536c7",
+    "src/physics/oxygen/mod_bartholomeus_microbial.f90": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+    "src/physics/oxygen/mod_bartholomeus_micro.f90": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+    "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+    "src/physics/oxygen/mod_bartholomeus_macro.f90": "45f20bc8af741bfaff267d3cb0584c67642f56b8351fd0e9a377722c10406443",
+    "src/physics/oxygen/mod_oxygen_scalar_bracket.f90": "8d4e53cfe14a91c34ffa74c7cad55bda83bf3d2abab2b938d61a68cee6a22ade",
+    "src/physics/oxygen/mod_bartholomeus_response.f90": "fb7a5325c46660300de077a41e83b0ac46554e4ac22a0260a7b322e614c48cd6",
+    "src/physics/oxygen/mod_bartholomeus_response_assembly.f90": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+    "src/physics/oxygen/mod_bartholomeus_profile_response.f90": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+    "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+    "src/physics/oxygen/mod_bartholomeus_factor_provider.f90": "da3991936914a41a1bd96dd771494abf8ba981c8535013f371be0e45301d07a0",
+    "tests/performance/benchmark_bartholomeus_perf03_attribution.f90": "b033e77b12d4fcb9427d9c923770ae1296e055e3f591b87d9d851a88cd91c9aa"
+  },
+  "instrumentation": {
+    "original_sha256": "fb7a5325c46660300de077a41e83b0ac46554e4ac22a0260a7b322e614c48cd6",
+    "temporary_sha256": "00f6bd9e40321a98e4903d9ab37c40fc1f8c1f8d5de7f4c7a62606a66c051832",
+    "scope": "One saved counter increment per actual residual callback; temporary diagnostic build only, excluded from timing."
+  },
+  "qualification": {
+    "O0": {
+      "plain": "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\n",
+      "counted": "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_RESIDUAL_COUNT|NODE=1|CALLS=31\nPERF03_RESIDUAL_COUNT|NODE=2|CALLS=31\nPERF03_RESIDUAL_COUNT|NODE=3|CALLS=31\n",
+      "instrumented_plain_identity": true
+    },
+    "O2": {
+      "plain": "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\n",
+      "counted": "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_RESIDUAL_COUNT|NODE=1|CALLS=31\nPERF03_RESIDUAL_COUNT|NODE=2|CALLS=31\nPERF03_RESIDUAL_COUNT|NODE=3|CALLS=31\n",
+      "instrumented_plain_identity": true
+    }
+  },
+  "timing_outputs": [
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  7.2325474600000001E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  3.3109080000000000E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  8.9669671999999991E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  8.3721648600000000E+04|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  6.8816414600000004E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  3.6925240000000002E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  8.8304087999999992E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  7.8423970600000001E+04|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  6.6434148000000001E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  3.3216239999999999E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  8.9837145999999993E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  1.0029865380000000E+05|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  6.9346514200000005E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  3.3796519999999998E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  8.7168289999999997E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  7.8479732999999993E+04|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  7.5272464399999997E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  4.3294279999999998E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  9.4179634000000005E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  8.6932937200000000E+04|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  6.9684619800000000E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  3.3211619999999999E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  8.7705722000000005E+03|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  7.7282127600000007E+04|CHECKSUM=  0.0000000000000000E+00\n",
+    "PERF03_GATE_NEGATIVE_AND_FACTOR_IDENTITY=PASS\nPERF03_SCIENCE|NODE=1|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=2|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_SCIENCE|NODE=3|FILM=  2.1675614226573345E-04|FACTOR=  0.0000000000000000E+00\nPERF03_TIME|STAGE=WATERFILM|NS=  7.9695416400000002E+04|CHECKSUM=  3.2513421339858040E+00\nPERF03_TIME|STAGE=ASSEMBLY|NS=  5.2955100000000004E+02|CHECKSUM=  1.0837807113285454E+00\nPERF03_TIME|STAGE=PROFILE|NS=  1.3075859399999999E+04|CHECKSUM=  0.0000000000000000E+00\nPERF03_TIME|STAGE=FULL|NS=  7.9682045400000003E+04|CHECKSUM=  0.0000000000000000E+00\n"
+  ],
+  "residual_calls_per_node": [
+    [
+      "1",
+      "31"
+    ],
+    [
+      "2",
+      "31"
+    ],
+    [
+      "3",
+      "31"
+    ]
+  ],
+  "timing": {
+    "flags": [
+      "-O3",
+      "-march=native"
+    ],
+    "warmup": 100,
+    "repetitions": 5000,
+    "runs": [
+      {
+        "WATERFILM": 72325.4746,
+        "ASSEMBLY": 331.0908,
+        "PROFILE": 8966.9672,
+        "FULL": 83721.6486
+      },
+      {
+        "WATERFILM": 68816.4146,
+        "ASSEMBLY": 369.2524,
+        "PROFILE": 8830.4088,
+        "FULL": 78423.9706
+      },
+      {
+        "WATERFILM": 66434.148,
+        "ASSEMBLY": 332.1624,
+        "PROFILE": 8983.7146,
+        "FULL": 100298.6538
+      },
+      {
+        "WATERFILM": 69346.5142,
+        "ASSEMBLY": 337.9652,
+        "PROFILE": 8716.829,
+        "FULL": 78479.733
+      },
+      {
+        "WATERFILM": 75272.4644,
+        "ASSEMBLY": 432.9428,
+        "PROFILE": 9417.9634,
+        "FULL": 86932.9372
+      },
+      {
+        "WATERFILM": 69684.6198,
+        "ASSEMBLY": 332.1162,
+        "PROFILE": 8770.5722,
+        "FULL": 77282.1276
+      },
+      {
+        "WATERFILM": 79695.4164,
+        "ASSEMBLY": 529.551,
+        "PROFILE": 13075.8594,
+        "FULL": 79682.0454
+      }
+    ],
+    "median_ns": {
+      "WATERFILM": 69684.6198,
+      "ASSEMBLY": 337.9652,
+      "PROFILE": 8966.9672,
+      "FULL": 79682.0454
+    },
+    "stage_sum_to_full_ratio": 0.9913092943771246
+  },
+  "work_unit": "PPA-WU05-C3A-PERF03",
+  "stage": "QUALIFIED_BOUNDED_COST_ATTRIBUTION_NO_PRODUCTION_OPTIMIZATION",
+  "original_pr": 1008,
+  "original_head": "f4f698ddfe2c12d2676afc7e11347bb9410a08be",
+  "canonical_source_snapshot": "8acdf60e1da367f482fe9d2aadb9a849670b69b8",
+  "remote_qualified_checkpoint": "0731bdadc656b0a7f086bb1d9ce5188c46faf0c0",
+  "qualified_tree": "07a782843d7ce69b9465ef003e2871f401ef48fc",
+  "hardware": "AMD EPYC 9V74, x86_64, shared container; timings are local host observations",
+  "archive": {
+    "path": "integration/audits/evidence/PPA_WU05C3A_PERF03_ATTRIBUTION_20261011.tar.gz.b64",
+    "decoded_sha256": "85811abdc61e2842ebca00a6478bbce6246a68aadfa8abf07600c3f104d6cefe",
+    "members": 31,
+    "original_postimages": 4,
+    "manifest": {
+      "qualified/src/solver/mod_soil_water_solver_contract.f90": {
+        "sha256": "0fc4d1ba94451697754e3b93a54bf47ae2d6f852301e59ad35f1db36dad08905",
+        "bytes": 24777
+      },
+      "qualified/src/solver/mod_process_hydraulic_view.f90": {
+        "sha256": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+        "bytes": 2382
+      },
+      "qualified/src/transaction/mod_transaction_reference.f90": {
+        "sha256": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
+        "bytes": 37433
+      },
+      "qualified/src/process/mod_soil_temperature_contract.f90": {
+        "sha256": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+        "bytes": 14635
+      },
+      "qualified/src/process/mod_bartholomeus_runtime_input.f90": {
+        "sha256": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+        "bytes": 3349
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90": {
+        "sha256": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+        "bytes": 903
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_parameter_contract.f90": {
+        "sha256": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+        "bytes": 7063
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_temperature.f90": {
+        "sha256": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+        "bytes": 1453
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_waterfilm.f90": {
+        "sha256": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+        "bytes": 1791
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": {
+        "sha256": "566bf63d98deb4b080c4a73ea11f3acc3c7531d6dfb49d4193130fd0dc02ba7b",
+        "bytes": 3095
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": {
+        "sha256": "489736b45944486921068de06fd3e41d495f090dab29f10a4b1e7582a71536c7",
+        "bytes": 2794
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_microbial.f90": {
+        "sha256": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+        "bytes": 1624
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_micro.f90": {
+        "sha256": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+        "bytes": 3199
+      },
+      "qualified/src/physics/oxygen/mod_oxygen_macro_zero_depth.f90": {
+        "sha256": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+        "bytes": 3597
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_macro.f90": {
+        "sha256": "45f20bc8af741bfaff267d3cb0584c67642f56b8351fd0e9a377722c10406443",
+        "bytes": 2738
+      },
+      "qualified/src/physics/oxygen/mod_oxygen_scalar_bracket.f90": {
+        "sha256": "8d4e53cfe14a91c34ffa74c7cad55bda83bf3d2abab2b938d61a68cee6a22ade",
+        "bytes": 2628
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_response.f90": {
+        "sha256": "fb7a5325c46660300de077a41e83b0ac46554e4ac22a0260a7b322e614c48cd6",
+        "bytes": 2496
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_response_assembly.f90": {
+        "sha256": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+        "bytes": 4033
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_profile_response.f90": {
+        "sha256": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+        "bytes": 1970
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90": {
+        "sha256": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+        "bytes": 4239
+      },
+      "qualified/src/physics/oxygen/mod_bartholomeus_factor_provider.f90": {
+        "sha256": "da3991936914a41a1bd96dd771494abf8ba981c8535013f371be0e45301d07a0",
+        "bytes": 3440
+      },
+      "qualified/tests/performance/benchmark_bartholomeus_perf03_attribution.f90": {
+        "sha256": "b033e77b12d4fcb9427d9c923770ae1296e055e3f591b87d9d851a88cd91c9aa",
+        "bytes": 4400
+      },
+      "qualified/tests/performance/run_bartholomeus_perf03_attribution.py": {
+        "sha256": "ce927e0c6aa7c9e45e7fcd4e2d79b086093a200baa56373284dcbda9d3e08ec3",
+        "bytes": 5189
+      },
+      "original/.github/workflows/ppa-wu05c3a-perf03.yml": {
+        "sha256": "ee0ee229c70740e932c94b516da5c3a838ce6d24c9f9661e895ba19c1cfe8549",
+        "bytes": 729
+      },
+      "original/docs/audits/PPA_WU05C3A_PERF03_PREREGISTRATION.md": {
+        "sha256": "55c4013f793d766c76450a4fc90fb1a77ce3c6ef07388febe963291e4f082a31",
+        "bytes": 2263
+      },
+      "original/tests/performance/characterize_bartholomeus_perf03_waterfilm.f90": {
+        "sha256": "00916f2dafa388ab41f1f0c065a51024a75ab1551196851f44d45f7156969327",
+        "bytes": 1505
+      },
+      "original/tests/performance/run_bartholomeus_perf03_waterfilm.py": {
+        "sha256": "1b3f6889bf81fdf7561c139e5841110ba16882b88e39a267323d4f680a760cca",
+        "bytes": 995
+      },
+      "qualification-and-timing.json": {
+        "sha256": "ce81c3a4e27667384874663c5f6ca5d3890b97d5a6e3ca64465d49fc49a2b25e",
+        "bytes": 11194
+      },
+      "raw-local.log": {
+        "sha256": "b4bfe5b92f2134d7a06f9d88cc950dbecf2fc068af403af304d3820422677483",
+        "bytes": 2315
+      },
+      "cpu.txt": {
+        "sha256": "c76eb87639b5165986bbd77b4591da3dbc28f360615427ff50d88b4fe2b0af90",
+        "bytes": 3341
+      }
+    }
+  },
+  "interpretation": {
+    "waterfilm_fraction_of_full": 0.8745335219519854,
+    "assembly_fraction_of_full": 0.004241422246422404,
+    "profile_fraction_of_full": 0.11253435017871666,
+    "primary_target": "REFERENCE waterfilm dominates this three-node non-skipped fixture. Source-bound exact-preserving pure/repeated calculations are the next owner review target. No approximation, new optimization or speedup is admitted.",
+    "limitations": [
+      "All three factors are clamped zero although each node executes 31 actual residual callbacks; this is a full stress fixture, not a no-stress shortcut.",
+      "One frozen fixture, not parameter sweep, field trajectory or growing-season frequency.",
+      "Independent stage timings need not sum exactly to complete path because full includes validation/gate overhead and measurement noise.",
+      "No production runtime, ABI, numerical tolerance, physics or global capability-count change."
+    ]
+  },
+  "original_runner_disposition": "Original dependency regex uses literal double backslashes, preventing module discovery. All four original postimages are preserved; new research runner uses actual module/use whitespace and unmodified canonical dependencies."
+}
