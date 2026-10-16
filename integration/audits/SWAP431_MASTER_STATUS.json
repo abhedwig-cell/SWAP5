@@ -105,32 +105,32 @@
     "capabilities": 243,
     "dispositions": {
       "ADMITTED": 94,
-      "ACTIVE_MIGRATION": 109,
+      "ACTIVE_MIGRATION": 110,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
-      "QUALIFICATION_ONLY": 4
+      "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 109,
+    "open_capabilities": 110,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 86,
-    "other_unresolved_source_admission_reviews": 4,
-    "qualification_only_capabilities": 4,
+    "confirmed_missing_production_entries": 87,
+    "other_unresolved_source_admission_reviews": 3,
+    "qualification_only_capabilities": 3,
     "total_unresolved_capabilities": 113,
     "active_gap_type_breakdown": {
-      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 109,
-    "missing_standalone_process_implementations_not_established": 109,
-    "active_with_existing_production_source_authority": 69,
+    "missing_production_binding_or_implementation_entries": 110,
+    "missing_standalone_process_implementations_not_established": 110,
+    "active_with_existing_production_source_authority": 70,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 109,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open.",
+    "active_missing_complete_admitted_route": 110,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;110 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -158,7 +158,9 @@
     "integration/audits/evidence/SWAP431_OWNER_DISPATCH_PROOF_20261009.json",
     "integration/audits/evidence/SWAP431_CANONICAL_177COMMIT_DELTA_20261011.json",
     "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-    "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+    "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+    "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+    "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json"
   ],
   "authority_paths": [
     "AGENTS.md",
@@ -172,13 +174,15 @@
     "tools/audits/census_swap431_source.py",
     "tools/audits/probe_swap431_dramet3.py",
     "tools/audits/probe_swap431_aquifer_bounds.py",
-    "tools/audits/probe_swap431_seepage_runtime.py"
+    "tools/audits/probe_swap431_seepage_runtime.py",
+    "tests/fmig431/annual/run_classic_source.py"
   ],
   "interfaces_changed": false,
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "Coverage closure remains blocked: semantic denominator incomplete; 109 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY capability envelopes remain. Historical source/evidence and pinned later authority-locator integrity PASS does not establish current-canonical numerical qualification."
+    "Coverage closure remains blocked: semantic denominator incomplete; 110 ACTIVE_MIGRATION and 3 QUALIFICATION_ONLY capability envelopes remain. Historical source/evidence and pinned later authority-locator integrity PASS does not establish current-canonical numerical qualification.",
+    "SW431-CROP-ANNUAL: CLASSIC_RETAINED_DEAD_ORGAN_STATE, source-proven existing-owner/persistence gap. No unresolved external capability dependency. See classic_annual_disposition_20261016."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
@@ -189,7 +193,6 @@
   "unresolved_review_ids": [
     "SW431-MACRO-SEP1",
     "SW431-MACRO-SEP2",
-    "SW431-CROP-ANNUAL",
     "SW431-CROP-WOF-OTHER"
   ],
   "dependency_surface": [
@@ -2844,6 +2847,26 @@
         "decoded_bytes": 11324,
         "members": 11
       }
+    }
+  },
+  "classic_annual_disposition_20261016": {
+    "capability_id": "SW431-CROP-ANNUAL",
+    "status": "BLOCKED_SOURCE_STATE_COMPLETENESS",
+    "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+    "recovery": "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+    "qualification_attempt": "b4deeec4bba76edff23bb82ee941057bc5cc5b3d",
+    "exact_tree": "994e08801048c81c5afcaa0bd300b1290b8da560",
+    "canonical": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "reconciled_canonical": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "production_changed": false,
+    "full_capability_admitted": false,
+    "source_probe": "PASS three200-day actual classic process trajectories atO0/O2; living organs/phenology/cohorts and actual living persistence every17 days; no Richards/accepted-event/full source-state admission claim",
+    "blocker": "Literal B1.11 retains cumulative DWRT/DWST/DWLV. Existing classic biomass owner and persistence cannot represent these inventories. Qualification-only label corrected; no claim that AMAXTB or living growth is absent.",
+    "next_action": "Explicit same-owner retained mortality/persistence extension with legacy/default compatibility and actual affected consumer preservation, then source/state/event qualification. Do not inherit IDSL1/root/Soil-N dependencies or silently add a second owner.",
+    "unresolved_count_delta": 0,
+    "classification_delta": {
+      "QUALIFICATION_ONLY": -1,
+      "ACTIVE_MIGRATION": 1
     }
   },
   "latest_leaf_return_review_20261016": {

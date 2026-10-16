@@ -1,5 +1,15 @@
 # SWAP431 functional coverage master: recoverable review
 
+Current classic-annual qualification disposition (2026-10-16):
+**SW431-CROP-ANNUAL is BLOCKED_SOURCE_STATE_COMPLETENESS.** The living classic
+source/process trajectories and existing living persistence pass O0/O2, but
+B1.11 retained dead-root/stem/leaf state is absent from its owner/persistence.
+One row moves from QUALIFICATION_ONLY to ACTIVE_MIGRATION:94 ADMITTED,110 ACTIVE,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,3 QUALIFICATION_ONLY;113 unresolved.
+This current classification supersedes the dated snapshots below. Production
+and all existing admission scopes remain unchanged. See the final annual section.
+
+
 
 Latest separate partial-return source assessment (2026-10-16): PR1261 merged at
 `7dc1adb594c4091d7df60229af4b779485ca9558`, receipt `9b05521b`.
@@ -711,3 +721,10 @@ absence/binding flags remain unchanged. Full historical activation and broader
 material, geometry, stress and requested-window envelopes remain open, as do
 TCS6 real week/dayfix, bottom7 accepted salt, HYD/POWER weather and native disk
 codec. Master PR1072 remains draft. No hosted or full moving F-CI PASS is inferred.
+
+
+## Classic annual source qualification, 16 October 2026
+
+SW431-CROP-ANNUAL is concretely blocked on retained dead-organ state and its persistence. Three200-day literal B1.11 versus real classic production process trajectories pass O0/O2 for living organs, phenology and leaf cohorts; actual living-owner persistence continuation passes. These do not prove full B1.11 organ-state completeness. The previous QUALIFICATION_ONLY label is corrected to ACTIVE_MIGRATION:110 active,3 qualification-only,113 total unresolved;94 admitted unchanged. This is a bounded existing-owner state gap, not absent AMAXTB code. No production merge or new crop variant.
+
+See [source disposition](../../docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md) and `MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json`. Earlier counts on this historical checkpoint page remain dated snapshots.

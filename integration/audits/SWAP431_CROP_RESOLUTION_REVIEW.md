@@ -50,3 +50,8 @@ the *potential* trajectory. A single actual owner and an external potential inpu
 do not establish that dual-trajectory option. Crop rotation likewise includes
 start/end and harvest state, not merely the already implemented consumption of
 a daily event token. These entries remain explicit source/ownership reviews.
+
+
+## Classic annual follow-up, 16 October 2026
+
+The historical qualification-only label above is superseded for SW431-CROP-ANNUAL by the source-proven retained dead-organ state gap. Living AMAXTB/source trajectories and living persistence pass; complete B1.11 organ inventories cannot be represented by the existing classic owner. The capability is ACTIVE_MIGRATION and concretely blocked, with no added external dependency. See [source-state disposition](../../docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md). The IDSL1 entry is not reclassified or qualified by this result.
