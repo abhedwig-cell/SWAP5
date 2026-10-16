@@ -51,6 +51,7 @@ program test_b111_reproductive_day
   cp%base%nitrogen%nfix_fr=1d0-fractions(i) ! different policy must be completely replaced
   call configure_owner(crop,cp,code);call require(code==0,'crop initialization')
   crop%crop%development_stage=phases(k)
+  crop%crop%evolution_continuation%anthesis_reached=phases(k)>=1d0
   crop%nitrogen%value%namountlv=crop%nitrogen%value%namountlv-2d0
   crop%nitrogen%value%initial_total=crop%nitrogen%value%initial_total-2d0
   call initialize_soil_n_pool_state(sp%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
@@ -62,7 +63,11 @@ program test_b111_reproductive_day
   call initialize_crop_soil(soil,crop,cp,9101_int64,state,code);call require(code==0,'selected owner initialize')
   previous=state;root=.001d0*ratios(j)
   call advance_crop_soil_day(state,0d0,1d0,.34d0-root/.3d0,0d0,0d0,0d0,root,.1d0,weather,r)
-  if(r%status/=0)print *,'case',m,i,j,k,r%status,r%soil%status
+  if(r%status/=0)then
+   print *,'case',m,i,j,k,r%status,r%soil%status
+   print *,r%prepared%ready,r%prepared%active,r%prepared%drlv,r%prepared%drst,r%prepared%drrt
+   print *,r%prepared%wlv_before,r%prepared%wst_before,r%prepared%wrt_before,r%prepared%corrected_rates%relative_transpiration_used
+  end if
   call require(r%status==0,'actual soil crop selected policy')
   associate(q=>r%prepared)
    pv=[cp%b111_reproductive%dvsnlt,cp%b111_reproductive%dvsnt,cp%b111_reproductive%nfixf,cp%b111_reproductive%fntrt]
@@ -100,6 +105,7 @@ program test_b111_reproductive_day
  end do
  ! Source max donor may overdraw actual root pool: rollback after soil trial.
  call configure_owner(crop,cp,code);crop%crop%development_stage=1.2d0
+ crop%crop%evolution_continuation%anthesis_reached=.true.
  crop%nitrogen%value%initial_total=crop%nitrogen%value%initial_total-crop%nitrogen%value%namountrt
  crop%nitrogen%value%namountrt=0d0
  call initialize_crop_soil(soil,crop,cp,9101_int64,state,code);call require(code==0,'bounded overdraw initial owner')
