@@ -4,10 +4,10 @@
   "root_material_dcs1_20261016": {
     "baseline": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
     "branch": "work/irr-dcs1-root-material-20261016",
-    "phase": "SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
     "implemented": true,
     "persisted": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
     "contract": "docs/science/MC_IRR01_ROOT_MATERIAL_DCS1_CONTRACT_20261016.md",
     "scope": "Existing managed TCS7/8 DCS1 default-MvG SSDI with actual persistent SWRD2 extent, per-node material thresholds, authenticated daily rain, existing cap/allocation/event publication and opaque joint restart. No new owner.",
@@ -33,7 +33,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "rossfast": "NOT_SELECTED_IMPACT"
     },
-    "next_action": "Verify exact source/current native evidence, immutable incumbent and affected negative controls, then existing moving owner-only preservation. Admission remains separate; no broad numerical or hosted run.",
+    "next_action": "Current source science, incumbent proof,23 rejection controls and owner-only preservation complete. Reconcile live canonical and reviews/checks, admit one bounded PR only when current source stays unchanged, verify actual merge tree and update existing master receipt.",
     "blockers": [],
     "full_capability": false,
     "master_disposition_changes": 0,
@@ -119,7 +119,24 @@
         }
       ]
     },
-    "physical_scope": "Positive capped TCS7 single-node gifts and wet/rain zero-gift TCS8 three-node profiles; current/lagged daily crop/adaptive roots, accepted mass and opaque joint restart. Component leaf separately discriminates heterogeneous material and partial-cell depth. No full source-envelope promotion."
+    "physical_scope": "Positive capped TCS7 single-node gifts and wet/rain zero-gift TCS8 three-node profiles; current/lagged daily crop/adaptive roots, accepted mass and opaque joint restart. Component leaf separately discriminates heterogeneous material and partial-cell depth. No full source-envelope promotion.",
+    "preserved": true,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_ROOT_MATERIAL_DCS1_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "8cc8fda91670a7cc4873f7f615ed49c7c7fb5d1946315dc8bc890e3cac357f1b",
+      "decoded_bytes": 11844,
+      "members": 7
+    },
+    "admission_controls": 23,
+    "admission_checks": {
+      "current_source_and_complete_incumbent_projection": "PASS",
+      "original_weather_and_DCS2_native_records": "BYTE_IDENTICAL",
+      "current_physical_O0_O2": "26PASS",
+      "existing_moving_owner_only": "PASS exit0; full numerical F-CI NOT_SELECTED",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS20.93s",
+      "hosted_actions_requested": 0
+    }
   },
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",

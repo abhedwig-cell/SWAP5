@@ -1,6 +1,8 @@
 # MC-IRR01 accepted root/material DCS1 successor
 
-Status: implemented candidate, not qualified or canonically admitted.
+Status: source-bound scientific candidate tested at O0/O2; canonical admission
+is separate and recorded in `integration/audits/MC_IRR01_STATUS.json`,
+`root_material_dcs1_20261016`.
 
 Baseline: `7f5441c5caff025e6eb95ed6044e5a851d47363a`.
 Existing owner: `integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json`,
@@ -64,3 +66,24 @@ Full F-CI, highest low-air and RossFast are NOT_SELECTED_IMPACT. This is not a
 PASS for those runners. No TCS2/3/4/6, bottom7/SALTEXCESS, HYD/POWER composition,
 arbitrary long-window accuracy, complete irrigation selector envelope or master
 capability promotion. Remain branch-only until all selected gates complete.
+
+## Completed candidate evidence
+
+The real material leaf completed at O0/O2 in1.6204/2.6504 seconds, six compiler
+requests each. The single final cold physical build completed26 native programs
+in606.207 seconds against245 ordered providers per optimization. Aggregate
+compile/link/native costs are521.610/3.003/74.646 seconds. Full original weather
+and DCS2 native records are byte-identical; current/lagged crop schedules and
+opaque joint continuation assertions remain active.
+
+The new physical witnesses are positive capped TCS7 one-node delivery and
+wet/rain zero-gift TCS8 three-node delivery. They do not establish an exhaustive
+uncapped DCS1, positive three-node or wider parameter envelope. Heterogeneous
+material, fractional root cells and evolving depth are separately discriminated
+through the real small production contract. No full historical capability is
+promoted from this bounded composition evidence.
+
+The first failed gift oracle and an early interrupted second build are retained
+with their original statuses. The corrected independent oracle includes sensor
+permission and literal zero-rate SSDI availability. No production formula,
+physical mass tolerance or historical failure was altered to obtain a PASS.
