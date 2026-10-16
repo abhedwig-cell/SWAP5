@@ -43,7 +43,9 @@ program test_crop_soil_joint
  integer::status
  logical::ok
  character(512)::mode,path,endpoint
+ character(32)::request_policy
  call get_command_argument(1,mode);call get_command_argument(2,path);call get_command_argument(3,endpoint)
+ call get_command_argument(4,request_policy)
  call initialize_application_config(cfg,-75d0,k)
  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
  cfg%tiles(1)%base_forcing%top_flux=0d0;cfg%tiles(1)%base_forcing%bottom_flux=-.1d0
@@ -60,6 +62,10 @@ program test_crop_soil_joint
  column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
  column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
  call parameters(sp);call configure_crop(cp);cp%base%nitrogen%nfix_fr=.3d0
+ if(trim(request_policy)=='b111'.or.trim(request_policy)=='wrong-policy')then
+  allocate(cp%b111_request);cp%b111_request%dvsnlt=.7d0;cp%b111_request%nfixf=.25d0
+  if(trim(request_policy)=='wrong-policy')cp%b111_request%nfixf=.5d0
+ end if
  call configure_owner(crop,cp,status);call require(status==0,'WOFOST81 owner initialize')
  crop%nitrogen%value%namountlv=crop%nitrogen%value%namountlv-2d0
  crop%nitrogen%value%initial_total=crop%nitrogen%value%initial_total-2d0

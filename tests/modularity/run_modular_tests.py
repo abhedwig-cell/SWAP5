@@ -31,6 +31,9 @@ CASES.update({
  'assimilation': {'driver':'tests/fwof/pp02/test_wofost81_assimilation_driver.f90',
                   'marker':None,'validator':'assimilation','flags':['-std=f2008']}})
 CASES['low_air_policy']={'driver':'tests/modularity/test_low_air_step_policy.f90','marker':'LOW_AIR_STEP_POLICY_CONTRACT=PASS','flags':COMMON}
+CASES['b111_request']={'driver':'tests/nut-crop/test_b111_request_boundaries.f90',
+                     'marker':'B111_REQUEST_BOUNDARY_TINY_DEMAND_MULTI_ORGAN_NONFINITE=PASS',
+                     'flags':COMMON+['-I'+str(ROOT/'tests/nut-crop')]}
 CASES['low_air_physical']={'driver':'tests/modularity/test_low_air_development.f90','marker':'PPA_WU05B15_LOW_AIR_LOW_AIR_DRAIN_RUNTIME=PASS','flags':COMMON}
 DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
 
