@@ -17,7 +17,8 @@ def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').
 def verify_source(git_reader=None):
  g=git if git_reader is None else git_reader;r=record()
  check(r['admission_baseline']==BASE,'TCS6 baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
- check(not g('status','--porcelain','--',*SURFACE),'dirty TCS6 scientific surface')
+ dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines()
+ check(not [p for p in dirty if not re.fullmatch(r'\?\? .*/__pycache__/[^/]+\.pyc',p)],'dirty TCS6 scientific surface')
  rows={s.split('\t')[1]:s.split('\t')[0]for s in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
  check(rows=={p:v['status']for p,v in r['postimages'].items()},'foreign TCS6 science')
  check({p for p in rows if p.startswith('src/')}==PRODUCTION,'TCS6 production scope')
@@ -129,6 +130,15 @@ def incumbent():
  env=os.environ.copy();i=int(env.get('GIT_CONFIG_COUNT','0'));env['GIT_CONFIG_COUNT']=str(i+1);env['GIT_CONFIG_KEY_'+str(i)]='core.abbrev';env['GIT_CONFIG_VALUE_'+str(i)]='8'
  p=subprocess.run([sys.executable,'-B','tests/nut-crop/verify_reproductive_successor.py'],cwd=root,capture_output=True,text=True,env=env)
  check(p.returncode==0,'TCS6 incumbent proof failed '+p.stderr[-1200:]);r=json.loads(p.stdout);check(r['qualified'],'unqualified incumbent');return r
+def run_multilevel_predecessor_controls():
+ # Execute the unchanged original six assertions at the admitted snapshot.
+ root=ROOT.parent/('tcs6-multilevel-controls-'+BASE[:12])
+ if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),BASE],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==BASE,'multilevel controls moved')
+ env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','PYTHONPYCACHEPREFIX':str(ROOT.parent/'tcs6-control-python-cache')}
+ p=subprocess.run([sys.executable,'-B','tests/fmig431/verify_multilevel_divdra_successor.py','--self-test'],cwd=root,capture_output=True,text=True,env=env)
+ check(p.returncode==0 and 'MULTILEVEL_EVIDENCE_CORRUPTION_CONTROLS=6'in p.stdout,'original multilevel controls failed '+p.stderr[-1500:])
+ print(p.stdout,end='')
 def verify_qualification():
  s=verify_source();check(record()['phase']in ('SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'),'TCS6 unfinished')
  science=validate_science(evidence());old=incumbent()
