@@ -25,7 +25,17 @@
     "contract": "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
     "scope": "Explicit existing compartment surface-mass reconstruction and opt-in V2 native restart; preserve V1/default activation. No new pond hydrology or deposition equation.",
     "selection": "Real matrix/kernel/adapter O0/O2, opaque/native/fresh continuation, V1/default/nonmutation and CRC-correct mass forgeries; expected300s cold closure. Full FCI/highest low-air/RossFast NOT_SELECTED_IMPACT.",
-    "next_action": "Bounded persistent dry-surface mass/native restart is admitted via1256. Reconcile master1072 without capability promotion. Remaining full pond/source integration needs real water-owner substep receipts, infiltration/remaining-mass and deposition/runoff balance qualification; aquifer stays excluded.",
+    "next_action": "Bounded persistent dry-surface mass/native restart is admitted via1256. Continue the now-existing active pond/deposition PR1257, not a duplicate route. Reconcile its pre1256 native codec, state owner and eligibility postimages with current admitted1256 before final affected-source qualification. Full pond/source/runoff still needs actual water receipts and whole mass/restart; aquifer stays excluded.",
+    "live_successor_reconciliation": {
+      "pr": 1257,
+      "branch": "work/sol-pond-continuation-20261016",
+      "observed_head": "2bb976932c4900b29a0341fb46fa22ba3870186a",
+      "merge_base_with_1256": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "state": "ACTIVE_DRAFT_PRESERVED_NOT_MERGE_READY",
+      "concrete_blockers": "Final science/owner controls remain pending. Same native writer/reader trailing argument is optional pond object in1257 versus admitted allow_surface_mass logical in1256; schema S5MP0001 versus S5MJ0002. Must preserve V1/V2, one surface-mass owner, accepted atomicity and existing1256 recovery/source guards before current integration can qualify.",
+      "preserved_pre1256_checkpoint": "2bb97693 retains its complete source and science archive; no active work closed or implementation overwritten.",
+      "new_duplicate_pr_authorized_or_created": false
+    },
     "admission_verification": {
       "candidate_local": "95a949b4785ee347edc8eb576a5f09b2ce305aa9",
       "candidate_remote": "0dada3f4bb904f22899ff1ad53b5dd5a36c097f9",
