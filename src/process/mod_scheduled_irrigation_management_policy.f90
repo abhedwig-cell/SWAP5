@@ -79,6 +79,14 @@ contains
       status = IRR_MGMT_INVALID_REQUEST
       return
     end if
+    ! Same admissible state domain as the existing restart owner. In
+    ! particular, never increment an invalid/overflowing integer counter.
+    if (parameters%timing_criterion==6) then
+      if (committed_state%weekly_day_counter>6.and.committed_state%weekly_day_counter/=366) then
+        status=IRR_MGMT_INVALID_REQUEST
+        return
+      end if
+    end if
     if (.not. valid_parameters(parameters)) then
       status = IRR_MGMT_INVALID_PARAMETERS
       return
@@ -203,8 +211,8 @@ contains
       if (any(parameters%tcs4_depletion_mm(1:parameters%tcs4_knot_count)<0.0_real64) .or. &
           any(parameters%tcs4_depletion_mm(1:parameters%tcs4_knot_count)>500.0_real64)) return
     case(6)
-      if (.not. ieee_is_finite(parameters%tcs6_threshold_mm) .or. parameters%tcs6_threshold_mm<0.0_real64 .or. &
-          parameters%tcs6_threshold_mm>20.0_real64) return
+      if (.not. ieee_is_finite(parameters%tcs6_threshold_mm)) return
+      if (parameters%tcs6_threshold_mm<0.0_real64.or.parameters%tcs6_threshold_mm>20.0_real64) return
     case default
       return
     end select

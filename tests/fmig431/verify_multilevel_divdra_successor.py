@@ -114,16 +114,28 @@ def incumbent(source_only=False):
     return result
 
 def verify_source(git_reader=None):
+    if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
+        return tcs6.verify_source(git_reader)
     require(git_reader is None,'unregistered projected git reader')
     load_verified();old=incumbent(True)
     return {**old,'multilevel_divdra_successor':True,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'qualified':False}
 def verify_qualification():
+    if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
+        return tcs6.verify_qualification()
     load_verified();old=incumbent(False)
     return {**old,'incumbent':old,'multilevel_divdra_successor':True,'qualified':True,
             'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),
             'drainage_ledger_rows':['SW431-DRAIN-DIV-SIGNED','SW431-DRAIN-DIV-MULTI'],
             'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+    if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
+        result=tcs6.verify_qualification()
+        if sys.argv[1:]==['--self-test']:tcs6.run_multilevel_predecessor_controls()
+        elif sys.argv[1:]:raise SystemExit('unknown TCS6 successor owner option')
+        print(json.dumps(result,indent=2));return
     ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args()
     s,r=load_verified()
     if a.self_test:

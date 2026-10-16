@@ -654,3 +654,7 @@ SALTEXCESS, hydraulic-selector/POWER weather hybrids, arbitrary long-request
 accuracy and native weather disk continuation remain open. No full master
 capability disposition is promoted, no frozen Status-A denominator changes,
 and no full moving F-CI, highest low-air or independent RossFast rerun is claimed.
+
+## MC-IRR01 weekly irrigation continuation (2026-10-16)
+
+The existing SW431-IRR-TCS6 closure is traced by the [weekly irrigation and joint continuation contract](../science/MC_IRR01_TCS6_CONTINUATION_20261016.md) and `integration/audits/MC_IRR01_STATUS.json`, field `tcs6_completion_20261016`. The recovery record distinguishes executed science, qualification and canonical admission. This successor uses accepted actual roots and material moisture limits, the existing weekly event owner and the existing native restart adapter. It does not change the frozen Status-A denominator or promote other irrigation profiles.

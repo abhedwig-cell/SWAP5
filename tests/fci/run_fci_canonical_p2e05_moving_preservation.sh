@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Current full TCS6 owner, selected by exact science/postimages, with immutable
+# incumbent proof and fresh native application preservation. No full-FCI claim.
+if [[ "${1:-}" == --mc-irr01-owner-only ]] && [[ -f "$(dirname "$0")/../mc-irr01/verify_tcs6_successor.py" ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/mc-irr01/verify_tcs6_successor.py
+  echo 'FCI_CANONICAL_MC_IRR01_CURRENT_OVERLAP_PRESERVATION=PASS'
+  exit 0
+fi
+
+
 # Classic annual source/state owner only; never a full moving PASS.
 if [[ "${1:-}" == --crop-annual-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
