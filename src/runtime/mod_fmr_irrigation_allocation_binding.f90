@@ -114,7 +114,7 @@ contains
     binding%status=1
     if(.not.receipt_matches(state))return
     if(.not.sensor%scheduled_irrigation_enabled)return
-    if(sensor%timing_criterion<2.or.sensor%timing_criterion>4)return
+    if((sensor%timing_criterion<2.or.sensor%timing_criterion>4).and.sensor%timing_criterion/=6)return
     selecting=.not.state%management%event%active_event.and.request%selection_opportunity.and. &
       request%irrigation_enabled.and.request%schedule_enabled.and.request%crop_emerged.and. &
       request%irrigation_window_open.and..not.request%fixed_event_already_selected

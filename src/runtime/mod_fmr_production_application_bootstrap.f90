@@ -444,7 +444,7 @@ contains
       if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
       select case(config%file_weather_irrigation_sensor%timing_criterion)
-      case(2:4,7,8)
+      case(2:4,6:8)
       case default
         return
       end select
