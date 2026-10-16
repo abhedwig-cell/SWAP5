@@ -432,6 +432,10 @@ contains
     if(.not.view%configuration%file_weather_irrigation_depth%fixed_interval_enabled)then
       if(irrigation%management%policy%weekly_day_counter>6.and. &
          irrigation%management%policy%weekly_day_counter/=366)return
+    else
+      if(irrigation%management%policy%weekly_day_counter> &
+         view%configuration%file_weather_irrigation_depth%fixed_interval_days.and. &
+         irrigation%management%policy%weekly_day_counter/=366)return
     end if
     bundle%valid=view%valid
     bundle%initial_crop_daystart_committed=view%initial_crop_daystart_committed
@@ -2012,6 +2016,10 @@ contains
       if(s/=FMR_IRR_ALLOCATION_OK)return
       if(.not.bundle%configuration%file_weather_irrigation_depth%fixed_interval_enabled)then
         if(pending_irrigation%management%policy%weekly_day_counter>6.and. &
+           pending_irrigation%management%policy%weekly_day_counter/=366)return
+      else
+        if(pending_irrigation%management%policy%weekly_day_counter> &
+           bundle%configuration%file_weather_irrigation_depth%fixed_interval_days.and. &
            pending_irrigation%management%policy%weekly_day_counter/=366)return
       end if
       call pending_soil%current_time(pending_time,restored)

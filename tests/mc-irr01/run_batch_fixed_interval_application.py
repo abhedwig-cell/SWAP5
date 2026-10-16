@@ -52,7 +52,7 @@ def main():
    assert session.toolchain_identity()==identity and all(m.sha(ROOT/q)==h for q,h in inputs.items())
    assert all(m.sha(build/q)==h for q,h in artifacts.items())
    obj=build/(name+'.o');exe=build/('test-'+name);session.command([session.compiler,*opts,'-c',str(driver),'-o',str(obj)],build,'driver');session.command([session.compiler,*opts,str(obj),*map(str,objects),'-o',str(exe)],build,'link');exe_sha=m.sha(exe)
-   modes=[('continuous','neutral')] # Existing program also executes its opaque continuation branch.
+   modes=[('continuous','neutral')]+[(md,ph)for ph in ['neutral','hydraulic']for md in ['native-write','native-resume','native-write-active','native-resume-active']]
    for mode,phase in modes:
     assert m.sha(exe)==exe_sha
     stdout,e=session.command([str(exe),*[str(fixture/q)for q in ['weather.999','altered.999','bad.999','backup.999']],mode,phase],build,'native-'+name+'-'+mode+'-'+phase)
@@ -62,9 +62,9 @@ def main():
     ends=[Path(str(exe)+'.'+q+'.final')for q in ['continuous','restart','native-resume']];assert all(q.read_bytes()==ends[0].read_bytes()for q in ends)
    else:
     for phase in ['morning','dayend']:
-     ends=[Path(str(exe)+'.'+phase+'.'+q)for q in ['full','opaque']];assert all(q.read_bytes()==ends[0].read_bytes()for q in ends)
-   if False: # Codec negatives are not selected until new parameter ABI is reviewed.
-    for phase in(['neutral']if kinds[name]=='sensor'else['neutral','hydraulic']):m.write(out/f'DECODER_{opt}_{name}_{phase}.json',decoder_controls(session,exe,fixture,phase,build,opt,name,kinds[name]=='sensor'))
+     ends=[Path(str(exe)+'.'+phase+'.'+q)for q in ['full','opaque','resumed','active.resumed']];assert all(q.read_bytes()==ends[0].read_bytes()for q in ends)
+   if kinds[name]!='weekly':
+    for phase in(['neutral']if kinds[name]=='sensor'else['neutral','hydraulic']):m.write(out/f'DECODER_{opt}_{name}_{phase}.json',decoder_controls(session,exe,fixture,phase,build,opt,name,kinds[name]=='sensor',interval_days=3))
    exe.unlink()
   costs.append(json.loads((out/f'COST_O{opt}.json').read_text()))
  for r in rows:assert r['stdout_sha256']==next(x for x in rows if x['opt']==2-r['opt']and all(x[q]==r[q]for q in ['driver','mode','phase']))['stdout_sha256']
