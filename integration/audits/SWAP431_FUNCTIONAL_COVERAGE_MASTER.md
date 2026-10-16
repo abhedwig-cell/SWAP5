@@ -1,6 +1,22 @@
 # SWAP431 functional coverage master: recoverable review
 
 
+Latest bounded evolving-pond admission (2026-10-16): PR1258 merged at
+`6353f109d00763fcb4f533f2f764c8eb50db99d5`, receipt `1c28da44`.
+The existing hydraulic depth now fills/drains under explicit gross rain/irrigation;
+sole1256 matrix surface mass and codec remain. Actual water/whole-solute balances,
+retained dry solute, deposition, rejection/retry/replay and native continuation
+pass O0/O2:42 new programs,12 incumbent programs,23 comparison cases per opt,
+28 evidence controls and both actual FCI owner entries. Prior1257 wet/dry and
+original V1 bytes remain identical. Requested core SOL scope is bounded admitted.
+Evaporation/runoff/runon, surface age/N companions and full historical/default
+activation remain open; aquifer remains excluded. Next user priority: separately
+assess reproductive/translocation/death N while preserving vegetative PR1253.
+All243 dispositions and other242 capability rows remain unchanged. Earlier
+snapshots below retain their historical qualification scope.
+
+
+
 Latest bounded pond/source admission (2026-10-16): PR1257 actually merged at
 `d52ed8934d8a6a0fe5e5976b6c05620f45658995`, canonical receipt `a8da9e76`.
 The existing1256 matrix surface-mass owner and V1/V2 codec stay unchanged. Real
