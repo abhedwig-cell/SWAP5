@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-HYD01 / MC-HYST01",
   "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
-  "canonical_reconciled_against": "integration/f-ci-canonical@a86da5b6931b15ef8a5432fd03adc30a72491b65",
+  "canonical_reconciled_against": "integration/f-ci-canonical@8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
   "branch": "work/swap431-hydraulic-coverage-20261007",
   "pull_request": 1103,
-  "checkpoint_head": "69b2e44742c736046a8c035543657933a13291f0",
-  "phase": "BLOCKED_CURRENT_REAL_RUNTIME_TEMPORAL_ACCEPTANCE",
+  "checkpoint_head": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
+  "phase": "BLOCKED_ANALYTICAL_PROVIDER_TEMPORAL_CERTIFICATE_ENVELOPE",
   "authority": [
     "reference/swap-4.3.1/snapshots/B1.11.yml",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
@@ -123,7 +123,7 @@
       "tests/fpm/test_swap431_hyd_serialized_runtime.f90",
       "tests/fpm/run_ppa_wu05a8_real_richards.sh"
     ],
-    "local_result": "Analytical MODEL2/MODEL3 provider passed O0 -fcheck=all and O2 before persistence; MODEL6 identity and later runtime/power changes require persisted integrated confirmation.",
+    "local_result": "Analytical and POWER component O0/O2 PASS. Original real dynamic positive remains FAIL; current O0/O2 real predecessor + certificate envelope negative PASS, no dynamic admission.",
     "pending_runs": [],
     "queue_note": "Historical pending labels superseded: original HYD workflow failed its real runtime step; current local result pending."
   },
@@ -137,10 +137,10 @@
   ],
   "blockers": [
     "Current positive MODEL2 real receiving runtime rejects all13 attempts under the identity-only external full/half temporal route. No accepted substep, committed endpoint or restart qualification.",
-    "Reconcile existing F-KT temporal-history/model-certificate authority with the new constitutive provider and a physically justified predecessor. Do not alter common identity acceptance, raise tolerance, replace the test by equilibrium, or invent zero predecessor history solely to get PASS.",
+    "Actual accepted/committed physical predecessor now tested O0/O2 for MODEL2/3/6, with measured history. Existing model-certificate service explicitly rejects all three new provider types: constitutive-policy-deferred,13 attempts each. Requires owner-qualified constitutive certificate extension, independent temporal validation and owning default preservation before dynamic admission.",
     "Before admission, independently bind MODEL2/3/6/POWER values and cutoff behavior to literal source, qualify actual dynamic commit/discard/retry/restart and current default/owner preservation. Broader hydraulic families remain excluded."
   ],
-  "next_action": "Within existing PR1103, qualify the current real Reference temporal certificate/history route and independent literal hydraulics; retain the failed trajectory as a negative witness. Merge only after positive actual accepted mass/state/restart and owning current preservation. No new model family started.",
+  "next_action": "Existing PR1103 remains draft: owner-qualified analytical-provider extension of existing Reference temporal certificate, independent literal/cutoff and temporal validation, actual accepted dynamic commit/restart and current preservation. No new migration family or numerical tolerance change.",
   "recovery_20261016": {
     "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
     "canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
@@ -189,5 +189,35 @@
       "Read-only diagnosis27.22s"
     ],
     "cost_scope": "Reported shell wall/user/system totals retained; separate compile/link/native categories UNKNOWN."
+  },
+  "certificate_envelope_recovery_20261016": {
+    "checkpoint": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
+    "local_checkpoint": "d480ae9e4748ff1b58613443472bf6d7c489c7ac",
+    "canonical": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "production_source_tree": "d8ff5ebcf85730db4b005ef32167e256e77e1815",
+    "provider_count": 157,
+    "status": "NEGATIVE_ENVELOPE_O0_O2_PASS_NOT_SCIENTIFIC_ADMISSION",
+    "predecessor": "Actual uniform-head gravity-throughflow production predecessor qtop=-K, mass complete, committed. History seeded only from measured accepted head increment/dt. Dynamic top flux then0. No invented zero history.",
+    "dynamic": "All three providers at both optimizations reject13 attempts;0solver/mass rejection; previous history and1e-6cm budget valid; constitutive-policy-deferred. Rejected physical state and derivative bit-preserved.",
+    "original_positive": "Original dynamic external-full-half positive assertions unchanged; known FAIL retained. No positive dynamic commit/restart claim.",
+    "selection": "Same existing157-provider runtime closure; only certificate-envelope mode, no macro/salt incumbent rerun this phase. No production source mutation.",
+    "cost_seconds": {
+      "wall": 98.58,
+      "user": 90.003,
+      "sys": 8.326,
+      "compile": "UNKNOWN",
+      "link": "UNKNOWN",
+      "native": "UNKNOWN"
+    },
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_HYD01_CERTIFICATE_ENVELOPE_20261016.tar.xz.b64",
+      "decoded_sha256": "9d6a0e5ce4afbe952317cfcc6c41a923a3c2a589d4595e2f5308efb0e536f74b",
+      "decoded_bytes": 76780,
+      "members": 11
+    },
+    "qualified": false,
+    "admitted": false,
+    "source_delta_this_phase": "NONE; test-only diagnostic mode added, original positive assertions preserved."
   }
 }
