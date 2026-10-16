@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+  "canonical_head": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
   "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "coverage_closed": false,
   "closure_statement": null,
@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 100,
-      "ACTIVE_MIGRATION": 104,
+      "ADMITTED": 101,
+      "ACTIVE_MIGRATION": 103,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 104,
+    "open_capabilities": 103,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 83,
+    "confirmed_missing_production_entries": 82,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 107,
+    "total_unresolved_capabilities": 106,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 6,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 104,
-    "missing_standalone_process_implementations_not_established": 104,
-    "active_with_existing_production_source_authority": 64,
+    "missing_production_binding_or_implementation_entries": 103,
+    "missing_standalone_process_implementations_not_established": 103,
+    "active_with_existing_production_source_authority": 63,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 104,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;104 full production envelopes remain open. AVAIL closes through actual provider/joint native continuation; annual and signed-drainage admissions remain preserved.",
+    "active_missing_complete_admitted_route": 103,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -11725,24 +11725,29 @@
       },
       "meaning": "Absolute or water-level-relative discharge-layer geometry",
       "swap5_implementation_authority": [
-        "src/process/mod_drainage_spatial_distribution.f90",
-        "src/runtime/mod_fmr_divdra_runtime_binding.f90"
+        "src/process/mod_drainage_discharge_layer_transform.f90",
+        "src/runtime/mod_fmr_divdra_dislayer_binding.f90",
+        "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+        "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+        "integration/audits/evidence/MC_DRAIN01_DISLAYER_REFERENCE_20261016.json.gz.b64 at 218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+        "integration/audits/evidence/MC_DRAIN01_DISLAYER_20261016.json.gz.b64 at 218d2425612408b8ae451cdda54c0e1e3d3d6a63"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation."
+        "established": true,
+        "route": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+        "claim": "Ordinary frost-OFF SWDISLAY1 supplied absolute top and SWDISLAY2 original fraction formulas for DRAMET2 shape or explicit current head difference. Per-level enable/disable, interacting signed levels and separate infiltration; qualified B1 Paragraph12 mass correction. Existing physical partition/accepted water/state/restart owners; real mass, rollback/replay and native committed restart/isolation qualified."
       },
       "restrictions": [
-        "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation."
+        "Explicit immutable groundwater view, per-level physical controls and authoritative scalar inputs. No native DRAMET3/OWLTAB scalar resolver, highest-interflow override or new frost-ON scope. Original tiny nonzero activation seam and source-invalid geometry reject without publication. No new response law, store, solver policy or restart codec."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-DRAIN01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -11751,13 +11756,16 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_DEFECT_REFERENCE_CORRECTION_REQUIRED",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW431-DRAIN-DIV"
+        "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-INF-SPLIT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "CANONICALLY_ADMITTED",
       "source_qualification_blocker_20261016": {
         "canonical_recovery": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
         "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
@@ -11766,7 +11774,46 @@
         "existing_branch": "work/swap431-drain-dislayer-20261007",
         "qualified": false,
         "admitted": false,
-        "count_delta": 0
+        "count_delta": 0,
+        "state": "RESOLVED_BY_QUALIFIED_B1_CORRECTION_AND_CANONICAL_ADMISSION",
+        "resolved_by": "218d2425612408b8ae451cdda54c0e1e3d3d6a63"
+      },
+      "canonical_admission_20261016": {
+        "capability_id": "SW431-DRAIN-DISLAYER",
+        "pr": 1269,
+        "canonical_merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+        "qualified_head": "b62291c021f7231653a0949f9f3caf7c2ddaa57f",
+        "source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
+        "full_tree": "5b1915d47ffc797c4d9ec6e7e40411c44b749e7d",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+        "phase": "dislayer_phase_20261016",
+        "full_capability": true,
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "reference_source_cases_per_optimization": 25920,
+        "real_binder_cases_per_optimization": 25920,
+        "runtime_cases_per_optimization": 288,
+        "reject_replay_restart_per_optimization": 48,
+        "hard_mass_cm": 1e-12,
+        "scalar_closure_cm_per_day": 1e-14,
+        "reference_component": "FROST-DIVDRA-04",
+        "reference_component_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+        "B18_original_assertions": "4536;3240accepted1296held;PASS_O0_O2",
+        "corruption_controls": {
+          "production": 8,
+          "reference": 3,
+          "applicator": 4
+        },
+        "parallel_preserved": [
+          "full irrigation AVAIL admission atc9231e1b",
+          "TCS6",
+          "signed/multilevel/INF-SPLIT drainage",
+          "annual crop/B1.12 reference"
+        ],
+        "disposition_delta": {
+          "ADMITTED": 1,
+          "ACTIVE_MIGRATION": -1
+        }
       }
     },
     {
@@ -14884,20 +14931,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-DRAIN-DISLAYER",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [],
-      "why_open": "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-DRAIN-DIV-TOPINTERFLOW",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
@@ -17970,7 +18003,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
+  "canonical_locator_head": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19613,5 +19646,130 @@
       "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
     },
     "scope": "Exactly one existing AVAIL row closes; all other242 capability rows and all prior source/census/annual/drainage/N/SOL receipts remain byte-semantically unchanged. No new capability or numerical FCI claim."
+  },
+  "latest_mc_drain01_dislayer_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DISLAYER",
+    "pr": 1269,
+    "canonical_merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+    "qualified_head": "b62291c021f7231653a0949f9f3caf7c2ddaa57f",
+    "source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
+    "full_tree": "5b1915d47ffc797c4d9ec6e7e40411c44b749e7d",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+    "phase": "dislayer_phase_20261016",
+    "full_capability": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "reference_source_cases_per_optimization": 25920,
+    "real_binder_cases_per_optimization": 25920,
+    "runtime_cases_per_optimization": 288,
+    "reject_replay_restart_per_optimization": 48,
+    "hard_mass_cm": 1e-12,
+    "scalar_closure_cm_per_day": 1e-14,
+    "reference_component": "FROST-DIVDRA-04",
+    "reference_component_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+    "B18_original_assertions": "4536;3240accepted1296held;PASS_O0_O2",
+    "corruption_controls": {
+      "production": 8,
+      "reference": 3,
+      "applicator": 4
+    },
+    "parallel_preserved": [
+      "full irrigation AVAIL admission atc9231e1b",
+      "TCS6",
+      "signed/multilevel/INF-SPLIT drainage",
+      "annual crop/B1.12 reference"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 1,
+      "ACTIVE_MIGRATION": -1
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 100,
+        "ACTIVE_MIGRATION": 104,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 104,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 83,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 107,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 6,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 104,
+      "missing_standalone_process_implementations_not_established": 104,
+      "active_with_existing_production_source_authority": 64,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 104,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;104 full production envelopes remain open. AVAIL closes through actual provider/joint native continuation; annual and signed-drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 101,
+        "ACTIVE_MIGRATION": 103,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 103,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 82,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 106,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 103,
+      "missing_standalone_process_implementations_not_established": 103,
+      "active_with_existing_production_source_authority": 63,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 103,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Exactly one existing DISLAYER row closes; other242 capability records remain unchanged; global denominator remains incomplete.",
+    "validation_receipts": {
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "inheritance_controls": "20 PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS10.64s",
+      "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
+      "all_other242_capability_records": "UNCHANGED",
+      "numerical_execution_for_master_metadata": false
+    }
   }
 }

@@ -84,13 +84,12 @@
       "id": "MC-DRAIN01",
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
-        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-ALLOCATION",
         "SW431-DRAIN-INF-LIMIT",
         "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
-      "next_action": "Qualify isolated B1 Paragraph12 DISLAYER mass correction before fixing existing transform and materializing runtime effects. Existing signed/multilevel/INF-SPLIT admissions remain preserved; no new drainage route.",
+      "next_action": "Preserve admitted signed/multilevel/INF-SPLIT/DISLAYER ordinary drainage. Remaining native DRAMET3,allocation,infiltration limiter and highest-interflow retain their separate existing contracts; no duplicate drainage route.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -98,6 +97,7 @@
         "SW431-DRAIN-DRAMET3"
       ],
       "closed_foundation_authorities": [
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
         "SW431-DRAIN-DIV-MULTI",
         "SW431-DRAIN-DIV-SIGNED",
@@ -113,7 +113,8 @@
       },
       "closed_capabilities": [
         "SW431-DRAIN-DIV-MULTI",
-        "SW431-DRAIN-INF-SPLIT"
+        "SW431-DRAIN-INF-SPLIT",
+        "SW431-DRAIN-DISLAYER"
       ]
     },
     {
@@ -1454,6 +1455,52 @@
       "ledger_disposition_delta": 0,
       "all243_dispositions_unchanged": true,
       "canonical_production_and_reference_unchanged": true
+    }
+  },
+  "latest_mc_drain01_dislayer_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DISLAYER",
+    "pr": 1269,
+    "canonical_merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+    "qualified_head": "b62291c021f7231653a0949f9f3caf7c2ddaa57f",
+    "source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
+    "full_tree": "5b1915d47ffc797c4d9ec6e7e40411c44b749e7d",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+    "phase": "dislayer_phase_20261016",
+    "full_capability": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "reference_source_cases_per_optimization": 25920,
+    "real_binder_cases_per_optimization": 25920,
+    "runtime_cases_per_optimization": 288,
+    "reject_replay_restart_per_optimization": 48,
+    "hard_mass_cm": 1e-12,
+    "scalar_closure_cm_per_day": 1e-14,
+    "reference_component": "FROST-DIVDRA-04",
+    "reference_component_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+    "B18_original_assertions": "4536;3240accepted1296held;PASS_O0_O2",
+    "corruption_controls": {
+      "production": 8,
+      "reference": 3,
+      "applicator": 4
+    },
+    "parallel_preserved": [
+      "full irrigation AVAIL admission atc9231e1b",
+      "TCS6",
+      "signed/multilevel/INF-SPLIT drainage",
+      "annual crop/B1.12 reference"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 1,
+      "ACTIVE_MIGRATION": -1
+    },
+    "validation_receipts": {
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "inheritance_controls": "20 PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS10.64s",
+      "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
+      "all_other242_capability_records": "UNCHANGED",
+      "numerical_execution_for_master_metadata": false
     }
   }
 }

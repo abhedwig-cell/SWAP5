@@ -1,3 +1,9 @@
+# Current ordinary DISLAYER full capability admission, 16 October 2026
+
+`SW431-DRAIN-DISLAYER` is **ADMITTED** through [PR1269](https://github.com/abhedwig-cell/SWAP5/pull/1269), canonical `218d2425612408b8ae451cdda54c0e1e3d3d6a63`; qualified head `b62291c021f7231653a0949f9f3caf7c2ddaa57f`. The full merge tree matches the qualified candidate exactly; source `3d8a5ad6f1520716e2131f7aa4b1ab62fe076250`. Minimal B1 Paragraph12 normalization correction,25,920 actual source and binder cases,288 real runtime cases and48 reject/replay/restart controls per optimization pass O0/O2. Existing positive/signed/multilevel/INF and original B18, plus the parallel full AVAIL admission, remain preserved.
+
+Current counts: **101 ADMITTED,103 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;106 unresolved,243 total**. Exactly one existing row closes; the other242 capability records remain unchanged. The global denominator remains incomplete. Recovery authority: `SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase `dislayer_phase_20261016`. Counts below are historical.
+
 # Current external availability admission, 16 October 2026
 
 `SW431-IRR-AVAIL` is **ADMITTED** through [PR1267](https://github.com/abhedwig-cell/SWAP5/pull/1267), canonical `a1a4dc8d0cf7b63f10c77aeb06843465e220d87d`; receipt `760429f1d73e4917dfbf29a0bdfdaa119b823f7a`. Literal TASK4, frozen/expired provider and fresh next-event selection, actual water balance and exact continuous/opaque/native fresh-process continuation pass O0/O2. The TCS6 byte representation and parallel drainage admissions are preserved.
