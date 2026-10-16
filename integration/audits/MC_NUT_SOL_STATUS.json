@@ -779,5 +779,186 @@
       "evidence_members": 5
     },
     "status_scope": "Historical process/day review checkpoint; actual bounded admission and independent reconciliation are recorded below and in reproductive_process_20261016."
+  },
+  "leaf_return_review_20261016": {
+    "stage": "SOURCE_CHAIN_REVIEW_PASS_REFERENCE_DECISION_REQUIRED",
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "branch": "work/nut-leaf-return-review-20261016",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "source_tree_unchanged": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "18c1ce8455d67c5755838ad5f2e63838d617f8361a72b2d2b13259e652ac52b4",
+      "decoded_bytes": 29188,
+      "members": 38
+    },
+    "case_counts_per_optimization": {
+      "day_harvest_cases": 27,
+      "leaf_DM_return_exceeds_death": 9
+    },
+    "counterexample": {
+      "leaf_death_DM_kg_ha": 10,
+      "daily_leaf_fraction": 1,
+      "harvest_leaf_fraction": 1,
+      "daily_leaf_soil_DM_kg_ha": 10,
+      "harvest_dead_leaf_soil_DM_kg_ha": 10,
+      "total_leaf_soil_N_kg_ha": 0.1
+    },
+    "production_providers_executed": {
+      "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+      "src/process/mod_b111_soil_n_addition.f90": "3c6c1f874cdf67cbe107e17ffbe39acb33e0ffda447c9d7b56a7fcb349485211",
+      "src/process/mod_crop_senescence_residue.f90": "ccdd7d77be2384f75927132f0a27113f002637ee15eb2f5ed04bc5d8436331ba"
+    },
+    "cost_seconds": {
+      "compile": 0.9690339189983206,
+      "link": 0.0847224110038951,
+      "native": 0.005504872999154031
+    },
+    "scope": "Immutable literal source blocks plus real current pending/material constructors; no full historical crop/calendar reachability claim, corrected reference or partial-return runtime admission.",
+    "finding": "Partial leaf return and no daily stem return require retained leaf/stem physical DM/N. Literal gross dead-leaf DM can be returned again at harvest while N is reduced by prior leaf return. N closure alone is insufficient.",
+    "test_selection": {
+      "small": "Three real current mapping providers plus immutable source-block oracle, O0/O2, bounds/FP traps; actual about1.06s",
+      "broad": "NOT_SELECTED_IMPACT: src/tests/tools/reference/.github and all admitted science dependencies unchanged; actual owner source proof plus docs integrity selected. No full FCI, alternate solver or highest-low-air run."
+    },
+    "production_admitted": false,
+    "formal_reference_defect_status": "UNADJUDICATED_SOURCE_CHAIN_COUNTEREXAMPLE",
+    "scientific_prerequisite": "Adjudicate ordinary source growth/daily-return/harvest timing and DM overlap; if confirmed, correct and qualify B1 before changing SWAP5 partial-return semantics.",
+    "next_safe_step": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
+    "capability_disposition_changes": 0,
+    "aquifer": "EXCLUDED",
+    "pr": 1261,
+    "validation": {
+      "capsule_manifest_and_raw_events": "PASS 38 members;14 compile/link/native events, all runtime/FP checks retained",
+      "actual_owner_source_proof": "PASS current admitted1260 owner; all src/tests/tools/reference/.github unchanged",
+      "docs": "source checks and strict build PASS",
+      "numerical_requalification": "NOT_SELECTED_IMPACT scientific postimages unchanged",
+      "full_historical_trajectory": "NOT_ESTABLISHED",
+      "formal_reference_correction": "NOT_ADMITTED"
+    },
+    "canonical_assessment": {
+      "pr": 1261,
+      "merge_commit": "7dc1adb594c4091d7df60229af4b779485ca9558",
+      "reviewed_head": "74f8ec335a7eb7efcdb01b98b362da6d2115640a",
+      "actual_tree": "85364309d66b291213abf62a44c831d59edbf7af",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "scientific_surface": "src/tests/tools/reference/.github unchanged from d27c6abe",
+      "post_merge_source_proof": "PASS actual GitHub merge object and admitted1260 source guard",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_admitted": false,
+      "reference_correction_admitted": false
+    }
+  },
+  "leaf_return_reference_20261016": {
+    "stage": "ACTUAL_ORDINARY_SOURCE_DEFECT_CONFIRMED_CORRECTION_CANDIDATE_VERIFIED",
+    "baseline": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "branch": "work/nut-leaf-return-reference-20261016",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "candidate_id": "MC-NUT01-LEAF-DM",
+    "source_tree_unchanged": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_REFERENCE_CANDIDATE_20261016.tar.xz.b64",
+      "decoded_sha256": "81f4682477b738ee88641e34527d9b6ead6363ad4d0f35f35e5f036b3f90469c",
+      "decoded_bytes": 60240,
+      "members": 338
+    },
+    "actual_source_scope": "Exact19-helper WOFOST growth/phenology/leaf/management/interface compilation closure; unselected grass helpers are compiled, not claimed exercised, original task3/4 cases, full original nutrient scientific routines and original SoilManagement5/residue chemistry. Ordinary annual SW_WOFOST1, IDSL0, SWCROPSNM0/1; prescribed environment and PGASS0/20. No full weather/hydraulic trajectory or active grass-removal claim.",
+    "controls": {
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "source_candidate_native_programs": 96,
+      "combinations_per_variant_per_opt": 24,
+      "N_off_and_zero_return": "bit-identical complete stdout",
+      "potential_dead_leaf_stock": "positive and bit-identical",
+      "daily_N_organs_and_organ_loss_fixation_uptake_ledgers": "10 source values per day, bit-identical",
+      "actual_organic_soil_DM_and_N": "checked via original residue routine",
+      "runtime_checks": "bounds and invalid/zero/overflow traps"
+    },
+    "confirmed_ordinary_example": {
+      "initial_DM_kg_ha": 300,
+      "computed_leaf_death_kg_ha": 27.1,
+      "original_soil_DM_kg_ha": 327.1,
+      "candidate_soil_DM_kg_ha": 300,
+      "both_soil_N_kg_ha": 3
+    },
+    "positive_growth_example": {
+      "initial_DM_kg_ha": 300,
+      "actual_growth_kg_ha": 30,
+      "computed_leaf_death_kg_ha": 28.26,
+      "original_soil_DM_kg_ha": 358.26,
+      "candidate_soil_DM_kg_ha": 330,
+      "both_soil_N_kg_ha": 3
+    },
+    "candidate_reference_identity": {
+      "scope": "B1.11 plus candidate only; not admitted B1 snapshot",
+      "member_count": 63,
+      "preimage_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "candidate_manifest_sha256": "1b7ea89d87ceedd812011c55351721e2232ced67883a5a9d3e35d7e6b73d596d",
+      "preimage_bytes": 1886519,
+      "candidate_bytes": 1886733,
+      "patch_sha256": "5f96fc709e26553f7437900876eb2b77944438fd084c55d45dd8b61888b0a393",
+      "changed": {
+        "SWAP/wofost.f90": {
+          "preimage_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+          "candidate_sha256": "b66e34cba9210420396b6e29b0612fb3f4240579f4e837bad1de0d70edef0bd6"
+        },
+        "SWAP/wofostnut.f90": {
+          "preimage_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+          "candidate_sha256": "f64dbc7a58bc7508fd25aa277fa09f70a9ed9206aab684ad094ef1dc61d3e346"
+        }
+      },
+      "actual_patch_apply": "PASS exact stored bytes"
+    },
+    "cost_seconds": {
+      "compile": 2.413378142984584,
+      "link": 0.22014849598053843,
+      "native": 0.28214638387726154
+    },
+    "scientific_decision": "Confirmed ordinary daily-to-harvest implementation defect: returned leaf DM remains in the physical dead-leaf stock and is returned again. DWLV is a removable stock in source management_event, not an immutable gross-death ledger. Candidate retains only (1-f) daily death in actual N-active DWLV; no change to N scientific bodies or soil chemistry.",
+    "production_admitted": false,
+    "corrected_B1_snapshot_admitted": false,
+    "published_B1_manifest_changed": false,
+    "remaining": "Formal corrected-reference admission/provenance and qualification of affected allowed removal modes before global B1 update; then retained leaf/stem DM/N, harvest, whole N/OM, rollback and native/opaque continuation in existing SWAP5 owner.",
+    "next_safe_step": "Complete the B1 correction admission against the existing ordered reference lineage, preserving immutable B1.11 and affected removal/state semantics; do not rebuild admitted1260 or enable partial-return runtime before retained physical stock and restart are qualified.",
+    "capability_disposition_changes": 0,
+    "test_selection": "Small actual scientific closure: 3s compile/link/native. Source-only owner and docs gates selected; full FCI, unrelated solver and highest-low-air NOT_SELECTED_IMPACT.",
+    "pr": 1263,
+    "validation": {
+      "sealed_capsule": "PASS 338 members;132 checked events incl96 native executions",
+      "candidate_binary_patch": "PASS exact two-source application and63-member manifest",
+      "current_owner_source": "PASS admitted1260 source guard; all scientific surfaces unchanged",
+      "docs": "source and strict PASS"
+    },
+    "canonical_reconciliation": {
+      "base": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+      "change": "Independent admitted #1099 signed DIVDRA; no overlap with three candidate assessment files or archived legacy scientific inputs.",
+      "current_source_tree": "7f11c4d028c88aab9aaddb9b693dac5796443284",
+      "selection": "No numerical rerun for unchanged leaf scientific inputs; current signed successor owner evidence and documentation selected.",
+      "production_delta_from_reconciled_base": false
+    },
+    "canonical_assessment": {
+      "pr": 1263,
+      "merge_commit": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
+      "reviewed_head": "df661c9006eaa903cf1193fd4c551266a80a24de",
+      "reviewed_tree": "25bc960b6be9f5f0781238401a2e2d21aff38cf0",
+      "actual_tree": "a092bc4b9cf1247b76853c15f232c5f9d9020eb8",
+      "actual_merge_base": "e849dbb01e4bda79dacf584fa14e9cb49ca9c764",
+      "reviewed_tree_equals_actual_merge_tree": false,
+      "merge_delta": "Only independent signed DIVDRA master receipt in its own status JSON; all three candidate assessment files and all scientific surfaces byte-identical to reviewed head.",
+      "post_merge_source_proof": "PASS actual GitHub merge; current reproductive/signed source guard; scientific surfaces equal reviewed head",
+      "owner_evidence_qualification": "PASS reproductive and signed successor capsule validation; no numerical rerun",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_admitted": false,
+      "reference_correction_admitted": false
+    }
   }
 }

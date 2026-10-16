@@ -4256,10 +4256,10 @@
   "tcs6_completion_20261016": {
     "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
     "branch": "work/mc-irr01-tcs6-20261016",
-    "phase": "STABLE_NATIVE_CANDIDATE_SCIENCE_PENDING",
+    "phase": "SCIENCE_COMPLETE_ADMISSION_PENDING",
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "admitted": false,
     "full_capability": false,
@@ -4305,7 +4305,7 @@
       "weather/crop joint continuation/native owner contract",
       "actual root/material and accepted physics callers"
     ],
-    "next_action": "Compile/test persisted joint native extension and actual weekly trajectory; retain all failures and mandatory full closure conditions.",
+    "next_action": "Run current owner/admission negatives, docs and final live reconciliation; then safe expected-head merge and update existing master row only.",
     "test_selection": {
       "small_contract": "real source-bound TCS6 policy/application, expected <30s",
       "physical_application": "Stable native candidate actual Richards/weather/crop weekly progression, rejected trials, current/lagged opaque and native fresh processes, active event/weekly boundary and CRC-correct decoder invalid paths; expected600s including295-provider O0/O2 builds and54 trajectory native programs. Previous failure diagnosed; no inherited native PASS. No broad FCI/RossFast/highest/Actions."
@@ -4333,6 +4333,159 @@
     "diagnostic_results": {
       "O0_actual_three_cases": "All three11-day original assertion sets pass; exact full/opaque/fresh native bytes for both schedules and both before-week/active-event checkpoint boundaries. Diagnostic reuse only of verified unchanged compiled providers, plus fresh affected bootstrap/driver; not final qualification.",
       "native_decoder": "18 negatives pertriggered phase and16 pernontrigger phase: corrupted/truncated/trailing/tag/source/config, futureselection, NaN/Inf/wrong time, negative/NaN water, invalid/overflow counter and active provider fraction. Final qualification will execute again."
-    }
+    },
+    "admission_baseline": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+    "execution_commit": "754a76801fe2b40c6069f4b3df584520683642c8",
+    "source_tree": "c560a353907e73942720dcd4a2d71f32ce06d644",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_TCS6_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c86e93a285109c795e421c65727ef14a05451fafd47f7202db65728480e2741a",
+      "decoded_bytes": 385612,
+      "members": 4851
+    },
+    "postimages": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "a18ca6c6ce54fbce616d2fedfd3ac7510774ee52"
+      },
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90": {
+        "status": "M",
+        "blob": "9391528be4c6ebb0d519f713d7283f2c46fa1d23"
+      },
+      "src/crop/mod_crop_et_canopy_view_provider.f90": {
+        "status": "M",
+        "blob": "7e007ea0f228c8e0dfeddafd2a340575233de576"
+      },
+      "src/crop/mod_wofost_prepare_assimilation.f90": {
+        "status": "M",
+        "blob": "a19d21bb18307903a568b3f6cf4a6722c4468c2e"
+      },
+      "src/crop/mod_wofost_rate_table.f90": {
+        "status": "M",
+        "blob": "6c38364075e1cfff508999e0a48fab8bb7396823"
+      },
+      "src/process/mod_scheduled_irrigation_management_policy.f90": {
+        "status": "M",
+        "blob": "6620d6bf95ed9bbcb3d31c86cd622138c9c0bd4a"
+      },
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90": {
+        "status": "M",
+        "blob": "5092432d05fb443ffa42706d2a719239b13e74ce"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "9825f776c65674bc32e569eca326c5d26d6f8eed"
+      },
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": {
+        "status": "M",
+        "blob": "db587c8ee36fdaea5d7d74c0d241d3c86ec9b097"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "90de9a033a756699db55d736629c8f3b4491fe64"
+      },
+      "tests/fmig431/verify_signed_divdra_successor.py": {
+        "status": "M",
+        "blob": "659bd2b25f9142147bc33a7eeac4a40cc8bc6ddc"
+      },
+      "tests/mc-irr01/check_tcs6_controls.py": {
+        "status": "A",
+        "blob": "11b1489c833333663c96e1e7f7f04aa97040bcf6"
+      },
+      "tests/mc-irr01/run_tcs6_application.py": {
+        "status": "A",
+        "blob": "f623314bff3ec4d366c7ca501859904caa5cd9e8"
+      },
+      "tests/mc-irr01/run_tcs6_contract.py": {
+        "status": "A",
+        "blob": "ea54f6a7bec73c54f170bff2c3f3ce4630ce493f"
+      },
+      "tests/mc-irr01/run_tcs6_reconciliation.py": {
+        "status": "A",
+        "blob": "7cf688c0f86a570d7102e36c200816e6548a3e44"
+      },
+      "tests/mc-irr01/run_tcs6_weather_domain.py": {
+        "status": "A",
+        "blob": "218ecdd2fc5b802cbcac76d6610794c13321119c"
+      },
+      "tests/mc-irr01/tcs6_cycle_driver.py": {
+        "status": "A",
+        "blob": "c0a65dac8b5f8bb5f45846aa8d07dc231a949b55"
+      },
+      "tests/mc-irr01/tcs6_native_controls.py": {
+        "status": "A",
+        "blob": "9ff8373eec2786a53367130f35a2dd325b2e1621"
+      },
+      "tests/mc-irr01/test_tcs6_progression.f90": {
+        "status": "A",
+        "blob": "e7f76f854bbaf2e00e7bb6dd7e20e11dfd30382c"
+      },
+      "tests/mc-irr01/test_tcs6_weather_domain.f90": {
+        "status": "A",
+        "blob": "d0779cc9519e9a08f80ba2255d982f4ca811b272"
+      },
+      "tests/mc-irr01/verify_tcs6_successor.py": {
+        "status": "A",
+        "blob": "8c14af08688dbe2d85680a0f71beb66bec00b3f7"
+      }
+    },
+    "closure_results": [
+      {
+        "condition": 1,
+        "status": "PASS",
+        "evidence": "Existing preparation and accepted weekly owner; exact9 production postimages."
+      },
+      {
+        "condition": 2,
+        "status": "PASS",
+        "evidence": "2040 source-literal vectors, direct O0/O2 and source-unit original-domain preservation."
+      },
+      {
+        "condition": 3,
+        "status": "PASS",
+        "evidence": "11 actual days, two week opportunities, both schedules, DCS1/2 and nontrigger; actual roots and water-balance assertions."
+      },
+      {
+        "condition": 4,
+        "status": "PASS",
+        "evidence": "Speculative invalid allocation, failed/incomplete prefix, replay and valid retry preserve accepted owners."
+      },
+      {
+        "condition": 5,
+        "status": "PASS",
+        "evidence": "Full/opaque exact throughout day/week and active event."
+      },
+      {
+        "condition": 6,
+        "status": "PASS",
+        "evidence": "54 trajectory programs and208 invalid decoder cases O0/O2; native processes restore only missing tail with byte-exact endpoints."
+      },
+      {
+        "condition": 7,
+        "status": "PASS",
+        "evidence": "Original native tags/default+B111 request and allocation probes O0/O2; inherited immutable canonical signed-drainage/reproductive/owner authority, original signed source/evidence verifier revalidated; recursive checkout failures retained and not science PASS. Admission negatives, docs and final canonical merge remain pending."
+      }
+    ],
+    "qualification_results": {
+      "trajectory_programs": 54,
+      "decoder_negative_programs": 208,
+      "direct_vectors": 2040,
+      "direct_optimizations": [
+        0,
+        2
+      ],
+      "source_unit_programs": 4,
+      "affected_owner_cases": 6,
+      "science_wall_seconds": 482.4816856899997,
+      "reconciliation_wall_seconds": 264.4951728689921,
+      "continuous_opaque_native": "EXACT_BYTE_IDENTITY",
+      "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS"
+    },
+    "canonical_reconciliation": {
+      "head": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+      "delta": "PR1099 signed DIVDRA plus documentary leaf-return/source review. No overlap with9 TCS6 production files. One additive drainage module enters295-provider build; positive body byte-exact, new signed entry point unused by weather owner. Other3 new drainage modules absent from this build. Recompiled the changed provider; executed full54 native trajectory and208 decoder matrix again, exact original endpoint/stdout identity; all other reused artifacts verified by admitted candidate hashes.",
+      "parallel_annual": "Existing candidate remains blocked on retained-organ source-state semantics, no assimilation/runtime source delta. Source-review files preserved."
+    },
+    "incumbent_proof_sha256": "a7cbccc1b6bc9121b4fc58c742af8664e2ff5ceecae51ff7c526c93edf30f0df"
   }
 }

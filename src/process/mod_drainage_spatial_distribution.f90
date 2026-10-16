@@ -46,6 +46,7 @@ module mod_drainage_spatial_distribution
   end type drainage_distribution_diagnostics_t
 
   public :: distribute_single_level_positive_divdra
+  public :: distribute_single_level_signed_divdra
 
 contains
 
@@ -229,5 +230,28 @@ contains
     end do
     valid = .true.
   end function valid_parameters
+
+  ! SWDIVDINF=0 uses exactly the admitted positive conductivity weights for
+  ! either direction. This adapter changes only orientation, never the law.
+  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+    type(drainage_distribution_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    real(real64), intent(in) :: scalar_transfer
+    type(drainage_node_transfer_t), intent(out) :: node_transfer
+    type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
+
+    if (.not. ieee_is_finite(scalar_transfer)) then
+      diagnostics = drainage_distribution_diagnostics_t()
+      diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
+      return
+    end if
+    call distribute_single_level_positive_divdra(parameters, hydraulic_view, abs(scalar_transfer), node_transfer, diagnostics)
+    if (diagnostics%status /= DRAIN_DIST_OK) return
+    if (scalar_transfer < 0.0_real64) then
+      node_transfer%soil_to_drain_rate = -node_transfer%soil_to_drain_rate
+      diagnostics%raw_partition_sum = -diagnostics%raw_partition_sum
+      diagnostics%closure_correction = -diagnostics%closure_correction
+    end if
+  end subroutine distribute_single_level_signed_divdra
 
 end module mod_drainage_spatial_distribution

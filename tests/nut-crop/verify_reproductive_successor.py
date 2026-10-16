@@ -17,6 +17,9 @@ def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hex
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['reproductive_process_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/fmig431/verify_signed_divdra_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/fmig431'));import verify_signed_divdra_successor as drain
+  return drain.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'reproductive baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--',*SURFACE),'dirty reproductive input')
@@ -117,6 +120,9 @@ def incumbent():
  check(p.returncode==0,'actual incumbent rejected '+p.stderr[-1000:]);r=json.loads(p.stdout)
  check(r['qualified']and r['dynamic_pond_successor'],'incomplete reproductive incumbent');return r
 def verify_qualification():
+ if (ROOT/'tests/fmig431/verify_signed_divdra_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/fmig431'));import verify_signed_divdra_successor as drain
+  return drain.verify_qualification()
  s=verify_source();check(record()['stage']in ('SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_BOUNDED'),'reproductive science not ready')
  science=validate_science(evidence());old=incumbent()
  return {**old,**s,'qualified':True,'incumbent':old,'science':science,'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
