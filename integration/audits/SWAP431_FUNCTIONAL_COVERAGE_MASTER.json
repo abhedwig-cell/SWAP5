@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 104,
-      "ACTIVE_MIGRATION": 100,
+      "ADMITTED": 105,
+      "ACTIVE_MIGRATION": 99,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 100,
+    "open_capabilities": 99,
     "open_workunits": 18,
     "confirmed_missing_production_entries": 79,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 103,
+    "total_unresolved_capabilities": 102,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 15,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 100,
-    "missing_standalone_process_implementations_not_established": 100,
-    "active_with_existing_production_source_authority": 62,
+    "missing_production_binding_or_implementation_entries": 99,
+    "missing_standalone_process_implementations_not_established": 99,
+    "active_with_existing_production_source_authority": 61,
     "active_without_listed_production_source_authority": 38,
-    "active_missing_complete_admitted_route": 100,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+    "active_missing_complete_admitted_route": 99,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;99 full production envelopes remain active. Full LIMIT modifier closes through real current-root/material weather and native continuation; all other242 rows preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -8450,9 +8450,12 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_scheduled_irrigation_application.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "src/process/mod_scheduled_irrigation_management_policy.f90 at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "src/process/mod_irrigation_process.f90 at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 at 121ed3503638c2d3168fa30e40f6af24156348a7"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/f-app/F-APP07_PREREGISTRATION.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
@@ -8465,20 +8468,21 @@
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
         "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "integration/audits/MC_IRR01_STATUS.json limit_completion_20261016 at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "integration/audits/evidence/MC_IRR01_LIMIT_SCIENCE_20261016.tar.xz.b64 at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "docs/science/MC_IRR01_DEPTH_LIMIT_20261016.md at 121ed3503638c2d3168fa30e40f6af24156348a7"
       ],
       "production_reachability": {
         "established": true,
-        "route": "Existing bootstrap authentic file-weather -> allocated sensor preparation -> existing physical dispatcher -> accepted-only joint publication",
-        "claim": "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open.",
-        "bounded_receipt": "managed_weather_irrigation_20261016"
+        "route": "Existing authentic weather/current-root/material shared application, DCS1/DCS2, selectors2/3/4/6/7/8; existing native restart codec",
+        "claim": "Full source-defined postselection DCSLIM minimum/maximum modifier, including zero gift lifted by minimum and zero maximum. Source endpoints, current roots/material thresholds, once-only accepted selection, rejected trials/retry, water balance and exact continuous/opaque/fresh-process tails."
       },
       "restrictions": [
-        "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open.",
-        "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        "Only depth-limit modifier closes. Other selector, crop, salt and generic parser capabilities keep independent admission conditions."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-IRR01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -8487,13 +8491,13 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
-      "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
+      "coverage_gap_type": "NONE_CANONICALLY_ADMITTED",
+      "workunit_stage": "CANONICALLY_ADMITTED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-IRR-TCS1"
       ],
-      "resolution_stage": "SHARED_APPLICATION_COMPOSITION_OWNER_DEPENDENCY",
+      "resolution_stage": "CANONICALLY_ADMITTED",
       "algorithm_absence_proven": false,
       "implementation_absence_proven_scope": "No missing irrigation algorithm claim; admitted runtime scope lacks full shared application authority.",
       "canonical_successor_review": {
@@ -8544,22 +8548,11 @@
         "evidence": "integration/audits/evidence/SWAP431_MC_IRR01_SHARED_APPLICATION_RECONCILIATION_20261011.json"
       },
       "latest_owner_disposition": {
-        "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
-        "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
-        "canonical_runtime_prs": [
-          1198,
-          1199,
-          1200,
-          1201,
-          1203,
-          1205
-        ],
-        "runtime_admitted": true,
-        "full_capability_admitted": false,
-        "remaining_specific_action": "Depth caps with accepted root/material bounds through actual shared management entry.",
-        "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
-        "cluster": "ROOT_FREE_SENSOR_APPLICATION"
+        "canonical_head": "121ed3503638c2d3168fa30e40f6af24156348a7",
+        "status": "CANONICALLY_ADMITTED_FULL",
+        "full_capability_admitted": true,
+        "owner_record": "integration/audits/MC_IRR01_STATUS.json",
+        "remaining_specific_action": null
       },
       "prior_shared_application_restrictions_20261011": [
         "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority."
@@ -8569,6 +8562,108 @@
         "full_capability": false,
         "bounded_route_established": true,
         "remaining": "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open."
+      },
+      "prior_depth_limit_restrictions_20261017": {
+        "restrictions": [
+          "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open.",
+          "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        ],
+        "production_reachability": {
+          "established": true,
+          "route": "Existing bootstrap authentic file-weather -> allocated sensor preparation -> existing physical dispatcher -> accepted-only joint publication",
+          "claim": "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open.",
+          "bounded_receipt": "managed_weather_irrigation_20261016"
+        },
+        "latest_owner_disposition": {
+          "canonical_head": "e35ea0c6801ad0c225ff02e60f24996d2bc0156d",
+          "owner_record": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+          "status": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+          "canonical_runtime_prs": [
+            1198,
+            1199,
+            1200,
+            1201,
+            1203,
+            1205
+          ],
+          "runtime_admitted": true,
+          "full_capability_admitted": false,
+          "remaining_specific_action": "Depth caps with accepted root/material bounds through actual shared management entry.",
+          "shared_authority_required": "Central RT/HY and MC-CROP01 owners must accept the proposed shared management hook and grown-root/weather profile, derive evolved roots and material thresholds from existing accepted owners, compose real rain/ET/daystart, and qualify joint physical/weather/crop/irrigation weekly/event/allocation restart at O0/O2 with affected owner/F-CI preservation. Reuse admitted runtime bindings; do not implement a second crop/root owner.",
+          "cluster": "ROOT_FREE_SENSOR_APPLICATION"
+        },
+        "remaining_dependency": [],
+        "active_workunit": "MC-IRR01",
+        "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+        "workunit_stage": "BOUNDED_PRODUCTION_IMPLEMENTED_FULL_RUNTIME_QUALIFICATION_OPEN",
+        "resolution_stage": "SHARED_APPLICATION_COMPOSITION_OWNER_DEPENDENCY"
+      },
+      "limit_admission_20261017": {
+        "capability_id": "SW431-IRR-LIMIT",
+        "pr": 1268,
+        "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+        "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+        "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+        "full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/MC_IRR01_STATUS.json at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "phase": "limit_completion_20261016",
+        "full_capability": true,
+        "optimizations": [
+          0,
+          2
+        ],
+        "literal_vectors_per_optimization": 934,
+        "fresh_providers_per_optimization": 296,
+        "trajectories": 160,
+        "decoder_negatives": 560,
+        "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+        "water_balance": "PASS_UNCHANGED_HARD_ASSERTIONS",
+        "other_242_capability_rows": "UNCHANGED",
+        "previous_summary": {
+          "capabilities": 243,
+          "dispositions": {
+            "ADMITTED": 104,
+            "ACTIVE_MIGRATION": 100,
+            "SUPERSEDED": 14,
+            "REJECTED": 2,
+            "NOT_APPLICABLE": 20,
+            "QUALIFICATION_ONLY": 3
+          },
+          "open_capabilities": 100,
+          "open_workunits": 18,
+          "confirmed_missing_production_entries": 79,
+          "other_unresolved_source_admission_reviews": 3,
+          "qualification_only_capabilities": 3,
+          "total_unresolved_capabilities": 103,
+          "active_gap_type_breakdown": {
+            "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+            "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+            "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+            "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+            "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+          },
+          "qualified_process_missing_runtime_binding": 0,
+          "missing_production_binding_or_implementation_entries": 100,
+          "missing_standalone_process_implementations_not_established": 100,
+          "active_with_existing_production_source_authority": 62,
+          "active_without_listed_production_source_authority": 38,
+          "active_missing_complete_admitted_route": 100,
+          "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+          "derived_gap_counter_reconciliation": {
+            "previous_summary": 108,
+            "actual_marked_rows": 92,
+            "active_complete_route_gaps": 108,
+            "disposition_changes": 0,
+            "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+          },
+          "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+        },
+        "derived_counter_scope": "Recompute summary from unchanged242 rows plus admitted LIMIT. Does not change capability meanings or dispositions.",
+        "disposition_delta": {
+          "ADMITTED": 1,
+          "ACTIVE_MIGRATION": -1
+        }
       }
     },
     {
@@ -15099,20 +15194,6 @@
       "implementation_absence_proven": false
     },
     {
-      "capability_id": "SW431-IRR-LIMIT",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "Bounded DCS2 cap application is admitted by PR1252. Material/root-derived DCS1 bounds, broader selectors and complete historical parameter/calendar activation remain open.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-IRR-SALTEXCESS",
       "work_unit": "MC-IRR01",
       "dependencies": [],
@@ -18083,7 +18164,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+  "canonical_locator_head": "121ed3503638c2d3168fa30e40f6af24156348a7",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19980,5 +20061,78 @@
         "sha256": "ce182fcbe651b2cd65747996ed7c464bb4b43181665226ebed01daacec6f877b"
       }
     }
+  },
+  "latest_limit_admission_20261017": {
+    "capability_id": "SW431-IRR-LIMIT",
+    "pr": 1268,
+    "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+    "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+    "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+    "full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/MC_IRR01_STATUS.json at 121ed3503638c2d3168fa30e40f6af24156348a7",
+    "phase": "limit_completion_20261016",
+    "full_capability": true,
+    "optimizations": [
+      0,
+      2
+    ],
+    "literal_vectors_per_optimization": 934,
+    "fresh_providers_per_optimization": 296,
+    "trajectories": 160,
+    "decoder_negatives": 560,
+    "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+    "water_balance": "PASS_UNCHANGED_HARD_ASSERTIONS",
+    "other_242_capability_rows": "UNCHANGED",
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 100,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 79,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 103,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 100,
+      "missing_standalone_process_implementations_not_established": 100,
+      "active_with_existing_production_source_authority": 62,
+      "active_without_listed_production_source_authority": 38,
+      "active_missing_complete_admitted_route": 100,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "derived_counter_scope": "Recompute summary from unchanged242 rows plus admitted LIMIT. Does not change capability meanings or dispositions.",
+    "disposition_delta": {
+      "ADMITTED": 1,
+      "ACTIVE_MIGRATION": -1
+    }
+  },
+  "limit_closeout_checks_20261017": {
+    "path": "integration/audits/evidence/MC_IRR01_LIMIT_MASTER_CHECKS_20261017.json.gz.b64",
+    "sha256": "704381a77b97ae14067f05667069382184926c3a78878e397b64e9bb64041758",
+    "status": "PASS",
+    "other_242_rows": "EXACT"
   }
 }

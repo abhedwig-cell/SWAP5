@@ -1,8 +1,14 @@
+# Full irrigation depth-limit admission, 17 October 2026
+
+`SW431-IRR-LIMIT` is **ADMITTED** through [PR1268](https://github.com/abhedwig-cell/SWAP5/pull/1268), canonical `121ed3503638c2d3168fa30e40f6af24156348a7`. Full merge tree equals qualified tree `c28073b67812eab4136cdc6a578b534527f31c5b`. O0/O2:934 source vectors per optimization,160 actual application/continuation trajectories,560 decoder negatives and29 admission controls. Original AVAIL/TCS6 endpoints and admitted drainage remain preserved.
+
+Current counts: **105 ADMITTED,99 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;102 unresolved,243 total**. Exactly one existing rule closes; all other242 capability records remain unchanged. Counts below are historical.
+
 # Native ordinary DRAMET3 full-capability admission, 16 October 2026
 
 `SW431-DRAIN-DRAMET3`, `SW431-DRAIN-ALLOCATION` and `SW431-DRAIN-INF-LIMIT` are **ADMITTED** through [PR1270](https://github.com/abhedwig-cell/SWAP5/pull/1270), canonical `8329752d9c08ec32f31f6248a3eecd05c6c26fc5`; qualified head `89103429ad60305fb8d45023eb58e10b23585033`. Actual full merge tree equals qualified tree `fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33`; source `6007b4b5c3757347c0418d21178961f8bda3291b`. Each optimization passes3,888 complete original-source/real-binder cases,20 invalid/undefined guards,144 physical configurations,2 actual reject/replay/empty-registry restart and2 column-isolation controls. All nine previous response variants retain297 byte-exact cases; original signed and DISLAYER physical assertions remain.
 
-Current counts: **104 ADMITTED,100 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;103 unresolved,243 total**. Exactly three existing rows close; all other240 capability records remain unchanged. Highest-interflow redistribution remains open. The global denominator remains incomplete. Recovery authority: `SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase `dramet3_phase_20261016`. Counts below are historical.
+Current counts: **104 ADMITTED,99 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;103 unresolved,243 total**. Exactly three existing rows close; all other240 capability records remain unchanged. Highest-interflow redistribution remains open. The global denominator remains incomplete. Recovery authority: `SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase `dramet3_phase_20261016`. Counts below are historical.
 
 # Current ordinary DISLAYER full capability admission, 16 October 2026
 
@@ -319,7 +325,6 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner. |
 | SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MC-IRR01 | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | MC-IRR01 | None |
-| SW431-IRR-LIMIT | Minimum/maximum irrigation depth constraints | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. |
 | SW431-IRR-RATE-CAP | Cap long scheduled irrigation events at one day while preserving depth | MC-IRR01 | None |
 | SW431-IRR-RATE-DAILY | Spread scheduled irrigation depth uniformly over one day | MC-IRR01 | None |
 | SW431-IRR-SCHED-SURF | Scheduled surface irrigation routing | MC-IRR01 | None |
@@ -545,7 +550,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | Admitted source/runtime/event/salt/allocation; full shared application authority remains open. | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner. |
 | SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required. | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route. | None |
-| SW431-IRR-LIMIT | Minimum/maximum irrigation depth constraints | Admitted source/runtime/event/salt/allocation; full shared application authority remains open. | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. |
 | SW431-IRR-RATE-CAP | Cap long scheduled irrigation events at one day while preserving depth | Source temporarily raises the rate to depth/day when requested duration exceeds one day. Current admitted TCS1 owner rejects duration>1 and never performs this adaptation. | None |
 | SW431-IRR-RATE-DAILY | Spread scheduled irrigation depth uniformly over one day | Source zero-rate fallback selects daily depth as rate. Current admitted TCS1 owner requires strictly positive rate and does not implement this fallback. | None |
 | SW431-IRR-SCHED-SURF | Scheduled surface irrigation routing | MIGRATE the explicit nonintercepted scheduled-surface application binding, first for existing TCS1/DCS2. Current scheduled binding always marks Rutter input intercepted; fixed surface identity is not a scheduled lifecycle admission. | None |
@@ -879,3 +883,7 @@ See [source disposition](../../docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_
 ## TCS6 full capability admission (2026-10-16)
 
 Existing SW431-IRR-TCS6 closes through PR1262 at `1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a`; receipt `40c6fe4252cb80bc2adbeee2731f76199f6a7c48`. Real weekly progression, accepted current roots/material limits, rejected trials, replay and exact continuous/opaque/fresh-process native continuation pass O0/O2 with water-balance preservation. Annual and signed-drainage changes were reconciled before admission. Current ledger: 98 ADMITTED, 106 ACTIVE_MIGRATION, 3 QUALIFICATION_ONLY; 109 unresolved of243. Other dispositions and the historical scientific denominator remain unchanged.
+
+## Full depth-limit admission
+
+PR #1268 admits only SW431-IRR-LIMIT at `121ed3503638c2d3168fa30e40f6af24156348a7`. The source/native qualification and exact merged tree are recorded in `MC_IRR01_STATUS.json` at that commit. The master now has105 ADMITTED,99 ACTIVE_MIGRATION and3 QUALIFICATION_ONLY,102 unresolved. All other242 capability rows are unchanged.

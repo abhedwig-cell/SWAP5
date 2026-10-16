@@ -222,7 +222,6 @@
       "status": "BOUNDED_RUNTIME_ADMITTED_SHARED_APPLICATION_BLOCKED",
       "capabilities": [
         "SW431-IRR-DCS1",
-        "SW431-IRR-LIMIT",
         "SW431-IRR-SALTEXCESS",
         "SW431-IRR-SSDI",
         "SW431-IRR-TCS2",
@@ -231,7 +230,7 @@
         "SW431-IRR-TCS7",
         "SW431-IRR-TCS8"
       ],
-      "next_action": "Preserve admitted TCS6 and external-availability current-owner weather/native continuation. Nine existing full irrigation envelopes remain active; salt/SALTEXCESS and wider selector/profile activation keep their own gates.",
+      "next_action": "Preserve admitted LIMIT, AVAIL and TCS6 native/current-root weather composition. Eight remaining irrigation capability envelopes retain their independent source/runtime admission gates.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -241,6 +240,7 @@
         "SW431-IRR-AVAIL",
         "SW431-IRR-FIXED-SPRINK",
         "SW431-IRR-FREQ",
+        "SW431-IRR-LIMIT",
         "SW431-IRR-RATE-CAP",
         "SW431-IRR-RATE-DAILY",
         "SW431-IRR-SCHED-SURF",
@@ -318,6 +318,73 @@
         "canonical_receipt": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
         "qualified_head": "72583ca3744271494da4a4147cbe35e46cd31e1a",
         "full_capability": true
+      },
+      "limit_admission_20261017": {
+        "capability_id": "SW431-IRR-LIMIT",
+        "pr": 1268,
+        "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+        "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+        "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+        "full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/MC_IRR01_STATUS.json at 121ed3503638c2d3168fa30e40f6af24156348a7",
+        "phase": "limit_completion_20261016",
+        "full_capability": true,
+        "optimizations": [
+          0,
+          2
+        ],
+        "literal_vectors_per_optimization": 934,
+        "fresh_providers_per_optimization": 296,
+        "trajectories": 160,
+        "decoder_negatives": 560,
+        "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+        "water_balance": "PASS_UNCHANGED_HARD_ASSERTIONS",
+        "other_242_capability_rows": "UNCHANGED",
+        "previous_summary": {
+          "capabilities": 243,
+          "dispositions": {
+            "ADMITTED": 104,
+            "ACTIVE_MIGRATION": 100,
+            "SUPERSEDED": 14,
+            "REJECTED": 2,
+            "NOT_APPLICABLE": 20,
+            "QUALIFICATION_ONLY": 3
+          },
+          "open_capabilities": 100,
+          "open_workunits": 18,
+          "confirmed_missing_production_entries": 79,
+          "other_unresolved_source_admission_reviews": 3,
+          "qualification_only_capabilities": 3,
+          "total_unresolved_capabilities": 103,
+          "active_gap_type_breakdown": {
+            "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+            "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+            "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+            "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+            "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+          },
+          "qualified_process_missing_runtime_binding": 0,
+          "missing_production_binding_or_implementation_entries": 100,
+          "missing_standalone_process_implementations_not_established": 100,
+          "active_with_existing_production_source_authority": 62,
+          "active_without_listed_production_source_authority": 38,
+          "active_missing_complete_admitted_route": 100,
+          "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+          "derived_gap_counter_reconciliation": {
+            "previous_summary": 108,
+            "actual_marked_rows": 92,
+            "active_complete_route_gaps": 108,
+            "disposition_changes": 0,
+            "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+          },
+          "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+        },
+        "derived_counter_scope": "Recompute summary from unchanged242 rows plus admitted LIMIT. Does not change capability meanings or dispositions.",
+        "disposition_delta": {
+          "ADMITTED": 1,
+          "ACTIVE_MIGRATION": -1
+        }
       }
     },
     {

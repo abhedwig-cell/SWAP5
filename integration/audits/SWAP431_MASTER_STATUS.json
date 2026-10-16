@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+  "last_reconciled_upstream": "121ed3503638c2d3168fa30e40f6af24156348a7",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -105,33 +105,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 104,
-      "ACTIVE_MIGRATION": 100,
+      "ADMITTED": 105,
+      "ACTIVE_MIGRATION": 99,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 100,
+    "open_capabilities": 99,
     "open_workunits": 18,
     "confirmed_missing_production_entries": 79,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 103,
+    "total_unresolved_capabilities": 102,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 15,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 100,
-    "missing_standalone_process_implementations_not_established": 100,
-    "active_with_existing_production_source_authority": 62,
+    "missing_production_binding_or_implementation_entries": 99,
+    "missing_standalone_process_implementations_not_established": 99,
+    "active_with_existing_production_source_authority": 61,
     "active_without_listed_production_source_authority": 38,
-    "active_missing_complete_admitted_route": 100,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+    "active_missing_complete_admitted_route": 99,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;99 full production envelopes remain active. Full LIMIT modifier closes through real current-root/material weather and native continuation; all other242 rows preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -141,7 +141,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Continue existing remaining queue; AVAIL, annual and signed DIVDRA are admitted. Coverage remains open; use243 fixed IDs and retain all remaining capability-specific gates.",
+  "next_action": "Continue existing remaining workstreams by source-bound capability closure; preserve LIMIT/AVAIL/TCS6 and all admitted drainage. Coverage remains open:105 ADMITTED,99 ACTIVE,3 QUALIFICATION_ONLY,102 unresolved.",
   "recovery_point": "PR1109 canonically admits ordinary interacting signed multilevel DIVDRA;97 ADMITTED,110 unresolved. B1.12/SWAP-019 canonically admitted through1265. Reuse existing annual-expanded biomass owner; distinguish gross mortality diagnostics from retained physical DM/N. SWAP5 partial-return runtime remains unadmitted. Preserve1264 annual and1099 signed drainage. Master draft:96 admitted,111 unresolved.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -3993,5 +3993,78 @@
         "sha256": "ce182fcbe651b2cd65747996ed7c464bb4b43181665226ebed01daacec6f877b"
       }
     }
+  },
+  "latest_limit_admission_20261017": {
+    "capability_id": "SW431-IRR-LIMIT",
+    "pr": 1268,
+    "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+    "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+    "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+    "full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/MC_IRR01_STATUS.json at 121ed3503638c2d3168fa30e40f6af24156348a7",
+    "phase": "limit_completion_20261016",
+    "full_capability": true,
+    "optimizations": [
+      0,
+      2
+    ],
+    "literal_vectors_per_optimization": 934,
+    "fresh_providers_per_optimization": 296,
+    "trajectories": 160,
+    "decoder_negatives": 560,
+    "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+    "water_balance": "PASS_UNCHANGED_HARD_ASSERTIONS",
+    "other_242_capability_rows": "UNCHANGED",
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 100,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 79,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 103,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 100,
+      "missing_standalone_process_implementations_not_established": 100,
+      "active_with_existing_production_source_authority": 62,
+      "active_without_listed_production_source_authority": 38,
+      "active_missing_complete_admitted_route": 100,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "derived_counter_scope": "Recompute summary from unchanged242 rows plus admitted LIMIT. Does not change capability meanings or dispositions.",
+    "disposition_delta": {
+      "ADMITTED": 1,
+      "ACTIVE_MIGRATION": -1
+    }
+  },
+  "limit_closeout_checks_20261017": {
+    "path": "integration/audits/evidence/MC_IRR01_LIMIT_MASTER_CHECKS_20261017.json.gz.b64",
+    "sha256": "704381a77b97ae14067f05667069382184926c3a78878e397b64e9bb64041758",
+    "status": "PASS",
+    "other_242_rows": "EXACT"
   }
 }
