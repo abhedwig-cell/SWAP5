@@ -1,8 +1,10 @@
 # MC-NUT01 bounded B1.11 reproductive and death process
 
-Status: qualified bounded implementation and affected O0/O2 physical science;
-34 fail-closed controls, both actual owner entrypoints and strict docs pass.
-Canonical admission pending. Source assessment PR1259 and independent balance
+Status: canonically admitted bounded implementation through PR1260, merge
+dd3e78dfc005c11221c6d049c5fcee4ef8cd2280. The actual merge tree equals the
+qualified25563e164cda762f8fa1de271fefadb9d829cc38 tree and passes the owner
+source proof.34 fail-closed controls, both actual owner entrypoints and strict
+docs pass. Source assessment PR1259 and independent balance
 review remain the authority for selecting these literal source laws. Baseline canonical71551d19d7f9a5e973d2deff5347049174502cbf.
 Owning recovery: `integration/audits/MC_NUT_SOL_STATUS.json`.
 
@@ -81,6 +83,6 @@ Measured one full affected build:222.325s providers,47.003s driver compilation,
 feedback closure costs31.317s; no unrelated solver or full FCI run is selected.
 Source-bound raw events, immutable literal blocks, rejected development fixtures,
 complete original-body insertion projections and bytes are retained in the
-owning `reproductive_process_20261016` science capsule. PR1260 is the bounded
-production admission candidate; exact canonical merge identity is recorded in
-that owner after admission.
+owning `reproductive_process_20261016` science capsule. PR1260 supplies bounded
+production admission; the owning record retains its actual merge, qualified head,
+source tree, checks/reviews and exact-tree post-merge source proof.
