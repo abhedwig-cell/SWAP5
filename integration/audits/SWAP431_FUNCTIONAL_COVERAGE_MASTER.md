@@ -1,5 +1,24 @@
 # SWAP431 functional coverage master: recoverable review
 
+
+Latest bounded pond/source admission (2026-10-16): PR1257 actually merged at
+`d52ed8934d8a6a0fe5e5976b6c05620f45658995`, canonical receipt `a8da9e76`.
+The existing1256 matrix surface-mass owner and V1/V2 codec stay unchanged. Real
+accepted pond begin/end receipts now bind gross rain/irrigation and prescribed
+dry deposition with whole water/soil-plus-surface mass, rejection/retry/replay
+and fresh-process continuation.38 current O0/O2 native programs,4 complete
+original surface programs,23 evidence controls and both actual FCI owner
+entrypoints pass; original V1 native/endpoint bytes remain identical.
+Actual fixtures cover constant positive water depth and dry-to-rewet zero depth;
+general varying pond level, evaporation/runoff/runon, surface age/nonlinear
+composition and full historical/default activation remain open. Aquifer stays
+excluded. All243 dispositions and other242 capability rows are unchanged:
+94 ADMITTED,109 ACTIVE_MIGRATION,4 QUALIFICATION_ONLY,113 unresolved.
+No full master/numerical qualification or capability promotion is implied.
+Earlier snapshots below retain their original scope and are historical where
+this later bounded source receipt supersedes their missing-source wording.
+
+
 Status: IN_PROGRESS. **Coverage is not closed and the 243-entry denominator is not declared exhaustive.**
 
 ## Current reconciliation, 16 October 2026

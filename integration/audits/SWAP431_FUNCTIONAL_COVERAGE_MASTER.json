@@ -9060,7 +9060,10 @@
         "src/runtime/mod_fmr_b111_surface_solute_route.f90",
         "src/runtime/mod_fmr_b111_surface_joint_application.f90",
         "src/adapter/mod_matrix_joint_restart_file.f90",
-        "src/runtime/mod_fmr_b111_matrix_solute_route.f90"
+        "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "src/process/mod_b111_persistent_pond.f90",
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "src/runtime/mod_fmr_b111_pond_joint_application.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -9069,16 +9072,17 @@
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
         "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
         "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
-        "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md at 0de60dd5bd2fe0787f33a3038aba868579aa94a8"
+        "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md at 0de60dd5bd2fe0787f33a3038aba868579aa94a8",
+        "docs/science/MC_SOL01_PERSISTENT_POND_CONTRACT.md at d52ed8934d8a6a0fe5e5976b6c05620f45658995"
       ],
       "production_reachability": {
         "established": false,
         "bounded_established": true,
-        "route": "src/runtime/mod_fmr_b111_surface_joint_application.f90",
-        "claim": "The admitted zero-pond supply route remains unchanged. PR1256 separately admits explicit persistent dry-surface mass reconstruction and opt-in native V2/opaque/fresh-process restart over actual zero-top-flux matrix continuation. No full pond-water/source/runoff route is established."
+        "route": "src/runtime/mod_fmr_b111_pond_joint_application.f90",
+        "claim": "Existing1256 matrix pond_mass owner, actual accepted begin/end pond water receipts, fixed positive pond depth and dry-to-rewet zero-depth route, gross rain/irrigation and prescribed dry deposition; whole water/soil-plus-surface mass, rejection/retry/replay and exact native continuation. No independent committed pool or codec. Full historical pond-water/source/runoff envelope remains open."
       },
       "restrictions": [
-        "Actual accepted per-substep pond begin/end, gross rain/irrigation, evaporation/runoff water-owner receipts; infiltration from retained pond, explicit deposition forcing and complete water/soil-plus-surface budget/native continuation. Aquifer remains excluded. Wider nonlinear surface composition and complete historical activation remain open."
+        "General dynamically varying pond level in the actual application; evaporation/runoff/runon receipts and mass composition; surface age/nonlinear composition and full historical/default activation. Aquifer remains excluded."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-SOL01",
@@ -9098,19 +9102,19 @@
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "latest_canonical_bounded_owner": {
-        "pr": 1234,
-        "canonical_merge": "136787ef2927eb44967298bec7029c30e6434422",
+        "pr": 1257,
+        "canonical_merge": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
         "owner_family": "MC-SOL01",
-        "scope": "Explicit typed rain/irrigation supply, exact actual accepted top water flux, literal linear matrix transport and existing chemical restart, strictly zero pond water and mass.",
-        "remaining": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
+        "scope": "Existing1256 matrix pond_mass owner, actual accepted begin/end pond water receipts, fixed positive pond depth and dry-to-rewet zero-depth route, gross rain/irrigation and prescribed dry deposition; whole water/soil-plus-surface mass, rejection/retry/replay and exact native continuation. No independent committed pool or codec.",
+        "remaining": "General dynamically varying pond level in the actual application; evaporation/runoff/runon receipts and mass composition; surface age/nonlinear composition and full historical/default activation. Aquifer remains excluded.",
         "sources": [
-          "src/process/mod_b111_surface_supply.f90",
-          "src/runtime/mod_fmr_b111_surface_solute_route.f90",
-          "src/runtime/mod_fmr_b111_surface_joint_application.f90"
+          "src/process/mod_b111_persistent_pond.f90",
+          "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+          "src/runtime/mod_fmr_b111_pond_joint_application.f90"
         ],
         "records": [
           "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
-          "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md"
+          "docs/science/MC_SOL01_PERSISTENT_POND_CONTRACT.md"
         ],
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "full_capability": false,
@@ -9121,7 +9125,7 @@
         "pr": 1256,
         "canonical_merge": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
         "canonical_receipt": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
-    "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_surface_restart_20261016",
+        "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_surface_restart_20261016",
         "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
         "science_archive": {
           "path": "integration/audits/evidence/MC_SOL01_SURFACE_MASS_RESTART_20261016.tar.xz.b64",
@@ -9152,6 +9156,45 @@
           "master_capability_promotion": false
         },
         "qualification_selection": "Affected real water/mass/rollback/restart O0/O2 and exact unchanged incumbent source/evidence; full FCI/highest low-air/RossFast NOT_SELECTED, no new Actions."
+      },
+      "pond_source_admission_20261016": {
+        "pr": 1257,
+        "canonical_merge": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
+        "canonical_receipt": "a8da9e7629d476d97d4deb1aa4f36c7c7cd95c06",
+        "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+        "actual_merge_tree": "56c5722d5946a9b6cbcedc82fdd7bee57066084e",
+        "production_source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+        "merge_tree_equals_qualified_tree": true,
+        "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_pond_successor_20261016",
+        "scope": "Existing1256 matrix pond_mass owner, actual accepted begin/end pond water receipts, fixed positive pond depth and dry-to-rewet zero-depth route, gross rain/irrigation and prescribed dry deposition; whole water/soil-plus-surface mass, rejection/retry/replay and exact native continuation. No independent committed pool or codec.",
+        "full_capability": false,
+        "capability_disposition_changes": 0,
+        "full_master_qualification": false,
+        "current_physical_native_programs": 38,
+        "original_surface_programs": 4,
+        "leaf_literal_cases_per_optimization": 240,
+        "negative_admission_controls": 23,
+        "remaining": "General dynamically varying pond level in the actual application; evaporation/runoff/runon receipts and mass composition; surface age/nonlinear composition and full historical/default activation. Aquifer remains excluded.",
+        "qualification_selection": "Affected source-bound O0/O2 and original V1 native/endpoint byte identity, exact unchanged1256 reconstruction/codec, both actual FCI owner entrypoints,23 source/evidence controls and source/strict docs PASS. Full FCI/highest low-air/RossFast NOT_SELECTED; no hosted numerical PASS."
+      },
+      "earlier_zero_pond_bounded_owner": {
+        "pr": 1234,
+        "canonical_merge": "136787ef2927eb44967298bec7029c30e6434422",
+        "owner_family": "MC-SOL01",
+        "scope": "Explicit typed rain/irrigation supply, exact actual accepted top water flux, literal linear matrix transport and existing chemical restart, strictly zero pond water and mass.",
+        "remaining": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
+        "sources": [
+          "src/process/mod_b111_surface_supply.f90",
+          "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+          "src/runtime/mod_fmr_b111_surface_joint_application.f90"
+        ],
+        "records": [
+          "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+          "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md"
+        ],
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "full_capability": false,
+        "full_master_qualification_claimed": false
       }
     },
     {
@@ -15534,7 +15577,7 @@
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Persistent pond/source/dry-deposition mass, runoff/evaporation/runon and nonlinear surface composition remain open; aquifer rejected.",
+      "why_open": "General dynamically varying pond level in the actual application; evaporation/runoff/runon receipts and mass composition; surface age/nonlinear composition and full historical/default activation. Aquifer remains excluded.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17221,7 +17264,7 @@
       "pr": 1256,
       "canonical_merge": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
       "canonical_receipt": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
-    "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_surface_restart_20261016",
+      "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_surface_restart_20261016",
       "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
       "science_archive": {
         "path": "integration/audits/evidence/MC_SOL01_SURFACE_MASS_RESTART_20261016.tar.xz.b64",
@@ -17642,7 +17685,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+  "canonical_locator_head": "a8da9e7629d476d97d4deb1aa4f36c7c7cd95c06",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -18552,5 +18595,25 @@
       "master_capability_promotion": false
     },
     "qualification_selection": "Affected real water/mass/rollback/restart O0/O2 and exact unchanged incumbent source/evidence; full FCI/highest low-air/RossFast NOT_SELECTED, no new Actions."
+  },
+  "latest_pond_source_reconciliation_20261016": {
+    "pr": 1257,
+    "canonical_merge": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
+    "canonical_receipt": "a8da9e7629d476d97d4deb1aa4f36c7c7cd95c06",
+    "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+    "actual_merge_tree": "56c5722d5946a9b6cbcedc82fdd7bee57066084e",
+    "production_source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+    "merge_tree_equals_qualified_tree": true,
+    "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json persistent_pond_successor_20261016",
+    "scope": "Existing1256 matrix pond_mass owner, actual accepted begin/end pond water receipts, fixed positive pond depth and dry-to-rewet zero-depth route, gross rain/irrigation and prescribed dry deposition; whole water/soil-plus-surface mass, rejection/retry/replay and exact native continuation. No independent committed pool or codec.",
+    "full_capability": false,
+    "capability_disposition_changes": 0,
+    "full_master_qualification": false,
+    "current_physical_native_programs": 38,
+    "original_surface_programs": 4,
+    "leaf_literal_cases_per_optimization": 240,
+    "negative_admission_controls": 23,
+    "remaining": "General dynamically varying pond level in the actual application; evaporation/runoff/runon receipts and mass composition; surface age/nonlinear composition and full historical/default activation. Aquifer remains excluded.",
+    "qualification_selection": "Affected source-bound O0/O2 and original V1 native/endpoint byte identity, exact unchanged1256 reconstruction/codec, both actual FCI owner entrypoints,23 source/evidence controls and source/strict docs PASS. Full FCI/highest low-air/RossFast NOT_SELECTED; no hosted numerical PASS."
   }
 }
