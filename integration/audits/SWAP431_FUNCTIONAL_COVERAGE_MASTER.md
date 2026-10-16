@@ -1,3 +1,18 @@
+# Current multilevel drainage admission, 16 October 2026
+
+`SW431-DRAIN-DIV-MULTI` is **ADMITTED** via [PR1109](https://github.com/abhedwig-cell/SWAP5/pull/1109),
+canonical `5d2518abd2b285b13f9b5f7d2177918589fd7abc`. Actual canonical source equals the qualified source
+`9ce06f8381c006dbc16f95880632695abbec12d5`. Original source/literal partition and real signed/mixed mass,
+rollback, replay, restart and isolation pass O0/O2. Positive/signed single-level,
+annual crop and B1.12 reference authorities are preserved.
+
+Current counts: **97 ADMITTED,107 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;110 unresolved,243 total**.
+These counts supersede earlier snapshots below. This closes one existing row;
+ordinary multilevel is now a closed foundation for the separate frost work.
+DRAMET3, separate infiltration, altered layers and frost-ON multilevel remain open.
+The source denominator remains incomplete and PR1072 remains draft.
+
 # Current annual admission, 16 October 2026
 
 Latest reference correction (2026-10-16): B1.12/SWAP-019 is canonically admitted
@@ -349,7 +364,6 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | MC-NUT01 | None |
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | MC-DRAIN01 | None |
 | SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | MC-DRAIN01 | None |
 | SW431-IRR-SALTEXCESS | Sensor salt-threshold excess irrigation | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. |
@@ -376,7 +390,7 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-NUT-NITRIF | Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation | MC-NUT01 | SW431-NUT-MINERAL |
 | SW431-NUT-RESIDUE | Crop residue transfers to organic soil pools | MC-NUT01 | SW431-NUT-ORGANIC |
 | SW431-NUT-TRANSPORT | Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake | MC-NUT01 | SW431-NUT-MINERAL |
-| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | MC-FROST01 | SW431-DRAIN-DIV-MULTI |
+| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | MC-FROST01 | None |
 | SW431-TILL-REDIST | Retain pressure head then redistribute weighted water after material change | MC-TILL01 | SW431-TILL-EVENT, SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
 | SW431-TILL-REDIST1 | Keep water content with excess-to-pond redistribution after material change | MC-TILL01 | SW431-TILL-N1, SW431-TILL-N2, SW431-TILL-N3 |
 
@@ -437,7 +451,6 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-DRAIN-DIV-TOPINTERFLOW | Separate highest interflow discharge layer and lower-layer exclusion | Source partitions the highest interflow down to its physical drain bottom and starts all lower discharge layers below that boundary. Current ordinary positive DIVDRA has no highest-interflow selector or separate top-layer operator. This is distinct from B15 highest scalar response and from SWDISLAY top truncation. | None |
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present. | None |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher. | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel. | None |
 | SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics. | SW431-DRAIN-DRAMET3 |
 | SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | Signed ordinary foundation is now admitted by PR1099. SWDIVDINF=1 remains open: share the existing B19 separate-infiltration partition with the ordinary owner, then qualify its source domain, accepted mass/reject/restart composition. No second partition law. | None |
 
@@ -449,7 +462,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-FROST-GW | Frost with other legacy lower-boundary owners | Current frost admission requires bottom_mode==2. The other source-relevant lower-boundary frost compositions have no admitted runtime route. | None |
 | SW431-FROST-ROOTDRAIN | Root uptake composed with frost drainage | Current frost drainage admission explicitly rejects root_extraction_active and root_frost.active. Admitted empirical root frost does not close its composition with ordinary/extended drainage. | None |
 | SW431-FROST-SNOW | Snow-insulated sensible temperature driving empirical frost hydraulics | Legacy snow resistance changes the soil-interface temperature consumed by FrozenCond; current frost admission rejects snow_active, and the current numerical thermal owner also rejects snow. This needs the TEMP-SNOW route followed by bounded snow/frost ownership qualification. No ice or latent heat is implied. | SW431-TEMP-SNOW |
-| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution. | SW431-DRAIN-DIV-MULTI |
+| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | Ordinary frost-OFF multilevel is admitted by PR1109; frost-ON composition, proposal regeneration and its mass/rollback/restart remain open. | None |
 
 ### MC-HEAT01
 

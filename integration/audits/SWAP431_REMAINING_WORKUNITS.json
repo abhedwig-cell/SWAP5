@@ -89,7 +89,6 @@
         "SW431-DRAIN-ALLOCATION",
         "SW431-DRAIN-INF-LIMIT",
         "SW431-DRAIN-DRAMET3",
-        "SW431-DRAIN-DIV-MULTI",
         "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
       "next_action": "Preserve admitted ordinary signed single-level PR1099. Resume existing multilevel/INF-SPLIT/DRAMET3 owners only under their separate source contracts; no duplicate signed foundation.",
@@ -110,7 +109,10 @@
         "canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
         "closeout": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
         "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc"
-      }
+      },
+      "closed_capabilities": [
+        "SW431-DRAIN-DIV-MULTI"
+      ]
     },
     {
       "id": "MC-FROST01",
@@ -125,7 +127,6 @@
       "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [
-        "SW431-DRAIN-DIV-MULTI",
         "SW431-TEMP-SNOW"
       ],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -136,7 +137,8 @@
         "SW431-FROST-DRAIN-PRESCRIBED",
         "SW431-FROST-HYD",
         "SW431-ROOT-FROST",
-        "SW431-SNOW"
+        "SW431-SNOW",
+        "SW431-DRAIN-DIV-MULTI"
       ]
     },
     {
@@ -1354,5 +1356,19 @@
     "next_action": "Implement a small separately selected source-order reproductive/death prepare/apply contract bounded to conserving donors; qualify cutoff/overdraw refusal before existing sole crop/soil/pending and native-restart composition. Preserve1253/default; wider reachable source defects require reference review.",
     "capability_disposition_changes": 0,
     "new_production_admission": false
+  },
+  "latest_mc_drain01_multilevel_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DIV-MULTI",
+    "pr": 1109,
+    "canonical_merge": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "qualified_head": "edacd011ab73126d77c3592f1621c3c3c905c5ce",
+    "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "scope": "Ordinary frost-OFF interacting signed multilevel DIVDRA admitted by PR1109: source-faithful descending active spacing/cumulative abs(q)*spacing, nested transmissivity and capped layers. Explicit per-level scalar/view ownership and existing serialized Reference runtime; independent signed/net-zero mass, rollback/replay, committed restart and column isolation. No new response, store, solver policy or restart codec.",
+    "validation": "Original B1.11 oracle/literal process, real O0/O2 mass/rollback/restart;6 corruption controls; original annual/reference qualification and existing owner entries; source/strict docs. No full numerical FCI/RossFast/low-air claim."
   }
 }

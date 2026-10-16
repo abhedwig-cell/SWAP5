@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+  "canonical_head": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
   "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "coverage_closed": false,
   "closure_statement": null,
@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 96,
-      "ACTIVE_MIGRATION": 108,
+      "ADMITTED": 97,
+      "ACTIVE_MIGRATION": 107,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 108,
+    "open_capabilities": 107,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 85,
+    "confirmed_missing_production_entries": 84,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 111,
+    "total_unresolved_capabilities": 110,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 7,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 108,
-    "missing_standalone_process_implementations_not_established": 108,
-    "active_with_existing_production_source_authority": 68,
+    "missing_production_binding_or_implementation_entries": 107,
+    "missing_standalone_process_implementations_not_established": 107,
+    "active_with_existing_production_source_authority": 67,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 108,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;108 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
+    "active_missing_complete_admitted_route": 107,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;107 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -4492,17 +4492,15 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution."
+        "claim": "Ordinary frost-OFF interacting multilevel DIVDRA is admitted by PR1109. Frost-ON multilevel nodal/bottom composition, its proposal regeneration, mass and transactional restart remain a separate qualification; B19 single-level frost admission is unchanged."
       },
       "restrictions": [
-        "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution."
+        "Ordinary frost-OFF interacting multilevel DIVDRA is admitted by PR1109. Frost-ON multilevel nodal/bottom composition, its proposal regeneration, mass and transactional restart remain a separate qualification; B19 single-level frost admission is unchanged."
       ],
-      "remaining_dependency": [
-        "SW431-DRAIN-DIV-MULTI"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-FROST01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 3,
@@ -4514,7 +4512,8 @@
       "implementation_absence_proven": true,
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "closed_foundation_authorities": [
-        "SW431-FROST-DIVDRA"
+        "SW431-FROST-DIVDRA",
+        "SW431-DRAIN-DIV-MULTI"
       ]
     },
     {
@@ -14531,29 +14530,29 @@
       },
       "meaning": "Multiple interacting discharge-layer partitions",
       "swap5_implementation_authority": [
-        "src/process/mod_drainage_process.f90",
-        "src/process/mod_drainage_tabulated_response.f90",
-        "src/process/mod_drainage_extended_exchange.f90",
         "src/process/mod_drainage_spatial_distribution.f90",
         "src/runtime/mod_fmr_divdra_runtime_binding.f90",
-        "src/runtime/mod_fmr_drainage_response_binding.f90"
+        "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+        "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/drainage.md",
         "docs/science/drainage-formulations.md",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64 at 5d2518abd2b285b13f9b5f7d2177918589fd7abc"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel."
+        "established": true,
+        "route": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+        "claim": "Ordinary frost-OFF interacting signed multilevel DIVDRA admitted by PR1109: source-faithful descending active spacing/cumulative abs(q)*spacing, nested transmissivity and capped layers. Explicit per-level scalar/view ownership and existing serialized Reference runtime; independent signed/net-zero mass, rollback/replay, committed restart and column isolation. No new response, store, solver policy or restart codec."
       },
       "restrictions": [
-        "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel."
+        "Ordinary SWDIVDINF=0, SWDISLAY=0 without highest-interflow override and frost OFF; all levels share exact grid/K/anisotropy. Original tiny nonzero activation seam is unavailable and rejects without publication. Separate infiltration, DRAMET3, altered layer tops and frost-ON multilevel remain separately open."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-DRAIN01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14562,14 +14561,32 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV",
         "SW431-DRAIN-DIV-SIGNED"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "canonical_admission_20261016": {
+        "pr": 1109,
+        "canonical_merge": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "qualified_head": "edacd011ab73126d77c3592f1621c3c3c905c5ce",
+        "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "original_DIVDRA_cases_per_opt": 1890,
+        "runtime_cases_per_opt": 24,
+        "reject_replay_restart_controls_per_opt": 4,
+        "hard_mass_cm": 1e-12,
+        "full_capability": true,
+        "parallel_preserved": [
+          "classic annual PR1264",
+          "B1.12 reference PR1265"
+        ],
+        "production_merge_source_identity": "PASS"
+      }
     },
     {
       "capability_id": "SW431-DRAIN-DIV-TOPINTERFLOW",
@@ -14755,20 +14772,6 @@
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
       "why_open": "SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-DRAIN-DIV-MULTI",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [],
-      "why_open": "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15001,6 +15004,20 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false
+    },
+    {
+      "capability_id": "SW431-FROST-DIV-MULTI",
+      "work_unit": "MC-FROST01",
+      "dependencies": [],
+      "why_open": "Ordinary frost-OFF interacting multilevel DIVDRA is admitted by PR1109. Frost-ON multilevel nodal/bottom composition, its proposal regeneration, mass and transactional restart remain a separate qualification; B19 single-level frost admission is unchanged.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-FROST-EXT-MULTI",
@@ -15784,9 +15801,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true,
-      "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
-      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-ROTATION",
@@ -15814,8 +15829,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false,
-      "bounded_production_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1207"
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-CROP-SOY",
@@ -15931,25 +15945,6 @@
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true,
-      "bounded_supporting_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
-      "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
-      "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
-    },
-    {
-      "capability_id": "SW431-FROST-DIV-MULTI",
-      "work_unit": "MC-FROST01",
-      "dependencies": [
-        "SW431-DRAIN-DIV-MULTI"
-      ],
-      "why_open": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 3,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -17901,7 +17896,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
+  "canonical_locator_head": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19114,5 +19109,105 @@
     "scope": "Ordinary frost-OFF single-level SWDIVD=1, SWDIVDINF=0 signed conductivity partition and existing serialized Reference binding admitted by PR1099. Positive bodies remain byte-exact; negative direction uses the same admitted weights. Supplied immutable scalar/view ownership, one accepted water ledger, rollback/replay and existing committed restart. No new scalar response or state owner.",
     "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc",
     "source_integrity": "Canonical admitted source equals completed local O0/O2 postimage. Master census validation is structural/source integrity, not a full current-canonical numerical qualification."
+  },
+  "latest_mc_drain01_multilevel_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DIV-MULTI",
+    "pr": 1109,
+    "canonical_merge": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "qualified_head": "edacd011ab73126d77c3592f1621c3c3c905c5ce",
+    "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 96,
+        "ACTIVE_MIGRATION": 108,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 108,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 85,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 111,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 108,
+      "missing_standalone_process_implementations_not_established": 108,
+      "active_with_existing_production_source_authority": 68,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 108,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;108 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 97,
+        "ACTIVE_MIGRATION": 107,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 107,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 84,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 110,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 7,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 107,
+      "missing_standalone_process_implementations_not_established": 107,
+      "active_with_existing_production_source_authority": 67,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 107,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;107 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Ordinary frost-OFF interacting signed multilevel DIVDRA admitted by PR1109: source-faithful descending active spacing/cumulative abs(q)*spacing, nested transmissivity and capped layers. Explicit per-level scalar/view ownership and existing serialized Reference runtime; independent signed/net-zero mass, rollback/replay, committed restart and column isolation. No new response, store, solver policy or restart codec.",
+    "validation": "Original B1.11 oracle/literal process, real O0/O2 mass/rollback/restart;6 corruption controls; original annual/reference qualification and existing owner entries; source/strict docs. No full numerical FCI/RossFast/low-air claim.",
+    "validation_receipts": {
+      "source_census_integrity": "{\n  \"schema\": \"swap5.coverage_integrity_result.v1\",\n  \"integrity\": \"PASS\",\n  \"ledger_metadata_baseline\": \"5d2518abd2b285b13f9b5f7d2177918589fd7abc\",\n  \"historical_evidence_baseline\": \"78acf56f931763d2e1d4924b3dea0742f231d2e8\",\n  \"canonical_locator_head\": \"5d2518abd2b285b13f9b5f7d2177918589fd7abc\",\n  \"source_members\": 63,\n  \"capabilities\": 243,\n  \"dispositions\": {\n    \"ADMITTED\": 97,\n    \"ACTIVE_MIGRATION\": 107,\n    \"SUPERSEDED\": 14,\n    \"REJECTED\": 2,\n    \"NOT_APPLICABLE\": 20,\n    \"QUALIFICATION_ONLY\": 3\n  },\n  \"denominator_complete\": false,\n  \"coverage_closed\": false,\n  \"claim\": \"Historical evidence/source integrity and pinned later authority locators only; not current-canonical scientific qualification, complete semantic coverage or new admission\"\n}\n",
+      "inheritance_controls": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.277s\n\nOK\n",
+      "authority_locator_failure": "First structural validation rejected semicolon-qualified authority locator. Corrected to existing exact path at SHA syntax, retaining phase as record navigation. No capability conditions changed.",
+      "docs_source": "PASS",
+      "strict_docs": "PASS;14.73s",
+      "global_closure_guard": "EXPECTED_REJECTION: denominator incomplete"
+    }
   }
 }
