@@ -1,0 +1,24 @@
+name: SWAP431 crop CO2 response qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/swap431-crop-co2.yml'
+  push:
+    branches: [work/swap431-crop-co2-20261007]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/swap431-crop-co2.yml'
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Shared CO2 response O0 O2
+        run: python3 tests/fmig431/run_swap431_crop_co2_response.py

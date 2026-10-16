@@ -1,0 +1,199 @@
+{
+  "baseline_canonical": "c591205c5e03f1c96c6488eb53c562265f749556",
+  "v1_scientific_source": "1d5515057",
+  "current_guarded_source": "519f7ee34",
+  "canonical_admission": false,
+  "qualified_full_fci": false,
+  "tenfold_end_to_end_proved": false,
+  "historical_hardware_comparability": "UNKNOWN",
+  "exclusive_python_evidence_github_times": "UNKNOWN",
+  "full_gate_solver_constitutive_jacobian_process_clone_exclusive_times": "UNKNOWN",
+  "optimizations": {
+    "0": {
+      "rounds": [
+        {
+          "baseline": {
+            "wall_sum": 2824.5088137489993,
+            "cpu_sum": 2824.113692
+          },
+          "candidate": {
+            "wall_sum": 302.5748250159995,
+            "cpu_sum": 302.496376
+          },
+          "native_sum_speedup": 9.334910178332402
+        },
+        {
+          "baseline": {
+            "wall_sum": 2818.208732051,
+            "cpu_sum": 2817.604263
+          },
+          "candidate": {
+            "wall_sum": 341.4897948529979,
+            "cpu_sum": 341.43760499999996
+          },
+          "native_sum_speedup": 8.252687999839534
+        }
+      ],
+      "scope": "Full original six-family native cost; O0 three workers, O2 serial. Sum of child walls is cost, not concurrent elapsed duration.",
+      "batches": [
+        {
+          "round": 0,
+          "policy": "baseline",
+          "wall_seconds": 945.715175673,
+          "cpu_seconds": 2824.113692
+        },
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 102.2730037070005,
+          "cpu_seconds": 302.496376
+        },
+        {
+          "round": 1,
+          "policy": "candidate",
+          "wall_seconds": 114.19473212699995,
+          "cpu_seconds": 341.43760499999996
+        },
+        {
+          "round": 1,
+          "policy": "baseline",
+          "wall_seconds": 944.7645691779999,
+          "cpu_seconds": 2817.604263
+        }
+      ],
+      "fine_comparisons": 144,
+      "complete_executions": 24
+    },
+    "2": {
+      "rounds": [
+        {
+          "baseline": {
+            "wall_sum": 1149.7140190969994,
+            "cpu_sum": 1149.3718669999998
+          },
+          "candidate": {
+            "wall_sum": 122.29588660800073,
+            "cpu_sum": 122.0574270000001
+          },
+          "native_sum_speedup": 9.401084950487483
+        },
+        {
+          "baseline": {
+            "wall_sum": 1146.9031184869991,
+            "cpu_sum": 1146.4596569999999
+          },
+          "candidate": {
+            "wall_sum": 121.1138800780036,
+            "cpu_sum": 120.92088099999984
+          },
+          "native_sum_speedup": 9.469625758404687
+        }
+      ],
+      "scope": "Full original six-family native cost; O0 three workers, O2 serial. Sum of child walls is cost, not concurrent elapsed duration.",
+      "batches": null,
+      "fine_comparisons": 144,
+      "complete_executions": 24
+    }
+  },
+  "guarded": {
+    "0": {
+      "executions": 6,
+      "fine_comparisons": 36,
+      "max_head_error_cm": 2.934918e-07,
+      "max_temperature_error_c": 5.349545e-07,
+      "science": "PASS_ALL_ORIGINAL_ASSERTIONS",
+      "batches": [
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 159.06291448000047,
+          "cpu_seconds": 315.58235
+        }
+      ],
+      "native_wall_sum": 315.6386510400025,
+      "native_cpu_sum": 315.58235,
+      "compile_wall": 25.82049575401834,
+      "compile_cpu": 25.59611100000001,
+      "link_wall": 0.09140573100012261,
+      "link_cpu": 0.09069099999999652,
+      "extra_ab_driver_build_times": "UNKNOWN"
+    },
+    "2": {
+      "executions": 6,
+      "fine_comparisons": 36,
+      "max_head_error_cm": 2.934918e-07,
+      "max_temperature_error_c": 5.349545e-07,
+      "science": "PASS_ALL_ORIGINAL_ASSERTIONS",
+      "batches": [
+        {
+          "round": 0,
+          "policy": "candidate",
+          "wall_seconds": 64.80907617699995,
+          "cpu_seconds": 129.489651
+        }
+      ],
+      "native_wall_sum": 129.53166746499846,
+      "native_cpu_sum": 129.489651,
+      "compile_wall": 79.48506275401269,
+      "compile_cpu": 79.11084799999995,
+      "link_wall": 0.07156140000006417,
+      "link_cpu": 0.07072500000000392,
+      "extra_ab_driver_build_times": "UNKNOWN"
+    }
+  },
+  "phases": {
+    "0": {
+      "COARSE_PHASE": {
+        "cpu": 3.228227000000001,
+        "wall": 3.228498699
+      },
+      "FINE_PHASE": {
+        "cpu": 10.891305000000001,
+        "wall": 10.895017148
+      },
+      "RESIDUAL_REPLAY_RESTART_APPLICATION_SETUP_ASSERTIONS_IO": {
+        "cpu": 4.5109649999999935,
+        "wall": 4.550553281001065
+      }
+    },
+    "1": {
+      "COARSE_PHASE": {
+        "cpu": 3.1688040000000006,
+        "wall": 3.16900522
+      },
+      "FINE_PHASE": {
+        "cpu": 10.732790000000001,
+        "wall": 10.733701242
+      },
+      "RESIDUAL_REPLAY_RESTART_APPLICATION_SETUP_ASSERTIONS_IO": {
+        "cpu": 4.382058000000001,
+        "wall": 4.428685070999986
+      }
+    }
+  },
+  "phases_scope": "V1 full original first family, O2, observational instrumentation only. Coarse/fine include driver/production interface; residual is not pure Python or pure physics.",
+  "observed_instrumentation_median_difference_seconds": 0.23202660100014327,
+  "observed_instrumentation_median_fraction": 0.012699379533230859,
+  "instrumentation_scientific_stdout_identity": true,
+  "matched_v1_o0_o2_native_sum_rounds": [
+    {
+      "baseline": 3974.2228328459987,
+      "candidate": 424.87071162400025,
+      "speedup": 9.353958096229247
+    },
+    {
+      "baseline": 3965.111850537999,
+      "candidate": 462.6036749310015,
+      "speedup": 8.571293453579688
+    }
+  ],
+  "matched_v1_median_native_sum_speedup": 8.945987403876419,
+  "hard_mass_assertion_bound_cm": 1e-12,
+  "actually_observed_full_gate_max_mass_residual": "UNKNOWN (not printed by immutable original driver)",
+  "governance_rehearsal": {
+    "exit": 1,
+    "wall_seconds": 0.11422989899983804,
+    "scope": "ACTUAL_OWNER_GOVERNANCE_REHEARSAL_NOT_NUMERICAL_PASS"
+  },
+  "governance_reason": "Actual moving F-CI verifier rejects unknown production mutation in modular repair owner binding before numerics; no guard weakened."
+}

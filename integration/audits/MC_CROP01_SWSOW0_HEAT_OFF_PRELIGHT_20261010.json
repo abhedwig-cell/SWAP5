@@ -1,0 +1,29 @@
+{
+  "schema": "swap431.mc_crop01.swsow0_heat_off_certified_preflight.v1",
+  "baseline": "4d30b0374d70c57e0cc03a94dadc16ea76051a7f",
+  "source_authority": {
+    "file": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "blob": "6f587310c7b9e9ba5e79f22d988bddd5feead133",
+    "observation": "sowing task1 rejects SWHEA=0 only if SWSOW=1; SWGERM=2 uses accepted head without soil-temperature requirement"
+  },
+  "change": "SWSOW=0 bypasses certified hydrothermal sampler; SWPREP=1 samples owner-certified pressure-head at zprep, and germination samples accepted zgerm pressure-head. SWSOW=1 retains certified heat requirement.",
+  "production_blob": "3c6242ee6e052478eb107600c21a7d30858a76c7",
+  "test_blob": "1fbe41ce3c36f2bd699849eb5d90e0af96195abe",
+  "negative_tests": [
+    "heat-off SWSOW1 remains forbidden",
+    "heat-off SWSOW0 SWPREP1 SWGERM2 accepted",
+    "no invented soil heat or sow node",
+    "stale F-KT revision rejected",
+    "out-of-profile preparation depth rejected"
+  ],
+  "local_tests": "NOT EXECUTED: local GitHub checkout unavailable (DNS resolution failure), exact-head F-CI owner test mandatory",
+  "qualification": "PENDING",
+  "preserved": false,
+  "admitted": false,
+  "unmodified": [
+    "F-KT commit owner",
+    "meteorological forcing owner",
+    "crop event owner"
+  ],
+  "future": "Actual owner-authenticated TAV plus event publication still open."
+}

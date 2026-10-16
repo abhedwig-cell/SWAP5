@@ -1,0 +1,21 @@
+{
+  "schema": "swap431.mc_root01.local_component_evidence.v1",
+  "date": "2026-10-08",
+  "candidate_commit": "a5350a93a3786dab2cd10ab94db6c3f6491b81a1",
+  "case": "root anaerobic gate plus supply-limited growth",
+  "files": {
+    "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "7f4503648a4979b200764b94e90a4605e5355410",
+    "src/crop/mod_crop_root_extension_supply_limit.f90": "d0e32a9ae578cf043a486be37ca66ce376dd8e2d",
+    "tests/fmig431/test_swap431_root_anox_supply_combined.f90": "e29f213ec41138b8eecd9324eb2ead23decbccff"
+  },
+  "source_verification": "All three local files match exact Git blob SHA via git hash-object before compilation.",
+  "compiler": "gfortran -O0/-O2 -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow",
+  "result": {
+    "O0": "ROOT_ANOX_SUPPLY_COMBINED=PASS",
+    "O2": "ROOT_ANOX_SUPPLY_COMBINED=PASS",
+    "output_identical": true,
+    "conclusion": "PASS"
+  },
+  "claim_ceiling": "Bounded module-level oxygen gate and drought/root-growth supply limiter only. This does not test SWRD2/SWRD3 production composition, potential shadow, adaptive density, accepted daily input provenance, root-water mass balance, rollback, restart or whole-model preservation.",
+  "actions_dispatched": 0
+}

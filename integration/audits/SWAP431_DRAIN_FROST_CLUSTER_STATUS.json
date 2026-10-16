@@ -1,18 +1,17 @@
 {
   "schema_version": "1.0",
   "work_unit": "SWAP431-MC-DRAIN01-FOUNDATION",
-  "baseline": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
-  "branch": "work/swap431-drain-signed-multilevel-20261007",
-  "checkpoint_commit": "9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
+  "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "branch": "work/swap431-drain-frost-coverage-20261007",
+  "checkpoint_commit": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "implemented_capabilities": [
-    "SW431-DRAIN-DIV-SIGNED",
-    "SW431-DRAIN-DIV-MULTI"
+    "SW431-DRAIN-DIV-SIGNED"
   ],
-  "scope": "Ordinary no-frost signed single-level DIVDRA plus interacting multilevel discharge-layer partitioning, wired through existing serialized DIVDRA composition/runtime. Existing positive-only API remains fail-closed for negative transfers.",
+  "scope": "Ordinary frost-OFF drainage recovery: signed and interacting multilevel are canonically admitted. Continue the existing closeout branch for separate infiltration under the frozen phase below.",
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
     "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
@@ -23,7 +22,12 @@
     "src/runtime/mod_fmr_divdra_serialized_composition.f90",
     "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
     "tests/fmig431/test_swap431_drain_signed_divdra.f90",
-    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "tests/fmig431/run_swap431_multilevel_divdra.py",
+    "tests/fmig431/test_swap431_multilevel_divdra_contract.f90",
+    "tests/fmig431/test_swap431_multilevel_divdra_runtime.f90",
+    "tests/fmig431/verify_multilevel_divdra_successor.py",
+    "tests/fmig431/verify_signed_divdra_successor.py"
   ],
   "dependency_surface": [
     "src/process/mod_drainage_spatial_distribution.f90",
@@ -42,21 +46,817 @@
     "B19 frost physics is not duplicated or changed"
   ],
   "current_test_state": {
-    "focused_runner": "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "execution": "PASS_LOCAL_O0_O2_COMPLETE",
+    "focused_runner": "tests/fmig431/run_swap431_signed_divdra_runtime.py",
     "expected_optimizations": [
       "O0",
       "O2"
     ],
-    "execution": "PENDING",
-    "reason": "PR-triggered broad Actions are queued; local checkout cannot resolve github.com and no source archive is materialized in the shell environment."
+    "observations": [
+      "Original unpublished harness did not call inactive control; repeated allocated requests; incorrect .eqv. precedence and distinct-view assertion repaired.",
+      "Nonfinite signed inputs trapped in incumbent ordered comparison. Additive signed adapters now reject these before calling unchanged positive implementation.",
+      "Unqualified old fixture used a custom top provider unavailable to temporal history and exact full/half identity for evolving states. Uses existing fixed_flux_top_boundary_provider_t and admitted numerical-continuation history/certificate owner.",
+      "Actual temporal history requires known predecessor; uniform gravity equilibrium derivative zero is seeded. Discontinuous signed forcing refines using min timestep 1e-10 day, 24 retries, head budget 1e-6 cm; production defaults unchanged.",
+      "Exact bitwise sum assertion was inconsistent with incumbent floating-point partition. Uses admitted B19 nodal closure 1e-14 and unchanged hard total mass 1e-12 cm.",
+      "Diagnostic retain-step-proposal was rejected by existing certificate compatibility guard; removed without changing production policy.",
+      "Mode2 explicit water balance and mode7 free drainage both execute 24 signed cases; four actual reject/replay/empty-registry restart controls pass in O0 diagnostic.",
+      "Historical pond validator compares git diff headers literally. Additional Git objects changed automatic abbreviation from eight to nine characters, reproducing a metadata-only false rejection after earlier PASS. The original immutable chain is executed with scoped core.abbrev=8 matching the captured patch; science/reference/old assertions are unchanged."
+    ],
+    "current_cases": {
+      "process": "literal overlap, B19 warm donor, immutable positive body and FCI32/33 smoke",
+      "runtime": 24,
+      "rejection_replay_restart": 4,
+      "inactive": 2,
+      "two_column_isolation": 1,
+      "negative_preflight": 7,
+      "mass_gate_cm": 1e-12,
+      "nodal_roundoff_cm": 1e-14
+    },
+    "owner_reconciliation": "Source-only inherited N validator rejected foreign reproductive science for four drainage providers. Additive delegation validates complete new exact scope and original predecessor source/science in immutable d27 incumbent. No old assertions removed."
   },
   "active_ci_observation": {
-    "run_id": 37626797140,
-    "workflow": "F-CI canonical qualification",
-    "head": "9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
-    "status": "QUEUED_NOT_COUNTED_AS_TEST"
+    "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Obtain compiler execution for the focused runner; repair any compile/test defects. Only then persist qualification evidence and reconcile census dispositions. In parallel, continue source-bound design decomposition for DRAMET3, INF-SPLIT, DISLAYER and TOPINTERFLOW without claiming closure.",
-  "recovery_point": "work/swap431-drain-signed-multilevel-20261007@9ac3a72f9d938b4263f0fefbd15fb0db911b6fd7",
-  "blockers": []
+  "next_action": "Signed and interacting multilevel rows are closed. Other drainage/frost rows retain their separate source-bound conditions; no broader route is admitted.",
+  "recovery_point": "PR1109 merge5d2518abd2b285b13f9b5f7d2177918589fd7abc; master receipt725ea58dc1ae725c1c5de475578bb9a3ad65928f. Original signed PR1099 admission preserved.",
+  "blockers": [],
+  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
+  "closure_conditions_frozen_20261016": {
+    "ledger_rows": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "conditions": [
+      "O0/O2 real process and binder drivers: independent reference/positive-path preservation; positive, negative, zero; tiny and nonfinite rejection; sign and nodal closure; preallocated target nonmutation",
+      "O0/O2 actual serialized Richards: signed input/output water amounts, hard 1e-12 cm mass closure, inactive and positive preservation, distinct columns, rejected candidate rollback and clean replay, committed restart into empty registry with exact continuation",
+      "No new state/mass owner, no double booking of nodal redistribution as external water; final accepted nodes only",
+      "Reconcile live canonical and parallel source delta; docs and source-bound evidence valid; safe normal merge of existing PR1099"
+    ],
+    "excluded": [
+      "SW431-DRAIN-DIV-MULTI",
+      "SW431-DRAIN-INF-SPLIT",
+      "SW431-DRAIN-DRAMET3",
+      "frost/low-air",
+      "RossFast/full-FCI blanket execution"
+    ],
+    "authority": "Existing SW431-DRAIN-DIV-SIGNED ledger definition and PR1099 scope. PR1109 is a separate later multilevel candidate, not prerequisite for this row."
+  },
+  "test_selection": {
+    "candidate": "2a3b88f7abefeeae520f32859ac2b7adb64925f4",
+    "process": "small real distribution/binding drivers O0/O2; four production providers",
+    "integration": "24 real signed cases across bottom modes 2/7; four reject/replay/native committed restart controls; two-column isolation; O0+O2 cold closure expected 100 s based on first O0 compile 28 s and native diagnostic 6 s. All original source tolerances retained.",
+    "not_selected": {
+      "full_fci": "No changed solver/runtime/state owner. Targeted actual Richards mass/rollback/restart covers changed sign binding; no blanket new whole-model claim.",
+      "highest_low_air": "NOT_SELECTED_POLICY, frost OFF",
+      "rossfast": "NOT_SELECTED_IMPACT, unchanged implementation and input contract"
+    }
+  },
+  "prior_recovery": "PR1109 record carried forward for retrieval, narrowed explicitly to earlier PR1099. No prior qualified claim exists.",
+  "canonically_admitted": true,
+  "closure_evidence": {
+    "path": "integration/audits/evidence/MC_DRAIN01_SIGNED_20261016.json.gz.b64",
+    "sha256": "0856eab8f6dc454a562ad899fa91ee4c0a094a420b1d5c813ac89c3bbb42daca",
+    "source_commit": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
+    "result": "PASS_LOCAL_O0_O2",
+    "bytes": 94083
+  },
+  "qualification_inputs_sha256": {
+    "tests/fmig431/run_swap431_signed_divdra_runtime.py": "190466732ced3c4a88b720724c175524c4e40707ae7c694a2eeaed86761511c3",
+    "tests/fmig431/verify_signed_divdra_successor.py": "7af9f7e5f3b7fe3c12dd5785eaffb54dcb72e9bf0ead61145fa2199003932e00",
+    "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
+    "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2"
+  },
+  "measurements": [
+    {
+      "case": "signed_contract",
+      "optimization": 0,
+      "compile_seconds": 0.8403410440078005,
+      "link_seconds": 0.04043583699967712,
+      "execution_seconds": 0.004086875997018069,
+      "total_seconds": 1.1291786060028244,
+      "compiler_requests": 7,
+      "reused_compilations": 0,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "signed_contract",
+      "optimization": 2,
+      "compile_seconds": 1.485019140993245,
+      "link_seconds": 0.04522561500198208,
+      "execution_seconds": 0.002414204995147884,
+      "total_seconds": 1.7200128949916689,
+      "compiler_requests": 7,
+      "reused_compilations": 0,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "positive_process",
+      "optimization": 0,
+      "compile_seconds": 0.04608173899760004,
+      "link_seconds": 0.03685946500627324,
+      "execution_seconds": 0.002941081009339541,
+      "total_seconds": 0.24463184499472845,
+      "compiler_requests": 2,
+      "reused_compilations": 3,
+      "ordered_source_count": 4
+    },
+    {
+      "case": "positive_process",
+      "optimization": 2,
+      "compile_seconds": 0.07625808799639344,
+      "link_seconds": 0.046236088004661724,
+      "execution_seconds": 0.00178912200499326,
+      "total_seconds": 0.2847821219911566,
+      "compiler_requests": 2,
+      "reused_compilations": 3,
+      "ordered_source_count": 4
+    },
+    {
+      "case": "positive_binder",
+      "optimization": 0,
+      "compile_seconds": 0.16557715002272744,
+      "link_seconds": 0.048927967000054196,
+      "execution_seconds": 0.0019640730024548247,
+      "total_seconds": 0.3947926959954202,
+      "compiler_requests": 4,
+      "reused_compilations": 3,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "positive_binder",
+      "optimization": 2,
+      "compile_seconds": 0.3135729859932326,
+      "link_seconds": 0.03869383200071752,
+      "execution_seconds": 0.002040477003902197,
+      "total_seconds": 0.5307539950008504,
+      "compiler_requests": 4,
+      "reused_compilations": 3,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "signed_runtime",
+      "optimization": 0,
+      "compile_seconds": 24.900075538054807,
+      "link_seconds": 0.10892746000899933,
+      "execution_seconds": 4.6216854130034335,
+      "total_seconds": 30.68959547500708,
+      "compiler_requests": 170,
+      "reused_compilations": 0,
+      "ordered_source_count": 169
+    },
+    {
+      "case": "signed_runtime",
+      "optimization": 2,
+      "compile_seconds": 71.78606795307132,
+      "link_seconds": 0.08404404899920337,
+      "execution_seconds": 1.9788507420016686,
+      "total_seconds": 74.81952142900263,
+      "compiler_requests": 170,
+      "reused_compilations": 0,
+      "ordered_source_count": 169
+    }
+  ],
+  "preservation": {
+    "positive_process_and_binder": "FRESH_O0_O2_PLUS_BYTE_EXACT_INCUMBENT_BODIES",
+    "B19": "Existing warm partition exercised O0/O2; all frost science sources/tests and positive dependency bodies byte-exact. No new complete frost or low-air PASS claimed.",
+    "solver_transaction_restart": "UNCHANGED_IMPLEMENTATION; actual affected signed compositions/reject/replay/restart execute fresh",
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "RossFast": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "canonical_reconciliation": {
+    "base": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "observed_head": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "delta": "Three N leaf-return review/status/evidence paths; no production/tests or drainage dependency change. Fresh numeric evidence preserved."
+  },
+  "successor_postimages": {
+    ".github/workflows/swap431-drain-signed.yml": {
+      "status": "A",
+      "blob": "44e206fa63b7da835cbeee0891bd88029f45662d"
+    },
+    "src/process/mod_drainage_spatial_distribution.f90": {
+      "status": "M",
+      "blob": "3414a170ba01af906dbb1d3b1b854eb1fd375a6b"
+    },
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90": {
+      "status": "M",
+      "blob": "a20113bbd756b353ecc9997e4fbfacf9f1d551f4"
+    },
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90": {
+      "status": "M",
+      "blob": "9e76812048d4621e167aa120a1977128cab4b973"
+    },
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90": {
+      "status": "M",
+      "blob": "70585d183ea68e0bee64210baab7de3adb8c514f"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "blob": "c500c4f03975b460123ede71a8bf1cb2f38364dd"
+    },
+    "tests/fmig431/run_swap431_signed_divdra_runtime.py": {
+      "status": "A",
+      "blob": "ceb361178e7f193d5b2649a8428c3ce916a3840b"
+    },
+    "tests/fmig431/test_swap431_signed_divdra_contract.f90": {
+      "status": "A",
+      "blob": "7fbd40b707ec04694ffb12ce3701406eb2fb0fa6"
+    },
+    "tests/fmig431/test_swap431_signed_divdra_runtime.f90": {
+      "status": "A",
+      "blob": "f2f2a43896b36685c93b41e5fcbc1d9a050b6a44"
+    },
+    "tests/fmig431/verify_signed_divdra_successor.py": {
+      "status": "A",
+      "blob": "132b5a003a16b76ae7c41bc5f55f5f7969ec71b0"
+    },
+    "tests/nut-crop/verify_reproductive_successor.py": {
+      "status": "M",
+      "blob": "7effeb38d1429c591ed8ce748ce9cfc4cfd09410"
+    }
+  },
+  "owner_qualification_preservation": {
+    "terminal": "PASS_AFTER_FORMAT_REPRODUCTION",
+    "entry": "tests/fwof/pp02/verify_b111_nfixation_successor.py",
+    "incumbent": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "current_signed_successor": true,
+    "reproductive_preserved": true,
+    "stdout_sha256": "6d736b0e2faaf22eb8ba357ded8a9ee9ee0583ab839663fd60878d56d239b234",
+    "receipt_in_archive": true,
+    "execution": "Evidence/source verification through original immutable owner chain; no repeated numerical FCI or low-air run.",
+    "git_diff_format": "core.abbrev=8, scoped only to original immutable validator process and descendants"
+  },
+  "automatic_ci_reconciliation": {
+    "run_id": 38932004068,
+    "job_id": 117078288219,
+    "conclusion": "failure",
+    "actual_failure": "ValueError: foreign reproductive science",
+    "disposition": "Old exact source-only guard rejected the four new drainage providers. Additive successor delegation now checks new exact scope and reruns original complete predecessor evidence validator. Actual same owner entry passes locally. No failed numerical test or full FCI PASS inferred.",
+    "successor_run": {
+      "id": 38933819049,
+      "selection_preflight": "success",
+      "modular_feedback": "success",
+      "full_numerical_FCI": "skipped by selection policy; not claimed PASS"
+    }
+  },
+  "validation": {
+    "source_evidence": "PASS",
+    "corruption_controls": 6,
+    "focused_FCI_owner_entry": "PASS",
+    "original_incumbent_owner_entry": "PASS",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "shell_syntax": "PASS",
+    "whitespace": "PASS",
+    "canonical_merge_source_identity": "PASS"
+  },
+  "stage": "CANONICALLY_ADMITTED_SIGNED_AND_INTERACTING_MULTILEVEL_FROST_OFF",
+  "canonical_admission": {
+    "pr": 1099,
+    "actual_canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+    "qualified_head": "31d05eac08211382d003c6cf59b51bf4077da2fd",
+    "qualified_science_source": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
+    "source_tree": "7f11c4d028c88aab9aaddb9b693dac5796443284",
+    "qualified_and_actual_merge_tree": "81dccfccd0b356d9f77604799622226f716f6648",
+    "fetched_merge_identity_verified": true,
+    "normal_merge_api": true,
+    "protection_bypass": false,
+    "closed_capabilities": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "complete_MC_DRAIN01": false
+  },
+  "mastercoverage_receipt": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "pr": 1072,
+    "commit": "f373f72cedb5f3124ec7ee16b2e01c54f5e18299",
+    "closed_ledger_rows": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "counts": {
+      "capabilities": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 3,
+      "total_unresolved": 112
+    },
+    "source_integrity": "PASS",
+    "inheritance_guard_tests": 20,
+    "docs_source_and_strict": "PASS",
+    "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
+  },
+  "multilevel_phase_20261016": {
+    "baseline": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+    "existing_branch": "work/swap431-drain-signed-multilevel-r2-20261007",
+    "existing_pr": 1109,
+    "existing_candidate": "8a8d88fe68b3b0c424883a75d762b5ea98d76ba2",
+    "state": "CANONICALLY_ADMITTED",
+    "ledger_rows": [
+      "SW431-DRAIN-DIV-MULTI"
+    ],
+    "conditions_frozen": [
+      "Original unedited B1.11 DIVDRA oracle at frost OFF, SWDIVDINF=0, SWDISLAY=0 and no highest-interflow override: heterogeneous/nonuniform grids, anisotropy, interacting layer depths, reordered/equal spacings, signed/mixed/zero levels and groundwater boundary seams; O0/O2 real production process and binder.",
+      "Per-level scalar remains authoritative, signed sum closure; nonzero legacy-inactive magnitudes reject rather than silently lose water. Invalid parameters/view/nonfinite/shape and prebound target fail before publication.",
+      "Serialized real physical runtime: signed/mixed per-level contributions, independent external soil-drain mass and net-zero internal level cancellation, accepted state, rejected trial/retry exact replay, empty-registry restart and two-column isolation; O0/O2.",
+      "Incumbent positive and signed single-level process/binder bodies remain exact. Original signed O0/O2 drivers replay only affected contracts; unchanged solver, bottom, frost and other science evidence is inherited by explicit source comparison.",
+      "Affected source/admission guards, evidence integrity and docs checks, current canonical/parallel reconciliation and safe existing PR merge before ledger admission."
+    ],
+    "excluded": [
+      "SW431-DRAIN-INF-SPLIT",
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT",
+      "SW431-DRAIN-DISLAYER",
+      "SW431-DRAIN-DIV-TOPINTERFLOW",
+      "all frost-ON multilevel capabilities"
+    ],
+    "invariants": [
+      "No new mass/state/restart owner: process partitions prescribed per-level soil-to-drain rates; runtime owns transaction and scratch cleanup. Positive removes soil water, negative adds; external exchange is algebraic signed sum.",
+      "No solver or execution-policy change. No automatic full F-CI, RossFast or low-air selection."
+    ],
+    "remaining": [],
+    "parallel_reconciliation": {
+      "head": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+      "since": "e849dbb01e4bda79dacf584fa14e9cb49ca9c764",
+      "paths": [
+        "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+        "integration/audits/MC_NUT_SOL_STATUS.json",
+        "integration/audits/evidence/MC_NUT01_LEAF_RETURN_REFERENCE_CANDIDATE_20261016.tar.xz.b64"
+      ],
+      "drainage_dependencies_changed": false
+    },
+    "qualified": true,
+    "tested": true,
+    "persisted_science_checkpoint": "8688620187311189e0e3eee637e4e24ee88b1dbb",
+    "frozen_conditions_commit": "0f3294ffa5be77410befc99a9e5fd5b8a2926b81",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+      "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+    },
+    "qualification_inputs_sha256": {
+      "tests/fmig431/run_swap431_multilevel_divdra.py": "ecf046f8ad58c5546c97f73374f37710c0691a468a6781168b47568801d425aa",
+      "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
+      "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2"
+    },
+    "original_source_cases_per_optimization": 1890,
+    "source_oracle_tolerance_cm_per_day": 1e-14,
+    "hard_mass_tolerance_cm": 1e-12,
+    "runtime_cases_per_optimization": 24,
+    "rollback_replay_restart_cases_per_optimization": 4,
+    "original_signed_runtime_replayed": true,
+    "numerical_changes": false,
+    "inherited_signed_qualified": true,
+    "claim_ceiling": "SW431-DRAIN-DIV-MULTI is fully closed within the declared ordinary frost-OFF partition contract; all frozen exclusions remain separate and open.",
+    "test_selection": {
+      "small_first": "7 sources; original/literal process/binder O0/O2 before runtime; incumbent positive/signed contracts",
+      "integration": "Real serialized Richards modes2/7, mixed signed levels and zero-net cancellation; cold O0/O2, shared verified modules only inside one Session",
+      "not_selected": {
+        "full_fci": "Affected contracts and owning evidence guards only; no solver or execution policy change",
+        "rossfast": "NOT_SELECTED_IMPACT",
+        "highest_low_air": "NOT_SELECTED_POLICY; frost OFF"
+      }
+    },
+    "measured": [
+      {
+        "case": "multilevel_contract",
+        "optimization": 0,
+        "compile_seconds": 0.9442314890184207,
+        "link_seconds": 0.05625052000686992,
+        "execution_seconds": 0.012544255005195737,
+        "validation_seconds": 0.08013897600176279,
+        "reused_compilations": 0
+      },
+      {
+        "case": "multilevel_contract",
+        "optimization": 2,
+        "compile_seconds": 2.6288215309905354,
+        "link_seconds": 0.054350500999134965,
+        "execution_seconds": 0.01337316000717692,
+        "validation_seconds": 0.07139589200960472,
+        "reused_compilations": 0
+      },
+      {
+        "case": "signed_contract",
+        "optimization": 0,
+        "compile_seconds": 0.43179467700247187,
+        "link_seconds": 0.056138953994377516,
+        "execution_seconds": 0.0019690229964908212,
+        "validation_seconds": 0.24267170601524413,
+        "reused_compilations": 3
+      },
+      {
+        "case": "signed_contract",
+        "optimization": 2,
+        "compile_seconds": 0.8606929719971959,
+        "link_seconds": 0.055919509002706036,
+        "execution_seconds": 0.001905490003991872,
+        "validation_seconds": 0.15877538398490287,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_process",
+        "optimization": 0,
+        "compile_seconds": 0.05379527900367975,
+        "link_seconds": 0.09003785700770095,
+        "execution_seconds": 0.007336245995247737,
+        "validation_seconds": 0.15738877801049966,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_process",
+        "optimization": 2,
+        "compile_seconds": 0.07432834499923047,
+        "link_seconds": 0.041405707990634255,
+        "execution_seconds": 0.0018445559981046245,
+        "validation_seconds": 0.16638822498498484,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_binder",
+        "optimization": 0,
+        "compile_seconds": 0.12842432499746792,
+        "link_seconds": 0.038882216991623864,
+        "execution_seconds": 0.0019001350010512397,
+        "validation_seconds": 0.18014246701204684,
+        "reused_compilations": 4
+      },
+      {
+        "case": "positive_binder",
+        "optimization": 2,
+        "compile_seconds": 0.25390486100513954,
+        "link_seconds": 0.04475762799847871,
+        "execution_seconds": 0.002101480000419542,
+        "validation_seconds": 0.1483680870005628,
+        "reused_compilations": 4
+      },
+      {
+        "case": "multilevel_runtime",
+        "optimization": 0,
+        "compile_seconds": 34.52356880303705,
+        "link_seconds": 0.18222889400203712,
+        "execution_seconds": 6.937330556000234,
+        "validation_seconds": 0.22114188499108423,
+        "reused_compilations": 0
+      },
+      {
+        "case": "multilevel_runtime",
+        "optimization": 2,
+        "compile_seconds": 101.80592883906502,
+        "link_seconds": 0.23942466000153217,
+        "execution_seconds": 2.7240949859988177,
+        "validation_seconds": 0.3528978970134631,
+        "reused_compilations": 0
+      },
+      {
+        "case": "signed_runtime",
+        "optimization": 0,
+        "compile_seconds": 3.0463984070083825,
+        "link_seconds": 0.10971726299612783,
+        "execution_seconds": 4.308641252006055,
+        "validation_seconds": 2.320185902150115,
+        "reused_compilations": 168
+      },
+      {
+        "case": "signed_runtime",
+        "optimization": 2,
+        "compile_seconds": 6.30324032700446,
+        "link_seconds": 0.29936188099964056,
+        "execution_seconds": 2.569383623995236,
+        "validation_seconds": 2.2161739789153216,
+        "reused_compilations": 168
+      }
+    ],
+    "successor_postimages": {
+      "reference/swap-4.3.1/README.md": {
+        "status": "M",
+        "blob": "8017117dced1059f5e5f1f91cd38abab8d1766a1"
+      },
+      "reference/swap-4.3.1/b1-manifest.yml": {
+        "status": "M",
+        "blob": "eb6500526eb29c2a743b6cfa269e09a76b4ce7b2"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/apply_and_verify.py": {
+        "status": "A",
+        "blob": "8ef33660f09eade020a1eb4f749c81435ef5fbb0"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/finding.md": {
+        "status": "A",
+        "blob": "01715ea5f288826ebd60c5b040e54e04f722b017"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/fix.patch": {
+        "status": "A",
+        "blob": "183ea401256e2e710ba70f3e62eb2be33bdec24c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/qualification.md": {
+        "status": "A",
+        "blob": "63f8acd0f763ad2bcc6c496f89c87cf264b4416f"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/run_reference.py": {
+        "status": "A",
+        "blob": "22df9d021fde758cd2b894264c3f93bb8362b22c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/test_reference.py": {
+        "status": "A",
+        "blob": "e09ef60bdbb8b6f98158cea45507e4b05389fadb"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/verify.py": {
+        "status": "A",
+        "blob": "e597dfe314f52bec9da467fdd2afbe854f767a0b"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
+        "status": "A",
+        "blob": "f91716505c34fab5ba490a51d679c6eb2ffb3c0e"
+      },
+      "reference/swap-4.3.1/snapshots/B1.12.yml": {
+        "status": "A",
+        "blob": "12b793b8283e11b6cd9e130a0a559c97e09961c6"
+      },
+      "src/crop/mod_wofost_actual_biomass_state.f90": {
+        "status": "M",
+        "blob": "79da2d32fa4e99f8f5bb24097f526e4ee896af47"
+      },
+      "src/crop/mod_wofost_finalize_rates.f90": {
+        "status": "M",
+        "blob": "b967136a0640f9ae6c2c4d9d9250d8946a05245d"
+      },
+      "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+        "status": "M",
+        "blob": "9afdb2e4ea88fba0f75b80a7ccdfaae579e6481a"
+      },
+      "src/process/mod_drainage_spatial_distribution.f90": {
+        "status": "M",
+        "blob": "de410e965665bfd1d7bf1828dddc7a275f779bd2"
+      },
+      "src/runtime/mod_fmr_divdra_runtime_binding.f90": {
+        "status": "M",
+        "blob": "b93202db935d146a80ffbd4ca01d25d6a4d00d13"
+      },
+      "src/runtime/mod_fmr_divdra_serialized_composition.f90": {
+        "status": "M",
+        "blob": "be00933240bbddcec791ec751f4c6e31fb239e38"
+      },
+      "src/runtime/mod_fmr_divdra_serialized_runtime.f90": {
+        "status": "M",
+        "blob": "56679bfde412c989b1d0f92521982e9a30a32eb9"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "b256c5354d0d34be51690a20c65449670cc01ba2"
+      },
+      "tests/fmig431/annual/check_classic_codec.py": {
+        "status": "A",
+        "blob": "c64e00d2255e63c21bb75ec133b35f1eac7b6591"
+      },
+      "tests/fmig431/annual/check_zero_codec_bytes.py": {
+        "status": "A",
+        "blob": "5e09c8cbe27820ba627f2263380cabc6a159ba1d"
+      },
+      "tests/fmig431/annual/resume_classic_weather.py": {
+        "status": "A",
+        "blob": "69fed665565fa6ec5e9eac966afead333742fc8c"
+      },
+      "tests/fmig431/annual/run_classic_owners.py": {
+        "status": "A",
+        "blob": "6e91b2b918d8ac410db0ec9d446e1b4d4b3f5829"
+      },
+      "tests/fmig431/annual/run_classic_restart.py": {
+        "status": "A",
+        "blob": "0b793b82fbb61d2ef9485cf24e2d7df8b773fdb4"
+      },
+      "tests/fmig431/annual/run_classic_source.py": {
+        "status": "A",
+        "blob": "043a8869558f86a82ba583a12a2d6188372de0d0"
+      },
+      "tests/fmig431/annual/run_classic_weather.py": {
+        "status": "A",
+        "blob": "47e2f7b8da3f4f46e83c56fd3ab770b55dc23412"
+      },
+      "tests/fmig431/annual/run_wofost81_preservation.py": {
+        "status": "A",
+        "blob": "4dcb6ba71bdb5dceeedd8336cadf96fbdb09e2c1"
+      },
+      "tests/fmig431/annual/test_annual_admission_controls.py": {
+        "status": "A",
+        "blob": "fb302b32cc9da687a7b6c6be70c69c756d3ebd57"
+      },
+      "tests/fmig431/annual/test_classic_source.f90": {
+        "status": "A",
+        "blob": "a93fee4043f760fb1a1ff0a3c5b7d8069b40fd26"
+      },
+      "tests/fmig431/annual/test_zero_restart.f90": {
+        "status": "A",
+        "blob": "3d82d522c5bb3e644dd5014f3c3cf5a172419d29"
+      },
+      "tests/fmig431/annual/verify_annual_successor.py": {
+        "status": "A",
+        "blob": "cfd2a5236823f461c427b42c520f7ffb911aea2b"
+      },
+      "tests/fmig431/run_swap431_multilevel_divdra.py": {
+        "status": "A",
+        "blob": "8e22e653975e9fd9bb3fa5bb60bb173a7e4d78c8"
+      },
+      "tests/fmig431/test_swap431_multilevel_divdra_contract.f90": {
+        "status": "A",
+        "blob": "c8142aefa1b1c62672b045cca59b9a2098cbc8bc"
+      },
+      "tests/fmig431/test_swap431_multilevel_divdra_runtime.f90": {
+        "status": "A",
+        "blob": "ea39b51cc48afbbae8fc4d9415eac7c5caa9554d"
+      },
+      "tests/fmig431/verify_multilevel_divdra_successor.py": {
+        "status": "A",
+        "blob": "6b0d3e2adb0695902594b3c484264842cc1172d6"
+      },
+      "tests/fmig431/verify_signed_divdra_successor.py": {
+        "status": "M",
+        "blob": "9dadf619ca66908dc823fe0171c719e9d250f626"
+      },
+      "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90": {
+        "status": "M",
+        "blob": "e4845a4d118fe17955efec3800754c19aa2dfb08"
+      },
+      "tools/vq/b1_12_admission_gate.py": {
+        "status": "A",
+        "blob": "6394ddb0e910f4297f7ae654691ac5424bb8b471"
+      },
+      "tools/vq/b1_12_reconstruct.py": {
+        "status": "A",
+        "blob": "85c09cc4c3be2f584b411b41d0e4fd13f40b9b5d"
+      }
+    },
+    "qualification_checkpoint": "ddf13d59ec8a593c6f6407d9b5f01f3aecdfb65a",
+    "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+    "validation": {
+      "source_evidence": "PASS",
+      "evidence_corruption_controls": 6,
+      "actual_original_incumbent_qualification_chain": "PASS",
+      "existing_focused_FCI_owner_entry": "PASS",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS",
+      "whitespace": "PASS",
+      "joint_annual_owner_entry": "PASS",
+      "joint_drain_owner_entry": "PASS",
+      "joint_evidence_corruption_controls": 6,
+      "joint_docs_source": "PASS",
+      "joint_mkdocs_strict": "PASS",
+      "reference_joint_owner": "PASS",
+      "reference_joint_evidence_controls": 6
+    },
+    "parallel_annual_reconciliation": {
+      "canonical_commit": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "decision": "Preserve annual source, original owner validator and immutable qualification at its actual canonical admission. Compose only additive successor delegation; preserve numerical drainage evidence because no selected compiled input changed.",
+      "drainage_numerical_input_intersection": [],
+      "changed_paths": [
+        "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+        "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_ADMISSION_CONTROLS_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_SOURCE_QUALIFICATION_20261016.tar.xz.b64",
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "tests/fmig431/annual/check_classic_codec.py",
+        "tests/fmig431/annual/check_zero_codec_bytes.py",
+        "tests/fmig431/annual/resume_classic_weather.py",
+        "tests/fmig431/annual/run_classic_owners.py",
+        "tests/fmig431/annual/run_classic_restart.py",
+        "tests/fmig431/annual/run_classic_source.py",
+        "tests/fmig431/annual/run_classic_weather.py",
+        "tests/fmig431/annual/run_wofost81_preservation.py",
+        "tests/fmig431/annual/test_annual_admission_controls.py",
+        "tests/fmig431/annual/test_classic_source.f90",
+        "tests/fmig431/annual/test_zero_restart.f90",
+        "tests/fmig431/annual/verify_annual_successor.py",
+        "tests/fmig431/verify_signed_divdra_successor.py",
+        "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90"
+      ],
+      "new_production_scope": [
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90"
+      ],
+      "guard": "tests/fmig431/annual/verify_annual_successor.py",
+      "remaining": [],
+      "qualification": "PASS actual immutable original annual validator plus exact current annual postimages/delegation reconstruction; all12 drainage records retain identical inputs."
+    },
+    "joint_receipts": {
+      "controls": {
+        "sha256": "1a4234206ab4e278c6d11e32ccc31a325b0a9799aa52cd940b08563f6e4c0f03",
+        "terminal": "PASS"
+      },
+      "annual_owner": {
+        "sha256": "e14b951c0f7006a050a07170feac095119cf361784b6002e70e3ba33736aa5eb",
+        "terminal": "PASS"
+      },
+      "drain_owner": {
+        "sha256": "a998e5c81908dae6d4bac281a856a8c8400d3834ac13b428f16816895a2ddb16",
+        "terminal": "PASS"
+      },
+      "strict_docs": {
+        "sha256": "e043fa7aa8c125c69701ac224e0f8398b48ba36f97a4f4f99996e40f622dc7be",
+        "terminal": "PASS"
+      }
+    },
+    "parallel_reference_reconciliation": {
+      "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+      "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+      "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+      "drainage_numerical_input_intersection": [],
+      "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+    },
+    "latest_reconciled_canonical": "36862e06001154f5097b438ae4b851ae092423df",
+    "canonical_admission": {
+      "pr": 1109,
+      "actual_canonical_merge": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+      "qualified_head": "edacd011ab73126d77c3592f1621c3c3c905c5ce",
+      "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+      "qualified_tree": "b00dc0588fa8dd3d50ca1769e8cafda02ca63c29",
+      "actual_merge_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+      "actual_first_parent": "5d45a7a4ff162be6cc8b1b9fa4f1f18feb687cfd",
+      "source_and_scientific_postimages_identical": true,
+      "late_parallel_delta": [
+        "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+        "integration/audits/MC_NUT_SOL_STATUS.json"
+      ],
+      "late_delta_disposition": "Reference admission/master metadata only; all source/test/tool/reference/scientific inputs identical. Qualified source/evidence retained.",
+      "normal_merge_api": true,
+      "protection_bypass": false,
+      "closed_capabilities": [
+        "SW431-DRAIN-DIV-MULTI"
+      ]
+    },
+    "mastercoverage_receipt": {
+      "branch": "work/swap431-master-coverage-20261006",
+      "pr": 1072,
+      "commit": "725ea58dc1ae725c1c5de475578bb9a3ad65928f",
+      "closed_rows": [
+        "SW431-DRAIN-DIV-MULTI"
+      ],
+      "counts": {
+        "capabilities": 243,
+        "ADMITTED": 97,
+        "ACTIVE_MIGRATION": 107,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3,
+        "total_unresolved": 110
+      },
+      "structural_source_integrity": "PASS",
+      "inheritance_controls": 20,
+      "docs_source_and_strict": "PASS",
+      "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
+    }
+  },
+  "inf_split_phase_20261016": {
+    "baseline": "0c715757c57d302aa29cad3510ffba12c9baf3ea",
+    "existing_candidate": "aa5b6a729dd762b8f9e853c57295faefdff779a5",
+    "existing_branch": "work/swap431-drain-frost-closeout-20261007",
+    "pr_search": "No PR returned for exact existing closeout head; reuse existing branch, create no second branch/route.",
+    "state": "CONDITIONS_FROZEN_BEFORE_IMPLEMENTATION",
+    "ledger_rows": [
+      "SW431-DRAIN-INF-SPLIT"
+    ],
+    "conditions_frozen": [
+      "Share the admitted B19 corrected transmissivity partition itself, without copied infiltration physics. Preserve all existing B19 frost/default calls, public positive/signed/multilevel ordinary bodies, scalar and state owners.",
+      "Ordinary SWDIVDINF1 single and interacting multiple levels: original FDisInf effective-spacing ordering/cumulative flow must affect positive discharge layers in mixed signs; negative rows reuse the B19 unsaturated/saturated integral. Positive/zero defaults retain existing ordinary behavior.",
+      "Source-bound corrected DIVDRA O0/O2 comparisons on heterogeneous/nonuniform/anisotropic grids, equal/reordered spacings, negative/mixed/zero rates, infiltration factors0/1/interior and depth caps. Include source-valid same-compartment surface/GWL geometry and zero unsaturated span; no silent restriction to the old B19 multi-compartment subset. A source defect, if found, remains a specific reference-qualification blocker rather than an implicit exclusion.",
+      "Invalid/nonfinite/mismatched shape and parameter ownership, tiny nonzero legacy activation seam, negative saturated thickness within original offset, inconsistent flow direction geometry and preallocated targets fail closed without publication. Do not weaken per-level scalar closure or accepted mass.",
+      "Small real production driver O0/O2 first. Then real serialized single/multilevel mixed-sign mass, independent net-zero external exchange, rejection/replay, cleanup, empty-registry restart and two-column isolation O0/O2. Reuse existing transaction/temporal history and immutable view contracts.",
+      "Fresh affected B18 corrected-reference component preservation and existing signed/multilevel small and runtime drivers; exact reconstruction of unchanged frost/default partition path. Unchanged solver and unrelated frost/runtime numerical evidence is inherited by relevant source/semantic projection, not broad reruns.",
+      "Qualify exact persisted postimages, frozen conditions and integrity controls; joint current owner/admission entries, source/strict docs, final canonical/parallel reconciliation, safe merge and existing master/recovery receipt before claiming the row closed."
+    ],
+    "excluded": [
+      "DRAMET3/OWLTAB",
+      "SWDISLAY altered tops",
+      "highest-interflow special layer",
+      "new frost-ON capabilities",
+      "new bottom/response/solver/store/restart owner"
+    ],
+    "remaining": [
+      "shared partition and valid source-domain qualification",
+      "ordinary multilevel source response to FDisInf",
+      "actual runtime mass/rollback/restart",
+      "affected preservation and admission",
+      "safe canonical merge and ledger receipt"
+    ],
+    "invariants": [
+      "One authoritative scalar per level, one existing accepted water ledger; positive removes soil water, negative supplies it.",
+      "No second infiltration algebra, forcing clock, physical store or restart codec.",
+      "Rejected work leaves committed state and caller forcing unchanged."
+    ],
+    "test_selection": {
+      "small_first": "Direct existing shared partition, real ordinary adapter/binder, unedited admitted corrected DIVDRA oracle; cold O0/O2.",
+      "integration": "Actual serialized Reference modes2/7 and existing temporal-history owner; expected cold build~150s based on previous169-provider closure.",
+      "not_selected": {
+        "full_fci": "No blanket selection; only affected owner contracts",
+        "rossfast": "NOT_SELECTED_IMPACT",
+        "highest_low_air": "NOT_SELECTED_POLICY; no frost-ON envelope extension"
+      }
+    }
+  }
 }

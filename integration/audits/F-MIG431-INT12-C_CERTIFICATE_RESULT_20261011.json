@@ -1,0 +1,69 @@
+{
+  "work_unit": "INT12-C additive certificate-profile receiving witness",
+  "status": "BLOCKED_REAL_ENDPOINT_TEMPORAL_RETRY_EXHAUSTION",
+  "baseline": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
+  "final_reconciled_canonical": "230f2acdeccc29045c57f918c1dae0a49a6f5e3d",
+  "final_reconciliation": "Concurrent irrigation weather-publication evidence and crop harvest/rotation decision preserved. No overlap with163 compile dependencies; both PROJECT-CONTROL additions and registry objects retained.",
+  "checkpoint": "18bddada5797de8425f14ea3d5d2038b9d80029f",
+  "checkpoint_tree": "30aa6f36ac6dafb176a657ac66b65cfe4fd96c1d",
+  "candidate_pr": 1009,
+  "candidate_head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+  "candidate_source_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
+  "authority": "Existing prescribed-qbot certificate route admitted and reconciled through F-CI62P; no new production route.",
+  "profile": "Separate hydrostatic origin with zero supplied predecessor derivative, fixed-flux net rain and inactive roots; test-only head budget1e-6cm,8 retries,32 substep limit, hard mass1e-12cm. No application accuracy selection.",
+  "results_each_optimization": {
+    "returncode": 1,
+    "completed": false,
+    "committed": false,
+    "kernel_status": 2,
+    "admission_status": "ADMITTED",
+    "attempts": 9,
+    "retries": 8,
+    "temporal_rejections": 9,
+    "mass_rejections": 0,
+    "solver_rejections": 0,
+    "headcalc_calls": 9,
+    "solver_status": 1,
+    "accepted_substeps": 0
+  },
+  "passing_checks": [
+    "Original FMR44R equilibrium, positive-qbot/certificate and unowned-mode assertions unchanged and passing O0/O2",
+    "Actual mode4 preflight cannot advance source progress or physical revision/time",
+    "Actual mode2 temporal failure cannot advance source progress or physical revision/time",
+    "O0/O2 semantic marker lines identical"
+  ],
+  "not_qualified": [
+    "Any real accepted receiving endpoint in the new fixture",
+    "Unequal accepted source allocation or companion restore",
+    "Accepted gross/interception/net-rain mass identity",
+    "Full dynamic-top/crop application or joint physical restart",
+    "Candidate-wide ten-gate admission"
+  ],
+  "interpretation": "This separate certificate configuration also exhausts the declared retry budget. The captured result does not distinguish certificate-unavailable from certificate-over-budget rejection or record its numerical Binf. Do not infer an adapter defect, general solver defect or impossibility of another valid profile.",
+  "identity_profile_source_diagnosis": {
+    "source": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "blob": "01d1981cc7aebb1553463b1cee955bb21da05fe6",
+    "procedure": "fmr_serialized_temporal_identity",
+    "rule": "Base state returns0 only for full/half exact pressure,water,pond,GWL identity; otherwise huge. Increasing a finite tolerance is not a calibrated accuracy fix.",
+    "negative_result_record": "integration/audits/F-MIG431-INT12-C_REAL_ENDPOINT_RESULT_20261011.json"
+  },
+  "archive": {
+    "path": "integration/audits/evidence/F-MIG431-INT12-C_CERTIFICATE_20261011.tar.gz.b64",
+    "decoded_sha256": "2a490195559e14a81c39c2af1bbc8d0e29c48d713993d2d58adbafbb1191c554",
+    "members": 9,
+    "member_sha256": {
+      "compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+      "o0.txt": "b15a5b9e5aa883d2fd26021289b14c773985676b77ec67bba59f5192dfab135a",
+      "results.json": "32102aeeab7b3ded144c02328af0b6ae81d75d716163b0de6a010d1bcd37df23",
+      "driver.f90": "fed7b2c3737b30afc0503cfa2ca785558f7ac38b2c3350cc89a0b63e28d53a19",
+      "o2.txt": "454169313fb90bebda5de7e36fdba89ddf3f69e0b4c5492cbe8eb9f05e18b7a4",
+      "compile_sources.json": "ef070754e3ef021bf06c703c23d3bf3e59db79d510ee8eab5fa333cfbc266c87",
+      "compile-run.log": "f0bc8816f18904f7ec2a24adce4286164cdc65c51807ea2869d78e1d9e840162",
+      "preregistered.json": "2d9d3711a9a02a3c2c559e1f84fa6e03783a6d6ebb5f858a0d3df4b5adfe3eb6"
+    }
+  },
+  "compile_dependency_count": 163,
+  "preservation": "All original assertions and thresholds unchanged. Production/reference/workflows/assets/testbank/owner crop changes unchanged against be5a1476. No Actions or capability admission.",
+  "next_safe_step": "F-KT/RT with PPA-WU04-C and MC-CROP01 resolves the receiving numerical profile using explicit certificate availability/Binf and continuation diagnostics, then qualifies actual F-APP04/crop composition and all ten original gates against admitted PR1209. Current fixed-flux attempts are not full application evidence.",
+  "reproduction": "python3 tests/fpm/run_int12c_real_endpoint.py --profile certificate --evidence-dir /tmp/new-unique-certificate-path; expected positive gate failure and both logs retained."
+}

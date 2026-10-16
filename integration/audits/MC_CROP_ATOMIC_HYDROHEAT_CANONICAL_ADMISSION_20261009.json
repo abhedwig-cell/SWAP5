@@ -1,0 +1,34 @@
+{
+  "schema": "swap431.crop_atomic_accepted_hydroheat_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "4bdce5547601b41b2323f96638dd6413555078fb",
+  "qualified_head": "b746873e3b500a5cb8084d81f7d6967c03672363",
+  "canonical_merge": "78841c56eea2dcec7bcf64202655cc095c516800",
+  "admitted": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "pr": 1157,
+  "implementation": "src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90",
+  "tests": [
+    "tests/fmig431/test_crop_atomic_accepted_hydroheat.f90",
+    "tests/fmig431/run_crop_atomic_accepted_hydroheat.sh"
+  ],
+  "qualification": {
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37915213843",
+    "result": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37915213624",
+    "fci_result": "success"
+  },
+  "scope": "Read-only pressure-head and soil-temperature sampling from one F-KT committed physical-state snapshot with lineage, revision, accepted-time, heat presence, finite and node guards. No state mutation.",
+  "claim_ceiling": [
+    "Caller node is not authenticated against same B110 grid and immutable parameter_set_id.",
+    "Heat-state presence is not proof of independently authorized SWHEA option selection.",
+    "No accepted weather TAV, lifecycle forcing publication, crop emergence, root init, harvest/fallow or whole-system restart."
+  ],
+  "next_action": "Implement owner-minted immutable B110 parameter/grid identity bound to accepted F-KT kernel state, covering init, restart, retry, reconfigure and same-geometry false positives, before crop transition authority."
+}

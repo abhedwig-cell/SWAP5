@@ -1,0 +1,929 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-INPUT",
+  "persistent_surface_restart_20261016": {
+    "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "branch": "work/sol-surface-restart-20261016",
+    "phase": "CANONICALLY_ADMITTED_PERSISTENT_SURFACE_RESTART",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "canonical_admission": {
+      "pr": 1256,
+      "merge_commit": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
+      "qualified_head": "73314c8f97c62ce0e4ed53d4be131edc74ffcbe4",
+      "merge_tree": "241f990f3d090e4d81a657b477bf5b857b075f5e",
+      "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_actual_source_and_science_identity": "PASS on exact canonical efe79f5fd58f564f54dde5ca5e575bb138c4bbb1; no numerical rerun",
+      "master_recovery_commit": "11d052fd8c4ad21d6c917ddaa2e0e9039408447b",
+      "master_integrity": "PASS historical source/pinned locators;20 inheritance controls; strict docs14.07s; full closure correctly refused",
+      "full_pond_source_admission": false,
+      "master_capability_promotion": false
+    },
+    "contract": "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
+    "scope": "Explicit existing compartment surface-mass reconstruction and opt-in V2 native restart; preserve V1/default activation. No new pond hydrology or deposition equation.",
+    "selection": "Real matrix/kernel/adapter O0/O2, opaque/native/fresh continuation, V1/default/nonmutation and CRC-correct mass forgeries; expected300s cold closure. Full FCI/highest low-air/RossFast NOT_SELECTED_IMPACT.",
+    "next_action": "PR1256 and the single-owner pond/deposition successor1257 are both actually admitted. Do not reopen their resolved codec/state-owner conflict or start a duplicate route. Remaining SOL scope is general varying pond depth, separately owned gross evaporation/runoff/runon, surface age/nonlinear/default activation. Follow the admitted1257 scope/next_action; aquifer stays excluded.",
+    "live_successor_reconciliation": {
+      "pr": 1257,
+      "branch": "work/sol-pond-continuation-20261016",
+      "observed_head": "2bb976932c4900b29a0341fb46fa22ba3870186a",
+      "merge_base_with_1256": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "state": "RESOLVED_CANONICALLY_ADMITTED_1257",
+      "current_blockers_for_bounded1257": [],
+      "canonical_merge": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
+      "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+      "current_closeout_verification": {
+        "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
+        "command": "PYTHONDONTWRITEBYTECODE=1 python -B tests/nut-sol/verify_pond_successor.py",
+        "exit_code": 0,
+        "qualified": true,
+        "source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+        "actual_merge_tree_equals_qualified_tree": true,
+        "science": "Verified existing sealed240-case leaf,38 physical native programs and4 original surface programs; exact source/test/oracle/raw evidence and immutable incumbent authority.",
+        "new_numerical_or_actions_runs": 0,
+        "general_variable_pond_level_qualified": false
+      },
+      "historical_pre1256_blockers": "Final science/owner controls remain pending. Same native writer/reader trailing argument is optional pond object in1257 versus admitted allow_surface_mass logical in1256; schema S5MP0001 versus S5MJ0002. Must preserve V1/V2, one surface-mass owner, accepted atomicity and existing1256 recovery/source guards before current integration can qualify.",
+      "preserved_pre1256_checkpoint": "2bb97693 retains its complete source and science archive; no active work closed or implementation overwritten.",
+      "new_duplicate_pr_authorized_or_created": false,
+      "single_owner_resolution_1257": {
+        "state": "CANONICALLY_ADMITTED_BOUNDED_SINGLE_OWNER",
+        "source": "matrix1256 pond_mass and V1/V2 bytes unchanged",
+        "original_head": "2bb976932c4900b29a0341fb46fa22ba3870186a",
+        "historical_scientific_remote": "ea39f8e8b6666b5472868553a2cdfd18a03e4655",
+        "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+        "no_competing_codec_or_committed_pool": true
+      }
+    },
+    "admission_verification": {
+      "candidate_local": "95a949b4785ee347edc8eb576a5f09b2ce305aa9",
+      "candidate_remote": "0dada3f4bb904f22899ff1ad53b5dd5a36c097f9",
+      "candidate_tree": "bd4b448633429bfe4ccf722be5b20a481f704d2f",
+      "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python -B tests/mc-irr01/check_material_root_controls.py",
+      "terminal_stdout": "PERSISTENT_SURFACE_ADMISSION_CONTROLS=26|PASS\n",
+      "exit_code": 0,
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS exit0;22.16s; existing pinned docs dependencies",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "workflow_runs": 0,
+      "canonical_rechecked": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "overlap": "PR1256 is the sole open SOL persistent-surface candidate; prior1254 and closure1255 retained unchanged.",
+      "full_fci": "NOT_SELECTED_AFFECTED_RESTART_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "new_actions_dispatched": false,
+      "numerical_rerun_for_metadata": false
+    },
+    "full_capability": false,
+    "master_disposition_changes": 0,
+    "execution_commit": "1e6f4a19452a2793b7d8ebe8bbba72ca4344879c",
+    "remote_equivalent_execution": "adb0155c1c15e3a6782d2f2f24f401d8491863ba",
+    "execution_tree": "de881915975138976d59f195960f0d92ae220a99",
+    "postimages": {
+      "src/adapter/mod_matrix_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "ababe5f4222964d431b3fe62f42a997d31846746"
+      },
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90": {
+        "status": "M",
+        "blob": "79dfbf07fe94a2785edfb28c02b44702e5fc136e"
+      },
+      "tests/mc-irr01/check_material_root_controls.py": {
+        "status": "M",
+        "blob": "2e3f472002a626cedb96c93ff43a9347f56bd37c"
+      },
+      "tests/mc-irr01/verify_material_root_successor.py": {
+        "status": "M",
+        "blob": "31988a2e1be9d01062cfcd9317a3129e819a568e"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "M",
+        "blob": "e1a9de60878cf8f039268d5ea78dd20e8747c00b"
+      },
+      "tests/nut-sol/run_surface.py": {
+        "status": "M",
+        "blob": "40cee628aebe9e728b31fbbe2a994c3b2c3f468b"
+      },
+      "tests/nut-sol/surface_restart_contract.inc": {
+        "status": "A",
+        "blob": "f1f97c86516f23ffcd2d7080b3f0679595186ac8"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "M",
+        "blob": "b1f60720545ad84c35c467c01b97aeaecb5020d3"
+      }
+    },
+    "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_MASS_RESTART_20261016.tar.xz.b64",
+      "decoded_sha256": "6eac1ef7e04c7b59a3fedec2075af152d3c825b91e00ff6676157808f1e15d3e",
+      "decoded_bytes": 48164,
+      "members": 1227
+    },
+    "cost_seconds": {
+      "physical_compile": 179.07304422206653,
+      "physical_link": 0.28261966099671554,
+      "physical_native": 21.129505079981755,
+      "process_compile": 0.41797913404298015,
+      "process_link": 0.11812917899806052,
+      "process_native": 0.00424614199437201,
+      "restart_compile": 6.670627553990926,
+      "restart_link": 0.3890205809875624,
+      "restart_native": 9.019629448011983
+    },
+    "physical_provider_count": 261,
+    "selected_programs": {
+      "process": 2,
+      "zero_pond_native": 24,
+      "persistent_surface_native": 18
+    },
+    "last_reconciled_upstream": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "pr": 1256,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1256",
+    "recovery_point": "PR1256 actually merged0de60dd5bd2fe0787f33a3038aba868579aa94a8; canonical receipt efe79f5fd58f564f54dde5ca5e575bb138c4bbb1 and actual post-merge source/science identity PASS. Master11d052fd8c4ad21d6c917ddaa2e0e9039408447b,243 dispositions unchanged. Full pond/source water receipts and composition remain open; prior raw science is retained.",
+    "relevant_paths": [
+      "src/adapter/mod_matrix_joint_restart_file.f90",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+      "tests/mc-irr01/check_material_root_controls.py",
+      "tests/mc-irr01/verify_material_root_successor.py",
+      "tests/nut-sol/check_surface_evidence_controls.py",
+      "tests/nut-sol/run_surface.py",
+      "tests/nut-sol/surface_restart_contract.inc",
+      "tests/nut-sol/verify_surface_successor.py"
+    ],
+    "authority_paths": [
+      "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
+      "docs/development/workstream-execution-protocol.md"
+    ],
+    "blockers": [
+      "Full nonzero pond/source integration requires actual water-owner pond begin/end, gross rain/irrigation, evaporation/runoff substep receipts; this prerequisite does not invent them."
+    ]
+  },
+  "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+  "stage": "BOUNDED_ZERO_POND_SURFACE_INPUT_CANONICALLY_ADMITTED_CLOSED",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": true,
+  "scope": "Prescribed supply-limited matrix infiltration, no pond/evaporation/runoff; typed transient rain/irrigation split matched to actual accepted top flux; existing chemical owner and restart reused.",
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "next_action": "Requested persistent pond/infiltration/retained-solute/dry-deposition/restart scope closed within actual qualified dynamic application. Separate future surface evaporation/runoff/runon receipts, surface age, N companions and full historical/default activation remain open; aquifer excluded. Next user priority is separate reproductive/translocation/death crop-N assessment; preserve1253 and1254.",
+  "test_selection": {
+    "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
+    "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
+    "admission": "Full moving selected once at stable candidate because two eligibility guards must recognize exact additive sources. Expected1400..1900s. Highest NOT_SELECTED_POLICY; no Actions selected."
+  },
+  "reconciliation": {
+    "canonical": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
+    "open_overlap": "No newer NUT/SOL successor found in current open PR retrieval; donor1117 remains selective only",
+    "age": "PR1233 admitted e85bfe13",
+    "reactive_N": "PR1232 admitted26ddf94e; no duplication",
+    "master": "PR1072 aae2b8d207b13453be45dd1773d39f8eae855831;243 dispositions unchanged; stale inheritance failure remains"
+  },
+  "blockers": [],
+  "added_blobs": {
+    "src/process/mod_b111_surface_supply.f90": "0b3079d02685e2b7d425f8bdf92029fcd247967c",
+    "src/runtime/mod_fmr_b111_surface_solute_route.f90": "d8b70f17cbbc4d9270025f35544d919c33cd7aae",
+    "src/runtime/mod_fmr_b111_surface_joint_application.f90": "314f8f1ba57126c81428938670a2867e35a8f5a2",
+    "tests/nut-sol/run_surface.py": "63c65c3c6e906b20126f634a72a45d22ef906061",
+    "tests/nut-sol/test_surface_process.f90": "0706e673d06ebb7ba14915181865785ebd68b3bc",
+    "tests/nut-sol/test_surface_joint.f90": "62037253706c541039cae44138a255f9a73e372f",
+    "tests/nut-sol/verify_surface_successor.py": "a7a102f79c1acede4217479a07eeb13f74045682",
+    "tests/nut-sol/check_surface_evidence_controls.py": "37df67a2a0d71bed6f304ff99cf26c0425791a68"
+  },
+  "guard_blobs": {
+    "tests/crop-co2/verify_co2_successor.py": "bc6df6bf83119048a68dc9bac5143c8bf5692ee5",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "98dcea60c6b86a17137d7c4c6ca190fc654f9962"
+  },
+  "execution_commit": "2291376815e3d33e21cb655d109f915300ed7d19",
+  "cost_seconds": {
+    "physical_compile": 128.32305141595134,
+    "physical_link": 0.20651543900021352,
+    "physical_native": 18.181484894957975,
+    "process_compile": 0.34114225300436374,
+    "process_link": 0.10799846399459057,
+    "process_native": 0.0034752289939206094
+  },
+  "physical_provider_count": 238,
+  "process_provider_count": 2,
+  "input_count": 242,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_INPUT_20261015.tar.xz.b64",
+    "sha256": "ed6ba2035349ee34f48a86d15356601692529e0afa052175ecf5bb1cd6d0bb8d",
+    "decoded_bytes": 1665616,
+    "members": 1323
+  },
+  "failed_attempts": [
+    {
+      "path": "failed-process",
+      "reason": "Strict -Werror real equality warning; fixed without changing physical formula."
+    },
+    {
+      "path": "failed-physical",
+      "reason": "Overdraw fixture exceeded declared parameter bound and could not retry; fixed to permitted1e6/day."
+    },
+    {
+      "path": "leaf-feedback",
+      "status": "PASS_O0_FEEDBACK_NOT_FINAL_QUALIFICATION"
+    }
+  ],
+  "pr": 1234,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1234",
+  "branch": "work/sol-surface-input-20261015",
+  "scientifically_qualified": true,
+  "preservation_execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+  "remote_equivalent_execution": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+  "recovery_point": "PR1234; frozen surface-admission atdebc95c5; full local moving controller run_surface_admission.py live owning session. Scientific capsule exact SHA in evidence; no admission until terminal preservation and regie checks.",
+  "censored_preservation": {
+    "execution": "debc95c5823c2178f901b4af73a541cbc947ae3d",
+    "status": "CENSORED_NOT_PASS",
+    "reason": "Pre-admission review found relative surface-rate tolerance can exceed absolute water budget at large finite rate and dt. Exact match and discriminating real Fortran control required. Owning unified session Ctrl-C; no terminal PASS.",
+    "wall_seconds": "UNKNOWN (controller interrupted)",
+    "compile_link_native_seconds": "UNKNOWN"
+  },
+  "superseded_science": {
+    "sha256": "4293d22d3a572337d367ad5e84e83ef1e1dec127b704559bb6d35ce5d6068338",
+    "git_blob": "5bf357e53da432d637a4ef7301b06d9216755eb9",
+    "remote_commit": "4d364d06493c0c19d9cdaf946057d61a7ee88fee",
+    "status": "SUPERSEDED_BY_EXACT_TOP_FLUX_VALIDATION",
+    "scope": "Preliminary science and raw failed process/physical attempts retained in this immutable prior Git object. Final source/driver differ; do not reuse preliminary scientific PASS as final."
+  },
+  "last_reconciled_upstream": "6353f109d00763fcb4f533f2f764c8eb50db99d5",
+  "current_canonical_selection": {
+    "canonical": "31ff3158b956183c8af19f85bd3361847f60309b",
+    "reason": "Harvest changes actual compiled provider closure; select one final cold actual surface process/matrix/restart on current source. No old physical provider object is reused. All existing production bytes stay canonical; only three explicit providers added.",
+    "expected_seconds": 200,
+    "current_surface_forcing_oracles_tolerances": "UNCHANGED",
+    "full_fci": "NOT_SELECTED_ADDITIVE_EXISTING_PRODUCTION_EXACT_AND_OWNER_BODY_PROOF",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "canonical_composition": {
+    "canonical": "31ff3158b956183c8af19f85bd3361847f60309b",
+    "original_final": "238b6184140ec42cbd77f472436519d98bbf7bd7",
+    "execution_commit": "62c79a338d2d9e9b00fcc6c0eec4fe04c69d0377",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "postimages": {
+      "src/process/mod_b111_surface_supply.f90": {
+        "status": "A",
+        "blob": "0b3079d02685e2b7d425f8bdf92029fcd247967c"
+      },
+      "src/runtime/mod_fmr_b111_surface_joint_application.f90": {
+        "status": "A",
+        "blob": "314f8f1ba57126c81428938670a2867e35a8f5a2"
+      },
+      "src/runtime/mod_fmr_b111_surface_solute_route.f90": {
+        "status": "A",
+        "blob": "d8b70f17cbbc4d9270025f35544d919c33cd7aae"
+      },
+      "tests/crop-harvest/check_admission_controls.py": {
+        "status": "M",
+        "blob": "3f51cc43d5c496b3182755ebf05f1fb0f7c38537"
+      },
+      "tests/crop-harvest/verify_harvest_successor.py": {
+        "status": "M",
+        "blob": "59f77c84f427c70484aa6b3738d7b4e85e308522"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "83058d4de92fbdd81f935841e4fedda7819fe6a5"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "A",
+        "blob": "5acad02ab1970f00829a3346521fccd56d0f094b"
+      },
+      "tests/nut-sol/run_surface.py": {
+        "status": "A",
+        "blob": "63c65c3c6e906b20126f634a72a45d22ef906061"
+      },
+      "tests/nut-sol/test_surface_joint.f90": {
+        "status": "A",
+        "blob": "62037253706c541039cae44138a255f9a73e372f"
+      },
+      "tests/nut-sol/test_surface_process.f90": {
+        "status": "A",
+        "blob": "0706e673d06ebb7ba14915181865785ebd68b3bc"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "A",
+        "blob": "3d850472d333bdd6745320687fea074592f71fbb"
+      },
+      "tests/fci/select_component_impact.py": {
+        "status": "A",
+        "blob": "4ad85485ecc30db96d22dab7f504a27ef1c9f080"
+      },
+      "tests/fci/test_select_component_impact.py": {
+        "status": "A",
+        "blob": "e12649a3d9fbd373b91f5bab9153dafed102c23c"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_CANONICAL_COMPOSITION_20261015.tar.xz.b64",
+      "decoded_sha256": "fc1e8bc4d5c9d9ea70e57ef7df1d2175c04e4615ab128cb3a35a76a3019f08fb",
+      "decoded_bytes": 778932,
+      "members": 1337
+    },
+    "source_and_witness": "Three corrected source providers and final Fortran drivers exactly unchanged from original final238b; preliminary and censored evidence not reused as PASS. Final native endpoints and actual signed-flux stdout equal the earlier current run.",
+    "cost_seconds": {
+      "physical_compile": 148.1935030919849,
+      "physical_link": 0.2595427550004388,
+      "physical_native": 23.78207997899517,
+      "process_compile": 0.41513387899976806,
+      "process_link": 0.08367364599689608,
+      "process_native": 0.004500262002693489
+    },
+    "full_fci": "NOT_SELECTED_ADDITIVE_UNCHANGED_EXISTING_PRODUCTION",
+    "highest": "NOT_SELECTED_POLICY",
+    "qualification": "PASS_CURRENT_FINAL_SCIENCE_24_ORIGINAL_46_CURRENT_CONTROLS",
+    "control_evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_CANONICAL_CONTROLS_20261015.tar.xz.b64",
+      "decoded_sha256": "4f32dd93d62f1b7d715bb7cfc2ba47bd320b53573de49fa527f478c14faad5ca",
+      "decoded_bytes": 10136,
+      "members": 8
+    },
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "new_full_numerical_fci_claimed": false,
+    "all_selected_runs_terminal": true
+  },
+  "canonical_admission": {
+    "pr": 1234,
+    "merge_commit": "136787ef2927eb44967298bec7029c30e6434422",
+    "admission_head": "85d9a81f592de678845947e8ec2044a6e189aa17",
+    "tree": "b9fb374ed22b5cbd9ddb653cdc6d108ddfc69fd2",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "reviews": 0,
+    "review_threads": 0,
+    "existing_production_bytes_unchanged_from_harvest_canonical": true,
+    "fresh_source_science": "O0/O2 literal150, real accepted signed flux/mass/retry and native/opaque/fresh continuation; endpoint/stdout identity",
+    "original_controls": 24,
+    "current_controls": 46,
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "full_fci": "NOT_SELECTED_EXACT_ADDITIVE_DEFAULT_BODY_PROOF",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "hosted_pass_claimed": false,
+    "master_disposition_changes": 0,
+    "master_receipt_commit": "fb21ba5626e2b557b85616abbc19857105a6ecd3",
+    "master_summary": {
+      "capabilities": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 112,
+      "full_master_integrity": "READBACK_BLOCKED_STALE_INHERITANCE"
+    }
+  },
+  "canonical_closeout_validation": {
+    "scope": "Metadata/documentation only; all production/reference/test/guard inputs unchanged from admitted136787ef. No native rerun selected.",
+    "source_only_identity": "PASS",
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "raw_sha256": {
+      "canonical-closeout-source.log": "e6ac7b83572b032559623a5152400cdf683ff8244e85749818462776b69603fb",
+      "canonical-closeout-docs-source.log": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "canonical-closeout-docs-strict.log": "701f4932cb1dd445dcf496265195bc7e6706fa69f897d337daa4113a50cf15b1"
+    }
+  },
+  "impact_preflight_reconciliation": {
+    "canonical": "952d6dc157d9548ced6c84f2564666e29ff7e56c",
+    "pr": 1250,
+    "scope": "Optional nonexecuting preflight only; exact prefix removed to recover the entire already-admitted moving runner. All src, reference, physical drivers, evidence capsules and scientific validators remain unchanged except this exact prefix projection. No automatic test pruning; unknown/shared impacts require review.",
+    "qualification": "PASS_17_PLANNER_24_ORIGINAL_46_CURRENT_OWNER_CONTROLS",
+    "new_numerical_fci_pass": false,
+    "preserved_source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "evidence": {
+      "impact-tests.log": {
+        "sha256": "c58dbcb82ff8af32e8d44f2bc4b58b58929a8d4cf9b814902ef320b6daa35fd6",
+        "raw": ".................\n----------------------------------------------------------------------\nRan 17 tests in 0.471s\n\nOK\n"
+      },
+      "impact-surface-controls.log": {
+        "sha256": "1cf88ef58cf643e6eec2de29bbe94b275c5862b9b6412a7f4e34c70d24083f33",
+        "raw": "{\n  \"status\": \"PASS\",\n  \"original_controls\": 24,\n  \"current_controls\": 46,\n  \"controls\": [\n    \"foreign_src\",\n    \"foreign_test\",\n    \"source_blob\",\n    \"source_tree\",\n    \"reference\",\n    \"dirty\",\n    \"unfinished\",\n    \"wrong_source\",\n    \"wrong_authority\",\n    \"stale_input\",\n    \"lost_negative\",\n    \"forged_endpoint\",\n    \"failed_actual_command\",\n    \"verify_swrd2_successor:positive\",\n    \"verify_swrd2_successor:new_science\",\n    \"verify_swrd2_successor:admitted_owner\",\n    \"verify_swrd2_successor:current_source\",\n    \"verify_swrd3_successor:positive\",\n    \"verify_swrd3_successor:new_science\",\n    \"verify_swrd3_successor:admitted_owner\",\n    \"verify_swrd3_successor:current_source\",\n    \"verify_calendar_successor:positive\",\n    \"verify_calendar_successor:new_science\",\n    \"verify_calendar_successor:admitted_owner\",\n    \"verify_calendar_successor:current_source\",\n    \"verify_senescence_successor:positive\",\n    \"verify_senescence_successor:new_science\",\n    \"verify_senescence_successor:admitted_owner\",\n    \"verify_senescence_successor:current_source\",\n    \"verify_co2_successor:positive\",\n    \"verify_co2_successor:new_science\",\n    \"verify_co2_successor:admitted_owner\",\n    \"verify_co2_successor:current_source\",\n    \"verify_input_successor:positive\",\n    \"verify_input_successor:new_science\",\n    \"verify_input_successor:admitted_owner\",\n    \"verify_input_successor:current_source\",\n    \"verify_thermal_successor:positive\",\n    \"verify_thermal_successor:new_science\",\n    \"verify_thermal_successor:admitted_owner\",\n    \"verify_thermal_successor:current_source\",\n    \"verify_harvest_successor:positive\",\n    \"verify_harvest_successor:new_science\",\n    \"verify_harvest_successor:admitted_owner\",\n    \"verify_harvest_successor:current_source\",\n    \"current_capsule_corruption\"\n  ]\n}\n"
+      },
+      "impact-docs.log": {
+        "sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "raw": "Documentation source checks passed.\n"
+      },
+      "impact-mkdocs.log": {
+        "sha256": "673442eb5f72b0d782973b5a4fa619704e834d9d35760fbd220488e2f7a8a88f",
+        "raw": "\n\u001b[31m \u2502  \u26a0  Warning from the Material for MkDocs team\u001b[0m\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  MkDocs 2.0, the underlying framework of Material for MkDocs,\n\u001b[31m \u2502\u001b[0m  will introduce backward-incompatible changes, including:\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502  \u00d7 \u001b[0mAll plugins will stop working \u2013 the plugin system has been removed\n\u001b[31m \u2502  \u00d7 \u001b[0mAll theme overrides will break \u2013 the theming system has been rewritten\n\u001b[31m \u2502  \u00d7 \u001b[0mNo migration path exists \u2013 existing projects cannot be upgraded\n\u001b[31m \u2502  \u00d7 \u001b[0mClosed contribution model \u2013 community members can't report bugs\n\u001b[31m \u2502  \u00d7 \u001b[0mCurrently unlicensed \u2013 unsuitable for production use\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  Our full analysis:\n\u001b[31m \u2502\u001b[0m\n\u001b[31m \u2502\u001b[0m  \u001b[4mhttps://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/\u001b[0m\n\u001b[0m\nINFO    -  Cleaning site directory\nINFO    -  Building documentation to directory: /workspace/scratch/0fe3d4b8d201/impact-site\nINFO    -  The following pages exist in the docs directory, but are not included in the \"nav\" configuration:\n  - audits/FCI_DUPLICATE_CALLSITE_FORENSICS_20261013.md\n  - audits/FCI_PERFORMANCE_DECISION_CHECKPOINT_20261013.md\n  - audits/FCI_RESUME_RESULT_20261012.md\n  - audits/FCI_RUNTIME_COST_AUDIT_20261013.md\n  - audits/FCI_SHARED_BUILD_CLOSEOUT_20261013.md\n  - audits/FCI_SHARED_BUILD_ROUTE_CLOSEOUT_20261013.md\n  - audits/LOW_AIR_10X_20261014.md\n  - audits/LOW_AIR_10X_SUCCESSOR_CONTRACT_20261014.md\n  - audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md\n  - audits/MC_MET01_PILOT_RESULT_20261012.md\n  - audits/MIGRATION_EXECUTION_ANALYSIS_20261012.md\n  - audits/MIGRATION_EXECUTION_IMPLEMENTATION_20261012.md\n  - audits/MIGRATION_EXECUTION_MODEL_20261012.md\n  - audits/MIGRATION_EXECUTION_PILOT_20261012.md\n  - audits/MODULAR_DEVELOPMENT_ADOPTION_20261014.md\n  - audits/MODULAR_TESTABILITY_20261013.md\n  - audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md\n  - audits/PPA_LOW02_TIME_CANONICAL_CLOSEOUT.md\n  - audits/PPA_MICRO01_CANONICAL_CLOSEOUT.md\n  - audits/PPA_MICRO01_DRY_TABLE_REVIEW.md\n  - audits/PPA_MICRO01_TABLE_REPAIR_CONTRACT.md\n  - audits/PPA_MICRO02_06_CANONICAL_ADMISSION_HANDOFF.md\n  - audits/PPA_MICRO02_DE_WILLIGEN_CONTRACT.md\n  - audits/PPA_MICRO02_STANDALONE_CLOSEOUT.md\n  - audits/PPA_MICRO03_RUNTIME_CONTRACT.md\n  - audits/PPA_MICRO04_HORIZON_BINDING_CONTRACT.md\n  - audits/PPA_MICRO05_LITERAL_MVG_AND_RUNTIME_MAP_CONTRACT.md\n  - audits/PPA_MICRO06_CHANGED_FORCING_RESTART_CONTRACT.md\n  - audits/PPA_MICRO_B15_MOVING_PRESERVATION_RECONCILIATION.md\n  - audits/PPA_MICRO_HISTORICAL_GATE_RECONCILIATION.md\n  - audits/PPA_ROOT_HYD01_NET_ROOT_EXTRACTION.md\n  - audits/PPA_ROOT_HYD01_R1_RESULT.md\n  - audits/PPA_ROOT_HYD02_PRESCRIBED_ROOT_TANGENT.md\n  - audits/PPA_ROOT_HYD02_RESULT.md\n  - audits/PPA_WU01_PRODUCTION_APPLICATION_BOOTSTRAP.md\n  - audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md\n  - audits/PPA_WU03_ATMOSPHERIC_FORCING_NORMAL_INPUT_ADAPTER.md\n  - audits/PPA_WU04A_BLACK_EVAPORATION_ADMISSION.md\n  - audits/PPA_WU04B_BOESTEN_EVAPORATION_ADMISSION.md\n  - audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md\n  - audits/PPA_WU05A10_CLOSEOUT.md\n  - audits/PPA_WU05A10_PREREGISTRATION.md\n  - audits/PPA_WU05A10_RESULT.md\n  - audits/PPA_WU05A11_CLOSEOUT.md\n  - audits/PPA_WU05A11_PREREGISTRATION.md\n  - audits/PPA_WU05A11_RESULT.md\n  - audits/PPA_WU05A12_CLOSEOUT.md\n  - audits/PPA_WU05A12_PREREGISTRATION.md\n  - audits/PPA_WU05A12_RESULT.md\n  - audits/PPA_WU05A13_CLOSEOUT.md\n  - audits/PPA_WU05A13_PREREGISTRATION.md\n  - audits/PPA_WU05A13_RESULT.md\n  - audits/PPA_WU05A14_EFFECTIVE_SUPPLY_OWNERSHIP.md\n  - audits/PPA_WU05A15_CLOSEOUT.md\n  - audits/PPA_WU05A15_PREREGISTRATION.md\n  - audits/PPA_WU05A15_RESULT.md\n  - audits/PPA_WU05A16_CLOSEOUT.md\n  - audits/PPA_WU05A16_PREREGISTRATION.md\n  - audits/PPA_WU05A16_RESULT.md\n  - audits/PPA_WU05A17_CLOSEOUT.md\n  - audits/PPA_WU05A17_PREREGISTRATION.md\n  - audits/PPA_WU05A17_RESULT.md\n  - audits/PPA_WU05A18_STATE_OWNERSHIP.md\n  - audits/PPA_WU05A19_CLOSEOUT.md\n  - audits/PPA_WU05A19_PREREGISTRATION.md\n  - audits/PPA_WU05A19_RESULT.md\n  - audits/PPA_WU05A20_CLOSEOUT.md\n  - audits/PPA_WU05A20_PREREGISTRATION.md\n  - audits/PPA_WU05A20_RESULT.md\n  - audits/PPA_WU05A21_LIVE_RUNTIME_READINESS.md\n  - audits/PPA_WU05A22A_PREREGISTRATION.md\n  - audits/PPA_WU05A22A_RESULT.md\n  - audits/PPA_WU05A22B_PREREGISTRATION.md\n  - audits/PPA_WU05A22B_RESULT.md\n  - audits/PPA_WU05A23_PREREGISTRATION.md\n  - audits/PPA_WU05A23_RESULT.md\n  - audits/PPA_WU05A24_PREREGISTRATION.md\n  - audits/PPA_WU05A24_RESULT.md\n  - audits/PPA_WU05A25_CLOSEOUT.md\n  - audits/PPA_WU05A25_PREREGISTRATION.md\n  - audits/PPA_WU05A25_RESULT.md\n  - audits/PPA_WU05A26H_PREREGISTRATION.md\n  - audits/PPA_WU05A26H_RESULT.md\n  - audits/PPA_WU05A26I_MACRO_HEAD_CONTRACT.md\n  - audits/PPA_WU05A26J_PREREGISTRATION.md\n  - audits/PPA_WU05A26J_RESULT.md\n  - audits/PPA_WU05A26K_RESULT.md\n  - audits/PPA_WU05A26_CLOSEOUT.md\n  - audits/PPA_WU05A26_COMPOSER_RESULT.md\n  - audits/PPA_WU05A26_PREREGISTRATION.md\n  - audits/PPA_WU05A26_REAL_RICHARDS_RESULT.md\n  - audits/PPA_WU05A26_RECONCILED_RESULT.md\n  - audits/PPA_WU05A26_RESULT.md\n  - audits/PPA_WU05A8_CLOSEOUT.md\n  - audits/PPA_WU05A8_RESULT.md\n  - audits/PPA_WU05A9_CLOSEOUT.md\n  - audits/PPA_WU05A9_PREREGISTRATION.md\n  - audits/PPA_WU05A9_RESULT.md\n  - audits/PPA_WU05A_MACROPORE_AUTHORITY.md\n  - audits/PPA_WU05B10_LOW_AIR_LINEAR_RESPONSE.md\n  - audits/PPA_WU05B11_TABULATED_FROST_DRAINAGE.md\n  - audits/PPA_WU05B12_ANALYTIC_FROST_DRAINAGE.md\n  - audits/PPA_WU05B13_EMPIRICAL_FROST_DRAINAGE.md\n  - audits/PPA_WU05B14_EXTENDED_FROST_DRAINAGE.md\n  - audits/PPA_WU05B15_HIGHEST_FROST_DRAINAGE.md\n  - audits/PPA_WU05B16_DIVDRA_REFERENCE_OWNER.md\n  - audits/PPA_WU05B17_CORRECTED_DIVDRA_REFERENCE.md\n  - audits/PPA_WU05B18_TYPED_FROST_DIVDRA.md\n  - audits/PPA_WU05B19_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05B19_DIVDRA_RUNTIME_CONTRACT.md\n  - audits/PPA_WU05B19_DIVDRA_RUNTIME_QUALIFICATION.md\n  - audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md\n  - audits/PPA_WU05B2_ROOT_FROST_COMPOSITION.md\n  - audits/PPA_WU05B3_NO_DRAIN_FROZEN_BOTTOM.md\n  - audits/PPA_WU05B4_ROOT_BOTTOM_COMPOSITION_CONTRACT.md\n  - audits/PPA_WU05B5_CORRECTED_B1_DRAIN_REPORT.md\n  - audits/PPA_WU05B6_NORMAL_DRAINAGE.md\n  - audits/PPA_WU05B7_GUARDED_REFERENCE_GEOMETRY.md\n  - audits/PPA_WU05B8_BRACKETED_LOW_AIR_DRAINAGE.md\n  - audits/PPA_WU05B9_LINEAR_RESPONSE_FROST.md\n  - audits/PPA_WU05B_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md\n  - audits/PPA_WU05B_FROZEN_BOUNDS_REASSESSMENT.md\n  - audits/PPA_WU05B_FROZEN_DRAIN_SOURCE_FINDING.md\n  - audits/PPA_WU05C3A_ACTIVATION_MATRIX.md\n  - audits/PPA_WU05C3A_ADMISSION.md\n  - audits/PPA_WU05C3A_APPLICATION_INPUT_AUDIT.md\n  - audits/PPA_WU05C3A_BOUNDARY_FALSIFICATION.md\n  - audits/PPA_WU05C3A_CLOSEOUT.md\n  - audits/PPA_WU05C3A_PERF01_CLOSEOUT.md\n  - audits/PPA_WU05C3A_PERF01_PREREGISTRATION.md\n  - audits/PPA_WU05C3A_PERF01_RESULT.md\n  - audits/PPA_WU05C3A_PERF02_BOUND_DERIVATION.md\n  - audits/PPA_WU05C3A_PERF02_INTERIM_RESULT.md\n  - audits/PPA_WU05C3A_PERF02_PREREGISTRATION.md\n  - audits/PPA_WU05C3A_PERF03_PREREGISTRATION.md\n  - audits/PPA_WU05C3A_PERF03_RESULT.md\n  - audits/PPA_WU05C3A_REPAIR_PREREGISTRATION.md\n  - audits/PPA_WU05C3A_REPAIR_RESULT.md\n  - audits/PPA_WU05C3A_SHARED_INTEGRATION_CONTRACT.md\n  - audits/PPA_WU05C3A_SHARED_PRESERVATION_PREREGISTRATION.md\n  - audits/PPA_WU05C3P_COMPOSITION_BOUNDARY.md\n  - audits/PPA_WU05C3P_RESULT.md\n  - audits/PPA_WU05C3Q_EXECUTION_HANDOFF.md\n  - audits/PPA_WU05C3Q_LOCAL_PREQUALIFICATION.md\n  - audits/PPA_WU05C3Q_PREREGISTRATION.md\n  - audits/PPA_WU05C3Q_RESULT.md\n  - audits/PPA_WU05C3R_BARTHOLOMEUS_RECONSTRUCTION.md\n  - audits/PPA_WU05C3R_FORMULA_RECONCILIATION.md\n  - audits/PPA_WU05C3R_KERNEL_CONTRACT.md\n  - audits/PPA_WU05C3_ADMISSION_CANDIDATE.md\n  - audits/PPA_WU05C_OXYGEN_STRESS_AUTHORITY.md\n  - audits/PPA_WU05D_COMPENSATION_AUTHORITY.md\n  - audits/PPA_WU05D_D1_RECONSTRUCTION_RESULT.md\n  - audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05D_D2_RUNTIME_CONTRACT.md\n  - audits/PPA_WU05D_D3_GEOMETRY_CONTRACT.md\n  - audits/PPA_WU05D_EXACT01_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05D_EXACT01_CONTRACT.md\n  - audits/PPA_WU05E_ADVECTION_DISPERSION_CONTRACT.md\n  - audits/PPA_WU05E_BASE_SALT_TEMPORAL_CONTRACT.md\n  - audits/PPA_WU05E_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05E_CANONICAL_RECONCILIATION.md\n  - audits/PPA_WU05E_CLOSED_DIFFUSION_CONTRACT.md\n  - audits/PPA_WU05E_LIVE_FMR_ENVELOPE.md\n  - audits/PPA_WU05E_MACROPORE_SOLUTE_BOUNDARY.md\n  - audits/PPA_WU05E_MATRIX_MIXED_LOCAL_RESULT.md\n  - audits/PPA_WU05E_MATRIX_TRANSPORT_RESULT.md\n  - audits/PPA_WU05E_RUNTIME_TRANSACTION_BOUNDARY.md\n  - audits/PPA_WU05E_SALFRO01_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05E_SALFRO01_CONTRACT.md\n  - audits/PPA_WU05E_SALINITY_PREREGISTRATION.md\n  - audits/PPA_WU05E_STATE_LAYOUT_DECISION.md\n  - audits/PPA_WU05E_WALSAL01_CANONICAL_CLOSEOUT.md\n  - audits/PPA_WU05E_WALSUM_SALINITY_CONTRACT.md\n  - audits/PPA_WU05_ADVANCED_WATER_PROCESS_TRIAGE.md\n  - audits/PPA_WU05_MACROPORE_MIGRATION_GAP_AUDIT_20261001.md\n  - audits/PPA_WU05_MIGMAC01_ACTIVE_AUTHORITY_RECOVERY.md\n  - audits/PPA_WU05_MIGMAC01_ACTIVE_E2E_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_B1_CORRECTION_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_B1_CORRECTION_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_CANONICAL_RECONCILIATION_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_CONTROLLED_REFERENCE_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_G6_STORAGE_PRECISION_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_G7_ATTRIBUTION.md\n  - audits/PPA_WU05_MIGMAC01_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_PROVIDER_SHORTSTEP_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_REFERENCE_CARRIER_DEFECT.md\n  - audits/PPA_WU05_MIGMAC01_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_ROOT_COMPOSITION_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_SOURCE_ORIGIN_REPLAY_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_SOURCE_RECONCILIATION.md\n  - audits/PPA_WU05_MIGMAC01_SOURCE_REPLAY_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC01_SOURCE_TRANSACTION_RESULT.md\n  - audits/PPA_WU05_MIGMAC01_TYPED_PHYSICAL_CONTRACT.md\n  - audits/PPA_WU05_MIGMAC02_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC02_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC02_PURE_OPERATOR_RESULT.md\n  - audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md\n  - audits/PPA_WU05_MIGMAC02_TIMING_CONTRACT.md\n  - audits/PPA_WU05_MIGMAC03_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC03_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC04_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC04_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC05_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC05_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC06_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC06_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC07_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC07_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC08_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC08_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC09_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC09_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC10_B0_ANDELST_REFERENCE_RUN.md\n  - audits/PPA_WU05_MIGMAC10_CANONICAL_RECONCILIATION.md\n  - audits/PPA_WU05_MIGMAC10_PREREGISTRATION.md\n  - audits/PPA_WU05_MIGMAC11_CLOSEOUT.md\n  - audits/PPA_WU05_MIGMAC11_PREREGISTRATION.md\n  - audits/PPA_WU05_PERCH21_CLOSEOUT.md\n  - audits/PPA_WU05_PERCH21_PREREGISTRATION.md\n  - audits/PPA_WU05_PERCH21_RESULT.md\n  - audits/PRODUCTION_PHYSICS_APPLICATION_ENVELOPE_GAP_AUDIT.md\n  - capabilities/bartholomeus-oxygen.md\n  - development/FCI_BUILD_CACHE_TRIAL_20261012.md\n  - development/FCI_SAFE_RESUME_20261012.md\n  - development/FCI_SHARED_BUILD_ROUTE_CONTRACT_20261013.md\n  - development/open-pr-reconciliation-20260919.md\n  - integration/F-CI02_CANONICAL_REFERENCE_ROOT.md\n  - integration/F-CI03_TRANSACTIONAL_FORWARD_PORT.md\n  - integration/F-CI04_CANONICAL_RUNTIME_AND_PHYSICAL_SEAM.md\n  - integration/F-CI05_B1_10_PHYSICAL_ADAPTER_PREIMAGE.md\n  - integration/F-CI06_CONTROLLED_B1_10_SOURCE_PORT.md\n  - integration/F-CI07_PHYSICAL_TRANSACTION_STATE.md\n  - integration/F-CI08_PHYSICAL_PROCESS_CONTINUATION_STATE.md\n  - integration/F-CI09_TRANSACTION_MODEL_BINDING.md\n  - integration/F-CI11_GENERIC_INTERVAL_MASS_PORT.md\n  - integration/F-CI12_PHYSICAL_ADVANCE_AND_TEMPORAL_CHARACTERIZATION.md\n  - integration/F-CI13_RECOVERABLE_TRIAL_STATUS.md\n  - integration/F-CI14_REFERENCE_TEMPORAL_ACCEPTANCE.md\n  - integration/F-GC33_MODFLOW6_LINEAR_RESPONSE_BACKEND.md\n  - integration/F-GC34_MODFLOW6_TYPED_API_BINDING.md\n  - integration/F-GC35_MODFLOW6_XMI_PACKAGE_ADAPTER.md\n  - integration/F-GC36_LIVE_MODFLOW6_FGC34_BRIDGE.md\n  - integration/F-GC38_MODFLOW6_PREPARED_SOLVE_ITERATIVE_BACKEND.md\n  - integration/F-GC39_PREPARED_SOLVE_COUPLING_SERVICE_CONTRACT.md\n  - integration/F-GC40_MULTISWAP_MODFLOW6_CELL_RESPONSE.md\n  - integration/F-GC41_WHOLE_WINDOW_ACCEPTANCE_RETRY.md\n  - integration/F-GC42_WHOLE_WINDOW_SERVICE_COMPOSITION.md\n  - integration/F-GC43_PRODUCTION_SWAP_PARTICIPANT.md\n  - integration/F-GC44_REAL_SWAP_MODFLOW6_END_TO_END.md\n  - integration/F-GC45_REAL_MULTISWAP_MODFLOW6_END_TO_END.md\n  - integration/F-GC46_REAL_MULTICELL_LIVE_MODFLOW.md\n  - integration/F-GC47_MIXED_TOPOLOGY_LIVE_MODFLOW.md\n  - integration/F-GC48_GENERIC_GROUNDWATER_TOPOLOGY.md\n  - integration/F-GC49A_APPLICATION_PLAN_MATERIALIZATION.md\n  - integration/F-GC49B_FMR_PARTICIPANT_REGISTRY.md\n  - integration/F-GC49C_GENERIC_LIVE_APPLICATION_SERVICE.md\n  - integration/F-GC50_IMOD_COUPLER_PRODUCT_INTEGRATION.md\n  - integration/M1_C3_FINAL_LEGACY_FILE_TYPED_ADAPTER.md\n  - integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md\n  - integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md\n  - migration/F-MIG431-INT12-P0_PREREGISTRATION.md\n  - migration/F-MIG431-INT12-P0_RESULT.md\n  - migration/F-MIG431-LOW01A_CLOSEOUT.md\n  - migration/F-MIG431-LOW01A_PREREGISTRATION.md\n  - migration/F-MIG431-LOW01A_SOURCE_AUTHORITY_BLOCKER.md\n  - migration/F-MIG431-LOW01A_STATE_TIMING_CONTRACT.md\n  - migration/F-MIG431-LOW03-A-DEP01_CLOSEOUT.md\n  - migration/F-MIG431-LOW03-A-DEP01_PREREGISTRATION.md\n  - migration/F-MIG431-LOW03-A_APPLICATION_BINDING.md\n  - migration/F-MIG431-LOW03-A_CLOSEOUT.md\n  - migration/F-MIG431-LOW03-A_PREREGISTRATION.md\n  - migration/F-MIG431-LOW03-A_SHARED_CONTEXT_PREREQUISITE.md\n  - migration/F-MIG431-LOW03-A_TEMPORAL_ACCEPTANCE_PREREQUISITE.md\n  - migration/F-MIG431-LOW03-P0_CLOSEOUT.md\n  - migration/F-MIG431-LOW03-P0_DEP01_LOCAL_REVIEW.md\n  - migration/F-MIG431-LOW03-P0_PREREGISTRATION.md\n  - migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md\n  - migration/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_PREREGISTRATION.md\n  - migration/F-MIG431-LOW03-P0_TYPED_CONTRACT.md\n  - migration/F-MIG431-LOW05A_CLOSEOUT.md\n  - migration/F-MIG431-LOW05A_FEASIBILITY_REVIEW.md\n  - migration/F-MIG431-LOW05A_PREREGISTRATION.md\n  - migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md\n  - migration/F-MIG431-LOW05A_RESULT.md\n  - migration/F-MIG431-LOW05P0_SHARED_CONTRACT.md\n  - migration/F-MIG431-LOW08-A_PREREGISTRATION.md\n  - migration/F-MIG431-LOW08-P0_CLOSEOUT.md\n  - migration/F-MIG431-LOW08-P0_PREREGISTRATION.md\n  - migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md\n  - migration/F-MIG431_LOWER_BOUNDARY_CLOSEOUT_2026-10-03.md\n  - performance/F-PE-APPROX01_A1_PREREGISTRATION.md\n  - performance/F-PE-APPROX01_A1_RESULT.md\n  - performance/F-PE-APPROX01_CLOSEOUT.md\n  - performance/F-PE-APPROX01_LEVER01_ADAPTIVE_PREREGISTRATION.md\n  - performance/F-PE-APPROX01_LEVER01_INITIAL_RESULTS.md\n  - performance/F-PE-APPROX01_LEVER01_PREREGISTRATION.md\n  - performance/F-PE-APPROX01_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_A2B_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_A2B_RESULT.md\n  - performance/F-PE-APPROX02_A2C_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_A2C_PRODUCTION_BINDING_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_A2C_RESULT.md\n  - performance/F-PE-APPROX02_A2_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_A2_RESULT.md\n  - performance/F-PE-APPROX02_CLOSEOUT.md\n  - performance/F-PE-APPROX02_MEASUREMENT_PLAN.md\n  - performance/F-PE-APPROX02_PREREGISTRATION.md\n  - performance/F-PE-APPROX02_R1_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_CLOSEOUT.md\n  - performance/F-PE-APPROX03_MEASUREMENT_PLAN.md\n  - performance/F-PE-APPROX03_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_T1_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_T1_RESULT.md\n  - performance/F-PE-APPROX03_T2A_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_T2A_RESULT.md\n  - performance/F-PE-APPROX03_T2B_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_T2B_RESULT.md\n  - performance/F-PE-APPROX03_T2C_PREREGISTRATION.md\n  - performance/F-PE-APPROX03_T2C_RESULT.md\n  - performance/F-PE-APPROX03_T2_PREREGISTRATION.md\n  - performance/F-PE-APPROX04_CLOSEOUT.md\n  - performance/F-PE-APPROX04_P0_RESULT.md\n  - performance/F-PE-APPROX04_P1A_RESULT.md\n  - performance/F-PE-APPROX04_P1B_PREREGISTRATION.md\n  - performance/F-PE-APPROX04_P1B_RESULT.md\n  - performance/F-PE-APPROX04_P1_PREREGISTRATION.md\n  - performance/F-PE-APPROX04_PREREGISTRATION.md\n  - performance/F-PE-BALTOL01_AUTHORITY_RECONCILIATION.md\n  - performance/F-PE-BALTOL01_CLOSEOUT.md\n  - performance/F-PE-BALTOL01_P0_PREREGISTRATION.md\n  - performance/F-PE-BALTOL01_P0_RESULT.md\n  - performance/F-PE-BALTOL01_P1_PREREGISTRATION.md\n  - performance/F-PE-BALTOL01_P1_RESULT.md\n  - performance/F-PE-BALTOL01_P2R_PREREGISTRATION.md\n  - performance/F-PE-BALTOL01_P2R_RESULT.md\n  - performance/F-PE-BALTOL01_P2_PREREGISTRATION.md\n  - performance/F-PE-BALTOL01_P2_RESULT.md\n  - performance/F-PE-BALTOL01_PREREGISTRATION.md\n  - performance/F-PE-BALTOL02_CLOSEOUT.md\n  - performance/F-PE-BALTOL02_PREREGISTRATION.md\n  - performance/F-PE-BALTOL02_QUALIFICATION.md\n  - performance/F-PE-BASE01_CLOSEOUT.md\n  - performance/F-PE-BASE01_P0_RESULT.md\n  - performance/F-PE-BASE01_P1B_PREREGISTRATION.md\n  - performance/F-PE-BASE01_P1B_RESULT.md\n  - performance/F-PE-BASE01_P1_PREREGISTRATION.md\n  - performance/F-PE-BASE01_P1_RESULT.md\n  - performance/F-PE-BASE01_P2_PREREGISTRATION.md\n  - performance/F-PE-BASE01_P2_RESULT.md\n  - performance/F-PE-BASE01_PREREGISTRATION.md\n  - performance/F-PE-BOFEK-PRACTICAL01_PREREGISTRATION.md\n  - performance/F-PE-BOFEK-PRACTICAL01_RESULT.md\n  - performance/F-PE-BOFEK-PRACTICAL02_PREREGISTRATION.md\n  - performance/F-PE-BOFEK-PRACTICAL02_RESULT.md\n  - performance/F-PE-BOFEK-PRACTICAL03_PREREGISTRATION.md\n  - performance/F-PE-BOFEK-PRACTICAL03_RESULT.md\n  - performance/F-PE-BOFEK-PRACTICAL_CLOSEOUT.md\n  - performance/F-PE-BOFEK01_02_CLOSEOUT.md\n  - performance/F-PE-BOFEK01_02_PREREGISTRATION.md\n  - performance/F-PE-BOFEK01_02_RESULT.md\n  - performance/F-PE-BOFEK01_P1R_ORACLE_SOLVABILITY_PREREGISTRATION.md\n  - performance/F-PE-BOFEK01_P1R_RESULT.md\n  - performance/F-PE-BOFEK01_P1_ORACLE_PREREGISTRATION.md\n  - performance/F-PE-BOFEK01_P1_P1R_RESULT.md\n  - performance/F-PE-BOFEK01_SCREEN_RESULT.md\n  - performance/F-PE-DIR01_CLOSEOUT.md\n  - performance/F-PE-DIR01_MEASUREMENT_PLAN.md\n  - performance/F-PE-DIR01_POST_REPAIR03_REBASELINE.md\n  - performance/F-PE-DIR01_POST_REPAIR05_REBASELINE.md\n  - performance/F-PE-DIR01_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR01_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR01_RESULT.md\n  - performance/F-PE-DIR01_REPAIR02_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR02_RESULT.md\n  - performance/F-PE-DIR01_REPAIR03_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR03_RESULT.md\n  - performance/F-PE-DIR01_REPAIR04_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR04_RESULT.md\n  - performance/F-PE-DIR01_REPAIR05_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR05_RESULT.md\n  - performance/F-PE-DIR01_REPAIR06_PREREGISTRATION.md\n  - performance/F-PE-DIR01_REPAIR06_RESULT.md\n  - performance/F-PE-DYNERR01A_PREREGISTRATION.md\n  - performance/F-PE-DYNERR01A_RESULT.md\n  - performance/F-PE-DYNERR01_PREREGISTRATION.md\n  - performance/F-PE-DYNERR01_RESULT.md\n  - performance/F-PE-DYNTOP-PREDICT01_PREREGISTRATION.md\n  - performance/F-PE-DYNTOP-PREDICT01_RESULT.md\n  - performance/F-PE-DYNTOP-PREDICT02_PREREGISTRATION.md\n  - performance/F-PE-DYNTOP-PREDICT02_RESULT.md\n  - performance/F-PE-DYNTOP-PREDICT03_PREREGISTRATION.md\n  - performance/F-PE-DYNTOP-PREDICT03_RESULT.md\n  - performance/F-PE-DYNTOP-PREDICT_CLOSEOUT.md\n  - performance/F-PE-ELASTIC05_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC05_RESULT.md\n  - performance/F-PE-ELASTIC08_RESULT.md\n  - performance/F-PE-ELASTIC08_RUNTIME_MATERIALIZATION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC09_APPLICATION_BOOTSTRAP_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC09_CLOSURE.md\n  - performance/F-PE-ELASTIC09_RESULT.md\n  - performance/F-PE-ELASTIC13_CLOSEOUT.md\n  - performance/F-PE-ELASTIC13_PARAMETER_POLICY_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC13_RESULT.md\n  - performance/F-PE-ELASTIC14_CLOSURE.md\n  - performance/F-PE-ELASTIC14_MINERAL_PRIOR_MATERIALIZER_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC14_RESULT.md\n  - performance/F-PE-ELASTIC15_CLOSURE.md\n  - performance/F-PE-ELASTIC15_EXPLICIT_PRIOR_BINDING_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC15_RESULT.md\n  - performance/F-PE-ELASTIC16_CLOSURE.md\n  - performance/F-PE-ELASTIC16_DESCRIPTOR_ASSEMBLY_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC16_RESULT.md\n  - performance/F-PE-ELASTIC17_CLOSURE.md\n  - performance/F-PE-ELASTIC17_LAYER_NODE_MAPPING_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC17_RESULT.md\n  - performance/F-PE-ELASTIC18R_STRENGTHENED_VERIFICATION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC18R_STRENGTHENED_VERIFICATION_RESULT.md\n  - performance/F-PE-ELASTIC18_CLOSURE.md\n  - performance/F-PE-ELASTIC18_RESULT.md\n  - performance/F-PE-ELASTIC18_SWAP_GRID_NORMALIZATION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC19_CLOSURE.md\n  - performance/F-PE-ELASTIC19_HORIZON_DESCRIPTOR_BUILDER_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC19_RESULT.md\n  - performance/F-PE-ELASTIC20_CLOSURE.md\n  - performance/F-PE-ELASTIC20_RESULT.md\n  - performance/F-PE-ELASTIC20_STARINGREEKS_CATALOG_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC21_CLOSURE.md\n  - performance/F-PE-ELASTIC21_RESULT.md\n  - performance/F-PE-ELASTIC21_STARINGSERIESBLOCK_MAP_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC22_CLOSURE.md\n  - performance/F-PE-ELASTIC22_EXPLICIT_PROFILE_SOURCE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC22_RESULT.md\n  - performance/F-PE-ELASTIC23_MAPAREA_PROFILE_ASSOCIATION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC23_RESULT.md\n  - performance/F-PE-ELASTIC24_CLOSURE.md\n  - performance/F-PE-ELASTIC24_PROFILE_RETRIEVAL_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC24_RESULT.md\n  - performance/F-PE-ELASTIC25_APPLICATION_REQUEST_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC25_CLOSURE.md\n  - performance/F-PE-ELASTIC25_RESULT.md\n  - performance/F-PE-ELASTIC26_CLOSURE.md\n  - performance/F-PE-ELASTIC26_CONFIG_FILE_ADAPTER_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC26_RESULT.md\n  - performance/F-PE-ELASTIC27_APPLICATION_REQUEST_LOADER_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC27_CLOSURE.md\n  - performance/F-PE-ELASTIC27_RESULT.md\n  - performance/F-PE-ELASTIC28_CLOSURE.md\n  - performance/F-PE-ELASTIC28_REQUEST_SOURCE_ARBITRATION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC28_RESULT.md\n  - performance/F-PE-ELASTIC29_CLOSURE.md\n  - performance/F-PE-ELASTIC29_ENVIRONMENT_SOURCE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC29_RESULT.md\n  - performance/F-PE-ELASTIC30_CLI_SOURCE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC30_CLOSURE.md\n  - performance/F-PE-ELASTIC30_RESULT.md\n  - performance/F-PE-ELASTIC31_CLOSURE.md\n  - performance/F-PE-ELASTIC31_REQUEST_DISCOVERY_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC31_RESULT.md\n  - performance/F-PE-ELASTIC32_SPATIAL_SOURCE_AUDIT_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC32_SPATIAL_SOURCE_AUDIT_RESULT.md\n  - performance/F-PE-ELASTIC33_CLOSURE.md\n  - performance/F-PE-ELASTIC33_PROFILE_ROW_INTERCHANGE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC33_RESULT.md\n  - performance/F-PE-ELASTIC34_CLOSURE.md\n  - performance/F-PE-ELASTIC34_RD_POINT_MAPAREA_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC34_RESULT.md\n  - performance/F-PE-ELASTIC35_CLOSURE.md\n  - performance/F-PE-ELASTIC35_RESULT.md\n  - performance/F-PE-ELASTIC35_ROW_INTERCHANGE_PARSER_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC36_CLOSURE.md\n  - performance/F-PE-ELASTIC36_RD_POINT_PROFILE_INTERCHANGE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC36_RESULT.md\n  - performance/F-PE-ELASTIC37_CLOSURE.md\n  - performance/F-PE-ELASTIC37_RESULT.md\n  - performance/F-PE-ELASTIC37_ROW_TO_APPLICATION_BINDING_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC38_CRS_CAPABILITY_AUDIT_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC38_CRS_CAPABILITY_AUDIT_RESULT.md\n  - performance/F-PE-ELASTIC39_PROJ_CLI_AUDIT_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC39_PROJ_CLI_AUDIT_RESULT.md\n  - performance/F-PE-ELASTIC40_GDAL_CLI_AUDIT_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC40_GDAL_CLI_AUDIT_RESULT.md\n  - performance/F-PE-ELASTIC41_CLOSURE.md\n  - performance/F-PE-ELASTIC41_RD_APPLICATION_HANDOFF_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC41_RD_APPLICATION_HANDOFF_RESULT.md\n  - performance/F-PE-ELASTIC41_RESULT.md\n  - performance/F-PE-ELASTIC42_RD_END_TO_END_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC42_RD_END_TO_END_RESULT.md\n  - performance/F-PE-ELASTIC43_CRS_DEPENDENCY_GOVERNANCE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC43_CRS_DEPENDENCY_GOVERNANCE_RESULT.md\n  - performance/F-PE-ELASTIC44_APPLICATION_HOST_BINDING_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC44_CLOSURE.md\n  - performance/F-PE-ELASTIC44_RESULT.md\n  - performance/F-PE-ELASTIC45_CLOSURE.md\n  - performance/F-PE-ELASTIC45_RD_APPLICATION_HOST_ORCHESTRATOR_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC45_RESULT.md\n  - performance/F-PE-ELASTIC59_MODE7_TYPED_MASS_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC59_RESULT.md\n  - performance/F-PE-ELASTIC60_CLOSURE.md\n  - performance/F-PE-ELASTIC60_MODE7_INDICATOR_ADMISSION_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC60_RESULT.md\n  - performance/F-PE-ELASTIC61_CLOSURE.md\n  - performance/F-PE-ELASTIC61_MODE7_ERROR_ENVELOPE_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC61_RESULT.md\n  - performance/F-PE-ELASTIC65_CLOSURE.md\n  - performance/F-PE-ELASTIC65_EBI25_ADMISSION_RECONCILIATION.md\n  - performance/F-PE-ELASTIC65_MODE7_CSAFE_BINDING_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC65_P2E05_ADMISSION_RECONCILIATION.md\n  - performance/F-PE-ELASTIC65_RESULT.md\n  - performance/F-PE-ELASTIC69_APPLICATION_POLICY.md\n  - performance/F-PE-ELASTIC69_CLOSURE.md\n  - performance/F-PE-ELASTIC69_GENERATED_MODE7_APPLICATION_POLICY_PREREGISTRATION.md\n  - performance/F-PE-ELASTIC70_CLOSURE.md\n  - performance/F-PE-ELASTIC71_CLOSURE.md\n  - performance/F-PE-ELASTIC_RD_CHAIN_CLOSEOUT_2026-09-29.md\n  - performance/F-PE-EMBEDSTEP01_PREREGISTRATION.md\n  - performance/F-PE-EMBEDSTEP01_RESULT.md\n  - performance/F-PE-EMBEDSTEP02_PREREGISTRATION.md\n  - performance/F-PE-EMBEDSTEP02_RESULT.md\n  - performance/F-PE-EMBEDSTEP_CLOSEOUT.md\n  - performance/F-PE-ENDPOINT01_CLOSEOUT.md\n  - performance/F-PE-ENDPOINT01_DYNAMIC_RESULT.md\n  - performance/F-PE-ENDPOINT01_P0_CONVERGENCE_AMENDMENT.md\n  - performance/F-PE-ENDPOINT01_PREREGISTRATION.md\n  - performance/F-PE-KIMPL-DYNTOP01_PREREGISTRATION.md\n  - performance/F-PE-KIMPL-DYNTOP01_RESULT.md\n  - performance/F-PE-KIMPL-DYNTOP02_PREREGISTRATION.md\n  - performance/F-PE-KIMPL-DYNTOP02_RESULT.md\n  - performance/F-PE-KIMPL-DYNTOP_CLOSEOUT.md\n  - performance/F-PE-LIVE01_CLOSEOUT.md\n  - performance/F-PE-LIVE01_P0_RESULT.md\n  - performance/F-PE-LIVE01_P1_PREREGISTRATION.md\n  - performance/F-PE-LIVE01_P1_RESULT.md\n  - performance/F-PE-LIVE01_P2_PREREGISTRATION.md\n  - performance/F-PE-LIVE01_P2_RESULT.md\n  - performance/F-PE-LIVE01_PREREGISTRATION.md\n  - performance/F-PE-MULTI01_CLOSEOUT.md\n  - performance/F-PE-MULTI01_P0_RESULT.md\n  - performance/F-PE-MULTI01_P1_PREREGISTRATION.md\n  - performance/F-PE-MULTI01_P1_RESULT.md\n  - performance/F-PE-MULTI01_PREREGISTRATION.md\n  - performance/F-PE-MULTI02_CLOSEOUT.md\n  - performance/F-PE-MULTI02_P0_RESULT.md\n  - performance/F-PE-MULTI02_P1_PREREGISTRATION.md\n  - performance/F-PE-MULTI02_P1_RESULT.md\n  - performance/F-PE-MULTI02_P2_PREREGISTRATION.md\n  - performance/F-PE-MULTI02_P2_RESULT.md\n  - performance/F-PE-MULTI02_PREREGISTRATION.md\n  - performance/F-PE-MULTI03_CLOSEOUT.md\n  - performance/F-PE-MULTI03_P0_RESULT.md\n  - performance/F-PE-MULTI03_P1_PREREGISTRATION.md\n  - performance/F-PE-MULTI03_P1_RESULT.md\n  - performance/F-PE-MULTI03_PREREGISTRATION.md\n  - performance/F-PE-MULTI04_CLOSEOUT.md\n  - performance/F-PE-MULTI04_P0_RESULT.md\n  - performance/F-PE-MULTI04_P1A_RESULT.md\n  - performance/F-PE-MULTI04_P1B_RESULT.md\n  - performance/F-PE-MULTI04_P1C_RESULT.md\n  - performance/F-PE-MULTI04_P2_RESULT.md\n  - performance/F-PE-MULTI04_P3P4_RESULT.md\n  - performance/F-PE-MULTI04_PREREGISTRATION.md\n  - performance/F-PE-MULTI06_CLOSURE.md\n  - performance/F-PE-MULTI06_MODE7_GENERATED_WORKER_POOL_PREREGISTRATION.md\n  - performance/F-PE-MULTI06_RESULT.md\n  - performance/F-PE-MULTI07_CLOSURE.md\n  - performance/F-PE-NLGLOB01_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB01_RESULT.md\n  - performance/F-PE-NLGLOB02_CLOSEOUT.md\n  - performance/F-PE-NLGLOB02_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB02_RESULT.md\n  - performance/F-PE-NLGLOB03_CLOSEOUT.md\n  - performance/F-PE-NLGLOB03_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB03_RESULT.md\n  - performance/F-PE-NLGLOB04_CLOSEOUT.md\n  - performance/F-PE-NLGLOB04_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB04_RESULT.md\n  - performance/F-PE-NLGLOB05A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB05A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB05A_RESULT.md\n  - performance/F-PE-NLGLOB05_CLOSEOUT.md\n  - performance/F-PE-NLGLOB05_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB05_RESULT.md\n  - performance/F-PE-NLGLOB06_CLOSEOUT.md\n  - performance/F-PE-NLGLOB06_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB06_RESULT.md\n  - performance/F-PE-NLGLOB07_CLOSEOUT.md\n  - performance/F-PE-NLGLOB07_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB07_RESULT.md\n  - performance/F-PE-NLGLOB08_CLOSEOUT.md\n  - performance/F-PE-NLGLOB08_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB08_RESULT.md\n  - performance/F-PE-NLGLOB09_CLOSEOUT.md\n  - performance/F-PE-NLGLOB09_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB09_RESULT.md\n  - performance/F-PE-NLGLOB10_CLOSEOUT.md\n  - performance/F-PE-NLGLOB10_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB10_RESULT.md\n  - performance/F-PE-NLGLOB11A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB11A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB11A_RESULT.md\n  - performance/F-PE-NLGLOB11_CLOSEOUT.md\n  - performance/F-PE-NLGLOB11_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB11_RESULT.md\n  - performance/F-PE-NLGLOB12A1_CLOSEOUT.md\n  - performance/F-PE-NLGLOB12A1_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB12A1_RESULT.md\n  - performance/F-PE-NLGLOB12A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB12A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB12A_RESULT.md\n  - performance/F-PE-NLGLOB12B_CLOSEOUT.md\n  - performance/F-PE-NLGLOB12B_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB12B_RESULT.md\n  - performance/F-PE-NLGLOB12_CLOSEOUT.md\n  - performance/F-PE-NLGLOB12_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB12_RESULT.md\n  - performance/F-PE-NLGLOB13A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13A_RESULT.md\n  - performance/F-PE-NLGLOB13B_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13B_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13B_RESULT.md\n  - performance/F-PE-NLGLOB13C1_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13C1_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13C1_RESULT.md\n  - performance/F-PE-NLGLOB13C2_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13C2_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13C2_RESULT.md\n  - performance/F-PE-NLGLOB13C_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13C_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13C_RESULT.md\n  - performance/F-PE-NLGLOB13D_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13D_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13D_RESULT.md\n  - performance/F-PE-NLGLOB13_CLOSEOUT.md\n  - performance/F-PE-NLGLOB13_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB13_RESULT.md\n  - performance/F-PE-NLGLOB14A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14A_RESULT.md\n  - performance/F-PE-NLGLOB14B_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14B_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14B_RESULT.md\n  - performance/F-PE-NLGLOB14C_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14C_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14C_RESULT.md\n  - performance/F-PE-NLGLOB14D_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14D_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14D_RESULT.md\n  - performance/F-PE-NLGLOB14E1_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14E1_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14E1_RESULT.md\n  - performance/F-PE-NLGLOB14E_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14E_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14E_RESULT.md\n  - performance/F-PE-NLGLOB14F_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14F_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14F_RESULT.md\n  - performance/F-PE-NLGLOB14G_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14G_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14G_RESULT.md\n  - performance/F-PE-NLGLOB14H_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14H_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14H_RESULT.md\n  - performance/F-PE-NLGLOB14I_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14I_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14I_RESULT.md\n  - performance/F-PE-NLGLOB14J_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14J_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14J_RESULT.md\n  - performance/F-PE-NLGLOB14K_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14K_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14K_RESULT.md\n  - performance/F-PE-NLGLOB14L_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14L_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14L_RESULT.md\n  - performance/F-PE-NLGLOB14M_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14M_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14M_RESULT.md\n  - performance/F-PE-NLGLOB14Z43F_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14Z43F_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14Z43F_RESULT.md\n  - performance/F-PE-NLGLOB14Z47_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14Z47_INTEGRATION_BLOCKER.md\n  - performance/F-PE-NLGLOB14Z47_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14Z47_RESULT.md\n  - performance/F-PE-NLGLOB14_CLOSEOUT.md\n  - performance/F-PE-NLGLOB14_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB14_RESULT.md\n  - performance/F-PE-NLGLOB15A_CLOSEOUT.md\n  - performance/F-PE-NLGLOB15A_PREREGISTRATION.md\n  - performance/F-PE-NLGLOB15A_RESULT.md\n  - performance/F-PE-ORCH01_CLOSEOUT.md\n  - performance/F-PE-ORCH01_PREREGISTRATION.md\n  - performance/F-PE-ORCH01_RESULT.md\n  - performance/F-PE-PHYS01_CLOSEOUT.md\n  - performance/F-PE-PHYS01_PREREGISTRATION.md\n  - performance/F-PE-PHYS01_RESULT.md\n  - performance/F-PE-PROFILE04_CLOSEOUT.md\n  - performance/F-PE-PROFILE04_FIRST_REBASELINE.md\n  - performance/F-PE-PROFILE04_INITIAL_RESULTS.md\n  - performance/F-PE-PROFILE04_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05R2_B1_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05R2_CLOSEOUT.md\n  - performance/F-PE-PROFILE05R2_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05R2_RESULT.md\n  - performance/F-PE-PROFILE05_A2C_FAILURE_ATTRIBUTION_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05_A2C_FAILURE_ATTRIBUTION_RESULT.md\n  - performance/F-PE-PROFILE05_A2C_REPRO_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05_A2C_REPRO_RESULT.md\n  - performance/F-PE-PROFILE05_CLOSEOUT.md\n  - performance/F-PE-PROFILE05_FIXED_BUILD_REPEATABILITY_PREREGISTRATION.md\n  - performance/F-PE-PROFILE05_FIXED_BUILD_REPEATABILITY_RESULT.md\n  - performance/F-PE-PROFILE05_MEASUREMENT_PLAN.md\n  - performance/F-PE-PROFILE05_PREREGISTRATION.md\n  - performance/F-PE-PROFILE06_CLOSEOUT.md\n  - performance/F-PE-PROFILE06_P2_PREREGISTRATION.md\n  - performance/F-PE-PROFILE06_PREREGISTRATION.md\n  - performance/F-PE-PROFILE06_RESULT.md\n  - performance/F-PE-PZG23-01_CLOSURE.md\n  - performance/F-PE-PZG23-02_CLOSURE.md\n  - performance/F-PE-PZG23-03_CLOSURE.md\n  - performance/F-PE-PZG23-06_CLOSURE.md\n  - performance/F-PE-REPAIR01_CLOSEOUT.md\n  - performance/F-PE-REPAIR01_PREREGISTRATION.md\n  - performance/F-PE-REPAIR01_QUALIFICATION_PLAN.md\n  - performance/F-PE-REPAIR01_QUALIFICATION_RESULT.md\n  - performance/F-PE-REPRO01_CLOSEOUT.md\n  - performance/F-PE-REPRO01_D1_D2_RESULT.md\n  - performance/F-PE-REPRO01_D1_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D2_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D3_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D4_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D5_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D6_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D7_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D8_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D9_PREREGISTRATION.md\n  - performance/F-PE-REPRO01_D9_RESULT.md\n  - performance/F-PE-REPRO01_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_CLOSEOUT.md\n  - performance/F-PE-REPRO02_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R10_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R10_RESULT.md\n  - performance/F-PE-REPRO02_R11_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R11_RESULT.md\n  - performance/F-PE-REPRO02_R12_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R12_RESULT.md\n  - performance/F-PE-REPRO02_R13_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R13_RESULT.md\n  - performance/F-PE-REPRO02_R1_RESULT.md\n  - performance/F-PE-REPRO02_R2_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R2_RESULT.md\n  - performance/F-PE-REPRO02_R3_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R3_RESULT.md\n  - performance/F-PE-REPRO02_R4_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R4_RESULT.md\n  - performance/F-PE-REPRO02_R5_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R5_RESULT.md\n  - performance/F-PE-REPRO02_R6_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R6_RESULT.md\n  - performance/F-PE-REPRO02_R7_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R7_RESULT.md\n  - performance/F-PE-REPRO02_R8_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R8_RESULT.md\n  - performance/F-PE-REPRO02_R9_PREREGISTRATION.md\n  - performance/F-PE-REPRO02_R9_RESULT.md\n  - performance/F-PE-SCHED01_CLOSURE.md\n  - performance/F-PE-SCHED02_CLOSURE.md\n  - performance/F-PE-SETUP04_CLOSEOUT.md\n  - performance/F-PE-SETUP04_PREREGISTRATION.md\n  - performance/F-PE-SETUP04_RESULT.md\n  - performance/F-PE-SETUP05_CLOSEOUT.md\n  - performance/F-PE-SETUP05_PREREGISTRATION.md\n  - performance/F-PE-SETUP05_RESULT.md\n  - performance/F-PE-SHORTSTEP01_CLOSEOUT.md\n  - performance/F-PE-SHORTSTEP01_P0_RESULT.md\n  - performance/F-PE-SHORTSTEP01_P1_PREREGISTRATION.md\n  - performance/F-PE-SHORTSTEP01_P1_RESULT.md\n  - performance/F-PE-SHORTSTEP01_P2_PREREGISTRATION.md\n  - performance/F-PE-SHORTSTEP01_P2_RESULT.md\n  - performance/F-PE-SHORTSTEP01_P3_PREREGISTRATION.md\n  - performance/F-PE-SHORTSTEP01_P3_RESULT.md\n  - performance/F-PE-SHORTSTEP01_PREREGISTRATION.md\n  - performance/F-PE-STATESTEP01_PREREGISTRATION.md\n  - performance/F-PE-STATESTEP01_RESULT.md\n  - performance/F-PE-STATESTEP02_PREREGISTRATION.md\n  - performance/F-PE-STATESTEP02_RESULT.md\n  - performance/F-PE-STATESTEP03_PREREGISTRATION.md\n  - performance/F-PE-STATESTEP03_RESULT.md\n  - performance/F-PE-STATESTEP_CLOSEOUT.md\n  - performance/F-PE-SYSTEM-CLOSE01_CLOSEOUT.md\n  - performance/F-PE-TANGENT01_CLOSEOUT.md\n  - performance/F-PE-TANGENT01_P0_RESULT.md\n  - performance/F-PE-TANGENT01_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL02_P0_RESULT.md\n  - performance/F-PE-TEMPORAL02_P1_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_P1_RESULT.md\n  - performance/F-PE-TEMPORAL02_P2R_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_P2R_RESULT.md\n  - performance/F-PE-TEMPORAL02_P2_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_P2_RESULT.md\n  - performance/F-PE-TEMPORAL02_P3A_RESULT.md\n  - performance/F-PE-TEMPORAL02_P3B_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_P3B_RESULT.md\n  - performance/F-PE-TEMPORAL02_P3_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL02_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL03_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL03_P0_RESULT.md\n  - performance/F-PE-TEMPORAL03_P1A_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL03_P1A_RESULT.md\n  - performance/F-PE-TEMPORAL03_P1B_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL03_P1B_RESULT.md\n  - performance/F-PE-TEMPORAL03_P1C_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL03_P1C_RESULT.md\n  - performance/F-PE-TEMPORAL03_P2_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL03_P2_RESULT.md\n  - performance/F-PE-TEMPORAL03_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL04_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL04_P0_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL04_P0_RESULT.md\n  - performance/F-PE-TEMPORAL04_P1_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL04_P1_RESULT.md\n  - performance/F-PE-TEMPORAL04_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL05_CALIBRATION_RESULT.md\n  - performance/F-PE-TEMPORAL05_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL05_HOLDOUT_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL05_HOLDOUT_RESULT.md\n  - performance/F-PE-TEMPORAL05_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL06_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL06_P0_RESULT.md\n  - performance/F-PE-TEMPORAL06_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL06_TANGENT_AUTHORITY_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL06_TANGENT_AUTHORITY_RESULT.md\n  - performance/F-PE-TEMPORAL07_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL07_P0_RESULT.md\n  - performance/F-PE-TEMPORAL07_P1_RESULT.md\n  - performance/F-PE-TEMPORAL07_P2_ATTRIBUTION_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL07_P2_BRACKET_AMENDMENT.md\n  - performance/F-PE-TEMPORAL07_P2_RESULT.md\n  - performance/F-PE-TEMPORAL07_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL08_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL08_P0_RESULT.md\n  - performance/F-PE-TEMPORAL08_P1_RESULT.md\n  - performance/F-PE-TEMPORAL08_P2_RESULT.md\n  - performance/F-PE-TEMPORAL08_P3_RESULT.md\n  - performance/F-PE-TEMPORAL08_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL09_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL09_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL09_RESULT.md\n  - performance/F-PE-TEMPORAL10_PREREGISTRATION.md\n  - performance/F-PE-TEMPORAL10_RESULT.md\n  - performance/F-PE-TEMPORAL11_CLOSEOUT.md\n  - performance/F-PE-TEMPORAL11_RESULT.md\n  - performance/F-PE-TIMEARCH01_ARCHITECTURE_AUDIT.md\n  - performance/F-PE-TIMEARCH01_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH01_CURRENT_ARCHITECTURE.md\n  - performance/F-PE-TIMEARCH01_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH01_TARGET_ARCHITECTURE.md\n  - performance/F-PE-TIMEARCH02_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH02_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH02_RESULT.md\n  - performance/F-PE-TIMEARCH03_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH03_RESULT.md\n  - performance/F-PE-TIMEARCH04A_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH04A_RESULT.md\n  - performance/F-PE-TIMEARCH04_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH04_HUPSEL_CONTEXT.md\n  - performance/F-PE-TIMEARCH04_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH04_RESULT.md\n  - performance/F-PE-TIMEARCH05_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH05_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH05_RESULT.md\n  - performance/F-PE-TIMEARCH06_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH06_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH06_RESULT.md\n  - performance/F-PE-TIMEARCH07_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH07_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH07_RESULT.md\n  - performance/F-PE-TIMEARCH08_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH08_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH08_RESULT.md\n  - performance/F-PE-TIMEARCH09_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH09_RESULT.md\n  - performance/F-PE-TIMEARCH10_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH10_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH10_RESULT.md\n  - performance/F-PE-TIMEARCH11_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH11_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH11_RESULT.md\n  - performance/F-PE-TIMEARCH12_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH12_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH12_RESULT.md\n  - performance/F-PE-TIMEARCH13_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH13_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH13_RESULT.md\n  - performance/F-PE-TIMEARCH14_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH14_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH14_RESULT.md\n  - performance/F-PE-TIMEARCH15_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH15_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH15_RESULT.md\n  - performance/F-PE-TIMEARCH16_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH16_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH16_RESULT.md\n  - performance/F-PE-TIMEARCH17_CLOSEOUT.md\n  - performance/F-PE-TIMEARCH17_PREREGISTRATION.md\n  - performance/F-PE-TIMEARCH17_RESULT.md\n  - performance/F-PE-TIMEINT01A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT01A_RESULT.md\n  - performance/F-PE-TIMEINT01_CLOSEOUT.md\n  - performance/F-PE-TIMEINT01_CURRENT_DISCRETIZATION.md\n  - performance/F-PE-TIMEINT01_OPTIONS.md\n  - performance/F-PE-TIMEINT01_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT02A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT02A_RESULT.md\n  - performance/F-PE-TIMEINT02_CLOSEOUT.md\n  - performance/F-PE-TIMEINT02_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT02_RESULT.md\n  - performance/F-PE-TIMEINT03A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT03A_RESULT.md\n  - performance/F-PE-TIMEINT03B_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT03B_RESULT.md\n  - performance/F-PE-TIMEINT03_CLOSEOUT.md\n  - performance/F-PE-TIMEINT03_P0_RESULT.md\n  - performance/F-PE-TIMEINT03_P1_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT03_P1_RESULT.md\n  - performance/F-PE-TIMEINT03_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT04A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT04A_RESULT.md\n  - performance/F-PE-TIMEINT04B_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT04B_RESULT.md\n  - performance/F-PE-TIMEINT04_CLOSEOUT.md\n  - performance/F-PE-TIMEINT04_P0_RESULT.md\n  - performance/F-PE-TIMEINT04_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT05_CLOSEOUT.md\n  - performance/F-PE-TIMEINT05_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT05_RESULT.md\n  - performance/F-PE-TIMEINT06A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT06A_RESULT.md\n  - performance/F-PE-TIMEINT06_CLOSEOUT.md\n  - performance/F-PE-TIMEINT06_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT06_RESULT.md\n  - performance/F-PE-TIMEINT07A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT07A_RESULT.md\n  - performance/F-PE-TIMEINT07_CLOSEOUT.md\n  - performance/F-PE-TIMEINT07_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT07_RESULT.md\n  - performance/F-PE-TIMEINT08A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT08A_RESULT.md\n  - performance/F-PE-TIMEINT08_CLOSEOUT.md\n  - performance/F-PE-TIMEINT08_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT08_RESULT.md\n  - performance/F-PE-TIMEINT09A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT09A_RESULT.md\n  - performance/F-PE-TIMEINT09_CLOSEOUT.md\n  - performance/F-PE-TIMEINT09_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT09_RESULT.md\n  - performance/F-PE-TIMEINT10A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT10A_RESULT.md\n  - performance/F-PE-TIMEINT10_CLOSEOUT.md\n  - performance/F-PE-TIMEINT10_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT10_RESULT.md\n  - performance/F-PE-TIMEINT11_CLOSEOUT.md\n  - performance/F-PE-TIMEINT11_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT11_RESULT.md\n  - performance/F-PE-TIMEINT12A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT12A_RESULT.md\n  - performance/F-PE-TIMEINT12_CLOSEOUT.md\n  - performance/F-PE-TIMEINT12_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT12_RESULT.md\n  - performance/F-PE-TIMEINT13_CLOSEOUT.md\n  - performance/F-PE-TIMEINT13_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT13_RESULT.md\n  - performance/F-PE-TIMEINT14A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT14A_RESULT.md\n  - performance/F-PE-TIMEINT14_CLOSEOUT.md\n  - performance/F-PE-TIMEINT14_HANDOFF_2026-09-29.md\n  - performance/F-PE-TIMEINT14_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT14_RESULT.md\n  - performance/F-PE-TIMEINT15A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT15A_RESULT.md\n  - performance/F-PE-TIMEINT15_CLOSEOUT.md\n  - performance/F-PE-TIMEINT15_LITERATURE.md\n  - performance/F-PE-TIMEINT15_P0_RESULT.md\n  - performance/F-PE-TIMEINT15_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT16B_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT16C_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT16_CLOSEOUT.md\n  - performance/F-PE-TIMEINT16_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT16_RESULT.md\n  - performance/F-PE-TIMEINT17A2_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17A2_RESULT.md\n  - performance/F-PE-TIMEINT17A_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17A_RESULT.md\n  - performance/F-PE-TIMEINT17B_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17B_RESULT.md\n  - performance/F-PE-TIMEINT17C_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17C_RESULT.md\n  - performance/F-PE-TIMEINT17D_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17D_RESULT.md\n  - performance/F-PE-TIMEINT17E_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17E_RESULT.md\n  - performance/F-PE-TIMEINT17F_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17F_RESULT.md\n  - performance/F-PE-TIMEINT17G_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17G_RESULT.md\n  - performance/F-PE-TIMEINT17H_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17H_RESULT.md\n  - performance/F-PE-TIMEINT17I_RESULT.md\n  - performance/F-PE-TIMEINT17_CLOSEOUT.md\n  - performance/F-PE-TIMEINT17_HANDOFF_2026-09-29.md\n  - performance/F-PE-TIMEINT17_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17_REQUALIFICATION_CLOSEOUT.md\n  - performance/F-PE-TIMEINT17_REQUALIFICATION_PREREGISTRATION.md\n  - performance/F-PE-TIMEINT17_REQUALIFICATION_RESULT.md\n  - performance/F-PE13_SWAP011_E7_PROVENANCE_RECOVERY.md\n  - performance/F-PE19_B1_11_ADMISSION_CHECKLIST.md\n  - performance/F-PE19_B1_11_ADMISSION_CLOSE.md\n  - performance/F-PE19_B1_11_CANONICAL_REPLAY.md\n  - performance/F-PE19_B1_11_CI_RECONCILIATION.md\n  - performance/F-PE19_B1_11_IDENTITY_FREEZE.md\n  - performance/F-PE19_B1_11_METADATA_CORRECTION.md\n  - performance/F-PE19_SWAP011_ADMISSION_BLOCKER.md\n  - performance/F-PE19_SWAP011_B1_ADMISSION.md\n  - performance/F-PE19_SWAP011_B1_QUALIFICATION.md\n  - performance/SWAP5_MULTISWAP_PERFORMANCE_OBJECTIVE.md\n  - performance/SWAP5_PERFORMANCE_GOAL_2026-09-30.md\n  - publication/HYDRO_MEMORY_ACC02_F1_RESULT.md\n  - publication/HYDRO_MEMORY_ACC02_F2_RESULT.md\n  - publication/HYDRO_MEMORY_DYN01_RESULT.md\n  - publication/HYDRO_MEMORY_DYN02_VIEW01_PREREGISTRATION.md\n  - publication/HYDRO_MEMORY_DYN02_VIEW01_RESULT.md\n  - publication/HYDRO_MEMORY_STAGE0_ACCURACY_GOVERNANCE_V1.md\n  - publication/HYDRO_MEMORY_STAGE0_INTERFACE_ACCURACY_GOVERNANCE_V1.md\n  - publication/P1_EVIDENCE_REGISTER.md\n  - publication/P1_PUBLICATION_QUALIFICATION_SET.md\n  - publication/P2_ADMISSIBILITY_ENVELOPE_DESIGN.md\n  - publication/P2_E0_BASELINE.md\n  - publication/P2_E0_EXPERIMENT_DESIGN.md\n  - publication/PUB_GC_COUPLE_FIXED_INTERFACE_THEORY_HANDOFF.md\n  - publication/PUB_GC_E3D2_PREDICTOR_FAILURE_PREREGISTRATION.md\n  - publication/PUB_GC_E3D2_PREDICTOR_FAILURE_RESULT.md\n  - publication/PUB_GC_E3D_PREDICTOR_ENVELOPE_PREREGISTRATION.md\n  - publication/PUB_GC_E3D_PREDICTOR_ENVELOPE_RESULT.md\n  - publication/PUB_GC_E3R_STRONGER_FEEDBACK_PREREGISTRATION.md\n  - publication/PUB_GC_E3R_STRONGER_FEEDBACK_RESULT.md\n  - publication/PUB_GC_E3_INITIAL_RESULT.md\n  - publication/PUB_GC_E3_PREREGISTRATION.md\n  - publication/PUB_GC_E3_RESULT.md\n  - publication/PUB_GC_E4_RESPONSE_IDENTITY_PREREGISTRATION.md\n  - publication/PUB_GC_E5_INFORMATION_VALUE_PREREGISTRATION.md\n  - publication/PUB_GC_E5_LINEAR_CONTROL.md\n  - publication/PUB_GC_E6A_STATE_SCREEN_PREREGISTRATION.md\n  - publication/PUB_GC_E6A_STATE_SCREEN_RESULT.md\n  - publication/PUB_GC_E6_ACTIVE_DRAINAGE_PREREGISTRATION.md\n  - publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.md\n  - publication/PUB_GC_E6_RESULT.md\n  - publication/PUB_GC_E7_CASE_SELECTION.md\n  - publication/PUB_GC_E7_CURRENT_CANONICAL_RECONCILIATION_20260919.md\n  - publication/PUB_GC_E7_HUPSEL_EXECUTION_PREREGISTRATION.md\n  - publication/PUB_GC_E7_REALISTIC_COMPONENT_DOMAIN_RESULT.md\n  - publication/PUB_GC_E7_STANDALONE_SELECTION_RESULT.md\n  - publication/PUB_GC_FIGURE_TABLE_PLAN.md\n  - publication/PUB_GC_GMD_ARCHIVAL_GATE.md\n  - publication/PUB_GC_GMD_ARCHIVE_CONTENTS_INVENTORY.md\n  - publication/PUB_GC_GMD_CODE_DATA_AVAILABILITY_TEMPLATE.md\n  - publication/PUB_GC_GMD_COVER_LETTER_DRAFT.md\n  - publication/PUB_GC_GMD_FIGURE_EXPORT_PLAN.md\n  - publication/PUB_GC_GMD_FIGURE_EXPORT_QUALIFICATION.md\n  - publication/PUB_GC_GMD_FINALIZATION_CONTRACT.md\n  - publication/PUB_GC_GMD_FINAL_AUTHORITY_HANDOFF.md\n  - publication/PUB_GC_GMD_FORMATTING_HANDOFF.md\n  - publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md\n  - publication/PUB_GC_GMD_LICENSE_EXTERNAL_EVIDENCE.md\n  - publication/PUB_GC_GMD_MANUSCRIPT_PREPARATION_AUDIT.md\n  - publication/PUB_GC_GMD_PRE_SUBMISSION_CHECKLIST.md\n  - publication/PUB_GC_GMD_RELEASE_LICENSE_AUTHORITY_AUDIT.md\n  - publication/PUB_GC_GMD_SUBMISSION_METADATA_DRAFT.md\n  - publication/PUB_GC_JOURNAL_POSITIONING.md\n  - publication/PUB_GC_MANUSCRIPT_CLAIM_SENTENCE_AUDIT.md\n  - publication/PUB_GC_MANUSCRIPT_CONSOLIDATION_STATUS.md\n  - publication/PUB_GC_MANUSCRIPT_FIGURE_TABLE_PLAN.md\n  - publication/PUB_GC_MANUSCRIPT_TABLES.md\n  - publication/PUB_GC_NOTATION_AND_UNITS.md\n  - publication/PUB_GC_REFERENCE_AUDIT.md\n  - publication/PUB_GC_RELEASE_LICENSE_DECISION_TEMPLATE.md\n  - publication/PUB_GC_SUBMISSION_PROSE_AUDIT.md\n  - publication/PUB_GC_SUBMISSION_READINESS.md\n  - publication/PUB_GC_SUPPLEMENTARY_METHODS_AND_EVIDENCE.md\n  - publication/SWAP5_GMD_PUBLICATION_READINESS_SPEC.md\n  - publication/SWAP5_RESEARCH_PUBLICATION_INBOX_2026-10-02.md\n  - publications/README.md\n  - publications/EVIDENCE_INVENTORY.md\n  - publications/EXPERIMENT_MANIFEST.md\n  - publications/EXPERIMENT_REGISTER.md\n  - publications/PHD_RESEARCH_PROGRAMME.md\n  - publications/PUB-GC_ACCURACY_AND_REFERENCE_ADJUDICATION.md\n  - publications/PUB-GC_E1_ORIGIN_HARNESS_SPEC.md\n  - publications/PUB-GC_E2_TERMINAL_FLUX_COMPARATOR_SPEC.md\n  - publications/PUB-GC_EXPERIMENT_MATRIX.md\n  - publications/PUB-GC_GC-REF_SPECIFICATION.md\n  - publications/PUB-GC_GW-A_SPECIFICATION.md\n  - publications/PUB-GC_MACRO_512_EXTENSION_SPEC.md\n  - publications/PUB-GC_MACRO_HIGH_COUNT_EXTENSION_SPEC.md\n  - publications/PUB-GC_MACRO_TIME_COORDINATE_EXTENSION_SPEC.md\n  - publications/PUB-GC_MACRO_WINDOW_RESPONSE_SPEC.md\n  - publications/PUB-GC_NATIVE_TIME_SPEC.md\n  - publications/PUB-GC_SCIENTIFIC_CONTRACT.md\n  - publications/PUB-ME_D1A_RESULT.md\n  - publications/PUB-ME_D1_D6_CROSS_DEFECT_ADJUDICATION.md\n  - publications/PUB-ME_D1_D6_PREREGISTERED_EXPERIMENT_MATRIX.md\n  - publications/PUB-ME_D1_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D2_D5_REPLICATION_PREREGISTRATION.md\n  - publications/PUB-ME_D2_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D3_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D3_RESULT.md\n  - publications/PUB-ME_D4_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D4_RESULT.md\n  - publications/PUB-ME_D5_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D5_RESULT.md\n  - publications/PUB-ME_D6_CANONICAL_RECONCILIATION.md\n  - publications/PUB-ME_D6_EXECUTION_CHECKPOINT.md\n  - publications/PUB-ME_D6_FCI98_SUCCESSOR_REPLAY.md\n  - publications/PUB-ME_D6_RESULT.md\n  - publications/PUB-ME_EXPERIMENT_MATRIX.md\n  - publications/PUB-ME_G1_D2_FCI98_RECONCILIATION.md\n  - publications/PUB-ME_G1_D2_REPLICATION_CHECKPOINT.md\n  - publications/PUB-ME_G1_D2_REPLICATION_PREREGISTRATION.md\n  - publications/PUB-ME_G1_D2_REPLICATION_RESULT.md\n  - publications/PUB-ME_INTRODUCTION_SOURCE_LEDGER.md\n  - publications/PUB-ME_LITERATURE_CLUSTER_TRANSACTIONAL_SIMULATION.md\n  - publications/PUB-ME_LITERATURE_REVIEW_PASS2.md\n  - publications/PUB-ME_LITERATURE_REVIEW_PASS3_STATE_AUTHORITY.md\n  - publications/PUB-ME_LITERATURE_REVIEW_PASS4_TEMPORAL_STATE_TRANSITION.md\n  - publications/PUB-ME_LITERATURE_REVIEW_PASS5_ROLLBACK_COMMIT.md\n  - publications/PUB-ME_LITERATURE_REVIEW_PROTOCOL.md\n  - publications/PUB-ME_LITERATURE_REVIEW_REGISTER.md\n  - publications/PUB-ME_MIGRATION_SLICES.md\n  - publications/PUB-ME_RESEARCH_QUESTION_ADJUDICATION.md\n  - publications/PUB-ME_SCIENTIFIC_CONTRACT.md\n  - publications/PUB-RC_SCIENTIFIC_CONTRACT.md\n  - publications/PUB-SG_SCIENTIFIC_CONTRACT.md\n  - publications/PUB-SQ_EXPERIMENT_MATRIX.md\n  - publications/PUB-SQ_SCIENTIFIC_CONTRACT.md\n  - publications/PUBLICATION_PORTFOLIO.md\n  - publications/decisions/PUB-GC-E1-SCREEN-0002_TRIGGER.md\n  - publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md\n  - publications/decisions/PUB-GC_E2_E3_MACRO_WINDOW_ADJUDICATION.md\n  - publications/decisions/PUB-GC_MACRO_TIME_COORDINATE_ADJUDICATION.md\n  - publications/decisions/PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0002.md\n  - publications/decisions/PUB-GC_NATIVE_TIME_REFINEMENT_AFTER_0003.md\n  - science/F-ROM0_ACCEPTED_FULL_ORDER_AUTHORITY.md\n  - science/F-ROM0_FINAL_AUTHORITY_ADJUDICATION.md\n  - science/F-ROM0_FINAL_GATE_RECONCILIATION_AFTER_T1Q1.md\n  - science/F-ROM1A_I0_REFERENCE_OBSERVATION_SEAM.md\n  - science/F-ROM1_FINAL_STATE_SUFFICIENCY_RECONCILIATION.md\n  - science/F-ROMP_PROPOSITION_QUALIFICATION.md\n  - science/F-ROMV2_D10_HE_TWO_LAYER_ADJUDICATION.md\n  - science/F-ROMV2_D11_STATE_OF_ART_RECONCILIATION.md\n  - science/F-ROMV2_D12_FMC_SMVE_PREFLIGHT_ADJUDICATION.md\n  - science/F-ROMV2_D13_FMC_GROUNDWATER_ADJUDICATION.md\n  - science/F-ROMV2_D14_FMC_SURFACE_KINEMATICS_ADJUDICATION.md\n  - science/F-ROMV2_D15_FMC_SURFACE_ACCOUNTING_ADJUDICATION.md\n  - science/F-ROMV2_D16_FMC_SURFACE_REDISTRIBUTION_ADJUDICATION.md\n  - science/F-ROMV2_D17_COMBINED_FMC_ADJUDICATION.md\n  - science/F-ROMV2_D18_MERGE_EVENT_PREFLIGHT_ADJUDICATION.md\n  - science/F-ROMV2_D19_EXACT_CONTACT_MERGE_ADJUDICATION.md\n  - science/F-ROMV2_D20_ONE_HOUR_PERSISTENCE_ADJUDICATION.md\n  - science/F-ROMV2_D21_RAIN_PONDING_RUNOFF_ADJUDICATION.md\n  - science/F-ROMV2_D22_NATIVE_THRESHOLD_RESPONSE_ADJUDICATION.md\n  - science/F-ROMV2_D23_SHORT_RAINFALL_TRAJECTORY_ADJUDICATION.md\n  - science/F-ROMV2_D24_NATIVE_RAIN_GROUNDWATER_ADJUDICATION.md\n  - science/F-ROMV2_D25_COMPUTATIONAL_VALUE_SCREEN_ADJUDICATION.md\n  - science/F-ROMV2_D26_ROOT_UPTAKE_AUTHORITY.md\n  - science/F-ROMV2_D27_UNSTRESSED_UPTAKE_ACCOUNTING.md\n  - science/F-ROMV2_D28_NATIVE_ET_SOURCE_BLOCKER.md\n  - science/F-ROMV2_D29_ONE_DAY_SEPARATED_PREFLIGHT_ADJUDICATION.md\n  - science/F-ROMV2_D2_COARSE_RICHARDS_ADJUDICATION.md\n  - science/F-ROMV2_D30_SURFACE_GW_CONTACT_AUTHORITY.md\n  - science/F-ROMV2_D31_M2WC70_RETRIEVAL_RECONCILIATION.md\n  - science/F-ROMV2_D3_REPRESENTATION_POLICY_ADJUDICATION.md\n  - science/F-ROMV2_D4_INTEGRATED_MASS_COARSE_RICHARDS_ADJUDICATION.md\n  - science/F-ROMV2_D5_TWO_LAYER_PHYSICAL_REDUCTION_ADJUDICATION.md\n  - science/F-ROMV2_D6_MANIFOLD_PREFLIGHT_ADJUDICATION.md\n  - science/F-ROMV2_D7_QS1_ADJUDICATION.md\n  - science/F-ROMV2_D8_QS2_COMPOSITE_ADJUDICATION.md\n  - science/F-ROMV2_D9_HE_TWO_LAYER_LITERATURE_RECONCILIATION.md\n  - science/F-ROMV2_PURPOSE_DEPENDENT_FIDELITY_PROPOSITION.md\n  - science/F-ROMV2_V1_BLIND_HYDRAULIC_ADJUDICATION.md\n  - science/F-ROMV_COMPUTATIONAL_VALUE_GONOGO.md\n  - science/F-ROMV_MDE_STAGE1_RESULT.md\n  - science/F-ROMV_TERMINAL_RECONCILIATION.md\n  - science/F-ROM_CODE_FRONTIER_RECONCILIATION.md\n  - science/F-ROM_RESEARCH_PROPOSITION.md\n  - science/MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md\n  - science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md\n  - science/MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md\n  - science/MC_CROP01_OXYGEN_CYCLE_CONTRACT.md\n  - science/MC_CROP01_TRAJECTORY2_CO2_CONTRACT.md\n  - science/MC_CROP01_TRAJECTORY2_RECOVERY_20261014.md\n  - science/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_RECOVERY_20261015.md\n  - science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md\n  - science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md\n  - science/MC_CROP01_TRAJECTORY4_SWRD2_RECOVERY_20261015.md\n  - science/MC_MET01_DAILY_DEMAND_CONTRACT.md\n  - science/MC_MET01_LOW_AIR_JOINT_ADMISSION_20261014.md\n  - science/MC_MET01_RAINTB_PRODUCTION_CONTRACT.md\n  - science/MC_NUT01_ACCEPTED_THERMAL_CONTRACT_20261015.md\n  - science/MC_NUT01_ACCEPTED_THERMAL_RECOVERY_20261015.md\n  - science/MC_NUT01_AMENDMENT_INPUT_CONTRACT_20261015.md\n  - science/MC_NUT01_AMENDMENT_INPUT_COVERAGE_RECEIPT_20261015.md\n  - science/MC_NUT01_AMENDMENT_INPUT_RECOVERY_20261015.md\n  - science/MC_NUT01_CALENDAR_RECONCILIATION_20261015.md\n  - science/MC_NUT01_CALENDAR_REFERENCE_DECISION_20261015.md\n  - science/MC_NUT01_CROP_SUPPLY_CONTRACT_20261015.md\n  - science/MC_NUT01_CROP_SUPPLY_RECOVERY_20261015.md\n  - science/MC_NUT01_DAILY_ENVIRONMENT_CONTRACT_20261015.md\n  - science/MC_NUT01_DAILY_ENVIRONMENT_RECOVERY_20261015.md\n  - science/MC_NUT01_INPUT_SOURCE_AUDIT_20261015.md\n  - science/MC_NUT01_MANAGEMENT_CALENDAR_CONTRACT_20261015.md\n  - science/MC_NUT01_MANAGEMENT_CALENDAR_RECOVERY_20261015.md\n  - science/MC_NUT01_MATERIAL_CYCLE_CONTRACT_20261015.md\n  - science/MC_NUT01_MATERIAL_CYCLE_RECOVERY_20261015.md\n  - science/MC_NUT01_MATERIAL_ENVIRONMENT_CONTRACT_20261015.md\n  - science/MC_NUT01_MATERIAL_ENVIRONMENT_RECOVERY_20261015.md\n  - science/MC_NUT01_MINERAL_TRANSPORT_CONTRACT.md\n  - science/MC_NUT01_MINERAL_TRANSPORT_RECOVERY_20261015.md\n  - science/MC_NUT01_ORGANIC_REFERENCE_DECISION_20261015.md\n  - science/MC_NUT01_REACTIVE_DAY_CONTRACT.md\n  - science/MC_NUT01_REACTIVE_DAY_RECOVERY_20261015.md\n  - science/MC_NUT01_SENESCENCE_CYCLE_CONTRACT_20261015.md\n  - science/MC_NUT01_SENESCENCE_CYCLE_RECOVERY_20261015.md\n  - science/MC_NUT01_THERMAL_ADMISSION_RECONCILIATION_20261015.md\n  - science/MC_NUT_SOL_TRAJECTORY3_MATRIX_CONTRACT.md\n  - science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md\n  - science/MC_SOL01_NONLINEAR_MATRIX_CONTRACT.md\n  - science/MC_SOL01_SURFACE_INPUT_CONTRACT.md\n  - testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md\n  - verification/F-PE-BOFEK00_ADAPTIVE_PREREGISTRATION.md\n  - verification/F-PE-BOFEK00_CLOSEOUT.md\n  - verification/F-PE-BOFEK00_PREREGISTRATION.md\n  - verification/F-PE-BOFEK00_QUALIFICATION.md\n  - verification/legacy-differences.md\n  - verification/evidence/F-TB13_NEXT_ACTION.md\n  - verification/evidence/F-TB13_PRESERVED_ASSET_CARRIER.md\n  - verification/evidence/F-TB13_README_POINTER.md\n  - verification/evidence/F-TB13_SCOPE_GUARD.md\n  - verification/evidence/F-TB13_TEST_MATRIX.md\nINFO    -  Doc file 'architecture/m3-gate-evidence.md' contains a link 'migration-slices.md#m3---transactional-interval-execution', but the doc 'architecture/migration-slices.md' does not contain an anchor '#m3---transactional-interval-execution'.\nINFO    -  Documentation built in 16.53 seconds\n"
+      }
+    },
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "reviews": 0,
+    "review_threads": 0,
+    "canonical_admission": {
+      "pr": 1250,
+      "merge_commit": "02ae9f0090857e07c984e3f4be4ed8a5d8fa553b",
+      "head": "dfd792b02fc99f306dfab10d6c36b7a8b5299cac",
+      "tree": "5e93505dc09dfcad5dfefaefa16be68898899ed8",
+      "master_recovery_commit": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
+      "numerical_science_rerun": "NOT_SELECTED_EXACT_UNCHANGED_PRODUCTION_AND_SCIENTIFIC_DRIVER_EVIDENCE",
+      "full_master_integrity": "BLOCKED_HISTORICAL_INHERITANCE_NOT_WAIVED"
+    }
+  },
+  "master_census_correction_20261016": {
+    "master_recovery_commit": "a40ef6b0ace5ce800ece2b12550f99c1750638b6",
+    "canonical_source": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+    "source_tree_unchanged": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "summary": {
+      "capabilities": 243,
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 113,
+      "explicit_absence_flags_not_algorithm_count": 92
+    },
+    "correction": "ROOT-DENSITY component retained; daily initializer/updater has no production caller and the original qualifying supply fixture never calls it. Restore ACTIVE_MIGRATION and supply dependency; no canonical code/admitted root contract reverted.",
+    "integrity": "PASS_HISTORICAL_SOURCE_AND_PINNED_LATER_LOCATORS_NOT_CURRENT_NUMERICAL_QUALIFICATION",
+    "closure": "REFUSED_DENOMINATOR_INCOMPLETE",
+    "master_pr": 1072,
+    "master_pr_retained_as_draft": true,
+    "new_migration_started": false
+  },
+  "persistent_pond_successor_20261016": {
+    "stage": "CANONICALLY_ADMITTED_BOUNDED",
+    "baseline": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+    "branch": "work/sol-pond-continuation-20261016",
+    "scope": "Existing1256 matrix companion pond_mass is the only persistent chemical surface store; real accepted fixed-depth wet and dry-to-rewet water receipts, gross rain/irrigation and prescribed dry deposition; current V2 native/opaque owner unchanged; no general varying pond level, evaporation/runoff/macropores, aquifer or default activation.",
+    "invariants_affected": [
+      3,
+      4,
+      7,
+      9,
+      13,
+      21,
+      22,
+      25,
+      27,
+      29,
+      30
+    ],
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": true,
+    "next_action": "Later bounded actual evolving pond application is admitted via1258; see dynamic_pond_successor_20261016. Historical1257 fixed/dry qualification is retained. Gross evaporation/runoff and other unsupported combinations remain separately open; aquifer excluded.",
+    "test_selection": {
+      "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
+      "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
+      "broad": "NOT_SELECTED before stable-candidate impact review; no implied full moving or highest low-air"
+    },
+    "execution_commit": "d0f7049ec93528717dd7e1feab3cd352447025d3",
+    "execution_tree": "dda84f84e8ef2a9573e9fe1e700aae77ea7805c1",
+    "source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_POND_SOURCE_20261016.tar.xz.b64",
+      "decoded_sha256": "0af1948eee5ad9cbb9da76e0c09f624ae4d3da824145d8a0bb44e8df93ad8b97",
+      "decoded_bytes": 216596,
+      "members": 1831
+    },
+    "postimages": {
+      "src/process/mod_b111_persistent_pond.f90": {
+        "status": "A",
+        "blob": "78703f26f70f4dce863698795317d33930137087"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "A",
+        "blob": "07846151bd31a683019d1662472de71d5fe6100c"
+      },
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+        "status": "A",
+        "blob": "e111432d454bd31eeb761f7bc056ae66166063a6"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+      },
+      "tests/mc-irr01/check_material_root_controls.py": {
+        "status": "M",
+        "blob": "3520af78631b5fe5f3c12d2ba616c10e37b5e2bb"
+      },
+      "tests/mc-irr01/verify_material_root_successor.py": {
+        "status": "M",
+        "blob": "c2375c6ab6499933f1b90c3b81399954ff76f8a4"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "A",
+        "blob": "a3e260d3cf1637073529953d74b2263fcf6189eb"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "M",
+        "blob": "f058e3e9464f23b976a358b6075abc9382825d35"
+      },
+      "tests/nut-sol/run_persistent_pond.py": {
+        "status": "A",
+        "blob": "821f6debe50494177798a7389452666067006c90"
+      },
+      "tests/nut-sol/run_pond_joint.py": {
+        "status": "A",
+        "blob": "c48affa4e523d11cc911dcb97c01c08deaa941c3"
+      },
+      "tests/nut-sol/test_persistent_pond.f90": {
+        "status": "A",
+        "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+      },
+      "tests/nut-sol/test_pond_joint.f90": {
+        "status": "A",
+        "blob": "bfa91a3f64a08a9c4726ce4270f2d25cf97697aa"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "A",
+        "blob": "2a2d7dee74bf23654771b17d5179397fdb370f70"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "M",
+        "blob": "cabff03fc68de3d883f28727e5d5cf4bb561cc9a"
+      }
+    },
+    "cost_seconds": {
+      "physical_compile": 194.50119866718887,
+      "physical_link": 0.4280248460127041,
+      "physical_native": 55.75857900601113,
+      "preservation_compile": 11.407297228972311,
+      "preservation_link": 0.5430716410046443,
+      "preservation_native": 23.45421971900214,
+      "process_compile": 0.48713431901705917,
+      "process_link": 0.0827895310067106,
+      "process_native": 0.004335931007517502
+    },
+    "pre1256_reconciliation": {
+      "new_canonical": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+      "admitted_pr": 1256,
+      "decision": "Preserve all preliminary source/science; do not merge duplicate surface owner/codec. Recompose persistent pond/source consumption over admitted matrix pond_mass and V2 restart. This capsule proves only the original87bc baseline.",
+      "qualified_for_current_canonical": false
+    },
+    "prior_pre1256_science": {
+      "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "execution_commit": "10e061826f3e13e34ec52ceb73b66a94e39c4eb1",
+      "execution_tree": "d20c87edc92ffe81dad758665bf8b3a52a4b8f1e",
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+        "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+        "decoded_bytes": 109736,
+        "members": 3066
+      },
+      "source_tree": "beea61514fcd76a547b3824c40a21f934b86e67b",
+      "postimages": {
+        "src/adapter/mod_matrix_joint_restart_file.f90": {
+          "status": "M",
+          "blob": "4f55ee9d5b97cf3bb1d0a85ba5128a99c6f2811d"
+        },
+        "src/process/mod_b111_persistent_pond.f90": {
+          "status": "A",
+          "blob": "78703f26f70f4dce863698795317d33930137087"
+        },
+        "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+          "status": "A",
+          "blob": "fae5a4c26bd19e5fc8ba248043fd4c6f622ce530"
+        },
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+          "status": "A",
+          "blob": "08d98af3a352d6df3d28426377c3e286f45531a4"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "status": "M",
+          "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+        },
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+          "status": "M",
+          "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+        },
+        "tests/mc-irr01/verify_material_root_successor.py": {
+          "status": "M",
+          "blob": "db1686b83f1b9962219bbba7e5970c85420ec19b"
+        },
+        "tests/nut-sol/check_pond_controls.py": {
+          "status": "A",
+          "blob": "5627e8a4b67df2e9b7cfbba1780f40c2af19f2fb"
+        },
+        "tests/nut-sol/run_persistent_pond.py": {
+          "status": "A",
+          "blob": "821f6debe50494177798a7389452666067006c90"
+        },
+        "tests/nut-sol/run_pond_joint.py": {
+          "status": "A",
+          "blob": "a4b32e2e8871c4ee9f4c87e6fa9aa64773a858db"
+        },
+        "tests/nut-sol/test_persistent_pond.f90": {
+          "status": "A",
+          "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+        },
+        "tests/nut-sol/test_pond_joint.f90": {
+          "status": "A",
+          "blob": "05d54e8fda35b90f92aab3ebf3427ccc5f2c5b14"
+        },
+        "tests/nut-sol/verify_pond_successor.py": {
+          "status": "A",
+          "blob": "ebb351dc9afab24e469c676b09e98b05af61c0bb"
+        }
+      },
+      "cost_seconds": {
+        "physical_compile": 174.225236249913,
+        "physical_link": 0.3069188310037134,
+        "physical_native": 50.9656070269848,
+        "preservation_compile": 10.23940672900062,
+        "preservation_link": 0.3265203350165393,
+        "preservation_native": 19.023562807007693,
+        "process_compile": 0.4906309939833591,
+        "process_link": 0.0939477520150831,
+        "process_native": 0.004268365999450907
+      }
+    },
+    "last_reconciled_upstream": "fcad97c7745ea2886b310aaad3c8f8a36a2ec4e1",
+    "persisted": true,
+    "pr": 1257,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1257",
+    "source_ownership": {
+      "persistent_mass": "existing matrix_solute_state_t companion pond_mass admitted1256",
+      "water": "existing accepted Richards state",
+      "native_and_opaque_restart": "exact admitted1256 implementation, no mutation",
+      "leaf_state": "tentative process scratch only; never separately committed or restarted by the application"
+    },
+    "science_summary": {
+      "current_native_programs": 38,
+      "original_surface_programs": 4,
+      "literal_leaf_cases_per_optimization": 240,
+      "leaf_evidence": "inherited only with all source/driver/oracle/compiler/flags/environment identities unchanged; current physical closure compiles production leaf again O0/O2",
+      "last_carrier_controls_per_window": 21,
+      "crc_and_decoder_controls_per_optimization": 15,
+      "actual_variably_evolving_pond_level": false,
+      "original_v1_endpoint": "7927b66f0ccf253d00795dd6c174a8323ac6e06d5bd6d384248e9bb0e7331d9e",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "hosted_numerical_claim": false
+    },
+    "retained_failures": [
+      {
+        "scope": "original prototype",
+        "archive": {
+          "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+          "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+          "decoded_bytes": 109736,
+          "members": 3066
+        },
+        "status": "HISTORICAL_SCIENCE_NOT_CURRENT_QUALIFICATION"
+      },
+      {
+        "scope": "single-owner literal whole balance",
+        "execution": "6915817c",
+        "status": "FAILED_ORACLE_DOUBLE_COUNTING_NOT_PRODUCTION_FAILURE",
+        "reason": "After moving pond mass into existing companion, independent driver subtracted initial surface mass both through solute_total and standalone pm. Removed redundant standalone subtraction; retained raw fail and source history."
+      },
+      {
+        "scope": "old evidence control invocation",
+        "status": "REJECTED_DIRTY_PYTHON_CACHE_BEFORE_SCIENTIFIC_REVIEW"
+      }
+    ],
+    "recovery_point": "Canonical1257 merge d52ed8934d8a6a0fe5e5976b6c05620f45658995, canonical actual-admission receipt a8da9e7629d476d97d4deb1aa4f36c7c7cd95c06, master1072 dedff534210e9b08372b3f169e751e27a7102d71. All selected runs terminal; source11c528ca and immutable capsules retained.",
+    "preserved": true,
+    "admission_controls": {
+      "negative_controls": 23,
+      "status": "PASS",
+      "raw_log_sha256": "062a4cc496a01b9c86c4a7397bc9d09bf8873a9090fea3c5a2dd89e096e7b7e2",
+      "new_pond_owner_dispatch": "PASS",
+      "retained_int12c_owner_dispatch": "PASS actual existing entrypoint",
+      "docs_source": "PASS final",
+      "strict_mkdocs": "PASS final",
+      "missing_mkdocs_attempt": "FAILED_ENVIRONMENT_ONLY, retained raw log; recovered without new package download",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_POND_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "1f3c223982c53925c63acff4a000780b800078f4972c609a8016b37c78fa3240",
+        "decoded_bytes": 12460,
+        "members": 12
+      }
+    },
+    "regie_admission_selection": "Bounded existing-owner successor: actual source O0/O2, exact V1/V2/native/current owner proof and23 fail-closed controls. Only new opt-in consumers and observation metadata change; solver equations, committed state ownership,1256 reconstruction/codec and all incumbent bodies preserved. No full moving/highest/RossFast selected solely for added valid forcing. User autonomous continuation plus execution-protocol full-cycle authority; verify live canonical, reviews, PR head and merge tree before admitting.",
+    "canonical_admission": {
+      "pr": 1257,
+      "merge_commit": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
+      "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+      "actual_tree": "56c5722d5946a9b6cbcedc82fdd7bee57066084e",
+      "source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_whole_source_test_and_evidence_tree_identity": "PASS actual GitHub Git commit read",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "existing_hosted_runs": 0,
+      "hosted_pass_claimed": false,
+      "full_capability_or_census_promotion": false
+    },
+    "master_receipt": {
+      "pr": 1072,
+      "recovery_commit": "dedff534210e9b08372b3f169e751e27a7102d71",
+      "tree": "bf640bbd012960602024bb9b88d6a318c42e7e84",
+      "all243_dispositions_and_counts": "UNCHANGED",
+      "other242_capability_rows": "EXACTLY_UNCHANGED",
+      "historical_source_and_pinned_locators": "PASS",
+      "inheritance_controls": "20 PASS",
+      "docs_source_and_strict": "PASS",
+      "full_closure": "EXPECTED_REFUSAL denominator incomplete",
+      "full_master_numerical_qualification": false
+    }
+  },
+  "dynamic_pond_successor_20261016": {
+    "baseline": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
+    "baseline_tree": "53e6b022dfea342cfd0ceceb252bd92c76391be3",
+    "branch": "work/sol-dynamic-pond-20261016",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED",
+    "contract": "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md",
+    "scope": "Explicit gross rain/irrigation bare surface forcing reuses existing dynamic top provider with actual committed begin depth per trial, evolving Richards pond depth and sole matrix pond_mass. No losses, no new state or restart codec. Aquifer excluded.",
+    "invariants": [
+      "water owns depth",
+      "matrix companion owns chemical surface mass",
+      "water and chemistry publish atomically",
+      "rejected trials leave accepted owners unchanged",
+      "native1256 V2 only opt-in, V1 default unchanged"
+    ],
+    "test_selection": {
+      "changed": [
+        "forcing ownership and opt-in dynamic-top runtime binding",
+        "actual varying pond application coupling"
+      ],
+      "run": "FC=<recovered GNU13.3> DYNAMIC_POND_RESULT_DIR=<scratch> python -B tests/nut-sol/run_dynamic_pond_joint.py",
+      "driver": "real production backend, independent literal B1.11 mass oracle, O0/O2 draining/filling/dry-rewet and fresh-process V2; all original fixed/dry1257 and original surface drivers on same objects; last-carrier negatives and native corruption controls",
+      "closure": "accepted physical state/runtime dependency closure unavoidable for real trial/commit and native continuation; no mocked production physics",
+      "expected_seconds": 400,
+      "prior_compile_seconds": 195,
+      "unmeasured_dynamic_native_seconds": "UNKNOWN",
+      "not_selected": "full FCI, unrelated Richards/RossFast/highest-low-air qualifications: numerical implementation and admitted boundary input domain unchanged",
+      "stable_candidate": "source-bound successor projections and evidence controls; docs source/strict; safe canonical/master reconciliation only after owning preservation passes",
+      "fixture": "Low-conductivity default MvG, -1 cm initial head, 0.5 cm wet pond; gross .25+.25 filling, zero-input drainage, dry deposition/rewet. Same 1e-6 cm comparison and 1e-10 cm water budget. Abrupt high-flux front stress is not the surface-storage claim."
+    },
+    "recovery": "Actual1258 merged6353f109 with exact qualified tree2854c107; all selected gates terminal PASS. Master50fd11f0 independently reconciled with243 dispositions unchanged. Requested bounded SOL scope closed; separate crop-N source assessment is recorded in MC_NUT_SOL_STATUS.json reproductive_review_20261016. Preserve1253/1254, existing owners and independent post-merge validation.",
+    "pr": 1258,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1258",
+    "reconciled_canonical": "f7ddd936b062d3f34acc8e95002799238a04b3c5",
+    "numerical_contract": "Opt-in BASE/default MvG/SWKIMPL0/Reference external full-half comparison: max head/pond/GWL difference in cm; old identity and model-certificate paths unchanged. Caller tolerance remains explicit. No automatic substitution.",
+    "diagnostics": [
+      "initial compiler path missing; reconstructed same GNU13.3 package toolchain",
+      "first native rejected missing dynamic head derivative: corrected binding to admitted explicit-conductivity override",
+      "history indicator explicitly excludes dynamic top; prior default identity-only comparison rejects changing state; neither failure claimed PASS",
+      "new optional temporal comparison under focused feedback, no admission yet",
+      "steep -75 cm wetting-front feedback interrupted before completion; -1 cm original-conductivity feedback bounded at120s; no PASS and raw logs retained",
+      "Fortran public module type metadata changed after extraction: reduced feedback closure explicitly rebuilt all backend descendants",
+      "small independent production comparison now has23 O0/O2 cases under checks/traps, separate compile/link/native evidence"
+    ],
+    "postimages": {
+      "src/process/mod_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "36b108ed01068d8b3ff78c3a8798b783c4a1f8f9"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "M",
+        "blob": "6495e1b4f5a7999a889c7b14e4d682bf0abc1d0e"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "1c0af1ffb5f41869f3fb02b2f42d962a55532ee4"
+      },
+      "tests/nut-sol/check_dynamic_pond_controls.py": {
+        "status": "A",
+        "blob": "72e8c8391d614c6a1bcb3ce6e364dae37a37be6c"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "M",
+        "blob": "2d9c07a975d13405dc90d62d42608809d8b1fef3"
+      },
+      "tests/nut-sol/run_dynamic_pond_joint.py": {
+        "status": "A",
+        "blob": "a0446165ed847296e89397dbc58355f1e758b69d"
+      },
+      "tests/nut-sol/run_pond_temporal.py": {
+        "status": "A",
+        "blob": "43625693c701ffe5b4add5c7c6cfe5f6a2f40be5"
+      },
+      "tests/nut-sol/test_dynamic_pond_joint.f90": {
+        "status": "A",
+        "blob": "985d1e229e3869ccd1daebf24b1c5ac6bd8c243b"
+      },
+      "tests/nut-sol/test_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "c3e51751e2c9b4a34b12f9d9da4b2b5d3b77fa1f"
+      },
+      "tests/nut-sol/verify_dynamic_pond_successor.py": {
+        "status": "A",
+        "blob": "f5874e19eca2c5ccab2d0151b5837d3da4e97fad"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "M",
+        "blob": "bb033b0cd1a85e802a73f968d84c7135cc36944c"
+      }
+    },
+    "source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+    "feedback": "O0 real production wet/drain, fill/accumulation and dry/rewet all PASS; literal source and21 scientific negatives each interval;8 forcing negatives, strict temporal rejection, rollback/retry and within-process native1256 V2 continuation. Not O2 or source-qualified yet.",
+    "execution_commit": "f0e0507e4956556c27d536963efb49d9282c6be0",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_SOURCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c6c3ce38e3f70101415edf85321ff17c0ff27941e1de7f857dd223229c8f9efd",
+      "decoded_bytes": 107924,
+      "members": 1890
+    },
+    "science": {
+      "status": "O0_O2_PASS_NOT_ADMITTED",
+      "dynamic_native_programs": 42,
+      "original_1257_and_surface_programs": 12,
+      "new_temporal_leaf_cases_per_opt": 23,
+      "scientific_negatives_per_interval": 21,
+      "forcing_rejections_per_write": 8,
+      "cost_seconds": {
+        "physical_compile": 220.56194329314167,
+        "physical_link": 0.3078020840039244,
+        "physical_native": 8.180173718952574,
+        "preservation_compile": 18.76615652802866,
+        "preservation_link": 0.5615385580022121,
+        "preservation_native": 78.35965171502903,
+        "process_compile": 1.8565611509839073,
+        "process_link": 0.09716352401301265,
+        "process_native": 0.006659285994828679
+      },
+      "prior_native_files_and_endpoints": "EXACT1257_WET_DRY_AND_ORIGINAL_V1"
+    },
+    "admission_controls": 28,
+    "owner_dispatch": "SOL_POND_AND_INT12C_ACTUAL_ENTRYPOINTS_PASS",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "29919c8db2b5b7c435174cb52dc5413fe3046e9cf89ff3534f71577f11d7b777",
+      "decoded_bytes": 12884,
+      "members": 11
+    },
+    "qualification_scope": "Actual draining/filling hydraulic pond, dry deposition and rewet; default MvG/SWKIMPL0 Reference BASE external full/half policy with explicit cm tolerance. Sole1256 matrix mass and native codec; no aquifer or evaporation/runoff/surface-age/N-companion admission.",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true,
+    "canonical_admission": {
+      "pr": 1258,
+      "merge_commit": "6353f109d00763fcb4f533f2f764c8eb50db99d5",
+      "qualified_head": "020b88ddedca90ba30de87706e262aecba2cbfe3",
+      "actual_tree": "2854c107eb85a068cde9381c16a42bc73784f018",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_guard": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_workflow_runs": [],
+      "hosted_statuses": [],
+      "full_capability": false,
+      "master_disposition_changes": 0
+    },
+    "closeout_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_CLOSEOUT_20261016.tar.xz.b64",
+      "decoded_sha256": "b34a7f135d18ae33a2dc9b611bf2af8ecbe8507f354a9e109a2c1d2ee800a44a",
+      "decoded_bytes": 10968,
+      "members": 5
+    },
+    "next_action": "Requested persistent pond/infiltration/retained-solute/dry-deposition/restart scope closed within actual qualified dynamic application. Separate future surface evaporation/runoff/runon receipts, surface age, N companions and full historical/default activation remain open; aquifer excluded. Next user priority is separate reproductive/translocation/death crop-N assessment; preserve1253 and1254.",
+    "master_reconciliation": {
+      "pr": 1072,
+      "head": "50fd11f0bff033f49034331ba8b1d06ccad15b89",
+      "tree": "cc1b8132a4f8475fac23055f7d8b3cdcb34a17da",
+      "dispositions": "94 ADMITTED,109 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,4 QUALIFICATION_ONLY",
+      "all243_dispositions": "UNCHANGED",
+      "other242_capability_rows": "EXACTLY_UNCHANGED",
+      "controls": "source/locator integrity and20 inheritance controls PASS; docs source/strict PASS; full closure deliberately refuses incomplete denominator"
+    },
+    "independent_closeout_review": {
+      "tested_science_head": "93ef8746348a3ace1c3f1bc45667d2385ca54726",
+      "qualified_head": "020b88ddedca90ba30de87706e262aecba2cbfe3",
+      "reviewed_canonical": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "actual_master_recovery": "50fd11f0bff033f49034331ba8b1d06ccad15b89",
+      "actual_master_verification": "PASS historical-source/pinned-locator integrity,20 inheritance controls and source docs on50fd11f0;243 dispositions remain94 ADMITTED,109 ACTIVE,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,4 QUALIFICATION_ONLY;113 unresolved",
+      "parallel_master_reconciliation": "Concurrent owning master receipt50fd11f0 retained. Alternative local metadata7593a2dd preserved at checkpoint/1258-master-independent-20261016, not pushed over the advanced branch. No scientific implementation or evidence discarded.",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "scientific_delta_tested_to_qualified": "EMPTY across src/tests/tools/reference/.github; final change is owning evidence/status only",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python -B tests/nut-sol/check_dynamic_pond_controls.py",
+      "exit_code": 0,
+      "terminal_stdout": "DYNAMIC_POND_ADMISSION_CONTROLS=28|PASS\n",
+      "source_and_archived_science": "PASS actual persisted source, sealed O0/O2 evidence,42 dynamic plus12 incumbent native programs,23 temporal leaf cases per optimization and retained1257/V1 binary endpoints",
+      "source_review": "Explicit water and chemical supply equality, actual sibling/retry start depth, one matrix surface-mass owner, BASE/default-MvG/Reference full-half temporal contract, retained mass/reject/restart assertions. Existing optional-state layout guards exclude incompatible heat/frost state from this BASE application.",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS exit0;15.18s; recovered from existing dynamic-docs-deps without new package download",
+      "retained_environment_failure": "Earlier old docs-deps path lacked mkdocs.__main__; exit1 before documentation execution, not a scientific failure or PASS",
+      "new_numerical_or_actions_runs": 0,
+      "wider_evaporation_runoff_scope_qualified": false
+    }
+  }
+}

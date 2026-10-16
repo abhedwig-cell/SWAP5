@@ -1,0 +1,16 @@
+name: SW431 crop atomic accepted hydrothermal snapshot qualification
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_crop_atomic_accepted_hydroheat.f90'
+      - 'tests/fmig431/test_crop_atomic_accepted_hydroheat.f90'
+      - 'tests/fmig431/run_crop_atomic_accepted_hydroheat.sh'
+      - '.github/workflows/swap431-crop-atomic-hydroheat.yml'
+  workflow_dispatch:
+jobs:
+  atomic-hydroheat-o0-o2:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fmig431/run_crop_atomic_accepted_hydroheat.sh

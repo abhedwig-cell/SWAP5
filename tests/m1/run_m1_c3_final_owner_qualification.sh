@@ -4,6 +4,16 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "M1_C3_OWNER_FAIL $*" >&2; exit 1; }
 
+# The exact non-M1 fixed-K repair is a later one-file Task2 successor, not
+# another original three-file M1 implementation. Retain native immutable
+# oracles and M1 fixed-carrier/default assertions through its pinned closure.
+if [[ "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" == ed678be6e27621ac076a883c947abba8032ac7e6 ]]; then
+  bash tests/fci/run_fci93_non_m1_fixed_k_qualification.sh
+  bash tests/fci/run_fci93_fixed_k_component_preservation.sh
+  echo 'M1_C3_FCI93_FIXED_K_EXACT_SUCCESSOR_PRESERVATION=PASS'
+  exit 0
+fi
+
 BASE="$(git merge-base HEAD origin/integration/f-ci-canonical)"
 expected=$'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90\nsrc/adapter/mod_b110_production_soil_water_task2.f90\nsrc/solver/mod_b110_dynamic_top_boundary_provider.f90'
 actual="$(git diff --name-only "$BASE" -- src | sort)"

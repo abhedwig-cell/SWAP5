@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "work_unit": "MC-IRR01",
+  "phase": "COMBINED_OWNER_POSTIMAGE_QUALIFICATION",
+  "qualified_head": "694f47635b7942f95c90cf0dc49b1cc0f9ecd338",
+  "workflow_run_id": 37768355395,
+  "job_id": 113281436898,
+  "workflow": "F-APP07 Hupsel TCS1 DCS2 irrigation",
+  "event": "push",
+  "conclusion": "success",
+  "results": {
+    "source_reconstruction": "PASS",
+    "process_and_exact_110_interval_composition": "PASS",
+    "sensor_ssdi_authoritative_mass": "PASS",
+    "management_policy_O0": "PASS",
+    "management_policy_O2": "PASS",
+    "nonfinite_management_request": "PASS",
+    "nonfinite_interval": "PASS",
+    "management_restart_fail_closed": "PASS",
+    "management_retry_continuation": "PASS",
+    "tcs2346_dcs1_dcs2_composition": "PASS"
+  },
+  "claim_ceiling": "Owner workflow passes on exact head. This is not canonical admission; branch diverges from integration/f-ci-canonical and downstream cross-workstream preservation/coverage admission remains pending.",
+  "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37768355395"
+}

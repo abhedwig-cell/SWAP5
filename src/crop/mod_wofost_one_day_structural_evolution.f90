@@ -40,6 +40,10 @@ module mod_wofost_one_day_structural_evolution
   type, public :: wofost_accepted_window_aggregates_t
     real(real64) :: actual_root_uptake = 0.0_real64
     real(real64) :: potential_transpiration = 0.0_real64
+    logical :: deepest_root_oxygen_factor_available = .false.
+    real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
+    logical :: rootzone_drought_uptake_factor_available = .false.
+    real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
   end type wofost_accepted_window_aggregates_t
 
   type, public :: wofost_one_day_update_parameters_t
@@ -51,6 +55,9 @@ module mod_wofost_one_day_structural_evolution
     real(real64) :: temperature_sum_increment = 0.0_real64
     real(real64) :: development_rate = 0.0_real64
     real(real64) :: root_net_growth_rate = 0.0_real64
+    real(real64) :: gross_root_growth_rate = 0.0_real64
+    real(real64) :: root_death_rate = 0.0_real64
+    real(real64) :: stem_death_rate = 0.0_real64
     real(real64) :: stem_net_growth_rate = 0.0_real64
     real(real64) :: storage_net_growth_rate = 0.0_real64
     real(real64) :: leaf_growth_rate = 0.0_real64
@@ -200,6 +207,10 @@ contains
     call apply_leaf_state_update(candidate, parameters, rates, diagnostics, status)
     if (status /= WOFOST_ONE_DAY_OK) return
 
+    candidate%biomass%cumulative_dead_root_biomass = &
+         candidate%biomass%cumulative_dead_root_biomass + rates%root_death_rate
+    candidate%biomass%cumulative_dead_stem_biomass = &
+         candidate%biomass%cumulative_dead_stem_biomass + rates%stem_death_rate
     candidate%biomass%root_biomass = candidate%biomass%root_biomass + rates%root_net_growth_rate
     candidate%biomass%stem_biomass = candidate%biomass%stem_biomass + rates%stem_net_growth_rate
     candidate%biomass%storage_biomass = candidate%biomass%storage_biomass + rates%storage_net_growth_rate
@@ -233,7 +244,7 @@ contains
     type(wofost_one_day_diagnostics_t), intent(inout) :: diagnostics
     integer, intent(out) :: status
     real(real64), allocatable :: new_leaf(:), new_sla(:), new_age(:)
-    real(real64) :: remaining_death, lai_rate, lai_before
+    real(real64) :: remaining_death, lai_rate, lai_before, age_death
     integer :: n
 
     status = WOFOST_ONE_DAY_OK
@@ -251,11 +262,17 @@ contains
       end if
     end do
 
+    age_death = 0.0_real64
     do while (n >= 1)
       if (candidate%biomass%leaf_age(n) <= parameters%leaf_lifespan) exit
+      age_death = age_death + candidate%biomass%leaf_biomass(n)
       candidate%biomass%leaf_biomass(n) = 0.0_real64
       n = n - 1
     end do
+
+    ! Source DRLV = stress death + age death after stress removal.
+    candidate%biomass%cumulative_dead_leaf_biomass = &
+         candidate%biomass%cumulative_dead_leaf_biomass + (rates%leaf_stress_death_rate + age_death)
 
     allocate(new_leaf(n + 1), new_sla(n + 1), new_age(n + 1))
     new_leaf(1) = rates%leaf_growth_rate
@@ -350,6 +367,22 @@ contains
     if (.not. valid) return
     valid = aggregates%actual_root_uptake >= 0.0_real64 .and. &
          aggregates%potential_transpiration >= 0.0_real64
+    if (.not. valid) return
+    if (aggregates%deepest_root_oxygen_factor_available) then
+      valid = ieee_is_finite(aggregates%deepest_root_oxygen_factor_integral) .and. &
+           aggregates%deepest_root_oxygen_factor_integral >= 0.0_real64 .and. &
+           aggregates%deepest_root_oxygen_factor_integral <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64)
+    else
+      valid = abs(aggregates%deepest_root_oxygen_factor_integral) <= tiny(1.0_real64)
+    end if
+    if (.not. valid) return
+    if (aggregates%rootzone_drought_uptake_factor_available) then
+      valid = ieee_is_finite(aggregates%rootzone_drought_uptake_factor_integral) .and. &
+           aggregates%rootzone_drought_uptake_factor_integral >= 0.0_real64 .and. &
+           aggregates%rootzone_drought_uptake_factor_integral <= 1.0_real64 + 64.0_real64*epsilon(1.0_real64)
+    else
+      valid = abs(aggregates%rootzone_drought_uptake_factor_integral) <= tiny(1.0_real64)
+    end if
   end function valid_aggregates
 
   logical function valid_parameters(parameters) result(valid)
@@ -363,17 +396,19 @@ contains
 
   logical function valid_rates(rates) result(valid)
     type(wofost_one_day_rate_packet_t), intent(in) :: rates
-    real(real64) :: values(11)
+    real(real64) :: values(14)
 
     values = [rates%temperature_sum_increment, rates%development_rate, &
-         rates%root_net_growth_rate, rates%stem_net_growth_rate, rates%storage_net_growth_rate, &
+         rates%root_net_growth_rate, rates%gross_root_growth_rate, rates%stem_net_growth_rate, rates%storage_net_growth_rate, &
          rates%leaf_growth_rate, rates%leaf_stress_death_rate, rates%leaf_age_increment, &
          rates%youngest_specific_leaf_area, rates%lai_exponential_growth_rate, &
-         rates%relative_transpiration_used]
+         rates%relative_transpiration_used, rates%root_death_rate, rates%stem_death_rate]
     valid = all(ieee_is_finite(values))
     if (.not. valid) return
-    valid = rates%temperature_sum_increment >= 0.0_real64 .and. &
-         rates%development_rate >= 0.0_real64 .and. rates%leaf_growth_rate >= 0.0_real64 .and. &
+    valid = rates%root_death_rate >= 0.0_real64 .and. rates%stem_death_rate >= 0.0_real64 .and. &
+         rates%temperature_sum_increment >= 0.0_real64 .and. &
+         rates%development_rate >= 0.0_real64 .and. rates%gross_root_growth_rate >= 0.0_real64 .and. &
+         rates%leaf_growth_rate >= 0.0_real64 .and. &
          rates%leaf_stress_death_rate >= 0.0_real64 .and. rates%leaf_age_increment >= 0.0_real64 .and. &
          rates%youngest_specific_leaf_area >= 0.0_real64 .and. &
          rates%lai_exponential_growth_rate >= 0.0_real64 .and. &

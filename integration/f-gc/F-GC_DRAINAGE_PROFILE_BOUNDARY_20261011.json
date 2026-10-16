@@ -1,0 +1,119 @@
+{
+  "work_unit": "F-GC-DRAINAGE-PROFILE-BOUNDARY-20261011",
+  "baseline": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "status": "CURRENT_SOURCE_QBOT_COMPONENT_REPLAY_PASS_SMOOTH_HEAD_PROFILE_REJECTED",
+  "owner": "central F-GC; RT/HY owns physical drainage/head-profile extension",
+  "invariants": [
+    7,
+    12,
+    13,
+    14,
+    23,
+    28,
+    30
+  ],
+  "production_delta": "NONE",
+  "interfaces_changed": "NONE",
+  "historical_authorities": [
+    "integration/f-ci/F-CI98_STATUS.json",
+    "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_PREREGISTRATION.md",
+    "docs/publication/PUB_GC_E6_ACTIVE_DRAINAGE_RESULT.md",
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json"
+  ],
+  "original_fixture_head": "fff0a8be74de3240d56a910f1b19eb4fb50146e9",
+  "original_fixture_blob": "d3bce268758ec489accab7e10888655bf14dc910",
+  "test_paths": [
+    "tests/fgc/recovered/test_fgc31_active_drainage_production_tangent.f90",
+    "tests/fgc/run_fgc31_current_drainage_profile_boundary.sh"
+  ],
+  "scope": "Replay original F-GC31 physical fixture and unchanged six assertions against current production dependencies; add actual materializer/backend mode5 negative control with physical-origin/provenance preservation.",
+  "harness_changes": "Recover historical owner driver, add separate negative-control subroutine; complete current compile dependencies with existing augment helper. No original physical parameters, FD epsilon, tolerances or scientific assertions changed.",
+  "preregistered_gates": [
+    "Original multi-substep active-drainage physical tangent fixture at O0/O2",
+    "Original coverage, same-backend centered FD, physical identity and no extra nonlinear solve assertions",
+    "Actual head materializer preserves active controls; backend rejects smooth mode5 before transaction",
+    "Rejected mode5 candidate unavailable, zero transaction calls/accepted steps, physical origin and revision/time preserved",
+    "O0/O2 exact stdout identity"
+  ],
+  "stop_rule": "Report actual failure; do not widen the backend profile or weaken old assertions to obtain a coupled fixture.",
+  "not_claimed": [
+    "Live MODFLOW drainage",
+    "Joint mixed-path drainage",
+    "Production active-drainage admission",
+    "Joint restart qualification"
+  ],
+  "tested": true,
+  "qualified": "Bounded current-source component preservation and pretransactional rejection only; no production admission",
+  "next_action": "RT/HY and central F-GC must establish a reviewed physical head-driven drainage response contract, including phreatic projection distinct from lower-face head, lagged versus fully implicit response, complete drainage contribution/tangent, and storage/path mapping. Then implement selective route carrier and qualify actual mixed-path SWAP/MODFLOW budgets, transaction and joint restart.",
+  "remaining_shared_gate": "Define reviewed head-driven SWAP drainage response/storage semantics and route carrier; then physical distinct-path SWAP/MODFLOW budgets, tangents, transaction and restart qualification.",
+  "scientific_checkpoint": "609c6683dbe7c8d6d2d06fae34c85ffeff3d6fe8",
+  "checkpoint_tree": "1da31278e259e9740755977bec1ca31dd6f8df00",
+  "recovery_branch": "qualification/regie-drainage-profile-boundary-20261011",
+  "validation": {
+    "command": "bash tests/fgc/run_fgc31_current_drainage_profile_boundary.sh",
+    "exit_code": 0,
+    "optimization_modes": [
+      "O0",
+      "O2"
+    ],
+    "exact_stdout_identity": true,
+    "accepted_substeps": 2,
+    "retries": 3,
+    "face_fd_absolute_error": 0.00002711697,
+    "head_fd_max_absolute_error": 0.00002711697,
+    "head_profile_kernel_status": 101,
+    "head_profile_transaction_calls": 0,
+    "head_profile_accepted_substeps": 0,
+    "head_profile_candidate_ready": false,
+    "head_profile_origin": "Pressure, water content, ponding, groundwater-level carrier, lineage, revision and time byte-exact preserved",
+    "archive_sha256": "5d5b1610921b0194ee88b6451007fd928dddbc13443c6d170f9e3173bccf085a",
+    "members": {
+      "current_replay.log": {
+        "bytes": 101227,
+        "sha256": "e68e95f38a177db60d689087fdf3db854236ac184275820db5cb80efb1cbe32b"
+      },
+      "initial_harness_compile_failure.log": {
+        "bytes": 49389,
+        "sha256": "aa077078eb4366318f347c3acdc0605794c71e44ccb8ab67d054024bf9b1f800"
+      },
+      "dependency_manifest.json": {
+        "bytes": 34018,
+        "sha256": "6baae9c932c2e80802f933d4c86b2fab1c28ece4407b44b6dddda33ccce1dd8c"
+      },
+      "original_owner_driver.f90": {
+        "bytes": 20052,
+        "sha256": "3b0b3b4aa95e5a12fad501f324dd562e612f3a3f3ce9144464e9429baf172841"
+      },
+      "original_owner_runner.sh": {
+        "bytes": 5202,
+        "sha256": "723ac793695831194180e5e5f79e517f1f0d30a0e1a355e6de789d583a849873"
+      },
+      "compiler.txt": {
+        "bytes": 254,
+        "sha256": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222"
+      }
+    },
+    "dependency_count": 160,
+    "original_assertions_and_fixture_restored_byte_exact": true,
+    "scientific_stdout": "FGC31_ACTIVE_DRAINAGE_PRODUCTION_O0=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_O2=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_O0_O2_EXACT_IDENTITY=PASS\nFGC31_ACTIVE_DRAINAGE_ACCEPTED_SUBSTEPS=2\nFGC31_ACTIVE_DRAINAGE_RETRIES=3\nFGC31_ACTIVE_DRAINAGE_FACE_FD_ERROR=   2.711697E-05\nFGC31_ACTIVE_DRAINAGE_HEAD_FD_MAX_ERROR=   2.711697E-05\nFGC31_ACTIVE_DRAINAGE_MULTI_SUBSTEP=PASS\nFGC31_ACTIVE_DRAINAGE_COVERAGE_PROVENANCE=PASS\nFGC31_ACTIVE_DRAINAGE_TANGENT_PHYSICAL_IDENTITY=PASS\nFGC31_ACTIVE_DRAINAGE_PRODUCTION_FD=PASS\nFGC31_ACTIVE_DRAINAGE_NO_EXTRA_NONLINEAR_SOLVE=PASS\nFGC31_ACTIVE_DRAINAGE_ENDPOINT_AUTHORITATIVE=PASS\nFGC31_CURRENT_HEAD_PROFILE_STATUS=101\nFGC31_CURRENT_HEAD_PROFILE_PRETRANSACTION_REJECTION=PASS\nFGC31_CURRENT_HEAD_PROFILE_ORIGIN_IMMUTABILITY=PASS\nF-GC31 ACTIVE DRAINAGE PRODUCTION TANGENT GATE PASS\n",
+    "archive_path": "integration/f-gc/evidence/F-GC_DRAINAGE_PROFILE_BOUNDARY_20261011.tar.gz.b64",
+    "final_documentation_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "archive_verified_members": 6,
+    "current_dependency_identities_verified": 160,
+    "synthetic_contract_checks": 13
+  },
+  "initial_harness_failure": "New negative-control compile failed because current_time is a subroutine and backend requires typed physical forcing. Fixed only test API use, persisted 609c6683 before successful full rerun; original fixture/production untouched.",
+  "interpretation": "F-GC31 smooth qbot projection and materializer mode5 have no admitted intersection for this exact fixture. Passing head materializer validation is not backend/application admission. This does not disprove other drainage/head profiles or physical coupling in principle.",
+  "preservation": "Production/reference/workflow/assets/testbank and incumbent tests unchanged versus 98906988; isolated recovered component driver/runner and evidence added. No whole-model F-CI or live MODFLOW requalification claimed.",
+  "carrier_actions": {
+    "pr486": "OPEN_UNCHANGED",
+    "pr528": "OPEN_UNCHANGED",
+    "hupsel_rerun": false,
+    "new_actions": 0,
+    "verified_pr_heads": {
+      "pr486": "2f919cb095c0b581664d8c261fb10586670caa45",
+      "pr528": "4fd8861bf6300d8074051d3bd24ef993cb60dbda"
+    }
+  }
+}

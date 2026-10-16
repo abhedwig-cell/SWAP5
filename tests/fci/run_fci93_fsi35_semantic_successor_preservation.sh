@@ -4,6 +4,14 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "FCI93_FAIL $*" >&2; exit 93; }
 
+# Exact selected non-M1 explicit-conductivity successor. Its own guard pins
+# the full affected dependency surface and replays all immutable native oracles.
+# Unknown postimages continue through the historical fail-closed route below.
+if [[ "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" == ed678be6e27621ac076a883c947abba8032ac7e6 ]]; then
+  bash tests/fci/run_fci93_non_m1_fixed_k_qualification.sh
+  exit 0
+fi
+
 # Historical F-CI58P/F-SI35 authorities remain immutable evidence.
 POSTIMAGE=3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d
 COMPOSITION=040627c77720829c297a0ba06e908efce683133c

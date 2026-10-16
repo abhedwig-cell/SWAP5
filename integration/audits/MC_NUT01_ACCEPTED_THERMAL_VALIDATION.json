@@ -1,0 +1,85 @@
+{
+  "status": "QUALIFIED_PRESERVED_PREMERGE",
+  "production_source_tree": "fe0747d5ec38d1383666376f5e0162373faefcc0",
+  "physical_execution": "999d9580fcdd38d43ff48d454a8d1784db6df72b",
+  "owner_execution": "66c10f635a881a5d5fc8a44280ad045bbec2f69f",
+  "physical_evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_THERMAL_20261015.tar.xz.b64",
+    "sha256": "704efe955d9f99a625b7b54b944ca4ab59eb290f647c1909a1ac6b1c250f6c77",
+    "decoded_bytes": 160104,
+    "members": 3227
+  },
+  "owner_reconciliation_evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_THERMAL_RECONCILIATION_20261015.tar.xz.b64",
+    "sha256": "5c3c25335f52bf56256fc55f941521d6ccaedf4df01a664f5274c2bf282ae6e5",
+    "decoded_bytes": 108984,
+    "members": 29
+  },
+  "selected_checks": {
+    "controls-final": {
+      "command": [
+        "python3",
+        "-B",
+        "tests/nut-input/check_input_controls.py"
+      ],
+      "returncode": 0,
+      "seconds": 48.69011758500028,
+      "head": "66c10f635a881a5d5fc8a44280ad045bbec2f69f"
+    },
+    "owner-final": {
+      "command": [
+        "bash",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "--nut-thermal-owner-only"
+      ],
+      "returncode": 0,
+      "seconds": 37.33243858900005,
+      "head": "66c10f635a881a5d5fc8a44280ad045bbec2f69f"
+    },
+    "docs-source": {
+      "command": [
+        "python3",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.23164090299997042
+    },
+    "docs-strict": {
+      "command": [
+        "python3",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/79ca9f168731/thermal-docs-site"
+      ],
+      "returncode": 0,
+      "seconds": 23.216509397999744
+    },
+    "shell": {
+      "command": [
+        "bash",
+        "-n",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+      ],
+      "returncode": 0,
+      "seconds": 0.008299022000301193
+    },
+    "whitespace": {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "seconds": 0.011471849999907135
+    }
+  },
+  "controls": 289,
+  "qualification_scope": "Source-literal temperature reduction; certified accepted-state access; actual thermal Richards/crop/N/material/pending continuation; opaque and native restart; BASE byte preservation",
+  "preservation_scope": "Source-exact default-path projection of three shared files, unchanged full moving scientific body, original NUT/CO2 evidence assertions and BASE native O0/O2 byte identity; no fresh full-FCI claim",
+  "canonical_admission": "ONLY_PR1246_FINAL_MERGE_RECEIPT",
+  "full_fci": "NOT_SELECTED"
+}

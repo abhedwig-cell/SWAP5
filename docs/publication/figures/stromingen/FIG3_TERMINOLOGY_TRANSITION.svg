@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>
+    .title{font:700 38px Arial,sans-serif;fill:#1f2933}
+    .head{font:700 27px Arial,sans-serif;fill:#102a43}
+    .label{font:600 24px Arial,sans-serif;fill:#1f2933}
+    .small{font:400 20px Arial,sans-serif;fill:#39424e}
+    .note{font:italic 18px Arial,sans-serif;fill:#52606d}
+  </style>
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <text x="70" y="65" class="title">Terminologie tijdens de overgang</text>
+
+  <rect x="70" y="120" width="450" height="650" rx="28" fill="#f7f8fa" stroke="#cbd2d9" stroke-width="2"/>
+  <text x="125" y="175" class="head">Bestaande en huidige praktijk</text>
+  <g>
+    <rect x="125" y="225" width="340" height="70" rx="16" fill="#ffffff" stroke="#9aa5b1"/>
+    <text x="260" y="269" class="label">SWAP</text>
+    <rect x="125" y="315" width="340" height="70" rx="16" fill="#ffffff" stroke="#9aa5b1"/>
+    <text x="230" y="359" class="label">MetaSWAP</text>
+    <rect x="125" y="405" width="340" height="70" rx="16" fill="#ffffff" stroke="#9aa5b1"/>
+    <text x="222" y="449" class="label">MODFLOW 6</text>
+    <rect x="125" y="495" width="340" height="70" rx="16" fill="#ffffff" stroke="#9aa5b1"/>
+    <text x="205" y="539" class="label">iMOD / Coupler</text>
+    <rect x="125" y="585" width="340" height="70" rx="16" fill="#ffffff" stroke="#9aa5b1"/>
+    <text x="250" y="629" class="label">Ribasim</text>
+  </g>
+
+  <rect x="575" y="120" width="450" height="650" rx="28" fill="#f5f8f2" stroke="#bdc9b6" stroke-width="2"/>
+  <text x="735" y="175" class="head">Ontwikkeling</text>
+  <rect x="630" y="250" width="340" height="130" rx="20" fill="#ffffff" stroke="#8da07f" stroke-width="2"/>
+  <text x="755" y="300" class="label">SWAP5</text>
+  <text x="665" y="342" class="small">modernisering van de</text>
+  <text x="685" y="369" class="small">SWAP-modelbasis</text>
+
+  <rect x="630" y="435" width="340" height="150" rx="20" fill="#ffffff" stroke="#8da07f" stroke-width="2"/>
+  <text x="735" y="485" class="label">MultiSWAP</text>
+  <text x="670" y="525" class="small">publiek door NHI als</text>
+  <text x="680" y="552" class="small">opvolger MetaSWAP</text>
+
+  <text x="635" y="665" class="note">Geen gelijkteken tussen SWAP5 en MultiSWAP.</text>
+  <text x="635" y="695" class="note">Formele inbedding bij publicatie actualiseren.</text>
+
+  <rect x="1080" y="120" width="450" height="650" rx="28" fill="#f4f7fb" stroke="#bcc8d4" stroke-width="2"/>
+  <text x="1230" y="175" class="head">Toepassing</text>
+  <rect x="1135" y="245" width="340" height="90" rx="18" fill="#ffffff" stroke="#9aa5b1"/>
+  <text x="1210" y="300" class="label">Regionale modellen</text>
+  <rect x="1135" y="370" width="340" height="105" rx="18" fill="#ffffff" stroke="#9aa5b1"/>
+  <text x="1182" y="415" class="label">Landelijke / NHI-achtige</text>
+  <text x="1230" y="447" class="label">toepassingen</text>
+  <rect x="1135" y="510" width="340" height="130" rx="18" fill="#ffffff" stroke="#9aa5b1"/>
+  <text x="1207" y="552" class="label">Gekoppelde modellen</text>
+  <text x="1190" y="590" class="small">onverzadigde zone · grondwater</text>
+  <text x="1230" y="618" class="small">· oppervlaktewater</text>
+
+  <path d="M520 350 C545 350 550 315 575 315" stroke="#7b8794" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+  <path d="M520 350 C545 350 550 510 575 510" stroke="#7b8794" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+  <path d="M1025 315 C1050 315 1055 290 1080 290" stroke="#7b8794" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+  <path d="M1025 510 C1050 510 1055 430 1080 430" stroke="#7b8794" stroke-width="3" fill="none" stroke-dasharray="10,10"/>
+
+  <text x="70" y="835" class="small">Contextfiguur. Relaties zijn bewust indicatief waar formele product- of programma-inbedding nog in ontwikkeling is.</text>
+</svg>

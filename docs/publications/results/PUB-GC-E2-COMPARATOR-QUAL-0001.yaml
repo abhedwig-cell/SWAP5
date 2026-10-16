@@ -1,0 +1,109 @@
+result:
+  result_id: PUB-GC-E2-COMPARATOR-QUAL-0001
+  publication_owner: PUB-GC
+  experiment_family: PUB-GC-E2
+  hypothesis: H2
+  evidence_role: RESEARCH_COMPARATOR_QUALIFICATION
+  primary_h2_inference_eligible: false
+  status: PASS
+
+chronology:
+  comparator_spec_commit: 4e9d891f9a4d1678e5fa4590adae13471597d72e
+  qualification_manifest_commit: ceb695cbdbf08f5f8c6a97f1af3deac4da69ebc2
+  research_branch_base: d2e810649c5deae20bb22f42c92918eb1795d786
+  first_implementation_head: d2ead6812c694b4f0c7c87fec6194d90e4be9f05
+  first_execution:
+    github_actions_run_id: 35287702976
+    github_actions_job_id: 105423607052
+    status: INVALID_IMPLEMENTATION_EXECUTION
+    reason: checkpoint_origin_time_was_called_as_a_function_instead_of_using_the_public_accessor_contract
+    scientific_inference: NONE
+  qualified_research_head: 188c863f560d8adacf255edb4f6f83edcac798f3
+  qualification_precedes_E2_screening: true
+  qualification_precedes_E2_primary: true
+
+implementation:
+  branch: research/pub-gc-e2-terminal-comparator
+  module_path: tests/publication/pub_gc/e2_terminal_comparator/mod_pub_gc_e2_terminal_comparator.f90
+  module_blob: 3d397f0e629fff6f28849daba9dcb0fd9b396a0b
+  oracle_path: tests/publication/pub_gc/e2_terminal_comparator/test_pub_gc_e2_terminal_comparator.f90
+  oracle_blob: 473389cfcf48f1aa00b6fb83e3d00d974f49e851
+  runner_path: tests/publication/pub_gc/e2_terminal_comparator/run_pub_gc_e2_terminal_comparator_qualification.sh
+  runner_blob: 18fe22d4f65d5c90d8eb5dde6541504cef4348c2
+  workflow_path: .github/workflows/pub-gc-e2-terminal-comparator-qualification.yml
+  scope: RESEARCH_ONLY
+  production_src_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  production_src_modified: false
+  qualified_GW_A_modified: false
+  qualified_E1_harness_modified: false
+
+execution:
+  github_actions_run_id: 35287826254
+  github_actions_job_id: 105423983032
+  workflow_name: PUB-GC E2 terminal comparator qualification
+  workflow_conclusion: success
+  runner_os: ubuntu-24.04
+  compiler: GNU Fortran 13.3.0
+  optimization_modes:
+    - O0
+    - O2
+  scientific_output_sha256: 2ecdc416e036db066b540bc9514fb4ca12ddcc25a2d4edb527278487d086021b
+  artifact:
+    id: 10524254774
+    name: pub-gc-e2-comparator-188c863f560d8adacf255edb4f6f83edcac798f3
+    zip_sha256: 4366fb77e628c7ff1dc660e6758a2a0ddebd6ef3220ed3c9c95154b4dd3ec1fb
+
+qualified_oracles:
+  comparator_spec_lock: PASS
+  qualification_manifest_lock: PASS
+  production_src_unchanged: PASS
+  qualified_GW_A_bytes_unchanged: PASS
+  qualified_E1_bytes_unchanged: PASS
+  no_SWAP_execution_inside_comparator: PASS
+  no_groundwater_commit_inside_comparator: PASS
+  terminal_exchange_equals_terminal_flux_times_duration: PASS
+  same_groundwater_checkpoint_for_both_arms: PASS
+  whole_window_action_reaction_residual_zero: PASS
+  terminal_residual_equals_Q_whole_minus_Q_terminal: PASS
+  synthetic_equal_control: PASS
+  synthetic_terminal_only_selectivity: PASS
+  synthetic_whole_only_selectivity: PASS
+  frozen_real_E1_B_analytic_GW_A_projection: PASS
+  nonfinite_input_fail_closed: PASS
+  o0_o2_scientific_output_identity: PASS
+  comparator_oracle: PASS
+
+frozen_real_trial_check:
+  source_experiment: PUB-GC-E1-PRIMARY-0001
+  source_row: S1_SAME_index2_B
+  Q_whole_cm: 4.13068016868983270e-2
+  q_terminal_cm_per_day: 1.37689338957496554
+  duration_days: 0.03
+  Q_terminal_cm: 4.13068016872489632e-2
+  signed_terminal_residual_cm: -3.50636186752240064e-13
+  GW_A_head_whole_m: 2.06534008434491618e-3
+  GW_A_head_terminal_m: 2.06534008436244816e-3
+  GW_A_head_difference_m: -1.75319828099596009e-14
+  may_be_used_for_H2_effect_estimation: false
+
+admitted_scope:
+  - The research comparator isolates whole-window versus endpoint-terminal exchange accounting without rerunning SWAP.
+  - Both groundwater arms are evaluated from the same accepted GW-A checkpoint and remain nonpublishing.
+  - The terminal surrogate is exactly q_terminal times coupling-window duration.
+  - Synthetic selectivity controls show that changing only one exchange representation changes only its corresponding comparator arm.
+  - The frozen real E1-B row is reproduced analytically by GW-A using only already frozen observables.
+  - O0 and O2 qualification output is identical.
+
+nonclaims:
+  - H2 is not established by this qualification.
+  - No practical hydrologic materiality is established.
+  - No coupling-window threshold or convergence order is established.
+  - The near-zero difference in the frozen E1-B qualification row is not an H2 effect estimate.
+  - No MODFLOW 6 transferability is established.
+  - This comparator is not production groundwater science.
+
+next_permitted_action:
+  - update PUB-GC-E2 readiness to comparator-qualified
+  - freeze the GC-REF construction before any primary H2 inference
+  - optionally perform separately labelled E2 screening after this qualification
+  - keep all screening results ineligible for primary H2 inference

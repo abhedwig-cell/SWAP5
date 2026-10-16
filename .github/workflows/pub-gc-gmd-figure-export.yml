@@ -26,10 +26,56 @@ jobs:
           python-version: '3.x'
 
       - name: Install pinned export dependencies
-        run: python -m pip install --disable-pip-version-check "cairosvg==2.8.2" "pypdf==6.1.1"
+        run: python -m pip install --disable-pip-version-check "cairosvg==2.8.2" "pillow==12.3.0" "pypdf==6.1.1"
+
+      - name: Install render dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends poppler-utils
+          command -v pdftoppm
 
       - name: Export and validate governed figures
         run: python tools/publication/export_pub_gc_gmd_figures.py
+
+      - name: Repeat export independently
+        run: |
+          python tools/publication/export_pub_gc_gmd_figures.py             --out-dir build/pub_gc_gmd_figures_repeat             --zip build/pub_gc_gmd_figures_repeat.zip             --manifest build/pub_gc_gmd_figure_export_manifest_repeat.json
+
+      - name: Classify byte repeatability
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          a = json.loads(Path("build/pub_gc_gmd_figure_export_manifest.json").read_text())
+          b = json.loads(Path("build/pub_gc_gmd_figure_export_manifest_repeat.json").read_text())
+          a_pdf = [x["pdf_sha256"] for x in a["figures"]]
+          b_pdf = [x["pdf_sha256"] for x in b["figures"]]
+          pdf_equal = a_pdf == b_pdf
+          zip_equal = a["zip"]["sha256"] == b["zip"]["sha256"]
+
+          print("PUB_GC_GMD_PDF_BYTE_REPEATABLE=" + ("PASS" if pdf_equal else "NOT_PROVEN"))
+          print("PUB_GC_GMD_ZIP_BYTE_REPEATABLE=" + ("PASS" if zip_equal else "NOT_PROVEN"))
+
+          Path("build/pub_gc_gmd_repeatability.json").write_text(
+              json.dumps(
+                  {
+                      "schema": "pub-gc-gmd-export-repeatability-v1",
+                      "pdf_byte_identical": pdf_equal,
+                      "zip_byte_identical": zip_equal,
+                      "first_pdf_sha256": a_pdf,
+                      "second_pdf_sha256": b_pdf,
+                      "first_zip_sha256": a["zip"]["sha256"],
+                      "second_zip_sha256": b["zip"]["sha256"],
+                      "authority_rule": (
+                          "Byte identity may be claimed only when both booleans are true. "
+                          "Otherwise governed SVG sources and structural/render checks remain authority."
+                      ),
+                  },
+                  indent=2,
+              ) + "\n"
+          )
+          PY
 
       - name: Verify flat package and total size budget
         run: |
@@ -42,5 +88,6 @@ jobs:
           path: |
             build/pub_gc_gmd_figures.zip
             build/pub_gc_gmd_figure_export_manifest.json
+            build/pub_gc_gmd_repeatability.json
           if-no-files-found: error
           retention-days: 90

@@ -1,0 +1,11 @@
+name: SW431 Drain Signed Qualification
+on:
+  workflow_dispatch:
+jobs:
+  signed-divdra:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 tests/fmig431/run_swap431_signed_divdra_runtime.py --output /tmp/signed-drain

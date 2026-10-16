@@ -41,7 +41,7 @@ contains
     type(fmr_wofost_crop_transaction_persistence_t) :: view
     class(transaction_state_t), allocatable :: physical
     logical :: ok, view_ok, time_available
-    integer :: persistence_status, crop_status, u, ios, i, nleaf
+    integer :: persistence_status, crop_status, u, ios, i, nleaf, selected_codec
     real(real64) :: committed_time
     character(len=64) :: label
 
@@ -65,6 +65,13 @@ contains
     call snapshot%current_time(committed_time, time_available)
     if (.not. time_available) return
 
+    selected_codec = FWO40_CROP_CODEC_VERSION
+    if (allocated(view%owner%biomass)) then
+      if (any([view%owner%biomass%cumulative_dead_root_biomass, &
+           view%owner%biomass%cumulative_dead_stem_biomass, &
+           view%owner%biomass%cumulative_dead_leaf_biomass] /= 0.0_real64)) selected_codec = 2
+    end if
+
     open(newunit=u, file=trim(path), status='replace', action='write', form='formatted', iostat=ios)
     if (ios /= 0) then
       status = FWO40_EXTERNAL_IO_ERROR
@@ -74,7 +81,7 @@ contains
     write(u,'(A)',iostat=ios) MAGIC
     if (ios == 0) call write_int(u, 'schema', snapshot%schema_version(), ios)
     if (ios == 0) call write_i64(u, 'layout', snapshot%layout_id(), ios)
-    if (ios == 0) call write_int(u, 'codec', FWO40_CROP_CODEC_VERSION, ios)
+    if (ios == 0) call write_int(u, 'codec', selected_codec, ios)
     if (ios == 0) call write_i64(u, 'kernel_lineage', snapshot%current_lineage_id(), ios)
     if (ios == 0) call write_i64(u, 'kernel_revision', snapshot%current_revision(), ios)
     if (ios == 0) call write_flag(u, 'kernel_time_bound', snapshot%time_is_bound(), ios)
@@ -89,6 +96,11 @@ contains
       if (ios == 0) call write_bits(u, 'stem_biomass_bits', view%owner%biomass%stem_biomass, ios)
       if (ios == 0) call write_bits(u, 'storage_biomass_bits', view%owner%biomass%storage_biomass, ios)
       if (ios == 0) call write_bits(u, 'exponential_lai_bits', view%owner%biomass%exponential_leaf_area_index, ios)
+      if (selected_codec == 2) then
+        if (ios == 0) call write_bits(u, 'dead_root_bits', view%owner%biomass%cumulative_dead_root_biomass, ios)
+        if (ios == 0) call write_bits(u, 'dead_stem_bits', view%owner%biomass%cumulative_dead_stem_biomass, ios)
+        if (ios == 0) call write_bits(u, 'dead_leaf_bits', view%owner%biomass%cumulative_dead_leaf_biomass, ios)
+      end if
       if (allocated(view%owner%biomass%leaf_biomass)) nleaf = size(view%owner%biomass%leaf_biomass)
     end if
     if (ios == 0) call write_int(u, 'leaf_count', nleaf, ios)
@@ -180,7 +192,7 @@ contains
     if (layout /= FWO40_CROP_LAYOUT_ID) then; status = FWO40_EXTERNAL_LAYOUT_MISMATCH; close(u); return; end if
     call read_int(u, 'codec', codec, ok)
     if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
-    if (codec /= FWO40_CROP_CODEC_VERSION) then; status = FWO40_EXTERNAL_CODEC_MISMATCH; close(u); return; end if
+    if (codec /= FWO40_CROP_CODEC_VERSION .and. codec /= 2) then; status = FWO40_EXTERNAL_CODEC_MISMATCH; close(u); return; end if
     call read_i64(u, 'kernel_lineage', lineage, ok)
     if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
     call read_i64(u, 'kernel_revision', revision, ok)
@@ -206,7 +218,16 @@ contains
       if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
       call read_bits(u, 'exponential_lai_bits', owner%biomass%exponential_leaf_area_index, ok)
       if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
+      if (codec == 2) then
+        call read_bits(u, 'dead_root_bits', owner%biomass%cumulative_dead_root_biomass, ok)
+        if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
+        call read_bits(u, 'dead_stem_bits', owner%biomass%cumulative_dead_stem_biomass, ok)
+        if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
+        call read_bits(u, 'dead_leaf_bits', owner%biomass%cumulative_dead_leaf_biomass, ok)
+        if (.not. ok) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
+      end if
     end if
+    if (codec == 2 .and. .not. flag) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
     call read_int(u, 'leaf_count', leaf_count, ok)
     if (.not. ok .or. leaf_count < 0) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
     if (.not. flag .and. leaf_count /= 0) then; status = FWO40_EXTERNAL_FORMAT_ERROR; close(u); return; end if
