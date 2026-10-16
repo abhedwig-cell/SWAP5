@@ -1,0 +1,25 @@
+name: Kalmthout current-canonical pilot
+on:
+  push:
+    branches:
+      - work/kalmthout-pilot-current-20261017
+    paths:
+      - research/kalmthout_pilot/RUN_CURRENT
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run Kalmthout current-canonical pilot
+        run: chmod +x research/kalmthout_pilot/run_kalmthout_official.sh && research/kalmthout_pilot/run_kalmthout_official.sh "$RUNNER_TEMP/kalmthout-output"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kalmthout-current-pilot
+          path: ${{ runner.temp }}/kalmthout-output
