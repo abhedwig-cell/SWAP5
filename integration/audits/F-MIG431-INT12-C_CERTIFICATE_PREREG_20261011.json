@@ -1,0 +1,22 @@
+{
+  "work_unit": "INT12-C additive certificate-profile receiving witness",
+  "baseline": "be5a14761b3ddedfe7052cf0c6e5ce7985803190",
+  "status": "PERSISTED_AND_TESTED_O0_O2_POSITIVE_ENDPOINT_GATE_FAILED; exact result archived separately",
+  "scope": "Separate root-free fixed-flux net-rain fixture using current admitted F-SI38/F-MR44R certificate route. Preserve the failed identity-profile experiment and all incumbent FMR44R assertions.",
+  "authority": ["integration/f-ci/F-CI62_ARCHITECTURE_AUDIT.json", "integration/f-ci/F-CI62P_STATUS.json", "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md", "docs/numerics/richards-solver.md"],
+  "identity_profile_diagnosis": "Current base physical temporal_identity returns0 only for exactly equal full/half pressure,water,pond andGWL; otherwise huge. This differs from a calibrated finite temporal error. Nine rejections do not establish that more retries or a relaxed finite tolerance is appropriate.",
+  "certificate_profile": {
+    "initial_state": "Existing hydrostatic FMR44R initializer and explicitly supplied zero predecessor derivative, representing equilibrium before rain starts. Not the original identity-profile nonhydrostatic origin.",
+    "temporal_mode": "TX_TEMPORAL_MODEL_CERTIFICATE",
+    "head_budget_cm": 0.000001,
+    "budget_authority": "Explicit qualification-only input; no universal or application accuracy default or true-error theorem claimed.",
+    "temporal_history": "Existing FMR numerical continuation layout, retained through actual physical commits",
+    "mass_tolerance_cm": 1e-12,
+    "max_retries": 8,
+    "max_committed_substeps": 32,
+    "endpoints_days": [0.002,0.004,0.007,0.01]
+  },
+  "gates": ["All original assertions unchanged and executed", "Actual certificate available and normalized indicator<=1 at every accepted endpoint", "No extra nonlinear certificate trajectory", "Actual rejected mode4 result leaves physical/source progress unchanged", "Actual time/revision committed and hard mass closes", "Accepted interception allocated once and final aggregate bitwise closes", "Companion-only restore at day0.004 while kernel stays live", "O0/O2 exact stdout identity"],
+  "exclusions": ["new production physics", "candidate ten-gate admission", "full dynamic-top/crop application", "joint physical restart", "partial physical acceptance", "application accuracy selection"],
+  "next_expensive_action": "Persist then run --profile certificate at O0/O2; retain any failure without changing gates or production."
+}

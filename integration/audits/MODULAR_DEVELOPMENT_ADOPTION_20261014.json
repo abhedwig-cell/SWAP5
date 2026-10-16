@@ -1,0 +1,597 @@
+{
+  "work_unit": "MODULAR_DEVELOPMENT_ADOPTION_20261014",
+  "baseline": "a6bbc4abc077df84eaf42420343c8774c8938468",
+  "last_reconciled_upstream": "a6bbc4abc077df84eaf42420343c8774c8938468",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": false,
+  "scope": "Three direct physical feedback routes, controlled provider sharing, isolated type feasibility; no src/reference/incumbent runner/default admission changes",
+  "interfaces_held_fixed": [
+    "physical formulas",
+    "accepted/candidate state",
+    "trial/retry/rollback",
+    "restart",
+    "Full Richards",
+    "mass/coupling",
+    "F-CI triggers and owner gates"
+  ],
+  "affected_invariants": [
+    3,
+    5,
+    7,
+    13,
+    21,
+    22,
+    25,
+    29,
+    30
+  ],
+  "relevant_paths": [
+    "tests/modularity",
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/audits/MODULAR_TESTABILITY_20261013.md",
+    "docs/development/quality-governance-a-aa.md"
+  ],
+  "next_action": "Publish final candidate PR; reconcile live canonical and automatic checks; bounded admission only",
+  "recovery_point": "work/modular-development-adoption-20261014 HEAD",
+  "blockers": [
+    "Production type move requires shared HY/RT/restart owner successor decision; isolated proof not authority"
+  ],
+  "preservation_selection": "Production, reference, incumbent scientific drivers, F-CI/default owner runners unchanged. Opt-in feedback amendment: run all affected drivers plus targeted original integration, retain existing full preservation on unchanged scientific surface; no new full F-CI solely for additive feedback tooling. Exact byte bindings retained at closeout.",
+  "benchmark": {
+    "baseline": "Same new production drivers with the incumbent per-driver independent compile policy",
+    "candidate": "Shared verified provider artifacts within one controlled session; no cross-run cache",
+    "cases": {
+      "assimilation": {
+        "executable_identity_per_optimization": {
+          "0": true,
+          "2": true
+        },
+        "pair_median_by_policy": {
+          "independent/cold": 0.4813054290002583,
+          "shared/cold": 0.4871914679997644,
+          "shared/warm_same_transaction": 0.29248787600045034
+        },
+        "providers": 1,
+        "science_sha256": "e5f227eb3bb865909f679ba93e901b2c23c7de1c7f15010ff7ea73171e454d99"
+      },
+      "boesten": {
+        "executable_identity_per_optimization": {
+          "0": true,
+          "2": true
+        },
+        "pair_median_by_policy": {
+          "independent/cold": 0.46578304199965714,
+          "shared/cold": 0.42152361699982066,
+          "shared/warm_same_transaction": 0.2481031110000913
+        },
+        "providers": 1,
+        "science_sha256": "cdc46bcf142ebd693c82a7bc4c64a35e255fab8785653ce9eb6ca5ce79f9a679"
+      },
+      "drainage": {
+        "executable_identity_per_optimization": {
+          "0": true,
+          "2": true
+        },
+        "pair_median_by_policy": {
+          "independent/cold": 0.4506401899998309,
+          "shared/cold": 0.4556370490004156,
+          "shared/warm_same_transaction": 0.2225065280003946
+        },
+        "providers": 1,
+        "science_sha256": "c9b261c8ea7de9801ca29ad9f6437873095f92221fd6f4f8edb8c02a310244d9"
+      },
+      "root_contract": {
+        "executable_identity_per_optimization": {
+          "0": true,
+          "2": true
+        },
+        "pair_median_by_policy": {
+          "independent/cold": 1.255545360999804,
+          "shared/cold": 0.44936827099991206,
+          "shared/warm_same_transaction": 0.21073058399997535
+        },
+        "providers": 3,
+        "science_sha256": "085ed8177eb05b3ca94d42755a75359cf16832f94ce2e7331f95fff99893a6fd"
+      },
+      "root_oxygen": {
+        "executable_identity_per_optimization": {
+          "0": true,
+          "2": true
+        },
+        "pair_median_by_policy": {
+          "independent/cold": 1.3422105109998483,
+          "shared/cold": 1.2016463439999825,
+          "shared/warm_same_transaction": 0.22001595099982296
+        },
+        "providers": 3,
+        "science_sha256": "06110dd0c447ed9f601198daab2f6d938f67fd43620682848077eb9bdc9229f7"
+      }
+    },
+    "claim_ceiling": "Same five direct drivers on one host. Native includes driver assertions/IO; physics-only, portable and full-preservation speedup UNKNOWN.",
+    "head": "74120ab052c6ab55ed6774ff420d2c724c1fe71f",
+    "policies": {
+      "independent/cold": {
+        "medians": {
+          "compile_seconds": 2.3302366420002727,
+          "compiler_requests": 38,
+          "execution_seconds": 0.05665166500057239,
+          "link_seconds": 0.31597687899920857,
+          "reused_compilations": 0,
+          "scientific_validation_seconds": 0.0018337259994041233,
+          "total_seconds": 3.9859776659995987,
+          "validation_seconds": 1.2360530639998615
+        },
+        "samples": [
+          {
+            "compile_seconds": 2.3302366420002727,
+            "compiler_requests": 38,
+            "execution_seconds": 0.04332120299932285,
+            "link_seconds": 0.3240761119996023,
+            "reused_compilations": 0,
+            "scientific_validation_seconds": 0.0015941649999149377,
+            "total_seconds": 3.9859776659995987,
+            "validation_seconds": 1.2616810389995408
+          },
+          {
+            "compile_seconds": 2.1990516509999907,
+            "compiler_requests": 38,
+            "execution_seconds": 0.05665166500057239,
+            "link_seconds": 0.29648299199971007,
+            "reused_compilations": 0,
+            "scientific_validation_seconds": 0.0018361900015406718,
+            "total_seconds": 3.7661447350001254,
+            "validation_seconds": 1.1906459980000363
+          },
+          {
+            "compile_seconds": 2.4046337889990355,
+            "compiler_requests": 38,
+            "execution_seconds": 0.0596109019998039,
+            "link_seconds": 0.31597687899920857,
+            "reused_compilations": 0,
+            "scientific_validation_seconds": 0.0018337259994041233,
+            "total_seconds": 4.041729481999937,
+            "validation_seconds": 1.2360530639998615
+          }
+        ]
+      },
+      "shared/cold": {
+        "medians": {
+          "compile_seconds": 1.4183355180002764,
+          "compiler_requests": 32,
+          "execution_seconds": 0.05256181100003232,
+          "link_seconds": 0.3080349909996585,
+          "reused_compilations": 6,
+          "scientific_validation_seconds": 0.001673214999755146,
+          "total_seconds": 2.955162410999492,
+          "validation_seconds": 1.1948653300000842
+        },
+        "samples": [
+          {
+            "compile_seconds": 1.4183355180002764,
+            "compiler_requests": 32,
+            "execution_seconds": 0.05326054799979829,
+            "link_seconds": 0.3080349909996585,
+            "reused_compilations": 6,
+            "scientific_validation_seconds": 0.0014285790002759313,
+            "total_seconds": 2.955162410999492,
+            "validation_seconds": 1.1513612920002743
+          },
+          {
+            "compile_seconds": 1.3818521360003615,
+            "compiler_requests": 32,
+            "execution_seconds": 0.05042537499957689,
+            "link_seconds": 0.28999685500048145,
+            "reused_compilations": 6,
+            "scientific_validation_seconds": 0.0017030699996212206,
+            "total_seconds": 2.9444096739998713,
+            "validation_seconds": 1.1948653300000842
+          },
+          {
+            "compile_seconds": 1.6655809060002866,
+            "compiler_requests": 32,
+            "execution_seconds": 0.05256181100003232,
+            "link_seconds": 0.32403540199993586,
+            "reused_compilations": 6,
+            "scientific_validation_seconds": 0.001673214999755146,
+            "total_seconds": 3.3778446860005715,
+            "validation_seconds": 1.306900164999206
+          }
+        ]
+      },
+      "shared/warm_same_transaction": {
+        "medians": {
+          "compile_seconds": 0.0,
+          "compiler_requests": 0,
+          "execution_seconds": 0.04476198599968484,
+          "link_seconds": 0.0,
+          "reused_compilations": 28,
+          "scientific_validation_seconds": 0.0017809680002756068,
+          "total_seconds": 1.1907539580001867,
+          "validation_seconds": 1.13948992800033
+        },
+        "samples": [
+          {
+            "compile_seconds": 0.0,
+            "compiler_requests": 0,
+            "execution_seconds": 0.04476198599968484,
+            "link_seconds": 0.0,
+            "reused_compilations": 28,
+            "scientific_validation_seconds": 0.0015100799996616843,
+            "total_seconds": 1.1907539580001867,
+            "validation_seconds": 1.13948992800033
+          },
+          {
+            "compile_seconds": 0.0,
+            "compiler_requests": 0,
+            "execution_seconds": 0.04147007599931385,
+            "link_seconds": 0.0,
+            "reused_compilations": 28,
+            "scientific_validation_seconds": 0.0017832319995250145,
+            "total_seconds": 1.1429379389996939,
+            "validation_seconds": 1.0947840260009798
+          },
+          {
+            "compile_seconds": 0.0,
+            "compiler_requests": 0,
+            "execution_seconds": 0.059959713999433006,
+            "link_seconds": 0.0,
+            "reused_compilations": 28,
+            "scientific_validation_seconds": 0.0017809680002756068,
+            "total_seconds": 1.3968774310001209,
+            "validation_seconds": 1.3295224900002722
+          }
+        ]
+      }
+    },
+    "rounds": 3,
+    "status": "COMPLETE_LOCAL_ADOPTION_COMPARISON"
+  },
+  "targeted_integration": {
+    "status": "PASS",
+    "tested_head": "49262c5e1eb72a45912e2c1d334bc4c50f57af82",
+    "records": [
+      {
+        "case": "root_richards",
+        "optimization": 0,
+        "stdout_sha256": "9082917444c41643ba08ba4c22e4e6ddd81ec008f8e3522cbd86fa94ffac5eca",
+        "total_seconds": 16.51508706499999,
+        "compiler_requests": 156,
+        "reused_compilations": 0
+      },
+      {
+        "case": "root_richards",
+        "optimization": 2,
+        "stdout_sha256": "9082917444c41643ba08ba4c22e4e6ddd81ec008f8e3522cbd86fa94ffac5eca",
+        "total_seconds": 48.512079973000255,
+        "compiler_requests": 156,
+        "reused_compilations": 0
+      },
+      {
+        "case": "root_state",
+        "optimization": 0,
+        "stdout_sha256": "2814f98575e99bc5f5a388b4755a04924b099642cd74c6970752dac61f2ff326",
+        "total_seconds": 15.369139932000053,
+        "compiler_requests": 151,
+        "reused_compilations": 7
+      },
+      {
+        "case": "root_state",
+        "optimization": 2,
+        "stdout_sha256": "2814f98575e99bc5f5a388b4755a04924b099642cd74c6970752dac61f2ff326",
+        "total_seconds": 45.31284989200003,
+        "compiler_requests": 151,
+        "reused_compilations": 7
+      },
+      {
+        "case": "crop_candidate",
+        "optimization": 0,
+        "stdout_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+        "total_seconds": 1.3774791509999886,
+        "compiler_requests": 26,
+        "reused_compilations": 0
+      },
+      {
+        "case": "crop_candidate",
+        "optimization": 2,
+        "stdout_sha256": "2153df1c20ec653e6e2ec7188f803f32a3fe43f34526408d4b38d8af9737541a",
+        "total_seconds": 2.958680461000313,
+        "compiler_requests": 26,
+        "reused_compilations": 0
+      },
+      {
+        "case": "accepted_heat",
+        "optimization": 0,
+        "stdout_sha256": "3655e266598f345978f544a5b29d2c192808d8a30f37bb099b89a51227e557b2",
+        "total_seconds": 14.768733872000212,
+        "compiler_requests": 157,
+        "reused_compilations": 0
+      },
+      {
+        "case": "accepted_heat",
+        "optimization": 2,
+        "stdout_sha256": "3655e266598f345978f544a5b29d2c192808d8a30f37bb099b89a51227e557b2",
+        "total_seconds": 45.63377059000004,
+        "compiler_requests": 157,
+        "reused_compilations": 0
+      }
+    ]
+  },
+  "architecture_proof": {
+    "blocker": "Moving type identity and private history requires shared HY/RT/restart successor authority and full affected gates; this experiment authorizes no production split.",
+    "closure": [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+      "src/transaction/mod_transaction_reference.f90",
+      "src/runtime/mod_canonical_contracts.f90",
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/solver/mod_process_hydraulic_view.f90",
+      "src/process/mod_restricted_soil_temperature.f90",
+      "src/process/mod_snow_process.f90",
+      "src/runtime/mod_macropore_continuation_state.f90",
+      "src/process/mod_rutter_interception_process.f90",
+      "src/process/mod_rutter_event_integrator.f90",
+      "src/runtime/mod_interception_source_window_runtime.f90",
+      "src/runtime/mod_rutter_source_window_processor.f90",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90",
+      "src/runtime/probe_accepted_state_types.f90",
+      "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90"
+    ],
+    "head": "49262c5e1eb72a45912e2c1d334bc4c50f57af82",
+    "input_sha256": {
+      "probe.f90": "2fc32ba008019bdfae5100cf19de1583cfdc7c44d37dd47e51d51cd2dc6a2d12",
+      "src/kernel/mod_kernel_transactions.f90": "3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de",
+      "src/process/mod_restricted_soil_temperature.f90": "81a8abe849ea0fd75cfc46ba2d3ee164a91951ca42c70258ca4e3d7a2f1ab53f",
+      "src/process/mod_rutter_event_integrator.f90": "8033bcca89c8d488db2d754f1b345234e4dcea5f2b8fc7aad5ca45abab91de5f",
+      "src/process/mod_rutter_interception_process.f90": "7d0bc19366a331d793860e1b22e3407c682b64158a86eb6f59d032e325af17ab",
+      "src/process/mod_snow_process.f90": "1590a91275f99f3412bf71a263c0fa61371b106810c6a662c249b7d1b3c89293",
+      "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+      "src/runtime/mod_canonical_contracts.f90": "8ff0be96291542ea660640b6a4c9066a5909b159ce02b9b009ca967803259060",
+      "src/runtime/mod_canonical_interval_runtime.f90": "d86672ebdfc95e3b2a2fd6155d609a1d56a8fbb60124193baba4dfab14720adb",
+      "src/runtime/mod_fmr_crop_accepted_soil_temperature.f90": "c18e743fc692b2d5023abaf993d4b63e7f20846f8e3908be98962ced1b74aef1",
+      "src/runtime/mod_interception_source_window_runtime.f90": "2f1643e4ea1f1e1247c745aab21671efd980bc198e4e4c9e4d09ace65439ebf0",
+      "src/runtime/mod_macropore_continuation_state.f90": "ce0e8289429f7bacfb4c04ce49fbec4a6d2500f0d383ce7fb8970e34eb216dc6",
+      "src/runtime/mod_rutter_source_window_processor.f90": "ef96289da429efea5b243167aabfb223ea09917f356ab3306cd2f40417433c5d",
+      "src/runtime/probe_accepted_state_types.f90": "621e4783e09d9717ea93b5bd2cb7bf7b4d157aec4f16282142f0f73d8228786c",
+      "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+      "src/solver/mod_soil_water_solver_contract.f90": "0fc4d1ba94451697754e3b93a54bf47ae2d6f852301e59ad35f1db36dad08905",
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+      "src/transaction/mod_fkt_temporal_indicator_history.f90": "f17deb9c343d17dc426689a589080048c208c38171b2a967ca9650211f3596db",
+      "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d"
+    },
+    "isolated_providers": 20,
+    "original_providers": 154,
+    "production_state_changed": false,
+    "records": [
+      {
+        "compile_seconds": 1.445497387001069,
+        "link_seconds": 0.03384866500027783,
+        "native_seconds": 0.0016029280000111612,
+        "optimization": 0,
+        "stdout_sha256": "0066342e251b3678829fe8bf63c6dfdd4ef6b0508816b89f48563f3cd4d81500"
+      },
+      {
+        "compile_seconds": 3.628480285999103,
+        "link_seconds": 0.029850174999864976,
+        "native_seconds": 0.0011562169997887395,
+        "optimization": 2,
+        "stdout_sha256": "0066342e251b3678829fe8bf63c6dfdd4ef6b0508816b89f48563f3cd4d81500"
+      }
+    ],
+    "routines": [
+      "copy_b110_physical_state",
+      "fmr_mobile_salt_ready",
+      "fmr_b110_state_clone",
+      "fmr_b110_temporal_indicator_state_clone",
+      "fmr_b110_temporal_history_available",
+      "fmr_b110_temporal_history_snapshot"
+    ],
+    "source_sha256": "450510407276d2eb6a88048d488b3964d2e39f0d12671fc0653c1d93deaa47f3",
+    "status": "PASS_FEASIBILITY_ONLY",
+    "types": [
+      "fmr_snow_runtime_state_t",
+      "fmr_mobile_salt_component_t",
+      "fmr_b110_physical_state_t",
+      "fmr_b110_temporal_indicator_state_t"
+    ]
+  },
+  "preservation": {
+    "decision": "INHERIT_UNCHANGED_SCIENTIFIC_SURFACE; no new full F-CI claimed",
+    "held_trees": {
+      "src": {
+        "base": "d4412e09005f5f76eb795c748350eb502833fdc7",
+        "candidate": "d4412e09005f5f76eb795c748350eb502833fdc7"
+      },
+      "reference": {
+        "base": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+        "candidate": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
+      },
+      "tools": {
+        "base": "3089b7df0e2b977993def1b7692f5ab716059581",
+        "candidate": "3089b7df0e2b977993def1b7692f5ab716059581"
+      },
+      ".github": {
+        "base": "5c04e8f374821eb8ae223a73191515b1eca8d4fe",
+        "candidate": "5c04e8f374821eb8ae223a73191515b1eca8d4fe"
+      }
+    },
+    "incumbent_test_delta_excluding_modularity": [],
+    "all_default_FCI_runners_and_workflows_unchanged": true,
+    "full_authority": "PR1219 original and shared full moving preservation, admitted at0181a829; PR1223 proportional execution rules",
+    "fresh_sealed_prerequisite": {
+      "command": [
+        "python",
+        "tests/modularity/verify_modular_repair_evidence.py"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.996742746000109,
+      "recovery": "Restored immutable documented bundles and exact public fixture-owner commit; checkout unchanged"
+    },
+    "missing_history_failures_retained": true
+  },
+  "oracle_provenance": {
+    "F-VQ38": {
+      "donor": "49728b999b884a37643908c1dad40269f4e2db9b",
+      "path": "tests/fvq/test_fvq38_dramet2_scientific.py",
+      "blob": "ee8773388e15b164b049aea297bdd78b7b701eaa",
+      "copied_blob": "ee8773388e15b164b049aea297bdd78b7b701eaa",
+      "tolerance": "existing close rtol5e-12 atol2e-13"
+    },
+    "crop": "Existing unchanged 1206-case PCSE-backed oracle and flags"
+  },
+  "controls": {
+    "incumbent_native_dependency": 15,
+    "added_provider_oracle_input": 6,
+    "summary_negatives": 5,
+    "status": "PASS",
+    "prior_initial_failures": "Retained; root flags differed legitimately preventing reuse; prototype initializer required polymorphic input"
+  },
+  "low_air": {
+    "owner": "PPA-WU05-B frost/drainage with central HY/RT/F-KT",
+    "routine_feedback": false,
+    "frequency": "owning scientific successor/admission and applicable mandatory preservation; fixed calendar frequency UNKNOWN",
+    "historic_seconds": 10678.726278795999,
+    "numeric_policy_changed": false
+  },
+  "coverage_effect": "ZERO_NEW_FULLCAPS; existing master1072 owner retained",
+  "execution_surface": {
+    "tests/modularity/run_adoption_benchmark.py": "6a3fbd2348c700f1cfb5e431c3045be997340c53f9cebdbfa4e63a2955e6f5ee",
+    "tests/modularity/test_modular_controls.py": "718e43ec4ff78dfe4eaf3e66b769b9ef46435ff815e1719f7dfc47eaa5b5419e",
+    "tests/modularity/run_multiswap_independent.py": "eee02763663c8a68037e8f566c9e850ad22fd8201d7b8da01d14d590bd865381",
+    "tests/modularity/backend_allocation_authority.py": "3b53ac59f9fecc707380c1ecd2b7d35933ac3cb71cb60f1f214d1746df9829b7",
+    "tests/modularity/test_root_contracts.f90": "c302a1949353f05d6f9015f585822219c35debb51c3828316d0b79362802602f",
+    "tests/modularity/summarize_results.py": "22b1a57e846946fb6a235a2745deb0c67784c2817efb849b5941a3bdaeaa41d0",
+    "tests/modularity/run_modular_tests.py": "39dc6b61aa863fa9a966317aab5023937133dbaf392da334f20e355fd612bfb2",
+    "tests/modularity/contract_oracles.py": "5dc140a733be1fa02fc6bf08e267396462069ee8f0ac77902dee597094ca3503",
+    "tests/modularity/test_drainage_contract.f90": "84e6819b4fb8e334cf687a69a921e009207022aae50b93bf9571ea0f4dc331ae",
+    "tests/modularity/probe_accepted_state_types.py": "85e37549e9d059cbf97e89727a7704ad13624eb4ed200e625f67718ba6d7cb9b",
+    "tests/modularity/test_adoption_controls.py": "a25d569769b5f21397cc585f609e5733828b27c719db79d001b9a160c31a33dd",
+    "tests/modularity/test_backend_allocation_authority.py": "9f1011e9ef01af8bafb20b09ec976882d0d154bb2faacafa2d7b1ffb7cbd8251",
+    "tests/modularity/verify_modular_repair_evidence.py": "fa138d8d5d1a3b68db2610693b4f606408f19e2b5805bcfa1e32d756ff40f421",
+    "tests/modularity/run_contract_guards.py": "03ee35e041ceed69116421b54131469d3799a2a8cccd39ec37e9acafc4903b81",
+    "tests/modularity/verify_backend_owner_evidence.py": "9a7d93009147f973e72d901dc77b97d1e7d5050921104227c066bb408576755e",
+    "tests/modularity/test_physical_contracts.f90": "7eccee013aef8c2dcb6f16fee9d2c80d1dbede9ddebad0736105603a176e08bb",
+    "tests/modularity/oracles/fvq38_dramet2_scientific.py": "d2daf859636e359016efdf478353d1297a8d36465e7d5ca2ebc0cfd6bf2f4f84"
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MODULAR_DEVELOPMENT_ADOPTION_20261014.tar.xz.b64",
+    "decoded_sha256": "271859c9aeca96b8e27b4bb93966144cf9ebd4359de4e7bac26188cd2fefd0ff",
+    "decoded_bytes": 461220,
+    "indexed_paths": 4182,
+    "unique_blobs": 198,
+    "roundtrip": "PASS_EVERY_ORIGINAL_BYTE",
+    "manifest_name": "INDEX.json",
+    "tested_code_bundle_sha256": "90cea34c4f4232c3ea6d0f67bc78097e211125097a8e8ce640f439b677f1d3b2"
+  },
+  "docs_validation": [
+    {
+      "label": "docs-source",
+      "command": [
+        "python",
+        "tools/docs/check_docs.py"
+      ],
+      "exit": 0,
+      "wall_seconds": 0.18133049799962464
+    },
+    {
+      "label": "strict-mkdocs",
+      "command": [
+        "python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/a6761018dd94/docs-site"
+      ],
+      "exit": 0,
+      "wall_seconds": 12.984898248000263
+    },
+    {
+      "label": "whitespace",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "a6bbc4abc",
+        "HEAD"
+      ],
+      "exit": 0,
+      "wall_seconds": 0.005831886000123632
+    }
+  ],
+  "status_snapshot": "QUALIFIED_CANDIDATE_PRE_MERGE; subsequent canonical admission is established by the merged PR1224 and verified canonical receipt",
+  "canonical_admission_authority": "https://github.com/abhedwig-cell/SWAP5/pull/1224",
+  "proportional_execution_20261015": {
+    "baseline": "cd64c5044a29643a068c6151720f76b2e70f570d",
+    "local_tested_commit": "d5bdd4777c0226c8b2ce4d90a635b53e0d159052",
+    "remote_tree_equivalent_checkpoint": "c6b0375d233317495b4c65c88dcfb66bf81cd15b",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified_scope": "bounded selection and execution policy; no new science or full-FCI PASS",
+    "canonical_admitted": true,
+    "controls": {
+      "adoption_and_selection": 18,
+      "incumbent_modular": 15
+    },
+    "preservation": "exact original full-FCI body after new preflight; all original principal workflow commands; source/reference/oracle bytes unchanged",
+    "full_fci": "NOT_SELECTED_POLICY_CHANGE_ONLY",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "comparison": {
+      "old_median_seconds": 1.1210302709951065,
+      "new_median_seconds": 0.865064956000424,
+      "rounds": 3,
+      "old_native_executions": 4,
+      "new_native_executions": 2,
+      "compiler_requests_each": 6,
+      "avoided_compilations_measured": 0,
+      "full_fci_or_highest_saving_measured": false
+    },
+    "next_action": "CLOSED; apply persisted change-impact selection in subsequent owners. Physical defaults unchanged.",
+    "blockers": [],
+    "evidence": {
+      "path": "integration/audits/evidence/PROPORTIONAL_EXECUTION_20261015.tar.xz.b64",
+      "decoded_sha256": "46fbb323dd6ed61aaeb30342c0d803dba44732621bb47b74d6c3fd38dc449fa7",
+      "indexed_members": 721,
+      "unique_blobs": 115,
+      "roundtrip": "PASS"
+    },
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1245",
+    "published_snapshot_before_closeout": {
+      "commit": "e4ecc77569635b439d340d3797c913e92fc4f81f",
+      "tree": "eac36c3506327a32a45adeea8e6a23a703735f49",
+      "local_tree_equal": true
+    },
+    "final_prefix_test_commit": "e8a51cb039c1786cd375c9ec50df1d76fef3eb82",
+    "closeout_reconciliation": {
+      "canonical": "56aa2ba52fc4980053d712df85660a2facdfb0f4",
+      "local_merge": "86fc3e2b",
+      "adoption_selection_controls": 18,
+      "fresh_controls": "PASS",
+      "source_reference": "EXACT_CANONICAL",
+      "moving_body": "EXACT_CANONICAL_AFTER_REMOVING_SELECTION_PREFLIGHT",
+      "owner_only": "existing thermal source/evidence-only exit retained before expensive selection; no full numerical PASS",
+      "docs_source": "PASS",
+      "full_fci": "NOT_SELECTED_POLICY_ONLY",
+      "highest": "NOT_SELECTED_POLICY",
+      "strict_mkdocs": "PASS"
+    },
+    "canonical_merge": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
+    "admission_head": "7c1c6dc76a63666c34c24b8ea6eca607ff23c9d1"
+  }
+}

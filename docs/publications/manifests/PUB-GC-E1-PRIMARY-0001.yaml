@@ -1,0 +1,259 @@
+experiment:
+  experiment_id: PUB-GC-E1-PRIMARY-0001
+  run_family_id: PUB-GC-E1
+  title: Held-out primary same-origin replay versus history-contaminated diagnostic
+  evidence_class: PROSPECTIVE_PRIMARY
+  primary_h1_inference_eligible: true
+  status: FROZEN_NOT_RUN
+
+publication:
+  primary_owner: PUB-GC
+  doctoral_rq: RQ3
+  candidate_manuscript_artifact: PUB-GC-F01
+  excluded_primary_owners: [PUB-ME, PUB-SQ, PUB-RC, PUB-SG]
+
+chronology:
+  scientific_contract: docs/publications/PUB-GC_SCIENTIFIC_CONTRACT.md
+  origin_harness_specification_commit: 2d0a9ea26dbb6048e60e67dcf6882a1b03664d61
+  origin_harness_qualification_receipt: PUB-GC-E1-HARNESS-QUAL-0001
+  gw_a_qualification_receipt: PUB-GC-GW-A-QUAL-0001
+  controlling_screen_manifest: PUB-GC-E1-SCREEN-0002
+  controlling_screen_manifest_commit: bc8dca037912de10dbfce33d1ca7a62b34bc7761
+  controlling_screen_result: PUB-GC-E1-SCREEN-0002
+  screening_completed_before_primary_freeze: true
+  primary_values_observed_before_freeze: false
+  primary_execution_before_freeze: false
+  implementation_of_primary_sequence_engine: NOT_YET_QUALIFIED
+  execution_authority: FREEZE_AFTER_ENGINE_QUALIFICATION_BEFORE_PRIMARY_RUN
+
+selection_to_holdout_rule:
+  selected_screening_class:
+    duration: long
+    perturbation: strong
+    sign: drying_side
+  class_geometry_from_screen_manifest:
+    long_duration_bounds_days: [0.02, 0.06]
+    strong_absolute_delta_head_bounds_cm: [15.0, 30.0]
+  exact_value_derivation:
+    primary_baseline_A_cm:
+      value: -80.0
+      rule: >
+        Shift the screening baseline -75 cm by one third of the selected
+        strong-class lower bound (15/3=5 cm) toward the drying side solely to
+        make the accepted primary state numerically disjoint from qualification
+        and screening states.
+    primary_window_days:
+      value: 0.03
+      rule: lower quartile of the selected long-duration interval [0.02,0.06]
+    candidate_B_absolute_delta_from_A_cm:
+      value: 22.5
+      rule: midpoint of selected strong perturbation interval [15,30]
+    candidate_C_absolute_delta_from_A_cm:
+      value: 18.75
+      rule: lower quartile of selected strong perturbation interval [15,30]
+    candidate_B_head_cm:
+      value: -102.5
+      rule: A - 22.5 cm
+    candidate_C_head_cm:
+      value: -98.75
+      rule: A - 18.75 cm
+  disjointness:
+    qualification_A_B_window: [-75.0, -70.0, 0.02]
+    screen_0001_values_reused: false
+    screen_0002_values_reused: false
+    primary_A_previously_observed: false
+    primary_B_previously_observed: false
+    primary_C_previously_observed: false
+    primary_window_previously_observed: false
+
+system:
+  repository: abhedwig-cell/SWAP5
+  production_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  solver: reference_B1.10
+  bottom_mode: 5
+  temporal_route: TX_TEMPORAL_MODEL_CERTIFICATE
+  continuation_layout: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  top_boundary_provider: fixed_flux_top_boundary_provider_t
+  initial_pressure_head_cm: -80.0
+  top_forcing: stationary_reference_flux_recomputed_at_A_minus_80_cm
+  initial_predecessor_right_derivative: exact_zero_stationary_origin
+  coupling_window_days: 0.03
+  mass_tolerance_cm: 1.0e-10
+  temporal_certificate_budget_cm: 100.0
+  temporal_certificate_budget_interpretation: >
+    Technical qualification/acceptance budget inherited from the research
+    harness. It is not a publication accuracy threshold or coupling tolerance.
+  root_extraction_active: false
+  macropore_active: false
+  snow_active: false
+  drainage_response_active: false
+
+candidate_heads:
+  A_cm: -80.0
+  B_cm: -102.5
+  C_cm: -98.75
+  all_three_distinct: true
+  B_and_C_inside_selected_strong_drying_class: true
+
+origin_policies:
+  GC-ORIGIN-SAME:
+    rule: every candidate in every sequence starts from the same immutable accepted SWAP origin X0
+  GC-ORIGIN-HISTORY-DIAG:
+    rule: >
+      candidate j+1 starts from a new disposable research lineage seeded from
+      candidate j physical endpoint and relabelled at the original nominal t0;
+      no production commit and no private-state access
+    production_valid: false
+
+primary_sequences:
+  S1: [A, B, A, C]
+  S2: [A, C, A, B]
+  purpose: >
+    The repeated A occurs after different immediate predecessors under the
+    history diagnostic, while every same-origin evaluation sees identical X0.
+    B and C also occur in both permutations so same-origin B/C repeatability can
+    be checked across sequence order.
+
+groundwater_telemetry:
+  component: GW-A
+  authority: 8a090fc9228574525e599817771aadb8ae176047
+  role: analytic_same_checkpoint_residual_telemetry_only
+  coupled_feedback_changes_candidate_heads: false
+  area_m2: 1.0
+  Sy: 0.2
+  q_ext_in_m_per_s: 0.0
+  relative_datum:
+    accepted_A_interface_head_m: 0.0
+    h_ref_m: 0.0
+    prescribed_candidate_head_relative_m: "(candidate_pressure_head_cm - A_cm) * 0.01"
+  update:
+    swap_outward_exchange_m: "Q_swap_out_native_cm * 0.01"
+    gw_candidate_head_m: "0.0 + swap_outward_exchange_m / Sy"
+    head_residual_m: "prescribed_candidate_head_relative_m - gw_candidate_head_m"
+  origin_rule: >
+    Every GW-A residual candidate is computed from the same accepted GW-A
+    checkpoint. GW-A candidate history is not contaminated in E1; E1 isolates
+    the SWAP subsystem-origin question.
+  no_gw_a_commit: true
+
+required_candidate_telemetry:
+  - sequence_id
+  - origin_policy
+  - candidate_index
+  - candidate_label
+  - prescribed_head_cm
+  - accepted_origin_lineage
+  - accepted_origin_revision
+  - accepted_origin_time
+  - synthetic_origin
+  - synthetic_source_candidate_index
+  - whole_window_bottom_outward_exchange_native_cm
+  - terminal_bottom_outward_flux_native_cm_per_day
+  - candidate_endpoint_pressure_head_digest
+  - candidate_endpoint_water_content_digest
+  - candidate_mass_residual_cm
+  - transaction_retries
+  - temporal_indicator
+  - candidate_disposition
+  - GW_A_origin_head_m
+  - GW_A_candidate_head_m
+  - GW_A_head_residual_m
+
+primary_discriminants:
+  same_origin_repeatability:
+    A_across_all_occurrences: exact_bitwise_exchange_and_endpoint_identity
+    B_between_S1_and_S2: exact_bitwise_exchange_and_endpoint_identity
+    C_between_S1_and_S2: exact_bitwise_exchange_and_endpoint_identity
+  history_order_dependence:
+    delta_Q_A_after_B_vs_after_C_cm: "abs(Q_hist(S1,index3,A) - Q_hist(S2,index3,A))"
+    delta_endpoint_head_A_after_B_vs_after_C_cm: >
+      max_abs(X_hist(S1,index3,A).pressure_head -
+              X_hist(S2,index3,A).pressure_head)
+    delta_endpoint_water_A_after_B_vs_after_C: >
+      max_abs(X_hist(S1,index3,A).water_content -
+              X_hist(S2,index3,A).water_content)
+  gw_a_consequence:
+    delta_GW_A_candidate_head_for_repeated_A_m: >
+      abs(GW_A_head_from_Q_hist_A_after_B - GW_A_head_from_Q_hist_A_after_C)
+    delta_GW_A_residual_for_repeated_A_m: >
+      abs(residual_hist_A_after_B - residual_hist_A_after_C)
+
+numerical_discrimination_floors:
+  purpose: distinguish_primary_signal_from_solver_or_mass_resolution_not_practical_materiality
+  exchange_cm: 1.0e-9
+  endpoint_pressure_head_cm: 1.0e-8
+  rationale:
+    exchange: 10_times_the_1e-10_cm_hard_mass_gate
+    endpoint_head: 100_times_the_1e-10_cm_solver_head_absolute_tolerance
+  practical_materiality_threshold_defined_here: false
+
+primary_interpretation:
+  H1_supported_for_operator_definition_if:
+    - all GC-ORIGIN-SAME repeated A/B/C responses are exact under the frozen oracle
+    - accepted same-origin state remains unchanged
+    - history diagnostic uses only public snapshot_initialize and no production commit
+    - delta_Q_A_after_B_vs_after_C_cm > 1.0e-9
+    - delta_endpoint_head_A_after_B_vs_after_C_cm > 1.0e-8
+  H1_practical_materiality_claim: not_established_by_E1_alone
+  partial_result_rule: >
+    If only one primary history discriminant exceeds its numerical floor, report
+    a mixed/partial result and do not strengthen the claim.
+  null_rule: >
+    If both primary history discriminants are at or below their frozen numerical
+    floors while all validity checks pass, the held-out primary case is a valid
+    null result and the practical history-sensitivity part of H1 must be narrowed.
+  invalidation_rule: >
+    Any failure of same-origin exact replay, origin immutability, public-API-only
+    construction, whole-window exchange availability, finite complete mass
+    accounting, or GW-A analytic recomputation invalidates the experiment rather
+    than counting for or against H1.
+  execution_failure_rule: >
+    A solver/temporal rejection of a frozen primary candidate is retained as a
+    primary-case execution failure. Do not substitute easier heads or a shorter
+    window after seeing it.
+
+analysis:
+  use_all_frozen_sequences: true
+  post_result_case_selection: forbidden
+  post_result_threshold_change: forbidden
+  screening_effect_magnitudes_used_in_primary_statistics: false
+  report_exact_raw_values: true
+  candidate_figure:
+    id: PUB-GC-F01
+    planned_content: >
+      Whole-window SWAP response and endpoint-state separation for repeated A
+      under same-origin and history-diagnostic policies across S1 and S2.
+  supporting_table:
+    planned_content: same-origin identity, history discriminants, GW-A analytic residual telemetry, mass/retry status
+
+implementation_gate_before_primary_run:
+  required:
+    - generic A/B/C two-sequence engine implemented in research-only paths
+    - engine qualification uses non-primary numeric fixture values
+    - engine qualification proves sequence parsing/order, same-origin reset, recursive history policy, telemetry completeness and GW-A analytic check
+    - src/** remains unchanged
+    - qualified E1 origin harness bytes remain unchanged
+    - qualified GW-A bytes remain unchanged
+    - primary engine commit and blobs frozen before first primary execution
+  forbidden:
+    - executing A=-80, B=-102.5, C=-98.75, dt=0.03 during engine qualification
+    - tuning primary values after an execution attempt
+    - production commit in history diagnostic
+    - changing scientific source tree
+
+nonclaims:
+  - no novelty claim for generic checkpoint or rollback
+  - no practical-materiality conclusion from E1 alone
+  - no whole-window-versus-terminal-flux conclusion
+  - no coupling-window convergence conclusion
+  - no MODFLOW6 transferability conclusion
+  - no response/tangent acceleration conclusion
+  - no RossFast-versus-reference conclusion
+  - no N:1 heterogeneity-value conclusion
+
+next_permitted_action:
+  - create a separate primary-engine research branch from the qualified E1 harness/source authority
+  - implement the generic two-sequence engine without executing the frozen primary values
+  - qualify that engine only on non-primary fixture values
+  - freeze engine authority and then advance PUB-GC-E1 to READY_FOR_PRIMARY_RUN
+  - execute the primary manifest exactly once after that boundary

@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-HYD01 / MC-HYST01",
   "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
-  "canonical_reconciled_against": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+  "canonical_reconciled_against": "integration/f-ci-canonical@a86da5b6931b15ef8a5432fd03adc30a72491b65",
   "branch": "work/swap431-hydraulic-coverage-20261007",
   "pull_request": 1103,
-  "checkpoint_head": "f7db94c78943c21518ca41f30bb9557385626aac",
-  "phase": "IMPLEMENTED_PENDING_INTEGRATED_QUALIFICATION",
+  "checkpoint_head": "69b2e44742c736046a8c035543657933a13291f0",
+  "phase": "BLOCKED_CURRENT_REAL_RUNTIME_TEMPORAL_ACCEPTANCE",
   "authority": [
     "reference/swap-4.3.1/snapshots/B1.11.yml",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
@@ -124,12 +124,8 @@
       "tests/fpm/run_ppa_wu05a8_real_richards.sh"
     ],
     "local_result": "Analytical MODEL2/MODEL3 provider passed O0 -fcheck=all and O2 before persistence; MODEL6 identity and later runtime/power changes require persisted integrated confirmation.",
-    "pending_runs": [
-      "F-CI canonical qualification",
-      "F-SI39 B1.11 KSATEXM preservation",
-      "PPA-WU01 production application bootstrap"
-    ],
-    "queue_note": "Relevant PR runs were still queued at this checkpoint because of repository-wide runner load."
+    "pending_runs": [],
+    "queue_note": "Historical pending labels superseded: original HYD workflow failed its real runtime step; current local result pending."
   },
   "invariants": [
     "Reference Richards remains the production numerical owner.",
@@ -140,8 +136,58 @@
     "Hysteresis cannot be represented as immutable parameters because accepted-history state affects later constitutive evaluation."
   ],
   "blockers": [
-    "Integrated compile/runtime qualification has not yet completed on the persisted branch head.",
-    "Full exact B1.11 source extraction for scaled dry-bound, PDI, RIA, tabulated interpolation and hysteresis state transitions remains necessary before those families can be implemented/admitted."
+    "Current positive MODEL2 real receiving runtime rejects all13 attempts under the identity-only external full/half temporal route. No accepted substep, committed endpoint or restart qualification.",
+    "Reconcile existing F-KT temporal-history/model-certificate authority with the new constitutive provider and a physically justified predecessor. Do not alter common identity acceptance, raise tolerance, replace the test by equilibrium, or invent zero predecessor history solely to get PASS.",
+    "Before admission, independently bind MODEL2/3/6/POWER values and cutoff behavior to literal source, qualify actual dynamic commit/discard/retry/restart and current default/owner preservation. Broader hydraulic families remain excluded."
   ],
-  "next_action": "Complete integrated qualification for MODEL2/MODEL3/MODEL6/POWER, repair any compiler/runtime failures, then continue source-bound implementation of scaled MvG/table/PDI/RIA and finally stateful hysteresis."
+  "next_action": "Within existing PR1103, qualify the current real Reference temporal certificate/history route and independent literal hydraulics; retain the failed trajectory as a negative witness. Merge only after positive actual accepted mass/state/restart and owning current preservation. No new model family started.",
+  "recovery_20261016": {
+    "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
+    "canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "merge_checkpoint": "144a31aa",
+    "original_component_checks": "O0/O2 analytical and power scripts PASS locally",
+    "historical_workflow": {
+      "run": 37629724103,
+      "status": "completed",
+      "conclusion": "failure",
+      "first_failed_step": "Serialized Reference Richards production qualification"
+    },
+    "selection": {
+      "command": "bash tests/fpm/run_ppa_wu05a8_real_richards.sh",
+      "owner": "MC-HYD01 existing bounded hydraulic candidate and PPA-WU05A8 receiving runtime",
+      "scientific_impact": "Existing shared default MvG initialization/conductivity and serialized Reference constitutive dispatch change. Execute new real HYD trial/replay plus existing coupled macro/salt assertions with identical closure, O0/O2. No alternative RossFast/full repository/low-air matrix selected.",
+      "expected_seconds": 240,
+      "new_scientific_pass_claimed": false
+    },
+    "implementation": "Existing candidate reconciled without production conflict; source/provider and original analytical test scope require independent source review and current runtime qualification.",
+    "test_status": "CURRENT_COMPONENT_O0_O2_PASS_REAL_MODEL2_O0_FAIL",
+    "qualified": false,
+    "admitted": false,
+    "compiled_driver_fix": "F2008 failure-message reporting repaired without removing assertions",
+    "diagnostic": {
+      "admission_rejections": 0,
+      "solver_rejections": 0,
+      "mass_rejections": 0,
+      "temporal_rejections": 13,
+      "accepted_substeps": 0,
+      "attempts": 13,
+      "max_temporal_indicator": "HUGE(real64), exact-identity mismatch sentinel, not measured truncation error",
+      "route": "TX_TEMPORAL_EXTERNAL_FULL_HALF -> fmr_serialized_temporal_identity, which returns0 only for bit-identical full/half base states and HUGE otherwise"
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_HYD01_CURRENT_RUNTIME_BLOCKER_20261016.tar.xz.b64",
+      "decoded_sha256": "b5e1e4dbb7a2fb5c0590d8260027093528c295cf263b62bf70636ef8bab55b17",
+      "decoded_bytes": 67720,
+      "members": 19,
+      "providers": 157
+    },
+    "scope": "Actual current O0 macro/salt assertions complete before MODEL2 fails. HYD O2, later model runtime cases, positive commit, joint restart and all admission/preservation remain unqualified. Current analytical and power component scripts pass O0/O2.",
+    "retained_failures": [
+      "Original HYD workflow failure37629724103",
+      "Local F2008 compile failure26.14s",
+      "Current endpoint failure23.32s",
+      "Read-only diagnosis27.22s"
+    ],
+    "cost_scope": "Reported shell wall/user/system totals retained; separate compile/link/native categories UNKNOWN."
+  }
 }

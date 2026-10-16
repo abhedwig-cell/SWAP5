@@ -1,0 +1,93 @@
+{
+  "workstream": "MC-CROP01",
+  "status": "BOUNDED_TASK2_TASK3_PRODUCTION_PROFILE_CANONICALLY_ADMITTED_FULL_LIFECYCLE_OPEN",
+  "canonical_authority": "Central regie with existing crop lifecycle/F-WOF38/F-WOF40 owner",
+  "source": "Verified SWAP/MOD_cropdevelopment.f90 SHA256 aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+  "existing_contract": "integration/audits/MC_CROP_PHYSICAL_LIFECYCLE_CONTRACT_20261008.json",
+  "discovered_conflict": [
+    {
+      "historical": "preparation(2) initializes fl_prep independently from sw_prep",
+      "current": "ready() requires sown implies prepared"
+    },
+    {
+      "historical": "sowing(2) initializes fl_sow independently from sw_sow, even when preparation awaits hydraulics",
+      "current": "Daily preflight/composition suppresses sown while preparation is blocked"
+    },
+    {
+      "historical": "germination(2) initializes fl_germ independently from sw_germ; sw_germ=0 can be true while sowing/preparation await conditions",
+      "current": "ready() requires germinated implies sown"
+    },
+    {
+      "historical": "preparation(3) copies delay_prep into delay_sow even while blocked",
+      "current": "Bounded scheduled profile retains sowing_delay zero while preparation is blocked"
+    }
+  ],
+  "proposed_existing_owner_resolution": [
+    "Represent preparation, sowing and germination source flags independently inside existing crop_lifecycle_continuation_t, with explicit validated task2 initialization",
+    "Require all three prior accepted flags for physical emergence; daily germination evaluation still requires preparation and sowing",
+    "Retain existing transactional publication, immutable accepted-window receipt, rollback and restart owners; introduce no additional state owner",
+    "Preserve admitted default route unless a source-qualified historical lifecycle profile is explicitly selected"
+  ],
+  "required_qualification": [
+    "Compile literal historical task2/task3 branches for every supported selector combination",
+    "Hydraulic and thermal delayed initialization with all source flags and delays compared",
+    "Previous-day emergence and exact WOFOST/root initialization through existing physical owner and F-KT",
+    "Immediate emergence and SWINCO=3 with source-backed biomass/root seeds",
+    "Rejected initialization/event retry, rollback, exactly-once publication and joint restart",
+    "O0/O2 and unchanged existing preservation gates"
+  ],
+  "held_fixed": [
+    "All HeadCalc, dynamic-top, Task2 and thermal/root-owner physics",
+    "Existing mandatory preservation assertions and admission owners",
+    "No master coverage closure from a bounded germination arithmetic result"
+  ],
+  "implemented_semantic_change": true,
+  "next_safe_action": "Continue from canonical1206 through the existing task2 status remaining_dependency_order: delayed physical emergence/root/growth, then harvest/rotation/fallow and joint serialization. Full historical lifecycle qualification remains false.",
+  "authorization": "User explicitly delegated central coordination and decisions for both FCI93 and historical crop startup on 2026-10-11 after the scope question.",
+  "selected_profile_contract": {
+    "owner": "Existing crop_lifecycle_continuation_t and existing F-WOF38/F-WOF40/F-KT owners",
+    "profile": "Explicit B111 task2 initialization profile; existing bounded daily-composition profile remains default until independently admitted",
+    "initialization": "Distinct literal task2 flags/counter initialization followed, unless immediately emerged, by task3 in the SAME first source cropemergence daystart. New-model counters start0; source selector-specific resets are preserved. Atomic existing-owner creation publishes the completed first-day state without an invented hydro receipt. Rotation carry/reset remains separately open.",
+    "readiness": "Historical profile permits independent pre-emergence source flags but requires all preparation/sowing/germination flags for physical emergence. Existing default profile retains its implication checks. No transaction or mass guard relaxation.",
+    "daystart": "Preserve TimeControl(2) then authentic Meteo(2)/exchange22 then croprotation(2); task2 creation and task3 daily processing are distinct operations. Next day uses actual previous accepted F-KT state.",
+    "publication": "Existing crop physical state and F-KT accepted receipt publish once; reject/retry preserves old flags, counters, WOFOST state and event identity",
+    "restart": "Existing crop owner codec must explicitly version the selected profile and task2-completion identity; legacy layout restores the old profile. No second owner or silent restart reinterpretation."
+  },
+  "qualified": false,
+  "canonically_admitted": false,
+  "full_source_order_reconciliation": {
+    "source": "Verified SWAP/MOD_cropdevelopment.f90 cropemergence lines390..449, SHA256 as recorded",
+    "correction": "A task2-only fixture cannot qualify the full historical first day. Source cropemergence follows initialization with task3 within that same initial daystart unless already emerged.",
+    "supersedes": "Earlier no-task3-at-creation contract phrasing. Source task2 counter0 is an intermediate phase, not necessarily the final accepted first-day counter.",
+    "separate_recovery_branch": "work/mc-crop01-historical-task2-20261011",
+    "source_head": "9c613488536c2998d3a7d94c71bc827ccda4e4ab",
+    "focused_tests": "Literal12 task2/task3 selectors, schema2/old-schema rejection, actual thermal daystart/restart and completed previous-day emergence fail-closed boundary PASS O0/O2. Full preservation and admission pending.",
+    "this_admission_block": "Historical bounded pre-emergence task2/task3 successor is now independently qualified at a3c37f26 and ready for admission; initial default-weather PR1204 remains its separate historical scope. Delayed physical emergence/root initialization and full lifecycle remain open.",
+    "prior_recovery_snapshot": true
+  },
+  "current_successor": {
+    "recovery_branch": "work/mc-crop01-task2-admission-20261011",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true,
+    "authority": "integration/audits/MC_CROP01_TASK2_PRODUCTION_STATUS.json",
+    "qualified_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+    "scope": "Explicit historical task2/task3 pre-emergence production profile, actual thermal delayed sowing/germination, schema2 restart, four-day physical default weather cases. Delayed physical emergence/root/growth/harvest/rotation/fallow and external disk serialization remain open.",
+    "canonical_admission": {
+      "pr": 1206,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
+      "admission_head": "ee84b43b367de3825b8865beb95f7cd56151d20a",
+      "merge_commit": "1e281332f64335092944ac8118a9ebc67e68fe4e",
+      "verified_merge_tree": "7822b8cb6962b8d84861ef605d9cb1ea55d42af1",
+      "verified_source_tree": "ad4e30250b6e5268522cbce7400f6fed61cdece4",
+      "scientific_head": "a3c37f2641e244445530698b7d9e713be032cbd9",
+      "canonical_source_archive_and_execution_dependency_verification": "PASS",
+      "full_capability": false,
+      "scope": "Historical task2/task3 pre-emergence production profile; delayed physical emergence/root/growth and full crop lifecycle remain open."
+    }
+  },
+  "claim_boundary": "Full historical source-order lifecycle qualification remains false; bounded pre-emergence successor has independent terminal production/preservation evidence."
+}

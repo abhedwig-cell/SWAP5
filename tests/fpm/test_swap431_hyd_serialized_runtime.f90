@@ -28,6 +28,12 @@ program test_swap431_hyd_serialized_runtime
 
 contains
 
+  subroutine stop_labeled(message)
+    character(len=*),intent(in)::message
+    write(*,'(a)') trim(message)
+    error stop 1
+  end subroutine stop_labeled
+
   subroutine exercise_model(kind,label)
     integer,intent(in)::kind
     character(len=*),intent(in)::label
@@ -163,25 +169,28 @@ contains
     real(real64),parameter::dt=1.0e-5_real64
 
     call setup_execution(p,initial,forcing,column,template,numerical,committed,checkpoint,top,backend,ok)
-    if(.not.ok)error stop trim(label)//' setup'
+    if(.not.ok)call stop_labeled(trim(label)//' setup')
     call committed%snapshot(before,available)
-    if(.not.available)error stop trim(label)//' before snapshot'
+    if(.not.available)call stop_labeled(trim(label)//' before snapshot')
 
     call backend%run_trial(column,template,p,committed,forcing,numerical,0.0_real64,dt,checkpoint,result,candidate,diag)
-    if(.not.result%completed.or..not.candidate%ready())error stop trim(label)//' production trial'
-    if(.not.result%mass%complete.or.abs(result%mass%residual)>1.0e-8_real64)error stop trim(label)//' mass receipt'
+    write(*,'(*(g0))') 'SWAP431_HYD_DIAGNOSTIC_',trim(label),'|ADMISSION=',diag%admission_rejections, &
+      '|SOLVER=',diag%solver_rejections,'|TEMPORAL=',diag%temporal_rejections,'|MASS=',diag%mass_rejections, &
+      '|ACCEPTED=',diag%accepted_substeps,'|ATTEMPTS=',diag%attempts,'|MAX_INDICATOR=',diag%max_temporal_indicator
+    if(.not.result%completed.or..not.candidate%ready())call stop_labeled(trim(label)//' production trial')
+    if(.not.result%mass%complete.or.abs(result%mass%residual)>1.0e-8_real64)call stop_labeled(trim(label)//' mass receipt')
     call committed%snapshot(after,available)
-    if(.not.available.or..not.same_state(before,after))error stop trim(label)//' trial mutated committed state'
+    if(.not.available.or..not.same_state(before,after))call stop_labeled(trim(label)//' trial mutated committed state')
     call candidate%snapshot(candidate_state,available)
-    if(.not.available)error stop trim(label)//' candidate snapshot'
+    if(.not.available)call stop_labeled(trim(label)//' candidate snapshot')
     call backend%discard_trial_candidate(candidate,diag)
-    if(candidate%ready())error stop trim(label)//' discard'
+    if(candidate%ready())call stop_labeled(trim(label)//' discard')
 
     call backend%run_trial(column,template,p,committed,forcing,numerical,0.0_real64,dt,checkpoint, &
          replay_result,replay_candidate,replay_diag)
-    if(.not.replay_result%completed.or..not.replay_candidate%ready())error stop trim(label)//' replay trial'
+    if(.not.replay_result%completed.or..not.replay_candidate%ready())call stop_labeled(trim(label)//' replay trial')
     call replay_candidate%snapshot(replay_state,available)
-    if(.not.available.or..not.same_state(candidate_state,replay_state))error stop trim(label)//' replay identity'
+    if(.not.available.or..not.same_state(candidate_state,replay_state))call stop_labeled(trim(label)//' replay identity')
     write(*,'(*(g0))') 'SWAP431_HYD_RUNTIME_',trim(label),'=PASS|MASS=',result%mass%residual
   end subroutine execute_and_replay
 
@@ -202,10 +211,10 @@ contains
     type(kernel_diagnostics_t)::diag
     logical::ok
     call setup_execution(p,initial,forcing,column,template,numerical,committed,checkpoint,top,backend,ok)
-    if(.not.ok)error stop trim(label)//' setup'
+    if(.not.ok)call stop_labeled(trim(label)//' setup')
     call backend%run_trial(column,template,p,committed,forcing,numerical,0.0_real64,1.0e-5_real64,checkpoint, &
          result,candidate,diag)
-    if(result%completed.or.candidate%ready().or.diag%admission_rejections<1)error stop trim(label)//' not rejected'
+    if(result%completed.or.candidate%ready().or.diag%admission_rejections<1)call stop_labeled(trim(label)//' not rejected')
     print '(a)','SWAP431_HYD_UNQUALIFIED_COMPOSITION=FAIL_CLOSED'
   end subroutine expect_rejected
 

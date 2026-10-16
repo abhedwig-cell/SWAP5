@@ -1,0 +1,74 @@
+{
+  "schema": "swap431.mc_crop01.potential_shadow.v1",
+  "canonical_baseline": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_authority": {
+    "member": "SWAP/wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "ownership": "s_pot/r_pot/m_pot are distinct potential biomass/rate/management state, while DVS/TSUM/anthesis are shared global phenology advanced by the actual branch only.",
+    "timing": "potential update executes before actual; rejected transaction must advance neither."
+  },
+  "architecture": {
+    "actual": "primary committed wofost_crop_owner_state_t",
+    "potential": "optional transactional biomass shadow",
+    "shared": [
+      "immutable crop parameters",
+      "DVS/TSUM/anthesis phenology from actual owner"
+    ],
+    "potential_owned": [
+      "organ biomass",
+      "leaf cohorts",
+      "LAIEXP",
+      "reference carryover",
+      "potential root biomass WRTPOT"
+    ],
+    "not_duplicated": [
+      "DVS",
+      "TSUM",
+      "root-water sink",
+      "hydraulic state"
+    ]
+  },
+  "implementation": [
+    "src/crop/mod_wofost_potential_shadow_state.f90",
+    "src/crop/mod_wofost_potential_shadow_daily.f90",
+    "src/crop/mod_wofost_prepare_assimilation.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/crop/mod_wofost_finalize_rates.f90"
+  ],
+  "semantics": [
+    "Potential rate-state view is materialized using actual phenology plus shadow biomass.",
+    "Potential shadow can diverge in WRT/LAI/organ biomass without mutating actual state.",
+    "Existing assimilation routine retains the default actual RELMF behavior; an optional explicit override supports potential SWPOTRELMF policy without duplicating assimilation physics.",
+    "SWPOTRELMF=2 can pass RELMF; other potential modes can pass 1.0.",
+    "The shared one-day rate packet now exposes trial-only gross_root_growth_rate, populated from source GRRT before root death; accepted state still uses root_net_growth_rate.",
+    "Potential daily wrapper runs the existing production prepare/rate/structural equations with RELTR=1 and explicit potential RELMF policy, then absorbs only biomass/reference carryover and discards temporary phenology changes.",
+    "Daily shadow wrapper runs the same classic assimilation/rate/structural modules with RELTR=1 and explicit potential RELMF policy, then discards temporary DVS/TSUM/anthesis changes and accepts only potential biomass/reference continuation.",
+    "The shared rate packet now exposes gross_root_growth_rate as trial-only source GRRT; potential wrapper publishes this as GRRTPOT while WRTPOT is the accepted shadow root biomass."
+  ],
+  "unlocked_dependencies": {
+    "SW431-CROP-ATTAINABLE": "potential RELMF policy owner now exists",
+    "SW431-CROP-ROOTGROW-BIOMASS": "WRTPOT owner now exists",
+    "SW431-CROP-ROOTGROW": "GRRTPOT is now an explicit trial result from the potential shadow daily evaluator; SWRD2 can gate potential extension without deriving gross growth from net biomass change."
+  },
+  "qualification": {
+    "component_runner": "tests/fmig431/run_swap431_potential_shadow.py",
+    "atomic_transaction_gate": "tests/fmig431/run_swap431_potential_shadow_transaction.sh",
+    "status": "READY_FOR_O0_O2_PERSISTED_QUALIFICATION"
+  },
+  "remaining": [
+    "Run component and atomic transaction O0/O2 gates.",
+    "Qualify post-event export/reconstruct and continuation across a second accepted event.",
+    "Compose accepted WRTPOT and GRRTPOT into SWRD3 and SWRD2 depth owners.",
+    "Keep potential shadow opt-in."
+  ],
+  "disposition": "OPTIONAL_POTENTIAL_TRAJECTORY_FULL_TRANSACTION_IMPLEMENTED_QUALIFICATION_OPEN",
+  "admission": false,
+  "transaction": {
+    "ordering": "potential candidate first, actual candidate second",
+    "publication": "actual owner, optional potential shadow, GRRT/GRRTPOT carrier and event receipt share one trial state and one kernel commit",
+    "rollback": "existing F-WOF38 rollback applies to all together",
+    "persistence": "production persistence view carries optional shadow and root-growth carrier",
+    "pre_event_restart": "shadow restart is valid before the first receipt while root-growth carrier is intentionally unavailable",
+    "post_event_invariant": "a shadow-enabled state with a receipt requires a ready root-growth carrier"
+  }
+}

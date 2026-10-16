@@ -65,6 +65,8 @@ contains
       end if
     end do
 
+    initial_total = committed_ledger_total(result%ledger_snapshots, order)
+
     do k = 1, n
       idx = order(k)
       weighted_exchange_m = bindings(idx)%area_fraction * swap_results(idx)%bottom_outward_exchange_native * CM_TO_M
@@ -194,7 +196,6 @@ contains
         error stop 'F-GC25 hard mass invariant: committed tile interface ledger is not exactly conservative'
       end if
     end do
-    initial_total = committed_ledger_total(result%ledger_snapshots, order)
     final_total = committed_ledger_total(result%ledger_snapshots, order)
     result%committed_ledger_increment_m = final_total - initial_total
     if (.not. same_multiswap_mass(result%committed_ledger_increment_m, result%accepted_cell_exchange_m)) then

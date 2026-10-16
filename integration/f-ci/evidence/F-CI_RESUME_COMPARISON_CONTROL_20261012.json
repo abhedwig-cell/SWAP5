@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python",
+    "tests/fci/compare_resume_trial.py",
+    "--self-test"
+  ],
+  "terminal_exit_code": 0,
+  "script_sha256": "51c694135dbd55732ec8679d46c726c882cb3e6f44314f2f12659dfe11f5e8b4",
+  "stdout": "COMPARISON_REJECTS_NUMERICAL_OPT_AND_CASE_MUTATION=PASS\n",
+  "private_pid_change_accepted": true,
+  "numerical_value_optimization_and_case_changes_rejected": true
+}

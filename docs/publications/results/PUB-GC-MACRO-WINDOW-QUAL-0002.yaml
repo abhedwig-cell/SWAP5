@@ -1,0 +1,106 @@
+qualification:
+  qualification_id: PUB-GC-MACRO-WINDOW-QUAL-0002
+  publication_owner: PUB-GC
+  evidence_role: RESEARCH_INFRASTRUCTURE_REQUALIFICATION
+  primary_h2_h3_inference_eligible: false
+  result: PASS
+
+chronology:
+  triggering_native_time_result_commit: a7c89350305efc6019b469896782f4f91b5ba7e6
+  temporal_coordinate_decision_commit: f81bd41ccb15dfb5567704db24784bd2f41b1280
+  temporal_coordinate_decision_blob: 406e1b886923b91c884b340b27d5b0fc6c3794f6
+  extension_spec_commit: b345b3e6b60797f82da05d0dd1a5c397a8bd56b9
+  extension_spec_blob: d29e4a672c7e3c6d15fdf40c3a20c0d82b10c24a
+  frozen_manifest_commit: 2f761eb45479fb3f2a837dbe93a068e6ebcdb3c5
+  frozen_manifest_blob: f57fd8e46f023dd25b7f677c022375eb5f0243e3
+  frozen_before_corrective_implementation: true
+
+authority:
+  research_branch: research/pub-gc-macro-time-coordinate
+  base_qualified_head: 32d1e9ae1bb3f0cda7a26e114eca0fe5fd900d12
+  qualified_head: 2fad7bb01f7d7d9b55dfca752efd02c502548389
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  production_src_modified: false
+  qualified_dependencies_modified: false
+  module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  test_blob: 413964720df5f165ad680c3a55e7fa5fa6121219
+  runner_blob: 8b05d857d8767cc1697592f0898789e74f760966
+  workflow_blob: 823b5ca9d33cf8bdfe8395dd028b02d5d4f63e3e
+
+execution:
+  github_actions_run: 35292229003
+  github_actions_job: 105437336617
+  conclusion: success
+  compiler: GNU Fortran 13.3.0
+  runner_os: Ubuntu 24.04
+  optimization_modes: [O0, O2]
+  exact_scientific_output_identity: PASS
+  output_sha256: 6fcef7fce1719b34882efec42274ef89ead7c2b48ccffbf2dc2f6aa27026e728
+  artifact:
+    id: 10526817119
+    digest: sha256:e5ed6c4be318d88ee70fe4c65442e3794f1402d5350bea1dac6a612f615f6785
+    expires_at: 2026-12-17T00:41:18Z
+
+legacy_oracles:
+  Q0_one_step_reduction: PASS
+  Q1_sequential_equivalence: PASS
+  Q2_aggregate_terminal_selectivity: PASS
+  Q3_same_origin_ABA: PASS
+  Q5_temporal_history_preservation: PASS
+  failure_controls: PASS
+
+temporal_coordinate_extension:
+  schedule_coordinate: relative_elapsed_time
+  compensated_nominal_duration_sum: true
+  final_native_boundary_exact_supplied_macro_t1: true
+  actual_native_duration_telemetry: true
+  final_disposable_time_exact_macro_t1: true
+  Q8A_16_contribution_closure:
+    result: PASS
+    macro_t0_day: 4200.125
+    native_count: 16
+    native_dt_day: 0.0025
+    max_abs_nominal_actual_dt_difference_day: 5.09316980951135534e-13
+  Q8B_32_contribution_closure:
+    result: PASS
+    macro_t0_day: 4200.125
+    native_count: 32
+    native_dt_day: 0.00125
+    max_abs_nominal_actual_dt_difference_day: 6.54836211297360471e-13
+  Q8C_shifted_absolute_time:
+    result: PASS
+    macro_t0_day: 14200.125
+    native_count: 32
+    native_dt_day: 0.00125
+    max_abs_nominal_actual_dt_difference_day: 1.16415319224849600e-12
+
+interpretation:
+  admitted:
+    - >-
+      The research-only macro response now constructs internal boundaries from
+      a relative elapsed-time coordinate, closes the external endpoint exactly
+      on macro_t1, exposes represented native durations, and preserves all
+      previously qualified Q0-Q7 behaviours.
+    - >-
+      The 16- and 32-contribution schedules that were rejected by the original
+      repeated-absolute-addition implementation are now within the explicitly
+      requalified research envelope.
+    - >-
+      Shifting the same 32-contribution timing fixture by +10000 days preserves
+      successful temporal closure and origin isolation.
+  qualification_only:
+    - Q8 represented-duration errors are temporal-representation provenance only.
+    - No Q8 hydrologic magnitude may be used to tune NATIVE-TIME-0002 or H2/H3 experiments.
+  nonclaims:
+    - no H2 support or falsification
+    - no H3 support or falsification
+    - no production admission
+    - no MODFLOW6 result
+    - no universal SWAP timestep recommendation
+    - no PUB-RC acceleration inference
+
+next_permitted_action:
+  - freeze PUB-GC-NATIVE-TIME-0002
+  - reuse unchanged N0-N3 ladder, five cases, four adequacy thresholds and coarsest-passing rule from NATIVE-TIME-0001
+  - change only the macro-response dependency to the requalified temporal-coordinate component
+  - execute under O0/O2 and accept the mechanical selection without retuning

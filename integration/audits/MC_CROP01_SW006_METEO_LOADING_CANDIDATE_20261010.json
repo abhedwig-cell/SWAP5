@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.mc_crop01.swap006_meteo_loading_candidate.v1",
+  "baseline": "8496c22d520d26a3fd4b6782f2ce6c3f3621b6bb",
+  "source": {
+    "path": "reference/swap-4.3.1/patches/SWAP-006/fix.patch",
+    "verified_b111_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "qualified_patch": "SWAP-006",
+    "meaning": "The corrected source scans i=1..ifnd; terminates at first cropstart not preceding tend or a sentinel below day 1; dynamic crop and date-overlap select meteorological loading."
+  },
+  "postimage": {
+    "source_blob": "db1b9b9e7e6322992611333e3bfbb18b52194a93",
+    "test_blob": "61954c8f93a769e17f19d352ec45044c114f2ffb",
+    "runner_blob": "587632aa97d9371ea51a73901a19f1f6ac5481f6"
+  },
+  "local": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "cases": 400,
+    "negative": "active NaN/malformed count, unused NaN slots, zero records, unsorted calendar",
+    "flags": "-std=f2008 -fcheck=all -ffpe-trap=invalid,zero,overflow -Wall -Wextra -Werror",
+    "blob_identity": "PASS; local git hash-object matches GitHub blobs"
+  },
+  "states": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "limits": [
+    "Candidate selection only; extra fail-closed validation beyond historical loop for malformed input",
+    "Does not retrieve historical daily TAV writer or certify source/lineage used in model",
+    "Does not publish crop physical events, cannot be treated as owner-authenticated meteo"
+  ],
+  "next": "Open bounded PR; reuse automatically scheduled exact-head F-CI, check mergeable and merge only qualified scope."
+}

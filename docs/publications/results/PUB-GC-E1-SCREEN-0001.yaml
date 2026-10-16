@@ -1,0 +1,50 @@
+result:
+  result_id: PUB-GC-E1-SCREEN-0001
+  publication_owner: PUB-GC
+  evidence_role: NON_AUTHORITATIVE_EXECUTION_RECORD
+  status: NON_AUTHORITATIVE_SUPERSEDED_BEFORE_EXECUTION
+  eligible_for_primary_h1_inference: false
+  eligible_for_primary_case_selection: false
+
+authority_correction:
+  correction_decision: docs/publications/decisions/PUB-GC-E1-SCREENING_PROVENANCE_CORRECTION.md
+  superseding_manifest_commit: bc8dca037912de10dbfce33d1ca7a62b34bc7761
+  superseding_manifest: PUB-GC-E1-SCREEN-0002
+  supersession_utc: 2026-09-17T23:06:56Z
+  execution_started_utc: 2026-09-17T23:09:03Z
+  reason: >
+    SCREEN-0002 explicitly superseded SCREEN-0001 before any SCREEN-0001
+    execution began, because SCREEN-0001 reused a qualification-observed
+    numeric pair. The later successful SCREEN-0001 workflow therefore remains
+    an auditable execution record but has no stress-selection authority.
+  previous_misclassification_commit: 4377317335a5d895aef58afab5d46d23f20a6162
+  previous_register_misclassification_commit: 8471425a1fb32a82cd4c94ed05fc4b3bba3cce60
+
+historical_execution:
+  preregistration_manifest_commit: 5c5d30273437bfc5082d2c91a75d25681cc8d15d
+  preregistration_manifest_blob: 06d781bdf946960b8d08bad913e97ae414d8c726
+  screening_execution_head: e34aa5072b8cdf9064865865bade34f2c50d19b8
+  github_actions_run_id: 35285493995
+  github_actions_job_id: 105416772498
+  event: push
+  technical_conclusion: success
+  artifact_id: 10524124393
+  artifact_zip_sha256: 8e1471208397b5cf9582d523efc791b4898451b62335b0418a25ef615f40f655
+  note: >
+    Historical telemetry and artifacts are retained for audit only. They must
+    not be used to choose primary heads, windows, sequences, thresholds,
+    effect sizes or publication conclusions.
+
+scientific_interpretation:
+  admitted: []
+  not_admitted:
+    - no screening class selection
+    - no H1 evidence
+    - no primary-design input
+    - no effect-size estimate
+    - no practical-materiality inference
+    - no coupling-method comparison
+
+next_permitted_use:
+  - provenance audit only
+  - reproducibility history only

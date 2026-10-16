@@ -1,0 +1,166 @@
+{
+  "head": "bf239429ed114e3638800bf9c99e16745d8e31fa",
+  "equivalent": true,
+  "all_executables_equal": true,
+  "rounds": [
+    {
+      "round": 1,
+      "order": [
+        "root",
+        "sensor",
+        "combined"
+      ],
+      "original": {
+        "wall": 867.4021769719993,
+        "cpu": 859.104775,
+        "compile_count": 712,
+        "compile": {
+          "count": 712,
+          "wall": 531.5029328859999,
+          "cpu": 519.597651
+        },
+        "link": {
+          "count": 4,
+          "wall": 1.108411823,
+          "cpu": 1.099695
+        },
+        "run": {
+          "count": 4,
+          "wall": 321.800987342,
+          "cpu": 321.127283
+        }
+      },
+      "shared": {
+        "wall": 539.6954957589996,
+        "cpu": 537.6719639999999,
+        "compile_count": 358,
+        "compile": {
+          "count": 358,
+          "wall": 248.169612323,
+          "cpu": 245.43679699999998
+        },
+        "link": {
+          "count": 4,
+          "wall": 0.99225535,
+          "cpu": 0.96838
+        },
+        "run": {
+          "count": 4,
+          "wall": 279.105083506,
+          "cpu": 278.31138
+        }
+      },
+      "saved_seconds": 327.7066812129997,
+      "saved_percent": 37.780246569934356
+    },
+    {
+      "round": 2,
+      "order": [
+        "combined",
+        "sensor",
+        "root"
+      ],
+      "original": {
+        "wall": 874.8725252129998,
+        "cpu": 869.8265549999996,
+        "compile_count": 712,
+        "compile": {
+          "count": 712,
+          "wall": 548.73170331,
+          "cpu": 541.763455
+        },
+        "link": {
+          "count": 4,
+          "wall": 0.9905372299999999,
+          "cpu": 0.977397
+        },
+        "run": {
+          "count": 4,
+          "wall": 308.148430678,
+          "cpu": 305.088789
+        }
+      },
+      "shared": {
+        "wall": 529.2077003119994,
+        "cpu": 513.2923780000001,
+        "compile_count": 358,
+        "compile": {
+          "count": 358,
+          "wall": 267.350848015,
+          "cpu": 250.544967
+        },
+        "link": {
+          "count": 4,
+          "wall": 1.047547781,
+          "cpu": 1.029706
+        },
+        "run": {
+          "count": 4,
+          "wall": 252.42484125099998,
+          "cpu": 251.272761
+        }
+      },
+      "saved_seconds": 345.66482490100043,
+      "saved_percent": 39.51030749500832
+    },
+    {
+      "round": 3,
+      "order": [
+        "root",
+        "sensor",
+        "combined"
+      ],
+      "original": {
+        "wall": 781.539018030001,
+        "cpu": 780.198132,
+        "compile_count": 712,
+        "compile": {
+          "count": 712,
+          "wall": 467.591879839,
+          "cpu": 463.826956
+        },
+        "link": {
+          "count": 4,
+          "wall": 1.04097938,
+          "cpu": 1.02246
+        },
+        "run": {
+          "count": 4,
+          "wall": 301.379035082,
+          "cpu": 300.11805200000003
+        }
+      },
+      "shared": {
+        "wall": 499.2253543279985,
+        "cpu": 497.9221650000002,
+        "compile_count": 358,
+        "compile": {
+          "count": 358,
+          "wall": 233.913528299,
+          "cpu": 231.538888
+        },
+        "link": {
+          "count": 4,
+          "wall": 0.856106417,
+          "cpu": 0.8469409999999999
+        },
+        "run": {
+          "count": 4,
+          "wall": 255.21559631399998,
+          "cpu": 254.628885
+        }
+      },
+      "saved_seconds": 282.3136637020025,
+      "saved_percent": 36.12278557935866
+    }
+  ],
+  "mean_saved_seconds": 318.56172327200085,
+  "median_saved_seconds": 327.7066812129997,
+  "calendar_seconds": 4105.522385,
+  "limitations": [
+    "First root arm overlapped discarded diagnostic build; rounds 2 and 3 had no concurrent heavy audit work. Host shared; no portable performance guarantee. Native runtime variation does not establish solver speedup."
+  ],
+  "archive": "integration/audits/evidence/FCI_SHARED_BUILD_THREE_ROUNDS_20261013.tar.gz.b64",
+  "decoded_archive_sha256": "b7e03f8004668527267185a7a41b08f13bb2c04bad71c2751b5b9d7b805231cd",
+  "status": "ACTUAL_THREE_ROUND_AB_PASS; broader qualification pending"
+}

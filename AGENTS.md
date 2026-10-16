@@ -18,6 +18,10 @@ When starting material work:
 
 If repository state and chat context disagree, repository state wins.
 
+## Autonomous execution across chats
+
+For substantive delegated SWAP5 development, follow the **Autonomous long-session execution standard (2026-10-08)** in `docs/development/workstream-execution-protocol.md`. It requires independent, larger dependency-ordered work batches; local O0/O2 first; GitHub-connector fallback when local DNS/git fails; active polling of **existing** qualification runs through terminal status within the live turn; scientific and F-CI evidence bound to the applicable dependency surface and admission authority; overlap reconciliation; safe canonical admission; and durable coverage/PR recovery. Do not stop after each small error or ask the user to repeat “go”. Do not promise work after the current turn.
+
 ## Read first
 
 For most work, start here:
@@ -57,6 +61,8 @@ Older `docs/architecture/implementation-status.md`, `D3a_IMPLEMENTATION_STATUS_M
 ## Work-unit discipline
 
 For a material work unit, maintain a recoverable Git state before expensive or timeout-sensitive work. Follow `docs/development/workstream-execution-protocol.md`.
+
+For operational continuity, use local shell/Git/Python/gfortran and focused tests when available, with GitHub connector access as an independent fallback. A local DNS or checkout failure is not evidence that the repository or legacy sources are unavailable. Follow the recovery ladder and local-first qualification rules in `docs/development/workstream-execution-protocol.md`. Work autonomously across meaningful phases, including justified shared-architecture changes with explicit contracts and preservation gates.
 
 A checkpoint is a recovery boundary, not a default stopping point. After persisting a meaningful checkpoint, continue automatically with the next safe and authorized phase unless a real blocker, explicit review boundary, tool failure, or runtime risk requires stopping.
 
@@ -125,3 +131,52 @@ Use status language that makes authority and time explicit. Useful labels includ
 - **Qualified** - supported by named verification evidence.
 
 Keep claims narrow enough that a future agent can trace each one to code, a contract, a decision, or evidence.
+
+## Independent local testability
+
+New physical functionality must have a small executable driver calling the real
+production interface, with explicit input/state/result contracts and a measured
+compile/link closure. If accepted-state or shared-runtime dependencies prevent a
+small closure, justify the dependency in the existing work-unit/PR, rather than
+substituting a copied formula or mock for production science. Use local direct
+contract and state/interface tests during development, then targeted physical
+composition and all owning scientific/admission/preservation gates. A module
+import graph alone never authorizes skipping a gate or inheriting prior PASS.
+See `docs/audits/MODULAR_TESTABILITY_20261013.md` for the opt-in tested routes and
+proportional four-level strategy; existing admission authority remains binding.
+
+## Proportional tests and execution costs
+
+Before invoking tests, apply **Test selection and cost discipline (2026-10-13)**
+in `docs/development/workstream-execution-protocol.md`. Start with the smallest
+real production contract driver. Expensive tests (expected or measured over five
+minutes) are excluded from routine local feedback unless explicitly selected with
+scientific impact and owning justification. Apply the later binding
+`docs/audits/LOW_AIR_TEST_SELECTION_DECISION_20261014.md`: the long highest low-air
+qualification is retired as a standard production admission/preservation gate.
+An older mandatory label or shared dependency change alone does not select it.
+Keep fast independent physical and numerical contract coverage; reconcile old
+owner guards without fabricated PASS or weakened assertions. A long stress run
+requires a named research question or essential uncovered risk and justification
+that a short discriminating test cannot cover it. Record its expected cost.
+A full F-CI run is never justified solely by a documentation checkpoint, branch
+advance or prior PASS without inspecting dependencies.
+Measure compile/link/native/validation costs, retain failed and censored results,
+and record unavailable categories as UNKNOWN. Read the live delta and existing
+recovery evidence before repeating work; use meaningful coherent checkpoints.
+
+For direct local feedback, use `python tests/modularity/run_modular_tests.py --list`
+and select the changed production contract. The no-case default is the measured
+small process set; accepted heat and ten-component audits require explicit selection.
+See **Apply the modular route (2026-10-14)** in the existing protocol for commands,
+provider reuse and the unchanged four-level admission boundary.
+
+Before broad execution, apply **Enforced proportional execution (2026-10-15)**
+in the existing protocol. Full moving F-CI checks `SWAP5_TEST_SELECTION_RECORD`
+before any compilation. Use an existing work-unit JSON; missing/stale selection
+blocks execution. For reviewed local seams use `--changed-since <exact-base>`;
+unmapped/shared dependency changes require owner selection, never inherited PASS.
+Automatic feedback and explicitly selected stable-candidate admission are separate.
+## Change-impact qualification: avoid retesting unchanged components
+
+Follow `Change-impact selection for already qualified components (2026-10-15)` in `docs/development/workstream-execution-protocol.md`. New valid forcing or boundary-condition values in an already qualified input domain are not by themselves a reason to repeat solver or other component qualification. RossFast is one example, not an exception. Select tests for genuinely changed implementation, scientific contract, state/coupling semantics or a concrete uncovered failure mode. Test changed physics and accepted mass/state with focused real production drivers; select additional component tests only when the actual impact warrants them. A changed import or source dependency alone does not require full unrelated preservation. Retain conservative evidence identity and required science checks; `NOT_SELECTED_IMPACT` is not a PASS. Check compound runners for implicit obsolete selections before expensive execution.
