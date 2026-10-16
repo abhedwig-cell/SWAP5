@@ -1,0 +1,28 @@
+{
+  "schema": "swap431.mc_crop01.b111_exact_local_gate.v1",
+  "reference_commit": "f2c5e4c0db8673d47eee1f11b9028e94b0f5c807",
+  "exact_git_blob_ids": {
+    "src/crop/mod_crop_b111_germination_sum_candidate.f90": "13e83db9e7dad60a62c11134f8951d65a23c7dc6",
+    "tests/fmig431/test_crop_b111_germination_sum_candidate.f90": "06575e9f105db9abfc278a324251847865e0bc48",
+    "tests/fmig431/run_crop_b111_germination_sum_candidate.sh": "ea80b16d25378b38b49e3c26f8ce74f490fe6c2c"
+  },
+  "local_execution": {
+    "command": "bash tests/fmig431/run_crop_b111_germination_sum_candidate.sh",
+    "compiler": "gfortran",
+    "flags": "-std=f2008 -fcheck=all -ffpe-trap=invalid,zero,overflow -Werror",
+    "O0": "PASS",
+    "O2": "PASS",
+    "output_identity": "PASS",
+    "expected_result": "CROP_B111_GERMINATION_SUM_O0_O2=PASS"
+  },
+  "validation_scope": "Pure source-derived germination temperature-sum candidate only. Verified local bytes identical to all three remote Git blob IDs before replay.",
+  "unverified": [
+    "independent bitwise B1.11 source oracle",
+    "historical normal MOD_meteo writer",
+    "actual meteo owner attestation",
+    "cross-owner acceptance",
+    "F-CI integrated gates",
+    "canonical admission"
+  ],
+  "github_actions_triggered_by_this_test": false
+}

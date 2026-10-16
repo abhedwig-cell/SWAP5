@@ -1,0 +1,194 @@
+{
+  "receipt": {
+    "pull_request": 1200,
+    "qualified_head": "5155c3df427fbb91fd391a9aa98f85ffad75b10b",
+    "qualified_tree": "846d71ce63efd4f5f5d3e8061a62a3f0bf996d36",
+    "canonical_merge": "ea4759a0633011f26e8ee43126db2484c0def8b3",
+    "canonical_paths_verified": 11,
+    "owner_run": 38132433330,
+    "owner_job": 114449349641,
+    "owner_result": "PASS_O0_O2_THREE_PROFILES_TWELVE_ROOT_CASES",
+    "fci_run": 38132433375,
+    "fci_moving_job": 114449871342,
+    "fci_result": "PASS_ALL_14_FROZEN_HISTORICAL_AND_MOVING",
+    "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+    "local_fci": "PASS",
+    "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  },
+  "inspected_other_workflow_red_jobs": [
+    {
+      "run": 38131724987,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "id": 114447257834,
+      "diagnostics": [
+        "2026-10-11T10:22:52.7801174Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:22:52.7846650Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725017,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "id": 114447257759,
+      "diagnostics": [
+        "2026-10-11T10:22:48.7694813Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference",
+        "2026-10-11T10:22:48.7719507Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131724974,
+      "name": "PUB-ME D3 origin authority",
+      "id": 114447257720,
+      "diagnostics": [
+        "2026-10-11T10:22:48.6522207Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source",
+        "2026-10-11T10:22:48.6548952Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131724986,
+      "name": "F-CI PPA-LOW02 moving preservation reconcile",
+      "id": 114447257822,
+      "diagnostics": [
+        "2026-10-11T10:22:47.7217340Z \u001b[36;1m  echo \"Production/reference mutation is forbidden in this reconciliation.\" >&2\u001b[0m",
+        "2026-10-11T10:22:47.7377234Z Production/reference mutation is forbidden in this reconciliation.",
+        "2026-10-11T10:22:47.7385970Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725089,
+      "name": "PUB-P1E02 post-solver rollback",
+      "id": 114447258047,
+      "diagnostics": [
+        "2026-10-11T10:22:49.1578495Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:22:49.1641091Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725071,
+      "name": "F-CI107 RossFast transform cache admission",
+      "id": 114447258191,
+      "diagnostics": [
+        "2026-10-11T10:22:45.0895819Z FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+        "2026-10-11T10:22:45.0928351Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725063,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "id": 114447258092,
+      "diagnostics": [
+        "2026-10-11T10:23:00.4741935Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base",
+        "2026-10-11T10:23:00.4761410Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725052,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "id": 114447258193,
+      "diagnostics": [
+        "2026-10-11T10:23:07.9671251Z FCI93_FAIL M1-C3 Task2 successor blob drift",
+        "2026-10-11T10:23:07.9692651Z ##[error]Process completed with exit code 93."
+      ]
+    },
+    {
+      "run": 38131725064,
+      "name": "PUB-ME D1 transition authority",
+      "id": 114447258136,
+      "diagnostics": [
+        "2026-10-11T10:23:24.2794337Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source",
+        "2026-10-11T10:23:24.2821972Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725107,
+      "name": "PUB-ME D5 workspace authority",
+      "id": 114447258226,
+      "diagnostics": [
+        "2026-10-11T10:23:32.7770063Z PUB_ME_D5_GATE_FAIL D5 changed production/reference source",
+        "2026-10-11T10:23:32.7800663Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725088,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "id": 114447258129,
+      "diagnostics": [
+        "2026-10-11T10:23:15.1336063Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical",
+        "2026-10-11T10:23:15.1361610Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725004,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "id": 114447257854,
+      "diagnostics": [
+        "2026-10-11T10:23:29.6445182Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base",
+        "2026-10-11T10:23:29.6470947Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725094,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "id": 114447258369,
+      "diagnostics": [
+        "2026-10-11T10:22:57.5610482Z TIMEINT16 declaration marker missing",
+        "2026-10-11T10:22:57.5689016Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725094,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "id": 114447258552,
+      "diagnostics": [
+        "2026-10-11T10:24:08.4765506Z TIMEINT16 declaration marker missing",
+        "2026-10-11T10:24:08.4815896Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725038,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "id": 114447258080,
+      "diagnostics": [
+        "2026-10-11T10:24:26.2030245Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference",
+        "2026-10-11T10:24:26.2058826Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131724984,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "id": 114447257846,
+      "diagnostics": [
+        "2026-10-11T10:23:54.0218199Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:23:54.0313021Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131724984,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "id": 114447257893,
+      "diagnostics": [
+        "2026-10-11T10:23:59.8466534Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:23:59.8549585Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725087,
+      "name": "F-PE-ZERO-WASTE01 paired runtime",
+      "id": 114447258175,
+      "diagnostics": [
+        "2026-10-11T10:24:11.7104663Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:24:11.7190666Z ##[error]Process completed with exit code 1."
+      ]
+    },
+    {
+      "run": 38131725087,
+      "name": "F-PE-ZERO-WASTE01 paired runtime",
+      "id": 114447258362,
+      "diagnostics": [
+        "2026-10-11T10:24:19.9481557Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+        "2026-10-11T10:24:19.9569140Z ##[error]Process completed with exit code 1."
+      ]
+    }
+  ],
+  "decision": "No whole-repository green claim. All mandatory owner and F-CI gates passed; unrelated historical/scope guards and unchanged dependency failures are retained as negative evidence, not silently relaxed.",
+  "first_owner_failure": "Fortran profiles and root cluster passed; final NumPy import failed. Standard-Python equivalent verified with identical limits and requalified in owner run38132433330."
+}

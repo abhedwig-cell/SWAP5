@@ -1,0 +1,25 @@
+name: F-PE-NLGLOB14Z47 narrow admission eligibility smoke
+
+on:
+  push:
+    branches:
+      - work/f-pe-nlglob14z47-narrow-admission-candidate
+    paths:
+      - 'docs/performance/F-PE-NLGLOB14Z47*.md'
+      - 'src/runtime/mod_moving_interface_manager.f90'
+      - 'tests/fpe/test_fpe_nlglob14z47_eligibility.f90'
+      - 'tests/fpe/run_fpe_nlglob14z47.sh'
+      - '.github/workflows/f-pe-nlglob14z47.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  narrow-admission-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: gfortran --version
+      - run: bash tests/fpe/run_fpe_nlglob14z47.sh

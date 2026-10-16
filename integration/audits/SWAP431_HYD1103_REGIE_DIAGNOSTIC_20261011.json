@@ -1,0 +1,138 @@
+{
+  "work_unit": "REGIE-HYD1103-OWNER-GATE-20261011",
+  "stage": "DIAGNOSED_NOT_SCIENTIFICALLY_QUALIFIED_NOT_PRODUCTION_ADMITTED",
+  "owner": "HYD/HYST",
+  "canonical_snapshot": "2173a327e6380720718da31c155eb777b41721a3",
+  "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
+  "original_owner_branch": "work/swap431-hydraulic-coverage-20261007",
+  "owner_branch_changed": false,
+  "recovery": {
+    "commit": "aa2a298029efcf241b4adfab3ac2fd0637432a97",
+    "tree": "2b510fef01e5a8e538a58076be28d1bbe14f0711",
+    "branch": "qualification/regie-hyd1103-test-portability-20261011",
+    "scope": "Exactly one test: all eleven assertion conditions unchanged, dynamic diagnostic printed before constant ERROR STOP 1; no production, runner or tolerance change."
+  },
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "local": {
+    "analytical": {
+      "exit": 0,
+      "optimizations": [
+        "O0 -fcheck=all",
+        "O2"
+      ],
+      "marker": "PASS swap431 hyd analytical"
+    },
+    "power": {
+      "exit": 0,
+      "optimizations": [
+        "O0 -fcheck=all",
+        "O2"
+      ],
+      "marker": "PASS swap431 hyd power"
+    },
+    "original_runtime": {
+      "exit": 1,
+      "phase": "O0 test compilation",
+      "cause": "Eleven nonconstant ERROR STOP codes under -std=f2008; same as existing HYD CI."
+    },
+    "portable_runtime_o0": {
+      "exit": 1,
+      "phase": "MODEL2 production trial",
+      "cause": "Completed/candidate-ready assertion failed; mass/replay assertions and later MODEL3/6/POWER/fail-closed tests not reached."
+    },
+    "portable_runtime_o2": {
+      "exit": 1,
+      "phase": "MODEL2 production trial",
+      "execution": "Isolated diagnostic only: original shell runner streamed through sed replacing ROOT with exact worktree and for opt in 0 2 with for opt in 2. No stored runner or compiler flags changed.",
+      "cause": "Same MODEL2 assertion fails. Not full gate/O0-O2 output identity."
+    }
+  },
+  "historical_ci": [
+    {
+      "run": 37629724103,
+      "job": 112820508809,
+      "conclusion": "failure",
+      "failure": "F2008 nonconstant ERROR STOP test compilation"
+    },
+    {
+      "run": 37629724240,
+      "job": 112820512913,
+      "conclusion": "failure",
+      "checkout": "04f4a19845a381c5e0fbf4b367be7075a4dcf4ee",
+      "failure": "-Werror=compare-reals in soil-water solver contract; not established as HYD-specific regression"
+    },
+    {
+      "run": 37629724095,
+      "job": 113050445951,
+      "conclusion": "failure",
+      "checkout": "04f4a19845a381c5e0fbf4b367be7075a4dcf4ee",
+      "failure": "B19+MICRO exact qualified production tree drift; no preservation receipt"
+    },
+    {
+      "run": 37629724186,
+      "conclusion": "success",
+      "scope": "Bootstrap only, not HYD or moving-preservation qualification"
+    }
+  ],
+  "source_delta": {
+    "merge_base": "71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+    "paths": [
+      {
+        "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "historical_blob": "a00fbba014ced8ad31870caa4d9b36459faf8c0c",
+        "canonical_blob": "01d1981cc7aebb1553463b1cee955bb21da05fe6"
+      },
+      {
+        "path": "src/solver/mod_b110_default_mvg_provider.f90",
+        "historical_blob": "e13dd4df4c9ebcc8d3b406fc54850491a2a979ab",
+        "canonical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed"
+      }
+    ],
+    "mechanical_merge_tree": "4577f7316874513ee40e822ac45b81b8d405fa26",
+    "mechanical_conflicts": false,
+    "qualification_claim": false
+  },
+  "preservation": {
+    "archive": "integration/audits/evidence/SWAP431_HYD1103_REGIE_DIAGNOSTIC_20261011.tar.gz.b64",
+    "decoded_sha256": "3369fe11954fcb87e10bfc941c8c86cd4dd2b8c956206a1796624aa1af64cd8a",
+    "total_members": 8,
+    "members": {
+      "hyd1103-analytical.log": {
+        "bytes": 56,
+        "sha256": "c96a2abb280e93267b310f3f652489bfc72304b2ec3f6e7a8fd48ce77d04b01a"
+      },
+      "hyd1103-power.log": {
+        "bytes": 46,
+        "sha256": "755c5e80ee7cdbbc88b30b0733cd2c6815550e0a400a6d63c97461f25fb166c9"
+      },
+      "hyd1103-runtime.log": {
+        "bytes": 71182,
+        "sha256": "827afd6941f9ad76ab11e453219af774588bd13a7c7981910be0c91b6b1f633e"
+      },
+      "hyd1103-runtime-portable.log": {
+        "bytes": 68472,
+        "sha256": "a95999e3512a70d5da906c83e91243f68bb538647769d1cfacf1f915490f9766"
+      },
+      "hyd1103-runtime-portable-o2.log": {
+        "bytes": 81831,
+        "sha256": "b2b1b48aeb12db67e00c440e8eee9e3d7352a9d20e34f304cd1f9a801523dcc2"
+      },
+      "original-runtime-test.f90": {
+        "bytes": 13110,
+        "sha256": "eea319f7d13e54a5b692e2459f757494bbf4e7aa801afbc049577b7b86270cdc"
+      },
+      "portable-runtime-test.f90": {
+        "bytes": 13250,
+        "sha256": "95c01a483b2a190ff0287572d88a3d457f7541b6b53060e7631473bf0258aa12"
+      }
+    }
+  },
+  "next_action": "HYD/HYST owner diagnoses MODEL2 admission/runtime failure without weakening assertions, selectively recomposes original two-source delta on current canonical, obtains exact owner/F-CI preservation and proposes bounded admission. Existing original status is navigation only; its queued qualification description is stale.",
+  "excluded_claims": [
+    "No runtime qualification of MODEL2/3/6/POWER",
+    "No source-bound extension to scaled/PDI/RIA/table/hysteresis",
+    "No owner PR closure or production admission",
+    "No physical-policy or global capability-count change",
+    "No new Actions dispatch"
+  ]
+}

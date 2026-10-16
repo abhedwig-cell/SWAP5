@@ -1,0 +1,17 @@
+{
+  "work_unit": "MC-NUT01-MATERIAL-ENVIRONMENT",
+  "baseline": "fb311dabd16266409deb394c381fe26086a64d03",
+  "pr": 1238,
+  "prior_bounded_coverage": "integration/audits/MC_NUT01_MATERIAL_CYCLE_COVERAGE_20261015.json",
+  "affected_capabilities": [
+    "SW431-NUT-AMEND",
+    "SW431-NUT-RESIDUE"
+  ],
+  "disposition_delta": 0,
+  "master_branch_modified": false,
+  "full_capability_admission": false,
+  "global_master_integrity": "NOT_CLAIMED",
+  "bounded_progress": "Simultaneous explicit ordered material batch and time-bound prescribed soil temperature through existing daily crop/soil and actual Richards material application; unchanged sole inventory, whole N and complete restart.",
+  "remaining": "Automatic WOFOST81 senescence/harvest residue debit and return with whole-N internal transfer, explicit calendar policy and broader default/heat profiles. Pond/source remains open; aquifer rejected. No full capability/count promotion.",
+  "admission_authority": "PR1238 final expected-head merge and exact canonical source/tree receipt; no admission claim while pending."
+}

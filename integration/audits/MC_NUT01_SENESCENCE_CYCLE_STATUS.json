@@ -1,0 +1,159 @@
+{
+  "work_unit": "MC-NUT01-SENESCENCE-CYCLE",
+  "baseline": "e22a677146ef49d14bd6dd6e72b78f60e340bcab",
+  "branch": "work/nut-senescence-cycle-20261015",
+  "contract": "docs/science/MC_NUT01_SENESCENCE_CYCLE_CONTRACT_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "next_safe_step": "Verify final fetched postimage, exact live canonical and expected PR head, safely merge then verify canonical tree/source. No repeat full for metadata-only closeout.",
+  "pr": 1239,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1239",
+  "development_process": "senescence-process-first/result.json",
+  "development_day": "senescence-day-fourth/result.json",
+  "small_feedback": "O0/O2 process3 and actual crop/soil day44 PASS; actual3-organ ageing/death, one-day lag, whole N, old-route refusal, zero-death identity, rollback/retry and retained juvenile over-supply rejection.",
+  "retained_attempts": [
+    {
+      "path": "senescence-day-first",
+      "status": "FAILED_CONTINUATION_TEST_PROFILE",
+      "cause": "Full ageing used a next-day canopy/N supply profile outside admitted exact soil-to-crop uptake envelope; no committed publication."
+    },
+    {
+      "path": "senescence-day-second",
+      "status": "FAILED_JUVENILE_SUPPLY_TEST_PROFILE",
+      "cause": "Partial ageing lowered LAI below original critical3. Historical juvenile supply exceeded WOFOST81 request; existing CROP_SOIL_TRANSFER gate correctly rejected. Reproduced native values and commands retained in senescence-day-supply-probe.json."
+    },
+    {
+      "path": "senescence-day-third",
+      "status": "FAILED_INVALID_AGE_TEST_EXPECTATION",
+      "cause": "Age100 is source-valid under N-bounded humus split, not necessarily invalid. Correct test uses100.01 outside declared finite age domain. Production unchanged."
+    }
+  ],
+  "primary_execution": "12b3a77c26c51ba71efa978ce93797fb1628e6d5",
+  "direct_execution": "abee433886e1890349f51e2b6edbd29c643be569",
+  "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+  "physical_provider_count": 263,
+  "direct_provider_count": 44,
+  "process_provider_count": 3,
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_SENESCENCE_CYCLE_20261015.tar.xz.b64",
+    "sha256": "3c4441b39044f1fc2fa813af849633cb5299c15baa1a0bc160cfccfd5ba44e36",
+    "decoded_bytes": 2952256,
+    "members": 3026
+  },
+  "physical_cost_seconds": {
+    "compile": 122.22333172796061,
+    "driver_compile": 29.24556865100749,
+    "link": 1.8367614000017056,
+    "native": 149.0081067839492
+  },
+  "direct_cost_seconds": {
+    "compile": 13.749170234965277,
+    "driver_compile": 8.267372717004037,
+    "link": 0.4980478310317267,
+    "native": 0.027588429977186024
+  },
+  "process_cost_seconds": {
+    "compile": 0.6229273429635214,
+    "driver_compile": 0.24417540300055407,
+    "link": 0.12287956198269967,
+    "native": 0.006364205997670069
+  },
+  "qualification_status": "BOUNDED_DELAYED_SENESCENCE_QUALIFIED_PRESERVED_PREMERGE",
+  "added_blobs": {
+    "src/crop/mod_crop_soil_n_senescence_day.f90": "3899c668bdb72152b71501aa618d42a449946fd6",
+    "src/process/mod_crop_senescence_residue.f90": "fc6dc2f32c0b16c988857552737f9413b99b33d2",
+    "src/runtime/mod_fmr_crop_soil_n_senescence_application.f90": "a6fb92ad11498cfc33ca765f52ab52d599a884d5",
+    "tests/nut-senescence/check_pending_native.py": "1a205a837e140f04928394dc7b1b828f3897bb28",
+    "tests/nut-senescence/check_senescence_controls.py": "ce5564b2a83f4a44eb0585b30eb3134921231c6d",
+    "tests/nut-senescence/run_incumbent.py": "62d5caab6a1a53fdb2a0b8480726e21f0e55aab6",
+    "tests/nut-senescence/run_senescence.py": "77289e05447d78827fefbb634f23ab53050f2199",
+    "tests/nut-senescence/test_senescence_day.f90": "cdd79987a22b611ed7925b671cc3fe762367ca99",
+    "tests/nut-senescence/test_senescence_joint.f90": "a06137c3d064e67f09d5edea5f2b3942b927cbfb",
+    "tests/nut-senescence/test_senescence_mapping.f90": "dec9daf4d872be7854750c3deac7c2c08bef928d",
+    "tests/nut-senescence/verify_senescence_successor.py": "056fa13f2ff554b116dfdeef1b5d77f414c2e179"
+  },
+  "changed_blobs": {
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90": "dee678616b4fc7508e977dee748fb5a75af4e0e5",
+    "src/crop/mod_crop_soil_n_day.f90": "2e46035da8890fc97aec07de71b8c0ca71c3d352",
+    "src/crop/mod_crop_soil_n_material_day.f90": "0aeea05d9068c86b6db9ed849e388d3f69b1ff4f",
+    "tests/crop-co2/verify_co2_successor.py": "c93fc0395ac4799023f9d72e7b07baf9364cd122",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "e3a940757a27e26e89782d39b1c1cbe229f6fcf7",
+    "tests/nut-environment/check_environment_controls.py": "189e14cccaf3dce1846cfb1c3e9ee40d8ca47dd8",
+    "tests/nut-material-environment/check_material_environment_controls.py": "9f613b470ecd3ef90639141cad0462b58907e343",
+    "tests/nut-material-environment/verify_material_environment_successor.py": "0fc3610981f4d2baa2c8256cb898fc36932bd8b5"
+  },
+  "incumbent_execution": "3a0c3bf2a78bdef8f507263953af2d2677ad9dc6",
+  "incumbent_cost_seconds": {
+    "compile": 3.402676024023094,
+    "driver_compile": 29.43299585598288,
+    "link": 1.4228903200128116,
+    "native": 133.88243678105937
+  },
+  "incumbent_provider_count": 264,
+  "incumbent_coverage": "All6 current ABI drivers native O0/O2; all4 physical endpoints immutable-identical, audited same-session provider reuse; permission-only resume retains checked successful prefix.",
+  "recovery": "docs/science/MC_NUT01_SENESCENCE_CYCLE_RECOVERY_20261015.md",
+  "test_selection": {
+    "process": "Fresh O0/O2 actual producer3, literal source mapping",
+    "direct": "Fresh O0/O2 actual crop/soil44",
+    "composition": "Fresh O0/O2 actual Richards263;8 original/new drivers, original8pool endpoint bytes",
+    "incumbent": "Fresh all6 original drivers O0/O2 with hash-bound same-session provider objects; all4 two-FOM physical endpoints immutable-identical",
+    "full": "SELECTED_PENDING: exactly one full local moving OFF, expected1780s, changed state/restart boundary under AGENTS/protocol; physics/category split UNKNOWN",
+    "highest": "NOT_SELECTED_POLICY"
+  },
+  "scope": "Actual daily root/leaf/stem senescence delayed one day, original material chemistry, sole soil+crop+pending whole-N owner and complete native/opaque restart",
+  "remaining": "Harvest/reset/rotation phase decision, calendar/default activation and accepted heat/profile coupling open. Pond/source open; aquifer rejected. No master capability/disposition promotion.",
+  "negative_controls": {
+    "status": "PASS",
+    "count": 138,
+    "inherited_at_exact_baseline": 87,
+    "current_controls": 51
+  },
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS",
+  "full_preservation": {
+    "execution_commit": "6fd1eb4bf820b985e2c5043f98f51e7af1751fc9",
+    "tree": "acfdc2654fd7731d7a4e6c34af5b7929edee4858",
+    "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+    "command": [
+      "bash",
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+    ],
+    "resume_mode": "OFF",
+    "status": "PASS",
+    "tracked_inputs": 6363,
+    "compile_link_native_split": "UNKNOWN",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "returncode": 0,
+    "wall_seconds": 1616.2715397360007,
+    "changed_inputs": [],
+    "stdout_sha256": "c11b4d4acfb5c4151bb2ae4205bfbec836dbfff6785385b49dc2bfe9ea542bd4",
+    "stderr_sha256": "18068f6b1c7b2bfcb5d72334b6db03200ef34ddfb19814f5fbfa01f9128b2d2d",
+    "terminal_marker": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_SENESCENCE_CYCLE_ADMISSION_20261015.tar.xz.b64",
+      "sha256": "5438af14d3312d91b795774e62e4bd53e8f9685f87c4ed5922e9c8cd023b95b2",
+      "decoded_bytes": 3364280,
+      "members": 15
+    }
+  },
+  "final_dependency_rebind": {
+    "execution": "6fd1eb4bf820b985e2c5043f98f51e7af1751fc9",
+    "original_tree": "acfdc2654fd7731d7a4e6c34af5b7929edee4858",
+    "source_tree": "8c9ee98d76f03c45c69f7dc20cb293c8cf4e0210",
+    "changed_scientific_inputs": [],
+    "closeout_only": [
+      "integration/audits/MC_NUT01_SENESCENCE_CYCLE_STATUS.json",
+      "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "integration/control/SWAP5_WORKSTREAM_REGISTRY.json",
+      "docs/science/MC_NUT01_SENESCENCE_CYCLE_RECOVERY_20261015.md",
+      "integration/audits/evidence/MC_NUT01_SENESCENCE_CYCLE_ADMISSION_20261015.tar.xz.b64"
+    ],
+    "reason": "Terminal full preservation executed against frozen persisted source, scientific inputs, drivers, oracles and guards. Final changes record result and raw evidence only; no duplicate science/full run for metadata-only closeout."
+  },
+  "canonical_admission_authority": "Frozen premerge receipt. PR1239 expected-head merge and exact canonical tree/source establish bounded admission."
+}

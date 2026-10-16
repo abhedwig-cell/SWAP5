@@ -1,0 +1,15 @@
+{
+  "workstream": "MC-CROP01",
+  "baseline": "5dd7be85049edb3c351db318c078ebb0ba1a39af",
+  "scope": "Strengthen existing read-only weather-to-FKT crop event composer: accept FWO38 window only when its owner-derived event receipt lineage, final revision and terminal t1 match the certified prior soil committed identity and crop daystart.",
+  "source_blob": "8e2e554bbffdd1dad579d63d36ae9a844e2bc2d7",
+  "scientific_limit": "No external weather producer authentication or positive fully committed end-to-end crop event is proven. Event receipt comes from existing FWO owner; no duplicate commit authority.",
+  "qualification": "PENDING O0/O2 and FCI",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.crop_committed_head_depth_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "42358a813b5d5fc9ab334876b004848f211a9494",
+  "source_authority": [
+    "reference/swap-4.3.1/b0/file-manifest.sha256",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90",
+    "src/crop/mod_crop_b111_pressure_head_average.f90"
+  ],
+  "owned": "src/runtime/mod_fmr_crop_accepted_head_depth_binding.f90",
+  "admission": {
+    "pr": 1148,
+    "qualified_head": "18b9c69710076a4af2927fd9cd9ff05c9b72c12f",
+    "owner_o0_o2": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37904235481",
+    "fci": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37904235339",
+    "fci_result": "success (15/15 jobs)",
+    "merge_commit": "4c09bc0bea3f7219519adb9500539abc90c482a4",
+    "canonically_admitted": true
+  },
+  "scope": "Nonmutating bounded composition of a committed B110 F-KT hydraulic snapshot and B1.11 weighted-pF pressure head depth sampler, with lineage/revision/time and dimensions/depth validation.",
+  "claims": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "exclusions": [
+    "Caller-provided soil layer thicknesses dz are only shape/range checked, not authenticated against the accepted soil grid",
+    "Not an authorized physical crop preparation, sowing or germination forcing",
+    "No soil heat/SWHEA temperature node provenance or daily atmospheric tav provenance",
+    "No cross-owner same-event crop receipt binding",
+    "No physical emergence, harvest, root initialization or full restart admission"
+  ],
+  "next_action": "Bind z-grid geometry and compartment thicknesses from the accepted F-KT physical owner rather than caller-supplied dz. Keep active #1141 paired physical/calendar restart ownership isolated. Then reconcile SWHEA, soil temperature node and accepted daily tav, and qualify before physical crop lifecycle publication."
+}

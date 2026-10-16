@@ -11,18 +11,18 @@ b0:
   unpacked_git_mirror_status: "PENDING_BINARY_SAFE_IMPORT"
 
 b1:
-  snapshot: "B1.11"
+  snapshot: "B1.12"
   status: "CORRECTED_REFERENCE"
   oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
-  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.11.yml"
-  supersedes_snapshot: "B1.10"
+  snapshot_definition: "reference/swap-4.3.1/snapshots/B1.12.yml"
+  supersedes_snapshot: "B1.11"
   numerical_change_from_superseded_snapshot: true
-  description: "Corrected SWAP 4.3.1 reference adding the qualified SWAP-011 hydraulic-conductivity derivative/Jacobian consistency correction to B1.10."
+  description: "Corrected reference adds SWAP-019: actual N-active classical WOFOST leaf DM retained after daily soil return; other selectors preserve B1.11."
   source_tree:
     member_count: 63
-    source_bytes: 1886519
-    member_manifest_sha256: "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
-    reconstruction: "tools/vq/b1_11_reconstruct.py"
+    source_bytes: 1886750
+    member_manifest_sha256: "5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e"
+    reconstruction: "tools/vq/b1_12_reconstruct.py"
   patches:
     - id: "SWAP-001"
       patch_path: "reference/swap-4.3.1/patches/SWAP-001/fix.patch"
@@ -87,6 +87,20 @@ b1:
       qualification: "reference/swap-4.3.1/patches/SWAP-011/qualification.md"
       ordered_preimage_snapshot: "B1.10"
       historical_e7_patch_sha256: "9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110"
+    - id: SWAP-019
+      patch_path: reference/swap-4.3.1/patches/SWAP-019/fix.patch
+      patch_sha256: 763e44540692971a8d2bb491a1ff47bb5682a5f3dcf0f6d8ca72838adc353070
+      ordered_preimage_snapshot: B1.11
+      qualification: reference/swap-4.3.1/patches/SWAP-019/qualification.md
+      targets:
+      - target: SWAP/wofost.f90
+        b0_target_sha256: 3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b
+        ordered_preimage_sha256: 3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b
+        corrected_target_sha256: 2d1f9962f2423f94209784cf92e295ddbd18d103a052312be0f3da3e330bac38
+      - target: SWAP/wofostnut.f90
+        b0_target_sha256: 071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2
+        ordered_preimage_sha256: 071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2
+        corrected_target_sha256: f64dbc7a58bc7508fd25aa277fa09f70a9ed9206aab684ad094ef1dc61d3e346
 
 history:
   - snapshot: "B1.0-bootstrap"
@@ -127,6 +141,9 @@ history:
     exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
   - snapshot: "B1.11"
     definition: "reference/swap-4.3.1/snapshots/B1.11.yml"
+    exact_oracle_status: "QUALIFIED_NUMERICAL_BEHAVIOURAL"
+  - snapshot: "B1.12"
+    definition: "reference/swap-4.3.1/snapshots/B1.12.yml"
     exact_oracle_status: "CURRENT_QUALIFIED_NUMERICAL_BEHAVIOURAL"
 
 admission_rule:

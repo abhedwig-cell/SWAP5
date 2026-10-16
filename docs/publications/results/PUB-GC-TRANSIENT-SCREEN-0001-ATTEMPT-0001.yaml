@@ -1,0 +1,99 @@
+result:
+  result_id: PUB-GC-TRANSIENT-SCREEN-0001-ATTEMPT-0001
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_SCREENING_ATTEMPT
+  status: INVALID_EXECUTION
+  selection_authority: false
+  primary_h2_h3_inference_eligible: false
+
+chronology:
+  preregistration_manifest_commit: 6096c24e91d6d9ab8ee8b812b0090123878a6cef
+  preregistration_manifest_blob: 7aa93be2f6698ad6e655e70bf1024758e7516da4
+  stable_reference_base: c48ad3e09a7ab373e3ee424ae90fabbb65e83e4f
+  execution_head: 848d1414de10d7160841f59874a24ec14025773b
+  workflow_started_utc: 2026-09-18T00:13:14Z
+  workflow_completed_utc: 2026-09-18T00:13:59Z
+  defect_identified_after_execution: true
+  frozen_case_values_changed: false
+  frozen_thresholds_changed: false
+  frozen_selection_rule_changed: false
+
+execution:
+  github_actions_run_id: 35290254007
+  github_actions_job_id: 105431334545
+  workflow_conclusion: success
+  infrastructure_gate_conclusion: success
+  source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  trajectory_blob: c71e342d7752e2648c896e6a55b31451e0e9ee7d
+  test_blob: 83fb7bf3b99d64016eb0d7691a9d061722361ca2
+  runner_blob: 9f5227d409ce74806964bfd7dc753ecf45af1172
+  raw_scientific_output_sha256: 42d7a97cf795d2ef307b6648bc2d19d06a99925aceb78860884fe85a1f19a7dc
+  o0_o2_identity: PASS
+  artifact:
+    id: 10526100175
+    name: pub-gc-transient-screening-848d1414de10d7160841f59874a24ec14025773b
+    sha256: 2ec9620a011b80a46c416f2c2f2b1a2e89ba0a66e904465b5b788b01cabbcb4f
+    expires_at: 2026-12-17T00:13:14Z
+
+invalidity:
+  classification: HARNESS_FORCING_RECONSTRUCTION_MISMATCH
+  defect: >
+    evaluate_active_residual() evaluated each frozen transient candidate with
+    forcing%top_flux = current_top_flux(), but reconstruct_prepare_commit()
+    reconstructed the selected root using active_forcing_template without
+    reapplying current_top_flux(). For every window whose frozen top-flux factor
+    differed from the baseline -1 factor, the reconstruction therefore used a
+    different forcing from the root search.
+  direct_code_evidence:
+    root_evaluation: "forcing%top_flux = current_top_flux()"
+    reconstruction_missing_operation: "forcing%top_flux = current_top_flux()"
+    reconstruction_default: active_forcing_template
+  observed_signature:
+    cases_with_nonbaseline_top_flux:
+      TS-WET-5: {L0: 2, L1: 2, L2: 2}
+      TS-DRY-1: {L0: 2, L1: 2, L2: 2}
+      TS-REV: {L0: 2, L1: 2, L2: 2}
+      TS-LOW-SY-WET: {L0: 2, L1: 2, L2: 2}
+    baseline_top_flux_only_cases:
+      TS-GW-UP: VALID_STABLE_UNRESOLVED
+      TS-GW-DOWN: VALID_STABLE_UNRESOLVED
+  status_2_meaning: PUB_GC_REF_TRAJECTORY_RECONSTRUCTION_FAILED
+  scientific_conclusion: NONE
+  screening_selection_conclusion: NONE
+  note: >
+    Even outputs from the two baseline-only cases are retained only as debugging
+    telemetry. The attempt is globally non-authoritative for family selection
+    because the screening implementation did not faithfully implement the
+    preregistered forcing schedule across root evaluation and reconstruction.
+
+permitted_repair:
+  scope: >
+    Add the missing forcing%top_flux = current_top_flux() assignment to
+    reconstruct_prepare_commit() so root evaluation and reconstruction use the
+    same frozen forcing.
+  prohibited:
+    - changing any of the six preregistered cases
+    - changing top-flux factors
+    - changing coupling-window ladder
+    - changing root bracket or tolerances
+    - changing stability or resolution thresholds
+    - changing heldout candidates
+    - changing the heldout promotion rule
+    - modifying src/**
+  rerun_policy: >
+    After the surgical harness repair, execute the same frozen manifest as a
+    new attempt and preserve this invalid attempt permanently.
+
+nonclaims:
+  - no H2 support or falsification
+  - no H3 support or falsification
+  - no evidence that the four reconstruction-failed stress families are physically invalid
+  - no evidence from this attempt for heldout-family promotion
+  - no practical-materiality inference
+  - no MODFLOW6 inference
+
+next_permitted_action:
+  - persist this invalid-execution receipt
+  - apply only the frozen-forcing reconstruction repair
+  - rerun the unchanged six-case matrix under O0 and O2
+  - adjudicate family promotion only from a valid repaired execution

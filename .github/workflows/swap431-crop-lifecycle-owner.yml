@@ -1,0 +1,29 @@
+name: SW431 crop lifecycle owner qualification
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - src/crop/mod_crop_lifecycle_continuation.f90
+      - src/runtime/mod_fmr_wofost_crop_transaction.f90
+      - tests/fmig431/test_crop_lifecycle_continuation.f90
+      - tests/fmig431/run_crop_lifecycle_continuation.sh
+      - tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
+      - tests/fmig431/patch_crop_lifecycle_fwof38_fixture.py
+      - tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh
+      - .github/workflows/swap431-crop-lifecycle-owner.yml
+jobs:
+  lifecycle-owner-o0-o2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler
+        run: gfortran --version
+      - name: Lifecycle candidate O0 O2
+        run: bash tests/fmig431/run_crop_lifecycle_continuation.sh
+      - name: Existing F-WOF38 transaction and opt-in persistence O0 O2
+        run: bash tests/fmig431/run_crop_lifecycle_fkt_compatibility.sh
+      - name: Cross-preserve B19 and MICRO on actual crop postimage
+        run: bash tests/fmig431/run_crop_lifecycle_b19_micro_cross_preservation.sh

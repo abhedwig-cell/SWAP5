@@ -39,6 +39,15 @@ Follow `docs/development/workstream-execution-protocol.md`.
 - Transaction/rollback result where relevant:
 - Performance evidence where relevant:
 
+## Test selection and cost (before broad execution)
+
+Use this PR or the existing work-unit JSON, never a second registry. For every
+expected/measured >300 s group name the changed dependency, scientific claim,
+owner/authority clause, expected duration and already-valid evidence (or UNKNOWN).
+Diagnose any earlier unexpected long run before repeating it. New commits and
+checkpoints do not select full F-CI. In machine-checked records use `test_selection`
+from the execution protocol. Highest low-air is NOT_SELECTED_POLICY by default.
+
 ## Dependencies and integration
 
 - Depends on:

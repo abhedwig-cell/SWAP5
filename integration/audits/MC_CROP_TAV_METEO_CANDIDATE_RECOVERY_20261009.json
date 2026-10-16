@@ -1,0 +1,33 @@
+{
+  "schema": "swap431.crop_tav_meteo_candidate_recovery.v1",
+  "workstream": "MC-CROP01",
+  "canonical_baseline": "f0f2663879e2ec6d77bfe80010a3cab3aaa165e3",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "locally_tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "files": [
+    "src/crop/mod_crop_tav_meteorological_candidate.f90",
+    "tests/fmig431/test_crop_tav_meteorological_candidate.f90",
+    "tests/fmig431/run_crop_tav_meteorological_candidate.sh"
+  ],
+  "local_test": "gfortran 14 -std=f2008 -fcheck=all -Wall -Wextra O0 and O2; both SW431_CROP_TAV_METEO_CANDIDATE PASS, no external Actions workflow",
+  "external_legacy_trace": {
+    "source": "https://raw.githubusercontent.com/SWAP-model/SWAP/main/src/atmosphere/meteoday.f90",
+    "version_caveat": "Unofficial independently evolving SWAP source, not byte-verified SWAP 4.3.1 authority",
+    "daily": "meteoday ProcessMeteoDay tav=(tmx+tmn)*0.5",
+    "uniform_detailed": "detailed meteorology tav=sum(atav(i))*metperiod with N=1/metperiod and equal durations",
+    "comparison": "SWAP 4.3.1 B1.11 MOD_cropdevelopment germination imports atmosphere_interface:tav; exact 4.3.1 writer remains unverified"
+  },
+  "admitted_claim_ceiling": [
+    "Standalone pure candidate transformation only, not an accepted meteorological input source or owner-certified F-KT forcing",
+    "Does not modify previous caller-supplied daily crop preflight or publish events",
+    "Does not validate day boundary or weather file provenance, which remain pending",
+    "Not proof that separate WOFOST daytime_average_temperature equals historical tav"
+  ],
+  "next_action": "Recover exact 4.3.1 atmosphere_interface and meteo input writer; bind accepted per-day weather record to physical F-KT interval acceptance with source ID, retry rollback, restart. Then qualify before using in physical germination."
+}

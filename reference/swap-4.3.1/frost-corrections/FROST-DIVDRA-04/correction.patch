@@ -1,0 +1,20 @@
+--- FROST-DIVDRA-03/divdra.f90
++++ FROST-DIVDRA-04/divdra.f90
+@@ -360,7 +360,7 @@
+                do icp = icpTopDisLay+1,numnod
+                   sumqdr     = sumqdr + qdra(idr,icp)
+                end do
+-               if (abs(sumqdr) < 1.0d-8) then
++               if (sumqdr == 0.0d0) then
+                   ratio = 1.0d0
+                else
+                   ratio = qdrain(idr) / sumqdr
+@@ -374,7 +374,7 @@
+                   qdra(idr,icp) = qdra(idr,icp) * ratio
+                end do    
+                
+-               if (abs(sumqdr) < 1.d-8 .AND. abs(qdrain(idr)) > 1.d-8) then
++               if (sumqdr == 0.0d0 .AND. qdrain(idr) /= 0.0d0) then
+                   qdra(idr,icpTopDisLay) = qdrain(idr)
+                end if         
+             end if

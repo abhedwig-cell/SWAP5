@@ -1,0 +1,99 @@
+{
+  "archive": "integration/audits/evidence/FCI_SHARED_BUILD_QUALIFICATION_20261013.tar.gz.b64",
+  "decoded_archive_sha256": "0553546fbfd74f406eb85eaacb89e556e2e8d1fe0dc3734f289b40e55a3f225b",
+  "default_fci_runner_blob": "6f44e3163cbfe28ac85539dad5416c156604879e",
+  "fci": {
+    "exit": 0,
+    "head": "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9",
+    "logs": {
+      "fci.stderr": "6c58cd629dd26e443dbe31cc483c85afef264dcfb2824d3726a0d6c57078ff81",
+      "fci.stdout": "bca35e1b9c3b8744ccd521036b8648a8e666a8e47c49de52572f5fa4693f8e02"
+    },
+    "resume_mode": "OFF",
+    "system_cpu_seconds": 539.031299,
+    "user_cpu_seconds": 4810.99634,
+    "wall_seconds": 5383.975149062
+  },
+  "members": 86,
+  "reference_tree": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+  "scope": "Unchanged root/sensor assertions, O0/O2 and exact science hashes; default F-CI unchanged. No whole-FCI speed claim.",
+  "source_tree": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+  "status": "SHARED_AB_AND_FULL_FCI_PASS; solver profiles running",
+  "uninstrumented": {
+    "affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "ended_utc": "2026-10-13T09:07:23.100654+00:00",
+    "environment_sha256": "b70044e18a52c33b6b5ae17e139c1558da6ac6e62cd4eb771c537347c794a77c",
+    "equivalent": true,
+    "head": "38c97e54553f3f0e0fb2be08baa3f6fe8f46ada9",
+    "host": {
+      "machine": "x86_64",
+      "node": "af35da838e56",
+      "processor": "x86_64",
+      "release": "6.18.44",
+      "system": "Linux",
+      "version": "#1 SMP Sat Sep 26 20:02:31 UTC 2026"
+    },
+    "instrumented": false,
+    "started_utc": "2026-10-13T08:43:29.273317+00:00",
+    "toolchain": {
+      "/usr/bin/x86_64-linux-gnu-as": "d0b9315551af88dba9e4f141f270278ff7326d4ed0996b4317067e4fd062cd5e",
+      "/usr/bin/x86_64-linux-gnu-ld.bfd": "5b674ea1d7017c2929f3c52c43487478bb240ecdd7197a25cce3813a70329a5c",
+      "/workspace/scratch/4fc81fefc123/compiler/bin/gfortran": "60ca8bff2521e7a3a60bc7cb413925ceade75bbe80efd072649c0920e9d97f2a",
+      "/workspace/scratch/4fc81fefc123/compiler/root/usr/libexec/gcc/x86_64-linux-gnu/13/f951": "9c86153267d3b556b4c74c204f775737b39e2bdd611c62a39c71714cde6acb1d"
+    },
+    "trials": [
+      {
+        "arms": {
+          "combined": {
+            "exit": 0,
+            "root_science_sha256": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+            "seconds": 534.2942490529986,
+            "sensor_science_sha256": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e",
+            "stderr_sha256": "84d177b2699e76d4fbaabfd25b1488dd280b25da23405483e4ddf810e96247f6",
+            "stdout_sha256": "411f4213e902f38b83e57d8ccc1429c630b353cce6379371cd85784f2e1ffcf7",
+            "system_cpu_seconds": 34.975257,
+            "user_cpu_seconds": 497.48191699999995
+          },
+          "root": {
+            "exit": 0,
+            "science_sha256": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+            "seconds": 463.72323980500005,
+            "stderr_sha256": "5116533081ef5ea1faee2bbfdd27ea376929e6788a6d2127382b3000506b925a",
+            "stdout_sha256": "b481f72a463405bfb4d10fd11c1604050d9bcdabfe7ccc2554d929035b75687a",
+            "system_cpu_seconds": 34.491152,
+            "user_cpu_seconds": 429.666612
+          },
+          "sensor": {
+            "exit": 0,
+            "science_sha256": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e",
+            "seconds": 432.4539809409998,
+            "stderr_sha256": "31b0371105eac9e8003784da948d2081e8f8cd661b388512045aa7f3ccd39be8",
+            "stdout_sha256": "a16fb7395e8b196e3f9186382342d114d76ee18b3ce988ed331e6443bb65e01e",
+            "system_cpu_seconds": 32.64035500000001,
+            "user_cpu_seconds": 383.798208
+          }
+        },
+        "combined_seconds": 534.2942490529986,
+        "difference_seconds": 361.8829716930013,
+        "equivalent": true,
+        "order": [
+          "root",
+          "sensor",
+          "combined"
+        ],
+        "original_seconds": 896.1772207459999
+      }
+    ]
+  }
+}

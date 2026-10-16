@@ -5,7 +5,13 @@ module mod_fmr_divdra_serialized_composition
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_fmr_divdra_runtime_binding, only: fmr_divdra_binding_diagnostics_t, &
-       fmr_bind_single_level_positive_divdra, FMR_DIVDRA_BIND_OK
+       fmr_divdra_multilevel_binding_diagnostics_t, fmr_bind_single_level_signed_divdra, &
+       fmr_bind_multilevel_signed_divdra, FMR_DIVDRA_BIND_OK
+  use mod_drainage_b19_separate_infiltration_adapter, only: drainage_b19_separate_infiltration_parameters_t
+  use mod_fmr_divdra_separate_infiltration_binding, only: fmr_divdra_separate_infiltration_binding_diagnostics_t, &
+       fmr_bind_separate_infiltration, FMR_DIVDRA_INF_SPLIT_OK
+  use mod_drainage_discharge_layer_transform,only:discharge_layer_top_control_t
+  use mod_fmr_divdra_dislayer_binding,only:fmr_bind_dislayer,fmr_divdra_dislayer_diagnostics_t
   implicit none
   private
 
@@ -24,6 +30,10 @@ module mod_fmr_divdra_serialized_composition
     integer(int64) :: distribution_parameter_ref = 0_int64
     integer(int64) :: hydraulic_view_ref = 0_int64
     real(real64) :: scalar_transfer = 0.0_real64
+    integer(int64), allocatable :: distribution_parameter_refs(:)
+    real(real64), allocatable :: scalar_transfers(:)
+    type(drainage_b19_separate_infiltration_parameters_t), allocatable :: separate_infiltration_controls(:)
+    type(discharge_layer_top_control_t),allocatable::discharge_layer_controls(:)
   end type fmr_divdra_serialized_column_request_t
 
   type, public :: fmr_divdra_serialized_binding_record_t
@@ -31,7 +41,11 @@ module mod_fmr_divdra_serialized_composition
     integer :: column_index = 0
     integer(int64) :: forcing_handle = 0_int64
     integer :: composition_status = FMR_DIVDRA_COMPOSE_OK
+    type(fmr_divdra_dislayer_diagnostics_t)::discharge_layer_binding
     type(fmr_divdra_binding_diagnostics_t) :: binding
+    type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: separate_infiltration_binding
+    logical :: multilevel = .false.
+    type(fmr_divdra_multilevel_binding_diagnostics_t) :: multilevel_binding
   end type fmr_divdra_serialized_binding_record_t
 
   public :: fmr_preflight_serialized_divdra
@@ -51,7 +65,12 @@ contains
     integer, allocatable :: forcing_use_count(:)
     real(real64), allocatable :: probe(:,:)
     type(fmr_divdra_binding_diagnostics_t) :: bind_diag
-    integer :: i, active_count, slot, forcing_index, parameter_index, view_index
+    type(fmr_divdra_multilevel_binding_diagnostics_t) :: multi_diag
+    type(fmr_divdra_separate_infiltration_binding_diagnostics_t) :: inf_diag
+    type(fmr_divdra_dislayer_diagnostics_t)::layer_diag
+    type(drainage_distribution_parameters_t), allocatable :: level_parameters(:)
+    integer :: i, j, active_count, slot, forcing_index, parameter_index, view_index
+    logical :: multilevel
 
     status = FMR_DIVDRA_COMPOSE_OK
     allocate(records(0))
@@ -103,13 +122,43 @@ contains
         return
       end if
 
-      if (requests(i)%distribution_parameter_ref < 1_int64 .or. &
-          requests(i)%distribution_parameter_ref > int(size(distribution_parameters), int64)) then
-        status = FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
-        records(slot)%composition_status = status
-        return
+      multilevel=allocated(requests(i)%distribution_parameter_refs).or.allocated(requests(i)%scalar_transfers)
+      if(multilevel)then
+        if(requests(i)%distribution_parameter_ref/=0_int64.or.requests(i)%scalar_transfer/=0.0_real64)then
+          status=FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
+          records(slot)%composition_status=status
+          return
+        end if
+        if(.not.allocated(requests(i)%distribution_parameter_refs).or..not.allocated(requests(i)%scalar_transfers))then
+          status=FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
+          records(slot)%composition_status=status
+          return
+        end if
+        if(size(requests(i)%distribution_parameter_refs)<=1.or. &
+             size(requests(i)%distribution_parameter_refs)/=size(requests(i)%scalar_transfers))then
+          status=FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
+          records(slot)%composition_status=status
+          return
+        end if
+        allocate(level_parameters(size(requests(i)%distribution_parameter_refs)))
+        do j=1,size(level_parameters)
+          if(requests(i)%distribution_parameter_refs(j)<1_int64.or. &
+               requests(i)%distribution_parameter_refs(j)>int(size(distribution_parameters),int64))then
+            status=FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
+            records(slot)%composition_status=status
+            return
+          end if
+          level_parameters(j)=distribution_parameters(int(requests(i)%distribution_parameter_refs(j)))
+        end do
+      else
+        if (requests(i)%distribution_parameter_ref < 1_int64 .or. &
+            requests(i)%distribution_parameter_ref > int(size(distribution_parameters), int64)) then
+          status = FMR_DIVDRA_COMPOSE_INVALID_PARAMETER_REF
+          records(slot)%composition_status = status
+          return
+        end if
+        parameter_index = int(requests(i)%distribution_parameter_ref)
       end if
-      parameter_index = int(requests(i)%distribution_parameter_ref)
 
       if (requests(i)%hydraulic_view_ref < 1_int64 .or. &
           requests(i)%hydraulic_view_ref > int(size(hydraulic_views), int64)) then
@@ -126,13 +175,61 @@ contains
         probe = forcing_registry(forcing_index)%drainage_flux_by_level
       end if
 
-      call fmr_bind_single_level_positive_divdra(distribution_parameters(parameter_index), hydraulic_views(view_index), &
-           requests(i)%scalar_transfer, probe, bind_diag)
-      records(slot)%binding = bind_diag
-      if (bind_diag%status /= FMR_DIVDRA_BIND_OK) then
-        status = FMR_DIVDRA_COMPOSE_BIND_REJECTED
-        records(slot)%composition_status = status
-        return
+      if(allocated(requests(i)%discharge_layer_controls))then
+        if(multilevel)then
+          call fmr_bind_dislayer(level_parameters,hydraulic_views(view_index),requests(i)%scalar_transfers, &
+               requests(i)%discharge_layer_controls,probe,layer_diag,requests(i)%separate_infiltration_controls)
+          deallocate(level_parameters)
+        else
+          call fmr_bind_dislayer(distribution_parameters(parameter_index:parameter_index),hydraulic_views(view_index), &
+               [requests(i)%scalar_transfer],requests(i)%discharge_layer_controls,probe,layer_diag, &
+               requests(i)%separate_infiltration_controls)
+        end if
+        records(slot)%multilevel=multilevel;records(slot)%discharge_layer_binding=layer_diag
+        if(.not.layer_diag%published)then
+          status=FMR_DIVDRA_COMPOSE_BIND_REJECTED;records(slot)%composition_status=status;return
+        end if
+        records(slot)%composition_status=FMR_DIVDRA_COMPOSE_OK;cycle
+      end if
+      if(allocated(requests(i)%separate_infiltration_controls))then
+        if(multilevel)then
+          call fmr_bind_separate_infiltration(level_parameters,hydraulic_views(view_index),requests(i)%scalar_transfers, &
+               requests(i)%separate_infiltration_controls,probe,inf_diag)
+          deallocate(level_parameters)
+        else
+          call fmr_bind_separate_infiltration(distribution_parameters(parameter_index:parameter_index), &
+               hydraulic_views(view_index),[requests(i)%scalar_transfer],requests(i)%separate_infiltration_controls,probe,inf_diag)
+        end if
+        records(slot)%multilevel=multilevel
+        records(slot)%separate_infiltration_binding=inf_diag
+        if(inf_diag%status/=FMR_DIVDRA_INF_SPLIT_OK)then
+          status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          records(slot)%composition_status=status
+          return
+        end if
+        records(slot)%composition_status=FMR_DIVDRA_COMPOSE_OK
+        cycle
+      end if
+      records(slot)%multilevel=multilevel
+      if(multilevel)then
+        call fmr_bind_multilevel_signed_divdra(level_parameters,hydraulic_views(view_index), &
+             requests(i)%scalar_transfers,probe,multi_diag)
+        records(slot)%multilevel_binding=multi_diag
+        if(multi_diag%status/=FMR_DIVDRA_BIND_OK)then
+          status=FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          records(slot)%composition_status=status
+          return
+        end if
+        deallocate(level_parameters)
+      else
+        call fmr_bind_single_level_signed_divdra(distribution_parameters(parameter_index), hydraulic_views(view_index), &
+             requests(i)%scalar_transfer, probe, bind_diag)
+        records(slot)%binding = bind_diag
+        if (bind_diag%status /= FMR_DIVDRA_BIND_OK) then
+          status = FMR_DIVDRA_COMPOSE_BIND_REJECTED
+          records(slot)%composition_status = status
+          return
+        end if
       end if
       records(slot)%composition_status = FMR_DIVDRA_COMPOSE_OK
     end do

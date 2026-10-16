@@ -1,0 +1,118 @@
+{
+  "baseline": "d8414c1ba11bee9f061622fd2495f631a57d2383",
+  "scope": "Actual transitive native FCI93 compile closure, not a repository-wide production freeze",
+  "immutable_oracles": [
+    "48336cb7f14e9246b03c23e549fe7354a93f9e6b",
+    "5898e6616dbb6871a9f52d489038235ba1172cae"
+  ],
+  "dependencies": [
+    {
+      "path": "src/solver/mod_soil_water_solver_contract.f90",
+      "blob": "7b16c3fcf58179f1491104a1dce3279010b4178a"
+    },
+    {
+      "path": "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "blob": "5418b6a1a9f651e818678f347c9cd8399693eb82"
+    },
+    {
+      "path": "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "blob": "8cf848d0ac85602bcde434d76189990f30c11dcb"
+    },
+    {
+      "path": "src/runtime/mod_a23bu_worker_execution_context.f90",
+      "blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56"
+    },
+    {
+      "path": "src/solver/mod_reference_linear_solver.f90",
+      "blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_workspace.f90",
+      "blob": "1ae4eea78df6b27dc982b8318402f78728394aa7"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_state_binding.f90",
+      "blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed"
+    },
+    {
+      "path": "src/solver/mod_b110_default_mvg_directional_provider.f90",
+      "blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3"
+    },
+    {
+      "path": "src/solver/mod_b110_source_sink_provider.f90",
+      "blob": "d6c57add72387e5c0022a44319fff08046194aac"
+    },
+    {
+      "path": "src/solver/mod_b110_root_sink_provider.f90",
+      "blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    {
+      "path": "src/solver/mod_fixed_flux_top_boundary_provider.f90",
+      "blob": "fb226f133bd48d8ab945f111c76897aeff49facf"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_core.f90",
+      "blob": "4079f23ac63a60efb80e499029346fac88f8a780"
+    },
+    {
+      "path": "src/solver/mod_b110_direct_retention_provider.f90",
+      "blob": "8de39d457ee85ef930c021be360648c490b2c732"
+    },
+    {
+      "path": "src/solver/mod_reference_richards_temporal_indicator.f90",
+      "blob": "63b89538e7466437a6af38a69d76a8043b206370"
+    },
+    {
+      "path": "src/solver/mod_surface_evaporation_capacity_contract.f90",
+      "blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982"
+    },
+    {
+      "path": "src/solver/mod_b110_surface_evaporation_capacity_provider.f90",
+      "blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+    },
+    {
+      "path": "src/process/mod_restricted_surface_evaporation.f90",
+      "blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    {
+      "path": "src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "blob": "abe2d699017300e890eeb69a56448bb071660d2d"
+    },
+    {
+      "path": "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90",
+      "blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90",
+      "blob": "28aa42572ee202e7a25f790c175927c832ee849b"
+    },
+    {
+      "path": "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90",
+      "blob": "e381db141cf8c2b148dd944b98a73a7612a00296"
+    },
+    {
+      "path": "src/legacy/b1_10_port/headcalc.f90",
+      "blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "blob": "8862ff35d17d309389c0f151cd296ca3a0729029"
+    },
+    {
+      "path": "src/adapter/mod_reference_richards_accepted_step_directional_service.f90",
+      "blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19"
+    },
+    {
+      "path": "src/adapter/mod_b110_production_soil_water_task2.f90",
+      "blob": "ed678be6e27621ac076a883c947abba8032ac7e6"
+    }
+  ]
+}

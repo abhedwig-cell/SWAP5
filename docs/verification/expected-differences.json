@@ -8,7 +8,7 @@
   "comparison_edges": {
     "B0_to_B1": {
       "oracle": "B0",
-      "candidate": "B1.11",
+      "candidate": "B1.12",
       "authoritative_ledger": "docs/verification/legacy-differences.md",
       "entries": [
         {
@@ -17,10 +17,17 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.1",
-          "affected_outputs": ["macropore execution validity", "VlMpDm1Cp inactive tail"],
+          "affected_outputs": [
+            "macropore execution validity",
+            "VlMpDm1Cp inactive tail"
+          ],
           "expected_direction_or_envelope": "When macp != numnod, strict B0 may fail on the non-conformable whole-array assignment; B1 copies 1:numnod and zeroes the inactive tail. No unrelated macropore physics change is admitted.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
-          "known_unchanged_scope": ["active VlMpDm1Cp(1:numnod) values copied from the same source slice", "macropore physical equations", "solver policy"]
+          "known_unchanged_scope": [
+            "active VlMpDm1Cp(1:numnod) values copied from the same source slice",
+            "macropore physical equations",
+            "solver policy"
+          ]
         },
         {
           "difference_id": "SWAP-005",
@@ -28,10 +35,18 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.2",
-          "affected_outputs": ["crop-calendar control flow", "portability under non-short-circuit evaluation"],
+          "affected_outputs": [
+            "crop-calendar control flow",
+            "portability under non-short-circuit evaluation"
+          ],
           "expected_direction_or_envelope": "At i==ifnd B1 never evaluates cropstart(i+1). For i<ifnd the original sequence test and error condition are unchanged.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
-          "known_unchanged_scope": ["crop sequence criterion", "crop physics", "phenology", "water balance equations"]
+          "known_unchanged_scope": [
+            "crop sequence criterion",
+            "crop physics",
+            "phenology",
+            "water balance equations"
+          ]
         },
         {
           "difference_id": "SWAP-006",
@@ -39,10 +54,17 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.3",
-          "affected_outputs": ["meteo crop-record scan", "compiler-initialization dependence"],
+          "affected_outputs": [
+            "meteo crop-record scan",
+            "compiler-initialization dependence"
+          ],
           "expected_direction_or_envelope": "B1 scans exactly loaded records 1:ifnd and cannot consume an unused sentinel entry; overlap and CROPTYPE tests on loaded records are unchanged.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
-          "known_unchanged_scope": ["meteo overlap criterion", "dynamic-crop decision for valid records", "crop and atmospheric physics"]
+          "known_unchanged_scope": [
+            "meteo overlap criterion",
+            "dynamic-crop decision for valid records",
+            "crop and atmospheric physics"
+          ]
         },
         {
           "difference_id": "SWAP-007",
@@ -50,10 +72,17 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.4",
-          "affected_outputs": ["strict-FPE execution on unrepresentable oxygen-stress Newton quotient", "restart control path"],
+          "affected_outputs": [
+            "strict-FPE execution on unrepresentable oxygen-stress Newton quotient",
+            "restart control path"
+          ],
           "expected_direction_or_envelope": "Representable Newton updates are unchanged. Where fi/fi_a is unrepresentable, B0 can raise SIGFPE while B1 routes through the existing large-lnew restart path. Ordinary grass control output remains identical after timestamp normalization.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
-          "known_unchanged_scope": ["representable Newton formula", "oxygen-stress physical formulation", "ordinary control output"]
+          "known_unchanged_scope": [
+            "representable Newton formula",
+            "oxygen-stress physical formulation",
+            "ordinary control output"
+          ]
         },
         {
           "difference_id": "SWAP-008",
@@ -61,10 +90,19 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "docs/verification/legacy-differences.md",
           "first_admitted_tag_or_commit": "B1.5",
-          "affected_outputs": ["Fortran dummy-argument definedness for bandec/banbks", "compiler portability"],
+          "affected_outputs": [
+            "Fortran dummy-argument definedness for bandec/banbks",
+            "compiler portability"
+          ],
           "expected_direction_or_envelope": "No numerical solution difference is expected. B1 changes consumed-and-overwritten dummy arrays from INTENT(OUT) to INTENT(INOUT), making the incoming values defined without altering band-solver arithmetic.",
           "qualification_evidence": "docs/verification/vq-1c3-b1.5p1-targeted-qualification.md",
-          "known_unchanged_scope": ["banded LU arithmetic", "pivoting", "forward/back substitution", "fallback trigger", "water-balance equations"]
+          "known_unchanged_scope": [
+            "banded LU arithmetic",
+            "pivoting",
+            "forward/back substitution",
+            "fallback trigger",
+            "water-balance equations"
+          ]
         },
         {
           "difference_id": "SWAP-009",
@@ -72,10 +110,20 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
           "first_admitted_tag_or_commit": "B1.6",
-          "affected_outputs": ["PDI vapor hydraulic conductivity", "very-dry PDI pressure-head and boundary-flux trajectories when vapor conductivity is active"],
+          "affected_outputs": [
+            "PDI vapor hydraulic conductivity",
+            "very-dry PDI pressure-head and boundary-flux trajectories when vapor conductivity is active"
+          ],
           "expected_direction_or_envelope": "For negative unsaturated h, B1 passes signed h to the Kelvin vapor-conductivity helper instead of abs(h), so the vapor term follows relative humidity below one. The old/corrected vapor-term ratio grows strongly with dry magnitude; a representative full PDI run shows small but nonzero h/theta/flux changes while retaining the same Newton route and hard water-balance closure.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-009/qualification.md",
-          "known_unchanged_scope": ["PDI water-retention result in the targeted function gate", "conductivity with vapor disabled", "Kelvin helper implementation itself", "non-PDI hydraulic models", "solver policy and nonlinear route in the representative full-production gate", "mass-conservation criterion"]
+          "known_unchanged_scope": [
+            "PDI water-retention result in the targeted function gate",
+            "conductivity with vapor disabled",
+            "Kelvin helper implementation itself",
+            "non-PDI hydraulic models",
+            "solver policy and nonlinear route in the representative full-production gate",
+            "mass-conservation criterion"
+          ]
         },
         {
           "difference_id": "SWAP-010",
@@ -83,10 +131,22 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
           "first_admitted_tag_or_commit": "B1.7",
-          "affected_outputs": ["hydraulic model 7 capacity/storage term", "model-7 pressure-head and theta trajectories", "model-7 boundary/internal flux trajectory", "nonlinear solver route when the inconsistent capacity materially affected convergence"],
+          "affected_outputs": [
+            "hydraulic model 7 capacity/storage term",
+            "model-7 pressure-head and theta trajectories",
+            "model-7 boundary/internal flux trajectory",
+            "nonlinear solver route when the inconsistent capacity materially affected convergence"
+          ],
           "expected_direction_or_envelope": "For hydraulic model 7, corrected C(h) must equal the derivative of the same implemented scaled-bimodal water-retention function within the qualified numerical-derivative tolerance. Sensitive full runs may change h/theta/flux and nonlinear route because the storage derivative was previously inconsistent; only model-7 effects attributable to this capacity correction are admitted.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-010/qualification.md",
-          "known_unchanged_scope": ["WC_MvG_2_s water-retention formula", "model-7 conductivity formulation", "hydraulic models other than model 7", "forcing and boundary-condition definitions", "reference numerical policy", "hard mass-conservation criterion"]
+          "known_unchanged_scope": [
+            "WC_MvG_2_s water-retention formula",
+            "model-7 conductivity formulation",
+            "hydraulic models other than model 7",
+            "forcing and boundary-condition definitions",
+            "reference numerical policy",
+            "hard mass-conservation criterion"
+          ]
         },
         {
           "difference_id": "SWAP-013",
@@ -94,10 +154,20 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-013/qualification.md",
           "first_admitted_tag_or_commit": "B1.8",
-          "affected_outputs": ["PDI input acceptance/rejection", "error diagnostics for invalid HA/H0 combinations"],
+          "affected_outputs": [
+            "PDI input acceptance/rejection",
+            "error diagnostics for invalid HA/H0 combinations"
+          ],
           "expected_direction_or_envelope": "For PDI models 8-11, B1.8 rejects inputs after magnitude conversion unless 0 < HA < H0. Previously accepted singular combinations such as HA=0, HA=H0 or HA>H0 may therefore terminate during input validation instead of reaching PDI constitutive evaluation.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-013/qualification.md",
-          "known_unchanged_scope": ["all accepted PDI constitutive equations", "valid PDI inputs satisfying 0 < HA < H0", "non-PDI models", "solver policy", "time integration", "water-balance equations and tolerances"]
+          "known_unchanged_scope": [
+            "all accepted PDI constitutive equations",
+            "valid PDI inputs satisfying 0 < HA < H0",
+            "non-PDI models",
+            "solver policy",
+            "time integration",
+            "water-balance equations and tolerances"
+          ]
         },
         {
           "difference_id": "SWAP-012",
@@ -105,10 +175,20 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
           "first_admitted_tag_or_commit": "B1.9",
-          "affected_outputs": ["prhead inverse values for hydraulic models 3 and 5-12", "pressure-head reconstruction from water content on affected inverse-call paths"],
+          "affected_outputs": [
+            "prhead inverse values for hydraulic models 3 and 5-12",
+            "pressure-head reconstruction from water content on affected inverse-call paths"
+          ],
           "expected_direction_or_envelope": "For models 3 and 5-12, B1.9 numerically inverts the actual selected retention relation rather than applying the unrelated default-MvG analytical inverse. Differences are expected only on paths that call prhead for affected models and must be consistent with the selected retention curve.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-012/qualification.md",
-          "known_unchanged_scope": ["hydraulic model 4 analytical inverse", "retention functions", "conductivity functions", "Richards residual and Jacobian", "solver policy", "water-balance equations and tolerances"]
+          "known_unchanged_scope": [
+            "hydraulic model 4 analytical inverse",
+            "retention functions",
+            "conductivity functions",
+            "Richards residual and Jacobian",
+            "solver policy",
+            "water-balance equations and tolerances"
+          ]
         },
         {
           "difference_id": "SWAP-002",
@@ -116,10 +196,20 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
           "first_admitted_tag_or_commit": "B1.10",
-          "affected_outputs": ["tillage next-event pointer at simulation start", "historical tillage/consolidation parameter initialization when the start follows one or more tillage events"],
+          "affected_outputs": [
+            "tillage next-event pointer at simulation start",
+            "historical tillage/consolidation parameter initialization when the start follows one or more tillage events"
+          ],
           "expected_direction_or_envelope": "For starts on or after later tillage events, B1.10 sets iTill to the first event on/after the start, or Ntill+1 after the final event, and loads the most recent preceding event parameters. Differences outside this initialization envelope are not admitted by SWAP-002.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-002/qualification.md",
-          "known_unchanged_scope": ["tillage constitutive formulations", "SWAP-003 PCLAY domain behaviour", "SWAP-004 tillage type indexing", "solver policy", "time-step policy", "water-balance equations and tolerances"]
+          "known_unchanged_scope": [
+            "tillage constitutive formulations",
+            "SWAP-003 PCLAY domain behaviour",
+            "SWAP-004 tillage type indexing",
+            "solver policy",
+            "time-step policy",
+            "water-balance equations and tolerances"
+          ]
         },
         {
           "difference_id": "SWAP-011",
@@ -127,10 +217,43 @@
           "status": "ADMITTED_B1",
           "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-011/finding.md",
           "first_admitted_tag_or_commit": "B1.11",
-          "affected_outputs": ["implicit Richards hydraulic-conductivity Jacobian derivative for hydraulic models 3 and 5-12", "nonlinear convergence trajectory where the legacy inconsistent derivative materially affected Newton behaviour"],
+          "affected_outputs": [
+            "implicit Richards hydraulic-conductivity Jacobian derivative for hydraulic models 3 and 5-12",
+            "nonlinear convergence trajectory where the legacy inconsistent derivative materially affected Newton behaviour"
+          ],
           "expected_direction_or_envelope": "When SWKIMPL=1 and hydraulic models 3 or 5-12 are active, B1.11 differentiates the actual conductivity relation used by the residual, using the qualified model-specific/lazy-state implementation and its bounded fallback route. Differences are admitted only when attributable to replacement of the legacy default-MvG derivative mismatch by the derivative of the active K(h) relation.",
           "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-011/qualification.md",
-          "known_unchanged_scope": ["hydraulic model 4 standard Mualem-van Genuchten derivative", "physical conductivity and retention formulations", "mass-conservation requirements", "forcing and boundary-condition definitions", "solver policy", "time-step policy", "previously admitted SWAP-009/SWAP-010/SWAP-012 semantics"]
+          "known_unchanged_scope": [
+            "hydraulic model 4 standard Mualem-van Genuchten derivative",
+            "physical conductivity and retention formulations",
+            "mass-conservation requirements",
+            "forcing and boundary-condition definitions",
+            "solver policy",
+            "time-step policy",
+            "previously admitted SWAP-009/SWAP-010/SWAP-012 semantics"
+          ]
+        },
+        {
+          "difference_id": "SWAP-019",
+          "comparison_edge": "B0_to_B1",
+          "status": "ADMITTED_B1",
+          "source_decision_or_finding": "reference/swap-4.3.1/patches/SWAP-019/finding.md",
+          "first_admitted_tag_or_commit": "B1.12",
+          "affected_outputs": [
+            "actual classical N-active retained dead-leaf DM",
+            "harvest leaf OM receipt and downstream organic chemistry"
+          ],
+          "expected_direction_or_envelope": "Only SW_WOFOST=1, SWCROPSNM=1 actual stock: retain (1-f) daily leaf death; soil-DM reduction at harvest equals f*harvest_leaf_fraction*cumulative_leaf_death. Daily N formulas unchanged.",
+          "qualification_evidence": "reference/swap-4.3.1/patches/SWAP-019/qualification.md",
+          "known_unchanged_scope": [
+            "potential crop",
+            "N-OFF",
+            "f=0",
+            "soybean and grass shared update",
+            "all original N scientific bodies",
+            "SWAP5 source and historical reference pins",
+            "hydraulic/solver/forcing policies"
+          ]
         }
       ]
     },

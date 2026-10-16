@@ -1,0 +1,37 @@
+name: F-MIG431-INT12-C qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/f-mig431-int12-c.yml
+      - src/runtime/mod_fmr_interception_source_window_binding.f90
+      - src/runtime/mod_fmr_production_application_bootstrap.f90
+      - tests/fpm/*int12_c*
+      - tests/fpm/*int12c*
+      - docs/migration/F-MIG431-INT12-C*
+      - integration/audits/F-MIG431-INT12-C*
+      - integration/audits/evidence/F-MIG431-INT12-C*
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Qualify restricted source-window composition
+        run: bash tests/fpm/run_f_mig431_int12_c.sh
+      - name: Qualify real application or verify exact unchanged application preservation
+        run: |
+          if [[ -f tests/fpm/hyd_default_projection.json ]]; then
+            # HYD does not change the default INT12-C application contract.
+            # Exact default source projection, actual incumbent evidence and
+            # fresh HYD physical/default owners remain mandatory.
+            python3 -B tests/fpm/verify_int12c_successor.py
+          else
+            python3 tests/fpm/run_int12c_real_endpoint.py --profile application --preserve-owners --evidence-dir /tmp/int12c-application
+          fi
+      - name: Verify source-bound owner successor and rejection controls
+        run: |
+          python3 -B tests/fpm/verify_int12c_successor.py
+          python3 -B tests/fpm/test_int12c_successor_controls.py
