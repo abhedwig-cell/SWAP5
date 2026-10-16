@@ -114,6 +114,18 @@ def validate_science(data):
         check(len(old)==2, 'original surface native absent')
         check(b'SURFACE_JOINT_ATOMIC_BALANCE_LITERAL_RESTART=PASS' in data['final/'+old[0]['stdout']], 'original surface assertions absent')
         check(b'SURFACE_JOINT_FRESH_PROCESS=PASS' in data['final/'+old[1]['stdout']], 'original surface fresh process absent')
+    leaf_events=json.loads(data['leaf/events.json'])
+    leaf_native=[e for e in leaf_events if e['category']=='native']
+    check(len(leaf_native)==2, 'pond leaf execution absent')
+    for e in leaf_native:
+        check(data['leaf/'+e['stdout']].decode()==leaf['stdout'], 'pond leaf raw assertions missing')
+    # The optional extension must leave the complete old native file identical.
+    predecessor=json.loads((ROOT/STATUS).read_text())['canonical_composition']['evidence']
+    oldraw=base64.b64decode((ROOT/predecessor['path']).read_bytes())
+    check(sha(oldraw)=='fc1e8bc4d5c9d9ea70e57ef7df1d2175c04e4615ab128cb3a35a76a3019f08fb','old surface native authority drift')
+    with tarfile.open(fileobj=io.BytesIO(oldraw),mode='r:xz') as old:
+        for opt in ('O0','O2'):
+            check(data['final/'+opt+'/old-restart.bin']==old.extractfile('stable/'+opt+'/restart.bin').read(),'old native file changed')
     for prefix,items in [('final',events),('leaf',json.loads(data['leaf/events.json']))]:
         for e in items:
             check(e.get('returncode',e.get('exit'))==0, 'failed pond execution')

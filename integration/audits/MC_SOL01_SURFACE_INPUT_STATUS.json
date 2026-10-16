@@ -293,7 +293,7 @@
     "new_migration_started": false
   },
   "persistent_pond_successor_20261016": {
-    "stage": "CONTRACT_IMPLEMENTATION_IN_PROGRESS_NOT_ADMITTED",
+    "stage": "SCIENCE_COMPLETE_ADMISSION_PENDING",
     "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
     "branch": "work/sol-pond-continuation-20261016",
     "scope": "Existing surface owner successor: persistent pond mass, prescribed dry deposition, accepted per-substep pond water receipts and atomic soil-plus-pond continuation; no aquifer, evaporation/runoff, macropores or default activation.",
@@ -310,15 +310,95 @@
       29,
       30
     ],
-    "implemented": false,
-    "tested": false,
+    "implemented": true,
+    "tested": true,
     "qualified": false,
     "canonically_admitted": false,
-    "next_action": "Implement bounded pond process/state; qualify literal historical mixing and source/deposition bookkeeping before accepted-water composition.",
+    "next_action": "Recompose runtime over admitted1256 single matrix surface-mass owner; discard no source/evidence. Fresh affected composition required; all current broad claims remain false.",
     "test_selection": {
       "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
       "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
       "broad": "NOT_SELECTED before stable-candidate impact review; no implied full moving or highest low-air"
+    },
+    "execution_commit": "10e061826f3e13e34ec52ceb73b66a94e39c4eb1",
+    "execution_tree": "d20c87edc92ffe81dad758665bf8b3a52a4b8f1e",
+    "source_tree": "beea61514fcd76a547b3824c40a21f934b86e67b",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+      "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+      "decoded_bytes": 109736,
+      "members": 3066
+    },
+    "postimages": {
+      "src/adapter/mod_matrix_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "4f55ee9d5b97cf3bb1d0a85ba5128a99c6f2811d"
+      },
+      "src/process/mod_b111_persistent_pond.f90": {
+        "status": "A",
+        "blob": "78703f26f70f4dce863698795317d33930137087"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "A",
+        "blob": "fae5a4c26bd19e5fc8ba248043fd4c6f622ce530"
+      },
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+        "status": "A",
+        "blob": "08d98af3a352d6df3d28426377c3e286f45531a4"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+      },
+      "tests/mc-irr01/verify_material_root_successor.py": {
+        "status": "M",
+        "blob": "db1686b83f1b9962219bbba7e5970c85420ec19b"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "A",
+        "blob": "5627e8a4b67df2e9b7cfbba1780f40c2af19f2fb"
+      },
+      "tests/nut-sol/run_persistent_pond.py": {
+        "status": "A",
+        "blob": "821f6debe50494177798a7389452666067006c90"
+      },
+      "tests/nut-sol/run_pond_joint.py": {
+        "status": "A",
+        "blob": "a4b32e2e8871c4ee9f4c87e6fa9aa64773a858db"
+      },
+      "tests/nut-sol/test_persistent_pond.f90": {
+        "status": "A",
+        "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+      },
+      "tests/nut-sol/test_pond_joint.f90": {
+        "status": "A",
+        "blob": "05d54e8fda35b90f92aab3ebf3427ccc5f2c5b14"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "A",
+        "blob": "ebb351dc9afab24e469c676b09e98b05af61c0bb"
+      }
+    },
+    "cost_seconds": {
+      "physical_compile": 174.225236249913,
+      "physical_link": 0.3069188310037134,
+      "physical_native": 50.9656070269848,
+      "preservation_compile": 10.23940672900062,
+      "preservation_link": 0.3265203350165393,
+      "preservation_native": 19.023562807007693,
+      "process_compile": 0.4906309939833591,
+      "process_link": 0.0939477520150831,
+      "process_native": 0.004268365999450907
+    },
+    "pre1256_reconciliation": {
+      "new_canonical": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+      "admitted_pr": 1256,
+      "decision": "Preserve all preliminary source/science; do not merge duplicate surface owner/codec. Recompose persistent pond/source consumption over admitted matrix pond_mass and V2 restart. This capsule proves only the original87bc baseline.",
+      "qualified_for_current_canonical": false
     }
   }
 }
