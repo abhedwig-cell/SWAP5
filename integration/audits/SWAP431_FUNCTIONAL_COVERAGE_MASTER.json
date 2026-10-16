@@ -14311,6 +14311,20 @@
       "implementation_absence_proven": false
     },
     {
+      "capability_id": "SW431-IRR-SALTEXCESS",
+      "work_unit": "MC-IRR01",
+      "dependencies": [],
+      "why_open": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": false
+    },
+    {
       "capability_id": "SW431-IRR-SSDI",
       "work_unit": "MC-IRR01",
       "dependencies": [],
@@ -14684,6 +14698,20 @@
         "functional_relevance": 1,
         "implementation_extent": 3,
         "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 2,
+        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -15360,20 +15388,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-IRR-SALTEXCESS",
-      "work_unit": "MC-IRR01",
-      "dependencies": [],
-      "why_open": "PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": false
-    },
-    {
       "capability_id": "SW431-ROOT-ANAE-GROW",
       "work_unit": "MC-CROP01",
       "dependencies": [
@@ -15490,20 +15504,6 @@
         "functional_relevance": 1,
         "implementation_extent": 3,
         "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ROOTGROW-SUPPLY",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 2,
-        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true

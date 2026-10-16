@@ -7,7 +7,7 @@
   "implemented": true,
   "persisted": true,
   "tested": {
-    "coverage_integrity": "NOT RUN: exact-source historical inherited evidence baseline stale; no global PASS claimed",
+    "coverage_integrity": "FAIL on d52dc9e1: stale inheritance baseline; unchanged official checker. Extended assertion observations are diagnostic only, not validation.",
     "census_lexical_tests": "4 PASS",
     "literal_dramet3_probe": "O0/O2 identical; replacement counterexample reproduced",
     "documentation_source": "PASS",
@@ -25,8 +25,6 @@
     "coverage_structural_recount": "PASS current branch 243 unique IDs; 95 ADMITTED, 108 ACTIVE, 4 qualification only; open queue 108, no stale closed dependencies",
     "semantic_gap_type_recount": "PASS structural classifier on 113 ACTIVE_MIGRATION entries; not an independent source-to-runtime semantic qualification",
     "workunit_sequence_dependency_audit": "PASS: removed closed SW431-ROOT-DENSITY and SW431-GW-PROJECTION from internal sequence blockers; retained as closed authorities",
-    "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed",
-    "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending.",
     "qualified_module_locator_split": "PASS: 65 open rows name existing production-module authority, 48 name none; this is not proof of completeness.",
     "shared_owner_grouping": "65 active entries with existing module locators grouped; module overlap is not proof of implementation/admission",
     "shared_owner_exact_source_inspection": "Three current-canonical modules inspected: DIVDRA single-level positive, Hupsel fixed-surface/TCS1, MICRO matric flux table; none alone admits claimed wider 29 affected open IDs.",
@@ -37,7 +35,10 @@
     "latest_irr_owner_reconciliation": "PASS: 16 owner IDs mapped to 243-entry ledger; 5 admitted, 11 shared-application-blocked, no ungrounded promotions; full Python checker NOT RUN.",
     "bounded_swrd3_reconciliation": "PASS: exact canonical source/evidence, two bounded rows and one supporting queue field only; all243 dispositions and summary unchanged. Not a full master qualification.",
     "bounded_swrd2_reconciliation": "PASS: exact merged source/full evidence, three bounded rows and two queue facets; all243 dispositions and summary unchanged. Not global census qualification.",
-    "pr_closeout_scoped_recount": "PASS243 unique;95 ADMITTED/108 ACTIVE/14 SUPERSEDED/2 REJECTED/20 NOT_APPLICABLE/4 QUALIFICATION_ONLY;108 queue IDs;112 unresolved; no whole-cap promotions"
+    "pr_closeout_scoped_recount": "PASS243 unique;95 ADMITTED/108 ACTIVE/14 SUPERSEDED/2 REJECTED/20 NOT_APPLICABLE/4 QUALIFICATION_ONLY;108 queue IDs;112 unresolved; no whole-cap promotions",
+    "latest_integrity_reconciliation": "Scoped structural PASS: queue sorted with identical row payloads; 92 explicit absence flags; all 243 capability objects/dispositions retained. Global integrity remains FAIL.",
+    "current_local_git_connectivity": "PASS: exact canonical and master branch fetched locally on 2026-10-16; prior DNS failure is historical.",
+    "latest_integrity_reconciliation_docs": "PASS documentation source check and strict MkDocs (15.96s); reused existing pinned docs dependencies after base runtime reported missing mkdocs. Full integrity FAIL remains recorded separately."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -54,7 +55,7 @@
     },
     "open_capabilities": 108,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 108,
+    "confirmed_missing_production_entries": 92,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 112,
@@ -67,10 +68,10 @@
     },
     "active_with_existing_production_source_authority": 61,
     "active_without_listed_production_source_authority": 47,
-    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted routes, not necessarily absent algorithms"
+    "confirmed_missing_production_entries_claim_scope": "92 ACTIVE_MIGRATION rows explicitly carry implementation_absence_proven; a structural flag count, not 92 independently absent algorithms. All 108 complete-route envelopes remain open."
   },
-  "next_action": "Continue existing dependency-ready crop/root, irrigation shared application and persistent solute surface packages within their owners. Master full inherited-source integrity remains pending; no long low-air research.",
-  "recovery_point": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+  "next_action": "Reconcile the existing master checker source/ref contract and historical source inheritance using the extended diagnostic; do not rebind hashes or alter dispositions to get PASS. No new migration route selected by this closeout.",
+  "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
     "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
@@ -107,7 +108,8 @@
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "No complete current-canonical source-bound integrity PASS; 108 active and 4 qualification-only remain, despite bounded NUT/SOL/crop and irrigation owner admissions."
+    "Master integrity FAIL: stale baseline and backend dependencies, mixed-ref/text evidence locators, and obsolete disposition/reachability assertions. See extended diagnostic; not resolved by queue/count repairs.",
+    "108 active routes and 4 qualification-only capabilities remain; denominator incomplete."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
@@ -745,7 +747,22 @@
     "actual_baseline": "fb21ba5626e2b557b85616abbc19857105a6ecd3",
     "canonical": "02ae9f0090857e07c984e3f4be4ed8a5d8fa553b",
     "next_safe_step": "Review changed serialized-reference backend against the historical reachability claims and owning admitted runtime receipts. Reconcile the historical baseline chain only with exact dependency/source authority; then run existing check_swap431_coverage.py to expose any later independent stale evidence. Do not relax the checker, rewrite historical receipts, or treat a new baseline/hash as scientific qualification.",
-    "full_master_integrity": "BLOCKED_UNRECONCILED_HISTORICAL_DEPENDENCY"
+    "full_master_integrity": "BLOCKED_UNRECONCILED_HISTORICAL_DEPENDENCY",
+    "extended_diagnostic": {
+      "evidence": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
+      "candidate": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
+      "canonical_head": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "diagnostic_observations": 130,
+      "independent_failures_not_claimed": true,
+      "source_hash_rebinding_performed": false,
+      "historical_records_changed": false,
+      "checker_changed": false,
+      "next_safe_step": "Keep the old source checkout and immutable historical records intact. Choose and explicitly bind historical snapshot validation versus current canonical receipt validation; their identities cannot be silently mixed.",
+      "missing_local_paths_checked_at_canonical": 87,
+      "all_checked_paths_exist_at_canonical": true,
+      "queue_order_repaired": true,
+      "status_absence_flag_count_repaired": 92
+    }
   },
   "impact_preflight_admission_20261016": {
     "pr": 1250,
@@ -755,5 +772,13 @@
     "qualification": "17 focused planner/entrypoint tests; 24 original plus 46 current owner controls; exact unchanged scientific/full runner body; docs source and strict PASS",
     "coverage_disposition_changes": 0,
     "other_prs": "Existing active/research donor branches retained. No new migration work started."
-  }
+  },
+  "historical_access_observations": {
+    "superseded_fields": {
+      "local_git_connectivity": "FAILED: git ls-remote github.com returns Could not resolve host; no exact-byte local Python full checker executed",
+      "full_python_coverage_integrity": "NOT EXECUTED: local github.com DNS failure; source-bound upstream checks remain pending."
+    }
+  },
+  "last_integrity_diagnostic_head": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
+  "last_integrity_diagnostic_canonical": "02ee16779f2411faec7492f7048b7d36f6f850f8"
 }
