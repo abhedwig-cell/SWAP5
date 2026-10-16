@@ -85,13 +85,12 @@
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
         "SW431-DRAIN-DISLAYER",
-        "SW431-DRAIN-INF-SPLIT",
         "SW431-DRAIN-ALLOCATION",
         "SW431-DRAIN-INF-LIMIT",
         "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
-      "next_action": "Preserve admitted ordinary signed single-level PR1099. Resume existing multilevel/INF-SPLIT/DRAMET3 owners only under their separate source contracts; no duplicate signed foundation.",
+      "next_action": "Preserve admitted signed, multilevel and INF-SPLIT ordinary drainage. Resume remaining existing DISLAYER/DRAMET3/allocation owners under their separate source contracts; no duplicate drainage route.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -100,8 +99,10 @@
       ],
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-EXT",
-        "SW431-DRAIN-DIV-SIGNED"
+        "SW431-DRAIN-INF-SPLIT"
       ],
       "signed_admission_20261016": {
         "capability_id": "SW431-DRAIN-DIV-SIGNED",
@@ -111,7 +112,8 @@
         "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc"
       },
       "closed_capabilities": [
-        "SW431-DRAIN-DIV-MULTI"
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-INF-SPLIT"
       ]
     },
     {
@@ -1377,5 +1379,42 @@
     },
     "scope": "Ordinary frost-OFF interacting signed multilevel DIVDRA admitted by PR1109: source-faithful descending active spacing/cumulative abs(q)*spacing, nested transmissivity and capped layers. Explicit per-level scalar/view ownership and existing serialized Reference runtime; independent signed/net-zero mass, rollback/replay, committed restart and column isolation. No new response, store, solver policy or restart codec.",
     "validation": "Original B1.11 oracle/literal process, real O0/O2 mass/rollback/restart;6 corruption controls; original annual/reference qualification and existing owner entries; source/strict docs. No full numerical FCI/RossFast/low-air claim."
+  },
+  "latest_mc_drain01_inf_split_admission_20261016": {
+    "capability_id": "SW431-DRAIN-INF-SPLIT",
+    "pr": 1266,
+    "canonical_merge": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+    "qualified_head": "c988d69cf8d172b5441981d9d083213af44b1b60",
+    "source_tree": "cbf6dad5539c6ba38dcdd3481e696ab7aaac2921",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 09bd5913394e5e263d414b50d29f720e3ab1e21f",
+    "phase": "inf_split_phase_20261016",
+    "full_capability": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "source_cases_per_opt": 15192,
+    "same_compartment_cases": 720,
+    "runtime_cases_per_opt": 48,
+    "reject_replay_restart_controls_per_opt": 8,
+    "b18_original_assertions": "3240 accepted;1296 held;O0/O2 original assertions PASS",
+    "hard_mass_cm": 1e-12,
+    "production_merge_source_identity": "PASS_FULL_TREE_IDENTICAL",
+    "parallel_preserved": [
+      "full TCS6 PR1262",
+      "classic annual PR1264",
+      "B1.12 reference PR1265"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 1,
+      "ACTIVE_MIGRATION": -1
+    },
+    "validation_receipts": {
+      "historical_source_locator_integrity": "PASS",
+      "inheritance_controls": "20 PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS16.22s",
+      "global_closure": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
+      "numerical_execution_for_metadata": false,
+      "production_merge_full_tree": "f53b65c16dabeb6c59fda5bdc598ee64b59ddf68 EXACT qualified candidate",
+      "other242_capability_rows": "UNCHANGED"
+    }
   }
 }

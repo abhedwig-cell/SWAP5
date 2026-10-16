@@ -1,4 +1,10 @@
-# Current TCS6 full capability admission, 16 October 2026
+# Current ordinary separate infiltration admission, 16 October 2026
+
+`SW431-DRAIN-INF-SPLIT` is **ADMITTED** through [PR1266](https://github.com/abhedwig-cell/SWAP5/pull/1266), canonical `09bd5913394e5e263d414b50d29f720e3ab1e21f`, source `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921`. The actual full merge tree equals the qualified candidate. Shared B19 integral, original effective spacing, source-valid same-compartment geometry and actual single/multilevel mass, rejection/replay, restart and isolation pass O0/O2. Original B18, signed/multilevel and parallel TCS6 admission evidence is preserved.
+
+Current counts: **99 ADMITTED,105 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;108 unresolved,243 total**. Exactly one existing row closes; all other242 capability rows are unchanged. The global denominator remains incomplete. Recovery and evidence: `SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase `inf_split_phase_20261016`.
+
+# Previous TCS6 full capability admission, 16 October 2026
 
 `SW431-IRR-TCS6` is **ADMITTED** through [PR1262](https://github.com/abhedwig-cell/SWAP5/pull/1262), canonical `1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a`; receipt `40c6fe4252cb80bc2adbeee2731f76199f6a7c48`.
 Actual weather-day/week progression, accepted current roots/material thresholds, rejected trials/replay, water balance and exact continuous/opaque/native fresh-process continuation pass O0/O2. The full merge tree equals the qualified candidate. Annual, single/multilevel drainage and B1.12 reference admissions were reconciled and preserved.
