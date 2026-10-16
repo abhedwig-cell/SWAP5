@@ -49,6 +49,7 @@ module mod_drainage_dramet3_response
   end type dramet3_level_result_t
 
   public :: initialize_dramet3_channel_control
+  public :: valid_dramet3_parameters
   public :: evaluate_dramet3_level
 
 contains
@@ -144,7 +145,7 @@ contains
     integer :: status
 
     result = dramet3_level_result_t()
-    if (.not. valid_parameters(parameters)) return
+    if (.not. valid_dramet3_parameters(parameters)) return
     if (.not. ieee_is_finite(groundwater_level_cm) .or. .not. ieee_is_finite(substep_t1)) then
       result%status = DRAMET3_INVALID_QUERY
       return
@@ -160,7 +161,7 @@ contains
     difference = groundwater_level_cm - channel_head
 
     result%resolved_channel_head_cm = channel_head
-    if (difference > 0.0_real64) then
+    if (difference >= 0.0_real64) then
       if (parameters%allocation_mode == DRAMET3_INFILTRATION_ONLY) then
         result%drainage_suppressed = .true.
         result%signed_exchange_cm_per_day = 0.0_real64
@@ -168,6 +169,9 @@ contains
         result%signed_exchange_cm_per_day = difference / parameters%drainage_resistance_day
       end if
     else
+      ! The source reader permits INFRES=0; its active negative-head division
+      ! is undefined. Hold that branch before arithmetic, including SWALLO3.
+      if(parameters%infiltration_resistance_day==0.0_real64) return
       if (parameters%drain_type == DRAMET3_OPEN_CHANNEL .and. parameters%limit_channel_infiltration) then
         if (difference < parameters%drain_bottom_cm - channel_head) result%infiltration_head_limited = .true.
         difference = max(difference, parameters%drain_bottom_cm - channel_head)
@@ -181,23 +185,24 @@ contains
       end if
     end if
 
+    if (.not. ieee_is_finite(result%signed_exchange_cm_per_day)) return
     result%head_difference_cm = difference
     result%available = .true.
     result%status = DRAMET3_OK
   end subroutine evaluate_dramet3_level
 
-  logical function valid_parameters(parameters) result(ok)
+  logical function valid_dramet3_parameters(parameters) result(ok)
     type(dramet3_level_parameters_t), intent(in) :: parameters
     ok = .false.
     if (.not. ieee_is_finite(parameters%drain_bottom_cm)) return
     if (.not. ieee_is_finite(parameters%drainage_resistance_day) .or. &
         parameters%drainage_resistance_day <= 0.0_real64) return
     if (.not. ieee_is_finite(parameters%infiltration_resistance_day) .or. &
-        parameters%infiltration_resistance_day <= 0.0_real64) return
+        parameters%infiltration_resistance_day < 0.0_real64) return
     if (parameters%allocation_mode < DRAMET3_ALLOW_BOTH .or. parameters%allocation_mode > DRAMET3_DRAINAGE_ONLY) return
     if (parameters%drain_type /= DRAMET3_TUBE .and. parameters%drain_type /= DRAMET3_OPEN_CHANNEL) return
     ok = .true.
-  end function valid_parameters
+  end function valid_dramet3_parameters
 
   pure real(real64) function afgen_pairs(x_table, y_table, x) result(value)
     real(real64), intent(in) :: x_table(:), y_table(:), x
