@@ -118,3 +118,41 @@ restart. Actual coupled Richards and original default/1253 programs are selected
 only after the policy is executable. No full FCI, alternative solver, highest
 low-air or unrelated numerical qualification is selected for this read-only source
 assessment. Full master coverage and capability dispositions do not change.
+
+## Independent bounded candidate review
+
+An explicit reproductive/death candidate is implemented at `7e28752086ee32e26b40f67ca08304a974c04e55`,
+outside the admitted canonical production tree at this review checkpoint.
+Its small process and actual crop/Soil-N day binding have independent O0/O2
+evidence in the existing NUT owner record under
+`reproductive_candidate_independent_review_20261016`. This is process and direct
+day verification; coupled production integration and restart admission remain open.
+
+The current process SHA256 is
+`913a515e869e7093155750e91dbdbabb4919a156bf46c5821c723017a7f4ae95`.
+The original corpus accepts2083 and refuses23 cases per optimization. A separate
+logarithmic corpus spans organ dry matter from1e-4 to1e8kg/ha and TCNT from1e-6
+to1e3days, including prior cumulative losses:70712 cases accept and29346 refuse
+per optimization. Accepted live organs and uptake/fixation ledgers match the
+immutable literal oracle exactly; the aggregated historical death ledger is
+compared with the existing2048epsilon balance authority. Refused applies retain
+the complete before-state. At extreme invalid donor rates, allocation closure
+can reject before the donor-overdraw check; either refusal must prevent publication.
+These algebraic input probes do not establish a reachable complete crop trajectory.
+
+The actual day driver passes72 cases per optimization with finite/exhausted soil
+supply, distinct uptake/translocation thresholds, simultaneous residual death,
+whole N, duplicate-clock refusal and rollback after tentative soil advancement.
+The47-provider cold direct build preserves the original default day test. Only
+unchanged hashed objects were reused for the corrected daily-fixture replay.
+Failed fixtures and probe attempts are retained: the cutoff fixture originally
+specified death above before-step dry matter, and the post-anthesis fixture
+originally omitted its anthesis continuation flag. Both corrections affect tests.
+The earlier process snapshot was superseded by explicit request initialization;
+both small corpora were rerun cold against the current process identity.
+
+Actual coupled Richards/soil/crop/pending integration, native and opaque
+fresh-process continuation, policy-identity/no-overwrite negatives, original
+default/1253 preservation and owning source/evidence controls are still admission
+conditions. No canonical reproductive production, historical capability/count
+promotion or full-master qualification follows from this independent review.
