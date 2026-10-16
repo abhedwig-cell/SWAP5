@@ -91,6 +91,33 @@ program test_dynamic_pond_joint
   else
     call initialize_owners(water,solute,p)
     initial_water=water;initial_solute=solute
+    block
+      type(fmr_b110_physical_forcing_t)::invalid
+      type(pond_step_t)::bad_supply
+      integer::j
+      do j=1,6
+        invalid=cfg%tiles(1)%base_forcing;bad_supply=supply
+        select case(j)
+        case(1)
+          invalid%pond_input%rain_rate_cm_day=supply%rain_rate+1d-5
+        case(2)
+          invalid%pond_input%rain_rate_cm_day=ieee_value(0d0,ieee_quiet_nan)
+        case(3)
+          invalid%top_flux=-0.5d0
+        case(4)
+          invalid%pond_input%rain_rate_cm_day=-1d0;bad_supply%rain_rate=-1d0
+        case(5)
+          invalid%pond_input%rain_rate_cm_day=1d6;bad_supply%rain_rate=1d6
+        case(6)
+          allocate(invalid%black_evaporation)
+        end select
+        call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+          invalid,cfg%numerical,solute,bad_supply,T0,T1,result)
+        call require(result%status/=JOINT_OK,'invalid dynamic forcing rejected')
+        call compare_water(initial_water,water);call compare_chemical(initial_solute,solute)
+      end do
+      print '(A)','DYNAMIC_POND_SIX_FORCING_REJECTIONS=PASS'
+    end block
     pbad=p;pbad%decpot=1d6
     call initialize_owners(bad_water,bad_solute,pbad)
     small_supply=supply;small_supply%t1=1d-9
