@@ -91,28 +91,32 @@
     "baseline": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
     "branch": "work/root-density-supply-20261016",
     "contract": "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md",
-    "checkpoint": "5653187d87ed5523331d58194b3d043205cc2ac5",
-    "phase": "SCIENCE_COMPLETE_ADMISSION_VALIDATION_PENDING",
+    "checkpoint": "56ca773704ffa07f3019c741efb423244910e3b4",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
     "implemented": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
-    "scope": "Explicit SWRD2 adaptive density; accepted uncompensated layer receipts; SWDMI2RD2 supply. Real existing task2 emergence initializes density atomically; harvest/rotation and native weather disk codec remain excluded. Current/lagged Richards composition running.",
+    "scope": "Explicit SWRD2 adaptive density; accepted uncompensated nodal receipts; SWDMI2RD2 supply. Real task2 emergence, current/lagged Richards, rollback and opaque joint restart qualified. Harvest/rotation composition, advanced selectors and native weather disk codec excluded.",
     "direct": {
       "command": "python -B tests/root-growth/run_root_growth.py --swrd2 --density --output <unique-owned-directory>",
       "status": "PASS",
       "providers": 39,
       "native_programs": 40,
-      "wall_seconds": 23.98935045699909,
+      "wall_seconds": 18.861368484002014,
       "cost_seconds": {
-        "compile": 16.41103539098549,
-        "link": 7.123310822018539,
-        "native": 0.1373938509641448
+        "compile": 12.871415299974615,
+        "link": 5.669717026001308,
+        "native": 0.09661447400139878
       },
-      "claim": "Current39-provider real crop/lineage owner and synthetic-water carrier.40 native O0/O2 programmes including30 incumbent plus10 new. No actual Richards or full daily application claim yet."
+      "claim": "Real39-provider crop/lineage owner with synthetic-water carrier;40 O0/O2 executions, including30 unchanged incumbent and10 new. Actual Richards separately qualified by physical/nodal matrices.",
+      "checkpoint": "13c3e66427b433d83cb0f7ab99c56f132a17720a"
     },
     "retained_failures": [
       "First O2 -Werror rejected uninitialized-variable warning; initialized control variable before use.",
-      "Second new supply-driver standalone case omitted predecessor biomass; repaired test input. Original assertions retained."
+      "Second new supply-driver standalone case omitted predecessor biomass; repaired test input. Original assertions retained.",
+      "Physical wrapper initially forwarded --density to original parser; corrected wrapper before execution.",
+      "Rejected old object reuse: complete environment equality unproven; fresh isolated nodal build executed instead.",
+      "Two control harness API/injection mismatches corrected to actual verifier contracts; final full controls PASS."
     ],
     "test_selection": {
       "physical_owner": "MC-ROOT01 current/lagged file-weather daily real Richards uptake and F-WOF38 owner",
@@ -120,7 +124,7 @@
       "next_command": "Existing shared physical build extended with two explicit daily-density drivers; original SWRD2 assertions retained.",
       "expected_seconds": 480,
       "reason": "New accepted-state/forcing coupling cannot be qualified by the synthetic-water direct contracts. Existing28-programme SWRD2 physical batch measured440.8s; reuse one controlled build for current O0/O2 drivers.",
-      "full_moving": "NOT_SELECTED_AT_DEVELOPMENT_CHECKPOINT",
+      "full_moving": "NOT_SELECTED_AFFECTED_CONTRACTS",
       "highest_low_air": "NOT_SELECTED_POLICY",
       "rossfast": "NOT_SELECTED_IMPACT",
       "incumbent_owners": {
@@ -135,10 +139,8 @@
         "failed_reuse": "No scientific execution or PASS from rejected attempts."
       }
     },
-    "next_action": "Validate current owner proof and all negative controls, reconcile live canonical/PR dependencies, then merge only the bounded qualified route. No new migration family.",
-    "blockers": [
-      "Current proof source/capsule falsification controls and documentation checks pending."
-    ],
+    "next_action": "Reconcile unchanged canonical and merge qualified bounded PR1251; then record actual canonical admission and existing master recovery without full-family promotion.",
+    "blockers": [],
     "physical_development": {
       "status": "PASS",
       "checkpoint": "c490edd61ce61d7b317435591f59039649d4a905",
@@ -150,7 +152,7 @@
     "incumbent_owners": {
       "status": "PASS",
       "native_programs": 16,
-      "scope": "Actual INT12-C endpoint and seven unchanged WU01/WU03/Black/Boesten/Rutter drivers O0/O2. Current scientific source; no full source-guard admission claim."
+      "scope": "Actual INT12-C endpoint and seven unchanged WU01/WU03/Black/Boesten/Rutter drivers O0/O2; all16 outputs equal actual admitted originals, with exact unchanged-statement warning line relocation only."
     },
     "pr": 1251,
     "science_archive": {
@@ -197,7 +199,7 @@
       },
       "tests/root-growth/check_daily_density_controls.py": {
         "status": "A",
-        "blob": "3ed928f57ae6881e3bdc173897ebd475d1f91215"
+        "blob": "dd76b9e9e6265ac452adbe48c8e203c3f70d3303"
       },
       "tests/root-growth/density_cycle_driver.py": {
         "status": "A",
@@ -226,6 +228,23 @@
       "native_programs": 8,
       "wall_seconds": 275.4717745309972,
       "claim": "Every accepted nodal potential and reduction integral compared with independent literal source sink, followed by daily density/supply recurrence and opaque joint restart. Fresh isolated233-provider build at both optimizations, no old object reuse."
+    },
+    "tested": true,
+    "preserved": true,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "f6a4314d734ba5f6c920b2804ce3190803190ca1875a106290ec4b5d6c001b24",
+      "decoded_bytes": 344404,
+      "members": 23
+    },
+    "admission_controls": {
+      "status": "PASS",
+      "checkpoint": "56ca773704ffa07f3019c741efb423244910e3b4",
+      "falsification_controls": 26,
+      "wall_seconds": 34.91411871200398,
+      "original_incumbent_controls": "5 PASS at actual immutable authority2194651f",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS"
     }
   }
 }

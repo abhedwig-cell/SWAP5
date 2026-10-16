@@ -1,6 +1,6 @@
 """Falsify the current bounded proof; original controls run at their own base."""
 from pathlib import Path
-import copy,importlib,json,sys
+import copy,importlib,inspect,json,sys
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import verify_daily_density_successor as v
@@ -47,6 +47,9 @@ routes=[('tests/fpm','verify_int12c_successor'),('tests/crop-harvest','verify_ha
 for path,name in routes:
  sys.path.insert(0,str(v.ROOT/path));module=importlib.import_module(name)
  result=module.verify_source();assert result['daily_density_successor'],name
- with patch.object(v,'git',side_effect=foreign):
-  rejects('PUBLIC_SOURCE_'+name,lambda module=module:module.verify_source())
+ if 'git_reader'in inspect.signature(module.verify_source).parameters:
+  rejects('PUBLIC_SOURCE_'+name,lambda module=module:module.verify_source(foreign))
+ else:
+  with patch.object(v,'git',side_effect=foreign):
+   rejects('PUBLIC_SOURCE_'+name,lambda module=module:module.verify_source())
 print('DAILY_DENSITY_CURRENT_ADMISSION_CONTROLS=PASS')
