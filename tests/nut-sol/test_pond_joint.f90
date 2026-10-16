@@ -36,8 +36,9 @@ program test_pond_joint
   integer(int64)::revision
   integer::status
   logical::ok
-  character(512)::mode,restart_path,endpoint_path
+  character(512)::mode,restart_path,endpoint_path,variant
   call get_command_argument(1,mode);call get_command_argument(2,restart_path);call get_command_argument(3,endpoint_path)
+  call get_command_argument(4,variant)
   call initialize_application_config(cfg,-75d0,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
   cfg%tiles(1)%initial_state%ponding_depth=0.5d0
@@ -55,9 +56,17 @@ program test_pond_joint
   column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
   column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
   column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  if(trim(variant)=='dry')then
+    cfg%tiles(1)%initial_state%ponding_depth=0d0
+    cfg%tiles(1)%base_forcing%top_flux=0d0
+  end if
   call parameters(p)
   call backend%initialize(top);call second%initialize(top)
   supply=pond_step_t(T0,T1,0.5d0,0.5d0,-0.5d0,0.25d0,0.125d0,0.25d0,0.375d0,0.125d0)
+  supply%depth_begin=cfg%tiles(1)%initial_state%ponding_depth;supply%depth_end=supply%depth_begin
+  if(trim(variant)=='dry')then
+    supply%qtop=0d0;supply%rain_rate=0d0;supply%irrigation_rate=0d0
+  end if
   if(trim(mode)=='reject')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
          water,solute,status,pond)
@@ -72,7 +81,7 @@ program test_pond_joint
     call require(status==JOINT_OK,'fresh process pond reconstruction')
   else
     call initialize_owners(water,solute,p)
-    call initialize_persistent_pond(T0,0.5d0,0.25d0,pond,status)
+    call initialize_persistent_pond(T0,cfg%tiles(1)%initial_state%ponding_depth,0.25d0,pond,status)
     call require(status==POND_OK,'initial pond')
     initial_water=water;initial_solute=solute;initial_pond=pond
     pbad=p;pbad%decpot=1d6
@@ -91,7 +100,8 @@ program test_pond_joint
     call require(result%status==JOINT_OK,'real Richards persistent pond')
     call require(abs(result%water%mass%residual)<=HARD_MASS_GATE.and.abs(result%chemical%residual)<1d-11,'whole balances')
     call pond%snapshot(clock,depth,mass,revision)
-    call require(depth==0.5d0.and.mass>0d0.and.mass/=0.25d0,'persistent actual pond mass')
+    call require(depth==cfg%tiles(1)%initial_state%ponding_depth.and.mass>0d0.and.mass/=0.25d0, &
+      'persistent actual pond mass')
     call verify_actual_trace(initial_solute,initial_pond,solute,pond)
     call write_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,water,solute,status,pond)
     call require(status==JOINT_OK,'native pond writer')
@@ -108,6 +118,8 @@ program test_pond_joint
     end block
   end if
   supply%t0=T1;supply%t1=2*T1
+  supply%rain_rate=0.25d0;supply%irrigation_rate=0.25d0
+  cfg%tiles(1)%base_forcing%top_flux=-0.5d0
   cfg%tiles(1)%base_forcing%bottom_flux=0.1d0
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=-1d-4
   initial_solute=solute;initial_pond=pond
@@ -268,12 +280,12 @@ contains
       'literal combined balance')
     call require(all(finalm%mass_mg_cm2>=0d0).and.all(finalc%sorbed_matrix_mass>=0d0),'nonnegative accepted stores')
     call require(finalc%pond_mass==0d0,'single surface owner')
-    do j=1,17
+    do j=1,21
       bad=steps;broken=supply;trial=initial;trial_pond=initial_pond
       i=size(bad)
       select case(j)
       case(1)
-        bad(i)%top_flux=0d0
+        bad(i)%top_flux=-0.75d0
       case(2)
         bad(i)%top_flux=0.5d0
       case(3)
@@ -307,6 +319,14 @@ contains
         bad(i)%pond_end_cm=bad(i)%pond_end_cm+1d-5
       case(17)
         bad(i)%pond_start_cm=ieee_value(0d0,ieee_quiet_nan)
+      case(18)
+        broken%t0=ieee_value(0d0,ieee_quiet_nan)
+      case(19)
+        broken%t1=ieee_value(0d0,ieee_quiet_nan)
+      case(20)
+        broken%dry_deposition_rate=ieee_value(0d0,ieee_quiet_nan)
+      case(21)
+        broken%dry_deposition_rate=huge(0d0)
       end select
       call consume_accepted_pond_trace(trial,trial_pond,bad,broken,r)
       call require(r%status/=MATRIX_OK,'last-carrier or supply rejection')
@@ -317,7 +337,7 @@ contains
     call consume_accepted_pond_trace(trial,trial_pond,steps,supply,r)
     call require(r%status/=MATRIX_OK,'clock replay rejected')
     call compare_chemical(accepted,trial)
-    print '(A)','POND_ACTUAL_LITERAL_SEVENTEEN_NEGATIVES_REPLAY=PASS'
+    print '(A)','POND_ACTUAL_LITERAL_TWENTYONE_NEGATIVES_REPLAY=PASS'
   end subroutine
   subroutine parameters(f)
     type(b111_reactive_solute_substep_forcing_t),intent(out)::f

@@ -32,6 +32,8 @@ contains
   integer(int64)::id,revision
   integer::k,n,code
   receipt=matrix_solute_receipt_t()
+  if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
+    supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
   if(.not.committed%ready().or.size(steps)<1.or.size(steps)>100000)return
   if(.not.pond%ready())return
   call pond%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)

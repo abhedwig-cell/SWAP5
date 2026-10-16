@@ -91,6 +91,14 @@ for opt in ('O0','O2'):
     stdout=run([exe,'write',restart,expected],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in stdout
     resumed=run([exe,'resume',restart,fresh],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in resumed
     assert expected.read_bytes()==fresh.read_bytes()
+    dry_restart=build/'dry-restart.bin';dry_expected=build/'dry-expected.bin';dry_fresh=build/'dry-fresh.bin'
+    dry_stdout=run([exe,'write',dry_restart,dry_expected,'dry'],build,'physical_native')
+    dry_resumed=run([exe,'resume',dry_restart,dry_fresh,'dry'],build,'physical_native')
+    assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in dry_stdout
+    assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in dry_resumed
+    assert dry_expected.read_bytes()==dry_fresh.read_bytes()
+    results['runs'][opt].update(dry_stdout=dry_stdout.decode(),dry_endpoint_sha256=digest(dry_expected))
+
     raw=restart.read_bytes();n=struct.unpack_from('i',raw,152)[0];history=struct.unpack_from('i',raw,156)[0]
     chem=160+8*(2*n+2+(n if history else 0));count=struct.unpack_from('i',raw,chem+24)[0]
     values=chem+28;state=values+8*count
@@ -103,6 +111,23 @@ for opt in ('O0','O2'):
     for label,data in negatives.items():
         path=build/(label+'.bin');path.write_bytes(data)
         out=run([exe,'reject',path,fresh],build,'physical_native');assert b'POND_JOINT_INVALID_FILE=PASS' in out
+    original=ROOT/'tests/nut-sol/test_surface_joint.f90';bind(original)
+    original_oracle=build/'literal_original.f90'
+    original_oracle.write_text(oracle.replace('literal_step(f,cml,cmsy_mass,surface_mass,decay_out','literal_step(f,cml,cmsy_mass,decay_out').replace('cml(:),cmsy_mass(:),surface_mass','cml(:),cmsy_mass(:)').replace('csurf=surface_mass;pond=f%pond_end_cm;','csurf=0;pond=0;').replace(' surface_mass=csurf\n',''))
+    # Recompile oracle and original driver only; production objects remain byte-identical in this live run.
+    original_objects=[]
+    for j,source in enumerate((original_oracle,original)):
+        obj=build/('original'+str(j)+'.o');original_objects.append(obj)
+        run(FC+flags+['-c',source,'-o',obj],build,'preservation_compile')
+    original_exe=build/'original'
+    run(FC+flags+[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+original_objects+['-o',original_exe],build,'preservation_link')
+    original_stdout=run([original_exe,'write',build/'old-restart.bin',build/'old-expected.bin'],build,'preservation_native')
+    original_resume=run([original_exe,'resume',build/'old-restart.bin',build/'old-fresh.bin'],build,'preservation_native')
+    assert b'SURFACE_JOINT_ATOMIC_BALANCE_LITERAL_RESTART=PASS' in original_stdout
+    assert b'SURFACE_JOINT_FRESH_PROCESS=PASS' in original_resume
+    assert (build/'old-expected.bin').read_bytes()==(build/'old-fresh.bin').read_bytes()
+    assert digest(build/'old-expected.bin')=='7927b66f0ccf253d00795dd6c174a8323ac6e06d5bd6d384248e9bb0e7331d9e'
+    results['runs'][opt].update(original_surface_stdout=original_stdout.decode(),original_surface_endpoint=digest(build/'old-expected.bin'))
     results['runs'][opt].update(physical_stdout=stdout.decode(),physical_provider_count=len(ordered),
         endpoint_sha256=digest(expected),fresh_sha256=digest(fresh),restart_negatives=list(negatives))
 assert results['runs']['O0']['process_stdout']==results['runs']['O2']['process_stdout']
