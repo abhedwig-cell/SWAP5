@@ -54,7 +54,8 @@
       "Actual temporal history requires known predecessor; uniform gravity equilibrium derivative zero is seeded. Discontinuous signed forcing refines using min timestep 1e-10 day, 24 retries, head budget 1e-6 cm; production defaults unchanged.",
       "Exact bitwise sum assertion was inconsistent with incumbent floating-point partition. Uses admitted B19 nodal closure 1e-14 and unchanged hard total mass 1e-12 cm.",
       "Diagnostic retain-step-proposal was rejected by existing certificate compatibility guard; removed without changing production policy.",
-      "Mode2 explicit water balance and mode7 free drainage both execute 24 signed cases; four actual reject/replay/empty-registry restart controls pass in O0 diagnostic."
+      "Mode2 explicit water balance and mode7 free drainage both execute 24 signed cases; four actual reject/replay/empty-registry restart controls pass in O0 diagnostic.",
+      "Historical pond validator compares git diff headers literally. Additional Git objects changed automatic abbreviation from eight to nine characters, reproducing a metadata-only false rejection after earlier PASS. The original immutable chain is executed with scoped core.abbrev=8 matching the captured patch; science/reference/old assertions are unchanged."
     ],
     "current_cases": {
       "process": "literal overlap, B19 warm donor, immutable positive body and FCI32/33 smoke",
@@ -74,7 +75,7 @@
   "next_action": "Safe normal merge of PR1099 on reconciled canonical, verify exact qualified source, then canonical metadata closeout and targeted +1 master-ledger reconciliation.",
   "recovery_point": "work/swap431-drain-frost-coverage-20261007",
   "blockers": [],
-  "last_reconciled_upstream": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "closure_conditions_frozen_20261016": {
     "ledger_rows": [
       "SW431-DRAIN-DIV-SIGNED"
@@ -115,7 +116,7 @@
   },
   "qualification_inputs_sha256": {
     "tests/fmig431/run_swap431_signed_divdra_runtime.py": "190466732ced3c4a88b720724c175524c4e40707ae7c694a2eeaed86761511c3",
-    "tests/fmig431/verify_signed_divdra_successor.py": "97def8a013f6d6888b88fe50b41e0646f4a6fae1cef697aa68196449969da79f",
+    "tests/fmig431/verify_signed_divdra_successor.py": "7af9f7e5f3b7fe3c12dd5785eaffb54dcb72e9bf0ead61145fa2199003932e00",
     "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
     "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2"
   },
@@ -261,7 +262,7 @@
     },
     "tests/fmig431/verify_signed_divdra_successor.py": {
       "status": "A",
-      "blob": "9b64d6d2ac681de51eb082c5cd99df7ea17828a9"
+      "blob": "132b5a003a16b76ae7c41bc5f55f5f7969ec71b0"
     },
     "tests/nut-crop/verify_reproductive_successor.py": {
       "status": "M",
@@ -269,14 +270,15 @@
     }
   },
   "owner_qualification_preservation": {
-    "terminal": "PASS",
+    "terminal": "PASS_AFTER_FORMAT_REPRODUCTION",
     "entry": "tests/fwof/pp02/verify_b111_nfixation_successor.py",
     "incumbent": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
     "current_signed_successor": true,
     "reproductive_preserved": true,
     "stdout_sha256": "6d736b0e2faaf22eb8ba357ded8a9ee9ee0583ab839663fd60878d56d239b234",
     "receipt_in_archive": true,
-    "execution": "Evidence/source verification through original immutable owner chain; no repeated numerical FCI or low-air run."
+    "execution": "Evidence/source verification through original immutable owner chain; no repeated numerical FCI or low-air run.",
+    "git_diff_format": "core.abbrev=8, scoped only to original immutable validator process and descendants"
   },
   "automatic_ci_reconciliation": {
     "run_id": 38932004068,

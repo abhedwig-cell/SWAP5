@@ -5,7 +5,7 @@ No numerical execution and no full-FCI PASS. Historical positive bodies remain
 byte-exact; signed entry points are additive orientation adapters.
 """
 from pathlib import Path
-import argparse,base64,copy,gzip,hashlib,json,re,subprocess,sys
+import argparse,base64,copy,gzip,hashlib,json,re,subprocess,sys,os
 from functools import lru_cache
 ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json'
@@ -75,7 +75,13 @@ def incumbent(source_only=False):
     require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==base,'incumbent moved')
     command=[sys.executable,'-B','tests/nut-crop/verify_reproductive_successor.py']
     if source_only:command+=['--source-only']
-    cp=subprocess.run(command,cwd=root,capture_output=True,text=True)
+    # Historical capsules compare complete git diff text, whose auto-selected
+    # abbreviation otherwise changes as repository objects accumulate. Reuse
+    # their original eight-character format; no file or assertion is changed.
+    env=os.environ.copy();index=int(env.get('GIT_CONFIG_COUNT','0'))
+    env['GIT_CONFIG_KEY_'+str(index)]='core.abbrev'
+    env['GIT_CONFIG_VALUE_'+str(index)]='8';env['GIT_CONFIG_COUNT']=str(index+1)
+    cp=subprocess.run(command,cwd=root,capture_output=True,text=True,env=env)
     require(cp.returncode==0,'original reproductive owner rejected '+cp.stderr[-1800:])
     result=json.loads(cp.stdout)
     if not source_only:require(result['qualified'] and result['reproductive_successor'],'unqualified incumbent')
