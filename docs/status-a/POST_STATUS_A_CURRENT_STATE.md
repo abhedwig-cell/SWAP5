@@ -567,16 +567,45 @@ seasonal rotation, thermal-harvest composition, persistent pond/source mass or
 nonlinear surface composition. Aquifer remains rejected. Frozen Status-A and
 complete historical master capability dispositions are unchanged.
 
-[The existing master receipt](https://github.com/abhedwig-cell/SWAP5/blob/fb21ba5626e2b557b85616abbc19857105a6ecd3/integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json)
+[The historical closeout receipt](https://github.com/abhedwig-cell/SWAP5/blob/fb21ba5626e2b557b85616abbc19857105a6ecd3/integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json)
 recounts243 unique capabilities:95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,
 2 REJECTED,20 NOT_APPLICABLE and4 QUALIFICATION_ONLY;112 unresolved. It records
 three bounded facets and updates their queue explanations, without whole-cap
 promotion. A stale derived gap counter is corrected to92 explicitly marked rows;
-that is not an absent-algorithm count. The full master integrity readback still
-refuses `stale inheritance baseline`; it is not relabelled a global PASS.
+that is not an absent-algorithm count. At that checkpoint the full master
+integrity readback refused `stale inheritance baseline`. The later correction
+below supersedes that checkpoint's counts and integrity state.
 
 Completed research PR1226 (low-air performance) and1214 (cache I/O) are closed
 without merging the experiments or deleting branches/evidence. Other active
 shared semantics, source donors and nonblocking research are retained with
 concrete review/qualification boundaries in that same existing master record.
 No new migration package is started by the closeout.
+
+## Master evidence integrity and density classification correction, 16 October 2026
+
+[The reconciled master recovery](https://github.com/abhedwig-cell/SWAP5/blob/a40ef6b0ace5ce800ece2b12550f99c1750638b6/integration/audits/SWAP431_MASTER_STATUS.json)
+repairs the existing integrity checker while preserving immutable historical
+evidence and the concurrent diagnostic. Historical source baseline `78acf56f`
+is distinct from later canonical file/field locators. Exactly seven default-OFF
+profile-projection additions preserve the complete old backend body; any other
+postimage is rejected. Twenty inheritance/locator controls, four census controls,
+full integrity and documentation checks PASS. Closure still refuses the incomplete
+denominator. This is not current-canonical numerical or complete semantic qualification.
+
+The corrected census has **243 capabilities: 94 ADMITTED, 109 ACTIVE_MIGRATION,
+14 SUPERSEDED, 2 REJECTED, 20 NOT_APPLICABLE and 4 QUALIFICATION_ONLY;
+113 unresolved**. `SW431-ROOT-DENSITY` was overpromoted from the PR1125 merge.
+Its real adaptive component exists, but neither its initializer nor its updater
+has a production caller at canonical `02ee1677`. The passing supply fixture
+assigns a static node array and never executes density initialization/growth/death.
+The admitted SWRD2 contract also leaves this daily composition open. The ledger
+restores that open production capability and its supply dependency, without
+reverting code or the actually qualified root contracts. No algorithm is removed
+or declared absent. Empirical oxygen and constant LRV retain their verified
+original-head admissions within their bounded scopes.
+
+PR1072 remains draft because the semantic denominator and remaining production
+envelopes are incomplete, not because the historical inheritance check is still
+broken. Production source, reference, numerical policy, mass, rollback, restart
+and runtime interfaces are unchanged by this audit correction.

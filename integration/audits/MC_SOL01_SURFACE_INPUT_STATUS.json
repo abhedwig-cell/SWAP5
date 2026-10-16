@@ -269,5 +269,27 @@
       "numerical_science_rerun": "NOT_SELECTED_EXACT_UNCHANGED_PRODUCTION_AND_SCIENTIFIC_DRIVER_EVIDENCE",
       "full_master_integrity": "BLOCKED_HISTORICAL_INHERITANCE_NOT_WAIVED"
     }
+  },
+  "master_census_correction_20261016": {
+    "master_recovery_commit": "a40ef6b0ace5ce800ece2b12550f99c1750638b6",
+    "canonical_source": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+    "source_tree_unchanged": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "summary": {
+      "capabilities": 243,
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 113,
+      "explicit_absence_flags_not_algorithm_count": 92
+    },
+    "correction": "ROOT-DENSITY component retained; daily initializer/updater has no production caller and the original qualifying supply fixture never calls it. Restore ACTIVE_MIGRATION and supply dependency; no canonical code/admitted root contract reverted.",
+    "integrity": "PASS_HISTORICAL_SOURCE_AND_PINNED_LATER_LOCATORS_NOT_CURRENT_NUMERICAL_QUALIFICATION",
+    "closure": "REFUSED_DENOMINATOR_INCOMPLETE",
+    "master_pr": 1072,
+    "master_pr_retained_as_draft": true,
+    "new_migration_started": false
   }
 }
