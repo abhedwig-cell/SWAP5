@@ -352,7 +352,7 @@
     "existing_branch": "work/swap431-drain-signed-multilevel-r2-20261007",
     "existing_pr": 1109,
     "existing_candidate": "8a8d88fe68b3b0c424883a75d762b5ea98d76ba2",
-    "state": "SCIENCE_QUALIFIED_ADMISSION_PENDING",
+    "state": "QUALIFIED_SAFE_ADMISSION_PENDING",
     "ledger_rows": [
       "SW431-DRAIN-DIV-MULTI"
     ],
@@ -377,8 +377,8 @@
       "No solver or execution-policy change. No automatic full F-CI, RossFast or low-air selection."
     ],
     "remaining": [
-      "affected admission and preservation guards",
-      "safe merge and master receipt"
+      "safe canonical merge",
+      "mastercoverage receipt"
     ],
     "parallel_reconciliation": {
       "head": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
@@ -396,7 +396,7 @@
     "frozen_conditions_commit": "0f3294ffa5be77410befc99a9e5fd5b8a2926b81",
     "evidence": {
       "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
-      "sha256": "284506d2c365d2251fae6949f1c91ed99980804c33c6abee5c14cc2ac7715898"
+      "sha256": "ffba457c732db6405582334e53a72913123fbb3d0761a11782f25126648abaf8"
     },
     "qualification_inputs_sha256": {
       "tests/fmig431/run_swap431_multilevel_divdra.py": "ecf046f8ad58c5546c97f73374f37710c0691a468a6781168b47568801d425aa",
@@ -568,6 +568,17 @@
         "status": "M",
         "blob": "56b47ebaad51d23e7db423df32487ab11cb301ad"
       }
+    },
+    "qualification_checkpoint": "ddf13d59ec8a593c6f6407d9b5f01f3aecdfb65a",
+    "source_tree": "247cf3b744576226df030a174530ea5662e3ddbf",
+    "validation": {
+      "source_evidence": "PASS",
+      "evidence_corruption_controls": 6,
+      "actual_original_incumbent_qualification_chain": "PASS",
+      "existing_focused_FCI_owner_entry": "PASS",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS",
+      "whitespace": "PASS"
     }
   }
 }
