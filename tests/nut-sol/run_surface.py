@@ -103,10 +103,45 @@ for opt in ('O0','O2'):
         out=run([exe,'reject',path,fresh],build,'physical_native');assert b'MATRIX_JOINT_INVALID_FILE=PASS' in out
     results['runs'][opt].update(physical_stdout=stdout.decode(),physical_provider_count=len(ordered),
         endpoint_sha256=digest(expected),fresh_sha256=digest(fresh),restart_negatives=list(negatives))
+    if '--surface-restart' in sys.argv:
+        include=ROOT/'tests/nut-sol/surface_restart_contract.inc';bind(include)
+        generated=build/'surface_restart.f90'
+        original=driver.read_text()
+        anchor='  call backend%initialize(top);call second%initialize(top)\n'
+        assert original.count(anchor)==1
+        generated.write_text(original.replace(anchor,anchor+'  call surface_restart_contract()\n  stop\n').replace(
+            'contains\n','contains\n'+include.read_text()+'\n',1))
+        obj=build/'surface_restart.o'
+        run(FC+flags+['-c',generated,'-o',obj],build,'restart_compile')
+        contract_exe=build/'surface_restart'
+        run(FC+flags+objects[:-1]+[obj,'-o',contract_exe],build,'restart_link')
+        r=build/'surface-v2.bin';e=build/'surface-expected.bin';f=build/'surface-fresh.bin'
+        out=run([contract_exe,'write',r,e],build,'restart_native')
+        assert b'SURFACE_STORE_NATIVE_OPAQUE_BALANCE=PASS' in out
+        resumed=run([contract_exe,'resume',r,f],build,'restart_native')
+        assert b'SURFACE_STORE_FRESH_PROCESS=PASS' in resumed
+        assert e.read_bytes()==f.read_bytes()
+        raw=r.read_bytes();assert raw[:8]==b'S5MJ0002'
+        mutations={}
+        for label,value in [('negative',-1.),('nan',float('nan')),('infinite',float('inf')),('overbound',1.01e12)]:
+            data=bytearray(raw[:-4]);struct.pack_into('d',data,len(data)-8,value)
+            mutations[label]=bytes(data)
+        mutations['missing_mass']=raw[:-12]
+        mutations['extra_byte']=raw[:-4]+b'x'
+        mutations['unknown_schema']=b'S5MJ0003'+raw[8:-4]
+        for label,data in mutations.items():
+            path=build/('surface-'+label+'.bin')
+            path.write_bytes(data+struct.pack('I',zlib.crc32(data)&0xffffffff))
+            rejected=run([contract_exe,'reject',path,f],build,'restart_native')
+            assert b'SURFACE_STORE_INVALID_FILE=PASS' in rejected
+        results['runs'][opt]['surface_restart']=dict(stdout=out.decode(),endpoint_sha256=digest(e),
+            fresh_sha256=digest(f),native_sha256=digest(r),crc_correct_negatives=list(mutations))
 assert results['runs']['O0']['process_stdout']==results['runs']['O2']['process_stdout']
 if '--process-only' not in sys.argv:
     assert (OUT/'O0/expected.bin').read_bytes()==(OUT/'O2/expected.bin').read_bytes()
     assert results['runs']['O0']['physical_stdout']==results['runs']['O2']['physical_stdout']
+    if '--surface-restart' in sys.argv:
+        assert results['runs']['O0']['surface_restart']==results['runs']['O2']['surface_restart']
 results.update(input_sha256=inputs,cost_seconds={k:sum(e['seconds'] for e in events if e['category']==k) for k in sorted({e['category'] for e in events})},
     status='PROCESS_PASS' if '--process-only' in sys.argv else 'PHYSICAL_PASS_NOT_ADMITTED')
 assert all(digest(ROOT/p)==h for p,h in inputs.items())

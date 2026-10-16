@@ -1,6 +1,66 @@
 """Negative controls for exact eligibility and real surface evidence."""
 import copy,json,unittest
 import verify_surface_successor as v
+if (v.ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
+ from pathlib import Path
+ import importlib,sys
+ from unittest.mock import patch
+ passed=[]
+ def reject(label,fn):
+  try:fn()
+  except (ValueError,KeyError,AssertionError,IndexError,FileNotFoundError):passed.append(label);return
+  raise AssertionError('accepted persistent '+label)
+ positive=v.persistent_qualification();assert positive['qualified']and not positive['admitted']
+ original=v.git
+ for label in ['foreign_src','foreign_test','foreign_workflow','dirty','source_tree','reference','postimage']:
+  def reader(*a,label=label):
+   value=original(*a)
+   if label.startswith('foreign_')and a[:2]==('diff','--name-status'):
+    return value+'\nA\t'+{'foreign_src':'src/unknown.f90','foreign_test':'tests/unknown.py','foreign_workflow':'.github/workflows/unknown.yml'}[label]
+   if label=='dirty'and a[:2]==('status','--porcelain'):return ' M src/unknown.f90'
+   if label=='source_tree'and a==('rev-parse','HEAD:src'):return '0'*40
+   if label=='reference'and a==('rev-parse','HEAD:reference'):return '0'*40
+   if label=='postimage'and a==('rev-parse','HEAD:src/adapter/mod_matrix_joint_restart_file.f90'):return '0'*40
+   return value
+  reject(label,lambda:v.persistent_source(reader))
+ for path in v.PERSISTENT_PRODUCTION:
+  r=copy.deepcopy(v.persistent_record());r['postimages'][path]['blob']='0'*40
+  with patch.object(v,'persistent_record',return_value=r):reject('stale_'+Path(path).stem,v.persistent_source)
+ r=copy.deepcopy(v.persistent_record());r['science_archive']['decoded_sha256']='0'*64
+ with patch.object(v,'persistent_record',return_value=r):reject('corrupt_capsule',v.persistent_evidence)
+ r=copy.deepcopy(v.persistent_record());r['phase']='IMPLEMENTED'
+ with patch.object(v,'persistent_record',return_value=r):reject('unfinished_phase',v.persistent_qualification)
+ data=v.persistent_evidence()
+ for label,mutate in [
+  ('unfinished_science',lambda r:r.update(status='RUNNING')),
+  ('wrong_execution',lambda r:r.update(baseline='0'*40)),
+  ('wrong_authority',lambda r:r.update(authority_sha256='0'*64)),
+  ('stale_input',lambda r:r['input_sha256'].update({'src/adapter/mod_matrix_joint_restart_file.f90':'0'*64})),
+  ('missing_decoder',lambda r:r['runs']['O0']['surface_restart']['crc_correct_negatives'].pop()),
+  ('forged_endpoint',lambda r:r['runs']['O2']['surface_restart'].update(endpoint_sha256='0'*64)),
+  ('missing_incumbent_negative',lambda r:r['runs']['O0']['restart_negatives'].pop())]:
+  d=copy.deepcopy(data);r=json.loads(d['stable/result.json']);mutate(r);d['stable/result.json']=json.dumps(r).encode()
+  reject(label,lambda d=d:v.persistent_science(d))
+ for label,mutate in [
+  ('failed_command',lambda r:r[0].update(returncode=1)),
+  ('missing_driver_compile',lambda r:r.pop(next(i for i,e in enumerate(r)if e['category']=='restart_compile'))),
+  ('missing_native',lambda r:r.pop(next(i for i,e in enumerate(r)if e['category']=='restart_native'))),
+  ('missing_traps',lambda r:next(e for e in r if '-c'in e['command'])['command'].remove('-ffpe-trap=invalid,zero,overflow'))]:
+  d=copy.deepcopy(data);r=json.loads(d['stable/events.json']);mutate(r);d['stable/events.json']=json.dumps(r).encode()
+  reject(label,lambda d=d:v.persistent_science(d))
+ for label,path in [('missing_raw','stable/0000.stderr'),('unexecuted_driver','stable/O0/surface_restart.f90'),('wrong_native','stable/O2/surface-v2.bin')]:
+  d=copy.deepcopy(data)
+  if label=='missing_raw':d.pop(path)
+  else:d[path]+=b'x'
+  reject(label,lambda d=d:v.persistent_science(d))
+ d=copy.deepcopy(data);r=json.loads(d['review/default_projections.json']);r.pop(next(iter(r)));d['review/default_projections.json']=json.dumps(r).encode()
+ reject('missing_incumbent_body_review',lambda:v.persistent_science(d))
+ for folder,name in [('tests/mc-irr01','verify_material_root_successor'),('tests/nut-crop','verify_b111_request_successor'),
+  ('tests/root-growth','verify_daily_density_successor'),('tests/fpm','verify_int12c_successor')]:
+  sys.path.insert(0,str(v.ROOT/folder));module=importlib.import_module(name)
+  assert module.verify_source()['persistent_surface_restart_successor'],name
+ print('PERSISTENT_SURFACE_ADMISSION_CONTROLS='+str(len(passed))+'|PASS')
+ raise SystemExit(0)
 if v.composition() is not None:
  import subprocess,sys
  from pathlib import Path
