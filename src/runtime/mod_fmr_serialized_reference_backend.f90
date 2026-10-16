@@ -4075,12 +4075,21 @@ contains
     if (step_duration <= 0.0_real64) return
     rutter_trial_prepared = .false.
     rutter_previous_ponding = 0.0_real64
+    fixed_top_conductivity = -1.0_real64
+    fixed_top_conductivity_ok = .true.
     if (self%rutter_active) then
       if (.not. allocated(self%rutter_forcing) .or. .not. self%rutter_forcing%prepared) return
       select type (rutter_physical => state)
       class is (fmr_b110_physical_state_t)
         if (.not. allocated(rutter_physical%rutter)) return
         rutter_previous_ponding = rutter_physical%ponding_depth
+        if (self%swkimpl == 0) then
+          if (rutter_physical%active_nodes <= 0 .or. .not. allocated(rutter_physical%pressure_head)) return
+          if (size(rutter_physical%pressure_head) < rutter_physical%active_nodes) return
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters, 1, &
+               rutter_physical%pressure_head(1), fixed_top_conductivity, fixed_top_conductivity_ok)
+          if (.not. fixed_top_conductivity_ok) return
+        end if
       class default
         return
       end select
@@ -4094,7 +4103,7 @@ contains
            self%rutter_forcing%snowmelt_rate_cm_per_day, self%rutter_forcing%runon_rate_cm_per_day, &
            self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day, &
            self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
-           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
+           self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent, fixed_top_conductivity)
       rutter_trial_prepared = .true.
     end if
     effective_bottom_mode = self%bottom_mode
