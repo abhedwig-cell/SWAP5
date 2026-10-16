@@ -3762,6 +3762,9 @@ contains
         if (allocated(forcing%snow).or.allocated(forcing%black_evaporation).or. &
             allocated(forcing%boesten_evaporation).or.allocated(forcing%rutter).or. &
             allocated(forcing%rfm_surface).or.allocated(forcing%macropore_top_input)) return
+        if (self%swkimpl/=0.or.self%analytical_hydraulics_active.or.self%direct_retention_active) return
+        if (self%temporal_indicator_history_enabled.or..not.self%soil_water_selection%uses_reference()) return
+        if (config%transaction%temporal_mode/=TX_TEMPORAL_EXTERNAL_FULL_HALF) return
         allocate(self%pond_input,source=forcing%pond_input)
       end if
       self%base_top_flux = forcing%top_flux
@@ -4712,10 +4715,13 @@ contains
       end select
       if (.not.ieee_is_finite(request%base_state%ponding_depth)) return
       if (request%base_state%ponding_depth<0.0_real64.or.request%base_state%ponding_depth>1.e6_real64) return
+      call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,1, &
+           request%base_state%pressure_head(1),fixed_top_conductivity,fixed_top_conductivity_ok)
+      if (.not.fixed_top_conductivity_ok) return
       call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters, &
            self%hydraulic_parameters,self%swkmean,request%base_state%ponding_depth,step_duration, &
            self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
-           0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.e6_real64,0.0_real64,1.0_real64)
+           0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.e6_real64,0.0_real64,1.0_real64,fixed_top_conductivity)
       request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
       nullify(request%evaluation%top_boundary)
       request%evaluation%dynamic_top_boundary=>rfm_top_provider
@@ -5672,6 +5678,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(allocated(self%pond_input))then
+      value=fmr_pond_input_temporal_error(full_state,half_state)
+      return
+    end if
     if(self%frost_divdra_active)then
       value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
       return
@@ -5778,6 +5788,37 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  ! New opt-in domain only. Existing identity and certificate routes are unchanged.
+  real(real64) function fmr_pond_input_temporal_error(full_state,half_state) result(value)
+    class(transaction_state_t),intent(in)::full_state,half_state
+    integer::n
+    value=huge(0.0_real64)
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<1.or.half%active_nodes/=n)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+           .not.allocated(full%water_content).or..not.allocated(half%water_content))return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n.or. &
+           size(full%water_content)/=n.or.size(half%water_content)/=n)return
+        if(.not.all(ieee_is_finite(full%pressure_head)).or..not.all(ieee_is_finite(half%pressure_head)).or. &
+           .not.all(ieee_is_finite(full%water_content)).or..not.all(ieee_is_finite(half%water_content)))return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth, &
+           full%groundwater_level,half%groundwater_level])))return
+        if(any(abs(full%pressure_head)>1.e6_real64).or.any(abs(half%pressure_head)>1.e6_real64))return
+        if(min(full%ponding_depth,half%ponding_depth)<0.0_real64.or. &
+           max(full%ponding_depth,half%ponding_depth)>1.e6_real64)return
+        if(max(abs(full%groundwater_level),abs(half%groundwater_level))>1.e6_real64)return
+        if(any(full%water_content<0.0_real64).or.any(full%water_content>1.0_real64).or. &
+           any(half%water_content<0.0_real64).or.any(half%water_content>1.0_real64))return
+        value=max(maxval(abs(full%pressure_head-half%pressure_head)), &
+             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+      end select
+    end select
+  end function fmr_pond_input_temporal_error
 
   real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self

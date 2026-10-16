@@ -10,6 +10,11 @@ sys.dont_write_bytecode = True
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import verify_pond_successor as v
 
+if (v.ROOT/'tests/nut-sol/check_dynamic_pond_controls.py').exists():
+    import runpy
+    runpy.run_path(str(v.ROOT/'tests/nut-sol/check_dynamic_pond_controls.py'),run_name='__main__')
+    raise SystemExit(0)
+
 count = 0
 def rejects(label, call):
     global count

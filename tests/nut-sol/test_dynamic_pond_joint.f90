@@ -1,6 +1,7 @@
 program test_dynamic_pond_joint
   use iso_fortran_env,only:real64,int64
   use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
+  use mod_canonical_contracts,only:canonical_numerical_config_t
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
   use mod_fmr_production_application_bootstrap
@@ -8,7 +9,7 @@ program test_dynamic_pond_joint
   use mod_fixed_flux_top_boundary_provider
   use mod_b110_default_mvg_provider
   use MOD_grid,only:numnod,z,dz,disnod
-  use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_EXTERNAL_FULL_HALF,TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t,B111_REACTIVE_NEGATIVE
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application
@@ -42,7 +43,7 @@ program test_dynamic_pond_joint
   call get_command_argument(1,mode);call get_command_argument(2,restart_path);call get_command_argument(3,endpoint_path)
   call get_command_argument(4,variant)
   call initialize_application_config(cfg,-75d0,k)
-  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
+  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
   cfg%tiles(1)%initial_state%ponding_depth=0.5d0
   cfg%tiles(1)%base_forcing%top_flux=-0.5d0
   cfg%tiles(1)%parameters%root_extraction_active=.true.
@@ -50,10 +51,10 @@ program test_dynamic_pond_joint
   cfg%tiles(1)%base_forcing%bottom_flux=-0.1d0
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=1d-4
   cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0d0
-  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
+  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   cfg%numerical%model_temporal_indicator_budget_available=.true.
   cfg%numerical%model_temporal_indicator_budget=1d-6
-  cfg%numerical%transaction%temporal_tolerance=0d0
+  cfg%numerical%transaction%temporal_tolerance=1d-6
   cfg%numerical%transaction%max_retries=30;cfg%numerical%max_committed_substeps=10000
   column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
   column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
@@ -94,9 +95,12 @@ program test_dynamic_pond_joint
     block
       type(fmr_b110_physical_forcing_t)::invalid
       type(pond_step_t)::bad_supply
+      type(fmr_b110_physical_parameters_t),target::invalid_parameters
+      type(canonical_numerical_config_t)::invalid_numerical
       integer::j
-      do j=1,6
+      do j=1,8
         invalid=cfg%tiles(1)%base_forcing;bad_supply=supply
+        invalid_parameters=cfg%tiles(1)%parameters;invalid_numerical=cfg%numerical
         select case(j)
         case(1)
           invalid%pond_input%rain_rate_cm_day=supply%rain_rate+1d-5
@@ -110,19 +114,36 @@ program test_dynamic_pond_joint
           invalid%pond_input%rain_rate_cm_day=1d6;bad_supply%rain_rate=1d6
         case(6)
           allocate(invalid%black_evaporation)
+        case(7)
+          invalid_parameters%swkimpl=1
+        case(8)
+          invalid_numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
         end select
-        call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-          invalid,cfg%numerical,solute,bad_supply,T0,T1,result)
+        call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,invalid_parameters,water, &
+          invalid,invalid_numerical,solute,bad_supply,T0,T1,result)
         call require(result%status/=JOINT_OK,'invalid dynamic forcing rejected')
         call compare_water(initial_water,water);call compare_chemical(initial_solute,solute)
       end do
-      print '(A)','DYNAMIC_POND_SIX_FORCING_REJECTIONS=PASS'
+      if(trim(variant)/='dry')then
+        invalid_numerical=cfg%numerical
+        invalid_numerical%transaction%temporal_tolerance=0d0
+        invalid_numerical%transaction%max_retries=0
+        call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+          cfg%tiles(1)%base_forcing,invalid_numerical,solute,supply,T0,T1,result)
+        call require(result%status==JOINT_WATER_REJECTED.and.result%diagnostics%temporal_rejections>0, &
+          'dynamic temporal difference causes real rejection')
+        call compare_water(initial_water,water);call compare_chemical(initial_solute,solute)
+        print '(A)','DYNAMIC_POND_ZERO_TOLERANCE_REJECTED=PASS'
+      end if
+      print '(A)','DYNAMIC_POND_EIGHT_FORCING_REJECTIONS=PASS' 
     end block
     pbad=p;pbad%decpot=1d6
     call initialize_owners(bad_water,bad_solute,pbad)
     small_supply=supply;small_supply%t1=1d-9
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
       cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,supply,T0,T1,result)
+    if(result%status/=JOINT_CHEMICAL_REJECTED.or..not.result%water%completed) &
+      call debug_result()
     call require(result%status==JOINT_CHEMICAL_REJECTED.and.result%water%completed,'chemical rejects completed water')
     call compare_water(initial_water,bad_water);call compare_chemical(initial_solute,bad_solute)
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
@@ -172,14 +193,21 @@ program test_dynamic_pond_joint
   call write_endpoint(trim(endpoint_path),water,solute)
   print '(A)','DYNAMIC_POND_JOINT_ACTUAL_BALANCE_RESTART=PASS'
 contains
+  subroutine debug_result()
+    type(fmr_serialized_physical_observation_t)::obs
+    obs=backend%observation()
+    print *, 'REJECTION_STATUS',result%status,result%water%status,result%water%completed,result%chemical%status,result%water%mass%residual
+    print *, 'DIAG',result%diagnostics%accepted_substeps,result%diagnostics%attempts,result%diagnostics%solver_rejections, &
+      result%diagnostics%temporal_rejections,result%diagnostics%temporal_certificate_unavailable_rejections,result%diagnostics%mass_rejections
+    print *, 'OBS',obs%solver_executed,obs%solver_status,obs%top_flux,obs%temporal_certificate_unavailable_reason
+  end subroutine
   subroutine initialize_owners(w,s,p)
     type(kernel_committed_state_t),intent(out)::w
     type(matrix_solute_state_t),intent(out)::s
     type(b111_reactive_solute_substep_forcing_t),intent(in)::p
     logical::ok
     integer::code,j
-    call fmr_new_b110_temporal_indicator_committed_state(w,column%column_id,cfg%tiles(1)%initial_state,T0,ok, &
-         spread(0.0_real64,1,numnod))
+    call fmr_new_b110_committed_state(w,column%column_id,cfg%tiles(1)%initial_state,T0,ok)
     call require(ok,'initial water owner')
     call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
          [(0.1_real64+0.1_real64*j,j=1,numnod)],s,code)
@@ -213,10 +241,9 @@ contains
     call s%snapshot(t,theta,m,c,rev)
     open(newunit=unit,file=path,access='stream',form='unformatted',status='replace')
     select type(q)
-    type is(fmr_b110_temporal_indicator_state_t)
-      call q%temporal_history_snapshot(history,ok);call require(ok,'endpoint temporal history available')
+    type is(fmr_b110_physical_state_t)
       write(unit)w%current_lineage_id(),w%current_revision(),q%pressure_head,q%water_content, &
-           q%ponding_depth,q%groundwater_level,history
+           q%ponding_depth,q%groundwater_level
     class default
       error stop 'wrong endpoint family'
     end select
@@ -234,14 +261,12 @@ contains
     call require(abs(t1-t2)<=0.0_real64.and.a%current_revision()==b%current_revision(),'water provenance identity')
     call a%snapshot(x,ok);call b%snapshot(y,ok)
     select type(x)
-    type is(fmr_b110_temporal_indicator_state_t)
+    type is(fmr_b110_physical_state_t)
       select type(y)
-      type is(fmr_b110_temporal_indicator_state_t)
+      type is(fmr_b110_physical_state_t)
         call require(x%ponding_depth==y%ponding_depth,'water pond identity')
         call require(all(abs(x%pressure_head-y%pressure_head)<=0.0_real64),'water head identity')
         call require(all(abs(x%water_content-y%water_content)<=0.0_real64),'water storage identity')
-        call x%temporal_history_snapshot(hx,ok);call y%temporal_history_snapshot(hy,ok)
-        call require(all(abs(hx-hy)<=0.0_real64),'water history identity')
       class default
         error stop 'water family2'
       end select

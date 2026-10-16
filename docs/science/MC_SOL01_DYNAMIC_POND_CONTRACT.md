@@ -8,8 +8,7 @@ The optional `fmr_pond_input_forcing_t` supplies gross rain and irrigation rates
 (cm/day), each finite in [0, 5e5]. Its absence preserves the existing fixed-flux
 application. Its presence requires zero prescribed top flux and excludes snow,
 Black/Boesten evaporation, Rutter, RFM, macropores and fixed-weir surface water.
-Only existing BASE and temporal-history physical states are admitted by this
-route. No evaporation, runoff, melt or runon may be hidden in the supplied rates.
+Only the existing BASE physical state is admitted by this new route. No evaporation, runoff, melt or runon may be hidden in the supplied rates.
 
 For every physical sibling, retry and substep, bind the existing dynamic-top
 provider from that trial's actual committed pond depth and duration. Zero loss
@@ -36,3 +35,19 @@ retry, replay, invalid forcing and fresh-process continuation. Run original1257
 fixed/dry and original surface programs against the same compiled providers.
 Keep source-bound evidence and guard controls; no unrelated solver qualification
 is selected merely because the dynamic provider receives valid inputs.
+
+## Explicit temporal comparison for the new route
+
+The admitted temporal-history indicator supports prescribed flux, so it cannot
+certify a changing dynamic head boundary. The old BASE identity-only full/half
+comparison also cannot certify evolving pond storage. Neither guard is relaxed.
+The new input option therefore requires BASE state, default MvG with SWKIMPL=0,
+Reference solver and the existing external full/half controller. Its explicit
+comparison is the maximum absolute difference (cm) of all pressure heads, pond
+depth and groundwater level between independently computed full and two-half
+candidates. Reject nonfinite or inconsistent state shapes. The caller supplies
+the existing numerical temporal tolerance in cm; no production tolerance or
+fallback is substituted. The qualification fixture selects 1e-6 cm and retains
+the independent 1e-10 cm water gate. This contract is new only for the optional
+pond-input route. Existing fixed-input certificate and identity semantics remain
+byte-for-byte unchanged after removing the declared inserted islands.
