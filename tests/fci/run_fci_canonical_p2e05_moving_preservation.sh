@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Classic annual source/state owner only; never a full moving PASS.
+if [[ "${1:-}" == --crop-annual-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/annual/verify_annual_successor.py
+  echo 'FCI_CLASSIC_ANNUAL_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
+# Signed DIVDRA owner only; no unrelated numerical suite or full F-CI claim.
+if [[ "${1:-}" == --drain-signed-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/verify_signed_divdra_successor.py
+  echo 'FCI_DRAIN_SIGNED_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 # Bounded pond source/science owner only; never a full moving numerical PASS.
 if [[ "${1:-}" == --sol-pond-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
@@ -481,7 +497,18 @@ for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runt
     break
   fi
 done
+drain_signed_exact_successor=0
+if [[ -f tests/fmig431/verify_signed_divdra_successor.py ]]; then
+  python3 -B tests/fmig431/verify_signed_divdra_successor.py || fail 'unqualified ordinary signed DIVDRA successor'
+  drain_signed_exact_successor=1
+fi
 for path in "${dependency_surface[@]}"; do
+  if (( drain_signed_exact_successor )); then
+    case "$path" in
+      src/process/mod_drainage_spatial_distribution.f90|src/runtime/mod_fmr_divdra_runtime_binding.f90|src/runtime/mod_fmr_divdra_serialized_composition.f90|src/runtime/mod_fmr_divdra_serialized_runtime.f90)
+        continue ;; # Exact successor, complete focused evidence and incumbent bodies checked above.
+    esac
+  fi
   if (( nut_thermal_exact_successor )) && [[ "$path" == "$BACKEND" ]]; then
     test "$(git rev-parse "HEAD:$path")" = "$NUT_THERMAL_BACKEND" || fail 'thermal backend default projection drift'
     continue
@@ -774,6 +801,9 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_root_depth_rate_owner.f90 ) ;;
       src/crop/mod_crop_root_extension_supply_limit.f90 ) ;;
       src/crop/mod_wofost_crop_owner_state.f90 ) ;;
+      src/crop/mod_wofost_actual_biomass_state.f90 )
+        python3 -B tests/fmig431/annual/verify_annual_successor.py || fail 'unqualified classic mortality state successor'
+        ;;
       src/crop/mod_wofost_finalize_rates.f90 ) ;;
       src/crop/mod_wofost_one_day_structural_evolution.f90 ) ;;
       src/crop/mod_wofost_potential_shadow_daily.f90 ) ;;

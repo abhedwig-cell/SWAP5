@@ -1,8 +1,9 @@
 module mod_fmr_divdra_runtime_binding
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, drainage_node_transfer_t, &
-       drainage_distribution_diagnostics_t, distribute_single_level_positive_divdra, DRAIN_DIST_OK
+       drainage_distribution_diagnostics_t, distribute_single_level_positive_divdra, DRAIN_DIST_OK, DRAIN_DIST_INVALID_TRANSFER
   implicit none
   private
 
@@ -23,6 +24,7 @@ module mod_fmr_divdra_runtime_binding
   end type fmr_divdra_binding_diagnostics_t
 
   public :: fmr_bind_single_level_positive_divdra
+  public :: fmr_bind_single_level_signed_divdra
 
 contains
 
@@ -80,5 +82,36 @@ contains
     diagnostics%drainage_levels = 1
     diagnostics%active_nodes = n
   end subroutine fmr_bind_single_level_positive_divdra
+
+  subroutine fmr_bind_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, &
+       drainage_flux_by_level, diagnostics)
+    type(drainage_distribution_parameters_t), intent(in) :: parameters
+    type(process_hydraulic_view_t), intent(in) :: hydraulic_view
+    real(real64), intent(in) :: scalar_transfer
+    real(real64), allocatable, intent(inout) :: drainage_flux_by_level(:,:)
+    type(fmr_divdra_binding_diagnostics_t), intent(out) :: diagnostics
+
+    ! Nonfinite values must not reach the incumbent ordered real comparison
+    ! under floating-point traps. Existing target ownership still has priority.
+    if (.not. ieee_is_finite(scalar_transfer)) then
+      diagnostics = fmr_divdra_binding_diagnostics_t()
+      diagnostics%authoritative_scalar_transfer = scalar_transfer
+      diagnostics%status = FMR_DIVDRA_BIND_PROCESS_REJECTED
+      diagnostics%process_status = DRAIN_DIST_INVALID_TRANSFER
+      diagnostics%process%status = DRAIN_DIST_INVALID_TRANSFER
+      if (allocated(drainage_flux_by_level)) diagnostics%status = FMR_DIVDRA_BIND_TARGET_ALREADY_BOUND
+      return
+    end if
+    ! Preserve target ownership and every incumbent validation/publication rule.
+    call fmr_bind_single_level_positive_divdra(parameters, hydraulic_view, abs(scalar_transfer), &
+         drainage_flux_by_level, diagnostics)
+    diagnostics%authoritative_scalar_transfer = scalar_transfer
+    if (diagnostics%status /= FMR_DIVDRA_BIND_OK) return
+    if (scalar_transfer < 0.0_real64) then
+      drainage_flux_by_level = -drainage_flux_by_level
+      diagnostics%process%raw_partition_sum = -diagnostics%process%raw_partition_sum
+      diagnostics%process%closure_correction = -diagnostics%process%closure_correction
+    end if
+  end subroutine fmr_bind_single_level_signed_divdra
 
 end module mod_fmr_divdra_runtime_binding

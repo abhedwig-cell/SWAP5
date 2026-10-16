@@ -1,12 +1,12 @@
 {
   "work_unit": "MC-CROP01 / SW431-CROP-ANNUAL",
-  "baseline": "9b05521b2df3579869f1906cb13900078fdeeda4",
+  "baseline": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
   "master_checkpoint": "988b46c3246e835b6f9bcd97b3f2714c56de30d2",
   "scope": "SW_WOFOST=1; IDSL=0; SWCROPSNM=0, existing classic AMAXTB route",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "remaining_dependency": [],
   "fixed_acceptance_conditions": [
@@ -24,243 +24,387 @@
     "root-depth variants",
     "potential RELMF"
   ],
-  "preexecution_finding": "B1.11 retains DWRT/DWST/DWLV; classic living biomass owner and persistence retain no dead-organ inventories. Verify the exact source/production discrepancy before any full-capability claim. WOFOST81 is not an equivalent reference authority.",
-  "next_action": "Implement source gross cumulative death counters in existing biomass/clone/structural owner; extend existing qualification-only codec in place; execute fixed annual source/event/restart gates.",
-  "recovery_point": "This record and tests/fmig431/annual/; production unchanged",
+  "preexecution_finding": "Historical first attempt identified absent classic mortality history; repaired in the existing owner. See initial_qualification_attempt.",
+  "next_action": "Publish exact qualified branch; verify live canonical and expected-head merge, then record admission and update existing master capability.",
+  "recovery_point": "Existing annual branch with sealed source, actual weather, accepted events and full-organ restart proof; no new crop variant.",
   "dependency_surface": [
     "src/crop/mod_wofost_*",
     "src/runtime/mod_fmr_wofost_crop_transaction.f90",
     "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
     "integration/f-wof/F-WOF41_PRODUCTION_OWNER_PERSISTENCE_API_CONTRACT.json"
   ],
-  "blockers": [
-    {
-      "id": "CLASSIC_RETAINED_DEAD_ORGAN_STATE",
-      "source": "B1.11 wofost.f90:1083..1085; WOFOST_states DWRT/DWST/DWLV, update_wofost_interface and write_wofost",
-      "production": "Classic biomass/owner has no retained dead-root/stem/leaf masses; classic export/reconstruct copies the incomplete owner. Daily living equivalence and its successful restart do not reconstruct cumulative dead inventories.",
-      "required_resolution": "Within the existing shared biomass/crop owner and persistence contracts, select retained mortality/total-organ representation and legacy/default compatibility, including all dependent WOFOST81/harvest/codec consumers. Then implement and qualify only that bounded successor. No second owner, inferred WOFOST81 replacement, or silent restart layout change."
-    }
-  ],
-  "status": "EXISTING_OWNER_MORTALITY_REPAIR_CONTRACT_SELECTED",
+  "blockers": [],
+  "status": "QUALIFIED_ADMISSION_PENDING",
   "checkpoint_commit": "33f072a4e68d4fd064309dfb11386db98b07172d",
   "exact_tested_tree": "e0f115963ca10955739569e998345d0ffb280467",
   "remote_preexecution_checkpoint": "1a5bca4b4f683686c954e388bd9f2c2a32e2ebac",
-  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
-  "canonical_delta": "Only NUT leaf-return source review/status/evidence; no compiled dependency or classic owner change.",
+  "last_reconciled_upstream": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+  "canonical_delta": "c62a2e69 to49f3434d is admitted-assessment receipt metadata only; complete science surface unchanged. Signed drainage integration is present and recompiled in resumed real weather qualification.",
   "evidence": {
-    "path": "integration/audits/evidence/MC_CROP01_ANNUAL_SOURCE_QUALIFICATION_20261016.tar.xz.b64",
-    "decoded_sha256": "869c230b6798b21acf186826192709564184ef5edc1a3db65a563cc09ac13c29",
-    "members": 36,
-    "bytes": 34468
+    "path": "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+    "decoded_sha256": "fb982dac926f9e018358bb54a62b5ed215e5f0bf09b616d017c3f24f0b667f55",
+    "members": 352,
+    "decoded_bytes": 212060
   },
   "results": {
-    "baseline": "33f072a4e68d4fd064309dfb11386db98b07172d",
-    "source_authority_ref": "988b46c3246e835b6f9bcd97b3f2714c56de30d2",
-    "source_member_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
-    "source_archive_sha256": "18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c",
-    "extracted_routines": {
-      "update_dvs_rate": "a790c50daaca67164c207acf723fba702af01cad9e5219bcadb75fcbb6e1f781",
-      "update_wofost": "82911647a8d3c0577ec7285b4c0d3b2d5225da0a9b8ff3a27c9825da6814f204",
-      "totass": "8279c1b2d8645bb0e78525607bea1b2f5ccb5da6efe6a065429918a0d3828127",
-      "assim": "3a357cef9d706802826e9411b4ddcf69cdae90ea30d396f9dfb6ece14becfb90",
-      "chckprt": "390cdcea78df9bc5f6d5832b7126e6d15172a39c28c89717381b1aefd85199db",
-      "chckcbl": "2561427d2b99e2ada3e38d67a5932a6c19271a7d0975717e8a30d4520df03475",
-      "relgrwt": "7402c0b4c6b2b411ac9cd99a17c3fc67ec3dc78e1c9f1b4e4eafb04dfd87891d",
-      "deaths": "62dbb71aeb73da7420b4510946c8545b69af6f8419771be7b760c6fceefc0fbd",
-      "deatha": "b2fbabaa6e983037d9d90c3a078cf0e9725b270175a8efc851c64bbec3719d3c",
-      "glai": "941634cbceb9b4486e3b7b99d6ff2d1d89aa3019970e06967e7f4f06d02930ba",
-      "lvdth": "2b796ab29999814c93d4093cc2bf4ea309f2806279c690478d7a804c5771cc75",
-      "lvshft": "0b128472090eed20eed724864d2f692a5e94d2abd93ffd2670f4a7e11e29107f",
-      "lvwgli": "101f158673275a6c179c06bebc57329dc95df4e7392d2ba7a45512131c374d79"
-    },
-    "source_adapter_sha256": "4ea7d01e9e73290c88f9fe3148c7b7c02e8f82c81c9978786183232c223570cf",
-    "compiled_inputs": {
-      "src/crop/mod_wofost_rate_table.f90": "8fb0b0765b2021bdddd9f3af9d497b43cdcc37c4cc93e23f5cf87208db6dd9fe",
-      "src/crop/mod_crop_root_depth_biomass.f90": "cad3f316fa4ad3bd3c3a2992c07782c5fcb2794347b6b7ea4ab9eb2ff01095a3",
-      "src/crop/mod_crop_root_depth_dvs.f90": "17ea93688481fd2abc0dd7bc552ddf77583e69e7e29bca30649485fcfdc1e161",
-      "src/crop/mod_crop_root_profile_static.f90": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95",
-      "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
-      "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
-      "src/crop/mod_wofost_actual_biomass_state.f90": "5266f31e18062015ac9a62caa2386a0717bece86d5189efc44537c78589db3f6",
-      "src/crop/mod_wofost_crop_owner_state.f90": "8abe8dc68e98a18f085232332a33c2de8d81750b2f96ca899d8849ac3e8c0ab9",
-      "src/crop/mod_wofost_one_day_rate_state_view.f90": "db22b520ffbefbcd8ab81e15a8738cb70f1ac51f5614c357033af89098e39b55",
-      "src/crop/mod_wofost_one_day_structural_evolution.f90": "d332c86fb3349b3cf788cc8c64fa16d424fb6fb7bfe4b1cc4df8ecf438749bc5",
-      "src/crop/mod_wofost_rate_parameters.f90": "1797ca6f0a1890b0eef72c34de76d0b6f6c713d41ad3ffb32edcbaa779ac14f5",
-      "src/crop/mod_wofost_prepare_assimilation.f90": "184f5106546118a742fc633fb388f091e126227cdd6188726f747c5af0603ca8",
-      "src/crop/mod_wofost_finalize_rates.f90": "13296fe2ff79d9371e980d973006ac40f103e45dce490ee85190b0bcca6c356b",
-      "src/crop/mod_wofost_two_phase_crop_window.f90": "f302ae0b3daf4e1166b8b7caa07f8da9995e0978b90be512e7059a28e79ddb58",
-      "src/crop/mod_crop_adaptive_root_profile_owner.f90": "d9bfd7487247701597b45d1ac8dcc39a3f6d5bb03c9f929f50a2c69fc996edbc",
-      "src/crop/mod_crop_germination_preflight.f90": "d602f3e103b3eb34d14da3a135292f5959308412fda5962813a3b03b5661c411",
-      "src/crop/mod_crop_preparation_sowing_preflight.f90": "e85843fd4654c45cd59f56bf2103dc218addde8724097d10c4d656e463558a95",
-      "src/crop/mod_crop_lifecycle_daily_composition.f90": "f3e6a744107ca12da5feb23fd484d1b2bedbe72cb8a3790f114f661288032580",
-      "src/crop/mod_crop_previous_day_emergence_gate.f90": "bce7b87e514bd78db479ddc1f379bd50484e1966321415a97d5ec2fce50bbcc6",
-      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
-      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
-      "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
-      "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
-      "src/runtime/mod_canonical_interval_runtime.f90": "ea3d780325bb03ceed80be7d1fd62d1e88bc710fea2ceac85464c3429ce160c4",
-      "src/kernel/mod_kernel_transactions.f90": "3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de",
-      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "192ecce84fc87610aff3d0f5bcf77b4ffce5b3426d636d47a3d0b231545c5a9d",
-      "src/crop/mod_crop_lifecycle_continuation.f90": "7b48d68384f0621c53b7fcec073131ef048690f12d84478dd29fc45fdaad379e",
-      "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "453144bafc59803f582fa7f250d8efed99f14b644be6167a2016df0a186404c9",
-      "src/crop/mod_crop_root_extension_supply_limit.f90": "463e868dc220e38d95505566af7848bc4d5f96d89e82fe26db4034e2ab9f1208",
-      "src/crop/mod_crop_root_depth_rate_owner.f90": "cbf964fb9669b34b7f1fabafd91998fd9753097e686cf048bdd58c47cafee910",
-      "src/crop/mod_wofost_emergence_initialization.f90": "c8f8e81a6ac2cbb1ca932884b172a757d06d9adb5ccdff2a6c375aed52066924",
-      "src/crop/mod_wofost_potential_shadow_state.f90": "2fe40bc73ef2b2835b23a8d781237c5bc1a48cf984cff621a44896be0f9ef237",
-      "src/crop/mod_wofost_potential_shadow_daily.f90": "0c1751400e6c9ccdeeacfce1aa502e72bb971a2ec9ccbe0cacc1f334a271ca09",
-      "src/runtime/mod_fmr_wofost_crop_transaction.f90": "9b4b67f962f3a21cfcdc538e51ebc0f8ff6a6c6ee0a07b8428dfaa784b3dd1d6",
-      "/tmp/classic-annual-probe-final/oracle.f90": "4ea7d01e9e73290c88f9fe3148c7b7c02e8f82c81c9978786183232c223570cf",
-      "tests/fmig431/annual/test_classic_source.f90": "4094818c69498ec78b34f1a4a5ff353976f5a0a1fa31231b7ad7919a41bcb861"
-    },
-    "runs": [
-      {
-        "optimization": 0,
-        "command": [
-          "/workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran",
-          "-ffree-line-length-none",
-          "-fcheck=all",
-          "-fbacktrace",
-          "-ffpe-trap=invalid,zero,overflow",
-          "-O0",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_table.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_biomass.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_dvs.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_profile_static.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_uptake_input_contract.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_transaction_reference.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_actual_biomass_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_crop_owner_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_rate_state_view.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_structural_evolution.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_parameters.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_prepare_assimilation.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_finalize_rates.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_two_phase_crop_window.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_adaptive_root_profile_owner.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_germination_preflight.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_preparation_sowing_preflight.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_daily_composition.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_previous_day_emergence_gate.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/solver/mod_soil_water_accepted_step_direction_contract.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_publication.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_contracts.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_interval_runtime.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/kernel/mod_kernel_transactions.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_continuation.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_anaerobic_extension_gate.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_extension_supply_limit.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_rate_owner.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_emergence_initialization.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_daily.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_crop_transaction.f90",
-          "/tmp/classic-annual-probe-final/oracle.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/tests/fmig431/annual/test_classic_source.f90",
-          "-o",
-          "/tmp/classic-annual-probe-final/o0/probe"
-        ],
-        "compile_link_seconds": 3.190258515009191,
-        "compile_exit": 0,
-        "native_seconds": 0.021747671999037266,
-        "native_exit": 0,
-        "stdout_sha256": "0de76a250fd201f6a756268940231dd30cfd2abf00ac7e0b3d7d24985d2bd6e0"
-      },
-      {
-        "optimization": 2,
-        "command": [
-          "/workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran",
-          "-ffree-line-length-none",
-          "-fcheck=all",
-          "-fbacktrace",
-          "-ffpe-trap=invalid,zero,overflow",
-          "-O2",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_table.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_biomass.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_dvs.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_profile_static.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_uptake_input_contract.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_transaction_reference.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_actual_biomass_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_crop_owner_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_rate_state_view.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_structural_evolution.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_parameters.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_prepare_assimilation.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_finalize_rates.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_two_phase_crop_window.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_adaptive_root_profile_owner.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_germination_preflight.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_preparation_sowing_preflight.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_daily_composition.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_previous_day_emergence_gate.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/solver/mod_soil_water_accepted_step_direction_contract.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_publication.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_contracts.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_interval_runtime.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/kernel/mod_kernel_transactions.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_continuation.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_anaerobic_extension_gate.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_extension_supply_limit.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_rate_owner.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_emergence_initialization.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_state.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_daily.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_crop_transaction.f90",
-          "/tmp/classic-annual-probe-final/oracle.f90",
-          "/workspace/scratch/367ae52292d4/SWAP5/tests/fmig431/annual/test_classic_source.f90",
-          "-o",
-          "/tmp/classic-annual-probe-final/o2/probe"
-        ],
-        "compile_link_seconds": 9.738268967004842,
-        "compile_exit": 0,
-        "native_seconds": 0.014239951997296885,
-        "native_exit": 0,
-        "stdout_sha256": "0de76a250fd201f6a756268940231dd30cfd2abf00ac7e0b3d7d24985d2bd6e0"
-      }
-    ],
-    "scope": "Three 200-day classic IDSL0 actual-crop process trajectories; supplied weather, constant tables and water ratios; actual classic persistence export/reconstruct every17 days; not Richards, accepted-event or complete-organ restart admission.",
-    "cost_limits": {
-      "separate_compile_seconds": "UNKNOWN",
-      "separate_link_seconds": "UNKNOWN"
-    },
-    "disposition": "NOT_QUALIFIED",
-    "source_state_completeness": {
-      "B111_retained_dead_organs": [
-        "dwrt",
-        "dwst",
-        "dwlv"
-      ],
-      "classic_biomass_fields": [
-        "root_biomass",
-        "stem_biomass",
-        "storage_biomass",
-        "exponential_leaf_area_index",
-        "leaf_biomass",
-        "specific_leaf_area",
-        "leaf_age"
-      ],
-      "mapping_complete": false,
-      "existing_living_restart": "PASS only when native probe passes",
-      "disposition": "BLOCKED_SOURCE_STATE_COMPLETENESS"
-    },
-    "living_source_probe_pass": true,
-    "O0_O2_stdout_identity": true
+    "source": "PASS 3x200 days/O0/O2",
+    "accepted_event_owners": "PASS",
+    "fresh_process_restart": "PASS",
+    "real_weather_Richards": "PASS12 native",
+    "WOFOST81_preservation": "PASS",
+    "original_codec_bytes": "PASS"
   },
-  "disposition": "CONCRETELY_BLOCKED_NOT_ADMITTED_NOT_SUPERSEDED",
-  "production_changed": false,
+  "disposition": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "production_changed": true,
   "nonclaims": [
-    "No field-calibrated crop, variable AFGEN-table interpolation or independent weather/astronomy qualification. Weather and water ratios are supplied boundaries.",
-    "Not a Richards-coupled trajectory, automatic sowing/harvest/calendar transition, full accepted-event gate, fresh-process disk restart, or all classic source parameter envelope.",
-    "The source-probe matching tolerance is 1e-10 relative, with measured maximum absolute difference1.918465386552271e-12; no existing admission tolerance changed.",
-    "Every17-day production export/reconstruct validates existing living continuation only; absence of dead state is a source-coverage gap, not a failed existing persistence API.",
-    "No production edit or admitted capability reopened. No full F-CI, RossFast, frost or unrelated N/root rerun."
+    "No new root/N/solver physics or production native codec tag.",
+    "Annual active-crop source and typed runtime are qualified; automatic initialization/harvest/reset/rotation remain separate existing capabilities.",
+    "Codec1 preserves its historical zero-counter representation; unrecorded B1.11 mortality cannot be reconstructed from an old artifact."
   ],
   "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
   "documentation_source_check": "PASS tools/docs/check_docs.py",
   "selected_repair_contract": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md#selected-same-owner-repair-16-october-2026",
-  "diagnostic_not_physical_storage": true
+  "diagnostic_not_physical_storage": true,
+  "initial_qualification_attempt": {
+    "status": "EXISTING_OWNER_MORTALITY_REPAIR_CONTRACT_SELECTED",
+    "baseline": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "results": {
+      "baseline": "33f072a4e68d4fd064309dfb11386db98b07172d",
+      "source_authority_ref": "988b46c3246e835b6f9bcd97b3f2714c56de30d2",
+      "source_member_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+      "source_archive_sha256": "18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c",
+      "extracted_routines": {
+        "update_dvs_rate": "a790c50daaca67164c207acf723fba702af01cad9e5219bcadb75fcbb6e1f781",
+        "update_wofost": "82911647a8d3c0577ec7285b4c0d3b2d5225da0a9b8ff3a27c9825da6814f204",
+        "totass": "8279c1b2d8645bb0e78525607bea1b2f5ccb5da6efe6a065429918a0d3828127",
+        "assim": "3a357cef9d706802826e9411b4ddcf69cdae90ea30d396f9dfb6ece14becfb90",
+        "chckprt": "390cdcea78df9bc5f6d5832b7126e6d15172a39c28c89717381b1aefd85199db",
+        "chckcbl": "2561427d2b99e2ada3e38d67a5932a6c19271a7d0975717e8a30d4520df03475",
+        "relgrwt": "7402c0b4c6b2b411ac9cd99a17c3fc67ec3dc78e1c9f1b4e4eafb04dfd87891d",
+        "deaths": "62dbb71aeb73da7420b4510946c8545b69af6f8419771be7b760c6fceefc0fbd",
+        "deatha": "b2fbabaa6e983037d9d90c3a078cf0e9725b270175a8efc851c64bbec3719d3c",
+        "glai": "941634cbceb9b4486e3b7b99d6ff2d1d89aa3019970e06967e7f4f06d02930ba",
+        "lvdth": "2b796ab29999814c93d4093cc2bf4ea309f2806279c690478d7a804c5771cc75",
+        "lvshft": "0b128472090eed20eed724864d2f692a5e94d2abd93ffd2670f4a7e11e29107f",
+        "lvwgli": "101f158673275a6c179c06bebc57329dc95df4e7392d2ba7a45512131c374d79"
+      },
+      "source_adapter_sha256": "4ea7d01e9e73290c88f9fe3148c7b7c02e8f82c81c9978786183232c223570cf",
+      "compiled_inputs": {
+        "src/crop/mod_wofost_rate_table.f90": "8fb0b0765b2021bdddd9f3af9d497b43cdcc37c4cc93e23f5cf87208db6dd9fe",
+        "src/crop/mod_crop_root_depth_biomass.f90": "cad3f316fa4ad3bd3c3a2992c07782c5fcb2794347b6b7ea4ab9eb2ff01095a3",
+        "src/crop/mod_crop_root_depth_dvs.f90": "17ea93688481fd2abc0dd7bc552ddf77583e69e7e29bca30649485fcfdc1e161",
+        "src/crop/mod_crop_root_profile_static.f90": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95",
+        "src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
+        "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
+        "src/crop/mod_wofost_actual_biomass_state.f90": "5266f31e18062015ac9a62caa2386a0717bece86d5189efc44537c78589db3f6",
+        "src/crop/mod_wofost_crop_owner_state.f90": "8abe8dc68e98a18f085232332a33c2de8d81750b2f96ca899d8849ac3e8c0ab9",
+        "src/crop/mod_wofost_one_day_rate_state_view.f90": "db22b520ffbefbcd8ab81e15a8738cb70f1ac51f5614c357033af89098e39b55",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90": "d332c86fb3349b3cf788cc8c64fa16d424fb6fb7bfe4b1cc4df8ecf438749bc5",
+        "src/crop/mod_wofost_rate_parameters.f90": "1797ca6f0a1890b0eef72c34de76d0b6f6c713d41ad3ffb32edcbaa779ac14f5",
+        "src/crop/mod_wofost_prepare_assimilation.f90": "184f5106546118a742fc633fb388f091e126227cdd6188726f747c5af0603ca8",
+        "src/crop/mod_wofost_finalize_rates.f90": "13296fe2ff79d9371e980d973006ac40f103e45dce490ee85190b0bcca6c356b",
+        "src/crop/mod_wofost_two_phase_crop_window.f90": "f302ae0b3daf4e1166b8b7caa07f8da9995e0978b90be512e7059a28e79ddb58",
+        "src/crop/mod_crop_adaptive_root_profile_owner.f90": "d9bfd7487247701597b45d1ac8dcc39a3f6d5bb03c9f929f50a2c69fc996edbc",
+        "src/crop/mod_crop_germination_preflight.f90": "d602f3e103b3eb34d14da3a135292f5959308412fda5962813a3b03b5661c411",
+        "src/crop/mod_crop_preparation_sowing_preflight.f90": "e85843fd4654c45cd59f56bf2103dc218addde8724097d10c4d656e463558a95",
+        "src/crop/mod_crop_lifecycle_daily_composition.f90": "f3e6a744107ca12da5feb23fd484d1b2bedbe72cb8a3790f114f661288032580",
+        "src/crop/mod_crop_previous_day_emergence_gate.f90": "bce7b87e514bd78db479ddc1f379bd50484e1966321415a97d5ec2fce50bbcc6",
+        "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+        "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+        "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+        "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+        "src/runtime/mod_canonical_interval_runtime.f90": "ea3d780325bb03ceed80be7d1fd62d1e88bc710fea2ceac85464c3429ce160c4",
+        "src/kernel/mod_kernel_transactions.f90": "3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de",
+        "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "192ecce84fc87610aff3d0f5bcf77b4ffce5b3426d636d47a3d0b231545c5a9d",
+        "src/crop/mod_crop_lifecycle_continuation.f90": "7b48d68384f0621c53b7fcec073131ef048690f12d84478dd29fc45fdaad379e",
+        "src/crop/mod_crop_root_anaerobic_extension_gate.f90": "453144bafc59803f582fa7f250d8efed99f14b644be6167a2016df0a186404c9",
+        "src/crop/mod_crop_root_extension_supply_limit.f90": "463e868dc220e38d95505566af7848bc4d5f96d89e82fe26db4034e2ab9f1208",
+        "src/crop/mod_crop_root_depth_rate_owner.f90": "cbf964fb9669b34b7f1fabafd91998fd9753097e686cf048bdd58c47cafee910",
+        "src/crop/mod_wofost_emergence_initialization.f90": "c8f8e81a6ac2cbb1ca932884b172a757d06d9adb5ccdff2a6c375aed52066924",
+        "src/crop/mod_wofost_potential_shadow_state.f90": "2fe40bc73ef2b2835b23a8d781237c5bc1a48cf984cff621a44896be0f9ef237",
+        "src/crop/mod_wofost_potential_shadow_daily.f90": "0c1751400e6c9ccdeeacfce1aa502e72bb971a2ec9ccbe0cacc1f334a271ca09",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90": "9b4b67f962f3a21cfcdc538e51ebc0f8ff6a6c6ee0a07b8428dfaa784b3dd1d6",
+        "/tmp/classic-annual-probe-final/oracle.f90": "4ea7d01e9e73290c88f9fe3148c7b7c02e8f82c81c9978786183232c223570cf",
+        "tests/fmig431/annual/test_classic_source.f90": "4094818c69498ec78b34f1a4a5ff353976f5a0a1fa31231b7ad7919a41bcb861"
+      },
+      "runs": [
+        {
+          "optimization": 0,
+          "command": [
+            "/workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-fbacktrace",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-O0",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_table.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_biomass.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_dvs.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_profile_static.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_uptake_input_contract.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_actual_biomass_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_crop_owner_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_rate_state_view.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_structural_evolution.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_parameters.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_prepare_assimilation.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_finalize_rates.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_two_phase_crop_window.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_adaptive_root_profile_owner.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_germination_preflight.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_preparation_sowing_preflight.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_daily_composition.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_previous_day_emergence_gate.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_contracts.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_interval_runtime.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/kernel/mod_kernel_transactions.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_continuation.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_anaerobic_extension_gate.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_extension_supply_limit.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_rate_owner.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_emergence_initialization.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_daily.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_crop_transaction.f90",
+            "/tmp/classic-annual-probe-final/oracle.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/tests/fmig431/annual/test_classic_source.f90",
+            "-o",
+            "/tmp/classic-annual-probe-final/o0/probe"
+          ],
+          "compile_link_seconds": 3.190258515009191,
+          "compile_exit": 0,
+          "native_seconds": 0.021747671999037266,
+          "native_exit": 0,
+          "stdout_sha256": "0de76a250fd201f6a756268940231dd30cfd2abf00ac7e0b3d7d24985d2bd6e0"
+        },
+        {
+          "optimization": 2,
+          "command": [
+            "/workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-fbacktrace",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-O2",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_table.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_biomass.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_dvs.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_profile_static.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_uptake_input_contract.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_actual_biomass_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_crop_owner_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_rate_state_view.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_one_day_structural_evolution.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_rate_parameters.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_prepare_assimilation.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_finalize_rates.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_two_phase_crop_window.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_adaptive_root_profile_owner.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_germination_preflight.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_preparation_sowing_preflight.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_daily_composition.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_previous_day_emergence_gate.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_contracts.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_canonical_interval_runtime.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/kernel/mod_kernel_transactions.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_lifecycle_continuation.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_anaerobic_extension_gate.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_extension_supply_limit.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_crop_root_depth_rate_owner.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_emergence_initialization.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_state.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/crop/mod_wofost_potential_shadow_daily.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/src/runtime/mod_fmr_wofost_crop_transaction.f90",
+            "/tmp/classic-annual-probe-final/oracle.f90",
+            "/workspace/scratch/367ae52292d4/SWAP5/tests/fmig431/annual/test_classic_source.f90",
+            "-o",
+            "/tmp/classic-annual-probe-final/o2/probe"
+          ],
+          "compile_link_seconds": 9.738268967004842,
+          "compile_exit": 0,
+          "native_seconds": 0.014239951997296885,
+          "native_exit": 0,
+          "stdout_sha256": "0de76a250fd201f6a756268940231dd30cfd2abf00ac7e0b3d7d24985d2bd6e0"
+        }
+      ],
+      "scope": "Three 200-day classic IDSL0 actual-crop process trajectories; supplied weather, constant tables and water ratios; actual classic persistence export/reconstruct every17 days; not Richards, accepted-event or complete-organ restart admission.",
+      "cost_limits": {
+        "separate_compile_seconds": "UNKNOWN",
+        "separate_link_seconds": "UNKNOWN"
+      },
+      "disposition": "NOT_QUALIFIED",
+      "source_state_completeness": {
+        "B111_retained_dead_organs": [
+          "dwrt",
+          "dwst",
+          "dwlv"
+        ],
+        "classic_biomass_fields": [
+          "root_biomass",
+          "stem_biomass",
+          "storage_biomass",
+          "exponential_leaf_area_index",
+          "leaf_biomass",
+          "specific_leaf_area",
+          "leaf_age"
+        ],
+        "mapping_complete": false,
+        "existing_living_restart": "PASS only when native probe passes",
+        "disposition": "BLOCKED_SOURCE_STATE_COMPLETENESS"
+      },
+      "living_source_probe_pass": true,
+      "O0_O2_stdout_identity": true
+    },
+    "blockers": [
+      {
+        "id": "CLASSIC_RETAINED_DEAD_ORGAN_STATE",
+        "source": "B1.11 wofost.f90:1083..1085; WOFOST_states DWRT/DWST/DWLV, update_wofost_interface and write_wofost",
+        "production": "Classic biomass/owner has no retained dead-root/stem/leaf masses; classic export/reconstruct copies the incomplete owner. Daily living equivalence and its successful restart do not reconstruct cumulative dead inventories.",
+        "required_resolution": "Within the existing shared biomass/crop owner and persistence contracts, select retained mortality/total-organ representation and legacy/default compatibility, including all dependent WOFOST81/harvest/codec consumers. Then implement and qualify only that bounded successor. No second owner, inferred WOFOST81 replacement, or silent restart layout change."
+      }
+    ],
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_ANNUAL_SOURCE_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "869c230b6798b21acf186826192709564184ef5edc1a3db65a563cc09ac13c29",
+      "members": 36,
+      "bytes": 34468
+    },
+    "nonclaims": [
+      "No field-calibrated crop, variable AFGEN-table interpolation or independent weather/astronomy qualification. Weather and water ratios are supplied boundaries.",
+      "Not a Richards-coupled trajectory, automatic sowing/harvest/calendar transition, full accepted-event gate, fresh-process disk restart, or all classic source parameter envelope.",
+      "The source-probe matching tolerance is 1e-10 relative, with measured maximum absolute difference1.918465386552271e-12; no existing admission tolerance changed.",
+      "Every17-day production export/reconstruct validates existing living continuation only; absence of dead state is a source-coverage gap, not a failed existing persistence API.",
+      "No production edit or admitted capability reopened. No full F-CI, RossFast, frost or unrelated N/root rerun."
+    ],
+    "preexecution_finding": "B1.11 retains DWRT/DWST/DWLV; classic living biomass owner and persistence retain no dead-organ inventories. Verify the exact source/production discrepancy before any full-capability claim. WOFOST81 is not an equivalent reference authority."
+  },
+  "repair_admission": {
+    "baseline": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
+    "stage": "QUALIFIED_ADMISSION_PENDING",
+    "scope": "Existing classic SW_WOFOST1/IDSL0/SWCROPSNM0 actual annual AMAXTB production; complete crop organ-state mortality history through existing FMR transaction and restart. Existing typed valid parameter domain; automatic sowing/harvest/rotation, root variants, Soil-N and potential RELMF remain separately owned.",
+    "production_paths": [
+      "src/crop/mod_wofost_actual_biomass_state.f90",
+      "src/crop/mod_wofost_finalize_rates.f90",
+      "src/crop/mod_wofost_one_day_structural_evolution.f90"
+    ],
+    "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+    "postimages": {
+      "src/crop/mod_wofost_actual_biomass_state.f90": {
+        "status": "M",
+        "blob": "79da2d32fa4e99f8f5bb24097f526e4ee896af47"
+      },
+      "src/crop/mod_wofost_finalize_rates.f90": {
+        "status": "M",
+        "blob": "b967136a0640f9ae6c2c4d9d9250d8946a05245d"
+      },
+      "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+        "status": "M",
+        "blob": "9afdb2e4ea88fba0f75b80a7ccdfaae579e6481a"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "b256c5354d0d34be51690a20c65449670cc01ba2"
+      },
+      "tests/fmig431/annual/check_classic_codec.py": {
+        "status": "A",
+        "blob": "c64e00d2255e63c21bb75ec133b35f1eac7b6591"
+      },
+      "tests/fmig431/annual/check_zero_codec_bytes.py": {
+        "status": "A",
+        "blob": "5e09c8cbe27820ba627f2263380cabc6a159ba1d"
+      },
+      "tests/fmig431/annual/resume_classic_weather.py": {
+        "status": "A",
+        "blob": "69fed665565fa6ec5e9eac966afead333742fc8c"
+      },
+      "tests/fmig431/annual/run_classic_owners.py": {
+        "status": "A",
+        "blob": "6e91b2b918d8ac410db0ec9d446e1b4d4b3f5829"
+      },
+      "tests/fmig431/annual/run_classic_restart.py": {
+        "status": "A",
+        "blob": "0b793b82fbb61d2ef9485cf24e2d7df8b773fdb4"
+      },
+      "tests/fmig431/annual/run_classic_source.py": {
+        "status": "A",
+        "blob": "043a8869558f86a82ba583a12a2d6188372de0d0"
+      },
+      "tests/fmig431/annual/run_classic_weather.py": {
+        "status": "A",
+        "blob": "47e2f7b8da3f4f46e83c56fd3ab770b55dc23412"
+      },
+      "tests/fmig431/annual/run_wofost81_preservation.py": {
+        "status": "A",
+        "blob": "4dcb6ba71bdb5dceeedd8336cadf96fbdb09e2c1"
+      },
+      "tests/fmig431/annual/test_annual_admission_controls.py": {
+        "status": "A",
+        "blob": "fb302b32cc9da687a7b6c6be70c69c756d3ebd57"
+      },
+      "tests/fmig431/annual/test_classic_source.f90": {
+        "status": "A",
+        "blob": "a93fee4043f760fb1a1ff0a3c5b7d8069b40fd26"
+      },
+      "tests/fmig431/annual/test_zero_restart.f90": {
+        "status": "A",
+        "blob": "3d82d522c5bb3e644dd5014f3c3cf5a172419d29"
+      },
+      "tests/fmig431/annual/verify_annual_successor.py": {
+        "status": "A",
+        "blob": "3141a25440fa6c5eb5ef21c4b9b6d92ecdb62f61"
+      },
+      "tests/fmig431/verify_signed_divdra_successor.py": {
+        "status": "M",
+        "blob": "0363090d3cb347a8aa575b3baf71e859ff65cc03"
+      },
+      "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90": {
+        "status": "M",
+        "blob": "e4845a4d118fe17955efec3800754c19aa2dfb08"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "fb982dac926f9e018358bb54a62b5ed215e5f0bf09b616d017c3f24f0b667f55",
+      "members": 352,
+      "decoded_bytes": 212060
+    },
+    "conditions": {
+      "literal_B111_actual_source": "PASS O0/O2,3x200days with source AFGEN/AMAXTB, stress, cohorts, anthesis, DVS2 and all mortality state",
+      "accepted_events": "PASS original F-WOF38/39 assertions plus mortality equality",
+      "restart": "PASS existing F-WOF40 two real processes, exact continuous/restarted endpoint; existing opaque/disk codec carries nonzero counters",
+      "codec_compatibility": "PASS original canonical codec1 bytes exact O0/O2,14 nonzero/corruption/legacy controls",
+      "affected_WOFOST81": "PASS immutable full-season case001 gate, original numerical precision",
+      "actual_weather_Richards": "PASS12 native programs,IDSL0,neutral/dry/hydraulic,continuous/restart,O0/O2; positive death and complete-owner comparison"
+    },
+    "parallel_reconciliation": "Preserves admitted signed DIVDRA and N-leaf reference assessment. N-off annual source does not consume daily partial-return or grass-removal stock; cumulative mortality here is not an extra N/OM storage reservoir.",
+    "test_selection": "Only changed crop/state/runtime and actual owning preservation. No full FCI, RossFast, frost or unrelated N qualification.",
+    "admission_guard_followup": "Exact successor source/qualification and CLI delegation plus Python-cache filtering only. Full previous signed guard projects byte-exact to canonicalc62a2e69; actual immutable qualification is sealed. No native/compiled scientific input changed.",
+    "owner_controls": {
+      "source_evidence_negatives": 18,
+      "owning_FCI_entry": "PASS --crop-annual-owner-only",
+      "existing_FCI_prerequisites": {
+        "--int12c-owner-only": "PASS",
+        "--sol-pond-owner-only": "PASS",
+        "--drain-signed-owner-only": "PASS"
+      },
+      "source_docs": "PASS",
+      "strict_docs": "PASS",
+      "full_FCI": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "archive": {
+        "path": "integration/audits/evidence/MC_CROP01_ANNUAL_ADMISSION_CONTROLS_20261016.tar.xz.b64",
+        "decoded_sha256": "c2fe22ad31fb560940733ee23f02a0ddcf649298f544b1e7cfd214064eb0afac",
+        "members": 7
+      }
+    }
+  }
 }
