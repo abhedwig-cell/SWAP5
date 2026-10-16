@@ -11736,10 +11736,10 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator."
+        "claim": "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation."
       },
       "restrictions": [
-        "SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator."
+        "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-DRAIN01",
@@ -11752,12 +11752,22 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "SOURCE_DEFECT_REFERENCE_CORRECTION_REQUIRED",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "source_qualification_blocker_20261016": {
+        "canonical_recovery": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+        "phase": "dislayer_phase_20261016",
+        "evidence_checkpoint": "3d0edefd47bdd1741cd693e1cfa0440ad4e616d2",
+        "existing_branch": "work/swap431-drain-dislayer-20261007",
+        "qualified": false,
+        "admitted": false,
+        "count_delta": 0
+      }
     },
     {
       "capability_id": "SW431-DRAIN-INF-SPLIT",
@@ -14840,7 +14850,7 @@
       "capability_id": "SW431-DRAIN-DISLAYER",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
-      "why_open": "SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator.",
+      "why_open": "Existing DISLAYER candidate matches complete B1.11/admitted03 source but both violate per-level scalar conservation when abs(retained sum)<1e-8. Small rates lose water; full-scalar top fallback double-books nonzero deeper flux. Actual O0/O2 native diagnosis24cases,18 defects/6 controls per variant. Qualify isolated B1 Paragraph12 mass correction first, then correct existing candidate and bind/test serialized runtime. No valid-domain restriction or tolerance relaxation.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -17937,7 +17947,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+  "canonical_locator_head": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19456,6 +19466,38 @@
       "numerical_execution_for_metadata": false,
       "production_merge_full_tree": "f53b65c16dabeb6c59fda5bdc598ee64b59ddf68 EXACT qualified candidate",
       "other242_capability_rows": "UNCHANGED"
+    }
+  },
+  "latest_mc_drain01_dislayer_preflight_20261016": {
+    "canonical_recovery": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+    "phase": "dislayer_phase_20261016",
+    "evidence_checkpoint": "3d0edefd47bdd1741cd693e1cfa0440ad4e616d2",
+    "existing_branch": "work/swap431-drain-dislayer-20261007",
+    "qualified": false,
+    "admitted": false,
+    "count_delta": 0,
+    "capability_id": "SW431-DRAIN-DISLAYER",
+    "remaining_condition": "Qualified minimal B1 correction for Paragraph12 mass normalization, then all already-frozen full process/runtime/admission conditions.",
+    "no_count_change": true,
+    "counts": {
+      "ADMITTED": 99,
+      "ACTIVE_MIGRATION": 105,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 3
+    },
+    "total_unresolved": 108,
+    "full_fci_RossFast_low_air": "NOT_SELECTED_SOURCE_PREFLIGHT_BLOCKED",
+    "validation_receipts": {
+      "historical_source_and_pinned_authority_integrity": "PASS",
+      "inheritance_negative_controls": "20 PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS13.03s",
+      "ledger_disposition_delta": 0,
+      "all243_dispositions_unchanged": true,
+      "canonical_production_and_reference_unchanged": true
     }
   }
 }

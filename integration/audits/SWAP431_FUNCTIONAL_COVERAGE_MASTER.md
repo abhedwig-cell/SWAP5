@@ -1,3 +1,9 @@
+# Current DISLAYER source preflight, 16 October 2026
+
+`SW431-DRAIN-DISLAYER` remains **ACTIVE_MIGRATION**. Complete B1.11 and admitted03 DIVDRA and the existing candidate reproduce18 per-level mass defects among24 cases per O0/O2 execution; six conservative controls remain exact. The1e-8 retained-sum branch loses small scalar transfers or double-books nonzero deeper flux after top-node fallback. Frozen full conditions and source-bound evidence: canonical `ce5d6b6a41462e25eacbc1b31a6a911bd809fceb`, phase `dislayer_phase_20261016` in the existing drainage recovery record.
+
+First remaining condition: qualify an isolated B1 Paragraph12 normalization correction under ADR-0005; then correct the existing transform and complete its existing process/runtime/admission conditions. No production/reference code was admitted. **Counts remain99 ADMITTED and108 unresolved of243.**
+
 # Current ordinary separate infiltration admission, 16 October 2026
 
 `SW431-DRAIN-INF-SPLIT` is **ADMITTED** through [PR1266](https://github.com/abhedwig-cell/SWAP5/pull/1266), canonical `09bd5913394e5e263d414b50d29f720e3ab1e21f`, source `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921`. The actual full merge tree equals the qualified candidate. Shared B19 integral, original effective spacing, source-valid same-compartment geometry and actual single/multilevel mass, rejection/replay, restart and isolation pass O0/O2. Original B18, signed/multilevel and parallel TCS6 admission evidence is preserved.
