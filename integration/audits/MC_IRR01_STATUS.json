@@ -4974,5 +4974,52 @@
       },
       "remaining_TCS6_conditions": []
     }
+  },
+  "availability_completion_20261016": {
+    "baseline": "341ba3783f4364d4ff08b00a97514a93adb7eb22",
+    "branch": "work/mc-irr01-avail-20261016",
+    "capability": "SW431-IRR-AVAIL",
+    "phase": "CONTRACT_FIXED_IMPLEMENTATION_PENDING",
+    "implemented": false,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "full_capability": false,
+    "candidate_reconciliation": "No existing open AVAIL/irrigation implementation PR found; PR1072 is the existing draft master. PR1262 TCS6 and its exact native adapter are inherited, not rebuilt as a second route.",
+    "closure_conditions": [
+      "Literal authenticated B1.11 TASK4 for surface and SSDI, fractions0/interior/1 and zero/positive configured rate, including zero-rate SSDI where TASK4 intentionally leaves qssdi and duration unchanged; no new availability physics.",
+      "Existing allocation source/revision/half-open validity and finite fraction checks; invalid/stale inputs reject without publication. Freeze once on selected accepted event, ignore changed/expired/missing provider inside it, and require fresh valid provider at next event.",
+      "Actual authentic-weather accepted production: root-free sensor and rooted material/current-root routes, rain/ET independent from spatial SSDI, positive/zero configured rate and differing provider revisions; rejected/incomplete physical attempts, replay and accepted water balance.",
+      "Existing S5WI0001 native adapter admits the already accepted managed selector profiles rather than TCS6 alone, with exact expected config/source binding. Continuous/opaque/native fresh-process continuation across active event, source expiry and next real day; no replayed prefix or second codec/calendar/provider owner.",
+      "Preserve TCS6 native bytes/trajectories and old native tags; byte-identical physical equations and TASK4 policy. Revalidate incumbent actual source/evidence authority, affected owner entrypoints and admission-negative controls.",
+      "Source/strict docs, current canonical and parallel branch reconciliation, exact qualified merge tree, postmerge owner proof, then existing AVAIL row/queue/recovery promotion only. No unrelated capability promotion."
+    ],
+    "scope": "Full existing external-availability modifier contract composed through currently admitted physical/application profiles. Other selector, salt, hydraulic, crop or spatial capabilities retain their independent admission conditions; they are not automatic AVAIL dependencies.",
+    "held_fixed": [
+      "one accepted weather/crop/soil owner",
+      "existing allocated irrigation owner and receipt",
+      "existing CRC native adapter/tag/schema and byte representation",
+      "literal TASK4 order and zero-rate SSDI semantics",
+      "mass gates and numerical policy"
+    ],
+    "dependency_surface": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+      "src/process/mod_irrigation_availability_policy.f90",
+      "existing managed/rooted weather owner contracts"
+    ],
+    "test_selection": {
+      "direct": "Small real availability policy + authenticated literal source and invalid input controls O0/O2; expected<10s.",
+      "physical": "Controlled verified reuse of admitted TCS6 final295-provider O0/O2 objects; recompile bootstrap, existing native adapter and actual generated drivers only if all other current source/toolchain/artifact hashes are exact. Fresh physical/native executions expected<240s. Full rebuild only on an actual ABI/provider delta.",
+      "preservation": "Fresh unchanged TCS6 representative endpoints and source/evidence owner proof. Exact old codec bodies unchanged.",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "github_actions": "NOT_SELECTED"
+    },
+    "next_action": "Extend existing native profile acceptance without changing payload bytes; implement actual provider/continuation witnesses, execute direct O0/O2 then affected physical qualification. No admission until all fixed conditions PASS.",
+    "blockers": []
   }
 }
