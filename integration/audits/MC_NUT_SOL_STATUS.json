@@ -144,7 +144,7 @@
     },
     "record_scope": "Pre-merge component qualification; actual canonical component integration is recorded separately. Runtime admission remains false."
   },
-  "next_safe_step": "PR1098 source-policy prerequisite is integrated. Preserve existing WOFOST81 and aquifer exclusion. Bind this policy only under existing crop/Soil-N owner contract with actual accepted mass/state, exactly-once fixation, rollback and restart qualification before runtime NFIX admission.",
+  "next_safe_step": "Vegetative1253 admitted and unchanged. Separate reproductive/death source assessment complete; follow reproductive_review_20261016, preserving existing owners and whole-N gates.",
   "canonical_component_integration_20261016": {
     "pr": 1098,
     "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
@@ -437,6 +437,87 @@
       "hosted_workflow_runs": [],
       "full_capability": false,
       "master_disposition_changes": 0
+    }
+  },
+  "reproductive_review_20261016": {
+    "baseline": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+    "stage": "SOURCE_ASSESSMENT_COMPLETE_NO_PRODUCTION_ADMISSION",
+    "branch": "work/nut-b111-reproductive-review-20261016",
+    "contract": "docs/science/MC_NUT01_REPRODUCTIVE_REVIEW_20261016.md",
+    "scope": "Separate source/executable review of reproductive storage supply, FNTRT root donor, residual-concentration death, small translocation cutoff and donor overdraw. Preserve1253 and existing WOFOST81/Soil-N owner.",
+    "source_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+    "literal_lines": [
+      [
+        354,
+        370
+      ],
+      [
+        197,
+        255
+      ]
+    ],
+    "unchanged1253_production_blobs": {
+      "src/crop/mod_crop_b111_n_request_binding.f90": "78f8dc0d6507e457941b2d8152466ce2e2384316",
+      "src/crop/mod_crop_soil_n_configuration.f90": "2b37c9ba5aec86f33d20bb9cef40eb658927b35b",
+      "src/crop/mod_crop_soil_n_day.f90": "6259e3aaaf852fc1fb3cac670c0c674602498d73",
+      "src/crop/mod_wofost81_nitrogen.f90": "49d75092fd06920468eb8665a3e1138022d19751"
+    },
+    "review_result": {
+      "status": "SOURCE_REVIEW_PASS_NOT_PRODUCTION_ADMISSION",
+      "baseline": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "authority_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+      "literal_lines": [
+        [
+          354,
+          370
+        ],
+        [
+          197,
+          255
+        ]
+      ],
+      "production_provider_sha256": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce",
+      "cases_per_opt": 4,
+      "cost_seconds": 0.6673359959822847
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "7eaed2455e86a1db193be55aa73426465f895fc6d8b106488f8330605067d16a",
+      "decoded_bytes": 8604,
+      "members": 23
+    },
+    "findings": [
+      "conserving root-translocation discriminator .08 vs .01904761904761905 kg/ha/day",
+      "literal donor-overdraw/clipping algebraic counterexample gains1.5 kg/ha; reachability in complete crop not established",
+      "death discriminator .1 vs .5 kg/ha/day",
+      "active translocation cutoff algebraic counterexample gains2e-6 kg/ha; not a declared reachable reference defect"
+    ],
+    "decision": "New bounded source prepare/apply policy requires explicit selection, original order, prepublication refusal of active cutoff/overdraw; no removal of1253 vegetative guard, no WOFOST81 rewrite and no automatic broad reference correction. Reuse sole crop/soil/pending owner and complete restart.",
+    "test_selection": {
+      "executed": "two native O0/O2 review programs with4 discriminators each, one real unchanged production provider and literal source oracle; strict bounds and IEEE traps",
+      "measured_total_seconds": 0.6673359959822847,
+      "scientific_admission": "NONE; source assessment only",
+      "not_selected": "full FCI, Richards/RossFast/highest low-air; no production/caller/state/restart changes"
+    },
+    "next_safe_step": "Implement small source-order reproductive/death process contract on explicit bounded conserving donor domain; qualify before composing existing N owner. Wider source defects need a separate reachability/reference decision.",
+    "actual_senescence_admission": {
+      "pr": 1239,
+      "merge_commit": "3b661766dc59298a7f541c970c2d3a55602d926c",
+      "scope": "Existing delayed physical material owner, not new B1.11 death-equation equivalence"
+    },
+    "production_implemented": false,
+    "production_qualified": false,
+    "production_admitted": false,
+    "capability_disposition_changes": 0,
+    "pr": 1259,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1259",
+    "validation": {
+      "scientific_surface_unchanged_from_canonical": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "source_guard": "PASS existing dynamic-pond owner source guard; no src/tests/tools/reference/.github delta",
+      "docs": "source and strict PASS;16.44s strict build",
+      "concurrent_canonical": "924b6c3eef1128f4b2a39a19754ff988cdf90df5 adds only independent1258 status/ledger receipts; all preserved",
+      "no_new_numerical_qualification": "Review probes only, not new production admission"
     }
   }
 }
