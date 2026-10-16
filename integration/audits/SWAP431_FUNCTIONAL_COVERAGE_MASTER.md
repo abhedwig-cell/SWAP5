@@ -1,6 +1,17 @@
 # SWAP431 functional coverage master: recoverable review
 
 
+Latest separate crop-N assessment (2026-10-16): PR1259 merged at
+`a0cbac6a14b952bc4a34dd105b7251803c77f445`. Four source discriminators per
+optimization establish reproductive/root-donor/death differences and algebraic
+literal cutoff/clipping counterexamples. They do not establish full-trajectory
+reachability or new production admission. Vegetative1253 and WOFOST81 remain
+byte-identical. Next MC-NUT01 unit is a bounded source-order prepare/apply
+contract, preserving one crop/soil/pending owner and restart. All243 dispositions
+and the complete capability census remain unchanged; SOL1258 stays admitted.
+
+
+
 Latest bounded evolving-pond admission (2026-10-16): PR1258 merged at
 `6353f109d00763fcb4f533f2f764c8eb50db99d5`, receipt `1c28da44`.
 The existing hydraulic depth now fills/drains under explicit gross rain/irrigation;
