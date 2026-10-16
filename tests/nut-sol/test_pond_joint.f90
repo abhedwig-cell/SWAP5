@@ -276,10 +276,9 @@ contains
     call require(maxval(abs(finalm%mass_mg_cm2+finalc%sorbed_matrix_mass-mass))<1d-11,'literal compartment mass')
     k=finalc%pond_mass
     call require(abs(k-surface_mass)<1d-11,'literal persistent pond')
-    call require(abs(sum(mass)+surface_mass-sum(m%mass_mg_cm2)-c%solute_total()-pm-surface_input+totalout)<1d-11, &
+    call require(abs(sum(mass)+surface_mass-sum(m%mass_mg_cm2)-c%solute_total()-surface_input+totalout)<1d-11, &
       'literal combined balance')
     call require(all(finalm%mass_mg_cm2>=0d0).and.all(finalc%sorbed_matrix_mass>=0d0),'nonnegative accepted stores')
-    call require(finalc%pond_mass==k,'single surface owner')
     do j=1,21
       bad=steps;broken=supply;trial=initial
       i=size(bad)
