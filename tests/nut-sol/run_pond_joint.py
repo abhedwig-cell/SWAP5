@@ -81,6 +81,7 @@ for opt in ('O0','O2'):
             if q!=p:visit(q)
         active.remove(p);seen.add(p);ordered.append(p)
     driver=ROOT/'tests/nut-sol/test_pond_joint.f90';visit(driver);ordered.remove(driver)
+    original_driver=ROOT/'tests/nut-sol/test_surface_joint.f90';visit(original_driver);ordered.remove(original_driver)
     ordered.append(ROOT/'src/legacy/b1_10_port/headcalc.f90')
     objects=[]
     for i,p in enumerate(ordered+[driver]):
