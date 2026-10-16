@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.1",
+  "work_unit": "MC-NUT01-MC-SOL01",
+  "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+  "branch": "work/swap431-nutsol-20261007",
+  "pull_request": 1098,
+  "phase": "B111_SOURCE_POLICY_COMPONENT_LOCALLY_QUALIFIED_PENDING_STABLE_CI",
+  "implemented": {
+    "b111_nfixation_policy": true,
+    "this_pr_changes_soil_n_owner": false,
+    "this_pr_changes_solute_owner": false
+  },
+  "persisted": true,
+  "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+  "qualification": {
+    "b111_literal_source_oracle": "593cases x3outputs bit-identical O0/O2 PASS",
+    "invalid_inputs": "39cases per optimization PASS with IEEE traps",
+    "unchanged_WOFOST81": "Original1806 demand/arbitrationcases and edge owner O0/O2 PASS",
+    "production_runtime_admission": false
+  },
+  "owner_contract": "integration/audits/MC_NUT_SOL_OWNER_DECISION.md",
+  "invariants": [
+    "rejected trials do not mutate committed nutrient/solute state",
+    "one authoritative owner per persistent mass store",
+    "whole-system constituent mass balance is independent from local equation equality",
+    "restart reproduces all persistent nutrient/solute stores",
+    "WOFOST81 semantics remain unchanged"
+  ],
+  "historical_preregistration": {
+    "schema_version": "1.0",
+    "work_unit": "MC-NUT01-MC-SOL01",
+    "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+    "branch": "work/swap431-nutsol-20261007",
+    "implemented": {
+      "b111_nfixation_policy": true,
+      "nutrient_soil_owner": false,
+      "solute_reactive_owner": false
+    },
+    "persisted": true,
+    "local_tests": {
+      "b111_nfixation_policy": "O0/O2 PASS with gfortran 14.2, -fcheck=all and -ffpe-trap=invalid,zero,overflow"
+    },
+    "qualification": {
+      "b111_literal_source_oracle": "PENDING_PR_ACTION",
+      "production_runtime_admission": false
+    },
+    "owner_contract": "integration/audits/MC_NUT_SOL_OWNER_DECISION.md",
+    "invariants": [
+      "rejected trials do not mutate committed nutrient/solute state",
+      "one authoritative owner per persistent mass store",
+      "whole-system constituent mass balance is independent from local equation equality",
+      "restart reproduces all persistent nutrient/solute stores",
+      "WOFOST81 semantics remain unchanged"
+    ],
+    "explicit_architecture_decision_required": {
+      "capability": "SW431-SALT-AQUIFER",
+      "reason": "B1.11 SWBR source has reproduced numnod+1 bounds defect; corrected reservoir coefficient/storage and units require approved reference-correction contract before implementation"
+    },
+    "next_safe_step": "Qualify the separate B1.11 fixation policy against the exact bundled source, then implement the Soil-N inventory owner before reactions/crop exchange. In MC-SOL01 extend the existing mobile owner with matrix reactive storage only; do not implement aquifer breakthrough until the correction decision is accepted."
+  },
+  "component_closeout_20261016": {
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "original_candidate": "d59aaa12c8312c8ecc42b1328537d5da412431a8",
+    "phase": "QUALIFIED_COMPONENT_ONLY_PENDING_CI",
+    "qualified": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "source_oracle": "Complete exact B1.11 wofostnut.f90 SHA071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2; original unchanged demand body extracted literally.",
+    "corpus": "Original6cases,75 boundary/cutoff/fraction combinations and512 independently seeded varying-demand vectors; all3outputs compared by binary64 bits.",
+    "rounding_reconciliation": "Original expanded component had157 one/few-ulp output mismatches at both optimizations, max absolute2.274e-13. Retain failed outputs; restore literal addition/partition order. No tolerance change or WOFOST81 edit.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24,
+      "member_sha256": {
+        "README.txt": "f586db17119c8bb2870825448073e8b1578447ea372de779f9693776b9c53c10",
+        "component/inputs.json": "2ea73024418646a399be74cb02c6c8cfcc285f47ef59fa9ca596236df4292636",
+        "component/native.log": "cfbd1fe68a20d6be22ea340824ac97bfc524eaf9906f72d5c169d9b894c45500",
+        "literal/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stdout": "3ebb0d856630a842f98639fcaeb91d45aba50bb5ec9403f46c4330a7737ad66d",
+        "literal/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stdout": "3ebb0d856630a842f98639fcaeb91d45aba50bb5ec9403f46c4330a7737ad66d",
+        "literal/inputs.txt": "7b6a56c1690e2d6b7296a7f3cf8baf099cdcf66bbf6785b6d6c4804fccdbbb78",
+        "literal/literal.f90": "095e142e51e15a3264a7638f50f7901ec11e7532ce71b2094b64a04b90bc2910",
+        "literal/result.json": "627ca7d6cde332df1c9c7b1c9f69104b95f554506b9dd5e4473cf3a4a8268030",
+        "literal/wofostnut.f90": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "retained_failures/literal_preimage/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_failures/literal_preimage/O0.stderr": "26e3c2570e692a5dff4ed553b6f23a973d973a9057178953c445979177cfdfe5",
+        "retained_failures/literal_preimage/O0.stdout": "eb566c706a613a797edd49d76086dafdf19f74a427f274573d842c2718aee902",
+        "retained_failures/literal_preimage/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_failures/literal_preimage/O2.stderr": "4dab61cb6614c907a577b7fb940ba2048019eb077da7848b1a065963b87ed301",
+        "retained_failures/literal_preimage/O2.stdout": "eb566c706a613a797edd49d76086dafdf19f74a427f274573d842c2718aee902",
+        "retained_failures/literal_preimage/inputs.txt": "7b6a56c1690e2d6b7296a7f3cf8baf099cdcf66bbf6785b6d6c4804fccdbbb78",
+        "retained_failures/literal_preimage/literal.f90": "095e142e51e15a3264a7638f50f7901ec11e7532ce71b2094b64a04b90bc2910",
+        "retained_failures/literal_preimage/result.json": "ecb77c277e5debab1cb5eda373b8b41e45dd5511060f6550f53a817a850e70b1",
+        "retained_failures/literal_preimage/wofostnut.f90": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "retained_failures/original_six_case.log": "30443db2b429152f7a91d4f9bb2565ffb7568280d207ee353e5c7196ce3cb693"
+      }
+    },
+    "postimages": {
+      ".github/workflows/fci-canonical.yml": {
+        "status": "M",
+        "blob": "6e0cc387f552352dddb50eb7aa2a8d216af71159"
+      },
+      ".github/workflows/swap431-nutsol.yml": {
+        "status": "A",
+        "blob": "db5553b8cd29af9456d869ae29b0c1e1ecb64213"
+      },
+      "src/crop/mod_b111_nfixation_policy.f90": {
+        "status": "A",
+        "blob": "995993a4d3f788dcdae9f58e3b4ec489d93fa4a5"
+      },
+      "tests/fwof/pp02/run_b111_nfixation_policy.sh": {
+        "status": "A",
+        "blob": "cb9d189f67964583bfbc34cd3a1cec10861fccf5"
+      },
+      "tests/fwof/pp02/test_b111_nfixation_policy.f90": {
+        "status": "A",
+        "blob": "5dd4185189604299282a52e19fe781ab787a0955"
+      },
+      "tests/fwof/pp02/test_b111_nfixation_successor_controls.py": {
+        "status": "A",
+        "blob": "e660d8ae6e426a71de3a339486e6025709558f3c"
+      },
+      "tests/fwof/pp02/verify_b111_nfixation_successor.py": {
+        "status": "A",
+        "blob": "3f5e896232294089d42003f99ca26893537a1872"
+      },
+      "tools/audits/probe_swap431_b111_nfix_policy.py": {
+        "status": "A",
+        "blob": "c25ea2d43136032d36d3684e5e81ec6aaca0d653"
+      }
+    },
+    "test_selection": {
+      "owning": "Standalone source-policy O0/O2, literal complete demand outputs,39 IEEE/domain negatives",
+      "preservation": "Unchanged WOFOST81 original numerical owner drivers freshly O0/O2; exact additive unused-module source guard; unchanged current canonical owner proof at immutable base.",
+      "full_fci": "NOT_SELECTED_IMPACT_NO_EXISTING_PRODUCTION_CHANGE",
+      "highest": "NOT_SELECTED_POLICY",
+      "solver": "NOT_SELECTED_IMPACT",
+      "expected_seconds": 60
+    }
+  },
+  "next_safe_step": "Observe existing PR1098 owning component, FCI selection/modular proof and documentation CI. Merge only qualified source component; record runtime and full NFIX capability unadmitted. Existing Soil-N/crop-N request/receipt binding remains a separate owner task; aquifer remains excluded/rejected."
+}
