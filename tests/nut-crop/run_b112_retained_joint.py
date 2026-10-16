@@ -3,7 +3,7 @@ from pathlib import Path
 import base64,hashlib,io,json,os,runpy,struct,tarfile,zlib
 ROOT=Path(__file__).resolve().parents[2]
 # One shared stable build executes the original default/1253/1260 science first.
-original=runpy.run_path(str(ROOT/'tests/nut-crop/run_reproductive_binding.py'))
+original=runpy.run_path(str(ROOT/('tests/nut-crop/reuse_b112_stable.py'if os.environ.get('B112_REUSE_STABLE')else'tests/nut-crop/run_reproductive_binding.py')))
 ns=original['ns'];OUT=ns['OUT'];cmd=ns['cmd'];FC=ns['FC'];sha=ns['sha'];result=original['result'];result['b112_retained']={}
 more_original=original['more']
 for opt in ('O0','O2'):

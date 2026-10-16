@@ -100,7 +100,7 @@ program test_b112_retained_joint
   cp%harvest%policy%return_fraction=[.5d0,.25d0,.5d0]
   cp%harvest%policy%application_age=[1.57d0,.99d0,1.57d0,1.57d0]
  endif
- cp%tables(15)%y=.01d0
+ cp%tables(15)%y=.02d0
  call configure_owner(crop,cp,status);call require(status==0,'WOFOST81 owner initialize')
  crop%nitrogen%value%namountlv=4d0;crop%nitrogen%value%namountst=1d0;crop%nitrogen%value%namountrt=.5d0
  crop%nitrogen%value%namountso=.5d0;crop%nitrogen%value%initial_total=6d0
@@ -377,7 +377,7 @@ contains
   integer::code
   pv=[cp%b111_reproductive%dvsnlt,cp%b111_reproductive%dvsnt,cp%b111_reproductive%nfixf,cp%b111_reproductive%fntrt]
   ! The fixture has a constant maximum concentration table.
-  nmaxlv=.01d0
+  nmaxlv=.02d0
   associate(q=>day%prepared)
    m=[q%wlv_before,q%wst_before,q%wrt_before,q%wso_before];dead=[q%drlv,q%drst,q%drrt]
    call literal_n(cp%base%nitrogen%donor_view(),pv,before%nitrogen%value,before%crop%development_stage, &

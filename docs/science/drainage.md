@@ -157,9 +157,9 @@ interacting multilevel partitions, altered discharge-layer bounds and native
 DRAMET3/OWLTAB remain separate ledger entries. The frozen Status-A denominator
 above is unchanged.
 
-## Post-Status-A interacting ordinary DIVDRA candidate (16 October 2026)
+## Post-Status-A interacting ordinary DIVDRA successor (16 October 2026)
 
-Existing MC-DRAIN01 PR1109 extends the explicit serialized request with paired
+Canonically admitted MC-DRAIN01 PR1109 extends the explicit serialized request with paired
 `distribution_parameter_refs(:)` and `scalar_transfers(:)` for more than one
 level. Both vectors are required together; their lengths must match. Scalar
 request fields must remain at their zero defaults when vectors are supplied.
@@ -189,7 +189,10 @@ The existing recovery record
 `multilevel_phase_20261016`, freezes the exact admission conditions and links
 O0/O2 original-source/literal partition, hard mass, rejection/replay,
 empty-registry restart, isolation and incumbent preservation evidence. Only
-`SW431-DRAIN-DIV-MULTI` is a closure candidate. Separate infiltration,
+`SW431-DRAIN-DIV-MULTI` closes through this admission. Separate infiltration,
 DRAMET3, highest-interflow, altered discharge-layer tops and frost-ON multilevel
-remain separate capabilities. Canonical admission must be established by the
-actual merged PR and its source/evidence identity.
+remain separate capabilities. [PR1109](https://github.com/abhedwig-cell/SWAP5/pull/1109)
+merged at `5d2518abd2b285b13f9b5f7d2177918589fd7abc`, with source tree
+`9ce06f8381c006dbc16f95880632695abbec12d5` identical to the qualified successor.
+The existing recovery record links the frozen conditions, raw O0/O2 receipts,
+parallel annual/B1.12 preservation and mastercoverage closure receipt.

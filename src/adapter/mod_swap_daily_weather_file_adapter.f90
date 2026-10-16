@@ -30,9 +30,19 @@ module mod_swap_daily_weather_file_adapter
     procedure :: growth_values => record_growth_values
     procedure :: same_input => record_same_input
     procedure :: same_source => record_same_source
+    procedure :: source_identity => record_source_identity
   end type
   public :: read_swap_daily_weather_file, swap_weather_calendar_day
 contains
+  subroutine record_source_identity(self,bytes,day,available)
+    class(swap_daily_weather_record_t),intent(in)::self
+    character(:),allocatable,intent(out)::bytes
+    integer,intent(out)::day
+    logical,intent(out)::available
+    bytes='';day=0;available=self%ready()
+    if(.not.available)return
+    bytes=self%source_bytes;day=self%calendar_day
+  end subroutine
   ! B1.11 functions.f90 AFGEN: a descending abscissa terminates a partly
   ! filled alternating x/y array. Trailing slots are not consumed. Normalize
   ! only that active prefix into the existing immutable physical input owner.

@@ -262,7 +262,9 @@ contains
 
     valid = .false.
     if (.not. all(ieee_is_finite(values))) return
-    if (forcing%global_radiation < 0.0_real64 .or. forcing%global_radiation > 5.0e6_real64) return
+    ! B1.11 MOD_meteo reads rad<=5.d6 in kJ/m2/day, then multiplies
+    ! by1000 before this J/m2/day interface. Preserve that source domain.
+    if (forcing%global_radiation < 0.0_real64 .or. forcing%global_radiation > 5.0e9_real64) return
     if (forcing%daylength_hours < 0.0_real64 .or. forcing%daylength_hours > 24.0_real64) return
     if (forcing%diffuse_irradiation_perpendicular < 0.0_real64) return
     if (forcing%co2_efficiency_factor < 0.0_real64 .or. forcing%co2_efficiency_factor > 2.0_real64) return

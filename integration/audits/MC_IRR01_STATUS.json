@@ -4252,5 +4252,701 @@
       "master_disposition_changes": 0,
       "qualification_selection": "Recorded affected-contract O0/O2 science and original owner preservation; full moving FCI/highest low-air/RossFast not selected. Empty GitHub status collection is not a hosted PASS."
     }
+  },
+  "tcs6_completion_20261016": {
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "branch": "work/mc-irr01-tcs6-20261016",
+    "phase": "CANONICALLY_ADMITTED_FULL",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "full_capability": true,
+    "closure_target": "SW431-IRR-TCS6, existing MC-IRR01 capability; no new bounded capability or denominator.",
+    "candidate_reconciliation": "No live TCS6 branch or PR found. PR1254 admitted material/root authority; PR1255 closed duplicate remains retained. Existing MC-IRR01 owner and recovery record reused.",
+    "source_authority": {
+      "archive": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+      "member": "SWAP/irrigation.f90",
+      "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "clauses": [
+        "TASK1 dayfix=366 at initialization/crop rotation",
+        "TASK3 only scheduled crop-growth selection, dayfix=dayfix+1, >=7 resets0 before strict10*cdef>IRGTHRESHOLD",
+        "TCSFIX1 and TCS6 explicitly conflict; do not combine two counters",
+        "DCS/TASK4 and active-event continuation reuse existing source semantics"
+      ]
+    },
+    "closure_conditions": [
+      "Enable existing TCS6 through actual shared weather/bootstrap/root-allocation preparation, using one existing weekly_day_counter, accepted actual roots and material FC/stress/wilting; no solver/forcing or second owner.",
+      "O0/O2 small real production drivers and literal byte-pinned B1.11 weekly branch: initial366, every0..6 boundary, strict equality/below/above threshold, failed opportunities reset0, invalid inputs and nonmutation, crop inactive/closed-window/fixed-event precedence.",
+      "Consecutive authenticated weather days spanning at least two eligible weekly opportunities; actual rooted water/crop advance, current and lagged event ordering, once per day with internal segments, exactly-once event delivery, water balance.",
+      "Rejected preparation and failed/noncompleted physical attempts preserve committed counter/day/event/provider/soil/crop; valid retry and replay return exact accepted results.",
+      "Continuous and existing opaque joint continuation are exact across active event, daily and weekly boundaries; weather/crop/soil/event/weekly/allocation state remains one atomic accepted record.",
+      "Native fresh-process joint restart using the existing restart owners/codec, with no replay from initial state or second custom codec; exact continuous/opaque/native continuation and invalid/incomplete input rejection.",
+      "Affected application owner preservation, evidence and negative controls, docs validation; reconcile latest canonical and parallel drainage/crop work before admission; update existing MC-IRR01 and master ledger only after all preceding conditions PASS."
+    ],
+    "known_gaps_before_implementation": [
+      "Bootstrap currently rejects6 and root-allocation preparation accepts2..4 only.",
+      "Existing weather/crop continuation is serialization-neutral and explicitly has no disk codec. Existing crop/Soil-N native codec encodes a different crop owner, not the weather/wofost transaction/adaptive-root/window owner. This is a genuine joint-native dependency, not evidence of PASS and not permission to add a second codec."
+    ],
+    "held_fixed": [
+      "weather Gregorian owner/epoch",
+      "weekly_day_counter existing owner",
+      "irrigation accepted-only publication",
+      "existing opaque continuation and irrigation restart schema",
+      "physical equations/tolerances/reference",
+      "canonical independent drainage/crop routes"
+    ],
+    "dependency_surface": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+      "src/process/mod_scheduled_irrigation_management_policy.f90",
+      "src/runtime/mod_fmr_irrigation_management_restart.f90",
+      "weather/crop joint continuation/native owner contract",
+      "actual root/material and accepted physics callers"
+    ],
+    "next_action": "Update existing master row/queue/recovery at latest live master head, preserve all other243-ID dispositions and parallel records; then no remaining TCS6 condition.",
+    "test_selection": {
+      "small_contract": "real source-bound TCS6 policy/application, expected <30s",
+      "physical_application": "Stable native candidate actual Richards/weather/crop weekly progression, rejected trials, current/lagged opaque and native fresh processes, active event/weekly boundary and CRC-correct decoder invalid paths; expected600s including295-provider O0/O2 builds and54 trajectory native programs. Previous failure diagnosed; no inherited native PASS. No broad FCI/RossFast/highest/Actions.",
+      "annual_reconciliation": "PR1264 changed classic biomass layout with3 gross-mortality fields and rate-packet ABI. Fresh full295-provider O0/O2 build is selected to avoid unsafe binary ABI reuse. Same54 trajectory and208 decoder matrix, explicit native serialization of all3 fields, expected600s. No full FCI/solver/stress qualification."
+    },
+    "shared_domain_findings": {
+      "actual_failure": "11-day actual driver d10 (30Jan morning completing29Jan): FMR_APP_BOOT14; crop model last_status10 potential error, potential detail5 assimilation error. Actual29Jan rad5267700J exceeds current5000000J guard.",
+      "source": "Authenticated MOD_meteo.f90 readradmax5.d6 in kJ/m2/day; lines641/917 multiply1000 to J/m2/day.",
+      "action": "Correct existing classic assimilation guard to5.d9 J source-unit bound; no formula/tolerance change. Add exact above-old-range and source-unit witnesses; rerun affected real application.",
+      "native_plan": "Extend existing mod_crop_soil_n_joint_restart_file adapter with a weather/irrigation tag, existing CRC and trusted kernel/owner reconstruction. Add serialization-neutral views to the existing opaque weather bundle/window owner; no duplicate physical state or calendar."
+    },
+    "pull_request": 1262,
+    "scientific_failures_retained": [
+      "Initial failure-probe fixture used BOUNDED rather than TASK2; corrected test configuration, no production bypass.",
+      "11-day actual O0 first driver stops on real29Jan radiation-domain refusal; source-unit correction added with separate original/corrected O0/O2 preservation witness.",
+      "First native reader restored actual model correctly, but test oracle sidecar omitted previous-day layer potential/reduction integrals; existing literal root assertion rejected. Added only independent diagnostic/oracle sidecar values; production state codec unchanged."
+    ],
+    "native_extension_contract": {
+      "adapter": "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+      "tag": "S5WI0001; extends existing adapter and CRC, old tag bodies unchanged",
+      "state": "Existing kernel snapshots, classic crop persistence, accepted windows, weather source bytes/revision and allocated irrigation restart. No second model owner.",
+      "caller": "Expected immutable configuration and actual current/previous weather records are supplied by existing application/input owners. Serialized IDs and policy/numerical/root/material fields are checked; decoder does not parse a second weather/configuration format.",
+      "fresh_process": "Producer exits at end day8 or within day9 active event after first1/64-day segment. New process restores only native model owners and independent numeric oracle/diagnostic sidecar, then executes the missing day9 tail and day10; never replays days0..8. Both schedules, DCS1/2 and nontrigger require exact continuous/opaque/native endpoint bytes.",
+      "remaining": "None for SW431-IRR-TCS6. Other selector/salt/profile capabilities retain their existing gates."
+    },
+    "diagnostic_results": {
+      "O0_actual_three_cases": "All three11-day original assertion sets pass; exact full/opaque/fresh native bytes for both schedules and both before-week/active-event checkpoint boundaries. Diagnostic reuse only of verified unchanged compiled providers, plus fresh affected bootstrap/driver; not final qualification.",
+      "native_decoder": "18 negatives pertriggered phase and16 pernontrigger phase: corrupted/truncated/trailing/tag/source/config, futureselection, NaN/Inf/wrong time, negative/NaN water, invalid/overflow counter and active provider fraction. Final qualification will execute again."
+    },
+    "admission_baseline": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "execution_commit": "03367772e47c3f6f6e20aebae39980a52a5dc665",
+    "source_tree": "e98209db9446743cad62521132040625ea750c18",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_TCS6_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "f59149101df250a04530cbac708879189d1e863d42acd8a92bd6dccc896c924c",
+      "decoded_bytes": 423248,
+      "members": 6741
+    },
+    "postimages": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "c1f4762a65046b30b3a37bfd4cb323fddfa87022"
+      },
+      "src/adapter/mod_swap_daily_weather_file_adapter.f90": {
+        "status": "M",
+        "blob": "9391528be4c6ebb0d519f713d7283f2c46fa1d23"
+      },
+      "src/crop/mod_crop_et_canopy_view_provider.f90": {
+        "status": "M",
+        "blob": "7e007ea0f228c8e0dfeddafd2a340575233de576"
+      },
+      "src/crop/mod_wofost_prepare_assimilation.f90": {
+        "status": "M",
+        "blob": "a19d21bb18307903a568b3f6cf4a6722c4468c2e"
+      },
+      "src/crop/mod_wofost_rate_table.f90": {
+        "status": "M",
+        "blob": "6c38364075e1cfff508999e0a48fab8bb7396823"
+      },
+      "src/process/mod_scheduled_irrigation_management_policy.f90": {
+        "status": "M",
+        "blob": "6620d6bf95ed9bbcb3d31c86cd622138c9c0bd4a"
+      },
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90": {
+        "status": "M",
+        "blob": "5092432d05fb443ffa42706d2a719239b13e74ce"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "9825f776c65674bc32e569eca326c5d26d6f8eed"
+      },
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": {
+        "status": "M",
+        "blob": "db587c8ee36fdaea5d7d74c0d241d3c86ec9b097"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "322a03076881687827b05a8a1531c16471ff894f"
+      },
+      "tests/fmig431/verify_multilevel_divdra_successor.py": {
+        "status": "M",
+        "blob": "258be9990cba5e4ecf334d69ef8fafc79a5ce718"
+      },
+      "tests/mc-irr01/check_tcs6_controls.py": {
+        "status": "A",
+        "blob": "c3ffb07f03798436808f2d287805016100f73bd5"
+      },
+      "tests/mc-irr01/run_tcs6_application.py": {
+        "status": "A",
+        "blob": "f623314bff3ec4d366c7ca501859904caa5cd9e8"
+      },
+      "tests/mc-irr01/run_tcs6_contract.py": {
+        "status": "A",
+        "blob": "ea54f6a7bec73c54f170bff2c3f3ce4630ce493f"
+      },
+      "tests/mc-irr01/run_tcs6_reconciliation.py": {
+        "status": "A",
+        "blob": "7cf688c0f86a570d7102e36c200816e6548a3e44"
+      },
+      "tests/mc-irr01/run_tcs6_weather_domain.py": {
+        "status": "A",
+        "blob": "218ecdd2fc5b802cbcac76d6610794c13321119c"
+      },
+      "tests/mc-irr01/tcs6_cycle_driver.py": {
+        "status": "A",
+        "blob": "c0a65dac8b5f8bb5f45846aa8d07dc231a949b55"
+      },
+      "tests/mc-irr01/tcs6_native_controls.py": {
+        "status": "A",
+        "blob": "9ff8373eec2786a53367130f35a2dd325b2e1621"
+      },
+      "tests/mc-irr01/test_tcs6_progression.f90": {
+        "status": "A",
+        "blob": "e7f76f854bbaf2e00e7bb6dd7e20e11dfd30382c"
+      },
+      "tests/mc-irr01/test_tcs6_weather_domain.f90": {
+        "status": "A",
+        "blob": "d0779cc9519e9a08f80ba2255d982f4ca811b272"
+      },
+      "tests/mc-irr01/verify_tcs6_successor.py": {
+        "status": "A",
+        "blob": "bb95c48085a17ae2dfb2e4a20073a45ca7145bc5"
+      }
+    },
+    "closure_results": [
+      {
+        "condition": 1,
+        "status": "PASS",
+        "evidence": "Existing preparation and accepted weekly owner; exact9 production postimages."
+      },
+      {
+        "condition": 2,
+        "status": "PASS",
+        "evidence": "2040 source-literal vectors, direct O0/O2 and source-unit original-domain preservation."
+      },
+      {
+        "condition": 3,
+        "status": "PASS",
+        "evidence": "11 actual days, two week opportunities, both schedules, DCS1/2 and nontrigger; actual roots and water-balance assertions."
+      },
+      {
+        "condition": 4,
+        "status": "PASS",
+        "evidence": "Speculative invalid allocation, failed/incomplete prefix, replay and valid retry preserve accepted owners."
+      },
+      {
+        "condition": 5,
+        "status": "PASS",
+        "evidence": "Full/opaque exact throughout day/week and active event."
+      },
+      {
+        "condition": 6,
+        "status": "PASS",
+        "evidence": "54 trajectory programs and208 invalid decoder cases O0/O2; native processes restore only missing tail with byte-exact endpoints."
+      },
+      {
+        "condition": 7,
+        "status": "PASS",
+        "evidence": "All scientific,30 evidence controls,6 original multilevel controls,3 owning entries,docs and live parallel reconciliation passed. PR1262 merged; full tree exactly equals qualified candidate; post-merge owner proof passed. Existing master promotion is the final accounting step."
+      }
+    ],
+    "qualification_results": {
+      "trajectory_programs": 54,
+      "decoder_negative_programs": 208,
+      "direct_vectors": 2040,
+      "direct_optimizations": [
+        0,
+        2
+      ],
+      "source_unit_programs": 4,
+      "affected_owner_cases": 6,
+      "science_wall_seconds": 493.7910814099887,
+      "prior_reconciliation_wall_seconds": 264.4951728689921,
+      "continuous_opaque_native": "EXACT_BYTE_IDENTITY",
+      "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS"
+    },
+    "canonical_reconciliation": {
+      "head": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+      "delta": "PR1099 signed drainage, PR1264 annual mortality, PR1109 multilevel and B1.12 reference admission incorporated. Complete fresh295-provider O0/O2 build, full54 trajectory/208 decoder matrix, original native tags and allocation probes re-executed. Existing classic actual and potential crop persistence includes cumulative dead-root/stem/leaf diagnostics. Original annual owner verifier and original multilevel source/evidence/postimage checks passed at immutable canonical snapshots. Multilevel adds only a separate type/procedure to one tested module; original bodies are exact and new names absent from all tested callers. Three changed routing modules are outside the build; B1.12 changes no compiled production source or pinned B1.11 weekly/weather oracle. No additional numerical selection for unused additions; no second calendar/counter/state owner/codec.",
+      "parallel": "Both canonical admissions preserved; original seven TCS6 closure conditions unchanged."
+    },
+    "incumbent_proof_sha256": "8da663beb402394797637e8b5a28add53a1a59ef0fe5bf18f2483177591ee8da",
+    "prior_science_before_annual_reconciliation": {
+      "trajectory_programs": 54,
+      "decoder_negative_programs": 208,
+      "direct_vectors": 2040,
+      "direct_optimizations": [
+        0,
+        2
+      ],
+      "source_unit_programs": 4,
+      "affected_owner_cases": 6,
+      "science_wall_seconds": 482.4816856899997,
+      "reconciliation_wall_seconds": 264.4951728689921,
+      "continuous_opaque_native": "EXACT_BYTE_IDENTITY",
+      "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS"
+    },
+    "inherited_input_projections": {
+      "src/process/mod_drainage_spatial_distribution.f90": {
+        "old_sha256": "deba7634ded2f619b89966fcfc96565e2abfb9b6ad39339599dc47268ce695be",
+        "new_sha256": "a5bd5a6e78b4291de9b86d6dcd502526bab323233824e5c9d0b19e2c1b84ed17",
+        "insertions": [
+          {
+            "range": [
+              46,
+              62
+            ],
+            "current": [
+              "\n",
+              "  type, public :: drainage_multilevel_diagnostics_t\n",
+              "    integer :: status = DRAIN_DIST_OK\n",
+              "    logical :: evaluated = .false.\n",
+              "    integer :: active_levels = 0\n",
+              "    integer :: water_table_node = 0\n",
+              "    real(real64) :: groundwater_depth = 0.0_real64\n",
+              "    real(real64) :: profile_anisotropy_factor = 0.0_real64\n",
+              "    real(real64), allocatable :: discharge_layer_bottom_depth(:)\n",
+              "    real(real64), allocatable :: discharge_transmissivity(:)\n",
+              "    real(real64), allocatable :: closure_correction(:)\n",
+              "    logical :: scalar_transfer_is_authoritative = .true.\n",
+              "    logical :: worker_scratch_only = .true.\n",
+              "  end type drainage_multilevel_diagnostics_t\n",
+              "\n",
+              "  public :: distribute_multilevel_signed_divdra\n"
+            ],
+            "baseline": []
+          },
+          {
+            "range": [
+              218,
+              466
+            ],
+            "current": [
+              "  subroutine distribute_multilevel_signed_divdra(level_parameters, hydraulic_view, scalar_transfer, &\n",
+              "       drainage_flux_by_level, diagnostics)\n",
+              "    type(drainage_distribution_parameters_t), intent(in) :: level_parameters(:)\n",
+              "    type(process_hydraulic_view_t), intent(in) :: hydraulic_view\n",
+              "    real(real64), intent(in) :: scalar_transfer(:)\n",
+              "    real(real64), allocatable, intent(out) :: drainage_flux_by_level(:,:)\n",
+              "    type(drainage_multilevel_diagnostics_t), intent(out) :: diagnostics\n",
+              "\n",
+              "    real(real64), allocatable :: khor(:), kver(:), dmax(:), flow_discharge(:), kd_drain(:)\n",
+              "    real(real64), allocatable :: bottom_depth(:), bottom_thickness(:), helper_flow(:)\n",
+              "    integer, allocatable :: sequence(:), bottom_node(:)\n",
+              "    real(real64) :: wlev, dz_top_sat, kd_hor, kd_ver, saturated_depth\n",
+              "    real(real64) :: khor_avg, kver_avg, fac_aniso\n",
+              "    real(real64) :: raw_bottom, sum_previous, tmp_r\n",
+              "    integer :: n, levels, level, i, j, wt_node, active_count, idr, jdr, tmp_i\n",
+              "\n",
+              "    diagnostics = drainage_multilevel_diagnostics_t()\n",
+              "    levels = size(level_parameters)\n",
+              "    if (levels <= 1 .or. size(scalar_transfer) /= levels) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS\n",
+              "      return\n",
+              "    end if\n",
+              "    if (any(.not. ieee_is_finite(scalar_transfer))) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_TRANSFER\n",
+              "      return\n",
+              "    end if\n",
+              "\n",
+              "    ! Preserve each authoritative scalar: inactive nonzero legacy values are unavailable, not zero.\n",
+              "    if (any(abs(scalar_transfer) > 0.0_real64 .and. abs(scalar_transfer) <= LEGACY_ACTIVE_MAGNITUDE)) then\n",
+              "      diagnostics%status = DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE\n",
+              "      return\n",
+              "    end if\n",
+              "\n",
+              "    n = level_parameters(1)%active_nodes\n",
+              "    if (.not. valid_parameters(level_parameters(1))) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS\n",
+              "      return\n",
+              "    end if\n",
+              "    do level = 2, levels\n",
+              "      if (.not. valid_parameters(level_parameters(level))) then\n",
+              "        diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS\n",
+              "        return\n",
+              "      end if\n",
+              "      if (level_parameters(level)%active_nodes /= n) then\n",
+              "        diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS\n",
+              "        return\n",
+              "      end if\n",
+              "      if (any(abs(level_parameters(level)%dz - level_parameters(1)%dz) > 0.0_real64) .or. &\n",
+              "          any(abs(level_parameters(level)%zbotcp - level_parameters(1)%zbotcp) > 0.0_real64) .or. &\n",
+              "          any(abs(level_parameters(level)%saturated_conductivity - &\n",
+              "              level_parameters(1)%saturated_conductivity) > 0.0_real64) .or. &\n",
+              "          any(abs(level_parameters(level)%horizontal_anisotropy_factor - &\n",
+              "              level_parameters(1)%horizontal_anisotropy_factor) > 0.0_real64)) then\n",
+              "        diagnostics%status = DRAIN_DIST_INVALID_PARAMETERS\n",
+              "        return\n",
+              "      end if\n",
+              "    end do\n",
+              "\n",
+              "    allocate(drainage_flux_by_level(levels,n))\n",
+              "    drainage_flux_by_level = 0.0_real64\n",
+              "    allocate(diagnostics%discharge_layer_bottom_depth(levels), diagnostics%discharge_transmissivity(levels), &\n",
+              "         diagnostics%closure_correction(levels))\n",
+              "    diagnostics%discharge_layer_bottom_depth = 0.0_real64\n",
+              "    diagnostics%discharge_transmissivity = 0.0_real64\n",
+              "    diagnostics%closure_correction = 0.0_real64\n",
+              "\n",
+              "    active_count = count(abs(scalar_transfer) > LEGACY_ACTIVE_MAGNITUDE)\n",
+              "    diagnostics%active_levels = active_count\n",
+              "    if (active_count == 0) then\n",
+              "      diagnostics%evaluated = .true.\n",
+              "      return\n",
+              "    end if\n",
+              "\n",
+              "    if (.not. ieee_is_finite(hydraulic_view%groundwater_level)) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW\n",
+              "      return\n",
+              "    end if\n",
+              "    wlev = -min(hydraulic_view%groundwater_level, 0.0_real64)\n",
+              "    if (wlev >= -level_parameters(1)%zbotcp(n)) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW\n",
+              "      return\n",
+              "    end if\n",
+              "\n",
+              "    wt_node = 1\n",
+              "    do while (wlev > -level_parameters(1)%zbotcp(wt_node) + LEGACY_LEVEL_TO_COMPARTMENT_OFFSET)\n",
+              "      wt_node = wt_node + 1\n",
+              "      if (wt_node > n) then\n",
+              "        diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW\n",
+              "        return\n",
+              "      end if\n",
+              "    end do\n",
+              "    dz_top_sat = -level_parameters(1)%zbotcp(wt_node) - wlev\n",
+              "    if (wt_node == n .and. dz_top_sat <= 0.0_real64) then\n",
+              "      diagnostics%status = DRAIN_DIST_INVALID_HYDRAULIC_VIEW\n",
+              "      return\n",
+              "    end if\n",
+              "\n",
+              "    allocate(khor(n),kver(n))\n",
+              "    khor = level_parameters(1)%saturated_conductivity * level_parameters(1)%horizontal_anisotropy_factor\n",
+              "    kver = level_parameters(1)%saturated_conductivity\n",
+              "    kd_hor = dz_top_sat*khor(wt_node)\n",
+              "    kd_ver = dz_top_sat/kver(wt_node)\n",
+              "    saturated_depth = dz_top_sat\n",
+              "    do i=wt_node+1,n\n",
+              "      kd_hor=kd_hor+level_parameters(1)%dz(i)*khor(i)\n",
+              "      kd_ver=kd_ver+level_parameters(1)%dz(i)/kver(i)\n",
+              "      saturated_depth=saturated_depth+level_parameters(1)%dz(i)\n",
+              "    end do\n",
+              "    if (kd_hor<=0.0_real64 .or. kd_ver<=0.0_real64 .or. saturated_depth<=0.0_real64) then\n",
+              "      diagnostics%status=DRAIN_DIST_INVALID_PARAMETERS\n",
+              "      return\n",
+              "    end if\n",
+              "    khor_avg=kd_hor/saturated_depth\n",
+              "    kver_avg=saturated_depth/kd_ver\n",
+              "    fac_aniso=sqrt(kver_avg/khor_avg)\n",
+              "\n",
+              "    allocate(dmax(levels),flow_discharge(levels),kd_drain(levels),bottom_depth(levels), &\n",
+              "         bottom_thickness(levels),bottom_node(levels),sequence(active_count),helper_flow(active_count))\n",
+              "    dmax=0.0_real64; flow_discharge=0.0_real64; kd_drain=0.0_real64\n",
+              "    bottom_depth=wlev; bottom_thickness=0.0_real64; bottom_node=wt_node\n",
+              "\n",
+              "    j=0\n",
+              "    do level=1,levels\n",
+              "      dmax(level)=min(0.25_real64*level_parameters(level)%drain_spacing*fac_aniso+wlev, &\n",
+              "           saturated_depth+wlev)\n",
+              "      if(abs(scalar_transfer(level))>LEGACY_ACTIVE_MAGNITUDE)then\n",
+              "        j=j+1\n",
+              "        sequence(j)=level\n",
+              "        helper_flow(j)=level_parameters(level)%drain_spacing\n",
+              "      end if\n",
+              "    end do\n",
+              "\n",
+              "    do i=1,active_count-1\n",
+              "      do j=i+1,active_count\n",
+              "        if(helper_flow(i)<helper_flow(j))then\n",
+              "          tmp_r=helper_flow(j); helper_flow(j)=helper_flow(i); helper_flow(i)=tmp_r\n",
+              "          tmp_i=sequence(j); sequence(j)=sequence(i); sequence(i)=tmp_i\n",
+              "        end if\n",
+              "      end do\n",
+              "    end do\n",
+              "\n",
+              "    idr=sequence(active_count)\n",
+              "    flow_discharge(idr)=abs(scalar_transfer(idr))*level_parameters(idr)%drain_spacing\n",
+              "    do i=active_count-1,1,-1\n",
+              "      idr=sequence(i); jdr=sequence(i+1)\n",
+              "      flow_discharge(idr)=flow_discharge(jdr)+abs(scalar_transfer(idr))*level_parameters(idr)%drain_spacing\n",
+              "    end do\n",
+              "\n",
+              "    idr=sequence(1)\n",
+              "    kd_drain(idr)=kd_hor\n",
+              "    bottom_depth(idr)=-level_parameters(1)%zbotcp(n)\n",
+              "    bottom_node(idr)=n\n",
+              "    bottom_thickness(idr)=level_parameters(1)%dz(n)\n",
+              "    if(bottom_depth(idr)>dmax(idr)) then\n",
+              "      call layer_for_depth(idr,dmax(idr))\n",
+              "      if(diagnostics%status/=DRAIN_DIST_OK)return\n",
+              "    end if\n",
+              "\n",
+              "    do i=2,active_count\n",
+              "      idr=sequence(i); jdr=sequence(i-1)\n",
+              "      if(flow_discharge(jdr)<=0.0_real64)then\n",
+              "        diagnostics%status=DRAIN_DIST_INVALID_PARAMETERS\n",
+              "        return\n",
+              "      end if\n",
+              "      kd_drain(idr)=kd_drain(jdr)*flow_discharge(idr)/flow_discharge(jdr)\n",
+              "      call layer_for_transmissivity(idr,kd_drain(idr))\n",
+              "      if(diagnostics%status/=DRAIN_DIST_OK)return\n",
+              "      if(bottom_depth(idr)>dmax(idr))then\n",
+              "        call layer_for_depth(idr,dmax(idr))\n",
+              "        if(diagnostics%status/=DRAIN_DIST_OK)return\n",
+              "      end if\n",
+              "    end do\n",
+              "\n",
+              "    do i=1,active_count\n",
+              "      idr=sequence(i)\n",
+              "      if(kd_drain(idr)<=0.0_real64 .or. bottom_thickness(idr)<=0.0_real64)then\n",
+              "        diagnostics%status=DRAIN_DIST_INVALID_PARAMETERS\n",
+              "        return\n",
+              "      end if\n",
+              "      if(wt_node==bottom_node(idr))then\n",
+              "        drainage_flux_by_level(idr,wt_node)=scalar_transfer(idr)\n",
+              "      else\n",
+              "        drainage_flux_by_level(idr,wt_node)=scalar_transfer(idr)*dz_top_sat*khor(wt_node)/kd_drain(idr)\n",
+              "        do j=wt_node+1,bottom_node(idr)-1\n",
+              "          drainage_flux_by_level(idr,j)=scalar_transfer(idr)*level_parameters(1)%dz(j)*khor(j)/kd_drain(idr)\n",
+              "        end do\n",
+              "        raw_bottom=scalar_transfer(idr)*bottom_thickness(idr)*khor(bottom_node(idr))/kd_drain(idr)\n",
+              "        sum_previous=sum(drainage_flux_by_level(idr,1:bottom_node(idr)-1))\n",
+              "        drainage_flux_by_level(idr,bottom_node(idr))=scalar_transfer(idr)-sum_previous\n",
+              "        diagnostics%closure_correction(idr)=drainage_flux_by_level(idr,bottom_node(idr))-raw_bottom\n",
+              "      end if\n",
+              "      diagnostics%discharge_layer_bottom_depth(idr)=bottom_depth(idr)\n",
+              "      diagnostics%discharge_transmissivity(idr)=kd_drain(idr)\n",
+              "    end do\n",
+              "\n",
+              "    diagnostics%evaluated=.true.\n",
+              "    diagnostics%water_table_node=wt_node\n",
+              "    diagnostics%groundwater_depth=wlev\n",
+              "    diagnostics%profile_anisotropy_factor=fac_aniso\n",
+              "\n",
+              "  contains\n",
+              "\n",
+              "    subroutine layer_for_depth(level_index, requested_depth)\n",
+              "      integer,intent(in)::level_index\n",
+              "      real(real64),intent(in)::requested_depth\n",
+              "      integer::node\n",
+              "      real(real64)::accum\n",
+              "      bottom_depth(level_index)=requested_depth\n",
+              "      node=wt_node\n",
+              "      accum=dz_top_sat\n",
+              "      kd_drain(level_index)=dz_top_sat*khor(wt_node)\n",
+              "      do while(requested_depth-wlev>accum)\n",
+              "        node=node+1\n",
+              "        if(node>n)then\n",
+              "          diagnostics%status=DRAIN_DIST_INVALID_PARAMETERS\n",
+              "          return\n",
+              "        end if\n",
+              "        accum=accum+level_parameters(1)%dz(node)\n",
+              "        kd_drain(level_index)=kd_drain(level_index)+level_parameters(1)%dz(node)*khor(node)\n",
+              "      end do\n",
+              "      kd_drain(level_index)=kd_drain(level_index)-(accum-(requested_depth-wlev))*khor(node)\n",
+              "      bottom_thickness(level_index)=level_parameters(1)%dz(node)-(accum-(requested_depth-wlev))\n",
+              "      bottom_node(level_index)=node\n",
+              "    end subroutine layer_for_depth\n",
+              "\n",
+              "    subroutine layer_for_transmissivity(level_index, requested_kd)\n",
+              "      integer,intent(in)::level_index\n",
+              "      real(real64),intent(in)::requested_kd\n",
+              "      integer::node\n",
+              "      real(real64)::accum_kd,accum_depth\n",
+              "      node=wt_node\n",
+              "      accum_kd=dz_top_sat*khor(node)\n",
+              "      accum_depth=dz_top_sat\n",
+              "      do while(accum_kd<requested_kd)\n",
+              "        node=node+1\n",
+              "        if(node>n)then\n",
+              "          diagnostics%status=DRAIN_DIST_INVALID_PARAMETERS\n",
+              "          return\n",
+              "        end if\n",
+              "        accum_kd=accum_kd+level_parameters(1)%dz(node)*khor(node)\n",
+              "        accum_depth=accum_depth+level_parameters(1)%dz(node)\n",
+              "      end do\n",
+              "      bottom_thickness(level_index)=level_parameters(1)%dz(node)-(accum_kd-requested_kd)/khor(node)\n",
+              "      bottom_depth(level_index)=wlev+accum_depth+(requested_kd-accum_kd)/khor(node)\n",
+              "      bottom_node(level_index)=node\n",
+              "    end subroutine layer_for_transmissivity\n",
+              "  end subroutine distribute_multilevel_signed_divdra\n",
+              "\n"
+            ],
+            "baseline": []
+          }
+        ],
+        "scope": "Two pure insertions: separate diagnostics type/public declaration and multilevel procedure. All existing lines and procedures byte-exact; new symbols absent from executed295-provider caller surface. Other3 drainage routing modules absent from build. B1.12 reference patch changes no compiled production source or byte-pinned B1.11 TCS/weather oracle."
+      }
+    },
+    "qualified_scientific_head": "470eb7dff66eca29ff5064259b183a74fd405717",
+    "admission_controls": {
+      "path": "integration/audits/evidence/MC_IRR01_TCS6_ADMISSION_20261016.json.gz.b64",
+      "decoded_sha256": "17852cf5d45789994c72e23f968c5a890b0405daac23693ff942c96c569113bc",
+      "decoded_bytes": 13687,
+      "negative_controls": 30,
+      "original_multilevel_controls": 6,
+      "owning_entries": [
+        "mc-irr01",
+        "int12c",
+        "crop-annual"
+      ],
+      "docs": "SOURCE_AND_STRICT_PASS"
+    },
+    "last_reconciled_canonical": "0c715757c57d302aa29cad3510ffba12c9baf3ea",
+    "infrastructure_failures_retained": [
+      "Historical recursive checkout ran out of shared scratch; no numerical PASS inferred. Original immutable annual and multilevel evidence/source checks revalidated at exact admitted snapshots.",
+      "First annual-reconciled O0 attempt censored on logging write after compile due full shared scratch; retained raw files, no native qualification reused. Final complete fresh295-provider O0/O2 build at03367772 and54+208 native matrix passed.",
+      "Generated Python cache was reported as untracked scientific input; current guard adopts the existing annual-owner exact .pyc exclusion and isolated cache prefix. All actual source/test/reference changes remain fail-closed;30 controls pass."
+    ],
+    "canonical_admission": {
+      "pr": 1262,
+      "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+      "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+      "actual_merge_tree": "998fba2a118011498b4149a22b17aa56c763ea9e",
+      "merge_tree_equals_qualified_tree": true,
+      "source_tree": "e98209db9446743cad62521132040625ea750c18",
+      "post_merge_owner_proof": "PASS",
+      "post_merge_proof_sha256": "f9d0f91e8c0be146d2b52daf7b20aa993d2f1cfb4a51dc6b2b24ae4bf3c97793",
+      "post_merge_owner_result": {
+        "qualified": true,
+        "admitted": false,
+        "persistent_surface_restart_successor": true,
+        "material_root_irrigation_successor": true,
+        "b111_request_successor": true,
+        "managed_irrigation_successor": true,
+        "nfix_component_preserved": true,
+        "hyd_successor": true,
+        "daily_density_successor": true,
+        "int12c_successor": true,
+        "co2_successor": true,
+        "swrd3_successor": true,
+        "swrd2_successor": true,
+        "harvest_successor": true,
+        "surface_successor": true,
+        "calendar_successor": true,
+        "input_successor": true,
+        "thermal_successor": true,
+        "full_capability": true,
+        "pond_successor": true,
+        "dynamic_pond_successor": true,
+        "reproductive_successor": true,
+        "signed_divdra_successor": true,
+        "baseline": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "source_tree": "e98209db9446743cad62521132040625ea750c18",
+        "current_source_tree": "e98209db9446743cad62521132040625ea750c18",
+        "classic_annual_successor": true,
+        "scope": "Classic B1.11 IDSL0/SWCROPSNM0 actual-crop source, gross mortality and FMR accepted-event/restart; existing typed valid domain. No Soil-N, automatic sowing/rotation or new numerical policy.",
+        "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "authority_commit": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "authority_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+        "method": "ORIGINAL_MULTILEVEL_SOURCE_EVIDENCE_AND_POSTIMAGES_REVALIDATED_WITH_CANONICAL_ANNUAL_REFERENCE_INHERITANCE",
+        "multilevel_divdra_successor": true,
+        "reference_leaf_successor": true,
+        "annual_source_evidence_revalidated": true,
+        "multilevel_source_evidence_revalidated": true,
+        "original_multilevel_verifier_sha256": "97bd15ec5113e13b4b3546002d5ec681b4881d17a62efc77768ef1f5de5e537e",
+        "multilevel_archive": {
+          "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+          "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+        },
+        "annual_raw_proof_sha256": "9566685698a9ea0e1083ecbea50316fca08e56720524c4e98393ee649726050c",
+        "reference_admission": {
+          "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+          "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+          "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+          "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+          "drainage_numerical_input_intersection": [],
+          "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+        },
+        "projection_policy": "New multilevel type/procedure are not referenced by any tested295-provider source outside the defining module. Every existing line is byte-exact; no additional numerical qualification selected for unused additions.",
+        "tcs6_successor": true,
+        "incumbent": {
+          "qualified": true,
+          "admitted": false,
+          "persistent_surface_restart_successor": true,
+          "material_root_irrigation_successor": true,
+          "b111_request_successor": true,
+          "managed_irrigation_successor": true,
+          "nfix_component_preserved": true,
+          "hyd_successor": true,
+          "daily_density_successor": true,
+          "int12c_successor": true,
+          "co2_successor": true,
+          "swrd3_successor": true,
+          "swrd2_successor": true,
+          "harvest_successor": true,
+          "surface_successor": true,
+          "calendar_successor": true,
+          "input_successor": true,
+          "thermal_successor": true,
+          "full_capability": false,
+          "pond_successor": true,
+          "dynamic_pond_successor": true,
+          "reproductive_successor": true,
+          "signed_divdra_successor": true,
+          "baseline": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
+          "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+          "current_source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+          "classic_annual_successor": true,
+          "scope": "Classic B1.11 IDSL0/SWCROPSNM0 actual-crop source, gross mortality and FMR accepted-event/restart; existing typed valid domain. No Soil-N, automatic sowing/rotation or new numerical policy.",
+          "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+          "highest_low_air": "NOT_SELECTED_UNCHANGED_POLICY",
+          "authority_commit": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+          "authority_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+          "method": "ORIGINAL_MULTILEVEL_SOURCE_EVIDENCE_AND_POSTIMAGES_REVALIDATED_WITH_CANONICAL_ANNUAL_REFERENCE_INHERITANCE",
+          "multilevel_divdra_successor": true,
+          "reference_leaf_successor": true,
+          "annual_source_evidence_revalidated": true,
+          "multilevel_source_evidence_revalidated": true,
+          "original_multilevel_verifier_sha256": "97bd15ec5113e13b4b3546002d5ec681b4881d17a62efc77768ef1f5de5e537e",
+          "multilevel_archive": {
+            "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+            "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+          },
+          "annual_raw_proof_sha256": "9566685698a9ea0e1083ecbea50316fca08e56720524c4e98393ee649726050c",
+          "reference_admission": {
+            "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+            "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+            "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+            "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+            "drainage_numerical_input_intersection": [],
+            "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+          },
+          "projection_policy": "New multilevel type/procedure are not referenced by any tested295-provider source outside the defining module. Every existing line is byte-exact; no additional numerical qualification selected for unused additions."
+        },
+        "science": {
+          "trajectories": 54,
+          "decoder_negatives": 208,
+          "direct_literal": true,
+          "source_unit_preservation": true,
+          "affected_owners": 6,
+          "continuous_opaque_fresh_native_exact": true
+        }
+      },
+      "full_capability": true,
+      "master_promotion": "Exactly SW431-IRR-TCS6; existing MC-IRR01 has6 admitted of16 and10 remaining.",
+      "global_full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "github_actions": "NOT_SELECTED"
+    },
+    "workstream_fullcaps": 6,
+    "workstream_remaining": 10
   }
 }
