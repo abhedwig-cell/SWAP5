@@ -47,10 +47,75 @@ module mod_crop_adaptive_root_profile_owner
     real(real64), allocatable :: root_sink_reduction(:)
   end type adaptive_root_profile_daily_forcing_t
 
+  type, public :: adaptive_root_profile_configuration_t
+    type(adaptive_root_profile_parameters_t) :: adaptation
+    type(wofost_rate_table_t) :: initial_density
+    real(real64) :: maximum_root_depth_cm=0.0_real64
+    real(real64),allocatable :: ztop_cm(:),zbot_cm(:),dz_cm(:)
+  contains
+    procedure :: ready => adaptive_configuration_ready
+    procedure :: rooted_nodes => adaptive_configuration_rooted_nodes
+  end type
+
   public :: initialize_adaptive_root_profile_state
   public :: evaluate_adaptive_root_profile_candidate
+  public :: finalize_adaptive_root_profile_candidate
 
 contains
+
+  integer function adaptive_configuration_rooted_nodes(self,depth)result(nodes)
+    class(adaptive_root_profile_configuration_t),intent(in)::self
+    real(real64),intent(in)::depth
+    integer::i
+    nodes=0
+    if(.not.self%ready().or..not.ieee_is_finite(depth))return
+    if(depth<=0.0_real64.or.depth>self%maximum_root_depth_cm)return
+    do i=1,size(self%dz_cm)
+      if(self%zbot_cm(i)+depth<1e-8_real64)then
+        nodes=i;return
+      end if
+    end do
+  end function
+
+  logical function adaptive_configuration_ready(self)result(ready)
+    class(adaptive_root_profile_configuration_t),intent(in)::self
+    ready=.false.
+    if(.not.self%adaptation%ready().or..not.self%initial_density%ready())return
+    if(.not.ieee_is_finite(self%maximum_root_depth_cm))return
+    if(self%maximum_root_depth_cm<=0.0_real64)return
+    if(.not.allocated(self%ztop_cm).or..not.allocated(self%zbot_cm).or..not.allocated(self%dz_cm))return
+    if(size(self%dz_cm)<=0)return
+    if(.not.geometry_valid(size(self%dz_cm),self%ztop_cm,self%zbot_cm,self%dz_cm))return
+    if(abs(self%ztop_cm(1))>1e-10_real64)return
+    if(any(abs(self%ztop_cm-self%zbot_cm-self%dz_cm)>1e-10_real64))return
+    if(size(self%dz_cm)>1)then
+      if(any(abs(self%ztop_cm(2:)-self%zbot_cm(:size(self%dz_cm)-1))>1e-10_real64))return
+    end if
+    if(self%maximum_root_depth_cm>abs(self%zbot_cm(size(self%dz_cm))))return
+    ready=.true.
+  end function
+
+  subroutine finalize_adaptive_root_profile_candidate(raw,rooted_nodes,root_biomass,candidate,status)
+    type(adaptive_root_profile_state_t),intent(in)::raw
+    integer,intent(in)::rooted_nodes
+    real(real64),intent(in)::root_biomass
+    type(adaptive_root_profile_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    real(real64),allocatable::cumulative(:)
+    integer::i
+    candidate=raw
+    status=ADAPTIVE_ROOT_PROFILE_INVALID_FORCING
+    if(.not.ieee_is_finite(root_biomass).or.root_biomass<=0.0_real64)return
+    ! B1.11 update_cumdens -> update_cumdens_top -> finalize_wroot_node:
+    ! retain the updated shape, then project its fractions onto actual WRT.
+    call raw%cumulative_root_fraction(rooted_nodes,cumulative,status)
+    if(status/=ADAPTIVE_ROOT_PROFILE_OK)return
+    candidate%root_biomass_by_node=0.0_real64
+    do i=1,rooted_nodes
+      candidate%root_biomass_by_node(i)=(cumulative(i+1)-cumulative(i))*root_biomass
+    end do
+    status=candidate%validate()
+  end subroutine
 
   logical function adaptive_root_profile_parameters_ready(self) result(ready)
     class(adaptive_root_profile_parameters_t), intent(in) :: self

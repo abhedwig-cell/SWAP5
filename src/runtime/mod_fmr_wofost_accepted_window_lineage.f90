@@ -47,6 +47,7 @@ module mod_fmr_wofost_accepted_window_lineage
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
   contains
     procedure, public :: ready => trial_ready
     procedure, public :: complete => trial_complete
@@ -68,6 +69,7 @@ module mod_fmr_wofost_accepted_window_lineage
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
     logical :: event_delivered = .false.
   contains
     procedure, public :: ready => accepted_window_ready
@@ -90,6 +92,7 @@ module mod_fmr_wofost_accepted_window_lineage
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
   contains
     procedure, public :: ready => crop_event_token_ready
   end type fmr_wofost_crop_event_token_t
@@ -109,6 +112,7 @@ module mod_fmr_wofost_accepted_window_lineage
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
   contains
     procedure, public :: ready => crop_event_identity_ready
   end type fmr_wofost_crop_event_identity_t
@@ -128,6 +132,7 @@ module mod_fmr_wofost_accepted_window_lineage
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
   contains
     procedure, public :: ready => crop_event_identity_persistence_ready
   end type fmr_wofost_crop_event_identity_persistence_t
@@ -170,6 +175,8 @@ contains
     end if
     if (.not. valid_optional_factor_integral(self%rootzone_drought_uptake_factor_available, &
          self%rootzone_drought_uptake_factor_integral, self%t1-self%t0)) return
+    if(.not.valid_root_layers(self%potential_root_sink_integral,self%root_sink_reduction_integral, &
+      self%potential_transpiration_integral,self%actual_root_uptake_integral))return
     ready = .true.
   end function crop_event_identity_persistence_ready
 
@@ -191,6 +198,10 @@ contains
     view%deepest_root_oxygen_factor_integral = identity%deepest_root_oxygen_factor_integral
     view%rootzone_drought_uptake_factor_available = identity%rootzone_drought_uptake_factor_available
     view%rootzone_drought_uptake_factor_integral = identity%rootzone_drought_uptake_factor_integral
+    if(allocated(identity%potential_root_sink_integral))then
+      view%potential_root_sink_integral=identity%potential_root_sink_integral
+      view%root_sink_reduction_integral=identity%root_sink_reduction_integral
+    end if
     view%valid = .true.
     exported = view%ready()
     if (.not. exported) view = fmr_wofost_crop_event_identity_persistence_t()
@@ -214,6 +225,10 @@ contains
     identity%deepest_root_oxygen_factor_integral = view%deepest_root_oxygen_factor_integral
     identity%rootzone_drought_uptake_factor_available = view%rootzone_drought_uptake_factor_available
     identity%rootzone_drought_uptake_factor_integral = view%rootzone_drought_uptake_factor_integral
+    if(allocated(view%potential_root_sink_integral))then
+      identity%potential_root_sink_integral=view%potential_root_sink_integral
+      identity%root_sink_reduction_integral=view%root_sink_reduction_integral
+    end if
     identity%initialized = .true.
     if (.not. identity%ready()) then
       identity = fmr_wofost_crop_event_identity_t()
@@ -318,13 +333,15 @@ contains
 
   subroutine accumulate_wofost_trial_process_rate(trial, sub_t0, sub_t1, &
        actual_root_uptake_rate, potential_transpiration_rate, status, deepest_root_oxygen_factor, &
-       rootzone_drought_uptake_factor)
+       rootzone_drought_uptake_factor, potential_root_sink, root_sink_reduction)
     type(fmr_wofost_trial_contribution_t), intent(inout) :: trial
     real(real64), intent(in) :: sub_t0, sub_t1
     real(real64), intent(in) :: actual_root_uptake_rate, potential_transpiration_rate
     integer, intent(out) :: status
     real(real64), intent(in), optional :: deepest_root_oxygen_factor
     real(real64), intent(in), optional :: rootzone_drought_uptake_factor
+    real(real64), intent(in), optional :: potential_root_sink(:),root_sink_reduction(:)
+    real(real64), allocatable :: layer_potential(:),layer_reduction(:)
     real(real64) :: dt, actual_add, potential_add, actual_new, potential_new
     real(real64) :: oxygen_add, oxygen_new, drought_add, drought_new
 
@@ -350,6 +367,22 @@ contains
     end if
 
     dt = sub_t1 - sub_t0
+    if(present(potential_root_sink).neqv.present(root_sink_reduction))return
+    if(present(potential_root_sink))then
+      status=FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE
+      layer_potential=potential_root_sink;layer_reduction=root_sink_reduction
+      if(.not.valid_root_layers(layer_potential,layer_reduction,potential_transpiration_rate,actual_root_uptake_rate))return
+      if(allocated(trial%potential_root_sink_integral))then
+        if(size(layer_potential)/=size(trial%potential_root_sink_integral))return
+        layer_potential=trial%potential_root_sink_integral+dt*potential_root_sink
+        layer_reduction=trial%root_sink_reduction_integral+dt*root_sink_reduction
+      else
+        if(.not.same_time(trial%next_t,trial%t0))return
+        layer_potential=dt*potential_root_sink;layer_reduction=dt*root_sink_reduction
+      end if
+    else if(allocated(trial%potential_root_sink_integral))then
+      return
+    end if
     actual_add = actual_root_uptake_rate * dt
     potential_add = potential_transpiration_rate * dt
     actual_new = trial%actual_root_uptake_integral + actual_add
@@ -404,6 +437,11 @@ contains
       return
     end if
 
+    if(.not.valid_root_layers(layer_potential,layer_reduction,potential_new,actual_new))return
+    if(allocated(layer_potential))then
+      trial%potential_root_sink_integral=layer_potential
+      trial%root_sink_reduction_integral=layer_reduction
+    end if
     trial%actual_root_uptake_integral = actual_new
     trial%potential_transpiration_integral = potential_new
     if (present(deepest_root_oxygen_factor)) then
@@ -481,6 +519,12 @@ contains
       return
     end if
 
+    if(allocated(window%potential_root_sink_integral).neqv.allocated(trial%potential_root_sink_integral))then
+      if(window%accepted_intervals>0)return
+    end if
+    if(allocated(window%potential_root_sink_integral).and.allocated(trial%potential_root_sink_integral))then
+      if(size(window%potential_root_sink_integral)/=size(trial%potential_root_sink_integral))return
+    end if
     status = FMR_WOFOST_LINEAGE_OK
   end subroutine prevalidate_wofost_trial_admission
 
@@ -490,6 +534,7 @@ contains
     type(fmr_wofost_trial_contribution_t), intent(in) :: trial
     integer, intent(out) :: status
     real(real64) :: actual_new, potential_new, oxygen_new, drought_new
+    real(real64),allocatable :: layer_potential(:),layer_reduction(:)
 
     status = FMR_WOFOST_LINEAGE_INVALID_WINDOW
     if (.not. window%ready()) return
@@ -515,6 +560,19 @@ contains
       return
     end if
 
+    if(allocated(trial%potential_root_sink_integral))then
+      if(allocated(window%potential_root_sink_integral))then
+        if(size(window%potential_root_sink_integral)/=size(trial%potential_root_sink_integral))return
+        layer_potential=window%potential_root_sink_integral+trial%potential_root_sink_integral
+        layer_reduction=window%root_sink_reduction_integral+trial%root_sink_reduction_integral
+      else
+        if(window%accepted_intervals>0)return
+        layer_potential=trial%potential_root_sink_integral
+        layer_reduction=trial%root_sink_reduction_integral
+      end if
+    else if(allocated(window%potential_root_sink_integral))then
+      return
+    end if
     actual_new = window%actual_root_uptake_integral + trial%actual_root_uptake_integral
     potential_new = window%potential_transpiration_integral + trial%potential_transpiration_integral
     oxygen_new = window%deepest_root_oxygen_factor_integral
@@ -545,6 +603,11 @@ contains
       return
     end if
 
+    if(.not.valid_root_layers(layer_potential,layer_reduction,potential_new,actual_new))return
+    if(allocated(layer_potential))then
+      window%potential_root_sink_integral=layer_potential
+      window%root_sink_reduction_integral=layer_reduction
+    end if
     window%actual_root_uptake_integral = actual_new
     window%potential_transpiration_integral = potential_new
     if (trial%deepest_root_oxygen_factor_available) then
@@ -598,6 +661,10 @@ contains
     token%deepest_root_oxygen_factor_integral = window%deepest_root_oxygen_factor_integral
     token%rootzone_drought_uptake_factor_available = window%rootzone_drought_uptake_factor_available
     token%rootzone_drought_uptake_factor_integral = window%rootzone_drought_uptake_factor_integral
+    if(allocated(window%potential_root_sink_integral))then
+      token%potential_root_sink_integral=window%potential_root_sink_integral
+      token%root_sink_reduction_integral=window%root_sink_reduction_integral
+    end if
     token%initialized = .true.
     available = .true.
     status = FMR_WOFOST_LINEAGE_OK
@@ -629,6 +696,8 @@ contains
          window%deepest_root_oxygen_factor_available) return
     if (.not. same_real_bits(token%deepest_root_oxygen_factor_integral, &
          window%deepest_root_oxygen_factor_integral)) return
+    if(.not.same_root_layers(token%potential_root_sink_integral,token%root_sink_reduction_integral, &
+      window%potential_root_sink_integral,window%root_sink_reduction_integral))return
     if (token%rootzone_drought_uptake_factor_available .neqv. &
          window%rootzone_drought_uptake_factor_available) return
     if (.not. same_real_bits(token%rootzone_drought_uptake_factor_integral, &
@@ -658,6 +727,9 @@ contains
     if (.not. ready) return
     ready = valid_optional_factor_integral(self%rootzone_drought_uptake_factor_available, &
          self%rootzone_drought_uptake_factor_integral, self%next_t-self%t0)
+    if(.not.ready)return
+    ready=valid_root_layers(self%potential_root_sink_integral,self%root_sink_reduction_integral, &
+      self%potential_transpiration_integral,self%actual_root_uptake_integral)
   end function trial_ready
 
   pure logical function trial_complete(self) result(complete)
@@ -681,6 +753,9 @@ contains
     if (.not. ready) return
     ready = valid_optional_factor_integral(self%rootzone_drought_uptake_factor_available, &
          self%rootzone_drought_uptake_factor_integral, self%covered_t-self%t0)
+    if(.not.ready)return
+    ready=valid_root_layers(self%potential_root_sink_integral,self%root_sink_reduction_integral, &
+      self%potential_transpiration_integral,self%actual_root_uptake_integral)
   end function accepted_window_ready
 
   pure logical function accepted_window_complete(self) result(complete)
@@ -730,6 +805,10 @@ contains
     identity%deepest_root_oxygen_factor_integral = token%deepest_root_oxygen_factor_integral
     identity%rootzone_drought_uptake_factor_available = token%rootzone_drought_uptake_factor_available
     identity%rootzone_drought_uptake_factor_integral = token%rootzone_drought_uptake_factor_integral
+    if(allocated(token%potential_root_sink_integral))then
+      identity%potential_root_sink_integral=token%potential_root_sink_integral
+      identity%root_sink_reduction_integral=token%root_sink_reduction_integral
+    end if
     identity%initialized = .true.
     status = FMR_WOFOST_LINEAGE_OK
   end subroutine identify_wofost_crop_event
@@ -748,6 +827,9 @@ contains
     if (.not. ready) return
     ready = valid_optional_factor_integral(self%rootzone_drought_uptake_factor_available, &
          self%rootzone_drought_uptake_factor_integral, self%t1-self%t0)
+    if(.not.ready)return
+    ready=valid_root_layers(self%potential_root_sink_integral,self%root_sink_reduction_integral, &
+      self%potential_transpiration_integral,self%actual_root_uptake_integral)
   end function crop_event_identity_ready
 
   pure logical function same_wofost_crop_event_identity(left, right) result(matches)
@@ -763,6 +845,8 @@ contains
          same_real_bits(left%deepest_root_oxygen_factor_integral, right%deepest_root_oxygen_factor_integral) .and. &
          (left%rootzone_drought_uptake_factor_available .eqv. right%rootzone_drought_uptake_factor_available) .and. &
          same_real_bits(left%rootzone_drought_uptake_factor_integral, right%rootzone_drought_uptake_factor_integral)
+    if(matches)matches=same_root_layers(left%potential_root_sink_integral,left%root_sink_reduction_integral, &
+      right%potential_root_sink_integral,right%root_sink_reduction_integral)
   end function same_wofost_crop_event_identity
 
   pure logical function crop_event_identity_matches_interval(identity, t0, t1) result(matches)
@@ -787,6 +871,9 @@ contains
     if (.not. ready) return
     ready = valid_optional_factor_integral(self%rootzone_drought_uptake_factor_available, &
          self%rootzone_drought_uptake_factor_integral, self%t1-self%t0)
+    if(.not.ready)return
+    ready=valid_root_layers(self%potential_root_sink_integral,self%root_sink_reduction_integral, &
+      self%potential_transpiration_integral,self%actual_root_uptake_integral)
   end function crop_event_token_ready
 
   pure logical function valid_optional_factor_integral(available, integral, duration) result(valid)
@@ -826,5 +913,41 @@ contains
     ib = transfer(b, ib)
     matches = ia == ib
   end function same_real_bits
+
+  pure logical function valid_root_layers(p,r,total_p,total_a)result(valid)
+    real(real64),allocatable,intent(in)::p(:),r(:)
+    real(real64),intent(in)::total_p,total_a
+    real(real64)::tol
+    valid=.false.
+    if(allocated(p).neqv.allocated(r))return
+    if(.not.allocated(p))then
+      valid=.true.;return
+    end if
+    if(size(p)<=0.or.size(p)/=size(r))return
+    if(any(.not.ieee_is_finite(p)).or.any(.not.ieee_is_finite(r)))return
+    if(any(p<0.0_real64).or.any(r<0.0_real64))return
+    tol=256.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(total_p),abs(total_a))
+    if(any(r>p+tol))return
+    if(.not.ieee_is_finite(sum(p)).or..not.ieee_is_finite(sum(p-r)))return
+    if(abs(sum(p)-total_p)>tol.or.abs(sum(p-r)-total_a)>tol)return
+    valid=.true.
+  end function
+
+  pure logical function same_root_layers(p,r,q,s)result(same)
+    real(real64),allocatable,intent(in)::p(:),r(:),q(:),s(:)
+    integer::i
+    same=.false.
+    if(allocated(p).neqv.allocated(q))return
+    if(allocated(r).neqv.allocated(s))return
+    if(allocated(p).neqv.allocated(r))return
+    if(.not.allocated(p))then
+      same=.true.;return
+    end if
+    if(size(p)/=size(q).or.size(r)/=size(s).or.size(p)/=size(r))return
+    do i=1,size(p)
+      if(.not.same_real_bits(p(i),q(i)).or..not.same_real_bits(r(i),s(i)))return
+    end do
+    same=.true.
+  end function
 
 end module mod_fmr_wofost_accepted_window_lineage

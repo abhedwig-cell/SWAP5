@@ -86,5 +86,165 @@
     "regression_test": "tests/fmig431/test_swap431_root_supply_fail_closed.f90",
     "local_runner": "tests/fmig431/run_swap431_root_supply_fail_closed.py",
     "test_commit": "4ed61310b9c189f053897bd5c60c1f8ad3d8473d"
+  },
+  "daily_density_supply_20261016": {
+    "baseline": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+    "branch": "work/root-density-supply-20261016",
+    "contract": "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md",
+    "checkpoint": "56ca773704ffa07f3019c741efb423244910e3b4",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "implemented": true,
+    "qualified": true,
+    "admitted": false,
+    "scope": "Explicit SWRD2 adaptive density; accepted uncompensated nodal receipts; SWDMI2RD2 supply. Real task2 emergence, current/lagged Richards, rollback and opaque joint restart qualified. Harvest/rotation composition, advanced selectors and native weather disk codec excluded.",
+    "direct": {
+      "command": "python -B tests/root-growth/run_root_growth.py --swrd2 --density --output <unique-owned-directory>",
+      "status": "PASS",
+      "providers": 39,
+      "native_programs": 40,
+      "wall_seconds": 18.861368484002014,
+      "cost_seconds": {
+        "compile": 12.871415299974615,
+        "link": 5.669717026001308,
+        "native": 0.09661447400139878
+      },
+      "claim": "Real39-provider crop/lineage owner with synthetic-water carrier;40 O0/O2 executions, including30 unchanged incumbent and10 new. Actual Richards separately qualified by physical/nodal matrices.",
+      "checkpoint": "13c3e66427b433d83cb0f7ab99c56f132a17720a"
+    },
+    "retained_failures": [
+      "First O2 -Werror rejected uninitialized-variable warning; initialized control variable before use.",
+      "Second new supply-driver standalone case omitted predecessor biomass; repaired test input. Original assertions retained.",
+      "Physical wrapper initially forwarded --density to original parser; corrected wrapper before execution.",
+      "Rejected old object reuse: complete environment equality unproven; fresh isolated nodal build executed instead.",
+      "Two control harness API/injection mismatches corrected to actual verifier contracts; final full controls PASS."
+    ],
+    "test_selection": {
+      "physical_owner": "MC-ROOT01 current/lagged file-weather daily real Richards uptake and F-WOF38 owner",
+      "changed_surface": "Optional nodal lineage/persistence, crop density/depth/supply and committed density -> real root sink. Solver equations unchanged.",
+      "next_command": "Existing shared physical build extended with two explicit daily-density drivers; original SWRD2 assertions retained.",
+      "expected_seconds": 480,
+      "reason": "New accepted-state/forcing coupling cannot be qualified by the synthetic-water direct contracts. Existing28-programme SWRD2 physical batch measured440.8s; reuse one controlled build for current O0/O2 drivers.",
+      "full_moving": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "incumbent_owners": {
+        "command": "python -B tests/fpm/run_int12c_real_endpoint.py --profile application --preserve-owners --evidence-dir <unique-owned-directory>",
+        "expected_seconds": 240,
+        "reason": "Shared bootstrap and crop/accepted-window type changes: execute actual admitted INT12-C endpoint plus unchanged WU01/WU03/Black/Boesten/Rutter drivers against current production. Weather/root physical batch does not cover this independent explicit application seam. Existing one shared build, no solver stress or full F-CI."
+      },
+      "nodal_discriminator": {
+        "scope": "Freshly compile only two strengthened actual Richards density drivers; eight O0/O2 current/lagged and continuous/restart programme executions. Existing36-case physical PASS retained, no whole-batch repeat.",
+        "expected_seconds": 480,
+        "reason": "Verify each accepted nodal potential and reduction integral independently, beyond scalar sum. Reuse was attempted and refused on different complete environment SHA; compiler/helper/library bytes agree, but environment equality is unproven. Isolated current closure rebuild; no old objects reused.",
+        "failed_reuse": "No scientific execution or PASS from rejected attempts."
+      }
+    },
+    "next_action": "Reconcile unchanged canonical and merge qualified bounded PR1251; then record actual canonical admission and existing master recovery without full-family promotion.",
+    "blockers": [],
+    "physical_development": {
+      "status": "PASS",
+      "checkpoint": "c490edd61ce61d7b317435591f59039649d4a905",
+      "native_programs": 36,
+      "wall_seconds": 531.0984224740023,
+      "providers": 233,
+      "scope": "Current/lagged real Richards, density/depth/supply literal recurrence, actual physical mass/rollback and opaque joint restart. All28 original physical stdout identities preserved."
+    },
+    "incumbent_owners": {
+      "status": "PASS",
+      "native_programs": 16,
+      "scope": "Actual INT12-C endpoint and seven unchanged WU01/WU03/Black/Boesten/Rutter drivers O0/O2; all16 outputs equal actual admitted originals, with exact unchanged-statement warning line relocation only."
+    },
+    "pr": 1251,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "a3ec19aca353e2b595eea12c9c956f0942b4fa544273411d38b6a97bf0c925ad",
+      "decoded_bytes": 275400,
+      "members": 2801
+    },
+    "production_source_tree": "5c8bd449d83dc06ef9a257f3b449f1818431175f",
+    "incumbent_root_science": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_SCIENCE_20261015.tar.xz.b64",
+      "decoded_sha256": "9058db4010e20c515d2802090be8b1a3483aab493b7de3a108a11f8ddcf38b01",
+      "decoded_bytes": 251844,
+      "members": 1318
+    },
+    "postimages": {
+      "src/crop/mod_crop_adaptive_root_profile_owner.f90": {
+        "status": "M",
+        "blob": "69817809279d17cebe249bb1c4cdcf76aa306122"
+      },
+      "src/crop/mod_crop_root_depth_rate_owner.f90": {
+        "status": "M",
+        "blob": "74d2f8d08aed0287d6d911bcb6d3a227708c5957"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "9a47bb9e556aeb6697b55f28a8b9ab410112a596"
+      },
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": {
+        "status": "M",
+        "blob": "256c7f658692f0ce4e78a34dc74b7c0543bf24d8"
+      },
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90": {
+        "status": "M",
+        "blob": "2422762336f493fd881769f831e25ee4260fa28e"
+      },
+      "tests/fpm/test_int12c_successor_controls.py": {
+        "status": "M",
+        "blob": "d71908a15099e270b899afb11d5375194e7de9a1"
+      },
+      "tests/fpm/verify_int12c_successor.py": {
+        "status": "M",
+        "blob": "bc06bea6f85732736678362869d00172f7aef4cc"
+      },
+      "tests/root-growth/check_daily_density_controls.py": {
+        "status": "A",
+        "blob": "dd76b9e9e6265ac452adbe48c8e203c3f70d3303"
+      },
+      "tests/root-growth/density_cycle_driver.py": {
+        "status": "A",
+        "blob": "8ab81249323f3090bd21c704387c204e0fb41089"
+      },
+      "tests/root-growth/density_transaction_driver.py": {
+        "status": "A",
+        "blob": "03dd4d59f27ffd803ca030ba0593a8ad5d8089c4"
+      },
+      "tests/root-growth/run_root_growth.py": {
+        "status": "M",
+        "blob": "d90ad0539aee1559c6618180223905b370fc714b"
+      },
+      "tests/root-growth/run_swrd2_cycle.py": {
+        "status": "M",
+        "blob": "4b53795d540531559b4f6cb4119df14d88d4b014"
+      },
+      "tests/root-growth/verify_daily_density_successor.py": {
+        "status": "A",
+        "blob": "a03e3126eecf5e4ea7e0f99c8442ebf055e66e59"
+      }
+    },
+    "nodal_independent": {
+      "status": "PASS",
+      "checkpoint": "734f9ce7912b5f531c9ec74ce212f66145976ccf",
+      "native_programs": 8,
+      "wall_seconds": 275.4717745309972,
+      "claim": "Every accepted nodal potential and reduction integral compared with independent literal source sink, followed by daily density/supply recurrence and opaque joint restart. Fresh isolated233-provider build at both optimizations, no old object reuse."
+    },
+    "tested": true,
+    "preserved": true,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "f6a4314d734ba5f6c920b2804ce3190803190ca1875a106290ec4b5d6c001b24",
+      "decoded_bytes": 344404,
+      "members": 23
+    },
+    "admission_controls": {
+      "status": "PASS",
+      "checkpoint": "56ca773704ffa07f3019c741efb423244910e3b4",
+      "falsification_controls": 26,
+      "wall_seconds": 34.91411871200398,
+      "original_incumbent_controls": "5 PASS at actual immutable authority2194651f",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS"
+    }
   }
 }

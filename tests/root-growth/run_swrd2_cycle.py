@@ -4,10 +4,11 @@ import argparse,sys
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(Path(__file__).parent),str(ROOT/'tests/crop-cycle'),str(ROOT/'tests/crop-co2')]
 from swrd2_cycle_driver import prepare as swrd2
+from density_cycle_driver import prepare as density
 from swrd3_cycle_driver import prepare as swrd3
 from co2_source_oracle import prepare as co2_oracle
 from oxygen_source_oracle import prepare as oxygen_oracle
-p=argparse.ArgumentParser();p.add_argument('--output',required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--output',required=True);p.add_argument('--density',action='store_true');a=p.parse_args()
 path=ROOT/'tests/mc-met01/run_raintb_legacy_owner_preservation.py';s=path.read_text()
 def replace(a,b):
  global s
@@ -31,6 +32,12 @@ replace(anchor,"""    drivers={'weather':drivers['weather'],
 replace("'task2_oracle.f90','preparation_oracle.f90','sowing_oracle.f90']", "'task2_oracle.f90','preparation_oracle.f90','sowing_oracle.f90','oxygen_oracle.f90','co2_oracle.f90']")
 replace("'raintb':b'MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS'}[name]", "'raintb':b'MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS','swrd3':b'SWRD3_ACTUAL_RICHARDS_GROWTH_OXYGEN_JOINT_RESTART=PASS','swrd2':b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS','swrd2_off':b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS','swrd2_unscaled':b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS'}[name]")
 replace('    results=[];output_hashes={}',"    (output/'executed_controller.py').write_text(executed_source)\n    results=[];output_hashes={}")
-ns={'__file__':str(path),'__name__':'__main__','swrd2':swrd2,'swrd3':swrd3,'co2_oracle':co2_oracle,'oxygen_oracle':oxygen_oracle,'executed_source':s}
+if a.density:
+ anchor="    oxygen_oracle(ROOT,fixture/'oxygen_oracle.f90');co2_oracle(ROOT,fixture/'co2_oracle.f90')"
+ replace(anchor,"    drivers['density']=density(ROOT,output/'density.f90')\n    drivers['density_supply']=density(ROOT,output/'density_supply.f90',True)\n    inputs['tests/root-growth/density_cycle_driver.py']=sha(ROOT/'tests/root-growth/density_cycle_driver.py')\n"+anchor)
+ anchor="'swrd2_unscaled':b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS'"
+ replace(anchor,anchor+",'density':b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS','density_supply':b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS'")
+ns={'__file__':str(path),'__name__':'__main__','swrd2':swrd2,'swrd3':swrd3,'density':density,'co2_oracle':co2_oracle,'oxygen_oracle':oxygen_oracle,'executed_source':s}
+if a.density:sys.argv.remove('--density')
 exec(compile(s,str(path),'exec'),ns)
 print('SWRD2_FOCUSED_AND_INCUMBENT_PHYSICAL_O0_O2=PASS')
