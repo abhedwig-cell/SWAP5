@@ -77,8 +77,8 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Signed and interacting multilevel rows are closed. Other drainage/frost rows retain their separate source-bound conditions; no broader route is admitted.",
-  "recovery_point": "PR1109 merge5d2518abd2b285b13f9b5f7d2177918589fd7abc; master receipt725ea58dc1ae725c1c5de475578bb9a3ad65928f. Original signed PR1099 admission preserved.",
+  "next_action": "Signed, interacting multilevel and INF-SPLIT ordinary rows are closed. Remaining DISLAYER, DRAMET3, allocation, infiltration-limit, highest-interflow and frost rows retain their separate contracts; no broader admission.",
+  "recovery_point": "PR1266 merge09bd5913394e5e263d414b50d29f720e3ab1e21f; master receiptce855e2760a97ce5e41d05126b386629847b0bc5. Original signed PR1099 and multilevel PR1109 admissions preserved.",
   "blockers": [],
   "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "closure_conditions_frozen_20261016": {
@@ -817,7 +817,7 @@
     "existing_candidate": "aa5b6a729dd762b8f9e853c57295faefdff779a5",
     "existing_branch": "work/swap431-drain-frost-closeout-20261007",
     "pr_search": "No PR returned for exact existing closeout head; reuse existing branch, create no second branch/route.",
-    "state": "SCIENCE_QUALIFIED_ADMISSION_PENDING",
+    "state": "CANONICALLY_ADMITTED",
     "ledger_rows": [
       "SW431-DRAIN-INF-SPLIT"
     ],
@@ -837,10 +837,7 @@
       "new frost-ON capabilities",
       "new bottom/response/solver/store/restart owner"
     ],
-    "remaining": [
-      "owner/admission integrity and current canonical reconciliation",
-      "safe canonical merge and mastercoverage receipt"
-    ],
+    "remaining": [],
     "invariants": [
       "One authoritative scalar per level, one existing accepted water ledger; positive removes soil water, negative supplies it.",
       "No second infiltration algebra, forcing clock, physical store or restart codec.",
@@ -1370,6 +1367,50 @@
         "tests/nut-crop/test_crop_soil_joint.f90": "c9d4159665e2f1494f7318a0c863a28144b2a5f54ac914ad846ea54671b7b237"
       },
       "selection": "No changed INF native inputs. TCS6 shared frost default body reconstructed byte-exact; all other owning inputs unchanged; immutable original TCS6 owner rerun, no native rerun."
+    },
+    "qualification_checkpoint": "c988d69cf8d172b5441981d9d083213af44b1b60",
+    "source_tree": "cbf6dad5539c6ba38dcdd3481e696ab7aaac2921",
+    "latest_reconciled_canonical": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+    "canonical_admission": {
+      "pr": 1266,
+      "merge": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+      "qualified_head": "c988d69cf8d172b5441981d9d083213af44b1b60",
+      "full_tree": "f53b65c16dabeb6c59fda5bdc598ee64b59ddf68",
+      "source_tree": "cbf6dad5539c6ba38dcdd3481e696ab7aaac2921",
+      "exact_qualified_tree": true,
+      "ledger_rows": [
+        "SW431-DRAIN-INF-SPLIT"
+      ]
+    },
+    "mastercoverage_receipt": {
+      "branch": "work/swap431-master-coverage-20261006",
+      "commit": "ce855e2760a97ce5e41d05126b386629847b0bc5",
+      "counts": {
+        "ADMITTED": 99,
+        "ACTIVE_MIGRATION": 105,
+        "QUALIFICATION_ONLY": 3,
+        "unresolved": 108,
+        "total": 243
+      },
+      "full_coverage_closed": false,
+      "structural_integrity": "PASS",
+      "inheritance_controls": "20 PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "global_closure": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
+    },
+    "validation": {
+      "production_contract_O0_O2": "16/16 PASS; original source/positive/signed/multilevel/runtime all exact",
+      "invalid_input_O0_O2": "2/2 PASS",
+      "affected_B18_component": "original scientific assertions PASS;3240 accepted1296 held",
+      "corruption_controls": "8 PASS",
+      "current_joint_owner": "FCI_CANONICAL_MC_IRR01_CURRENT_OVERLAP_PRESERVATION=PASS",
+      "default_frost_body": "exact reconstruction",
+      "reference": "UNCHANGED admitted FROST-DIVDRA-03/B20",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "workflow_runs": "none for qualified head; no automatic broad selection",
+      "numerical_FCI_RossFast_highest_low_air": "NOT_SELECTED"
     }
   }
 }

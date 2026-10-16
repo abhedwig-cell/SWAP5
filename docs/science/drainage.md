@@ -196,7 +196,7 @@ merged at `5d2518abd2b285b13f9b5f7d2177918589fd7abc`, with source tree
 `9ce06f8381c006dbc16f95880632695abbec12d5` identical to the qualified successor.
 The existing recovery record links the frozen conditions, raw O0/O2 receipts,
 parallel annual/B1.12 preservation and mastercoverage closure receipt.
-## Qualified ordinary separate infiltration successor (16 October 2026)
+## Canonically admitted ordinary separate infiltration successor (16 October 2026)
 
 MC-DRAIN01 `SW431-DRAIN-INF-SPLIT` selects the existing B19 transmissivity
 partition through explicit per-level separate-infiltration controls. The shared
@@ -225,3 +225,10 @@ multilevel process/runtime contracts and all original B18 component assertions
 are preserved. Only `SW431-DRAIN-INF-SPLIT` is eligible for this closure;
 DRAMET3, altered layer tops and new frost-ON capabilities remain separate.
 Canonical admission and mastercoverage receipts are recorded in that phase.
+
+[PR1266](https://github.com/abhedwig-cell/SWAP5/pull/1266) merged at
+`09bd5913394e5e263d414b50d29f720e3ab1e21f`. Its full tree equals the qualified
+`f53b65c16dabeb6c59fda5bdc598ee64b59ddf68`; the existing mastercoverage
+receipt `ce855e2760a97ce5e41d05126b386629847b0bc5` closes only that row. The source
+tree `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921` includes preserved parallel
+TCS6 admission; all INF numerical inputs remain unchanged.
