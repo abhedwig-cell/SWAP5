@@ -13,6 +13,9 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['availability_completion_20261016']
 def tcs6_record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['tcs6_completion_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
+  sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
+  return successor.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record();check(r['admission_baseline']==BASE,'AVAIL baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines();check(not[x for x in dirty if not re.fullmatch(r'\?\? .*/__pycache__/[^/]+\.pyc',x)],'dirty AVAIL science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
@@ -139,6 +142,9 @@ def run_original_inf_controls():
  check(p.returncode==0 and 'INF_SPLIT_EVIDENCE_CORRUPTION_CONTROLS=8'in p.stdout,'original INF controls failed '+p.stderr[-1000:])
  print(p.stdout,end='')
 def verify_qualification():
+ if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
+  sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
+  return successor.verify_qualification()
  result=verify_source();check(record()['phase']in['SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'],'unfinished AVAIL admission')
  science=validate_science(evidence());return {**result,'qualified':True,'full_capability':True,'science':science,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 if __name__=='__main__':print(json.dumps(verify_source()if'--source-only'in sys.argv else verify_qualification(),indent=2))

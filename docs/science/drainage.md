@@ -232,3 +232,49 @@ Canonical admission and mastercoverage receipts are recorded in that phase.
 receipt `ce855e2760a97ce5e41d05126b386629847b0bc5` closes only that row. The source
 tree `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921` includes preserved parallel
 TCS6 admission; all INF numerical inputs remain unchanged.
+
+## Qualified ordinary discharge-layer top successor (16 October 2026)
+
+MC-DRAIN01 `SW431-DRAIN-DISLAYER` adds explicit per-level
+`discharge_layer_controls(:)` to the admitted serialized request. Mode 0 keeps
+the original row exactly. Mode 1 supplies an absolute top in cm relative to the
+surface. Mode 2 uses the original fraction formula: for DRAMET2 the supplied
+drain bottom and shape, otherwise the supplied head difference and current
+immutable groundwater view. The caller owns these physical inputs. This adds
+no DRAMET3 scalar resolver, calendar, response law or persistent state.
+
+The existing partition owners optionally expose their physical nodal weights
+before the final-node roundoff correction. Only enabled top transformations
+consume this read-only view. Clipping a tiny remaining support after adding a
+roundoff residual could amplify that residual; the physical view avoids this
+while keeping the default closed rows and arithmetic unchanged. The transform
+zeros nodes above the top, applies the partial-node thickness fraction, and
+normalizes the remaining weights to the authoritative signed scalar.
+
+Actual complete B1.11 and admitted DIVDRA-03 demonstrated that the old
+`1e-8` retained-sum threshold can discard small scalar transfers or double-book
+deeper nodes after fallback. The isolated `FROST-DIVDRA-04` component changes
+exactly two Paragraph12 conditions: normalize every nonzero retained sum; use
+the prior top-node placement only for exactly zero support. B1.11, DIVDRA-02,
+DIVDRA-03 and the B20 authority remain immutable. The component does not promote
+a new global reference snapshot or admit a frost-ON extension.
+
+The original source/candidate defect and the fixed full-source O0/O2 comparison
+are recorded separately. Reference qualification covers 25,920 cases per
+optimization, with 32,539 unaffected per-level rows byte-identical and maximum
+independent nodal error about `1.3e-18` cm/day. The real production binder covers
+the same matrix. Actual serialized runtime covers 288 cases, 48
+reject/replay/empty-registry restart controls, 24 inactive identity checks and
+12 two-column isolation controls per optimization. Absolute tops, both dynamic
+formulas, one/three levels and separate-infiltration on/off share the existing
+accepted mass and state owners. Opposing nodal rows are internal attribution;
+they do not create an extra external transfer. Hard column mass remains
+`1e-12` cm and per-level scalar closure `1e-14` cm/day.
+
+The existing recovery authority is
+`integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase
+`dislayer_phase_20261016`. It freezes the complete admission conditions and links
+the source-bound reference, production, original B18 and incumbent preservation
+proof. Only `SW431-DRAIN-DISLAYER` is eligible to close. DRAMET3 scalar response,
+highest-interflow and new frost-ON capabilities retain separate ledger entries.
+Canonical and mastercoverage receipts are recorded in that phase after merge.

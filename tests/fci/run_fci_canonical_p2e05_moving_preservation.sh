@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${1:-}" == --drain-dislayer-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/verify_dislayer_successor.py
+  echo 'FCI_DRAIN_DISLAYER_OWNER=PASS'
+  exit 0
+fi
+
 # Separate infiltration owner only; no broad numerical execution.
 if [[ "${1:-}" == --drain-inf-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
@@ -740,6 +747,11 @@ if [[ "${1:-}" == --mc-irr01-owner-only ]]; then
 fi
 
 check_b19_micro_root_recomposition() {
+  if [[ -f tests/fmig431/verify_dislayer_successor.py ]]; then
+    python3 -B tests/fmig431/verify_dislayer_successor.py
+    echo 'FCI_B19_DISLAYER_CURRENT_OWNER_RECONCILIATION=PASS'
+    return 0
+  fi
   local ppa_weather_guard_changed=0
   local crop_positive_window_changed=0
   local crop_event_constructor_changed=0
