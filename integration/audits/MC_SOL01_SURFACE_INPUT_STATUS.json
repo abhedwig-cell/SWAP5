@@ -739,5 +739,134 @@
       "full_closure": "EXPECTED_REFUSAL denominator incomplete",
       "full_master_numerical_qualification": false
     }
+  },
+  "dynamic_pond_successor_20261016": {
+    "baseline": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
+    "baseline_tree": "53e6b022dfea342cfd0ceceb252bd92c76391be3",
+    "branch": "work/sol-dynamic-pond-20261016",
+    "stage": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "contract": "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md",
+    "scope": "Explicit gross rain/irrigation bare surface forcing reuses existing dynamic top provider with actual committed begin depth per trial, evolving Richards pond depth and sole matrix pond_mass. No losses, no new state or restart codec. Aquifer excluded.",
+    "invariants": [
+      "water owns depth",
+      "matrix companion owns chemical surface mass",
+      "water and chemistry publish atomically",
+      "rejected trials leave accepted owners unchanged",
+      "native1256 V2 only opt-in, V1 default unchanged"
+    ],
+    "test_selection": {
+      "changed": [
+        "forcing ownership and opt-in dynamic-top runtime binding",
+        "actual varying pond application coupling"
+      ],
+      "run": "FC=<recovered GNU13.3> DYNAMIC_POND_RESULT_DIR=<scratch> python -B tests/nut-sol/run_dynamic_pond_joint.py",
+      "driver": "real production backend, independent literal B1.11 mass oracle, O0/O2 draining/filling/dry-rewet and fresh-process V2; all original fixed/dry1257 and original surface drivers on same objects; last-carrier negatives and native corruption controls",
+      "closure": "accepted physical state/runtime dependency closure unavoidable for real trial/commit and native continuation; no mocked production physics",
+      "expected_seconds": 400,
+      "prior_compile_seconds": 195,
+      "unmeasured_dynamic_native_seconds": "UNKNOWN",
+      "not_selected": "full FCI, unrelated Richards/RossFast/highest-low-air qualifications: numerical implementation and admitted boundary input domain unchanged",
+      "stable_candidate": "source-bound successor projections and evidence controls; docs source/strict; safe canonical/master reconciliation only after owning preservation passes",
+      "fixture": "Low-conductivity default MvG, -1 cm initial head, 0.5 cm wet pond; gross .25+.25 filling, zero-input drainage, dry deposition/rewet. Same 1e-6 cm comparison and 1e-10 cm water budget. Abrupt high-flux front stress is not the surface-storage claim."
+    },
+    "recovery": "All selected science and owner gates terminal PASS. Ready for exact-head safe canonical merge, verify merged tree and update unchanged-count master receipt. No background qualification outstanding.",
+    "pr": 1258,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1258",
+    "reconciled_canonical": "f7ddd936b062d3f34acc8e95002799238a04b3c5",
+    "numerical_contract": "Opt-in BASE/default MvG/SWKIMPL0/Reference external full-half comparison: max head/pond/GWL difference in cm; old identity and model-certificate paths unchanged. Caller tolerance remains explicit. No automatic substitution.",
+    "diagnostics": [
+      "initial compiler path missing; reconstructed same GNU13.3 package toolchain",
+      "first native rejected missing dynamic head derivative: corrected binding to admitted explicit-conductivity override",
+      "history indicator explicitly excludes dynamic top; prior default identity-only comparison rejects changing state; neither failure claimed PASS",
+      "new optional temporal comparison under focused feedback, no admission yet",
+      "steep -75 cm wetting-front feedback interrupted before completion; -1 cm original-conductivity feedback bounded at120s; no PASS and raw logs retained",
+      "Fortran public module type metadata changed after extraction: reduced feedback closure explicitly rebuilt all backend descendants",
+      "small independent production comparison now has23 O0/O2 cases under checks/traps, separate compile/link/native evidence"
+    ],
+    "postimages": {
+      "src/process/mod_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "36b108ed01068d8b3ff78c3a8798b783c4a1f8f9"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "M",
+        "blob": "6495e1b4f5a7999a889c7b14e4d682bf0abc1d0e"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "1c0af1ffb5f41869f3fb02b2f42d962a55532ee4"
+      },
+      "tests/nut-sol/check_dynamic_pond_controls.py": {
+        "status": "A",
+        "blob": "72e8c8391d614c6a1bcb3ce6e364dae37a37be6c"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "M",
+        "blob": "2d9c07a975d13405dc90d62d42608809d8b1fef3"
+      },
+      "tests/nut-sol/run_dynamic_pond_joint.py": {
+        "status": "A",
+        "blob": "a0446165ed847296e89397dbc58355f1e758b69d"
+      },
+      "tests/nut-sol/run_pond_temporal.py": {
+        "status": "A",
+        "blob": "43625693c701ffe5b4add5c7c6cfe5f6a2f40be5"
+      },
+      "tests/nut-sol/test_dynamic_pond_joint.f90": {
+        "status": "A",
+        "blob": "985d1e229e3869ccd1daebf24b1c5ac6bd8c243b"
+      },
+      "tests/nut-sol/test_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "c3e51751e2c9b4a34b12f9d9da4b2b5d3b77fa1f"
+      },
+      "tests/nut-sol/verify_dynamic_pond_successor.py": {
+        "status": "A",
+        "blob": "f5874e19eca2c5ccab2d0151b5837d3da4e97fad"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "M",
+        "blob": "bb033b0cd1a85e802a73f968d84c7135cc36944c"
+      }
+    },
+    "source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+    "feedback": "O0 real production wet/drain, fill/accumulation and dry/rewet all PASS; literal source and21 scientific negatives each interval;8 forcing negatives, strict temporal rejection, rollback/retry and within-process native1256 V2 continuation. Not O2 or source-qualified yet.",
+    "execution_commit": "f0e0507e4956556c27d536963efb49d9282c6be0",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_SOURCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c6c3ce38e3f70101415edf85321ff17c0ff27941e1de7f857dd223229c8f9efd",
+      "decoded_bytes": 107924,
+      "members": 1890
+    },
+    "science": {
+      "status": "O0_O2_PASS_NOT_ADMITTED",
+      "dynamic_native_programs": 42,
+      "original_1257_and_surface_programs": 12,
+      "new_temporal_leaf_cases_per_opt": 23,
+      "scientific_negatives_per_interval": 21,
+      "forcing_rejections_per_write": 8,
+      "cost_seconds": {
+        "physical_compile": 220.56194329314167,
+        "physical_link": 0.3078020840039244,
+        "physical_native": 8.180173718952574,
+        "preservation_compile": 18.76615652802866,
+        "preservation_link": 0.5615385580022121,
+        "preservation_native": 78.35965171502903,
+        "process_compile": 1.8565611509839073,
+        "process_link": 0.09716352401301265,
+        "process_native": 0.006659285994828679
+      },
+      "prior_native_files_and_endpoints": "EXACT1257_WET_DRY_AND_ORIGINAL_V1"
+    },
+    "admission_controls": 28,
+    "owner_dispatch": "SOL_POND_AND_INT12C_ACTUAL_ENTRYPOINTS_PASS",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "29919c8db2b5b7c435174cb52dc5413fe3046e9cf89ff3534f71577f11d7b777",
+      "decoded_bytes": 12884,
+      "members": 11
+    },
+    "qualification_scope": "Actual draining/filling hydraulic pond, dry deposition and rewet; default MvG/SWKIMPL0 Reference BASE external full/half policy with explicit cm tolerance. Sole1256 matrix mass and native codec; no aquifer or evaporation/runoff/surface-age/N-companion admission."
   }
 }

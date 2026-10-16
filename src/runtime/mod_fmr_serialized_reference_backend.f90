@@ -4,6 +4,7 @@ module mod_fmr_serialized_reference_backend
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_pond_water_temporal_difference,only:evaluate_pond_water_temporal_difference
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
@@ -440,6 +441,13 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: runoff_exponent = 1.0_real64
   end type fmr_rutter_runtime_forcing_t
 
+  ! MC-SOL01 opt-in bare surface water input. No additional committed owner.
+  ! Rain and irrigation are gross rates; evaporation/runoff are outside this route.
+  type, public :: fmr_pond_input_forcing_t
+    real(real64) :: rain_rate_cm_day = 0.0_real64
+    real(real64) :: irrigation_rate_cm_day = 0.0_real64
+  end type fmr_pond_input_forcing_t
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
     real(real64) :: top_flux = 0.0_real64
@@ -469,6 +477,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_boesten_evaporation_runtime_forcing_t), allocatable :: boesten_evaporation
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
     type(rfm_surface_forcing_t), allocatable :: rfm_surface
+    type(fmr_pond_input_forcing_t), allocatable :: pond_input
     type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
@@ -747,6 +756,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: bottom_head = 0.0_real64
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
     type(fmr_qgwl_bottom_boundary_config_t), allocatable :: legacy_swbotb4_qgwl_control
+    type(fmr_pond_input_forcing_t), allocatable :: pond_input
     logical :: forcing_admitted = .false.
     logical :: state_profile_admitted = .false.
     logical :: root_extraction_active = .false.
@@ -3327,6 +3337,7 @@ contains
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol
+    if (allocated(self%pond_input)) deallocate(self%pond_input)
     self%forcing_admitted = .false.
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
@@ -3740,6 +3751,22 @@ contains
               self%fixed_weir_surface_water_active) return
         end if
         self%macropore_top_input_forcing = forcing%macropore_top_input
+      end if
+      if (allocated(forcing%pond_input)) then
+        if (.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
+            forcing%pond_input%irrigation_rate_cm_day,forcing%top_flux]))) return
+        if (min(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)<0.0_real64.or. &
+            max(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)>5.e5_real64) return
+        if (forcing%top_flux/=0.0_real64.or.self%snow_active.or.self%black_evaporation_active.or. &
+            self%boesten_evaporation_active.or.self%rutter_active.or.self%macropore_active.or. &
+            self%rfm_configuration%enabled.or.self%fixed_weir_surface_water_active) return
+        if (allocated(forcing%snow).or.allocated(forcing%black_evaporation).or. &
+            allocated(forcing%boesten_evaporation).or.allocated(forcing%rutter).or. &
+            allocated(forcing%rfm_surface).or.allocated(forcing%macropore_top_input)) return
+        if (self%swkimpl/=0.or.self%analytical_hydraulics_active.or.self%direct_retention_active) return
+        if (self%temporal_indicator_history_enabled.or..not.self%soil_water_selection%uses_reference()) return
+        if (config%transaction%temporal_mode/=TX_TEMPORAL_EXTERNAL_FULL_HALF) return
+        allocate(self%pond_input,source=forcing%pond_input)
       end if
       self%base_top_flux = forcing%top_flux
       self%top_flux = forcing%top_flux
@@ -4677,6 +4704,28 @@ contains
       request%evaluation%dynamic_top_boundary => rutter_top_provider
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
+    end if
+
+    if (allocated(self%pond_input)) then
+      ! Rebind from this sibling/retry's actual water owner, never from a saved depth.
+      select type (physical => state)
+      type is (fmr_b110_physical_state_t)
+      type is (fmr_b110_temporal_indicator_state_t)
+      class default
+        return
+      end select
+      if (.not.ieee_is_finite(request%base_state%ponding_depth)) return
+      if (request%base_state%ponding_depth<0.0_real64.or.request%base_state%ponding_depth>1.e6_real64) return
+      call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,1, &
+           request%base_state%pressure_head(1),fixed_top_conductivity,fixed_top_conductivity_ok)
+      if (.not.fixed_top_conductivity_ok) return
+      call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters, &
+           self%hydraulic_parameters,self%swkmean,request%base_state%ponding_depth,step_duration, &
+           self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
+           0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.e6_real64,0.0_real64,1.0_real64,fixed_top_conductivity)
+      request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
+      nullify(request%evaluation%top_boundary)
+      request%evaluation%dynamic_top_boundary=>rfm_top_provider
     end if
 
     if (self%soil_water_selection%uses_rossfast()) then
@@ -5630,6 +5679,10 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    if(allocated(self%pond_input))then
+      value=fmr_pond_input_temporal_error(full_state,half_state)
+      return
+    end if
     if(self%frost_divdra_active)then
       value=fmr_frost_divdra_temporal_error(self,full_state,half_state)
       return
@@ -5736,6 +5789,26 @@ contains
       value = huge(0.0_real64)
     end if
   end function fmr_serialized_temporal_identity
+
+  ! New opt-in domain only. Existing identity and certificate routes are unchanged.
+  real(real64) function fmr_pond_input_temporal_error(full_state,half_state) result(value)
+    class(transaction_state_t),intent(in)::full_state,half_state
+    logical::available
+    value=huge(0.0_real64)
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        if(full%active_nodes/=half%active_nodes)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+           .not.allocated(full%water_content).or..not.allocated(half%water_content))return
+        if(size(full%pressure_head)/=full%active_nodes)return
+        call evaluate_pond_water_temporal_difference(full%pressure_head,half%pressure_head, &
+             full%water_content,half%water_content,full%ponding_depth,half%ponding_depth, &
+             full%groundwater_level,half%groundwater_level,value,available)
+      end select
+    end select
+  end function fmr_pond_input_temporal_error
 
   real(real64) function fmr_root_frost_temporal_error(self,full_state,half_state) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self

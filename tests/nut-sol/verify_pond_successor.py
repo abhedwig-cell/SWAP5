@@ -38,6 +38,9 @@ def record():
     return json.loads((ROOT/STATUS).read_text())['persistent_pond_successor_20261016']
 
 def verify_source(git_reader=None):
+    if (ROOT/'tests/nut-sol/verify_dynamic_pond_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_dynamic_pond_successor as dynamic
+        return dynamic.verify_source(git_reader)
     g = git if git_reader is None else git_reader
     r = record()
     check(r['baseline'] == BASE, 'wrong pond baseline')
@@ -169,6 +172,9 @@ def incumbent():
     return r
 
 def verify_qualification():
+    if (ROOT/'tests/nut-sol/verify_dynamic_pond_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_dynamic_pond_successor as dynamic
+        return dynamic.verify_qualification()
     s = verify_source()
     check(record()['stage'] in ('SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_BOUNDED'), 'pond science not ready')
     science = validate_science(evidence())

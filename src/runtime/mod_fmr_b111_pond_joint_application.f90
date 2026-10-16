@@ -61,6 +61,13 @@ contains
     if(allocated(forcing%black_evaporation).or.allocated(forcing%boesten_evaporation).or. &
       allocated(forcing%snow).or.allocated(forcing%rutter).or.allocated(forcing%rfm_surface).or. &
       allocated(forcing%macropore_top_input))return
+    if(allocated(forcing%pond_input))then
+      if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+      if(.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
+          forcing%pond_input%irrigation_rate_cm_day])))return
+      if(forcing%pond_input%rain_rate_cm_day/=supply%rain_rate.or. &
+          forcing%pond_input%irrigation_rate_cm_day/=supply%irrigation_rate)return
+    end if
     if(.not.bounded_template(template))return
     if(.not.matrix_joint_states_match(water,chemical))return
     call water%current_time(clock,ok)
