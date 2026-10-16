@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "da5482c24259a1772759335d8289944053f62332",
+  "last_reconciled_upstream": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -84,7 +84,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "PR1253 explicit vegetative N-request production binding is admitted, qualified and preserved. Full109 ACTIVE plus4 QUALIFICATION_ONLY envelopes remain; master1072 stays draft. Next independent existing packages: IRR DCS1/material/evolving-root summaries and SOL persistent surface/pond mass; shared owner/restart integration stays serial. No duplicate NFIX owner or default WOFOST81 replacement.",
+  "next_action": "Existing nearly-ready PR closeout round is complete. Preserve PR1245/1247/1234 and later1251/1252/1253 bounded admissions, and retired700/1117 evidence. Full109 ACTIVE plus4 QUALIFICATION_ONLY envelopes remain; master1072 stays draft. Next three dependency-ready existing owner packages are IRR DCS1/material/evolving-root summaries, SOL persistent surface/pond mass, and DRAIN ordinary frost-OFF signed DIVDRA. Their source review and isolated contract work can proceed in parallel; shared runtime/restart admission stays serial. This closeout does not start or authorize a new migration route.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -2365,5 +2365,53 @@
     },
     "canonical_actual_closure_receipt": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
     "remaining_open_pr_count_after_closure": 9
+  },
+  "latest_existing_pr_closeout_reconciliation_20261016": {
+    "canonical_head": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+    "master_predecessor": "43bbd2fd3cc2aadfa050f04ab5c6cb82b1ff9f81",
+    "phase": "EXISTING_NEARLY_READY_PR_CLOSEOUT_COMPLETE_REMAINING_OWNER_GATES_RETAINED",
+    "verified_merged_prs": {
+      "1245": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
+      "1247": "31ff3158b956183c8af19f85bd3361847f60309b",
+      "1234": "136787ef2927eb44967298bec7029c30e6434422",
+      "1251": "b7faa67907e75d4447ceb126e40f9de47dbab165",
+      "1252": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+      "1253": "c9e5efad50cf6cf18342a57efbee398260fdce82"
+    },
+    "verified_closed_without_merge": [700, 1117],
+    "remaining_open_prs": {
+      "58": "Draft canonical-to-main umbrella, not a release admission.",
+      "365": "Independent nonlinear method authority missing for H3; other research phases remain separate.",
+      "486": "CSR03 head-transfer authority, CSR04 non-overlapping storage partition and current-source recomposition required.",
+      "528": "Research-only fixed-interface analytical coupling; no production authorization.",
+      "740": "Soil-property mapping/calibration research; no production authorization.",
+      "953": "TOP02 executable qualification and TOP03 transaction publication remain separate prerequisites.",
+      "956": "Research contact/surface candidate lacks production accepted-window, rollback/restart, external storage and complete physical admission.",
+      "987": "Research A28 requires Q4 long-history/reconstruction/rollback qualification; not a canonical admission candidate.",
+      "1072": "Draft master census:109 active and4 qualification-only full envelopes remain unresolved."
+    },
+    "preservation": "Canonical changes since b899baaf are donor audit/evidence only; src/tests/tools/reference/workflows are byte-identical. Retain original exact-source scientific and admission evidence, including failed/censored preliminary SOL results. No new numerical PASS inferred.",
+    "summary": {
+      "capabilities": 243,
+      "admitted": 94,
+      "active_migration": 109,
+      "qualification_only": 4,
+      "unresolved": 113,
+      "structurally_flagged_absence_or_binding_rows": 86,
+      "capability_disposition_changes": 0
+    },
+    "parallel_ready_existing_packages": [
+      "MC-IRR01: accepted material/evolving-root DCS1 summaries using admitted1251/1252 owners; no second irrigation owner.",
+      "MC-SOL01: persistent surface/pond/source/dry-deposition mass and restart following admitted1234 zero-pond route; aquifer remains rejected.",
+      "MC-DRAIN01: ordinary frost-OFF signed DIVDRA against existing B19 algebra/ownership; multilevel and frost compositions remain separate."
+    ],
+    "parallelism_ceiling": "Independent source review, contracts and isolated owner work only. Shared accepted-state/runtime/restart composition requires dependency reconciliation and serial canonical admission. Existing workunit gates are not waived.",
+    "validation": {
+      "historical_source_and_pinned_locator_integrity": "PASS on43bbd2fd before metadata edit",
+      "inheritance_controls": "20PASS on43bbd2fd before metadata edit",
+      "metadata_postimage": "PASS historical source/pinned-locator integrity,20 inheritance controls, documentation source and strict MkDocs16.28s; closure correctly refused:denominator incomplete",
+      "numerical_or_actions_runs": "NOT_SELECTED_METADATA_ONLY",
+      "full_master_qualification": false
+    }
   }
 }
