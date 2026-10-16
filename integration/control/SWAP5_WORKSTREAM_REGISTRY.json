@@ -3790,7 +3790,7 @@
     "pr": 700,
     "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
     "class": "RETIRE_HISTORICAL_INTEGRATION_CARRIER_WITHOUT_MERGE_RETAIN_UNADJUDICATED_SOURCE",
-    "phase": "READY_FOR_PR_CLOSURE",
+    "phase": "CLOSED_WITHOUT_MERGE_SOURCE_AND_UNRESOLVED_REVIEWS_RETAINED",
     "authority": "integration/audits/PPA_RECONCILE01_STATUS.json",
     "source_paths": 160,
     "bounded_no_import": 20,
@@ -3799,6 +3799,14 @@
     "supersedes": "Earlier keep-open decisions governed pending source/owner recovery. Full archived-source preservation and explicit20/140 dispositions now establish recovery without an open integration PR. This does not supersede scientific contract or source-equivalence requirements.",
     "new_production_admission": false,
     "capability_delta": 0,
-    "branch_preserved": true
+    "branch_preserved": true,
+    "actual_pr_closure": {
+      "pr": 700,
+      "state": "closed",
+      "merged": false,
+      "closed_at": "2026-10-16T12:08:06Z",
+      "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+      "source_branch_preserved": true
+    }
   }
 }

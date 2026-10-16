@@ -1,7 +1,7 @@
 {
   "schema": "swap5.ppa_reconcile01.status.v1",
   "work_unit": "PPA-RECONCILE01",
-  "phase": "HISTORICAL_CARRIER_RETIREMENT_READY_FOR_CLOSE_WITHOUT_MERGE",
+  "phase": "CLOSED_WITHOUT_MERGE_HISTORICAL_CARRIER_RETIRED_SOURCE_AND_OPEN_REVIEWS_PRESERVED",
   "canonical_review": "da5482c24259a1772759335d8289944053f62332",
   "historical_snapshot": {
     "schema": "swap5.ppa_reconcile01.status.v1",
@@ -100,6 +100,15 @@
       "documentation_source": "PASS",
       "strict_mkdocs": "PASS_exit0",
       "whitespace": "PASS"
-    }
+    },
+    "actual_pr_closure": {
+      "pr": 700,
+      "state": "closed",
+      "merged": false,
+      "closed_at": "2026-10-16T12:08:06Z",
+      "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+      "source_branch_preserved": true
+    },
+    "master_handoff_before_closure": "021359510b1e5502a20f53e4adf58479e11df8c6"
   }
 }
