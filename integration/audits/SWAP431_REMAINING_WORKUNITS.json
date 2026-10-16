@@ -90,22 +90,28 @@
         "SW431-DRAIN-ALLOCATION",
         "SW431-DRAIN-INF-LIMIT",
         "SW431-DRAIN-DRAMET3",
-        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-DIV-MULTI",
         "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
-      "next_action": "Qualify ordinary frost-OFF signed DIVDRA using admitted B19 algebra and ownership; native DRAMET3 controls, multilevel partitions and altered discharge layers remain separate slices.",
+      "next_action": "Preserve admitted ordinary signed single-level PR1099. Resume existing multilevel/INF-SPLIT/DRAMET3 owners only under their separate source contracts; no duplicate signed foundation.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
-        "SW431-DRAIN-DIV-SIGNED",
         "SW431-DRAIN-DRAMET3"
       ],
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV",
-        "SW431-DRAIN-EXT"
-      ]
+        "SW431-DRAIN-EXT",
+        "SW431-DRAIN-DIV-SIGNED"
+      ],
+      "signed_admission_20261016": {
+        "capability_id": "SW431-DRAIN-DIV-SIGNED",
+        "pr": 1099,
+        "canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+        "closeout": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc"
+      }
     },
     {
       "id": "MC-FROST01",

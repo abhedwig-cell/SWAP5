@@ -1,5 +1,17 @@
 # SWAP431 functional coverage master: recoverable review
 
+Current drainage admission (16 October 2026): **SW431-DRAIN-DIV-SIGNED is ADMITTED**
+through PR1099, canonical `1db58d059b646d7189413caed37b977599a47c95`, closeout `c2b7ad286704798662d6a00b75f15ab81c59d2fc`.
+Exactly one existing capability closes. Current authoritative counts are
+**95 ADMITTED,109 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,
+3 QUALIFICATION_ONLY;112 unresolved,243 total**. These counts supersede all
+prior count snapshots below. The historical denominator remains incomplete.
+O0/O2 production contracts,24 real signed compositions,four real rejection/
+replay/committed-restart controls and unchanged positive bodies support this row.
+Multilevel,separate infiltration and native DRAMET3 remain open under their
+existing contracts. Source/evidence authority is the existing drainage recovery
+record at `c2b7ad286704798662d6a00b75f15ab81c59d2fc`.
+
 Current classic-annual qualification disposition (2026-10-16):
 **SW431-CROP-ANNUAL is BLOCKED_SOURCE_STATE_COMPLETENESS.** The living classic
 source/process trajectories and existing living persistence pass O0/O2, but
@@ -158,7 +170,6 @@ The following entries are deliberately excluded from the missing-production-impl
 | Capability | Meaning | Workunit | Dependencies |
 |---|---|---|---|
 | SW431-DRAIN-DISLAYER | Absolute or water-level-relative discharge-layer geometry | MC-DRAIN01 | None |
-| SW431-DRAIN-DIV-SIGNED | Ordinary signed conductivity-weighted drainage distribution | MC-DRAIN01 | None |
 | SW431-DRAIN-DIV-TOPINTERFLOW | Separate highest interflow discharge layer and lower-layer exclusion | MC-DRAIN01 | None |
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | MC-DRAIN01 | None |
 | SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | MC-HYD01 | None |
@@ -249,9 +260,9 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | MC-NUT01 | None |
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | MC-DRAIN01 | None |
 | SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | MC-DRAIN01 | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | MC-DRAIN01 | None |
 | SW431-IRR-SALTEXCESS | Sensor salt-threshold excess irrigation | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. |
 | SW431-ROOT-ANAE-GROW | Anaerobic suppression of root extension | MC-CROP01 | SW431-CROP-ROOTGROW |
 | SW431-ROOT-LRV-CONSTANT | Force root length density from RDCTB using rooted-compartment depth | MC-CROP01 | SW431-ROOT-MICRO2 |
@@ -287,7 +298,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | Workunit | Open entries | Next action |
 |---|---:|---|
 | MC-CROP01 | 19 | Source/admission adjudication for the exact IDs below |
-| MC-DRAIN01 | 8 | Source/admission adjudication for the exact IDs below |
+| MC-DRAIN01 | 7 | Preserve PR1099; qualify the remaining existing source contracts |
 | MC-FROST01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-HEAT01 | 5 | Source/admission adjudication for the exact IDs below |
 | MC-HYD01 | 15 | Source/admission adjudication for the exact IDs below |
@@ -334,13 +345,12 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-DRAIN-DISLAYER | Absolute or water-level-relative discharge-layer geometry | SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator. | None |
-| SW431-DRAIN-DIV-SIGNED | Ordinary signed conductivity-weighted drainage distribution | B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission. | None |
 | SW431-DRAIN-DIV-TOPINTERFLOW | Separate highest interflow discharge layer and lower-layer exclusion | Source partitions the highest interflow down to its physical drain bottom and starts all lower discharge layers below that boundary. Current ordinary positive DIVDRA has no highest-interflow selector or separate top-layer operator. This is distinct from B15 highest scalar response and from SWDISLAY top truncation. | None |
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present. | None |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher. | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions. | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-DIV-MULTI | Multiple interacting discharge-layer partitions | Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel. | None |
 | SW431-DRAIN-INF-LIMIT | Head-difference-limited drain/channel infiltration | MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics. | SW431-DRAIN-DRAMET3 |
-| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission. | SW431-DRAIN-DIV-SIGNED |
+| SW431-DRAIN-INF-SPLIT | Separate shallower infiltration spatial distribution | Signed ordinary foundation is now admitted by PR1099. SWDIVDINF=1 remains open: share the existing B19 separate-infiltration partition with the ordinary owner, then qualify its source domain, accepted mass/reject/restart composition. No second partition law. | None |
 
 ### MC-FROST01
 

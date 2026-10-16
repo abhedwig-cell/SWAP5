@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 94,
-      "ACTIVE_MIGRATION": 110,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 109,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 110,
+    "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 87,
+    "confirmed_missing_production_entries": 86,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 113,
+    "total_unresolved_capabilities": 112,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 110,
-    "missing_standalone_process_implementations_not_established": 110,
-    "active_with_existing_production_source_authority": 70,
+    "missing_production_binding_or_implementation_entries": 109,
+    "missing_standalone_process_implementations_not_established": 109,
+    "active_with_existing_production_source_authority": 69,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 110,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;110 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+    "active_missing_complete_admitted_route": 109,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -4502,7 +4502,7 @@
       ],
       "active_workunit": "MC-FROST01",
       "migration_priority": {
-        "dependency_depth": 2,
+        "dependency_depth": 1,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 3,
@@ -11734,17 +11734,15 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
+        "claim": "Signed ordinary foundation is now admitted by PR1099. SWDIVDINF=1 remains open: share the existing B19 separate-infiltration partition with the ordinary owner, then qualify its source domain, accepted mass/reject/restart composition. No second partition law."
       },
       "restrictions": [
-        "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
+        "Signed ordinary foundation is now admitted by PR1099. SWDIVDINF=1 remains open: share the existing B19 separate-infiltration partition with the ordinary owner, then qualify its source domain, accepted mass/reject/restart composition. No second partition law."
       ],
-      "remaining_dependency": [
-        "SW431-DRAIN-DIV-SIGNED"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-DRAIN01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -11755,7 +11753,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-DRAIN-DIV"
+        "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-SIGNED"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
@@ -14436,30 +14435,29 @@
       },
       "meaning": "Ordinary signed conductivity-weighted drainage distribution",
       "swap5_implementation_authority": [
-        "src/process/mod_drainage_process.f90",
-        "src/process/mod_drainage_tabulated_response.f90",
-        "src/process/mod_drainage_extended_exchange.f90",
         "src/process/mod_drainage_spatial_distribution.f90",
         "src/runtime/mod_fmr_divdra_runtime_binding.f90",
-        "src/runtime/mod_fmr_drainage_response_binding.f90"
+        "src/runtime/mod_fmr_divdra_serialized_composition.f90",
+        "src/runtime/mod_fmr_divdra_serialized_runtime.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/drainage.md",
         "docs/science/drainage-formulations.md",
         "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
-        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
+        "established": true,
+        "route": "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
+        "claim": "Ordinary frost-OFF single-level SWDIVD=1, SWDIVDINF=0 signed conductivity partition and existing serialized Reference binding admitted by PR1099. Positive bodies remain byte-exact; negative direction uses the same admitted weights. Supplied immutable scalar/view ownership, one accepted water ledger, rollback/replay and existing committed restart. No new scalar response or state owner."
       },
       "restrictions": [
-        "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission."
+        "Single-level ordinary SWDIVDINF=0 only; existing tiny nonzero magnitude seam excluded. Multilevel, separate infiltration, altered layers and native DRAMET3/OWLTAB remain separate. Frost-OFF qualification does not extend frost admission."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-DRAIN01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14468,13 +14466,26 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-DRAIN-DIV"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "canonical_admission_20261016": {
+        "pr": 1099,
+        "canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+        "qualified_source_commit": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
+        "qualified_head": "31d05eac08211382d003c6cf59b51bf4077da2fd",
+        "closeout": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "signed_runtime_cases": 24,
+        "reject_replay_restart_controls": 4,
+        "hard_mass_cm": 1e-12,
+        "full_capability": true
+      }
     },
     {
       "capability_id": "SW431-DRAIN-DIV-MULTI",
@@ -14514,17 +14525,15 @@
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions."
+        "claim": "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel."
       },
       "restrictions": [
-        "Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions."
+        "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel."
       ],
-      "remaining_dependency": [
-        "SW431-DRAIN-DIV-SIGNED"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-DRAIN01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -14535,7 +14544,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW431-DRAIN-DIV"
+        "SW431-DRAIN-DIV",
+        "SW431-DRAIN-DIV-SIGNED"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
     },
@@ -14719,10 +14729,10 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-DRAIN-DIV-SIGNED",
+      "capability_id": "SW431-DRAIN-DIV-MULTI",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
-      "why_open": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission.",
+      "why_open": "Signed single-level foundation is admitted by PR1099. Existing PR1109 branch remains unqualified: interacting active-level order/discharge-layer routing needs its own source oracle, per-level signed closure and accepted rollback/restart proof. Ordinary single-level closure does not admit multilevel.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14751,6 +14761,20 @@
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
       "why_open": "Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
+      "capability_id": "SW431-DRAIN-INF-SPLIT",
+      "work_unit": "MC-DRAIN01",
+      "dependencies": [],
+      "why_open": "Signed ordinary foundation is now admitted by PR1099. SWDIVDINF=1 remains open: share the existing B19 separate-infiltration partition with the ordinary owner, then qualify its source domain, accepted mass/reject/restart composition. No second partition law.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14792,7 +14816,7 @@
       "capability_id": "SW431-IRR-DCS1",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+      "why_open": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14848,7 +14872,7 @@
       "capability_id": "SW431-IRR-TCS2",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+      "why_open": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14862,7 +14886,7 @@
       "capability_id": "SW431-IRR-TCS3",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+      "why_open": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14876,7 +14900,7 @@
       "capability_id": "SW431-IRR-TCS4",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+      "why_open": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14932,7 +14956,7 @@
       "capability_id": "SW431-ROOT-DENSITY",
       "work_unit": "MC-ROOT01",
       "dependencies": [],
-      "why_open": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+      "why_open": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15030,7 +15054,7 @@
       "capability_id": "SW431-HYD-MODEL2",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+      "why_open": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15044,7 +15068,7 @@
       "capability_id": "SW431-HYD-MODEL3",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+      "why_open": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15072,7 +15096,7 @@
       "capability_id": "SW431-HYD-MODEL6",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+      "why_open": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15128,7 +15152,7 @@
       "capability_id": "SW431-HYD-POWER",
       "work_unit": "MC-HYD01",
       "dependencies": [],
-      "why_open": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+      "why_open": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15240,7 +15264,7 @@
       "capability_id": "SW431-ET-PMTRAD",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Bounded daily PMtraditional/CFBS production admitted at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9. Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction.",
+      "why_open": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15254,7 +15278,7 @@
       "capability_id": "SW431-ET-SOILFACTOR",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Bounded daily PMtraditional/CFBS production admitted at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9. Rooted/interception, broader historical parser/weather and lifecycle profiles and external disk codec remain OPEN. Pure canopy oracle cases do not admit physical rooted extraction.",
+      "why_open": "Daily traditional PM SWETR0/SWDIVIDE0 and branch-specific CFBS reference/traditional demand through authenticated weather to actual accepted Full Richards, with multi-day BASE/AIR, failed-prefix/retry/rollback, exactly-once and configuration-checked joint restore.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15422,7 +15446,7 @@
       "capability_id": "SW431-MET-RAIN1",
       "work_unit": "MC-MET01",
       "dependencies": [],
-      "why_open": "Bounded actual typed RAINTB production is admitted at 8881729964f33c399e6f3b18200eff9434f5764e. Wider historical source envelopes remain open: Legacy input/parser and partly filled tables, independent external dtleap equivalence, near-midnight legacy event-array coalescing, rooted/interception profiles and external disk codec remain OPEN.",
+      "why_open": "Authentic daily weather plus typed seasonal AFGEN RAINTB; actual pulse/on/off Full Richards and same-day/next-day continuation; wet/dry failed-prefix/retry/rollback and table-identity-checked opaque joint restart.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15618,7 +15642,7 @@
       "capability_id": "SW431-AGE-TRACER",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Bounded age matrix route canonically admitted via PR1233 at e85bfe13. Accepted surface/pond budget, default/multicolumn activation and output envelope remain open; full capability is not promoted.",
+      "why_open": "PR1233 at e85bfe130b9ff1a09e88e00ffab94859e26b0d8e admits the complete bounded zero-top matrix age route over actual accepted water, age production/balance, atomic retry and fresh-process restart. Surface/pond/default/multicolumn/output envelope remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15632,7 +15656,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "PR1228/1230 admit linear and nonlinear0.5..2 matrix decay/transport/restart. Wider exponents, dynamic accepted thermal, surface/default application remain open. No dependency on rejected SWBR aquifer.",
+      "why_open": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15646,7 +15670,7 @@
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "General evaporation/runoff/runon gross receipts and chemical balance, surface age, simultaneous N and full historical/default activation. Aquifer excluded. Requested core pond/infiltration/retained-solute/deposition/restart is bounded admitted; next user priority is separate reproductive/translocation/death N assessment preserving1253.",
+      "why_open": "Actual filling/draining hydraulic pond in existing BASE/default MvG/SWKIMPL0 Reference joint application, gross rain/irrigation, retained surface solute, prescribed dry deposition and dry/rewet, sole1256 matrix pond_mass and codec; accepted water plus whole-solute balances and exact restart. Explicit external full/half comparison at caller-supplied cm tolerance.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15660,7 +15684,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "PR1230 admits nonlinear0.5..2 with changing-water oracle, units, atomic mass and joint continuation. Reader domain0..10 outside this range and default/multicolumn/wider combinations remain open; no whole capability closure.",
+      "why_open": "PR1228 admits the linear route; PR1230 at d6e21f02 admits nonlinear0.5..2 with independent inverse, actual changing-water transport, balance and joint restart. Full reader domain0..10, dynamic thermal/surface and default application scope remain open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15746,7 +15770,7 @@
       "capability_id": "SW431-CROP-SOW",
       "work_unit": "MC-CROP01",
       "dependencies": [],
-      "why_open": "PR1206/1207/1209 admit persisted preparation/sowing/germination, delayed emergence, actual rooted growth and current-day/final-window growth completion. Remaining scope is historical harvest4/integral-output/reset, physical rotation/fallow/new-season authority, broader selector/weather/root profiles, SWINCO=3 and external disk restart.",
+      "why_open": "PR1204/1206/1207/1209 admit authentic-weather preparation/sowing/germination, delayed emergence, rooted annual growth and current-day/final-window growth completion in the actual application. established=false denotes full historical selector/lifecycle scope, not absence of owners.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15803,7 +15827,7 @@
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, partial-leaf return and full historical harvest equivalence remain outside this bounded option. Aquifer remains excluded.",
+      "why_open": "PR1260 adds a bounded literal B1.11 translocation/residual-death profile with separate allocation/nonnegative guards, actual finite soil supply and full-return pending/native continuation. PR1253 vegetative option and WOFOST81 default remain preserved. Full automatic historical activation and trajectory envelope remain open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15860,44 +15884,12 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-DRAIN-DIV-MULTI",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [
-        "SW431-DRAIN-DIV-SIGNED"
-      ],
-      "why_open": "Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-DRAIN-INF-LIMIT",
       "work_unit": "MC-DRAIN01",
       "dependencies": [
         "SW431-DRAIN-DRAMET3"
       ],
       "why_open": "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-DRAIN-INF-SPLIT",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [
-        "SW431-DRAIN-DIV-SIGNED"
-      ],
-      "why_open": "B19 now supplies a qualified signed/separate-infiltration runtime, but requires active frost and sensible temperature. The ordinary no-frost runtime still binds positive-only single-level DIVDRA; the B19 configuration validator rejects frost-off. Reuse B19 algebra/ownership contracts for the ordinary successor, without silently extending admission.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 1,
@@ -15925,6 +15917,22 @@
       "bounded_supporting_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1241",
       "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
       "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
+    },
+    {
+      "capability_id": "SW431-FROST-DIV-MULTI",
+      "work_unit": "MC-FROST01",
+      "dependencies": [
+        "SW431-DRAIN-DIV-MULTI"
+      ],
+      "why_open": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution.",
+      "priority": {
+        "dependency_depth": 1,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 3,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-FROST-SNOW",
@@ -16034,7 +16042,7 @@
       "dependencies": [
         "SW431-ROOT-DENSITY"
       ],
-      "why_open": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+      "why_open": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -16163,7 +16171,7 @@
       "dependencies": [
         "SW431-CROP-ANNUAL"
       ],
-      "why_open": "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
+      "why_open": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart. Full historical source capability not established. Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -16245,7 +16253,7 @@
       "dependencies": [
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
+      "why_open": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset. Full historical source capability not established. Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -16266,22 +16274,6 @@
         "dependency_depth": 1,
         "functional_relevance": 2,
         "implementation_extent": 3,
-        "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-FROST-DIV-MULTI",
-      "work_unit": "MC-FROST01",
-      "dependencies": [
-        "SW431-DRAIN-DIV-MULTI"
-      ],
-      "why_open": "B19 admits the single-level runtime foundation. Interacting multilevel DIVDRA and its frost nodal/bottom composition remain unimplemented; scalar multilevel response is not spatial redistribution.",
-      "priority": {
-        "dependency_depth": 2,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
         "physical_risk": 3,
         "regression_risk": 3
       },
@@ -17907,7 +17899,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "7c85247afaeaba4f96b86324d58ef575851b5310",
+  "canonical_locator_head": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19030,5 +19022,96 @@
       "QUALIFICATION_ONLY": -1,
       "ACTIVE_MIGRATION": 1
     }
+  },
+  "latest_mc_drain01_signed_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DIV-SIGNED",
+    "pr": 1099,
+    "canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+    "closeout": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 94,
+        "ACTIVE_MIGRATION": 110,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 110,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 87,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 113,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 110,
+      "missing_standalone_process_implementations_not_established": 110,
+      "active_with_existing_production_source_authority": 70,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 110,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;110 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 95,
+        "ACTIVE_MIGRATION": 109,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 109,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 86,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 112,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 109,
+      "missing_standalone_process_implementations_not_established": 109,
+      "active_with_existing_production_source_authority": 69,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 109,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Ordinary frost-OFF single-level SWDIVD=1, SWDIVDINF=0 signed conductivity partition and existing serialized Reference binding admitted by PR1099. Positive bodies remain byte-exact; negative direction uses the same admitted weights. Supplied immutable scalar/view ownership, one accepted water ledger, rollback/replay and existing committed restart. No new scalar response or state owner.",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+    "source_integrity": "Canonical admitted source equals completed local O0/O2 postimage. Master census validation is structural/source integrity, not a full current-canonical numerical qualification."
   }
 }

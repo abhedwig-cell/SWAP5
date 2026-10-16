@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
+  "last_reconciled_upstream": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -58,7 +58,7 @@
     "numerical_or_actions_run_for_master": false,
     "complete_master_qualification": false
   },
-  "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
+  "checkpoint_commit": "72046cd58f85636590ff5b9746bf4167f4ccec1f",
   "implemented": true,
   "persisted": true,
   "tested": {
@@ -104,33 +104,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 94,
-      "ACTIVE_MIGRATION": 110,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 109,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 110,
+    "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 87,
+    "confirmed_missing_production_entries": 86,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 113,
+    "total_unresolved_capabilities": 112,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 110,
-    "missing_standalone_process_implementations_not_established": 110,
-    "active_with_existing_production_source_authority": 70,
+    "missing_production_binding_or_implementation_entries": 109,
+    "missing_standalone_process_implementations_not_established": 109,
+    "active_with_existing_production_source_authority": 69,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 110,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;110 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+    "active_missing_complete_admitted_route": 109,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -141,7 +141,7 @@
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
   "next_action": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
-  "recovery_point": "Actual1260 bounded reproductive process stays admitted. Separate1261 source review is merged: literal daily/harvest dead-leaf DM overlap needs a B1 reference decision before partial-return runtime; retained leaf/stem DM/N and native semantics remain prerequisites. All243 dispositions unchanged; PR1072 stays draft.",
+  "recovery_point": "PR1099 ordinary signed DIVDRA canonically admitted; existing master records +1 ADMITTED, -1 ACTIVE, 112 unresolved. Preserve the parallel annual-crop retained-organ and partial-return review decisions and all unrelated work.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
     "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
@@ -2928,6 +2928,63 @@
         "decoded_bytes": 11240,
         "members": 12
       }
+    }
+  },
+  "latest_mc_drain01_signed_admission_20261016": {
+    "capability_id": "SW431-DRAIN-DIV-SIGNED",
+    "pr": 1099,
+    "canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+    "closeout": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "scope": "Ordinary frost-OFF single-level SWDIVD=1, SWDIVDINF=0 signed conductivity partition and existing serialized Reference binding admitted by PR1099. Positive bodies remain byte-exact; negative direction uses the same admitted weights. Supplied immutable scalar/view ownership, one accepted water ledger, rollback/replay and existing committed restart. No new scalar response or state owner.",
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+    "source_integrity": "Canonical admitted source equals completed local O0/O2 postimage. Master census validation is structural/source integrity, not a full current-canonical numerical qualification.",
+    "counts": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 95,
+        "ACTIVE_MIGRATION": 109,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 109,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 86,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 112,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 109,
+      "missing_standalone_process_implementations_not_established": 109,
+      "active_with_existing_production_source_authority": 69,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 109,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "validation": {
+      "coverage_integrity": "PASS",
+      "unchanged_inheritance_guard_tests": 20,
+      "qualification_claim": "Master source/structural integrity only; drainage science is independently pinned to canonical PR1099."
     }
   }
 }
