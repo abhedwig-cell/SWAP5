@@ -727,5 +727,33 @@
       "raw_sha256": "4d17d66507401087cfe0c5226359c2e22f602b3d9aed4a4b1b82df37dff6a993",
       "science_run": false
     }
+  },
+  "inheritance_recovery_20261016": {
+    "ledger_baseline": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+    "inheritance_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+    "scope": "Diagnostic only. No historical source evidence rebound, no disposition changes, no science rerun.",
+    "stale_dependencies": {
+      "SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json": {
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "historically_accepted_sha256": "a1c9baa710b487709c9036a88bf9ab28be5f68b0c0541dd117c2543958de188a",
+          "current_sha256": "b26cb073a2e52a9b0d0613d81df926a39e720531be4d61168e39b4561241e036",
+          "current_blob": "f3eb655139b897d91bd5ddea5bd1f385c87b3807"
+        }
+      },
+      "SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json": {}
+    },
+    "actual_baseline": "fb21ba5626e2b557b85616abbc19857105a6ecd3",
+    "canonical": "02ae9f0090857e07c984e3f4be4ed8a5d8fa553b",
+    "next_safe_step": "Review changed serialized-reference backend against the historical reachability claims and owning admitted runtime receipts. Reconcile the historical baseline chain only with exact dependency/source authority; then run existing check_swap431_coverage.py to expose any later independent stale evidence. Do not relax the checker, rewrite historical receipts, or treat a new baseline/hash as scientific qualification.",
+    "full_master_integrity": "BLOCKED_UNRECONCILED_HISTORICAL_DEPENDENCY"
+  },
+  "impact_preflight_admission_20261016": {
+    "pr": 1250,
+    "merge_commit": "02ae9f0090857e07c984e3f4be4ed8a5d8fa553b",
+    "head": "dfd792b02fc99f306dfab10d6c36b7a8b5299cac",
+    "source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "qualification": "17 focused planner/entrypoint tests; 24 original plus 46 current owner controls; exact unchanged scientific/full runner body; docs source and strict PASS",
+    "coverage_disposition_changes": 0,
+    "other_prs": "Existing active/research donor branches retained. No new migration work started."
   }
 }
