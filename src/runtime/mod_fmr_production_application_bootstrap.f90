@@ -1682,6 +1682,7 @@ contains
       if (inputs(i)%root_parameters%active_nodes/=self%parameters(i)%active_nodes) return
       call evaluate_pmdirect_swetr0_daily(inputs(i)%weather,inputs(i)%site,inputs(i)%canopy,trial(i)%daily,daily_diag)
       if (.not.daily_diag%daily_result_produced) return
+      interval_diag=daily_diag
       call apply_swinter1_daily_interval(inputs(i)%weather,inputs(i)%canopy,trial(i)%daily,trial(i)%interval,interval_diag)
       if (.not.interval_diag%interval_result_produced) return
       call export_fmr_interception_source_window_restart(owners(i),t0,record,st)

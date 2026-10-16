@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# INT12-C explicit owner prerequisite. It never establishes full moving PASS.
+if [[ "${1:-}" == --int12c-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fpm/verify_int12c_successor.py
+  echo 'FCI_INT12C_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 

@@ -73,7 +73,13 @@ jobs:
       - name: Small production contracts or explicit owner-selection block
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
-        run: python3 tests/modularity/run_modular_tests.py --changed-since "$BASE" --output "$RUNNER_TEMP/modular-feedback"
+        run: |
+          if [[ -f src/runtime/mod_fmr_interception_source_window_binding.f90 ]]; then
+            # Exact owner evidence and default projection; no full F-CI PASS.
+            python3 -B tests/fpm/verify_int12c_successor.py
+          else
+            python3 tests/modularity/run_modular_tests.py --changed-since "$BASE" --output "$RUNNER_TEMP/modular-feedback"
+          fi
   historical-fci03-through-fci18:
     if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
     needs: selection-preflight

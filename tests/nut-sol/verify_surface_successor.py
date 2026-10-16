@@ -107,6 +107,9 @@ DISPATCH={'verify_source': " if (ROOT/'src/runtime/mod_fmr_b111_surface_solute_r
 CONTROL_DISPATCH="if (v.ROOT/'src/runtime/mod_fmr_b111_surface_solute_route.f90').exists():\n subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_surface_evidence_controls.py')],check=True);raise SystemExit(0)\n"
 def composition():return json.loads((ROOT/STATUS).read_text()).get('canonical_composition')
 def verify_source(git_reader=None):
+ if (ROOT/'src/runtime/mod_fmr_interception_source_window_binding.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/fpm'));import verify_int12c_successor as int12c
+  return int12c.verify_source(git_reader)
  m=composition()
  if m is None:return _original_verify_source()
  g=git if git_reader is None else git_reader
@@ -153,6 +156,9 @@ def incumbent_qualification():
  check(result['qualified']and result['swrd2_successor']and result['harvest_successor'],'incomplete admitted incumbent')
  return result
 def verify_qualification():
+ if (ROOT/'src/runtime/mod_fmr_interception_source_window_binding.f90').exists():
+  sys.path.insert(0,str(ROOT/'tests/fpm'));import verify_int12c_successor as int12c
+  return int12c.verify_qualification()
  if composition()is None:return _original_verify_qualification()
  source=verify_source();data=current_evidence();r=validate_evidence(data,composition()['execution_commit']);old=incumbent_qualification()
  # Every existing production byte is unchanged from an actually qualified

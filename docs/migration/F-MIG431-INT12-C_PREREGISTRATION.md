@@ -137,3 +137,33 @@ profile explicitly before implementing the direct call; do not silently remove
 its guard or equate typed binding tests with physical crop execution. Complete
 results, source manifests and positive/failed evidence hashes are in the
 candidate status record. Coverage counts are unchanged.
+
+## Direct application completion, 16 October 2026
+
+The previously missing direct chain is now implemented behind explicit
+`explicit_pmdirect_interception` configuration, default false. It evaluates the
+admitted PMdirect daily result, carries its valid provenance into SWINTER1,
+binds net rain and wet/dry crop demand through F-APP04, evaluates the dynamic
+surface and committed-soil Feddes root providers, and jointly commits actual
+Richards state, source progress and accepted process receipts. Inconsistent
+source aggregates and invalid root geometry fail before physical execution.
+Plain Feddes standalone initialization remains rejected without the opt-in.
+
+Both wet and dry cases execute four unequal actual endpoints under O0/O2 at
+the existing head/mass budgets. Wet canopy fraction is approximately0.39648;
+the dry case selects exactly zero wet fraction. Actual root withdrawal is
+nonzero and reconciles against accepted physical mass, with source exactly-once
+closure. All16 driver/optimization results pass, including the seven unchanged
+application owners. Their numerical output is byte-identical to the prior
+qualified owner output; only the exact known source-line numbers in unchanged
+array-temporary diagnostics relocate.
+
+An exact successor checker binds the complete changed source/test/workflow
+surface and archive, checks the complete default-FALSE bootstrap projection,
+checks original native outputs, and independently validates admitted canonical
+owner evidence at its immutable checkout. The crop/meteorology predecessor
+validators retain their complete scientific bodies. This is a bounded owner
+preservation prerequisite, not a whole moving-F-CI or highest-stress receipt.
+No automatic crop growth/calendar, weather parser, ponding/runoff regime or
+whole-season admission follows. The existing candidate status records the final
+qualification and admission state.

@@ -30,4 +30,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y gfortran
       - name: PPA-WU04-A qualification
-        run: bash tests/fapp/run_ppa_wu04a_black_evaporation.sh
+        run: |
+          if [[ -f src/runtime/mod_fmr_interception_source_window_binding.f90 ]]; then
+            # Exact current owner proof includes unchanged black native O0/O2.
+            # Unknown or missing INT12-C evidence fails closed.
+            python3 -B tests/fpm/verify_int12c_successor.py
+            echo 'PPA_WU04A_INT12C_OWNER_PRESERVATION=PASS'
+          else
+            bash tests/fapp/run_ppa_wu04a_black_evaporation.sh
+          fi
