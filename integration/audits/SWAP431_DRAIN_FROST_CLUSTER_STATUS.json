@@ -396,7 +396,7 @@
     "frozen_conditions_commit": "0f3294ffa5be77410befc99a9e5fd5b8a2926b81",
     "evidence": {
       "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
-      "sha256": "ffba457c732db6405582334e53a72913123fbb3d0761a11782f25126648abaf8"
+      "sha256": "d3c37d441e6decd94797192464c6cbd6a6dd32dce41b8a786701343a9c7d6ea6"
     },
     "qualification_inputs_sha256": {
       "tests/fmig431/run_swap431_multilevel_divdra.py": "ecf046f8ad58c5546c97f73374f37710c0691a468a6781168b47568801d425aa",
@@ -532,6 +532,18 @@
       }
     ],
     "successor_postimages": {
+      "src/crop/mod_wofost_actual_biomass_state.f90": {
+        "status": "M",
+        "blob": "79da2d32fa4e99f8f5bb24097f526e4ee896af47"
+      },
+      "src/crop/mod_wofost_finalize_rates.f90": {
+        "status": "M",
+        "blob": "b967136a0640f9ae6c2c4d9d9250d8946a05245d"
+      },
+      "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+        "status": "M",
+        "blob": "9afdb2e4ea88fba0f75b80a7ccdfaae579e6481a"
+      },
       "src/process/mod_drainage_spatial_distribution.f90": {
         "status": "M",
         "blob": "de410e965665bfd1d7bf1828dddc7a275f779bd2"
@@ -548,6 +560,58 @@
         "status": "M",
         "blob": "56679bfde412c989b1d0f92521982e9a30a32eb9"
       },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "b256c5354d0d34be51690a20c65449670cc01ba2"
+      },
+      "tests/fmig431/annual/check_classic_codec.py": {
+        "status": "A",
+        "blob": "c64e00d2255e63c21bb75ec133b35f1eac7b6591"
+      },
+      "tests/fmig431/annual/check_zero_codec_bytes.py": {
+        "status": "A",
+        "blob": "5e09c8cbe27820ba627f2263380cabc6a159ba1d"
+      },
+      "tests/fmig431/annual/resume_classic_weather.py": {
+        "status": "A",
+        "blob": "69fed665565fa6ec5e9eac966afead333742fc8c"
+      },
+      "tests/fmig431/annual/run_classic_owners.py": {
+        "status": "A",
+        "blob": "6e91b2b918d8ac410db0ec9d446e1b4d4b3f5829"
+      },
+      "tests/fmig431/annual/run_classic_restart.py": {
+        "status": "A",
+        "blob": "0b793b82fbb61d2ef9485cf24e2d7df8b773fdb4"
+      },
+      "tests/fmig431/annual/run_classic_source.py": {
+        "status": "A",
+        "blob": "043a8869558f86a82ba583a12a2d6188372de0d0"
+      },
+      "tests/fmig431/annual/run_classic_weather.py": {
+        "status": "A",
+        "blob": "47e2f7b8da3f4f46e83c56fd3ab770b55dc23412"
+      },
+      "tests/fmig431/annual/run_wofost81_preservation.py": {
+        "status": "A",
+        "blob": "4dcb6ba71bdb5dceeedd8336cadf96fbdb09e2c1"
+      },
+      "tests/fmig431/annual/test_annual_admission_controls.py": {
+        "status": "A",
+        "blob": "fb302b32cc9da687a7b6c6be70c69c756d3ebd57"
+      },
+      "tests/fmig431/annual/test_classic_source.f90": {
+        "status": "A",
+        "blob": "a93fee4043f760fb1a1ff0a3c5b7d8069b40fd26"
+      },
+      "tests/fmig431/annual/test_zero_restart.f90": {
+        "status": "A",
+        "blob": "3d82d522c5bb3e644dd5014f3c3cf5a172419d29"
+      },
+      "tests/fmig431/annual/verify_annual_successor.py": {
+        "status": "A",
+        "blob": "cfd2a5236823f461c427b42c520f7ffb911aea2b"
+      },
       "tests/fmig431/run_swap431_multilevel_divdra.py": {
         "status": "A",
         "blob": "8e22e653975e9fd9bb3fa5bb60bb173a7e4d78c8"
@@ -562,15 +626,19 @@
       },
       "tests/fmig431/verify_multilevel_divdra_successor.py": {
         "status": "A",
-        "blob": "0e7e0a669f46eeaebdc8f79ea6ca35bfcaf1f0e5"
+        "blob": "ece8edffa799e5457a99e517624a0329eba24179"
       },
       "tests/fmig431/verify_signed_divdra_successor.py": {
         "status": "M",
-        "blob": "56b47ebaad51d23e7db423df32487ab11cb301ad"
+        "blob": "0363090d3cb347a8aa575b3baf71e859ff65cc03"
+      },
+      "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90": {
+        "status": "M",
+        "blob": "e4845a4d118fe17955efec3800754c19aa2dfb08"
       }
     },
     "qualification_checkpoint": "ddf13d59ec8a593c6f6407d9b5f01f3aecdfb65a",
-    "source_tree": "247cf3b744576226df030a174530ea5662e3ddbf",
+    "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
     "validation": {
       "source_evidence": "PASS",
       "evidence_corruption_controls": 6,
@@ -578,7 +646,68 @@
       "existing_focused_FCI_owner_entry": "PASS",
       "docs_source": "PASS",
       "mkdocs_strict": "PASS",
-      "whitespace": "PASS"
+      "whitespace": "PASS",
+      "joint_annual_owner_entry": "PASS",
+      "joint_drain_owner_entry": "PASS",
+      "joint_evidence_corruption_controls": 6,
+      "joint_docs_source": "PASS",
+      "joint_mkdocs_strict": "PASS"
+    },
+    "parallel_annual_reconciliation": {
+      "canonical_commit": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "decision": "Preserve annual source, original owner validator and immutable qualification at its actual canonical admission. Compose only additive successor delegation; preserve numerical drainage evidence because no selected compiled input changed.",
+      "drainage_numerical_input_intersection": [],
+      "changed_paths": [
+        "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+        "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_ADMISSION_CONTROLS_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_SOURCE_QUALIFICATION_20261016.tar.xz.b64",
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "tests/fmig431/annual/check_classic_codec.py",
+        "tests/fmig431/annual/check_zero_codec_bytes.py",
+        "tests/fmig431/annual/resume_classic_weather.py",
+        "tests/fmig431/annual/run_classic_owners.py",
+        "tests/fmig431/annual/run_classic_restart.py",
+        "tests/fmig431/annual/run_classic_source.py",
+        "tests/fmig431/annual/run_classic_weather.py",
+        "tests/fmig431/annual/run_wofost81_preservation.py",
+        "tests/fmig431/annual/test_annual_admission_controls.py",
+        "tests/fmig431/annual/test_classic_source.f90",
+        "tests/fmig431/annual/test_zero_restart.f90",
+        "tests/fmig431/annual/verify_annual_successor.py",
+        "tests/fmig431/verify_signed_divdra_successor.py",
+        "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90"
+      ],
+      "new_production_scope": [
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90"
+      ],
+      "guard": "tests/fmig431/annual/verify_annual_successor.py",
+      "remaining": [],
+      "qualification": "PASS actual immutable original annual validator plus exact current annual postimages/delegation reconstruction; all12 drainage records retain identical inputs."
+    },
+    "joint_receipts": {
+      "controls": {
+        "sha256": "1a4234206ab4e278c6d11e32ccc31a325b0a9799aa52cd940b08563f6e4c0f03",
+        "terminal": "PASS"
+      },
+      "annual_owner": {
+        "sha256": "e14b951c0f7006a050a07170feac095119cf361784b6002e70e3ba33736aa5eb",
+        "terminal": "PASS"
+      },
+      "drain_owner": {
+        "sha256": "a998e5c81908dae6d4bac281a856a8c8400d3834ac13b428f16816895a2ddb16",
+        "terminal": "PASS"
+      },
+      "strict_docs": {
+        "sha256": "e043fa7aa8c125c69701ac224e0f8398b48ba36f97a4f4f99996e40f622dc7be",
+        "terminal": "PASS"
+      }
     }
   }
 }

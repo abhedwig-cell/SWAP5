@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Classic annual source/state owner only; never a full moving PASS.
+if [[ "${1:-}" == --crop-annual-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/annual/verify_annual_successor.py
+  echo 'FCI_CLASSIC_ANNUAL_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 # Signed DIVDRA owner only; no unrelated numerical suite or full F-CI claim.
 if [[ "${1:-}" == --drain-signed-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
@@ -793,6 +801,9 @@ check_b19_micro_root_recomposition() {
       src/crop/mod_crop_root_depth_rate_owner.f90 ) ;;
       src/crop/mod_crop_root_extension_supply_limit.f90 ) ;;
       src/crop/mod_wofost_crop_owner_state.f90 ) ;;
+      src/crop/mod_wofost_actual_biomass_state.f90 )
+        python3 -B tests/fmig431/annual/verify_annual_successor.py || fail 'unqualified classic mortality state successor'
+        ;;
       src/crop/mod_wofost_finalize_rates.f90 ) ;;
       src/crop/mod_wofost_one_day_structural_evolution.f90 ) ;;
       src/crop/mod_wofost_potential_shadow_daily.f90 ) ;;
