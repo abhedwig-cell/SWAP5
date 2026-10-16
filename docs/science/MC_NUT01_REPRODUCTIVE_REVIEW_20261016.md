@@ -1,6 +1,7 @@
 # MC-NUT01 reproductive, translocation and death assessment
 
-Status: completed source assessment with bounded executable discriminators;
+Status: source assessment canonically recorded through PR1259 at
+`a0cbac6a14b952bc4a34dd105b7251803c77f445`, with bounded executable discriminators;
 **no reproductive production admission**. Baseline canonical
 `1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8`, after SOL PR1258.
 The existing vegetative B1.11 request admitted through PR1253 at
