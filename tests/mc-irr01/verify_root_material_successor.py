@@ -65,6 +65,9 @@ def validate_science(data):
   check(row['returncode']==0,'failed material native program')
   outs=[b for p,b in data.items()if p.startswith('physical/')and p.endswith('.stdout')and sha(b)==row['stdout_sha256']]
   check(bool(outs),'missing material raw stdout')
+  check(any(Path(e['command'][0]).name=='test-'+row['driver']and '/o'+str(row['opt'])+'/'in e['command'][0]and
+    e['command'][-2:]==[row['mode'],row['moisture']]and e['stdout_sha256']==row['stdout_sha256']for e in r['events']),
+    'material native matrix row not bound to executed command')
   k=identity(row);check(hashes[(2-k[0],*k[1:])]==row['stdout_sha256'],'material O0/O2 drift')
   if row['driver'].startswith('material_rooted'):
    for marker in [b'MC_IRR01_MATERIAL_DCS1_ACCEPTED_ROOT_RAIN_MASS_RESTART=PASS',b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS',b'CROP_FILE_WEATHER_PRODUCTION=PASS']:
@@ -86,11 +89,15 @@ def validate_science(data):
  leaf=json.loads(data['leaf/RESULTS.json'])
  check(leaf['status']=='PASS'and len(leaf['records'])==2,'unfinished material leaf')
  check({x['optimization']for x in leaf['records']}=={0,2},'material leaf optimization missing')
+ for e in leaf['events']:
+  check(e['returncode']==0,'failed material leaf command')
+  if '-c'in e['command']:check('-fcheck=all'in e['command']and '-ffpe-trap=invalid,zero,overflow'in e['command'],'unchecked material leaf compiler')
  for row in leaf['records']:
   check(row['case']=='irrigation_material','wrong material leaf')
   for p,h in row['inputs'].items():check(sha((ROOT/p).read_bytes())==h,'stale material leaf input '+p)
   outs=[b for p,b in data.items()if p.startswith('leaf/')and p.endswith('.stdout')and sha(b)==row['stdout_sha256']]
   check(bool(outs)and b'IRR_ROOT_MATERIAL_PARTIAL_CELL_MVG_INVALID_ABA=PASS'in outs[0],'material leaf raw proof absent')
+ check(b'MC_IRR01_LITERAL_DAILY_RAIN_O0_O2=PASS'in data['literal.log'],'literal daily rain proof missing')
  return r
 def incumbent():
  base=ROOT.parent/'irr-material-incumbent-7f5441c5'
