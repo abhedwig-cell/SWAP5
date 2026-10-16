@@ -1,7 +1,7 @@
 module mod_fmr_irrigation_allocation_binding
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t
+  use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t, IRRIGATION_APPLICATION_SSDI
   use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, irrigation_management_policy_result_t
   use mod_fmr_sensor_depth_irrigation_binding, only: fmr_run_sensor_depth_ssdi_interval, &
@@ -17,7 +17,7 @@ module mod_fmr_irrigation_allocation_binding
   use mod_fmr_scheduled_management_irrigation_application, only: fmr_irrigation_management_parameters_t, &
        fmr_irrigation_management_request_t, fmr_irrigation_management_state_t
   use mod_fmr_management_irrigation_forcing_binding, only: fmr_management_forcing_binding_diagnostics_t, &
-       fmr_run_management_ssdi_interval
+       fmr_run_management_ssdi_interval,fmr_prepare_management_ssdi_forcing
   use mod_fmr_accepted_salt_irrigation_binding, only: fmr_run_accepted_salt_root_irrigation, fmr_run_accepted_salt_sensor_irrigation, &
        fmr_accepted_salt_irrigation_diagnostics_t
   use mod_fmr_irrigation_management_restart, only: fmr_irrigation_management_restart_record_t, &
@@ -50,7 +50,7 @@ module mod_fmr_irrigation_allocation_binding
   end type
   public :: fmr_run_allocated_root_irrigation, fmr_run_allocated_sensor_irrigation
   public :: fmr_export_allocated_irrigation_restart, fmr_restore_allocated_irrigation_restart
-  public :: fmr_prepare_allocated_sensor_irrigation
+  public :: fmr_prepare_allocated_sensor_irrigation,fmr_prepare_allocated_root_irrigation
 contains
   ! Preparation only: use the same selection, frozen receipt and physical
   ! forcing owners as the admitted standalone route. The caller owns dispatch.
@@ -87,6 +87,60 @@ contains
     end if
     call fmr_prepare_sensor_depth_ssdi_forcing(sensor,root,depth,rainfall,state%management%event,resolved, &
       physical,base,candidate%management%event,bound,binding,depth_result)
+    if(binding%status/=0)return
+    call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
+  end subroutine
+
+  ! Same preparation-only allocation contract for existing root timing policies.
+  subroutine fmr_prepare_allocated_root_irrigation(sensor,root,depth,rainfall,physical,base,state,request,allocation, &
+       candidate,bound,binding)
+    type(scheduled_irrigation_parameters_t), intent(in) :: sensor
+    type(irrigation_root_zone_parameters_t), intent(in) :: root
+    type(irrigation_management_policy_parameters_t), intent(in) :: depth
+    real(real64), intent(in) :: rainfall
+    type(kernel_committed_state_t), intent(in) :: physical
+    type(fmr_b110_physical_forcing_t), intent(in) :: base
+    type(fmr_allocated_irrigation_state_t), intent(in) :: state
+    type(scheduled_irrigation_request_t), intent(in) :: request
+    type(fmr_irrigation_allocation_t), intent(in) :: allocation
+    type(fmr_allocated_irrigation_state_t), intent(out) :: candidate
+    type(fmr_b110_physical_forcing_t), intent(out) :: bound
+    type(fmr_irrigation_forcing_binding_diagnostics_t), intent(out) :: binding
+    type(fmr_irrigation_management_parameters_t) :: parameters
+    type(fmr_irrigation_management_request_t) :: resolved
+    type(fmr_management_forcing_binding_diagnostics_t) :: diagnostics
+    logical :: selecting
+    candidate=state;bound=base;binding=fmr_irrigation_forcing_binding_diagnostics_t()
+    binding%status=1
+    if(.not.receipt_matches(state))return
+    if(.not.sensor%scheduled_irrigation_enabled)return
+    if(sensor%timing_criterion<2.or.sensor%timing_criterion>4)return
+    selecting=.not.state%management%event%active_event.and.request%selection_opportunity.and. &
+      request%irrigation_enabled.and.request%schedule_enabled.and.request%crop_emerged.and. &
+      request%irrigation_window_open.and..not.request%fixed_event_already_selected
+    resolved%t0=request%t0;resolved%t1=request%t1;resolved%dvs=request%dvs;resolved%rainfall_cm=rainfall
+    resolved%selection_opportunity=request%selection_opportunity
+    resolved%irrigation_enabled=request%irrigation_enabled;resolved%schedule_enabled=request%schedule_enabled
+    resolved%crop_emerged=request%crop_emerged;resolved%irrigation_window_open=request%irrigation_window_open
+    resolved%fixed_event_already_selected=request%fixed_event_already_selected
+    if(selecting)then
+      if(.not.allocation%valid(request%t0))return
+      resolved%availability_scaling_enabled=.true.;resolved%availability_fraction=allocation%fraction
+    end if
+    parameters%active_nodes=sensor%active_nodes;parameters%root_zone=root
+    parameters%policy=depth;parameters%policy%timing_criterion=sensor%timing_criterion
+    parameters%application_type=IRRIGATION_APPLICATION_SSDI
+    parameters%single_ssdi_node=sensor%single_ssdi_node
+    parameters%ssdi_first_node=sensor%ssdi_first_node;parameters%ssdi_last_node=sensor%ssdi_last_node
+    parameters%rate_cm_per_day=sensor%irr_rate_cm_per_day
+    parameters%salinity_excess_enabled=sensor%salinity_excess_enabled
+    parameters%salinity_threshold=sensor%salinity_threshold
+    parameters%salinity_excess_percent=sensor%salinity_excess_percent
+    call fmr_prepare_management_ssdi_forcing(parameters,state%management,resolved,physical,base, &
+      candidate%management,bound,diagnostics)
+    binding%status=diagnostics%status;binding%split_required=diagnostics%split_required
+    binding%split_time=diagnostics%split_time
+    binding%external_inflow_amount_cm=diagnostics%external_inflow_amount_cm
     if(binding%status/=0)return
     call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
   end subroutine

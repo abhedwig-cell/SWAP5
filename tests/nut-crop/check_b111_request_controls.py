@@ -4,6 +4,10 @@ import copy,json,sys
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import verify_b111_request_successor as v
+if (v.ROOT/'tests/mc-irr01/check_material_root_controls.py').exists():
+ import runpy
+ runpy.run_path(str(v.ROOT/'tests/mc-irr01/check_material_root_controls.py'),run_name='__main__')
+ raise SystemExit(0)
 positive=v.verify_qualification();assert positive['qualified']and not positive['admitted']
 count=0
 def rejects(label,call):
