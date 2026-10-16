@@ -233,7 +233,7 @@ receipt `ce855e2760a97ce5e41d05126b386629847b0bc5` closes only that row. The sou
 tree `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921` includes preserved parallel
 TCS6 admission; all INF numerical inputs remain unchanged.
 
-## Qualified ordinary discharge-layer top successor (16 October 2026)
+## Canonically admitted ordinary discharge-layer top successor (16 October 2026)
 
 MC-DRAIN01 `SW431-DRAIN-DISLAYER` adds explicit per-level
 `discharge_layer_controls(:)` to the admitted serialized request. Mode 0 keeps
@@ -278,3 +278,12 @@ the source-bound reference, production, original B18 and incumbent preservation
 proof. Only `SW431-DRAIN-DISLAYER` is eligible to close. DRAMET3 scalar response,
 highest-interflow and new frost-ON capabilities retain separate ledger entries.
 Canonical and mastercoverage receipts are recorded in that phase after merge.
+
+[PR1269](https://github.com/abhedwig-cell/SWAP5/pull/1269) merged at
+`218d2425612408b8ae451cdda54c0e1e3d3d6a63`. The full merge tree
+`5b1915d47ffc797c4d9ec6e7e40411c44b749e7d` equals the qualified candidate.
+The existing mastercoverage receipt
+`4235e1dc6f3d7d96a29a4e7bf80ebac100949239` closes exactly this existing row;
+counts are101 ADMITTED and106 unresolved of243. The global denominator remains
+incomplete. The admitted component remains isolated from the prior immutable
+references and changes no frost-ON capability claim.

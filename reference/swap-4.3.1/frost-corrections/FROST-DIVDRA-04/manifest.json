@@ -20,12 +20,18 @@
     }
   ],
   "qualified": true,
-  "admitted": false,
+  "admitted": true,
   "global_B1_snapshot_promoted": false,
   "scope": "Paragraph12 only: normalize every nonzero retained support; exact-zero support uses prior top-node placement and books authoritative scalar once. SWDISLAY0 and all other source bytes unchanged.",
   "qualification_authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json dislayer_phase_20261016",
   "evidence": {
     "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_REFERENCE_20261016.json.gz.b64",
     "sha256": "5dc60798a550453e87343faf79d365d57a317f8597fa60b4b4a3ff43138a9fc2"
+  },
+  "canonical_admission": {
+    "pr": 1269,
+    "merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+    "source_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+    "global_reference_snapshot_promoted": false
   }
 }

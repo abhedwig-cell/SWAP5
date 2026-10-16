@@ -11,7 +11,7 @@
   "implemented_capabilities": [
     "SW431-DRAIN-DIV-SIGNED"
   ],
-  "scope": "Ordinary frost-OFF signed, multilevel and INF-SPLIT admitted. Resume existing DISLAYER candidate under separately frozen conditions; no DRAMET3 scalar or highest-interflow work.",
+  "scope": "Ordinary frost-OFF signed,multilevel,INF-SPLIT and DISLAYER are canonically admitted; all other drainage/frost capabilities retain their separate contracts.",
   "authority_paths": [
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
     "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
@@ -77,10 +77,10 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "DISLAYER source preflight blocked: qualify isolated B1 Paragraph12 mass correction under ADR-0005 before correcting existing candidate and binding runtime. Signed, multilevel and INF-SPLIT admissions remain unchanged.",
-  "recovery_point": "Existing DISLAYER branch, frozen2ea0795f57ebcf8aad49e7e82d803c887957292b; actual B1.11/03 and candidate four native O0/O2 witnesses. No new ledger closure.",
+  "next_action": "Preserve the four ordinary drainage admissions. Remaining native DRAMET3,allocation,infiltration-limit and highest-interflow rows remain independently open; no new route started by this closeout.",
+  "recovery_point": "PR1269 merge218d2425612408b8ae451cdda54c0e1e3d3d6a63; existing master receipt4235e1dc6f3d7d96a29a4e7bf80ebac100949239. Qualified original-source/runtime proof and prior signed,multilevel,INF,AVAIL admissions retained.",
   "blockers": [],
-  "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
+  "last_reconciled_upstream": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
   "closure_conditions_frozen_20261016": {
     "ledger_rows": [
       "SW431-DRAIN-DIV-SIGNED"
@@ -1421,7 +1421,7 @@
     "ledger_rows": [
       "SW431-DRAIN-DISLAYER"
     ],
-    "state": "SCIENCE_QUALIFIED_ADMISSION_PENDING",
+    "state": "CANONICALLY_ADMITTED",
     "qualified": true,
     "tested": true,
     "conditions_frozen": [
@@ -1452,12 +1452,11 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "affected_preservation": "Existing original INF,signed,multilevel process and runtime plus positive process/binder, one current invocation each O0/O2. Preserve unchanged B18/frost/solver evidence; no blanket chain numerical replay."
     },
-    "remaining": [
-      "safe canonical merge and actual source/tree identity",
-      "existing mastercoverage and recovery admission receipt"
+    "remaining": [],
+    "admitted": true,
+    "ledger_rows_closed": [
+      "SW431-DRAIN-DISLAYER"
     ],
-    "admitted": false,
-    "ledger_rows_closed": [],
     "frozen_conditions_commit": "2ea0795f57ebcf8aad49e7e82d803c887957292b",
     "blocker": {
       "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md and docs/verification/principles.md",
@@ -1506,10 +1505,12 @@
       "existing_candidate_reproduces_source_defect": true,
       "source_bytes_changed": false,
       "runtime_integration_selected": false,
-      "ledger_admission": false
+      "ledger_admission": false,
+      "resolution": "Resolved by isolated qualified FROST-DIVDRA-04, corrected physical-weight view and full source/runtime admission in PR1269.",
+      "resolved_by": "218d2425612408b8ae451cdda54c0e1e3d3d6a63"
     },
     "reference_correction_preregistration": {
-      "state": "QUALIFIED_COMPONENT_NOT_ADMITTED",
+      "state": "CANONICALLY_ADMITTED_COMPONENT",
       "audit_identifier": "MC-DRAIN01-DISLAYER-MASS01",
       "prior_admitted_component": "FROST-DIVDRA-03",
       "scope": "Only Paragraph12 SWDISLAY1/2 post-partition normalization; original snapshots remain immutable. No new drain response, clock or state owner.",
@@ -1546,21 +1547,25 @@
     "evidence_branch": "work/swap431-drain-dislayer-20261007",
     "blocked_science_surface_admitted": false,
     "mastercoverage_receipt": {
-      "commit": "f23dc540a917b6121f11701a4bad213b1dbe322b",
-      "counts_unchanged": true,
-      "ADMITTED": 99,
-      "unresolved": 108,
+      "branch": "work/swap431-master-coverage-20261006",
+      "commit": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+      "ADMITTED": 101,
+      "ACTIVE_MIGRATION": 103,
+      "QUALIFICATION_ONLY": 3,
+      "unresolved": 106,
       "total": 243,
-      "source_integrity": "PASS",
+      "only_one_disposition_changed": true,
+      "other242_rows_unchanged": true,
+      "structural_integrity": "PASS",
       "inheritance_controls": "20 PASS",
       "docs_source": "PASS",
-      "strict_mkdocs": "PASS13.03s",
-      "no_new_capability_admission": true
+      "strict_mkdocs": "PASS10.64s",
+      "global_coverage_closed": false
     },
     "reference_qualification": {
       "component": "FROST-DIVDRA-04",
       "qualified": true,
-      "admitted": false,
+      "admitted": true,
       "evidence": {
         "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_REFERENCE_20261016.json.gz.b64",
         "sha256": "5dc60798a550453e87343faf79d365d57a317f8597fa60b4b4a3ff43138a9fc2"
@@ -1586,7 +1591,8 @@
         }
       ],
       "applicator_controls": "4 PASS",
-      "qualify_before_production": true
+      "qualify_before_production": true,
+      "canonical_merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63"
     },
     "latest_reconciled_canonical": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "production_pilot": {
@@ -1950,7 +1956,7 @@
       },
       "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-04/manifest.json": {
         "status": "A",
-        "blob": "864a6f80832e522d2b149170859c2b35f7c7dc49"
+        "blob": "6438b7cd75c50179020059991c6343810103c37d"
       },
       "src/process/mod_drainage_b19_separate_infiltration_adapter.f90": {
         "status": "M",
@@ -2061,6 +2067,19 @@
     },
     "last_reconciled_head": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "last_reconciled_master": "07f48bc604c03167358645875117ba6489572de0",
-    "qualification_postimage_source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250"
+    "qualification_postimage_source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
+    "qualification_checkpoint": "b62291c021f7231653a0949f9f3caf7c2ddaa57f",
+    "canonical_admission": {
+      "pr": 1269,
+      "merge": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+      "qualified_head": "b62291c021f7231653a0949f9f3caf7c2ddaa57f",
+      "qualified_full_tree": "5b1915d47ffc797c4d9ec6e7e40411c44b749e7d",
+      "actual_merge_full_tree": "5b1915d47ffc797c4d9ec6e7e40411c44b749e7d",
+      "full_tree_identical": true,
+      "source_tree": "3d8a5ad6f1520716e2131f7aa4b1ab62fe076250",
+      "ledger_rows": [
+        "SW431-DRAIN-DISLAYER"
+      ]
+    }
   }
 }
