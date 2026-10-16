@@ -119,12 +119,21 @@ def main():
   if cp.returncode:break
  result={'baseline':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
  'source_authority_ref':AUTH,'source_member_sha256':HASH,'source_archive_sha256':sha(raw),
- 'extracted_routines':names,'source_adapter_sha256':sha(oracle.encode()),
+ 'extracted_routines':{n:sha(v.encode()) for n,v in zip(names,pieces)},'source_adapter_sha256':sha(oracle.encode()),
  'compiled_inputs':{str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p):sha(p.read_bytes()) for p in ordered},
  'runs':records,'scope':'Three 200-day classic IDSL0 actual-crop process trajectories; supplied weather, constant tables and water ratios; actual classic persistence export/reconstruct every17 days; not Richards, accepted-event or complete-organ restart admission.',
  'cost_limits':{'separate_compile_seconds':'UNKNOWN','separate_link_seconds':'UNKNOWN'},
  'disposition':'NOT_QUALIFIED'}
  ok=len(records)==2 and all(x.get('native_exit')==0 for x in records)
+ # Full B1.11 state is not equivalent to the existing restricted living view.
+ # This is a structural qualification blocker, independently of native PASS.
+ biomass=(ROOT/'src/crop/mod_wofost_actual_biomass_state.f90').read_text().lower()
+ body=biomass.split('type, extends(transaction_state_t), public :: wofost_actual_biomass_state_t',1)[1].split('contains',1)[0]
+ fields=re.findall(r'::\s*(\w+)',body)
+ assert set(fields)=={'root_biomass','stem_biomass','storage_biomass','exponential_leaf_area_index','leaf_biomass','specific_leaf_area','leaf_age'}
+ for term in ['s%dwrt = s%dwrt + r%drrt * delt','s%dwlv = s%dwlv + r%drlv * delt','s%dwst = s%dwst + r%drst * delt']:
+  assert term in s.lower(),term
+ result['source_state_completeness']={'B111_retained_dead_organs':['dwrt','dwst','dwlv'],'classic_biomass_fields':fields,'mapping_complete':False,'existing_living_restart':'PASS only when native probe passes','disposition':'BLOCKED_SOURCE_STATE_COMPLETENESS'}
  result['living_source_probe_pass']=ok
  result['O0_O2_stdout_identity']=ok and records[0]['stdout_sha256']==records[1]['stdout_sha256']
  (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')

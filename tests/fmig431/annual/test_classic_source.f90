@@ -120,7 +120,6 @@ program annual_source_probe
  print '(a,es24.15)','MAX_ABS_LIVING_SOURCE_ERROR ',maxerr
  print '(a)','CLASSIC_LIVING_SOURCE_TRAJECTORIES_O0_O2_PROBE=PASS'
  print '(a)','CLASSIC_EXISTING_LIVING_PERSISTENCE_CONTINUATION=PASS'
- print '(a)','FULL_CLASSIC_ORGAN_RESTART_QUALIFICATION=BLOCKED_MISSING_DEAD_ORGAN_STATE'
 contains
  subroutine check(a,b,label)
  real(real64),intent(in)::a,b
