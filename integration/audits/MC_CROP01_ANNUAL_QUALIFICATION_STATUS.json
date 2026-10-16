@@ -1,0 +1,24 @@
+{
+  "work_unit": "MC-CROP01 / SW431-CROP-ANNUAL",
+  "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "master_checkpoint": "988b46c3246e835b6f9bcd97b3f2714c56de30d2",
+  "scope": "SW_WOFOST=1; IDSL=0; SWCROPSNM=0, existing classic AMAXTB route",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "remaining_dependency": [],
+  "fixed_acceptance_conditions": [
+    "Authenticated literal B1.11 classic assimilation and daily/seasonal actual growth with water stress",
+    "Phenology, anthesis/maturity, organ/carbon and leaf-cohort closure",
+    "Accepted-event exactly-once publication, rollback and complete classic state restart",
+    "O0/O2 source comparisons and targeted real production trajectories; owning admission only after complete evidence"
+  ],
+  "excluded_dependencies": ["Soil-N", "automatic emergence", "IDSL1/2", "soybean", "grass", "root-depth variants", "potential RELMF"],
+  "preexecution_finding": "B1.11 retains DWRT/DWST/DWLV; classic living biomass owner and persistence retain no dead-organ inventories. Verify the exact source/production discrepancy before any full-capability claim. WOFOST81 is not an equivalent reference authority.",
+  "next_action": "Run the persisted source/process probe O0/O2; inspect missing dead-organ state through the existing classic persistence API; retain a negative result without broad qualification.",
+  "recovery_point": "This record and tests/fmig431/annual/; production unchanged",
+  "dependency_surface": ["src/crop/mod_wofost_*", "src/runtime/mod_fmr_wofost_crop_transaction.f90", "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90", "integration/f-wof/F-WOF41_PRODUCTION_OWNER_PERSISTENCE_API_CONTRACT.json"],
+  "blockers": []
+}
