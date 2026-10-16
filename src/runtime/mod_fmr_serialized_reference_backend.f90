@@ -477,6 +477,8 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_water_flux_substep_trace_t
     real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
+    logical :: pond_storage_available = .false.
+    real(real64) :: pond_start_cm = 0.0_real64, pond_end_cm = 0.0_real64
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
@@ -5295,6 +5297,12 @@ contains
     step%t1 = t1
     step%top_flux = solve_result%top_flux
     step%bottom_flux = solve_result%bottom_flux
+    ! Accepted observation only; never infer storage from default zero values.
+    step%pond_start_cm = request%base_state%ponding_depth
+    step%pond_end_cm = solve_result%candidate_state%ponding_depth
+    if (.not.all(ieee_is_finite([step%pond_start_cm,step%pond_end_cm]))) return
+    if (min(step%pond_start_cm,step%pond_end_cm)<0.0_real64) return
+    step%pond_storage_available = .true.
     step%water_start = request%base_state%water_content
     step%water_end = solve_result%candidate_state%water_content
     step%subsurface_source = self%qssdi

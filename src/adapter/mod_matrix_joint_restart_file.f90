@@ -15,13 +15,14 @@ module mod_matrix_joint_restart_file
   use mod_fmr_b111_matrix_joint_application,only:matrix_joint_states_match,JOINT_OK,JOINT_INVALID
   use mod_solute_mobile_salt_state,only:mobile_salt_state_t
   use mod_solute_compartment_state,only:solute_compartment_state_t
+  use mod_b111_persistent_pond,only:persistent_pond_state_t,restore_persistent_pond,POND_OK
   implicit none
   private
-  character(8),parameter::MAGIC='S5MJ0001'
+  character(8),parameter::MAGIC='S5MJ0001',POND_MAGIC='S5MP0001'
   integer,parameter::MAX_BYTES=10485760
   public::write_matrix_joint_restart_file,read_matrix_joint_restart_file
 contains
-  subroutine write_matrix_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status)
+  subroutine write_matrix_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status,pond)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -29,6 +30,10 @@ contains
     type(kernel_committed_state_t),intent(in)::water
     type(matrix_solute_state_t),intent(in)::chemical
     integer,intent(out)::status
+    type(persistent_pond_state_t),intent(in),optional::pond
+    real(real64)::pond_clock,pond_depth,pond_mass
+    integer(int64)::pond_revision
+    character(8)::tag
     type(fmr_committed_restart_bundle_t)::b
     type(b111_reactive_solute_substep_forcing_t)::p
     type(mobile_salt_state_t)::m
@@ -46,6 +51,19 @@ contains
     call chemical%configuration(p,id);v=matrix_parameter_vector(p)
     if(.not.allocated(v))return
     call chemical%snapshot(time,theta,m,s,revision)
+    tag=MAGIC
+    if(present(pond))then
+      if(.not.pond%ready())return
+      call pond%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
+      if(pond_clock/=time)return
+      select type(q=>b%records(1)%physical_state)
+      class is(fmr_b110_physical_state_t)
+        if(q%ponding_depth/=pond_depth)return
+      class default
+        return
+      end select
+      tag=POND_MAGIC
+    end if
     n=size(theta);mode=-1;has_history=.false.
     select type(q=>b%records(1)%physical_state)
     type is(fmr_b110_physical_state_t)
@@ -62,7 +80,7 @@ contains
     if(io/=0)return
     writing: block
       associate(r=>b%records(1))
-        write(u,iostat=io)MAGIC,b%schema_version,b%parameter_set_identity, &
+        write(u,iostat=io)tag,b%schema_version,b%parameter_set_identity, &
              r%schema_version,r%kernel_schema_version,r%column_id,r%parameter_ref,r%forcing_handle, &
              r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
              mode,n,has_history
@@ -76,6 +94,8 @@ contains
         if(io/=0)exit writing
         write(u,iostat=io)id,revision,time,size(v),v,theta,m%concentration_mg_cm3,m%mass_mg_cm2,s%sorbed_matrix_mass
       end associate
+      if(io/=0)exit writing
+      if(present(pond))write(u,iostat=io)1,pond_clock,pond_depth,pond_mass,pond_revision
     end block writing
     close(u)
     if(io/=0)return
@@ -84,7 +104,7 @@ contains
   end subroutine
 
   subroutine read_matrix_joint_restart_file(path,column,template,water_parameter_id,chemical_parameter_id,p, &
-       water,chemical,status)
+       water,chemical,status,pond)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -93,6 +113,11 @@ contains
     type(kernel_committed_state_t),intent(inout)::water
     type(matrix_solute_state_t),intent(inout)::chemical
     integer,intent(out)::status
+    type(persistent_pond_state_t),intent(inout),optional::pond
+    type(persistent_pond_state_t)::pond_trial
+    real(real64)::pond_clock,pond_depth,pond_mass
+    integer(int64)::pond_revision
+    integer::pond_schema
     type(fmr_committed_restart_bundle_t)::b
     type(kernel_committed_state_t)::temporary,water_trial(1)
     type(fmr_b110_physical_state_t)::physical
@@ -109,6 +134,9 @@ contains
     if(column%state_handle/=1)return
     if(water%ready())return
     if(chemical%ready())return
+    if(present(pond))then
+      if(pond%ready())return
+    end if
     if(.not.allocated(p%dz_cm))return
     expected=matrix_parameter_vector(p)
     if(.not.allocated(expected))return
@@ -127,7 +155,12 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        if(tag/=MAGIC.or.n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
+        if(present(pond))then
+          if(tag/=POND_MAGIC)exit decoding
+        else
+          if(tag/=MAGIC)exit decoding
+        end if
+        if(n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(mode==0.and.has_history)exit decoding
         physical%active_nodes=n
         allocate(physical%pressure_head(n),physical%water_content(n),theta(n),concentration(n),dissolved(n),sorbed(n))
@@ -156,7 +189,17 @@ contains
         if(io/=0)exit decoding
         io=1
         if(id/=chemical_parameter_id.or.count/=size(expected))exit decoding
-        allocate(v(count));read(u,iostat=io)v,theta,concentration,dissolved,sorbed,checksum
+        allocate(v(count));read(u,iostat=io)v,theta,concentration,dissolved,sorbed
+        if(io/=0)exit decoding
+        if(present(pond))then
+          read(u,iostat=io)pond_schema,pond_clock,pond_depth,pond_mass,pond_revision
+          if(io/=0)exit decoding
+          call restore_persistent_pond(pond_schema,pond_clock,pond_depth,pond_mass,pond_revision,pond_trial,io)
+          if(io/=POND_OK)exit decoding
+          io=1
+          if(pond_clock/=time.or.pond_depth/=physical%ponding_depth)exit decoding
+        end if
+        read(u,iostat=io)checksum
         if(io/=0)exit decoding
         io=1
         if(.not.all(ieee_is_finite(v)))exit decoding
@@ -178,7 +221,9 @@ contains
     end block decoding
     close(u)
     if(io/=0)return
-    water=water_trial(1);chemical=chemical_trial;status=JOINT_OK
+    water=water_trial(1);chemical=chemical_trial
+    if(present(pond))pond=pond_trial
+    status=JOINT_OK
   end subroutine
 
   function crc32(bytes) result(crc)
