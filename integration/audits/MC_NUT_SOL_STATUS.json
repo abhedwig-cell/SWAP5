@@ -987,7 +987,7 @@
       "decoded_bytes": 127612,
       "members": 2852
     },
-    "source_tree_unchanged": "7f11c4d028c88aab9aaddb9b693dac5796443284",
+    "source_tree_unchanged": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
     "source_identity": {
       "b111_authority_decoded_sha256": "18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c",
       "patch_sha256": "763e44540692971a8d2bb491a1ff47bb5682a5f3dcf0f6d8ca72838adc353070",
@@ -1046,7 +1046,7 @@
       },
       "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
         "status": "A",
-        "blob": "d306c9fc43b7aaef65c2de088d17ff3587ee86d4"
+        "blob": "3765d082b960926496668e37ef43db58ae29f0e0"
       },
       "reference/swap-4.3.1/snapshots/B1.12.yml": {
         "status": "A",
@@ -1054,11 +1054,11 @@
       },
       "tests/fmig431/verify_signed_divdra_successor.py": {
         "status": "M",
-        "blob": "70ff658ad7992f7d9b81589a9e1088c5d6125f49"
+        "blob": "9dadf619ca66908dc823fe0171c719e9d250f626"
       },
       "tools/vq/b1_12_admission_gate.py": {
         "status": "A",
-        "blob": "fee857fbdb3e9e36b29b2a6a006d85b74be5b493"
+        "blob": "6394ddb0e910f4297f7ae654691ac5424bb8b471"
       },
       "tools/vq/b1_12_reconstruct.py": {
         "status": "A",
@@ -1086,6 +1086,20 @@
       "decoded_bytes": 13560,
       "members": 9
     },
-    "next_safe_step": "Admit B1.12 exact reference correction; then extend the existing crop/Soil-N owner with retained leaf/stem DM/N, whole N/OM, harvest and atomic opaque/native continuation. Preserve current1260/1253/default and all explicit historical B1.11 pins."
+    "next_safe_step": "Admit B1.12 exact reference correction; then extend the existing crop/Soil-N owner with retained leaf/stem DM/N, whole N/OM, harvest and atomic opaque/native continuation. Preserve current1260/1253/default and all explicit historical B1.11 pins.",
+    "reconciled_base": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+    "canonical_reconciliation": {
+      "pr": 1264,
+      "admission": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "scope": "Independent classical annual SWCROPSNM=0 source-state/codec admission. Legacy reference science unchanged; reference gate preserves current annual owner source/evidence at its exact admitted commit. No new numerical rerun for unchanged leaf scientific inputs.",
+      "next_production_owner": "Reuse existing expanded actual biomass owner including mortality state; do not create a second dead-DM owner. Retained N and source-partial semantics still require explicit coupling qualification.",
+      "validation": "PASS actual current annual source and complete capsule; preserved six signed controls through real CLI; final strict docs",
+      "archive": {
+        "path": "integration/audits/evidence/MC_NUT01_SWAP019_ANNUAL_RECONCILIATION_20261016.tar.xz.b64",
+        "decoded_sha256": "478eb20add62b002d58562a9a20e4b630462cee55f6020fbd393bdf748f9708c",
+        "decoded_bytes": 8792,
+        "members": 4
+      }
+    }
   }
 }

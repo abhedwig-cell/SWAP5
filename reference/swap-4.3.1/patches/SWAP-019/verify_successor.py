@@ -4,7 +4,8 @@ from functools import lru_cache
 import importlib.util,json,os,subprocess,sys
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[4]
-BASE='49f3434df92fa4864dda5cd06c80ad32dfb32f38'
+BASE='5bacc7419f5ad73614f8e55b1d0c7c88706da00c'
+ORIGIN='49f3434df92fa4864dda5cd06c80ad32dfb32f38'
 SURFACE=['src','tests','tools','reference','.github']
 def require(ok,label):
  if not ok:raise ValueError(label)
@@ -14,7 +15,7 @@ def load():
 def record():return json.loads((ROOT/'integration/audits/MC_NUT_SOL_STATUS.json').read_text())['leaf_reference_admission_20261016']
 def check_current():
  r=record();git('merge-base','--is-ancestor',BASE,'HEAD')
- require(r['baseline']==BASE and not git('status','--porcelain','--',*SURFACE),'dirty or moved reference successor')
+ require(r['baseline']==ORIGIN and r['reconciled_base']==BASE and not git('status','--porcelain','--',*SURFACE),'dirty or moved reference successor')
  rows={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
  require(rows=={p:v['status']for p,v in r['postimages'].items()},'foreign reference successor surface')
  require(all(not p.startswith('src/')for p in rows),'production source changed')
@@ -32,8 +33,14 @@ def incumbent(source_only):
  env=os.environ.copy();n=int(env.get('GIT_CONFIG_COUNT','0'));env['GIT_CONFIG_KEY_'+str(n)]='core.abbrev';env['GIT_CONFIG_VALUE_'+str(n)]='8';env['GIT_CONFIG_COUNT']=str(n+1)
  p=subprocess.run(command,cwd=root,env=env,capture_output=True,text=True)
  require(p.returncode==0,'incumbent owner rejected '+p.stderr[-1200:]);r=json.loads(p.stdout)
- if not source_only:require(r['qualified']and r['signed_divdra_successor']and r['reproductive_successor'],'incomplete incumbent evidence')
+ if not source_only:require(r['qualified']and r['classic_annual_successor'],'incomplete current annual incumbent evidence')
  return r
+def run_predecessor_controls():
+ incumbent(False)
+ root=ROOT.parent/('leaf-reference-incumbent-'+BASE[:12])
+ p=subprocess.run([sys.executable,'-B','tests/fmig431/verify_signed_divdra_successor.py','--self-test'],cwd=root,capture_output=True,text=True)
+ require(p.returncode==0 and 'MC_DRAIN01_EVIDENCE_CORRUPTION_CONTROLS=6'in p.stdout,'preserved predecessor corruption controls')
+ print(p.stdout,end='')
 def verify_source():
  check_current();return {**incumbent(True),'reference_leaf_successor':True,'qualified':False,'reference_snapshot':'B1.12','production_reference_pins_unchanged':True}
 def verify_qualification():

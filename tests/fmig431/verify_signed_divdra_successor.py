@@ -94,6 +94,9 @@ def verify_source(git_reader=None):
         import importlib.util
         spec=importlib.util.spec_from_file_location('swap019_successor',candidate);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         return module.verify_source()
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        return annual.verify_source(git_reader)
     require(git_reader is None,'unregistered projected git reader')
     status,_=load_verified();old=incumbent(True)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
@@ -105,6 +108,9 @@ def verify_qualification():
         import importlib.util
         spec=importlib.util.spec_from_file_location('swap019_successor',candidate);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
         return module.verify_qualification()
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        return annual.verify_qualification()
     status,_=load_verified();old=incumbent(False)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'incumbent':old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':True,
@@ -130,4 +136,22 @@ def main():
         reject('source drift',status,record,lambda p:(ROOT/p).read_bytes()+ (b'!corruption' if p==PATHS[0] else b''))
         print('MC_DRAIN01_EVIDENCE_CORRUPTION_CONTROLS='+str(len(controls)))
     print('MC_DRAIN01_SIGNED_SOURCE_EVIDENCE=PASS')
-if __name__=='__main__':main()
+if __name__=='__main__':
+    candidate=ROOT/'reference/swap-4.3.1/patches/SWAP-019/verify_successor.py'
+    if candidate.exists():
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('swap019_successor',candidate);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        if sys.argv[1:]not in ([],['--self-test']):raise SystemExit('unknown reference owner option')
+        result=module.verify_qualification()
+        if sys.argv[1:]==['--self-test']:module.run_predecessor_controls()
+        print(json.dumps(result,indent=2));raise SystemExit(0)
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        result=annual.verify_qualification()
+        if sys.argv[1:]==['--self-test']:
+            annual.run_predecessor_controls()
+        elif sys.argv[1:]:
+            raise SystemExit('unknown annual successor owner option')
+        print(json.dumps(result,indent=2))
+    else:
+        main()
