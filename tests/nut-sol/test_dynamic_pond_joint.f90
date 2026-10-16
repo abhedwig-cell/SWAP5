@@ -180,6 +180,9 @@ program test_dynamic_pond_joint
   end if
   supply%t0=T1;supply%t1=2*T1
   supply%rain_rate=0.00025d0;supply%irrigation_rate=0.00025d0
+  if(trim(variant)=='dry')then
+    supply%rain_rate=.25d0;supply%irrigation_rate=.25d0
+  end if
   cfg%tiles(1)%base_forcing%top_flux=0d0
   cfg%tiles(1)%base_forcing%pond_input%rain_rate_cm_day=supply%rain_rate
   cfg%tiles(1)%base_forcing%pond_input%irrigation_rate_cm_day=supply%irrigation_rate
@@ -188,6 +191,7 @@ program test_dynamic_pond_joint
   initial_solute=solute
   call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
     cfg%tiles(1)%base_forcing,cfg%numerical,solute,supply,T1,2*T1,result)
+  if(result%status/=JOINT_OK)call debug_result()
   call require(result%status==JOINT_OK,'continued actual pond')
   call verify_actual_trace(initial_solute,solute)
   if(trim(mode)/='resume')then

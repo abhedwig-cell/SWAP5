@@ -48,6 +48,14 @@ def validate_science(data):
     for p,h in r['input_sha256'].items():
         check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe dynamic input')
         check(sha((ROOT/p).read_bytes())==h,'stale dynamic input '+p)
+    leaf=json.loads(data['leaf/result.json']);le=json.loads(data['leaf/events.json'])
+    check(leaf['status']=='LEAF_PASS_NOT_RUNTIME_ADMISSION'and leaf['cases_per_opt']==23,'unfinished temporal leaf')
+    for p,h in leaf['input_sha256'].items():check(sha((ROOT/p).read_bytes())==h,'stale temporal leaf '+p)
+    check(len(le)==6 and len([e for e in le if '-c'not in e['command']and len(e['command'])==1])==2,'temporal leaf command coverage')
+    for e in le:
+        check(e['returncode']==0 and e['seconds']>=0,'failed temporal leaf event')
+        for stream in ('stdout','stderr'):check('leaf/'+e[stream]in data,'missing temporal raw event')
+        if len(e['command'])==1:check(b'POND_WATER_TEMPORAL_23_COMPARISONS=PASS'in data['leaf/'+e['stdout']],'temporal leaf native absent')
     oldrec=json.loads((ROOT/STATUS).read_text())['persistent_pond_successor_20261016']
     old=capsule(oldrec['science_archive'])
     for opt in ('O0','O2'):
@@ -56,6 +64,8 @@ def validate_science(data):
             check('DYNAMIC_POND_JOINT_ACTUAL_BALANCE_RESTART=PASS'in row[key],'missing dynamic scenario '+key)
             check(row[key].count('POND_ACTUAL_LITERAL_TWENTYONE_NEGATIVES_REPLAY=PASS')==2,'dynamic scientific negatives missing')
             check('DYNAMIC_POND_EIGHT_FORCING_REJECTIONS=PASS'in row[key],'dynamic forcing rejection absent')
+        for key in ('physical_stdout','fill_stdout'):
+            check('DYNAMIC_POND_ZERO_TOLERANCE_REJECTED=PASS'in row[key],'temporal policy rejection absent')
         for stem,key in [('expected','endpoint_sha256'),('dry-expected','dry_endpoint_sha256'),('fill-expected','fill_endpoint_sha256')]:
             check(sha(data['final/'+opt+'/'+stem+'.bin'])==row[key],'dynamic endpoint drift')
         for prefix in ('','dry-','fill-'):

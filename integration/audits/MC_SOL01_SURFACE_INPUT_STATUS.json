@@ -769,7 +769,7 @@
       "stable_candidate": "source-bound successor projections and evidence controls; docs source/strict; safe canonical/master reconciliation only after owning preservation passes",
       "fixture": "Low-conductivity default MvG, -1 cm initial head, 0.5 cm wet pond; gross .25+.25 filling, zero-input drainage, dry deposition/rewet. Same 1e-6 cm comparison and 1e-10 cm water budget. Abrupt high-flux front stress is not the surface-storage claim."
     },
-    "recovery": "PR1258 implementation checkpoint, source/evidence guards prepared; complete real O0/O2 after bounded feedback; keep all failed logs",
+    "recovery": "Start one complete current-source O0/O2 runner, retaining old fixed/dry and surface drivers and fresh processes; then seal raw evidence/source guards and reconcile canonical.",
     "pr": 1258,
     "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1258",
     "reconciled_canonical": "f7ddd936b062d3f34acc8e95002799238a04b3c5",
@@ -782,6 +782,54 @@
       "steep -75 cm wetting-front feedback interrupted before completion; -1 cm original-conductivity feedback bounded at120s; no PASS and raw logs retained",
       "Fortran public module type metadata changed after extraction: reduced feedback closure explicitly rebuilt all backend descendants",
       "small independent production comparison now has23 O0/O2 cases under checks/traps, separate compile/link/native evidence"
-    ]
+    ],
+    "postimages": {
+      "src/process/mod_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "36b108ed01068d8b3ff78c3a8798b783c4a1f8f9"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "M",
+        "blob": "6495e1b4f5a7999a889c7b14e4d682bf0abc1d0e"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "1c0af1ffb5f41869f3fb02b2f42d962a55532ee4"
+      },
+      "tests/nut-sol/check_dynamic_pond_controls.py": {
+        "status": "A",
+        "blob": "72e8c8391d614c6a1bcb3ce6e364dae37a37be6c"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "M",
+        "blob": "2d9c07a975d13405dc90d62d42608809d8b1fef3"
+      },
+      "tests/nut-sol/run_dynamic_pond_joint.py": {
+        "status": "A",
+        "blob": "a0446165ed847296e89397dbc58355f1e758b69d"
+      },
+      "tests/nut-sol/run_pond_temporal.py": {
+        "status": "A",
+        "blob": "43625693c701ffe5b4add5c7c6cfe5f6a2f40be5"
+      },
+      "tests/nut-sol/test_dynamic_pond_joint.f90": {
+        "status": "A",
+        "blob": "985d1e229e3869ccd1daebf24b1c5ac6bd8c243b"
+      },
+      "tests/nut-sol/test_pond_water_temporal_difference.f90": {
+        "status": "A",
+        "blob": "c3e51751e2c9b4a34b12f9d9da4b2b5d3b77fa1f"
+      },
+      "tests/nut-sol/verify_dynamic_pond_successor.py": {
+        "status": "A",
+        "blob": "f5874e19eca2c5ccab2d0151b5837d3da4e97fad"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "M",
+        "blob": "bb033b0cd1a85e802a73f968d84c7135cc36944c"
+      }
+    },
+    "source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+    "feedback": "O0 real production wet/drain, fill/accumulation and dry/rewet all PASS; literal source and21 scientific negatives each interval;8 forcing negatives, strict temporal rejection, rollback/retry and within-process native1256 V2 continuation. Not O2 or source-qualified yet."
   }
 }
