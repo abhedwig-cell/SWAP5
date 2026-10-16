@@ -72,8 +72,8 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Safe normal merge of PR1099 on reconciled canonical, verify exact qualified source, then canonical metadata closeout and targeted +1 master-ledger reconciliation.",
-  "recovery_point": "work/swap431-drain-frost-coverage-20261007",
+  "next_action": "Register exact +1 SW431-DRAIN-DIV-SIGNED admission in existing master PR1072; retain separate multilevel, INF-SPLIT and DRAMET3 conditions.",
+  "recovery_point": "1db58d059b646d7189413caed37b977599a47c95",
   "blockers": [],
   "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "closure_conditions_frozen_20261016": {
@@ -106,7 +106,7 @@
     }
   },
   "prior_recovery": "PR1109 record carried forward for retrieval, narrowed explicitly to earlier PR1099. No prior qualified claim exists.",
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "closure_evidence": {
     "path": "integration/audits/evidence/MC_DRAIN01_SIGNED_20261016.json.gz.b64",
     "sha256": "0856eab8f6dc454a562ad899fa91ee4c0a094a420b1d5c813ac89c3bbb42daca",
@@ -285,7 +285,13 @@
     "job_id": 117078288219,
     "conclusion": "failure",
     "actual_failure": "ValueError: foreign reproductive science",
-    "disposition": "Old exact source-only guard rejected the four new drainage providers. Additive successor delegation now checks new exact scope and reruns original complete predecessor evidence validator. Actual same owner entry passes locally. No failed numerical test or full FCI PASS inferred."
+    "disposition": "Old exact source-only guard rejected the four new drainage providers. Additive successor delegation now checks new exact scope and reruns original complete predecessor evidence validator. Actual same owner entry passes locally. No failed numerical test or full FCI PASS inferred.",
+    "successor_run": {
+      "id": 38933819049,
+      "selection_preflight": "success",
+      "modular_feedback": "success",
+      "full_numerical_FCI": "skipped by selection policy; not claimed PASS"
+    }
   },
   "validation": {
     "source_evidence": "PASS",
@@ -295,6 +301,23 @@
     "docs_source": "PASS",
     "mkdocs_strict": "PASS",
     "shell_syntax": "PASS",
-    "whitespace": "PASS"
+    "whitespace": "PASS",
+    "canonical_merge_source_identity": "PASS"
+  },
+  "stage": "CANONICALLY_ADMITTED_SIGNED_SINGLE_LEVEL_FROST_OFF",
+  "canonical_admission": {
+    "pr": 1099,
+    "actual_canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
+    "qualified_head": "31d05eac08211382d003c6cf59b51bf4077da2fd",
+    "qualified_science_source": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
+    "source_tree": "7f11c4d028c88aab9aaddb9b693dac5796443284",
+    "qualified_and_actual_merge_tree": "81dccfccd0b356d9f77604799622226f716f6648",
+    "fetched_merge_identity_verified": true,
+    "normal_merge_api": true,
+    "protection_bypass": false,
+    "closed_capabilities": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "complete_MC_DRAIN01": false
   }
 }
