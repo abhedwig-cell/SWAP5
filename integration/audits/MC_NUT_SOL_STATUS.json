@@ -1115,5 +1115,45 @@
       "hosted_check_runs": [],
       "hosted_workflow_runs": []
     }
+  },
+  "b112_retained_independent_review_20261017": {
+    "stage": "REPRODUCED_ADMISSION_EVIDENCE_GAP_TARGETED_FIX_VERIFIED_NOT_INTEGRATED",
+    "baseline_canonical": "de1124d9f22fc8769d5feaf30a9e321a204fa0bb",
+    "candidate_branch": "work/nut-b112-retained-stock-20261016",
+    "reviewed_candidate": "a84ba0bda729789da0fec694faa720b28bc238ba",
+    "published_predecessor": "177105f187b7013797b7583f447a5f0c2d3e2259",
+    "reviewed_guard_sha256": "9b7f7e3c0656ab2a26df151b22725ffd24f05434bcd9ea2fce6eb29aa72ab2bd",
+    "fixed_guard_sha256": "6dca4bb6ebed977aab297896f1d00bd0cd2fb6dc20a039b9a1e0231061dd2ddf",
+    "finding": "The current verify() function accepts unmodified real evidence but also accepts removal of every joint/small/thermal native event, removal of joint compilation, missing traps, duplicated providers/programs and a renamed unexecuted profile rejection. Existing raw loops are vacuously true for missing commands; checking endpoint files alone does not prove the commands executed.",
+    "original_invalid_evidence_accepted": 10,
+    "fixed_invalid_evidence_rejected": 10,
+    "unmodified_real_science_function": "ACCEPTED before and after fix",
+    "validation_scope": "Validator mutation test only. The record precondition qualified=true is synthetic to reach verify(); it is NOT an owner qualification, scientific PASS or admission. All physical source/driver inputs read from the pinned committed candidate. No native science rerun or Actions.",
+    "repair": "Portable guard.patch adds exact complete execution inventories for small/joint/phase fixtures, O0/O2 program multiplicity, unique native commands, one compilation per scientific provider, checks/traps, actual write/resume stdout, named configuration/decoder rejection commands and phase-to-joint provider-result binding.",
+    "patch_application": "Apply the archived patch to the existing candidate owner only, then regenerate its source postimages and run the complete owning admission controls. Counts intentionally bind the reviewed real fixture; a different selected corpus needs an explicit reviewed inventory update, not silent reuse.",
+    "archive": {
+      "path": "integration/audits/evidence/MC_NUT01_RETAINED_GUARD_REVIEW_20261017.tar.xz.b64",
+      "decoded_sha256": "8efc95a31b0576742cdef6188645edb779ab4262e6bde7399ce36c943eb22dde",
+      "decoded_bytes": 793696,
+      "members": 2541
+    },
+    "production_admitted": false,
+    "new_scientific_qualification": false,
+    "master_capability_promotions": 0,
+    "overlap_reconciliation": "SOL1256/1257/1258 already canonically admitted. Existing retained-stock owner checkout has concurrent work; left byte-for-byte untouched. Independent patch and raw review evidence only; no duplicate migration branch or PR and no source changes to canonical.",
+    "remaining_conditions": [
+      "Integrate the targeted evidence guard in the active retained-stock candidate and run its complete fail-closed controls.",
+      "Complete current TCS6/availability and newer drainage owner reconciliation on the stable candidate.",
+      "Verify whole source/native/physical proof and exact candidate-to-merge identity before bounded admission."
+    ],
+    "next_safe_step": "Existing retained-stock owner applies guard.patch from the capsule and qualifies it with current science and ownership gates; preserve default/1253/1260/annual plus current irrigation/drainage, without repeating unaffected numerical runs.",
+    "validation": {
+      "portable_capsule_replay": "PASS; original accepts all10 invalid evidence mutations, repaired guard rejects all10, unmodified evidence accepted by both",
+      "portable_patch_application": "PASS exact reverse-application check against the reviewed guard postimage",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS exit0;12.61s",
+      "canonical_scientific_surface": "EXACTLY_UNCHANGED src/tests/tools/reference/.github from de1124d9f22fc8769d5feaf30a9e321a204fa0bb",
+      "native_or_hosted_runs": "NOT_SELECTED_VALIDATOR_ONLY"
+    }
   }
 }

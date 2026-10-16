@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${1:-}" == --drain-dramet3-owner-only ]]; then
+  cd "$(dirname "$0")/../.."
+  python3 -B tests/fmig431/verify_dramet3_successor.py
+  exit $?
+fi
 if [[ "${1:-}" == --drain-dislayer-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
   python3 -B tests/fmig431/verify_dislayer_successor.py

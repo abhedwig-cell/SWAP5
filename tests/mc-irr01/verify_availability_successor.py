@@ -15,7 +15,8 @@ def tcs6_record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.js
 def verify_source(git_reader=None):
  if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
   from verify_depth_limit_successor import verify_source as successor
-  return successor(git_reader) if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
+  return successor(git_reader)
+ if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
   sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
   return successor.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record();check(r['admission_baseline']==BASE,'AVAIL baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
@@ -146,7 +147,8 @@ def run_original_inf_controls():
 def verify_qualification():
  if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
   from verify_depth_limit_successor import verify_qualification as successor
-  return successor() if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
+  return successor()
+ if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
   sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
   return successor.verify_qualification()
  result=verify_source();check(record()['phase']in['SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'],'unfinished AVAIL admission')

@@ -16,7 +16,11 @@ def main():
  with tarfile.open(fileobj=io.BytesIO(raw))as t:
   data={q.name:t.extractfile(q).read()for q in t.getmembers()if q.isfile()}
  manifest=json.loads(data.pop('MANIFEST.json'));assert set(data)==set(manifest)and all(hashlib.sha256(data[q]).hexdigest()==h for q,h in manifest.items())
- inp=json.loads(data['physical/INPUTS.json']);providers=inp['providers'];assert len(providers)==295
+ inp=json.loads(data['physical/INPUTS.json']);providers=list(inp['providers']);assert len(providers)==295
+ # Canonical DRAMET3 adds a real module dependency to the retained binder.
+ added='src/process/mod_drainage_dramet3_response.f90';assert added not in providers
+ providers.insert(providers.index('src/runtime/mod_fmr_drainage_response_binding.f90'),added)
+ assert len(providers)==296
  fixture=out/'fixture';fixture.mkdir();fixture_pins={}
  for name,b in data.items():
   if name.startswith('physical/fixture/'):

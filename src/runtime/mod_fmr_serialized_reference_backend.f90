@@ -120,6 +120,7 @@ module mod_fmr_serialized_reference_backend
        FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1, FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2, &
        FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5, &
        FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
+  use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_DRAMET3
   use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
        EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
@@ -3474,6 +3475,11 @@ contains
         self%drainage_response_diagnostics%status = drainage_preflight_status
         self%last_observation%drainage_response = self%drainage_response_diagnostics
         if (drainage_preflight_status /= FMR_DRAIN_BIND_OK) return
+        ! Native OWLTAB is ordinary-only; the existing frost contracts retain
+        ! their explicitly qualified response families and endpoint semantics.
+        if(any(self%drainage_response_levels%variant==FMR_DRAIN_VARIANT_DRAMET3))then
+          if(self%frost_active.or.self%frost_response_drainage_active) return
+        end if
         if(self%frost_low_air_response_drainage_active)then
           if(.not.self%frost_low_air_drainage%valid())return
           if(size(self%frost_low_air_drainage%drain_depth_cm)/=size(self%drainage_response_levels))return
@@ -4615,8 +4621,15 @@ contains
         self%last_observation%drainage_qbot_projection_available = .true.
         self%last_observation%drainage_projected_groundwater_level = projected_groundwater_level
       end if
+      if(any(self%drainage_response_levels%variant==FMR_DRAIN_VARIANT_DRAMET3))then
+        ! t1 belongs to this actual full/half/retry trial. The channel resolver
+        ! maps it to the immutable legacy epoch; it owns no advancing clock.
+        call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+             hydraulic_start,self%qdra,self%drainage_response_diagnostics,substep_t1=t1)
+      else
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, self%drainage_response_controls, &
            hydraulic_start, self%qdra, self%drainage_response_diagnostics)
+      end if
       self%drainage_response_evaluations = self%drainage_response_evaluations + 1
       self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
       self%last_observation%drainage_response = self%drainage_response_diagnostics
