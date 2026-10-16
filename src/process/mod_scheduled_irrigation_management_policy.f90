@@ -272,7 +272,8 @@ contains
     integer,intent(in)::n
     integer::i
     valid_table=.false.
-    if(n<2 .or. n>IRR_MGMT_MAX_KNOTS)return
+    ! A one-knot AFGEN table is source-valid and constant.
+    if(n<1 .or. n>IRR_MGMT_MAX_KNOTS)return
     do i=1,n
       if(.not.ieee_is_finite(knots(i)) .or. .not.ieee_is_finite(values(i)))return
       if(knots(i)<0.0_real64 .or. knots(i)>2.0_real64)return
@@ -296,7 +297,7 @@ contains
     if(x>=knots(n))then; value=values(n); ok=.true.; return; end if
     do i=2,n
       if(x<=knots(i))then
-        f=(x-knots(i-1))/(knots(i)-knots(i-1)); value=values(i-1)+f*(values(i)-values(i-1)); ok=.true.; return
+        f=(values(i)-values(i-1))/(knots(i)-knots(i-1)); value=values(i-1)+(x-knots(i-1))*f; ok=.true.; return
       end if
     end do
   end subroutine afgen

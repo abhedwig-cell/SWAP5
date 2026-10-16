@@ -5,10 +5,59 @@ module mod_fmr_irrigation_material_root_binding
     bind_b110_default_mvg_provider
   use mod_soil_water_solver_contract, only: CONSTITUTIVE_DEMAND_WATER_CONTENT
   use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
+  use mod_crop_rotation_calendar, only: crop_calendar_t,CROP_CAL_OK,CROP_CAL_OUTSIDE
+  use mod_swap_daily_weather_file_adapter, only: swap_weather_calendar_day,swap_weather_calendar_year
   implicit none
   private
-  public :: fmr_build_irrigation_material_root_zone
+  public :: fmr_build_irrigation_material_root_zone, fmr_resolve_irrigation_management_activation
 contains
+  ! B1.11 TASK3 period selection consumes the existing immutable crop plan
+  ! and accepted Gregorian weather time. This routine owns no calendar/state.
+  subroutine fmr_resolve_irrigation_management_activation(calendar,time,startirr,endirr,schedule,window,ok)
+    type(crop_calendar_t),intent(in)::calendar
+    real(real64),intent(in)::time
+    integer,intent(in)::startirr(2),endirr(2) ! source day,month
+    logical,intent(in)::schedule
+    logical,intent(out)::window,ok
+    real(real64),allocatable::starts(:),ends(:)
+    real(real64)::t,lower,upper
+    integer::year,first_year,last_year,period,st,a,b,i
+    logical::active,begins,available
+    window=.false.;ok=.false.
+    if(.not.ieee_is_finite(time))return
+    if(time<1._real64.or.time>=real(swap_weather_calendar_day(9999,12,31),real64)+1._real64)return
+    if(.not.schedule)then
+      ok=.true.;return
+    end if
+    call calendar%snapshot_periods(starts,ends,available)
+    if(.not.available)return
+    ! STARTIRR/ENDIRR are source1900 dates. Do not invent an annual wrap
+    ! for same-year crops or silently repair the source leap-year arithmetic.
+    a=swap_weather_calendar_day(1900,startirr(2),startirr(1))
+    b=swap_weather_calendar_day(1900,endirr(2),endirr(1))
+    if(a==0.or.b==0)return
+    do i=1,size(starts)
+      if(starts(i)<1._real64.or.ends(i)>=real(swap_weather_calendar_day(9999,12,31),real64)+1._real64)return
+    end do
+    call calendar%select_at(time,period,active,begins,st)
+    if(st/=CROP_CAL_OK.and.st/=CROP_CAL_OUTSIDE)return
+    ok=.true.
+    if(.not.active)return
+    first_year=swap_weather_calendar_year(int(starts(period)))
+    last_year=swap_weather_calendar_year(int(ends(period)))
+    if(last_year>first_year)then
+      lower=real(swap_weather_calendar_day(first_year,startirr(2),startirr(1)),real64)
+      upper=real(swap_weather_calendar_day(last_year,endirr(2),endirr(1)),real64)
+      window=(time-lower)>1.e-3_real64.and.(time-upper)<=1.e-3_real64
+    else
+      year=swap_weather_calendar_year(int(time))
+      t=time-real(swap_weather_calendar_day(year,1,1),real64)
+      lower=real(a-swap_weather_calendar_day(1900,1,1),real64)
+      upper=real(b-swap_weather_calendar_day(1900,1,1),real64)
+      window=(t-lower)>=-1.e-3_real64.and.(t-upper)<=1.e-3_real64
+    end if
+  end subroutine
+
   ! Material thresholds follow B1.11 irrigation, not the transpiration-dependent
   ! Feddes threshold. No physical or crop state is mutated or owned here.
   subroutine fmr_build_irrigation_material_root_zone(material,dz,actual_depth,hfc,h3l,h3h,h4,root,ok)

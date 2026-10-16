@@ -136,3 +136,20 @@ The observed master receipt is `6bad61262c2a510c8048b81d5a930f391b7d634e`:
 include the independent LIMIT admission and no experiment promotion. The existing
 recovery field and its hashed raw capsule preserve the exact measurements and
 remaining admission gates.
+
+## Resumed activation contract
+
+The existing immutable `crop_calendar_t` plan is the crop-period authority. A
+readonly snapshot exposes its configured starts/ends; no alternate calendar is
+created. Times are Gregorian ordinals consistent with the accepted weather
+epoch. The existing date adapter provides the inverse year partition.
+
+The existing irrigation policy resolves source STARTIRR/ENDIRR against the
+selected crop period. Same-year crops compare actual elapsed days since Jan1
+with the source1900 date offsets, preserving the historical leap-year arithmetic.
+Cross-year crops map bounds into the start/end years and use the literal strict
+lower `>1e-3` and inclusive upper `<=1e-3` comparison. Same-year lower bound is
+`>=-1e-3`. Selection consumes the existing accepted weather time and crop
+emergence; the plan cannot create emergence or a crop transition. Configuration
+and plan are immutable inputs, serialized only in the existing config extension.
+Disabled activation retains the original admitted default path and bytes.

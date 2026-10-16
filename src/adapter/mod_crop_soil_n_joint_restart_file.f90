@@ -541,6 +541,14 @@ contains
       write(scratch,iostat=io)'TCSFIX01',c%file_weather_irrigation_depth%fixed_interval_days
       if(io/=0)then;close(scratch);return;end if
     end if
+    if(c%file_weather_irrigation_historical_activation)then
+      write(scratch,iostat=io)'IRRWIN01',c%file_weather_irrigation_schedule_enabled, &
+        c%file_weather_irrigation_startirr,c%file_weather_irrigation_endirr
+      if(io/=0)then;close(scratch);return;end if
+      call c%file_weather_irrigation_crop_calendar%snapshot_periods(x,y,ok)
+      write(scratch,iostat=io)ok,size(x),x,y
+      if(io/=0)then;close(scratch);return;end if
+    end if
     call c%file_weather_root_depth%snapshot_values(x,y,ok)
     write(scratch,iostat=io)ok,size(x),x,y
     if(io/=0)then;close(scratch);return;end if

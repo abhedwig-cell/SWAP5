@@ -115,8 +115,10 @@ module mod_fmr_production_application_bootstrap
        fmr_prepare_allocated_sensor_irrigation,fmr_prepare_allocated_root_irrigation,fmr_export_allocated_irrigation_restart, &
        fmr_restore_allocated_irrigation_restart,FMR_IRR_ALLOCATION_OK
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t
-  use mod_fmr_irrigation_material_root_binding, only: fmr_build_irrigation_material_root_zone
+  use mod_fmr_irrigation_material_root_binding, only: fmr_build_irrigation_material_root_zone, &
+       fmr_resolve_irrigation_management_activation
   use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
+  use mod_crop_rotation_calendar, only: crop_calendar_t
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, &
        irrigation_management_policy_result_t
   use mod_fmr_scheduled_irrigation_forcing_binding, only: fmr_irrigation_forcing_binding_diagnostics_t
@@ -209,6 +211,10 @@ module mod_fmr_production_application_bootstrap
     ! One annual atmospheric forcing and one response for both assimilation
     ! and transpiration. No second canopy CO2 table is selected by this profile.
     logical :: file_weather_irrigation=.false.
+    logical :: file_weather_irrigation_historical_activation=.false.
+    logical :: file_weather_irrigation_schedule_enabled=.true.
+    integer :: file_weather_irrigation_startirr(2)=[1,1],file_weather_irrigation_endirr(2)=[31,12]
+    type(crop_calendar_t) :: file_weather_irrigation_crop_calendar
     type(scheduled_irrigation_parameters_t) :: file_weather_irrigation_sensor
     type(irrigation_management_policy_parameters_t) :: file_weather_irrigation_depth
     real(real64) :: file_weather_irrigation_field_capacity_head_cm=-100._real64
@@ -466,6 +472,7 @@ contains
     integer :: i, local_status, n
     class(transaction_state_t), allocatable :: initial_physical
     logical :: ok, hydraulic_prepared, groundwater_profile, standalone_profile, prescribed_qbot_profile, ordinary_head_profile
+    logical :: irrigation_window
     logical :: ordinary_cauchy_profile, ordinary_explicit_cauchy_profile, ordinary_lysimeter_profile, direct_retention_requested
     type(root_water_uptake_request_t) :: zero_root_request
     type(root_water_uptake_flux_result_t) :: zero_root_fluxes
@@ -565,6 +572,12 @@ contains
     end if
     if(config%file_weather_irrigation)then
       if(.not.config%file_weather_daystart.or.n/=1) return
+      if(config%file_weather_irrigation_historical_activation)then
+        call fmr_resolve_irrigation_management_activation(config%file_weather_irrigation_crop_calendar, &
+          config%initial_time+real(config%file_weather_epoch_day,real64),config%file_weather_irrigation_startirr, &
+          config%file_weather_irrigation_endirr,config%file_weather_irrigation_schedule_enabled,irrigation_window,ok)
+        if(.not.ok)return
+      end if
       ! New hydraulic selectors are independently admitted, not implicitly
       ! composed with this default-MvG managed weather profile.
       if(allocated(config%tiles(1)%parameters%hydraulic_model_kind).or. &
@@ -1406,12 +1419,21 @@ contains
       irrigation_request%selection_opportunity=self%irrigation_selection_day/=int(day)+self%weather_epoch_day
       irrigation_request%irrigation_enabled=.true.;irrigation_request%schedule_enabled=.true.
       irrigation_request%irrigation_window_open=.true.
+      if(self%weather_configuration%file_weather_irrigation_historical_activation)then
+        irrigation_request%schedule_enabled=self%weather_configuration%file_weather_irrigation_schedule_enabled
+        call fmr_resolve_irrigation_management_activation( &
+          self%weather_configuration%file_weather_irrigation_crop_calendar,t0+real(self%weather_epoch_day,real64), &
+          self%weather_configuration%file_weather_irrigation_startirr,self%weather_configuration%file_weather_irrigation_endirr, &
+          irrigation_request%schedule_enabled,irrigation_request%irrigation_window_open,available)
+        if(.not.available)return
+      end if
       allocation=fmr_irrigation_allocation_t()
       if(present(irrigation_allocation))allocation=irrigation_allocation
       unused_root%active_nodes=self%parameters(1)%active_nodes
       if((self%weather_configuration%file_weather_irrigation_depth%depth_criterion==1.or. &
           self%weather_configuration%file_weather_irrigation_sensor%timing_criterion<7).and. &
           crop_owner%crop_emerged.and.irrigation_request%selection_opportunity.and. &
+          irrigation_request%schedule_enabled.and.irrigation_request%irrigation_window_open.and. &
           .not.self%irrigation%management%event%active_event)then
         select type(physical)
         type is(fmr_wofost_crop_transaction_state_t)
