@@ -1,6 +1,7 @@
 # MC-SOL01 persistent surface-mass restart prerequisite
 
-Status: O0/O2 physical candidate passed; admission controls pending, not canonically admitted.
+Status: bounded prerequisite qualified;26 admission controls and source/strict
+documentation checks passed. Canonical admission remains separately recorded.
 Baseline: `87bc1b1bc0e33d5df9cc460c56f7773209d40931`.
 Owner: existing `matrix_solute_state_t` compartment `pond_mass`, existing
 atomic matrix/water restart. No second physical pool, new reaction law or
