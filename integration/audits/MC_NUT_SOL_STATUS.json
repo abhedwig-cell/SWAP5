@@ -779,5 +779,61 @@
       "evidence_members": 5
     },
     "status_scope": "Historical process/day review checkpoint; actual bounded admission and independent reconciliation are recorded below and in reproductive_process_20261016."
+  },
+  "leaf_return_review_20261016": {
+    "stage": "SOURCE_CHAIN_REVIEW_PASS_REFERENCE_DECISION_REQUIRED",
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "branch": "work/nut-leaf-return-review-20261016",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "source_tree_unchanged": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "18c1ce8455d67c5755838ad5f2e63838d617f8361a72b2d2b13259e652ac52b4",
+      "decoded_bytes": 29188,
+      "members": 38
+    },
+    "case_counts_per_optimization": {
+      "day_harvest_cases": 27,
+      "leaf_DM_return_exceeds_death": 9
+    },
+    "counterexample": {
+      "leaf_death_DM_kg_ha": 10,
+      "daily_leaf_fraction": 1,
+      "harvest_leaf_fraction": 1,
+      "daily_leaf_soil_DM_kg_ha": 10,
+      "harvest_dead_leaf_soil_DM_kg_ha": 10,
+      "total_leaf_soil_N_kg_ha": 0.1
+    },
+    "production_providers_executed": {
+      "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+      "src/process/mod_b111_soil_n_addition.f90": "3c6c1f874cdf67cbe107e17ffbe39acb33e0ffda447c9d7b56a7fcb349485211",
+      "src/process/mod_crop_senescence_residue.f90": "ccdd7d77be2384f75927132f0a27113f002637ee15eb2f5ed04bc5d8436331ba"
+    },
+    "cost_seconds": {
+      "compile": 0.9690339189983206,
+      "link": 0.0847224110038951,
+      "native": 0.005504872999154031
+    },
+    "scope": "Immutable literal source blocks plus real current pending/material constructors; no full historical crop/calendar reachability claim, corrected reference or partial-return runtime admission.",
+    "finding": "Partial leaf return and no daily stem return require retained leaf/stem physical DM/N. Literal gross dead-leaf DM can be returned again at harvest while N is reduced by prior leaf return. N closure alone is insufficient.",
+    "test_selection": {
+      "small": "Three real current mapping providers plus immutable source-block oracle, O0/O2, bounds/FP traps; actual about1.06s",
+      "broad": "NOT_SELECTED_IMPACT: src/tests/tools/reference/.github and all admitted science dependencies unchanged; actual owner source proof plus docs integrity selected. No full FCI, alternate solver or highest-low-air run."
+    },
+    "production_admitted": false,
+    "formal_reference_defect_status": "UNADJUDICATED_SOURCE_CHAIN_COUNTEREXAMPLE",
+    "scientific_prerequisite": "Adjudicate ordinary source growth/daily-return/harvest timing and DM overlap; if confirmed, correct and qualify B1 before changing SWAP5 partial-return semantics.",
+    "next_safe_step": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
+    "capability_disposition_changes": 0,
+    "aquifer": "EXCLUDED",
+    "pr": 1261,
+    "validation": {
+      "capsule_manifest_and_raw_events": "PASS 38 members;14 compile/link/native events, all runtime/FP checks retained",
+      "actual_owner_source_proof": "PASS current admitted1260 owner; all src/tests/tools/reference/.github unchanged",
+      "docs": "source checks and strict build PASS",
+      "numerical_requalification": "NOT_SELECTED_IMPACT scientific postimages unchanged",
+      "full_historical_trajectory": "NOT_ESTABLISHED",
+      "formal_reference_correction": "NOT_ADMITTED"
+    }
   }
 }
