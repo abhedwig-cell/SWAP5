@@ -37,7 +37,7 @@
     "bounded_swrd3_reconciliation": "PASS: exact canonical source/evidence, two bounded rows and one supporting queue field only; all243 dispositions and summary unchanged. Not a full master qualification.",
     "bounded_swrd2_reconciliation": "PASS: exact merged source/full evidence, three bounded rows and two queue facets; all243 dispositions and summary unchanged. Not global census qualification.",
     "pr_closeout_scoped_recount": "PASS243 unique;95 ADMITTED/108 ACTIVE/14 SUPERSEDED/2 REJECTED/20 NOT_APPLICABLE/4 QUALIFICATION_ONLY;108 queue IDs;112 unresolved; no whole-cap promotions",
-    "latest_integrity_reconciliation": "Scoped structural PASS: queue sorted with identical row payloads; 92 explicit absence flags; all 243 capability objects/dispositions retained. Global integrity remains FAIL.",
+    "latest_integrity_reconciliation": "Historical queue/count diagnostic retained as predecessor evidence. Superseded by repaired integrity PASS; current census 94 ADMITTED, 109 ACTIVE_MIGRATION, 4 QUALIFICATION_ONLY, 113 unresolved and 92 explicit absence flags.",
     "current_local_git_connectivity": "PASS: exact canonical and master branch fetched locally on 2026-10-16; prior DNS failure is historical.",
     "latest_integrity_reconciliation_docs": "PASS documentation source check and strict MkDocs (15.96s); reused existing pinned docs dependencies after base runtime reported missing mkdocs. Full integrity FAIL remains recorded separately."
   },
@@ -120,8 +120,7 @@
   "production_source_changed": false,
   "invariants_affected": "No production changes. Typed input replacement and separate physical owner/policy contracts only.",
   "blockers": [
-    "Master integrity FAIL: stale baseline and backend dependencies, mixed-ref/text evidence locators, and obsolete disposition/reachability assertions. See extended diagnostic; not resolved by queue/count repairs.",
-    "108 active routes and 4 qualification-only capabilities remain; denominator incomplete."
+    "Coverage closure remains blocked: semantic denominator incomplete; 109 ACTIVE_MIGRATION and 4 QUALIFICATION_ONLY capability envelopes remain. Historical source/evidence and pinned later authority-locator integrity PASS does not establish current-canonical numerical qualification."
   ],
   "noncanonical_work_reuse": {
     "MICRO": "PR1077 draft head 3d0e5f2effd9bb4855ec831890ca1335cbaaba42; reuse, do not assume admission",
@@ -835,6 +834,11 @@
         "raw": "02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:50:  public :: initialize_adaptive_root_profile_state\n02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:51:  public :: evaluate_adaptive_root_profile_candidate\n02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:87:  subroutine initialize_adaptive_root_profile_state(density_table, zbotcp_cm, maximum_root_depth_cm, &\n02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:114:  end subroutine initialize_adaptive_root_profile_state\n02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:116:  subroutine evaluate_adaptive_root_profile_candidate(parameters, committed, forcing, ztopcp_cm, zbotcp_cm, dz_cm, &\n02ee16779f2411faec7492f7048b7d36f6f850f8:src/crop/mod_crop_adaptive_root_profile_owner.f90:218:  end subroutine evaluate_adaptive_root_profile_candidate\n",
         "complete_raw_embedded": true
       }
+    },
+    "concurrent_postimage_verification": {
+      "published_head": "a40ef6b0ace5ce800ece2b12550f99c1750638b6",
+      "verification": "All files except descriptive SWAP431_MASTER_STATUS.json exactly equal locally tested ab5ff378. 20 inheritance/locator controls PASS, integrity PASS, require-closed rejects incomplete denominator, docs source and strict MkDocs PASS (17.63s). Complete embedded raw evidence hashes verified. No source/reference change.",
+      "scope": "Identity and bounded historical/locator evidence verification only; no new migration or numerical qualification."
     }
   },
   "historical_access_observations": {
