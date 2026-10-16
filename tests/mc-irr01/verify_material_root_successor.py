@@ -16,6 +16,9 @@ def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hex
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['material_root_application_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
+  return pond.verify_source(git_reader)
  if (ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
   return surface.persistent_source(git_reader)
@@ -140,6 +143,9 @@ def incumbent():
  p=subprocess.run([sys.executable,'-B','tests/nut-crop/verify_b111_request_successor.py'],cwd=base,capture_output=True,text=True)
  check(p.returncode==0,'original incumbent owner proof failed '+p.stderr[-1200:]);r=json.loads(p.stdout);check(r['qualified'],'unqualified original incumbent');return r
 def verify_qualification():
+ if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
+  return pond.verify_qualification()
  if (ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
   return surface.persistent_qualification()

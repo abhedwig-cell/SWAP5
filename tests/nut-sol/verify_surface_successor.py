@@ -170,6 +170,9 @@ PERSISTENT_BASE='87bc1b1bc0e33d5df9cc460c56f7773209d40931'
 PERSISTENT_PRODUCTION={'src/adapter/mod_matrix_joint_restart_file.f90','src/runtime/mod_fmr_b111_matrix_solute_route.f90'}
 def persistent_record():return json.loads((ROOT/STATUS).read_text())['persistent_surface_restart_20261016']
 def persistent_source(git_reader=None):
+ if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
+  return pond.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=persistent_record()
  check(r['baseline']==PERSISTENT_BASE,'foreign persistent surface baseline')
  g('merge-base','--is-ancestor',PERSISTENT_BASE,'HEAD')
@@ -250,6 +253,9 @@ def persistent_science(data):
   check(''.join(lines).encode()==subprocess.check_output(['git','show',PERSISTENT_BASE+':'+p],cwd=ROOT),'incumbent body not reconstructible '+p)
  return r
 def persistent_qualification():
+ if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
+  return pond.verify_qualification()
  source=persistent_source();r=persistent_record()
  check(r['phase']in ['SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_PERSISTENT_SURFACE_RESTART'],'persistent science unfinished')
  persistent_science(persistent_evidence())

@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Bounded pond source/science owner only; never a full moving numerical PASS.
+if [[ "${1:-}" == --sol-pond-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/nut-sol/verify_pond_successor.py
+  echo 'FCI_SOL_POND_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 # INT12-C explicit owner prerequisite. It never establishes full moving PASS.
 if [[ "${1:-}" == --int12c-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
@@ -848,6 +856,9 @@ check_b19_micro_root_recomposition() {
         else
           python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
         fi
+        ;;
+      src/process/mod_b111_persistent_pond.f90|src/runtime/mod_fmr_b111_pond_solute_route.f90|src/runtime/mod_fmr_b111_pond_joint_application.f90 )
+        python3 -B tests/nut-sol/verify_pond_successor.py || fail "unqualified persistent pond successor: $candidate_path"
         ;;
       src/process/mod_b111_surface_supply.f90|src/runtime/mod_fmr_b111_surface_solute_route.f90|src/runtime/mod_fmr_b111_surface_joint_application.f90 )
         python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"

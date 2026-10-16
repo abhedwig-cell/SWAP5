@@ -1,6 +1,9 @@
 """Negative controls for exact eligibility and real surface evidence."""
 import copy,json,unittest
 import verify_surface_successor as v
+if (v.ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
+ import subprocess,sys
+ subprocess.run([sys.executable,'-B',str(v.ROOT/'tests/nut-sol/check_pond_controls.py')],check=True);raise SystemExit(0)
 if (v.ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
  from pathlib import Path
  import importlib,sys

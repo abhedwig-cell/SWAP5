@@ -34,7 +34,14 @@
       "state": "ACTIVE_DRAFT_PRESERVED_NOT_MERGE_READY",
       "concrete_blockers": "Final science/owner controls remain pending. Same native writer/reader trailing argument is optional pond object in1257 versus admitted allow_surface_mass logical in1256; schema S5MP0001 versus S5MJ0002. Must preserve V1/V2, one surface-mass owner, accepted atomicity and existing1256 recovery/source guards before current integration can qualify.",
       "preserved_pre1256_checkpoint": "2bb97693 retains its complete source and science archive; no active work closed or implementation overwritten.",
-      "new_duplicate_pr_authorized_or_created": false
+      "new_duplicate_pr_authorized_or_created": false,
+      "single_owner_resolution_1257": {
+        "state": "CURRENT_SOURCE_SCIENCE_COMPLETE_ADMISSION_PENDING",
+        "source": "matrix1256 pond_mass and V1/V2 bytes unchanged",
+        "original_head": "2bb976932c4900b29a0341fb46fa22ba3870186a",
+        "current_scientific_remote": "ea39f8e8b6666b5472868553a2cdfd18a03e4655",
+        "no_competing_codec_or_committed_pool": true
+      }
     },
     "admission_verification": {
       "candidate_local": "95a949b4785ee347edc8eb576a5f09b2ce305aa9",
@@ -433,5 +440,263 @@
     "master_pr": 1072,
     "master_pr_retained_as_draft": true,
     "new_migration_started": false
+  },
+  "persistent_pond_successor_20261016": {
+    "stage": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "baseline": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+    "branch": "work/sol-pond-continuation-20261016",
+    "scope": "Existing1256 matrix companion pond_mass is the only persistent chemical surface store; real accepted fixed-depth wet and dry-to-rewet water receipts, gross rain/irrigation and prescribed dry deposition; current V2 native/opaque owner unchanged; no general varying pond level, evaporation/runoff/macropores, aquifer or default activation.",
+    "invariants_affected": [
+      3,
+      4,
+      7,
+      9,
+      13,
+      21,
+      22,
+      25,
+      27,
+      29,
+      30
+    ],
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "next_action": "Verify remote qualified tree/live canonical/reviews and admit bounded1257, then master receipt. All selected runs terminal. No global capability promotion.",
+    "test_selection": {
+      "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
+      "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
+      "broad": "NOT_SELECTED before stable-candidate impact review; no implied full moving or highest low-air"
+    },
+    "execution_commit": "d0f7049ec93528717dd7e1feab3cd352447025d3",
+    "execution_tree": "dda84f84e8ef2a9573e9fe1e700aae77ea7805c1",
+    "source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_POND_SOURCE_20261016.tar.xz.b64",
+      "decoded_sha256": "0af1948eee5ad9cbb9da76e0c09f624ae4d3da824145d8a0bb44e8df93ad8b97",
+      "decoded_bytes": 216596,
+      "members": 1831
+    },
+    "postimages": {
+      "src/process/mod_b111_persistent_pond.f90": {
+        "status": "A",
+        "blob": "78703f26f70f4dce863698795317d33930137087"
+      },
+      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+        "status": "A",
+        "blob": "07846151bd31a683019d1662472de71d5fe6100c"
+      },
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+        "status": "A",
+        "blob": "e111432d454bd31eeb761f7bc056ae66166063a6"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+      },
+      "tests/mc-irr01/check_material_root_controls.py": {
+        "status": "M",
+        "blob": "3520af78631b5fe5f3c12d2ba616c10e37b5e2bb"
+      },
+      "tests/mc-irr01/verify_material_root_successor.py": {
+        "status": "M",
+        "blob": "c2375c6ab6499933f1b90c3b81399954ff76f8a4"
+      },
+      "tests/nut-sol/check_pond_controls.py": {
+        "status": "A",
+        "blob": "a3e260d3cf1637073529953d74b2263fcf6189eb"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "M",
+        "blob": "f058e3e9464f23b976a358b6075abc9382825d35"
+      },
+      "tests/nut-sol/run_persistent_pond.py": {
+        "status": "A",
+        "blob": "821f6debe50494177798a7389452666067006c90"
+      },
+      "tests/nut-sol/run_pond_joint.py": {
+        "status": "A",
+        "blob": "c48affa4e523d11cc911dcb97c01c08deaa941c3"
+      },
+      "tests/nut-sol/test_persistent_pond.f90": {
+        "status": "A",
+        "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+      },
+      "tests/nut-sol/test_pond_joint.f90": {
+        "status": "A",
+        "blob": "bfa91a3f64a08a9c4726ce4270f2d25cf97697aa"
+      },
+      "tests/nut-sol/verify_pond_successor.py": {
+        "status": "A",
+        "blob": "2a2d7dee74bf23654771b17d5179397fdb370f70"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "M",
+        "blob": "cabff03fc68de3d883f28727e5d5cf4bb561cc9a"
+      }
+    },
+    "cost_seconds": {
+      "physical_compile": 194.50119866718887,
+      "physical_link": 0.4280248460127041,
+      "physical_native": 55.75857900601113,
+      "preservation_compile": 11.407297228972311,
+      "preservation_link": 0.5430716410046443,
+      "preservation_native": 23.45421971900214,
+      "process_compile": 0.48713431901705917,
+      "process_link": 0.0827895310067106,
+      "process_native": 0.004335931007517502
+    },
+    "pre1256_reconciliation": {
+      "new_canonical": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
+      "admitted_pr": 1256,
+      "decision": "Preserve all preliminary source/science; do not merge duplicate surface owner/codec. Recompose persistent pond/source consumption over admitted matrix pond_mass and V2 restart. This capsule proves only the original87bc baseline.",
+      "qualified_for_current_canonical": false
+    },
+    "prior_pre1256_science": {
+      "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "execution_commit": "10e061826f3e13e34ec52ceb73b66a94e39c4eb1",
+      "execution_tree": "d20c87edc92ffe81dad758665bf8b3a52a4b8f1e",
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+        "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+        "decoded_bytes": 109736,
+        "members": 3066
+      },
+      "source_tree": "beea61514fcd76a547b3824c40a21f934b86e67b",
+      "postimages": {
+        "src/adapter/mod_matrix_joint_restart_file.f90": {
+          "status": "M",
+          "blob": "4f55ee9d5b97cf3bb1d0a85ba5128a99c6f2811d"
+        },
+        "src/process/mod_b111_persistent_pond.f90": {
+          "status": "A",
+          "blob": "78703f26f70f4dce863698795317d33930137087"
+        },
+        "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+          "status": "A",
+          "blob": "fae5a4c26bd19e5fc8ba248043fd4c6f622ce530"
+        },
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+          "status": "A",
+          "blob": "08d98af3a352d6df3d28426377c3e286f45531a4"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "status": "M",
+          "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+        },
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+          "status": "M",
+          "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+        },
+        "tests/mc-irr01/verify_material_root_successor.py": {
+          "status": "M",
+          "blob": "db1686b83f1b9962219bbba7e5970c85420ec19b"
+        },
+        "tests/nut-sol/check_pond_controls.py": {
+          "status": "A",
+          "blob": "5627e8a4b67df2e9b7cfbba1780f40c2af19f2fb"
+        },
+        "tests/nut-sol/run_persistent_pond.py": {
+          "status": "A",
+          "blob": "821f6debe50494177798a7389452666067006c90"
+        },
+        "tests/nut-sol/run_pond_joint.py": {
+          "status": "A",
+          "blob": "a4b32e2e8871c4ee9f4c87e6fa9aa64773a858db"
+        },
+        "tests/nut-sol/test_persistent_pond.f90": {
+          "status": "A",
+          "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+        },
+        "tests/nut-sol/test_pond_joint.f90": {
+          "status": "A",
+          "blob": "05d54e8fda35b90f92aab3ebf3427ccc5f2c5b14"
+        },
+        "tests/nut-sol/verify_pond_successor.py": {
+          "status": "A",
+          "blob": "ebb351dc9afab24e469c676b09e98b05af61c0bb"
+        }
+      },
+      "cost_seconds": {
+        "physical_compile": 174.225236249913,
+        "physical_link": 0.3069188310037134,
+        "physical_native": 50.9656070269848,
+        "preservation_compile": 10.23940672900062,
+        "preservation_link": 0.3265203350165393,
+        "preservation_native": 19.023562807007693,
+        "process_compile": 0.4906309939833591,
+        "process_link": 0.0939477520150831,
+        "process_native": 0.004268365999450907
+      }
+    },
+    "last_reconciled_upstream": "fcad97c7745ea2886b310aaad3c8f8a36a2ec4e1",
+    "persisted": true,
+    "pr": 1257,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1257",
+    "source_ownership": {
+      "persistent_mass": "existing matrix_solute_state_t companion pond_mass admitted1256",
+      "water": "existing accepted Richards state",
+      "native_and_opaque_restart": "exact admitted1256 implementation, no mutation",
+      "leaf_state": "tentative process scratch only; never separately committed or restarted by the application"
+    },
+    "science_summary": {
+      "current_native_programs": 38,
+      "original_surface_programs": 4,
+      "literal_leaf_cases_per_optimization": 240,
+      "leaf_evidence": "inherited only with all source/driver/oracle/compiler/flags/environment identities unchanged; current physical closure compiles production leaf again O0/O2",
+      "last_carrier_controls_per_window": 21,
+      "crc_and_decoder_controls_per_optimization": 15,
+      "actual_variably_evolving_pond_level": false,
+      "original_v1_endpoint": "7927b66f0ccf253d00795dd6c174a8323ac6e06d5bd6d384248e9bb0e7331d9e",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "hosted_numerical_claim": false
+    },
+    "retained_failures": [
+      {
+        "scope": "original prototype",
+        "archive": {
+          "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+          "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+          "decoded_bytes": 109736,
+          "members": 3066
+        },
+        "status": "HISTORICAL_SCIENCE_NOT_CURRENT_QUALIFICATION"
+      },
+      {
+        "scope": "single-owner literal whole balance",
+        "execution": "6915817c",
+        "status": "FAILED_ORACLE_DOUBLE_COUNTING_NOT_PRODUCTION_FAILURE",
+        "reason": "After moving pond mass into existing companion, independent driver subtracted initial surface mass both through solute_total and standalone pm. Removed redundant standalone subtraction; retained raw fail and source history."
+      },
+      {
+        "scope": "old evidence control invocation",
+        "status": "REJECTED_DIRTY_PYTHON_CACHE_BEFORE_SCIENTIFIC_REVIEW"
+      }
+    ],
+    "recovery_point": "Existing PR1257 and this status; remote source07a12396/ea39f8e8. Current final exact execution and all prior failures retained in source-bound capsules; admission/control phase remains pending.",
+    "preserved": true,
+    "admission_controls": {
+      "negative_controls": 23,
+      "status": "PASS",
+      "raw_log_sha256": "062a4cc496a01b9c86c4a7397bc9d09bf8873a9090fea3c5a2dd89e096e7b7e2",
+      "new_pond_owner_dispatch": "PASS",
+      "retained_int12c_owner_dispatch": "PASS actual existing entrypoint",
+      "docs_source": "PASS final",
+      "strict_mkdocs": "PASS final",
+      "missing_mkdocs_attempt": "FAILED_ENVIRONMENT_ONLY, retained raw log; recovered without new package download",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_POND_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "1f3c223982c53925c63acff4a000780b800078f4972c609a8016b37c78fa3240",
+        "decoded_bytes": 12460,
+        "members": 12
+      }
+    },
+    "regie_admission_selection": "Bounded existing-owner successor: actual source O0/O2, exact V1/V2/native/current owner proof and23 fail-closed controls. Only new opt-in consumers and observation metadata change; solver equations, committed state ownership,1256 reconstruction/codec and all incumbent bodies preserved. No full moving/highest/RossFast selected solely for added valid forcing. User autonomous continuation plus execution-protocol full-cycle authority; verify live canonical, reviews, PR head and merge tree before admitting."
   }
 }
