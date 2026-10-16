@@ -2332,5 +2332,29 @@
       "delta": "Two macropore donor-disposition audit/evidence files only; src/reference/tests/tools/workflows unchanged. Preserve full concurrent donor records; no new numerical rerun.",
       "publication_failure": "Initial expected-head update failed when concurrent master advanced. Re-read actual refs and compose bounded NFIX receipt on top; no force overwrite."
     }
+  },
+  "latest_pr700_historical_carrier_retirement_20261016": {
+    "pr": 700,
+    "original_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "phase": "RETIREMENT_READY_FOR_CLOSE_WITHOUT_MERGE",
+    "canonical_recovery": "25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "authority": "integration/audits/PPA_RECONCILE01_STATUS.json at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "source_matrix": "source-dispositions.json inside integration/audits/evidence/PPA_RECONCILE01_CARRIER_RETIREMENT_20261016.tar.xz.b64 at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "all_original_postimages_preserved": 862,
+    "source_rows": 160,
+    "bounded_no_import_dispositions": 20,
+    "semantic_review_still_open": 140,
+    "original_qualifications": "Original WU04C blocked/failed evidence retained; no PASS reclassification. Previous bounded source diagnostics remain at their exact source/claim ceilings.",
+    "source_branch_preserved": true,
+    "scope": "Retire obsolete historical integration proposal, not remaining source migration. Existing capabilities/dispositions, workunit IDs, dependencies, numerical/physical gates and production authority unchanged.",
+    "next_action": "Use existing owning workunits/current admitted production paths. Selective donor recovery requires the owning source, parameter/state/mass and restart/admission checks. No new production edit authorization or whole-tree merge.",
+    "validation": {
+      "source_retention_and_owner_handoff": "PASS",
+      "all243_capability_rows_and_dispositions": "UNCHANGED",
+      "all_existing_workunit_rows_and_dependencies": "UNCHANGED",
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "inheritance_controls": "20PASS",
+      "new_actions_or_numerical_runs": 0
+    }
   }
 }

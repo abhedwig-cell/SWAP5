@@ -523,5 +523,134 @@
         "SW431-HYD-MVG"
       ]
     }
-  ]
+  ],
+  "retained_pr700_donor_source_20261016": {
+    "pr": 700,
+    "original_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "phase": "RETIREMENT_READY_FOR_CLOSE_WITHOUT_MERGE",
+    "canonical_recovery": "25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "authority": "integration/audits/PPA_RECONCILE01_STATUS.json at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "source_matrix": "source-dispositions.json inside integration/audits/evidence/PPA_RECONCILE01_CARRIER_RETIREMENT_20261016.tar.xz.b64 at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
+    "all_original_postimages_preserved": 862,
+    "source_rows": 160,
+    "bounded_no_import_dispositions": 20,
+    "semantic_review_still_open": 140,
+    "original_qualifications": "Original WU04C blocked/failed evidence retained; no PASS reclassification. Previous bounded source diagnostics remain at their exact source/claim ceilings.",
+    "source_branch_preserved": true,
+    "scope": "Retire obsolete historical integration proposal, not remaining source migration. Existing capabilities/dispositions, workunit IDs, dependencies, numerical/physical gates and production authority unchanged.",
+    "next_action": "Use existing owning workunits/current admitted production paths. Selective donor recovery requires the owning source, parameter/state/mass and restart/admission checks. No new production edit authorization or whole-tree merge.",
+    "families": {
+      "weather_interception": {
+        "existing_workunits": [
+          "MC-MET01",
+          "MC-CROP01",
+          "MC-SUR01"
+        ],
+        "owner": "PPA-WU04 / INT12 PR1009 / MC-CROP01 / central RT-HY",
+        "source_rows": 14,
+        "semantic_review_open": 6,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "irrigation": {
+        "existing_workunits": [
+          "MC-IRR01"
+        ],
+        "owner": "MC-IRR01 / central RT-HY / MC-CROP01",
+        "source_rows": 27,
+        "semantic_review_open": 27,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "lower_boundary": {
+        "existing_workunits": [
+          "MC-LOW01"
+        ],
+        "owner": "LOW01/03/05/08 owners / shared HY-GC",
+        "source_rows": 15,
+        "semantic_review_open": 15,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "macropore": {
+        "existing_workunits": [
+          "MC-MACRO01",
+          "MC-MACROSUR01"
+        ],
+        "owner": "PPA-WU05-A / MIGMAC / central runtime",
+        "source_rows": 58,
+        "semantic_review_open": 46,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "solute": {
+        "existing_workunits": [
+          "MC-SOL01",
+          "MC-NUT01"
+        ],
+        "owner": "Current MC-SOL01 and MC-NUT01 accepted soil/crop/transport owners; historical1098/1117 are not live owner PRs",
+        "source_rows": 21,
+        "semantic_review_open": 21,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "frost": {
+        "existing_workunits": [
+          "MC-FROST01"
+        ],
+        "owner": "PPA-WU05-B / thermal owner",
+        "source_rows": 2,
+        "semantic_review_open": 2,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "oxygen": {
+        "existing_workunits": [
+          "MC-ROOT01",
+          "MC-CROP01"
+        ],
+        "owner": "PPA-WU05-C / PERF03 PR1008",
+        "source_rows": 4,
+        "semantic_review_open": 4,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "compensated_roots": {
+        "existing_workunits": [
+          "MC-ROOT01"
+        ],
+        "owner": "PPA-WU05-D / crop-root owner",
+        "source_rows": 2,
+        "semantic_review_open": 2,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "salinity": {
+        "existing_workunits": [
+          "MC-ROOT01",
+          "MC-SOL01"
+        ],
+        "owner": "PPA-WU05-E / crop-root and solute owners",
+        "source_rows": 1,
+        "semantic_review_open": 1,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "micro": {
+        "existing_workunits": [
+          "MC-MICRO01"
+        ],
+        "owner": "PPA-WU05-G / shared hydraulics",
+        "source_rows": 2,
+        "semantic_review_open": 2,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "shared_solver": {
+        "existing_workunits": [],
+        "owner": "central HY / Task2 / M1 / numerical owners",
+        "source_rows": 9,
+        "semantic_review_open": 9,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      },
+      "shared_runtime": {
+        "existing_workunits": [],
+        "owner": "central RT-TX / crop-irrigation-solute owners",
+        "source_rows": 5,
+        "semantic_review_open": 5,
+        "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
+      }
+    },
+    "central_shared_owner": "HY/RT-TX retain9 shared solver and5 shared-runtime source references under existing central authority, without introducing another process owner."
+  }
 }
