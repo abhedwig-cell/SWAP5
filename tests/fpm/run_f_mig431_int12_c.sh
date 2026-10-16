@@ -10,6 +10,12 @@ cd "$ROOT"
 BASE=a86da5b6931b15ef8a5432fd03adc30a72491b65
 expected_src=$'src/runtime/mod_fmr_interception_source_window_binding.f90\nsrc/runtime/mod_fmr_production_application_bootstrap.f90'
 changed_src="$(git diff --name-only "$BASE" -- src | sort)"
+if [[ -f tests/fpm/hyd_default_projection.json ]]; then
+  # The exact HYD owner proof must accept the entire scientific delta first.
+  # Remove only its three declared files before the unchanged INT12-C check.
+  python3 -B tests/fpm/verify_hyd_successor.py --source-only
+  changed_src="$(printf '%s\n' "$changed_src" | python3 -c "import sys; allowed={'src/solver/mod_b110_default_mvg_provider.f90','src/solver/mod_reference_richards_temporal_indicator.f90','src/runtime/mod_fmr_serialized_reference_backend.f90'}; print('\n'.join(p for p in sys.stdin.read().splitlines() if p not in allowed))")"
+fi
 [[ "$changed_src" == "$expected_src" ]] || {
   echo 'INT12C_UNEXPECTED_PRODUCTION_DELTA' >&2
   printf '%s\n' "$changed_src" >&2

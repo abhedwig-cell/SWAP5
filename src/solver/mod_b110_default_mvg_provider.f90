@@ -683,6 +683,7 @@ contains
     conductivity=0.0_real64
     if(.not.associated(self%parameters))return
     if(node_index<1.or.node_index>self%parameters%active_nodes)return
+    if(.not.ieee_is_finite(pressure_head).or..not.ieee_is_finite(water_content))return
     call evaluate_node(self%parameters,node_index,pressure_head,theta,conductivity,cap,dk)
     available=ieee_is_finite(conductivity).and.conductivity>=0.0_real64
   end subroutine

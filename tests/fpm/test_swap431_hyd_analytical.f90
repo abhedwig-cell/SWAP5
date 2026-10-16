@@ -1,5 +1,6 @@
 program test_swap431_hyd_analytical
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan
   use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_parameters_t, &
        b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
        bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &
@@ -63,6 +64,10 @@ program test_swap431_hyd_analytical
   call assert_close(conductivity6(1),conductivity(2),0.0_real64,'model6/model3 K identity')
   call assert_close(capacity6(1),capacity(2),0.0_real64,'model6/model3 C identity')
   call assert_close(dkdh6(1),dkdh(2),0.0_real64,'model6/model3 dKdh identity')
+  call provider%evaluate_point_conductivity(2,-75.0_real64,ieee_value(0.0_real64,ieee_quiet_nan),kplus,available)
+  if(available)error stop 'nonfinite point water content accepted'
+  call provider%evaluate_point_conductivity(2,ieee_value(0.0_real64,ieee_quiet_nan),0.2_real64,kplus,available)
+  if(available)error stop 'nonfinite point head accepted'
   print '(a)','PASS swap431 hyd analytical'
 contains
   subroutine assert_close(actual,expected,tolerance,label)

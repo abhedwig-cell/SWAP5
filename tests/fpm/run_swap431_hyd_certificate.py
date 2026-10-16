@@ -15,16 +15,21 @@ result={'providers':len(paths),'source_sha256':manifest,'optimizations':{}}
 flags=['-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace']
 for opt in ['O0','O2']:
  out=BUILD/opt;out.mkdir(exist_ok=True);objects=[];compile_seconds=0;native={}
- log=open(EVIDENCE/(opt+'-compile.log'),'wb');new=False
+ log=open(EVIDENCE/(opt+'-compile.log'),'wb');new=False;rebuilt=[];interfaces=[]
  for p in paths:
   obj=out/(pathlib.Path(p).stem+'.o');pin=obj.with_suffix('.sha256')
-  # Once an upstream provider changes, rebuild its downstream module consumers.
-  new=new or not obj.exists() or not pin.exists() or pin.read_text()!=manifest[p]
-  if new:
+  # Public .mod byte changes invalidate consumers. A body-only change with
+  # exactly identical compiler interfaces needs a new object and fresh links.
+  changed=new or not obj.exists() or not pin.exists() or pin.read_text()!=manifest[p]
+  if changed:
+   before={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in out.glob('*.mod')}
    t=time.monotonic();run=subprocess.run(['gfortran','-'+opt,*flags,'-J'+str(out),'-I'+str(out),'-c',str(ROOT/p),'-o',str(obj)],cwd=out,stdout=log,stderr=log)
    compile_seconds+=time.monotonic()-t
    if run.returncode: log.close();raise SystemExit('compile failed '+opt+' '+p)
-   pin.write_text(manifest[p])
+   pin.write_text(manifest[p]);rebuilt.append(p)
+   after={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in out.glob('*.mod')}
+   public_changed=before!=after;interfaces.append({'source':p,'compiler_module_bytes_changed':public_changed})
+   new=new or public_changed
   objects.append(str(obj))
  log.close()
  for name,path,args in drivers:
@@ -38,7 +43,7 @@ for opt in ['O0','O2']:
   native[name]={'exit':run.returncode,'driver_compile_seconds':driver_compile,'link_seconds':link,'native_seconds':elapsed,'stdout_sha256':hashlib.sha256(run.stdout).hexdigest()}
   print(opt,name,'exit',run.returncode,flush=True)
   if run.returncode:print(run.stdout.decode()[-2500:]+run.stderr.decode()[-1500:],flush=True)
- result['optimizations'][opt]={'provider_compile_seconds':compile_seconds,'provider_build_reused':not new,'drivers':native}
+ result['optimizations'][opt]={'provider_compile_seconds':compile_seconds,'provider_build_reused':not rebuilt,'rebuilt_providers':rebuilt,'public_interface_checks':interfaces,'drivers':native}
  (EVIDENCE/'result.json').write_text(json.dumps(result,indent=2)+'\n')
 result['identities']={name:(EVIDENCE/('O0-'+name+'.stdout')).read_bytes()==(EVIDENCE/('O2-'+name+'.stdout')).read_bytes() for name,_,_ in drivers}
 result['pass']=all(r['exit']==0 for o in result['optimizations'].values() for r in o['drivers'].values()) and all(result['identities'].values())

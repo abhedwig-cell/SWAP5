@@ -662,12 +662,16 @@
     "admitted": false,
     "implemented": true,
     "evidence": {
-      "path": "integration/audits/evidence/MC_HYD01_FULL_PROFILE_QUALIFICATION_20261016.tar.xz.b64",
-      "decoded_sha256": "b2bf9275ab1b906d6bb44f5a51b488bde3bc70cd55e16ed9d85ca27789f89630",
-      "decoded_bytes": 30456,
-      "members": 58,
+      "path": "integration/audits/evidence/MC_HYD01_STABLE_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "e5a74f25c778bc2eb8b01ac6ca38cad907cac46d20a5d4e26c7928fdc03e2e0f",
+      "decoded_bytes": 32576,
+      "members": 63,
       "member_sha256": {
-        "README.txt": "c77de366dc86f003b0bdc3246b2d66cd3951f418f776b804c9e81408d3f2217b",
+        "README.txt": "ef69421529d22788561bfb3d089925be0741afef001dd4de513914a3322bd6d8",
+        "component/analytical.log": "c96a2abb280e93267b310f3f652489bfc72304b2ec3f6e7a8fd48ce77d04b01a",
+        "component/inputs.json": "3468ca5412902daba385bb6036bb1c4892372a701af5ff41601f186b037f64a7",
+        "component/int12c.log": "e8f0d542b8f07691508e2c539a1d0155151a8b4efd4ecaf0af5e0df4c91f628b",
+        "component/power.log": "755c5e80ee7cdbbc88b30b0733cd2c6815550e0a400a6d63c97461f25fb166c9",
         "literal/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "literal/O0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "literal/O0.stdout": "5940a17992bbb67103675a870d9782513bbbeee4ca5d189c5ea102424d4cb71c",
@@ -677,7 +681,8 @@
         "literal/WC_K_models_04_11.f90": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
         "literal/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
         "literal/readswap.f90": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c",
-        "literal/result.json": "6d9e66d51e6ca9ac1845d838cf28e339ab58404943351feb84947af420aef40b",
+        "literal/result.json": "647bb8c915ec40c83732ad6eca1b3388afce3f9fc3e59d898cdcdf6e982d3c8d",
+        "retained_failures/int12c_unused_dummy.log": "812eca06394050cff955746cccd9d1f492e56022feb80c35ce9f1003cc8e86f4",
         "runtime/O0-analytical-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "runtime/O0-analytical.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "runtime/O0-analytical.stdout": "82b2f6f40c8bdc52a131823e67586486893c4016d8466c1e51152feb62cff172",
@@ -723,8 +728,8 @@
         "runtime/O2-runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "runtime/O2-runtime.stdout": "f7eeaa247e3bdb81d1452b555bc618ef79470351e073527386baa537ebdd590e",
         "runtime/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
-        "runtime/manifest.json": "0290fb65343db895457d780a48bf80bd6b89bbf7b08593adbca8ab4b41c00395",
-        "runtime/result.json": "19bae7a1e5e2e6c814fbbfe3edd1aa477aa700bc86620a89a5fa3ea45ed8e079"
+        "runtime/manifest.json": "e07e0f4bcb7bcddd62dbd6e2be0621bdcc7ec2e984c6f1bfcb8f47bf9f0d1903",
+        "runtime/result.json": "6cd858da5f3a3d14f2fc9eed3f8b324e8772eec6a2cd5b38dfb0ccbf87c05910"
       }
     },
     "literal_results": {
@@ -734,22 +739,22 @@
         "@WC": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
         "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90": "6b65637866476581b283eb3d61c3aa0dfe4b51f84223f6eea571ac25ecac1104",
         "src/solver/mod_soil_water_solver_contract.f90": "0fc4d1ba94451697754e3b93a54bf47ae2d6f852301e59ad35f1db36dad08905",
-        "src/solver/mod_b110_default_mvg_provider.f90": "89eccdffc7ac333368b0d575b7290652c267960f40aa31c21868dd4241731cca",
+        "src/solver/mod_b110_default_mvg_provider.f90": "8240bebcd71853ff8d225823415c36a3d68e44899bee583cab2de6fa576e3661",
         "tests/fpm/test_swap431_hyd_literal.f90": "8f29c66f0cd4304ee45a65177bb0e490ec9a81334558951e8c40de837f6cfe9c"
       },
       "optimizations": {
         "O0": {
           "exit": 0,
-          "compile_seconds": 1.4720160210054019,
-          "link_seconds": 0.04969987100048456,
-          "native_seconds": 0.00196857399714645,
+          "compile_seconds": 1.397612469008891,
+          "link_seconds": 0.047576844997820444,
+          "native_seconds": 0.0020988250034861267,
           "stdout_sha256": "5940a17992bbb67103675a870d9782513bbbeee4ca5d189c5ea102424d4cb71c"
         },
         "O2": {
           "exit": 0,
-          "compile_seconds": 6.007152997997764,
-          "link_seconds": 0.15170102599950042,
-          "native_seconds": 0.003874297995935194,
+          "compile_seconds": 2.6573241330115707,
+          "link_seconds": 0.045374458997685,
+          "native_seconds": 0.001842548997956328,
           "stdout_sha256": "5940a17992bbb67103675a870d9782513bbbeee4ca5d189c5ea102424d4cb71c"
         }
       },
@@ -803,7 +808,7 @@
         "src/process/mod_restricted_soil_temperature.f90": "81a8abe849ea0fd75cfc46ba2d3ee164a91951ca42c70258ca4e3d7a2f1ab53f",
         "src/solver/mod_reference_richards_workspace.f90": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
         "src/solver/mod_reference_linear_solver.f90": "99924ba6e42d3ade458333f65d71d48b71e262b570a2381b5350682919ec14eb",
-        "src/solver/mod_b110_default_mvg_provider.f90": "89eccdffc7ac333368b0d575b7290652c267960f40aa31c21868dd4241731cca",
+        "src/solver/mod_b110_default_mvg_provider.f90": "8240bebcd71853ff8d225823415c36a3d68e44899bee583cab2de6fa576e3661",
         "src/solver/mod_b110_default_mvg_directional_provider.f90": "bc5cb47ea986c9dbb39db722dae75e5637d78efa178236fa2d62ecc48e94a0b1",
         "src/solver/mod_b110_direct_retention_core.f90": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
         "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
@@ -926,111 +931,129 @@
       },
       "optimizations": {
         "O0": {
-          "provider_compile_seconds": 14.800259030016605,
+          "provider_compile_seconds": 0.8804815330004203,
           "provider_build_reused": false,
+          "rebuilt_providers": [
+            "src/solver/mod_b110_default_mvg_provider.f90"
+          ],
+          "public_interface_checks": [
+            {
+              "source": "src/solver/mod_b110_default_mvg_provider.f90",
+              "compiler_module_bytes_changed": false
+            }
+          ],
           "drivers": {
             "analytical": {
               "exit": 0,
-              "driver_compile_seconds": 0.11129592199722538,
-              "link_seconds": 0.13319255399983376,
-              "native_seconds": 0.002658231998793781,
+              "driver_compile_seconds": 0.15154376199643593,
+              "link_seconds": 0.171401640996919,
+              "native_seconds": 0.002152159999241121,
               "stdout_sha256": "82b2f6f40c8bdc52a131823e67586486893c4016d8466c1e51152feb62cff172"
             },
             "runtime": {
               "exit": 0,
-              "driver_compile_seconds": 0.7351145559950965,
-              "link_seconds": 0.14558156400016742,
-              "native_seconds": 0.009645594996982254,
+              "driver_compile_seconds": 0.6890833460056456,
+              "link_seconds": 0.12239021000277717,
+              "native_seconds": 0.006507174999569543,
               "stdout_sha256": "f7eeaa247e3bdb81d1452b555bc618ef79470351e073527386baa537ebdd590e"
             },
             "direct_retention": {
               "exit": 0,
-              "driver_compile_seconds": 0.36173393100034446,
-              "link_seconds": 0.12253509999572998,
-              "native_seconds": 0.0024515189943485893,
+              "driver_compile_seconds": 0.09784741900512017,
+              "link_seconds": 0.10550963500281796,
+              "native_seconds": 0.002044686996669043,
               "stdout_sha256": "ffbe1e2fa7cb7de56fc79088b62b047381cdf028cb91f938ee7aa6e78212a5ad"
             },
             "fsi38": {
               "exit": 0,
-              "driver_compile_seconds": 0.17868764900049428,
-              "link_seconds": 0.15845687899854966,
-              "native_seconds": 0.0024430060002487153,
+              "driver_compile_seconds": 0.15174778199434513,
+              "link_seconds": 0.11330802099837456,
+              "native_seconds": 0.002389449000474997,
               "stdout_sha256": "3ffa183718860163f31dc9518b0f646f1124c7038468cf1c17bf81c801559488"
             },
             "fsi25": {
               "exit": 0,
-              "driver_compile_seconds": 0.24217317999864463,
-              "link_seconds": 0.16507452700170688,
-              "native_seconds": 0.0023219479990075342,
+              "driver_compile_seconds": 0.11329870000190567,
+              "link_seconds": 0.14656351899611764,
+              "native_seconds": 0.002650440001161769,
               "stdout_sha256": "a069b65a52f725dd822e4d85bf1d32fa2e20bb1f48e6800efef53d3bf6246f7b"
             },
             "incumbent_runtime": {
               "exit": 0,
-              "driver_compile_seconds": 2.0153657230039244,
-              "link_seconds": 0.10530699200171512,
-              "native_seconds": 0.051405341997451615,
+              "driver_compile_seconds": 1.8815300130008836,
+              "link_seconds": 0.12535487299464876,
+              "native_seconds": 0.04266257499693893,
               "stdout_sha256": "fa256259a129b4d1ea524f7390ed331bc01e065bf50a0b0aa059f26b09afd779"
             },
             "incumbent_macropore": {
               "exit": 0,
-              "driver_compile_seconds": 0.3115951949948794,
-              "link_seconds": 0.10935505999805173,
-              "native_seconds": 0.004356711004220415,
+              "driver_compile_seconds": 0.22706687499885447,
+              "link_seconds": 0.1014680079970276,
+              "native_seconds": 0.004318726998462807,
               "stdout_sha256": "70bb8ffad72bc2294b03b2cbfbf215ffdd0fa9dd89fd5a85aa940141344dce41"
             }
           }
         },
         "O2": {
-          "provider_compile_seconds": 52.093254292012716,
+          "provider_compile_seconds": 0.8021246369971777,
           "provider_build_reused": false,
+          "rebuilt_providers": [
+            "src/solver/mod_b110_default_mvg_provider.f90"
+          ],
+          "public_interface_checks": [
+            {
+              "source": "src/solver/mod_b110_default_mvg_provider.f90",
+              "compiler_module_bytes_changed": false
+            }
+          ],
           "drivers": {
             "analytical": {
               "exit": 0,
-              "driver_compile_seconds": 0.576998297998216,
-              "link_seconds": 0.12361346599936951,
-              "native_seconds": 0.0022740380009054206,
+              "driver_compile_seconds": 0.48952132299746154,
+              "link_seconds": 0.11712005599838449,
+              "native_seconds": 0.0019380009980523027,
               "stdout_sha256": "82b2f6f40c8bdc52a131823e67586486893c4016d8466c1e51152feb62cff172"
             },
             "runtime": {
               "exit": 0,
-              "driver_compile_seconds": 8.454198513994925,
-              "link_seconds": 0.12510959199425997,
-              "native_seconds": 0.011526769994816277,
+              "driver_compile_seconds": 7.9225095649962896,
+              "link_seconds": 0.12969947599776788,
+              "native_seconds": 0.004419459997734521,
               "stdout_sha256": "f7eeaa247e3bdb81d1452b555bc618ef79470351e073527386baa537ebdd590e"
             },
             "direct_retention": {
               "exit": 0,
-              "driver_compile_seconds": 0.43831069299631054,
-              "link_seconds": 0.18055929700494744,
-              "native_seconds": 0.015452378000190947,
+              "driver_compile_seconds": 0.3757953050007927,
+              "link_seconds": 0.10805638099554926,
+              "native_seconds": 0.0021859210028196685,
               "stdout_sha256": "ffbe1e2fa7cb7de56fc79088b62b047381cdf028cb91f938ee7aa6e78212a5ad"
             },
             "fsi38": {
               "exit": 0,
-              "driver_compile_seconds": 1.0380182299995795,
-              "link_seconds": 0.1161955069983378,
-              "native_seconds": 0.002451265994750429,
+              "driver_compile_seconds": 0.883808931997919,
+              "link_seconds": 0.09144010699674254,
+              "native_seconds": 0.0023240349983097985,
               "stdout_sha256": "3ffa183718860163f31dc9518b0f646f1124c7038468cf1c17bf81c801559488"
             },
             "fsi25": {
               "exit": 0,
-              "driver_compile_seconds": 0.7920589490022394,
-              "link_seconds": 0.10979535599472001,
-              "native_seconds": 0.0028303450017119758,
+              "driver_compile_seconds": 0.6357058189969393,
+              "link_seconds": 0.10366015800536843,
+              "native_seconds": 0.00279983899963554,
               "stdout_sha256": "a069b65a52f725dd822e4d85bf1d32fa2e20bb1f48e6800efef53d3bf6246f7b"
             },
             "incumbent_runtime": {
               "exit": 0,
-              "driver_compile_seconds": 15.583819454994227,
-              "link_seconds": 0.10260510200168937,
-              "native_seconds": 0.022015183996700216,
+              "driver_compile_seconds": 13.915402491002169,
+              "link_seconds": 0.11871466699813027,
+              "native_seconds": 0.024043132994847838,
               "stdout_sha256": "fa256259a129b4d1ea524f7390ed331bc01e065bf50a0b0aa059f26b09afd779"
             },
             "incumbent_macropore": {
               "exit": 0,
-              "driver_compile_seconds": 3.032253674005915,
-              "link_seconds": 0.10815731900220271,
-              "native_seconds": 0.016010076004022267,
+              "driver_compile_seconds": 1.952353790999041,
+              "link_seconds": 0.14429541199933738,
+              "native_seconds": 0.0036246809977455996,
               "stdout_sha256": "70bb8ffad72bc2294b03b2cbfbf215ffdd0fa9dd89fd5a85aa940141344dce41"
             }
           }
@@ -1050,6 +1073,10 @@
     "default_projection": "tests/fpm/hyd_default_projection.json: complete prior production text for all3 changed src files recovered exactly when new analytical family absent/POWER false. Numerical inheritance additionally needs incumbent actual evidence and fresh selected owner gates.",
     "selection_authority": "docs/development/workstream-execution-protocol.md Change-impact selection20261015; no full F-CI merely for import changes; all changed physical/certificate/state contracts and relevant incumbent receiving owners selected.",
     "postimages": {
+      ".github/workflows/f-mig431-int12-c.yml": {
+        "status": "M",
+        "blob": "4b14a2ecd05d63eccfb6e86dfc2e370bff4c3b21"
+      },
       ".github/workflows/swap431-hydraulic-coverage.yml": {
         "status": "A",
         "blob": "ff63d1b1c1878373be650985ada8f633d9b23e53"
@@ -1060,7 +1087,7 @@
       },
       "src/solver/mod_b110_default_mvg_provider.f90": {
         "status": "M",
-        "blob": "91b89f0b9e9af5bc84d2065ee7daa43283f86cb7"
+        "blob": "226dec2740dd3cf2eb677928f54f433086354c3f"
       },
       "src/solver/mod_reference_richards_temporal_indicator.f90": {
         "status": "M",
@@ -1068,11 +1095,15 @@
       },
       "tests/fpm/hyd_default_projection.json": {
         "status": "A",
-        "blob": "5faed1458f54831cecfac23b164e11adacd0a95d"
+        "blob": "00134e29c66a8972beb651a641c86ee96807ba21"
       },
       "tests/fpm/hyd_literal_stubs.f90": {
         "status": "A",
         "blob": "da6f390226dbd89cbfde365cba1ffcc75de3293e"
+      },
+      "tests/fpm/run_f_mig431_int12_c.sh": {
+        "status": "M",
+        "blob": "08c9078d084e598b029efc48ac97a77135a54b55"
       },
       "tests/fpm/run_ppa_wu05a8_real_richards.sh": {
         "status": "M",
@@ -1084,7 +1115,7 @@
       },
       "tests/fpm/run_swap431_hyd_certificate.py": {
         "status": "A",
-        "blob": "a162d5738ee6893ff4fcb25a22f950cabf9f36e8"
+        "blob": "8cefe22772e519716178ac4fd209b4c11f78cc91"
       },
       "tests/fpm/run_swap431_hyd_literal.py": {
         "status": "A",
@@ -1100,7 +1131,7 @@
       },
       "tests/fpm/test_swap431_hyd_analytical.f90": {
         "status": "A",
-        "blob": "1d921673d5ff53897317f84d55c490a012ae790d"
+        "blob": "fed6a525d51ac48381a6b5e5b9fd68a6f8d9fe7d"
       },
       "tests/fpm/test_swap431_hyd_certificate.f90": {
         "status": "A",
@@ -1120,7 +1151,7 @@
       },
       "tests/fpm/verify_hyd_successor.py": {
         "status": "A",
-        "blob": "60560c1e8bac8af0b94b8a8d4d3dba8e4baf0f1a"
+        "blob": "400dadda3592abd3ba3523e246641cece5610428"
       },
       "tests/fpm/verify_int12c_successor.py": {
         "status": "M",
@@ -1151,6 +1182,117 @@
       "documentation_source": "PASS",
       "strict_MkDocs": "PASS16.03seconds",
       "whitespace": "PASS"
+    },
+    "int12c_owner_guard_reconciliation": {
+      "first_run": 38871186000,
+      "failure": "Historical INT12-C source list rejected three exact declared HYD production files before native execution. Retained failure, not a physics result.",
+      "fix": "Require exact full HYD scientific-surface proof before excluding only those3 files from original INT12-C production-scope assertion. All original scientific assertions remain unchanged.",
+      "selection": "Small original component gate plus source-bound unchanged full application evidence and fresh HYD default/runtime preservation. No unnecessary238-provider rerun for default-OFF projection.",
+      "scientific_surface": "All production source bytes identical to qualified stable candidateaecd8caeb89606da3e9434eeba84f8556f239192. Only old scope guard/workflow routing and metadata changed."
+    },
+    "previous_full_profile_evidence": {
+      "path": "integration/audits/evidence/MC_HYD01_FULL_PROFILE_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "b2bf9275ab1b906d6bb44f5a51b488bde3bc70cd55e16ed9d85ca27789f89630",
+      "decoded_bytes": 30456,
+      "members": 58,
+      "member_sha256": {
+        "README.txt": "c77de366dc86f003b0bdc3246b2d66cd3951f418f776b804c9e81408d3f2217b",
+        "literal/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stdout": "5940a17992bbb67103675a870d9782513bbbeee4ca5d189c5ea102424d4cb71c",
+        "literal/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stdout": "5940a17992bbb67103675a870d9782513bbbeee4ca5d189c5ea102424d4cb71c",
+        "literal/WC_K_models_04_11.f90": "d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126",
+        "literal/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "literal/readswap.f90": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c",
+        "literal/result.json": "6d9e66d51e6ca9ac1845d838cf28e339ab58404943351feb84947af420aef40b",
+        "runtime/O0-analytical-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-analytical.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-analytical.stdout": "82b2f6f40c8bdc52a131823e67586486893c4016d8466c1e51152feb62cff172",
+        "runtime/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-direct_retention-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-direct_retention.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-direct_retention.stdout": "ffbe1e2fa7cb7de56fc79088b62b047381cdf028cb91f938ee7aa6e78212a5ad",
+        "runtime/O0-fsi25-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-fsi25.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-fsi25.stdout": "a069b65a52f725dd822e4d85bf1d32fa2e20bb1f48e6800efef53d3bf6246f7b",
+        "runtime/O0-fsi38-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-fsi38.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-fsi38.stdout": "3ffa183718860163f31dc9518b0f646f1124c7038468cf1c17bf81c801559488",
+        "runtime/O0-incumbent_macropore-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-incumbent_macropore.stderr": "765e784edba8b07c432e8e44161f087f420fec5291928243f65140f0a1df77a8",
+        "runtime/O0-incumbent_macropore.stdout": "70bb8ffad72bc2294b03b2cbfbf215ffdd0fa9dd89fd5a85aa940141344dce41",
+        "runtime/O0-incumbent_runtime-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-incumbent_runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-incumbent_runtime.stdout": "fa256259a129b4d1ea524f7390ed331bc01e065bf50a0b0aa059f26b09afd779",
+        "runtime/O0-runtime-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O0-runtime.stdout": "f7eeaa247e3bdb81d1452b555bc618ef79470351e073527386baa537ebdd590e",
+        "runtime/O2-analytical-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-analytical.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-analytical.stdout": "82b2f6f40c8bdc52a131823e67586486893c4016d8466c1e51152feb62cff172",
+        "runtime/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-direct_retention-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-direct_retention.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-direct_retention.stdout": "ffbe1e2fa7cb7de56fc79088b62b047381cdf028cb91f938ee7aa6e78212a5ad",
+        "runtime/O2-fsi25-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-fsi25.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-fsi25.stdout": "a069b65a52f725dd822e4d85bf1d32fa2e20bb1f48e6800efef53d3bf6246f7b",
+        "runtime/O2-fsi38-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-fsi38.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-fsi38.stdout": "3ffa183718860163f31dc9518b0f646f1124c7038468cf1c17bf81c801559488",
+        "runtime/O2-incumbent_macropore-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-incumbent_macropore.stderr": "765e784edba8b07c432e8e44161f087f420fec5291928243f65140f0a1df77a8",
+        "runtime/O2-incumbent_macropore.stdout": "70bb8ffad72bc2294b03b2cbfbf215ffdd0fa9dd89fd5a85aa940141344dce41",
+        "runtime/O2-incumbent_runtime-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-incumbent_runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-incumbent_runtime.stdout": "fa256259a129b4d1ea524f7390ed331bc01e065bf50a0b0aa059f26b09afd779",
+        "runtime/O2-runtime-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "runtime/O2-runtime.stdout": "f7eeaa247e3bdb81d1452b555bc618ef79470351e073527386baa537ebdd590e",
+        "runtime/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "runtime/manifest.json": "0290fb65343db895457d780a48bf80bd6b89bbf7b08593adbca8ab4b41c00395",
+        "runtime/result.json": "19bae7a1e5e2e6c814fbbfe3edd1aa477aa700bc86620a89a5fa3ea45ed8e079"
+      }
+    },
+    "point_input_reconciliation": {
+      "reason": "Strict original INT12-C component compile found unused water_content argument in new B111 point method; no flag relaxed.",
+      "fix": "Reject nonfinite pressure_head/water_content before point evaluation; actual qNaN point tests pass.",
+      "valid_native_preservation": "Every7 driver stdout at both optimizations byte-equals preceding full-profile evidence.",
+      "compiler_interface_reuse": "Exactly one provider object rebuilt per optimization; compiler-produced .mod byte identity verified before reusing consumers, every selected driver freshly compiled/linked/executed.",
+      "component": "Original INT12-C strict native O0/O2 PASS, exact output SHA98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717; analytical/POWER components PASS."
+    },
+    "qualification_failures_classified": [
+      {
+        "run": 38871186000,
+        "scope": "First INT12-C source-only guard rejects3 declared files, no native test ran. Local reconciled guard and original component now PASS."
+      },
+      {
+        "run": 38871185510,
+        "scope": "Old F-KT candidate backend blob b218ac6 already differs from canonical219 preimage7e1b034. Prior candidate-specific799 source whitelist is not current successor authority. Not claimed PASS."
+      },
+      {
+        "run": 38871185541,
+        "scope": "TEMPORAL11 original one-file candidate scope rejects current three-file HYD change; actual direct-retention oracle is freshly executed in declared receiving closure. Not claimed old workflow PASS."
+      },
+      {
+        "run": 38871185966,
+        "scope": "F-SI39 two-file original candidate scope guard rejects third temporal source; unchanged default/KSATEXM equations are covered by exact default projection. Not claimed FSI39 workflow PASS."
+      }
+    ],
+    "first_stable_ci": {
+      "head": "aecd8caeb89606da3e9434eeba84f8556f239192",
+      "terminal_success_runs": {
+        "HYD_OWNER": 38871185990,
+        "F_CI_SELECTION_AND_MODULAR_FEEDBACK": 38871185936,
+        "WU01_BOOTSTRAP": 38871186067,
+        "BLACK": 38871186076,
+        "BOESTEN": 38871185968,
+        "DOCS": 38871185915
+      },
+      "terminal_INT12C_guard_failure": 38871186000,
+      "scope": "First qualified science postimage; subsequent finite-input point check and old INT12C scope guard were repaired and source/native/negative-control checks passed locally. Final exact-source CI follows."
     }
   }
 }

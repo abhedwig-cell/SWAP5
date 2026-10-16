@@ -67,6 +67,8 @@ def verify_qualification():
  for p,h in literal['source_sha256'].items():
   if p!='@WC':check(sha((ROOT/p).read_bytes())==h,'HYD stale literal input '+p)
  check(literal['source_sha256']['@WC']=='d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126','HYD literal WC identity')
+ check(b'INT12C_OUTPUT_SHA256=98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717' in d['component/int12c.log'],'HYD incumbent component numeric drift')
+ for p,h in json.loads(d['component/inputs.json']).items():check(sha((ROOT/p).read_bytes())==h,'HYD stale component input '+p)
  return {**s,'qualified':True,'preservation':'EXACT_DEFAULT_OFF_PROJECTION_AND_FRESH_DECLARED_OWNER_O0_O2',
          'full_fci':'NOT_CLAIMED_OWNER_PREREQUISITE_ONLY','highest':'NOT_SELECTED_IMPACT'}
 if __name__=='__main__':print(json.dumps(verify_source() if '--source-only' in sys.argv else verify_qualification(),indent=2))
