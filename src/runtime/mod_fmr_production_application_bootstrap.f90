@@ -1050,7 +1050,7 @@ contains
             type(crop_root_depth_rate_state_t)::depth
             call physical%snapshot_root_depth(depth,available)
             if(.not.available) return
-            if(self%weather_configuration%file_weather_adaptive_root_profile)then
+            if(self%weather_configuration%file_weather_adaptive_root_profile.and.crop_owner%crop_emerged)then
               block
                 type(adaptive_root_profile_state_t)::profile
                 integer::rooted_nodes,i
@@ -1246,10 +1246,15 @@ contains
       if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
     end if
     lifecycle%emerged=initial_owner%crop_emerged
-    if(self%weather_configuration%file_weather_adaptive_root_profile)return
     if(self%weather_configuration%file_weather_root_depth_mode==2)then
+      if(self%weather_configuration%file_weather_adaptive_root_profile)then
+      call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle, &
+        enable_potential_shadow=.true.,root_depth_parameters=self%weather_configuration%file_weather_swrd2_parameters, &
+        root_profile_configuration=self%weather_configuration%file_weather_root_profile)
+      else
       call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle, &
         enable_potential_shadow=.true.,root_depth_parameters=self%weather_configuration%file_weather_swrd2_parameters)
+      end if
     else
       call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle, &
         enable_potential_shadow=self%weather_configuration%file_weather_root_depth_mode==3)

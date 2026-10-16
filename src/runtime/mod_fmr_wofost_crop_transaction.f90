@@ -380,14 +380,16 @@ contains
     if(present(root_profile_configuration))then
       status=FMR_WOF38_INVALID_PARAMETERS
       if(.not.present(root_depth_parameters))return
-      if(.not.root_profile_configuration%ready().or..not.owner%crop_emerged)return
+      if(.not.root_profile_configuration%ready())return
       if(root_depth_parameters%initial_root_depth_cm<=0.0_real64)return
       if(root_profile_configuration%maximum_root_depth_cm/=root_depth_parameters%maximum_root_depth_cm)return
-      allocate(state%root_profile)
-      call initialize_adaptive_root_profile_state(root_profile_configuration%initial_density, &
-        root_profile_configuration%zbot_cm,root_profile_configuration%maximum_root_depth_cm, &
-        state%root_depth%actual_root_depth_cm,owner%biomass%root_biomass,state%root_profile,shadow_status)
-      if(shadow_status/=ADAPTIVE_ROOT_PROFILE_OK)return
+      if(owner%crop_emerged)then
+        allocate(state%root_profile)
+        call initialize_adaptive_root_profile_state(root_profile_configuration%initial_density, &
+          root_profile_configuration%zbot_cm,root_profile_configuration%maximum_root_depth_cm, &
+          state%root_depth%actual_root_depth_cm,owner%biomass%root_biomass,state%root_profile,shadow_status)
+        if(shadow_status/=ADAPTIVE_ROOT_PROFILE_OK)return
+      end if
     end if
     state%owner = owner
     if (present(lifecycle_initial)) then
@@ -917,12 +919,9 @@ contains
         return
       end if
 
-      if(allocated(self%root_profile_configuration).neqv.allocated(typed_state%root_profile))return
-      if(allocated(self%root_profile_configuration))then
-        ! Bounded active crop envelope; no implicit emergence/harvest reset.
-        if(self%event_forcing%emergence_requested.or.self%event_forcing%lifecycle_requested.or. &
-          self%event_forcing%active_lifecycle_requested)return
-        if(.not.typed_state%owner%crop_emerged)return
+      if(allocated(typed_state%root_profile).and..not.allocated(self%root_profile_configuration))return
+      if(allocated(self%root_profile_configuration).and.typed_state%owner%crop_emerged)then
+        if(.not.allocated(typed_state%root_profile))return
         call export_wofost_crop_event_identity_persistence(self%event_forcing%event_identity,layer_receipt,layers_ok)
         if(.not.layers_ok)return
         if(.not.allocated(layer_receipt%potential_root_sink_integral))return
@@ -1051,7 +1050,12 @@ contains
           if(crop_status/=CROP_ROOT_RATE_OK.or..not.depth_diagnostics%candidate_built) return
         end if
       end if
-      if(allocated(self%root_profile_configuration))then
+      if(allocated(self%root_profile_configuration).and.self%event_forcing%emergence_requested)then
+        call initialize_adaptive_root_profile_state(self%root_profile_configuration%initial_density, &
+          self%root_profile_configuration%zbot_cm,self%root_profile_configuration%maximum_root_depth_cm, &
+          candidate_depth%actual_root_depth_cm,candidate_owner%biomass%root_biomass,candidate_profile,crop_status)
+        if(crop_status/=ADAPTIVE_ROOT_PROFILE_OK)return
+      else if(allocated(self%root_profile_configuration).and.typed_state%owner%crop_emerged)then
         new_nodes=self%root_profile_configuration%rooted_nodes(candidate_depth%actual_root_depth_cm)
         profile_forcing%old_rooted_nodes=old_nodes;profile_forcing%rooted_nodes=new_nodes
         profile_forcing%old_root_depth_cm=typed_state%root_depth%actual_root_depth_cm
@@ -1072,7 +1076,9 @@ contains
       end if
       ! All optional depth work succeeded before publishing any crop field.
       typed_state%owner = candidate_owner
-      if(allocated(self%root_profile_configuration))typed_state%root_profile=candidate_profile
+      if(allocated(self%root_profile_configuration))then
+        if(candidate_owner%crop_emerged)typed_state%root_profile=candidate_profile
+      end if
       if(allocated(self%root_depth_parameters)) typed_state%root_depth=candidate_depth
       if (self%potential_shadow_enabled) then
         typed_state%potential_shadow = potential_result%candidate_shadow
