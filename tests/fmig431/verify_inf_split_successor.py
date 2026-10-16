@@ -118,6 +118,12 @@ def verify_qualification():
  load_verified();old=incumbent(False)
  return {**old,'incumbent':old,'inf_split_successor':True,'qualified':True,'drainage_ledger_rows':['SW431-DRAIN-DIV-SIGNED','SW431-DRAIN-DIV-MULTI','SW431-DRAIN-INF-SPLIT'],'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+ if (ROOT/'tests/mc-irr01/verify_availability_successor.py').is_file():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_availability_successor as successor
+  result=successor.verify_qualification()
+  if sys.argv[1:]==['--self-test']:successor.run_original_inf_controls()
+  elif sys.argv[1:]:raise SystemExit('unknown availability successor owner option')
+  print(json.dumps(result,indent=2));return
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args();s,r=load_verified()
  if a.self_test:
   controls=[]

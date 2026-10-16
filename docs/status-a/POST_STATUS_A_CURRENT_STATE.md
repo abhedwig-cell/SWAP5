@@ -659,6 +659,6 @@ and no full moving F-CI, highest low-air or independent RossFast rerun is claime
 
 The existing SW431-IRR-TCS6 closure is traced by the [weekly irrigation and joint continuation contract](../science/MC_IRR01_TCS6_CONTINUATION_20261016.md) and `integration/audits/MC_IRR01_STATUS.json`, field `tcs6_completion_20261016`. The recovery record distinguishes executed science, qualification and canonical admission. This successor uses accepted actual roots and material moisture limits, the existing weekly event owner and the existing native restart adapter. It does not change the frozen Status-A denominator or promote other irrigation profiles.
 
-## MC-IRR01 external availability continuation candidate, 16 October 2026
+## MC-IRR01 external availability continuation, 16 October 2026
 
-[External availability and joint continuation](../science/MC_IRR01_AVAIL_CONTINUATION_20261016.md) records the existing AVAIL full-capability closure contract and current qualification. This candidate is not canonically admitted until the MC-IRR01 recovery admission receipt records its exact merge. Existing TCS6 admission remains unchanged.
+[External availability and joint continuation](../science/MC_IRR01_AVAIL_CONTINUATION_20261016.md) records the existing AVAIL full-capability closure contract and qualification. The MC-IRR01 recovery admission receipt identifies the exact qualified source, canonical merge and current admission status. Existing TCS6 admission remains unchanged.

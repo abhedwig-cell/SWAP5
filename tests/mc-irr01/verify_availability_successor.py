@@ -20,7 +20,7 @@ def verify_source(git_reader=None):
  for p,v in r['postimages'].items():check(g('rev-parse','HEAD:'+p)==v['blob']==blob((ROOT/p).read_bytes()),'AVAIL postimage '+p)
  check(g('rev-parse','HEAD:src')==r['source_tree'],'AVAIL source tree')
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'AVAIL reference drift')
- old=r['incumbent_result'];return {**old,'baseline':BASE,'source_tree':r['source_tree'],'current_source_tree':r['source_tree'],'availability_successor':True,'tcs6_successor':True,'qualified':False,'admitted':False,'full_capability':False}
+ old=r['incumbent_result'];return {**old,'baseline':BASE,'source_tree':r['source_tree'],'current_source_tree':r['source_tree'],'availability_successor':True,'tcs6_successor':True,'scope':r['scope'],'qualified':False,'admitted':False,'full_capability':False}
 def evidence():
  r=record()['science_archive'];raw=base64.b64decode((ROOT/r['path']).read_bytes());check(sha(raw)==r['decoded_sha256']and len(raw)==r['decoded_bytes'],'AVAIL archive drift')
  with tarfile.open(fileobj=io.BytesIO(raw))as t:
@@ -93,6 +93,25 @@ def validate_science(data):
  direct=json.loads(data['direct/RESULTS.json']);check(direct['status']=='PASS'and direct['vectors_per_optimization']==404 and len(direct['rows'])==4,'AVAIL literal unfinished')
  for path,h in direct['inputs'].items():check(sha((ROOT/path).read_bytes())==h,'stale AVAIL direct input')
  check(sha(data['direct/literal.f90'])==direct['generated']['literal.f90'],'AVAIL literal changed');raw_events(data,'direct',direct['events'])
+ check({(x['opt'],x['name'])for x in direct['rows']}=={(o,n)for o in(0,2)for n in['literal','nonfinite']},'AVAIL literal optimization coverage')
+ for row in direct['rows']:
+  events=[e for e in direct['events']if Path(e['command'][0]).name==row['name']and '/o'+str(row['opt'])+'/'in e['command'][0]]
+  check(row['returncode']==0 and len(events)==1 and events[0]['stdout_sha256']==row['stdout_sha256'],'AVAIL direct unexecuted row')
+ # Recover the exact literal-source program expression without executing its
+ # build runner. Only constants, concatenation and the authenticated body exist.
+ import ast
+ with tarfile.open(fileobj=io.BytesIO(base64.b64decode((ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64').read_bytes())))as archive:
+  raw=archive.extractfile(next(m for m in archive.getmembers()if m.name.endswith('SWAP/irrigation.f90'))).read()
+ check(sha(raw)=='65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1','AVAIL original authority')
+ body='\n'.join(raw.decode().split('      case(4)')[1].split('      case(9)')[0].splitlines()[1:])
+ tree=ast.parse((ROOT/'tests/mc-irr01/run_availability_contract.py').read_text())
+ expression=next(n.value for n in ast.walk(tree)if isinstance(n,ast.Assign)and any(isinstance(x,ast.Name)and x.id=='code'for x in n.targets))
+ def literal(n):
+  if isinstance(n,ast.Constant)and isinstance(n.value,str):return n.value
+  if isinstance(n,ast.Name)and n.id=='body':return body
+  if isinstance(n,ast.BinOp)and isinstance(n.op,ast.Add):return literal(n.left)+literal(n.right)
+  raise ValueError('unregistered AVAIL oracle expression')
+ check(literal(expression).encode()==data['direct/literal.f90'],'unexecuted AVAIL literal generator')
  oldproof=json.loads(data['review/incumbent.json']);check(oldproof==r['incumbent_result']and sha(data['review/incumbent.json'])==r['incumbent_proof_sha256']and oldproof['qualified']and oldproof['full_capability']and oldproof['current_source_tree']==git('rev-parse',BASE+':src'),'unqualified AVAIL predecessor')
  check(b'TCS6_ADMISSION_NEGATIVES=30|PASS'in data['review/original-tcs6-controls.stdout'],'missing original TCS6 controls')
  check(b'INF_SPLIT_EVIDENCE_CORRUPTION_CONTROLS=8'in data['review/original-inf-controls.stdout'],'missing original INF controls')
@@ -111,6 +130,14 @@ def decoder(data,p,opt,name,phase,count):
   matches=[e for e in p['events']if Path(e['command'][0]).name=='test-'+name and '/o'+str(opt)+'/'in e['command'][0]and e['command'][-3:]==[mode,phase,e['command'][-1]]and Path(e['command'][-1]).name==row['input']]
   check(len(matches)==1 and matches[0]['returncode']==0 and matches[0]['stdout_sha256']==row['stdout_sha256'],'AVAIL decoder not executed')
  return len(rows)
+def run_original_inf_controls():
+ import os
+ root=ROOT.parent/('availability-incumbent-'+BASE[:12])
+ if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),BASE],cwd=ROOT,check=True,capture_output=True)
+ check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==BASE,'AVAIL original INF moved')
+ p=subprocess.run([sys.executable,'-B','tests/fmig431/verify_inf_split_successor.py','--self-test'],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','PYTHONPYCACHEPREFIX':str(ROOT.parent/'avail-python-cache')})
+ check(p.returncode==0 and 'INF_SPLIT_EVIDENCE_CORRUPTION_CONTROLS=8'in p.stdout,'original INF controls failed '+p.stderr[-1000:])
+ print(p.stdout,end='')
 def verify_qualification():
  result=verify_source();check(record()['phase']in['SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'],'unfinished AVAIL admission')
  science=validate_science(evidence());return {**result,'qualified':True,'full_capability':True,'science':science,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}

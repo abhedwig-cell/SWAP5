@@ -1,7 +1,7 @@
 # External irrigation availability and joint continuation
 
 Workstream: MC-IRR01. Existing capability: `SW431-IRR-AVAIL`.
-Status: implemented; complete scientific qualification and canonical admission pending.
+Status and exact scientific/canonical admission receipts are recorded in the existing recovery authority below.
 Recovery authority: `integration/audits/MC_IRR01_STATUS.json`,
 `availability_completion_20261016`. Baseline: `341ba378`.
 
@@ -55,8 +55,8 @@ Checksum-correct invalid provider, state, source and configuration records must
 reject without partial publication.
 
 The admitted 295-provider O0/O2 build supplies only source-, compiler-, artifact-
-and ABI-verified unchanged objects. The two changed executable profile guards and
+and ABI-verified unchanged objects. The two changed executable profile guards, the reconciled INF-SPLIT provider and
 all selected drivers are compiled fresh. The drainage module's inherited unused
 insertions retain the existing exact projection authority. Raw executions, donor
 identity, failed history and admission negatives are sealed before integration.
-No broad moving F-CI, RossFast, highest low-air or hosted Actions is selected.
+The current matrix requires 124 actual trajectory programs and 480 invalid native inputs across O0/O2. The unchanged TCS6 predecessor and its 30 original admission negatives, and the admitted INF-SPLIT predecessor with eight original negatives, are independently revalidated at their exact snapshots. No broad moving F-CI, RossFast, highest low-air or hosted Actions is selected.
