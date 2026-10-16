@@ -291,5 +291,34 @@
     "master_pr": 1072,
     "master_pr_retained_as_draft": true,
     "new_migration_started": false
+  },
+  "persistent_pond_successor_20261016": {
+    "stage": "CONTRACT_IMPLEMENTATION_IN_PROGRESS_NOT_ADMITTED",
+    "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "branch": "work/sol-pond-continuation-20261016",
+    "scope": "Existing surface owner successor: persistent pond mass, prescribed dry deposition, accepted per-substep pond water receipts and atomic soil-plus-pond continuation; no aquifer, evaporation/runoff, macropores or default activation.",
+    "invariants_affected": [
+      3,
+      4,
+      7,
+      9,
+      13,
+      21,
+      22,
+      25,
+      27,
+      29,
+      30
+    ],
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "next_action": "Implement bounded pond process/state; qualify literal historical mixing and source/deposition bookkeeping before accepted-water composition.",
+    "test_selection": {
+      "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
+      "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
+      "broad": "NOT_SELECTED before stable-candidate impact review; no implied full moving or highest low-air"
+    }
   }
 }
