@@ -3,7 +3,7 @@
   "workunit": "F-MIG431-INT12-C",
   "parent_workunit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
-  "state": "BOUNDED_APPLICATION_QUALIFIED_FULL_OWNER_COMPOSITION_PENDING",
+  "state": "DIRECT_APPLICATION_IMPLEMENTED_QUALIFICATION_IN_PROGRESS",
   "branch": "work/f-mig431-int12-c-vonhhbraden",
   "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
   "authorities": {
@@ -38,7 +38,7 @@
   "persistent_physical_state": [],
   "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
   "production_admission": "NO_NEW_ADMISSION_YET",
-  "qualification": "Real fixed-flux application and seven incumbent owner drivers PASS O0/O2. Direct dynamic-top/crop composition remains pending; no full INT12-C admission.",
+  "qualification": "Prior fixed-flux qualification retained at5e931cc7. Direct PMdirect/dynamic-top/active-root application implemented but new production postimage is not yet qualified.",
   "next_safe_step": "Review/admit an explicit application initialization profile for standalone base-layout Feddes roots with compensation OFF, then implement the preregistered direct PMdirect/dynamic-top/root call and qualify its real physical endpoints. Preserve current fixed-flux/owner evidence and complete gate5 before full PR admission. Reconcile existing exact-source crop/meteorology preservation successors against the new bootstrap before full admission; broader CI is not green.",
   "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
   "production_process_present": "RESTRICTED_HUPSEL_ONLY",
@@ -481,5 +481,19 @@
       ],
       "interpretation": "Dedicated scientific qualification passed. Broader successor/source-delta contracts are not updated to admit this additive bootstrap postimage. Setup/scaling runners also fail before native execution on a missing canonical provider. These failures are retained, not waived or classified as broad science PASS. Direct crop composition and proper owner-qualified preservation routing remain necessary."
     }
+  },
+  "direct_application_recovery_20261016": {
+    "base": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "previous_qualified_checkpoint": "d694ea1e5b381188e0057e13434f2e43b4e194f6",
+    "implementation_checkpoint": "d41ccd81",
+    "contract": "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md",
+    "scope": "Explicit frozen weather/canopy/crop-root geometry. Mode2, base layout, root compensation OFF, temporal certificate, unponded/no runoff. Automatic crop/calendar lifecycle excluded.",
+    "invariants": "Trial input does not mutate committed soil or source. Process receipts only on jointly accepted physical and source commit. No new equations or numerical policy. Opt-in false preserves complete incumbent routing.",
+    "test_command": "python -B tests/fpm/run_int12c_real_endpoint.py --profile application --preserve-owners --evidence-dir /tmp/unique-int12c-direct",
+    "test_status": "RUNNING O0/O2 shared focused build; wet/dry real four-endpoint profiles plus all prior application assertions and seven unchanged owner drivers.",
+    "expected_seconds": 240,
+    "compile_link_native_split": "UNKNOWN before execution",
+    "preservation": "Updated projection recovers original bootstrap, including original initialization and tile routing after removing declared opt-in-only additions. Numerical/source formulas and original drivers unchanged.",
+    "admission": "NONE until completed evidence and required preservation/CI qualification."
   }
 }

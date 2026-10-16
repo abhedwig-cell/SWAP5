@@ -110,6 +110,7 @@
     call require(abs(soil_sum+canopy_sum-weather%gross_rain_cm_d*endpoints(4))<hard_mass_gate, &
          'application combined source mass closes')
     call verify_int12c_batch_rollback(cfg,forcing(1),source,endpoints(1))
+    call verify_int12c_direct(cfg,weather,site,canopy)
     call app%close(status)
     call require(status==FMR_APP_BOOT_OK,'application owner released')
     write(*,'(A)') 'INT12C_REAL_APPLICATION_PHYSICAL_AND_COMPANION_COMMIT=PASS'
@@ -193,3 +194,125 @@
     call atomic%close(status)
     write(*,'(A)') 'INT12C_REAL_APPLICATION_TWO_COLUMN_ROLLBACK_AND_RETRY=PASS'
   end subroutine verify_int12c_batch_rollback
+
+  subroutine verify_int12c_direct(cfg,weather,site,canopy)
+    use mod_fmr_production_application_bootstrap
+    use mod_fmr_interception_source_window_binding
+    use mod_pmdirect_swetr0_process
+    use mod_root_uptake_compensation, only: ROOT_COMP_OFF
+    type(fmr_production_application_config_t),intent(in) :: cfg
+    type(pmdirect_swetr0_weather_t),intent(in) :: weather
+    type(pmdirect_swetr0_site_t),intent(in) :: site
+    type(pmdirect_swetr0_canopy_t),intent(in) :: canopy
+    type(fmr_production_application_config_t) :: rooted,badcfg
+    type(fmr_production_application_bootstrap_t) :: app,legacy,bad
+    type(fmr_pmdirect_interception_input_t) :: input(1),invalid(1)
+    type(fmr_pmdirect_interception_receipt_t),allocatable :: receipts(:)
+    type(fmr_interception_source_window_t) :: owner(1),wrong(1),restored
+    type(fmr_interception_source_window_restart_t) :: restart
+    type(fmr_serialized_column_result_t),allocatable :: results(:)
+    type(kernel_committed_state_t) :: snapshot
+    type(pmdirect_swetr0_daily_result_t) :: daily
+    type(pmdirect_swetr0_interval_result_t) :: interval
+    type(pmdirect_swetr0_diagnostics_t) :: diag
+    real(real64),allocatable :: amounts(:)
+    real(real64) :: endpoint(4),t0,dt,source,time,amount,canopy_sum,expected_root,expected_top
+    integer :: status,i,j,case_index
+    integer(int64) :: revision
+    logical :: complete
+    rooted=cfg;rooted%tiles(1)%parameters%root_extraction_active=.true.
+    rooted%tiles(1)%parameters%root_compensation%method=ROOT_COMP_OFF
+    call legacy%initialize(rooted,status)
+    call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.legacy%ready(), &
+         'incumbent plain Feddes initialization still rejected without opt-in')
+    rooted%explicit_pmdirect_interception=.true.
+    badcfg=rooted;badcfg%tiles(1)%parameters%bottom_mode=7
+    call bad%initialize(badcfg,status)
+    call require(status==FMR_APP_BOOT_PROFILE_NOT_ADMITTED.and..not.bad%ready(),'opt-in rejects unsupported bottom mode')
+    endpoint=[0.002_real64,0.004_real64,0.007_real64,0.01_real64]
+    input(1)%weather=weather;input(1)%site=site;input(1)%canopy=canopy
+    input(1)%roots%crop_emerged=.true.;input(1)%roots%rooted_nodes=numnod
+    allocate(input(1)%roots%cumulative_root_fraction(numnod+1))
+    do j=1,numnod+1
+      input(1)%roots%cumulative_root_fraction(j)=real(j-1,real64)/real(numnod,real64)
+    end do
+    input(1)%root_parameters%active_nodes=numnod
+    input(1)%root_parameters%hlim3l=-500.0_real64
+    input(1)%root_parameters%hlim3h=-300.0_real64
+    input(1)%root_parameters%hlim4=-8000.0_real64
+    input(1)%root_parameters%adcrl=0.1_real64
+    input(1)%root_parameters%adcrh=0.5_real64
+    do case_index=1,2
+      if(case_index==2) input(1)%weather%gross_rain_cm_d=0.0_real64
+      call evaluate_pmdirect_swetr0_daily(input(1)%weather,site,canopy,daily,diag)
+      call require(diag%daily_result_produced,'direct oracle daily')
+      call apply_swinter1_daily_interval(input(1)%weather,canopy,daily,interval,diag)
+      call require(diag%interval_result_produced,'direct oracle interval')
+      call require(daily%potential_transpiration_dry_cm_per_day>0.0_real64.and. &
+           daily%potential_transpiration_wet_cm_per_day>0.0_real64,'both physical canopy demands nonzero')
+      call require(abs(interval%potential_transpiration_cm_per_day- &
+           ((1.0_real64-interval%wet_canopy_fraction)*daily%potential_transpiration_dry_cm_per_day+ &
+            interval%wet_canopy_fraction*daily%potential_transpiration_wet_cm_per_day))<1e-14_real64, &
+           'direct wet/dry demand call order unchanged')
+      if(case_index==1) call require(interval%wet_canopy_fraction>0.0_real64.and. &
+           interval%wet_canopy_fraction<1.0_real64,'wet case actually blends canopy demand')
+      if(case_index==2) call require(same_bits(interval%wet_canopy_fraction,0.0_real64),'dry case selects dry demand')
+      source=interval%interception_rate_cm_per_day*endpoint(4)
+      call app%initialize(rooted,status)
+      call require(status==FMR_APP_BOOT_OK,'explicit direct crop-root application initialized')
+      call initialize_fmr_interception_source_window(column_id,10091010_int64,0.0_real64,endpoint(4),source,owner(1),status)
+      call initialize_fmr_interception_source_window(column_id,10091010_int64,0.0_real64,endpoint(4), &
+           source+0.001_real64,wrong(1),status)
+      call app%run_pmdirect_interception_interval(wrong,0.0_real64,endpoint(1),input,results,amounts,receipts,status)
+      call require(status==FMR_APP_BOOT_INTERCEPTION_REJECTED.and..not.allocated(results).and. &
+           .not.allocated(receipts).and.all(amounts==0.0_real64),'inconsistent aggregate fails before publication')
+      invalid=input;invalid(1)%roots%cumulative_root_fraction(numnod+1)=0.5_real64
+      call app%run_pmdirect_interception_interval(owner,0.0_real64,endpoint(1),invalid,results,amounts,receipts,status)
+      call require(status==FMR_APP_BOOT_INTERCEPTION_REJECTED.and..not.allocated(results).and. &
+           .not.allocated(receipts),'invalid root geometry fails before physical execution')
+      call app%copy_committed_for_crop(1,snapshot,status)
+      call require(snapshot%current_revision()==0_int64,'upstream rejection preserves actual physical revision')
+      t0=0.0_real64;canopy_sum=0.0_real64
+      do i=1,4
+        dt=endpoint(i)-t0
+        call app%run_pmdirect_interception_interval(owner,t0,endpoint(i),input,results,amounts,receipts,status)
+        if(status/=FMR_APP_BOOT_OK) write(*,'(A,3I6)') 'INT12C_DIRECT_STATUS=',case_index,i,status
+        call require(status==FMR_APP_BOOT_OK,'direct physical soil and source interval committed')
+        call require(allocated(receipts).and.allocated(results),'direct only publishes accepted receipts')
+        call require(receipts(1)%accepted.and.results(1)%completed.and.results(1)%committed,'direct actual commit')
+        call require(results(1)%solver_headcalc_calls>0,'direct actually invokes Richards HeadCalc')
+        call require(results(1)%mass%complete.and.abs(results(1)%mass%residual)<=hard_mass_gate,'direct unchanged hard mass')
+        call require(same_bits(receipts(1)%interval%net_rain_cm_per_day,interval%net_rain_cm_per_day).and. &
+             same_bits(receipts(1)%interval%potential_transpiration_cm_per_day,interval%potential_transpiration_cm_per_day), &
+             'direct actual call retains exact source rain and crop demand')
+        expected_root=receipts(1)%roots%actual_uptake_total*dt
+        call require(expected_root>0.0_real64,'direct root uptake is physically nonzero')
+        call require(abs(results(1)%mass%total_out-max(0.0_real64,receipts(1)%top%actual_top_flux_cm_per_day)*dt- &
+             expected_root)<hard_mass_gate,'actual physical mass includes accepted root extraction')
+        expected_top=interval%net_rain_cm_per_day-receipts(1)%top%bare_soil_evaporation_cm_per_day
+        call require(abs(receipts(1)%top%actual_top_flux_cm_per_day+expected_top)<1e-14_real64, &
+             'dynamic top receives net rainfall exactly once and resolves actual evaporation')
+        call require(abs(results(1)%mass%total_in-max(expected_top,0.0_real64)*dt)<hard_mass_gate, &
+             'actual physical rain input follows dynamic top')
+        canopy_sum=canopy_sum+amounts(1)
+        call fmr_interception_source_window_progress(owner(1),time,amount,complete,status)
+        call require(same_bits(time,endpoint(i)),'direct source follows actual endpoint')
+        call app%copy_committed_for_crop(1,snapshot,status);revision=snapshot%current_revision()
+        call require(revision==results(1)%final_revision,'direct physical revision is authoritative')
+        if(i==2) then
+          call export_fmr_interception_source_window_restart(owner(1),endpoint(i),restart,status)
+          call restore_fmr_interception_source_window(restart,restored,status);owner(1)=restored
+        end if
+        write(*,'(A,2I3,5(1X,ES23.15))') 'INT12C_DIRECT_ENDPOINT=',case_index,i,time,amounts(1), &
+             receipts(1)%interval%wet_canopy_fraction,expected_root,results(1)%mass%residual
+        t0=endpoint(i)
+      end do
+      call require(complete.and.same_bits(amount,source),'direct source final bitwise closure')
+      call require(abs(canopy_sum-source)<1e-14_real64,'direct exactly-once interception')
+      call app%close(status)
+      call require(status==FMR_APP_BOOT_OK,'direct application closes')
+    end do
+    write(*,'(A)') 'INT12C_DIRECT_PMDIRECT_DYNAMIC_TOP_ACTIVE_ROOT_COMMITS=PASS'
+    write(*,'(A)') 'INT12C_DIRECT_WET_DRY_DEMAND_AND_PHYSICAL_MASS=PASS'
+    write(*,'(A)') 'INT12C_DIRECT_UPSTREAM_REJECTION_AND_OPTIN_BOUNDARY=PASS'
+  end subroutine verify_int12c_direct

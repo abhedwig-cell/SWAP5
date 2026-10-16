@@ -63,3 +63,18 @@ head budget and 1e-12 cm mass gate, source exactly-once accounting, rejected
 upstream-input nonmutation and O0/O2 identity. Requalify the affected bootstrap
 and original owners on the final persisted postimage. This contract does not
 claim automatic crop lifecycle, whole-season or ponded/runoff admission.
+
+### Explicit initialization contract
+
+Implementation decision: `explicit_pmdirect_interception` defaults false in both
+configuration and live application. True is eligible only for single-worker
+mode2, base optional/solute-free state with temporal-history certificate, no
+file-weather/calendar, and no thermal, frost, snow, macropores, drainage response,
+salinity, hysteresis, elasticity, direct retention, MICRO, Bartholomeus or root
+compensation. Existing ordinary root rejection is unchanged when false. The new
+flag enables only base-layout externally frozen Feddes inputs; it does not
+select a solver or alter an accuracy budget. Root parameters are validated by
+the existing process. The direct call validates its source aggregate, derives
+all PMdirect bindings from frozen weather/canopy, uses current committed soil
+for top/root providers, and passes only eligible flux-regime forcing to the
+atomic receiver. Process receipts are published only with physical acceptance.
