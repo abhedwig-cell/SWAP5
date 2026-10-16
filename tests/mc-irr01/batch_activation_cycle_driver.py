@@ -17,6 +17,7 @@ def rooted(root,target,criterion,dcs=1,rate=0.,kind='annual'):
  assert s.count(anchor)==2
  start='[1,10]'if kind=='winter'else f'[{20+first if first<90 else 1},1]'
  end=f'[{20+last if last>0 else 31},1]'
+ assert end!='[1,2]' # The native rejection witness must actually change config.
  extra=f'''
     tc%file_weather_irrigation_depth%fixed_interval_enabled=.true.
     tc%file_weather_irrigation_depth%fixed_interval_days=3
@@ -45,7 +46,7 @@ def rooted(root,target,criterion,dcs=1,rate=0.,kind='annual'):
  # Only an eligible selection consumes external allocation. Off-window invalid
  # allocations are irrelevant and must not be mistaken for failed trials.
  s=s.replace('          if(q==0.and.wo%crop_emerged)then','          if(q==0.and.wo%crop_emerged.and.literal_day_window(d))then',1)
- replace("if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_field_capacity_head_cm=-300._real64", "if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_endirr=[30,1]\n      if(trim(continuation_mode)=='native-reject-schedule')tc%file_weather_irrigation_schedule_enabled=.false.\n      if(trim(continuation_mode)=='native-reject-calendar')call initialize_crop_calendar( &\n        [real(swap_weather_calendar_day(1997,1,1),real64)],[real(swap_weather_calendar_day(1999,12,31),real64)], &\n        tc%file_weather_irrigation_crop_calendar,st)")
+ replace("if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_field_capacity_head_cm=-300._real64", "if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_endirr=[1,2]\n      if(trim(continuation_mode)=='native-reject-schedule')tc%file_weather_irrigation_schedule_enabled=.false.\n      if(trim(continuation_mode)=='native-reject-calendar')call initialize_crop_calendar( &\n        [real(swap_weather_calendar_day(1997,1,1),real64)],[real(swap_weather_calendar_day(1999,12,31),real64)], &\n        tc%file_weather_irrigation_crop_calendar,st)")
  # An in-flight witness in season4: day8 is an actual gift. Default weekly and
  # AVAIL representatives retain their own original checkpoint generation.
  replace("merge(29,28,index(trim(continuation_mode),'active')>0)", '28')

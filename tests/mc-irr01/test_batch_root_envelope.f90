@@ -1,15 +1,16 @@
 program root_envelope
  use iso_fortran_env,only:real64
+ use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use mod_scheduled_irrigation_management_policy
  implicit none
- type(irrigation_management_policy_parameters_t)::p
+ type(irrigation_management_policy_parameters_t)::p,good
  type(irrigation_management_policy_state_t)::s,c
  type(irrigation_management_policy_request_t)::r
  type(irrigation_management_policy_result_t)::z
  real(real64)::rawtab(14),tawtab(14),dwatab(14),ditab(14),v,depth,threshold,edge,scale,x
  real(real64),parameter::xs(11)=[-.1_real64,0._real64,.1_real64,.333_real64,.5_real64, &
    .75_real64,1._real64,1.333_real64,1.9_real64,2._real64,2.1_real64]
- integer::n,criterion,i,j,st,irrigevent,side,raincase,fail,cases
+ integer::n,criterion,i,j,st,irrigevent,side,raincase,fail,cases,invalid
  real(real64),external::afgen
  fail=0;cases=0
  do n=1,7
@@ -63,6 +64,25 @@ program root_envelope
  end do
  end do
  end do
+ good=p;good%timing_criterion=2
+ do invalid=1,10
+ p=good
+ select case(invalid)
+ case(1);p%tcs2_knot_count=0
+ case(2);p%tcs2_knot_count=8
+ case(3);p%tcs2_dvs(2)=p%tcs2_dvs(1)
+ case(4);p%tcs2_dvs(1)=ieee_value(0._real64,ieee_quiet_nan)
+ case(5);p%tcs2_fraction(1)=ieee_value(0._real64,ieee_quiet_nan)
+ case(6);p%tcs2_fraction(1)=-1
+ case(7);p%tcs2_fraction(1)=2
+ case(8);p%timing_criterion=4;p%tcs4_depletion_mm(1)=501
+ case(9);p%dcs1_adjustment_mm(1)=-101
+ case(10);p%rainfall_threshold_cm=ieee_value(0._real64,ieee_quiet_nan)
+ end select
+ call evaluate_irrigation_management_policy(p,s,r,c,z,st)
+ if(st/=IRR_MGMT_INVALID_PARAMETERS)error stop 'invalid root policy not rejected'
+ end do
+ print '(a)','BATCH_ROOT_INVALID_DOMAINS=10|PASS'
  print '(a,i0,a,i0)','BATCH_ROOT_ENVELOPE_CASES=',cases,'|FAILURES=',fail
  if(fail/=0)error stop 2
  print '(a)','BATCH_ROOT_LITERAL_AFGEN_TCS234_DCS1_FULL_DOMAIN=PASS'

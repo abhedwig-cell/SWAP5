@@ -251,8 +251,10 @@ contains
       if (.not. valid_table(parameters%dcs1_dvs,parameters%dcs1_adjustment_mm,parameters%dcs1_knot_count)) return
       if (any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)<-100.0_real64) .or. &
           any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)>100.0_real64)) return
-      if (.not. ieee_is_finite(parameters%rainfall_threshold_cm) .or. parameters%rainfall_threshold_cm<0.0_real64 .or. &
-          parameters%rainfall_threshold_cm>1000.0_real64) return
+      ! Fortran logical evaluation need not short circuit. Reject NaN before
+      ! ordered comparisons under the retained invalid-operation trap.
+      if (.not. ieee_is_finite(parameters%rainfall_threshold_cm)) return
+      if (parameters%rainfall_threshold_cm<0.0_real64 .or. parameters%rainfall_threshold_cm>1000.0_real64) return
     case(2)
       if (.not. valid_table(parameters%dcs2_dvs,parameters%dcs2_depth_cm,parameters%dcs2_knot_count)) return
       if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<0.0_real64)) return

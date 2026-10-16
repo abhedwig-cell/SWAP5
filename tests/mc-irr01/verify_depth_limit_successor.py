@@ -12,6 +12,9 @@ def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['limit_completion_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_batch_activation_successor.py').is_file():
+  from verify_batch_activation_successor import verify_source as successor
+  return successor(git_reader)
  g=git if git_reader is None else git_reader;r=record();check(r['admission_baseline']==BASE,'LIMIT baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines();check(not[x for x in dirty if not re.fullmatch(r'\?\? .*/__pycache__/[^/]+\.pyc',x)],'dirty LIMIT science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
@@ -128,6 +131,9 @@ def validate_science(data):
   check(''.join(lines).encode()==subprocess.check_output(['git','show',BASE+':'+q],cwd=ROOT),'LIMIT original body projection')
  return dict(trajectories=160,decoder_negatives=560,literal_vectors_per_optimization=934,continuous_opaque_fresh_native_exact=True,TCS6_AVAIL_native_bytes_preserved=True)
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_batch_activation_successor.py').is_file():
+  from verify_batch_activation_successor import verify_qualification as successor
+  return successor()
  result=verify_source();check(record()['phase']in ['SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'],'unfinished LIMIT admission')
  science=validate_science(evidence());return {**result,'qualified':True,'full_capability':True,'science':science,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 if __name__=='__main__':print(json.dumps(verify_source()if'--source-only'in sys.argv else verify_qualification(),indent=2))

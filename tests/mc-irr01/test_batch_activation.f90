@@ -41,11 +41,12 @@ program batch_activation
    ! Evaluate the exact source operators using the same relative subtraction
    ! for the annual branch; large ordinals can round the adjacent tolerance witness.
    if(cross)then
-    expected=(time-lo)>1.e-3_real64.and.(time-hi)<=1.e-3_real64
+    call b111_window(first_year,last_year,0._real64,time,0._real64,0._real64,lo,hi,expected)
    else
     t=time-real(swap_weather_calendar_day(year,1,1),real64)
-    expected=(t-real(swap_weather_calendar_day(1900,3,1)-swap_weather_calendar_day(1900,1,1),real64))>=-1.e-3_real64 &
-      .and.(t-real(swap_weather_calendar_day(1900,9,20)-swap_weather_calendar_day(1900,1,1),real64))<=1.e-3_real64
+    call b111_window(year,year,t,time, &
+      real(swap_weather_calendar_day(1900,3,1)-swap_weather_calendar_day(1900,1,1),real64), &
+      real(swap_weather_calendar_day(1900,9,20)-swap_weather_calendar_day(1900,1,1),real64),0._real64,0._real64,expected)
    end if
    call fmr_resolve_irrigation_management_activation(calendar,time,startirr,endirr,.true.,window,ok)
    call require(ok.and.(window.eqv.expected),'same-year/cross-year literal boundary operators')
