@@ -79,3 +79,13 @@ Fresh joint-source hydraulic owners and the two complete root-density/supply
 receiving drivers run at O0/O2, including continuous/restart identity. This
 does not admit simultaneous new hydraulic profiles with active root extraction;
 the existing explicit composition rejection remains required.
+
+### Bounded canonical admission
+
+PR #1103 merged at `f0efbf9396ad62c52658e6e8315fe762cffddfca` after all seven selected workflows passed on
+`f2e825d99006e5ab160f130f207903518e1efd4a`. The actual merge tree is identical to that qualified candidate.
+The four bounded MODEL2/3/6/POWER routes and their explicit composition
+exclusions are now canonical. The complete hydraulic/hysteresis source
+envelope remains open. Exact evidence, native preservation and CI receipts
+are recorded in `SWAP431_HYD_HYST_STATUS.json`, field
+`canonical_admission_20261016`.

@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-HYD01 / MC-HYST01",
   "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
-  "canonical_reconciled_against": "integration/f-ci-canonical@2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+  "canonical_reconciled_against": "integration/f-ci-canonical@f0efbf9396ad62c52658e6e8315fe762cffddfca",
   "branch": "work/swap431-hydraulic-coverage-20261007",
   "pull_request": 1103,
-  "checkpoint_head": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
-  "phase": "FOUR_BOUNDED_HYDRAULIC_PROFILES_LOCALLY_QUALIFIED_WAITING_STABLE_CI",
+  "checkpoint_head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+  "phase": "FOUR_BOUNDED_HYDRAULIC_PROFILES_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
   "authority": [
     "reference/swap-4.3.1/snapshots/B1.11.yml",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
@@ -135,10 +135,8 @@
     "Mass closure and replay identity are required by the serialized runtime qualification.",
     "Hysteresis cannot be represented as immutable parameters because accepted-history state affects later constitutive evaluation."
   ],
-  "blockers": [
-    "Stable exact-source owning CI and central admission receipt pending. All four bounded literal/provider/runtime/retry/discard/restart local gates PASS; broader hydraulic/hysteresis/optional compositions remain excluded."
-  ],
-  "next_action": "Observe stable-candidate existing owner/F-CI feedback workflows to terminal status, reconcile relevant failures, then admit existing PR1103 within its bounded qualified source/runtime scope and reconcile master. No new migration family.",
+  "blockers": [],
+  "next_action": "Existing PR1103 merged within its four-profile bounded qualified scope. Preserve exclusions and original failure evidence; master records bounded production without full-family promotion. No additional migration family started.",
   "recovery_20261016": {
     "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
     "canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
@@ -2402,6 +2400,265 @@
         "DOCS": 38872380903
       },
       "scope": "All seven selected workflows passed before concurrent canonical root admission. Joint source rerun follows."
-    }
+    },
+    "record_scope": "Immutable pre-merge joint qualification. Actual admission and seven terminal selected CI receipts are recorded at canonical_admission_20261016."
+  },
+  "canonical_admission_20261016": {
+    "pr": 1103,
+    "canonical_merge": "f0efbf9396ad62c52658e6e8315fe762cffddfca",
+    "qualified_head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+    "baseline": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+    "production_source_tree": "65e42240e42881096fa55be896119d9301530d30",
+    "status": "FOUR_BOUNDED_HYDRAULIC_PROFILES_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "full_capability": false,
+    "full_master_qualification_claimed": false,
+    "scope": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
+    "remaining": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+    "capabilities": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-POWER"
+    ],
+    "sources": [
+      "src/solver/mod_b110_default_mvg_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_reference_richards_temporal_indicator.f90"
+    ],
+    "records": [
+      "integration/audits/SWAP431_HYD_HYST_STATUS.json",
+      "docs/architecture/legacy-migration-hydraulic.md"
+    ],
+    "authority_at_canonical": "integration/audits/SWAP431_HYD_HYST_STATUS.json",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_HYD01_JOINT_ROOT_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "5827b15bbc23cad1e832e5a72023de1de2e57660db3fb170ac9600e73fde187a",
+      "decoded_bytes": 115132,
+      "members": 1087
+    },
+    "qualification": {
+      "literal_cases_per_optimization": 256,
+      "hydraulic_solver_drivers_per_optimization": 7,
+      "joint_root_receiving_native_programs": 8,
+      "original_int12c_numeric_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717",
+      "selected_ci": [
+        {
+          "name": "Documentation",
+          "id": 38874363832,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721714,
+              "name": "Validate and build",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886636961,
+              "name": "Deploy GitHub Pages",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886637720,
+              "name": "Verify published site",
+              "status": "completed",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU01 production application bootstrap",
+          "id": 38874363946,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721505,
+              "name": "owner-qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU04-B Boesten evaporation admission",
+          "id": 38874363932,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721344,
+              "name": "qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "SWAP431 HYD/HYST hydraulic coverage",
+          "id": 38874363836,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720786,
+              "name": "qualify",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU04-A Black evaporation admission",
+          "id": 38874363899,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720775,
+              "name": "qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "F-CI canonical qualification",
+          "id": 38874363834,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885722147,
+              "name": "selection-preflight",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886647041,
+              "name": "modular-feedback",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886648330,
+              "name": "historical-fci03-through-fci18",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648364,
+              "name": "frozen-fci19-candidate-preservation",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648625,
+              "name": "frozen-fci19-source-lineage",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648626,
+              "name": "frozen-fci37-parallel-root-uptake-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648797,
+              "name": "frozen-fci24-reference-et-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648998,
+              "name": "frozen-fci40-effective-forcing-executor-source-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649042,
+              "name": "frozen-fci36-divdra-active-runtime-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649150,
+              "name": "frozen-fci28-restart-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649395,
+              "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649435,
+              "name": "frozen-fci34-root-attribution-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649508,
+              "name": "frozen-fci27-reference-et-runtime-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649543,
+              "name": "frozen-fci30-restricted-parallel-v1-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649622,
+              "name": "frozen-fci29-ptra-ownership-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886651635,
+              "name": "frozen-fci31-reference-et-root-uptake-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886651696,
+              "name": "current-restricted-canonical-preservation",
+              "status": "completed",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "F-MIG431-INT12-C qualification",
+          "id": 38874363828,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720306,
+              "name": "qualify",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "preservation": "Byte-exact default HYD source projection; unchanged admitted five-file root production surface; original full root qualification and26 rejection controls at immutable canonical; fresh joint root receiving outputs identical to admitted originals."
+    },
+    "full_fci": "NOT_SELECTED_PROPORTIONAL_OWNER_SOURCE_PRESERVATION_AND_MODULAR_FEEDBACK",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT",
+    "post_merge_verification": "Actual merge tree equals exact qualified CI head tree; production blobs unchanged. Current source/capsule proof rerun at actual canonical merge."
   }
 }
