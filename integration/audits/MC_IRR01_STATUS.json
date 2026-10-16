@@ -4256,13 +4256,13 @@
   "tcs6_completion_20261016": {
     "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
     "branch": "work/mc-irr01-tcs6-20261016",
-    "phase": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
-    "full_capability": false,
+    "full_capability": true,
     "closure_target": "SW431-IRR-TCS6, existing MC-IRR01 capability; no new bounded capability or denominator.",
     "candidate_reconciliation": "No live TCS6 branch or PR found. PR1254 admitted material/root authority; PR1255 closed duplicate remains retained. Existing MC-IRR01 owner and recovery record reused.",
     "source_authority": {
@@ -4305,7 +4305,7 @@
       "weather/crop joint continuation/native owner contract",
       "actual root/material and accepted physics callers"
     ],
-    "next_action": "Run current owner/admission negatives, docs and final live reconciliation; then safe expected-head merge and update existing master row only.",
+    "next_action": "Safe expected-head merge of PR1262, verify merged source/full tree and record canonical/full capability receipt; then promote exactly existing master TCS6 row with parallel records preserved.",
     "test_selection": {
       "small_contract": "real source-bound TCS6 policy/application, expected <30s",
       "physical_application": "Stable native candidate actual Richards/weather/crop weekly progression, rejected trials, current/lagged opaque and native fresh processes, active event/weekly boundary and CRC-correct decoder invalid paths; expected600s including295-provider O0/O2 builds and54 trajectory native programs. Previous failure diagnosed; no inherited native PASS. No broad FCI/RossFast/highest/Actions.",
@@ -4463,8 +4463,8 @@
       },
       {
         "condition": 7,
-        "status": "PASS",
-        "evidence": "Original native tags/default+B111 request and allocation probes O0/O2; original immutable canonical annual owner verification replayed, with inherited signed-drainage/reproductive authority; recursive checkout failures retained and not science PASS. Admission negatives, docs and final canonical merge remain pending."
+        "status": "QUALIFIED_PENDING_CANONICAL_MERGE",
+        "evidence": "30 evidence/source negatives,6 unchanged original multilevel controls,3 owning current entrypoints and source/strict docs PASS. Source/evidence/application identity pinned; source-less0c715757 drainage receipt reconciled. Canonical merge and ledger receipt are the remaining final steps."
       }
     ],
     "qualification_results": {
@@ -4793,6 +4793,26 @@
         ],
         "scope": "Two pure insertions: separate diagnostics type/public declaration and multilevel procedure. All existing lines and procedures byte-exact; new symbols absent from executed295-provider caller surface. Other3 drainage routing modules absent from build. B1.12 reference patch changes no compiled production source or byte-pinned B1.11 TCS/weather oracle."
       }
-    }
+    },
+    "qualified_scientific_head": "470eb7dff66eca29ff5064259b183a74fd405717",
+    "admission_controls": {
+      "path": "integration/audits/evidence/MC_IRR01_TCS6_ADMISSION_20261016.json.gz.b64",
+      "decoded_sha256": "17852cf5d45789994c72e23f968c5a890b0405daac23693ff942c96c569113bc",
+      "decoded_bytes": 13687,
+      "negative_controls": 30,
+      "original_multilevel_controls": 6,
+      "owning_entries": [
+        "mc-irr01",
+        "int12c",
+        "crop-annual"
+      ],
+      "docs": "SOURCE_AND_STRICT_PASS"
+    },
+    "last_reconciled_canonical": "0c715757c57d302aa29cad3510ffba12c9baf3ea",
+    "infrastructure_failures_retained": [
+      "Historical recursive checkout ran out of shared scratch; no numerical PASS inferred. Original immutable annual and multilevel evidence/source checks revalidated at exact admitted snapshots.",
+      "First annual-reconciled O0 attempt censored on logging write after compile due full shared scratch; retained raw files, no native qualification reused. Final complete fresh295-provider O0/O2 build at03367772 and54+208 native matrix passed.",
+      "Generated Python cache was reported as untracked scientific input; current guard adopts the existing annual-owner exact .pyc exclusion and isolated cache prefix. All actual source/test/reference changes remain fail-closed;30 controls pass."
+    ]
   }
 }

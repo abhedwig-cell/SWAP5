@@ -77,8 +77,8 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "This signed single-level frost-OFF route and its existing ledger row are closed. Preserve the admitted algebra/state/mass/restart evidence. Remaining multilevel, separate-infiltration, DRAMET3, discharge-layer and frost rows require their own existing contracts; do not rebuild this foundation.",
-  "recovery_point": "1db58d059b646d7189413caed37b977599a47c95",
+  "next_action": "Signed and interacting multilevel rows are closed. Other drainage/frost rows retain their separate source-bound conditions; no broader route is admitted.",
+  "recovery_point": "PR1109 merge5d2518abd2b285b13f9b5f7d2177918589fd7abc; master receipt725ea58dc1ae725c1c5de475578bb9a3ad65928f. Original signed PR1099 admission preserved.",
   "blockers": [],
   "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "closure_conditions_frozen_20261016": {
@@ -309,7 +309,7 @@
     "whitespace": "PASS",
     "canonical_merge_source_identity": "PASS"
   },
-  "stage": "CANONICALLY_ADMITTED_SIGNED_SINGLE_LEVEL_FROST_OFF",
+  "stage": "CANONICALLY_ADMITTED_SIGNED_AND_INTERACTING_MULTILEVEL_FROST_OFF",
   "canonical_admission": {
     "pr": 1099,
     "actual_canonical_merge": "1db58d059b646d7189413caed37b977599a47c95",
@@ -352,7 +352,7 @@
     "existing_branch": "work/swap431-drain-signed-multilevel-r2-20261007",
     "existing_pr": 1109,
     "existing_candidate": "8a8d88fe68b3b0c424883a75d762b5ea98d76ba2",
-    "state": "QUALIFIED_SAFE_ADMISSION_PENDING",
+    "state": "CANONICALLY_ADMITTED",
     "ledger_rows": [
       "SW431-DRAIN-DIV-MULTI"
     ],
@@ -376,10 +376,7 @@
       "No new mass/state/restart owner: process partitions prescribed per-level soil-to-drain rates; runtime owns transaction and scratch cleanup. Positive removes soil water, negative adds; external exchange is algebraic signed sum.",
       "No solver or execution-policy change. No automatic full F-CI, RossFast or low-air selection."
     ],
-    "remaining": [
-      "safe canonical merge",
-      "mastercoverage receipt"
-    ],
+    "remaining": [],
     "parallel_reconciliation": {
       "head": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
       "since": "e849dbb01e4bda79dacf584fa14e9cb49ca9c764",
@@ -411,7 +408,7 @@
     "original_signed_runtime_replayed": true,
     "numerical_changes": false,
     "inherited_signed_qualified": true,
-    "claim_ceiling": "SW431-DRAIN-DIV-MULTI only after safe canonical merge; all frozen exclusions remain open.",
+    "claim_ceiling": "SW431-DRAIN-DIV-MULTI is fully closed within the declared ordinary frost-OFF partition contract; all frozen exclusions remain separate and open.",
     "test_selection": {
       "small_first": "7 sources; original/literal process/binder O0/O2 before runtime; incumbent positive/signed contracts",
       "integration": "Real serialized Richards modes2/7, mixed signed levels and zero-net cancellation; cold O0/O2, shared verified modules only inside one Session",
@@ -771,6 +768,48 @@
       "drainage_numerical_input_intersection": [],
       "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
     },
-    "latest_reconciled_canonical": "36862e06001154f5097b438ae4b851ae092423df"
+    "latest_reconciled_canonical": "36862e06001154f5097b438ae4b851ae092423df",
+    "canonical_admission": {
+      "pr": 1109,
+      "actual_canonical_merge": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+      "qualified_head": "edacd011ab73126d77c3592f1621c3c3c905c5ce",
+      "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+      "qualified_tree": "b00dc0588fa8dd3d50ca1769e8cafda02ca63c29",
+      "actual_merge_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+      "actual_first_parent": "5d45a7a4ff162be6cc8b1b9fa4f1f18feb687cfd",
+      "source_and_scientific_postimages_identical": true,
+      "late_parallel_delta": [
+        "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+        "integration/audits/MC_NUT_SOL_STATUS.json"
+      ],
+      "late_delta_disposition": "Reference admission/master metadata only; all source/test/tool/reference/scientific inputs identical. Qualified source/evidence retained.",
+      "normal_merge_api": true,
+      "protection_bypass": false,
+      "closed_capabilities": [
+        "SW431-DRAIN-DIV-MULTI"
+      ]
+    },
+    "mastercoverage_receipt": {
+      "branch": "work/swap431-master-coverage-20261006",
+      "pr": 1072,
+      "commit": "725ea58dc1ae725c1c5de475578bb9a3ad65928f",
+      "closed_rows": [
+        "SW431-DRAIN-DIV-MULTI"
+      ],
+      "counts": {
+        "capabilities": 243,
+        "ADMITTED": 97,
+        "ACTIVE_MIGRATION": 107,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3,
+        "total_unresolved": 110
+      },
+      "structural_source_integrity": "PASS",
+      "inheritance_controls": 20,
+      "docs_source_and_strict": "PASS",
+      "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
+    }
   }
 }
