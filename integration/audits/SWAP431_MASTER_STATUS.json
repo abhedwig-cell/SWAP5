@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
+  "last_reconciled_upstream": "76cb15e1adfa53a12c452887012ed1b025d11fad",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -82,7 +82,7 @@
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
     }
   },
-  "next_action": "Keep PR1072 draft: full denominator and113 source envelopes remain open. Existing PR1098 source-policy component is closed, with NFIX production binding explicitly open. Preserve PR1103 bounded hydraulic and PR1251 density/supply admissions; continue only existing qualified/dependency-ready closeouts.",
+  "next_action": "Keep PR1072 draft:109 active plus4 qualification-only full source envelopes and incomplete denominator. Preserve PR1252 bounded managed weather, PR1251 roots, PR1103 hydraulics and PR1098 source component. Existing MC-IRR01 next slice is accepted material/evolving-root DCS1/TCS2-4; independent existing MC-SOL01 persistent pond/source state and MC-NUT01 B111 policy binding are dependency-ready with separate owned edits and coordinated runtime admission.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -145,14 +145,12 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
+  "last_reconciled_head": "76cb15e1adfa53a12c452887012ed1b025d11fad",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
-    "sha": "685e46358a7013580f88a0359e7093a760cbdcfd",
-    "local_and_remote_tree": "a7a234607893fa1f79621c546bbcbbe365320d47",
-    "changed_blob_hashes_verified": 10,
-    "mechanism": "GitHub connector; nonforced expected-head update; full content tree verified against local Git. This metadata-only successor records the published content checkpoint.",
+    "predecessor": "17752beb40ac2cd26207f7b43159fc43fdeec69f",
+    "mechanism": "Expected-head GitHub update; exact full metadata tree readback required. Scientific source checkout stays historical.",
     "pending_successor": true
   },
   "mc_irr01_runtime_reconciliation_20261011": {
@@ -1608,6 +1606,182 @@
         }
       ],
       "scope": "Live PR navigation and closeout readiness only; no new scientific PASS or full admission inferred.1119 already merged;1098 now source-component merged;1117 and700 retain distinct donor scopes."
+    }
+  },
+  "latest_managed_weather_irrigation_reconciliation_20261016": {
+    "pr": 1252,
+    "canonical_merge": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+    "admission_head": "bac65cbcaeb0038772e649e2033c60faae72b39e",
+    "baseline": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
+    "production_source_tree": "3c6e7a2f98a364dd27eee16cbaf0f0a232221588",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "admitted": true,
+    "status": "BOUNDED_MANAGED_WEATHER_APPLICATION_CANONICALLY_ADMITTED",
+    "scope": "Bounded authentic full-day TCS7/8,DCS2,1/3-node SSDI,limits/frozen allocation; actual adaptive SWRD2/supply with current/lagged crop, common-prefix rollback/retry and opaque joint restart. Existing64-interval daily schedule; no arbitrary long-tail accuracy, bottom7 salt, DCS1/root timing or native weather disk claim.",
+    "remaining": "DCS1 accepted material FC/stress/wilting and evolving-root summaries with TCS2/3/4; real TCS6 week/dayfix progression; accepted bottom7 matrix-salt/SALTEXCESS composition; HYD/POWER weather hybrids, arbitrary long-window accuracy and native weather disk codec remain unadmitted.",
+    "native_programs": {
+      "physical": 22,
+      "incumbent_application_owners": 16
+    },
+    "admission_controls": 29,
+    "immutable_original_controls": {
+      "ROOT": 26,
+      "HYD": 6,
+      "NFIX": 6
+    },
+    "post_merge_verification": {
+      "actual_merge_tree_equals_qualified_tree": true,
+      "actual_source_tree_equals_qualified_source": true,
+      "full_source_capsule_proof": "PASS",
+      "proof_sha256": "b2b964c8141dbaa1343da6202befba87f6989372563a1b8499c26e351979713d",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": []
+    },
+    "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT",
+    "full_capability": false,
+    "full_master_qualification_claimed": false,
+    "evidence": {
+      "science": {
+        "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_SCIENCE_20261016.tar.xz.b64",
+        "decoded_sha256": "43f58ca2cf53262e398db9cea010c8c1b448ed44d347a8e67a31098bfdffbfaf",
+        "decoded_bytes": 271624,
+        "members": 3426
+      },
+      "admission": {
+        "path": "integration/audits/evidence/MC_IRR01_MANAGED_WEATHER_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "dd5a58b4bd56077a6cba35740d2b52098534ac360dad56c3ae99029862d494b7",
+        "decoded_bytes": 61536,
+        "members": 21
+      }
+    },
+    "authority_at_canonical": "integration/audits/MC_IRR01_STATUS.json managed_application_20261016",
+    "sources": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+      "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
+      "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90"
+    ],
+    "canonical_source_paths": [
+      "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90",
+      "src/runtime/mod_fmr_scheduled_irrigation_application.f90",
+      "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90"
+    ],
+    "canonical_merge_status": "ACTUAL_MERGE_VERIFIED_WITH_QUALIFIED_TREE",
+    "canonical_closeout": "76cb15e1adfa53a12c452887012ed1b025d11fad",
+    "master_integrity": {
+      "source_and_pinned_locator_integrity": "PASS",
+      "inheritance_controls": 20,
+      "fullcap_disposition_changes": 0,
+      "structural_absence_flags": 87,
+      "closure": "EXPECTED_FAIL_DENOMINATOR_INCOMPLETE",
+      "full_scientific_master_qualification_claimed": false,
+      "raw_source_integrity": "{\n  \"schema\": \"swap5.coverage_integrity_result.v1\",\n  \"integrity\": \"PASS\",\n  \"ledger_metadata_baseline\": \"10345ab164f6778174c2fe8d0f08233a491fa4d7\",\n  \"historical_evidence_baseline\": \"78acf56f931763d2e1d4924b3dea0742f231d2e8\",\n  \"canonical_locator_head\": \"cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff\",\n  \"source_members\": 63,\n  \"capabilities\": 243,\n  \"dispositions\": {\n    \"ADMITTED\": 94,\n    \"ACTIVE_MIGRATION\": 109,\n    \"SUPERSEDED\": 14,\n    \"REJECTED\": 2,\n    \"NOT_APPLICABLE\": 20,\n    \"QUALIFICATION_ONLY\": 4\n  },\n  \"denominator_complete\": false,\n  \"coverage_closed\": false,\n  \"claim\": \"Historical evidence/source integrity and pinned later authority locators only; not current-canonical scientific qualification, complete semantic coverage or new admission\"\n}\n",
+      "raw_inheritance_controls": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.240s\n\nOK\n",
+      "raw_require_closed": "SWAP431_COVERAGE_FAIL: denominator incomplete\n",
+      "final_source_integrity": {
+        "schema": "swap5.coverage_integrity_result.v1",
+        "integrity": "PASS",
+        "ledger_metadata_baseline": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+        "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+        "canonical_locator_head": "76cb15e1adfa53a12c452887012ed1b025d11fad",
+        "source_members": 63,
+        "capabilities": 243,
+        "dispositions": {
+          "ADMITTED": 94,
+          "ACTIVE_MIGRATION": 109,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "QUALIFICATION_ONLY": 4
+        },
+        "denominator_complete": false,
+        "coverage_closed": false,
+        "claim": "Historical evidence/source integrity and pinned later authority locators only; not current-canonical scientific qualification, complete semantic coverage or new admission"
+      }
+    },
+    "remaining_pr_navigation": {
+      "observed_after_canonical": "76cb15e1adfa53a12c452887012ed1b025d11fad",
+      "query": "repo:abhedwig-cell/SWAP5 is:open",
+      "returned_count": 11,
+      "requested_limit": 30,
+      "scope": "Current open PR navigation; individual donor/research scopes and blockers preserved. No closure solely to shorten list; no fresh long research qualification.",
+      "rows": [
+        {
+          "number": 58,
+          "title": "F-CI canonical integration: F-CI02-F-CI13",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/58",
+          "classification": "LONG_LIVED_CANONICAL_UMBRELLA"
+        },
+        {
+          "number": 1072,
+          "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/1072",
+          "classification": "MASTER_DRAFT_DENOMINATOR_INCOMPLETE"
+        },
+        {
+          "number": 365,
+          "title": "DIFFICULTY: preregister Phase-0 falsification experiment",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/365",
+          "classification": "NONBLOCKING_DIFFICULTY_INDEPENDENT_METHOD_AUTHORITY_OPEN"
+        },
+        {
+          "number": 700,
+          "title": "PPA-RECONCILE01: reconcile local SWAP4.3.1 migration with current canonical",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/700",
+          "classification": "HISTORICAL_RECONCILIATION_DONOR_NOT_WHOLESALE_ADMISSION"
+        },
+        {
+          "number": 740,
+          "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/740",
+          "classification": "NONBLOCKING_SOIL_MAPPING_RESEARCH"
+        },
+        {
+          "number": 1117,
+          "title": "QUAL: consolidated SW431 NUT/SOL binding postimage and exact-source gate",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/1117",
+          "classification": "HISTORICAL_NUT_SOL_DONOR_RETAIN_UNIQUE_SOURCE"
+        },
+        {
+          "number": 956,
+          "title": "SW-RIB-TOP03: transactional top-surface exchange",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/956",
+          "classification": "NONBLOCKING_SURFACE_RESEARCH_TRANSACTION_RESTART_OPEN"
+        },
+        {
+          "number": 987,
+          "title": "PPA-WU05-A28: opt-in approximate RFM sorptivity mode",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/987",
+          "classification": "NONBLOCKING_SORPTIVITY_RESEARCH_Q4_OPEN"
+        },
+        {
+          "number": 953,
+          "title": "SW-RIB-TOP02: external surface-water head candidate",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/953",
+          "classification": "EXTERNAL_HEAD_AND_TRANSACTION_QUALIFICATION_OPEN"
+        },
+        {
+          "number": 528,
+          "title": "Research: fixed-interface dummy SWAP coupling qualification",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/528",
+          "classification": "NONBLOCKING_COUPLING_RESEARCH"
+        },
+        {
+          "number": 486,
+          "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB",
+          "url": "https://github.com/abhedwig-cell/SWAP5/pull/486",
+          "classification": "COUPLING_STORAGE_PARTITION_AND_HEAD_TRANSFER_AUTHORITY_OPEN"
+        }
+      ]
     }
   }
 }
