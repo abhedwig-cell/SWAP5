@@ -167,3 +167,33 @@ scientific surfaces. The merge additionally preserves an independent drainage
 master-receipt update in its own status JSON. Current source and sealed owner
 evidence checks pass. This admits the assessment record, not a corrected B1
 snapshot or partial-return production behavior.
+
+## Qualified B1.12 reference correction candidate
+
+The SWAP-019 follow-up refines PR1263 with an explicit SW_WOFOST=1 condition.
+Actual N-active classical WOFOST retains only(1-f) leaf death; potential, N-OFF,
+soybean and grass preserve B1.11. This is a scoped implementation-defect
+correction, not a new physical model or admission of grass management. The
+corrected two-member patch adds231bytes with CRLF preserved. Candidate B1.12
+has63 members,1886750bytes and manifest
+`5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e`.
+Published B1.11 and prior snapshots/patches remain immutable.
+
+The1368 O0/O2 native source/corrected programs cover independent leaf/stem
+harvest fractions, fixed-date/DVS/date-fallback harvest, actual N, daily pending
+and original residue chemistry. Original post-harvest reset clears DM while
+preserving all eight pending DM/N values for next-day incorporation. Whole DM/N
+closes including nonreturned/exported harvest material. Daily10-value N outputs
+remain identical; separate shared-update controls preserve all other selectors
+and positive potential dead stock. Nine science corruption controls and six
+reference/rejection controls pass. Exact extracted scientific bodies are checked
+against complete sources, independent of fixture hashes.
+
+Exact canonical B0 target preimages equal the ordered B1.11 targets. Full63-member
+reconstruction from the immutable qualified B1.11 source archive is verified;
+the earlier B1.11 full B0 distribution replay is inherited, not repeated or
+claimed as a fresh full replay. Existing SWAP5 evidence keeps its explicit
+reference pins. Canonical reference admission is recorded under
+leaf_reference_admission_20261016; this does not admit retained-stock or
+partial-return production behavior. That remains the next crop/Soil-N state,
+harvest, whole N/OM and native/opaque continuation unit.

@@ -1,0 +1,33 @@
+--- a/SWAP/wofost.f90
++++ b/SWAP/wofost.f90
+@@ -938,7 +938,7 @@
+       use atmosphere_interface, only: tav
+       use plant_interface, only: dvs, tsum, swrd, aeratecrit, swwrtnonox, wrtmax
+       use MOD_integral, only: ialpwet_day
+-      use MOD_wofost_nut, only: nni, nsla
++      use MOD_wofost_nut, only: nni, nsla, fradeceasedlvtosoil
+ 
+       implicit none
+ 
+@@ -1081,7 +1081,11 @@
+ 
+          ! dry weight of dead plant organs (roots,leaves & stems)
+          s%dwrt = s%dwrt + r%drrt * delt
++         if (.not.s%fl_potential.and.swcropsnm==1.and.sw_wofost==1) then
++            s%dwlv = s%dwlv + (1.d0-fradeceasedlvtosoil)*r%drlv*delt
++         else
+          s%dwlv = s%dwlv + r%drlv * delt
++         end if
+          s%dwst = s%dwst + r%drst * delt
+ 
+          ! leaf area index
+--- a/SWAP/wofostnut.f90
++++ b/SWAP/wofostnut.f90
+@@ -45,6 +45,7 @@
+    public :: outbalcropN
+    
+    public :: fstr
++   public :: fradeceasedlvtosoil
+    public :: nlue, nsla, nlai, nni
+    public :: anlv, anst, nmaxlv, nmaxst, nmaxrt, lrnr, lsnr, rnflv, rnfst, frnx, npart, rdrns
+    public :: dvsnlt, dvsnt
