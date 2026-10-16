@@ -1,5 +1,22 @@
 # SWAP431 functional coverage master: recoverable review
 
+Latest partial-return follow-up (2026-10-16): PR1263 merged at
+`c62a2e69a0e604d92dcdba625c525835c2bd5224`, receipt `49f3434d`.
+Actual ordinary WOFOST task3/4, growth/leaf/phenology, full N routines and next-day
+residue chemistry confirm the #1261 defect: original327.1kg soil DM from300kg
+initial stock; the minimal two-member candidate gives300kg. Positive growth
+closes at330kg instead of358.26kg. Across96 O0/O2 native programs, daily N,
+positive potential dead-leaf stock and N-OFF/zero-return controls are unchanged.
+This is a verified correction candidate, not an admitted corrected B1 snapshot
+or SWAP5 partial-return runtime. Qualify affected allowed removal/state modes
+and admit the corrected reference before retained leaf/stem DM/N, harvest,
+whole N/OM, rollback and restart in the existing owner. Preserve admitted1260,
+1253, irrigation, SOL and independent1099 signed DIVDRA. This assessment changes
+no ledger row; the latest census remains95 ADMITTED,109 ACTIVE_MIGRATION,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,3 QUALIFICATION_ONLY;112 unresolved.
+Earlier assessments below retain their historical scope and counts.
+
+
 Current drainage admission (16 October 2026): **SW431-DRAIN-DIV-SIGNED is ADMITTED**
 through PR1099, canonical `1db58d059b646d7189413caed37b977599a47c95`, closeout `c2b7ad286704798662d6a00b75f15ab81c59d2fc`.
 Exactly one existing capability closes. Current authoritative counts are
@@ -20,6 +37,45 @@ One row moves from QUALIFICATION_ONLY to ACTIVE_MIGRATION:94 ADMITTED,110 ACTIVE
 14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,3 QUALIFICATION_ONLY;113 unresolved.
 This current classification supersedes the dated snapshots below. Production
 and all existing admission scopes remain unchanged. See the final annual section.
+
+
+
+Latest separate partial-return source assessment (2026-10-16): PR1261 merged at
+`7dc1adb594c4091d7df60229af4b779485ca9558`, receipt `9b05521b`.
+The literal growth/daily-return/harvest source chain can return20kg leaf DM from
+10kg death while leaf N still closes;9 of27 bounded algebraic cases per O0/O2
+exceed supplied dead-leaf DM. Actual current pending/material mappings also pass.
+This is a source-block discriminator, not full-trajectory reachability or a formal
+reference correction. Resolve that B1 reference/retained-stock decision before
+partial-return runtime. Existing1260/1253/default/full-return/irrigation/SOL
+scientific postimages remain unchanged; all243 dispositions/census are preserved.
+
+
+Latest bounded crop-N process admission (2026-10-16): PR1260 merged at
+`dd3e78dfc005c11221c6d049c5fcee4ef8cd2280`, canonical receipt `7c85247afaeaba4f96b86324d58ef575851b5310`.
+Explicit source-order translocation and residual-concentration death now execute
+in the existing daily crop/Soil-N owner, with independent allocation checks and
+preclipping donor nonnegativity. One organ/cumulative N owner, pending material
+and native codec remain. Small literal process,72 actual daily cases per O0/O2,
+actual Richards/material/delayed incorporation, rejection/replay, opaque/native
+fresh continuation and34 evidence controls pass. The original default and1253
+restart/endpoint bytes remain identical; both actual FCI owner entries pass.
+Automatic historical activation, full trajectories, partial-leaf return and full
+historical harvest equivalence remain open. Aquifer remains excluded. All243
+capability dispositions and complete census remain unchanged:94 ADMITTED,
+109 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,
+4 QUALIFICATION_ONLY;113 unresolved. Earlier review checkpoints below are
+historical and do not override this bounded production admission.
+
+
+Latest separate crop-N assessment (2026-10-16): PR1259 merged at
+`a0cbac6a14b952bc4a34dd105b7251803c77f445`. Four source discriminators per
+optimization establish reproductive/root-donor/death differences and algebraic
+literal cutoff/clipping counterexamples. They do not establish full-trajectory
+reachability or new production admission. Vegetative1253 and WOFOST81 remain
+byte-identical. Next MC-NUT01 unit is a bounded source-order prepare/apply
+contract, preserving one crop/soil/pending owner and restart. All243 dispositions
+and the complete capability census remain unchanged; SOL1258 stays admitted.
 
 
 
