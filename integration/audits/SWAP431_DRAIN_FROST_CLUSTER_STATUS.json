@@ -77,7 +77,7 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Complete the three frozen native DRAMET3/ALLOCATION/INF-LIMIT rows on the existing candidate; retain four prior ordinary drainage admissions.",
+  "next_action": "Preserve all seven ordinary drainage admissions. Only the independently contracted highest-interflow redistribution row remains in MC-DRAIN01.",
   "recovery_point": "PR1269 merge218d2425612408b8ae451cdda54c0e1e3d3d6a63; existing master receipt4235e1dc6f3d7d96a29a4e7bf80ebac100949239. Qualified original-source/runtime proof and prior signed,multilevel,INF,AVAIL admissions retained.",
   "blockers": [],
   "last_reconciled_upstream": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
@@ -2132,12 +2132,12 @@
       "existing response variant arithmetic",
       "DIVDRA process and binder formulas"
     ],
-    "qualification_state": "FULLY_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+    "qualification_state": "CANONICALLY_ADMITTED_THREE_FULL_LEDGER_ROWS",
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
-    "next_action": "Reconfirm live canonical and master, integrate qualified existing branch using exact-head normal PR merge, record actual tree and three-row master receipt.",
+    "canonically_admitted": true,
+    "next_action": "Preserve all seven ordinary drainage admissions. Only the independently contracted highest-interflow redistribution row remains in MC-DRAIN01.",
     "blockers": [],
     "cost_selection": {
       "process": "seconds; small independent production module then literal native source/binding",
@@ -2162,10 +2162,7 @@
       "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64",
       "sha256": "8f59c41a2cfb2538fd9a6ed3f3ed240f5f71828e1b2ddf409dd71c06a111a58e"
     },
-    "remaining": [
-      "safe exact-head canonical merge",
-      "existing master104/103 and canonical recovery receipts"
-    ],
+    "remaining": [],
     "qualification_inputs_sha256": {
       "tests/fmig431/verify_dramet3_successor.py": "de55678becce49dd3e2df67b99992c5a5da1de750d0bd1b5a87674c9474159a7",
       "tests/fmig431/run_swap431_dramet3.py": "bbb3a3072d1d27a5aaae371d14702bb11e12664b07944a5bf5d04f9b8cee65c9",
@@ -2339,6 +2336,35 @@
         "tests/mc-irr01/verify_availability_successor.py",
         "tests/mc-irr01/verify_depth_limit_successor.py"
       ]
-    }
+    },
+    "canonical_admission": {
+      "pr": 1270,
+      "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+      "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+      "qualified_full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+      "scientific_source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+      "actual_merge_full_tree_identity": true,
+      "master_receipt": "90708bb68a8ebf7233845268ba12566a341ff2da",
+      "master_branch": "work/swap431-master-coverage-20261006",
+      "ledger_rows": [
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-INF-LIMIT"
+      ],
+      "master_counts": {
+        "total": 243,
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "QUALIFICATION_ONLY": 3,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "unresolved": 103
+      },
+      "all_other_240_capabilities": "UNCHANGED",
+      "checks": "PASS complete exact-current science/source/evidence; joint irrigation/drainage owner; original immutable predecessor admission; eight corruption controls; historical master source/census/pinned locator integrity; docs source and strict build",
+      "no_broad_run": true
+    },
+    "qualification_checkpoint": "89103429ad60305fb8d45023eb58e10b23585033"
   }
 }

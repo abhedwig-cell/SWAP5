@@ -331,3 +331,10 @@ and automatic legacy disk input activation retain their separate contracts.
 Existing SWDIVD1 algebra and all admitted default response variants are unchanged.
 The recovery receipt identifies any actual ledger promotion; this section alone
 is not an admission assertion.
+
+Actual canonical admission: [PR1270](https://github.com/abhedwig-cell/SWAP5/pull/1270),
+merge `8329752d9c08ec32f31f6248a3eecd05c6c26fc5`, exactly matches the qualified full tree
+`fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33`. The existing
+[master receipt](https://github.com/abhedwig-cell/SWAP5/commit/90708bb68a8ebf7233845268ba12566a341ff2da)
+closes precisely the three named ledger rows:104 ADMITTED and103 unresolved of243.
+All other240 capability records and the frozen Status-A denominator are unchanged.
