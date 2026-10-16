@@ -5634,11 +5634,11 @@
   "limit_completion_20261016": {
     "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "branch": "work/mc-irr01-limit-20261016",
-    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
+    "phase": "CANONICALLY_ADMITTED_FULL",
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "admitted": false,
+    "admitted": true,
     "full_capability": true,
     "closure_target": "Exactly SW431-IRR-LIMIT, the existing B1.11 DCSLIM postselection minimum/maximum depth modifier. No new bounded variant.",
     "candidate_reconciliation": "Canonical PR1254 supplies current-root/material DCS1; PR1262 week progression/native; PR1267 all admitted managed native profiles. PR1255 duplicate retired. Search existing LIMIT irrigation PRs found historical owners and no open LIMIT-specific candidate; preserve existing MC-IRR01 workstream.",
@@ -5695,7 +5695,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Safe expected-head merge of existing PR1268, exact merged tree/source proof, promote only LIMIT on existing master branch and update canonical recovery receipt. All scientific/admission conditions passed.",
+    "next_action": "COMPLETE: existing PR1268 merged and only existing SW431-IRR-LIMIT promoted. Preserve this full modifier admission; remaining irrigation capabilities retain independent gates.",
     "retained_failures": [
       {
         "kind": "test fixture compile",
@@ -6084,8 +6084,8 @@
       "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS",
       "small_original_O0_O2": "PASS_FRESH",
       "original_DRAMET3_controls": 8,
-      "admission": "PASS",
-      "master": "PENDING",
+      "admission": "CANONICALLY_ADMITTED_FULL",
+      "master": "PASS_ONLY_LIMIT_PROMOTED",
       "negative_controls": 29
     },
     "closure_results": [
@@ -6111,7 +6111,7 @@
       },
       {
         "condition": 6,
-        "status": "READY_EXPECTED_HEAD_MERGE_AND_MASTER_PROMOTION"
+        "status": "PASS"
       }
     ],
     "prior_science_before_dislayer_reconciliation": {
@@ -6220,6 +6220,33 @@
       "sha256": "daaca2bec0dc313ecb76e405436b73d34cf612a5883a08477a26df4140477e0f",
       "decoded_json_sha256": "c5db4bfd69e2b6ff4a45f6254c9e7c3007bb9ee9acac01eab81e4937d02d2d0b",
       "execution_head": "b479c212c61b68f964c69dadf00bbfd0b16dcf1a"
+    },
+    "blockers": [],
+    "completion_receipt_20261017": {
+      "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+      "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+      "qualified_full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+      "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+      "merged_full_tree_exact": true,
+      "merge_expected_head_protected": true,
+      "postmerge_source_science": "PASS",
+      "master_branch": "work/swap431-master-coverage-20261006",
+      "master_commit": "6bad61262c2a510c8048b81d5a930f391b7d634e",
+      "only_promoted": "SW431-IRR-LIMIT",
+      "all_other_242_rows": "EXACT_UNCHANGED",
+      "counts": {
+        "total": 243,
+        "ADMITTED": 105,
+        "ACTIVE_MIGRATION": 99,
+        "QUALIFICATION_ONLY": 3,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "unresolved": 102
+      },
+      "master_checks": "PASS original source/census and pinned later locators;20 inheritance tests;242-row exact comparison;docs source and strict build. Metadata-only receipt does not alter qualified production or science.",
+      "master_evidence": "integration/audits/evidence/MC_IRR01_LIMIT_MASTER_CHECKS_20261017.json.gz.b64 at 6bad61262c2a510c8048b81d5a930f391b7d634e",
+      "no_full_fci_rossfast_highest_low_air_or_actions": true
     }
   }
 }
