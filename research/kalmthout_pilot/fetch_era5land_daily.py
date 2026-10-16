@@ -80,6 +80,7 @@ if len(days)!=expected:
 # resolution for the SWAP atmospheric boundary. ET0 is a daily rate and is
 # therefore repeated as a rate for each hourly forcing interval.
 daily_et0={}
+daily_pm={}
 for ds,rows in days.items():
     temp=[r["temperature_2m"] for r in rows]
     dew=[r["dew_point_2m"] for r in rows]
@@ -92,14 +93,18 @@ for ds,rows in days.items():
     u2=(sum(w10)/24)*factor
     doy=date.fromisoformat(ds).timetuple().tm_yday
     daily_et0[ds]=fao56_et0(tmin,tmax,tmean,ea,rad,u2,doy)
+    daily_pm[ds]=(tmin,tmax,rad*1000.0,ea,u2,doy)
 
 writer=csv.writer(sys.stdout)
-writer.writerow(["time","precip_mm_hour","temp_c","dew_c","shortwave_mj_m2_hour","wind10_m_s","et0_mm_day"])
+writer.writerow(["time","precip_mm_hour","temp_c","dew_c","shortwave_mj_m2_hour","wind10_m_s","et0_mm_day",
+                 "tmin_day_c","tmax_day_c","radiation_kj_m2_day","vapour_pressure_kpa","wind2_m_s","day_of_year"])
 for ds in sorted(days):
+    tmin,tmax,rad_kj,ea,u2,doy=daily_pm[ds]
     for hour,row in enumerate(days[ds]):
         tstamp=f"{ds}T{hour:02d}:00"
         precip=max(0.0,row["precipitation"])
         rad=max(0.0,row["shortwave_radiation"])*0.0036
         writer.writerow([tstamp,f"{precip:.6f}",f"{row['temperature_2m']:.6f}",
                          f"{row['dew_point_2m']:.6f}",f"{rad:.6f}",
-                         f"{max(0.0,row['wind_speed_10m']):.6f}",f"{daily_et0[ds]:.6f}"])
+                         f"{max(0.0,row['wind_speed_10m']):.6f}",f"{daily_et0[ds]:.6f}",
+                         f"{tmin:.6f}",f"{tmax:.6f}",f"{rad_kj:.6f}",f"{ea:.6f}",f"{u2:.6f}",doy])
