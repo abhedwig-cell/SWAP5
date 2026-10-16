@@ -197,3 +197,12 @@ reference pins. Canonical reference admission is recorded under
 leaf_reference_admission_20261016; this does not admit retained-stock or
 partial-return production behavior. That remains the next crop/Soil-N state,
 harvest, whole N/OM and native/opaque continuation unit.
+
+Canonical B1.12 reference admission: PR1265 merged as
+`36862e06001154f5097b438ae4b851ae092423df`, exact reviewed/actual tree
+`8fc7117d7007bff46d9b25972fc44390ccce40e3`. SWAP-019 is ADMITTED_B1.
+The current annual source-state admission1264 is preserved, with SWAP5 source
+tree `216c756797a9ed2d6fa9ecfd51c1235df5a4e79b` unchanged by1265. Gross
+mortality diagnostics must not be mistaken for unreturned physical material.
+The next production unit must reuse the existing joint owner and keep these
+quantities distinct. Partial-return SWAP5 runtime is not yet admitted.

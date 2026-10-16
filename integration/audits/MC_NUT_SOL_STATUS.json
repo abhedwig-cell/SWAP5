@@ -962,7 +962,7 @@
     }
   },
   "leaf_reference_admission_20261016": {
-    "stage": "QUALIFIED_REFERENCE_ADMISSION_PENDING",
+    "stage": "CANONICALLY_ADMITTED_REFERENCE",
     "baseline": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
     "branch": "work/nut-leaf-reference-admission-20261016",
     "audit_id": "SWAP-019",
@@ -979,7 +979,7 @@
     ],
     "test_selection": "Small original source contract and daily/harvest/removal closure O0/O2; actual archived scientific providers. Reference reconstruction and owner evidence only. Full FCI/RossFast/highest-low-air NOT_SELECTED_IMPACT.",
     "production_admitted": false,
-    "reference_admitted": false,
+    "reference_admitted": true,
     "capability_disposition_changes": 0,
     "science_archive": {
       "path": "integration/audits/evidence/MC_NUT01_SWAP019_REFERENCE_20261016.tar.xz.b64",
@@ -1086,7 +1086,7 @@
       "decoded_bytes": 13560,
       "members": 9
     },
-    "next_safe_step": "Admit B1.12 exact reference correction; then extend the existing crop/Soil-N owner with retained leaf/stem DM/N, whole N/OM, harvest and atomic opaque/native continuation. Preserve current1260/1253/default and all explicit historical B1.11 pins.",
+    "next_safe_step": "Extend existing joint crop/Soil-N owner with physical retained leaf/stem DM/N distinct from gross mortality diagnostics; harvest, whole N/OM and atomic opaque/native continuation. Reuse admitted annual biomass owner and preserve1260/1253/default plus explicit B1.11 pins.",
     "reconciled_base": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
     "canonical_reconciliation": {
       "pr": 1264,
@@ -1100,6 +1100,20 @@
         "decoded_bytes": 8792,
         "members": 4
       }
+    },
+    "canonical_assessment": {
+      "pr": 1265,
+      "merge_commit": "36862e06001154f5097b438ae4b851ae092423df",
+      "reviewed_head": "b54d5ebe9e9b10fade6d5dea0848669df141fdd0",
+      "actual_tree": "8fc7117d7007bff46d9b25972fc44390ccce40e3",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "post_merge_reference_gate": "PASS exact actual merge and B1.12 admission gate",
+      "SWAP5_source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": []
     }
   }
 }
