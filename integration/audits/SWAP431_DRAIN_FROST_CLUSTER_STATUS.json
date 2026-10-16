@@ -72,7 +72,7 @@
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Register exact +1 SW431-DRAIN-DIV-SIGNED admission in existing master PR1072; retain separate multilevel, INF-SPLIT and DRAMET3 conditions.",
+  "next_action": "This signed single-level frost-OFF route and its existing ledger row are closed. Preserve the admitted algebra/state/mass/restart evidence. Remaining multilevel, separate-infiltration, DRAMET3, discharge-layer and frost rows require their own existing contracts; do not rebuild this foundation.",
   "recovery_point": "1db58d059b646d7189413caed37b977599a47c95",
   "blockers": [],
   "last_reconciled_upstream": "9b05521b2df3579869f1906cb13900078fdeeda4",
@@ -319,5 +319,27 @@
       "SW431-DRAIN-DIV-SIGNED"
     ],
     "complete_MC_DRAIN01": false
+  },
+  "mastercoverage_receipt": {
+    "branch": "work/swap431-master-coverage-20261006",
+    "pr": 1072,
+    "commit": "f373f72cedb5f3124ec7ee16b2e01c54f5e18299",
+    "closed_ledger_rows": [
+      "SW431-DRAIN-DIV-SIGNED"
+    ],
+    "counts": {
+      "capabilities": 243,
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 3,
+      "total_unresolved": 112
+    },
+    "source_integrity": "PASS",
+    "inheritance_guard_tests": 20,
+    "docs_source_and_strict": "PASS",
+    "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
   }
 }
