@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "040eb47783286763c4eb82df8ea07746ae3e977c",
+  "last_reconciled_upstream": "093bff909f38f8bfa3b1284b40a0c3736e864954",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -82,7 +82,7 @@
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
     }
   },
-  "next_action": "Existing ready production closeouts including hydraulic1103, source-component1098 and managed irrigation1252 are recorded; historical qualification carrier1117 is closed without merge with its donor preserved. Keep master1072/umbrella58 open and retain700 distinct donor scopes. Remaining research/authority PRs are not automatic migration blockers. Full113 source envelopes remain open; no new route is started by this closeout.",
+  "next_action": "Priority1245/1247/1234 already canonically admitted and verified in current ancestry. Ten remaining PRs retain named master/umbrella/donor/research/authority blockers. No additional merge/closure is justified. Future disjoint NUT fixation, IRR material-root summaries and SOL persistent-surface work may be prepared in parallel; shared integration serial. Full113 historical capability envelopes remain unresolved.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -145,7 +145,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "040eb47783286763c4eb82df8ea07746ae3e977c",
+  "last_reconciled_head": "093bff909f38f8bfa3b1284b40a0c3736e864954",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -945,7 +945,194 @@
         "branch_preserved": true,
         "new_current_runtime_admission": false
       }
-    ]
+    ],
+    "current_reconciliation": {
+      "canonical": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+      "master_reviewed": "4de0e11ecf641f7315a90a13a63b1d266b1b9da1",
+      "verification": "Fresh GitHub exact PR metadata, complete open-search inventory and local Git ancestry; target PRs already merged before this session. No additional safe candidate established.",
+      "priority_prs": [
+        {
+          "pr": 1245,
+          "merged": true,
+          "merge_commit": "f56a82b37bc1c3df7a6cb305990ab31e97818969",
+          "qualified_head": "7c1c6dc76a63666c34c24b8ea6eca607ff23c9d1",
+          "merge_is_ancestor_of_pinned_canonical": true
+        },
+        {
+          "pr": 1247,
+          "merged": true,
+          "merge_commit": "31ff3158b956183c8af19f85bd3361847f60309b",
+          "qualified_head": "15c218d17ac4e19ed3206e2a8eefb37743328e37",
+          "merge_is_ancestor_of_pinned_canonical": true
+        },
+        {
+          "pr": 1234,
+          "merged": true,
+          "merge_commit": "136787ef2927eb44967298bec7029c30e6434422",
+          "qualified_head": "85d9a81f592de678845947e8ec2044a6e189aa17",
+          "merge_is_ancestor_of_pinned_canonical": true
+        }
+      ],
+      "closed_without_merge": [
+        {
+          "pr": 1226,
+          "state": "closed",
+          "merged": false,
+          "head": "f4d4e07e051b4954d59681fcfffd20a576eec676",
+          "closure_predates_this_session": true,
+          "branch_preserved": true
+        },
+        {
+          "pr": 1214,
+          "state": "closed",
+          "merged": false,
+          "head": "e9722c8a565129734c249a40a6d58f37250e8733",
+          "closure_predates_this_session": true,
+          "branch_preserved": true
+        },
+        {
+          "pr": 1117,
+          "state": "closed",
+          "merged": false,
+          "head": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+          "closure_predates_this_session": true,
+          "branch_preserved": true
+        }
+      ],
+      "open_count": 10,
+      "open_prs": [
+        {
+          "number": 58,
+          "head": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+          "branch": "integration/f-ci-canonical",
+          "base": "main",
+          "decision": "RETAIN_UMBRELLA_DRAFT: canonical-to-main integration; this task does not authorize main release."
+        },
+        {
+          "number": 365,
+          "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
+          "branch": "research/difficulty-phase0-preregistration",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_NONBLOCKING_RESEARCH: independent nonlinear iterative method prerequisite for H3; RossFast cannot substitute."
+        },
+        {
+          "number": 486,
+          "head": "2f919cb095c0b581664d8c261fb10586670caa45",
+          "branch": "work/f-gc-coupling-semantics-reconciliation",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_AUTHORITY_BLOCKED: CSR03 head-transfer, CSR04 nonoverlapping storage, CSR05 one-owner drainage and current composition qualification remain open."
+        },
+        {
+          "number": 528,
+          "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+          "branch": "work/f-gc-dummy-swap-shared-storage",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_NONBLOCKING_RESEARCH: fixed-interface coupling falsification/oracles; not a production proposal, no new long run selected."
+        },
+        {
+          "number": 700,
+          "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+          "branch": "work/ppa-reconcile01-merged",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_DISTINCT_DONOR: 152 original source paths retain disjoint owner decisions; old publication contract must not overwrite current INT12C."
+        },
+        {
+          "number": 740,
+          "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+          "branch": "work/f-pe-elastic01-soil-storage",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_NONBLOCKING_RESEARCH: per-soil elasticity selection/calibration and owner qualification remain open; no production import."
+        },
+        {
+          "number": 953,
+          "head": "76067cced09715e42220301d2410656851ec7013",
+          "branch": "work/sw-rib-top02-external-head-candidate",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_DEPENDENT_CANDIDATE: TOP02 executable qualification and TOP03 transaction publication must close first."
+        },
+        {
+          "number": 956,
+          "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+          "branch": "work/sw-rib-top03-transactional-top-exchange",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_NONBLOCKING_RESEARCH: accepted-window/external-surface storage, production rollback/restart and transient acceptance remain unadmitted."
+        },
+        {
+          "number": 987,
+          "head": "29c788b325bee9339dfde429a3bd90d44910d38d",
+          "branch": "work/ppa-wu05-a28-rfm-approximate-mode",
+          "base": "work/ppa-wu05-a27-rfm-performance-equivalence",
+          "decision": "RETAIN_NONBLOCKING_RESEARCH: Q4 long-history, trusted replay and non-publication rollback remain unqualified; targets research base."
+        },
+        {
+          "number": 1072,
+          "head": "4de0e11ecf641f7315a90a13a63b1d266b1b9da1",
+          "branch": "work/swap431-master-coverage-20261006",
+          "base": "integration/f-ci-canonical",
+          "decision": "RETAIN_DRAFT_MASTER: 109 ACTIVE_MIGRATION and4 QUALIFICATION_ONLY; incomplete semantic denominator blocks closure/merge."
+        }
+      ],
+      "new_merges": 0,
+      "new_closures": 0,
+      "new_migration_routes_started": false,
+      "inheritance_delta": {
+        "from": "040eb47783286763c4eb82df8ea07746ae3e977c",
+        "to": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+        "changed": [
+          "integration/audits/MC_IRR01_STATUS.json",
+          "integration/audits/PPA_RECONCILE01_VONHH_SOURCE_DISPOSITION_20261016.json"
+        ],
+        "production_reference_tests_tools_workflows_unchanged": true,
+        "claim": "Metadata/owner navigation reconciliation only. Later production admissions have their own qualification records; no original harvest/surface proof relabelled as new current-source numerical PASS."
+      },
+      "verification_results": {
+        "master_integrity": "PASS historical source and pinned later locators; not current numerical science",
+        "inheritance_controls": "20 PASS",
+        "census_tests": "4 PASS",
+        "false_closure": "EXPECTED_REJECTION denominator incomplete",
+        "canonical_docs_source": "PASS",
+        "execution_selection_controls": "12 PASS including actual missing-selection refusal before compilation",
+        "initial_adoption_attempt": "4 harness errors: required ADOPTION_CONTROL_EVIDENCE_DIR unset; remaining14 tests PASS. Superseded for selection-only scope by explicit12 SelectionControls PASS; no18-test PASS claimed.",
+        "initial_modular_attempt": "8 errors:6 gfortran unavailable;2 dependent closure lookups use temporary harness root.7 tests passed. No15-test PASS claimed; compiler/environment work outside this metadata-only closeout is not selected.",
+        "new_numerical_qualification": "NOT_SELECTED_METADATA_ONLY",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "actions_started": 0
+      },
+      "parallel_ready_packages": [
+        {
+          "workunit": "MC-NUT01",
+          "package": "Bind already-qualified B1.11 vegetative demand/fixation selection to existing crop/Soil-N owner with exactly one accepted N receipt",
+          "prerequisite": "Qualified source component merged1098 and existing accepted crop/Soil-N owners",
+          "owned_surface": "Crop N request/fixation selection and accepted receipt; preserve WOFOST81",
+          "qualification": "Literal policy, accepted N budget, retry/rollback/exactly-once and restart"
+        },
+        {
+          "workunit": "MC-IRR01",
+          "package": "DCS1/TCS2/3/4 accepted material FC/stress/wilting and evolving-root summaries",
+          "prerequisite": "Managed weather1252 and actual adaptive density/supply1251 admitted",
+          "owned_surface": "Existing irrigation preparation and selector binding; read accepted root state",
+          "qualification": "Actual accepted delivery, limits, rejection/retry and joint continuation"
+        },
+        {
+          "workunit": "MC-SOL01",
+          "package": "Persistent surface/pond and dry-deposition mass over actual substep water receipts",
+          "prerequisite": "Admitted zero-pond surface input1234 and preserved historical pond source donor1117",
+          "owned_surface": "Surface chemical store and explicit water-receipt contract; reuse matrix transport owner",
+          "qualification": "Independent literal source oracle, complete soil-plus-pond mass, negative water/mass controls and native continuation"
+        }
+      ],
+      "parallel_rule": "Disjoint source/contract development may proceed concurrently. Shared application, accepted-state/restart and owner-guard integration is serialized against fresh canonical. No agents spawned and no new route started here.",
+      "counts": {
+        "capabilities": 243,
+        "ADMITTED": 94,
+        "ACTIVE_MIGRATION": 109,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4,
+        "total_unresolved": 113
+      }
+    }
   },
   "latest_int12c_application_reconciliation_20261016": {
     "pr": 1009,
