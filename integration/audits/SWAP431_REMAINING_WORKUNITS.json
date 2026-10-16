@@ -527,7 +527,7 @@
   "retained_pr700_donor_source_20261016": {
     "pr": 700,
     "original_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
-    "phase": "RETIREMENT_READY_FOR_CLOSE_WITHOUT_MERGE",
+    "phase": "CLOSED_WITHOUT_MERGE_HISTORICAL_CARRIER_RETIRED_UNRESOLVED_SOURCE_PRESERVED",
     "canonical_recovery": "25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
     "authority": "integration/audits/PPA_RECONCILE01_STATUS.json at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
     "source_matrix": "source-dispositions.json inside integration/audits/evidence/PPA_RECONCILE01_CARRIER_RETIREMENT_20261016.tar.xz.b64 at 25f74dc862297a1745dcc7a9e36dbf92aa227ffc",
@@ -651,6 +651,15 @@
         "capability_mapping_limit": "Family-level review denominator; no one-to-one module equivalence, coverage extension or absent-physics claim."
       }
     },
-    "central_shared_owner": "HY/RT-TX retain9 shared solver and5 shared-runtime source references under existing central authority, without introducing another process owner."
+    "central_shared_owner": "HY/RT-TX retain9 shared solver and5 shared-runtime source references under existing central authority, without introducing another process owner.",
+    "actual_pr_closure": {
+      "state": "closed",
+      "merged": false,
+      "closed_at": "2026-10-16T12:08:06Z",
+      "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+      "branch_preserved": true
+    },
+    "canonical_actual_closure_receipt": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+    "remaining_open_pr_count_after_closure": 9
   }
 }
