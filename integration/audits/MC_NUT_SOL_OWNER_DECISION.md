@@ -1,6 +1,7 @@
 # MC-NUT01 / MC-SOL01 state and owner decision
 
-Status: SOURCE_POLICY_COMPONENT_QUALIFICATION_ONLY, NOT_RUNTIME_ADMISSION
+Status: original source component plus bounded explicit vegetative request
+binding admitted via PR1253; not full historical crop-N runtime admission.
 Baseline: `integration/f-ci-canonical@be8a49cd59815b537b46e0dac2b3d0161366c796`
 
 PR #1098 completes only its separate pure B1.11 request/fixation component.

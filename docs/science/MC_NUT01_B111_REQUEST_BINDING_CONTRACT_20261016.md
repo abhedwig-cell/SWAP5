@@ -1,6 +1,7 @@
 # B1.11 request policy in the existing crop/Soil-N transaction
 
-Status: affected local O0/O2 science and27 admission controls PASS; canonical admission pending.
+Status: bounded explicit request profile canonically admitted via PR1253 at
+`c9e5efad50cf6cf18342a57efbee398260fdce82`. Full historical NFIX remains open.
 Base: canonical 093bff909f38f8bfa3b1284b40a0c3736e864954.
 Owner: MC-NUT01, existing crop_soil_state_t. Invariants: one persistent N owner,
 accepted-only publication, independent whole-N balance, atomic rollback and restart.

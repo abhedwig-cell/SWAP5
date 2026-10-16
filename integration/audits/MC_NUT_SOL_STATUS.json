@@ -325,7 +325,7 @@
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "contract": "docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md",
     "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
     "invariants_affected": [
@@ -334,7 +334,7 @@
       "rejection nonmutation",
       "restart identity"
     ],
-    "next_action": "Publish exact qualified tree on same branch, inspect reviews/checks and current canonical, expected-head merge if unchanged; verify actual merge tree and update existing master receipt. No new numerical run for metadata closeout.",
+    "next_action": "CLOSED: explicit vegetative request profile admitted. Full legacy activation, reproductive translocation, residual-concentration death and wider B1.11 crop-N equivalence remain open; no second N owner and WOFOST81 remains default.",
     "blockers": [],
     "test_selection": {
       "affected": "Explicit optional request calculation, joint N accepted-state and tagged configuration identity",
@@ -422,6 +422,21 @@
     "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
     "docs": "SOURCE_AND_STRICT_PASS",
     "full_capability": false,
-    "full_master_qualification": false
+    "full_master_qualification": false,
+    "canonical_admission": {
+      "pr": 1253,
+      "merge_commit": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+      "qualified_head": "529451f4273d51722daefefce6d55b576598e44d",
+      "actual_tree": "73f81e9c7fb8a18979a683cf449b4d16c4c2c502",
+      "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": [],
+      "full_capability": false,
+      "master_disposition_changes": 0
+    }
   }
 }
