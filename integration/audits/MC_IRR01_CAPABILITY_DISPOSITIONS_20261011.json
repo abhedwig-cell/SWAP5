@@ -1,13 +1,13 @@
 {
   "work_unit": "MC-IRR01",
-  "last_reconciled_canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
+  "last_reconciled_canonical": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
   "original_capabilities": 16,
-  "admitted_fullcaps": 5,
-  "blocked_shared_application_authority": 11,
+  "admitted_fullcaps": 6,
+  "blocked_shared_application_authority": 10,
   "functional_coverage_closed": false,
   "independent_runtime_cluster_qualified_and_admitted": true,
   "canonical_allocation_pr": 1205,
-  "claim_ceiling": "Matrix MOBILE_DISSOLVED bottom2 positive48 SSDI with1/3nodes. Does not establish root-free bottom7 weather hook, evolved crop roots, macro salt, arbitrary surface profile or external disk codec.",
+  "claim_ceiling": "Six existing MC-IRR01 capabilities admitted, including complete TCS6 weekly weather/current-root/material and joint native continuation at PR1262. Ten remaining capabilities retain their own source/selector/salt/wider-profile gates.",
   "source_authority_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "capabilities": [
     {
@@ -60,19 +60,42 @@
     },
     {
       "capability_id": "SW431-IRR-TCS6",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Real dayfix/week progression across repeated weather days and joint continuation.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Source-faithful weekly/dayfix progression over real weather days, two opportunities, once-only events, rejected trials/replay, exact continuous/opaque/native fresh-process continuation and water balance.",
+      "remaining_specific_action": null,
+      "shared_authority_required": "Existing accepted weather/current-root/material/irrigation owners and existing native adapter accepted through PR1262.",
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json tcs6_completion_20261016",
+        "integration/audits/evidence/MC_IRR01_TCS6_SCIENCE_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_IRR01_TCS6_ADMISSION_20261016.json.gz.b64"
       ],
-      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION",
+      "prior_open_gate_20261016": {
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Real dayfix/week progression across repeated weather days and joint continuation.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261016": {
+        "pr": 1262,
+        "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+        "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+        "actual_merge_tree": "998fba2a118011498b4149a22b17aa56c763ea9e",
+        "merge_tree_equals_qualified_tree": true,
+        "source_tree": "e98209db9446743cad62521132040625ea750c18",
+        "post_merge_owner_proof": "PASS",
+        "post_merge_proof_sha256": "f9d0f91e8c0be146d2b52daf7b20aa993d2f1cfb4a51dc6b2b24ae4bf3c97793",
+        "full_capability": true,
+        "master_promotion": "Exactly SW431-IRR-TCS6; existing MC-IRR01 has6 admitted of16 and10 remaining.",
+        "global_full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "github_actions": "NOT_SELECTED"
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS7",
@@ -254,5 +277,21 @@
     "remaining_master_dispositions": "5 ADMITTED /11 ACTIVE_MIGRATION; no promotion without full authority."
   },
   "shared_interface_review": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json#shared_interface_review_20261011",
-  "current_owner_reconciliation": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json"
+  "current_owner_reconciliation": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
+  "previous_claim_ceiling_20261016": "Matrix MOBILE_DISSOLVED bottom2 positive48 SSDI with1/3nodes. Does not establish root-free bottom7 weather hook, evolved crop roots, macro salt, arbitrary surface profile or external disk codec.",
+  "tcs6_fullcap_admission_20261016": {
+    "pr": 1262,
+    "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+    "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+    "actual_merge_tree": "998fba2a118011498b4149a22b17aa56c763ea9e",
+    "merge_tree_equals_qualified_tree": true,
+    "source_tree": "e98209db9446743cad62521132040625ea750c18",
+    "post_merge_owner_proof": "PASS",
+    "post_merge_proof_sha256": "f9d0f91e8c0be146d2b52daf7b20aa993d2f1cfb4a51dc6b2b24ae4bf3c97793",
+    "full_capability": true,
+    "master_promotion": "Exactly SW431-IRR-TCS6; existing MC-IRR01 has6 admitted of16 and10 remaining.",
+    "global_full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "github_actions": "NOT_SELECTED"
+  }
 }

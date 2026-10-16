@@ -627,10 +627,16 @@
   },
   "tcs6_successor_20261016": {
     "pull_request": 1262,
-    "status": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "status": "CANONICALLY_ADMITTED_FULL",
     "contract": "docs/science/MC_IRR01_TCS6_CONTINUATION_20261016.md",
     "recovery": "integration/audits/MC_IRR01_STATUS.json tcs6_completion_20261016",
     "owner_decision": "Reuse existing accepted weather calendar, weekly irrigation owner, actual material/root binding and opaque bundle. Extend existing native adapter with S5WI0001 through serialization-neutral views and trusted owners. No second calendar, weekly counter, physical owner or codec.",
-    "required_closure": "All seven frozen recovery conditions; complete O0/O2 and native fresh-process equality before promoting the existing SW431-IRR-TCS6 row. Bottom7 salt/SALTEXCESS and other capabilities remain separate."
+    "required_closure": "All seven frozen recovery conditions; complete O0/O2 and native fresh-process equality before promoting the existing SW431-IRR-TCS6 row. Bottom7 salt/SALTEXCESS and other capabilities remain separate.",
+    "canonical_admitted": true,
+    "full_capability": true,
+    "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+    "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+    "merge_tree_equals_qualified_tree": true,
+    "remaining_conditions": []
   }
 }
