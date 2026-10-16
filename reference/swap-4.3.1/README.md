@@ -21,7 +21,7 @@ patches/
 snapshots/
     B1.0-bootstrap.yml
     ...
-    B1.11.yml
+    B1.12.yml
 b1-manifest.yml
 ```
 
@@ -53,6 +53,7 @@ B1.8           = B1.7 + SWAP-013
 B1.9           = B1.8 + SWAP-012
 B1.10          = B1.9 + SWAP-002
 B1.11          = B1.10 + SWAP-011
+B1.12          = B1.11 + SWAP-019
 ```
 
 Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and remain audit records rather than exact executable oracles. B1.5p1 repaired those identities. B1.6-B1.10 then admitted SWAP-009, SWAP-010, SWAP-013, SWAP-012 and SWAP-002 in order.
@@ -61,13 +62,19 @@ Historical B1.2-B1.5 contain provenance metadata defects discovered by VQ-1c and
 
 The historical E7 implementation was recovered and verified byte-for-byte. Because B1.10 already contains overlapping SWAP-009, SWAP-010 and SWAP-012 corrections, B1.11 uses a separately identified mechanical ordered-admission transform derived from exact byte authorities. The complete canonical B0 archive replay reproduces the frozen B1.11 identity exactly.
 
+B1.12 corrects repeated soil return of daily dead-leaf DM in actual N-active
+classical WOFOST (SW_WOFOST=1). Potential, N-OFF, soybean and grass retain
+B1.11 behavior. See patches/SWAP-019/qualification.md for source/harvest/reset
+scope and remaining SWAP5 production gates. Historical evidence keeps its
+explicit reference pin.
+
 The current corrected-reference identity is:
 
 ```text
-snapshot         B1.11
+snapshot         B1.12
 members          63
-source bytes      1,886,519
-manifest SHA-256  24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2
+source bytes      1,886,750
+manifest SHA-256  5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e
 ```
 
 SWAP-003 and SWAP-004 remain outside the admitted B1 line.

@@ -88,12 +88,23 @@ def incumbent(source_only=False):
     return result
 
 def verify_source(git_reader=None):
+    candidate=ROOT/'reference/swap-4.3.1/patches/SWAP-019/verify_successor.py'
+    if candidate.exists():
+        require(git_reader is None,'unregistered projected reader')
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('swap019_successor',candidate);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module.verify_source()
     require(git_reader is None,'unregistered projected git reader')
     status,_=load_verified();old=incumbent(True)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':False}
 
 def verify_qualification():
+    candidate=ROOT/'reference/swap-4.3.1/patches/SWAP-019/verify_successor.py'
+    if candidate.exists():
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('swap019_successor',candidate);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        return module.verify_qualification()
     status,_=load_verified();old=incumbent(False)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'incumbent':old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':True,
