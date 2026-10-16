@@ -833,7 +833,7 @@
     "new_actions": false,
     "new_migration_route": false,
     "capability_promotions": 0,
-    "phase": "READY_TO_CLOSE_HISTORICAL_QUALIFICATION_COMPLETED",
+    "phase": "CLOSED_WITHOUT_MERGE_HISTORICAL_QUALIFICATION_COMPLETED",
     "source_branch": "work/swap431-nut-sol-binding-20261007",
     "branch_preserved": true,
     "merged": false,
@@ -856,6 +856,15 @@
         "review/summary.json": "cf9799985678813576fddfad671e527e12288fe59908d689d65624c18c73a1b8"
       }
     },
-    "next_action": "Close original PR1117 as completed historical qualification carrier after publishing this pinned disposition; retain source branch and all current/pending production owners. Do not merge or silently promote donor scope."
+    "next_action": "Original qualification carrier1117 is closed without merge; retain immutable donor/branch for selective owner-controlled reuse. Existing current production authorities and unresolved NFIX/pond/full envelopes remain authoritative. No new numerical gate is selected for this metadata-only closeout.",
+    "closed_pr": {
+      "number": 1117,
+      "head": "b6b894513fcdcf66e94824742c129616ddd7aed1",
+      "closed_at": "2026-10-16T09:30:08Z",
+      "state": "closed",
+      "merged": false,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1117"
+    },
+    "published_disposition": "6f503c0ea340efe097f2b163672b5de7629fe7dc"
   }
 }
