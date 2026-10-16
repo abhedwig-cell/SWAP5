@@ -6253,10 +6253,10 @@
     "authority_issue": 1271,
     "baseline": "121ed3503638c2d3168fa30e40f6af24156348a7",
     "branch": "work/mc-irr01-batch-1271-20261017",
-    "phase": "MODULAR_PASS_COMPOSITION_PENDING",
+    "phase": "FOCUSED_OPTION_TESTED_FULL_CAPABILITY_GATES_OPEN",
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "admitted": false,
     "full_capability_promotions": 0,
@@ -6315,9 +6315,60 @@
     "measurements": {
       "instrumented_phase_start_utc": "2026-10-16T23:15:16.815281+00:00",
       "prior_reconciliation_elapsed_seconds": "UNKNOWN: tool/controller elapsed not fully instrumented",
-      "test_programs": 0,
-      "compile_invocations": 0,
-      "full_rows_closed": 0
+      "test_programs": 325,
+      "compile_invocations": 987,
+      "full_rows_closed": 0,
+      "attempts": [
+        {
+          "attempt": "batch-direct-v2",
+          "compile_invocations": 18,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.833070011001837,
+          "controller_wall_seconds": 1.954705191001267
+        },
+        {
+          "attempt": "batch-physical-v2",
+          "compile_invocations": 307,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 45.063953974009564,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "batch-direct-final",
+          "compile_invocations": 18,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.615559455996845,
+          "controller_wall_seconds": 1.6980263120003656
+        },
+        {
+          "attempt": "batch-physical-v3",
+          "compile_invocations": 620,
+          "link_invocations": 8,
+          "native_invocations": 312,
+          "command_seconds": 399.39029117498103,
+          "controller_wall_seconds": 401.9504968229994
+        },
+        {
+          "attempt": "batch-small-preservation",
+          "returncode": 0,
+          "wall_seconds": 2.7360074050011463,
+          "head": "dcb8de76c9d90cbf2a5a52b9f4f2863e39130819",
+          "compile_invocations": 24,
+          "link_invocations": 8,
+          "native_invocations": 8
+        }
+      ],
+      "link_invocations": 21,
+      "native_invocations": 325,
+      "terminal_qualification_wall_seconds": 406.3845305400009,
+      "failed_attempt_controller_wall_seconds": "UNKNOWN; raw failed command wall times retained, not substituted for total controller time",
+      "instrumented_elapsed_seconds": 799.471592,
+      "total_engineering_seconds": "UNKNOWN: early reconciliation and historical baseline analysis/bookkeeping not fully instrumented",
+      "baseline_selected_physical_seconds_per_full_row": 536.0578849539888,
+      "new_qualification_seconds_per_full_row": "UNDEFINED: zero full rows admitted"
     },
     "test_selection": {
       "direct": "Small real policy+management+restart production driver O0/O2 against authenticated literal TCSFIX; expected under30seconds.",
@@ -6335,10 +6386,12 @@
       "rossfast": "NOT_SELECTED_IMPACT",
       "highest_low_air": "NOT_SELECTED_POLICY"
     },
-    "next_action": "Run corrected persisted real production O0/O2 package through terminal status; inspect distinct errors, retain raw; no full-row promotion without original closure gates.",
+    "next_action": "Continue existing PR1272 by resolving the actual historical activation contract through accepted weather/crop calendar owners, then finish existing complete-row qualification; do not rerun shared physics merely for evidence/docs commits.",
     "blockers": [
-      "Full existing capability closure still requires historical seasonal activation and remaining full-row profile restrictions.",
-      "Native interval extension and unchanged legacy codec compatibility are implemented but not yet qualified."
+      "Historical STARTIRR/ENDIRR and crop-season activation are absent from the current accepted managed-weather selection interface; bootstrap currently forces schedule/window true. No full historical row closure is established.",
+      "Original broader selector/material/geometry profile conditions remain unreconciled for complete rows.",
+      "Sensor interval integration requires passing existing management policy state through its current event-only preparation boundary; no second counter introduced.",
+      "Exact complete-row owning successor/admission guards and master promotion remain unperformed while these gates are open."
     ],
     "retained_failures": [
       {
@@ -6354,6 +6407,78 @@
         "result": "At start of weather day9 the independent interval recurrence gives1, not2; existing j2 replay snapshot assertion incorrectly expected2. Corrected only fixture expectation; source/physics/tolerance untouched. Raw retained batch-physical-v2."
       }
     ],
-    "canonical_metadata_reconciliation": "f5504d30391baff52143ac6441ba231264cee5a0; retain full LIMIT master105/102 receipt. No production/test delta."
+    "canonical_metadata_reconciliation": "f5504d30391baff52143ac6441ba231264cee5a0; retain full LIMIT master105/102 receipt. No production/test delta.",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_BATCH1271_20261017.tar.xz.b64",
+      "decoded_sha256": "1b1c5a41acc91706bd423d4e1c65e3ef570c1b060ab118805b5883d296d8ab96",
+      "decoded_bytes": 182628,
+      "members": 3029
+    },
+    "pull_request": 1272,
+    "execution_commit": "dcb8de76c9d90cbf2a5a52b9f4f2863e39130819",
+    "results": {
+      "direct_vectors_per_optimization": 4452,
+      "direct_O0_O2": "PASS",
+      "physical_trajectory_programs": 72,
+      "decoder_negative_programs": 240,
+      "incumbent_small_programs": 8,
+      "full_capability_promotions": 0,
+      "default_weekly_native_byte_equivalence": [
+        {
+          "opt": 0,
+          "phase": "morning",
+          "sha256": "9b433e7ca5b1c49df1c16ddeef1a9fbc840cd99117233fb13e5543fcfd044e9b"
+        },
+        {
+          "opt": 0,
+          "phase": "dayend",
+          "sha256": "781ca74d7fb6a83448aeca6267fc121714dbb82907d772ceabee7b7b992bc8c7"
+        },
+        {
+          "opt": 2,
+          "phase": "morning",
+          "sha256": "9b433e7ca5b1c49df1c16ddeef1a9fbc840cd99117233fb13e5543fcfd044e9b"
+        },
+        {
+          "opt": 2,
+          "phase": "dayend",
+          "sha256": "781ca74d7fb6a83448aeca6267fc121714dbb82907d772ceabee7b7b992bc8c7"
+        }
+      ],
+      "mass_reject_replay_opaque_fresh_native": "PASS_SELECTED_COMPOSITION_ONLY",
+      "original_owner_admission": "NOT_COMPLETE_FULL_ROW_GATES_OPEN",
+      "docs_source": "PASS",
+      "strict_docs": "PASS"
+    },
+    "inheritance": {
+      "prior_physical_passes_reused": 0,
+      "shared_providers_per_optimization": 296,
+      "historical_fixture_and_oracles_reused": true,
+      "native_default_evidence": "Fresh new bytes compared directly with authenticated LIMIT capsule; all four full endpoint files identical.",
+      "unaffected_solvers": "NOT_SELECTED_IMPACT, no fabricated fresh PASS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "hosted_actions": "NOT_SELECTED"
+    },
+    "experiment_result": {
+      "success": false,
+      "interpretation": "INCONCLUSIVE: shared option migrated/tested, zero full capability closures. The minimum success criterion is unmet; no speed/reliability equivalence claim.",
+      "limitation": "Application activation/interface and full-row dependency readiness, plus observed failed-controller rebuild overhead. No evidence that root-trigger equations need separate campaigns.",
+      "selection_review": "The chosen four-row package was ready for shared option implementation, not full closure. That distinction must be resolved before treating a source-ready batch as admission-ready."
+    },
+    "master_receipt": {
+      "head": "6bad61262c2a510c8048b81d5a930f391b7d634e",
+      "counts": {
+        "ADMITTED": 105,
+        "ACTIVE_MIGRATION": 99,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "unresolved": 102,
+      "experiment_promotions": 0,
+      "canonical_merge": null
+    }
   }
 }
