@@ -1572,10 +1572,10 @@
       },
       {
         "pr": 1009,
-        "head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
-        "class": "RESTRICTED_COMPOSITION_CANDIDATE_PENDING_FULL_OWNER_GATES",
+        "head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+        "class": "CLOSED_BOUNDED_EXPLICIT_APPLICATION_CANONICALLY_ADMITTED",
         "owner": "PPA-WU04-C interception/application with MC-CROP01",
-        "next_action": "F-KT/RT with PPA-WU04-C/MC-CROP01 resolves real receiving-profile continuation/certificate availability and Binf. Both isolated identity and explicit-budget certificate attempts fail before acceptance; this is not a general impossibility result. Then complete actual dynamic-top/crop composition and ten original gates against admitted PR1209. Old whole-src guard is incompatible with current canonical; INT12-D/E do not supersede this slice.",
+        "next_action": "Completed existing PR1009. Original ten gates and actual explicit dynamic-top/active-root composition PASS. No broader automatic weather/crop or ponded/runoff admission; no new capability count.",
         "real_endpoint_diagnostic_20261011": {
           "record": "integration/audits/F-MIG431-INT12-C_REAL_ENDPOINT_RESULT_20261011.json",
           "certificate_record": "integration/audits/F-MIG431-INT12-C_CERTIFICATE_RESULT_20261011.json",
@@ -1584,7 +1584,15 @@
           "status": "O0_O2_REAL_ENDPOINT_POSITIVE_GATE_FAILED_TEMPORAL_RETRY_EXHAUSTION",
           "scope": "Identity profile: first requested day0.002,9 temporal rejections,8 retries,27 HeadCalc calls. Separate hydrostatic certificate profile with test-only1e-6cm budget also fails with9 temporal rejections,8 retries,9 HeadCalc calls. Both O0/O2; zero solver/mass rejections or accepted substeps. Source progress and physical revision/time preserved. All incumbent FMR44R assertions pass.",
           "admission": "NONE; original candidate remains open and unchanged; broader dynamic-top/crop and ten-gate admission pending"
-        }
+        },
+        "application_qualification_20261016": {
+          "record": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+          "scope": "Explicit uniform SWINTER1 Hupsel fixed-flux mode2 root-inactive receiver only. No automatic weather/crop/dynamic-top admission.",
+          "test_result": "PASS O0/O2: actual direct wet/dry physical chain, all prior atomic assertions, seven unchanged owners and exact canonical owner prerequisite.",
+          "full_owner_gate5": "PASS_BOUNDED_DIRECT_DYNAMIC_TOP_ACTIVE_ROOT_PHYSICAL_COMPOSITION",
+          "admission": "BOUNDED_EXPLICIT_APPLICATION_ADMITTED; NO_FULL_LEGACY_ENVELOPE_PROMOTION"
+        },
+        "canonical_admission": "06c199fb512154bf4abb99b4ad23856c72a21268"
       },
       {
         "pr": 700,
@@ -2020,6 +2028,18 @@
             "all6_raw_log_hashes": "VERIFIED; original negative prototype exit1 remains negative",
             "disposition": "Close stale TCD-FSI35-HEADED-DERIVATIVE row for the admitted bounded non-M1 SWKIMPL0 repair; retain diagnosis as historical evidence. No general headed or global preservation claim."
           }
+        },
+        "vonhh_semantic_map_20261016": {
+          "status": "BOUNDED_SOURCE_POLICY_DISPOSITION_COMPLETE",
+          "result_record": "integration/audits/PPA_RECONCILE01_VONHH_SOURCE_DISPOSITION_20261016.json",
+          "canonical_base": "8714a32d72d51889772912938e0e4b4835a98f2f",
+          "compiled_common_formula_cases": 336,
+          "partition_mismatches": 48,
+          "source_graph_files_dispositioned": 3,
+          "scope": "Historical source recovery only; no unchanged import for current SWINTER1. Existing PR1009 bounded application replaces that need within its admitted envelope; no broader historical API equivalence.",
+          "original_pr": "OPEN_DRAFT_OTHER_OWNER_DISPOSITIONS_REQUIRED",
+          "coverage_delta": 0,
+          "production_reference_execution_changed": false
         }
       }
     ],
@@ -3706,5 +3726,64 @@
     "weather_authority_reconciliation": "integration/audits/MC_IRR01_WEATHER_AUTHORITY_RECONCILIATION_20261011.json",
     "last_reconciled_canonical": "989069886d971daed94b1ce7c8176e2d3f73dad1",
     "rooted_crop_weather_admission_pr": 1207
+  },
+  "int12c_regie_admission_20261016": {
+    "pull_request": 1009,
+    "status": "CANONICALLY_ADMITTED_BOUNDED_EXPLICIT_SWINTER1_APPLICATION",
+    "canonical_admission": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+    "status_authority": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+    "scope": "Uniform-source SWINTER1, frozen explicit canopy/root input, mode2, base layout, compensation OFF, unponded/nonrunoff flux regime, atomic physical/source commit.",
+    "owning_workflows": [
+      {
+        "id": 38861395245,
+        "name": "PPA-WU04-B Boesten evaporation admission",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395262,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395188,
+        "name": "F-MIG431-INT12-C qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395209,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395178,
+        "name": "PPA-WU03 common forcing adapter",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395230,
+        "name": "PPA-WU01 production application bootstrap",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395219,
+        "name": "MC-CROP01 file weather production",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38861395020,
+        "name": "PPA-WU04-A Black evaporation admission",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "coverage_effect": "ZERO_NEW_HISTORICAL_CAPABILITY_ADMISSIONS; completed existing application composition only"
   }
 }

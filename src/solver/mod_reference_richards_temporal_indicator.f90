@@ -9,6 +9,8 @@ module mod_reference_richards_temporal_indicator
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
+  use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_provider_t, &
+       B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
@@ -209,6 +211,45 @@ contains
             water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
        call constitutive%evaluate_demand(solve_result%candidate_state%pressure_head, CONSTITUTIVE_DEMAND_CAPACITY, &
             water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
+    type is (b111_analytical_hydraulic_provider_t)
+       if (.not. associated(constitutive%parameters)) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'constitutive-policy-deferred'
+          return
+       end if
+       if (constitutive%parameters%active_nodes /= n) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_FAILED
+          indicator_result%route = 'constitutive-size-mismatch'
+          return
+       end if
+       if (any(constitutive%parameters%model_kind /= B111_HYD_EXPONENTIAL .and. &
+            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG)) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'constitutive-policy-deferred'
+          return
+       end if
+       ! Stateless analytical retention: no dt-dependent storage. Keep the
+       ! incumbent certificate restricted to smooth positive-storage branches.
+       call constitutive%evaluate(request%base_state%pressure_head, &
+            water_base, conductivity_base, capacity_base, dkdh_base)
+       call constitutive%evaluate(solve_result%candidate_state%pressure_head, &
+            water_candidate, conductivity_candidate, capacity_candidate, dkdh_candidate)
+       do i = 1, n
+          if (constitutive%parameters%model_kind(i) == B111_HYD_EXPONENTIAL) then
+             scale = real(1.0000001,real64)*constitutive%parameters%theta_r(i)
+             if (water_base(i) <= scale .or. water_candidate(i) <= scale) exit
+          else
+             if (water_base(i) <= constitutive%parameters%theta_r(i) .or. &
+                  water_candidate(i) <= constitutive%parameters%theta_r(i) .or. &
+                  water_base(i) >= constitutive%parameters%theta_s(i) .or. &
+                  water_candidate(i) >= constitutive%parameters%theta_s(i)) exit
+          end if
+       end do
+       if (i <= n) then
+          indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
+          indicator_result%route = 'constitutive-branch-deferred'
+          return
+       end if
     class default
        indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
        indicator_result%route = 'constitutive-policy-deferred'

@@ -22,3 +22,29 @@
 | `sptabulated.f90` | `RETAIN_NUMERICS_EXTRACT` | Shared constitutive/numerical utility | Keep interpolation capability if required by supported physics, with explicit immutable table data. |
 | `tridag.f90` | `RETAIN_NUMERICS` | Soil-water solver implementation / numerical utilities | Retain qualified tridiagonal/banded numerical kernels as solver-private utilities or replace with equivalently qualified implementation. |
 | `variables.f90` | `DECOMPOSE_AND_RETIRE_GLOBALS` | Committed column-state domain; shared parameters; forcing; numerical configuration; results | Major migration hotspot. Classify every variable by ownership/lifetime, move it to typed domains, then retire broad mutable globals. |
+
+## PR1103 bounded analytical certificate candidate, 2026-10-16
+
+Status: proposed and implemented only on the existing hydraulic candidate; no canonical admission.
+
+The full unchanged B1.11 `MOD_MvG_functions.f90` is the independent executable
+value authority for MODEL2 and MODEL3. The MODEL2 dry water-content floor uses a
+default-real `1.0000001` literal, rounded before promotion to double precision.
+The port must preserve this value, including its effect on conductivity. This
+corrects the port; it changes neither the reference nor the admitted default MvG.
+
+The existing Reference temporal certificate may use the stateless MODEL2/3
+provider only on its smooth positive-storage branch: base and candidate water
+content must be strictly above the MODEL2 floor, or strictly between residual and
+saturated content for MODEL3; conductivity and candidate capacity remain strictly
+positive under the existing checks. The provider has no timestep-dependent
+storage term. MODEL6 remains deferred until its separate literal WC_K oracle is
+qualified. Saturated, dry-floor and other compositions receive no new certificate.
+
+Only provider dispatch and this explicit input-domain check may change. The
+mass-weighted raw/defect norms, tridiagonal operator, head budget, history contract,
+solver and acceptance thresholds remain the incumbent equations. Required evidence
+is literal values/cutoffs, an independent dense defect-operator oracle, real dynamic
+accepted mass/state with measured predecessor, discard/retry/restart, and current
+owner preservation. A component PASS alone cannot admit the runtime. Original
+negative provider-envelope evidence remains historical and immutable.

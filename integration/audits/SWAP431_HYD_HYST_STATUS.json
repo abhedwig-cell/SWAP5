@@ -1,7 +1,7 @@
 {
   "work_unit": "MC-HYD01 / MC-HYST01",
   "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
-  "canonical_reconciled_against": "integration/f-ci-canonical@8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+  "canonical_reconciled_against": "integration/f-ci-canonical@2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
   "branch": "work/swap431-hydraulic-coverage-20261007",
   "pull_request": 1103,
   "checkpoint_head": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
@@ -219,5 +219,24 @@
     "qualified": false,
     "admitted": false,
     "source_delta_this_phase": "NONE; test-only diagnostic mode added, original positive assertions preserved."
+  },
+  "literal_certificate_followup_20261016": {
+    "phase": "IMPLEMENTED_NOT_YET_QUALIFIED",
+    "baseline_owner": "92768628951d87186d55f6d69598344a1f75d15e",
+    "canonical": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+    "literal_failure": "112 actual literal MODEL2/3 cases:22 mismatches in MODEL2 theta/K dry floor due to default-real constant promoted after rounding. Both optimization outputs identical. Original failures retained.",
+    "literal_fix": "Preserve real(1.0000001,real64) exactly as literal B1.11; default MvG module and reference unchanged.",
+    "literal_after_fix": "112 cases,448 quantity comparisons O0/O2 PASS; maximum theta1.11e-16 K1.78e-15 C8.67e-19 dKdh0. Exact stdout identity.",
+    "certificate_candidate": "Only MODEL2/3 smooth positive-storage branch; MODEL6 deferred. Incumbent operator/norm/budget unchanged; independent dense operator and actual measured predecessor dynamic discard/replay/commit/restart gates pending.",
+    "selection": {
+      "focused": "Literal full unchanged B1.11 module plus3 typed/scaffold/driver inputs; O0/O2, measured compile/link/native.",
+      "runtime": "Reuse existing157-provider closure once per optimization; run analytical certificate dense oracle and existing actual predecessor branch; also incumbent direct-retention certificate and FSI38 owner on same build. Existing unchanged macro/salt/whole FCI not automatically selected.",
+      "expected_seconds": 140,
+      "long_low_air": "NOT_SELECTED_IMPACT",
+      "alternative_solver": "NOT_SELECTED_IMPACT"
+    },
+    "remote_checkpoint": "Existing owner927 and canonical219 independently durable. Local implementation checkpoint precedes140s selected gate; publish same existing PR after gate to avoid unnecessary Actions. No force push.",
+    "qualified": false,
+    "admitted": false
   }
 }

@@ -623,7 +623,9 @@ contains
     delta=p%theta_s(i)-p%theta_r(i)
     select case(p%model_kind(i))
     case(B111_HYD_EXPONENTIAL)
-      theta=max(1.0000001_real64*p%theta_r(i),p%theta_r(i)+delta*exp(p%alpha_1(i)*h))
+      ! B1.11 watcon uses a default-real literal, promoted only after its
+      ! single-precision rounding. Preserve that dry-floor value exactly.
+      theta=max(real(1.0000001,real64)*p%theta_r(i),p%theta_r(i)+delta*exp(p%alpha_1(i)*h))
       cap=p%alpha_1(i)*delta*exp(p%alpha_1(i)*h)
       relsat=(theta-p%theta_r(i))/delta
       k=p%ksat(i)*relsat

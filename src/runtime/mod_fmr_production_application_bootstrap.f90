@@ -98,6 +98,16 @@ module mod_fmr_production_application_bootstrap
        FMR_GW_APP_C_API_CONTEXT_BUSY
   use mod_fmr_biomass_root_uptake_input, only: bind_committed_biomass_root_uptake_input
   use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, CROP_ROOT_RATE_OK
+  use mod_fmr_interception_source_window_binding, only: fmr_interception_source_window_t, &
+       fmr_interception_source_window_restart_t, export_fmr_interception_source_window_restart, &
+       prepare_fmr_interception_source_window_trial, accept_fmr_interception_source_window_result, FMR_INTWIN_OK
+  ! INT12-C direct application imports.
+  use mod_pmdirect_swetr0_process
+  use mod_fmr_pmdirect_dynamic_top_boundary_binding
+  use mod_fmr_pmdirect_ptra_root_input_binding
+  use mod_fmr_pmdirect_surface_evaporation_binding
+  use mod_restricted_surface_evaporation, only: surface_evaporation_demand_t
+  ! End INT12-C direct application imports.
   implicit none
   private
 
@@ -117,6 +127,7 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_CROP_WINDOW_UNAVAILABLE = 13
   integer, parameter, public :: FMR_APP_BOOT_CROP_TRANSACTION_FAILED = 14
   integer, parameter, public :: FMR_APP_BOOT_CROP_EVENT_DELIVERED = 15
+  integer, parameter, public :: FMR_APP_BOOT_INTERCEPTION_REJECTED = 16
 
   ! Physical controls only. Live continuation is read exclusively from the
   ! existing committed crop owner; creation starts with zero continuation.
@@ -160,7 +171,25 @@ module mod_fmr_production_application_bootstrap
     real(real64), allocatable :: initial_right_derivative(:)
   end type fmr_production_application_tile_config_t
 
+  ! INT12-C explicit immutable application inputs and accepted receipts.
+  type, public :: fmr_pmdirect_interception_input_t
+    type(pmdirect_swetr0_weather_t) :: weather
+    type(pmdirect_swetr0_site_t) :: site
+    type(pmdirect_swetr0_canopy_t) :: canopy
+    type(crop_root_uptake_input_t) :: roots
+    type(root_water_uptake_parameters_t) :: root_parameters
+  end type
+  type, public :: fmr_pmdirect_interception_receipt_t
+    logical :: accepted=.false.
+    type(pmdirect_swetr0_daily_result_t) :: daily
+    type(pmdirect_swetr0_interval_result_t) :: interval
+    type(b110_dynamic_top_boundary_result_t) :: top
+    type(root_water_uptake_flux_result_t) :: roots
+  end type
+  ! End INT12-C explicit application types.
+
   type, public :: fmr_production_application_config_t
+    logical :: explicit_pmdirect_interception=.false.
     ! One annual atmospheric forcing and one response for both assimilation
     ! and transpiration. No second canopy CO2 table is selected by this profile.
     logical :: file_weather_co2_response=.false.
@@ -210,6 +239,7 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
+    logical :: explicit_pmdirect_interception=.false.
     logical :: ordinary_head_application = .false.
     logical :: ordinary_cauchy_application = .false.
     logical :: ordinary_lysimeter_application = .false.
@@ -249,6 +279,8 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: ready => production_application_ready
     procedure, public :: tile_count => production_application_tile_count
     procedure, public :: groundwater_worker_count => production_application_groundwater_worker_count
+    procedure, public :: run_pmdirect_interception_interval => production_application_run_pmdirect_interception_interval
+    procedure, public :: run_interception_window_interval => production_application_run_interception_window_interval
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
     procedure, public :: begin_weather_day => production_application_begin_weather_day
@@ -294,6 +326,17 @@ contains
     if (config%groundwater_parallel_workers /= 1 .and. config%groundwater_parallel_workers /= 2 .and. &
         config%groundwater_parallel_workers /= 4) return
 
+    ! INT12-C explicit initialization gate; false preserves incumbent routing.
+    if (config%explicit_pmdirect_interception) then
+      status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+      if (config%file_weather_daystart.or.config%file_weather_rooted.or.config%file_weather_epoch_day/=0.or. &
+          config%groundwater_parallel_workers/=1) return
+      if (config%numerical%transaction%temporal_mode/=TX_TEMPORAL_MODEL_CERTIFICATE) return
+      do i=1,n
+        if (.not.explicit_pmdirect_tile_valid(config%tiles(i))) return
+      end do
+    end if
+    ! End INT12-C explicit initialization gate.
     ordinary_head_profile = .true.
     ordinary_cauchy_profile = .true.
     ordinary_explicit_cauchy_profile = .true.
@@ -303,7 +346,7 @@ contains
     prescribed_qbot_profile = .true.
     direct_retention_requested = .false.
     do i = 1, n
-      if (.not. tile_config_valid(config%tiles(i), n, i, config%file_weather_daystart,config%file_weather_rooted)) then
+      if (.not. tile_config_valid(config%tiles(i), n, i, config%file_weather_daystart,config%file_weather_rooted,config%explicit_pmdirect_interception)) then
         status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
         return
       end if
@@ -618,6 +661,7 @@ contains
          self%execution_plan, ok)
 
     if(config%file_weather_daystart) self%weather_configuration=config
+    self%explicit_pmdirect_interception=config%explicit_pmdirect_interception
     self%initialized = .true.
     status = FMR_APP_BOOT_OK
   end subroutine production_application_initialize
@@ -1575,6 +1619,192 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
+  ! INT12-C direct PMdirect application and its explicit tile contract.
+  logical function explicit_pmdirect_tile_valid(tile) result(valid)
+    type(fmr_production_application_tile_config_t), intent(in) :: tile
+    valid=.false.
+    if (tile%parameters%bottom_mode/=2.or.tile%parameters%root_compensation%method/=ROOT_COMP_OFF) return
+    if (tile%template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
+        tile%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+        tile%template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY) return
+    if (tile%parameters%soil_temperature_active.or.tile%parameters%frost_active.or.tile%parameters%snow_active.or. &
+        tile%parameters%macropore_active.or.tile%parameters%drainage_response_active.or. &
+        tile%parameters%root_salinity_active.or.tile%parameters%root_frost%active.or. &
+        tile%parameters%black_evaporation_active.or.tile%parameters%boesten_evaporation_active.or. &
+        tile%parameters%elasticity_active.or.tile%parameters%direct_retention_active.or. &
+        tile%parameters%hysteresis_active.or.tile%parameters%tabulated_hydraulics_active) return
+    if (allocated(tile%parameters%bartholomeus).or.allocated(tile%parameters%micro_de_willigen)) return
+    valid=.true.
+  end function explicit_pmdirect_tile_valid
+
+  subroutine production_application_run_pmdirect_interception_interval(self,owners,t0,t1,inputs, &
+       results,accepted_interception,receipts,status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(fmr_interception_source_window_t), intent(inout) :: owners(:)
+    real(real64), intent(in) :: t0,t1
+    type(fmr_pmdirect_interception_input_t), intent(in) :: inputs(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    real(real64), allocatable, intent(out) :: accepted_interception(:)
+    type(fmr_pmdirect_interception_receipt_t), allocatable, intent(out) :: receipts(:)
+    integer, intent(out) :: status
+    type(fmr_pmdirect_interception_receipt_t), allocatable :: trial(:)
+    type(fmr_b110_physical_forcing_t), allocatable :: effective(:)
+    type(pmdirect_swetr0_diagnostics_t) :: daily_diag,interval_diag
+    type(fmr_pmdirect_surface_demand_binding_diagnostics_t) :: demand_diag
+    type(fmr_pmdirect_top_precip_binding_diagnostics_t) :: top_diag
+    type(fmr_pmdirect_ptra_root_binding_diagnostics_t) :: ptra_diag
+    type(fmr_crop_root_uptake_adapter_diagnostics_t) :: root_adapter
+    type(fmr_root_uptake_binding_diagnostics_t) :: root_binding
+    type(root_water_uptake_diagnostics_t) :: root_diag
+    type(crop_root_uptake_input_t) :: roots
+    type(surface_evaporation_demand_t) :: demand
+    type(b110_dynamic_top_boundary_request_t) :: base,request
+    type(soil_water_parameter_set_t) :: geometry
+    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(fmr_interception_source_window_restart_t) :: record
+    class(transaction_state_t), allocatable :: physical
+    real(real64) :: aggregate
+    logical :: ok
+    integer :: i,st
+    allocate(accepted_interception(size(owners)));accepted_interception=0.0_real64
+    status=FMR_APP_BOOT_NOT_READY
+    if (.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if (.not.self%explicit_pmdirect_interception) return
+    status=FMR_APP_BOOT_INTERCEPTION_REJECTED
+    if (.not.all(ieee_is_finite([t0,t1]))) return
+    if (t1<=t0) return
+    if (size(inputs)/=size(self%columns).or.size(owners)/=size(self%columns)) return
+    allocate(trial(size(inputs)),effective(size(inputs)))
+    do i=1,size(inputs)
+      if (inputs(i)%canopy%crop_emerged.neqv.inputs(i)%roots%crop_emerged) return
+      if (inputs(i)%roots%crop_emerged.and..not.self%parameters(i)%root_extraction_active) return
+      if (inputs(i)%root_parameters%active_nodes/=self%parameters(i)%active_nodes) return
+      call evaluate_pmdirect_swetr0_daily(inputs(i)%weather,inputs(i)%site,inputs(i)%canopy,trial(i)%daily,daily_diag)
+      if (.not.daily_diag%daily_result_produced) return
+      interval_diag=daily_diag
+      call apply_swinter1_daily_interval(inputs(i)%weather,inputs(i)%canopy,trial(i)%daily,trial(i)%interval,interval_diag)
+      if (.not.interval_diag%interval_result_produced) return
+      call export_fmr_interception_source_window_restart(owners(i),t0,record,st)
+      if (st/=FMR_INTWIN_OK) return
+      if (record%column_id/=self%columns(i)%column_id) return
+      if (record%source_window%t1-record%source_window%t0>1.0_real64) return
+      aggregate=trial(i)%interval%interception_rate_cm_per_day*(record%source_window%t1-record%source_window%t0)
+      if (abs(aggregate-record%source_window%aggregate)> &
+          64.0_real64*epsilon(aggregate)*max(tiny(aggregate),abs(aggregate))) return
+      call fmr_bind_pmdirect_surface_evaporation_demand(trial(i)%daily,daily_diag,demand,demand_diag)
+      if (.not.demand_diag%result_produced) return
+      base=b110_dynamic_top_boundary_request_t()
+      base%step_duration_day=t1-t0;base%conductivity_mean_method=self%parameters(i)%swkmean
+      base%runoff_resistance_day=1.0_real64
+      base%potential_bare_soil_evaporation_cm_per_day=demand%bare_soil_demand
+      base%potential_pond_evaporation_cm_per_day=demand%ponded_water_demand
+      call self%committed(i)%snapshot(physical,ok)
+      if (.not.ok) return
+      select type(physical)
+      class is(fmr_b110_physical_state_t)
+        base%pressure_head_top_cm=physical%pressure_head(1)
+        base%water_content_top=physical%water_content(1)
+        base%previous_ponding_depth_cm=physical%ponding_depth
+        base%candidate_ponding_depth_cm=physical%ponding_depth
+      class default
+        return
+      end select
+      call fmr_bind_pmdirect_net_rain_to_dynamic_top_request(base,trial(i)%interval,interval_diag,request,top_diag)
+      if (.not.top_diag%result_produced) return
+      geometry%parameter_set_id=self%parameters(i)%parameter_set_id
+      geometry%active_nodes=self%parameters(i)%active_nodes
+      geometry%z=self%parameters(i)%z;geometry%dz=self%parameters(i)%dz
+      geometry%node_distance=self%parameters(i)%node_distance
+      call initialize_b110_default_mvg_parameters(hydraulics,self%parameters(i)%cofgen)
+      call evaluate_b110_dynamic_top_boundary(geometry,hydraulics,request,trial(i)%top)
+      call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(i),trial(i)%top,effective(i),st)
+      if (st/=PPA_WU03_OK) return
+      call fmr_bind_pmdirect_ptra_to_root_input(inputs(i)%roots,self%parameters(i)%active_nodes, &
+           trial(i)%interval,interval_diag,roots,ptra_diag)
+      if (.not.ptra_diag%result_produced) return
+      call fmr_evaluate_shared_crop_root_uptake(self%committed(i),inputs(i)%root_parameters,roots, &
+           trial(i)%roots,root_diag,root_binding,root_adapter)
+      if (root_adapter%status/=FMR_CROP_ROOT_ADAPTER_OK) return
+      effective(i)%root_extraction_sink=trial(i)%roots%root_extraction_sink
+    end do
+    call self%run_interception_window_interval(owners,t0,t1,effective,results,accepted_interception,status)
+    if (status/=FMR_APP_BOOT_OK) return
+    trial%accepted=.true.
+    call move_alloc(trial,receipts)
+  end subroutine production_application_run_pmdirect_interception_interval
+  ! End INT12-C direct PMdirect application.
+
+  ! Explicit source-window application: both physical and companion changes
+  ! remain private until this call succeeds. Existing standalone calls retain
+  ! their own partial-progress semantics.
+  subroutine production_application_run_interception_window_interval(self, owners, t0, t1, &
+       effective_forcing, results, accepted_interception, status)
+    class(fmr_production_application_bootstrap_t), intent(inout) :: self
+    type(fmr_interception_source_window_t), intent(inout) :: owners(:)
+    real(real64), intent(in) :: t0, t1
+    type(fmr_b110_physical_forcing_t), intent(in) :: effective_forcing(:)
+    type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
+    real(real64), allocatable, intent(out) :: accepted_interception(:)
+    integer, intent(out) :: status
+    type(fmr_interception_source_window_t), allocatable :: trial_owners(:)
+    type(kernel_committed_state_t), allocatable :: before(:)
+    type(fmr_interception_source_window_restart_t) :: record
+    real(real64) :: proposed_amount
+    integer :: i, local_status
+
+    allocate(accepted_interception(size(owners)))
+    accepted_interception=0.0_real64
+    status=FMR_APP_BOOT_NOT_READY
+    if (.not.self%ready()) return
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if (associated(self%active_context).or.self%weather_epoch_day/=0) return
+    ! This is the qualified explicit root-inactive fixed-flux receiver. Do not
+    ! silently acquire optional-process or automatic crop/weather semantics.
+    if (any(self%parameters%bottom_mode/=2).or.(any(self%parameters%root_extraction_active).and..not.self%explicit_pmdirect_interception).or. &
+        any(self%parameters%black_evaporation_active).or.any(self%parameters%boesten_evaporation_active).or. &
+        any(self%parameters%macropore_active).or. &
+        any(self%parameters%snow_active).or.any(self%parameters%frost_active).or. &
+        any(self%parameters%soil_temperature_active)) return
+    if (any(self%templates%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE).or. &
+        any(self%templates%solute_state_layout_id/=0_int64).or. &
+        self%numerical%transaction%temporal_mode/=TX_TEMPORAL_MODEL_CERTIFICATE) return
+    status=FMR_APP_BOOT_INTERCEPTION_REJECTED
+    if (size(owners)/=size(self%columns).or.size(effective_forcing)/=size(self%columns)) return
+    trial_owners=owners
+    do i=1,size(owners)
+      call export_fmr_interception_source_window_restart(owners(i),t0,record,local_status)
+      if (local_status/=FMR_INTWIN_OK) return
+      if (record%column_id/=self%columns(i)%column_id) return
+      call prepare_fmr_interception_source_window_trial(trial_owners(i),t1,proposed_amount,local_status)
+      if (local_status/=FMR_INTWIN_OK) return
+    end do
+    before=self%committed
+    call self%run_standalone_with_forcing(t0,t1,effective_forcing,results,status)
+    if (status/=FMR_APP_BOOT_OK) then
+      self%committed=before
+      if (allocated(results)) deallocate(results)
+      return
+    end if
+    status=FMR_APP_BOOT_INTERCEPTION_REJECTED
+    do i=1,size(owners)
+      if (.not.results(i)%mass%complete) exit
+      call accept_fmr_interception_source_window_result(trial_owners(i),results(i)%column_id, &
+           results(i)%requested_t0,results(i)%requested_t1,results(i)%committed,results(i)%accepted_substeps, &
+           results(i)%initial_revision,results(i)%final_revision,results(i)%final_committed_time, &
+           results(i)%final_committed_time_bound,accepted_interception(i),local_status)
+      if (local_status/=FMR_INTWIN_OK) exit
+    end do
+    if (i<=size(owners)) then
+      self%committed=before
+      accepted_interception=0.0_real64
+      if (allocated(results)) deallocate(results)
+      return
+    end if
+    owners=trial_owners
+    status=FMR_APP_BOOT_OK
+  end subroutine production_application_run_interception_window_interval
+
   subroutine production_application_run_standalone(self, t0, t1, results, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     real(real64), intent(in) :: t0, t1
@@ -2000,10 +2230,10 @@ contains
     valid=.true.
   end function
 
-  logical function tile_config_valid(tile, ntiles, slot, file_weather,rooted_weather) result(valid)
+  logical function tile_config_valid(tile, ntiles, slot, file_weather,rooted_weather,explicit_interception) result(valid)
     type(fmr_production_application_tile_config_t), intent(in) :: tile
     integer, intent(in) :: ntiles, slot
-    logical, intent(in) :: file_weather,rooted_weather
+    logical, intent(in) :: file_weather,rooted_weather,explicit_interception
 
     valid = .false.
     if (tile%tile_id <= 0_int64) return
@@ -2095,6 +2325,8 @@ contains
           if (tile%template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BASE) return
         else if (tile%template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RUTTER) then
           if (tile%parameters%root_compensation%method /= ROOT_COMP_OFF) return
+        else if (explicit_interception.and.explicit_pmdirect_tile_valid(tile)) then
+          ! Explicit frozen Feddes input; incumbent profiles below are unchanged.
         else
           if(tile%parameters%root_compensation%method/=ROOT_COMP_JARVIS.and. &
              tile%parameters%root_compensation%method/=ROOT_COMP_WALSUM.and. &
@@ -2347,6 +2579,7 @@ contains
       call end_b110_direct_retention_application()
       self%direct_retention_owner_active = .false.
     end if
+    self%explicit_pmdirect_interception=.false.
     self%initialized = .false.
     self%ordinary_head_application = .false.
     self%ordinary_cauchy_application = .false.

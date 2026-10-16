@@ -2,6 +2,7 @@
 """Exact SWRD3 source and executed production proof; admission remains separate."""
 from pathlib import Path
 import argparse,base64,hashlib,io,json,math,os,subprocess,sys,tarfile
+sys.dont_write_bytecode=True  # Proof imports must leave the scientific checkout clean.
 ROOT=Path(__file__).resolve().parents[2]
 BASE='3b661766dc59298a7f541c970c2d3a55602d926c'
 STATUS='integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json'

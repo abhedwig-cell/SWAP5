@@ -19,6 +19,8 @@ program test_swap431_hyd_serialized_runtime
        fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t, &
        fmr_new_b110_committed_state, fmr_new_b110_temporal_indicator_committed_state, &
        fmr_b110_temporal_indicator_state_t, fmr_serialized_physical_observation_t
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
   implicit none
   character(len=64)::mode
 
@@ -27,7 +29,7 @@ program test_swap431_hyd_serialized_runtime
     call certificate_envelope(B111_HYD_EXPONENTIAL,'MODEL2')
     call certificate_envelope(B111_HYD_BIMODAL_MVG,'MODEL3')
     call certificate_envelope(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
-    print '(a)','SWAP431_HYD_CERTIFICATE_ENVELOPE_NEGATIVE=PASS'
+    print '(a)','SWAP431_HYD_CERTIFICATE_MODEL2_MODEL3_POSITIVE_MODEL6_DEFERRED=PASS'
     stop
   end if
 
@@ -53,13 +55,14 @@ contains
     type(fmr_logical_column_t)::column
     type(fmr_template_t)::template
     type(canonical_numerical_config_t)::numerical
-    type(kernel_committed_state_t)::committed,history_state
+    type(kernel_committed_state_t)::committed,history_state,registry(1),restored_registry(1)
     type(kernel_checkpoint_t)::checkpoint
-    type(kernel_candidate_state_t)::candidate
-    type(kernel_result_t)::result
+    type(kernel_candidate_state_t)::candidate,replay_candidate
+    type(kernel_result_t)::result,replay_result
     type(kernel_diagnostics_t)::diag
     type(fmr_serialized_physical_observation_t)::obs
-    class(transaction_state_t),allocatable::snapshot
+    class(transaction_state_t),allocatable::snapshot,first,second
+    type(fmr_committed_restart_bundle_t)::bundle
     real(real64),allocatable::theta(:),k(:),cap(:),dk(:),derivative(:),history(:)
     real(real64),parameter::dt=1.0e-5_real64
     logical::ok,available,did_commit
@@ -111,6 +114,57 @@ contains
       '|SOLVER=',diag%solver_rejections,'|MASS=',diag%mass_rejections,'|TEMPORAL=',diag%temporal_rejections, &
       '|HISTORY=',obs%temporal_previous_derivative_available,'|BUDGET=',obs%temporal_head_budget_valid, &
       '|ROUTE=',trim(obs%temporal_indicator_route)
+    if(kind/=B111_HYD_BIMODAL_MVG_WCK)then
+      if(.not.result%completed.or..not.candidate%ready())call stop_labeled(label//' analytical dynamic trial')
+      if(.not.result%mass%complete.or.abs(result%mass%residual)>1e-8_real64) &
+        call stop_labeled(label//' analytical dynamic mass')
+      call candidate%snapshot(first,available)
+      if(.not.available)call stop_labeled(label//' analytical candidate snapshot')
+      select type(f=>first)
+      type is(fmr_b110_temporal_indicator_state_t)
+        if(maxval(abs(f%pressure_head-predecessor%pressure_head))<=1e-12_real64) &
+          call stop_labeled(label//' dynamic profile did not change')
+      class default
+        call stop_labeled(label//' dynamic history carrier')
+      end select
+      ! A discarded physical trial must leave the measured predecessor unchanged.
+      call history_state%snapshot(snapshot,available)
+      select type(f=>snapshot)
+      type is(fmr_b110_temporal_indicator_state_t)
+        if(any(f%pressure_head/=predecessor%pressure_head))call stop_labeled(label//' discard changed committed head')
+      class default
+        call stop_labeled(label//' discard history carrier')
+      end select
+      call backend%run_trial(column,template,p,history_state,forcing,numerical,dt,2*dt,checkpoint, &
+        replay_result,replay_candidate,diag)
+      if(.not.replay_result%completed)call stop_labeled(label//' dynamic replay')
+      call replay_candidate%snapshot(second,available)
+      if(.not.available.or..not.same_history_state(first,second))call stop_labeled(label//' discard replay identity')
+      call backend%commit_trial_candidate(history_state,candidate,diag,did_commit,status)
+      if(.not.did_commit)call stop_labeled(label//' dynamic commit')
+      registry(1)=history_state
+      call fmr_export_committed_restart([column],[template],registry,p%parameter_set_id,bundle,ok,status)
+      if(.not.ok.or.status/=FMR_RESTART_OK)call stop_labeled(label//' history restart export')
+      call fmr_restore_committed_restart(bundle,p%parameter_set_id,[column],[template],restored_registry,ok,status)
+      if(.not.ok.or.status/=FMR_RESTART_OK)call stop_labeled(label//' history restart restore')
+      call restored_registry(1)%snapshot(second,available)
+      call history_state%snapshot(first,available)
+      if(.not.same_history_state(first,second))call stop_labeled(label//' restart physical/history identity')
+      call history_state%capture_checkpoint(checkpoint,ok)
+      call backend%run_trial(column,template,p,history_state,forcing,numerical,2*dt,3*dt,checkpoint, &
+        result,candidate,diag)
+      if(.not.result%completed.or..not.result%mass%complete.or.abs(result%mass%residual)>1e-8_real64) &
+        call stop_labeled(label//' uninterrupted continuation mass')
+      call candidate%snapshot(first,available)
+      call restored_registry(1)%capture_checkpoint(checkpoint,ok)
+      call backend%run_trial(column,template,p,restored_registry(1),forcing,numerical,2*dt,3*dt,checkpoint, &
+        replay_result,replay_candidate,diag)
+      if(.not.replay_result%completed)call stop_labeled(label//' restarted continuation')
+      call replay_candidate%snapshot(second,available)
+      if(.not.same_history_state(first,second))call stop_labeled(label//' restarted continuation identity')
+      write(*,'(a,es24.16)')'SWAP431_HYD_ANALYTICAL_DYNAMIC_REPLAY_RESTART_'//label//'=PASS|MASS=',result%mass%residual
+      return
+    end if
     if(result%completed.or.candidate%ready())call stop_labeled(label//' deferred provider unexpectedly accepted')
     if(.not.obs%temporal_previous_derivative_available.or..not.obs%temporal_head_budget_valid) &
       call stop_labeled(label//' certificate prerequisites unavailable')
@@ -129,6 +183,24 @@ contains
       call stop_labeled(label//' rejected trial changed carrier')
     end select
   end subroutine certificate_envelope
+
+  logical function same_history_state(a,b) result(same)
+    class(transaction_state_t),intent(in)::a,b
+    real(real64),allocatable::da(:),db(:)
+    logical::aa_ok,bb_ok
+    same=.false.
+    select type(aa=>a)
+    type is(fmr_b110_temporal_indicator_state_t)
+      select type(bb=>b)
+      type is(fmr_b110_temporal_indicator_state_t)
+        same=all(aa%pressure_head==bb%pressure_head).and.all(aa%water_content==bb%water_content)
+        same=same.and.aa%ponding_depth==bb%ponding_depth.and.aa%groundwater_level==bb%groundwater_level
+        call aa%temporal_history_snapshot(da,aa_ok);call bb%temporal_history_snapshot(db,bb_ok)
+        same=same.and.aa_ok.and.bb_ok
+        if(same)same=all(da==db)
+      end select
+    end select
+  end function same_history_state
 
   subroutine stop_labeled(message)
     character(len=*),intent(in)::message
