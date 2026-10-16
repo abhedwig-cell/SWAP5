@@ -543,5 +543,70 @@
         "members": 21
       }
     }
+  },
+  "material_root_interface_decision_20261016": {
+    "baseline": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": false,
+    "scope": "Extend existing PR1252 managed authentic weather with material/root-derived DCS1 and existing TCS2/3/4; no second physical or management owner.",
+    "source_decisions": [
+      "B1.11 irrigation.f90 uses phfieldcapacity default -100cm, typed override[-500,0]; stress head is arithmetic mean(hlim3l,hlim3h), NOT demand-dependent Feddes critical head; wilting is hlim4. Preserve that independent irrigation authority.",
+      "Evaluate all threshold theta using the same prepared default-MvG material as current physical/top assembly. Bounded per-node material representation; no unqualified alternate material families.",
+      "Root-zone extent is accepted crop SWRD2 actual depth, not potential depth or caller-configured node count; partial deepest compartment fraction from actual dz. New root-dependent profile requires actual rooted daily SWRD2 ownership.",
+      "Use authenticated whole-day rain at DCS1 selection, never subinterval rain or rain pulse amplitude.",
+      "Existing root-management preparation and allocation receipt extended preparation-only, preserving same accepted-only bootstrap dispatch, once/day selection, split/event continuation and existing opaque restart.",
+      "Invalid/missing crop authority, zero/unavailable emerged root depth, unsupported geometry/material/selector refuse before publication. Before emergence there is no root selection.",
+      "TCS6 weekly and bottom7 salt remain excluded; no arbitrary long-window accuracy or native weather disk claim."
+    ],
+    "invariants": [
+      "One physical mass and accepted state owner",
+      "No mutation/receipt/selection consumption on failed trial",
+      "Frozen active event independent of later root growth/rain/provider",
+      "Explicit physical selectors separate from numerical policy",
+      "Original source policy, tolerances and references retained"
+    ],
+    "qualification_selection": {
+      "direct": "New material-root adapter: minimal real dependency closure O0/O2, literal independent theta and partial-root sums, mean-vs-demand discriminator, invalid heads/geometry/material/nonmutation. Existing source-policy literal daily rain and TCS2-4 policy tests retained. Expected30s.",
+      "physical": "One fresh controlled Session O0/O2:22 existing weather/managed/default owners plus18 new actual TCS2/3/4 xDCS1/2 and nontrigger executions. Drivers internally retain current/lagged, actual soil/uptake, accepted whole-day weather, source-oracle, common-prefix retry, frozen receipt and joint restart assertions. Expected1100-1800s; measured cost to follow. No cross-session object reuse.",
+      "owners": "Fresh16 affected explicit application/process owner executions O0/O2 with unchanged original assertions and immutable stdout comparison; expected300s. No full moving/highest/RossFast selection.",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS: unchanged solver/default body; affected new physical/crop/event mass/restart and all existing managed outputs tested directly. Owner guards reconciled source-bound; no relabelled full PASS.",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT"
+    },
+    "next_action": "Publish exact qualified candidate on existing material-root branch; fresh canonical/ref/review/check reconciliation, then normal bounded integration. No full source-envelope or master closure claim.",
+    "original_implementation_checkpoint": "237ed8f64",
+    "direct_contract": {
+      "status": "PASS",
+      "source_checkpoint": "5ff5e753fe8fd3e650cfa2cbf274595ed54c6980",
+      "providers": 5,
+      "literal_material_and_fractional_root_cases_per_optimization": 240,
+      "invalid_inputs_per_optimization": 13,
+      "optimization": "O0/O2 stdout byte identity",
+      "wall_seconds": 3.8006341260042973
+    },
+    "reconciliation": {
+      "canonical": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+      "added_peer_admission": "PR1253 existing bounded B111 request owner preserved",
+      "production_overlap": "NONE: material/root changes three runtime files; peer request changes crop modules. Actual current ordered runtime closure will be freshly compiled.",
+      "source_worktree": "Original peer checkout remains untouched; continue committed237ed8f postimage in separate checkout."
+    },
+    "science_authority": "integration/audits/MC_IRR01_STATUS.json#material_root_application_20261016",
+    "admission_controls": {
+      "status": "PASS",
+      "negative_controls": 21,
+      "public_owner_dispatch": "PASS actual existing FCI/NFIX qualification entrypoint",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "archive": {
+        "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "256b1ff1065150f3fb25f50ee0ffa43c591de256148b5c601d8b64b82e53b874",
+        "decoded_bytes": 11560,
+        "members": 7
+      }
+    }
   }
 }
