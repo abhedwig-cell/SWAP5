@@ -11,7 +11,7 @@ import tarfile
 
 sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
-BASE = '87bc1b1bc0e33d5df9cc460c56f7773209d40931'
+BASE = 'efe79f5fd58f564f54dde5ca5e575bb138c4bbb1'
 STATUS = 'integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json'
 SURFACE = ['src', 'tests', 'tools', 'reference', '.github']
 PRODUCTION = {
@@ -19,7 +19,6 @@ PRODUCTION = {
     'src/runtime/mod_fmr_b111_pond_solute_route.f90',
     'src/runtime/mod_fmr_b111_pond_joint_application.f90',
     'src/runtime/mod_fmr_serialized_reference_backend.f90',
-    'src/adapter/mod_matrix_joint_restart_file.f90',
 }
 
 def check(ok, label):

@@ -237,16 +237,21 @@ contains
   end function
 
   subroutine reconstruct_matrix_solute_trusted(p,parameter_id,revision,time,water,concentration, &
-       dissolved,sorbed,state,status)
+       dissolved,sorbed,state,status,surface_mass)
     type(b111_reactive_solute_substep_forcing_t),intent(in)::p
     integer(int64),intent(in)::parameter_id,revision
     real(real64),intent(in)::time,water(:),concentration(:),dissolved(:),sorbed(:)
     type(matrix_solute_state_t),intent(out)::state
     integer,intent(out)::status
+    real(real64),intent(in),optional::surface_mass
     type(matrix_solute_state_t)::trial
     real(real64)::tol,scale
     state=matrix_solute_state_t();status=MATRIX_INVALID
     if(revision<0.or.size(dissolved)/=size(water).or.size(sorbed)/=size(water))return
+    if(present(surface_mass))then
+      if(.not.ieee_is_finite(surface_mass))return
+      if(surface_mass<0.0_real64.or.surface_mass>1.0e12_real64)return
+    end if
     if(.not.all(ieee_is_finite(dissolved)).or..not.all(ieee_is_finite(sorbed)))return
     if(any(dissolved<0.0_real64).or.any(sorbed<0.0_real64))return
     call initialize_matrix_solute(p,parameter_id,time,water,concentration,trial,status)
@@ -259,6 +264,7 @@ contains
     ! Keep exact accepted bits after physical validation, rather than
     ! recomputing and rounding concentration/storage during every restart.
     trial%mobile%mass_mg_cm2=dissolved;trial%companion%sorbed_matrix_mass=sorbed
+    if(present(surface_mass))trial%companion%pond_mass=surface_mass
     trial%revision=revision
     state=trial;status=MATRIX_OK
   end subroutine

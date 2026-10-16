@@ -106,7 +106,7 @@ for opt in ('O0','O2'):
     negatives={'truncated':raw[:-12]};data=bytearray(raw);data[10]^=1;negatives['crc']=bytes(data)
     for label,offset,fmt,value in [('clock',136,'d',5.),('node_count',152,'i',100000),('revision',chem+8,'q',-1),
         ('chemical_clock',chem+16,'d',5.),('parameter_nan',values,'d',float('nan')),('water_nan',state,'d',float('nan')),
-        ('negative_dissolved',state+16*n,'d',-1.),('wrong_sorbed',state+24*n,'d',100.),('pond_schema',len(raw)-40,'i',2),('pond_clock',len(raw)-36,'d',5.),('pond_depth',len(raw)-28,'d',5.),('pond_mass',len(raw)-20,'d',-1.),('pond_revision',len(raw)-12,'q',-1)]:
+        ('negative_dissolved',state+16*n,'d',-1.),('wrong_sorbed',state+24*n,'d',100.),('surface_negative',len(raw)-12,'d',-1.),('surface_nan',len(raw)-12,'d',float('nan')),('surface_overbound',len(raw)-12,'d',1.01e12),('surface_infinite',len(raw)-12,'d',float('inf')),('surface_tag',0,'8s',b'S5MJ9999')]:
         data=bytearray(raw[:-4]);struct.pack_into(fmt,data,offset,value)
         negatives[label]=bytes(data)+struct.pack('I',zlib.crc32(data)&0xffffffff)
     for label,data in negatives.items():

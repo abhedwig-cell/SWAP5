@@ -15,14 +15,14 @@ module mod_matrix_joint_restart_file
   use mod_fmr_b111_matrix_joint_application,only:matrix_joint_states_match,JOINT_OK,JOINT_INVALID
   use mod_solute_mobile_salt_state,only:mobile_salt_state_t
   use mod_solute_compartment_state,only:solute_compartment_state_t
-  use mod_b111_persistent_pond,only:persistent_pond_state_t,restore_persistent_pond,POND_OK
   implicit none
   private
-  character(8),parameter::MAGIC='S5MJ0001',POND_MAGIC='S5MP0001'
+  character(8),parameter::MAGIC='S5MJ0001'
+  character(8),parameter::SURFACE_MAGIC='S5MJ0002'
   integer,parameter::MAX_BYTES=10485760
   public::write_matrix_joint_restart_file,read_matrix_joint_restart_file
 contains
-  subroutine write_matrix_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status,pond)
+  subroutine write_matrix_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status,allow_surface_mass)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -30,10 +30,7 @@ contains
     type(kernel_committed_state_t),intent(in)::water
     type(matrix_solute_state_t),intent(in)::chemical
     integer,intent(out)::status
-    type(persistent_pond_state_t),intent(in),optional::pond
-    real(real64)::pond_clock,pond_depth,pond_mass
-    integer(int64)::pond_revision
-    character(8)::tag
+    logical,intent(in),optional::allow_surface_mass
     type(fmr_committed_restart_bundle_t)::b
     type(b111_reactive_solute_substep_forcing_t)::p
     type(mobile_salt_state_t)::m
@@ -43,6 +40,8 @@ contains
     integer(int64)::id,revision
     integer::u,io,mode,n
     logical::ok,has_history
+    logical::surface_enabled
+    character(8)::tag
     status=JOINT_INVALID
     if(column%state_handle/=1)return
     if(.not.matrix_joint_states_match(water,chemical))return
@@ -51,19 +50,16 @@ contains
     call chemical%configuration(p,id);v=matrix_parameter_vector(p)
     if(.not.allocated(v))return
     call chemical%snapshot(time,theta,m,s,revision)
+    surface_enabled=.false.
+    if(present(allow_surface_mass))surface_enabled=allow_surface_mass
+    ! V1 must never silently drop an unsupported physical store. Check before
+    ! opening/replacing the caller's file. Surface V2 is an explicit contract.
+    if(s%aquifer_mass/=0.0_real64.or.any(s%age_amount/=0.0_real64))return
+    if(.not.ieee_is_finite(s%pond_mass))return
+    if(s%pond_mass<0.0_real64.or.s%pond_mass>1.0e12_real64)return
+    if(.not.surface_enabled.and.s%pond_mass/=0.0_real64)return
     tag=MAGIC
-    if(present(pond))then
-      if(.not.pond%ready())return
-      call pond%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
-      if(pond_clock/=time)return
-      select type(q=>b%records(1)%physical_state)
-      class is(fmr_b110_physical_state_t)
-        if(q%ponding_depth/=pond_depth)return
-      class default
-        return
-      end select
-      tag=POND_MAGIC
-    end if
+    if(surface_enabled)tag=SURFACE_MAGIC
     n=size(theta);mode=-1;has_history=.false.
     select type(q=>b%records(1)%physical_state)
     type is(fmr_b110_physical_state_t)
@@ -93,9 +89,9 @@ contains
         if(has_history)write(u,iostat=io)derivative
         if(io/=0)exit writing
         write(u,iostat=io)id,revision,time,size(v),v,theta,m%concentration_mg_cm3,m%mass_mg_cm2,s%sorbed_matrix_mass
+        if(io/=0)exit writing
+        if(surface_enabled)write(u,iostat=io)s%pond_mass
       end associate
-      if(io/=0)exit writing
-      if(present(pond))write(u,iostat=io)1,pond_clock,pond_depth,pond_mass,pond_revision
     end block writing
     close(u)
     if(io/=0)return
@@ -104,7 +100,7 @@ contains
   end subroutine
 
   subroutine read_matrix_joint_restart_file(path,column,template,water_parameter_id,chemical_parameter_id,p, &
-       water,chemical,status,pond)
+       water,chemical,status,allow_surface_mass)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -113,30 +109,25 @@ contains
     type(kernel_committed_state_t),intent(inout)::water
     type(matrix_solute_state_t),intent(inout)::chemical
     integer,intent(out)::status
-    type(persistent_pond_state_t),intent(inout),optional::pond
-    type(persistent_pond_state_t)::pond_trial
-    real(real64)::pond_clock,pond_depth,pond_mass
-    integer(int64)::pond_revision
-    integer::pond_schema
+    logical,intent(in),optional::allow_surface_mass
     type(fmr_committed_restart_bundle_t)::b
     type(kernel_committed_state_t)::temporary,water_trial(1)
     type(fmr_b110_physical_state_t)::physical
     type(matrix_solute_state_t)::chemical_trial
     real(real64),allocatable::theta(:),concentration(:),dissolved(:),sorbed(:),derivative(:),v(:),expected(:)
-    real(real64)::time
+    real(real64)::time,surface_mass
     integer(int64)::id,revision
     integer(int32)::checksum
     integer::u,io,mode,n,count
     integer(int8)::extra
     character(8)::tag
-    logical::ok,has_history
+    logical::ok,has_history,surface_enabled
     status=JOINT_INVALID
     if(column%state_handle/=1)return
     if(water%ready())return
     if(chemical%ready())return
-    if(present(pond))then
-      if(pond%ready())return
-    end if
+    surface_enabled=.false.
+    if(present(allow_surface_mass))surface_enabled=allow_surface_mass
     if(.not.allocated(p%dz_cm))return
     expected=matrix_parameter_vector(p)
     if(.not.allocated(expected))return
@@ -155,11 +146,8 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        if(present(pond))then
-          if(tag/=POND_MAGIC)exit decoding
-        else
-          if(tag/=MAGIC)exit decoding
-        end if
+        if(tag/=MAGIC.and.tag/=SURFACE_MAGIC)exit decoding
+        if(tag==SURFACE_MAGIC.and..not.surface_enabled)exit decoding
         if(n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(mode==0.and.has_history)exit decoding
         physical%active_nodes=n
@@ -191,13 +179,13 @@ contains
         if(id/=chemical_parameter_id.or.count/=size(expected))exit decoding
         allocate(v(count));read(u,iostat=io)v,theta,concentration,dissolved,sorbed
         if(io/=0)exit decoding
-        if(present(pond))then
-          read(u,iostat=io)pond_schema,pond_clock,pond_depth,pond_mass,pond_revision
+        surface_mass=0.0_real64
+        if(tag==SURFACE_MAGIC)then
+          read(u,iostat=io)surface_mass
           if(io/=0)exit decoding
-          call restore_persistent_pond(pond_schema,pond_clock,pond_depth,pond_mass,pond_revision,pond_trial,io)
-          if(io/=POND_OK)exit decoding
           io=1
-          if(pond_clock/=time.or.pond_depth/=physical%ponding_depth)exit decoding
+          if(.not.ieee_is_finite(surface_mass))exit decoding
+          if(surface_mass<0.0_real64.or.surface_mass>1.0e12_real64)exit decoding
         end if
         read(u,iostat=io)checksum
         if(io/=0)exit decoding
@@ -212,7 +200,8 @@ contains
         if(.not.ok.or.io/=FMR_RESTART_OK)then
           io=1;exit decoding
         end if
-        call reconstruct_matrix_solute_trusted(p,id,revision,time,theta,concentration,dissolved,sorbed,chemical_trial,io)
+        call reconstruct_matrix_solute_trusted(p,id,revision,time,theta,concentration,dissolved,sorbed,chemical_trial,io, &
+          surface_mass=surface_mass)
         if(io/=MATRIX_OK)exit decoding
         io=1
         if(.not.matrix_joint_states_match(water_trial(1),chemical_trial))exit decoding
@@ -221,9 +210,7 @@ contains
     end block decoding
     close(u)
     if(io/=0)return
-    water=water_trial(1);chemical=chemical_trial
-    if(present(pond))pond=pond_trial
-    status=JOINT_OK
+    water=water_trial(1);chemical=chemical_trial;status=JOINT_OK
   end subroutine
 
   function crc32(bytes) result(crc)

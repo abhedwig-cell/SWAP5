@@ -19,6 +19,9 @@ def verify_source(git_reader=None):
  if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
   return pond.verify_source(git_reader)
+ if (ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
+  return surface.persistent_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'unknown material-root baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--',*SURFACE),'dirty material-root scientific surface')
@@ -143,6 +146,9 @@ def verify_qualification():
  if (ROOT/'tests/nut-sol/verify_pond_successor.py').exists():
   sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_pond_successor as pond
   return pond.verify_qualification()
+ if (ROOT/'docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_successor as surface
+  return surface.persistent_qualification()
  s=verify_source();r=record();check(r['phase']in ['SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_BOUNDED_MATERIAL_ROOT'],'material-root science unfinished')
  science=validate_science(evidence());old=incumbent()
  return {**s,'qualified':True,'scope':r['scope'],'science':science,'incumbent':old,'full_capability':False,

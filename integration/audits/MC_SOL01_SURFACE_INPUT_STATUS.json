@@ -1,5 +1,134 @@
 {
   "work_unit": "MC-SOL01-SURFACE-INPUT",
+  "persistent_surface_restart_20261016": {
+    "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "branch": "work/sol-surface-restart-20261016",
+    "phase": "CANONICALLY_ADMITTED_PERSISTENT_SURFACE_RESTART",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "canonical_admission": {
+      "pr": 1256,
+      "merge_commit": "0de60dd5bd2fe0787f33a3038aba868579aa94a8",
+      "qualified_head": "73314c8f97c62ce0e4ed53d4be131edc74ffcbe4",
+      "merge_tree": "241f990f3d090e4d81a657b477bf5b857b075f5e",
+      "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+      "merge_tree_equals_qualified_tree": true,
+      "full_pond_source_admission": false,
+      "master_capability_promotion": false
+    },
+    "contract": "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
+    "scope": "Explicit existing compartment surface-mass reconstruction and opt-in V2 native restart; preserve V1/default activation. No new pond hydrology or deposition equation.",
+    "selection": "Real matrix/kernel/adapter O0/O2, opaque/native/fresh continuation, V1/default/nonmutation and CRC-correct mass forgeries; expected300s cold closure. Full FCI/highest low-air/RossFast NOT_SELECTED_IMPACT.",
+    "next_action": "Bounded persistent dry-surface mass/native restart is admitted via1256. Reconcile master1072 without capability promotion. Remaining full pond/source integration needs real water-owner substep receipts, infiltration/remaining-mass and deposition/runoff balance qualification; aquifer stays excluded.",
+    "admission_verification": {
+      "candidate_local": "95a949b4785ee347edc8eb576a5f09b2ce305aa9",
+      "candidate_remote": "0dada3f4bb904f22899ff1ad53b5dd5a36c097f9",
+      "candidate_tree": "bd4b448633429bfe4ccf722be5b20a481f704d2f",
+      "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python -B tests/mc-irr01/check_material_root_controls.py",
+      "terminal_stdout": "PERSISTENT_SURFACE_ADMISSION_CONTROLS=26|PASS\n",
+      "exit_code": 0,
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS exit0;22.16s; existing pinned docs dependencies",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "workflow_runs": 0,
+      "canonical_rechecked": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "overlap": "PR1256 is the sole open SOL persistent-surface candidate; prior1254 and closure1255 retained unchanged.",
+      "full_fci": "NOT_SELECTED_AFFECTED_RESTART_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "new_actions_dispatched": false,
+      "numerical_rerun_for_metadata": false
+    },
+    "full_capability": false,
+    "master_disposition_changes": 0,
+    "execution_commit": "1e6f4a19452a2793b7d8ebe8bbba72ca4344879c",
+    "remote_equivalent_execution": "adb0155c1c15e3a6782d2f2f24f401d8491863ba",
+    "execution_tree": "de881915975138976d59f195960f0d92ae220a99",
+    "postimages": {
+      "src/adapter/mod_matrix_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "ababe5f4222964d431b3fe62f42a997d31846746"
+      },
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90": {
+        "status": "M",
+        "blob": "79dfbf07fe94a2785edfb28c02b44702e5fc136e"
+      },
+      "tests/mc-irr01/check_material_root_controls.py": {
+        "status": "M",
+        "blob": "2e3f472002a626cedb96c93ff43a9347f56bd37c"
+      },
+      "tests/mc-irr01/verify_material_root_successor.py": {
+        "status": "M",
+        "blob": "31988a2e1be9d01062cfcd9317a3129e819a568e"
+      },
+      "tests/nut-sol/check_surface_evidence_controls.py": {
+        "status": "M",
+        "blob": "e1a9de60878cf8f039268d5ea78dd20e8747c00b"
+      },
+      "tests/nut-sol/run_surface.py": {
+        "status": "M",
+        "blob": "40cee628aebe9e728b31fbbe2a994c3b2c3f468b"
+      },
+      "tests/nut-sol/surface_restart_contract.inc": {
+        "status": "A",
+        "blob": "f1f97c86516f23ffcd2d7080b3f0679595186ac8"
+      },
+      "tests/nut-sol/verify_surface_successor.py": {
+        "status": "M",
+        "blob": "b1f60720545ad84c35c467c01b97aeaecb5020d3"
+      }
+    },
+    "production_source_tree": "36c16c573d35cc07e44dc6e73ff4352a57802e52",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_MASS_RESTART_20261016.tar.xz.b64",
+      "decoded_sha256": "6eac1ef7e04c7b59a3fedec2075af152d3c825b91e00ff6676157808f1e15d3e",
+      "decoded_bytes": 48164,
+      "members": 1227
+    },
+    "cost_seconds": {
+      "physical_compile": 179.07304422206653,
+      "physical_link": 0.28261966099671554,
+      "physical_native": 21.129505079981755,
+      "process_compile": 0.41797913404298015,
+      "process_link": 0.11812917899806052,
+      "process_native": 0.00424614199437201,
+      "restart_compile": 6.670627553990926,
+      "restart_link": 0.3890205809875624,
+      "restart_native": 9.019629448011983
+    },
+    "physical_provider_count": 261,
+    "selected_programs": {
+      "process": 2,
+      "zero_pond_native": 24,
+      "persistent_surface_native": 18
+    },
+    "last_reconciled_upstream": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "pr": 1256,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1256",
+    "recovery_point": "Remote source/test checkpoint adb0155c1c15e3a6782d2f2f24f401d8491863ba; cold O0/O2 complete. Science archive binds exact inputs; no admission yet.",
+    "relevant_paths": [
+      "src/adapter/mod_matrix_joint_restart_file.f90",
+      "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+      "tests/mc-irr01/check_material_root_controls.py",
+      "tests/mc-irr01/verify_material_root_successor.py",
+      "tests/nut-sol/check_surface_evidence_controls.py",
+      "tests/nut-sol/run_surface.py",
+      "tests/nut-sol/surface_restart_contract.inc",
+      "tests/nut-sol/verify_surface_successor.py"
+    ],
+    "authority_paths": [
+      "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
+      "docs/development/workstream-execution-protocol.md"
+    ],
+    "blockers": [
+      "Full nonzero pond/source integration requires actual water-owner pond begin/end, gross rain/irrigation, evaporation/runoff substep receipts; this prerequisite does not invent them."
+    ]
+  },
   "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
   "stage": "BOUNDED_ZERO_POND_SURFACE_INPUT_CANONICALLY_ADMITTED_CLOSED",
   "implemented": true,
@@ -293,10 +422,10 @@
     "new_migration_started": false
   },
   "persistent_pond_successor_20261016": {
-    "stage": "SCIENCE_COMPLETE_ADMISSION_PENDING",
-    "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "stage": "SINGLE_OWNER_RECOMPOSITION_PERSISTED_SCIENCE_PENDING",
+    "baseline": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
     "branch": "work/sol-pond-continuation-20261016",
-    "scope": "Existing surface owner successor: persistent pond mass, prescribed dry deposition, accepted per-substep pond water receipts and atomic soil-plus-pond continuation; no aquifer, evaporation/runoff, macropores or default activation.",
+    "scope": "Existing1256 matrix companion pond_mass is the only persistent chemical surface store; real accepted fixed-depth wet and dry-to-rewet water receipts, gross rain/irrigation and prescribed dry deposition; current V2 native/opaque owner unchanged; no general varying pond level, evaporation/runoff/macropores, aquifer or default activation.",
     "invariants_affected": [
       3,
       4,
@@ -311,10 +440,10 @@
       30
     ],
     "implemented": true,
-    "tested": true,
+    "tested": false,
     "qualified": false,
     "canonically_admitted": false,
-    "next_action": "Recompose runtime over admitted1256 single matrix surface-mass owner; discard no source/evidence. Fresh affected composition required; all current broad claims remain false.",
+    "next_action": "Fresh source-bound O0/O2 wet/dry Richards-matrix-pond composition, V2 continuation and original V1 endpoints; then source/owner/control reconciliation.",
     "test_selection": {
       "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
       "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
@@ -323,66 +452,8 @@
     "execution_commit": "10e061826f3e13e34ec52ceb73b66a94e39c4eb1",
     "execution_tree": "d20c87edc92ffe81dad758665bf8b3a52a4b8f1e",
     "source_tree": "beea61514fcd76a547b3824c40a21f934b86e67b",
-    "science_archive": {
-      "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
-      "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
-      "decoded_bytes": 109736,
-      "members": 3066
-    },
-    "postimages": {
-      "src/adapter/mod_matrix_joint_restart_file.f90": {
-        "status": "M",
-        "blob": "4f55ee9d5b97cf3bb1d0a85ba5128a99c6f2811d"
-      },
-      "src/process/mod_b111_persistent_pond.f90": {
-        "status": "A",
-        "blob": "78703f26f70f4dce863698795317d33930137087"
-      },
-      "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
-        "status": "A",
-        "blob": "fae5a4c26bd19e5fc8ba248043fd4c6f622ce530"
-      },
-      "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
-        "status": "A",
-        "blob": "08d98af3a352d6df3d28426377c3e286f45531a4"
-      },
-      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
-        "status": "M",
-        "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
-      },
-      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
-        "status": "M",
-        "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
-      },
-      "tests/mc-irr01/verify_material_root_successor.py": {
-        "status": "M",
-        "blob": "db1686b83f1b9962219bbba7e5970c85420ec19b"
-      },
-      "tests/nut-sol/check_pond_controls.py": {
-        "status": "A",
-        "blob": "5627e8a4b67df2e9b7cfbba1780f40c2af19f2fb"
-      },
-      "tests/nut-sol/run_persistent_pond.py": {
-        "status": "A",
-        "blob": "821f6debe50494177798a7389452666067006c90"
-      },
-      "tests/nut-sol/run_pond_joint.py": {
-        "status": "A",
-        "blob": "a4b32e2e8871c4ee9f4c87e6fa9aa64773a858db"
-      },
-      "tests/nut-sol/test_persistent_pond.f90": {
-        "status": "A",
-        "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
-      },
-      "tests/nut-sol/test_pond_joint.f90": {
-        "status": "A",
-        "blob": "05d54e8fda35b90f92aab3ebf3427ccc5f2c5b14"
-      },
-      "tests/nut-sol/verify_pond_successor.py": {
-        "status": "A",
-        "blob": "ebb351dc9afab24e469c676b09e98b05af61c0bb"
-      }
-    },
+    "science_archive": {},
+    "postimages": {},
     "cost_seconds": {
       "physical_compile": 174.225236249913,
       "physical_link": 0.3069188310037134,
@@ -399,6 +470,84 @@
       "admitted_pr": 1256,
       "decision": "Preserve all preliminary source/science; do not merge duplicate surface owner/codec. Recompose persistent pond/source consumption over admitted matrix pond_mass and V2 restart. This capsule proves only the original87bc baseline.",
       "qualified_for_current_canonical": false
-    }
+    },
+    "prior_pre1256_science": {
+      "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+      "execution_commit": "10e061826f3e13e34ec52ceb73b66a94e39c4eb1",
+      "execution_tree": "d20c87edc92ffe81dad758665bf8b3a52a4b8f1e",
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_SOL01_POND_PRE1256_20261016.tar.xz.b64",
+        "decoded_sha256": "d50482e53cf3a86c532fc7e7998f32ef3cfb102ccd43c9409fa17177f36bcb26",
+        "decoded_bytes": 109736,
+        "members": 3066
+      },
+      "source_tree": "beea61514fcd76a547b3824c40a21f934b86e67b",
+      "postimages": {
+        "src/adapter/mod_matrix_joint_restart_file.f90": {
+          "status": "M",
+          "blob": "4f55ee9d5b97cf3bb1d0a85ba5128a99c6f2811d"
+        },
+        "src/process/mod_b111_persistent_pond.f90": {
+          "status": "A",
+          "blob": "78703f26f70f4dce863698795317d33930137087"
+        },
+        "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+          "status": "A",
+          "blob": "fae5a4c26bd19e5fc8ba248043fd4c6f622ce530"
+        },
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+          "status": "A",
+          "blob": "08d98af3a352d6df3d28426377c3e286f45531a4"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "status": "M",
+          "blob": "a04f9fb5c3f5c69e70b5d8347cc1a602300402da"
+        },
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+          "status": "M",
+          "blob": "d793efce194f7e379a2d6a0a2136cb2b8c380615"
+        },
+        "tests/mc-irr01/verify_material_root_successor.py": {
+          "status": "M",
+          "blob": "db1686b83f1b9962219bbba7e5970c85420ec19b"
+        },
+        "tests/nut-sol/check_pond_controls.py": {
+          "status": "A",
+          "blob": "5627e8a4b67df2e9b7cfbba1780f40c2af19f2fb"
+        },
+        "tests/nut-sol/run_persistent_pond.py": {
+          "status": "A",
+          "blob": "821f6debe50494177798a7389452666067006c90"
+        },
+        "tests/nut-sol/run_pond_joint.py": {
+          "status": "A",
+          "blob": "a4b32e2e8871c4ee9f4c87e6fa9aa64773a858db"
+        },
+        "tests/nut-sol/test_persistent_pond.f90": {
+          "status": "A",
+          "blob": "00b4e52113a787dd0882f3ccca986c8db4bca5be"
+        },
+        "tests/nut-sol/test_pond_joint.f90": {
+          "status": "A",
+          "blob": "05d54e8fda35b90f92aab3ebf3427ccc5f2c5b14"
+        },
+        "tests/nut-sol/verify_pond_successor.py": {
+          "status": "A",
+          "blob": "ebb351dc9afab24e469c676b09e98b05af61c0bb"
+        }
+      },
+      "cost_seconds": {
+        "physical_compile": 174.225236249913,
+        "physical_link": 0.3069188310037134,
+        "physical_native": 50.9656070269848,
+        "preservation_compile": 10.23940672900062,
+        "preservation_link": 0.3265203350165393,
+        "preservation_native": 19.023562807007693,
+        "process_compile": 0.4906309939833591,
+        "process_link": 0.0939477520150831,
+        "process_native": 0.004268365999450907
+      }
+    },
+    "last_reconciled_upstream": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1"
   }
 }

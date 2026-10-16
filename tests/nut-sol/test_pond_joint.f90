@@ -28,11 +28,13 @@ program test_pond_joint
   type(fmr_logical_column_t)::column
   type(kernel_committed_state_t)::water,other_water,initial_water,bad_water
   type(matrix_solute_state_t)::solute,other_solute,initial_solute,bad_solute
-  type(persistent_pond_state_t)::pond,other_pond,initial_pond,bad_pond
   type(matrix_joint_result_t)::result,result2
   type(pond_step_t)::supply,small_supply
   type(b111_reactive_solute_substep_forcing_t)::p,pbad
-  real(real64)::k,clock,depth,mass
+  type(mobile_salt_state_t)::current_mobile
+  type(solute_compartment_state_t)::current_companion
+  real(real64),allocatable::current_theta(:)
+  real(real64)::k,clock,mass
   integer(int64)::revision
   integer::status
   logical::ok
@@ -69,46 +71,44 @@ program test_pond_joint
   end if
   if(trim(mode)=='reject')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
-         water,solute,status,pond)
+         water,solute,status,allow_surface_mass=.true.)
     call require(status/=JOINT_OK,'invalid pond restart rejected')
-    call require(.not.water%ready().and..not.solute%ready().and..not.pond%ready(),'atomic decoder rejection')
+    call require(.not.water%ready().and..not.solute%ready(),'atomic decoder rejection')
     print '(A)','POND_JOINT_INVALID_FILE=PASS'
     stop
   end if
   if(trim(mode)=='resume')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
-         water,solute,status,pond)
+         water,solute,status,allow_surface_mass=.true.)
     call require(status==JOINT_OK,'fresh process pond reconstruction')
   else
     call initialize_owners(water,solute,p)
-    call initialize_persistent_pond(T0,cfg%tiles(1)%initial_state%ponding_depth,0.25d0,pond,status)
-    call require(status==POND_OK,'initial pond')
-    initial_water=water;initial_solute=solute;initial_pond=pond
+    initial_water=water;initial_solute=solute
     pbad=p;pbad%decpot=1d6
-    call initialize_owners(bad_water,bad_solute,pbad);bad_pond=pond
+    call initialize_owners(bad_water,bad_solute,pbad)
     small_supply=supply;small_supply%t1=1d-9
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
-      cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,bad_pond,supply,T0,T1,result)
+      cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,supply,T0,T1,result)
     call require(result%status==JOINT_CHEMICAL_REJECTED.and.result%water%completed,'chemical rejects completed water')
-    call compare_water(initial_water,bad_water);call compare_pond(initial_pond,bad_pond)
+    call compare_water(initial_water,bad_water);call compare_chemical(initial_solute,bad_solute)
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
-      cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,bad_pond,small_supply,T0,1d-9,result)
+      cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,small_supply,T0,1d-9,result)
     call require(result%status==JOINT_OK,'smaller retry')
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-      cfg%tiles(1)%base_forcing,cfg%numerical,solute,pond,supply,T0,T1,result)
+      cfg%tiles(1)%base_forcing,cfg%numerical,solute,supply,T0,T1,result)
     if(result%status/=JOINT_OK)print *,result%status,result%chemical%status,result%chemical%completed_substeps
     call require(result%status==JOINT_OK,'real Richards persistent pond')
     call require(abs(result%water%mass%residual)<=HARD_MASS_GATE.and.abs(result%chemical%residual)<1d-11,'whole balances')
-    call pond%snapshot(clock,depth,mass,revision)
-    call require(depth==cfg%tiles(1)%initial_state%ponding_depth.and.mass>0d0.and.mass/=0.25d0, &
-      'persistent actual pond mass')
-    call verify_actual_trace(initial_solute,initial_pond,solute,pond)
-    call write_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,water,solute,status,pond)
+    call solute%snapshot(clock,current_theta,current_mobile,current_companion,revision)
+    mass=current_companion%pond_mass
+    call require(mass>0d0.and.mass/=0.25d0,'persistent actual surface mass in matrix owner')
+    call verify_actual_trace(initial_solute,solute)
+    call write_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,water,solute,status,allow_surface_mass=.true.)
     call require(status==JOINT_OK,'native pond writer')
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
-      other_water,other_solute,status,other_pond)
+      other_water,other_solute,status,allow_surface_mass=.true.)
     call require(status==JOINT_OK,'native pond reader')
-    call compare_water(water,other_water);call compare_chemical(solute,other_solute);call compare_pond(pond,other_pond)
+    call compare_water(water,other_water);call compare_chemical(solute,other_solute);call compare_chemical(solute,other_solute)
     ! No old reader may silently drop a new pond payload.
     block
       type(kernel_committed_state_t)::w
@@ -122,31 +122,20 @@ program test_pond_joint
   cfg%tiles(1)%base_forcing%top_flux=-0.5d0
   cfg%tiles(1)%base_forcing%bottom_flux=0.1d0
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=-1d-4
-  initial_solute=solute;initial_pond=pond
+  initial_solute=solute
   call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,solute,pond,supply,T1,2*T1,result)
+    cfg%tiles(1)%base_forcing,cfg%numerical,solute,supply,T1,2*T1,result)
   call require(result%status==JOINT_OK,'continued actual pond')
-  call verify_actual_trace(initial_solute,initial_pond,solute,pond)
+  call verify_actual_trace(initial_solute,solute)
   if(trim(mode)/='resume')then
     call run_pond_joint_interval(second,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,other_water, &
-      cfg%tiles(1)%base_forcing,cfg%numerical,other_solute,other_pond,supply,T1,2*T1,result2)
+      cfg%tiles(1)%base_forcing,cfg%numerical,other_solute,supply,T1,2*T1,result2)
     call require(result2%status==JOINT_OK,'restarted pond continues')
-    call compare_water(water,other_water);call compare_chemical(solute,other_solute);call compare_pond(pond,other_pond)
+    call compare_water(water,other_water);call compare_chemical(solute,other_solute);call compare_chemical(solute,other_solute)
   end if
   call write_endpoint(trim(endpoint_path),water,solute)
-  call pond%snapshot(clock,depth,mass,revision)
-  open(unit=81,file=trim(endpoint_path),access='stream',form='unformatted',position='append')
-  write(81)clock,depth,mass,revision
-  close(81)
   print '(A)','POND_JOINT_ACTUAL_BALANCE_RESTART=PASS'
 contains
-  subroutine compare_pond(a,b)
-    type(persistent_pond_state_t),intent(in)::a,b
-    real(real64)::ta,da,ma,tb,db,mb
-    integer(int64)::ra,rb
-    call a%snapshot(ta,da,ma,ra);call b%snapshot(tb,db,mb,rb)
-    call require(ta==tb.and.da==db.and.ma==mb.and.ra==rb,'pond exact identity')
-  end subroutine
   subroutine initialize_owners(w,s,p)
     type(kernel_committed_state_t),intent(out)::w
     type(matrix_solute_state_t),intent(out)::s
@@ -159,6 +148,18 @@ contains
     call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
          [(0.1_real64+0.1_real64*j,j=1,numnod)],s,code)
     call require(code==0,'initial chemical owner')
+    block
+      type(mobile_salt_state_t)::m
+      type(solute_compartment_state_t)::c
+      real(real64),allocatable::theta(:)
+      real(real64)::clock
+      integer(int64)::revision
+      call s%snapshot(clock,theta,m,c,revision)
+      call reconstruct_matrix_solute_trusted(p,9001_int64,revision,clock,theta,m%concentration_mg_cm3, &
+        m%mass_mg_cm2,c%sorbed_matrix_mass,s,code,surface_mass=0.25d0)
+      call require(code==MATRIX_OK,'accepted1256 persistent surface owner')
+    end block
+
   end subroutine
   subroutine write_endpoint(path,w,s)
     character(*),intent(in)::path
@@ -183,7 +184,7 @@ contains
     class default
       error stop 'wrong endpoint family'
     end select
-    write(unit)t,rev,theta,m%concentration_mg_cm3,m%mass_mg_cm2,c%sorbed_matrix_mass
+    write(unit)t,rev,theta,m%concentration_mg_cm3,m%mass_mg_cm2,c%sorbed_matrix_mass,c%pond_mass
     close(unit)
   end subroutine
   subroutine compare_water(a,b)
@@ -224,8 +225,9 @@ contains
     call require(all(abs(m1%mass_mg_cm2-m2%mass_mg_cm2)<=0.0_real64),'chemical dissolved identity')
     call require(all(abs(m1%concentration_mg_cm3-m2%concentration_mg_cm3)<=0.0_real64),'chemical concentration identity')
     call require(all(abs(s1%sorbed_matrix_mass-s2%sorbed_matrix_mass)<=0.0_real64),'chemical sorbed identity')
+    call require(s1%pond_mass==s2%pond_mass,'persistent matrix surface mass identity')
   end subroutine
-  subroutine verify_actual_trace(initial,initial_pond,accepted,accepted_pond)
+  subroutine verify_actual_trace(initial,accepted)
     use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
     type(matrix_solute_state_t),intent(in)::initial,accepted
     type(fmr_serialized_physical_observation_t)::obs
@@ -236,8 +238,6 @@ contains
     type(solute_compartment_state_t)::c,finalc
     type(b111_reactive_solute_substep_forcing_t)::f
     type(pond_step_t)::broken
-    type(persistent_pond_state_t),intent(in)::initial_pond,accepted_pond
-    type(persistent_pond_state_t)::trial_pond
     real(real64)::surface_mass,pt,pd,pm
     integer(int64)::pr
     real(real64),allocatable::w(:),faces(:),expected(:),mass(:)
@@ -251,7 +251,7 @@ contains
       'actual signed bottom and drainage active')
     call initial%snapshot(clock,w,m,c,rev)
     expected=m%concentration_mg_cm3;mass=m%mass_mg_cm2+c%sorbed_matrix_mass
-    call initial_pond%snapshot(pt,pd,surface_mass,pr)
+    surface_mass=c%pond_mass
     pm=surface_mass
     surface_input=0;totalout=0
     do i=1,size(steps)
@@ -274,14 +274,14 @@ contains
     call accepted%snapshot(clock,w,finalm,finalc,rev)
     call require(maxval(abs(finalm%concentration_mg_cm3-expected))<1d-11,'literal surface and vertical concentration')
     call require(maxval(abs(finalm%mass_mg_cm2+finalc%sorbed_matrix_mass-mass))<1d-11,'literal compartment mass')
-    call accepted_pond%snapshot(pt,pd,k,pr)
+    k=finalc%pond_mass
     call require(abs(k-surface_mass)<1d-11,'literal persistent pond')
     call require(abs(sum(mass)+surface_mass-sum(m%mass_mg_cm2)-c%solute_total()-pm-surface_input+totalout)<1d-11, &
       'literal combined balance')
     call require(all(finalm%mass_mg_cm2>=0d0).and.all(finalc%sorbed_matrix_mass>=0d0),'nonnegative accepted stores')
-    call require(finalc%pond_mass==0d0,'single surface owner')
+    call require(finalc%pond_mass==k,'single surface owner')
     do j=1,21
-      bad=steps;broken=supply;trial=initial;trial_pond=initial_pond
+      bad=steps;broken=supply;trial=initial
       i=size(bad)
       select case(j)
       case(1)
@@ -328,13 +328,13 @@ contains
       case(21)
         broken%dry_deposition_rate=huge(0d0)
       end select
-      call consume_accepted_pond_trace(trial,trial_pond,bad,broken,r)
+      call consume_accepted_pond_trace(trial,bad,broken,r)
       call require(r%status/=MATRIX_OK,'last-carrier or supply rejection')
       if(j<=10)call require(r%completed_substeps==size(steps)-1,'valid prefix executed before rejection')
-      call compare_chemical(initial,trial);call compare_pond(initial_pond,trial_pond)
+      call compare_chemical(initial,trial)
     end do
-    trial=accepted;trial_pond=accepted_pond
-    call consume_accepted_pond_trace(trial,trial_pond,steps,supply,r)
+    trial=accepted
+    call consume_accepted_pond_trace(trial,steps,supply,r)
     call require(r%status/=MATRIX_OK,'clock replay rejected')
     call compare_chemical(accepted,trial)
     print '(A)','POND_ACTUAL_LITERAL_TWENTYONE_NEGATIVES_REPLAY=PASS'

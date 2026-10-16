@@ -23,33 +23,8 @@ module mod_fmr_b111_pond_joint_application
   use mod_fmr_b111_pond_solute_route
   implicit none
   private
-  public::run_pond_joint_interval,pond_states_match
+  public::run_pond_joint_interval
 contains
-  logical function pond_states_match(water,chemical,pond) result(ok)
-    type(kernel_committed_state_t),intent(in)::water
-    type(matrix_solute_state_t),intent(in)::chemical
-    type(persistent_pond_state_t),intent(in)::pond
-    real(real64)::clock,depth,mass
-    integer(int64)::revision
-    class(transaction_state_t),allocatable::q
-    logical::available
-    ok=.false.
-    if(.not.pond%ready())return
-    call pond%snapshot(clock,depth,mass,revision)
-    ok=matrix_joint_states_match(water,chemical)
-    if(.not.ok)return
-    ok=.false.
-    call water%snapshot(q,available)
-    if(.not.available)return
-    select type(q)
-    class is(fmr_b110_physical_state_t)
-      ok=q%ponding_depth==depth
-      if(ok)then
-        call water%current_time(depth,available)
-        ok=available.and.depth==clock
-      end if
-    end select
-  end function
   logical function bounded_template(t) result(ok)
     type(fmr_template_t),intent(in)::t
     ok=t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BASE.and. &
@@ -58,7 +33,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_pond_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,pond,supply,t0,t1,result)
+  subroutine run_pond_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,supply,t0,t1,result)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -67,8 +42,6 @@ contains
     type(fmr_b110_physical_forcing_t),intent(in)::forcing
     type(canonical_numerical_config_t),intent(in)::config
     type(matrix_solute_state_t),intent(inout)::chemical
-    type(persistent_pond_state_t),intent(inout)::pond
-    type(persistent_pond_state_t)::pond_trial
     type(pond_step_t),intent(in)::supply
     real(real64),intent(in)::t0,t1
     type(matrix_joint_result_t),intent(out)::result
@@ -79,8 +52,7 @@ contains
     class(transaction_state_t),allocatable::candidate_physical
     logical::ok,did_commit
     integer::status
-    real(real64)::clock,pond_clock,pond_depth,pond_mass
-    integer(int64)::pond_revision
+    real(real64)::clock
     result=matrix_joint_result_t()
     if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
       supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
@@ -90,7 +62,7 @@ contains
       allocated(forcing%snow).or.allocated(forcing%rutter).or.allocated(forcing%rfm_surface).or. &
       allocated(forcing%macropore_top_input))return
     if(.not.bounded_template(template))return
-    if(.not.pond_states_match(water,chemical,pond))return
+    if(.not.matrix_joint_states_match(water,chemical))return
     call water%current_time(clock,ok)
     if(.not.ok.or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1))return
     if(abs(t0-clock)>0.0_real64.or.t1<=t0)return
@@ -121,21 +93,16 @@ contains
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end select
-    chemical_trial=chemical;pond_trial=pond
-    call consume_accepted_pond_trace(chemical_trial,pond_trial,obs%accepted_water_flux_substeps,supply,result%chemical)
+    chemical_trial=chemical
+    call consume_accepted_pond_trace(chemical_trial,obs%accepted_water_flux_substeps,supply,result%chemical)
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=MATRIX_OK)then
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end if
-    call pond_trial%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
-    if(pond_clock/=t1)then
-      call backend%discard_trial_candidate(candidate,result%diagnostics)
-      return
-    end if
     select type(cp=>candidate_physical)
     class is(fmr_b110_physical_state_t)
-      if(cp%ponding_depth/=pond_depth)then
+      if(cp%ponding_depth/=obs%accepted_water_flux_substeps(size(obs%accepted_water_flux_substeps))%pond_end_cm)then
         call backend%discard_trial_candidate(candidate,result%diagnostics)
         return
       end if
@@ -145,7 +112,7 @@ contains
     if(.not.did_commit)return
     ! Candidate endpoint must agree before publishing either chemical pool.
     ! This has already been checked by the contiguous trace consumer.
-    chemical=chemical_trial;pond=pond_trial
+    chemical=chemical_trial
     result%status=JOINT_OK
   end subroutine
 end module

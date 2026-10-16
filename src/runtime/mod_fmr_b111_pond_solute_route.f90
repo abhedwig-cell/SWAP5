@@ -12,10 +12,9 @@ module mod_fmr_b111_pond_solute_route
  private
  public::consume_accepted_pond_trace
 contains
- subroutine consume_accepted_pond_trace(committed,pond,steps,supply,receipt)
+ subroutine consume_accepted_pond_trace(committed,steps,supply,receipt)
   type(matrix_solute_state_t),intent(inout)::committed
   type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
-  type(persistent_pond_state_t),intent(inout)::pond
   type(pond_step_t),intent(in)::supply
   type(persistent_pond_state_t)::pond_trial,pond_next
   type(persistent_pond_receipt_t)::pond_receipt
@@ -35,12 +34,8 @@ contains
   if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
     supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
   if(.not.committed%ready().or.size(steps)<1.or.size(steps)>100000)return
-  if(.not.pond%ready())return
-  call pond%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
-  pond_trial=pond
   call committed%snapshot(clock,water,mobile,amount,revision)
   call committed%configuration(p,id)
-  if(clock/=pond_clock)return
   if(clock/=supply%t0.or.steps(size(steps))%t1/=supply%t1)return
   if(revision<0.or.revision>=100000000_int64)return
   n=size(water)
@@ -57,8 +52,11 @@ contains
   if(p%cref_mg_cm3<1d-8.or.p%frexp/=1d0)return
   if(any(mobile%concentration_mg_cm3>1d6).or.any(mobile%mass_mg_cm2>1d12).or. &
     any(amount%sorbed_matrix_mass>1d12))return
-  if(amount%pond_mass/=0d0.or.amount%aquifer_mass/=0d0.or.any(amount%age_amount/=0d0))return
-  receipt%mass_before=sum(mobile%mass_mg_cm2)+amount%solute_total()+pond_mass
+  if(amount%pond_mass>1d12.or.amount%aquifer_mass/=0d0.or.any(amount%age_amount/=0d0))return
+  if(.not.steps(1)%pond_storage_available)return
+  call initialize_persistent_pond(clock,steps(1)%pond_start_cm,amount%pond_mass,pond_trial,code)
+  if(code/=POND_OK)return
+  receipt%mass_before=sum(mobile%mass_mg_cm2)+amount%solute_total()
   do k=1,size(steps)
    receipt%status=MATRIX_CARRIER
    associate(t=>steps(k))
@@ -106,7 +104,7 @@ contains
     call advance_persistent_pond(pond_trial,pond_step,pond_next,pond_receipt)
     if(pond_receipt%status/=POND_OK)return
     call pond_trial%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
-    amount%pond_mass=pond_mass+pond_receipt%dry_input
+    amount%pond_mass=amount%pond_mass+pond_receipt%dry_input
     f=p;f%dt_day=dt;f%theta_previous=t%water_start;f%theta=t%water_end
     f%q_face_up_cm_day=-faces;f%root_sink_cm_day=t%root_sink;f%qdra_cm_day=t%drainage_sink_by_level
     f%rain_rate_cm_day=supply%rain_rate;f%rain_c_mg_cm3=supply%rain_c
@@ -118,8 +116,7 @@ contains
     scale=max(1d0,pond_receipt%soil_transfer,pond_receipt%mass_after)
     if(abs(r%pond_to_soil_mg_cm2-pond_receipt%soil_transfer)>4096d0*epsilon(1d0)*scale)return
     if(abs(next_amount%pond_mass-pond_receipt%mass_after)>4096d0*epsilon(1d0)*scale)return
-    ! Surface mass has one persistent owner, not the matrix-only codec.
-    next_amount%pond_mass=0d0
+    ! Accepted1256 matrix companion is the sole persistent surface-mass owner.
     pond_trial=pond_next
     if(any(next_mobile%concentration_mg_cm3>1d6).or.any(next_mobile%mass_mg_cm2>1d12).or. &
       any(next_amount%sorbed_matrix_mass>1d12))return
@@ -131,13 +128,13 @@ contains
    end associate
   end do
   call pond_trial%snapshot(pond_clock,pond_depth,pond_mass,pond_revision)
-  receipt%mass_after=sum(mobile%mass_mg_cm2)+amount%solute_total()+pond_mass
+  receipt%mass_after=sum(mobile%mass_mg_cm2)+amount%solute_total()
   receipt%residual=receipt%mass_after-receipt%mass_before-receipt%external_in+receipt%external_out
   scale=max(1d0,receipt%mass_before,receipt%mass_after,receipt%external_in,receipt%external_out)
   if(abs(receipt%residual)>8192d0*epsilon(1d0)*scale)return
   call reconstruct_matrix_solute_trusted(p,id,revision+1,clock,water,mobile%concentration_mg_cm3, &
-    mobile%mass_mg_cm2,amount%sorbed_matrix_mass,trial,code)
+    mobile%mass_mg_cm2,amount%sorbed_matrix_mass,trial,code,surface_mass=amount%pond_mass)
   if(code/=MATRIX_OK)return
-  committed=trial;pond=pond_trial;receipt%status=MATRIX_OK
+  committed=trial;receipt%status=MATRIX_OK
  end subroutine
 end module
