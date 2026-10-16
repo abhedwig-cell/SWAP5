@@ -724,5 +724,35 @@
       "full_closure": "EXPECTED_REFUSAL denominator incomplete",
       "full_master_numerical_qualification": false
     }
+  },
+  "dynamic_pond_successor_20261016": {
+    "baseline": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
+    "baseline_tree": "53e6b022dfea342cfd0ceceb252bd92c76391be3",
+    "branch": "work/sol-dynamic-pond-20261016",
+    "stage": "IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
+    "contract": "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md",
+    "scope": "Explicit gross rain/irrigation bare surface forcing reuses existing dynamic top provider with actual committed begin depth per trial, evolving Richards pond depth and sole matrix pond_mass. No losses, no new state or restart codec. Aquifer excluded.",
+    "invariants": [
+      "water owns depth",
+      "matrix companion owns chemical surface mass",
+      "water and chemistry publish atomically",
+      "rejected trials leave accepted owners unchanged",
+      "native1256 V2 only opt-in, V1 default unchanged"
+    ],
+    "test_selection": {
+      "changed": [
+        "forcing ownership and opt-in dynamic-top runtime binding",
+        "actual varying pond application coupling"
+      ],
+      "run": "FC=<recovered GNU13.3> DYNAMIC_POND_RESULT_DIR=<scratch> python -B tests/nut-sol/run_dynamic_pond_joint.py",
+      "driver": "real production backend, independent literal B1.11 mass oracle, O0/O2 draining/filling/dry-rewet and fresh-process V2; all original fixed/dry1257 and original surface drivers on same objects; last-carrier negatives and native corruption controls",
+      "closure": "accepted physical state/runtime dependency closure unavoidable for real trial/commit and native continuation; no mocked production physics",
+      "expected_seconds": 400,
+      "prior_compile_seconds": 195,
+      "unmeasured_dynamic_native_seconds": "UNKNOWN",
+      "not_selected": "full FCI, unrelated Richards/RossFast/highest-low-air qualifications: numerical implementation and admitted boundary input domain unchanged",
+      "stable_candidate": "source-bound successor projections and evidence controls; docs source/strict; safe canonical/master reconciliation only after owning preservation passes"
+    },
+    "recovery": "implementation checkpoint; next execute focused O0/O2 and retain all failures/costs"
   }
 }
