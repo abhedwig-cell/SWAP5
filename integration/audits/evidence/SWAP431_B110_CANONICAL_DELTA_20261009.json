@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "workunit": "SWAP431-MASTER-COVERAGE",
+  "previous_canonical": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "current_canonical": "df696635e7ddc0d5c1a59101660b4f7f436df7f9",
+  "new_commits": 51,
+  "admission": {
+    "pr": 1160,
+    "merge": "3bb0e8c095f8d8c2476d08d195492da2464aabc7",
+    "admission_record": "integration/audits/MC_CROP_FKT_B110_CERTIFIED_IDENTITY_CANONICAL_ADMISSION_20261009.json",
+    "qualified_head": "d51b9b3729fa9059c30b1ae59e6bf1b7f1baaca0",
+    "runs": [
+      37943443887,
+      37943443484,
+      37943443221
+    ],
+    "scope": "Opt-in accepted B110 grid/heat identity in committed F-KT, validated candidate and trusted reconstruction, read-only certified nodsow, depth-averaged head and temperature; source-exact F-CI successor."
+  },
+  "master_entries_impacted": [
+    "SW431-CROP-SOW",
+    "SW431-CROP-ANNUAL",
+    "SW431-CROP-ROTATION"
+  ],
+  "decision": "No full capability admission: accepted weather/tav, SWHEA option and physical crop event publication not present in claim ceiling.",
+  "dispositions_changed": 0,
+  "ledger_count_at_review": {
+    "capabilities": 243,
+    "admitted": 90,
+    "active_migration": 113,
+    "qualification_only": 4,
+    "unresolved": 117
+  },
+  "status": "CANONICAL_DELTA_RECONCILED_BOUNDED_SCOPE",
+  "full_coverage_checker": "NOT_RUN_LOCAL_GITHUB_DNS_FAILURE",
+  "next_action": "Reconcile complete current-head source and closure denominator; retain crop event/lifecycle gaps until production owner admission."
+}

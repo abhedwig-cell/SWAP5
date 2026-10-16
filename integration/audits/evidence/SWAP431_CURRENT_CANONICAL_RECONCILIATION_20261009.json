@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MASTER-COVERAGE",
+  "canonical_branch": "integration/f-ci-canonical",
+  "canonical_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "master_branch": "work/swap431-master-coverage-20261006",
+  "master_head_at_review": "25f60f428410e6f0a789089d18bd5ec01e9addf8",
+  "ledger_path": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+  "ledger_last_full_canonical_reconciliation": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+  "review_date": "2026-10-09",
+  "recomputed_from_ledger": {
+    "capabilities": 243,
+    "dispositions": {
+      "ADMITTED": 90,
+      "ACTIVE_MIGRATION": 113,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "unresolved": 117,
+    "duplicate_capability_ids": 0,
+    "active_entries_without_workunit": 0
+  },
+  "canonical_delta_review": {
+    "bounded_scope": "most recent 200 canonical commits plus open PR head metadata",
+    "new_bounded_crop_admissions": [
+      "B1.11 sowing node resolver",
+      "B110 geometry preflight",
+      "paired physical/calendar restart values",
+      "atomic accepted hydrothermal snapshot",
+      "accepted hydraulic source and depth/pF averaging"
+    ],
+    "not_assumed_closed": [
+      "SW431-CROP-SOW",
+      "SW431-CROP-ANNUAL",
+      "SW431-CROP-ROTATION"
+    ],
+    "reason": "These admissions establish bounded owner/forcing/restart components; none alone proves complete physical source-state sowing, annual growth or rotation lifecycle."
+  },
+  "overlap_risks": [
+    {
+      "prs": [
+        1111,
+        1113
+      ],
+      "topic": "SWRD3 biomass root-depth implementations",
+      "action": "retain one authoritative production owner; do not double-count"
+    },
+    {
+      "prs": [
+        1159,
+        1160
+      ],
+      "topic": "B110 parameter/grid identity versus committed F-KT owner",
+      "action": "reconcile contract and canonical admission before promotion"
+    }
+  ],
+  "qualification_vs_admission": "Open/draft PRs remain noncanonical; no disposition promoted solely from their existence.",
+  "checker_status": "structural recount and uniqueness/workunit checks completed via repository connector; Python coverage-integrity checker not executed because local repository/network unavailable",
+  "denominator_complete": false,
+  "coverage_closed": false,
+  "production_source_changed": false,
+  "next_action": "Rebase or reconstruct master ledger on current canonical and rerun Python integrity checker; examine bounded owner admissions against each affected capability before status promotion."
+}

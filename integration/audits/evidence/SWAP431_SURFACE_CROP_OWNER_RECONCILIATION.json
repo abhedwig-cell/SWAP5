@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "review": "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+  "decisions": {
+    "SW431-MACRO-POND": "MIGRATE",
+    "SW431-MACRO-RUNON": "MIGRATE",
+    "SW431-MACRO-SW-EXTERNAL": "MIGRATE",
+    "SW431-IRR-FIXED-SPRINK": "MIGRATE",
+    "SW431-IRR-SCHED-SURF": "MIGRATE",
+    "SW431-CROP-CO2": "MIGRATE",
+    "SW431-CROP-ROTATION": "MIGRATE",
+    "SW431-DRAIN-INF-LIMIT": "MIGRATE"
+  },
+  "source_files_sha256": {
+    "src/crop/mod_wofost81_prepare_assimilation.f90": "3bd82af3f35836f231fb67eccb8a1af81e892ab154c38c82a9500a0533a0c8ba",
+    "src/crop/mod_wofost_crop_owner_state.f90": "0fba689dd2cae69a7e5ea73a302539fbe409c043d1c8348acab2b35d8eb037a9",
+    "src/crop/mod_wofost_prepare_assimilation.f90": "8b8d2a2b455f02ba5a00e094b945e7b9809f5b536a5420ae968a2c9937865119",
+    "src/process/mod_irrigation_process.f90": "0cbe4d23a2a29e8dc585fa92f9eb826b8e6f8b6124228e0b8955d160d97d64dd",
+    "src/process/mod_tcs1_dcs2_sprinkling_irrigation_process.f90": "41a2f082116362cd21c1e13d7972b689e8450b25d793647f06447acb37131964",
+    "src/runtime/mod_fmr_hupsel_irrigation_application_binding.f90": "0e7b5f97af8a2f3685dff202b37b040a5dafcfaf8cd2cabc890ee9366c0a357d",
+    "src/runtime/mod_fmr_macropore_configuration.f90": "2f1d13759ad0ba420f9032ee2468cb4cc48aa3edd4f3fdee2bcf042c856d30bd",
+    "src/runtime/mod_fmr_macropore_top_input.f90": "64fc409cdf5995e52cbf85160fac5509ff35da936448e49aa60f71d9b630b6a3",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "a1c9baa710b487709c9036a88bf9ab28be5f68b0c0541dd117c2543958de188a",
+    "src/runtime/mod_fmr_wofost_crop_event_lifecycle.f90": "0ac0ad5d6857ca06c725ba80bc2beb1ee3e66bd8e5f1147bb752357d70d2b7b6",
+    "src/runtime/mod_macropore_standard_rate_adapter.f90": "d28e618a53458724d7f222bc2fbd3a5d46aed4faad9752334f86d2d656c693ab"
+  },
+  "legacy_members_sha256": {
+    "SWAP/boundtop.f90": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+    "SWAP/headcalc.f90": "db667598dd0a9dbc2cd651d63f0074d3051db748fa45ee460da9c61904c113f5",
+    "SWAP/macrorate.f90": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+    "SWAP/surfacewater.f90": "d38e25da1b71cf3d7872df294b1de6080e070a314f9168b8a4e4d3ff1526089e",
+    "SWAP/drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "SWAP/irrigation.f90": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "SWAP/MOD_cropdevelopment.f90": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210"
+  },
+  "new_runtime_admission_created": false,
+  "validation_kind": "SOURCE_AND_OWNERSHIP_INSPECTION; NO_NEW_NUMERICAL_QUALIFICATION"
+}

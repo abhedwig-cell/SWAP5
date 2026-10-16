@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "work_unit": "SWAP431-MASTER-COVERAGE",
+  "canonical_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "audit_date": "2026-10-09",
+  "irrigation": {
+    "pr": 1126,
+    "head_ref": "integration/mc-irr01-isolated-20261008",
+    "comparison": {
+      "ahead": 1,
+      "behind": 260,
+      "status": "diverged"
+    },
+    "qualified_postimage": "4ed0a6d62eae82f46d9f79d06b764e141474c9e2",
+    "qualification_run": 37774945522,
+    "qualification_conclusion": "success",
+    "qualification_record": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+    "claim_ceiling": "Bounded F-APP07 owner and composed irrigation path at recorded postimage; not current-head cross-workstream preservation or canonical admission.",
+    "affected_open_ids": [
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4",
+      "SW431-IRR-TCS6",
+      "SW431-IRR-TCS7",
+      "SW431-IRR-TCS8",
+      "SW431-IRR-DCS1",
+      "SW431-IRR-FIXED-SPRINK",
+      "SW431-IRR-SCHED-SURF",
+      "SW431-IRR-SSDI",
+      "SW431-IRR-FREQ",
+      "SW431-IRR-LIMIT",
+      "SW431-IRR-SALTEXCESS",
+      "SW431-IRR-RATE-DAILY",
+      "SW431-IRR-RATE-CAP",
+      "SW431-IRR-AVAIL"
+    ],
+    "qualified_unbound_priority": [
+      "SW431-IRR-TCS7",
+      "SW431-IRR-SSDI"
+    ],
+    "next_admission_step": "Reconcile runtime and shared top/interception dependencies onto current canonical, preserve exact relevant F-CI and numerical gates, then promote only full source-backed capability routes."
+  },
+  "other_overlap": {
+    "crop_shared_owner_prs": [
+      1159,
+      1160
+    ],
+    "root_biomass_overlap_prs": [
+      1111,
+      1113
+    ],
+    "rule": "No duplicate production ownership or master-ledger admission from open or draft PR alone."
+  },
+  "master_dispositions_changed": 0,
+  "coverage_closed": false
+}

@@ -1,0 +1,175 @@
+{
+  "schema": "swap5.coverage.open_migration_pr_reconciliation.v1",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "snapshot": "integration/audits/evidence/SWAP431_PAGINATED_PR_SNAPSHOT.json",
+  "open_count": 114,
+  "merged_since_20261005": 55,
+  "matching_rule": "Migration-relevant titles selected by PPA|MIG431|MIGMAC|migrat|frost|jarvis|walsum|irrigat|tillage|solute|salin|rutter; title matching is navigation, not a scientific denominator",
+  "entries": [
+    {
+      "number": 1071,
+      "title": "PPA-MICRO02: qualified standalone de Willigen uptake (draft)",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1071",
+      "state": "open",
+      "created_at": "2026-10-06T05:29:50Z",
+      "updated_at": "2026-10-06T05:52:25Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "ACTIVE_COMPONENT_DEPENDENCY",
+      "capabilities": [
+        "SW431-ROOT-MICRO3"
+      ],
+      "workunit": "PPA-MICRO02",
+      "current_head": "339cdec3af3fa97d1fcd19068b9ad2259a13e00c",
+      "production_binding_admitted": false,
+      "next_dependency": "MC-MICRO01 accepted root sink, mass/transaction/restart; standalone uptake is not full runtime coverage"
+    },
+    {
+      "number": 1009,
+      "title": "F-MIG431-INT12-C: compose SWINTER1 with accepted source-window progress",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1009",
+      "state": "open",
+      "created_at": "2026-10-03T14:47:09Z",
+      "updated_at": "2026-10-03T14:58:35Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "COVERED_BY_LATER_CANONICAL_ADMISSION",
+      "capabilities": [
+        "SW431-INT-VONHH",
+        "SW431-MET-DETAIL-CONTINUATION"
+      ],
+      "authority": "integration/audits/F-MIG431-INT12-E_ADMISSION.json",
+      "note": "Original source-window proposal does not reopen the later admitted interception/continuation capability"
+    },
+    {
+      "number": 987,
+      "title": "PPA-WU05-A28: opt-in approximate RFM sorptivity mode",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/987",
+      "state": "open",
+      "created_at": "2026-10-02T12:11:03Z",
+      "updated_at": "2026-10-02T17:53:42Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "PERFORMANCE_EXTENSION_NOT_LEGACY_COVERAGE_BLOCKER",
+      "capabilities": [],
+      "note": "Approximate RFM sorptivity is opt-in numerical performance work, not an unclosed historical physical option"
+    },
+    {
+      "number": 973,
+      "title": "PPA-WU05-C3 admit Bartholomeus oxygen production slice",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/973",
+      "state": "open",
+      "created_at": "2026-10-01T21:53:12Z",
+      "updated_at": "2026-10-01T21:53:12Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "COVERED_BY_CANONICAL_SUCCESSOR",
+      "capabilities": [
+        "SW431-ROOT-OXYGEN-BARTH"
+      ],
+      "authority": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+      "note": "Current bounded oxygen/root admissions control coverage, not the state of this proposal PR"
+    },
+    {
+      "number": 968,
+      "title": "PPA-WU05-A26 reconcile on current canonical",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/968",
+      "state": "open",
+      "created_at": "2026-10-01T19:38:16Z",
+      "updated_at": "2026-10-01T20:02:32Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "COVERED_BY_CANONICAL_SUCCESSOR",
+      "capabilities": [
+        "SW431-MACRO-CORE"
+      ],
+      "authority": "integration/audits/PPA_WU05A26_RECONCILED_STATUS.json",
+      "note": "Bounded RFM admission does not close SWMBF2 kinematic-wave"
+    },
+    {
+      "number": 961,
+      "title": "PPA-WU05-PERCH20: admit source-backed perched macropore runtime",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/961",
+      "state": "open",
+      "created_at": "2026-10-01T17:08:51Z",
+      "updated_at": "2026-10-01T17:08:51Z",
+      "closed_at": null,
+      "draft": false,
+      "labels": [],
+      "role": "COVERED_BY_CANONICAL_SUCCESSOR",
+      "capabilities": [
+        "SW431-MACRO-PERCHED"
+      ],
+      "authority": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+      "note": "Use PERCH21 admitted source-backed runtime envelope"
+    },
+    {
+      "number": 924,
+      "title": "Admit bounded PPA-WU05-A8 macropore FMR runtime",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/924",
+      "state": "open",
+      "created_at": "2026-10-01T05:48:29Z",
+      "updated_at": "2026-10-01T05:48:29Z",
+      "closed_at": null,
+      "draft": false,
+      "labels": [],
+      "role": "COVERED_BY_CANONICAL_SUCCESSOR",
+      "capabilities": [
+        "SW431-MACRO-CORE"
+      ],
+      "authority": "integration/audits/PPA_WU05A8_STATUS.json",
+      "note": "Current active macropore runtime plus subsequent admissions control coverage"
+    },
+    {
+      "number": 830,
+      "title": "F-PE-NLGLOB14I saturated-set migration attribution",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/830",
+      "state": "open",
+      "created_at": "2026-09-29T12:12:38Z",
+      "updated_at": "2026-09-29T12:12:38Z",
+      "closed_at": null,
+      "draft": false,
+      "labels": [],
+      "role": "PERFORMANCE_RESEARCH_NOT_LEGACY_COVERAGE_BLOCKER",
+      "capabilities": [],
+      "note": "Saturated-set migration attribution is numerical diagnostic research"
+    },
+    {
+      "number": 700,
+      "title": "PPA-RECONCILE01: reconcile local SWAP4.3.1 migration with current canonical",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/700",
+      "state": "open",
+      "created_at": "2026-09-28T07:32:09Z",
+      "updated_at": "2026-09-28T07:32:09Z",
+      "closed_at": null,
+      "draft": true,
+      "labels": [],
+      "role": "HISTORICAL_RECONCILIATION_BRANCH_NOT_AUTOMATIC_BLOCKER",
+      "capabilities": [],
+      "note": "Evaluate each source capability against current canonical; an older broad reconciliation proposal cannot define today's denominator"
+    },
+    {
+      "number": 361,
+      "title": "PPA-WU05-B frost hydraulic authority blocker freeze",
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/361",
+      "state": "open",
+      "created_at": "2026-09-19T06:16:08Z",
+      "updated_at": "2026-09-19T08:56:12Z",
+      "closed_at": null,
+      "draft": false,
+      "labels": [],
+      "role": "OBSOLETE_SOURCE_HOLD_NOT_CURRENT_BLOCKER",
+      "capabilities": [
+        "SW431-FROST-HYD"
+      ],
+      "authority": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+      "note": "Exact source recovery and B1..B18 admissions supersede the early source/authority blocker"
+    }
+  ],
+  "micro1071_scope": "`sw_drought=3` has no SWAP5 MICRO runtime. This draft adds a call-local typed de Willigen evaluator and a B1.10 MvG point-conductivity adapter for the admitted MICRO01 table. It does not bind the production root sink.\n\nRun 37420361646 passed O0/O2-identical focused tests. The corrected-table literal B1.11 nonlinear oracle matched four constant-K model/stress cases and one heterogeneous-head case within 2e-5 cm/d per node, with all three source checks true. A separate real MvG sampling and uptake smoke passed. Exact hashes, output and PR-merge execution are preserved in `docs/audits/evidence/PPA_MICRO02_STANDALONE_SOURCE_FINAL_REPLAY.json.gz`. Documentation source and strict MkDocs passed.\n\nThe initial oracle omitted the legacy module `iMicro=1` setup. Those apparent signed-sink/source-closure findings were invalid harness output, have been retracted, and are recorded as negative evidence. The successful nonlinear oracle leaves B1.11 unmodified except the disclosed MICRO01 dry-table correction and public test access.\n\nScope ceiling: standalone component only. Heterogeneous-horizon source mapping, one accepted runtime root sink, transaction/mass/restart qualification, de Jong van Lier and signed hydraulic lift remain open. Keep this PR draft and unmerged until the production interface and its gates are addressed."
+}

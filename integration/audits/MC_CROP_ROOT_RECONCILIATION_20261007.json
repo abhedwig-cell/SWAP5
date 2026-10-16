@@ -1,0 +1,150 @@
+{
+  "schema": "swap431.crop_root.reconciliation.20261007.v1",
+  "canonical_head": "4dc02866825c6bcd24de81944c2b39e5fb0ca878",
+  "source_master_branch": "work/swap431-master-coverage-20261006",
+  "note": "Targeted MC-CROP01/MC-ROOT01 reconciliation. This does not mutate global census counts until branches are admitted/merged.",
+  "capabilities": [
+    {
+      "id": "SW431-CROP-ROOTGROW-DVS",
+      "state": "CANONICAL_ADMITTED",
+      "authority": "integration/f-ci-canonical@4dc02866825c6bcd24de81944c2b39e5fb0ca878"
+    },
+    {
+      "id": "SW431-ROOT-OXYGEN-EMP",
+      "state": "IMPLEMENTED_INTEGRATED_QUALIFICATION_QUEUED",
+      "authority": "work/swap431-root-oxygen-emp-20261007",
+      "remaining": "persisted O0/O2 production root binding"
+    },
+    {
+      "id": "SW431-ROOT-OXYGEN-REPRO",
+      "state": "IMPLEMENTED_INTEGRATED_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-oxygen-repro-20261007",
+      "remaining": "application config injection plus integrated O0/O2/restart/type1 preservation"
+    },
+    {
+      "id": "SW431-CROP-FIXED",
+      "state": "IMPLEMENTED_BOUNDED_INTEGRATION_OPEN",
+      "authority": "work/swap431-crop-fixed-owner-20261007",
+      "remaining": "calendar/event composition; IDEV1 TSUM excluded due pinned TBASE defect"
+    },
+    {
+      "id": "SW431-CROP-FIXED-THERMAL",
+      "state": "IMPLEMENTED_BOUNDED_INTEGRATION_OPEN",
+      "authority": "work/swap431-crop-fixed-owner-20261007",
+      "remaining": "calendar/event composition and persistence"
+    },
+    {
+      "id": "SW431-CROP-WOF-OTHER",
+      "state": "QUALIFICATION_ONLY_SOURCE_GATE_READY",
+      "authority": "work/swap431-crop-annual-idsl01-20261007",
+      "remaining": "run literal IDSL0/1 production comparator O0/O2"
+    },
+    {
+      "id": "SW431-CROP-SOY",
+      "state": "SOURCE_PHENOLOGY_IMPLEMENTED_INTEGRATION_OPEN",
+      "authority": "work/swap431-crop-soy-factors-20261007",
+      "remaining": "existing crop transaction binding/full-season event qualification"
+    },
+    {
+      "id": "SW431-CROP-GRASS",
+      "state": "MAJOR_MANAGEMENT_OWNER_IMPLEMENTED_QUALIFICATION_OPEN",
+      "authority": "work/swap431-crop-grass-management-20261007",
+      "supporting": "work/swap431-crop-grass-phenology-20261007",
+      "remaining": "strict O0/O2 plus actual/potential atomic management/restart; source defects fail closed for SW_LOSSGRZ=0 and WSO>0"
+    },
+    {
+      "id": "SW431-CROP-SOW",
+      "state": "STATE_MACHINE_IMPLEMENTED_RUNTIME_BINDING_OPEN",
+      "authority": "work/swap431-crop-preemergence-20261007",
+      "remaining": "hydrology/heat forcing seam plus atomic emergence/restart"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW",
+      "state": "IMPLEMENTED_UNIFIED_COMPOSITION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-growth-oxygen-composition-20261007",
+      "remaining": "O0/O2 integrated transaction/restart"
+    },
+    {
+      "id": "SW431-CROP-CO2",
+      "state": "IMPLEMENTED_INTEGRATED_QUALIFICATION_QUEUED",
+      "authority": "work/swap431-crop-co2-20261007",
+      "remaining": "persisted CO2 crop/ET forcing qualification"
+    },
+    {
+      "id": "SW431-CROP-ROTATION",
+      "state": "LIFECYCLE_OWNER_IMPLEMENTED_INTEGRATION_OPEN",
+      "authority": "work/swap431-crop-rotation-owner-20261007",
+      "remaining": "atomic parameter/preemergence/crop owner season transition plus restart"
+    },
+    {
+      "id": "SW431-CROP-ANNUAL",
+      "state": "QUALIFICATION_ONLY_SOURCE_GATE_READY",
+      "authority": "work/swap431-crop-annual-idsl01-20261007",
+      "remaining": "literal B1.11 classic annual production comparator; transaction/lifecycle/restart already covered by F-WOF38/39/41"
+    },
+    {
+      "id": "SW431-ROOT-DENSITY",
+      "state": "MAJOR_OWNER_IMPLEMENTED_ADMISSION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-density-adaptive-20261007",
+      "remaining": "O0/O2 production runtime, retry/restart, accepted daily redistribution forcing"
+    },
+    {
+      "id": "SW431-ROOT-ANAE-GROW",
+      "state": "IMPLEMENTED_UNIFIED_COMPOSITION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-growth-oxygen-composition-20261007",
+      "remaining": "accepted oxygen lineage plus SWRD2/SWRD3 integrated O0/O2/restart"
+    },
+    {
+      "id": "SW431-CROP-ATTAINABLE",
+      "state": "IMPLEMENTED_POTENTIAL_SHADOW_TRANSACTION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-crop-potential-shadow-20261007",
+      "remaining": "full transaction O0/O2 and restart; actual RELMF already source-equivalent"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "state": "IMPLEMENTED_UNIFIED_COMPOSITION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-growth-oxygen-composition-20261007",
+      "remaining": "SWRD3 transaction/restart O0/O2; WRTPOT owner no longer missing"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW-WATER",
+      "state": "IMPLEMENTED_UNIFIED_COMPOSITION_QUALIFICATION_OPEN",
+      "authority": "work/swap431-root-growth-oxygen-composition-20261007",
+      "remaining": "SWRD2 integrated O0/O2/restart; GRRTPOT/IALPWET carriers no longer missing"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW-SUPPLY",
+      "state": "SOURCE_RESOLVER_IMPLEMENTED_DEPENDENT_COMPOSITION_OPEN",
+      "authority": "work/swap431-rootgrow-supply-20261007",
+      "remaining": "compose adaptive WROOT_NODE plus accepted daily drought/root-growth carriers"
+    },
+    {
+      "id": "SW431-ROOT-LRV-CONSTANT",
+      "state": "IMPLEMENTED_INTEGRATED_QUALIFICATION_QUEUED",
+      "authority": "work/swap431-root-lrv-constant-20261007",
+      "remaining": "persisted production MICRO binding"
+    },
+    {
+      "id": "SW431-CROP-VERNAL",
+      "state": "SOURCE_STATE_OWNER_IMPLEMENTED_INTEGRATION_OPEN",
+      "authority": "work/swap431-crop-vernalisation-20261007",
+      "remaining": "classic one-day transaction selector integration/reject/replay/restart"
+    }
+  ],
+  "remaining_major_independent_owners": [
+    "SW431-CROP-GRASS management event owner",
+    "SW431-ROOT-DENSITY adaptive WROOT_NODE inventory owner"
+  ],
+  "remaining_cross_owner_integration_clusters": [
+    "season lifecycle: rotation + preemergence + fixed/classic/soybean crop owner + crop-end resolver",
+    "root growth: potential shadow + accepted daily water/oxygen + SWRD2/SWRD3 + adaptive density + SWDMI2RD2",
+    "oxygen type2 application immutable parameter injection into existing single-sink executor"
+  ],
+  "actions_queue": {
+    "empirical_oxygen": 37641722460,
+    "co2": 37637780221,
+    "constant_lrv": 37640585221,
+    "source_probe": 37642032137,
+    "state": "QUEUED_REPOSITORY_WIDE_SATURATION"
+  }
+}

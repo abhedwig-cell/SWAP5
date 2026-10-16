@@ -1,0 +1,30 @@
+{
+  "schema": "swap5.coverage.macropore_seepage_probe.v1",
+  "source_member": "SWAP/macrorate.f90",
+  "source_sha256": "537a84861fb256be67298064177b3e578305c1d036fe7376471d5bd3f7d4dcc7",
+  "provider": "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90",
+  "provider_sha256": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+  "status": "PASS_LITERAL_ACTIVE_BRANCH_COMPONENT_COMPARISON",
+  "results": [
+    {
+      "optimization": "-O0",
+      "cases": 48,
+      "max_relative_error": 1.9599871975145671e-16,
+      "stdout": "48   1.9599871975145671E-16\n"
+    },
+    {
+      "optimization": "-O2",
+      "cases": 48,
+      "max_relative_error": 1.9599871975145671e-16,
+      "stdout": "48   1.9599871975145671E-16\n"
+    }
+  ],
+  "runtime_admission_created": false,
+  "scope": "SWSEP1/2 positive-K seepage-face algebra, full/partial top matrix compartment, matrix-to-macro direction only",
+  "limitations": [
+    "Explicit pi=acos(-1) external carrier assumption",
+    "No native geometry resolver or Richards callback qualification",
+    "No donor cap, candidate commit, retry, restart or whole-column admission",
+    "Zero horizontal conductivity and all other SATFLOW branches excluded"
+  ]
+}

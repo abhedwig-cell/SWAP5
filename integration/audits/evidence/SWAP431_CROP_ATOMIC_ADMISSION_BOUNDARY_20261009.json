@@ -1,0 +1,110 @@
+{
+  "schema": "swap431.master.canonical_crop_delta.v1",
+  "canonical_head": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "ledger_baseline": "10345ab164f6778174c2fe8d0f08233a491fa4d7",
+  "scope": "Bounded crop physical-forcing and lifecycle admissions from canonical 2026-10-09; no whole-capability closure presumed",
+  "admitted_atomic_slices": [
+    {
+      "sha": "0f38b2d20058",
+      "scope": "stateless sowing temperature node resolution"
+    },
+    {
+      "sha": "f2b38c00cbbd",
+      "scope": "B110 soil grid consistency preflight"
+    },
+    {
+      "sha": "58e6620053ae",
+      "scope": "paired F-KT crop/calendar restart values"
+    },
+    {
+      "sha": "78841c56eea2",
+      "scope": "atomic accepted hydrothermal snapshot"
+    },
+    {
+      "pr": 1151,
+      "scope": "accepted F-KT soil heat source"
+    },
+    {
+      "pr": 1149,
+      "scope": "accepted pressure head depth composition"
+    },
+    {
+      "pr": 1147,
+      "scope": "B1.11 pressure-head averaging"
+    },
+    {
+      "pr": 1144,
+      "scope": "accepted hydraulic source"
+    }
+  ],
+  "still_open_crop_ids": [
+    {
+      "id": "SW431-CROP-FIXED",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Calendar-clock prescribed-LAI/root-biomass crop development and harvest"
+    },
+    {
+      "id": "SW431-CROP-WOF-OTHER",
+      "disposition": "QUALIFICATION_ONLY",
+      "meaning": "Annual crop daylength-dependent phenology"
+    },
+    {
+      "id": "SW431-CROP-SOY",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Soybean-specific phenology and photoperiod"
+    },
+    {
+      "id": "SW431-CROP-GRASS",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Grass regrowth, mowing and grazing"
+    },
+    {
+      "id": "SW431-CROP-SOW",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Soil-state-dependent preparation, sowing and germination"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Accepted daily maximum-rate root-depth extension gated by transpiration and allocated root growth"
+    },
+    {
+      "id": "SW431-CROP-ROTATION",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Multi-crop start/end/harvest accepted lifecycle"
+    },
+    {
+      "id": "SW431-CROP-ANNUAL",
+      "disposition": "QUALIFICATION_ONLY",
+      "meaning": "B1.11 annual-crop assimilation, biomass growth and calendar/thermal phenology"
+    },
+    {
+      "id": "SW431-ROOT-ANAE-GROW",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Anaerobic suppression of root extension"
+    },
+    {
+      "id": "SW431-CROP-ATTAINABLE",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Selector-controlled RELMF correction of companion potential assimilation"
+    },
+    {
+      "id": "SW431-CROP-FIXED-THERMAL",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Thermal-sum prescribed-LAI/root-biomass crop development and harvest"
+    },
+    {
+      "id": "SW431-CROP-ROOTGROW-SUPPLY",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Minimum/root-drought-scaled extension limited by allocated root dry matter"
+    },
+    {
+      "id": "SW431-CROP-VERNAL",
+      "disposition": "ACTIVE_MIGRATION",
+      "meaning": "Temperature/daylength phenology with persistent vernalisation sum and completion flag"
+    }
+  ],
+  "closed_claims": [],
+  "review_note": "Admitted subcomponents do not establish complete crop sowing/emergence, B1.11 annual assimilation, phenology, rotation or full physiological coupling. Canonical F-KT source identity must be checked before promotion. Draft PR1159/1160 are not canonical.",
+  "next_action": "Owner-specific source mapping against exact B1.11 for SW431-CROP-SOW and annual/rotation, then canonical admission only when the full meaning is qualified."
+}

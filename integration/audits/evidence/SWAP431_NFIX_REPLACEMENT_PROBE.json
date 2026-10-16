@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+  "source_member": "SWAP/wofostnut.f90",
+  "source_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+  "literal_lines": [
+    354,
+    371
+  ],
+  "source_files_sha256": {
+    "src/crop/mod_wofost81_nitrogen.f90": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce"
+  },
+  "results": [
+    {
+      "optimization": "-O0",
+      "cases": 6,
+      "stdout": " 1   1.0200000000000001E+01   1.0200000000000001E+01\n 2   0.0000000000000000E+00   1.0200000000000001E+01\n 3   1.0200000000000001E+01   1.0904000000000002E+01\n 4   1.0200000000000001E+01   1.0320000000000000E+01\n 5   0.0000000000000000E+00   0.0000000000000000E+00\n 6   1.0200000000000001E+01   1.0200000000000001E+01\nNFIX_REPLACEMENT_DISCRIMINATION_PASS\n",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "optimization": "-O2",
+      "cases": 6,
+      "stdout": " 1   1.0200000000000001E+01   1.0200000000000001E+01\n 2   0.0000000000000000E+00   1.0200000000000001E+01\n 3   1.0200000000000001E+01   1.0904000000000002E+01\n 4   1.0200000000000001E+01   1.0320000000000000E+01\n 5   0.0000000000000000E+00   0.0000000000000000E+00\n 6   1.0200000000000001E+01   1.0200000000000001E+01\nNFIX_REPLACEMENT_DISCRIMINATION_PASS\n",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ],
+  "runtime_admission_created": false,
+  "conclusion": "Three witnesses distinguish the source DVS cutoff, storage-demand exclusion and absence of new-growth demand. Moisture threshold agrees. WOFOST81 supplies biological fixation algebra but does not literally implement the B1.11 request contract.",
+  "nonclaims": [
+    "No claim that either biological model is physically wrong.",
+    "No full-season, runtime or Soil-N coupling qualification.",
+    "No global REJECTED or SUPERSEDED decision follows from equation differences alone."
+  ]
+}

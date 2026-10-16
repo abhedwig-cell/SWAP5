@@ -180,5 +180,33 @@
     }
   ],
   "review_verdict": "OXYGEN_FAMILY_BOUNDARIES_FROZEN_C1_READY_FOR_SEPARATE_IMPLEMENTATION_AUTHORITY_C2_C3_SOURCE_HELD",
-  "production_admission": "NONE_REVIEW_ONLY"
+  "production_admission": "NONE_REVIEW_ONLY",
+  "record_role": "HISTORICAL_REVIEW_CONTRACT_WITH_CURRENT_RECONCILIATION",
+  "current_reconciliation": {
+    "canonical_head": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "source_materialization_blocker_active": false,
+    "full_exact_b111_authority": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "master_ledger": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+    "families": {
+      "SWOXYGEN_2_SWOXYGENTYPE_1_BARTHOLOMEUS": {
+        "current_disposition": "ADMITTED",
+        "capability_id": "SW431-ROOT-OXYGEN-BARTH",
+        "successor": "docs/audits/PPA_WU05C3A_CLOSEOUT.md",
+        "scope": "C3A bounded mode2/type1 analytical-MvG REFERENCE waterfilm, homogeneous serial typed application, bottom2/7, restricted thermal owner"
+      },
+      "SWOXYGEN_1_FEDDES_WETNESS": {
+        "current_disposition": "ACTIVE_MIGRATION",
+        "capability_id": "SW431-ROOT-OXYGEN-EMP",
+        "active_workunit": "MC-ROOT01",
+        "reason": "Current Feddes process is drought-only. Bartholomeus does not supply the distinct wet-pressure-head factor."
+      },
+      "SWOXYGEN_2_SWOXYGENTYPE_2_REPRODUCTION": {
+        "current_disposition": "ACTIVE_MIGRATION",
+        "capability_id": "SW431-ROOT-OXYGEN-REPRO",
+        "active_workunit": "MC-ROOT01",
+        "reason": "Recovered/exact source factor is not production-bound by C3A type1 admission."
+      }
+    },
+    "historical_fields_preserved": true
+  }
 }

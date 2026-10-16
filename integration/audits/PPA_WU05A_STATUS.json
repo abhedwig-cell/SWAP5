@@ -105,5 +105,19 @@
       "production_mutation": "NONE",
       "reference_mutation": "NONE"
     }
+  },
+  "record_role": "HISTORICAL_REVIEW_CONTRACT_WITH_CURRENT_RECONCILIATION",
+  "current_reconciliation": {
+    "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+    "source_materialization_blocker_active": false,
+    "historical_implementation_hold_active": false,
+    "source_authority": "integration/audits/evidence/SWAP431_SOURCE_CENSUS.json",
+    "bounded_production_successors": [
+      "integration/audits/PPA_WU05A8_STATUS.json",
+      "integration/audits/PPA_WU05_MIGMAC01_STATUS.json",
+      "integration/audits/PPA_WU05A26_RECONCILED_STATUS.json"
+    ],
+    "current_capability_ledger": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+    "rule": "Historical fields below retain the originally qualified review contract. They are not the current source-availability or production-admission decision. Later bounded admissions supersede the blanket production prohibition; no whole macropore-family closure is inferred."
   }
 }

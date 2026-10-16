@@ -1,0 +1,253 @@
+{
+  "schema_version": "1.0",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "kind": "SOURCE_AND_PRODUCTION_CONTRACT_REVIEW",
+  "new_runtime_admission_created": false,
+  "source_files_sha256": {
+    "src/process/mod_drainage_process.f90": "4ad68b1b1fc1e4b58737ea94f11a899cc05079e11bd46b910c0e88ab568ce66b",
+    "src/process/mod_drainage_tabulated_response.f90": "84672d1c500c163c38bf98dbe0224559fd6a27189a95fde8911bdcce2f490f9b",
+    "src/process/mod_drainage_extended_exchange.f90": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292",
+    "src/process/mod_drainage_spatial_distribution.f90": "ee38490c881c78cba2e533c6ffbb8716e06c6b2893256695a120602cef73b17a",
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90": "cd06cb9bd9d278c8f28b092be27cb1bc7191f1590c79dcc20f1cd026e0e4bf36",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "6d297c308261948dd3a516c545e76f4650570ce4945cb96e179cbb538f51e852",
+    "src/adapter/mod_ppa_wu03_common_forcing_adapter.f90": "dee588f3ebba69e975186fc66c9076565827d6407f0bf304bfc24b647f580575"
+  },
+  "findings": [
+    {
+      "capability_id": "SW431-DRAIN-TAB",
+      "conclusion": "DRAMET1 normalized signed groundwater-depth lookup is admitted. Source one-element padding degeneracy is outside the qualified normalized law. This is not DRAMET3 resistance/OWLTAB execution.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        75,
+        77,
+        295,
+        300,
+        301,
+        304,
+        305
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-LINEAR",
+      "conclusion": "Admitted one-way q=max(gwl-resolved_head,0)/R response with supplied resolved head; the positive DRAMET3 contribution only. No implicit OWLTAB, signed infiltration or SWALLO dispatcher admission.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        152,
+        171,
+        173,
+        176,
+        179
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-EMP",
+      "conclusion": "Admitted drainage-side highest-level empirical q=coefficient*positive_head**exponent with supplied resolved head. Negative DRAMET3 infiltration and native OWLTAB/SWALLO remain excluded.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        171,
+        173,
+        174,
+        179
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-DIV",
+      "conclusion": "Admitted positive single-level conductivity distribution only, including zero transfer and rejection of nonzero transfers <=1e-10. Signed, multiple-level and altered discharge-layer bounds require separate entries.",
+      "legacy_member": "SWAP/divdra.f90",
+      "legacy_lines": [
+        224,
+        228,
+        233,
+        241,
+        247
+      ],
+      "source_sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
+    },
+    {
+      "capability_id": "SW431-DRAIN-DISLAYER",
+      "conclusion": "SWDISLAY1 uses supplied discharge-layer top; SWDISLAY2 derives it from groundwater/drain geometry and FTOPDISLAY. Both truncate and renormalize nodal fluxes. Current production positive DIVDRA parameter type has neither top-depth/fraction nor this redistribution operator.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        336,
+        338,
+        340,
+        342,
+        347,
+        349,
+        360,
+        365,
+        372,
+        374
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-INF-SPLIT",
+      "conclusion": "Separate DRAMET3 infiltration partition uses unsaturated/saturated transmissivity and FACDPTHINF. The ordinary runtime binds positive single-level DIVDRA only; B18 contains a bounded signed scientific component but has no canonical runtime import. B19 is rootless frost runtime work and cannot silently close ordinary/general separate infiltration.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        46,
+        253,
+        255,
+        258,
+        281,
+        300,
+        325
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-ALLOCATION",
+      "conclusion": "SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        164,
+        179,
+        185,
+        191
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-INF-LIMIT",
+      "conclusion": "SWLIMINF1 clips the negative DRAMET3 head difference at channel depth before dividing by INFRES. EXTENDED has a related GWLINF cap but also distinct 0.001cm activation, pond suppression and wet-perimeter rules; no source-bound mapping of this ordinary dispatcher is qualified. This is a resolver/envelope gap, not proof that capped infiltration algebra is absent.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        185,
+        186,
+        189,
+        191
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-DRAMET3",
+      "conclusion": "Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        152,
+        157,
+        158,
+        159,
+        176,
+        189
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-DIV-SIGNED",
+      "conclusion": "Source default DIVDRA partitions negative as well as positive active level transfers; the admitted ordinary scalar-to-node runtime rejects negative transfers. B18 isolated signed frost component does not constitute ordinary runtime admission.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        37,
+        46,
+        224,
+        233,
+        241,
+        247
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-DRAIN-DIV-MULTI",
+      "conclusion": "Source DIVDRA orders active drain levels and constructs distinct discharge layers before partitioning each level. Current ordinary runtime allocates exactly one level. Multilevel scalar aggregation with bottom-node lumping does not implement these interacting spatial partitions.",
+      "legacy_member": "SWAP/drainage.f90",
+      "legacy_lines": [
+        37,
+        42,
+        81,
+        94,
+        129,
+        176,
+        221,
+        228
+      ],
+      "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc"
+    },
+    {
+      "capability_id": "SW431-LOW3-EXPLICIT",
+      "conclusion": "Source evaluates (deepgw-[hdrain+shape_3*(gwl-hdrain)])/(rimlay+saturated_profile_resistance), plus optional SW4, at the prescribed endpoint. LOW03-A consumes the distinct implicit last-node Cauchy route. No production profile-resistance/SHAPE_3 resolver for the explicit variant exists; retain as a deliberate migration/scope decision, not a numerical-policy replacement.",
+      "legacy_member": "SWAP/boundbottom.f90",
+      "legacy_lines": [
+        76,
+        77,
+        84,
+        88,
+        96,
+        98,
+        100,
+        106,
+        109
+      ],
+      "source_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+    },
+    {
+      "capability_id": "SW431-LOW9",
+      "conclusion": "Source reader accepts independent DATE9A/HBOT9 and DATE9B/QBOT9. BoundBottom sets qbot and overwrites the final cell h/theta/K; HeadCalc solves only numnod-1 and Fluxes deliberately excludes mode9 from qbot reconstruction. No typed production mode9 route is admitted. This is a real state/flux ownership decision, not obsolete parser plumbing.",
+      "legacy_member": "SWAP/boundbottom.f90",
+      "legacy_lines": [
+        144,
+        145,
+        146,
+        147,
+        148,
+        149,
+        150,
+        151,
+        152
+      ],
+      "source_sha256": "5735f2b6e70408d304f6f5fa35ba659fb3422e03109630e27368933f5c10836e"
+    },
+    {
+      "capability_id": "SW431-MET-RAIN1",
+      "conclusion": "Source resolves daily depth and seasonal intensity into a midnight-start pulse: duration=min(1,depth/intensity), actual rate=depth/duration. Typed interval rates can carry the resolved pulse, but no current RAINTB/day-of-year pulse resolver is present. Daily total alone does not preserve infiltration intensity.",
+      "legacy_member": "SWAP/MOD_meteo.f90",
+      "legacy_lines": [
+        646,
+        677,
+        685,
+        686,
+        688,
+        691,
+        696,
+        697
+      ],
+      "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+    },
+    {
+      "capability_id": "SW431-MET-RAIN2",
+      "conclusion": "Source uses supplied daily WET duration and rate=depth/WET, with a rain-end time-step event and zero-rain intervals. Typed intervals can carry the result, but the native depth/duration resolver and its admitted forcing lifecycle are absent.",
+      "legacy_member": "SWAP/MOD_meteo.f90",
+      "legacy_lines": [
+        646,
+        677,
+        685,
+        686,
+        688,
+        691,
+        696,
+        697
+      ],
+      "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+    },
+    {
+      "capability_id": "SW431-MET-RAIN3",
+      "conclusion": "Source converts interval rain amounts at ordered timestamps to piecewise constant rates, reconstructs daily totals, and clips hydraulic steps to rain events. Generic typed spans support resolved rates; source-equivalent mapping of end-stamped amounts, start clipping and daily interception/snow composition still needs qualification.",
+      "legacy_member": "SWAP/MOD_meteo.f90",
+      "legacy_lines": [
+        1095,
+        1103,
+        1106,
+        1109,
+        1114,
+        1125,
+        1135
+      ],
+      "source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f"
+    }
+  ]
+}

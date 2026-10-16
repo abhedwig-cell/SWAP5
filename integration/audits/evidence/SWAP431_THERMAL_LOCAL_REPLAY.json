@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.coverage.thermal_local_replay.v1",
+  "tested_postimage": "2ed1c912ec1f47ae553cb181f1d140a90bd0266f",
+  "source_sha256": {
+    "src/transaction/mod_transaction_reference.f90": "be21ed3619fed7d8f2a4c9f04de286be7abfd62bb99d73c3a0c177d665ed0c7d",
+    "src/solver/mod_soil_water_solver_contract.f90": "82e3cf865c0e66de8d9020832ff161e75a4c9f02186cf02a297bf5e4776e90c2",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/process/mod_soil_temperature_contract.f90": "f68e8380a6db4fbcaeb9cdbc1c75c2dc1fe691022eab96c577928fff78a078a5",
+    "src/process/mod_restricted_soil_temperature.f90": "602858657ce4ccd8004303f4d09bc96ee4dae6dace8572d33aa947aef97aefe7",
+    "tests/fci/test_fci43_restricted_soil_temperature_independent.f90": "bffb492d9e8608f5e41b71609f5b956c7d98e9fba7d8e2999dde22d99881662f"
+  },
+  "results": [
+    {
+      "optimization": "-O0",
+      "exit_code": 0,
+      "stdout_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "stdout": "FVQ58_DENSE_ORACLE_CASES=6\nFVQ58_LEGACY_DEVRIES_DENSE_ORACLE=PASS\nFVQ58_ZERO_GRADIENT_IDENTITY=PASS\nFVQ58_BOUNDARY_SIGN_AND_ZERO_BOTTOM=PASS\nFVQ58_SENSIBLE_ENERGY_CLOSURE=PASS\nFVQ58_TEMPORAL_REFINEMENT=PASS\nFVQ58_TRANSACTION_IMMUTABILITY=PASS\nFVQ58_CONTINUOUS_SPLIT_RESTART_IDENTITY=PASS\nFVQ58_MINIMAL_RESTART_AND_SEMANTIC_VIEW=PASS\nFVQ58_FAIL_CLOSED_INVALID_INPUTS=PASS\nFVQ58_MULTISWAP_COLUMN_ISOLATION=PASS\nFVQ58_INDEPENDENT_ORACLE=PASS\n"
+    },
+    {
+      "optimization": "-O2",
+      "exit_code": 0,
+      "stdout_sha256": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "stdout": "FVQ58_DENSE_ORACLE_CASES=6\nFVQ58_LEGACY_DEVRIES_DENSE_ORACLE=PASS\nFVQ58_ZERO_GRADIENT_IDENTITY=PASS\nFVQ58_BOUNDARY_SIGN_AND_ZERO_BOTTOM=PASS\nFVQ58_SENSIBLE_ENERGY_CLOSURE=PASS\nFVQ58_TEMPORAL_REFINEMENT=PASS\nFVQ58_TRANSACTION_IMMUTABILITY=PASS\nFVQ58_CONTINUOUS_SPLIT_RESTART_IDENTITY=PASS\nFVQ58_MINIMAL_RESTART_AND_SEMANTIC_VIEW=PASS\nFVQ58_FAIL_CLOSED_INVALID_INPUTS=PASS\nFVQ58_MULTISWAP_COLUMN_ISOLATION=PASS\nFVQ58_INDEPENDENT_ORACLE=PASS\n"
+    }
+  ],
+  "new_runtime_admission": false,
+  "reproduction": {
+    "compiler": "GNU Fortran13.3",
+    "flags": [
+      "-O0 or -O2",
+      "-ffree-line-length-none",
+      "-fcheck=all",
+      "-ffpe-trap=invalid,zero,overflow"
+    ],
+    "ordered_sources": [
+      "src/transaction/mod_transaction_reference.f90",
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/solver/mod_process_hydraulic_view.f90",
+      "src/process/mod_soil_temperature_contract.f90",
+      "src/process/mod_restricted_soil_temperature.f90",
+      "tests/fci/test_fci43_restricted_soil_temperature_independent.f90"
+    ],
+    "procedure": "Compile ordered sources in a fresh temporary module directory, link thermal executable, execute it and compare stdout SHA256. Historical admission race guards are not rerun as if current canonical were the old base."
+  }
+}

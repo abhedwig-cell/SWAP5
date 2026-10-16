@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "source_member": "SWAP/drainage.f90",
+  "source_sha256": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+  "source_files_sha256": {
+    "src/solver/mod_soil_water_solver_contract.f90": "82e3cf865c0e66de8d9020832ff161e75a4c9f02186cf02a297bf5e4776e90c2",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/process/mod_drainage_extended_exchange.f90": "598043509c62414918fea3d61e76c6d146bb76f3413318c2444e3181bae2c292"
+  },
+  "scope": "Literal DRAMET3 branch; constant OWLTAB stub; four response comparisons and four direction/cap checks per optimization. No complete source runtime.",
+  "finding": "Zero-entry/exit-resistance EXTENDED with GWLINF=ZBOTDR reproduces the three ordinary bulk cases, but suppresses a positive DRAMET3 flux of approximately 5e-6 cm/day within its independent 0.001cm activation seam. Therefore blanket source-equivalent replacement is unproven and numerically false at this valid input.",
+  "runtime_admission_created": false,
+  "results": [
+    {
+      "optimization": "-O0",
+      "stdout": " 1  -1.0000000000000001E-01  -1.0000000000000001E-01\n 2  -5.0000000000000003E-02  -5.0000000000000003E-02\n 3   5.0000000000238740E-06   0.0000000000000000E+00\n 4   1.0000000000000001E-01   1.0000000000000001E-01\nDRAMET3_REPLACEMENT_COUNTEREXAMPLE_PASS\n"
+    },
+    {
+      "optimization": "-O2",
+      "stdout": " 1  -1.0000000000000001E-01  -1.0000000000000001E-01\n 2  -5.0000000000000003E-02  -5.0000000000000003E-02\n 3   5.0000000000238740E-06   0.0000000000000000E+00\n 4   1.0000000000000001E-01   1.0000000000000001E-01\nDRAMET3_REPLACEMENT_COUNTEREXAMPLE_PASS\n"
+    }
+  ]
+}

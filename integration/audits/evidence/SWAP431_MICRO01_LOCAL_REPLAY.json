@@ -1,0 +1,33 @@
+{
+  "schema": "swap5.micro01.corrected_table.v1",
+  "tested_postimage": "aed173fcbb0772b49ca5e1f3931ceeb89fd53d5e",
+  "reference_sha256": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+  "original_literal_sha256": "65f81e9c1ab27ce02e538eadd90cce6f1a43e206f7cc51408733c965851a9ba2",
+  "corrected_literal_sha256": "6e6fc3fef33ef973037917d0f1184325cee2564a1979f0bc9d9b2492304f52bf",
+  "explicit_reference_patches": [
+    [
+      "      start = int(100.d0*dlog10(-wiltpoint))",
+      "      M_table=0d0; K_table=0d0\n      start = int(100.d0*dlog10(-wiltpoint))"
+    ],
+    [
+      "         M_table(start,lay) = 0.0d0",
+      "         K_table(start,lay)=conduc1\n         wcontent=watcon(i,wiltpoint)\n         conduc2=hconduc(i,wiltpoint,wcontent,10d0)\n         K_table(start+1,lay)=conduc2\n         M_table(start,lay)=0.5d0*(conduc1+conduc2)*(phead1-wiltpoint)"
+    ],
+    [
+      "      else if (H > -1.023293d0) then",
+      "      else if (H <= -10d0**(dble(int(100d0*dlog10(-wiltpoint)))/100d0)) then\n         start=int(100d0*dlog10(-wiltpoint))\n         phead1=-10d0**(dble(start)/100d0)\n         c0=H-wiltpoint\n         c1=c0/(phead1-wiltpoint)\n         M=K_table(start+1,lay)*c0+0.5d0*(K_table(start,lay)-K_table(start+1,lay))*c0*c1\n         if(Kpresent)K=K_table(start+1,lay)+(K_table(start,lay)-K_table(start+1,lay))*c1\n      else if (H > -1.023293d0) then"
+    ]
+  ],
+  "runs": {
+    "O0": "MICRO01_CORRECTED_LITERAL_CASES=2600\nMICRO01_TERMINAL_INTEGRAL_AND_REJECTED_BUILD_ISOLATION=PASS\n",
+    "O2": "MICRO01_CORRECTED_LITERAL_CASES=2600\nMICRO01_TERMINAL_INTEGRAL_AND_REJECTED_BUILD_ISOLATION=PASS\n"
+  },
+  "source_sha256": {
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90": "cac3d723cc11fb001878d53f2747bbff9fd53fb22949b682906df4361cb90477",
+    "src/process/mod_root_micro_matric_flux_table.f90": "6cc00ec63f80d4fa02bfafa0f8b50ba1c5aa4f61102c6093c91b221e2f6c4e86",
+    "tests/physics/test_ppa_micro01_corrected_table.f90": "1c442c5b28d59a5ec9886894f5721335b4d416794e2a9967ab92364597065c11",
+    "tests/physics/run_ppa_micro01_corrected_table.py": "016b3925cab536f18440ed09b167cb71c005301799d11017bf9c718595036acf",
+    "tests/physics/run_ppa_micro01_dry_table.py": "ecd60997a8ad545ef1f5aff1fa39c0f6a117e480c2046d5d9d935b04e0dbe7b5"
+  },
+  "claim_ceiling": "Typed corrected table component with synthetic hydraulic owners only; not complete MICRO uptake or runtime/restart admission."
+}

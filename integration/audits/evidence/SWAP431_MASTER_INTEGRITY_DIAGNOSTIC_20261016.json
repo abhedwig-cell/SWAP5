@@ -1,0 +1,1237 @@
+{
+  "scope": "DIAGNOSTIC_ONLY. Original checker unchanged; assertions observed to expose independent blockers. No returned PASS is used. No validation/admission claim.",
+  "candidate": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
+  "checker_sha256": "7f594caf13c73b55faea413eef4a75aa11b926176ac56dd5e4539f18d50138e5",
+  "failures": [
+    {
+      "line": 22,
+      "message": "stale inheritance baseline",
+      "assertion": "assert inheritance['canonical_head'] == canonical_head, 'stale inheritance baseline'"
+    },
+    {
+      "line": 32,
+      "message": "stale inherited dependency: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale inherited dependency: {path}'"
+    },
+    {
+      "line": 68,
+      "message": "assertion",
+      "assertion": "assert by_id['SW431-GW-PROJECTION']['active_workunit'] == 'MC-LOW01'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ET-PMTRAD: missing integration/audits/MC_MET01_STATUS.json daily_demand_successor at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ET-PMTRAD: missing src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 96,
+      "message": "SW431-ET-PMTRAD",
+      "assertion": "assert not entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ET-SOILFACTOR: missing integration/audits/MC_MET01_STATUS.json daily_demand_successor at d30728087f3d7d8e9e37a5e0a3507f14bb29f7c9",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ET-SOILFACTOR: missing src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 96,
+      "message": "SW431-ET-SOILFACTOR",
+      "assertion": "assert not entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-MET-RAIN1: missing integration/audits/MC_MET01_STATUS.json at 8881729964f33c399e6f3b18200eff9434f5764e",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-MET-RAIN1: missing src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 96,
+      "message": "SW431-MET-RAIN1",
+      "assertion": "assert not entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-RUNON: missing integration/audits/SWAP431_RUNON_REPAIR_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-LOW3-EXPLICIT: missing integration/audits/SW431_LOW3_EXPLICIT_STATUS.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-LOW3-EXPLICIT: missing GitHub Actions run 37612263087",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-LOW3-EXPLICIT: missing PR #1090 merged as canonical commit 1e85f726bd5794110a60f1d2fbf22b12b72afbda",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-LOW3-EXPLICIT: missing src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-OXYGEN-EMP: missing PR #1127; empirical root oxygen 37779546275; F-CI 37779546290",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 102,
+      "message": "SW431-ROOT-OXYGEN-EMP",
+      "assertion": "assert entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS2: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS2: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS2: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS3: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS3: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS3: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS4: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS4: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS4: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS6: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS6: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS6: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS7: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS7: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS7: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS8: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS8: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-TCS8: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-DCS1: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-DCS1: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-DCS1: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-FIXED-SPRINK: missing integration/audits/MC_IRR01_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-FIXED-SPRINK: missing integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SCHED-SURF: missing integration/audits/MC_IRR01_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SCHED-SURF: missing integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SSDI: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SSDI: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SSDI: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-FREQ: missing integration/audits/MC_IRR01_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-FREQ: missing integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-LIMIT: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-LIMIT: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-LIMIT: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SALTEXCESS: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SALTEXCESS: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-SALTEXCESS: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-SALT-POND: missing integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-SALT-POND: missing docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-SALT-POND: missing src/process/mod_b111_surface_supply.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-SALT-POND: missing src/runtime/mod_fmr_b111_surface_solute_route.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-SALT-POND: missing src/runtime/mod_fmr_b111_surface_joint_application.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-AGE-TRACER: missing integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-AGE-TRACER: missing src/process/mod_b111_age_tracer_substep.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-AGE-TRACER: missing src/runtime/mod_fmr_b111_age_route.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-AGE-TRACER: missing src/runtime/mod_fmr_b111_age_joint_application.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-AGE-TRACER: missing src/adapter/mod_age_joint_restart_file.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 96,
+      "message": "SW431-AGE-TRACER",
+      "assertion": "assert not entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW: missing https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW: missing integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW: missing docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-CO2: missing integration/audits/MC_CROP01_CO2_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-CO2: missing src/crop/mod_crop_co2_response_resolver.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-CO2: missing src/runtime/mod_fmr_crop_co2_response_binding.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROTATION: missing integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROTATION: missing docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROTATION: missing src/crop/mod_crop_soil_n_day.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROTATION: missing src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-NUT-RESIDUE: missing integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-NUT-RESIDUE: missing src/crop/mod_crop_soil_n_day.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-NUT-RESIDUE: missing src/crop/mod_wofost81_harvest_materials.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-NUT-RESIDUE: missing src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-DENSITY: missing PR #1125; owner qualification 37773706292; F-CI 37773706297",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-DENSITY: missing src/crop/mod_crop_adaptive_root_profile_owner.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 102,
+      "message": "SW431-ROOT-DENSITY",
+      "assertion": "assert entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-ANAE-GROW: missing https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-ANAE-GROW: missing integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-ANAE-GROW: missing docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-RATE-DAILY: missing integration/audits/MC_IRR01_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-RATE-DAILY: missing integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-RATE-CAP: missing integration/audits/MC_IRR01_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-RATE-CAP: missing integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-AVAIL: missing integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-AVAIL: missing integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-IRR-AVAIL: missing integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-DVS: missing integration/audits/MC_CROP01_ROOTGROW_DVS_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-DVS: missing src/crop/mod_crop_root_depth_dvs.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-DVS: missing src/crop/mod_crop_root_profile_static.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing PR #1125; SWRD3 composition 37773706292; F-CI 37773706297",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing https://github.com/abhedwig-cell/SWAP5/pull/1241",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing src/crop/mod_crop_root_depth_biomass.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing src/runtime/mod_fmr_biomass_root_uptake_input.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-BIOMASS: missing src/runtime/mod_fmr_biomass_root_depth_binding.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-WATER: missing PR #1125; SWRD2 supply 37773706292; F-CI 37773706297",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-WATER: missing https://github.com/abhedwig-cell/SWAP5/pull/1248",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-WATER: missing integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-WATER: missing docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-CROP-ROOTGROW-WATER: missing src/crop/mod_crop_root_depth_rate_owner.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-LRV-CONSTANT: missing PR #1128; LRV 37781705092; F-CI 37781705082",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 84,
+      "message": "SW431-ROOT-LRV-CONSTANT: missing src/runtime/mod_fmr_micro_constant_lrv_binding.f90",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 102,
+      "message": "SW431-ROOT-LRV-CONSTANT",
+      "assertion": "assert entry['production_reachability']['established'], cap"
+    },
+    {
+      "line": 84,
+      "message": "SW431-GW-PROJECTION: missing GitHub Actions run 37578999251",
+      "assertion": "assert (ROOT / path).is_file(), f'{cap}: missing {path}'"
+    },
+    {
+      "line": 136,
+      "message": "assertion",
+      "assertion": "assert crop['baseline'] == ledger['canonical_head'] and not crop['new_admission_created']"
+    },
+    {
+      "line": 147,
+      "message": "stale owner/input review baseline",
+      "assertion": "assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'"
+    },
+    {
+      "line": 149,
+      "message": "stale owner/input review: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'"
+    },
+    {
+      "line": 147,
+      "message": "stale owner/input review baseline",
+      "assertion": "assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'"
+    },
+    {
+      "line": 147,
+      "message": "stale owner/input review baseline",
+      "assertion": "assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'"
+    },
+    {
+      "line": 149,
+      "message": "stale owner/input review: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'"
+    },
+    {
+      "line": 147,
+      "message": "stale owner/input review baseline",
+      "assertion": "assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'"
+    },
+    {
+      "line": 149,
+      "message": "stale owner/input review: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'"
+    },
+    {
+      "line": 164,
+      "message": "assertion",
+      "assertion": "assert aquifer['baseline'] == ledger['canonical_head'] and not aquifer['runtime_admission_created']"
+    },
+    {
+      "line": 178,
+      "message": "assertion",
+      "assertion": "assert by_id['SW431-SALT-AQUIFER']['current_disposition'] == 'ACTIVE_MIGRATION'"
+    },
+    {
+      "line": 184,
+      "message": "assertion",
+      "assertion": "assert probe['baseline'] == ledger['canonical_head'] and not probe['runtime_admission_created']"
+    },
+    {
+      "line": 186,
+      "message": "stale seepage dependency: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale seepage dependency: {path}'"
+    },
+    {
+      "line": 184,
+      "message": "assertion",
+      "assertion": "assert probe['baseline'] == ledger['canonical_head'] and not probe['runtime_admission_created']"
+    },
+    {
+      "line": 186,
+      "message": "stale seepage dependency: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale seepage dependency: {path}'"
+    },
+    {
+      "line": 184,
+      "message": "assertion",
+      "assertion": "assert probe['baseline'] == ledger['canonical_head'] and not probe['runtime_admission_created']"
+    },
+    {
+      "line": 186,
+      "message": "stale seepage dependency: src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "assertion": "assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale seepage dependency: {path}'"
+    },
+    {
+      "line": 22,
+      "message": "stale inheritance baseline",
+      "assertion": "assert inheritance['canonical_head'] == canonical_head, 'stale inheritance baseline'"
+    },
+    {
+      "line": 273,
+      "message": "queue ordering mismatch",
+      "assertion": "assert ledger['remaining_queue'] == ordered, 'queue ordering mismatch'"
+    }
+  ],
+  "exception": null,
+  "failure_count": 130,
+  "failures_by_line": {
+    "22": 2,
+    "32": 1,
+    "68": 1,
+    "84": 102,
+    "96": 4,
+    "102": 3,
+    "136": 1,
+    "147": 4,
+    "149": 3,
+    "164": 1,
+    "178": 1,
+    "184": 3,
+    "186": 3,
+    "273": 1
+  },
+  "canonical_head": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+  "official_checker": {
+    "command": "python tools/audits/check_swap431_coverage.py",
+    "exit_code": 1,
+    "output": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n"
+  },
+  "method": {
+    "description": "In a transient Python AST copy only, replace each assert with an observation recording its boolean result/message/line. Execute validate without using its return value; official source and assertions are unchanged. No coverage PASS is generated or accepted. Records secondary diagnostic blockers only.",
+    "terminal_exception": null,
+    "limitations": "This is not validation and does not establish that later assertions are independent of earlier failures. Missing local files can exist at a later exact canonical ref. Semantic assertion failures can indicate obsolete checker assumptions, not defects in production."
+  },
+  "backend_delta_review": {
+    "from": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+    "to": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "commits": [
+      "d03a1da0",
+      "57ba5b06",
+      "8b83abec"
+    ],
+    "finding": "Bounded profile-groundwater projection imports, default-false configuration, solve-local derivation and accepted candidate projection. Existing smooth-freatic route has precedence. No changes to the inspected historical hydraulic/solute/oxygen/frost/surface-water branches. This source inspection alone does not qualify execution or renew historical records.",
+    "qualification": "NOT_RENEWED"
+  },
+  "missing_local_path_exact_canonical_checks": [
+    {
+      "capability_id": "SW431-ET-PMTRAD",
+      "locator": "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-ET-SOILFACTOR",
+      "locator": "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-MET-RAIN1",
+      "locator": "src/adapter/mod_swap_daily_weather_file_adapter.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-RUNON",
+      "locator": "integration/audits/SWAP431_RUNON_REPAIR_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-LOW3-EXPLICIT",
+      "locator": "integration/audits/SW431_LOW3_EXPLICIT_STATUS.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-LOW3-EXPLICIT",
+      "locator": "src/process/mod_b111_explicit_cauchy_profile_flux.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS2",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS2",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS2",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS3",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS3",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS3",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS4",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS4",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS4",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS6",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS6",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS6",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS7",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS7",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS7",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS8",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS8",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-TCS8",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-DCS1",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-DCS1",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-DCS1",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-FIXED-SPRINK",
+      "locator": "integration/audits/MC_IRR01_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-FIXED-SPRINK",
+      "locator": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SCHED-SURF",
+      "locator": "integration/audits/MC_IRR01_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SCHED-SURF",
+      "locator": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SSDI",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SSDI",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SSDI",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-FREQ",
+      "locator": "integration/audits/MC_IRR01_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-FREQ",
+      "locator": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-LIMIT",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-LIMIT",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-LIMIT",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SALTEXCESS",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SALTEXCESS",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-SALTEXCESS",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "locator": "integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "locator": "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "locator": "src/process/mod_b111_surface_supply.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "locator": "src/runtime/mod_fmr_b111_surface_solute_route.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-SALT-POND",
+      "locator": "src/runtime/mod_fmr_b111_surface_joint_application.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "locator": "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "locator": "src/process/mod_b111_age_tracer_substep.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "locator": "src/runtime/mod_fmr_b111_age_route.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "locator": "src/runtime/mod_fmr_b111_age_joint_application.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-AGE-TRACER",
+      "locator": "src/adapter/mod_age_joint_restart_file.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW",
+      "locator": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW",
+      "locator": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-CO2",
+      "locator": "integration/audits/MC_CROP01_CO2_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-CO2",
+      "locator": "src/crop/mod_crop_co2_response_resolver.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-CO2",
+      "locator": "src/runtime/mod_fmr_crop_co2_response_binding.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "locator": "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "locator": "docs/science/MC_CROP01_HARVEST_ADMISSION_RECONCILIATION_20261015.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "locator": "src/crop/mod_crop_soil_n_day.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "locator": "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "locator": "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "locator": "src/crop/mod_crop_soil_n_day.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "locator": "src/crop/mod_wofost81_harvest_materials.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "locator": "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-ROOT-DENSITY",
+      "locator": "src/crop/mod_crop_adaptive_root_profile_owner.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-ROOT-ANAE-GROW",
+      "locator": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-ROOT-ANAE-GROW",
+      "locator": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-DAILY",
+      "locator": "integration/audits/MC_IRR01_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-DAILY",
+      "locator": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-CAP",
+      "locator": "integration/audits/MC_IRR01_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-RATE-CAP",
+      "locator": "integration/audits/MC_IRR01_ISOLATED_INTEGRATION_QUALIFICATION_20261008.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-AVAIL",
+      "locator": "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-AVAIL",
+      "locator": "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-IRR-AVAIL",
+      "locator": "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "locator": "integration/audits/MC_CROP01_ROOTGROW_DVS_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "locator": "src/crop/mod_crop_root_depth_dvs.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-DVS",
+      "locator": "src/crop/mod_crop_root_profile_static.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "locator": "docs/science/MC_CROP01_TRAJECTORY3_SWRD3_CONTRACT_20261015.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "locator": "integration/audits/MC_CROP01_TRAJECTORY3_ROOT_GROWTH_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "locator": "src/crop/mod_crop_root_depth_biomass.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "locator": "src/runtime/mod_fmr_biomass_root_uptake_input.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-BIOMASS",
+      "locator": "src/runtime/mod_fmr_biomass_root_depth_binding.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-WATER",
+      "locator": "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-WATER",
+      "locator": "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-CROP-ROOTGROW-WATER",
+      "locator": "src/crop/mod_crop_root_depth_rate_owner.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    },
+    {
+      "capability_id": "SW431-ROOT-LRV-CONSTANT",
+      "locator": "src/runtime/mod_fmr_micro_constant_lrv_binding.f90",
+      "canonical_ref": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+      "exists_at_canonical": true
+    }
+  ],
+  "remediation_order": [
+    "Keep the old source checkout and immutable historical records intact. Choose and explicitly bind historical snapshot validation versus current canonical receipt validation; their identities cannot be silently mixed.",
+    "Review the profile-GWL delta against each affected inherited review. Baseline labels or hashes alone cannot renew evidence. Seven non-inherited baseline checks and stale backend input hashes also need owner reconciliation.",
+    "Normalize free-text evidence citations into exact structured locators and validate code/evidence at their declared refs. Do not copy broad production donors into the census branch.",
+    "Reconcile checker semantics with already recorded capability dispositions, including rejected aquifer, bounded foundations, and open complete-route reachability. Do not flip dispositions to satisfy old assertions.",
+    "Run the unchanged fail-closed integrity/closure gates only after source authority and checker contract are reconciled. Full coverage remains open regardless of integrity."
+  ],
+  "administrative_repairs": {
+    "queue_order_only": true,
+    "queue_payloads_unchanged": true,
+    "status_explicit_absence_flags_before": 108,
+    "status_explicit_absence_flags_after": 92,
+    "dispositions_changed": false,
+    "capability_objects_changed": false
+  }
+}
