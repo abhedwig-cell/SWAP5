@@ -21,9 +21,13 @@ module mod_crop_soil_n_configuration
  type,public::crop_n_b111_request_t
   real(real64)::dvsnlt=0d0,nfixf=0d0
  end type
+ type,public::crop_n_b112_return_t
+  real(real64)::leaf_fraction=0d0
+ end type
  type,public::crop_n_configuration_t
   type(crop_n_harvest_configuration_t),allocatable::harvest
   type(b111_reproductive_policy_t),allocatable::b111_reproductive
+  type(crop_n_b112_return_t),allocatable::b112_return
   type(crop_n_b111_request_t),allocatable::b111_request
   type(wofost_rate_scalar_parameters_t)::scalars
   type(wofost81_parameter_contract_t)::base
@@ -83,6 +87,18 @@ contains
     v=[v,911003d0,b%dvsnlt,b%dvsnt,b%nfixf,b%fntrt]
    end associate
   end if
+  if(allocated(p%b112_return))then
+   if(.not.allocated(p%b111_reproductive).or..not.allocated(p%harvest))then
+    deallocate(v);allocate(v(0));return
+   endif
+   if(p%harvest%sw_wofost/=1.or..not.ieee_is_finite(p%b112_return%leaf_fraction))then
+    deallocate(v);allocate(v(0));return
+   endif
+   if(p%b112_return%leaf_fraction<0d0.or.p%b112_return%leaf_fraction>1d0)then
+    deallocate(v);allocate(v(0));return
+   endif
+   v=[v,911004d0,p%b112_return%leaf_fraction]
+  endif
   if(allocated(p%harvest))then
    associate(h=>p%harvest)
     if(h%crop_identity<1.or.h%crop_identity>1000000.or.h%sw_harv<0.or.h%sw_harv>1.or. &

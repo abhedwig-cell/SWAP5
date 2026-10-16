@@ -1115,5 +1115,40 @@
       "hosted_check_runs": [],
       "hosted_workflow_runs": []
     }
+  },
+  "b112_retained_stock_20261016": {
+    "stage": "SMALL_PRODUCTION_PASS_JOINT_QUALIFICATION_PENDING",
+    "baseline": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+    "branch": "work/nut-b112-retained-stock-20261016",
+    "contract": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md",
+    "reference": "B1.12/SWAP-019",
+    "production_admitted": false,
+    "capability_disposition_changes": 0,
+    "existing_owners": "actual biomass (physical DM plus separate gross mortality diagnostics), nested N, current crop/Soil-N state, existing pending and native adapter",
+    "test_selection": "Small real production state/split O0/O2 first; actual daily/harvest/pending and one stable current Richards/native composition. No full moving FCI, unrelated solver or highest-low-air. Integration cost several minutes justified by changed physical state/native boundary.",
+    "next_safe_step": "Execute the persisted stable real Richards/shared native gate; retain all failed direct fixture and compiler attempts. No production admission until all frozen conditions pass.",
+    "small_production": {
+      "split_cases_per_opt": 20,
+      "daily_harvest_cases_per_opt": 54,
+      "actual_invalid_storage_residue_rejections_per_opt": 27,
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "result": "/workspace/scratch/7d0ae38a8788/n-b112-retained-day-08/result.json",
+      "cost_seconds": {
+        "compile": 26.370782922022045,
+        "native": 0.16765824699541554,
+        "link": 0.24433777800004464,
+        "driver_compile": 1.9591839729837375
+      }
+    },
+    "joint_selection": {
+      "status": "SELECTED_NOT_QUALIFIED",
+      "expected_seconds": 480,
+      "scientific_claim": "Current shared physical state/native boundary, actual Richards and pending/harvest; unchanged default/1253/1260 endpoint and restart bytes. One stable shared build.",
+      "why_small_insufficient": "Water/chemical accepted-state atomicity and fresh native process continuation cannot be established by the small process/state drivers.",
+      "unrelated_solver_and_full_FCI": "NOT_SELECTED_IMPACT"
+    }
   }
 }

@@ -72,6 +72,15 @@ contains
     if (self%crop%validate() /= WOFOST_CROP_OWNER_OK) return
     status = WOFOST81_CROP_OWNER_INVALID_N_STATE
     if (self%nitrogen%validate() /= WOFOST81_N_OWNER_OK) return
+    if(allocated(self%crop%biomass))then
+      if(self%nitrogen%b112_residue_profile)then
+        if(any(self%nitrogen%retained_dead_n>self%crop%biomass%retained_dead_biomass))return
+      else
+        if(any(self%crop%biomass%retained_dead_biomass/=0d0))return
+      endif
+    else
+      if(any(self%nitrogen%retained_dead_n/=0d0))return
+    endif
     if(allocated(self%retired)) then
       status=WOFOST81_HARVEST_INVALID
       if(allocated(self%harvest))return
@@ -92,7 +101,12 @@ contains
         if(any(abs([n%namountlv,n%namountst,n%namountrt,n%namountso])>0d0)) return
         if(any(abs([n%initial_total-h%initial_total,n%nuptake_total-h%nuptake_total, &
             n%nfix_total-h%nfix_total])>0d0)) return
+        if(self%nitrogen%b112_residue_profile)then
+          if(abs(n%nlosses_total-(h%nlosses_total+sum(self%harvest%exported_n)- &
+             sum((1d0-self%harvest%policy%return_fraction(1:2))*self%harvest%end_nitrogen%retained_dead_n)))>1d-12)return
+        else
         if(abs(n%nlosses_total-(h%nlosses_total+sum(self%harvest%exported_n)))>0d0) return
+        endif
       end associate
     end if
     status = WOFOST81_CROP_OWNER_OK
@@ -195,8 +209,12 @@ contains
     if(h%end_crop%validate()/=WOFOST_CROP_OWNER_OK) return
     if(.not.h%end_crop%crop_emerged) return
     if(h%end_nitrogen%validate()/=WOFOST81_N_OWNER_OK) return
+    if(.not.h%end_nitrogen%b112_residue_profile)then
+      if(any(h%end_crop%biomass%retained_dead_biomass/=0d0))return
+    endif
     associate(b=>h%end_crop%biomass,n=>h%end_nitrogen%value)
       dm=[b%root_biomass,b%living_leaf_biomass(),b%stem_biomass,b%storage_biomass]
+      if(h%end_nitrogen%b112_residue_profile)dm(2:3)=dm(2:3)+b%retained_dead_biomass
       n_after=[n%namountrt,n%namountlv,n%namountst,n%namountso]
     end associate
     fractions=[1d0,h%policy%return_fraction]
@@ -204,7 +222,12 @@ contains
     if(any(n_before>dm)) return
     if(any(abs(h%pending_dm-fractions*dm)>0d0).or.any(abs(h%exported_dm-(dm-h%pending_dm))>0d0)) return
     ! N amounts have been debited at the historical residue boundary only.
-    if(any(abs(n_after-h%exported_n)>0d0)) return
+    if(h%end_nitrogen%b112_residue_profile)then
+      if(any(h%end_nitrogen%retained_dead_n>h%end_crop%biomass%retained_dead_biomass))return
+      if(any(abs(n_after-(h%exported_n-[0d0,(1d0-h%policy%return_fraction(1:2))*h%end_nitrogen%retained_dead_n,0d0]))>1d-12))return
+    else
+      if(any(abs(n_after-h%exported_n)>0d0)) return
+    endif
     if(any(abs(h%pending_n-fractions*n_before)>1d-12*max(1d0,maxval(n_before)))) return
     ok=.true.
   end function
@@ -238,10 +261,12 @@ contains
       if(any([b%root_biomass,b%stem_biomass,b%storage_biomass,b%leaf_biomass]<0d0)) return
       if(any([b%root_biomass,b%stem_biomass,b%storage_biomass,b%leaf_biomass]>5d5)) return
       dm=[b%root_biomass,b%living_leaf_biomass(),b%stem_biomass,b%storage_biomass]
+      if(committed%nitrogen%b112_residue_profile)dm(2:3)=dm(2:3)+b%retained_dead_biomass
     end associate
     if(any(dm>5d5)) return
     associate(s=>committed%nitrogen%value)
       n=[s%namountrt,s%namountlv,s%namountst,s%namountso]
+      if(committed%nitrogen%b112_residue_profile)n(2:3)=n(2:3)+committed%nitrogen%retained_dead_n
       nv=[n,s%nuptake_total,s%nfix_total,s%nlosses_total,s%initial_total]
     end associate
     if(.not.all(ieee_is_finite(nv))) return
@@ -262,12 +287,21 @@ contains
       s%namountrt=h%exported_n(1);s%namountlv=h%exported_n(2)
       s%namountst=h%exported_n(3);s%namountso=h%exported_n(4)
       s%nlosses_total=s%nlosses_total+sum(h%pending_n)
+      if(committed%nitrogen%b112_residue_profile)then
+        s%namountlv=(1d0-policy%return_fraction(1))*committed%nitrogen%value%namountlv
+        s%namountst=(1d0-policy%return_fraction(2))*committed%nitrogen%value%namountst
+        s%nlosses_total=s%nlosses_total-sum(policy%return_fraction(1:2)*committed%nitrogen%retained_dead_n)
+      endif
     end associate
     if(.not.harvest_record_valid(h)) return
     trial%crop=wofost_crop_owner_state_t();trial%nitrogen=h%end_nitrogen
     associate(s=>trial%nitrogen%value)
       s%namountrt=0d0;s%namountlv=0d0;s%namountst=0d0;s%namountso=0d0
       s%nlosses_total=s%nlosses_total+sum(h%exported_n)
+      if(trial%nitrogen%b112_residue_profile)then
+        s%nlosses_total=s%nlosses_total-sum((1d0-h%policy%return_fraction(1:2))*h%end_nitrogen%retained_dead_n)
+        trial%nitrogen%retained_dead_n=0d0
+      endif
     end associate
     allocate(trial%harvest,source=h)
     if(trial%validate()/=WOFOST81_CROP_OWNER_OK) return
@@ -301,6 +335,10 @@ contains
     associate(n=>trial%nitrogen%value)
      n%namountlv=0d0;n%namountst=0d0;n%namountrt=0d0;n%namountso=0d0
      n%nlosses_total=n%nlosses_total+sum(h%exported_n)
+     if(trial%nitrogen%b112_residue_profile)then
+       n%nlosses_total=n%nlosses_total-sum((1d0-h%policy%return_fraction(1:2))*h%end_nitrogen%retained_dead_n)
+       trial%nitrogen%retained_dead_n=0d0
+     endif
     end associate
     allocate(trial%harvest,source=h)
     if(trial%validate()/=0)return
