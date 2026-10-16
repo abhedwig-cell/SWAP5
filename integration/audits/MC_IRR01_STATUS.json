@@ -64,7 +64,7 @@
     23,
     29
   ],
-  "next_action": "Reconcile existing master PR1072 against actual PR1252 admission without full-capability promotion; then use the same accepted application owners for material/root-derived DCS1 and TCS2/3/4. DCS1 accepted material FC/stress/wilting and evolving-root summaries with TCS2/3/4; real TCS6 week/dayfix progression; accepted bottom7 matrix-salt/SALTEXCESS composition; HYD/POWER weather hybrids, arbitrary long-window accuracy and native weather disk codec remain unadmitted.",
+  "next_action": "Preserve actual PR1252 admission and completed master1072 reconciliation. Reuse the existing accepted application owner for material/evolving-root DCS1/TCS2-4; separately qualify TCS6 weekly progression, bottom7 salt/SALTEXCESS and native weather disk continuation. No new irrigation owner or full-capability promotion.",
   "recovery_point": "integration/f-ci-canonical@cd530867dc8a41e8cd5b46dfbaff1007d14c3a75",
   "blockers": [],
   "qualification_evidence": "integration/audits/MC_IRR01_EVENT_ROUTING_QUALIFICATION.json",
@@ -335,11 +335,22 @@
   "latest_master_reconciliation": {
     "owner_pr": 1072,
     "branch": "work/swap431-master-coverage-20261006",
-    "checkpoint": "8dbed749f062c3fba2547e9e998dc438a18c0cef",
-    "tree": "92989c9c512f325fbba92480e063ccfdaaf1d542",
-    "bounded_integrity": "PASS eleven owned capability rows and queue reasons, obsolete salt-to-sensor dependency and workunit sequencing removed, five admitted IDs moved out of active workunit list with original16 preserved; canonical root/source evidence snapshots byte-identical; all unrelated rows/dispositions/summary counts retained",
-    "global_integrity": "Not renewed: pre-existing stale inheritance baseline before and after bounded update remains with master owner",
-    "fullcap_promotions": 0
+    "checkpoint": "6f29e16e0f3b2c2ec8e0648d9b32ff14c647220f",
+    "canonical_admission": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+    "canonical_recovery": "76cb15e1adfa53a12c452887012ed1b025d11fad",
+    "integrity": "PASS historical source and pinned canonical locators;20 inheritance controls PASS; require-closed EXPECTED_FAIL denominator incomplete",
+    "owned_rows_reconciled": 11,
+    "bounded_new_routes": 5,
+    "fullcap_promotions": 0,
+    "counts": {
+      "total": 243,
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "QUALIFICATION_ONLY": 4,
+      "unresolved": 113,
+      "structural_absence_flags": 87
+    },
+    "claim": "Bounded actual application admission; no full source envelope or whole-master scientific claim."
   },
   "current_claim": "Five previously admitted full capabilities retained. PR1252 canonically admits the bounded authentic managed weather TCS7/8,DCS2,1/3-node SSDI,caps/frozen-allocation application with actual positive adaptive rooted crop, accepted-only publication, rollback/retry and opaque joint restart. Eleven complete historical source envelopes remain open; see the actual canonical admission receipt and explicit limitations.",
   "shared_application_review_20261011": {
