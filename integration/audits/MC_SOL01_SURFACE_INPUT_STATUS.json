@@ -1,5 +1,21 @@
 {
   "work_unit": "MC-SOL01-SURFACE-INPUT",
+  "persistent_surface_restart_20261016": {
+    "baseline": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "branch": "work/sol-surface-restart-20261016",
+    "phase": "IMPLEMENTED_NATIVE_COMPATIBILITY_AND_QUALIFICATION_PENDING",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "contract": "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md",
+    "scope": "Explicit existing compartment surface-mass reconstruction and opt-in V2 native restart; preserve V1/default activation. No new pond hydrology or deposition equation.",
+    "selection": "Real matrix/kernel/adapter O0/O2, opaque/native/fresh continuation, V1/default/nonmutation and CRC-correct mass forgeries; expected300s cold closure. Full FCI/highest low-air/RossFast NOT_SELECTED_IMPACT.",
+    "next_action": "Persist remotely and make existing work visible before costly execution. Complete real source-bound codec and accepted-water continuation tests, then reconcile owning admission guards. Full pond hydrology additionally needs actual surface-water substep receipts.",
+    "full_capability": false,
+    "master_disposition_changes": 0
+  },
   "baseline": "f8eca95ba623dc18db0110cd1b84af46857c8b9b",
   "stage": "BOUNDED_ZERO_POND_SURFACE_INPUT_CANONICALLY_ADMITTED_CLOSED",
   "implemented": true,
