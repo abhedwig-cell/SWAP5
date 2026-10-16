@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[2]
 BASE='93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694'
 STATUS='integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json'
 SURFACE=['src','tests','tools','reference','.github']
-PRODUCTION={'src/runtime/mod_fmr_serialized_reference_backend.f90','src/runtime/mod_fmr_b111_pond_joint_application.f90'}
+PRODUCTION={'src/process/mod_pond_water_temporal_difference.f90','src/runtime/mod_fmr_serialized_reference_backend.f90','src/runtime/mod_fmr_b111_pond_joint_application.f90'}
 def check(ok,label):
     if not ok:raise ValueError(label)
 def sha(raw):return hashlib.sha256(raw).hexdigest()

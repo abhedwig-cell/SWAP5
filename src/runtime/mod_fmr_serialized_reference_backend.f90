@@ -4,6 +4,7 @@ module mod_fmr_serialized_reference_backend
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_pond_water_temporal_difference,only:evaluate_pond_water_temporal_difference
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
@@ -5792,30 +5793,19 @@ contains
   ! New opt-in domain only. Existing identity and certificate routes are unchanged.
   real(real64) function fmr_pond_input_temporal_error(full_state,half_state) result(value)
     class(transaction_state_t),intent(in)::full_state,half_state
-    integer::n
+    logical::available
     value=huge(0.0_real64)
     select type(full=>full_state)
     type is(fmr_b110_physical_state_t)
       select type(half=>half_state)
       type is(fmr_b110_physical_state_t)
-        n=full%active_nodes
-        if(n<1.or.half%active_nodes/=n)return
+        if(full%active_nodes/=half%active_nodes)return
         if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
            .not.allocated(full%water_content).or..not.allocated(half%water_content))return
-        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n.or. &
-           size(full%water_content)/=n.or.size(half%water_content)/=n)return
-        if(.not.all(ieee_is_finite(full%pressure_head)).or..not.all(ieee_is_finite(half%pressure_head)).or. &
-           .not.all(ieee_is_finite(full%water_content)).or..not.all(ieee_is_finite(half%water_content)))return
-        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth, &
-           full%groundwater_level,half%groundwater_level])))return
-        if(any(abs(full%pressure_head)>1.e6_real64).or.any(abs(half%pressure_head)>1.e6_real64))return
-        if(min(full%ponding_depth,half%ponding_depth)<0.0_real64.or. &
-           max(full%ponding_depth,half%ponding_depth)>1.e6_real64)return
-        if(max(abs(full%groundwater_level),abs(half%groundwater_level))>1.e6_real64)return
-        if(any(full%water_content<0.0_real64).or.any(full%water_content>1.0_real64).or. &
-           any(half%water_content<0.0_real64).or.any(half%water_content>1.0_real64))return
-        value=max(maxval(abs(full%pressure_head-half%pressure_head)), &
-             abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
+        if(size(full%pressure_head)/=full%active_nodes)return
+        call evaluate_pond_water_temporal_difference(full%pressure_head,half%pressure_head, &
+             full%water_content,half%water_content,full%ponding_depth,half%ponding_depth, &
+             full%groundwater_level,half%groundwater_level,value,available)
       end select
     end select
   end function fmr_pond_input_temporal_error

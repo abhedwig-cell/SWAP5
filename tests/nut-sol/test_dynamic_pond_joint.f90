@@ -42,8 +42,13 @@ program test_dynamic_pond_joint
   character(512)::mode,restart_path,endpoint_path,variant
   call get_command_argument(1,mode);call get_command_argument(2,restart_path);call get_command_argument(3,endpoint_path)
   call get_command_argument(4,variant)
-  call initialize_application_config(cfg,-75d0,k)
+  call initialize_application_config(cfg,-1d0,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+  ! Low-conductivity material isolates persistent surface storage from an
+  ! unrelated abrupt high-flux wetting-front stress. Retain the 1e-6 cm gate.
+  cfg%tiles(1)%parameters%cofgen(3,:)=cfg%tiles(1)%parameters%cofgen(3,:)*1d-3
+  cfg%tiles(1)%parameters%cofgen(10,:)=cfg%tiles(1)%parameters%cofgen(10,:)*1d-3
+  cfg%tiles(1)%parameters%cofgen(12,:)=cfg%tiles(1)%parameters%cofgen(12,:)*1d-3
   cfg%tiles(1)%initial_state%ponding_depth=0.5d0
   cfg%tiles(1)%base_forcing%top_flux=-0.5d0
   cfg%tiles(1)%parameters%root_extraction_active=.true.
@@ -72,8 +77,9 @@ program test_dynamic_pond_joint
   if(trim(variant)=='dry')then
     supply%qtop=0d0;supply%rain_rate=0d0;supply%irrigation_rate=0d0
   end if
+  supply%rain_rate=0d0;supply%irrigation_rate=0d0
   if(trim(variant)=='fill')then
-    supply%rain_rate=100d0;supply%irrigation_rate=100d0
+    supply%rain_rate=.25d0;supply%irrigation_rate=.25d0
   end if
   cfg%tiles(1)%base_forcing%pond_input%rain_rate_cm_day=supply%rain_rate
   cfg%tiles(1)%base_forcing%pond_input%irrigation_rate_cm_day=supply%irrigation_rate
@@ -173,7 +179,7 @@ program test_dynamic_pond_joint
     end block
   end if
   supply%t0=T1;supply%t1=2*T1
-  supply%rain_rate=0.25d0;supply%irrigation_rate=0.25d0
+  supply%rain_rate=0.00025d0;supply%irrigation_rate=0.00025d0
   cfg%tiles(1)%base_forcing%top_flux=0d0
   cfg%tiles(1)%base_forcing%pond_input%rain_rate_cm_day=supply%rain_rate
   cfg%tiles(1)%base_forcing%pond_input%irrigation_rate_cm_day=supply%irrigation_rate
