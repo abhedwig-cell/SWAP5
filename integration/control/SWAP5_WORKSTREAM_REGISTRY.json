@@ -3785,5 +3785,20 @@
       }
     ],
     "coverage_effect": "ZERO_NEW_HISTORICAL_CAPABILITY_ADMISSIONS; completed existing application composition only"
+  },
+  "ppa_reconcile01_carrier_retirement_20261016": {
+    "pr": 700,
+    "head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "class": "RETIRE_HISTORICAL_INTEGRATION_CARRIER_WITHOUT_MERGE_RETAIN_UNADJUDICATED_SOURCE",
+    "phase": "READY_FOR_PR_CLOSURE",
+    "authority": "integration/audits/PPA_RECONCILE01_STATUS.json",
+    "source_paths": 160,
+    "bounded_no_import": 20,
+    "semantic_review_open": 140,
+    "current_source_review_denominator": "Existing master1072 and12 family owner routes in the capsule; central HY/RT-TX for shared solver/state/restart.",
+    "supersedes": "Earlier keep-open decisions governed pending source/owner recovery. Full archived-source preservation and explicit20/140 dispositions now establish recovery without an open integration PR. This does not supersede scientific contract or source-equivalence requirements.",
+    "new_production_admission": false,
+    "capability_delta": 0,
+    "branch_preserved": true
   }
 }
