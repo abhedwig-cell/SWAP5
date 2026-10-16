@@ -406,11 +406,22 @@ contains
     ok=.false.
     if(.not.allocated(c%tiles))return
     if(size(c%tiles)/=1)return
-    ! Reuse the currently admitted weather/material-root profile only.
-    if(.not.c%file_weather_irrigation.or..not.c%file_weather_rooted.or.c%file_weather_root_depth_mode/=2)return
+    ! Reuse the existing managed profiles; selector admission stays with
+    ! the bootstrap. The payload/CRC and parameter/source bindings are shared.
+    if(.not.c%file_weather_irrigation)return
+    if(c%file_weather_rooted)then
+      if(c%file_weather_root_depth_mode/=2)return
+    else
+      if(c%file_weather_irrigation_sensor%timing_criterion<7.or. &
+         c%file_weather_irrigation_depth%depth_criterion/=2)return
+    end if
     if(c%file_weather_co2_response.or.c%file_weather_daily_demand.or.c%file_weather_swrain/=0)return
     if(c%explicit_pmdirect_interception.or.c%base_salt_temporal_policy%enabled)return
-    if(c%file_weather_irrigation_sensor%timing_criterion/=6)return
+    select case(c%file_weather_irrigation_sensor%timing_criterion)
+    case(2:4,6:8)
+    case default
+      return
+    end select
     if(c%tiles(1)%parameters%bottom_mode/=7)return
     if(c%tiles(1)%template%solute_state_layout_id/=0_int64)return
     ok=.true.
