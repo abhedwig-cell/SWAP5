@@ -1,6 +1,6 @@
 # Classic annual AMAXTB source and state qualification
 
-Status: **QUALIFIED_ADMISSION_PENDING**, 16 October 2026.
+Status: **CANONICALLY_ADMITTED**, 16 October 2026.
 Capability: `SW431-CROP-ANNUAL`, `SW_WOFOST=1; IDSL=0; SWCROPSNM=0`.
 Canonical reconciliation: `c62a2e69a0e604d92dcdba625c525835c2bd5224`.
 Recovery and complete evidence: `integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json`.
@@ -113,5 +113,7 @@ production contract and its valid parameter domain. Active-crop anthesis/maturit
 and daily accepted-event transitions are qualified. Automatic sowing, whole
 harvest/fallow/rotation and other registered variants remain outside this row.
 No full moving F-CI, RossFast, highest frost or unrelated process qualification is
-selected or claimed. Canonical admission and the master ADMITTED disposition are
-recorded only after expected-head merge and exact source/tree verification.
+selected or claimed. Canonical admission: PR #1264 merged as `f86aea792bebd77040648d1d5d9c475bc1a0b76d`.
+The merge tree `fcb0ff16356cb09704baf9a61639c990740df4fa` exactly equals
+the qualified candidate; source tree is `216c756797a9ed2d6fa9ecfd51c1235df5a4e79b`.
+The existing master row is reconciled to ADMITTED by this receipt.

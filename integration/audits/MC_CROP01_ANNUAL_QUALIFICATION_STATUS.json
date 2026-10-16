@@ -7,7 +7,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "remaining_dependency": [],
   "fixed_acceptance_conditions": [
     "Authenticated literal B1.11 classic assimilation and daily/seasonal actual growth with water stress",
@@ -25,8 +25,8 @@
     "potential RELMF"
   ],
   "preexecution_finding": "Historical first attempt identified absent classic mortality history; repaired in the existing owner. See initial_qualification_attempt.",
-  "next_action": "Publish exact qualified branch; verify live canonical and expected-head merge, then record admission and update existing master capability.",
-  "recovery_point": "Existing annual branch with sealed source, actual weather, accepted events and full-organ restart proof; no new crop variant.",
+  "next_action": "Closed for the declared classic annual scope; preserve source-bound admission on relevant dependency changes.",
+  "recovery_point": "Canonical merge f86aea792bebd77040648d1d5d9c475bc1a0b76d, PR1264; exact qualified tree verified.",
   "dependency_surface": [
     "src/crop/mod_wofost_*",
     "src/runtime/mod_fmr_wofost_crop_transaction.f90",
@@ -34,7 +34,7 @@
     "integration/f-wof/F-WOF41_PRODUCTION_OWNER_PERSISTENCE_API_CONTRACT.json"
   ],
   "blockers": [],
-  "status": "QUALIFIED_ADMISSION_PENDING",
+  "status": "CANONICALLY_ADMITTED",
   "checkpoint_commit": "33f072a4e68d4fd064309dfb11386db98b07172d",
   "exact_tested_tree": "e0f115963ca10955739569e998345d0ffb280467",
   "remote_preexecution_checkpoint": "1a5bca4b4f683686c954e388bd9f2c2a32e2ebac",
@@ -54,7 +54,7 @@
     "WOFOST81_preservation": "PASS",
     "original_codec_bytes": "PASS"
   },
-  "disposition": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "disposition": "ADMITTED",
   "production_changed": true,
   "nonclaims": [
     "No new root/N/solver physics or production native codec tag.",
@@ -290,7 +290,7 @@
   },
   "repair_admission": {
     "baseline": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
-    "stage": "QUALIFIED_ADMISSION_PENDING",
+    "stage": "CANONICALLY_ADMITTED",
     "scope": "Existing classic SW_WOFOST1/IDSL0/SWCROPSNM0 actual annual AMAXTB production; complete crop organ-state mortality history through existing FMR transaction and restart. Existing typed valid parameter domain; automatic sowing/harvest/rotation, root variants, Soil-N and potential RELMF remain separately owned.",
     "production_paths": [
       "src/crop/mod_wofost_actual_biomass_state.f90",
@@ -406,5 +406,17 @@
         "members": 7
       }
     }
+  },
+  "canonical_admission": {
+    "pr": 1264,
+    "merge_sha": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
+    "qualified_head": "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5",
+    "tree": "fcb0ff16356cb09704baf9a61639c990740df4fa",
+    "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+    "exact_tree_verified": true,
+    "parents": [
+      "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+      "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5"
+    ]
   }
 }
