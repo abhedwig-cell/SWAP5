@@ -88,18 +88,18 @@ def incumbent(source_only=False):
     return result
 
 def verify_source(git_reader=None):
-    if (ROOT/"tests/mc-irr01/verify_tcs6_successor.py").exists():
-        sys.path.insert(0,str(ROOT/"tests/mc-irr01"));import verify_tcs6_successor as tcs6
-        return tcs6.verify_source(git_reader)
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        return annual.verify_source(git_reader)
     require(git_reader is None,'unregistered projected git reader')
     status,_=load_verified();old=incumbent(True)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':False}
 
 def verify_qualification():
-    if (ROOT/"tests/mc-irr01/verify_tcs6_successor.py").exists():
-        sys.path.insert(0,str(ROOT/"tests/mc-irr01"));import verify_tcs6_successor as tcs6
-        return tcs6.verify_qualification()
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        return annual.verify_qualification()
     status,_=load_verified();old=incumbent(False)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'incumbent':old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':True,
@@ -125,4 +125,14 @@ def main():
         reject('source drift',status,record,lambda p:(ROOT/p).read_bytes()+ (b'!corruption' if p==PATHS[0] else b''))
         print('MC_DRAIN01_EVIDENCE_CORRUPTION_CONTROLS='+str(len(controls)))
     print('MC_DRAIN01_SIGNED_SOURCE_EVIDENCE=PASS')
-if __name__=='__main__':main()
+if __name__=='__main__':
+    if (ROOT/'tests/fmig431/annual/verify_annual_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/fmig431/annual'));import verify_annual_successor as annual
+        result=annual.verify_qualification()
+        if sys.argv[1:]==['--self-test']:
+            annual.run_predecessor_controls()
+        elif sys.argv[1:]:
+            raise SystemExit('unknown annual successor owner option')
+        print(json.dumps(result,indent=2))
+    else:
+        main()

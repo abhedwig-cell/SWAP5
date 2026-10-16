@@ -985,6 +985,24 @@ contains
       write(u,iostat=io)v%exponential_leaf_area_index
     end if
     if(io/=0)return
+    if(reading)then
+      read(u,iostat=io)v%cumulative_dead_root_biomass
+    else
+      write(u,iostat=io)v%cumulative_dead_root_biomass
+    end if
+    if(io/=0)return
+    if(reading)then
+      read(u,iostat=io)v%cumulative_dead_stem_biomass
+    else
+      write(u,iostat=io)v%cumulative_dead_stem_biomass
+    end if
+    if(io/=0)return
+    if(reading)then
+      read(u,iostat=io)v%cumulative_dead_leaf_biomass
+    else
+      write(u,iostat=io)v%cumulative_dead_leaf_biomass
+    end if
+    if(io/=0)return
     present_value=allocated(v%leaf_biomass)
     if(reading)then
       read(u,iostat=io)present_value

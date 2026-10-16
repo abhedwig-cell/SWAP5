@@ -236,6 +236,8 @@ contains
     rates%development_rate = dvr
     rates%root_net_growth_rate = gwrt
     rates%gross_root_growth_rate = grrt
+    rates%root_death_rate = drrt
+    rates%stem_death_rate = drst
     rates%stem_net_growth_rate = gwst
     rates%storage_net_growth_rate = gwso
     rates%leaf_growth_rate = grlv
@@ -283,16 +285,17 @@ contains
 
   logical function valid_rate_packet(rates) result(valid)
     type(wofost_one_day_rate_packet_t), intent(in) :: rates
-    real(real64) :: values(12)
+    real(real64) :: values(14)
 
     values = [rates%temperature_sum_increment, rates%development_rate, &
          rates%root_net_growth_rate, rates%gross_root_growth_rate, rates%stem_net_growth_rate, rates%storage_net_growth_rate, &
          rates%leaf_growth_rate, rates%leaf_stress_death_rate, rates%leaf_age_increment, &
          rates%youngest_specific_leaf_area, rates%lai_exponential_growth_rate, &
-         rates%relative_transpiration_used]
+         rates%relative_transpiration_used, rates%root_death_rate, rates%stem_death_rate]
     valid = all(ieee_is_finite(values))
     if (.not. valid) return
-    valid = rates%temperature_sum_increment >= 0.0_real64 .and. &
+    valid = rates%root_death_rate >= 0.0_real64 .and. rates%stem_death_rate >= 0.0_real64 .and. &
+         rates%temperature_sum_increment >= 0.0_real64 .and. &
          rates%development_rate >= 0.0_real64 .and. &
          rates%gross_root_growth_rate >= 0.0_real64 .and. &
          rates%leaf_growth_rate >= 0.0_real64 .and. &
