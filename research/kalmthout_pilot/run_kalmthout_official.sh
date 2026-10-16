@@ -69,3 +69,8 @@ echo "KALMTHOUT_48H_RUTTER_PROBE=PASS"
 grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_rainfall_run.log"
 grep -Fq 'KALMTHOUT_EVAP_SCALE=    0.0000' "$OUTDIR/full_rainfall_run.log"
 echo "KALMTHOUT_FULL_RAINFALL_HYDRAULICS_2024_TO_2026=PASS"
+
+"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/full_atmospheric_2024_2026.csv" 0 1.0 | tee "$OUTDIR/full_atmospheric_run.log"
+grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_atmospheric_run.log"
+grep -Fq 'KALMTHOUT_EVAP_SCALE=    1.0000' "$OUTDIR/full_atmospheric_run.log"
+echo "KALMTHOUT_FULL_ATMOSPHERIC_2024_TO_2026=PASS"
