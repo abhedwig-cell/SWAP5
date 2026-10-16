@@ -1,6 +1,23 @@
 # SWAP431 functional coverage master: recoverable review
 
 
+Latest bounded crop-N process admission (2026-10-16): PR1260 merged at
+`dd3e78dfc005c11221c6d049c5fcee4ef8cd2280`, canonical receipt `7c85247afaeaba4f96b86324d58ef575851b5310`.
+Explicit source-order translocation and residual-concentration death now execute
+in the existing daily crop/Soil-N owner, with independent allocation checks and
+preclipping donor nonnegativity. One organ/cumulative N owner, pending material
+and native codec remain. Small literal process,72 actual daily cases per O0/O2,
+actual Richards/material/delayed incorporation, rejection/replay, opaque/native
+fresh continuation and34 evidence controls pass. The original default and1253
+restart/endpoint bytes remain identical; both actual FCI owner entries pass.
+Automatic historical activation, full trajectories, partial-leaf return and full
+historical harvest equivalence remain open. Aquifer remains excluded. All243
+capability dispositions and complete census remain unchanged:94 ADMITTED,
+109 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,
+4 QUALIFICATION_ONLY;113 unresolved. Earlier review checkpoints below are
+historical and do not override this bounded production admission.
+
+
 Latest separate crop-N assessment (2026-10-16): PR1259 merged at
 `a0cbac6a14b952bc4a34dd105b7251803c77f445`. Four source discriminators per
 optimization establish reproductive/root-donor/death differences and algebraic
@@ -426,7 +443,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
-| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking. | None |
+| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, partial-leaf return and full historical harvest equivalence remain outside this bounded option. Aquifer remains excluded. | None |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
 | SW431-NUT-AMEND | Fertilizer/manure applications and volatilisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
 | SW431-NUT-CROP | Demand/supply coupling and nitrogen-limited crop growth | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL |
