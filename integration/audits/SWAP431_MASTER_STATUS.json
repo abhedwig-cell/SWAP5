@@ -848,5 +848,50 @@
     }
   },
   "last_integrity_diagnostic_head": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
-  "last_integrity_diagnostic_canonical": "02ee16779f2411faec7492f7048b7d36f6f850f8"
+  "last_integrity_diagnostic_canonical": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+  "migration_pr_closeout_20261016": {
+    "canonical": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "previous_canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "production_source_tree_unchanged": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "production_reference_test_tool_workflow_delta": "NONE: PR389 adds publication documentation only. Relevant existing scientific evidence identities preserved, no numerical rerun.",
+    "merged": [
+      {
+        "pr": 389,
+        "merge_commit": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+        "head": "9bc5ced61be55d7d7263553fc3a6a7d16508fbff",
+        "scope": "Internal Stromingen working draft, PUB_CONTEXT_ONLY; not external submission, coauthor approval or new scientific inference",
+        "verification": "Docs source, strict MkDocs, four unchanged SVG XML/label checks, unchanged production/reference/test/tool/workflow and current owner source identity PASS; public NHI/NHV sources reread."
+      }
+    ],
+    "open_updated": [
+      {
+        "pr": 1103,
+        "head": "6f458add6caa5e31a8d1e311693d33dcbe147e06",
+        "status": "BLOCKED_NOT_QUALIFIED",
+        "completed": "Current canonical recomposition, F2008 driver compile repair, analytical/power O0/O2 PASS, actual current O0 runtime diagnosis,19-member evidence capsule with157-provider manifest",
+        "blocker": "MODEL2 has13 temporal rejections,0 accepted,0 solver/mass/admission rejections. External full/half route accepts exact identity only and returns HUGE on this evolving state; not measured truncation error. O2/later runtime models/commit/restart not reached.",
+        "next_safe_step": "Within existing PR, reconcile actual F-KT temporal certificate/history with new constitutive provider and physical predecessor, independent literal source and required preservation. No raised tolerance, equilibrium substitution or fabricated predecessor.",
+        "scope_record_at_branch": "integration/audits/SWAP431_HYD_HYST_STATUS.json"
+      },
+      {
+        "pr": 1009,
+        "head": "cf3874d8dc85c9033686fd055ebf22273a7d58eb",
+        "status": "RETAIN_ACTIVE_RECEIVING_OWNER_BLOCKED",
+        "scope": "Latest existing PR owner recovery reports a valid available head bound exceeding unchanged application budget; distinct from HYD exact-identity rejection. Not rerun or requalified by this closeout.",
+        "scope_record_at_branch": "integration/audits/F-MIG431-INT12-C_STATUS.json"
+      }
+    ],
+    "capability_disposition_changes": 0,
+    "new_migration_routes_started": false,
+    "full_numerical_fci": "NOT_SELECTED",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "master_summary": {
+      "capabilities": 243,
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 113
+    },
+    "master_pr1072": "Retain draft: historical integrity repaired, semantic denominator incomplete and113 envelopes unresolved."
+  }
 }
