@@ -5363,13 +5363,14 @@
       "docs_strict": "PASS"
     },
     "canonical_reconciliation": {
-      "last_canonical": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+      "last_canonical": "c1a2e57368eed047e87f8a12eb9e836c0103cf13",
       "scientific_baseline": "4a3e1d6bdb66a235d8fd529e30d6def6457da2d1",
       "later_delta": [
         "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json",
         "integration/audits/evidence/MC_DRAIN01_DISLAYER_PREFLIGHT_20261016.json.gz.b64"
       ],
-      "decision": "Preserve current DISLAYER preflight/mass blocker metadata exactly. No production/test/reference input changed; no repeated AVAIL numerical qualification selected for this metadata-only successor."
+      "decision": "Preserve current DISLAYER preflight/mass blocker metadata exactly. No production/test/reference input changed; no repeated AVAIL numerical qualification selected for this metadata-only successor.",
+      "latest_metadata_successor": "DISLAYER source-blocker recovery/master identity only; one drainage JSON,13 additions/1 deletion, no source/test/tool/reference delta. Preserved exactly before expected-head merge."
     }
   }
 }
