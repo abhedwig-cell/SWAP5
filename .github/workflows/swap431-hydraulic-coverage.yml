@@ -13,18 +13,35 @@ on:
       - 'tests/fpm/run_swap431_hyd_power.sh'
       - 'tests/fpm/test_swap431_hyd_serialized_runtime.f90'
       - 'tests/fpm/run_ppa_wu05a8_real_richards.sh'
+      - 'tests/fpm/*hyd*'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90'
       - 'integration/audits/SWAP431_HYD_HYST_STATUS.json'
       - '.github/workflows/swap431-hydraulic-coverage.yml'
   workflow_dispatch:
 
 jobs:
   qualify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Focused analytical constitutive oracle
         run: bash tests/fpm/run_swap431_hyd_analytical.sh
       - name: Focused MvG power-tail oracle
         run: bash tests/fpm/run_swap431_hyd_power.sh
-      - name: Serialized Reference Richards production qualification
-        run: bash tests/fpm/run_ppa_wu05a8_real_richards.sh
+      - name: Literal complete B1.11 MODEL2/3/6 and POWER oracle
+        env:
+          HYD_LITERAL_EVIDENCE: ${{ runner.temp }}/hyd-literal
+        run: python3 -B tests/fpm/run_swap431_hyd_literal.py
+      - name: Shared production build and owning runtime/certificate/default preservation
+        env:
+          HYD_CERTIFICATE_BUILD: ${{ runner.temp }}/hyd-build
+          HYD_CERTIFICATE_EVIDENCE: ${{ runner.temp }}/hyd-evidence
+        run: python3 -B tests/fpm/run_swap431_hyd_certificate.py
+      - name: Exact source, immutable evidence and incumbent composition controls
+        run: |
+          python3 -B tests/fpm/verify_int12c_successor.py
+          python3 -B tests/fpm/test_int12c_successor_controls.py
+          python3 -B tests/fpm/test_hyd_successor_controls.py

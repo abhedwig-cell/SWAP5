@@ -17,6 +17,9 @@ def sha(raw):return hashlib.sha256(raw).hexdigest()
 def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
 def record():return json.loads((ROOT/STATUS).read_text())['direct_application_recovery_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/fpm/hyd_default_projection.json').exists():
+  import verify_hyd_successor as hyd
+  return hyd.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['base']==BASE,'unknown INT12-C base');g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--','src','tests','tools','reference','.github'),'dirty INT12-C scientific surface')
@@ -80,7 +83,12 @@ def verify_qualification():
   check(marker in output,'INT12-C scientific marker absent')
  check(output.count(b'INT12C_DIRECT_ENDPOINT=')==8,'incomplete wet/dry actual endpoints')
  inputs=json.loads(d['final/compile_sources.json']);check({BOOT,ADAPTER}<={x['path']for x in inputs},'production not compiled')
- for x in inputs:check(sha((ROOT/x['path']).read_bytes())==x['sha256'],'stale INT12-C provider '+x['path'])
+ for x in inputs:
+  raw=(ROOT/x['path']).read_bytes()
+  if source.get('hyd_successor') and x['path'] in json.loads((ROOT/'tests/fpm/hyd_default_projection.json').read_text())['files']:
+   import verify_hyd_successor as hyd
+   raw=hyd.projected_bytes(x['path'])
+  check(sha(raw)==x['sha256'],'stale INT12-C provider '+x['path'])
  for path in [BOOT,'tests/fpm/run_int12c_real_endpoint.py','tests/fpm/test_int12c_application.inc']:
   check(d['inputs/'+path]==(ROOT/path).read_bytes(),'INT12-C executed input drift '+path)
  check(b'INT12C_OUTPUT_SHA256=98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717' in d['component-preservation.log'],'original component output changed')
@@ -93,6 +101,9 @@ def verify_qualification():
  p=subprocess.run([sys.executable,'-B','tests/crop-harvest/verify_harvest_successor.py'],cwd=base,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
  check(p.returncode==0,'actual canonical incumbent evidence rejected '+p.stderr[-1200:])
  old=json.loads(p.stdout);check(old['qualified'],'canonical incumbent not qualified')
+ if source.get('hyd_successor'):
+  import verify_hyd_successor as hyd
+  check(hyd.verify_qualification()['qualified'],'HYD owner evidence failed')
  return {**source,'qualified':True,'incumbent_owner':old,'preservation':'BYTE_EXACT_DEFAULT_PROJECTION_AND_FRESH_OWNERS_PLUS_DIRECT_PHYSICAL_SCIENCE',
          'full_fci':'NOT_CLAIMED_OWNER_PREREQUISITE_ONLY','highest':'NOT_SELECTED_UNCHANGED_DEPENDENCY'}
 if __name__=='__main__':
