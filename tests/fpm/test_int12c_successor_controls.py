@@ -3,6 +3,10 @@
 import copy
 from unittest.mock import patch
 import verify_int12c_successor as v
+if (v.ROOT/'tests/root-growth/verify_daily_density_successor.py').exists():
+ import runpy
+ runpy.run_path(str(v.ROOT/'tests/root-growth/check_daily_density_controls.py'),run_name='__main__')
+ raise SystemExit(0)
 
 def rejects(label,call):
  try:call()

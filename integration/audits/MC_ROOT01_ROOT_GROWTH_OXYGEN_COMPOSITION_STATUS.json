@@ -92,7 +92,7 @@
     "branch": "work/root-density-supply-20261016",
     "contract": "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md",
     "checkpoint": "5653187d87ed5523331d58194b3d043205cc2ac5",
-    "phase": "DIRECT_CONTRACTS_PASS_PHYSICAL_PENDING",
+    "phase": "SCIENCE_COMPLETE_ADMISSION_VALIDATION_PENDING",
     "implemented": true,
     "qualified": false,
     "admitted": false,
@@ -135,10 +135,9 @@
         "failed_reuse": "No scientific execution or PASS from rejected attempts."
       }
     },
-    "next_action": "Real daily accepted uptake, dynamic density shape and supply/death/extension recurrence, current/lagged schedules, rejects/replay and opaque joint restart. Then reconcile owning admission guards without dropping assertions.",
+    "next_action": "Validate current owner proof and all negative controls, reconcile live canonical/PR dependencies, then merge only the bounded qualified route. No new migration family.",
     "blockers": [
-      "Physical science and current owner preservation not yet executed.",
-      "Source emergence composition implemented; current/lagged Richards O0 passed, O2 still running. No admission yet."
+      "Current proof source/capsule falsification controls and documentation checks pending."
     ],
     "physical_development": {
       "status": "PASS",
@@ -146,12 +145,87 @@
       "native_programs": 36,
       "wall_seconds": 531.0984224740023,
       "providers": 233,
-      "scope": "Current/lagged real Richards, density/depth/supply literal recurrence, actual physical mass/rollback and opaque joint restart; all28 incumbent cases retained. Additional per-layer independent receipt discriminator still pending."
+      "scope": "Current/lagged real Richards, density/depth/supply literal recurrence, actual physical mass/rollback and opaque joint restart. All28 original physical stdout identities preserved."
     },
     "incumbent_owners": {
       "status": "PASS",
       "native_programs": 16,
       "scope": "Actual INT12-C endpoint and seven unchanged WU01/WU03/Black/Boesten/Rutter drivers O0/O2. Current scientific source; no full source-guard admission claim."
+    },
+    "pr": 1251,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "a3ec19aca353e2b595eea12c9c956f0942b4fa544273411d38b6a97bf0c925ad",
+      "decoded_bytes": 275400,
+      "members": 2801
+    },
+    "production_source_tree": "5c8bd449d83dc06ef9a257f3b449f1818431175f",
+    "incumbent_root_science": {
+      "path": "integration/audits/evidence/MC_CROP01_TRAJECTORY4_SWRD2_SCIENCE_20261015.tar.xz.b64",
+      "decoded_sha256": "9058db4010e20c515d2802090be8b1a3483aab493b7de3a108a11f8ddcf38b01",
+      "decoded_bytes": 251844,
+      "members": 1318
+    },
+    "postimages": {
+      "src/crop/mod_crop_adaptive_root_profile_owner.f90": {
+        "status": "M",
+        "blob": "69817809279d17cebe249bb1c4cdcf76aa306122"
+      },
+      "src/crop/mod_crop_root_depth_rate_owner.f90": {
+        "status": "M",
+        "blob": "74d2f8d08aed0287d6d911bcb6d3a227708c5957"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "9a47bb9e556aeb6697b55f28a8b9ab410112a596"
+      },
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": {
+        "status": "M",
+        "blob": "256c7f658692f0ce4e78a34dc74b7c0543bf24d8"
+      },
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90": {
+        "status": "M",
+        "blob": "2422762336f493fd881769f831e25ee4260fa28e"
+      },
+      "tests/fpm/test_int12c_successor_controls.py": {
+        "status": "M",
+        "blob": "d71908a15099e270b899afb11d5375194e7de9a1"
+      },
+      "tests/fpm/verify_int12c_successor.py": {
+        "status": "M",
+        "blob": "bc06bea6f85732736678362869d00172f7aef4cc"
+      },
+      "tests/root-growth/check_daily_density_controls.py": {
+        "status": "A",
+        "blob": "3ed928f57ae6881e3bdc173897ebd475d1f91215"
+      },
+      "tests/root-growth/density_cycle_driver.py": {
+        "status": "A",
+        "blob": "8ab81249323f3090bd21c704387c204e0fb41089"
+      },
+      "tests/root-growth/density_transaction_driver.py": {
+        "status": "A",
+        "blob": "03dd4d59f27ffd803ca030ba0593a8ad5d8089c4"
+      },
+      "tests/root-growth/run_root_growth.py": {
+        "status": "M",
+        "blob": "d90ad0539aee1559c6618180223905b370fc714b"
+      },
+      "tests/root-growth/run_swrd2_cycle.py": {
+        "status": "M",
+        "blob": "4b53795d540531559b4f6cb4119df14d88d4b014"
+      },
+      "tests/root-growth/verify_daily_density_successor.py": {
+        "status": "A",
+        "blob": "a03e3126eecf5e4ea7e0f99c8442ebf055e66e59"
+      }
+    },
+    "nodal_independent": {
+      "status": "PASS",
+      "checkpoint": "734f9ce7912b5f531c9ec74ce212f66145976ccf",
+      "native_programs": 8,
+      "wall_seconds": 275.4717745309972,
+      "claim": "Every accepted nodal potential and reduction integral compared with independent literal source sink, followed by daily density/supply recurrence and opaque joint restart. Fresh isolated233-provider build at both optimizations, no old object reuse."
     }
   }
 }
