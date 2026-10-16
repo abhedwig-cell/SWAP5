@@ -1,6 +1,6 @@
 # MC-SOL01 actual changing pond application
 
-Status: proposed successor to bounded PR1257, baseline canonical
+Status: qualified bounded successor PR1258 to bounded PR1257, baseline canonical
 `93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694`. Implementation and qualification
 status live in `integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json`.
 
@@ -51,3 +51,28 @@ fallback is substituted. The qualification fixture selects 1e-6 cm and retains
 the independent 1e-10 cm water gate. This contract is new only for the optional
 pond-input route. Existing fixed-input certificate and identity semantics remain
 byte-for-byte unchanged after removing the declared inserted islands.
+
+
+## Stable-candidate evidence
+
+The source-bound O0/O2 execution passes42 new native programs and12 incumbent
+programs, including unchanged fixed/dry1257 and original surface endpoints and
+native restart bytes. New23-case comparison leaf passes separately at O0/O2;
+real zero-tolerance rejection proves the temporal comparison remains operative.
+Each written physical scenario executes8 forcing negatives,21 last-carrier/source
+negatives per interval, rejection after completed water, smaller retry, replay,
+independent literal B1.11 and whole water/chemical balances. Fresh processes
+continue both actual pond depth and matrix surface mass without a new codec.
+The28 evidence/source controls and both actual FCI owner entrypoints pass.
+Source/strict docs pass. Measured full closure328.698s includes220.562s provider
+compile,18.766s preservation driver compile,8.180s new native and78.360s incumbent
+native; categories are retained separately in the raw event manifest.
+
+Actual fixtures use low-conductivity default MvG and -1 cm initial head to
+exercise persistent rather than immediately drained storage. Zero-input wet
+pond drains; gross rain/irrigation fills it; dry deposition survives a zero-water
+interval and remobilizes under explicit rain. This is not arbitrary dynamic-pond
+or high-flux-front qualification. Earlier failed/censored attempts are retained
+and never counted PASS. Generic optional surface/heat/N combinations remain
+outside this qualified joint-application contract. Canonical admission is a
+separate status receipt; master dispositions are not promoted by these tests.
