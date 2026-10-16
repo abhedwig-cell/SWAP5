@@ -2132,12 +2132,12 @@
       "existing response variant arithmetic",
       "DIVDRA process and binder formulas"
     ],
-    "qualification_state": "FINITE_GUARD_SOURCE_CORRECTION_FOCUSED_PASS_FINAL_REFRESH_PENDING",
+    "qualification_state": "FULLY_QUALIFIED_CANONICAL_ADMISSION_PENDING",
     "implemented": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "canonically_admitted": false,
-    "next_action": "Run eight evidence corruption controls and original immutable predecessor/joint owner entry; reconcile canonical and master before safe existing-branch PR integration.",
+    "next_action": "Reconfirm live canonical and master, integrate qualified existing branch using exact-head normal PR merge, record actual tree and three-row master receipt.",
     "blockers": [],
     "cost_selection": {
       "process": "seconds; small independent production module then literal native source/binding",
@@ -2160,14 +2160,14 @@
     ],
     "qualification_evidence": {
       "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64",
-      "sha256": "f8fb2a378f7f507165201edcec677ec484145cc91173360906d5209f7e2cc365"
+      "sha256": "8f59c41a2cfb2538fd9a6ed3f3ed240f5f71828e1b2ddf409dd71c06a111a58e"
     },
     "remaining": [
-      "affected current owner/source/evidence admission controls",
-      "current canonical and parallel reconciliation; safe merge and master/recovery receipt"
+      "safe exact-head canonical merge",
+      "existing master104/103 and canonical recovery receipts"
     ],
     "qualification_inputs_sha256": {
-      "tests/fmig431/verify_dramet3_successor.py": "6d024b0d4cf1eae0c98644548ebb679e35d48029adaf5c07b9e1471ba3a9439c",
+      "tests/fmig431/verify_dramet3_successor.py": "de55678becce49dd3e2df67b99992c5a5da1de750d0bd1b5a87674c9474159a7",
       "tests/fmig431/run_swap431_dramet3.py": "bbb3a3072d1d27a5aaae371d14702bb11e12664b07944a5bf5d04f9b8cee65c9",
       "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
       "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2",
@@ -2176,7 +2176,7 @@
     "successor_postimages": {
       "src/process/mod_drainage_dramet3_response.f90": {
         "status": "A",
-        "blob": "4abb9b4870f3bc449fc6c0661adee251b7a5f956"
+        "blob": "c7479ab87dcbdf429ca4a304e411a5e724507397"
       },
       "src/runtime/mod_fmr_drainage_response_binding.f90": {
         "status": "M",
@@ -2208,7 +2208,7 @@
       },
       "tests/fmig431/test_swap431_dramet3_contract.f90": {
         "status": "A",
-        "blob": "70e332df7c5ff70735de9c9ab4ee7196992c4896"
+        "blob": "3875e6335aad2f5c204b8301c11c9be95759aa20"
       },
       "tests/fmig431/test_swap431_dramet3_runtime.f90": {
         "status": "A",
@@ -2224,13 +2224,13 @@
       },
       "tests/fmig431/verify_dramet3_successor.py": {
         "status": "A",
-        "blob": "b788171851fa770b0d101f6b1c7be309a087d068"
+        "blob": "e6b1fdd676d301a40f5244f6bc1da8a288bfec9d"
       }
     },
     "measured_current": {
       "native_executions": 12,
       "source_cases_per_optimization": 3888,
-      "invalid_source_controls_per_optimization": 16,
+      "invalid_source_controls_per_optimization": 20,
       "native_runtime_configurations_per_optimization": 144,
       "lifecycle_per_optimization": 2,
       "column_isolation_per_optimization": 2,
@@ -2240,15 +2240,105 @@
       "signed_preservation_cases_per_optimization": 24,
       "hard_mass_cm": 1e-12,
       "nodal_scalar_cm_per_day": 1e-14,
-      "compile_seconds": 95.06441290100156,
-      "link_seconds": 0.6149861949998012,
-      "native_seconds": 78.64152852700317,
+      "compile_seconds": 94.01285405801354,
+      "link_seconds": 0.6184305109982233,
+      "native_seconds": 78.37383476000286,
       "artifact_reuse": "verified identical ordered module prefix within one live Session, isolated O0/O2; every native executable ran fresh",
       "docs": "source checks and mkdocs --strict PASS"
     },
     "prior_completed_qualification": {
       "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64",
-      "sha256": "f8fb2a378f7f507165201edcec677ec484145cc91173360906d5209f7e2cc365"
+      "sha256": "f8fb2a378f7f507165201edcec677ec484145cc91173360906d5209f7e2cc365",
+      "at_commit": "65a060ea78532c4c2c2b8dbfd3d4583e82242435"
+    },
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_ADMISSION_20261016.json.gz.b64",
+      "sha256": "fd891625431c365470975340235438017c6332406bdd492a0e700c4348942fcc"
+    },
+    "parallel_reconciliation": {
+      "canonical": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+      "master": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+      "open_prs": [
+        {
+          "number": 1268,
+          "title": "MC-IRR01: complete source depth-limit qualification [skip ci]",
+          "head": "83402264f4ac7e3bcfcae494b121165472c262bf",
+          "branch": "work/mc-irr01-limit-20261016",
+          "base": "c9231e1b102f9666865ced5604ef04d135b3931e",
+          "draft": true
+        },
+        {
+          "number": 1072,
+          "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)",
+          "head": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+          "branch": "work/swap431-master-coverage-20261006",
+          "base": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+          "draft": true
+        },
+        {
+          "number": 956,
+          "title": "SW-RIB-TOP03: transactional top-surface exchange",
+          "head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+          "branch": "work/sw-rib-top03-transactional-top-exchange",
+          "base": "641a8ba7fad5b67f0ebff7c78dd065270ed46329",
+          "draft": true
+        },
+        {
+          "number": 953,
+          "title": "SW-RIB-TOP02: external surface-water head candidate",
+          "head": "76067cced09715e42220301d2410656851ec7013",
+          "branch": "work/sw-rib-top02-external-head-candidate",
+          "base": "2a0b23a2c4e547f6de2613884207d10b2fce462e",
+          "draft": true
+        },
+        {
+          "number": 740,
+          "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study",
+          "head": "e406a7f27ed1de8a274dedd4100a6d1326e43d51",
+          "branch": "work/f-pe-elastic01-soil-storage",
+          "base": "044e686d1899adf3a631716d09743aa4fce0818f",
+          "draft": true
+        },
+        {
+          "number": 528,
+          "title": "Research: fixed-interface dummy SWAP coupling qualification",
+          "head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+          "branch": "work/f-gc-dummy-swap-shared-storage",
+          "base": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+          "draft": true
+        },
+        {
+          "number": 486,
+          "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB",
+          "head": "2f919cb095c0b581664d8c261fb10586670caa45",
+          "branch": "work/f-gc-coupling-semantics-reconciliation",
+          "base": "09b6d0415fee3c63c71ecd11b215fe0d206e05ae",
+          "draft": false
+        },
+        {
+          "number": 365,
+          "title": "DIFFICULTY: preregister Phase-0 falsification experiment",
+          "head": "91c78076aa232c8b9328fb86514f3c6afc6d8e90",
+          "branch": "research/difficulty-phase0-preregistration",
+          "base": "187e30153c890151768e929170d14bb22af1d86d",
+          "draft": true
+        }
+      ],
+      "parallel_1268_files": [
+        "docs/science/MC_IRR01_DEPTH_LIMIT_20261016.md",
+        "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
+        "integration/audits/MC_IRR01_STATUS.json",
+        "src/process/mod_irrigation_process.f90",
+        "src/process/mod_scheduled_irrigation_management_policy.f90",
+        "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90",
+        "tests/mc-irr01/check_depth_limit_controls.py",
+        "tests/mc-irr01/depth_limit_cycle_driver.py",
+        "tests/mc-irr01/run_depth_limit_application.py",
+        "tests/mc-irr01/run_depth_limit_contract.py",
+        "tests/mc-irr01/run_mc_irr01_management_policy.sh",
+        "tests/mc-irr01/verify_availability_successor.py",
+        "tests/mc-irr01/verify_depth_limit_successor.py"
+      ]
     }
   }
 }
