@@ -567,3 +567,10 @@ PR1245,1247 and1234 are canonically admitted at `f56a82b3`, `31ff3158` and `1367
 Scoped recount:243 unique capabilities,95 ADMITTED,108 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE and4 QUALIFICATION_ONLY;112 unresolved. Complete capability dispositions and queue dependencies remain unchanged. Three bounded facets/queue explanations and current source locators are reconciled. The full historical inherited-source integrity checker remains blocked/stale and is not relabelled PASS.
 
 Next independent owned packages are daily adaptive root density/supply2, existing irrigation shared-application event delivery, and persistent solute pond/source mass. Implementations may proceed in parallel with read-only shared inputs; shared ownership changes and admission remain serial. See the existing JSON ledger/status closeout object for exact receipts, open PR classifications and scope limits. No new migration is started by this closeout.
+
+
+## INT12-C application closeout, 16 October 2026
+
+PR1009 is canonically admitted at `06c199fb512154bf4abb99b4ad23856c72a21268`. It closes the existing explicit uniform-source SWINTER1 application composition through dynamic-top flux, active Feddes-root uptake and atomic Richards/source progress. The [owner admission record](https://github.com/abhedwig-cell/SWAP5/blob/8714a32d72d51889772912938e0e4b4835a98f2f/integration/audits/F-MIG431-INT12-C_STATUS.json) binds all eight final targeted workflows and the unchanged source/numerical contracts.
+
+`SW431-INT-VONHH` was already ADMITTED. The census remains243 capabilities,94 ADMITTED,109 ACTIVE_MIGRATION and113 total unresolved. No automatic crop/weather lifecycle, detailed/event forcing, ponded/runoff regime or whole-season capability follows from this bounded application receipt. Historical scientific checkout and evidence remain unchanged; the locator head advances to `8714a32d72d51889772912938e0e4b4835a98f2f`.

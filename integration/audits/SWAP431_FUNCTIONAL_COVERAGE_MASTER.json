@@ -262,12 +262,15 @@
       },
       "meaning": "Von Hoyningen-Hune/Braden interception",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/runtime/mod_fmr_interception_source_window_binding.f90 at 8714a32d72d51889772912938e0e4b4835a98f2f",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at 8714a32d72d51889772912938e0e4b4835a98f2f"
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
         "docs/status-a/POST_STATUS_A_CURRENT_STATE.md",
-        "integration/audits/F-MIG431-INT12-E_ADMISSION.json"
+        "integration/audits/F-MIG431-INT12-E_ADMISSION.json",
+        "integration/audits/F-MIG431-INT12-C_STATUS.json at 8714a32d72d51889772912938e0e4b4835a98f2f"
       ],
       "production_reachability": {
         "established": true,
@@ -275,7 +278,8 @@
         "claim": "Admitted daily route and non-Rutter detailed-record continuation"
       },
       "restrictions": [
-        "Admitted daily route and non-Rutter detailed-record continuation"
+        "Admitted daily route and non-Rutter detailed-record continuation",
+        "New INT12-C receipt qualifies only explicit uniform-source mode2 flux application with frozen canopy/roots and atomic source progress; broader automatic and ponded/runoff routes not inferred. Existing independently admitted detailed-record route unchanged."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -16368,6 +16372,38 @@
       "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
       "full_capability": false,
       "full_master_qualification_claimed": false
+    },
+    "closeout_sw431_int_vonhh_application_20261016": {
+      "pr": 1009,
+      "canonical_merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+      "authority_ref": "8714a32d72d51889772912938e0e4b4835a98f2f",
+      "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+      "owner_family": "PPA-WU04-C / INT12-C",
+      "capabilities": [
+        "SW431-INT-VONHH"
+      ],
+      "scope": "Explicit uniform source-window PMdirect/SWINTER1 -> dynamic-top flux -> active Feddes roots -> actual Richards physical/source atomic publication, compensation OFF, mode2, unponded/no runoff.",
+      "remaining": "Automatic crop/weather lifecycle, event/detail forcing, ponded/runoff regime and whole-season/general envelope are not admitted by this receipt. Existing independently admitted detailed-record route unchanged.",
+      "sources": [
+        "src/runtime/mod_fmr_interception_source_window_binding.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "records": [
+        "integration/audits/F-MIG431-INT12-C_STATUS.json",
+        "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md"
+      ],
+      "authority_at_canonical": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+      "status": "BOUNDED_APPLICATION_COMPOSITION_ADMITTED_ALREADY_ADMITTED_CAPABILITY_UNCHANGED",
+      "full_capability": false,
+      "full_master_qualification_claimed": false,
+      "counts_unchanged": {
+        "ADMITTED": 94,
+        "ACTIVE_MIGRATION": 109,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4
+      }
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -16758,12 +16794,18 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+  "canonical_locator_head": "8714a32d72d51889772912938e0e4b4835a98f2f",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
     "frozen_source_tree": "17c04166a67291d0435aca832d97c37d844e79d1",
     "canonical_locator_head": "02ee16779f2411faec7492f7048b7d36f6f850f8",
     "scope": "Historical source integrity and later bounded locator/admission receipts are separate. Seven default-OFF projection additions preserve the complete old backend body. No current canonical numerical PASS is inherited by this metadata audit."
+  },
+  "latest_int12c_application_reconciliation_20261016": {
+    "canonical": "8714a32d72d51889772912938e0e4b4835a98f2f",
+    "scope": "Bounded application composition receipt and exact later locators only; original historical/scientific checkout is unchanged. No capability promotion.",
+    "receipt": "closeout_sw431_int_vonhh_application_20261016",
+    "disposition_changes": 0
   }
 }

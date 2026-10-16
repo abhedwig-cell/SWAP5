@@ -789,7 +789,7 @@
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
     "frozen_source_tree": "17c04166a67291d0435aca832d97c37d844e79d1",
-    "canonical_locator_head": "02ee16779f2411faec7492f7048b7d36f6f850f8",
+    "canonical_locator_head": "8714a32d72d51889772912938e0e4b4835a98f2f",
     "scope": "Historical source integrity and later bounded locator/admission receipts are separate. Seven default-OFF projection additions preserve the complete old backend body. No current canonical numerical PASS is inherited by this metadata audit.",
     "root_density_correction": {
       "previous": "ADMITTED",
@@ -850,10 +850,9 @@
   "last_integrity_diagnostic_head": "d52dc9e1f558bdb2f40ad3819ae5b53e9a08387e",
   "last_integrity_diagnostic_canonical": "02ee16779f2411faec7492f7048b7d36f6f850f8",
   "migration_pr_closeout_20261016": {
-    "canonical": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
-    "previous_canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
-    "production_source_tree_unchanged": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
-    "production_reference_test_tool_workflow_delta": "NONE: PR389 adds publication documentation only. Relevant existing scientific evidence identities preserved, no numerical rerun.",
+    "canonical": "8714a32d72d51889772912938e0e4b4835a98f2f",
+    "previous_canonical": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "production_reference_test_tool_workflow_delta": "PR1009 adds original source-window adapter and explicit opt-in bootstrap composition plus qualified tests/CI. Reference and solver/backend implementation unchanged; eight targeted workflows PASS. Source tree differs from previous publication-only checkpoint.",
     "merged": [
       {
         "pr": 389,
@@ -861,6 +860,13 @@
         "head": "9bc5ced61be55d7d7263553fc3a6a7d16508fbff",
         "scope": "Internal Stromingen working draft, PUB_CONTEXT_ONLY; not external submission, coauthor approval or new scientific inference",
         "verification": "Docs source, strict MkDocs, four unchanged SVG XML/label checks, unchanged production/reference/test/tool/workflow and current owner source identity PASS; public NHI/NHV sources reread."
+      },
+      {
+        "pr": 1009,
+        "merge_commit": "06c199fb512154bf4abb99b4ad23856c72a21268",
+        "head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+        "scope": "Explicit uniform source-window PMdirect/SWINTER1 -> dynamic-top flux -> active Feddes roots -> actual Richards physical/source atomic publication, compensation OFF, mode2, unponded/no runoff.",
+        "verification": "Local O0/O2 direct wet/dry endpoints and atomic rollback,16 owner results, full default projection, canonical predecessor proof, negative controls and eight targeted GitHub workflows PASS."
       }
     ],
     "open_updated": [
@@ -872,13 +878,6 @@
         "blocker": "MODEL2/3/6 each reject13 attempts at both optimizations despite available measured predecessor history and valid unchanged1e-6cm head budget: constitutive-policy-deferred. Existing temporal service explicitly excludes new provider types. No accepted dynamic state/restart qualification.",
         "next_safe_step": "Within PR1103, owner-qualified extension of existing Reference temporal certificate provider envelope, independent literal/cutoff and temporal checks, actual dynamic commit/restart and relevant default preservation. No tolerance change or new migration family.",
         "scope_record_at_branch": "integration/audits/SWAP431_HYD_HYST_STATUS.json"
-      },
-      {
-        "pr": 1009,
-        "head": "40dd1c5bf359006991d5982b495d9596ece9e1e7",
-        "status": "RETAIN_ACTIVE_CONCURRENT_DIRECT_APPLICATION_QUALIFICATION",
-        "scope": "Fresh owner record: prior restricted wet/dry receiving qualification completed, broader preservation not green. New explicit SWINTER1 dynamic-top/active Feddes direct application implemented; O0/O2 application and seven-owner qualification marked RUNNING. Do not overwrite or duplicate. Automatic crop/calendar excluded. Not admitted.",
-        "scope_record_at_branch": "integration/audits/F-MIG431-INT12-C_STATUS.json"
       }
     ],
     "capability_disposition_changes": 0,
@@ -900,6 +899,52 @@
       "decoded_sha256": "9d6a0e5ce4afbe952317cfcc6c41a923a3c2a589d4595e2f5308efb0e536f74b",
       "outcome": "NEGATIVE_ENVELOPE_O0_O2_PASS_NOT_ADMISSION",
       "master_dispositions_changed": false
+    },
+    "previous_publication_only_source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "production_source_tree": "ff715244cdbfbfda7fa5df18f7c79a67c5d6ad2c"
+  },
+  "latest_int12c_application_reconciliation_20261016": {
+    "pr": 1009,
+    "canonical_merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "authority_ref": "8714a32d72d51889772912938e0e4b4835a98f2f",
+    "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+    "owner_family": "PPA-WU04-C / INT12-C",
+    "capabilities": [
+      "SW431-INT-VONHH"
+    ],
+    "scope": "Explicit uniform source-window PMdirect/SWINTER1 -> dynamic-top flux -> active Feddes roots -> actual Richards physical/source atomic publication, compensation OFF, mode2, unponded/no runoff.",
+    "remaining": "Automatic crop/weather lifecycle, event/detail forcing, ponded/runoff regime and whole-season/general envelope are not admitted by this receipt. Existing independently admitted detailed-record route unchanged.",
+    "sources": [
+      "src/runtime/mod_fmr_interception_source_window_binding.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "records": [
+      "integration/audits/F-MIG431-INT12-C_STATUS.json",
+      "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md"
+    ],
+    "authority_at_canonical": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+    "status": "BOUNDED_APPLICATION_COMPOSITION_ADMITTED_ALREADY_ADMITTED_CAPABILITY_UNCHANGED",
+    "full_capability": false,
+    "full_master_qualification_claimed": false,
+    "counts_unchanged": {
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "canonical_locator_head": "8714a32d72d51889772912938e0e4b4835a98f2f",
+    "master_integrity_scope": "Historical integrity and canonical locator validation only; no whole-current scientific qualification or denominator closure.",
+    "master_before": "67a52e1e6322868e62637215ff3e370015008389",
+    "validation": {
+      "census_recomputed": "PASS; all243 dispositions unchanged",
+      "historical_integrity_and_current_locators": "PASS",
+      "inheritance_and_locator_controls": "PASS",
+      "whole_coverage_closure": "EXPECTED_REJECTION: denominator incomplete and113 unresolved",
+      "docs_source": "PASS",
+      "scientific_checkout_changed": false,
+      "current_canonical_numerical_inheritance_claimed": false
     }
   }
 }
