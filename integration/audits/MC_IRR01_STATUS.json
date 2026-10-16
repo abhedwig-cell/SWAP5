@@ -1,6 +1,42 @@
 {
   "schema_version": 1,
   "work_unit": "MC-IRR01",
+  "concurrent_dcs1_candidate_retirement_20261016": {
+    "phase": "DUPLICATE_CARRIER_CLOSED_WITHOUT_MERGE_SOURCE_AND_EVIDENCE_RETAINED",
+    "canonical_reconciled": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
+    "canonical_authority": "material_root_application_20261016",
+    "admitted_pr": 1254,
+    "admitted_merge": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+    "closed_pr": 1255,
+    "closed_at": "2026-10-16T13:12:06Z",
+    "merged": false,
+    "retained_branch": "work/irr-dcs1-root-material-20261016",
+    "retained_head": "292042479a5b3f3497b0d19c18f2cfd55d790599",
+    "retained_tree": "65bef702c0ec7d359c769f8fbfd963498f48ef3b",
+    "retained_changed_postimages": 16,
+    "retained_science": {
+      "path_at_retained_head": "integration/audits/evidence/MC_IRR01_ROOT_MATERIAL_DCS1_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "01579412ceb34dd34b80a2b5ba5d4c1ce481f8ca185f2af1c4ba1e404f8efce7",
+      "decoded_bytes": 128620,
+      "members": 1953,
+      "native_programs": 26,
+      "wall_seconds": 606.2069072669983
+    },
+    "retained_admission_controls": {
+      "path_at_retained_head": "integration/audits/evidence/MC_IRR01_ROOT_MATERIAL_DCS1_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "8cc8fda91670a7cc4873f7f615ed49c7c7fb5d1946315dc8bc890e3cac357f1b",
+      "decoded_bytes": 11844,
+      "members": 7,
+      "negative_controls": 23
+    },
+    "equivalence_review": "PR1254 already binds the same committed actual SWRD2 depth, typed material FC/average stress/wilting, fractional rooted support, authenticated daily rain and existing accepted irrigation/event/opaque restart owner. It additionally qualifies TCS2/3/4,240 leaf vectors and an uncapped daily-rain discriminator. Do not merge both implementations.",
+    "retained_noninterchangeable_work": "Generic-provider helper and extra geometry/shape/nonfinite witnesses in1255 remain available for selective existing-owner review. Carrier retirement is not a blanket semantic replacement of all16 source/test/evidence postimages.",
+    "qualification_ceiling": "The1255 results qualify only its original7f5441c5 baseline and retained postimage, not current canonical. Production authority is actual PR1254 and its own source-bound60-program science/admission capsules. Failed and censored1255 attempts retain original statuses.",
+    "branch_or_evidence_deleted": false,
+    "production_changes_from_retirement": false,
+    "new_numerical_or_actions_runs_from_retirement": 0,
+    "master_disposition_changes": 0
+  },
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
