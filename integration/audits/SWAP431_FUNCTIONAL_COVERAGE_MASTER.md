@@ -1,5 +1,24 @@
 # Current annual admission, 16 October 2026
 
+Latest reference correction (2026-10-16): B1.12/SWAP-019 is canonically admitted
+through PR1265, merge `36862e06001154f5097b438ae4b851ae092423df`, receipt
+`5d45a7a4`. Actual N-active classical WOFOST now retains only(1-f) daily leaf
+death after soil return. Potential, N-OFF, soybean and grass retain B1.11.
+1368 O0/O2 real-source programs close whole DM/N through independent harvest
+fractions, calendar/DVS/date-fallback harvest, original reset and next-day
+residue incorporation. Exact63-member reconstruction, nine scientific and six
+reference rejection controls pass. Earlier B0 full-archive provenance is
+inherited unchanged; no fresh full distribution replay is claimed.
+
+SWAP5 source remains byte-identical to admitted annual1264. Its expanded actual
+biomass owner is the next implementation seam; gross mortality diagnostics are
+not physical retained material. Partial-return retained leaf/stem DM/N, harvest,
+whole N/OM and native/opaque continuation remain unadmitted. This reference unit
+changes no capability disposition. Preserve annual1264 and signed drainage1099:
+96 ADMITTED,109 ACTIVE_MIGRATION,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,
+2 QUALIFICATION_ONLY;111 unresolved. Earlier counts below are historical.
+
+
 SW431-CROP-ANNUAL is **ADMITTED** through PR1264, canonical
 `f86aea792bebd77040648d1d5d9c475bc1a0b76d`; merge tree exactly matches
 the qualified candidate. Same-owner retained mortality and restart repair closes

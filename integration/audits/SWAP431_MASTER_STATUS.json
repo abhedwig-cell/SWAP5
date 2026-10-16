@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
+  "last_reconciled_upstream": "5d45a7a4ff162be6cc8b1b9fa4f1f18feb687cfd",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -141,8 +141,8 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Complete the B1 correction admission against the existing ordered reference lineage, preserving immutable B1.11 and affected removal/state semantics; do not rebuild admitted1260 or enable partial-return runtime before retained physical stock and restart are qualified.",
-  "recovery_point": "1263 actual ordinary-source defect confirmation and minimal correction candidate are canonically recorded; corrected B1 and SWAP5 partial-return runtime are not admitted. Preserve1260/1253 and independent1099 signed DIVDRA. Master remains draft:95 admitted,112 unresolved. Annual PR1264 is now canonically admitted; current counts96 admitted,111 unresolved. The preceding95/112 snapshot is historical.",
+  "next_action": "Extend existing joint crop/Soil-N owner with physical retained leaf/stem DM/N distinct from gross mortality diagnostics; harvest, whole N/OM and atomic opaque/native continuation. Reuse admitted annual biomass owner and preserve1260/1253/default plus explicit B1.11 pins.",
+  "recovery_point": "B1.12/SWAP-019 canonically admitted through1265. Reuse existing annual-expanded biomass owner; distinguish gross mortality diagnostics from retained physical DM/N. SWAP5 partial-return runtime remains unadmitted. Preserve1264 annual and1099 signed drainage. Master draft:96 admitted,111 unresolved.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
     "integration/audits/SWAP431_REMAINING_WORKUNITS.json",
@@ -3124,5 +3124,162 @@
       "decoded_sha256": "020b89a8ad9a782695298f7d40749d9bf7306420250dc114f88cb7625b63a871",
       "members": 7
     }
+  },
+  "latest_b112_leaf_reference_admission_20261016": {
+    "stage": "CANONICALLY_ADMITTED_REFERENCE",
+    "baseline": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+    "branch": "work/nut-leaf-reference-admission-20261016",
+    "audit_id": "SWAP-019",
+    "predecessor": "B1.11",
+    "proposed_snapshot": "B1.12",
+    "candidate_origin_pr": 1263,
+    "closure_conditions": [
+      "Reproduce original ordinary DM defect with exact original source and actual pending/residue chemistry (1263 evidence retained).",
+      "Qualify affected source management modes and harvest boundaries; if candidate guard affects unsupported source modes, preserve them explicitly and record the narrowed defect correction instead of inferring equivalence.",
+      "Establish canonical B0 and ordered B1.11 preimages, exact minimal binary patch identity, 63-member reconstruction and immutable B1.11 preservation.",
+      "Daily crop N and potential/N-OFF/unaffected source behavior unchanged; OM/N closes with remaining stock and actual source harvest semantics.",
+      "Publish finding, expected differences, reproducible qualification evidence, stable audit ID and immutable B1.12 lineage; pin new reference explicitly without rebinding historical evidence.",
+      "Pass affected owner source/evidence successor guard and docs checks. No SWAP5 source or native ABI change in this reference unit."
+    ],
+    "test_selection": "Small original source contract and daily/harvest/removal closure O0/O2; actual archived scientific providers. Reference reconstruction and owner evidence only. Full FCI/RossFast/highest-low-air NOT_SELECTED_IMPACT.",
+    "production_admitted": false,
+    "reference_admitted": true,
+    "capability_disposition_changes": 0,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_SWAP019_REFERENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "09c4c58998c362735cb1577aab18acaff867508454060ac5cc3c93857cdd6a3b",
+      "decoded_bytes": 127612,
+      "members": 2852
+    },
+    "source_tree_unchanged": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+    "source_identity": {
+      "b111_authority_decoded_sha256": "18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c",
+      "patch_sha256": "763e44540692971a8d2bb491a1ff47bb5682a5f3dcf0f6d8ca72838adc353070",
+      "member_manifest_sha256": "5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e",
+      "source_bytes": 1886750,
+      "members": 63,
+      "targets": {
+        "wofost.f90": "2d1f9962f2423f94209784cf92e295ddbd18d103a052312be0f3da3e330bac38",
+        "wofostnut.f90": "f64dbc7a58bc7508fd25aa277fa09f70a9ed9206aab684ad094ef1dc61d3e346"
+      }
+    },
+    "native_programs": 1368,
+    "cost_seconds": {
+      "compile": 2.391112555997097,
+      "link": 0.3616566260025138,
+      "native": 3.6050563838070957
+    },
+    "candidate_revision": "1263 broader candidate refined with explicit SW_WOFOST=1 guard to preserve unqualified soybean/grass management. Both complete legacy files remain CRLF; total231 bytes added.",
+    "prior_B111_snapshots_immutable": true,
+    "postimages": {
+      "reference/swap-4.3.1/README.md": {
+        "status": "M",
+        "blob": "8017117dced1059f5e5f1f91cd38abab8d1766a1"
+      },
+      "reference/swap-4.3.1/b1-manifest.yml": {
+        "status": "M",
+        "blob": "eb6500526eb29c2a743b6cfa269e09a76b4ce7b2"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/apply_and_verify.py": {
+        "status": "A",
+        "blob": "8ef33660f09eade020a1eb4f749c81435ef5fbb0"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/finding.md": {
+        "status": "A",
+        "blob": "01715ea5f288826ebd60c5b040e54e04f722b017"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/fix.patch": {
+        "status": "A",
+        "blob": "183ea401256e2e710ba70f3e62eb2be33bdec24c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/qualification.md": {
+        "status": "A",
+        "blob": "63f8acd0f763ad2bcc6c496f89c87cf264b4416f"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/run_reference.py": {
+        "status": "A",
+        "blob": "22df9d021fde758cd2b894264c3f93bb8362b22c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/test_reference.py": {
+        "status": "A",
+        "blob": "e09ef60bdbb8b6f98158cea45507e4b05389fadb"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/verify.py": {
+        "status": "A",
+        "blob": "e597dfe314f52bec9da467fdd2afbe854f767a0b"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
+        "status": "A",
+        "blob": "3765d082b960926496668e37ef43db58ae29f0e0"
+      },
+      "reference/swap-4.3.1/snapshots/B1.12.yml": {
+        "status": "A",
+        "blob": "12b793b8283e11b6cd9e130a0a559c97e09961c6"
+      },
+      "tests/fmig431/verify_signed_divdra_successor.py": {
+        "status": "M",
+        "blob": "9dadf619ca66908dc823fe0171c719e9d250f626"
+      },
+      "tools/vq/b1_12_admission_gate.py": {
+        "status": "A",
+        "blob": "6394ddb0e910f4297f7ae654691ac5424bb8b471"
+      },
+      "tools/vq/b1_12_reconstruct.py": {
+        "status": "A",
+        "blob": "85c09cc4c3be2f584b411b41d0e4fd13f40b9b5d"
+      }
+    },
+    "qualification_controls": {
+      "sealed_science": 9,
+      "reference_reconstruction": 6,
+      "rejected_reference_inputs_unchanged": true
+    },
+    "validation": {
+      "source_owner": "PASS final complete reproductive/signed successor evidence and current reference successor",
+      "reference_reconstruction": "PASS 63 exact members; six corruption/rejection controls",
+      "sealed_science": "PASS 1368 native commands, nine negative controls and exact source-body extraction",
+      "reproducible_runner_replay": "PASS persisted runner; identical O0/O2/source/corrected outputs",
+      "docs": "PASS final source and strict",
+      "full_FCI": "NOT_SELECTED_IMPACT",
+      "reference_lineage_and_expected_differences": "PASS fail-closed B1.12 admission gate; B1.11 and historical entries preserved"
+    },
+    "pr": 1265,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_SWAP019_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "cf463d54b3e69a79586d37ab676c5f952292aaba45045836250289cd7d1130f4",
+      "decoded_bytes": 13560,
+      "members": 9
+    },
+    "next_safe_step": "Extend existing joint crop/Soil-N owner with physical retained leaf/stem DM/N distinct from gross mortality diagnostics; harvest, whole N/OM and atomic opaque/native continuation. Reuse admitted annual biomass owner and preserve1260/1253/default plus explicit B1.11 pins.",
+    "reconciled_base": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+    "canonical_reconciliation": {
+      "pr": 1264,
+      "admission": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "scope": "Independent classical annual SWCROPSNM=0 source-state/codec admission. Legacy reference science unchanged; reference gate preserves current annual owner source/evidence at its exact admitted commit. No new numerical rerun for unchanged leaf scientific inputs.",
+      "next_production_owner": "Reuse existing expanded actual biomass owner including mortality state; do not create a second dead-DM owner. Retained N and source-partial semantics still require explicit coupling qualification.",
+      "validation": "PASS actual current annual source and complete capsule; preserved six signed controls through real CLI; final strict docs",
+      "archive": {
+        "path": "integration/audits/evidence/MC_NUT01_SWAP019_ANNUAL_RECONCILIATION_20261016.tar.xz.b64",
+        "decoded_sha256": "478eb20add62b002d58562a9a20e4b630462cee55f6020fbd393bdf748f9708c",
+        "decoded_bytes": 8792,
+        "members": 4
+      }
+    },
+    "canonical_assessment": {
+      "pr": 1265,
+      "merge_commit": "36862e06001154f5097b438ae4b851ae092423df",
+      "reviewed_head": "b54d5ebe9e9b10fade6d5dea0848669df141fdd0",
+      "actual_tree": "8fc7117d7007bff46d9b25972fc44390ccce40e3",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "post_merge_reference_gate": "PASS exact actual merge and B1.12 admission gate",
+      "SWAP5_source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": []
+    },
+    "canonical_receipt": "5d45a7a4ff162be6cc8b1b9fa4f1f18feb687cfd",
+    "master_scope": "Reference correction only. Preserve annual1264 and drainage1099 admissions; all243 capability ledger rows unchanged from e498d388;96 admitted,111 unresolved."
   }
 }
