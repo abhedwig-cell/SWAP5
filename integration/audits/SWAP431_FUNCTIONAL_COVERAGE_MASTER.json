@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "canonical_branch": "integration/f-ci-canonical",
-  "canonical_head": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+  "canonical_head": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
   "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "coverage_closed": false,
   "closure_statement": null,
@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 101,
-      "ACTIVE_MIGRATION": 103,
+      "ADMITTED": 104,
+      "ACTIVE_MIGRATION": 100,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 103,
+    "open_capabilities": 100,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 82,
+    "confirmed_missing_production_entries": 79,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 106,
+    "total_unresolved_capabilities": 103,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
-      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 103,
-    "missing_standalone_process_implementations_not_established": 103,
-    "active_with_existing_production_source_authority": 63,
-    "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 103,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
+    "missing_production_binding_or_implementation_entries": 100,
+    "missing_standalone_process_implementations_not_established": 100,
+    "active_with_existing_production_source_authority": 62,
+    "active_without_listed_production_source_authority": 38,
+    "active_missing_complete_admitted_route": 100,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -11923,43 +11923,87 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Multilevel exchange allocation and drain/channel type",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/process/mod_drainage_dramet3_response.f90",
+        "src/runtime/mod_fmr_drainage_response_binding.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
-        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64 at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher."
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "Explicit native DRAMET3 variant: immutable OWLTAB/origin maps each actual full/half/retry endpoint to t1900+dt-1; current trial-start groundwater view, drain-bottom clamp, source signed DRARES/INFRES, SWALLO1/2/3, SWDTYP1/2 and SWLIMINF. SWDIVD0 exact per-level bottom placement and single existing accepted-water ledger. O0/O2 hard mass, actual rejection/replay, committed empty-registry restart and two-column isolation qualified."
       },
       "restrictions": [
-        "SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher."
+        "Ordinary frost OFF native scalar response; SWDIVD0 and stable immutable parameter registry/epoch at continuation. Existing SWDIVD1 and highest-interflow redistribution retain their separate contracts. No macropore rapid-drainage-basis, new frost profile, state owner, restart codec or automatic legacy disk activation. Source reader allows INFRES0: unused nonnegative branch is available; active negative-head zero division is source-undefined and rejected before arithmetic."
       ],
-      "remaining_dependency": [
-        "SW431-DRAIN-DRAMET3"
-      ],
-      "active_workunit": "MC-DRAIN01",
+      "remaining_dependency": [],
+      "active_workunit": null,
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "source_input_names": [
         "swallo",
         "swdtyp"
       ],
       "closed_foundation_authorities": [
+        "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-EXT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "canonical_admission_20261016": {
+        "capability_ids": [
+          "SW431-DRAIN-DRAMET3",
+          "SW431-DRAIN-ALLOCATION",
+          "SW431-DRAIN-INF-LIMIT"
+        ],
+        "pr": 1270,
+        "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+        "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+        "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "phase": "dramet3_phase_20261016",
+        "full_capabilities": true,
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "original_source_binder_cases_per_optimization": 3888,
+        "invalid_or_source_undefined_controls_per_optimization": 20,
+        "runtime_configurations_per_optimization": 144,
+        "rejection_replay_empty_registry_restart_per_optimization": 2,
+        "two_column_isolation_per_optimization": 2,
+        "runtime_invalid_pre_solver_controls_per_optimization": 4,
+        "original_response_cases_per_optimization": 297,
+        "hard_mass_cm": 1e-12,
+        "scalar_closure_cm_per_day": 1e-14,
+        "corruption_controls": 8,
+        "reference_correction": false,
+        "parallel_preserved": [
+          "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+          "AVAIL and TCS6",
+          "annual crop/B1.12",
+          "all other240 capability records"
+        ],
+        "disposition_delta": {
+          "ADMITTED": 3,
+          "ACTIVE_MIGRATION": -3
+        },
+        "capability_id": "SW431-DRAIN-ALLOCATION"
+      }
     },
     {
       "capability_id": "SW431-DRAIN-INF-LIMIT",
@@ -11978,43 +12022,87 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Head-difference-limited drain/channel infiltration",
-      "swap5_implementation_authority": [],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "swap5_implementation_authority": [
+        "src/process/mod_drainage_dramet3_response.f90",
+        "src/runtime/mod_fmr_drainage_response_binding.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "current_disposition": "ADMITTED",
       "evidence": [
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
         "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
         "integration/audits/evidence/SWAP431_DRAMET3_REPLACEMENT_PROBE.json",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
-        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json"
+        "integration/audits/evidence/SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64 at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics."
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "Explicit native DRAMET3 variant: immutable OWLTAB/origin maps each actual full/half/retry endpoint to t1900+dt-1; current trial-start groundwater view, drain-bottom clamp, source signed DRARES/INFRES, SWALLO1/2/3, SWDTYP1/2 and SWLIMINF. SWDIVD0 exact per-level bottom placement and single existing accepted-water ledger. O0/O2 hard mass, actual rejection/replay, committed empty-registry restart and two-column isolation qualified."
       },
       "restrictions": [
-        "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics."
+        "Ordinary frost OFF native scalar response; SWDIVD0 and stable immutable parameter registry/epoch at continuation. Existing SWDIVD1 and highest-interflow redistribution retain their separate contracts. No macropore rapid-drainage-basis, new frost profile, state owner, restart codec or automatic legacy disk activation. Source reader allows INFRES0: unused nonnegative branch is available; active negative-head zero division is source-undefined and rejected before arithmetic."
       ],
-      "remaining_dependency": [
-        "SW431-DRAIN-DRAMET3"
-      ],
-      "active_workunit": "MC-DRAIN01",
+      "remaining_dependency": [],
+      "active_workunit": null,
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
+        "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-EXT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "resolution_decision": "MIGRATE",
+      "canonical_admission_20261016": {
+        "capability_ids": [
+          "SW431-DRAIN-DRAMET3",
+          "SW431-DRAIN-ALLOCATION",
+          "SW431-DRAIN-INF-LIMIT"
+        ],
+        "pr": 1270,
+        "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+        "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+        "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "phase": "dramet3_phase_20261016",
+        "full_capabilities": true,
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "original_source_binder_cases_per_optimization": 3888,
+        "invalid_or_source_undefined_controls_per_optimization": 20,
+        "runtime_configurations_per_optimization": 144,
+        "rejection_replay_empty_registry_restart_per_optimization": 2,
+        "two_column_isolation_per_optimization": 2,
+        "runtime_invalid_pre_solver_controls_per_optimization": 4,
+        "original_response_cases_per_optimization": 297,
+        "hard_mass_cm": 1e-12,
+        "scalar_closure_cm_per_day": 1e-14,
+        "corruption_controls": 8,
+        "reference_correction": false,
+        "parallel_preserved": [
+          "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+          "AVAIL and TCS6",
+          "annual crop/B1.12",
+          "all other240 capability records"
+        ],
+        "disposition_delta": {
+          "ADMITTED": 3,
+          "ACTIVE_MIGRATION": -3
+        },
+        "capability_id": "SW431-DRAIN-INF-LIMIT"
+      }
     },
     {
       "capability_id": "SW431-SALT-BOTTOM-C",
@@ -14555,30 +14643,29 @@
       },
       "meaning": "Native signed resistance response with time-varying channel head and drain-bottom clamp",
       "swap5_implementation_authority": [
-        "src/process/mod_drainage_process.f90",
-        "src/process/mod_drainage_tabulated_response.f90",
-        "src/process/mod_drainage_extended_exchange.f90",
-        "src/process/mod_drainage_spatial_distribution.f90",
-        "src/runtime/mod_fmr_divdra_runtime_binding.f90",
-        "src/runtime/mod_fmr_drainage_response_binding.f90"
+        "src/process/mod_drainage_dramet3_response.f90",
+        "src/runtime/mod_fmr_drainage_response_binding.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/drainage.md",
         "docs/science/drainage-formulations.md",
         "integration/audits/evidence/SWAP431_DRAIN_LOWER_RAIN_RECONCILIATION.json",
-        "integration/audits/evidence/SWAP431_DRAMET3_REPLACEMENT_PROBE.json"
+        "integration/audits/evidence/SWAP431_DRAMET3_REPLACEMENT_PROBE.json",
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "integration/audits/evidence/MC_DRAIN01_DRAMET3_20261016.json.gz.b64 at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present."
+        "established": true,
+        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "claim": "Explicit native DRAMET3 variant: immutable OWLTAB/origin maps each actual full/half/retry endpoint to t1900+dt-1; current trial-start groundwater view, drain-bottom clamp, source signed DRARES/INFRES, SWALLO1/2/3, SWDTYP1/2 and SWLIMINF. SWDIVD0 exact per-level bottom placement and single existing accepted-water ledger. O0/O2 hard mass, actual rejection/replay, committed empty-registry restart and two-column isolation qualified."
       },
       "restrictions": [
-        "Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present."
+        "Ordinary frost OFF native scalar response; SWDIVD0 and stable immutable parameter registry/epoch at continuation. Existing SWDIVD1 and highest-interflow redistribution retain their separate contracts. No macropore rapid-drainage-basis, new frost profile, state owner, restart codec or automatic legacy disk activation. Source reader allows INFRES0: unused nonnegative branch is available; active negative-head zero division is source-undefined and rejected before arithmetic."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-DRAIN01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14587,9 +14674,9 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": null,
+      "workunit_stage": "CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
       "source_input_names": [
         "swallo",
         "swdtyp"
@@ -14597,7 +14684,46 @@
       "closed_foundation_authorities": [
         "SW431-DRAIN-EXT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "canonical_admission_20261016": {
+        "capability_ids": [
+          "SW431-DRAIN-DRAMET3",
+          "SW431-DRAIN-ALLOCATION",
+          "SW431-DRAIN-INF-LIMIT"
+        ],
+        "pr": 1270,
+        "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+        "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+        "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+        "phase": "dramet3_phase_20261016",
+        "full_capabilities": true,
+        "O0_O2": "PASS_BYTE_IDENTICAL",
+        "original_source_binder_cases_per_optimization": 3888,
+        "invalid_or_source_undefined_controls_per_optimization": 20,
+        "runtime_configurations_per_optimization": 144,
+        "rejection_replay_empty_registry_restart_per_optimization": 2,
+        "two_column_isolation_per_optimization": 2,
+        "runtime_invalid_pre_solver_controls_per_optimization": 4,
+        "original_response_cases_per_optimization": 297,
+        "hard_mass_cm": 1e-12,
+        "scalar_closure_cm_per_day": 1e-14,
+        "corruption_controls": 8,
+        "reference_correction": false,
+        "parallel_preserved": [
+          "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+          "AVAIL and TCS6",
+          "annual crop/B1.12",
+          "all other240 capability records"
+        ],
+        "disposition_delta": {
+          "ADMITTED": 3,
+          "ACTIVE_MIGRATION": -3
+        },
+        "capability_id": "SW431-DRAIN-DRAMET3"
+      }
     },
     {
       "capability_id": "SW431-DRAIN-DIV-SIGNED",
@@ -14935,20 +15061,6 @@
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
       "why_open": "Source partitions the highest interflow down to its physical drain bottom and starts all lower discharge layers below that boundary. Current ordinary positive DIVDRA has no highest-interflow selector or separate top-layer operator. This is distinct from B15 highest scalar response and from SWDISLAY top truncation.",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-DRAIN-DRAMET3",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [],
-      "why_open": "Native DRAMET3 resolves OWLTAB at t1900+dt-1, clamps to ZBOTDR and selects DRARES/INFRES by sign. Current admitted normalized response route consumes externally resolved control head; EXTENDED_SIGNED follows another source family and its activation/ponding rules differ. No typed source resolver plus qualified native signed resistance binding is present.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -16004,38 +16116,6 @@
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-DRAIN-ALLOCATION",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [
-        "SW431-DRAIN-DRAMET3"
-      ],
-      "why_open": "SWALLO2 suppresses positive drainage; SWALLO3 suppresses negative infiltration per level. Current response-binding parameters have no direction selector. The one-way linear provider covers only its restricted positive branch; it does not execute the native selectable signed resistance dispatcher.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-DRAIN-INF-LIMIT",
-      "work_unit": "MC-DRAIN01",
-      "dependencies": [
-        "SW431-DRAIN-DRAMET3"
-      ],
-      "why_open": "MIGRATE the SWLIMINF channel-depth cap within native DRAMET3 negative-head dispatch. Related EXTENDED cap algebra exists but its independent activation seam prevents blanket replacement. Depends on the source DRAMET3 resolver, not new EXTENDED physics.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -18003,7 +18083,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+  "canonical_locator_head": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19770,6 +19850,135 @@
       "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
       "all_other242_capability_records": "UNCHANGED",
       "numerical_execution_for_master_metadata": false
+    }
+  },
+  "latest_mc_drain01_dramet3_admission_20261016": {
+    "capability_ids": [
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT"
+    ],
+    "pr": 1270,
+    "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+    "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+    "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "phase": "dramet3_phase_20261016",
+    "full_capabilities": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "original_source_binder_cases_per_optimization": 3888,
+    "invalid_or_source_undefined_controls_per_optimization": 20,
+    "runtime_configurations_per_optimization": 144,
+    "rejection_replay_empty_registry_restart_per_optimization": 2,
+    "two_column_isolation_per_optimization": 2,
+    "runtime_invalid_pre_solver_controls_per_optimization": 4,
+    "original_response_cases_per_optimization": 297,
+    "hard_mass_cm": 1e-12,
+    "scalar_closure_cm_per_day": 1e-14,
+    "corruption_controls": 8,
+    "reference_correction": false,
+    "parallel_preserved": [
+      "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+      "AVAIL and TCS6",
+      "annual crop/B1.12",
+      "all other240 capability records"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 3,
+      "ACTIVE_MIGRATION": -3
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 101,
+        "ACTIVE_MIGRATION": 103,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 103,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 82,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 106,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 103,
+      "missing_standalone_process_implementations_not_established": 103,
+      "active_with_existing_production_source_authority": 63,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 103,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 100,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 79,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 103,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 100,
+      "missing_standalone_process_implementations_not_established": 100,
+      "active_with_existing_production_source_authority": 62,
+      "active_without_listed_production_source_authority": 38,
+      "active_missing_complete_admitted_route": 100,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Exactly three existing native DRAMET3/ALLOCATION/INF-LIMIT rows close; all other240 capability records unchanged. The global denominator remains incomplete.",
+    "closeout_checks": {
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "exactly_three_existing_row_promotions": true,
+      "other240_capability_records": "UNCHANGED",
+      "historic_scientific_surface": "UNCHANGED",
+      "global_closure": "EXPECTED_REFUSAL_DENOMINATOR_INCOMPLETE",
+      "docs_source_and_strict": "PASS",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_MASTER_CHECKS_20261016.json.gz.b64",
+        "sha256": "ce182fcbe651b2cd65747996ed7c464bb4b43181665226ebed01daacec6f877b"
+      }
     }
   }
 }

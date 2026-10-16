@@ -1,3 +1,9 @@
+# Native ordinary DRAMET3 full-capability admission, 16 October 2026
+
+`SW431-DRAIN-DRAMET3`, `SW431-DRAIN-ALLOCATION` and `SW431-DRAIN-INF-LIMIT` are **ADMITTED** through [PR1270](https://github.com/abhedwig-cell/SWAP5/pull/1270), canonical `8329752d9c08ec32f31f6248a3eecd05c6c26fc5`; qualified head `89103429ad60305fb8d45023eb58e10b23585033`. Actual full merge tree equals qualified tree `fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33`; source `6007b4b5c3757347c0418d21178961f8bda3291b`. Each optimization passes3,888 complete original-source/real-binder cases,20 invalid/undefined guards,144 physical configurations,2 actual reject/replay/empty-registry restart and2 column-isolation controls. All nine previous response variants retain297 byte-exact cases; original signed and DISLAYER physical assertions remain.
+
+Current counts: **104 ADMITTED,100 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;103 unresolved,243 total**. Exactly three existing rows close; all other240 capability records remain unchanged. Highest-interflow redistribution remains open. The global denominator remains incomplete. Recovery authority: `SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase `dramet3_phase_20261016`. Counts below are historical.
+
 # Current ordinary DISLAYER full capability admission, 16 October 2026
 
 `SW431-DRAIN-DISLAYER` is **ADMITTED** through [PR1269](https://github.com/abhedwig-cell/SWAP5/pull/1269), canonical `218d2425612408b8ae451cdda54c0e1e3d3d6a63`; qualified head `b62291c021f7231653a0949f9f3caf7c2ddaa57f`. The full merge tree matches the qualified candidate exactly; source `3d8a5ad6f1520716e2131f7aa4b1ab62fe076250`. Minimal B1 Paragraph12 normalization correction,25,920 actual source and binder cases,288 real runtime cases and48 reject/replay/restart controls per optimization pass O0/O2. Existing positive/signed/multilevel/INF and original B18, plus the parallel full AVAIL admission, remain preserved.

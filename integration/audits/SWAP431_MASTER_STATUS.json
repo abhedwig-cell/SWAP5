@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+  "last_reconciled_upstream": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -105,33 +105,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 101,
-      "ACTIVE_MIGRATION": 103,
+      "ADMITTED": 104,
+      "ACTIVE_MIGRATION": 100,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 103,
+    "open_capabilities": 100,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 82,
+    "confirmed_missing_production_entries": 79,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 106,
+    "total_unresolved_capabilities": 103,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
-      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
-      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 103,
-    "missing_standalone_process_implementations_not_established": 103,
-    "active_with_existing_production_source_authority": 63,
-    "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 103,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
+    "missing_production_binding_or_implementation_entries": 100,
+    "missing_standalone_process_implementations_not_established": 100,
+    "active_with_existing_production_source_authority": 62,
+    "active_without_listed_production_source_authority": 38,
+    "active_missing_complete_admitted_route": 100,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -206,7 +206,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "218d2425612408b8ae451cdda54c0e1e3d3d6a63",
+  "last_reconciled_head": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -3863,6 +3863,135 @@
       "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
       "all_other242_capability_records": "UNCHANGED",
       "numerical_execution_for_master_metadata": false
+    }
+  },
+  "latest_mc_drain01_dramet3_admission_20261016": {
+    "capability_ids": [
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT"
+    ],
+    "pr": 1270,
+    "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+    "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+    "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "phase": "dramet3_phase_20261016",
+    "full_capabilities": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "original_source_binder_cases_per_optimization": 3888,
+    "invalid_or_source_undefined_controls_per_optimization": 20,
+    "runtime_configurations_per_optimization": 144,
+    "rejection_replay_empty_registry_restart_per_optimization": 2,
+    "two_column_isolation_per_optimization": 2,
+    "runtime_invalid_pre_solver_controls_per_optimization": 4,
+    "original_response_cases_per_optimization": 297,
+    "hard_mass_cm": 1e-12,
+    "scalar_closure_cm_per_day": 1e-14,
+    "corruption_controls": 8,
+    "reference_correction": false,
+    "parallel_preserved": [
+      "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+      "AVAIL and TCS6",
+      "annual crop/B1.12",
+      "all other240 capability records"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 3,
+      "ACTIVE_MIGRATION": -3
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 101,
+        "ACTIVE_MIGRATION": 103,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 103,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 82,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 106,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 5,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 103,
+      "missing_standalone_process_implementations_not_established": 103,
+      "active_with_existing_production_source_authority": 63,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 103,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;103 full production envelopes remain open. Ordinary DISLAYER closes with qualified reference correction and runtime proof; prior irrigation and drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 100,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 79,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 103,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 100,
+      "missing_standalone_process_implementations_not_established": 100,
+      "active_with_existing_production_source_authority": 62,
+      "active_without_listed_production_source_authority": 38,
+      "active_missing_complete_admitted_route": 100,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;100 full production envelopes remain open. Three native DRAMET3/allocation/INF-limit rows close; all four ordinary drainage and parallel irrigation/crop admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Exactly three existing native DRAMET3/ALLOCATION/INF-LIMIT rows close; all other240 capability records unchanged. The global denominator remains incomplete.",
+    "closeout_checks": {
+      "historical_source_and_pinned_locator_integrity": "PASS",
+      "exactly_three_existing_row_promotions": true,
+      "other240_capability_records": "UNCHANGED",
+      "historic_scientific_surface": "UNCHANGED",
+      "global_closure": "EXPECTED_REFUSAL_DENOMINATOR_INCOMPLETE",
+      "docs_source_and_strict": "PASS",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_DRAIN01_DRAMET3_MASTER_CHECKS_20261016.json.gz.b64",
+        "sha256": "ce182fcbe651b2cd65747996ed7c464bb4b43181665226ebed01daacec6f877b"
+      }
     }
   }
 }

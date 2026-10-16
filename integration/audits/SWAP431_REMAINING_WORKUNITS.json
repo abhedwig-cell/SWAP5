@@ -84,12 +84,9 @@
       "id": "MC-DRAIN01",
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
-        "SW431-DRAIN-ALLOCATION",
-        "SW431-DRAIN-INF-LIMIT",
-        "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-DIV-TOPINTERFLOW"
       ],
-      "next_action": "Preserve admitted signed/multilevel/INF-SPLIT/DISLAYER ordinary drainage. Remaining native DRAMET3,allocation,infiltration limiter and highest-interflow retain their separate existing contracts; no duplicate drainage route.",
+      "next_action": "Preserve all seven ordinary signed/multilevel/INF-SPLIT/DISLAYER/native-DRAMET3/allocation/INF-limit admissions. Only existing highest-interflow redistribution row remains in MC-DRAIN01; no duplicate drainage route.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -97,11 +94,14 @@
         "SW431-DRAIN-DRAMET3"
       ],
       "closed_foundation_authorities": [
+        "SW431-DRAIN-ALLOCATION",
         "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV",
         "SW431-DRAIN-DIV-MULTI",
         "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DRAMET3",
         "SW431-DRAIN-EXT",
+        "SW431-DRAIN-INF-LIMIT",
         "SW431-DRAIN-INF-SPLIT"
       ],
       "signed_admission_20261016": {
@@ -112,9 +112,12 @@
         "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at c2b7ad286704798662d6a00b75f15ab81c59d2fc"
       },
       "closed_capabilities": [
+        "SW431-DRAIN-ALLOCATION",
+        "SW431-DRAIN-DISLAYER",
         "SW431-DRAIN-DIV-MULTI",
-        "SW431-DRAIN-INF-SPLIT",
-        "SW431-DRAIN-DISLAYER"
+        "SW431-DRAIN-DRAMET3",
+        "SW431-DRAIN-INF-LIMIT",
+        "SW431-DRAIN-INF-SPLIT"
       ]
     },
     {
@@ -1501,6 +1504,44 @@
       "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
       "all_other242_capability_records": "UNCHANGED",
       "numerical_execution_for_master_metadata": false
+    }
+  },
+  "latest_mc_drain01_dramet3_admission_20261016": {
+    "capability_ids": [
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT"
+    ],
+    "pr": 1270,
+    "canonical_merge": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "qualified_head": "89103429ad60305fb8d45023eb58e10b23585033",
+    "source_tree": "6007b4b5c3757347c0418d21178961f8bda3291b",
+    "full_tree": "fc1bd35ed32de58228c2fc7a72ac8372dfe6cc33",
+    "production_merge_full_tree_identity": true,
+    "authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json at 8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "phase": "dramet3_phase_20261016",
+    "full_capabilities": true,
+    "O0_O2": "PASS_BYTE_IDENTICAL",
+    "original_source_binder_cases_per_optimization": 3888,
+    "invalid_or_source_undefined_controls_per_optimization": 20,
+    "runtime_configurations_per_optimization": 144,
+    "rejection_replay_empty_registry_restart_per_optimization": 2,
+    "two_column_isolation_per_optimization": 2,
+    "runtime_invalid_pre_solver_controls_per_optimization": 4,
+    "original_response_cases_per_optimization": 297,
+    "hard_mass_cm": 1e-12,
+    "scalar_closure_cm_per_day": 1e-14,
+    "corruption_controls": 8,
+    "reference_correction": false,
+    "parallel_preserved": [
+      "all four ordinary signed/multilevel/INF-SPLIT/DISLAYER admissions",
+      "AVAIL and TCS6",
+      "annual crop/B1.12",
+      "all other240 capability records"
+    ],
+    "disposition_delta": {
+      "ADMITTED": 3,
+      "ACTIVE_MIGRATION": -3
     }
   }
 }
