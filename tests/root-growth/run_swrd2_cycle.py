@@ -38,5 +38,6 @@ if a.density:
  anchor="'swrd2_unscaled':b'SWRD2_ACTUAL_RICHARDS_DEPTH_OXYGEN_JOINT_RESTART=PASS'"
  replace(anchor,anchor+",'density':b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS','density_supply':b'DAILY_DENSITY_ACTUAL_RICHARDS_SOURCE_RESTART=PASS'")
 ns={'__file__':str(path),'__name__':'__main__','swrd2':swrd2,'swrd3':swrd3,'density':density,'co2_oracle':co2_oracle,'oxygen_oracle':oxygen_oracle,'executed_source':s}
+if a.density:sys.argv.remove('--density')
 exec(compile(s,str(path),'exec'),ns)
 print('SWRD2_FOCUSED_AND_INCUMBENT_PHYSICAL_O0_O2=PASS')
