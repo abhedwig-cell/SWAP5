@@ -10,7 +10,7 @@ module mod_reference_richards_temporal_indicator
   use mod_reference_linear_solver, only: reference_tridag
   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
   use mod_b111_analytical_hydraulic_provider, only: b111_analytical_hydraulic_provider_t, &
-       B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG
+       B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, B111_HYD_BIMODAL_MVG_WCK
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t
   use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
   use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
@@ -223,7 +223,8 @@ contains
           return
        end if
        if (any(constitutive%parameters%model_kind /= B111_HYD_EXPONENTIAL .and. &
-            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG)) then
+            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG .and. &
+            constitutive%parameters%model_kind /= B111_HYD_BIMODAL_MVG_WCK)) then
           indicator_result%status = SW_TEMPORAL_INDICATOR_UNAVAILABLE
           indicator_result%route = 'constitutive-policy-deferred'
           return

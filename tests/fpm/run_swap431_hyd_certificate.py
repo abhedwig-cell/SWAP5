@@ -7,7 +7,7 @@ EVIDENCE=pathlib.Path(os.environ['HYD_CERTIFICATE_EVIDENCE']);EVIDENCE.mkdir(par
 shell=(ROOT/'tests/fpm/run_ppa_wu05a8_real_richards.sh').read_text()
 paths=re.search(r'MODULE_SRC=\((.*?)\n\)',shell,re.S).group(1).split()
 paths=subprocess.check_output(['python','-B','tests/support/augment_bartholomeus_backend_sources.py',*paths],cwd=ROOT,text=True).splitlines()
-drivers=[('analytical','tests/fpm/test_swap431_hyd_certificate.f90',[]),('runtime','tests/fpm/test_swap431_hyd_serialized_runtime.f90',['--certificate-envelope']),('direct_retention','tests/fpe/test_fpe_temporal11_direct_retention_certificate.f90',[]),('fsi38','tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90',[])]
+drivers=[('analytical','tests/fpm/test_swap431_hyd_certificate.f90',[]),('runtime','tests/fpm/test_swap431_hyd_serialized_runtime.f90',['--certificate-envelope']),('direct_retention','tests/fpe/test_fpe_temporal11_direct_retention_certificate.f90',[]),('fsi38','tests/fsi/test_fsi38_prescribed_qbot_temporal_certificate.f90',[]),('fsi25','tests/fsi/test_fsi25_reference_indicator_production_seam.f90',['-75.0','0.01']),('incumbent_runtime','tests/fpm/test_ppa_wu05a7_real_richards_runtime.f90',[]),('incumbent_macropore','tests/fpm/test_ppa_wu05a8_fmr_macropore_trial.f90',[])]
 manifest={p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in [*paths,*[d[1] for d in drivers]]}
 (EVIDENCE/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 (EVIDENCE/'compiler.txt').write_bytes(subprocess.check_output(['gfortran','--version']))

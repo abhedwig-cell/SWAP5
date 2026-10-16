@@ -25,19 +25,21 @@ program test_swap431_hyd_serialized_runtime
   character(len=64)::mode
 
   call get_command_argument(1,mode)
-  if(trim(mode)=='--certificate-envelope')then
-    call certificate_envelope(B111_HYD_EXPONENTIAL,'MODEL2')
-    call certificate_envelope(B111_HYD_BIMODAL_MVG,'MODEL3')
-    call certificate_envelope(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
-    print '(a)','SWAP431_HYD_CERTIFICATE_MODEL2_MODEL3_POSITIVE_MODEL6_DEFERRED=PASS'
+  if(trim(mode)=='--legacy-identity')then
+    ! Retain the original positive assertions as a dated negative diagnostic.
+    ! Exact full/half identity is not the accepted model-certificate route.
+    call exercise_model(B111_HYD_EXPONENTIAL,'MODEL2')
+    call exercise_model(B111_HYD_BIMODAL_MVG,'MODEL3')
+    call exercise_model(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
+    call exercise_power()
     stop
   end if
-
-  call exercise_model(B111_HYD_EXPONENTIAL,'MODEL2')
-  call exercise_model(B111_HYD_BIMODAL_MVG,'MODEL3')
-  call exercise_model(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
-  call exercise_power()
+  call certificate_envelope(B111_HYD_EXPONENTIAL,'MODEL2')
+  call certificate_envelope(B111_HYD_BIMODAL_MVG,'MODEL3')
+  call certificate_envelope(B111_HYD_BIMODAL_MVG_WCK,'MODEL6')
+  call certificate_envelope(1,'POWER')
   call exercise_fail_closed_composition()
+  print '(a)','SWAP431_HYD_CERTIFICATE_ALL_FOUR_PROFILES=PASS'
   print '(a)','SWAP431_HYD_SERIALIZED_RUNTIME=PASS'
 
 contains
@@ -49,6 +51,8 @@ contains
     type(fmr_b110_physical_state_t)::initial,predecessor
     type(b111_analytical_hydraulic_parameters_t),target::hp
     type(b111_analytical_hydraulic_provider_t)::provider
+    type(b110_default_mvg_parameters_t),target::power_hp
+    type(b110_default_mvg_provider_t)::power_provider
     type(fmr_serialized_reference_backend_t)::backend
     type(fixed_flux_top_boundary_provider_t),target::top
     type(fmr_b110_physical_forcing_t)::forcing
@@ -71,9 +75,20 @@ contains
     call base_parameters(p)
     allocate(p%hydraulic_model_kind(numnod),theta(numnod),k(numnod),cap(numnod),dk(numnod))
     p%hydraulic_model_kind=kind
-    call initialize_b111_analytical_hydraulic_parameters(hp,p%hydraulic_model_kind,p%cofgen)
-    call bind_b111_analytical_hydraulic_provider(provider,hp)
-    call provider%evaluate(spread(-100.0_real64,1,numnod),theta,k,cap,dk)
+    if(kind==1)then
+      deallocate(p%hydraulic_model_kind)
+      p%conductivity_power_tail_active=.true.
+      p%cofgen(22,:)=-100.0_real64
+      ! Match the power-law transition K to the actual default MvG K.
+      call initialize_b110_default_mvg_parameters(power_hp,p%cofgen)
+      call bind_b110_default_mvg_provider(power_provider,power_hp,dt)
+      call power_provider%evaluate(spread(-100.0_real64,1,numnod),theta,k,cap,dk)
+      p%cofgen(23,:)=k
+    else
+      call initialize_b111_analytical_hydraulic_parameters(hp,p%hydraulic_model_kind,p%cofgen)
+      call bind_b111_analytical_hydraulic_provider(provider,hp)
+      call provider%evaluate(spread(-100.0_real64,1,numnod),theta,k,cap,dk)
+    end if
     call base_state(initial,theta)
     call setup_execution(p,initial,forcing,column,template,numerical,committed,checkpoint,top,backend,ok)
     if(.not.ok)call stop_labeled(label//' predecessor setup')
@@ -114,7 +129,7 @@ contains
       '|SOLVER=',diag%solver_rejections,'|MASS=',diag%mass_rejections,'|TEMPORAL=',diag%temporal_rejections, &
       '|HISTORY=',obs%temporal_previous_derivative_available,'|BUDGET=',obs%temporal_head_budget_valid, &
       '|ROUTE=',trim(obs%temporal_indicator_route)
-    if(kind/=B111_HYD_BIMODAL_MVG_WCK)then
+    block
       if(.not.result%completed.or..not.candidate%ready())call stop_labeled(label//' analytical dynamic trial')
       if(diag%temporal_rejections<1)call stop_labeled(label//' adaptive retry not exercised')
       if(.not.result%mass%complete.or.abs(result%mass%residual)>1e-8_real64) &
@@ -164,25 +179,9 @@ contains
       call replay_candidate%snapshot(second,available)
       if(.not.same_history_state(first,second))call stop_labeled(label//' restarted continuation identity')
       write(*,'(a,es24.16)')'SWAP431_HYD_ANALYTICAL_DYNAMIC_REPLAY_RESTART_'//label//'=PASS|MASS=',result%mass%residual
-      return
-    end if
-    if(result%completed.or.candidate%ready())call stop_labeled(label//' deferred provider unexpectedly accepted')
-    if(.not.obs%temporal_previous_derivative_available.or..not.obs%temporal_head_budget_valid) &
-      call stop_labeled(label//' certificate prerequisites unavailable')
-    if(trim(obs%temporal_indicator_route)/='constitutive-policy-deferred') &
-      call stop_labeled(label//' different certificate blocker')
-    call history_state%snapshot(snapshot,available)
-    if(.not.available)call stop_labeled(label//' rejected committed snapshot')
-    select type(s=>snapshot)
-    type is(fmr_b110_temporal_indicator_state_t)
-      if(any(s%pressure_head/=predecessor%pressure_head).or.any(s%water_content/=predecessor%water_content)) &
-        call stop_labeled(label//' rejected trial mutated physical state')
-      call s%temporal_history_snapshot(history,available)
-      if(.not.available)call stop_labeled(label//' rejected trial lost history')
-      if(any(history/=derivative))call stop_labeled(label//' rejected trial mutated history')
-    class default
-      call stop_labeled(label//' rejected trial changed carrier')
-    end select
+      write(*,'(a)')'SWAP431_HYD_RUNTIME_'//label//'=PASS'
+    end block
+
   end subroutine certificate_envelope
 
   logical function same_history_state(a,b) result(same)

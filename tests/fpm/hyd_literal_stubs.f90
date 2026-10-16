@@ -71,24 +71,7 @@ module MOD_RIA
  if(present(d))d=0d0
  end subroutine
 end module
-module WC_K_models_04_11
- contains
- real(8) function functionvalue_04_11(kind,node,models,cofgen,head,wc,temp)
- integer::kind,node,models(:)
- real(8)::cofgen(:,:),head
- real(8),optional::wc,temp
- error stop 'excluded literal hydraulic branch'
- end function
- real(8) function derivativevalue_04_11(node,models,cofgen,head,theta,temp,dimocap)
- integer::node,models(:)
- real(8)::cofgen(:,:),head,theta,temp,dimocap
- error stop 'excluded literal hydraulic branch'
- end function
- real(8) function NoVap(a,b)
- real(8)::a,b
- error stop 'excluded literal hydraulic branch'
- end function
-end module
+
 subroutine EvalTabulatedFunction(a,b,c,d,e,f,g,h,i,j,k,l)
  integer::a,b,c,d,e,f,h(:,:),l
  real(8)::g(:,:,:),i,j,k

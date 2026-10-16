@@ -30,10 +30,12 @@ program test_swap431_hyd_certificate
   real(real64) :: water(n), conductivity(n), capacity(n), dkdh(n)
   real(real64) :: expected_raw, expected_defect, expected_bounded, expected_binf
   real(real64) :: previous(n)
-  integer :: i, kind
+  integer :: i, kind, ik
+  integer,parameter::kinds(3)=[2,3,6]
 
   call configure_parameters(parameters,cofgen)
-  do kind=2,3
+  do ik=1,size(kinds)
+  kind=kinds(ik)
   call initialize_b111_analytical_hydraulic_parameters(hydraulic,spread(kind,1,n),cofgen)
   call bind_b111_analytical_hydraulic_provider(constitutive,hydraulic)
 

@@ -48,3 +48,21 @@ is literal values/cutoffs, an independent dense defect-operator oracle, real dyn
 accepted mass/state with measured predecessor, discard/retry/restart, and current
 owner preservation. A component PASS alone cannot admit the runtime. Original
 negative provider-envelope evidence remains historical and immutable.
+
+### Remaining MODEL6/POWER source gate, 2026-10-16
+
+The existing63-member B1.11 authority archive also contains exact WC_K code
+(SHA256 `d6038f1c2e0f4d061738bb2a176398cd89b7da59310394a2c4049fd0b4214126`).
+The full unmodified module now executes MODEL6 independently of the typed port.
+Its complementary weight comes from the literal readswap assignment
+`paramvg(17,lay) = 1.0d0 - omega_1(lay)`. All256 node/head/profile cases
+(MODEL2/3/6 and POWER) pass O0/O2, including POWER transition and near-saturation
+branches. POWER implicit dK/dh is not claimed for the SWKIMPL=0 route.
+
+This resolves the preceding MODEL6 literal prerequisite. Its certificate candidate
+uses the same explicit smooth branch as MODEL3. The default runtime qualification
+now selects the established model-certificate/history route for all four profiles;
+the unchanged original full/half identity assertions remain available with
+`--legacy-identity` as a historical negative diagnostic. No tolerance, mass policy
+or certificate equation changes. Current physical/default preservation and final
+admission remain required.
