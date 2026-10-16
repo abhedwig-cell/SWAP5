@@ -109,3 +109,31 @@ Admission may claim only P0 progress/restart composition for the already qualifi
 The existing real receiving witness was executed at canonical `a86da5b6` with unchanged forcing, head budget, mass gate and original assertions. Read-only output before failure resolves the earlier availability question: both O0 and O2 have valid predecessor history and an available certificate, but its final head-error bound is `0.003291913255370477 cm` for a `0.000001 cm` test budget. Nine temporal rejections exhaust eight retries; no state or source progress commits. This is a conservative indicator, not a measured solution error or a general solver defect.
 
 All original FMR44R assertions and failure nonmutation checks pass; the four positive endpoint/progress/accounting markers remain absent. Original restricted composition evidence remains historical. The existing status record contains the complete negative archive and exact-ref reproduction. Receiving-profile onset/history, timestep/retry limits and application accuracy require F-KT/RT and PPA-WU04-C/MC-CROP01 reconciliation before the original ten admission gates can complete. No tolerance, forcing, shared policy or production change is made by this diagnostic.
+
+
+## Bounded application qualification, 16 October 2026
+
+The separate refined execution envelope now admits all four real endpoints at
+the original 1e-6 cm head budget and 1e-12 cm mass gate. It permits24 retries,
+4096 substeps and a1e-12-day minimum solver step; no production default changes.
+The old eight-retry negative result above remains valid for its configuration.
+The refined run accepts2544 substeps. It establishes feasibility, not efficiency.
+
+The production application now has an opt-in atomic physical/source-window
+entrypoint for the explicit fixed-flux, root-inactive profile. O0/O2 executions
+are byte-identical and cover four actual HeadCalc endpoints, wrong/stale cursor
+rejection, source continuation, exact-once accounting, and actual two-column
+partial-commit rollback including pressure/water arrays and valid retry. All
+seven unchanged WU01/WU03/Black/Boesten/Rutter drivers pass O0/O2. Original
+INT12C/FAPP03/FAPP04/P0 drivers pass, and the old bootstrap body is recovered
+byte-for-byte after removing the additive entrypoint.
+
+This does not finish gate5 or authorize full original-candidate admission. The
+direct PMdirect/dynamic-top/crop physical chain is preregistered in the
+[application contract](F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md). Existing
+standalone initialization deliberately rejects base-layout Feddes roots with
+compensation OFF outside other admitted profiles. Resolve that application
+profile explicitly before implementing the direct call; do not silently remove
+its guard or equate typed binding tests with physical crop execution. Complete
+results, source manifests and positive/failed evidence hashes are in the
+candidate status record. Coverage counts are unchanged.

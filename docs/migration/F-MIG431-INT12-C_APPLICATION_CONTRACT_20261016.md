@@ -39,3 +39,27 @@ unchanged and execute them. Prove that removing the new import, entrypoint and
 procedure recovers the entire incumbent bootstrap body. Broader weather/crop/
 dynamic-top scientific admission and whole historical capability closure are not
 inferred from this restricted application entrypoint.
+
+## Direct PMdirect / dynamic-top / crop-root continuation
+
+Preregistered follow-on, 16 October: add an opt-in application-owned PMdirect
+interval call. It consumes explicit frozen weather/site/canopy and crop-root
+geometry/parameters for each source window. The production call evaluates the
+existing daily and SWINTER1 interval providers, binds F-APP04 surface demand,
+net rain and wet/dry transpiration, evaluates the existing dynamic-top and
+committed-state Feddes root providers, and sends their effective forcing to the
+atomic physical/source call. No equations or P0 records change.
+
+Only the existing unponded, nonrunoff flux regime is eligible. Frozen crop/root
+geometry is an explicit caller input; automatic weather/calendar and evolving
+crop ownership remain outside this route. Root compensation stays OFF. Require
+source-window aggregate consistency with the evaluated interception and current
+committed soil snapshots before execution. An unsupported regime, invalid crop
+input or inconsistent source aggregate returns no physical/source mutation.
+
+Keep all fixed-flux and incumbent owner assertions. Add real four-endpoint
+wet/dry-demand, dynamic-top and active-root execution at the unchanged 1e-6 cm
+head budget and 1e-12 cm mass gate, source exactly-once accounting, rejected
+upstream-input nonmutation and O0/O2 identity. Requalify the affected bootstrap
+and original owners on the final persisted postimage. This contract does not
+claim automatic crop lifecycle, whole-season or ponded/runoff admission.

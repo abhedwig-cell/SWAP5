@@ -3,7 +3,7 @@
   "workunit": "F-MIG431-INT12-C",
   "parent_workunit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
-  "state": "IMPLEMENTED_APPLICATION_QUALIFICATION_IN_PROGRESS",
+  "state": "BOUNDED_APPLICATION_QUALIFIED_FULL_OWNER_COMPOSITION_PENDING",
   "branch": "work/f-mig431-int12-c-vonhhbraden",
   "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
   "authorities": {
@@ -38,8 +38,8 @@
   "persistent_physical_state": [],
   "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
   "production_admission": "NO_NEW_ADMISSION_YET",
-  "qualification": "Historical restricted composition PASS retained; current real receiving positive gate FAIL O0/O2, not production admission.",
-  "next_safe_step": "Complete O0/O2 atomic multi-column rollback and unchanged WU01/WU03/Black/Boesten/Rutter preservation, bind evidence, review original ten gates before any canonical admission.",
+  "qualification": "Real fixed-flux application and seven incumbent owner drivers PASS O0/O2. Direct dynamic-top/crop composition remains pending; no full INT12-C admission.",
+  "next_safe_step": "Review/admit an explicit application initialization profile for standalone base-layout Feddes roots with compensation OFF, then implement the preregistered direct PMdirect/dynamic-top/root call and qualify its real physical endpoints. Preserve current fixed-flux/owner evidence and complete gate5 before full PR admission. Reconcile existing exact-source crop/meteorology preservation successors against the new bootstrap before full admission; broader CI is not green.",
   "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
   "production_process_present": "RESTRICTED_HUPSEL_ONLY",
   "qualification_evidence": {
@@ -149,11 +149,11 @@
   },
   "application_recovery_20261016": {
     "baseline": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
-    "implementation_checkpoint": "7d6c9004",
+    "implementation_checkpoint": "d694ea1e5b381188e0057e13434f2e43b4e194f6",
     "contract": "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md",
     "implementation": "Additive opt-in production application owner, exact original adapter, atomic physical/source commit across columns. Existing bootstrap body byte-exact after removing additive entrypoint.",
     "scope": "Explicit uniform SWINTER1 Hupsel fixed-flux mode2 root-inactive receiver only. No automatic weather/crop/dynamic-top admission.",
-    "tests": "Refined endpoint witness O0/O2 PASS. Atomic application O0 PASS, O2 pending. Existing component/FAPP03/FAPP04/P0 drivers PASS O0/O2. Owner preservation pending.",
+    "tests": "PASS O0/O2: real four-endpoint application, two-column partial-commit rollback and valid retry, seven unchanged owner drivers, original component/FAPP03/FAPP04/P0 drivers. Per-driver stdout byte-identical.",
     "head_budget_cm": 1e-06,
     "mass_gate_cm": 1e-12,
     "execution_limits": {
@@ -170,6 +170,316 @@
       "tests/fpm/test_int12c_application.inc",
       "tests/fpm/run_f_mig431_int12_c.sh"
     ],
-    "qualification": "PENDING; no full capability closure"
+    "qualification": "QUALIFIED ONLY for explicitly described fixed-flux, root-inactive opt-in application. Full original ten-gate owner composition remains pending.",
+    "last_reconciled_upstream": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
+    "archive": {
+      "path": "integration/audits/evidence/F-MIG431-INT12-C_APPLICATION_20261016.tar.gz.b64",
+      "decoded_sha256": "652d89f70e6faf6f3a8f3fe560e6a3287e4dab366996210ed992f807cfcc0013",
+      "members": {
+        "REPRODUCE.txt": "6ff243d27b2fbd6d8163c14f1b043c9f75757575c0f3ce917d28a0ea53d0f1c7",
+        "atomic/compile-run.log": "ca23ae935cf21eb781d26edab5b6834cd580b2ae4a4a54b3b044292d2b74d197",
+        "atomic/compile_sources.json": "52deb334a3a1f08e3f24eab9b53cea5584b112af3facd67a76bb7dbb5bc34257",
+        "atomic/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "atomic/driver.f90": "c92da06bf1129e0b59541ad7bdbe0136188fa873769eda04ab13c3175181fa3e",
+        "atomic/input-run_int12c_real_endpoint.py": "b64198469ffc719c3d818d4cde63ad4288400a028c094921b5e40a6be4b536ab",
+        "atomic/input-test_int12c_application.inc": "1927a02e9e61d57ef5486d090784976c6f3096d6c3d2bca574de0033a4d51903",
+        "atomic/input-test_int12c_real_endpoint.inc": "f5089d6517ab1c4c66525123ac72df0ca405baa5e081e9b3e7c868abf7cb349c",
+        "atomic/o0.txt": "937c58717b3509e131985c867bb7c61169d320682ded7e6bbf8e9c4d822529d9",
+        "atomic/o2.txt": "937c58717b3509e131985c867bb7c61169d320682ded7e6bbf8e9c4d822529d9",
+        "atomic/results.json": "d11c2bcc808db9a369db8e37b609f3a2b5ad02d9539e6d919a3a60484433a7a5",
+        "component-preservation.log": "6c0b295c51bedf694e3f429a849fb454f7d59969f8574f86c8c5626dfed8a15b",
+        "failed-nan-fixture/compile-run.log": "34eebba8d300655ef8ecd4a5029bf9f737223fa92dc17c4c07cace887b64f2c2",
+        "failed-nan-fixture/compile_sources.json": "52deb334a3a1f08e3f24eab9b53cea5584b112af3facd67a76bb7dbb5bc34257",
+        "failed-nan-fixture/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "failed-nan-fixture/driver.f90": "bd26b2c7039db8b815456538b94fbc0e7571c80737f0841ace849e8a02c35d69",
+        "failed-nan-fixture/input-run_int12c_real_endpoint.py": "b64198469ffc719c3d818d4cde63ad4288400a028c094921b5e40a6be4b536ab",
+        "failed-nan-fixture/input-test_int12c_application.inc": "a0042a0a429a7dd7db3d9c6e82f432ddd17d5e5882f637d495d191080ff7a76b",
+        "failed-nan-fixture/input-test_int12c_real_endpoint.inc": "f5089d6517ab1c4c66525123ac72df0ca405baa5e081e9b3e7c868abf7cb349c",
+        "failed-nan-fixture/o0.txt": "10ed1bdca31a49ce5b0325c50cf6627dadd471179d88c49f4807715683e03f4e",
+        "failed-nan-fixture/o2.txt": "cd7b135c9bfbad36db0b178e4360b922948f3233f28973ddd7434be09b86786e",
+        "failed-nan-fixture/results.json": "731f34f5bf1881689c6c5f39c32ebccab5b47b3b24a22ecb5686db8ee31f97bb",
+        "final-inputs/src/runtime/mod_fmr_interception_source_window_binding.f90": "d6753b7b0ae8af43f2d68958226cd95e0291cd1e06fbd5517b541aba8537364c",
+        "final-inputs/src/runtime/mod_fmr_production_application_bootstrap.f90": "06e054bc14a39933d67e57d5e589bcc086a9975fd31292b669ba641d10ca8c7f",
+        "final-inputs/tests/fpm/check_int12c_current_composition.py": "5b03e189da91bf4a6f7cf38edbde3793404b23284fe93409b1a0a5df78e86a0f",
+        "final-inputs/tests/fpm/run_f_mig431_int12_c.sh": "e98b1876fbd9e8d5e816a95bd31ce322eb7a0031b55b649422a259326a0bfc63",
+        "final-inputs/tests/fpm/run_int12c_real_endpoint.py": "b0c011e8df73d092b9741c38cacb0a4fc50717018f483864fa2242b91a92869a",
+        "final-inputs/tests/fpm/test_int12c_application.inc": "1927a02e9e61d57ef5486d090784976c6f3096d6c3d2bca574de0033a4d51903",
+        "final-inputs/tests/fpm/test_int12c_real_endpoint.inc": "f5089d6517ab1c4c66525123ac72df0ca405baa5e081e9b3e7c868abf7cb349c",
+        "owners/compile-run.log": "b556e14a6c8da4b1bd3c721cb595ddf0c4c3830f46b346fc52b2ac07b158b4f7",
+        "owners/compile_sources.json": "af3be008d4c12bda079f412cfd3e560c50437231bb83c3a0fa333ab51fde5a09",
+        "owners/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "owners/driver.f90": "c92da06bf1129e0b59541ad7bdbe0136188fa873769eda04ab13c3175181fa3e",
+        "owners/o0.txt": "937c58717b3509e131985c867bb7c61169d320682ded7e6bbf8e9c4d822529d9",
+        "owners/o2.txt": "937c58717b3509e131985c867bb7c61169d320682ded7e6bbf8e9c4d822529d9",
+        "owners/results.json": "8309b558455f6caeb67c6a9c756c972ef9216422850c0f5fcdfc006b4d4c4f82",
+        "owners/test_ppa_wu01_production_application_bootstrap-o0.txt": "a4b97e990b78987b55797de1230050dcd8b3360ebbd301a3dbec3b3fb865c680",
+        "owners/test_ppa_wu01_production_application_bootstrap-o2.txt": "a4b97e990b78987b55797de1230050dcd8b3360ebbd301a3dbec3b3fb865c680",
+        "owners/test_ppa_wu03_common_forcing_adapter-o0.txt": "4d4b8af6c95e44e35d9d81e04540b6fcfde5dfb0ca51b4aa1146eae64a6aca48",
+        "owners/test_ppa_wu03_common_forcing_adapter-o2.txt": "4d4b8af6c95e44e35d9d81e04540b6fcfde5dfb0ca51b4aa1146eae64a6aca48",
+        "owners/test_ppa_wu04a_black_process-o0.txt": "3a2b56244a3d086844b3170fe87c13a984e189a3eb8bc24827650f0330a7fa7f",
+        "owners/test_ppa_wu04a_black_process-o2.txt": "3a2b56244a3d086844b3170fe87c13a984e189a3eb8bc24827650f0330a7fa7f",
+        "owners/test_ppa_wu04a_black_runtime-o0.txt": "6afc69192edac909ab03c31ebc0be44640b454b0fc75333e8ad1b4ad5196836c",
+        "owners/test_ppa_wu04a_black_runtime-o2.txt": "6afc69192edac909ab03c31ebc0be44640b454b0fc75333e8ad1b4ad5196836c",
+        "owners/test_ppa_wu04b_boesten_process-o0.txt": "cdc46bcf142ebd693c82a7bc4c64a35e255fab8785653ce9eb6ca5ce79f9a679",
+        "owners/test_ppa_wu04b_boesten_process-o2.txt": "cdc46bcf142ebd693c82a7bc4c64a35e255fab8785653ce9eb6ca5ce79f9a679",
+        "owners/test_ppa_wu04b_boesten_runtime-o0.txt": "6393f50160c6ce3bf47c606bb47e6ec5660e53d12ebc91b57157cea8000dad62",
+        "owners/test_ppa_wu04b_boesten_runtime-o2.txt": "6393f50160c6ce3bf47c606bb47e6ec5660e53d12ebc91b57157cea8000dad62",
+        "owners/test_rutter_output_binding-o0.txt": "7895914455af07fb906b6ae6efadd9f420427b129d0120049abde56a8b858c56",
+        "owners/test_rutter_output_binding-o2.txt": "7895914455af07fb906b6ae6efadd9f420427b129d0120049abde56a8b858c56",
+        "refined/compile-run.log": "58a84578d9dafd0fb88e42756f17dcc0ed3fa7d77a2ddc32e03ee129d03d7d1e",
+        "refined/compile_sources.json": "4116c66b02656e66ee916a78982440aa450c4a24becc7fe1e05d72a028db3298",
+        "refined/compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "refined/driver.f90": "ea94b14a999c3b9c9c4fa65edf14c6ce9849e68b5fddebb5c2387c4c2f47844d",
+        "refined/input-run_int12c_real_endpoint.py": "c9095f393315af24ea536d6670fcd2a310f72b67bf6a814d2187de535424fa45",
+        "refined/input-test_int12c_real_endpoint.inc": "f5089d6517ab1c4c66525123ac72df0ca405baa5e081e9b3e7c868abf7cb349c",
+        "refined/o0.txt": "4844358fbe74cecdd77139e95e54143fe18936a3b8bed16f71114a158e459730",
+        "refined/o2.txt": "4844358fbe74cecdd77139e95e54143fe18936a3b8bed16f71114a158e459730",
+        "refined/results.json": "d11c2bcc808db9a369db8e37b609f3a2b5ad02d9539e6d919a3a60484433a7a5"
+      }
+    },
+    "refined_accepted_substeps": [
+      915,
+      550,
+      599,
+      480
+    ],
+    "head_inf_bounds_at_endpoints_cm": [
+      6.763797835008436e-07,
+      6.928331040304527e-07,
+      6.97005803024648e-07,
+      7.110361391305332e-07
+    ],
+    "maximum_absolute_mass_residual_cm": 4.848552115355176e-16,
+    "application_output_sha256": "937c58717b3509e131985c867bb7c61169d320682ded7e6bbf8e9c4d822529d9",
+    "results": [
+      {
+        "driver": "endpoint",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu01_production_application_bootstrap",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu03_common_forcing_adapter",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04a_black_runtime",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04b_boesten_runtime",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04a_black_process",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04b_boesten_process",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_rutter_output_binding",
+        "optimization": 0,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "endpoint",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu01_production_application_bootstrap",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu03_common_forcing_adapter",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04a_black_runtime",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04b_boesten_runtime",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04a_black_process",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_ppa_wu04b_boesten_process",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      },
+      {
+        "driver": "test_rutter_output_binding",
+        "optimization": 2,
+        "returncode": 0,
+        "missing_markers": []
+      }
+    ],
+    "incumbent_body_projection": "PASS; full baseline bootstrap body byte-exact after removing only new import/declarations/procedure. Adapter and original scientific drivers unchanged.",
+    "remaining_dependency": {
+      "authority": "src/runtime/mod_fmr_production_application_bootstrap.f90:tile profile validation on canonical8a3c560d",
+      "observed_contract": "Standalone base-layout active roots require an already admitted Jarvis/Walsum, frost, micro or file-weather-rooted profile. Bare Feddes compensation OFF is not admitted through standalone initialization. New fixed-flux entrypoint intentionally remains root inactive.",
+      "required_work": "Application-owned explicit initialization/admission contract and direct dynamic-top/crop physical composition; adding typed binding tests alone cannot satisfy this.",
+      "preregistration": "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md#direct-pmdirect--dynamic-top--crop-root-continuation"
+    },
+    "cost": {
+      "provider_and_driver_entries": 242,
+      "compile_link_native_split": "UNKNOWN; runner does not split timings",
+      "performance_admission": "NONE"
+    },
+    "gate_assessment": [
+      {
+        "gate": 1,
+        "status": "PRESERVED",
+        "evidence": "Original FAPP03 exact source/postimage unchanged; original source-vector driver executed O0/O2."
+      },
+      {
+        "gate": 2,
+        "status": "PASS_BOUNDED",
+        "evidence": "Four unequal actual endpoints, final bitwise source aggregate."
+      },
+      {
+        "gate": 3,
+        "status": "PASS_BOUNDED",
+        "evidence": "Actual first-column commit then second-column runtime rejection; all physical revisions/times/pressure/water arrays restored; source cursors unchanged; same-origin valid retry."
+      },
+      {
+        "gate": 4,
+        "status": "PASS_COMPANION_ONLY",
+        "evidence": "Mid-window source record export/restore with live physical kernel; no joint physical restart claim."
+      },
+      {
+        "gate": 5,
+        "status": "PARTIAL_NOT_ADMITTED",
+        "evidence": "Original wet/dry and typed root/surface/net-rain bindings PASS unchanged. Direct dynamic-top/crop physical chain is not implemented or qualified."
+      },
+      {
+        "gate": 6,
+        "status": "PASS_BOUNDED",
+        "evidence": "Original A/B/A and invalid-day assertions unchanged; actual wrong/stale source cursor rejected; all16 final driver/optimization results PASS and per-driver byte identity."
+      },
+      {
+        "gate": 7,
+        "status": "PASS_BOUNDED",
+        "evidence": "1e-12 cm hard mass unchanged; exactly-once source and combined rain/interception accounting."
+      },
+      {
+        "gate": 8,
+        "status": "PASS_PRESERVATION",
+        "evidence": "Unchanged WU01/WU03/Black/Boesten/Rutter real runtime and process drivers O0/O2; FAPP03/FAPP04/P0 originals executed."
+      },
+      {
+        "gate": 9,
+        "status": "PASS_PRESERVATION",
+        "evidence": "Original FAPP03 vectors, FAPP04 typed root/surface and dynamic-top bindings O0/O2."
+      },
+      {
+        "gate": 10,
+        "status": "PASS_BOUNDED_DELTA",
+        "evidence": "Only original adapter and additive owner entrypoint touch production. Complete incumbent bootstrap projection, reference unchanged, no solver/policy/P0 edits."
+      }
+    ],
+    "validation": {
+      "archive_and_all59_member_hashes": "PASS",
+      "current_atomic_and_owner_source_manifest_identity": "PASS",
+      "all16_driver_optimization_results": "PASS",
+      "per_driver_O0_O2_stdout_identity": "PASS",
+      "complete_incumbent_bootstrap_projection": "PASS",
+      "original_component_driver_and_adapter_identity": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "whitespace": "PASS",
+      "full_original_gate5": "PENDING"
+    },
+    "remote_ci_assessment": {
+      "tested_checkpoint": "d694ea1e5b381188e0057e13434f2e43b4e194f6",
+      "dedicated_workflow": {
+        "run": 38858527149,
+        "job": 116835322332,
+        "result": "PASS",
+        "steps": [
+          "restricted source-window composition",
+          "real application and seven incumbent owners"
+        ]
+      },
+      "broader_ci": "NOT_GREEN; no whole-candidate admission",
+      "pr_base_reconciliation": "PR metadata still pinned b0d2cc0... despite correct merge parents/current canonical8a3c560d. Explicitly retargeted to the same canonical branch; normalized base now8a3c560d and14 changed files, rather than1946. Historical selection run is not fresh current-base proof.",
+      "failures": [
+        {
+          "job": 116835654468,
+          "findings": [
+            "2026-10-16T05:59:54.2819467Z   \"status\": \"BLOCKED_OWNER_SELECTION\","
+          ]
+        },
+        {
+          "job": 116835322489,
+          "findings": [
+            "2026-10-16T05:58:23.5673529Z PPA_WU04B_GATE_FAIL production delta escaped preregistration"
+          ]
+        },
+        {
+          "job": 116835323620,
+          "findings": [
+            "2026-10-16T06:00:14.7214733Z ValueError: dirty composed surface",
+            "2026-10-16T06:00:14.7318296Z PPA_WU03_PRESERVATION_FAIL unqualified additive daily demand source"
+          ]
+        },
+        {
+          "job": 116835322133,
+          "findings": [
+            "2026-10-16T05:58:29.6149692Z ValueError: dirty composed surface"
+          ]
+        },
+        {
+          "job": 116835322986,
+          "findings": [
+            "2026-10-16T06:01:23.7932087Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+            "2026-10-16T06:01:23.7943654Z FPE_SETUP04_FAIL compile baseline src/runtime/mod_fmr_serialized_reference_backend.f90"
+          ]
+        },
+        {
+          "job": 116835322993,
+          "findings": [
+            "2026-10-16T06:00:37.1799061Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+            "2026-10-16T06:00:37.2807652Z FPE_MULTI04_P1C_FAIL compile w=1 src/runtime/mod_fmr_serialized_reference_backend.f90"
+          ]
+        }
+      ],
+      "interpretation": "Dedicated scientific qualification passed. Broader successor/source-delta contracts are not updated to admit this additive bootstrap postimage. Setup/scaling runners also fail before native execution on a missing canonical provider. These failures are retained, not waived or classified as broad science PASS. Direct crop composition and proper owner-qualified preservation routing remain necessary."
+    }
   }
 }

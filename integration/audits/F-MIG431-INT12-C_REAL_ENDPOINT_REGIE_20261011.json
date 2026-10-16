@@ -53,7 +53,7 @@
     "existing_evidence": "Historical 11 October negative result does not record Binf/availability at failure. No duplicate broad qualification; this diagnostic answers the explicitly recorded next question.",
     "test_command": "python -B tests/fpm/run_int12c_real_endpoint.py --profile certificate --evidence-dir /workspace/scratch/50173826d83b/int12c-certificate-current",
     "implementation": "persisted read-only test output extension",
-    "tests": "PENDING",
+    "tests": "COMPLETED_NEGATIVE; archived in candidate status. Superseded only for feasibility by separately configured refinement, not erased.",
     "qualification": "NONE"
   },
   "refinement_preregistration_20261016": {
@@ -84,6 +84,13 @@
     "compile_link_native_breakdown": "UNKNOWN before run",
     "stop_condition": "Preserve complete negative output if gates still fail. No accuracy, forcing or assertion reduction to obtain PASS.",
     "admission": "None from fixed-flux witness alone; original ten gates and owning application composition remain required.",
-    "test_status": "PENDING"
+    "test_status": "PASS O0/O2; four actual endpoints; unchanged head/mass budgets;2544 accepted substeps. No default or performance claim."
+  },
+  "application_followup_20261016": {
+    "record": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+    "source_checkpoint": "d694ea1e5b381188e0057e13434f2e43b4e194f6",
+    "status": "BOUNDED_APPLICATION_QUALIFIED_FULL_OWNER_COMPOSITION_PENDING",
+    "next_action": "Review/admit an explicit application initialization profile for standalone base-layout Feddes roots with compensation OFF, then implement the preregistered direct PMdirect/dynamic-top/root call and qualify its real physical endpoints. Preserve current fixed-flux/owner evidence and complete gate5 before full PR admission.",
+    "coverage_effect": "ZERO_NEW_CAPABILITY_ADMISSIONS"
   }
 }
