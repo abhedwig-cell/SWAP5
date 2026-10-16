@@ -27,9 +27,23 @@ module mod_crop_soil_n_joint_restart_file
   private
   character(8),parameter::MAGIC='S5NC0001',PENDING_MAGIC='S5NC0002'
   character(8),parameter::HEAT_MAGIC='S5NC0003',HEAT_PENDING_MAGIC='S5NC0004'
+  character(8),parameter::HARVEST_MAGIC='S5NC0005',HARVEST_PENDING_MAGIC='S5NC0006'
+  character(8),parameter::HEAT_HARVEST_MAGIC='S5NC0007',HEAT_HARVEST_PENDING_MAGIC='S5NC0008'
   integer,parameter::MAX_BYTES=10485760
   public::write_crop_soil_n_joint_restart_file,read_crop_soil_n_joint_restart_file
 contains
+  logical function pending_tag(tag)result(pending)
+    character(8),intent(in)::tag
+    pending=tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC.or.tag==HARVEST_PENDING_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+  end function
+  logical function thermal_tag(tag)result(thermal)
+    character(8),intent(in)::tag
+    thermal=tag==HEAT_MAGIC.or.tag==HEAT_PENDING_MAGIC.or.tag==HEAT_HARVEST_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+  end function
+  logical function harvest_tag(tag)result(harvest)
+    character(8),intent(in)::tag
+    harvest=tag==HARVEST_MAGIC.or.tag==HARVEST_PENDING_MAGIC.or.tag==HEAT_HARVEST_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+  end function
   subroutine write_crop_soil_n_joint_restart_file(path,column,template,water_parameter_id,water,coupled,status)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
@@ -72,7 +86,13 @@ contains
       if(.not.crop_soil_n_joint_states_match(water,coupled))return
     end if
     call coupled%snapshot(chemical,crop);call coupled%configuration(cp,crop_id)
-    cv=crop_n_configuration_vector(cp);ov=pack_crop_n_owner(crop)
+    if(crop%harvested())then
+      tag=HARVEST_MAGIC;if(has_pending)tag=HARVEST_PENDING_MAGIC
+      if(thermal)then
+        tag=HEAT_HARVEST_MAGIC;if(has_pending)tag=HEAT_HARVEST_PENDING_MAGIC
+      end if
+    end if
+    cv=crop_n_configuration_vector(cp);ov=pack_crop_n_continuation(crop)
     if(size(cv)==0.or.size(ov)==0)return
     call fmr_export_committed_restart([column],[template],[water],water_parameter_id,b,ok,io)
     if(.not.ok.or.io/=FMR_RESTART_OK)return
@@ -190,8 +210,8 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        thermal=tag==HEAT_MAGIC.or.tag==HEAT_PENDING_MAGIC
-        if((tag/=MAGIC.and.tag/=PENDING_MAGIC.and..not.thermal).or. &
+        thermal=thermal_tag(tag)
+        if((tag/=MAGIC.and.tag/=PENDING_MAGIC.and..not.thermal.and..not.harvest_tag(tag)).or. &
           n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(thermal.neqv.soil_n_thermal_template(template))exit decoding
         if(thermal.and..not.present(heat_parameters))exit decoding
@@ -245,18 +265,19 @@ contains
         if(io/=0)exit decoding
         io=1
         if(.not.all(ieee_is_finite(cv)))exit decoding
-        if(any(abs(cv-crop_expected)>0d0).or.count<29.or.count>2048)exit decoding
+        if(any(abs(cv-crop_expected)>0d0).or.count<9.or.count>2048)exit decoding
         allocate(ov(count));read(u,iostat=io)ov
         if(io/=0)exit decoding
-        if(tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC)then
+        if(pending_tag(tag))then
           read(u,iostat=io)pending%clock,pending%dry_matter_kg_ha,pending%nitrogen_kg_ha,pending%application_age
           if(io/=0)exit decoding
         end if
         read(u,iostat=io)checksum
         if(io/=0)exit decoding
-        call unpack_crop_n_owner(ov,crop_trial,io)
+        call unpack_crop_n_continuation(ov,crop_trial,io)
         if(io/=CROP_SOIL_OK)exit decoding
         io=1
+        if(crop_trial%harvested().neqv.harvest_tag(tag))exit decoding
         if(.not.all(ieee_is_finite(v)))exit decoding
         if(any(abs(v-expected)>0.0_real64))exit decoding
         read(u,iostat=io)extra
@@ -288,7 +309,7 @@ contains
     end block decoding
     close(u)
     if(io/=0)return
-    if(tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC)then
+    if(pending_tag(tag))then
       call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io,pending)
     else
       call initialize_crop_soil(chemical_trial,crop_trial,cp,crop_parameter_id,coupled_trial,io)

@@ -35,17 +35,17 @@ def classify(paths):
     if not paths:
         return "NOT_SELECTED_IMPACT", "No tracked changes"
     direct = [p for p in paths if p in ROSS_PATHS or p.startswith(ROSS_TEST_PREFIXES)]
-    if direct:
-        return "SELECT_FOCUSED_ROSSFAST", "RossFast implementation/contract/test changed: " + ", ".join(direct)
-    unknown = [p for p in paths if not p.startswith(PROCESS_PREFIXES + OTHER_SAFE_PREFIXES)]
+    unknown = [p for p in paths if p not in direct and (not p.startswith(PROCESS_PREFIXES + OTHER_SAFE_PREFIXES) or ".." in pathlib.PurePosixPath(p).parts)]
     if unknown:
         return "REVIEW_REQUIRED", "Unclassified dependency or execution surface: " + ", ".join(unknown)
+    if direct:
+        return "SELECT_FOCUSED_ROSSFAST", "RossFast implementation/contract/test changed: " + ", ".join(direct)
     return "NOT_SELECTED_IMPACT", "Only independent process/documentation surfaces changed; validate changed physics and composition separately"
 
 def changed_paths(base, head):
     # Three-dot delta includes the merge base. Fail closed on git errors.
     proc = subprocess.run(
-        ["git", "diff", "--name-only", "--diff-filter=ACDMRTUXB", f"{base}...{head}", "--"],
+        ["git", "diff", "--name-only", "--no-renames", "--diff-filter=ACDMRTUXB", f"{base}...{head}", "--"],
         cwd=ROOT, check=True, capture_output=True, text=True,
     )
     return [s for s in proc.stdout.splitlines() if s]

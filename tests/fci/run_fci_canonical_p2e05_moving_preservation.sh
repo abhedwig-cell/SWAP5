@@ -15,6 +15,13 @@ if [[ "${1:-}" == --plan-rossfast-impact ]]; then
   exit $?
 fi
 
+# Explicit harvest owner qualification only; never a full moving PASS.
+if [[ "${1:-}" == --crop-harvest-owner-only ]]; then
+  python3 -B tests/crop-harvest/verify_harvest_successor.py
+  echo 'FCI_CROP_HARVEST_OWNER_RECONCILIATION=PASS'
+  exit 0
+fi
+
 # Source/evidence-only owner selection. This is never a full moving PASS.
 if [[ "${1:-}" == --nut-thermal-owner-only ]]; then
   python3 -B tests/nut-thermal/verify_thermal_successor.py
@@ -24,6 +31,14 @@ if [[ "${1:-}" == --nut-thermal-owner-only ]]; then
 fi
 nut_thermal_exact_successor=0
 NUT_THERMAL_BACKEND=7e1b034e5cd134050e695c9a097c44a3eaeca344
+
+# Decision in the existing work-unit, before any compile or owner invocation.
+# The focused irrigation route selects its own expensive group, not full F-CI.
+selection_group=full_fci
+if [[ "${1:-}" == --mc-irr01-allocation-only ]]; then
+  selection_group=irrigation_allocation
+fi
+python3 tests/modularity/run_modular_tests.py --check-selection "$selection_group"
 
 # Shared qualification preserves all original driver executions; no result reuse.
 case "${FCI_IRR01_BUILD_MODE:-SHARED}" in
@@ -716,6 +731,9 @@ check_b19_micro_root_recomposition() {
         (( crop_fkt_b110_exact_successor )) ||
           fail "unqualified shared crop F-KT/B110 owner source change: $candidate_path"
         ;;
+      src/runtime/mod_fmr_wofost_crop_transaction.f90 )
+        python3 -B tests/root-growth/verify_swrd2_successor.py || fail 'unqualified persistent SWRD2 crop transaction'
+        ;;
       src/runtime/mod_fmr_biomass_root_uptake_input.f90|src/crop/mod_wofost_emergence_initialization.f90|src/adapter/mod_swap_daily_weather_file_adapter.f90|src/runtime/mod_fmr_production_application_bootstrap.f90|src/runtime/mod_fmr_serialized_multiswap_runtime.f90 )
         (( crop_file_weather_exact_successor )) || fail "unqualified production weather/commit path: $candidate_path"
         ;;
@@ -822,6 +840,12 @@ check_b19_micro_root_recomposition() {
         else
           python3 tests/nut-reactive/verify_reactive_successor.py || fail "unqualified reactive successor: $candidate_path"
         fi
+        ;;
+      src/process/mod_b111_surface_supply.f90|src/runtime/mod_fmr_b111_surface_solute_route.f90|src/runtime/mod_fmr_b111_surface_joint_application.f90 )
+        python3 tests/nut-sol/verify_surface_successor.py --incumbent-mineral || fail "unqualified surface input successor: $candidate_path"
+        ;;
+      src/crop/mod_wofost81_crop_owner_state.f90|src/crop/mod_wofost81_one_day_candidate.f90|src/crop/mod_wofost81_harvest_materials.f90 )
+        python3 -B tests/crop-harvest/verify_harvest_successor.py || fail "unqualified explicit harvest successor: $candidate_path"
         ;;
       src/crop/mod_crop_soil_n_configuration.f90|src/crop/mod_crop_soil_n_day.f90|src/runtime/mod_fmr_crop_soil_n_joint_application.f90|src/adapter/mod_crop_soil_n_joint_restart_file.f90 )
         python3 tests/nut-crop/verify_crop_supply_successor.py || fail "unqualified crop Soil-N successor: $candidate_path"

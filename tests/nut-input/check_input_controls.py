@@ -3,6 +3,11 @@
 import copy,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
+if (ROOT/'integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json').exists():
+ import sys
+ sys.path.insert(0,str(ROOT/'tests/root-growth'));import verify_swrd2_successor as swrd2
+ print(json.dumps(swrd2.predecessor_controls('tests/nut-input/check_input_controls.py'),indent=2))
+ raise SystemExit(0)
 if (ROOT/'integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json').exists()and not (ROOT/'src/runtime/mod_fmr_biomass_root_uptake_input.f90').exists():
  import runpy
  runpy.run_path(str(ROOT/'tests/nut-thermal/check_thermal_successor_controls.py'),run_name='__main__')
