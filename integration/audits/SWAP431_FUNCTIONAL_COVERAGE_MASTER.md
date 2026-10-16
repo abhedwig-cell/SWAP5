@@ -13,6 +13,11 @@ opaque/native/fresh-process continuation and exact retained admitted V1 bytes.
 No full pond-water/source/runoff route or master capability is promoted.
 The source-bound1227-member capsule and current owner record retain the proof.
 
+Live successor PR1257 appeared during closeout and is preserved as active draft.
+Its pre1256 checkpoint2bb97693 retains source/science. Final owner/science controls
+and reconciliation of its native pond extension with admitted V1/V2 and the one
+surface-mass owner are required before merge. Continue that PR, not a duplicate.
+
 The next SOL dependency is actual water-owner per-substep pond begin/end,
 gross rain/irrigation and evaporation/runoff receipts. Retained-pond infiltration
 and explicit dry-deposition forcing need physical composition over those receipts;
