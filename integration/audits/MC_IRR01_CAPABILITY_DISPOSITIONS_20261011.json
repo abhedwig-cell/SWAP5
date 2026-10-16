@@ -1,13 +1,13 @@
 {
   "work_unit": "MC-IRR01",
-  "last_reconciled_canonical": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+  "last_reconciled_canonical": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
   "original_capabilities": 16,
-  "admitted_fullcaps": 6,
-  "blocked_shared_application_authority": 10,
+  "admitted_fullcaps": 7,
+  "blocked_shared_application_authority": 9,
   "functional_coverage_closed": false,
   "independent_runtime_cluster_qualified_and_admitted": true,
   "canonical_allocation_pr": 1205,
-  "claim_ceiling": "Six existing MC-IRR01 capabilities admitted, including complete TCS6 weekly weather/current-root/material and joint native continuation at PR1262. Ten remaining capabilities retain their own source/selector/salt/wider-profile gates.",
+  "claim_ceiling": "Seven existing MC-IRR01 capabilities admitted, including full TCS6 and external availability through existing owners/native adapter. Nine remaining capabilities keep their independent source/selector/salt/profile gates.",
   "source_authority_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "capabilities": [
     {
@@ -255,19 +255,33 @@
     },
     {
       "capability_id": "SW431-IRR-AVAIL",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Reuse admitted frozen external provider receipt; integrate joint weather/application continuation and fresh next-event selection.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Literal external availability with existing selected-event/provider receipts; accepted physical weather/root/sensor execution, expiry and fresh next event, rejected trials/replay, water balance and exact joint opaque/native fresh-process continuation.",
+      "remaining_specific_action": null,
+      "shared_authority_required": "Existing admitted owners and existing native adapter via PR1267.",
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json availability_completion_20261016",
+        "integration/audits/evidence/MC_IRR01_AVAIL_SCIENCE_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_IRR01_AVAIL_ADMISSION_20261016.json.gz.b64"
       ],
-      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION",
+      "prior_open_gate_20261016": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Reuse admitted frozen external provider receipt; integrate joint weather/application continuation and fresh next-event selection.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_authority": {
+        "pull_request": 1267,
+        "merge": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+        "record": "integration/audits/MC_IRR01_STATUS.json availability_completion_20261016"
+      }
     }
   ],
   "shared_contract": "integration/control/MC_IRR01_APPLICATION_COMPOSITION_20261011.json",
@@ -291,6 +305,21 @@
     "full_capability": true,
     "master_promotion": "Exactly SW431-IRR-TCS6; existing MC-IRR01 has6 admitted of16 and10 remaining.",
     "global_full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "github_actions": "NOT_SELECTED"
+  },
+  "availability_fullcap_admission_20261016": {
+    "pr": 1267,
+    "canonical_merge": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+    "qualified_head": "72583ca3744271494da4a4147cbe35e46cd31e1a",
+    "actual_merge_tree": "bfbf4a740f5c1079df6bf02fd768c38b5b9cec0d",
+    "merge_tree_equals_qualified_tree": true,
+    "source_tree": "bcb1b4f15d4fe72062842cc097b6d80eef176c84",
+    "post_merge_owner_proof": "PASS",
+    "post_merge_proof_sha256": "9c9b07ee2c0f02c2607fca96ddc6a635c8ca380c80abec2c332f77a8c441287d",
+    "full_capability": true,
+    "master_promotion": "Exactly SW431-IRR-AVAIL; existing MC-IRR01 has7 admitted of16 and9 remaining.",
+    "global_full_fci": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "github_actions": "NOT_SELECTED"
   }
