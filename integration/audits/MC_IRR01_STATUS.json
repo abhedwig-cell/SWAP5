@@ -4979,13 +4979,13 @@
     "baseline": "341ba3783f4364d4ff08b00a97514a93adb7eb22",
     "branch": "work/mc-irr01-avail-20261016",
     "capability": "SW431-IRR-AVAIL",
-    "phase": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
-    "full_capability": false,
+    "full_capability": true,
     "candidate_reconciliation": "No existing open AVAIL/irrigation implementation PR found; PR1072 is the existing draft master. PR1262 TCS6 and its exact native adapter are inherited, not rebuilt as a second route.",
     "closure_conditions": [
       "Literal authenticated B1.11 TASK4 for surface and SSDI, fractions0/interior/1 and zero/positive configured rate, including zero-rate SSDI where TASK4 intentionally leaves qssdi and duration unchanged; no new availability physics.",
@@ -5019,7 +5019,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Run new AVAIL admission-negative controls and all current owning entrypoints, source/strict docs; reconcile live canonical and merge only the exact qualified tree. Then promote only the existing AVAIL master row and close recovery.",
+    "next_action": "Inspect current PR/canonical/reviews/checks and merge only the exact qualified tree; run postmerge owning proof, promote exactly existing AVAIL master row and close recovery.",
     "blockers": [],
     "direct_contract": {
       "status": "PASS",
@@ -5337,14 +5337,39 @@
       },
       {
         "condition": 5,
-        "status": "PENDING_ADMISSION",
-        "evidence": "Original current INF predecessor and8 controls, original TCS6 predecessor and30 controls PASS; new admission negatives and owning entries pending."
+        "status": "PASS",
+        "evidence": "Original current INF predecessor and8 controls, original TCS6 predecessor and30 controls; new27 admission negatives,4 actual owning entrypoints, current INF CLI original8 controls and source/strict docs PASS."
       },
       {
         "condition": 6,
         "status": "PENDING_ADMISSION",
         "evidence": "Exact current merge/tree, postmerge owner proof and existing master promotion pending."
       }
-    ]
+    ],
+    "qualified_scientific_head": "df5ee116f8e7fa4b4b0f6002efeb87a2ca6d3224",
+    "admission_controls": {
+      "path": "integration/audits/evidence/MC_IRR01_AVAIL_ADMISSION_20261016.json.gz.b64",
+      "decoded_sha256": "15087b298d2bc4d390c6e10aff9793ee46ba46d2f154f534e322ca015988dff6",
+      "decoded_bytes": 12887,
+      "negative_controls": 27,
+      "owning_entries": [
+        "mc-irr01",
+        "drain-inf",
+        "int12c",
+        "crop-annual"
+      ],
+      "original_INF_CLI_controls": 8,
+      "docs_source": "PASS",
+      "docs_strict": "PASS"
+    },
+    "canonical_reconciliation": {
+      "last_canonical": "ce5d6b6a41462e25eacbc1b31a6a911bd809fceb",
+      "scientific_baseline": "4a3e1d6bdb66a235d8fd529e30d6def6457da2d1",
+      "later_delta": [
+        "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json",
+        "integration/audits/evidence/MC_DRAIN01_DISLAYER_PREFLIGHT_20261016.json.gz.b64"
+      ],
+      "decision": "Preserve current DISLAYER preflight/mass blocker metadata exactly. No production/test/reference input changed; no repeated AVAIL numerical qualification selected for this metadata-only successor."
+    }
   }
 }
