@@ -22,7 +22,12 @@
     "src/runtime/mod_fmr_divdra_serialized_composition.f90",
     "src/runtime/mod_fmr_divdra_serialized_runtime.f90",
     "tests/fmig431/test_swap431_drain_signed_divdra.f90",
-    "tests/fmig431/run_swap431_drain_signed_divdra.sh"
+    "tests/fmig431/run_swap431_drain_signed_divdra.sh",
+    "tests/fmig431/run_swap431_multilevel_divdra.py",
+    "tests/fmig431/test_swap431_multilevel_divdra_contract.f90",
+    "tests/fmig431/test_swap431_multilevel_divdra_runtime.f90",
+    "tests/fmig431/verify_multilevel_divdra_successor.py",
+    "tests/fmig431/verify_signed_divdra_successor.py"
   ],
   "dependency_surface": [
     "src/process/mod_drainage_spatial_distribution.f90",
@@ -341,5 +346,431 @@
     "inheritance_guard_tests": 20,
     "docs_source_and_strict": "PASS",
     "global_closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE"
+  },
+  "multilevel_phase_20261016": {
+    "baseline": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+    "existing_branch": "work/swap431-drain-signed-multilevel-r2-20261007",
+    "existing_pr": 1109,
+    "existing_candidate": "8a8d88fe68b3b0c424883a75d762b5ea98d76ba2",
+    "state": "QUALIFIED_SAFE_ADMISSION_PENDING",
+    "ledger_rows": [
+      "SW431-DRAIN-DIV-MULTI"
+    ],
+    "conditions_frozen": [
+      "Original unedited B1.11 DIVDRA oracle at frost OFF, SWDIVDINF=0, SWDISLAY=0 and no highest-interflow override: heterogeneous/nonuniform grids, anisotropy, interacting layer depths, reordered/equal spacings, signed/mixed/zero levels and groundwater boundary seams; O0/O2 real production process and binder.",
+      "Per-level scalar remains authoritative, signed sum closure; nonzero legacy-inactive magnitudes reject rather than silently lose water. Invalid parameters/view/nonfinite/shape and prebound target fail before publication.",
+      "Serialized real physical runtime: signed/mixed per-level contributions, independent external soil-drain mass and net-zero internal level cancellation, accepted state, rejected trial/retry exact replay, empty-registry restart and two-column isolation; O0/O2.",
+      "Incumbent positive and signed single-level process/binder bodies remain exact. Original signed O0/O2 drivers replay only affected contracts; unchanged solver, bottom, frost and other science evidence is inherited by explicit source comparison.",
+      "Affected source/admission guards, evidence integrity and docs checks, current canonical/parallel reconciliation and safe existing PR merge before ledger admission."
+    ],
+    "excluded": [
+      "SW431-DRAIN-INF-SPLIT",
+      "SW431-DRAIN-DRAMET3",
+      "SW431-DRAIN-ALLOCATION",
+      "SW431-DRAIN-INF-LIMIT",
+      "SW431-DRAIN-DISLAYER",
+      "SW431-DRAIN-DIV-TOPINTERFLOW",
+      "all frost-ON multilevel capabilities"
+    ],
+    "invariants": [
+      "No new mass/state/restart owner: process partitions prescribed per-level soil-to-drain rates; runtime owns transaction and scratch cleanup. Positive removes soil water, negative adds; external exchange is algebraic signed sum.",
+      "No solver or execution-policy change. No automatic full F-CI, RossFast or low-air selection."
+    ],
+    "remaining": [
+      "safe canonical merge",
+      "mastercoverage receipt"
+    ],
+    "parallel_reconciliation": {
+      "head": "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+      "since": "e849dbb01e4bda79dacf584fa14e9cb49ca9c764",
+      "paths": [
+        "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+        "integration/audits/MC_NUT_SOL_STATUS.json",
+        "integration/audits/evidence/MC_NUT01_LEAF_RETURN_REFERENCE_CANDIDATE_20261016.tar.xz.b64"
+      ],
+      "drainage_dependencies_changed": false
+    },
+    "qualified": true,
+    "tested": true,
+    "persisted_science_checkpoint": "8688620187311189e0e3eee637e4e24ee88b1dbb",
+    "frozen_conditions_commit": "0f3294ffa5be77410befc99a9e5fd5b8a2926b81",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+      "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+    },
+    "qualification_inputs_sha256": {
+      "tests/fmig431/run_swap431_multilevel_divdra.py": "ecf046f8ad58c5546c97f73374f37710c0691a468a6781168b47568801d425aa",
+      "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
+      "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2"
+    },
+    "original_source_cases_per_optimization": 1890,
+    "source_oracle_tolerance_cm_per_day": 1e-14,
+    "hard_mass_tolerance_cm": 1e-12,
+    "runtime_cases_per_optimization": 24,
+    "rollback_replay_restart_cases_per_optimization": 4,
+    "original_signed_runtime_replayed": true,
+    "numerical_changes": false,
+    "inherited_signed_qualified": true,
+    "claim_ceiling": "SW431-DRAIN-DIV-MULTI only after safe canonical merge; all frozen exclusions remain open.",
+    "test_selection": {
+      "small_first": "7 sources; original/literal process/binder O0/O2 before runtime; incumbent positive/signed contracts",
+      "integration": "Real serialized Richards modes2/7, mixed signed levels and zero-net cancellation; cold O0/O2, shared verified modules only inside one Session",
+      "not_selected": {
+        "full_fci": "Affected contracts and owning evidence guards only; no solver or execution policy change",
+        "rossfast": "NOT_SELECTED_IMPACT",
+        "highest_low_air": "NOT_SELECTED_POLICY; frost OFF"
+      }
+    },
+    "measured": [
+      {
+        "case": "multilevel_contract",
+        "optimization": 0,
+        "compile_seconds": 0.9442314890184207,
+        "link_seconds": 0.05625052000686992,
+        "execution_seconds": 0.012544255005195737,
+        "validation_seconds": 0.08013897600176279,
+        "reused_compilations": 0
+      },
+      {
+        "case": "multilevel_contract",
+        "optimization": 2,
+        "compile_seconds": 2.6288215309905354,
+        "link_seconds": 0.054350500999134965,
+        "execution_seconds": 0.01337316000717692,
+        "validation_seconds": 0.07139589200960472,
+        "reused_compilations": 0
+      },
+      {
+        "case": "signed_contract",
+        "optimization": 0,
+        "compile_seconds": 0.43179467700247187,
+        "link_seconds": 0.056138953994377516,
+        "execution_seconds": 0.0019690229964908212,
+        "validation_seconds": 0.24267170601524413,
+        "reused_compilations": 3
+      },
+      {
+        "case": "signed_contract",
+        "optimization": 2,
+        "compile_seconds": 0.8606929719971959,
+        "link_seconds": 0.055919509002706036,
+        "execution_seconds": 0.001905490003991872,
+        "validation_seconds": 0.15877538398490287,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_process",
+        "optimization": 0,
+        "compile_seconds": 0.05379527900367975,
+        "link_seconds": 0.09003785700770095,
+        "execution_seconds": 0.007336245995247737,
+        "validation_seconds": 0.15738877801049966,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_process",
+        "optimization": 2,
+        "compile_seconds": 0.07432834499923047,
+        "link_seconds": 0.041405707990634255,
+        "execution_seconds": 0.0018445559981046245,
+        "validation_seconds": 0.16638822498498484,
+        "reused_compilations": 3
+      },
+      {
+        "case": "positive_binder",
+        "optimization": 0,
+        "compile_seconds": 0.12842432499746792,
+        "link_seconds": 0.038882216991623864,
+        "execution_seconds": 0.0019001350010512397,
+        "validation_seconds": 0.18014246701204684,
+        "reused_compilations": 4
+      },
+      {
+        "case": "positive_binder",
+        "optimization": 2,
+        "compile_seconds": 0.25390486100513954,
+        "link_seconds": 0.04475762799847871,
+        "execution_seconds": 0.002101480000419542,
+        "validation_seconds": 0.1483680870005628,
+        "reused_compilations": 4
+      },
+      {
+        "case": "multilevel_runtime",
+        "optimization": 0,
+        "compile_seconds": 34.52356880303705,
+        "link_seconds": 0.18222889400203712,
+        "execution_seconds": 6.937330556000234,
+        "validation_seconds": 0.22114188499108423,
+        "reused_compilations": 0
+      },
+      {
+        "case": "multilevel_runtime",
+        "optimization": 2,
+        "compile_seconds": 101.80592883906502,
+        "link_seconds": 0.23942466000153217,
+        "execution_seconds": 2.7240949859988177,
+        "validation_seconds": 0.3528978970134631,
+        "reused_compilations": 0
+      },
+      {
+        "case": "signed_runtime",
+        "optimization": 0,
+        "compile_seconds": 3.0463984070083825,
+        "link_seconds": 0.10971726299612783,
+        "execution_seconds": 4.308641252006055,
+        "validation_seconds": 2.320185902150115,
+        "reused_compilations": 168
+      },
+      {
+        "case": "signed_runtime",
+        "optimization": 2,
+        "compile_seconds": 6.30324032700446,
+        "link_seconds": 0.29936188099964056,
+        "execution_seconds": 2.569383623995236,
+        "validation_seconds": 2.2161739789153216,
+        "reused_compilations": 168
+      }
+    ],
+    "successor_postimages": {
+      "reference/swap-4.3.1/README.md": {
+        "status": "M",
+        "blob": "8017117dced1059f5e5f1f91cd38abab8d1766a1"
+      },
+      "reference/swap-4.3.1/b1-manifest.yml": {
+        "status": "M",
+        "blob": "eb6500526eb29c2a743b6cfa269e09a76b4ce7b2"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/apply_and_verify.py": {
+        "status": "A",
+        "blob": "8ef33660f09eade020a1eb4f749c81435ef5fbb0"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/finding.md": {
+        "status": "A",
+        "blob": "01715ea5f288826ebd60c5b040e54e04f722b017"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/fix.patch": {
+        "status": "A",
+        "blob": "183ea401256e2e710ba70f3e62eb2be33bdec24c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/qualification.md": {
+        "status": "A",
+        "blob": "63f8acd0f763ad2bcc6c496f89c87cf264b4416f"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/run_reference.py": {
+        "status": "A",
+        "blob": "22df9d021fde758cd2b894264c3f93bb8362b22c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/test_reference.py": {
+        "status": "A",
+        "blob": "e09ef60bdbb8b6f98158cea45507e4b05389fadb"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/verify.py": {
+        "status": "A",
+        "blob": "e597dfe314f52bec9da467fdd2afbe854f767a0b"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
+        "status": "A",
+        "blob": "f91716505c34fab5ba490a51d679c6eb2ffb3c0e"
+      },
+      "reference/swap-4.3.1/snapshots/B1.12.yml": {
+        "status": "A",
+        "blob": "12b793b8283e11b6cd9e130a0a559c97e09961c6"
+      },
+      "src/crop/mod_wofost_actual_biomass_state.f90": {
+        "status": "M",
+        "blob": "79da2d32fa4e99f8f5bb24097f526e4ee896af47"
+      },
+      "src/crop/mod_wofost_finalize_rates.f90": {
+        "status": "M",
+        "blob": "b967136a0640f9ae6c2c4d9d9250d8946a05245d"
+      },
+      "src/crop/mod_wofost_one_day_structural_evolution.f90": {
+        "status": "M",
+        "blob": "9afdb2e4ea88fba0f75b80a7ccdfaae579e6481a"
+      },
+      "src/process/mod_drainage_spatial_distribution.f90": {
+        "status": "M",
+        "blob": "de410e965665bfd1d7bf1828dddc7a275f779bd2"
+      },
+      "src/runtime/mod_fmr_divdra_runtime_binding.f90": {
+        "status": "M",
+        "blob": "b93202db935d146a80ffbd4ca01d25d6a4d00d13"
+      },
+      "src/runtime/mod_fmr_divdra_serialized_composition.f90": {
+        "status": "M",
+        "blob": "be00933240bbddcec791ec751f4c6e31fb239e38"
+      },
+      "src/runtime/mod_fmr_divdra_serialized_runtime.f90": {
+        "status": "M",
+        "blob": "56679bfde412c989b1d0f92521982e9a30a32eb9"
+      },
+      "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+        "status": "M",
+        "blob": "b256c5354d0d34be51690a20c65449670cc01ba2"
+      },
+      "tests/fmig431/annual/check_classic_codec.py": {
+        "status": "A",
+        "blob": "c64e00d2255e63c21bb75ec133b35f1eac7b6591"
+      },
+      "tests/fmig431/annual/check_zero_codec_bytes.py": {
+        "status": "A",
+        "blob": "5e09c8cbe27820ba627f2263380cabc6a159ba1d"
+      },
+      "tests/fmig431/annual/resume_classic_weather.py": {
+        "status": "A",
+        "blob": "69fed665565fa6ec5e9eac966afead333742fc8c"
+      },
+      "tests/fmig431/annual/run_classic_owners.py": {
+        "status": "A",
+        "blob": "6e91b2b918d8ac410db0ec9d446e1b4d4b3f5829"
+      },
+      "tests/fmig431/annual/run_classic_restart.py": {
+        "status": "A",
+        "blob": "0b793b82fbb61d2ef9485cf24e2d7df8b773fdb4"
+      },
+      "tests/fmig431/annual/run_classic_source.py": {
+        "status": "A",
+        "blob": "043a8869558f86a82ba583a12a2d6188372de0d0"
+      },
+      "tests/fmig431/annual/run_classic_weather.py": {
+        "status": "A",
+        "blob": "47e2f7b8da3f4f46e83c56fd3ab770b55dc23412"
+      },
+      "tests/fmig431/annual/run_wofost81_preservation.py": {
+        "status": "A",
+        "blob": "4dcb6ba71bdb5dceeedd8336cadf96fbdb09e2c1"
+      },
+      "tests/fmig431/annual/test_annual_admission_controls.py": {
+        "status": "A",
+        "blob": "fb302b32cc9da687a7b6c6be70c69c756d3ebd57"
+      },
+      "tests/fmig431/annual/test_classic_source.f90": {
+        "status": "A",
+        "blob": "a93fee4043f760fb1a1ff0a3c5b7d8069b40fd26"
+      },
+      "tests/fmig431/annual/test_zero_restart.f90": {
+        "status": "A",
+        "blob": "3d82d522c5bb3e644dd5014f3c3cf5a172419d29"
+      },
+      "tests/fmig431/annual/verify_annual_successor.py": {
+        "status": "A",
+        "blob": "cfd2a5236823f461c427b42c520f7ffb911aea2b"
+      },
+      "tests/fmig431/run_swap431_multilevel_divdra.py": {
+        "status": "A",
+        "blob": "8e22e653975e9fd9bb3fa5bb60bb173a7e4d78c8"
+      },
+      "tests/fmig431/test_swap431_multilevel_divdra_contract.f90": {
+        "status": "A",
+        "blob": "c8142aefa1b1c62672b045cca59b9a2098cbc8bc"
+      },
+      "tests/fmig431/test_swap431_multilevel_divdra_runtime.f90": {
+        "status": "A",
+        "blob": "ea39b51cc48afbbae8fc4d9415eac7c5caa9554d"
+      },
+      "tests/fmig431/verify_multilevel_divdra_successor.py": {
+        "status": "A",
+        "blob": "6b0d3e2adb0695902594b3c484264842cc1172d6"
+      },
+      "tests/fmig431/verify_signed_divdra_successor.py": {
+        "status": "M",
+        "blob": "9dadf619ca66908dc823fe0171c719e9d250f626"
+      },
+      "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90": {
+        "status": "M",
+        "blob": "e4845a4d118fe17955efec3800754c19aa2dfb08"
+      },
+      "tools/vq/b1_12_admission_gate.py": {
+        "status": "A",
+        "blob": "6394ddb0e910f4297f7ae654691ac5424bb8b471"
+      },
+      "tools/vq/b1_12_reconstruct.py": {
+        "status": "A",
+        "blob": "85c09cc4c3be2f584b411b41d0e4fd13f40b9b5d"
+      }
+    },
+    "qualification_checkpoint": "ddf13d59ec8a593c6f6407d9b5f01f3aecdfb65a",
+    "source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+    "validation": {
+      "source_evidence": "PASS",
+      "evidence_corruption_controls": 6,
+      "actual_original_incumbent_qualification_chain": "PASS",
+      "existing_focused_FCI_owner_entry": "PASS",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS",
+      "whitespace": "PASS",
+      "joint_annual_owner_entry": "PASS",
+      "joint_drain_owner_entry": "PASS",
+      "joint_evidence_corruption_controls": 6,
+      "joint_docs_source": "PASS",
+      "joint_mkdocs_strict": "PASS",
+      "reference_joint_owner": "PASS",
+      "reference_joint_evidence_controls": 6
+    },
+    "parallel_annual_reconciliation": {
+      "canonical_commit": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "decision": "Preserve annual source, original owner validator and immutable qualification at its actual canonical admission. Compose only additive successor delegation; preserve numerical drainage evidence because no selected compiled input changed.",
+      "drainage_numerical_input_intersection": [],
+      "changed_paths": [
+        "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+        "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_ADMISSION_CONTROLS_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_SOURCE_QUALIFICATION_20261016.tar.xz.b64",
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90",
+        "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+        "tests/fmig431/annual/check_classic_codec.py",
+        "tests/fmig431/annual/check_zero_codec_bytes.py",
+        "tests/fmig431/annual/resume_classic_weather.py",
+        "tests/fmig431/annual/run_classic_owners.py",
+        "tests/fmig431/annual/run_classic_restart.py",
+        "tests/fmig431/annual/run_classic_source.py",
+        "tests/fmig431/annual/run_classic_weather.py",
+        "tests/fmig431/annual/run_wofost81_preservation.py",
+        "tests/fmig431/annual/test_annual_admission_controls.py",
+        "tests/fmig431/annual/test_classic_source.f90",
+        "tests/fmig431/annual/test_zero_restart.f90",
+        "tests/fmig431/annual/verify_annual_successor.py",
+        "tests/fmig431/verify_signed_divdra_successor.py",
+        "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90"
+      ],
+      "new_production_scope": [
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90"
+      ],
+      "guard": "tests/fmig431/annual/verify_annual_successor.py",
+      "remaining": [],
+      "qualification": "PASS actual immutable original annual validator plus exact current annual postimages/delegation reconstruction; all12 drainage records retain identical inputs."
+    },
+    "joint_receipts": {
+      "controls": {
+        "sha256": "1a4234206ab4e278c6d11e32ccc31a325b0a9799aa52cd940b08563f6e4c0f03",
+        "terminal": "PASS"
+      },
+      "annual_owner": {
+        "sha256": "e14b951c0f7006a050a07170feac095119cf361784b6002e70e3ba33736aa5eb",
+        "terminal": "PASS"
+      },
+      "drain_owner": {
+        "sha256": "a998e5c81908dae6d4bac281a856a8c8400d3834ac13b428f16816895a2ddb16",
+        "terminal": "PASS"
+      },
+      "strict_docs": {
+        "sha256": "e043fa7aa8c125c69701ac224e0f8398b48ba36f97a4f4f99996e40f622dc7be",
+        "terminal": "PASS"
+      }
+    },
+    "parallel_reference_reconciliation": {
+      "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+      "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+      "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+      "drainage_numerical_input_intersection": [],
+      "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+    },
+    "latest_reconciled_canonical": "36862e06001154f5097b438ae4b851ae092423df"
   }
 }
