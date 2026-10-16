@@ -56,9 +56,9 @@ def run_predecessor_controls():
  check(p.returncode==0 and 'MC_DRAIN01_EVIDENCE_CORRUPTION_CONTROLS=6'in p.stdout,'original signed controls failed')
  print(p.stdout,end='')
 def verify_source(git_reader=None):
- if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
-  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
-  return tcs6.verify_source(git_reader)
+ if (ROOT/'tests/fmig431/verify_multilevel_divdra_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/fmig431'));import verify_multilevel_divdra_successor as drain
+  return drain.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'annual baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines()
@@ -121,9 +121,9 @@ def validate(data,check_inputs=True):
  old=j('incumbent/qualification.stdout');check(j('incumbent/result.json')['exit']==0 and old['qualified']and old['reproductive_successor'],'actual admitted predecessor rejected')
  return old
 def verify_qualification():
- if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
-  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
-  return tcs6.verify_qualification()
+ if (ROOT/'tests/fmig431/verify_multilevel_divdra_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/fmig431'));import verify_multilevel_divdra_successor as drain
+  return drain.verify_qualification()
  s=verify_source();r=record();check(r['stage']in ['QUALIFIED_ADMISSION_PENDING','CANONICALLY_ADMITTED'],'annual not ready')
  old=validate(capsule())
  return {**{k:v for k,v in old.items()if isinstance(v,bool)},**s,'qualified':True,'scope':'Classic B1.11 IDSL0/SWCROPSNM0 actual-crop source, gross mortality and FMR accepted-event/restart; existing typed valid domain. No Soil-N, automatic sowing/rotation or new numerical policy.','full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_UNCHANGED_POLICY'}

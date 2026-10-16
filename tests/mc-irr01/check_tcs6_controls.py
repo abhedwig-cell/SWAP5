@@ -37,4 +37,10 @@ for label,p in [('MISSING_RAW',next(p for p in data if p.startswith('physical/')
  d=dict(data);d.pop(p);rejects(label,lambda:v.validate_science(d))
 d=dict(data);p='physical/DECODER_0_weekly_dcs1_neutral.json';r=json.loads(d[p]);r.pop();d[p]=json.dumps(r).encode();rejects('MISSING_DECODER_NEGATIVE',lambda:v.validate_science(d))
 d=dict(data);p='review/projections.json';r=json.loads(d[p]);r.pop(next(iter(r)));d[p]=json.dumps(r).encode();rejects('MISSING_BODY_REVIEW',lambda:v.validate_science(d))
+for label,change in [
+ ('NO_INPUT_PROJECTION',lambda r:r.__setitem__('inherited_input_projections',{})),
+ ('NONINSERTION_PROJECTION',lambda r:next(iter(r['inherited_input_projections'].values()))['insertions'][0].__setitem__('baseline',['altered old body'])),
+ ('WRONG_PROJECTION_POSTIMAGE',lambda r:next(iter(r['inherited_input_projections'].values())).__setitem__('new_sha256','0'*64))]:
+ r=copy.deepcopy(v.record());change(r)
+ with patch.object(v,'record',return_value=r):rejects(label,lambda:v.validate_science(data))
 print('TCS6_ADMISSION_NEGATIVES='+str(count)+'|PASS')

@@ -1,11 +1,11 @@
 """Full existing TCS6 admission: pinned production, executed native science and incumbent proof."""
 from pathlib import Path
 from functools import lru_cache
-import base64,hashlib,io,json,subprocess,sys,tarfile,tempfile,os
+import base64,hashlib,io,json,subprocess,sys,tarfile,tempfile,os,re
 os.environ["PYTHONDONTWRITEBYTECODE"]="1"
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
-BASE='5bacc7419f5ad73614f8e55b1d0c7c88706da00c'
+BASE='5d2518abd2b285b13f9b5f7d2177918589fd7abc'
 SURFACE=['src','tests','tools','reference','.github']
 PRODUCTION={'src/adapter/mod_crop_soil_n_joint_restart_file.f90','src/adapter/mod_swap_daily_weather_file_adapter.f90','src/crop/mod_crop_et_canopy_view_provider.f90','src/crop/mod_wofost_prepare_assimilation.f90','src/crop/mod_wofost_rate_table.f90','src/process/mod_scheduled_irrigation_management_policy.f90','src/runtime/mod_fmr_irrigation_allocation_binding.f90','src/runtime/mod_fmr_production_application_bootstrap.f90','src/runtime/mod_fmr_wofost_accepted_window_lineage.f90'}
 def check(ok,label):
@@ -24,7 +24,7 @@ def verify_source(git_reader=None):
  for p,v in r['postimages'].items():check(g('rev-parse','HEAD:'+p)==v['blob']==blob((ROOT/p).read_bytes()),'TCS6 postimage '+p)
  check(g('rev-parse','HEAD:src')==r['source_tree'],'TCS6 source tree')
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'TCS6 reference drift')
- flags={n:True for n in ('classic_annual_successor','signed_divdra_successor','reproductive_successor','pond_successor','dynamic_pond_successor','persistent_surface_restart_successor','material_root_irrigation_successor','b111_request_successor','managed_irrigation_successor','nfix_component_preserved','hyd_successor','daily_density_successor','int12c_successor','co2_successor','swrd3_successor','swrd2_successor','harvest_successor','surface_successor','calendar_successor','input_successor','thermal_successor')}
+ flags={n:True for n in ('multilevel_divdra_successor','reference_leaf_successor','classic_annual_successor','signed_divdra_successor','reproductive_successor','pond_successor','dynamic_pond_successor','persistent_surface_restart_successor','material_root_irrigation_successor','b111_request_successor','managed_irrigation_successor','nfix_component_preserved','hyd_successor','daily_density_successor','int12c_successor','co2_successor','swrd3_successor','swrd2_successor','harvest_successor','surface_successor','calendar_successor','input_successor','thermal_successor')}
  return dict(baseline=BASE,source_tree=r['source_tree'],current_source_tree=r['source_tree'],tcs6_successor=True,qualified=False,admitted=False,**flags)
 def evidence():
  d=record()['science_archive'];raw=base64.b64decode((ROOT/d['path']).read_bytes());check(sha(raw)==d['decoded_sha256'],'TCS6 capsule drift')
@@ -39,7 +39,15 @@ def inputs(mapping):
  for p,h in mapping.items():
   check(not Path(p).is_absolute()and '..'not in Path(p).parts,'unsafe TCS6 input')
   raw=(ROOT/p).read_bytes()
-  check(sha(raw)==h,'stale TCS6 input '+p)
+  if sha(raw)!=h:
+   projection=record()['inherited_input_projections'].get(p)
+   check(projection is not None and projection['old_sha256']==h and projection['new_sha256']==sha(raw),'stale TCS6 input '+p)
+   check(p=='src/process/mod_drainage_spatial_distribution.f90','unreviewed inherited input')
+   lines=raw.decode().splitlines(True)
+   for q in reversed(projection['insertions']):
+    a,b=q['range'];check(lines[a:b]==q['current']and not q['baseline'],'altered incumbent drainage body');lines[a:b]=[]
+   check(sha(''.join(lines).encode())==h,'inexact unchanged drainage body')
+  else:check(sha(raw)==h,'stale TCS6 input '+p)
 
 def raw_events(data,prefix,events):
  for i,e in enumerate(events):
@@ -53,6 +61,16 @@ def raw_events(data,prefix,events):
 def validate_science(data):
  r=json.loads(data['physical/RESULTS.json']);check(r['status']=='PASS'and r['head']==record()['execution_commit'],'unfinished/wrong TCS6 physical science');inputs(r['source_inputs'])
  check(PRODUCTION<=set(r['source_inputs']),'untested changed production owner')
+ for p,h in r['source_inputs'].items():
+  if p.startswith('src/')and p!='src/process/mod_drainage_spatial_distribution.f90':
+   text=(ROOT/p).read_text().lower()
+   check('distribute_multilevel_signed_divdra'not in text,'unexecuted new multilevel caller')
+   joined=re.sub(r'&\s*\n\s*&?', '',text)
+   for statement in joined.splitlines():
+    if re.match(r'\s*use\s+mod_drainage_spatial_distribution\b',statement):
+     check('only:'in statement.replace(' ','')and 'drainage_multilevel_diagnostics_t'not in statement,'unqualified drainage import')
+
+ check(len(r['costs'])==2 and all(x['providers']==295 and x['provider_compiles']==295 for x in r['costs']),'incomplete fresh application provider build')
  expected={(o,n,'neutral','continuous')for o in (0,2)for n in ('weekly_dcs1','weekly_dcs2','weekly_nontrigger')}
  expected|={(o,n,p,m)for o in (0,2)for n in ('weekly_dcs1','weekly_dcs2','weekly_nontrigger')for p in ('neutral','hydraulic')for m in ('native-write','native-resume','native-write-active','native-resume-active')}
  ident=lambda x:(x['opt'],x['driver'],x['moisture'],x['mode'])
@@ -102,7 +120,7 @@ def incumbent():
  r=record()
  if 'incumbent_proof_sha256'in r:
   raw=evidence()['review/tcs6-incumbent-proof.json'];check(sha(raw)==r['incumbent_proof_sha256'],'incumbent proof drift');old=json.loads(raw)
-  check(old['qualified']and old['classic_annual_successor']and old['current_source_tree']==git('rev-parse',BASE+':src')and old['authority_commit']==BASE and old['authority_tree']==git('rev-parse',BASE+'^{tree}')and old['annual_source_evidence_revalidated'],'incumbent proof scope')
+  check(old['qualified']and old['classic_annual_successor']and old['current_source_tree']==git('rev-parse',BASE+':src')and old['authority_commit']==BASE and old['authority_tree']==git('rev-parse',BASE+'^{tree}')and old['annual_source_evidence_revalidated']and old['multilevel_source_evidence_revalidated'],'incumbent proof scope')
   return old
  root=ROOT.parent/('tcs6-incumbent-'+BASE[:12])
  if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),BASE],cwd=ROOT,check=True,capture_output=True)

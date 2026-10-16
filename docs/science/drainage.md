@@ -156,3 +156,40 @@ archive and verifier define the exact qualified postimage. Only
 interacting multilevel partitions, altered discharge-layer bounds and native
 DRAMET3/OWLTAB remain separate ledger entries. The frozen Status-A denominator
 above is unchanged.
+
+## Post-Status-A interacting ordinary DIVDRA candidate (16 October 2026)
+
+Existing MC-DRAIN01 PR1109 extends the explicit serialized request with paired
+`distribution_parameter_refs(:)` and `scalar_transfers(:)` for more than one
+level. Both vectors are required together; their lengths must match. Scalar
+request fields must remain at their zero defaults when vectors are supplied.
+All levels share exactly the same grid, saturated conductivity and anisotropy;
+the drain spacing is level-specific. The original single-level request remains
+available. This is an explicit forcing/partition interface, without a new
+response law or a persistent state owner.
+
+With frost OFF, `SWDIVDINF=0`, `SWDISLAY=0` and no highest-interflow override,
+B1.11 orders active levels by descending drain spacing. Cumulative absolute
+`q * spacing` determines the nested transmissivity and discharge-layer bottoms;
+the quarter-spacing/anisotropy depth cap is applied per level. Each resulting
+nodal row retains its own signed authoritative scalar. Zero levels contribute
+nothing; nonzero rates at or below the legacy `1e-10` activation seam reject
+without publication. The existing positive and signed single-level bodies
+remain byte-exact.
+
+Each positive nodal rate removes soil water and each negative rate adds it.
+Opposing levels can have zero net external transfer while changing the spatial
+forcing. Level attribution creates no second external booking. Preflight checks
+every active column before materialization; the existing runtime discards
+materialized scratch after acceptance or rejection. Committed physical state,
+temporal history and restart remain owned by the admitted runtime.
+
+The existing recovery record
+`integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json`, phase
+`multilevel_phase_20261016`, freezes the exact admission conditions and links
+O0/O2 original-source/literal partition, hard mass, rejection/replay,
+empty-registry restart, isolation and incumbent preservation evidence. Only
+`SW431-DRAIN-DIV-MULTI` is a closure candidate. Separate infiltration,
+DRAMET3, highest-interflow, altered discharge-layer tops and frost-ON multilevel
+remain separate capabilities. Canonical admission must be established by the
+actual merged PR and its source/evidence identity.
