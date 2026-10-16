@@ -7,6 +7,7 @@ import gzip
 import hashlib
 import io
 import json
+import subprocess
 from pathlib import Path
 import tarfile
 
@@ -14,12 +15,56 @@ ROOT = Path(__file__).resolve().parents[2]
 AUDIT = ROOT / 'integration/audits'
 DISPOSITIONS = {'ADMITTED', 'SUPERSEDED', 'REJECTED', 'NOT_APPLICABLE', 'ACTIVE_MIGRATION', 'QUALIFICATION_ONLY'}
 CLASSES = {'CORE_PHYSICS', 'APPLICATION_PHYSICS', 'LEGACY_COMPATIBILITY', 'LEGACY_IO', 'OBSOLETE_CONTROL_FLOW'}
+HISTORICAL_BASE = '78acf56f931763d2e1d4924b3dea0742f231d2e8'
+PROFILE_SNAPSHOT = '8b83abec615e4038f59029a264938077c4650a8c'
+BACKEND = 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+
+
+def historical_baseline(ledger):
+    """Later owner receipts do not rebind immutable historical science."""
+    baseline = ledger.get('historical_evidence_baseline', ledger['canonical_head'])
+    assert baseline == HISTORICAL_BASE, 'unknown historical evidence baseline'
+    return baseline
+
+
+def validate_source_dependency(path, expected):
+    raw = (ROOT / path).read_bytes()
+    if hashlib.sha256(raw).hexdigest() == expected:
+        return
+    # The only reviewed change in this frozen scientific checkout is the
+    # default-OFF CALCGWL opt-in. Never apply this exception to moving canonical.
+    assert path == BACKEND, f'stale historical dependency: {path}'
+    preimage = subprocess.check_output(['git', 'show', HISTORICAL_BASE + ':' + path], cwd=ROOT)
+    postimage = subprocess.check_output(['git', 'show', PROFILE_SNAPSHOT + ':' + path], cwd=ROOT)
+    assert hashlib.sha256(preimage).hexdigest() == expected, 'unknown projection preimage'
+    assert raw == postimage, 'unreviewed projection postimage'
+    assert raw.count(b'logical :: profile_groundwater_projection = .false.') == 2, 'projection default changed'
+    # Prove the complete old body remains: all seven reviewed hunks add only
+    # declarations or explicitly guarded opt-in work. No old line is replaced.
+    diff = subprocess.check_output(['git', 'diff', '--no-ext-diff', '--no-color',
+        '--unified=0', HISTORICAL_BASE, PROFILE_SNAPSHOT, '--', path], cwd=ROOT, text=True)
+    import re
+    pattern = r'^@@ -\d+,0 \+(\d+)(?:,(\d+))? @@.*\n'
+    headers = list(re.finditer(pattern, diff, flags=re.M))
+    assert len(headers) == 7 and diff.count('\n@@ ') == 7, 'projection delta shape changed'
+    projected = raw.splitlines(keepends=True)
+    for i in reversed(range(len(headers))):
+        header = headers[i]
+        hunk = diff[header.end():headers[i + 1].start() if i + 1 < len(headers) else len(diff)]
+        lines = hunk.splitlines(keepends=True)
+        assert lines and all(line.startswith('+') for line in lines), 'old backend body changed'
+        start, count = int(header[1]) - 1, int(header[2] or '1')
+        assert projected[start:start + count] == [line[1:].encode() for line in lines], 'projection addition absent'
+        del projected[start:start + count]
+    assert b''.join(projected) == preimage, 'historical backend body not preserved'
 
 
 def validate_inherited_review(name, record, canonical_head):
     """Accept only an explicitly reviewed and hash-bound dependency delta."""
     inheritance = json.loads((AUDIT / 'evidence/SWAP431_B19_MASTER_RECONCILIATION.json').read_text())
-    assert inheritance['canonical_head'] == canonical_head, 'stale inheritance baseline'
+    ledger = json.loads((AUDIT / 'SWAP431_FUNCTIONAL_COVERAGE_MASTER.json').read_text())
+    assert canonical_head in {ledger['canonical_head'], HISTORICAL_BASE}, 'unknown inheritance baseline'
+    assert inheritance['canonical_head'] == historical_baseline(ledger), 'stale inheritance baseline'
     assert record['baseline'] == inheritance['old_baseline'], 'wrong historical review baseline'
     review = inheritance['inherited_reviews'][name]
     raw = (AUDIT / 'evidence' / name).read_bytes()
@@ -29,11 +74,51 @@ def validate_inherited_review(name, record, canonical_head):
             delta = review['changed_dependencies'][path]
             assert delta['old_sha256'] == expected, 'inheritance preimage mismatch'
             expected = delta['current_sha256']
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale inherited dependency: {path}'
+        validate_source_dependency(path, expected)
+
+
+def validate_authority_locator(locator, ledger):
+    """Resolve file authority at its recorded ref, never from a prose label."""
+    import re
+    match = re.fullmatch(r'([^\s]+?)(?: ([A-Za-z_][A-Za-z_0-9]*))?(?: at ([0-9a-f]{40}))?', locator)
+    assert match, f'unstructured authority locator: {locator}'
+    path, field, ref = match.groups()
+    assert not Path(path).is_absolute() and '..' not in Path(path).parts, 'unsafe authority path'
+    current_ref = ledger['canonical_locator_head']
+    assert re.fullmatch(r'[0-9a-f]{40}', current_ref), 'unpinned canonical locator head'
+    if ref is None and (ROOT / path).is_file():
+        raw = (ROOT / path).read_bytes()
+    else:
+        ref = ref or current_ref
+        assert subprocess.run(['git', 'merge-base', '--is-ancestor', ref, current_ref],
+            cwd=ROOT, capture_output=True).returncode == 0, 'authority is not canonical ancestry'
+        try:
+            raw = subprocess.check_output(['git', 'show', ref + ':' + path], cwd=ROOT, stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError:
+            raise AssertionError(f'missing authority: {path} at {ref}') from None
+    if field:
+        assert field in json.loads(raw), f'missing authority field: {locator}'
+
+
+def validate_bounded_reachability(entry, ledger):
+    reachability = entry['production_reachability']
+    if not reachability['established']:
+        return
+    key = reachability.get('bounded_receipt')
+    receipt = ledger['bounded_owner_receipts'].get(key) if key else entry.get('bounded_age_successor')
+    assert receipt and receipt['full_capability'] is False, 'active route lacks bounded authority'
+    merge = receipt['canonical_merge']
+    assert subprocess.run(['git', 'merge-base', '--is-ancestor', merge, ledger['canonical_locator_head']],
+        cwd=ROOT, capture_output=True).returncode == 0, 'bounded admission is not canonical'
+    authority = receipt.get('authority_at_canonical', receipt.get('authority'))
+    assert authority, 'missing bounded admission authority'
+    validate_authority_locator(authority + ' at ' + merge, ledger)
+    assert entry['restrictions'] and not entry['implementation_absence_proven'], 'bounded route contradicts absence/full-scope claim'
 
 
 def validate(require_closed=False):
     ledger = json.loads((AUDIT / 'SWAP431_FUNCTIONAL_COVERAGE_MASTER.json').read_text())
+    evidence_head = historical_baseline(ledger)
     census = json.loads((AUDIT / 'evidence/SWAP431_SOURCE_CENSUS.json').read_text())
     work = json.loads((AUDIT / 'SWAP431_REMAINING_WORKUNITS.json').read_text())
     reachability = json.loads((AUDIT / 'evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json').read_text())
@@ -65,7 +150,8 @@ def validate(require_closed=False):
     active_gwl_source = '\n'.join(line.split('!')[0] for line in members['SWAP/calcgwl.f90'].decode('latin1').splitlines())
     assert set(re.findall(r'=\s*gwlevel\s*\(\s*(\d+)', active_gwl_source, re.I)) == {'1', '3'}
     assert by_id['SW431-GW-INACTIVE-AVERAGE']['current_disposition'] == 'NOT_APPLICABLE'
-    assert by_id['SW431-GW-PROJECTION']['active_workunit'] == 'MC-LOW01'
+    assert by_id['SW431-GW-PROJECTION']['current_disposition'] == 'ADMITTED', 'profile projection admission lost'
+    assert by_id['SW431-GW-PROJECTION']['active_workunit'] is None, 'closed projection treated as active work'
     foundations = {f['foundation_id']: f for f in ledger.get('swap5_admitted_foundations', [])}
     assert not ids.intersection(foundations), 'foundation counted as legacy capability'
     for foundation in foundations.values():
@@ -81,7 +167,7 @@ def validate(require_closed=False):
         assert entry['current_disposition'] in DISPOSITIONS, cap
         assert entry['classification'] in CLASSES, cap
         for path in entry['evidence'] + entry['swap5_implementation_authority']:
-            assert (ROOT / path).is_file(), f'{cap}: missing {path}'
+            validate_authority_locator(path, ledger)
         source = entry['legacy_source_authority']
         assert hashlib.sha256(members[source['member']]).hexdigest() == source['sha256'], cap
         lines = members[source['member']].decode('latin1').splitlines()
@@ -93,7 +179,7 @@ def validate(require_closed=False):
         if entry['current_disposition'] in {'ACTIVE_MIGRATION', 'QUALIFICATION_ONLY'}:
             assert entry['active_workunit'] in registered, f'{cap}: unregistered workunit'
             assert cap in registered[entry['active_workunit']]['capabilities'], cap
-            assert not entry['production_reachability']['established'], cap
+            validate_bounded_reachability(entry, ledger)
         else:
             assert entry['active_workunit'] is None, cap
             assert not entry['remaining_dependency'], f'{cap}: final disposition still has unresolved dependency'
@@ -133,9 +219,9 @@ def validate(require_closed=False):
     assert admission['runtime_admitted'] and by_id['SW431-FROST-DIVDRA']['current_disposition'] == 'ADMITTED'
     assert 'SW431-FROST-DIVDRA' not in by_id['SW431-FROST-DIV-MULTI']['remaining_dependency']
     crop = json.loads((AUDIT / 'evidence/SWAP431_CROP_RESOLUTION_REVIEW.json').read_text())
-    assert crop['baseline'] == ledger['canonical_head'] and not crop['new_admission_created']
+    assert crop['baseline'] == evidence_head and not crop['new_admission_created']
     for path, expected in crop['source_files_sha256'].items():
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale crop review: {path}'
+        validate_source_dependency(path, expected)
     replay = crop['test']
     assert replay['exit_code'] == 0
     assert hashlib.sha256(replay['stdout_stderr'].encode()).hexdigest() == replay['stdout_stderr_sha256']
@@ -144,9 +230,9 @@ def validate(require_closed=False):
                  'SWAP431_RAIN_TYPED_MAPPING_PROBE.json',
                  'SWAP431_SURFACE_CROP_OWNER_RECONCILIATION.json']:
         record = json.loads((AUDIT / 'evidence' / name).read_text())
-        assert record['baseline'] == ledger['canonical_head'], 'stale owner/input review baseline'
+        assert record['baseline'] == evidence_head, 'stale owner/input review baseline'
         for path, expected in record['source_files_sha256'].items():
-            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale owner/input review: {path}'
+            validate_source_dependency(path, expected)
         for path, expected in record.get('legacy_members_sha256', {}).items():
             assert hashlib.sha256(members[path]).hexdigest() == expected, f'stale legacy owner review: {path}'
         for cap, decision in record.get('decisions', {}).items():
@@ -161,7 +247,7 @@ def validate(require_closed=False):
         assert by_id[cap]['current_disposition'] == 'SUPERSEDED'
         assert by_id[cap]['classification'] == 'LEGACY_COMPATIBILITY'
     aquifer = json.loads((AUDIT / 'evidence/SWAP431_AQUIFER_BOUNDS_PROBE.json').read_text())
-    assert aquifer['baseline'] == ledger['canonical_head'] and not aquifer['runtime_admission_created']
+    assert aquifer['baseline'] == evidence_head and not aquifer['runtime_admission_created']
     raw = members[aquifer['source_member']]
     assert hashlib.sha256(raw).hexdigest() == aquifer['source_sha256']
     source = raw.decode('latin1')
@@ -175,15 +261,16 @@ def validate(require_closed=False):
         assert result['exit_code'] != 0 and result['expected_bounds_failure']
         expected = f"Index '{result['nodes'] + 1}' of dimension 1 of array 'bdenskfsatporos' above upper bound of {result['nodes']}"
         assert expected in result['stderr']
-    assert by_id['SW431-SALT-AQUIFER']['current_disposition'] == 'ACTIVE_MIGRATION'
+    assert by_id['SW431-SALT-AQUIFER']['current_disposition'] == 'REJECTED', 'rejected aquifer source revived'
+    assert 'integration/audits/MC_SOL01_AQUIFER_SOURCE_DECISION.md' in by_id['SW431-SALT-AQUIFER']['evidence'], 'aquifer decision authority lost'
     assert by_id['SW431-ICE']['classification'] == 'CORE_PHYSICS'
     for name in ['SWAP431_SEEPAGE_RUNTIME_INITIAL_PROBE.json',
                  'SWAP431_SEEPAGE_RUNTIME_ATTRIBUTION_PROBE.json',
                  'SWAP431_SEEPAGE_RUNTIME_PROBE.json']:
         probe = json.loads((AUDIT / 'evidence' / name).read_text())
-        assert probe['baseline'] == ledger['canonical_head'] and not probe['runtime_admission_created']
+        assert probe['baseline'] == evidence_head and not probe['runtime_admission_created']
         for path, expected in probe['source_files_sha256'].items():
-            assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, f'stale seepage dependency: {path}'
+            validate_source_dependency(path, expected)
         fixture = (ROOT / probe['fixture']).read_text()
         assert hashlib.sha256(fixture.encode()).hexdigest() == probe['fixture_sha256']
         for old, new in probe['fixture_replacements'].items():
@@ -275,7 +362,13 @@ def validate(require_closed=False):
         assert ledger['denominator_complete'] and census['census_complete'], 'denominator incomplete'
         assert not active and not qualification, f'{len(active)} implementation gaps and {len(qualification)} qualification-only capabilities unresolved'
         assert ledger['closure_statement'] == 'SWAP431 FUNCTIONAL COVERAGE CLOSED', 'closure statement'
-    return {'schema': 'swap5.coverage_integrity_result.v1', 'integrity': 'PASS', 'baseline': ledger['canonical_head'], 'source_members': len(members), 'capabilities': len(entries), 'dispositions': counts, 'denominator_complete': ledger['denominator_complete'], 'coverage_closed': ledger['coverage_closed'], 'claim': 'Evidence integrity only; not independent physics qualification or admission'}
+    return {'schema': 'swap5.coverage_integrity_result.v1', 'integrity': 'PASS',
+            'ledger_metadata_baseline': ledger['canonical_head'],
+            'historical_evidence_baseline': evidence_head,
+            'canonical_locator_head': ledger['canonical_locator_head'],
+            'source_members': len(members), 'capabilities': len(entries), 'dispositions': counts,
+            'denominator_complete': ledger['denominator_complete'], 'coverage_closed': ledger['coverage_closed'],
+            'claim': 'Historical evidence/source integrity and pinned later authority locators only; not current-canonical scientific qualification, complete semantic coverage or new admission'}
 
 
 if __name__ == '__main__':

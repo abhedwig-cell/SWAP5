@@ -43,11 +43,11 @@
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "internal_sequence_dependencies": [
         "SW431-CROP-ANNUAL",
-        "SW431-CROP-ROOTGROW"
+        "SW431-CROP-ROOTGROW",
+        "SW431-ROOT-DENSITY"
       ],
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81",
-        "SW431-ROOT-DENSITY"
+        "SW5-CROP-WOF81"
       ],
       "pr_closeout_20261015": {
         "canonical": "136787ef2927eb44967298bec7029c30e6434422",
@@ -389,9 +389,10 @@
       "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
       "capabilities": [
         "SW431-ROOT-OXYGEN-EMP",
-        "SW431-ROOT-OXYGEN-REPRO"
+        "SW431-ROOT-OXYGEN-REPRO",
+        "SW431-ROOT-DENSITY"
       ],
-      "next_action": "Migrate and qualify separate empirical SWOXYGEN=1 wet-head and SWOXYGEN=2/type2 reproduction factors; neither is supplied by Bartholomeus type1. Compose with the single root-sink owner and source stress attribution.",
+      "next_action": "Compose existing adaptive WROOT_NODE component with real daily accepted-layer uptake/stress, SWDMI2RD2 and atomic joint restart. Empirical oxygen is admitted within original bounds; reproduction/type2 remains separate.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",

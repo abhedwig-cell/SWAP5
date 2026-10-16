@@ -2,6 +2,37 @@
 
 Status: IN_PROGRESS. **Coverage is not closed and the 243-entry denominator is not declared exhaustive.**
 
+## Current reconciliation, 16 October 2026
+
+Current structural counts: **94 ADMITTED, 109 ACTIVE_MIGRATION, 14 SUPERSEDED,
+2 REJECTED, 20 NOT_APPLICABLE and 4 QUALIFICATION_ONLY; 113 unresolved.**
+The source review below and earlier dated receipts are historical snapshots.
+
+`SW431-ROOT-DENSITY` is corrected from ADMITTED to ACTIVE_MIGRATION. Its real
+component remains intact, but its initialization and candidate update have no
+production caller at canonical `02ee16779f2411faec7492f7048b7d36f6f850f8`.
+The passing PR1125 supply fixture assigns a static node array rather than
+executing density initialization/growth/death. The later admitted SWRD2
+contract explicitly leaves daily SWRDC1/SWDMI2RD2 composition open. This corrects
+the capability classification, not the code or actually qualified PR1125 scope.
+The supply dependency is restored; no standalone algorithm is declared absent.
+
+The historical scientific baseline is `78acf56f931763d2e1d4924b3dea0742f231d2e8`,
+not the later ledger metadata baseline `10345ab1`. The frozen scientific checkout
+adds exactly seven default-OFF profile-projection hunks. The checker proves
+that removing these additions recovers the entire historical backend body and
+rejects any different postimage. Later canonical file/field locators are checked
+at their explicit immutable refs, with bounded reachability kept separate from
+complete-capability admission. Descriptive PR/run labels are retained as labels,
+not accepted as file authority. The original immutable reviews are unchanged.
+
+Full integrity PASS here means historical evidence/source integrity, current
+ledger/queue consistency and pinned later authority locators. It is **not**
+current-canonical numerical qualification, semantic denominator completion or
+permission to merge this incomplete master audit as scientifically closed.
+
+## Earlier receipts and source-review snapshots
+
 Bounded MC-SOL01 receipt from PR #1228: linear matrix transport/sorption/decay, joint acceptance and fresh-process restart. Full sorption/decay capabilities remain ACTIVE_MIGRATION, aquifer remains REJECTED, and all243 dispositions/counts stay unchanged. The full master checker has its pre-existing stale inheritance baseline failure; this is not a whole-master admission.
 The machine-readable authority is `integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json`. Its latest canonical reconciliation pins `10345ab164f6778174c2fe8d0f08233a491fa4d7`.
 
