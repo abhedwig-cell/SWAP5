@@ -609,3 +609,22 @@ PR1072 remains draft because the semantic denominator and remaining production
 envelopes are incomplete, not because the historical inheritance check is still
 broken. Production source, reference, numerical policy, mass, rollback, restart
 and runtime interfaces are unchanged by this audit correction.
+
+
+## Daily adaptive root density and supply (2026-10-16)
+
+PR #1251, merge `b7faa67907e75d4447ceb126e40f9de47dbab165`, admits explicit SWRD2 daily adaptive
+root density with accepted uncompensated nodal potential/reduction receipts
+and optional SWDMI2RD2 supply. Actual task2 emergence initializes the owned
+profile; growth/death/finalization, current/lagged Richards uptake, atomic
+rollback/retry and opaque joint restart are qualified by100 local O0/O2
+programme executions and26 current falsification controls. Source-bound proof
+passes on the actual merge; original58 root and16 application outputs match
+their immutable authorities. The [bounded contract](../science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md)
+and existing root-growth/oxygen recovery record bind both evidence capsules.
+
+Harvest/rotation composition, native weather disk codec, advanced selectors
+and complete automatic legacy activation remain open. This admits a real
+production route without closing the full ROOT-DENSITY or ROOTGROW-SUPPLY
+source envelopes. It does not change the frozen Status-A denominator or claim
+a full moving F-CI, highest low-air or independent RossFast rerun.

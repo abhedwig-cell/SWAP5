@@ -1,8 +1,10 @@
 # Daily adaptive root density and supply composition
 
-Status: implemented candidate; qualification/admission state and raw evidence
-are maintained in the existing root-growth/oxygen status record, under
-`daily_density_supply_20261016`. PR1251 is the single work PR.
+Status: canonically admitted bounded production via PR1251, merge
+`b7faa67907e75d4447ceb126e40f9de47dbab165`. The existing root-growth/oxygen status
+record keeps the pre-merge qualification snapshot under
+`daily_density_supply_20261016` and the actual admission under
+`daily_density_supply_canonical_admission_20261016`.
 Baseline: `2194651f55881e5aa7ea7ffd3f9e2eebfae952f9`.
 Existing SWRD2 modes0/1 and their absent-density defaults remain authoritative.
 
@@ -55,7 +57,7 @@ Then real daily Richards uptake, growth/death/extension discrimination,
 current/lagged events, rejected/stale/duplicate replay and joint restart.
 Select only affected owner preservation after stable science. Exact source
 guards remain binding and cannot be relaxed to inherit old PASS. No full
-moving F-CI or highest low-air run is selected at this development checkpoint.
+moving F-CI or highest low-air run is selected for this bounded admission.
 No capability or master count promotion before actual bounded admission.
 
 The current proportional admission selection is the real39-provider crop and
