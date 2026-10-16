@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
+  "last_reconciled_upstream": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -2478,5 +2478,25 @@
       "four_current_bounded_routes": "PASS; all other239 capability rows unchanged",
       "full_master_or_new_numerical_qualification": "NOT_CLAIMED_METADATA_ONLY"
     }
+  },
+  "latest_concurrent_dcs1_retirement_20261016": {
+    "canonical_reconciled": "87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "master_predecessor": "68eec94d04f395948194a6b0c7a33b7e74bf279a",
+    "admitted_pr": 1254,
+    "admitted_merge": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+    "closed_without_merge": 1255,
+    "actual_closed_at": "2026-10-16T13:12:06Z",
+    "retained_source_branch": "work/irr-dcs1-root-material-20261016",
+    "retained_source_head": "292042479a5b3f3497b0d19c18f2cfd55d790599",
+    "retained_postimages": 16,
+    "retained_evidence": "All26 native executions,23 rejection controls, original inverse source projections and failed/censored attempts remain in both hash-bound ROOT_MATERIAL_DCS1 capsules at the retained commit. No source/evidence branch deletion.",
+    "canonical_authority": "integration/audits/MC_IRR01_STATUS.json concurrent_dcs1_candidate_retirement_20261016 at 87bc1b1bc0e33d5df9cc460c56f7773209d40931",
+    "decision": "Retire duplicate carrier after actual broader1254 admission, not an active uncovered migration. Preserve the generic-provider alternative and extra geometry/shape/nonfinite witnesses for selective existing-owner review. No blanket semantic replacement or whole-tree merge.",
+    "current_production_proof": "PASS actual current1254 source-bound qualification:42 physical,2 leaf and16 incumbent-owner programs retained; no new numerical run. Candidate1255 results are historical to its own7f5441c5 postimage, not current source.",
+    "all243_capability_rows_dispositions_and_counts": "UNCHANGED from68eec94d;94 ADMITTED,109 ACTIVE,4 QUALIFICATION_ONLY,113 unresolved,86 flagged rows",
+    "existing_next_packages": "SOL persistent pond/source mass; ordinary frost-OFF signed DIVDRA; separately contracted real TCS6 weekly progression. Shared runtime/restart admission remains serial.",
+    "validation": "PASS historical source/pinned-locator integrity,20 inheritance controls, documentation source and strict MkDocs16.19s. All243 capability rows and dispositions unchanged; numerical requalification NOT_SELECTED_METADATA_ONLY.",
+    "new_numerical_or_actions_runs": 0,
+    "full_master_qualification": false
   }
 }
