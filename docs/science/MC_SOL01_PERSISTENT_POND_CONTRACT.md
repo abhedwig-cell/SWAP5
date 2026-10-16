@@ -1,6 +1,7 @@
 # MC-SOL01 persistent surface/source successor
 
-Status: single-owner implementation, not canonical admission. Reconciled base
+Status: bounded canonical admission via PR1257 at
+`d52ed8934d8a6a0fe5e5976b6c05620f45658995`. Reconciled base
 `efe79f5fd58f564f54dde5ca5e575bb138c4bbb1`, including admitted PR1256.
 Recovery: `integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json`.
 

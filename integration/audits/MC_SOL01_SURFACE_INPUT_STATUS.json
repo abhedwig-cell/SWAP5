@@ -442,7 +442,7 @@
     "new_migration_started": false
   },
   "persistent_pond_successor_20261016": {
-    "stage": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED",
     "baseline": "efe79f5fd58f564f54dde5ca5e575bb138c4bbb1",
     "branch": "work/sol-pond-continuation-20261016",
     "scope": "Existing1256 matrix companion pond_mass is the only persistent chemical surface store; real accepted fixed-depth wet and dry-to-rewet water receipts, gross rain/irrigation and prescribed dry deposition; current V2 native/opaque owner unchanged; no general varying pond level, evaporation/runoff/macropores, aquifer or default activation.",
@@ -462,8 +462,8 @@
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
-    "next_action": "Verify remote qualified tree/live canonical/reviews and admit bounded1257, then master receipt. All selected runs terminal. No global capability promotion.",
+    "canonically_admitted": true,
+    "next_action": "Bounded1257 admitted. Reconcile master1072 without changing243 dispositions. Next SOL: independently contracted actual evolving pond hydrology and separately owned evaporation/runoff receipts. After the requested SOL scope is closed, assess remaining reproductive/translocation/death crop-N;1253 vegetative binding remains admitted. Aquifer stays excluded.",
     "test_selection": {
       "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
       "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
@@ -679,7 +679,7 @@
         "status": "REJECTED_DIRTY_PYTHON_CACHE_BEFORE_SCIENTIFIC_REVIEW"
       }
     ],
-    "recovery_point": "Existing PR1257 and this status; remote source07a12396/ea39f8e8. Current final exact execution and all prior failures retained in source-bound capsules; admission/control phase remains pending.",
+    "recovery_point": "Actual canonical merge d52ed8934d8a6a0fe5e5976b6c05620f45658995, source11c528ca and existing scientific/admission capsules; no selected qualification remains running.",
     "preserved": true,
     "admission_controls": {
       "negative_controls": 23,
@@ -697,6 +697,20 @@
         "members": 12
       }
     },
-    "regie_admission_selection": "Bounded existing-owner successor: actual source O0/O2, exact V1/V2/native/current owner proof and23 fail-closed controls. Only new opt-in consumers and observation metadata change; solver equations, committed state ownership,1256 reconstruction/codec and all incumbent bodies preserved. No full moving/highest/RossFast selected solely for added valid forcing. User autonomous continuation plus execution-protocol full-cycle authority; verify live canonical, reviews, PR head and merge tree before admitting."
+    "regie_admission_selection": "Bounded existing-owner successor: actual source O0/O2, exact V1/V2/native/current owner proof and23 fail-closed controls. Only new opt-in consumers and observation metadata change; solver equations, committed state ownership,1256 reconstruction/codec and all incumbent bodies preserved. No full moving/highest/RossFast selected solely for added valid forcing. User autonomous continuation plus execution-protocol full-cycle authority; verify live canonical, reviews, PR head and merge tree before admitting.",
+    "canonical_admission": {
+      "pr": 1257,
+      "merge_commit": "d52ed8934d8a6a0fe5e5976b6c05620f45658995",
+      "qualified_head": "500fdde80861916555b9e4241443e410f4c05c83",
+      "actual_tree": "56c5722d5946a9b6cbcedc82fdd7bee57066084e",
+      "source_tree": "11c528ca17bcbe6b44de23c8838f15224323e68e",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_whole_source_test_and_evidence_tree_identity": "PASS actual GitHub Git commit read",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "existing_hosted_runs": 0,
+      "hosted_pass_claimed": false,
+      "full_capability_or_census_promotion": false
+    }
   }
 }
