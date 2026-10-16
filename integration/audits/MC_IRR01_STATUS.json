@@ -5630,5 +5630,487 @@
       },
       "claim": "Bounded actual application admission; no full source envelope or whole-master scientific claim."
     }
+  },
+  "limit_completion_20261016": {
+    "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
+    "branch": "work/mc-irr01-limit-20261016",
+    "phase": "DISLAYER_JOINED_SOURCE_PERSISTED_FRESH_REQUALIFICATION_REQUIRED",
+    "implemented": true,
+    "tested": true,
+    "qualified": false,
+    "admitted": false,
+    "full_capability": false,
+    "closure_target": "Exactly SW431-IRR-LIMIT, the existing B1.11 DCSLIM postselection minimum/maximum depth modifier. No new bounded variant.",
+    "candidate_reconciliation": "Canonical PR1254 supplies current-root/material DCS1; PR1262 week progression/native; PR1267 all admitted managed native profiles. PR1255 duplicate retired. Search existing LIMIT irrigation PRs found historical owners and no open LIMIT-specific candidate; preserve existing MC-IRR01 workstream.",
+    "source_authority": {
+      "snapshot": "B1.11",
+      "member": "SWAP/irrigation.f90",
+      "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "source_domain": "DCSLIM0/1, IRGDEPMIN0..100mm, IRGDEPMAX>=min through1e7mm. DCS2 FID includes0. Apply max then min after DCS1 rain/adjustment or DCS2 interpolation, before salt and availability/rate."
+    },
+    "closure_conditions": [
+      {
+        "id": 1,
+        "condition": "Authenticated literal DCS1/DCS2+DCSLIM source versus both real production depth routes O0/O2: inactive, lower/interior/upper/equal/zero limits, full legal bound endpoints, raw zero with positive minimum, nonfinite/invalid rejection and immutable committed inputs."
+      },
+      {
+        "id": 2,
+        "condition": "Resolve any observed early zero-depth rejection before applying a positive minimum; retain exact positive-domain and invalid-domain results. No copied production clamp or second owner."
+      },
+      {
+        "id": 3,
+        "condition": "Actual authentic weather/current-root/material DCS1 and DCS2, selectors2/3/4/6/7/8, rain present/absent, lower/upper/inactive limits, sensor one/three-node spatial input, positive/zero rates. Use independent source depth and unchanged accepted water balance."
+      },
+      {
+        "id": 4,
+        "condition": "Exact continuous/opaque/fresh-process native tails at accepted day and active event, once-only selection, rejected trial/replay/retry and configuration binding. Reuse existing native codec and calendar owners."
+      },
+      {
+        "id": 5,
+        "condition": "Retain original AVAIL/TCS6/INF source/evidence qualification and owner entrypoints through exact reviewed successor projections, negative evidence controls, docs source and strict build. No fabricated PASS for omitted full-FCI/RossFast/highest low-air/Actions."
+      },
+      {
+        "id": 6,
+        "condition": "Reconcile live parallel changes, expected-head safe merge with qualified tree, postmerge proof; promote exactly existing LIMIT master row/queue and recovery, preserve other242 rows, validate census/inheritance/docs. State any unmet condition and retain ACTIVE until all pass."
+      }
+    ],
+    "prior_master_gates_reconciled": {
+      "material_root_DCS1": "Already admitted PR1254; actual cap extremes still need discriminating qualification.",
+      "broader_selectors": "Qualify modifier through currently admitted2/3/4/6/7/8 routes. Independent unadmitted selector physics are not silently promoted.",
+      "historical_parameter_calendar_activation": "DCSLIM is a postselection scalar with no calendar state or parser owner. Qualify full own source parameter domain and committed configuration/native binding, and gate inputs using existing admitted application selection/calendar. Generic legacy input parser and unrelated calendar/profile physics remain separately owned, as in full AVAIL/TCS6 authority. No claim all irrigation capabilities close.",
+      "native_disk": "Existing PR1267 supplies all admitted managed profiles; rerun changed depth composition, preserve bytes/codec."
+    },
+    "invariants": [
+      "single accepted water/crop/root/material/irrigation owner",
+      "no rejected publication",
+      "one calendar and native codec",
+      "unchanged solver/physical/mass thresholds",
+      "source order: depth/rain, clamp, salt, rate, availability"
+    ],
+    "test_selection": {
+      "direct": "Small actual depth policy +sensor process leaf with authenticated source O0/O2, estimated20s.",
+      "physical": "Fresh measured295-provider O0/O2 shared build, targeted LIMIT drivers and original AVAIL representative. Existing old compiled artifacts unavailable in this restored workspace; do not inherit compilation. Estimate700s justified by actual Richards/current crop/native contract.",
+      "full_fci": "NOT_SELECTED_IMPACT: local change to admitted depth modifier, select actual scientific composition and incumbent owner evidence rather than unchanged solvers.",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "github_actions": "NOT_SELECTED"
+    },
+    "next_action": "Complete current joint fresh O0/O2 application matrix, preserve original admitted DISLAYER/AVAIL evidence and native endpoints, then safe merge and exact one-row master promotion.",
+    "retained_failures": [
+      {
+        "kind": "test fixture compile",
+        "path": "limit-preflight/FAILED.json",
+        "cause": "Harness used non-existent hydraulic field; fixed fixture before source comparison."
+      },
+      {
+        "kind": "source preflight",
+        "path": "limit-source-preflight/FAILED.json",
+        "result": "FAIL actual O0:934 source vectors,147 rejects/mismatches, error stop10. Existing zero DCS2 rejection before limit and zero post-clamp event rejection. Raw retained; not qualified."
+      },
+      {
+        "kind": "strict small-harness compile diagnostic",
+        "path": "limit-small-preservation/FAILED.json",
+        "cause": "New intentional exact-zero test raises compare-reals warning under old -Werror. Harness now uses the existing targeted -Wno-error=compare-reals policy for the two zero-normalization modules; all other warnings remain errors and every scientific assertion/flag is retained. Final original small owner O0/O2 PASS."
+      }
+    ],
+    "source_findings": [
+      "DCS2 source FID includes0; both sensor early-zero check and management policy positive-only check prevent positive DCSLIM minimum from lifting it.",
+      "Zero maximum is source-valid; existing rate normalization rejected the zero contribution. Existing owner now returns no event/water while allowing accepted day consumption.",
+      "No formula, clamp, positive-depth domain, solver, mass threshold or restart representation changed."
+    ],
+    "direct_contract": {
+      "status": "PASS",
+      "vectors_per_optimization": 934,
+      "optimizations": [
+        0,
+        2
+      ],
+      "production_providers": 5,
+      "raw": "limit-direct",
+      "invalid_caps": 5
+    },
+    "pull_request": 1268,
+    "execution_commit": "df92b45930e6ec3a58f54f7015f12b5d7afdf3e3",
+    "source_tree": "b7c2ce0013a5bf2ba98e2ec22cad1518eb4ace7c",
+    "incumbent_result": {
+      "qualified": true,
+      "admitted": false,
+      "persistent_surface_restart_successor": true,
+      "material_root_irrigation_successor": true,
+      "b111_request_successor": true,
+      "managed_irrigation_successor": true,
+      "nfix_component_preserved": true,
+      "hyd_successor": true,
+      "daily_density_successor": true,
+      "int12c_successor": true,
+      "co2_successor": true,
+      "swrd3_successor": true,
+      "swrd2_successor": true,
+      "harvest_successor": true,
+      "surface_successor": true,
+      "calendar_successor": true,
+      "input_successor": true,
+      "thermal_successor": true,
+      "full_capability": true,
+      "pond_successor": true,
+      "dynamic_pond_successor": true,
+      "reproductive_successor": true,
+      "signed_divdra_successor": true,
+      "baseline": "4a3e1d6bdb66a235d8fd529e30d6def6457da2d1",
+      "source_tree": "bcb1b4f15d4fe72062842cc097b6d80eef176c84",
+      "current_source_tree": "bcb1b4f15d4fe72062842cc097b6d80eef176c84",
+      "classic_annual_successor": true,
+      "scope": "Full existing external-availability modifier contract composed through currently admitted physical/application profiles. Other selector, salt, hydraulic, crop or spatial capabilities retain their independent admission conditions; they are not automatic AVAIL dependencies.",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "authority_commit": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+      "authority_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+      "method": "ORIGINAL_MULTILEVEL_SOURCE_EVIDENCE_AND_POSTIMAGES_REVALIDATED_WITH_CANONICAL_ANNUAL_REFERENCE_INHERITANCE",
+      "multilevel_divdra_successor": true,
+      "reference_leaf_successor": true,
+      "annual_source_evidence_revalidated": true,
+      "multilevel_source_evidence_revalidated": true,
+      "original_multilevel_verifier_sha256": "97bd15ec5113e13b4b3546002d5ec681b4881d17a62efc77768ef1f5de5e537e",
+      "multilevel_archive": {
+        "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+        "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+      },
+      "annual_raw_proof_sha256": "9566685698a9ea0e1083ecbea50316fca08e56720524c4e98393ee649726050c",
+      "reference_admission": {
+        "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+        "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+        "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+        "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+        "drainage_numerical_input_intersection": [],
+        "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+      },
+      "projection_policy": "New multilevel type/procedure are not referenced by any tested295-provider source outside the defining module. Every existing line is byte-exact; no additional numerical qualification selected for unused additions.",
+      "tcs6_successor": true,
+      "incumbent": {
+        "qualified": true,
+        "admitted": false,
+        "persistent_surface_restart_successor": true,
+        "material_root_irrigation_successor": true,
+        "b111_request_successor": true,
+        "managed_irrigation_successor": true,
+        "nfix_component_preserved": true,
+        "hyd_successor": true,
+        "daily_density_successor": true,
+        "int12c_successor": true,
+        "co2_successor": true,
+        "swrd3_successor": true,
+        "swrd2_successor": true,
+        "harvest_successor": true,
+        "surface_successor": true,
+        "calendar_successor": true,
+        "input_successor": true,
+        "thermal_successor": true,
+        "full_capability": true,
+        "pond_successor": true,
+        "dynamic_pond_successor": true,
+        "reproductive_successor": true,
+        "signed_divdra_successor": true,
+        "baseline": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "source_tree": "e98209db9446743cad62521132040625ea750c18",
+        "current_source_tree": "e98209db9446743cad62521132040625ea750c18",
+        "classic_annual_successor": true,
+        "scope": "Classic B1.11 IDSL0/SWCROPSNM0 actual-crop source, gross mortality and FMR accepted-event/restart; existing typed valid domain. No Soil-N, automatic sowing/rotation or new numerical policy.",
+        "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "authority_commit": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+        "authority_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+        "method": "ORIGINAL_MULTILEVEL_SOURCE_EVIDENCE_AND_POSTIMAGES_REVALIDATED_WITH_CANONICAL_ANNUAL_REFERENCE_INHERITANCE",
+        "multilevel_divdra_successor": true,
+        "reference_leaf_successor": true,
+        "annual_source_evidence_revalidated": true,
+        "multilevel_source_evidence_revalidated": true,
+        "original_multilevel_verifier_sha256": "97bd15ec5113e13b4b3546002d5ec681b4881d17a62efc77768ef1f5de5e537e",
+        "multilevel_archive": {
+          "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+          "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+        },
+        "annual_raw_proof_sha256": "9566685698a9ea0e1083ecbea50316fca08e56720524c4e98393ee649726050c",
+        "reference_admission": {
+          "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+          "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+          "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+          "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+          "drainage_numerical_input_intersection": [],
+          "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+        },
+        "projection_policy": "New multilevel type/procedure are not referenced by any tested295-provider source outside the defining module. Every existing line is byte-exact; no additional numerical qualification selected for unused additions.",
+        "tcs6_successor": true,
+        "incumbent": {
+          "qualified": true,
+          "admitted": false,
+          "persistent_surface_restart_successor": true,
+          "material_root_irrigation_successor": true,
+          "b111_request_successor": true,
+          "managed_irrigation_successor": true,
+          "nfix_component_preserved": true,
+          "hyd_successor": true,
+          "daily_density_successor": true,
+          "int12c_successor": true,
+          "co2_successor": true,
+          "swrd3_successor": true,
+          "swrd2_successor": true,
+          "harvest_successor": true,
+          "surface_successor": true,
+          "calendar_successor": true,
+          "input_successor": true,
+          "thermal_successor": true,
+          "full_capability": false,
+          "pond_successor": true,
+          "dynamic_pond_successor": true,
+          "reproductive_successor": true,
+          "signed_divdra_successor": true,
+          "baseline": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
+          "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+          "current_source_tree": "9ce06f8381c006dbc16f95880632695abbec12d5",
+          "classic_annual_successor": true,
+          "scope": "Classic B1.11 IDSL0/SWCROPSNM0 actual-crop source, gross mortality and FMR accepted-event/restart; existing typed valid domain. No Soil-N, automatic sowing/rotation or new numerical policy.",
+          "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+          "highest_low_air": "NOT_SELECTED_UNCHANGED_POLICY",
+          "authority_commit": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
+          "authority_tree": "1cc46a74d9a725550f5b2c6533a483e4d7d5ab5d",
+          "method": "ORIGINAL_MULTILEVEL_SOURCE_EVIDENCE_AND_POSTIMAGES_REVALIDATED_WITH_CANONICAL_ANNUAL_REFERENCE_INHERITANCE",
+          "multilevel_divdra_successor": true,
+          "reference_leaf_successor": true,
+          "annual_source_evidence_revalidated": true,
+          "multilevel_source_evidence_revalidated": true,
+          "original_multilevel_verifier_sha256": "97bd15ec5113e13b4b3546002d5ec681b4881d17a62efc77768ef1f5de5e537e",
+          "multilevel_archive": {
+            "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
+            "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
+          },
+          "annual_raw_proof_sha256": "9566685698a9ea0e1083ecbea50316fca08e56720524c4e98393ee649726050c",
+          "reference_admission": {
+            "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+            "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+            "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+            "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+            "drainage_numerical_input_intersection": [],
+            "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+          },
+          "projection_policy": "New multilevel type/procedure are not referenced by any tested295-provider source outside the defining module. Every existing line is byte-exact; no additional numerical qualification selected for unused additions."
+        },
+        "science": {
+          "trajectories": 54,
+          "decoder_negatives": 208,
+          "direct_literal": true,
+          "source_unit_preservation": true,
+          "affected_owners": 6,
+          "continuous_opaque_fresh_native_exact": true
+        }
+      },
+      "science": {
+        "trajectories": 124,
+        "decoder_negatives": 480,
+        "literal_vectors_per_optimization": 404,
+        "continuous_opaque_fresh_native_exact": true,
+        "TCS6_native_bytes_preserved": true
+      },
+      "inf_split_successor": true,
+      "drainage_ledger_rows": [
+        "SW431-DRAIN-DIV-SIGNED",
+        "SW431-DRAIN-DIV-MULTI",
+        "SW431-DRAIN-INF-SPLIT"
+      ],
+      "availability_successor": true
+    },
+    "incumbent_proof_sha256": "7aa86d1ece9ad3f53516793d95ec0c9277a938aedac8f6b628ac59d3359cac60",
+    "small_original_preservation": "PASS original policy, root summary, TCS2346 DCS1/2, rejected requests/retry, event/week restart, nonfinite availability and48 literal source cases O0/O2.",
+    "postimages": {
+      "src/process/mod_irrigation_process.f90": {
+        "status": "M",
+        "blob": "5be25b2960978ae5d42c45df1187d00acb517d5e",
+        "sha256": "2757a7b3aa8d6db374839ee54f87b9e8f353bd78a1e02e50dc70437636b1468d"
+      },
+      "src/process/mod_scheduled_irrigation_management_policy.f90": {
+        "status": "M",
+        "blob": "d11319bd3e144dbe7452eef3217fbd26da3d0816",
+        "sha256": "325fe8968030b6bfc3d89541d5efda6f1eee3baba56979ff07e49be8e4175e6d"
+      },
+      "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90": {
+        "status": "M",
+        "blob": "41ed183d0dc70efd69ef2fa4170dacb48f6d0179",
+        "sha256": "948e05c4d1bbf5b45dcd728dd2f9627199cc3552ad74bad98e262fe62478a0a0"
+      },
+      "tests/mc-irr01/check_depth_limit_controls.py": {
+        "status": "A",
+        "blob": "c90bea2b1ea3ee85f54f709ba0da90ba8181890d",
+        "sha256": "a3109ac035af831d39517016d31976354e9ab24d7f5ec78846ceb1e7ba96236f"
+      },
+      "tests/mc-irr01/depth_limit_cycle_driver.py": {
+        "status": "A",
+        "blob": "359e927f29be2bfc035665a7832b77785fc2f621",
+        "sha256": "730e2ab8c586c4bf4084c50b8aeaaa1f2ae4bda39fcc613fc6cd409183215f5e"
+      },
+      "tests/mc-irr01/run_depth_limit_application.py": {
+        "status": "A",
+        "blob": "1f1880abebc52b3992e14fe18cd7021c3e3315c9",
+        "sha256": "1c685a8735ae7a405a32b5005d43f43e3429de15910a126b07f943385e9629a0"
+      },
+      "tests/mc-irr01/run_depth_limit_contract.py": {
+        "status": "A",
+        "blob": "22eadcc441714f48de1f9491db041cc101b80459",
+        "sha256": "7128892d468480ecbde8f9891b7bdc5157c43affddf35985817e43fc518e6414"
+      },
+      "tests/mc-irr01/run_mc_irr01_management_policy.sh": {
+        "status": "M",
+        "blob": "15955f0fb2128400e6a389d60e4fdbc1a22cd513",
+        "sha256": "aea5069cdabf32369cb468de6baa96b080b65ceca45cfb52ecd9997125770b1b"
+      },
+      "tests/mc-irr01/verify_availability_successor.py": {
+        "status": "M",
+        "blob": "ef6e05ca71f032756c4784ff46a6067031ac8d77",
+        "sha256": "6bd071446be6e6dee2ca53d060b0ab85acbcdf829f950939022fb5c09b336489"
+      },
+      "tests/mc-irr01/verify_depth_limit_successor.py": {
+        "status": "A",
+        "blob": "1cb1c9c0ae42c6ac928d2acb12c969b6db36358e",
+        "sha256": "6c78633e8ab6bb35c775e24efe74cd7cfb438ab70eef80cf2460b3e02256ca80"
+      }
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_LIMIT_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "532ed33c72a27aa38361f9acc8a6621f7329d838af992ca544150df962adc314",
+      "decoded_bytes": 256148,
+      "members": 3637
+    },
+    "persisted": true,
+    "qualification_results": {
+      "status": "PASS_SCIENCE",
+      "trajectory_programs": 160,
+      "decoder_negatives": 560,
+      "literal_vectors_per_optimization": 934,
+      "optimizations": [
+        0,
+        2
+      ],
+      "fresh_provider_compiles_per_optimization": 295,
+      "physical_wall_seconds": 672.2226199630004,
+      "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+      "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS",
+      "admission": "PENDING",
+      "master": "PENDING"
+    },
+    "closure_results": [
+      {
+        "condition": 1,
+        "status": "PASS"
+      },
+      {
+        "condition": 2,
+        "status": "PASS"
+      },
+      {
+        "condition": 3,
+        "status": "PASS"
+      },
+      {
+        "condition": 4,
+        "status": "PASS"
+      },
+      {
+        "condition": 5,
+        "status": "PENDING"
+      },
+      {
+        "condition": 6,
+        "status": "PENDING"
+      }
+    ],
+    "prior_science_before_dislayer_reconciliation": {
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_IRR01_LIMIT_SCIENCE_20261016.tar.xz.b64",
+        "decoded_sha256": "532ed33c72a27aa38361f9acc8a6621f7329d838af992ca544150df962adc314",
+        "decoded_bytes": 256148,
+        "members": 3637
+      },
+      "qualification_results": {
+        "status": "PASS_SCIENCE",
+        "trajectory_programs": 160,
+        "decoder_negatives": 560,
+        "literal_vectors_per_optimization": 934,
+        "optimizations": [
+          0,
+          2
+        ],
+        "fresh_provider_compiles_per_optimization": 295,
+        "physical_wall_seconds": 672.2226199630004,
+        "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+        "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS",
+        "admission": "PENDING",
+        "master": "PENDING"
+      },
+      "execution_commit": "df92b45930e6ec3a58f54f7015f12b5d7afdf3e3",
+      "source_tree": "b7c2ce0013a5bf2ba98e2ec22cad1518eb4ace7c",
+      "postimages": {
+        "src/process/mod_irrigation_process.f90": {
+          "status": "M",
+          "blob": "5be25b2960978ae5d42c45df1187d00acb517d5e",
+          "sha256": "2757a7b3aa8d6db374839ee54f87b9e8f353bd78a1e02e50dc70437636b1468d"
+        },
+        "src/process/mod_scheduled_irrigation_management_policy.f90": {
+          "status": "M",
+          "blob": "d11319bd3e144dbe7452eef3217fbd26da3d0816",
+          "sha256": "325fe8968030b6bfc3d89541d5efda6f1eee3baba56979ff07e49be8e4175e6d"
+        },
+        "src/runtime/mod_fmr_scheduled_management_irrigation_application.f90": {
+          "status": "M",
+          "blob": "41ed183d0dc70efd69ef2fa4170dacb48f6d0179",
+          "sha256": "948e05c4d1bbf5b45dcd728dd2f9627199cc3552ad74bad98e262fe62478a0a0"
+        },
+        "tests/mc-irr01/check_depth_limit_controls.py": {
+          "status": "A",
+          "blob": "c90bea2b1ea3ee85f54f709ba0da90ba8181890d",
+          "sha256": "a3109ac035af831d39517016d31976354e9ab24d7f5ec78846ceb1e7ba96236f"
+        },
+        "tests/mc-irr01/depth_limit_cycle_driver.py": {
+          "status": "A",
+          "blob": "359e927f29be2bfc035665a7832b77785fc2f621",
+          "sha256": "730e2ab8c586c4bf4084c50b8aeaaa1f2ae4bda39fcc613fc6cd409183215f5e"
+        },
+        "tests/mc-irr01/run_depth_limit_application.py": {
+          "status": "A",
+          "blob": "1f1880abebc52b3992e14fe18cd7021c3e3315c9",
+          "sha256": "1c685a8735ae7a405a32b5005d43f43e3429de15910a126b07f943385e9629a0"
+        },
+        "tests/mc-irr01/run_depth_limit_contract.py": {
+          "status": "A",
+          "blob": "22eadcc441714f48de1f9491db041cc101b80459",
+          "sha256": "7128892d468480ecbde8f9891b7bdc5157c43affddf35985817e43fc518e6414"
+        },
+        "tests/mc-irr01/run_mc_irr01_management_policy.sh": {
+          "status": "M",
+          "blob": "15955f0fb2128400e6a389d60e4fdbc1a22cd513",
+          "sha256": "aea5069cdabf32369cb468de6baa96b080b65ceca45cfb52ecd9997125770b1b"
+        },
+        "tests/mc-irr01/verify_availability_successor.py": {
+          "status": "M",
+          "blob": "ef6e05ca71f032756c4784ff46a6067031ac8d77",
+          "sha256": "6bd071446be6e6dee2ca53d060b0ab85acbcdf829f950939022fb5c09b336489"
+        },
+        "tests/mc-irr01/verify_depth_limit_successor.py": {
+          "status": "A",
+          "blob": "1cb1c9c0ae42c6ac928d2acb12c969b6db36358e",
+          "sha256": "6c78633e8ab6bb35c775e24efe74cd7cfb438ab70eef80cf2460b3e02256ca80"
+        }
+      }
+    },
+    "admission_baseline": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+    "canonical_reconciliation": {
+      "canonical": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+      "master": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
+      "scope": "Parallel full DISLAYER/source04 admitted; preserve every added reference, owner, test, source and admission byte. Only shared availability guard has both successor hooks, LIMIT first.",
+      "actual_compiled_intersection": [
+        "src/process/mod_drainage_spatial_distribution.f90",
+        "src/process/mod_frost_divdra_drainage_effect.f90"
+      ],
+      "decision": "Both add optional procedure arguments. Rebuild all295 current application providers and execute every160 trajectory and560 decoder negative fresh O0/O2; do not inherit ABI-compatible objects from earlier LIMIT execution. Source and references are not altered to fit old evidence.",
+      "expected_seconds": 700,
+      "independent_owner": "Revalidate original admitted DISLAYER and its8 evidence/3 reference negatives at immutable741, exact LIMIT source and native outputs on joined candidate. No broad unrelated qualification."
+    }
   }
 }

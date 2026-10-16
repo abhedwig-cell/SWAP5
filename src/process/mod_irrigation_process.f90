@@ -430,7 +430,7 @@ contains
       return
     end if
     diagnostics%interpolated_depth = depth
-    if (depth <= 0.0_real64) then
+    if (depth < 0.0_real64) then
       diagnostics%status = IRRIGATION_INVALID_EVENT
       return
     end if
@@ -726,8 +726,14 @@ contains
     effective_rate = 0.0_real64
     duration = 0.0_real64
     ok = .false.
-    if (.not. ieee_is_finite(depth) .or. depth <= 0.0_real64) return
+    if (.not. ieee_is_finite(depth) .or. depth < 0.0_real64) return
     if (.not. ieee_is_finite(configured_rate) .or. configured_rate < 0.0_real64) return
+    ! Source DCSLIM may reduce a valid gift to zero. It consumes the
+    ! selection opportunity but contributes no event or water.
+    if (depth == 0.0_real64) then
+      ok = .true.
+      return
+    end if
     if (configured_rate <= epsilon(1.0_real64)) then
       effective_rate = depth
       duration = 1.0_real64

@@ -163,7 +163,7 @@ contains
       result%selected_depth_cm = max(0.0_real64, request%field_capacity_deficit_cm + 0.1_real64*adjustment-rain_reduction)
     case (2)
       call afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, request%dvs, fixed_depth, ok)
-      if (.not. ok .or. fixed_depth <= 0.0_real64) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
+      if (.not. ok .or. fixed_depth < 0.0_real64) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
       result%selected_depth_cm = fixed_depth
     case default
       status = IRR_MGMT_INVALID_PARAMETERS
@@ -231,7 +231,7 @@ contains
           parameters%rainfall_threshold_cm>1000.0_real64) return
     case(2)
       if (.not. valid_table(parameters%dcs2_dvs,parameters%dcs2_depth_cm,parameters%dcs2_knot_count)) return
-      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<=0.0_real64)) return
+      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<0.0_real64)) return
     case default
       return
     end select

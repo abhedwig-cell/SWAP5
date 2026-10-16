@@ -96,12 +96,27 @@ def incumbent(source_only=False):
  if not source_only:require(old_result['qualified']and old_result['availability_successor']and old_result['inf_split_successor'],'unqualified incumbent')
  return old_result
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_depth_limit_successor as successor
+  return successor.verify_source(git_reader)
  require(git_reader is None,'unregistered projected reader');loaded();prior=incumbent(True)
  return {**prior,'dislayer_successor':True,'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_depth_limit_successor as successor
+  return successor.verify_qualification()
  loaded();prior=incumbent(False)
  return {**prior,'incumbent':prior,'dislayer_successor':True,'qualified':True,'full_capability':True,'drainage_ledger_rows':['SW431-DRAIN-DIV-SIGNED','SW431-DRAIN-DIV-MULTI','SW431-DRAIN-INF-SPLIT','SW431-DRAIN-DISLAYER'],'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+ if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_depth_limit_successor as successor
+  if '--self-test'in sys.argv:
+   root=ROOT.parent/'limit-incumbent-741'
+   if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),'741f8a61b66dc8a91b3e18edfcb8121548b61f64'],cwd=ROOT,check=True,capture_output=True)
+   require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()=='741f8a61b66dc8a91b3e18edfcb8121548b61f64','LIMIT immutable drainage moved')
+   cp=subprocess.run([sys.executable,'-B','tests/fmig431/verify_dislayer_successor.py','--self-test'],cwd=root,capture_output=True,text=True)
+   require(cp.returncode==0,'original DISLAYER controls rejected '+cp.stderr[-2000:]);print(cp.stdout,end='')
+  print(json.dumps(successor.verify_qualification(),indent=2));return
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');args=ap.parse_args();s,r=loaded()
  if args.self_test:
   names=[]

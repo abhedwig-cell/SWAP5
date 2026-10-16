@@ -13,8 +13,10 @@ for opt in 0 2; do
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_scheduled_irrigation_management_policy.f90 -o "$OUT/policy.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_irrigation_availability_policy.f90 -o "$OUT/availability.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_irrigation_root_zone_summary.f90 -o "$OUT/rootzone.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_irrigation_process.f90 -o "$OUT/irrigation.o"
-  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 -o "$OUT/application.o"
+  # Exact zero is source-authorized absence of a gift, not a tolerance comparison.
+  gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c src/process/mod_irrigation_process.f90 -o "$OUT/irrigation.o"
+  # Exact zero is source-authorized absence of a gift, not a tolerance comparison.
+  gfortran "${COMMON[@]}" -Wno-error=compare-reals -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_scheduled_management_irrigation_application.f90 -o "$OUT/application.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c src/runtime/mod_fmr_irrigation_management_restart.f90 -o "$OUT/restart.o"
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c tests/mc-irr01/test_mc_irr01_management_policy.f90 -o "$OUT/test.o"
   gfortran -O"$opt" "$OUT/solver.o" "$OUT/view.o" "$OUT/policy.o" "$OUT/availability.o" "$OUT/rootzone.o" "$OUT/irrigation.o" "$OUT/application.o" "$OUT/test.o" -o "$OUT/test"
