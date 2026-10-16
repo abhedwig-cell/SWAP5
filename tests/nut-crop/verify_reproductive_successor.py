@@ -26,7 +26,10 @@ def verify_source(git_reader=None):
  for p,v in r['postimages'].items():check(g('rev-parse','HEAD:'+p)==v['blob']==blob((ROOT/p).read_bytes()),'reproductive postimage '+p)
  check(g('rev-parse','HEAD:src')==r['source_tree'],'reproductive source tree')
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'reproductive reference drift')
- return dict(baseline=BASE,source_tree=r['source_tree'],current_source_tree=r['source_tree'],reproductive_successor=True,qualified=False,admitted=False)
+ flags={n:True for n in ('pond_successor','dynamic_pond_successor','persistent_surface_restart_successor','material_root_irrigation_successor',
+  'b111_request_successor','managed_irrigation_successor','nfix_component_preserved','hyd_successor','daily_density_successor',
+  'int12c_successor','co2_successor','swrd3_successor','swrd2_successor','harvest_successor','surface_successor','calendar_successor','input_successor','thermal_successor')}
+ return dict(baseline=BASE,source_tree=r['source_tree'],current_source_tree=r['source_tree'],reproductive_successor=True,qualified=False,admitted=False,**flags)
 def evidence():
  d=record()['science_archive'];raw=base64.b64decode((ROOT/d['path']).read_bytes())
  check(sha(raw)==d['decoded_sha256'],'reproductive capsule drift')

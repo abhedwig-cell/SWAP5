@@ -1,7 +1,9 @@
 # MC-NUT01 bounded B1.11 reproductive and death process
 
-Status: proposed implementation after source assessment PR1259 and independent
-balance review. Baseline canonical71551d19d7f9a5e973d2deff5347049174502cbf.
+Status: qualified bounded implementation and affected O0/O2 physical science;
+34 fail-closed controls, both actual owner entrypoints and strict docs pass.
+Canonical admission pending. Source assessment PR1259 and independent balance
+review remain the authority for selecting these literal source laws. Baseline canonical71551d19d7f9a5e973d2deff5347049174502cbf.
 Owning recovery: `integration/audits/MC_NUT_SOL_STATUS.json`.
 
 Implement literal B1.11 demand354..370 and update197..255 from the immutable
@@ -51,3 +53,34 @@ programs. Record compile/link/native costs. Reuse build products only within an
 identity-controlled execution. No full FCI, unrelated Richards/RossFast or highest
 low-air qualification is selected solely for source imports or new valid inputs.
 No full historical capability/count promotion follows from this bounded option.
+
+
+## Executable bounded evidence
+
+The persisted execution4117743b606f86b890fb997b238e97e04add2b65 passes the small
+real two-provider process and the actual crop/Soil-N binding. The small corpus
+accepts2083 and refuses23 cases per optimization. Independent review da6f5657
+adds logarithmic organ/TCNT and prior-loss probes; it does not extend runtime
+admission by itself. The existing aggregate loss ledger keeps its representation;
+comparison with historical separate-organ accumulated losses uses the existing
+2048epsilon budget authority.
+
+The affected physical build runs72 literal daily cases per optimization, actual
+Full Richards/material/source N and delayed full-return pending incorporation,
+rejected trials, duplicate clocks and continuous/opaque/native fresh-process
+continuation. All four selected policy values, absent policy and the separate1253
+profile are refused when inconsistent with native identity. The default and1253
+native endpoints/restarts remain byte-identical to the admitted1253 capsule.
+Existing18 default crop decoder negatives remain executed. The active storage
+threshold in the coupled fixture is explicit DVSNT=.4 at initial DVS=.5; the daily
+matrix also tests DVS1.2 with consistent post-anthesis continuation. This qualifies
+selected process/coupling contracts, not a complete historical crop trajectory.
+
+Measured one full affected build:222.325s providers,47.003s driver compilation,
+4.487s linking and190.721s native execution (464.535s total). The small direct day
+feedback closure costs31.317s; no unrelated solver or full FCI run is selected.
+Source-bound raw events, immutable literal blocks, rejected development fixtures,
+complete original-body insertion projections and bytes are retained in the
+owning `reproductive_process_20261016` science capsule. PR1260 is the bounded
+production admission candidate; exact canonical merge identity is recorded in
+that owner after admission.

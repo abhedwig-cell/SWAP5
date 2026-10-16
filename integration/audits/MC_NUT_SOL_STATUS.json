@@ -585,7 +585,7 @@
   "reproductive_process_20261016": {
     "baseline": "71551d19d7f9a5e973d2deff5347049174502cbf",
     "branch": "work/nut-reproductive-process-20261016",
-    "stage": "IMPLEMENTED_LOCAL_PROCESS_AND_DAILY_PASS_PHYSICAL_PENDING",
+    "stage": "QUALIFIED_BOUNDED_NOT_ADMITTED",
     "contract": "docs/science/MC_NUT01_REPRODUCTIVE_PROCESS_CONTRACT_20261016.md",
     "scope": "Bounded source-order reproduction/translocation/residual death in existing one-day N owner; new explicit policy mutually exclusive with1253, default unchanged. No new committed pool/codec.",
     "invariants": [
@@ -597,15 +597,15 @@
     ],
     "test_selection": {
       "small": "2-provider process with literal source oracle, O0/O2, strict runtime/FP checks; expected<5s",
-      "daily": "real existing crop/Soil-N and selected process; expected<30s",
+      "daily": "Real existing crop/Soil-N and selected process; expected<30s, actual31.317s direct feedback including providers/driver/link/native. No repeated broad run.",
       "stable": "one measured full affected crop supply build plus originaldefault/1253/mineral/reactive native programs, new joint fresh-process continuation and corruption controls; expected450s, selected because actual request/apply/configuration and state/caller semantics change",
       "unchanged": "No WOFOST81 source formula, existing1253 binding, solver, physical water state or native codec mutation selected",
       "broad": "Full FCI/RossFast/highest-low-air NOT_SELECTED_IMPACT; owner source/evidence gates required"
     },
-    "next_safe_step": "One stable selected physical build, actual pending-material composition and fresh-process restart, default/1253 native preservation; then fail-closed owner qualification.",
+    "next_safe_step": "Review exact remote head/base/checks/threads and safely merge PR1260; record actual canonical source/merge identity and update bounded master receipt.",
     "implementation": "Explicit source policy and private prepared context connected to existing daily soil trial and existing crop N owner; absent and PR1253 apply calls unchanged.",
     "local_feedback": {
-      "process": "n-repro-process-04 O0/O2 PASS, 2048 random plus boundary/invalid cases; final persisted execution pending",
+      "process": "Final persisted4117743 execution: O0/O2 PASS, 2083 accepted/23 refused per opt, immutable original source blocks and independent guard checks.",
       "daily": "n-repro-day-02 O0/O2 PASS, 72 literal real-soil cases per optimization plus donor-overdraw and replay rejection",
       "retained_failures": [
         "n-repro-process-01/02 invalid test death fixture > bounded DM corrected",
@@ -616,7 +616,96 @@
       "canonical": "da6f5657b6d68885a4b2a5e75eab527ad6f49bc5",
       "scope": "Independent process/direct-day review, no production/test dependency delta; preserved in full. No numerical repeat selected.",
       "independent_process_sha256": "913a515e869e7093155750e91dbdbabb4919a156bf46c5821c723017a7f4ae95"
-    }
+    },
+    "execution_commit": "4117743b606f86b890fb997b238e97e04add2b65",
+    "source_tree": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_PROCESS_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "e11720f8a4079435b6a44a50184ffc52d13aa9659ae576a5e30eabcc717a0a75",
+      "decoded_bytes": 55856,
+      "members": 1935
+    },
+    "postimages": {
+      "src/crop/mod_b111_reproductive_n_process.f90": {
+        "status": "A",
+        "blob": "7471d12f1b2f203415db0a5b28c83c3cce94b02f"
+      },
+      "src/crop/mod_crop_b111_reproductive_binding.f90": {
+        "status": "A",
+        "blob": "dad1308534d9276f7ffa0a90d89ea2a54de0fc1d"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "07876e3d535f9108a192d2f7d5b2f2f136b4020a"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "1cc9039f6d5b1f0cec2d081d3676342d60e78f0e"
+      },
+      "tests/nut-crop/check_reproductive_controls.py": {
+        "status": "A",
+        "blob": "0496cc08641eae3e3d69324388e9f70bcace6483"
+      },
+      "tests/nut-crop/run_reproductive_binding.py": {
+        "status": "A",
+        "blob": "6b3ba74816014588bb9b793b081bf0c36a40d6a5"
+      },
+      "tests/nut-crop/run_reproductive_process.py": {
+        "status": "A",
+        "blob": "8339b6102e1d03102602777dc73b66ad157b067b"
+      },
+      "tests/nut-crop/test_b111_reproductive_day.f90": {
+        "status": "A",
+        "blob": "68db9c592eea89abef8b5cacdc4d0e357cded1a3"
+      },
+      "tests/nut-crop/test_reproductive_joint.f90": {
+        "status": "A",
+        "blob": "c676553bb1dfac425ff5e0d0e3b4d8dc1f2fdcdb"
+      },
+      "tests/nut-crop/test_reproductive_process.f90": {
+        "status": "A",
+        "blob": "c096527351553bfc7604486d6bc1cf95ddc25689"
+      },
+      "tests/nut-crop/verify_reproductive_successor.py": {
+        "status": "A",
+        "blob": "52025a5e409e2638ba82a18588c0a143317db522"
+      },
+      "tests/nut-sol/check_dynamic_pond_controls.py": {
+        "status": "M",
+        "blob": "9b1892fba1520c38a31b4d61f567971651edd881"
+      },
+      "tests/nut-sol/verify_dynamic_pond_successor.py": {
+        "status": "M",
+        "blob": "b635a6c4f5d4c9cfcdc0e336d3f66fb081079300"
+      }
+    },
+    "cost_seconds": {
+      "compile": 222.32456987706246,
+      "driver_compile": 47.00289655299275,
+      "link": 4.486756418002187,
+      "native": 190.72063837609312
+    },
+    "process_cost_seconds": {
+      "compile": 0.8160445819812594,
+      "link": 0.11170307699649129,
+      "native": 0.008392820003791712
+    },
+    "qualification_scope": "72 literal daily cases per optimization; actual Richards/material/source N/delayed pending/replay/opaque/native/fresh-process; all4 source policy fields, absent and1253 mismatch refusals; default1253 restart/endpoint exact bytes. No aquifer or complete historical activation.",
+    "pr": 1260,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_PROCESS_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "c17c1f30e56e170eb903405181f79940b4aa1091fee4728869b8ef1fab6d08fb",
+      "decoded_bytes": 12680,
+      "members": 7
+    },
+    "admission_controls": 34,
+    "owning_fci_entries": [
+      "--sol-pond-owner-only PASS",
+      "--int12c-owner-only PASS"
+    ],
+    "docs": "source check and strict build PASS",
+    "full_capability": false,
+    "master_disposition_changes": 0
   },
   "reproductive_candidate_independent_review_20261016": {
     "stage": "PROCESS_AND_DIRECT_DAY_REVIEW_PASS_NOT_RUNTIME_ADMISSION",
