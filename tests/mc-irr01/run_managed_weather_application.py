@@ -14,9 +14,10 @@ replace("'raintb':b'MC_MET01_AUTHENTIC_PULSE_OFF_NEXT_DAY_RESTART_MASS=PASS'", "
 replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", "    inputs['tests/mc-irr01/run_managed_weather_application.py']=sha(ROOT/'tests/mc-irr01/run_managed_weather_application.py')\n    inputs.update({p:sha(ROOT/p) for p in PINS})")
 replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", "    drivers['allocation_guards']=ROOT/'tests/f-app07/test_mc_irr01_allocation_guards.f90'\n    inputs['tests/f-app07/test_mc_irr01_allocation_guards.f90']=sha(ROOT/'tests/f-app07/test_mc_irr01_allocation_guards.f90')\n    inputs.update({p:sha(ROOT/p) for p in PINS})")
 replace("'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'", "'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS','allocation_guards':b'MC_IRR01_ALLOCATION_GUARDS=PASS'")
-replace("for mode in ['continuous','restart']:", "for mode in (['continuous']if name=='allocation_guards'else ['continuous','restart']):")
+replace("for mode in ['continuous','restart']:", "for mode in (['continuous']if name in ('allocation_guards','managed_rooted7','managed_rooted8')else ['continuous','restart']):")
 replace("if pair[0]!=pair[1]:", "if len(pair)>1 and pair[0]!=pair[1]:")
-replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", """    drivers['managed_rooted']=rooted(ROOT,output/'managed_rooted.f90')
+replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", """    drivers['managed_rooted7']=rooted(ROOT,output/'managed_rooted7.f90',7,1)
+    drivers['managed_rooted8']=rooted(ROOT,output/'managed_rooted8.f90',8,3)
     oxygen_oracle(ROOT,fixture/'oxygen_oracle.f90');co2_oracle(ROOT,fixture/'co2_oracle.f90')
     for p in ['tests/mc-irr01/managed_root_cycle_driver.py','tests/root-growth/density_cycle_driver.py',
       'tests/root-growth/swrd2_cycle_driver.py','tests/root-growth/swrd3_cycle_driver.py',
@@ -25,7 +26,7 @@ replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", """    drivers['mana
       inputs[p]=sha(ROOT/p)
     inputs.update({p:sha(ROOT/p) for p in PINS})""")
 replace("'task2_oracle.f90','preparation_oracle.f90','sowing_oracle.f90']", "'task2_oracle.f90','preparation_oracle.f90','sowing_oracle.f90','oxygen_oracle.f90','co2_oracle.f90']")
-replace("'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'", "'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS','managed_rooted':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS'")
+replace("'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'", "'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS','managed_rooted7':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS','managed_rooted8':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS'")
 sys.path[:0]=[str(ROOT/'tests/mc-irr01'),str(ROOT/'tests/root-growth'),str(ROOT/'tests/crop-cycle'),str(ROOT/'tests/crop-co2')]
 from managed_root_cycle_driver import prepare as rooted
 from oxygen_source_oracle import prepare as oxygen_oracle

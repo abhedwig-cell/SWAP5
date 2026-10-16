@@ -41,6 +41,11 @@
       call ta%copy_committed_for_crop(1,origin,st);before=managed_soil_values(origin)
       call ta%run_weather_interval(wr,start,mid,forcing_config,canopy,rr,st)
       call require(st/=FMR_APP_BOOT_OK,'managed cannot use caller canopy instead of crop authority')
+      call cs%snapshot(physical,ok);call require(ok,'managed foreign owner negative snapshot')
+      call none%initialize(999_int64,physical,ok,start);call require(ok,'managed foreign same-time crop owner')
+      call ta%run_weather_interval(wr,start,mid,forcing_config,canopy,rr,st,none,allocation)
+      call require(st/=FMR_APP_BOOT_OK,'foreign crop lineage cannot select or publish irrigation')
+      none=kernel_committed_state_t()
       do neg=1,6
         wrong=allocation
         select case(neg)
@@ -88,7 +93,7 @@
         call require(delivered==previous.and.ir%receipt%allocation%revision==2_int64,'restore frozen amount and provider')
       end if
       wrong=fmr_irrigation_allocation_t() ! expired/missing/changing external provider is irrelevant inside selected event.
-      call ta%run_weather_interval(wr,mid,finish,forcing_config,canopy,rr,st,cs,wrong)
+      call ta%run_weather_interval(wr,mid,start+9._real64/64._real64,forcing_config,canopy,rr,st,cs,wrong)
       if(st/=FMR_APP_BOOT_OK)then
         print *,'MANAGED_TAIL_STATUS',st,criterion,nodes,day0
         if(allocated(rr))print *,'MANAGED_TAIL_KERNEL',rr%kernel_status,rr%temporal_rejections,rr%accepted_substeps
@@ -103,6 +108,16 @@
       call require(abs(delivered-real(nodes,real64)*0.2_real64)<1.e-13_real64.and..not.ir%management%event%active_event, &
         'complete gift once; tail and repeat sensor cannot reselect today')
       call require(selection==swap_weather_calendar_day(1999,1,day0),'selection identity is authenticated weather day')
+      ! Use the admitted weather owner's64-interval daily schedule for the
+      ! remaining full day. A single0.875-day aggregate accumulated1608
+      ! accepted substeps and2.535e-12cm residual; retained as failed evidence.
+      ! Keep full authentic forcing, physical duration and1e-12 assertion.
+      do q=9,63
+        call ta%run_weather_interval(wr,start+real(q,real64)/64._real64, &
+          start+real(q+1,real64)/64._real64,forcing_config,canopy,rr,st,cs,wrong)
+        call require(st==FMR_APP_BOOT_OK,'managed full daily source-off continuation')
+        call managed_mass(rr,wrain,wet,0._real64)
+      end do
       call ta%copy_committed_for_crop(1,ss,st);after=managed_soil_values(ss)
       do j=1,size(after)
         write(*,'(a,4(i0,1x),z16.16)')'MANAGED_FINAL_BITS=',criterion,nodes,day0,j,transfer(after(j),0_int64)
@@ -194,7 +209,7 @@
     type(fmr_serialized_column_result_t),allocatable::rr(:),cr(:)
     real(real64),allocatable::before(:),after(:),expected(:)
     real(real64)::amount,initial_amount
-    real(real64),parameter::short_end=1.e-6_real64
+    real(real64)::short_end
     integer::st,j,selection,initial_selection
     tc=config;tc%numerical%max_committed_substeps=1
     tc%tiles(1)%base_forcing%subsurface_irrigation_source=0._real64
@@ -235,8 +250,19 @@
       call ta%restore_weather_crop_continuation(saved,cs,st)
       call require(st==FMR_APP_BOOT_OK,'managed restart after actual rejected internally progressed candidate')
     end if
-    call ta%run_weather_interval(wr,0._real64,short_end,forcing_config,canopy,rr,st,cs,allocation)
-    call require(st==FMR_APP_BOOT_OK.and.rr(1)%committed,'managed smaller retry commits')
+    short_end=1.e-6_real64
+    do j=1,21
+      call ta%run_weather_interval(wr,0._real64,short_end,forcing_config,canopy,rr,st,cs,allocation)
+      if(st==FMR_APP_BOOT_OK)exit
+      call ta%copy_committed_for_crop(1,ss,st);after=managed_soil_values(ss)
+      call require(all(transfer(before,[0_int64],size(before))==transfer(after,[0_int64],size(after))), &
+        'each smaller failed retry preserves committed physical origin')
+      call ta%snapshot_weather_irrigation(ir,selection,amount,st)
+      call require(selection==-1.and.amount==0._real64.and..not.ir%receipt%present, &
+        'each smaller failed retry preserves irrigation origin')
+      short_end=short_end*.5_real64
+    end do
+    call require(j<=21.and.rr(1)%committed,'managed smaller retry commits')
     call clean%run_weather_interval(wr,0._real64,short_end,forcing_config,canopy,cr,st,ccs,allocation)
     call require(st==FMR_APP_BOOT_OK.and.cr(1)%committed,'managed clean small comparison')
     call ta%copy_committed_for_crop(1,ss,st);before=managed_soil_values(ss)

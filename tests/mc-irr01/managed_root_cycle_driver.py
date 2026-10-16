@@ -2,7 +2,7 @@
 import sys
 from pathlib import Path
 
-def prepare(root,target):
+def prepare(root,target,criterion=7,nodes=1):
  sys.path[:0]=[str(root/'tests/root-growth'),str(root/'tests/crop-cycle'),str(root/'tests/crop-co2')]
  from density_cycle_driver import prepare as density
  density(root,target,True);s=target.read_text()
@@ -17,8 +17,7 @@ def prepare(root,target):
     integer::selected_day
     real(real64)::delivered_amount''')
  anchor='    tc%tiles(1)%parameters%root_extraction_active=.true.'
- replace(anchor,'''    call configure_managed_sensor(tc,7,1)
-    if(dayend)call configure_managed_sensor(tc,8,3)
+ replace(anchor,f'''    call configure_managed_sensor(tc,{criterion},{nodes})
     ! Separate new compound-weather envelope:0.04cm capped gift per node,
     ! provider0.5 after cap; zero configured rate retains literal one-day rule.
     tc%file_weather_irrigation_depth%maximum_depth_cm=.04_real64
