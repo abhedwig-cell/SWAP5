@@ -15,6 +15,9 @@ def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hex
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['dynamic_pond_successor_20261016']
 def verify_source(git_reader=None):
+    if (ROOT/'tests/nut-crop/verify_reproductive_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/nut-crop'));import verify_reproductive_successor as reproductive
+        return reproductive.verify_source(git_reader)
     g=git if git_reader is None else git_reader;r=record()
     check(r['baseline']==BASE,'wrong dynamic pond baseline');g('merge-base','--is-ancestor',BASE,'HEAD')
     check(not g('status','--porcelain','--',*SURFACE),'dirty dynamic pond inputs')
@@ -116,6 +119,9 @@ def incumbent():
     check(r['qualified']and r['pond_successor'],'1257 incumbent incomplete');return r
 
 def verify_qualification():
+    if (ROOT/'tests/nut-crop/verify_reproductive_successor.py').exists():
+        sys.path.insert(0,str(ROOT/'tests/nut-crop'));import verify_reproductive_successor as reproductive
+        return reproductive.verify_qualification()
     s=verify_source();check(record()['stage']in ('SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED','CANONICALLY_ADMITTED_BOUNDED'),'dynamic science not ready')
     science=validate_science(evidence());old=incumbent()
     return {**old,**s,'qualified':True,'incumbent':old,'science':science,'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
