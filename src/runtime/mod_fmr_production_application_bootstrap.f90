@@ -383,8 +383,16 @@ contains
     integer::st
     bundle=fmr_weather_crop_application_continuation_t();status=FMR_APP_BOOT_INVALID_CONFIG
     if(.not.view%valid.or..not.view%record%ready().or..not.view%soil%ready().or..not.view%crop%ready())return
-    if(.not.view%configuration%file_weather_irrigation.or..not.view%configuration%file_weather_rooted)return
-    if(view%configuration%file_weather_irrigation_sensor%timing_criterion/=6)return
+    if(.not.view%configuration%file_weather_irrigation)return
+    select case(view%configuration%file_weather_irrigation_sensor%timing_criterion)
+    case(2:4,6:8)
+    case default
+      return
+    end select
+    if(view%configuration%file_weather_irrigation_sensor%timing_criterion<7.or. &
+       view%configuration%file_weather_irrigation_depth%depth_criterion==1)then
+      if(.not.view%configuration%file_weather_rooted)return
+    end if
     if(.not.allocated(view%configuration%tiles))return
     if(size(view%configuration%tiles)/=1)return
     if(view%soil%layout_id()/=view%configuration%tiles(1)%template%template_id.or.view%crop%layout_id()/=904001_int64)return

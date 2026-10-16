@@ -23,12 +23,13 @@ module mod_drainage_b19_separate_infiltration_adapter
   end type
   public :: distribute_single_level_separate_infiltration_b19, distribute_multilevel_separate_infiltration_b19
 contains
-  subroutine distribute_single_level_separate_infiltration_b19(distribution,view,scalar_transfer,parameters,result)
+  subroutine distribute_single_level_separate_infiltration_b19(distribution,view,scalar_transfer,parameters,result,preclosure_transfer)
     type(drainage_distribution_parameters_t),intent(in)::distribution
     type(process_hydraulic_view_t),intent(in)::view
     real(real64),intent(in)::scalar_transfer
     type(drainage_b19_separate_infiltration_parameters_t),intent(in)::parameters
     type(drainage_b19_separate_infiltration_result_t),intent(out)::result
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:)
     type(frost_divdra_parameters_t)::p
     type(drainage_node_transfer_t)::ordinary
     type(drainage_distribution_diagnostics_t)::d
@@ -37,7 +38,7 @@ contains
     result=drainage_b19_separate_infiltration_result_t();result%authoritative_scalar_transfer=scalar_transfer
     if(.not.valid_control(parameters))return
     if(.not.finite_distribution(distribution))return
-    call distribute_single_level_signed_divdra(distribution,view,scalar_transfer,ordinary,d)
+    call distribute_single_level_signed_divdra(distribution,view,scalar_transfer,ordinary,d,preclosure_transfer)
     result%component_status=d%status
     if(d%status/=DRAIN_DIST_OK)then
       result%status=DRAIN_B19_INF_COMPONENT_REJECTED;return
@@ -50,7 +51,7 @@ contains
       p%surface_water_level_cm=min(parameters%drain_level_cm,0._real64)
       p%infiltration_depth_factor=parameters%infiltration_depth_factor
       call partition_signed_divdra(p,distribution%saturated_conductivity,view%groundwater_level,scalar_transfer, &
-           nodes,result%correction,status,ordinary_surface_geometry=.true.)
+           nodes,result%correction,status,ordinary_surface_geometry=.true.,preclosure_transfer=preclosure_transfer)
       result%component_status=status
       if(status/=FROST_DIVDRA_OK)then
         result%status=DRAIN_B19_INF_COMPONENT_REJECTED;return
@@ -60,12 +61,14 @@ contains
     result%status=DRAIN_B19_INF_OK;result%available=.true.
   end subroutine
 
-  subroutine distribute_multilevel_separate_infiltration_b19(distribution,view,scalar_transfer,parameters,flux,status)
+  subroutine distribute_multilevel_separate_infiltration_b19(distribution,view,scalar_transfer,parameters,flux,status,preclosure_transfer)
     type(drainage_distribution_parameters_t),intent(in)::distribution(:)
     type(process_hydraulic_view_t),intent(in)::view
     real(real64),intent(in)::scalar_transfer(:)
     type(drainage_b19_separate_infiltration_parameters_t),intent(in)::parameters(:)
     real(real64),allocatable,intent(out)::flux(:,:)
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:,:)
+    real(real64),allocatable::raw_row(:)
     integer,intent(out)::status
     type(drainage_distribution_parameters_t),allocatable::effective(:)
     type(drainage_multilevel_diagnostics_t)::d
@@ -81,7 +84,7 @@ contains
     end do
     ! The admitted owner computes the profile anisotropy and legacy water-table node.
     ! Its temporary row is worker scratch, never a second scalar or published forcing.
-    call distribute_multilevel_signed_divdra(distribution,view,scalar_transfer,scratch,d)
+    call distribute_multilevel_signed_divdra(distribution,view,scalar_transfer,scratch,d,preclosure_transfer)
     if(d%status/=DRAIN_DIST_OK)then
       status=DRAIN_B19_INF_COMPONENT_REJECTED;return
     end if
@@ -96,13 +99,18 @@ contains
       end do
       ! FDisInf multiplies L in ordering, cumulative flow and dmax in the source.
       ! Reuse the admitted interacting-layer algebra with this effective spacing.
-      call distribute_multilevel_signed_divdra(effective,view,scalar_transfer,scratch,d)
+      call distribute_multilevel_signed_divdra(effective,view,scalar_transfer,scratch,d,preclosure_transfer)
       if(d%status/=DRAIN_DIST_OK)then
         status=DRAIN_B19_INF_COMPONENT_REJECTED;return
       end if
       do i=1,n
         if(scalar_transfer(i)>=0._real64)cycle
+        if(present(preclosure_transfer))then
+          call distribute_single_level_separate_infiltration_b19(distribution(i),view,scalar_transfer(i),parameters(i),row,raw_row)
+          if(allocated(raw_row))preclosure_transfer(i,:)=raw_row
+        else
         call distribute_single_level_separate_infiltration_b19(distribution(i),view,scalar_transfer(i),parameters(i),row)
+        end if
         if(.not.row%available)then
           status=DRAIN_B19_INF_COMPONENT_REJECTED;return
         end if

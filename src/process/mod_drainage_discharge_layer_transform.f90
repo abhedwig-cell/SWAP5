@@ -4,7 +4,11 @@ module mod_drainage_discharge_layer_transform
   implicit none
   private
   integer, parameter, public :: DISLAYER_OK=0, DISLAYER_INVALID=1, DISLAYER_GEOMETRY=2
-  real(real64), parameter :: SMALL_SUM=1.0e-8_real64
+  type, public :: discharge_layer_top_control_t
+    integer :: mode=0, dramet=3
+    real(real64) :: top_level=0.0_real64, fraction=0.0_real64
+    real(real64) :: drain_bottom=0.0_real64, shape=1.0_real64, head_difference=0.0_real64
+  end type
 
   type, public :: discharge_layer_diagnostics_t
     integer :: status=DISLAYER_INVALID
@@ -56,6 +60,9 @@ contains
     if(any(.not.ieee_is_finite(nodal_rate)).or..not.ieee_is_finite(top_level).or. &
        .not.ieee_is_finite(authoritative_scalar))return
     if(top_level>0.0_real64)return
+    if(authoritative_scalar>0.0_real64.and.any(nodal_rate<0.0_real64))return
+    if(authoritative_scalar<0.0_real64.and.any(nodal_rate>0.0_real64))return
+    if(authoritative_scalar==0.0_real64.and.any(nodal_rate/=0.0_real64))return
 
     top_node=1
     zbottom=-dz(1)
@@ -74,7 +81,7 @@ contains
 
     sumq=ratio_dz*nodal_rate(top_node)
     if(top_node<n)sumq=sumq+sum(nodal_rate(top_node+1:n))
-    if(abs(sumq)<SMALL_SUM)then
+    if(sumq==0.0_real64)then
       ratio=1.0_real64
     else
       ratio=authoritative_scalar/sumq
@@ -83,7 +90,7 @@ contains
     if(top_node>1)nodal_rate(1:top_node-1)=0.0_real64
     nodal_rate(top_node)=nodal_rate(top_node)*ratio*ratio_dz
     if(top_node<n)nodal_rate(top_node+1:n)=nodal_rate(top_node+1:n)*ratio
-    if(abs(sumq)<SMALL_SUM.and.abs(authoritative_scalar)>SMALL_SUM)then
+    if(sumq==0.0_real64.and.authoritative_scalar/=0.0_real64)then
       nodal_rate(top_node)=authoritative_scalar
       diagnostics%small_retained_fallback=.true.
     end if

@@ -1,0 +1,31 @@
+{
+  "audit_id": "MC-DRAIN01-DISLAYER-MASS01",
+  "component": "FROST-DIVDRA-04",
+  "parent": {
+    "path": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03/divdra.f90",
+    "sha256": "29ff7008141bcd1d375f5aefa333f539249b40ef1cc4a81ec45f1cf86ff2b229"
+  },
+  "candidate_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+  "materialized_reference": "reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-04/divdra.f90",
+  "patches": [
+    {
+      "old": "if (abs(sumqdr) < 1.0d-8) then",
+      "new": "if (sumqdr == 0.0d0) then",
+      "occurrences": 1
+    },
+    {
+      "old": "if (abs(sumqdr) < 1.d-8 .AND. abs(qdrain(idr)) > 1.d-8) then",
+      "new": "if (sumqdr == 0.0d0 .AND. qdrain(idr) /= 0.0d0) then",
+      "occurrences": 1
+    }
+  ],
+  "qualified": true,
+  "admitted": false,
+  "global_B1_snapshot_promoted": false,
+  "scope": "Paragraph12 only: normalize every nonzero retained support; exact-zero support uses prior top-node placement and books authoritative scalar once. SWDISLAY0 and all other source bytes unchanged.",
+  "qualification_authority": "integration/audits/SWAP431_DRAIN_FROST_CLUSTER_STATUS.json dislayer_phase_20261016",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_REFERENCE_20261016.json.gz.b64",
+    "sha256": "5dc60798a550453e87343faf79d365d57a317f8597fa60b4b4a3ff43138a9fc2"
+  }
+}

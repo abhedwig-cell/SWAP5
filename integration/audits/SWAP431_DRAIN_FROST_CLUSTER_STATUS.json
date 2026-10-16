@@ -1421,7 +1421,7 @@
     "ledger_rows": [
       "SW431-DRAIN-DISLAYER"
     ],
-    "state": "BLOCKED_QUALIFIED_REFERENCE_CORRECTION_REQUIRED",
+    "state": "REAL_PROCESS_QUALIFIED_AFFECTED_RUNTIME_PENDING",
     "qualified": false,
     "tested": true,
     "conditions_frozen": [
@@ -1446,10 +1446,11 @@
     ],
     "test_selection": {
       "small_first": "Unedited actual B1.11 and admitted03 full DIVDRA plus existing real candidate; O0/O2 with fcheck and FPE traps; expected<10s.",
-      "runtime": "NOT_SELECTED until source/conservation preflight passes.",
+      "runtime": "SELECTED after complete real binder source matrix. Existing Reference modes2/7 mass/rollback/replay/restart/isolation,3top modes,single/3levels,with/without separate infiltration; no other solver or physical owner changes. Expected total cold execution~450s; previous169-provider runtime~150s per opt, one shared prefix per optimization. Small real binder pilot is terminal PASS at93854aa40; final runtime harness committed before execution.",
       "full_fci": "NOT_SELECTED",
       "rossfast": "NOT_SELECTED_IMPACT",
-      "highest_low_air": "NOT_SELECTED_POLICY"
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "affected_preservation": "Existing original INF,signed,multilevel process and runtime plus positive process/binder, one current invocation each O0/O2. Preserve unchanged B18/frost/solver evidence; no blanket chain numerical replay."
     },
     "remaining": [
       "source and candidate scalar closure at fallback/retained threshold",
@@ -1511,7 +1512,7 @@
       "ledger_admission": false
     },
     "reference_correction_preregistration": {
-      "state": "REQUIRED_NOT_IMPLEMENTED_NOT_QUALIFIED",
+      "state": "QUALIFIED_COMPONENT_NOT_ADMITTED",
       "audit_identifier": "MC-DRAIN01-DISLAYER-MASS01",
       "prior_admitted_component": "FROST-DIVDRA-03",
       "scope": "Only Paragraph12 SWDISLAY1/2 post-partition normalization; original snapshots remain immutable. No new drain response, clock or state owner.",
@@ -1543,6 +1544,60 @@
       "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_PREFLIGHT_20261016.json.gz.b64",
       "sha256": "bc9c362b477e9dd637b18f84075550589cfeb74ad6ebed9090fcbb2600c73dec",
       "claim": "SOURCE_DEFECT_REPRODUCED_ONLY;NO_PRODUCTION_ADMISSION"
+    },
+    "evidence_checkpoint": "3d0edefd47bdd1741cd693e1cfa0440ad4e616d2",
+    "evidence_branch": "work/swap431-drain-dislayer-20261007",
+    "blocked_science_surface_admitted": false,
+    "mastercoverage_receipt": {
+      "commit": "f23dc540a917b6121f11701a4bad213b1dbe322b",
+      "counts_unchanged": true,
+      "ADMITTED": 99,
+      "unresolved": 108,
+      "total": 243,
+      "source_integrity": "PASS",
+      "inheritance_controls": "20 PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS13.03s",
+      "no_new_capability_admission": true
+    },
+    "reference_qualification": {
+      "component": "FROST-DIVDRA-04",
+      "qualified": true,
+      "admitted": false,
+      "evidence": {
+        "path": "integration/audits/evidence/MC_DRAIN01_DISLAYER_REFERENCE_20261016.json.gz.b64",
+        "sha256": "5dc60798a550453e87343faf79d365d57a317f8597fa60b4b4a3ff43138a9fc2"
+      },
+      "source_sha256": "7aa39c173556a1c0c218d9c95c043b5e61d21109759856668beb03aea1f11020",
+      "parent_sha256": "29ff7008141bcd1d375f5aefa333f539249b40ef1cc4a81ec45f1cf86ff2b229",
+      "science": [
+        {
+          "affected_rows": 19301,
+          "cases": 25920,
+          "max_nodal_error": 1.3010426069826053e-18,
+          "small_nonzero_support": 9903,
+          "unchanged_rows": 32539,
+          "zero_support": 9396
+        },
+        {
+          "affected_rows": 19301,
+          "cases": 25920,
+          "max_nodal_error": 1.3010426069826053e-18,
+          "small_nonzero_support": 9903,
+          "unchanged_rows": 32539,
+          "zero_support": 9396
+        }
+      ],
+      "applicator_controls": "4 PASS",
+      "qualify_before_production": true
+    },
+    "latest_reconciled_canonical": "c9231e1b102f9666865ced5604ef04d135b3931e",
+    "production_pilot": {
+      "checkpoint": "93854aa40",
+      "status": "O0_O2_PASS",
+      "cases_per_optimization": 25920,
+      "source": "qualified FROST-DIVDRA-04",
+      "preclosure_view": "Original owners optionally expose physical nodes before final-node accounting residual. Only explicit top-enabled rows consume it; default closed rows remain exact. This prevents amplification of upstream roundoff by tiny retained support; no second partition law."
     }
   }
 }

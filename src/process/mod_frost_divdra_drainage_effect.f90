@@ -95,13 +95,14 @@ contains
     end do
   end function
 
-  pure subroutine partition(p,k,groundwater,scalar,nodal,correction,status,ordinary_surface_geometry)
+  pure subroutine partition(p,k,groundwater,scalar,nodal,correction,status,ordinary_surface_geometry,preclosure_transfer)
     type(frost_divdra_parameters_t), intent(in) :: p
     real(real64), intent(in) :: k(:),groundwater,scalar
     real(real64), allocatable, intent(out) :: nodal(:)
     real(real64), intent(out) :: correction
     integer, intent(out) :: status
     logical, intent(in), optional :: ordinary_surface_geometry
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:)
     real(real64), allocatable :: kh(:),inverse_k(:),raw(:)
     real(real64) :: water,profile,thickness,kd_h,kd_v,fac,span,finish,total,uns,sat
     real(real64) :: surface,top,bottom,a,b,c,d,amount,raw_sum
@@ -185,6 +186,7 @@ contains
     if(last==0)then
       status=FROST_DIVDRA_PARTITION;return
     end if
+    if(present(preclosure_transfer))preclosure_transfer=raw
     raw(last)=scalar-sum(raw(:last-1));correction=scalar-raw_sum
     if(abs(correction)>1.e-14_real64)then
       status=FROST_DIVDRA_PARTITION;return
