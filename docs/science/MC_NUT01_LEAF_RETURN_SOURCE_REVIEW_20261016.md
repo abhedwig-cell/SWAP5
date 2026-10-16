@@ -158,3 +158,12 @@ ordered source lineage. Then implement retained aboveground leaf/stem DM/N in
 the existing SWAP5 state, with harvest transfer, whole N/OM, atomic rejection and
 complete native/opaque continuation. The current B1 manifest, all published
 snapshots and SWAP5 production remain unchanged at this candidate checkpoint.
+
+Canonical assessment receipt: PR1263 merged as
+`c62a2e69a0e604d92dcdba625c525835c2bd5224`, actual tree
+`a092bc4b9cf1247b76853c15f232c5f9d9020eb8`. Reviewed head
+`df661c9006eaa903cf1193fd4c551266a80a24de` has identical candidate files and
+scientific surfaces. The merge additionally preserves an independent drainage
+master-receipt update in its own status JSON. Current source and sealed owner
+evidence checks pass. This admits the assessment record, not a corrected B1
+snapshot or partial-return production behavior.
