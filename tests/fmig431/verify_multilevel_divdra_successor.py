@@ -63,11 +63,13 @@ def load_verified():
 @lru_cache(None)
 def incumbent(source_only=False):
     p=json.loads((ROOT/STATUS).read_text())[PHASE];base=p['baseline']
-    root=ROOT.parent/('multi-incumbent-'+base[:12])
+    namespace=ROOT.parent/'multilevel-immutable-chain'
+    namespace.mkdir(exist_ok=True)
+    root=namespace/('multi-incumbent-'+base[:12])
     if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),base],cwd=ROOT,check=True,capture_output=True)
     require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==base,'incumbent moved')
     code='import sys,json;sys.path.insert(0,"tests/fmig431");import verify_signed_divdra_successor as v;print(json.dumps(v.'+('verify_source' if source_only else 'verify_qualification')+'()))'
-    cp=subprocess.run([sys.executable,'-B','-c',code],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+    cp=subprocess.run([sys.executable,'-B','-c',code],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','PYTHONPYCACHEPREFIX':str(ROOT.parent/'multi-python-cache')})
     require(cp.returncode==0,'original signed owner rejected '+cp.stderr[-2000:])
     result=json.loads(cp.stdout)
     if not source_only:require(result['qualified'] and result['signed_divdra_successor'],'signed incumbent qualification')
