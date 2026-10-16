@@ -59,6 +59,7 @@ def sensor(root,target,criterion=7,nodes=1,day=20):
       checkpoint=trim(checkpoint)//'.checkpoint'
       if(index(trim(continuation_mode),'native-reject')==1)then
         call get_command_argument(7,checkpoint)
+        if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_depth%maximum_depth_cm=.3_real64
         call read_weather_irrigation_joint_restart_file(trim(checkpoint),tc,wr,no_previous,saved,st)
         call require(st/=0,'invalid native provider/source/profile fails closed')
         call other%restore_weather_crop_continuation(saved,none,st)

@@ -6,6 +6,7 @@ spec=importlib.util.spec_from_file_location('feedback',ROOT/'tests/modularity/ru
 sys.path.insert(0,str(ROOT/'tests/mc-irr01'))
 from availability_cycle_driver import rooted,sensor
 from tcs6_cycle_driver import prepare_native
+from availability_native_controls import execute as decoder_controls
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--prior',required=True);p.add_argument('--output',required=True);p.add_argument('--feedback',action='store_true');a=p.parse_args();prior=Path(a.prior).resolve();out=Path(a.output).resolve();session=m.Session(out);start=time.perf_counter()
@@ -38,7 +39,7 @@ def main():
   drivers[name]=sensor(ROOT,out/(name+'.f90'),c,n,day);kind[name]='sensor'
  if not a.feedback:drivers['weekly_dcs1']=prepare_native(ROOT,out/'weekly_dcs1.f90',1,True);kind['weekly_dcs1']='preservation'
  generated={q.name:m.sha(q)for q in drivers.values()};inputs={q:m.sha(ROOT/q)for q in inp['inputs']}
- for q in ['tests/mc-irr01/run_availability_application.py','tests/mc-irr01/availability_cycle_driver.py']:inputs[q]=m.sha(ROOT/q)
+ for q in ['tests/mc-irr01/run_availability_application.py','tests/mc-irr01/availability_cycle_driver.py','tests/mc-irr01/availability_native_controls.py']:inputs[q]=m.sha(ROOT/q)
  m.write(out/'INPUTS.json',dict(inputs=inputs,generated=generated,prior_execution=old['head'],providers=inp['providers'],flags=inp['flags'],compiler=session.identity,donor_input_sha256=m.sha(prior/'INPUTS.json')))
  rows=[];reuse={};costs=[]
  for opt in ((0,)if a.feedback else(0,2)):
@@ -66,6 +67,10 @@ def main():
     for phase in ['morning','dayend']:
      paths=[Path(str(exe)+'.'+phase+'.'+s)for s in ['full','opaque','resumed','active.resumed']];assert all(x.read_bytes()==paths[0].read_bytes()for x in paths)
      if kind[name]=='preservation':assert paths[0].read_bytes()==(prior/f'o{opt}'/paths[0].name).read_bytes()
+   if not a.feedback and kind[name]!='preservation':
+    for phase in (['neutral']if kind[name]=='sensor'else['neutral','hydraulic']):
+     controls=decoder_controls(session,exe,fixture,phase,build,opt,name,kind[name]=='sensor')
+     m.write(out/f'DECODER_{opt}_{name}_{phase}.json',controls)
    # Binaries are reproducible; retain raw executions and exact hashes, not
    # repeated large executables on the shared finite scratch volume.
    exe.unlink()

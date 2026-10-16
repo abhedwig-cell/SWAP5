@@ -4979,8 +4979,8 @@
     "baseline": "341ba3783f4364d4ff08b00a97514a93adb7eb22",
     "branch": "work/mc-irr01-avail-20261016",
     "capability": "SW431-IRR-AVAIL",
-    "phase": "CONTRACT_FIXED_IMPLEMENTATION_PENDING",
-    "implemented": false,
+    "phase": "IMPLEMENTED_DIRECT_AND_FEEDBACK_PASS_FULL_QUALIFICATION_PENDING",
+    "implemented": true,
     "persisted": true,
     "tested": false,
     "qualified": false,
@@ -5019,7 +5019,20 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Extend existing native profile acceptance without changing payload bytes; implement actual provider/continuation witnesses, execute direct O0/O2 then affected physical qualification. No admission until all fixed conditions PASS.",
-    "blockers": []
+    "next_action": "Fresh complete declared AVAIL O0/O2 application/native/decoder qualification using byte-verified current providers; then incumbent/admission controls and docs.",
+    "blockers": [],
+    "direct_contract": {
+      "status": "PASS",
+      "execution": "f44c7eca8a2c0daea04e1dc178ab30d94ad023ec",
+      "source_vectors_per_optimization": 404,
+      "nonfinite": "PASS",
+      "raw_results_sha256": "bf49d5c0b614f8acdd69ee513731322c3c3fef939c2711c5972163726951439d"
+    },
+    "feedback": {
+      "status": "PASS_O0_ONLY_NOT_ADMISSION",
+      "execution": "f44c7eca8a2c0daea04e1dc178ab30d94ad023ec",
+      "scope": "Actual rooted TCS2 positive configured rate and root-free sensor7, continuous/opaque and fresh native after provider expiry; all original hard mass/root/crop/trial assertions retained."
+    },
+    "root_free_scope": "The existing root-free sensor profile is a seeded emerged one-day contract; its next-day active crop growth is deliberately rejected by the crop owner. AVAIL does not change that crop admission. Native one-day continuation is qualified there; fresh subsequent-event provider selection is qualified over consecutive rooted weather days."
   }
 }
