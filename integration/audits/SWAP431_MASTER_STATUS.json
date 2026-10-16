@@ -105,33 +105,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 97,
-      "ACTIVE_MIGRATION": 107,
+      "ADMITTED": 98,
+      "ACTIVE_MIGRATION": 106,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 107,
+    "open_capabilities": 106,
     "open_workunits": 18,
     "confirmed_missing_production_entries": 84,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 110,
+    "total_unresolved_capabilities": 109,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 7,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 107,
-    "missing_standalone_process_implementations_not_established": 107,
-    "active_with_existing_production_source_authority": 67,
+    "missing_production_binding_or_implementation_entries": 106,
+    "missing_standalone_process_implementations_not_established": 106,
+    "active_with_existing_production_source_authority": 66,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 107,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;107 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
+    "active_missing_complete_admitted_route": 106,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;106 full production envelopes remain open. TCS6 closes through actual weekly/joint continuation; annual and signed-drainage admissions remain preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -141,7 +141,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Extend existing joint crop/Soil-N owner with physical retained leaf/stem DM/N distinct from gross mortality diagnostics; harvest, whole N/OM and atomic opaque/native continuation. Reuse admitted annual biomass owner and preserve1260/1253/default plus explicit B1.11 pins.",
+  "next_action": "Continue existing remaining queue; TCS6, annual and signed DIVDRA are admitted. Coverage remains open; use243 fixed IDs and retain all remaining capability-specific gates.",
   "recovery_point": "PR1109 canonically admits ordinary interacting signed multilevel DIVDRA;97 ADMITTED,110 unresolved. B1.12/SWAP-019 canonically admitted through1265. Reuse existing annual-expanded biomass owner; distinguish gross mortality diagnostics from retained physical DM/N. SWAP5 partial-return runtime remains unadmitted. Preserve1264 annual and1099 signed drainage. Master draft:96 admitted,111 unresolved.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -206,7 +206,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "da5482c24259a1772759335d8289944053f62332",
+  "last_reconciled_head": "40c6fe4252cb80bc2adbeee2731f76199f6a7c48",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -3380,6 +3380,111 @@
       "docs_source": "PASS",
       "strict_docs": "PASS;14.73s",
       "global_closure_guard": "EXPECTED_REJECTION: denominator incomplete"
+    }
+  },
+  "latest_tcs6_admission_20261016": {
+    "capability_id": "SW431-IRR-TCS6",
+    "pr": 1262,
+    "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
+    "canonical_receipt": "40c6fe4252cb80bc2adbeee2731f76199f6a7c48",
+    "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+    "full_capability": true,
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 97,
+        "ACTIVE_MIGRATION": 107,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 107,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 84,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 110,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 7,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 107,
+      "missing_standalone_process_implementations_not_established": 107,
+      "active_with_existing_production_source_authority": 67,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 107,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;107 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 98,
+        "ACTIVE_MIGRATION": 106,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 106,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 84,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 109,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 7,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 106,
+      "missing_standalone_process_implementations_not_established": 106,
+      "active_with_existing_production_source_authority": 66,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 106,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;106 full production envelopes remain open. TCS6 closes through actual weekly/joint continuation; annual and signed-drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Exactly one existing TCS6 row closes; all other242 capability rows and all prior source/census/annual/drainage/N/SOL receipts remain byte-semantically unchanged. No new capability or numerical FCI claim."
+  },
+  "tcs6_closeout_checks_20261016": {
+    "source_census_pinned_authority_integrity": "PASS",
+    "unchanged_inheritance_controls": 20,
+    "inheritance_controls_status": "PASS",
+    "docs_source": "PASS",
+    "docs_strict": "PASS",
+    "full_coverage_closed": false,
+    "scope": "Frozen master structural/evidence validation and exact one-row promotion; no new numerical qualification. Other242 capability rows byte-semantically preserved.",
+    "raw_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_TCS6_MASTER_CHECKS_20261016.json.gz.b64",
+      "decoded_sha256": "3cba6e7c7dd9f256032c336edb48a811ae19eff61fb912df739900a4fa17907b",
+      "decoded_bytes": 8761
     }
   }
 }
