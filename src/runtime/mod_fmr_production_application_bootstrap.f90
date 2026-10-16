@@ -97,7 +97,9 @@ module mod_fmr_production_application_bootstrap
        release_fmr_groundwater_application_context, FMR_GW_APP_C_API_OK, FMR_GW_APP_C_API_INVALID_CONTEXT, &
        FMR_GW_APP_C_API_CONTEXT_BUSY
   use mod_fmr_biomass_root_uptake_input, only: bind_committed_biomass_root_uptake_input
-  use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, CROP_ROOT_RATE_OK
+  use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, &
+    CROP_ROOT_RATE_OK,CROP_ROOT_RATE_DROUGHT_SUPPLY
+  use mod_crop_adaptive_root_profile_owner
   use mod_fmr_interception_source_window_binding, only: fmr_interception_source_window_t, &
        fmr_interception_source_window_restart_t, export_fmr_interception_source_window_restart, &
        prepare_fmr_interception_source_window_trial, accept_fmr_interception_source_window_result, FMR_INTWIN_OK
@@ -203,6 +205,8 @@ module mod_fmr_production_application_bootstrap
     logical :: file_weather_rooted = .false.
     integer :: file_weather_root_depth_mode = 1
     type(crop_root_depth_rate_parameters_t) :: file_weather_swrd2_parameters
+    logical :: file_weather_adaptive_root_profile=.false.
+    type(adaptive_root_profile_configuration_t)::file_weather_root_profile
     real(real64) :: file_weather_maximum_root_biomass = 0.0_real64
     logical :: file_weather_dayend = .false.
     real(real64) :: file_weather_latitude = -999.0_real64
@@ -415,6 +419,18 @@ contains
       if(.not.config%file_weather_rooted.or..not.config%file_weather_swrd2_parameters%ready()) return
       if(config%file_weather_swrd2_parameters%negligible_transpiration<=0.0_real64) return
       if(config%file_weather_swrd2_parameters%maximum_root_depth_cm/=config%file_weather_maximum_root_depth_cm) return
+    end if
+    if(config%file_weather_adaptive_root_profile)then
+      if(config%file_weather_root_depth_mode/=2)return
+      if(.not.config%file_weather_root_profile%ready())return
+      if(config%file_weather_swrd2_parameters%initial_root_depth_cm<=0.0_real64)return
+      if(config%file_weather_root_profile%maximum_root_depth_cm/=config%file_weather_maximum_root_depth_cm)return
+      if(size(config%file_weather_root_profile%dz_cm)/=config%tiles(1)%parameters%active_nodes)return
+      if(any(config%file_weather_root_profile%dz_cm/=config%tiles(1)%parameters%dz))return
+      if(any(config%file_weather_root_profile%ztop_cm/=config%tiles(1)%parameters%z+0.5_real64*config%tiles(1)%parameters%dz))return
+      if(any(config%file_weather_root_profile%zbot_cm/=config%tiles(1)%parameters%z-0.5_real64*config%tiles(1)%parameters%dz))return
+    else if(config%file_weather_root_depth_mode==2)then
+      if(config%file_weather_swrd2_parameters%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)return
     end if
     if(config%file_weather_root_depth_mode==3)then
       if(.not.config%file_weather_rooted) return
@@ -1034,10 +1050,28 @@ contains
             type(crop_root_depth_rate_state_t)::depth
             call physical%snapshot_root_depth(depth,available)
             if(.not.available) return
+            if(self%weather_configuration%file_weather_adaptive_root_profile)then
+              block
+                type(adaptive_root_profile_state_t)::profile
+                integer::rooted_nodes,i
+                call physical%snapshot_root_profile(profile,available)
+                if(.not.available)return
+                rooted_nodes=0
+                do i=1,self%parameters(1)%active_nodes
+                  if(self%weather_configuration%file_weather_root_profile%zbot_cm(i)+ &
+                    depth%actual_root_depth_cm<1e-8_real64)then
+                    rooted_nodes=i;exit
+                  end if
+                end do
+                call profile%derive_root_uptake_input(rooted_nodes,self%parameters(1)%active_nodes,root_input,s)
+                if(s/=ADAPTIVE_ROOT_PROFILE_OK)return
+              end block
+            else
             call depth%derive_root_uptake_input(self%weather_configuration%file_weather_root_density, &
               self%weather_configuration%file_weather_maximum_root_depth_cm, &
               self%parameters(1)%z-self%parameters(1)%dz*0.5_real64,root_input,available,s)
             if(s/=CROP_ROOT_RATE_OK.or..not.available) return
+            end if
             root_input%crop_emerged=crop_owner%crop_emerged
           end block
         class default
@@ -1087,7 +1121,18 @@ contains
         if(size(root_diagnostics%oxygen_reduction_factor)<root_input%rooted_nodes) return
         deepest_oxygen=root_diagnostics%oxygen_reduction_factor(root_input%rooted_nodes)
       end if
+      if(self%weather_configuration%file_weather_adaptive_root_profile)then
+        block
+          real(real64)::drought
+          drought=0.0_real64
+          if(ptra>1e-12_real64)drought=1.0_real64-root_diagnostics%drought_reduction_total/ptra
+          call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s,deepest_root_oxygen_factor=deepest_oxygen, &
+            rootzone_drought_uptake_factor=drought,potential_root_sink=root_diagnostics%potential_root_sink, &
+            root_sink_reduction=root_diagnostics%potential_root_sink-root_fluxes%root_extraction_sink)
+        end block
+      else
       call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s,deepest_root_oxygen_factor=deepest_oxygen)
+      end if
     else
       call accumulate_wofost_trial_process_rate(trial,t0,t1,qrot,ptra,s)
     end if
@@ -1201,6 +1246,7 @@ contains
       if(plan%germination_evaluated) lifecycle%germination_temperature_sum=daily%germination%next_temperature_sum
     end if
     lifecycle%emerged=initial_owner%crop_emerged
+    if(self%weather_configuration%file_weather_adaptive_root_profile)return
     if(self%weather_configuration%file_weather_root_depth_mode==2)then
       call initialize_fmr_wofost_crop_transaction_state(initial_owner,state,s,lifecycle_initial=lifecycle, &
         enable_potential_shadow=.true.,root_depth_parameters=self%weather_configuration%file_weather_swrd2_parameters)
@@ -1336,6 +1382,8 @@ contains
     if(active_event) then
       if(.not.crop_parameters%matches_root_depth(self%weather_configuration%file_weather_root_depth_mode, &
         self%weather_configuration%file_weather_swrd2_parameters)) return
+      if(.not.crop_parameters%matches_root_profile(self%weather_configuration%file_weather_adaptive_root_profile, &
+        self%weather_configuration%file_weather_root_profile))return
       if(.not.crop_parameters%matches_canopy(self%weather_configuration%file_weather_stem_area_coefficient, &
            self%weather_configuration%file_weather_storage_area_coefficient)) return
       ! Completed growth belongs to its own previous immutable record;
@@ -1477,6 +1525,8 @@ contains
          self%weather_configuration%file_weather_storage_area_coefficient)) return
     if(.not.crop_parameters%matches_root_depth(self%weather_configuration%file_weather_root_depth_mode, &
       self%weather_configuration%file_weather_swrd2_parameters)) return
+    if(.not.crop_parameters%matches_root_profile(self%weather_configuration%file_weather_adaptive_root_profile, &
+      self%weather_configuration%file_weather_root_profile))return
     call self%weather_record%growth_values(self%weather_configuration%file_weather_latitude, &
          iday,radiation,solar,available)
     if(.not.available) return

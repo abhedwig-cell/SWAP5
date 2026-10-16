@@ -32,6 +32,8 @@ module mod_fmr_wofost_crop_transaction
   use mod_crop_root_depth_rate_owner, only: crop_root_depth_rate_parameters_t, crop_root_depth_rate_state_t, &
        crop_root_depth_rate_daily_forcing_t, crop_root_depth_rate_diagnostics_t, initialize_crop_root_depth_rate_state, &
        evaluate_crop_root_depth_rate_candidate, CROP_ROOT_RATE_OK
+  use mod_crop_adaptive_root_profile_owner
+  use mod_crop_root_depth_rate_owner, only: CROP_ROOT_RATE_DROUGHT_SUPPLY
   implicit none
   private
 
@@ -73,6 +75,7 @@ module mod_fmr_wofost_crop_transaction
     type(fmr_wofost_crop_event_identity_t) :: last_consumed_event
     type(crop_lifecycle_continuation_t), allocatable :: lifecycle
     type(crop_root_depth_rate_state_t), allocatable :: root_depth
+    type(adaptive_root_profile_state_t),allocatable :: root_profile
   contains
     procedure :: clone => fmr_wofost_crop_transaction_clone
     procedure, public :: ready => fmr_wofost_crop_transaction_state_ready
@@ -81,6 +84,7 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: snapshot_potential_shadow => fmr_wofost_crop_transaction_snapshot_potential_shadow
     procedure, public :: snapshot_root_growth => fmr_wofost_crop_transaction_snapshot_root_growth
     procedure, public :: snapshot_root_depth => fmr_wofost_crop_transaction_snapshot_root_depth
+    procedure, public :: snapshot_root_profile => fmr_wofost_snapshot_root_profile
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
     procedure, public :: snapshot_lifecycle => fmr_wofost_crop_transaction_snapshot_lifecycle
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
@@ -97,6 +101,8 @@ module mod_fmr_wofost_crop_transaction
     type(fmr_wofost_root_growth_carrier_t) :: root_growth_carrier
     logical :: root_depth_present = .false.
     type(crop_root_depth_rate_state_t) :: root_depth
+    logical :: root_profile_present=.false.
+    type(adaptive_root_profile_state_t)::root_profile
     logical :: receipt_present = .false.
     logical :: lifecycle_present = .false.
     integer :: lifecycle_schema_version = 1
@@ -118,10 +124,12 @@ module mod_fmr_wofost_crop_transaction
     logical :: anaerobic_root_growth_gate_enabled = .false.
     real(real64) :: aeration_critical_factor = 0.0001_real64
     type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
+    type(adaptive_root_profile_configuration_t),allocatable :: root_profile_configuration
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
     procedure, public :: matches_canopy => fmr_wofost_parameters_matches_canopy
     procedure, public :: matches_root_depth => fmr_wofost_parameters_matches_root_depth
+    procedure, public :: matches_root_profile => fmr_wofost_matches_root_profile
   end type fmr_wofost_crop_transaction_parameters_t
 
   type, extends(canonical_forcing_t), public :: fmr_wofost_crop_event_forcing_t
@@ -150,6 +158,7 @@ module mod_fmr_wofost_crop_transaction
     logical :: anaerobic_root_growth_gate_enabled = .false.
     real(real64) :: aeration_critical_factor = 0.0001_real64
     type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
+    type(adaptive_root_profile_configuration_t),allocatable :: root_profile_configuration
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
@@ -187,6 +196,12 @@ contains
     ready = .false.
     if (.not. self%valid) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if(self%root_profile_present)then
+      if(.not.self%root_depth_present.or..not.self%owner%crop_emerged)return
+      if(self%root_profile%validate()/=ADAPTIVE_ROOT_PROFILE_OK)return
+      if(abs(sum(self%root_profile%root_biomass_by_node)-self%owner%biomass%root_biomass)> &
+        1e-10_real64*max(1.0_real64,self%owner%biomass%root_biomass))return
+    end if
     if (self%root_depth_present) then
       if (.not.self%potential_shadow_present) return
       if (self%root_depth%validate()/=CROP_ROOT_RATE_OK) return
@@ -253,6 +268,9 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
     if (.not. state%ready()) return
     view%owner = state%owner
+    if(allocated(state%root_profile))then
+      view%root_profile_present=.true.;view%root_profile=state%root_profile
+    end if
     if (allocated(state%root_depth)) then
       view%root_depth_present=.true.
       view%root_depth=state%root_depth
@@ -300,6 +318,7 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
     if (.not. view%ready()) return
     state%owner = view%owner
+    if(view%root_profile_present)state%root_profile=view%root_profile
     if (view%root_depth_present) then
       allocate(state%root_depth)
       state%root_depth=view%root_depth
@@ -333,13 +352,14 @@ contains
   end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
   subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, lifecycle_initial, &
-       root_depth_parameters)
+       root_depth_parameters,root_profile_configuration)
     type(wofost_crop_owner_state_t), intent(in) :: owner
     type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
     integer, intent(out) :: status
     logical, intent(in), optional :: enable_potential_shadow
     type(crop_lifecycle_continuation_t), intent(in), optional :: lifecycle_initial
     type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
+    type(adaptive_root_profile_configuration_t),intent(in),optional::root_profile_configuration
     logical :: enable_shadow
     integer :: shadow_status
 
@@ -356,6 +376,18 @@ contains
       call initialize_crop_root_depth_rate_state(root_depth_parameters,state%root_depth,shadow_status)
       if (shadow_status/=CROP_ROOT_RATE_OK) return
       if (.not.owner%crop_emerged) state%root_depth=crop_root_depth_rate_state_t()
+    end if
+    if(present(root_profile_configuration))then
+      status=FMR_WOF38_INVALID_PARAMETERS
+      if(.not.present(root_depth_parameters))return
+      if(.not.root_profile_configuration%ready().or..not.owner%crop_emerged)return
+      if(root_depth_parameters%initial_root_depth_cm<=0.0_real64)return
+      if(root_profile_configuration%maximum_root_depth_cm/=root_depth_parameters%maximum_root_depth_cm)return
+      allocate(state%root_profile)
+      call initialize_adaptive_root_profile_state(root_profile_configuration%initial_density, &
+        root_profile_configuration%zbot_cm,root_profile_configuration%maximum_root_depth_cm, &
+        state%root_depth%actual_root_depth_cm,owner%biomass%root_biomass,state%root_profile,shadow_status)
+      if(shadow_status/=ADAPTIVE_ROOT_PROFILE_OK)return
     end if
     state%owner = owner
     if (present(lifecycle_initial)) then
@@ -378,7 +410,8 @@ contains
 
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
-       potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor, root_depth_parameters)
+       potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor, root_depth_parameters, &
+       root_profile_configuration)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -389,6 +422,7 @@ contains
     logical, intent(in), optional :: enable_anaerobic_root_growth_gate
     real(real64), intent(in), optional :: aeration_critical_factor
     type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
+    type(adaptive_root_profile_configuration_t),intent(in),optional::root_profile_configuration
     logical :: enable_shadow, enable_anaerobic_gate
     real(real64) :: potential_multiplier, aeration_threshold
 
@@ -418,6 +452,15 @@ contains
     if (.not. ieee_is_finite(aeration_threshold) .or. aeration_threshold < 0.0_real64 .or. &
         aeration_threshold > 1.0_real64) return
 
+    if(present(root_profile_configuration))then
+      if(.not.present(root_depth_parameters))return
+      if(.not.root_profile_configuration%ready())return
+      if(root_depth_parameters%initial_root_depth_cm<=0.0_real64)return
+      if(root_profile_configuration%maximum_root_depth_cm/=root_depth_parameters%maximum_root_depth_cm)return
+      parameters%root_profile_configuration=root_profile_configuration
+    else if(allocated(parameters%root_depth_parameters))then
+      if(parameters%root_depth_parameters%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)return
+    end if
     parameters%rate_parameters = rate_parameters
     parameters%update_parameters = update_parameters
     parameters%stem_area_coefficient = stem_area_coefficient
@@ -529,6 +572,7 @@ contains
         typed_copy%root_growth_carrier = self%root_growth_carrier
       end if
       if (allocated(self%root_depth)) typed_copy%root_depth=self%root_depth
+      if(allocated(self%root_profile))typed_copy%root_profile=self%root_profile
       typed_copy%last_consumed_event = self%last_consumed_event
       if (allocated(self%lifecycle)) then
         allocate(typed_copy%lifecycle)
@@ -563,6 +607,12 @@ contains
       end if
     else
       if (allocated(self%root_growth_carrier)) return
+    end if
+    if(allocated(self%root_profile))then
+      if(.not.allocated(self%root_depth).or..not.self%owner%crop_emerged)return
+      if(self%root_profile%validate()/=ADAPTIVE_ROOT_PROFILE_OK)return
+      if(abs(sum(self%root_profile%root_biomass_by_node)-self%owner%biomass%root_biomass)> &
+        1e-10_real64*max(1.0_real64,self%owner%biomass%root_biomass))return
     end if
     if (allocated(self%root_depth)) then
       if (.not.allocated(self%potential_shadow)) return
@@ -669,10 +719,12 @@ contains
     if(.not.allocated(self%root_depth_parameters)) return
     p=self%root_depth_parameters
     matches=all([p%initial_root_depth_cm,p%maximum_root_depth_cm,p%maximum_daily_extension_cm, &
-      p%negligible_transpiration,p%negligible_root_growth,p%negligible_extension,p%aeration_critical_factor]== &
+      p%negligible_transpiration,p%negligible_root_growth,p%negligible_extension,p%aeration_critical_factor, &
+      p%minimum_daily_extension_cm,p%extent_critical_fraction]== &
       [parameters%initial_root_depth_cm,parameters%maximum_root_depth_cm,parameters%maximum_daily_extension_cm, &
       parameters%negligible_transpiration,parameters%negligible_root_growth,parameters%negligible_extension, &
-      parameters%aeration_critical_factor]).and.p%actual_extension_mode==parameters%actual_extension_mode
+      parameters%aeration_critical_factor,parameters%minimum_daily_extension_cm, &
+      parameters%extent_critical_fraction]).and.p%actual_extension_mode==parameters%actual_extension_mode
     matches=matches.and.(p%require_root_growth.eqv.parameters%require_root_growth).and. &
       (p%anaerobic_extension_gate_enabled.eqv.parameters%anaerobic_extension_gate_enabled)
   end function
@@ -686,6 +738,12 @@ contains
     if (allocated(self%root_depth_parameters)) then
       if (.not.self%root_depth_parameters%ready().or..not.self%potential_shadow_enabled) return
       if (self%root_depth_parameters%negligible_transpiration<=0.0_real64) return
+    end if
+    if(allocated(self%root_profile_configuration))then
+      if(.not.allocated(self%root_depth_parameters))return
+      if(.not.self%root_profile_configuration%ready())return
+    else if(allocated(self%root_depth_parameters))then
+      if(self%root_depth_parameters%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)return
     end if
     if (.not. ieee_is_finite(self%stem_area_coefficient)) return
     if (self%stem_area_coefficient < 0.0_real64) return
@@ -737,6 +795,7 @@ contains
 
     self%parameters_ready = .false.
     if(allocated(self%root_depth_parameters)) deallocate(self%root_depth_parameters)
+    if(allocated(self%root_profile_configuration))deallocate(self%root_profile_configuration)
     self%last_status = FMR_WOF38_INVALID_PARAMETERS
     select type (typed_parameters => parameters)
     type is (fmr_wofost_crop_transaction_parameters_t)
@@ -750,6 +809,7 @@ contains
       self%anaerobic_root_growth_gate_enabled = typed_parameters%anaerobic_root_growth_gate_enabled
       self%aeration_critical_factor = typed_parameters%aeration_critical_factor
       if(allocated(typed_parameters%root_depth_parameters)) self%root_depth_parameters=typed_parameters%root_depth_parameters
+      if(allocated(typed_parameters%root_profile_configuration))self%root_profile_configuration=typed_parameters%root_profile_configuration
       self%parameters_ready = .true.
       self%last_status = FMR_WOF38_OK
     class default
@@ -820,10 +880,16 @@ contains
     type(crop_root_depth_rate_state_t) :: candidate_depth
     type(crop_root_depth_rate_daily_forcing_t) :: depth_forcing
     type(crop_root_depth_rate_diagnostics_t) :: depth_diagnostics
+    type(adaptive_root_profile_state_t)::candidate_profile,raw_profile
+    type(adaptive_root_profile_daily_forcing_t)::profile_forcing
+    type(fmr_wofost_crop_event_identity_persistence_t)::layer_receipt
+    integer::old_nodes,new_nodes,n
+    logical::layers_ok
     integer :: crop_status, oxygen_status, lifecycle_status
     logical :: actual_root_growth_allowed, suppress_actual_root_growth
 
     outcome = trial_outcome_t()
+    old_nodes=0
     self%last_status = FMR_WOF38_INVALID_TRANSACTION_STATE
     if (.not. self%parameters_ready .or. .not. self%interval_ready) then
       if (.not. self%parameters_ready) self%last_status = FMR_WOF38_INVALID_PARAMETERS
@@ -851,6 +917,22 @@ contains
         return
       end if
 
+      if(allocated(self%root_profile_configuration).neqv.allocated(typed_state%root_profile))return
+      if(allocated(self%root_profile_configuration))then
+        ! Bounded active crop envelope; no implicit emergence/harvest reset.
+        if(self%event_forcing%emergence_requested.or.self%event_forcing%lifecycle_requested.or. &
+          self%event_forcing%active_lifecycle_requested)return
+        if(.not.typed_state%owner%crop_emerged)return
+        call export_wofost_crop_event_identity_persistence(self%event_forcing%event_identity,layer_receipt,layers_ok)
+        if(.not.layers_ok)return
+        if(.not.allocated(layer_receipt%potential_root_sink_integral))return
+        n=size(self%root_profile_configuration%dz_cm)
+        if(size(layer_receipt%potential_root_sink_integral)/=n)return
+        if(size(typed_state%root_profile%root_biomass_by_node)/=n)return
+        old_nodes=self%root_profile_configuration%rooted_nodes(typed_state%root_depth%actual_root_depth_cm)
+        if(old_nodes<=0)return
+        if(any(typed_state%root_profile%root_biomass_by_node(old_nodes+1:)/=0.0_real64))return
+      end if
       if (self%event_forcing%lifecycle_requested) then
         self%last_status = FMR_WOF38_LIFECYCLE_REJECTED
         if (.not. allocated(typed_state%lifecycle)) return
@@ -955,13 +1037,42 @@ contains
             self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_available
           depth_forcing%deepest_root_oxygen_factor_integral= &
             self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_integral
+          if(allocated(self%root_profile_configuration))then
+            depth_forcing%deepest_root_biomass_available=.true.
+            depth_forcing%deepest_root_biomass=typed_state%root_profile%root_biomass_by_node(old_nodes)
+            depth_forcing%deepest_node_top_cm=self%root_profile_configuration%ztop_cm(old_nodes)
+            depth_forcing%rootzone_drought_uptake_factor_available= &
+              self%event_forcing%accepted_aggregates%rootzone_drought_uptake_factor_available
+            depth_forcing%rootzone_drought_uptake_factor_integral= &
+              self%event_forcing%accepted_aggregates%rootzone_drought_uptake_factor_integral
+          end if
           call evaluate_crop_root_depth_rate_candidate(self%root_depth_parameters,typed_state%root_depth, &
             depth_forcing,candidate_depth,depth_diagnostics,crop_status)
           if(crop_status/=CROP_ROOT_RATE_OK.or..not.depth_diagnostics%candidate_built) return
         end if
       end if
+      if(allocated(self%root_profile_configuration))then
+        new_nodes=self%root_profile_configuration%rooted_nodes(candidate_depth%actual_root_depth_cm)
+        profile_forcing%old_rooted_nodes=old_nodes;profile_forcing%rooted_nodes=new_nodes
+        profile_forcing%old_root_depth_cm=typed_state%root_depth%actual_root_depth_cm
+        profile_forcing%root_depth_cm=candidate_depth%actual_root_depth_cm
+        profile_forcing%root_depth_extension_cm=candidate_depth%actual_root_depth_cm-typed_state%root_depth%actual_root_depth_cm
+        profile_forcing%root_biomass_end=candidate_owner%biomass%root_biomass
+        profile_forcing%root_growth=rates%gross_root_growth_rate
+        profile_forcing%root_death=rates%gross_root_growth_rate-rates%root_net_growth_rate
+        profile_forcing%potential_root_sink=layer_receipt%potential_root_sink_integral
+        profile_forcing%root_sink_reduction=layer_receipt%root_sink_reduction_integral
+        call evaluate_adaptive_root_profile_candidate(self%root_profile_configuration%adaptation, &
+          typed_state%root_profile,profile_forcing,self%root_profile_configuration%ztop_cm, &
+          self%root_profile_configuration%zbot_cm,self%root_profile_configuration%dz_cm,raw_profile,crop_status)
+        if(crop_status/=ADAPTIVE_ROOT_PROFILE_OK)return
+        call finalize_adaptive_root_profile_candidate(raw_profile,new_nodes,candidate_owner%biomass%root_biomass, &
+          candidate_profile,crop_status)
+        if(crop_status/=ADAPTIVE_ROOT_PROFILE_OK)return
+      end if
       ! All optional depth work succeeded before publishing any crop field.
       typed_state%owner = candidate_owner
+      if(allocated(self%root_profile_configuration))typed_state%root_profile=candidate_profile
       if(allocated(self%root_depth_parameters)) typed_state%root_depth=candidate_depth
       if (self%potential_shadow_enabled) then
         typed_state%potential_shadow = potential_result%candidate_shadow
@@ -1029,5 +1140,45 @@ contains
     class(fmr_wofost_crop_transaction_model_t), intent(in) :: self
     status = self%last_status
   end function fmr_wofost_crop_last_status_code
+
+  subroutine fmr_wofost_snapshot_root_profile(self,profile,available)
+    class(fmr_wofost_crop_transaction_state_t),intent(in)::self
+    type(adaptive_root_profile_state_t),intent(out)::profile
+    logical,intent(out)::available
+    profile=adaptive_root_profile_state_t()
+    available=self%ready().and.allocated(self%root_profile)
+    if(available)profile=self%root_profile
+  end subroutine
+
+  logical function fmr_wofost_matches_root_profile(self,enabled,c)result(matches)
+    class(fmr_wofost_crop_transaction_parameters_t),intent(in)::self
+    logical,intent(in)::enabled
+    type(adaptive_root_profile_configuration_t),intent(in)::c
+    type(adaptive_root_profile_configuration_t)::p
+    type(adaptive_root_profile_state_t)::a,b
+    integer::status
+    matches=.false.
+    if(.not.self%ready())return
+    if(.not.enabled)then
+      matches=.not.allocated(self%root_profile_configuration);return
+    end if
+    if(.not.allocated(self%root_profile_configuration))return
+    if(.not.c%ready())return
+    p=self%root_profile_configuration
+    if(size(p%dz_cm)/=size(c%dz_cm))return
+    if(any(p%ztop_cm/=c%ztop_cm).or.any(p%zbot_cm/=c%zbot_cm).or.any(p%dz_cm/=c%dz_cm))return
+    if(p%maximum_root_depth_cm/=c%maximum_root_depth_cm)return
+    if(any([p%adaptation%growth_adaptation_fraction,p%adaptation%death_adaptation_fraction, &
+      p%adaptation%minimum_root_biomass_per_cm,p%adaptation%specific_root_length_m_per_kg]/= &
+      [c%adaptation%growth_adaptation_fraction,c%adaptation%death_adaptation_fraction, &
+      c%adaptation%minimum_root_biomass_per_cm,c%adaptation%specific_root_length_m_per_kg]))return
+    call initialize_adaptive_root_profile_state(p%initial_density,p%zbot_cm,p%maximum_root_depth_cm, &
+      self%root_depth_parameters%initial_root_depth_cm,1.0_real64,a,status)
+    if(status/=ADAPTIVE_ROOT_PROFILE_OK)return
+    call initialize_adaptive_root_profile_state(c%initial_density,c%zbot_cm,c%maximum_root_depth_cm, &
+      self%root_depth_parameters%initial_root_depth_cm,1.0_real64,b,status)
+    if(status/=ADAPTIVE_ROOT_PROFILE_OK)return
+    matches=all(a%root_biomass_by_node==b%root_biomass_by_node)
+  end function
 
 end module mod_fmr_wofost_crop_transaction

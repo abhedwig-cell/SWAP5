@@ -6,6 +6,8 @@ module mod_crop_root_depth_rate_owner
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
   use mod_crop_root_anaerobic_extension_gate, only: root_extension_allowed_by_daily_oxygen, ROOT_ANOX_GATE_OK
+  use mod_crop_root_extension_supply_limit, only: limit_root_extension_by_drought_and_supply, &
+    root_extension_supply_result_t,ROOT_SUPPLY_OK
   implicit none
   private
 
@@ -17,6 +19,7 @@ module mod_crop_root_depth_rate_owner
 
   integer, parameter, public :: CROP_ROOT_RATE_UNSCALED = 0
   integer, parameter, public :: CROP_ROOT_RATE_WATER_SCALED = 1
+  integer, parameter, public :: CROP_ROOT_RATE_DROUGHT_SUPPLY = 2
 
   type, public :: crop_root_depth_rate_parameters_t
     real(real64) :: initial_root_depth_cm = 0.0_real64
@@ -29,6 +32,7 @@ module mod_crop_root_depth_rate_owner
     real(real64) :: negligible_extension = 0.0_real64
     logical :: anaerobic_extension_gate_enabled = .false.
     real(real64) :: aeration_critical_factor = 0.0001_real64
+    real(real64) :: minimum_daily_extension_cm=0.0_real64,extent_critical_fraction=1.0_real64
   contains
     procedure, public :: ready => crop_root_depth_rate_parameters_ready
   end type crop_root_depth_rate_parameters_t
@@ -51,6 +55,8 @@ module mod_crop_root_depth_rate_owner
     real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
     logical :: rootzone_drought_uptake_factor_available = .false.
     real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    logical :: deepest_root_biomass_available=.false.
+    real(real64) :: deepest_root_biomass=0.0_real64,deepest_node_top_cm=0.0_real64
   end type crop_root_depth_rate_daily_forcing_t
 
   type, public :: crop_root_depth_rate_diagnostics_t
@@ -76,7 +82,13 @@ contains
     if (self%initial_root_depth_cm > self%maximum_root_depth_cm) return
     if (.not. ieee_is_finite(self%maximum_daily_extension_cm) .or. self%maximum_daily_extension_cm < 0.0_real64) return
     if (self%actual_extension_mode /= CROP_ROOT_RATE_UNSCALED .and. &
-        self%actual_extension_mode /= CROP_ROOT_RATE_WATER_SCALED) return
+        self%actual_extension_mode /= CROP_ROOT_RATE_WATER_SCALED.and. &
+        self%actual_extension_mode /= CROP_ROOT_RATE_DROUGHT_SUPPLY) return
+    if(self%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)then
+      if(.not.ieee_is_finite(self%minimum_daily_extension_cm).or..not.ieee_is_finite(self%extent_critical_fraction))return
+      if(self%minimum_daily_extension_cm<0.0_real64.or.self%extent_critical_fraction<=0.0_real64.or. &
+        self%extent_critical_fraction>1.0_real64)return
+    end if
     if (.not. ieee_is_finite(self%negligible_transpiration) .or. self%negligible_transpiration < 0.0_real64) return
     if (.not. ieee_is_finite(self%negligible_root_growth) .or. self%negligible_root_growth < 0.0_real64) return
     if (.not. ieee_is_finite(self%negligible_extension) .or. self%negligible_extension < 0.0_real64) return
@@ -131,6 +143,7 @@ contains
     real(real64) :: rrpot, rr, ratio
     logical :: oxygen_allows_actual_extension
     integer :: oxygen_status
+    type(root_extension_supply_result_t)::supply
 
     candidate = committed
     diagnostics = crop_root_depth_rate_diagnostics_t()
@@ -188,6 +201,16 @@ contains
         ratio = forcing%actual_root_uptake / forcing%potential_transpiration
         diagnostics%water_scaling_factor = ratio
         rr = rr * ratio
+      end if
+      if(parameters%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)then
+        status=CROP_ROOT_RATE_INVALID_FORCING
+        if(.not.forcing%deepest_root_biomass_available.or..not.forcing%rootzone_drought_uptake_factor_available)return
+        call limit_root_extension_by_drought_and_supply(rr,parameters%minimum_daily_extension_cm, &
+          forcing%rootzone_drought_uptake_factor_integral,parameters%extent_critical_fraction, &
+          forcing%deepest_root_biomass,committed%actual_root_depth_cm,forcing%deepest_node_top_cm, &
+          forcing%actual_root_growth,parameters%negligible_extension,supply,oxygen_status)
+        if(oxygen_status/=ROOT_SUPPLY_OK)return
+        rr=supply%extension_cm
       end if
       if (rr < parameters%negligible_extension) rr = 0.0_real64
       candidate%actual_root_depth_cm = committed%actual_root_depth_cm + rr

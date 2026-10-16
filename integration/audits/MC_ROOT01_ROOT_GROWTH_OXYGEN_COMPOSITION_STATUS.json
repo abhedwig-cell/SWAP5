@@ -86,5 +86,48 @@
     "regression_test": "tests/fmig431/test_swap431_root_supply_fail_closed.f90",
     "local_runner": "tests/fmig431/run_swap431_root_supply_fail_closed.py",
     "test_commit": "4ed61310b9c189f053897bd5c60c1f8ad3d8473d"
+  },
+  "daily_density_supply_20261016": {
+    "baseline": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+    "branch": "work/root-density-supply-20261016",
+    "contract": "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md",
+    "checkpoint": "5653187d87ed5523331d58194b3d043205cc2ac5",
+    "phase": "DIRECT_CONTRACTS_PASS_PHYSICAL_PENDING",
+    "implemented": true,
+    "qualified": false,
+    "admitted": false,
+    "scope": "Explicit active crop initialization, SWRD2 adaptive density, accepted uncompensated layer receipts, optional SWDMI2RD2 supply. Emergence/harvest/rotation remain excluded.",
+    "direct": {
+      "command": "python -B tests/root-growth/run_root_growth.py --swrd2 --density --output <unique-owned-directory>",
+      "status": "PASS",
+      "providers": 39,
+      "native_programs": 40,
+      "wall_seconds": 23.98935045699909,
+      "cost_seconds": {
+        "compile": 16.41103539098549,
+        "link": 7.123310822018539,
+        "native": 0.1373938509641448
+      },
+      "claim": "Current39-provider real crop/lineage owner and synthetic-water carrier.40 native O0/O2 programmes including30 incumbent plus10 new. No actual Richards or full daily application claim yet."
+    },
+    "retained_failures": [
+      "First O2 -Werror rejected uninitialized-variable warning; initialized control variable before use.",
+      "Second new supply-driver standalone case omitted predecessor biomass; repaired test input. Original assertions retained."
+    ],
+    "test_selection": {
+      "physical_owner": "MC-ROOT01 current/lagged file-weather daily real Richards uptake and F-WOF38 owner",
+      "changed_surface": "Optional nodal lineage/persistence, crop density/depth/supply and committed density -> real root sink. Solver equations unchanged.",
+      "next_command": "Existing shared physical build extended with two explicit daily-density drivers; original SWRD2 assertions retained.",
+      "expected_seconds": 480,
+      "reason": "New accepted-state/forcing coupling cannot be qualified by the synthetic-water direct contracts. Existing28-programme SWRD2 physical batch measured440.8s; reuse one controlled build for current O0/O2 drivers.",
+      "full_moving": "NOT_SELECTED_AT_DEVELOPMENT_CHECKPOINT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT"
+    },
+    "next_action": "Real daily accepted uptake, dynamic density shape and supply/death/extension recurrence, current/lagged schedules, rejects/replay and opaque joint restart. Then reconcile owning admission guards without dropping assertions.",
+    "blockers": [
+      "Physical science and current owner preservation not yet executed.",
+      "No source-certified emergence/lifecycle density initialization; explicit active crop constructor only."
+    ]
   }
 }
