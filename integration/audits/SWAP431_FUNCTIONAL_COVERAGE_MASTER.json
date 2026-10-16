@@ -26,22 +26,22 @@
     },
     "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 92,
+    "confirmed_missing_production_entries": 91,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 113,
     "active_gap_type_breakdown": {
-      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 30,
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 29,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
-      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 58,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 11,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 57,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 13,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 109,
     "missing_standalone_process_implementations_not_established": 109,
-    "active_with_existing_production_source_authority": 64,
-    "active_without_listed_production_source_authority": 45,
+    "active_with_existing_production_source_authority": 65,
+    "active_without_listed_production_source_authority": 44,
     "active_missing_complete_admitted_route": 109,
     "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open.",
     "derived_gap_counter_reconciliation": {
@@ -11068,7 +11068,12 @@
       },
       "meaning": "Adaptive node root-biomass growth/death redistribution",
       "swap5_implementation_authority": [
-        "src/crop/mod_crop_adaptive_root_profile_owner.f90"
+        "src/crop/mod_crop_adaptive_root_profile_owner.f90",
+        "src/crop/mod_crop_adaptive_root_profile_owner.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/crop/mod_crop_root_depth_rate_owner.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -11076,16 +11081,19 @@
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
         "tests/fmig431/test_swap431_root_supply_fail_closed.f90",
         "integration/audits/MC_CROP01_TRAJECTORY4_SWRD2_STATUS.json",
-        "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md"
+        "docs/science/MC_CROP01_TRAJECTORY4_SWRD2_CONTRACT_20261015.md",
+        "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md at b7faa67907e75d4447ceb126e40f9de47dbab165"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Adaptive WROOT_NODE component exists. At canonical02ee its initialization and candidate-update procedures have no caller outside their defining module. The passing PR1125 supply fixture assigns a static node array, never executing density initialization/growth/death; it does not qualify SWRDC1 daily production ownership."
+        "established": true,
+        "route": "Existing F-WOF38 actual daily crop owner and file-weather real Richards bootstrap; explicit adaptive profile / SWRD2 / optional drought-supply selector.",
+        "bounded_receipt": "closeout_daily_density_supply_20261016",
+        "claim": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart."
       },
       "restrictions": [
-        "Preserve component and all actually qualified PR1125 SWRD2/SWRD3/potential-shadow contracts.",
-        "Daily density initialization/update, accepted layer uptake/stress, commit/retry and joint restart remain open. No absent-algorithm claim."
+        "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+        "Full source-selector capability remains ACTIVE_MIGRATION; this receipt admits only the explicit bounded daily route."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-ROOT01",
@@ -11097,10 +11105,10 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "IMPLEMENTED_COMPONENT_DAILY_PRODUCTION_AND_SCIENCE_OPEN",
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_DAILY_ROUTE_ADMITTED_FULL_ENVELOPE_OPEN",
       "implementation_absence_proven": false,
-      "resolution_stage": "HISTORICAL_CAPABILITY_PROMOTION_CORRECTED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED",
       "external_reference_labels": [
         "PR #1125; owner qualification 37773706292; F-CI 37773706297"
       ],
@@ -13578,19 +13586,29 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Minimum/root-drought-scaled extension limited by allocated root dry matter",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_adaptive_root_profile_owner.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/crop/mod_crop_root_depth_rate_owner.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at b7faa67907e75d4447ceb126e40f9de47dbab165"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
-        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json"
+        "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
+        "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json at b7faa67907e75d4447ceb126e40f9de47dbab165",
+        "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md at b7faa67907e75d4447ceb126e40f9de47dbab165"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification."
+        "established": true,
+        "route": "Existing F-WOF38 actual daily crop owner and file-weather real Richards bootstrap; explicit adaptive profile / SWRD2 / optional drought-supply selector.",
+        "bounded_receipt": "closeout_daily_density_supply_20261016",
+        "claim": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart."
       },
       "restrictions": [
-        "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification."
+        "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+        "Full source-selector capability remains ACTIVE_MIGRATION; this receipt admits only the explicit bounded daily route."
       ],
       "remaining_dependency": [
         "SW431-ROOT-DENSITY"
@@ -13604,14 +13622,18 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_DAILY_ROUTE_ADMITTED_FULL_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "source_input_names": [],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED"
+      "source_input_names": [
+        "SWDMI2RD",
+        "RRIMIN",
+        "EXTENTCRIT"
+      ],
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED"
     },
     {
       "capability_id": "SW431-ROOT-LRV-CONSTANT",
@@ -14499,7 +14521,7 @@
       "capability_id": "SW431-ROOT-DENSITY",
       "work_unit": "MC-ROOT01",
       "dependencies": [],
-      "why_open": "Adaptive WROOT_NODE component exists. At canonical02ee its initialization and candidate-update procedures have no caller outside their defining module. The passing PR1125 supply fixture assigns a static node array, never executing density initialization/growth/death; it does not qualify SWRDC1 daily production ownership.",
+      "why_open": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15587,7 +15609,7 @@
       "dependencies": [
         "SW431-ROOT-DENSITY"
       ],
-      "why_open": "No accepted root-depth owner applies the rrimin/extentcrit dry-stress response and grrt_needed supply cap based on deepest-node root biomass. This requires root-density/source growth state before qualification.",
+      "why_open": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -15595,7 +15617,7 @@
         "physical_risk": 2,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-MACRO-POWM",
@@ -16404,6 +16426,68 @@
         "NOT_APPLICABLE": 20,
         "QUALIFICATION_ONLY": 4
       }
+    },
+    "closeout_daily_density_supply_20261016": {
+      "pr": 1251,
+      "canonical_merge": "b7faa67907e75d4447ceb126e40f9de47dbab165",
+      "qualified_head": "9c26fe74f793bf7ee928489ade662e1a670e68a8",
+      "baseline": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+      "production_source_tree": "5c8bd449d83dc06ef9a257f3b449f1818431175f",
+      "status": "BOUNDED_DAILY_PRODUCTION_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
+      "implemented": true,
+      "tested": true,
+      "qualified": true,
+      "admitted": true,
+      "scope": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart.",
+      "remaining": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+      "native_programs": {
+        "direct": 40,
+        "physical": 36,
+        "independent_nodal": 8,
+        "incumbent_application_owners": 16
+      },
+      "preservation": "30 original direct +28 original physical +16 original application stdout identities matched immutable qualified/admitted originals; exact unchanged-statement diagnostic line relocation only. Original guard bodies retained; current source/capsule proof and26 falsification controls PASS.",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "full_capability": false,
+      "full_master_qualification_claimed": false,
+      "authority_at_canonical": "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json",
+      "records": [
+        "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json",
+        "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md"
+      ],
+      "sources": [
+        "src/crop/mod_crop_adaptive_root_profile_owner.f90",
+        "src/crop/mod_crop_root_depth_rate_owner.f90",
+        "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90"
+      ],
+      "evidence": {
+        "science": {
+          "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_SCIENCE_20261016.tar.xz.b64",
+          "decoded_sha256": "a3ec19aca353e2b595eea12c9c956f0942b4fa544273411d38b6a97bf0c925ad",
+          "decoded_bytes": 275400,
+          "members": 2801
+        },
+        "admission": {
+          "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_ADMISSION_20261016.tar.xz.b64",
+          "decoded_sha256": "f6a4314d734ba5f6c920b2804ce3190803190ca1875a106290ec4b5d6c001b24",
+          "decoded_bytes": 344404,
+          "members": 23
+        }
+      },
+      "post_merge_verification": "Actual merge tree equals qualified final candidate tree; source5c8bd44 unchanged; current complete proof PASS on actual canonical merge. No new numerical execution required for metadata-only closeout.",
+      "counts_unchanged": {
+        "ADMITTED": 94,
+        "ACTIVE_MIGRATION": 109,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 4
+      },
+      "structural_absence_flags": 91
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -16794,7 +16878,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "8714a32d72d51889772912938e0e4b4835a98f2f",
+  "canonical_locator_head": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -16807,5 +16891,68 @@
     "scope": "Bounded application composition receipt and exact later locators only; original historical/scientific checkout is unchanged. No capability promotion.",
     "receipt": "closeout_sw431_int_vonhh_application_20261016",
     "disposition_changes": 0
+  },
+  "latest_daily_density_supply_reconciliation_20261016": {
+    "pr": 1251,
+    "canonical_merge": "b7faa67907e75d4447ceb126e40f9de47dbab165",
+    "qualified_head": "9c26fe74f793bf7ee928489ade662e1a670e68a8",
+    "baseline": "2194651f55881e5aa7ea7ffd3f9e2eebfae952f9",
+    "production_source_tree": "5c8bd449d83dc06ef9a257f3b449f1818431175f",
+    "status": "BOUNDED_DAILY_PRODUCTION_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "scope": "Explicit SWRD2 adaptive density initialized at actual task2 emergence; literal growth/death/finalization, actual accepted uncompensated nodal Feddes/empirical-oxygen water potential/reduction; optional SWDMI2RD2 deepest-root supply. Current/lagged actual Richards, atomic retry/rollback/duplicate/stale events and opaque joint restart.",
+    "remaining": "Harvest/rotation composition, native weather disk codec, zero initial root depth, advanced stress selectors and complete automatic legacy parameter/calendar activation not admitted.",
+    "native_programs": {
+      "direct": 40,
+      "physical": 36,
+      "independent_nodal": 8,
+      "incumbent_application_owners": 16
+    },
+    "preservation": "30 original direct +28 original physical +16 original application stdout identities matched immutable qualified/admitted originals; exact unchanged-statement diagnostic line relocation only. Original guard bodies retained; current source/capsule proof and26 falsification controls PASS.",
+    "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT",
+    "full_capability": false,
+    "full_master_qualification_claimed": false,
+    "authority_at_canonical": "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json",
+    "records": [
+      "integration/audits/MC_ROOT01_ROOT_GROWTH_OXYGEN_COMPOSITION_STATUS.json",
+      "docs/science/MC_ROOT01_DAILY_DENSITY_SUPPLY_CONTRACT_20261016.md"
+    ],
+    "sources": [
+      "src/crop/mod_crop_adaptive_root_profile_owner.f90",
+      "src/crop/mod_crop_root_depth_rate_owner.f90",
+      "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+      "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+      "src/runtime/mod_fmr_production_application_bootstrap.f90"
+    ],
+    "evidence": {
+      "science": {
+        "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_SCIENCE_20261016.tar.xz.b64",
+        "decoded_sha256": "a3ec19aca353e2b595eea12c9c956f0942b4fa544273411d38b6a97bf0c925ad",
+        "decoded_bytes": 275400,
+        "members": 2801
+      },
+      "admission": {
+        "path": "integration/audits/evidence/MC_ROOT01_DAILY_DENSITY_SUPPLY_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "f6a4314d734ba5f6c920b2804ce3190803190ca1875a106290ec4b5d6c001b24",
+        "decoded_bytes": 344404,
+        "members": 23
+      }
+    },
+    "post_merge_verification": "Actual merge tree equals qualified final candidate tree; source5c8bd44 unchanged; current complete proof PASS on actual canonical merge. No new numerical execution required for metadata-only closeout.",
+    "counts_unchanged": {
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "structural_absence_flags": 91,
+    "canonical_closeout": "05d6b3f786b5a20cb053bf5e713ca771dafd289e"
   }
 }
