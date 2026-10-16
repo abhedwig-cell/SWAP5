@@ -48,7 +48,7 @@ d=copy.deepcopy(data);d['physical/managed_driver.f90']+=b'\n! unexecuted discrim
 with patch.object(v,'evidence',return_value=d):rejects('UNEXECUTED_MANAGED_DRIVER',v.verify_qualification)
 d=copy.deepcopy(data);x=json.loads(d['review/incumbent_projections.json']);x.pop(next(iter(x)));d['review/incumbent_projections.json']=json.dumps(x).encode()
 with patch.object(v,'evidence',return_value=d):rejects('MISSING_DEFAULT_REVIEW',v.verify_qualification)
-for path,name in [('tests/fpm','verify_hyd_successor'),('tests/root-growth','verify_daily_density_successor'),('tests/fpm','verify_int12c_successor'),
+for path,name in [('tests/fwof/pp02','verify_b111_nfixation_successor'),('tests/fpm','verify_hyd_successor'),('tests/root-growth','verify_daily_density_successor'),('tests/fpm','verify_int12c_successor'),
  ('tests/crop-harvest','verify_harvest_successor'),('tests/nut-sol','verify_surface_successor'),
  ('tests/root-growth','verify_swrd2_successor'),('tests/root-growth','verify_swrd3_successor'),
  ('tests/crop-co2','verify_co2_successor'),('tests/nut-calendar','verify_calendar_successor'),('tests/nut-input','verify_input_successor')]:

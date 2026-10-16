@@ -3,7 +3,7 @@ from pathlib import Path
 import base64,hashlib,io,json,re,subprocess,sys,tarfile,tempfile
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
-BASE='be8a49cd59815b537b46e0dac2b3d0161366c796'
+BASE='27dea4829f7025eb4701599d5dbef7b86e4fd20a'
 STATUS='integration/audits/MC_IRR01_STATUS.json'
 PRODUCTION={
  'src/runtime/mod_fmr_production_application_bootstrap.f90',
@@ -11,7 +11,8 @@ PRODUCTION={
  'src/runtime/mod_fmr_scheduled_irrigation_application.f90',
  'src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90'}
 GUARDS={'tests/root-growth/verify_daily_density_successor.py','tests/root-growth/check_daily_density_controls.py',
- 'tests/fpm/verify_hyd_successor.py','tests/fpm/test_hyd_successor_controls.py'}
+ 'tests/fpm/verify_hyd_successor.py','tests/fpm/test_hyd_successor_controls.py',
+ 'tests/fwof/pp02/verify_b111_nfixation_successor.py','tests/fwof/pp02/test_b111_nfixation_successor_controls.py'}
 FLAGS=['-std=f2008','-ffree-line-length-none','-w','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']
 def check(ok,label):
  if not ok:raise ValueError(label)
@@ -30,7 +31,8 @@ def verify_source(git_reader=None):
  for p,v in r['postimages'].items():check(g('rev-parse','HEAD:'+p)==v['blob']==blob((ROOT/p).read_bytes()),'managed-weather postimage drift '+p)
  check(g('rev-parse','HEAD:src')==r['production_source_tree'],'managed-weather production tree drift')
  check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'managed-weather reference drift')
- flags={name:True for name in ['managed_irrigation_successor','hyd_successor','daily_density_successor','int12c_successor','co2_successor',
+ for path in PRODUCTION:check(not re.search(r'\buse\s*(?:::\s*)?mod_b111_nfixation_policy\b',(ROOT/path).read_text(),re.I),'unqualified NFIX runtime caller')
+ flags={name:True for name in ['managed_irrigation_successor','nfix_component_preserved','hyd_successor','daily_density_successor','int12c_successor','co2_successor',
   'swrd3_successor','swrd2_successor','harvest_successor','surface_successor','calendar_successor','input_successor','thermal_successor']}
  return dict(baseline=BASE,source_tree=r['production_source_tree'],current_source_tree=r['production_source_tree'],qualified=False,admitted=False,**flags)
 def capsule(descriptor):
@@ -134,11 +136,11 @@ def validate_science(data):
  return r
 
 def incumbent():
- base=ROOT.parent/'irr-incumbent-be8a49cd'
+ base=ROOT.parent/'irr-incumbent-27dea482'
  if not base.exists():subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
  check(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'managed-weather incumbent moved')
  check(not subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=base,text=True).strip(),'managed-weather incumbent dirty')
- p=subprocess.run([sys.executable,'-B','tests/fpm/verify_hyd_successor.py'],cwd=base,capture_output=True,text=True)
+ p=subprocess.run([sys.executable,'-B','tests/fwof/pp02/verify_b111_nfixation_successor.py'],cwd=base,capture_output=True,text=True)
  check(p.returncode==0,'actual admitted density authority rejected '+p.stderr[-800:]);r=json.loads(p.stdout);check(r['qualified'],'actual density authority not qualified');return r
 
 def verify_qualification():
