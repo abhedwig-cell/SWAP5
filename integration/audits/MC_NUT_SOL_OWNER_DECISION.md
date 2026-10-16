@@ -7,7 +7,12 @@ PR #1098 completes only its separate pure B1.11 request/fixation component.
 The original ownership and sequencing proposal below is historical navigation;
 current admitted Soil-N, crop-N, matrix/age and surface routes are owned by their
 later canonical status records, including `MC_NUT_SOL_TRAJECTORY3_STATUS.json`.
-This component has no production caller and creates no runtime N-input receipt.
+At the original component admission, it had no production caller or runtime N-input receipt.
+The bounded request-binding successor is tracked in
+`MC_NUT_SOL_STATUS.json#b111_request_binding_20261016` and
+`docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md`.
+It explicitly selects this request inside the existing joint N owner, with
+fresh mass/restart qualification; it does not assert full B1.11 crop-N equivalence.
 It does not replace or alter the admitted WOFOST81 request/apply semantics.
 
 ## Ownership decomposition

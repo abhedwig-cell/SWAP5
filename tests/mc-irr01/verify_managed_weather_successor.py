@@ -21,6 +21,9 @@ def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hex
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['managed_application_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/nut-crop/verify_b111_request_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'));import verify_b111_request_successor as request
+  return request.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'unknown managed-weather baseline')
  g('merge-base','--is-ancestor',BASE,'HEAD')
@@ -144,6 +147,9 @@ def incumbent():
  check(p.returncode==0,'actual admitted density authority rejected '+p.stderr[-800:]);r=json.loads(p.stdout);check(r['qualified'],'actual density authority not qualified');return r
 
 def verify_qualification():
+ if (ROOT/'tests/nut-crop/verify_b111_request_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/nut-crop'));import verify_b111_request_successor as request
+  return request.verify_qualification()
  source=verify_source();check(record()['phase']in ('SCIENCE_COMPLETE_ADMISSION_CONTROLS_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED'),'managed-weather science unfinished')
  validate_science(evidence());old=incumbent()
  return {**source,'qualified':True,'incumbent':old,'scope':'Bounded authentic full-day TCS7/8,DCS2,1/3-node SSDI,limits/frozen allocation; actual adaptive SWRD2/supply with current/lagged crop, common-prefix rollback/retry and opaque joint restart. Existing64-interval daily schedule; no arbitrary long-tail accuracy, bottom7 salt, DCS1/root timing or native weather disk claim.','preservation':'12_BYTE_IDENTICAL_WEATHER_AND_16_BYTE_IDENTICAL_APPLICATION_OWNER_OUTPUTS_PLUS_ACTUAL_NEW_MANAGED_PHYSICS_AND_REVIEWED_DEFAULT_BODY','full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest':'NOT_SELECTED_POLICY'}

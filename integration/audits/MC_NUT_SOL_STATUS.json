@@ -323,8 +323,8 @@
     "branch": "work/nut-b111-request-binding-20261016",
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "canonically_admitted": false,
     "contract": "docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md",
     "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
@@ -334,15 +334,94 @@
       "rejection nonmutation",
       "restart identity"
     ],
-    "next_action": "Fresh cold O0/O2 existing default and selected real crop/Soil-N/Richards/restart tests via tests/nut-crop/run_b111_request_binding.py; then affected owner/admission controls.",
+    "next_action": "Publish exact qualified tree on same branch, inspect reviews/checks and current canonical, expected-head merge if unchanged; verify actual merge tree and update existing master receipt. No new numerical run for metadata closeout.",
     "blockers": [],
     "test_selection": {
       "affected": "Explicit optional request calculation, joint N accepted-state and tagged configuration identity",
       "expected_compile_link_native_seconds": 250,
       "full_fci": "NOT_SELECTED_IMPACT_UNCHANGED_DEFAULT_STATEMENTS_AND_TARGETED_SHARED_STATE_SCIENCE_REQUIRED",
       "highest_low_air": "NOT_SELECTED_POLICY",
-      "rossfast": "NOT_SELECTED_IMPACT"
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "unexpected_cost_diagnosis": "First full affected closure completed at385.297s versus250s estimate:220.426s provider compile,26.085s driver compile,2.640s link,136.147s native. Actual incumbent crop/mineral/reactive preservation runs are retained. No identical rebuild or native repeat selected. Only newly added tiny-demand/multi-organ boundary leaf needs execution."
     },
-    "compiler_recovery": "System gfortran absent; package attempts failed on apt cache permissions/unavailable package. Recovered existing local13.3.0 toolchain at /workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran; no fabricated prior numerical PASS."
+    "compiler_recovery": "System gfortran absent; package attempts failed on apt cache permissions/unavailable package. Recovered existing local13.3.0 toolchain at /workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran; no fabricated prior numerical PASS.",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+    "postimages": {
+      "src/crop/mod_crop_b111_n_request_binding.f90": {
+        "status": "A",
+        "blob": "78f8dc0d6507e457941b2d8152466ce2e2384316"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "2b37c9ba5aec86f33d20bb9cef40eb658927b35b"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "6259e3aaaf852fc1fb3cac670c0c674602498d73"
+      },
+      "tests/mc-irr01/check_managed_weather_controls.py": {
+        "status": "M",
+        "blob": "42f13dca9f0e76eef8c5fce646384a54ad3790f1"
+      },
+      "tests/mc-irr01/verify_managed_weather_successor.py": {
+        "status": "M",
+        "blob": "bd5ee1c1a582b2d1e069ba80b4d83779722333cf"
+      },
+      "tests/modularity/run_modular_tests.py": {
+        "status": "M",
+        "blob": "e48abcce3c63364f2a6d8ef4a21ae9cd0c2caa4b"
+      },
+      "tests/nut-crop/check_b111_request_controls.py": {
+        "status": "A",
+        "blob": "10d4a9a3b229a6119a3c62ff9ab558659325e305"
+      },
+      "tests/nut-crop/run_b111_request_binding.py": {
+        "status": "A",
+        "blob": "038c56f8c8c72833a8e122f92028d53f8a22f598"
+      },
+      "tests/nut-crop/test_b111_request_boundaries.f90": {
+        "status": "A",
+        "blob": "c6361772587bb7d1dd39108dc49e66e55bc74c55"
+      },
+      "tests/nut-crop/test_b111_request_day.f90": {
+        "status": "A",
+        "blob": "a0e4932fb392f468cbfd8e7ef2ab8c93e4db463b"
+      },
+      "tests/nut-crop/test_crop_soil_joint.f90": {
+        "status": "M",
+        "blob": "da2276c3cab8c61e9e0558cc7097462d72653678"
+      },
+      "tests/nut-crop/verify_b111_request_successor.py": {
+        "status": "A",
+        "blob": "2ab110e9d6e032b037880e08686b226b6b3b957a"
+      }
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c98f1bc2405f36f99d7e053e87e1b73e08e74013eb1cb809987531f59b17d8df",
+      "decoded_bytes": 86620,
+      "members": 1709
+    },
+    "cold_science": {
+      "compile": 220.4260660700529,
+      "driver_compile": 26.084536422000383,
+      "link": 2.6397610359999817,
+      "native": 136.14684015497915
+    },
+    "boundary_science": "O0/O2 PASS;72real soil/crop cases per optimization; real Richards plus opaque/fresh native continuation;2policy mismatch negatives per optimization; tiny-demand, multi-organ, strict gates and nonfinite direct boundary leaf PASS.",
+    "retained_failure": "First boundary leaf rejected before compilation: strict modular closure requires explicit include authority. Replaced fixture include by a small explicit real parameter/table contract, keeping closure guards unchanged. Final leaf PASS; original failed log retained.",
+    "preserved": true,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "06594c04ae7c6f3426f9a1d62ae2fc9660d5a1592f5c402bdcd77ab532d72ee4",
+      "members": 6,
+      "decoded_bytes": 11380
+    },
+    "admission_controls": 27,
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "full_capability": false,
+    "full_master_qualification": false
   }
 }
