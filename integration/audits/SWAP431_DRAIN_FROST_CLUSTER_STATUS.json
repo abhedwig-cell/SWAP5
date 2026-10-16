@@ -396,7 +396,7 @@
     "frozen_conditions_commit": "0f3294ffa5be77410befc99a9e5fd5b8a2926b81",
     "evidence": {
       "path": "integration/audits/evidence/MC_DRAIN01_MULTILEVEL_20261016.json.gz.b64",
-      "sha256": "d3c37d441e6decd94797192464c6cbd6a6dd32dce41b8a786701343a9c7d6ea6"
+      "sha256": "a3e9e37a986c045d0ae12eb0d0ff0c69621b03a0be57bf2194ee2b2963b9b4e1"
     },
     "qualification_inputs_sha256": {
       "tests/fmig431/run_swap431_multilevel_divdra.py": "ecf046f8ad58c5546c97f73374f37710c0691a468a6781168b47568801d425aa",
@@ -532,6 +532,50 @@
       }
     ],
     "successor_postimages": {
+      "reference/swap-4.3.1/README.md": {
+        "status": "M",
+        "blob": "8017117dced1059f5e5f1f91cd38abab8d1766a1"
+      },
+      "reference/swap-4.3.1/b1-manifest.yml": {
+        "status": "M",
+        "blob": "eb6500526eb29c2a743b6cfa269e09a76b4ce7b2"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/apply_and_verify.py": {
+        "status": "A",
+        "blob": "8ef33660f09eade020a1eb4f749c81435ef5fbb0"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/finding.md": {
+        "status": "A",
+        "blob": "01715ea5f288826ebd60c5b040e54e04f722b017"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/fix.patch": {
+        "status": "A",
+        "blob": "183ea401256e2e710ba70f3e62eb2be33bdec24c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/qualification.md": {
+        "status": "A",
+        "blob": "63f8acd0f763ad2bcc6c496f89c87cf264b4416f"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/run_reference.py": {
+        "status": "A",
+        "blob": "22df9d021fde758cd2b894264c3f93bb8362b22c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/test_reference.py": {
+        "status": "A",
+        "blob": "e09ef60bdbb8b6f98158cea45507e4b05389fadb"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/tests/verify.py": {
+        "status": "A",
+        "blob": "e597dfe314f52bec9da467fdd2afbe854f767a0b"
+      },
+      "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
+        "status": "A",
+        "blob": "f91716505c34fab5ba490a51d679c6eb2ffb3c0e"
+      },
+      "reference/swap-4.3.1/snapshots/B1.12.yml": {
+        "status": "A",
+        "blob": "12b793b8283e11b6cd9e130a0a559c97e09961c6"
+      },
       "src/crop/mod_wofost_actual_biomass_state.f90": {
         "status": "M",
         "blob": "79da2d32fa4e99f8f5bb24097f526e4ee896af47"
@@ -626,15 +670,23 @@
       },
       "tests/fmig431/verify_multilevel_divdra_successor.py": {
         "status": "A",
-        "blob": "ece8edffa799e5457a99e517624a0329eba24179"
+        "blob": "6b0d3e2adb0695902594b3c484264842cc1172d6"
       },
       "tests/fmig431/verify_signed_divdra_successor.py": {
         "status": "M",
-        "blob": "0363090d3cb347a8aa575b3baf71e859ff65cc03"
+        "blob": "9dadf619ca66908dc823fe0171c719e9d250f626"
       },
       "tests/fwof/mod_fwof40_external_crop_restart_adapter.f90": {
         "status": "M",
         "blob": "e4845a4d118fe17955efec3800754c19aa2dfb08"
+      },
+      "tools/vq/b1_12_admission_gate.py": {
+        "status": "A",
+        "blob": "6394ddb0e910f4297f7ae654691ac5424bb8b471"
+      },
+      "tools/vq/b1_12_reconstruct.py": {
+        "status": "A",
+        "blob": "85c09cc4c3be2f584b411b41d0e4fd13f40b9b5d"
       }
     },
     "qualification_checkpoint": "ddf13d59ec8a593c6f6407d9b5f01f3aecdfb65a",
@@ -651,7 +703,9 @@
       "joint_drain_owner_entry": "PASS",
       "joint_evidence_corruption_controls": 6,
       "joint_docs_source": "PASS",
-      "joint_mkdocs_strict": "PASS"
+      "joint_mkdocs_strict": "PASS",
+      "reference_joint_owner": "PASS",
+      "reference_joint_evidence_controls": 6
     },
     "parallel_annual_reconciliation": {
       "canonical_commit": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
@@ -708,6 +762,15 @@
         "sha256": "e043fa7aa8c125c69701ac224e0f8398b48ba36f97a4f4f99996e40f622dc7be",
         "terminal": "PASS"
       }
-    }
+    },
+    "parallel_reference_reconciliation": {
+      "canonical_commit": "36862e06001154f5097b438ae4b851ae092423df",
+      "baseline": "5bacc7419f5ad73614f8e55b1d0c7c88706da00c",
+      "guard": "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py",
+      "decision": "Keep B1.12 reference admission and all source-pinned production contracts exact. Compose additive drainage delegation in its guard; verify original immutable reference/annual evidence at36862. Original DIVDRA and every selected drainage compiled input are unchanged.",
+      "drainage_numerical_input_intersection": [],
+      "qualification": "PASS original immutable SWAP-019 validator,9 original reference negatives, original annual qualification and6 multilevel evidence controls; existing FCI owner entry PASS. No drainage numerical input changed."
+    },
+    "latest_reconciled_canonical": "36862e06001154f5097b438ae4b851ae092423df"
   }
 }

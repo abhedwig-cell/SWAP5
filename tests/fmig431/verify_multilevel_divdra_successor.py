@@ -53,6 +53,7 @@ def verify(s,r,reader=lambda p:(ROOT/p).read_bytes()):
         require(base=='5bacc7419f5ad73614f8e55b1d0c7c88706da00c','unregistered parallel admission')
         paths=subprocess.check_output(['git','diff','--name-only',p['baseline'],base,'--','src','tests','tools','reference','.github'],cwd=ROOT,text=True).splitlines()
         for path in paths:
+            if path=='tests/fmig431/verify_signed_divdra_successor.py' and p.get('parallel_reference_reconciliation'):continue
             old=subprocess.check_output(['git','show',base+':'+path],cwd=ROOT)
             current=reader(path)
             if path==parallel['guard']:
@@ -63,6 +64,22 @@ def verify(s,r,reader=lambda p:(ROOT/p).read_bytes()):
                     text=text.replace(addition,'',1)
                 current=text.encode()
             require(current==old,'parallel admitted body changed '+path)
+    reference=p.get('parallel_reference_reconciliation')
+    if reference:
+        base=reference['canonical_commit']
+        require(base=='36862e06001154f5097b438ae4b851ae092423df','unregistered reference admission')
+        paths=subprocess.check_output(['git','diff','--name-only',reference['baseline'],base,'--','src','tests','tools','reference','.github'],cwd=ROOT,text=True).splitlines()
+        for path in paths:
+            old=subprocess.check_output(['git','show',base+':'+path],cwd=ROOT)
+            current=reader(path)
+            if path==reference['guard']:
+                value=current.decode()
+                for name in ['verify_source','verify_qualification']:
+                    addition=" if (ROOT/'tests/fmig431/verify_multilevel_divdra_successor.py').exists():\n  sys.path.insert(0,str(ROOT/'tests/fmig431'));import verify_multilevel_divdra_successor as drain\n  return drain."+name+'()\n'
+                    require(value.count(addition)==1,'reference delegation drift')
+                    value=value.replace(addition,'',1)
+                current=value.encode()
+            require(current==old,'parallel reference body changed '+path)
     return True
 
 def load_verified():
@@ -78,7 +95,7 @@ def load_verified():
 
 @lru_cache(None)
 def incumbent(source_only=False):
-    p=json.loads((ROOT/STATUS).read_text())[PHASE];base=p.get('parallel_annual_reconciliation',{}).get('canonical_commit',p['baseline'])
+    p=json.loads((ROOT/STATUS).read_text())[PHASE];base=p.get('parallel_reference_reconciliation',p.get('parallel_annual_reconciliation',{})).get('canonical_commit',p['baseline'])
     namespace=ROOT.parent/'multilevel-immutable-chain'
     namespace.mkdir(exist_ok=True)
     root=namespace/('multi-incumbent-'+base[:12])
@@ -86,12 +103,14 @@ def incumbent(source_only=False):
     require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==base,'incumbent moved')
     module='verify_annual_successor' if p.get('parallel_annual_reconciliation') else 'verify_signed_divdra_successor'
     directory='tests/fmig431/annual' if p.get('parallel_annual_reconciliation') else 'tests/fmig431'
+    if p.get('parallel_reference_reconciliation'):module='verify_successor';directory='reference/swap-4.3.1/patches/SWAP-019'
     code='import sys,json;sys.path.insert(0,'+json.dumps(directory)+');import '+module+' as v;print(json.dumps(v.'+('verify_source' if source_only else 'verify_qualification')+'()))'
     cp=subprocess.run([sys.executable,'-B','-c',code],cwd=root,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','PYTHONPYCACHEPREFIX':str(ROOT.parent/'multi-python-cache')})
     require(cp.returncode==0,'original signed owner rejected '+cp.stderr[-2000:])
     result=json.loads(cp.stdout)
     if not source_only:require(result['qualified'] and result['signed_divdra_successor'],'signed incumbent qualification')
     if p.get('parallel_annual_reconciliation'):require(result['classic_annual_successor'],'parallel annual qualification')
+    if p.get('parallel_reference_reconciliation'):require(result['reference_leaf_successor'],'reference qualification')
     return result
 
 def verify_source(git_reader=None):
