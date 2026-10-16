@@ -58,3 +58,15 @@ old physical PASS substitutes for a fresh application run.
 Exact counts, raw evidence, admission negatives, owner entrypoints and final
 master/canonical disposition are recorded only after terminal checks finish.
 No broad F-CI, RossFast, highest low-air or GitHub Actions is selected.
+
+## Joined qualification result
+
+The fresh canonical-native-drainage composition passes 160 application/continuation
+executions and 560 decoder rejection controls across O0/O2, with 296 real
+production providers compiled per optimization. All retained 934 literal source
+vectors per optimization have exact unchanged input hashes. Complete accepted
+endpoints agree across continuous, opaque, fresh-process and O0/O2 execution;
+original AVAIL/TCS6 endpoint bytes remain exact. The original DISLAYER and DRAMET3
+admission controls were executed at their immutable canonical authorities.
+Canonical admission and the one-row master promotion remain governed by the
+existing completion record, rather than by this scientific summary.

@@ -5634,12 +5634,12 @@
   "limit_completion_20261016": {
     "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "branch": "work/mc-irr01-limit-20261016",
-    "phase": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
     "implemented": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
-    "full_capability": false,
+    "full_capability": true,
     "closure_target": "Exactly SW431-IRR-LIMIT, the existing B1.11 DCSLIM postselection minimum/maximum depth modifier. No new bounded variant.",
     "candidate_reconciliation": "Canonical PR1254 supplies current-root/material DCS1; PR1262 week progression/native; PR1267 all admitted managed native profiles. PR1255 duplicate retired. Search existing LIMIT irrigation PRs found historical owners and no open LIMIT-specific candidate; preserve existing MC-IRR01 workstream.",
     "source_authority": {
@@ -5695,7 +5695,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Run exact-source science validator and LIMIT negative controls, original retained owner entrypoints and docs; expected-head safe merge then exact one-row master promotion.",
+    "next_action": "Safe expected-head merge of existing PR1268, exact merged tree/source proof, promote only LIMIT on existing master branch and update canonical recovery receipt. All scientific/admission conditions passed.",
     "retained_failures": [
       {
         "kind": "test fixture compile",
@@ -6084,8 +6084,9 @@
       "water_balance": "PASS_EXISTING_UNCHANGED_HARD_ASSERTIONS",
       "small_original_O0_O2": "PASS_FRESH",
       "original_DRAMET3_controls": 8,
-      "admission": "PENDING",
-      "master": "PENDING"
+      "admission": "PASS",
+      "master": "PENDING",
+      "negative_controls": 29
     },
     "closure_results": [
       {
@@ -6106,11 +6107,11 @@
       },
       {
         "condition": 5,
-        "status": "PENDING"
+        "status": "PASS"
       },
       {
         "condition": 6,
-        "status": "PENDING"
+        "status": "READY_EXPECTED_HEAD_MERGE_AND_MASTER_PROMOTION"
       }
     ],
     "prior_science_before_dislayer_reconciliation": {
@@ -6213,6 +6214,12 @@
       "conflict": "Keep LIMIT-first delegation plus original native DRAMET3 fallback in DISLAYER owner. Fix pre-existing malformed AVAIL successor dispatch. Keep canonical native guard and require original native controls and proof at636.",
       "direct": "934 O0/O2 source vectors inherited only after all recorded direct input hashes revalidated.",
       "physical": "Fresh actual production build with296 providers O0/O2; every160 trajectory and560 decoder negative rerun. No ABI/object reuse."
+    },
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_LIMIT_ADMISSION_20261017.json.gz.b64",
+      "sha256": "daaca2bec0dc313ecb76e405436b73d34cf612a5883a08477a26df4140477e0f",
+      "decoded_json_sha256": "c5db4bfd69e2b6ff4a45f6254c9e7c3007bb9ee9acac01eab81e4937d02d2d0b",
+      "execution_head": "b479c212c61b68f964c69dadf00bbfd0b16dcf1a"
     }
   }
 }
