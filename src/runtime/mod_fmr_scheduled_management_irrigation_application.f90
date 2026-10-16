@@ -276,8 +276,13 @@ contains
     effective_rate = 0.0_real64
     duration = 0.0_real64
     ok = .false.
-    if (.not. ieee_is_finite(depth) .or. depth <= 0.0_real64) return
+    if (.not. ieee_is_finite(depth) .or. depth < 0.0_real64) return
     if (.not. ieee_is_finite(configured_rate) .or. configured_rate < 0.0_real64) return
+    ! A source-valid zero gift, including a zero maximum, has no event.
+    if (depth == 0.0_real64) then
+      ok = .true.
+      return
+    end if
     if (configured_rate <= epsilon(1.0_real64)) then
       effective_rate = depth
       duration = 1.0_real64

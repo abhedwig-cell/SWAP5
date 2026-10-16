@@ -76,10 +76,19 @@ def incumbent(source_only=False):
  require(cp.returncode==0,'immutable original owner rejected '+cp.stderr[-2500:]);prior=json.loads(cp.stdout)
  if not source_only:require(prior['qualified']and prior['dislayer_successor']and prior['availability_successor'],'incomplete predecessor admission')
  return prior
+def limit_successor():
+ path=ROOT/'tests/mc-irr01/verify_depth_limit_successor.py'
+ if not path.is_file():return None
+ sys.path.insert(0,str(path.parent));import verify_depth_limit_successor as successor
+ return successor
 def verify_source(git_reader=None):
+ successor=limit_successor()
+ if successor:return successor.verify_source(git_reader)
  require(git_reader is None,'unregistered projection reader');loaded();prior=incumbent(True)
  return {**prior,'dramet3_successor':True,'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
 def verify_qualification():
+ successor=limit_successor()
+ if successor:return successor.verify_qualification()
  loaded();prior=incumbent(False)
  return {**prior,'dramet3_successor':True,'qualified':True,'full_capability':True,'drainage_ledger_rows':prior['drainage_ledger_rows']+ROWS,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def self_test():
@@ -91,6 +100,16 @@ def self_test():
   raise ValueError('accepted '+name)
  print('DRAMET3_EVIDENCE_CORRUPTION_CONTROLS='+str(len(names)))
 def main():
+ successor=limit_successor()
+ if successor:
+  if '--self-test'in sys.argv:
+   root=ROOT.parent/'limit-incumbent-636'
+   ref='63658aa0835f13c64c2bc2562f0d0f820c77e97d'
+   if not root.exists():subprocess.run(['git','worktree','add','--detach',str(root),ref],cwd=ROOT,check=True,capture_output=True)
+   require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()==ref,'LIMIT immutable DRAMET3 moved')
+   cp=subprocess.run([sys.executable,'-B','tests/fmig431/verify_dramet3_successor.py','--self-test'],cwd=root,capture_output=True,text=True)
+   require(cp.returncode==0,'original DRAMET3 controls rejected '+cp.stderr[-2000:]);print(cp.stdout,end='')
+  successor.verify_qualification();print('MC_DRAIN01_DRAMET3_SOURCE_EVIDENCE=PASS');return
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args()
  if a.self_test:self_test()
  verify_qualification();print('MC_DRAIN01_DRAMET3_SOURCE_EVIDENCE=PASS')

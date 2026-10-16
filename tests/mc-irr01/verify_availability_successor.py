@@ -13,6 +13,9 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['availability_completion_20261016']
 def tcs6_record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['tcs6_completion_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
+  from verify_depth_limit_successor import verify_source as successor
+  return successor(git_reader)
  if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
   sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
   return successor.verify_source(git_reader)
@@ -142,6 +145,9 @@ def run_original_inf_controls():
  check(p.returncode==0 and 'INF_SPLIT_EVIDENCE_CORRUPTION_CONTROLS=8'in p.stdout,'original INF controls failed '+p.stderr[-1000:])
  print(p.stdout,end='')
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_depth_limit_successor.py').is_file():
+  from verify_depth_limit_successor import verify_qualification as successor
+  return successor()
  if (ROOT/"tests/fmig431/verify_dislayer_successor.py").exists():
   sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_dislayer_successor as successor
   return successor.verify_qualification()
