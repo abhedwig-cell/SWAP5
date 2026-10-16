@@ -55,6 +55,42 @@ relaxed and no donor clipping or invented correction is admitted by this review.
 
 ## Dependency-ordered implementation decision
 
+### Independent crop-level balance identity
+
+The literal update provides a useful analytical admission condition for a future
+bounded profile. For leaf, stem and root let `u_i`, `t_i` and `d_i` be the
+partitioned uptake, translocation and reported death rates in kg N/ha/day.
+Let `U=NUPTR+NFIXTR`, `C=RNSO` and `dt=DELT`. Before the literal nonnegative
+clipping, each living organ has `x_i=N_i+(u_i-t_i-d_i)*dt`; storage receives
+`C*dt`. Substituting these updates into final crop N plus reported death minus
+initial crop N and external uptake gives, apart from floating-point roundoff:
+
+```text
+R = dt * [(sum(u_i)-U) + (C-sum(t_i))] + sum(max(0,-x_i))
+```
+
+This is a diagnostic identity derived from the source statements, not a new
+production equation. It separates three causes that a single whole-N residual
+must not conflate: unpartitioned small-demand uptake, storage credit without
+matching donor debit at the translocation cutoff, and N created by clipping an
+overdrawn donor. A zero combined residual could conceal cancellation between
+these terms; it does not replace separate proposed allocation and donor guards.
+The four archived probes support this interpretation: safe allocation and the
+death-semantics discriminator conserve crop N; the overdraw probe gains1.5kg/ha
+through clipping, while the active translocation cutoff gains2e-6kg/ha through
+unmatched storage credit. Independent O0/O2 replay produces exactly the original
+four output records, including the different WOFOST81 death and root transfers.
+
+For the proposed opt-in domain, separately require complete uptake allocation
+(or zero uptake below its source cutoff), complete storage-to-donor allocation
+(or zero storage supply below its cutoff), and nonnegative `x_i` before the
+literal clipping. Apply the existing roundoff/mass authority; this review adds
+no tolerance or correction. These are future qualification conditions, not newly
+admitted guards or established full-crop reachability claims. Reported death is
+a crop-level loss in this identity; return into the existing pending-material
+owner is internal in the joint soil/crop/pending balance and must not also be
+booked as an external loss. PR1253 and WOFOST81 remain unchanged.
+
 Proceed within MC-NUT01 with a separately selectable source profile; preserve
 WOFOST81 as default and preserve the exact vegetative1253 profile. The first safe
 implementation unit is a small real process contract for reproductive storage
