@@ -26,18 +26,18 @@
     },
     "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 87,
+    "confirmed_missing_production_entries": 86,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 113,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
-      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 57,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
-    "qualified_process_missing_runtime_binding": 2,
+    "qualified_process_missing_runtime_binding": 0,
     "missing_production_binding_or_implementation_entries": 109,
     "missing_standalone_process_implementations_not_established": 109,
     "active_with_existing_production_source_authority": 69,
@@ -50,7 +50,8 @@
       "active_complete_route_gaps": 108,
       "disposition_changes": 0,
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
-    }
+    },
+    "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
   "capabilities": [
     {
@@ -12217,7 +12218,10 @@
       "swap5_implementation_authority": [
         "src/crop/mod_wofost81_nitrogen.f90",
         "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
-        "src/crop/mod_b111_nfixation_policy.f90 at 7d0af2fd99eb654389d79c98623a20075e8b2d2f"
+        "src/crop/mod_b111_nfixation_policy.f90 at 7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+        "src/crop/mod_crop_b111_n_request_binding.f90 at b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+        "src/crop/mod_crop_soil_n_day.f90 at b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+        "src/crop/mod_crop_soil_n_configuration.f90 at b899baaff7d0eba01f1b429f1408d96c1ecf17f8"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -12231,15 +12235,20 @@
         "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json",
         "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json",
         "integration/audits/MC_NUT_SOL_STATUS.json at 7d0af2fd99eb654389d79c98623a20075e8b2d2f",
-        "integration/audits/MC_NUT_SOL_OWNER_DECISION.md at 7d0af2fd99eb654389d79c98623a20075e8b2d2f"
+        "integration/audits/MC_NUT_SOL_OWNER_DECISION.md at 7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+        "integration/audits/MC_NUT_SOL_STATUS.json at b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+        "docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md at b899baaff7d0eba01f1b429f1408d96c1ecf17f8"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged."
+        "established": true,
+        "route": "Explicit crop configuration -> existing joint crop/Soil-N day -> B1.11 vegetative request -> existing single accepted N apply/whole-N receipt -> joint Richards commit/restart",
+        "claim": "PR1253 admits the bounded explicit vegetative request profile and its actual mass/retry/restart. Full historical NFIX activation/reproductive/death envelope remains open. WOFOST81 default is unchanged.",
+        "bounded_receipt": "b111_request_binding_20261016"
       },
       "restrictions": [
-        "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged."
+        "Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking.",
+        "Active positive demand <=1e-5 kg/ha is rejected because historical allocation omits it; no silent unmatched N input.",
+        "Explicit request policy with WOFOST81 growth/allocation/senescence ownership; not complete B1.11 crop-N equivalence."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -12251,15 +12260,16 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_POLICY_COMPONENT_CANONICAL_RUNTIME_BINDING_OPEN",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_VEGETATIVE_REQUEST_ADMITTED_FULL_ENVELOPE_OPEN",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED",
       "resolution_decision": "MIGRATE",
-      "source_component_receipt": "latest_b111_nfix_component_reconciliation_20261016"
+      "source_component_receipt": "latest_b111_nfix_component_reconciliation_20261016",
+      "bounded_runtime_receipt": "b111_request_binding_20261016"
     },
     {
       "capability_id": "SW431-INIT-PROFILE",
@@ -15584,7 +15594,7 @@
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged.",
+      "why_open": "Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -15592,7 +15602,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
@@ -17030,6 +17040,54 @@
         "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90"
       ],
       "canonical_merge_status": "ACTUAL_MERGE_VERIFIED_WITH_QUALIFIED_TREE"
+    },
+    "b111_request_binding_20261016": {
+      "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
+      "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+      "canonical_admission": {
+        "pr": 1253,
+        "merge_commit": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+        "qualified_head": "529451f4273d51722daefefce6d55b576598e44d",
+        "actual_tree": "73f81e9c7fb8a18979a683cf449b4d16c4c2c502",
+        "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+        "merge_tree_equals_qualified_tree": true,
+        "post_merge_source_proof": "PASS",
+        "reviews": 0,
+        "unresolved_review_threads": 0,
+        "hosted_statuses": [],
+        "hosted_workflow_runs": [],
+        "full_capability": false,
+        "master_disposition_changes": 0
+      },
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_SCIENCE_20261016.tar.xz.b64",
+        "decoded_sha256": "c98f1bc2405f36f99d7e053e87e1b73e08e74013eb1cb809987531f59b17d8df",
+        "decoded_bytes": 86620,
+        "members": 1709
+      },
+      "admission_archive": {
+        "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "06594c04ae7c6f3426f9a1d62ae2fc9660d5a1592f5c402bdcd77ab532d72ee4",
+        "members": 6,
+        "decoded_bytes": 11380
+      },
+      "admission_controls": 27,
+      "full_capability": false,
+      "pr": 1253,
+      "canonical_merge": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+      "canonical_receipt": "b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+      "status": "BOUNDED_VEGETATIVE_REQUEST_CANONICALLY_ADMITTED_FULL_NFIX_ENVELOPE_OPEN",
+      "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json b111_request_binding_20261016",
+      "production_runtime_admission": true,
+      "full_master_qualification": false,
+      "remaining": "Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking.",
+      "source_proof": "PASS actual fetched canonical merge tree equals qualified tree; default source bodies and original default endpoints preserved",
+      "new_actions": 0,
+      "derived_counter_correction": {
+        "previous_qualified_component_binding_count": 2,
+        "actual_explicitly_tagged_active_rows": 0,
+        "scope": "Structural row-stage count only; no complete-capability promotion."
+      }
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -17420,7 +17478,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+  "canonical_locator_head": "da5482c24259a1772759335d8289944053f62332",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",

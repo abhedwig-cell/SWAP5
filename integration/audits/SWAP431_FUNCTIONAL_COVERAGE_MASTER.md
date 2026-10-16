@@ -138,7 +138,7 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-CROP-SOY | Soybean-specific phenology and photoperiod | MC-CROP01 | None |
 | SW431-CROP-VERNAL | Temperature/daylength phenology with persistent vernalisation sum and completion flag | MC-CROP01 | None |
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | MC-NUT01 | None |
-| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | MC-NUT01 | None |
+
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | MC-NUT01 | None |
 | SW431-CROP-ATTAINABLE | Selector-controlled RELMF correction of companion potential assimilation | MC-CROP01 | SW431-CROP-ANNUAL |
 | SW431-DRAIN-ALLOCATION | Multilevel exchange allocation and drain/channel type | MC-DRAIN01 | SW431-DRAIN-DRAMET3 |
@@ -357,7 +357,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
 | SW431-NUT-MINERAL | Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
-| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics. | None |
+| SW431-NUT-NFIX | Biological nitrogen fixation as a separately booked crop N input | Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking. | None |
 | SW431-NUT-ORGANIC | Organic matter and organic nitrogen turnover/mineralisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | None |
 | SW431-NUT-AMEND | Fertilizer/manure applications and volatilisation | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL, SW431-NUT-ORGANIC |
 | SW431-NUT-CROP | Demand/supply coupling and nitrogen-limited crop growth | No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange. | SW431-NUT-MINERAL |
@@ -574,3 +574,20 @@ Next independent owned packages are daily adaptive root density/supply2, existin
 PR1009 is canonically admitted at `06c199fb512154bf4abb99b4ad23856c72a21268`. It closes the existing explicit uniform-source SWINTER1 application composition through dynamic-top flux, active Feddes-root uptake and atomic Richards/source progress. The [owner admission record](https://github.com/abhedwig-cell/SWAP5/blob/8714a32d72d51889772912938e0e4b4835a98f2f/integration/audits/F-MIG431-INT12-C_STATUS.json) binds all eight final targeted workflows and the unchanged source/numerical contracts.
 
 `SW431-INT-VONHH` was already ADMITTED. The census remains243 capabilities,94 ADMITTED,109 ACTIVE_MIGRATION and113 total unresolved. No automatic crop/weather lifecycle, detailed/event forcing, ponded/runoff regime or whole-season capability follows from this bounded application receipt. Historical scientific checkout and evidence remain unchanged; the locator head advances to `8714a32d72d51889772912938e0e4b4835a98f2f`.
+
+## Bounded vegetative N-request production admission, 16 October 2026
+
+PR1253 is admitted at `c9e5efad50cf6cf18342a57efbee398260fdce82`, with actual
+canonical recovery `b899baaff7d0eba01f1b429f1408d96c1ecf17f8`. Explicit B1.11
+vegetative demand/fixation selection now has a real caller in the existing atomic
+crop/Soil-N owner. One apply step books actual supply and fixation. Local O0/O2
+literal, actual soil/crop/Richards, whole-N, rollback/replay, opaque/fresh native
+restart, strict/tiny/multi-organ boundaries and27 admission controls PASS.
+Default WOFOST81 source and original default endpoints are preserved.
+
+This supersedes the earlier no-caller claim for that bounded profile. Full legacy
+activation, reproductive translocation and B1.11 death/full crop-N semantics remain
+open; SW431-NUT-NFIX stays ACTIVE_MIGRATION. All243 dispositions and113 unresolved
+envelopes remain unchanged. Structural absence/binding flags decrease87 to86;
+these are flagged rows, not a count of absent standalone algorithms. No new
+full numerical F-CI, highest low-air, RossFast or hosted PASS is claimed.

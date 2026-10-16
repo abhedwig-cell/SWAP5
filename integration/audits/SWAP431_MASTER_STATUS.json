@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+  "last_reconciled_upstream": "da5482c24259a1772759335d8289944053f62332",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -39,7 +39,8 @@
     "pr_closeout_scoped_recount": "PASS243 unique;95 ADMITTED/108 ACTIVE/14 SUPERSEDED/2 REJECTED/20 NOT_APPLICABLE/4 QUALIFICATION_ONLY;108 queue IDs;112 unresolved; no whole-cap promotions",
     "latest_integrity_reconciliation": "Historical queue/count diagnostic retained as predecessor evidence. Superseded by repaired integrity PASS; current census 94 ADMITTED, 109 ACTIVE_MIGRATION, 4 QUALIFICATION_ONLY, 113 unresolved and 92 explicit absence flags.",
     "current_local_git_connectivity": "PASS: exact canonical and master branch fetched locally on 2026-10-16; prior DNS failure is historical.",
-    "latest_integrity_reconciliation_docs": "PASS documentation source check and strict MkDocs (15.96s); reused existing pinned docs dependencies after base runtime reported missing mkdocs. Full integrity FAIL remains recorded separately."
+    "latest_integrity_reconciliation_docs": "PASS documentation source check and strict MkDocs (15.96s); reused existing pinned docs dependencies after base runtime reported missing mkdocs. Full integrity FAIL remains recorded separately.",
+    "b111_request_master_receipt": "PASS current historical-source/pinned-locator integrity after preserving concurrent macropore receipt;20 inheritance controls and source/strict docs passed unchanged bounded metadata. Not current numerical qualification or semantic closure."
   },
   "qualified": false,
   "coverage_closed": false,
@@ -56,18 +57,18 @@
     },
     "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 87,
+    "confirmed_missing_production_entries": 86,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 113,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
-      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 57,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
-    "qualified_process_missing_runtime_binding": 2,
+    "qualified_process_missing_runtime_binding": 0,
     "missing_production_binding_or_implementation_entries": 109,
     "missing_standalone_process_implementations_not_established": 109,
     "active_with_existing_production_source_authority": 69,
@@ -80,9 +81,10 @@
       "active_complete_route_gaps": 108,
       "disposition_changes": 0,
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
-    }
+    },
+    "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Priority1245/1247/1234 already canonically admitted and verified in current ancestry. Ten remaining PRs retain named master/umbrella/donor/research/authority blockers. No additional merge/closure is justified. Future disjoint NUT fixation, IRR material-root summaries and SOL persistent-surface work may be prepared in parallel; shared integration serial. Full113 historical capability envelopes remain unresolved.",
+  "next_action": "PR1253 explicit vegetative N-request production binding is admitted, qualified and preserved. Full109 ACTIVE plus4 QUALIFICATION_ONLY envelopes remain; master1072 stays draft. Next independent existing packages: IRR DCS1/material/evolving-root summaries and SOL persistent surface/pond mass; shared owner/restart integration stays serial. No duplicate NFIX owner or default WOFOST81 replacement.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -145,7 +147,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+  "last_reconciled_head": "da5482c24259a1772759335d8289944053f62332",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -879,6 +881,13 @@
         "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
         "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
         "verification": "593cases/all3outputs bit-identical O0/O2;39invalid cases; original1806case WOFOST81 and edge owners O0/O2;6negative controls;2selected workflows SUCCESS. Source component only, not NFIX runtime admission."
+      },
+      {
+        "pr": 1253,
+        "merge_commit": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+        "head": "529451f4273d51722daefefce6d55b576598e44d",
+        "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
+        "verification": "Local O0/O2 real crop/Soil-N/Richards mass and restart,593 literal vectors,39 invalids and original1806 WOFOST81;72 real cases per optimization, boundary leaf,27 admission controls, original default bytes, actual owner dispatch and docs PASS. Actual merge/source trees equal qualification. Full NFIX remains ACTIVE."
       }
     ],
     "open_updated": [],
@@ -2257,6 +2266,71 @@
       "inheritance_controls": "20PASS",
       "all243_capability_rows_and_existing_counts": "UNCHANGED",
       "claim_limit": "Integrity is not full semantic or scientific closure."
+    }
+  },
+  "latest_b111_request_binding_reconciliation_20261016": {
+    "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
+    "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+    "canonical_admission": {
+      "pr": 1253,
+      "merge_commit": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+      "qualified_head": "529451f4273d51722daefefce6d55b576598e44d",
+      "actual_tree": "73f81e9c7fb8a18979a683cf449b4d16c4c2c502",
+      "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": [],
+      "full_capability": false,
+      "master_disposition_changes": 0
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c98f1bc2405f36f99d7e053e87e1b73e08e74013eb1cb809987531f59b17d8df",
+      "decoded_bytes": 86620,
+      "members": 1709
+    },
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "06594c04ae7c6f3426f9a1d62ae2fc9660d5a1592f5c402bdcd77ab532d72ee4",
+      "members": 6,
+      "decoded_bytes": 11380
+    },
+    "admission_controls": 27,
+    "full_capability": false,
+    "pr": 1253,
+    "canonical_merge": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+    "canonical_receipt": "b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
+    "status": "BOUNDED_VEGETATIVE_REQUEST_CANONICALLY_ADMITTED_FULL_NFIX_ENVELOPE_OPEN",
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json#b111_request_binding_20261016",
+    "production_runtime_admission": true,
+    "full_master_qualification": false,
+    "remaining": "Automatic historical selector/parameter activation, reproductive translocation, B1.11 residual-concentration death and wider historical crop-N semantics remain unadmitted. WOFOST81 remains default; no duplicate fixation owner or booking.",
+    "source_proof": "PASS actual fetched canonical merge tree equals qualified tree; default source bodies and original default endpoints preserved",
+    "new_actions": 0,
+    "derived_counter_correction": {
+      "previous_qualified_component_binding_count": 2,
+      "actual_explicitly_tagged_active_rows": 0,
+      "scope": "Structural row-stage count only; no complete-capability promotion."
+    },
+    "master_receipt_repair": "Initial coverage checker correctly refused the active bounded route because its receipt was outside existing bounded_owner_receipts; registered it in that existing owner map and used the required structured authority-field locator. No checker or assertion changed.",
+    "validation": {
+      "historical_source_and_pinned_locators": "PASS",
+      "inheritance_controls": "20PASS",
+      "docs_source_and_strict": "PASS",
+      "closure_guard": "EXPECTED_REJECTION_DENOMINATOR_INCOMPLETE",
+      "all243_dispositions": "UNCHANGED",
+      "only_capability_row_changed": "SW431-NUT-NFIX",
+      "flagged_absence_rows": 86,
+      "current_numerical_rerun": "NOT_SELECTED_METADATA_ONLY"
+    },
+    "concurrent_reconciliation": {
+      "master_retained": "1b710ea63900677c42f9c66eba827f1e1e366753",
+      "canonical_retained": "da5482c24259a1772759335d8289944053f62332",
+      "delta": "Two macropore donor-disposition audit/evidence files only; src/reference/tests/tools/workflows unchanged. Preserve full concurrent donor records; no new numerical rerun.",
+      "publication_failure": "Initial expected-head update failed when concurrent master advanced. Re-read actual refs and compose bounded NFIX receipt on top; no force overwrite."
     }
   }
 }
