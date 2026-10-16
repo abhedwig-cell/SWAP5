@@ -37,6 +37,6 @@ def incumbent(source_only):
 def verify_source():
  check_current();return {**incumbent(True),'reference_leaf_successor':True,'qualified':False,'reference_snapshot':'B1.12','production_reference_pins_unchanged':True}
 def verify_qualification():
- check_current();m=load();data=m.unpack();science=m.validate(data);require(m.self_test(data)==9,'reference negative controls')
+ check_current();spec=importlib.util.spec_from_file_location('swap019_admission',ROOT/'tools/vq/b1_12_admission_gate.py');gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate);gate.verify();m=load();data=m.unpack();science=m.validate(data);require(m.self_test(data)==9,'reference negative controls')
  return {**incumbent(False),'reference_leaf_successor':True,'qualified':True,'reference_snapshot':'B1.12','reference_science':science,'SWAP5_partial_return_admitted':False,'full_fci':'NOT_SELECTED_IMPACT'}
 if __name__=='__main__':print(json.dumps(verify_source()if'--source-only'in sys.argv else verify_qualification(),indent=2))

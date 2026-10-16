@@ -35,6 +35,8 @@ Admission requires exact patch provenance, canonical B0 preimage verification, o
 | `B1.10` | `SWAP-002` | tillage control-flow/state-initialization bug | impossible interval test can retain the wrong next-event pointer when a run starts after the first event | choose first event on/after start and load the most recent previous tillage parameter state | historical semantic test + fresh strict compiled 3/6 -> 6/6 gate |
 | `B1.11` | `SWAP-011` | hydraulic Jacobian derivative bug | implicit Richards Jacobian uses the default MvG `dK/dh` for hydraulic models whose implemented `K(h)` differs | differentiate the actual active conductivity relation using the qualified model-specific/lazy-state implementation with bounded fallback | historical E5/E6/E7 + F-PE19 current-B1 qualification + full canonical B0 replay |
 
+| `B1.12` | `SWAP-019` | crop-residue DM bookkeeping bug | daily returned leaf DM remains in actual dead-leaf stock and returns again at harvest | retain only (1-f) leaf death for actual N-active classical WOFOST; preserve other selectors | 1368 O0/O2 real-source runs; original harvest reset/pending/residue chemistry; exact63-member reconstruction |
+
 Machine-readable scopes are in `docs/verification/expected-differences.json`. An admitted correction permits only its documented difference envelope.
 
 ## Provenance repair: B1.5 -> B1.5p1
@@ -116,3 +118,16 @@ else:
 ```
 
 This prevents known bugs from being recreated for compatibility while preserving a complete explanation for every intentional departure from legacy SWAP 4.3.1.
+
+## B1.11 -> B1.12: SWAP-019 admission
+
+SWAP-019 corrects the demonstrated daily-to-harvest dead-leaf DM duplication for
+actual N-active classical WOFOST (SW_WOFOST=1). The source-private fraction is
+exposed to the existing growth routine; no new state or scientific N equation is
+introduced. Potential, N-OFF and other selectors preserve B1.11. The broader
+PR1263 candidate is not the admitted patch; B1.12 includes an explicit selector
+guard and has a separate exact manifest. See [qualification](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/reference/swap-4.3.1/patches/SWAP-019/qualification.md).
+
+All published snapshots remain immutable. Existing SWAP5 results retain their
+original exact reference pins. This reference admission does not establish
+SWAP5 partial-return retained-stock or restart admission.

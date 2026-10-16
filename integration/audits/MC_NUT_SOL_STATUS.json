@@ -1046,7 +1046,7 @@
       },
       "reference/swap-4.3.1/patches/SWAP-019/verify_successor.py": {
         "status": "A",
-        "blob": "5c10b296fb86b4c584db2b66723b29dc03b0703a"
+        "blob": "d306c9fc43b7aaef65c2de088d17ff3587ee86d4"
       },
       "reference/swap-4.3.1/snapshots/B1.12.yml": {
         "status": "A",
@@ -1055,6 +1055,10 @@
       "tests/fmig431/verify_signed_divdra_successor.py": {
         "status": "M",
         "blob": "70ff658ad7992f7d9b81589a9e1088c5d6125f49"
+      },
+      "tools/vq/b1_12_admission_gate.py": {
+        "status": "A",
+        "blob": "fee857fbdb3e9e36b29b2a6a006d85b74be5b493"
       },
       "tools/vq/b1_12_reconstruct.py": {
         "status": "A",
@@ -1067,12 +1071,21 @@
       "rejected_reference_inputs_unchanged": true
     },
     "validation": {
-      "source_owner": "PASS",
+      "source_owner": "PASS final complete reproductive/signed successor evidence and current reference successor",
       "reference_reconstruction": "PASS 63 exact members; six corruption/rejection controls",
       "sealed_science": "PASS 1368 native commands, nine negative controls and exact source-body extraction",
       "reproducible_runner_replay": "PASS persisted runner; identical O0/O2/source/corrected outputs",
-      "docs": "source and strict PASS",
-      "full_FCI": "NOT_SELECTED_IMPACT"
-    }
+      "docs": "PASS final source and strict",
+      "full_FCI": "NOT_SELECTED_IMPACT",
+      "reference_lineage_and_expected_differences": "PASS fail-closed B1.12 admission gate; B1.11 and historical entries preserved"
+    },
+    "pr": 1265,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_SWAP019_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "cf463d54b3e69a79586d37ab676c5f952292aaba45045836250289cd7d1130f4",
+      "decoded_bytes": 13560,
+      "members": 9
+    },
+    "next_safe_step": "Admit B1.12 exact reference correction; then extend the existing crop/Soil-N owner with retained leaf/stem DM/N, whole N/OM, harvest and atomic opaque/native continuation. Preserve current1260/1253/default and all explicit historical B1.11 pins."
   }
 }
