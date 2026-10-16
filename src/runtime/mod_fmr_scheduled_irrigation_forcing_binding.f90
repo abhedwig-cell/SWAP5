@@ -21,6 +21,8 @@ module mod_fmr_scheduled_irrigation_forcing_binding
   type, public :: fmr_irrigation_forcing_binding_diagnostics_t
     integer :: status = FMR_IRR_FORCING_BIND_OK
     integer :: application_status = FMR_SCHEDULED_IRR_OK
+    logical :: split_required = .false.
+    real(real64) :: split_time = 0.0_real64
     logical :: committed_view_built = .false.
     logical :: application_evaluated = .false.
     logical :: source_bound = .false.
@@ -63,6 +65,8 @@ contains
                                                            candidate_management, scheduled_source, application_diagnostics)
     diagnostics%application_evaluated = .true.
     diagnostics%application_status = application_diagnostics%status
+    diagnostics%split_required=application_diagnostics%split_required
+    diagnostics%split_time=application_diagnostics%split_time
     if (application_diagnostics%status == FMR_SCHEDULED_IRR_INACTIVE) return
     if (application_diagnostics%status /= FMR_SCHEDULED_IRR_OK .or. .not. application_diagnostics%result_produced) then
       candidate_management = committed_management

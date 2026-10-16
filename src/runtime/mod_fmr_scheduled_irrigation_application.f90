@@ -17,6 +17,8 @@ module mod_fmr_scheduled_irrigation_application
   type, public :: fmr_scheduled_irrigation_application_diagnostics_t
     integer :: status = FMR_SCHEDULED_IRR_OK
     integer :: process_status = IRRIGATION_OK
+    logical :: split_required = .false.
+    real(real64) :: split_time = 0.0_real64
     logical :: process_called = .false.
     logical :: source_bound = .false.
     logical :: result_produced = .false.
@@ -54,6 +56,8 @@ contains
                                                 candidate_state, flux, process_diagnostics)
     diagnostics%process_called = .true.
     diagnostics%process_status = process_diagnostics%status
+    diagnostics%split_required=process_diagnostics%split_required
+    diagnostics%split_time=process_diagnostics%split_time
     if (present(flux_result)) flux_result = flux
     if (present(process_diagnostics_result)) process_diagnostics_result = process_diagnostics
 

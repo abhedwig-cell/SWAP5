@@ -110,6 +110,15 @@ module mod_fmr_production_application_bootstrap
   use mod_fmr_pmdirect_surface_evaporation_binding
   use mod_restricted_surface_evaporation, only: surface_evaporation_demand_t
   ! End INT12-C direct application imports.
+  use mod_fmr_irrigation_allocation_binding, only: fmr_irrigation_allocation_t, &
+       fmr_allocated_irrigation_state_t,fmr_allocated_irrigation_restart_t, &
+       fmr_prepare_allocated_sensor_irrigation,fmr_export_allocated_irrigation_restart, &
+       fmr_restore_allocated_irrigation_restart,FMR_IRR_ALLOCATION_OK
+  use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t
+  use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
+  use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, &
+       irrigation_management_policy_result_t
+  use mod_fmr_scheduled_irrigation_forcing_binding, only: fmr_irrigation_forcing_binding_diagnostics_t
   implicit none
   private
 
@@ -130,6 +139,8 @@ module mod_fmr_production_application_bootstrap
   integer, parameter, public :: FMR_APP_BOOT_CROP_TRANSACTION_FAILED = 14
   integer, parameter, public :: FMR_APP_BOOT_CROP_EVENT_DELIVERED = 15
   integer, parameter, public :: FMR_APP_BOOT_INTERCEPTION_REJECTED = 16
+  integer, parameter, public :: FMR_APP_BOOT_IRRIGATION_REJECTED = 17
+  integer, parameter :: FMR_APP_BOOT_IRRIGATION_SPLIT = 18
 
   ! Physical controls only. Live continuation is read exclusively from the
   ! existing committed crop owner; creation starts with zero continuation.
@@ -194,6 +205,9 @@ module mod_fmr_production_application_bootstrap
     logical :: explicit_pmdirect_interception=.false.
     ! One annual atmospheric forcing and one response for both assimilation
     ! and transpiration. No second canopy CO2 table is selected by this profile.
+    logical :: file_weather_irrigation=.false.
+    type(scheduled_irrigation_parameters_t) :: file_weather_irrigation_sensor
+    type(irrigation_management_policy_parameters_t) :: file_weather_irrigation_depth
     logical :: file_weather_co2_response=.false.
     type(crop_atmospheric_co2_forcing_t) :: file_weather_atmospheric_co2
     type(crop_co2_response_parameters_t) :: file_weather_co2_parameters
@@ -231,6 +245,9 @@ module mod_fmr_production_application_bootstrap
   type, public :: fmr_weather_crop_application_continuation_t
     private
     logical :: valid=.false., initial_crop_daystart_committed=.false.
+    integer :: irrigation_schema=0,irrigation_selection_day=-1
+    real(real64) :: irrigation_time=0.0_real64,irrigation_delivered_cm=0.0_real64
+    type(fmr_allocated_irrigation_restart_t) :: irrigation
     type(fmr_production_application_config_t) :: configuration
     type(kernel_persistence_snapshot_t) :: soil,crop
     type(weather_day_owner_t) :: weather
@@ -278,6 +295,9 @@ module mod_fmr_production_application_bootstrap
     type(fmr_production_application_config_t) :: weather_configuration
     type(fmr_wofost_accepted_window_t) :: weather_window, previous_weather_window
     integer(int64) :: accepted_crop_lineage=0_int64,accepted_crop_revision=-1_int64
+    type(fmr_allocated_irrigation_state_t) :: irrigation
+    integer :: irrigation_selection_day=-1
+    real(real64) :: irrigation_time=0.0_real64,irrigation_delivered_cm=0.0_real64
   contains
     procedure, public :: initialize => production_application_initialize
     procedure, public :: ready => production_application_ready
@@ -287,6 +307,7 @@ module mod_fmr_production_application_bootstrap
     procedure, public :: run_interception_window_interval => production_application_run_interception_window_interval
     procedure, public :: run_standalone => production_application_run_standalone
     procedure, public :: run_standalone_with_forcing => production_application_run_standalone_with_forcing
+    procedure, public :: snapshot_weather_irrigation => production_application_snapshot_weather_irrigation
     procedure, public :: begin_weather_day => production_application_begin_weather_day
     procedure, public :: run_weather_interval => production_application_run_weather_interval
     procedure, public :: initialize_weather_crop_daystart => production_application_initialize_weather_crop_daystart
@@ -408,6 +429,17 @@ contains
     if (.not. groundwater_profile .and. config%groundwater_parallel_workers /= 1) then
       status = FMR_APP_BOOT_PROFILE_NOT_ADMITTED
       return
+    end if
+    if(config%file_weather_irrigation)then
+      if(.not.config%file_weather_daystart.or.n/=1) return
+      if(config%explicit_pmdirect_interception.or.config%base_salt_temporal_policy%enabled) return
+      if(config%tiles(1)%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)return
+      if(config%file_weather_irrigation_sensor%salinity_excess_enabled)return
+      if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
+      if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
+      if(config%file_weather_irrigation_sensor%timing_criterion/=7.and. &
+         config%file_weather_irrigation_sensor%timing_criterion/=8)return
+      if(config%file_weather_irrigation_depth%depth_criterion/=2)return
     end if
     if(config%file_weather_co2_response) then
       if(.not.config%file_weather_rooted) return
@@ -677,6 +709,7 @@ contains
          self%execution_plan, ok)
 
     if(config%file_weather_daystart) self%weather_configuration=config
+    if(config%file_weather_irrigation)self%irrigation_time=config%initial_time
     self%explicit_pmdirect_interception=config%explicit_pmdirect_interception
     self%initialized = .true.
     status = FMR_APP_BOOT_OK
@@ -839,7 +872,75 @@ contains
     status=FMR_APP_BOOT_OK
   end subroutine
 
-  subroutine production_application_run_weather_interval(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed)
+  subroutine production_application_run_managed_weather(self,record,t0,t1,forcing_config,canopy,results,status, &
+       crop_committed,irrigation_allocation)
+    class(fmr_production_application_bootstrap_t),intent(inout)::self
+    type(swap_daily_weather_record_t),intent(in)::record
+    real(real64),intent(in)::t0,t1
+    type(ppa_wu03_common_forcing_config_t),intent(in)::forcing_config
+    type(reference_et_demand_canopy_view_t),intent(in)::canopy
+    type(fmr_serialized_column_result_t),allocatable,intent(out)::results(:)
+    integer,intent(out)::status
+    type(kernel_committed_state_t),intent(in),optional::crop_committed
+    type(fmr_irrigation_allocation_t),intent(in),optional::irrigation_allocation
+    type(fmr_serialized_column_result_t),allocatable::segment(:)
+    real(real64)::cursor,endpoint,rate,split,day,tmin,tmax,rain,etref
+    logical::ok
+    integer::st
+    status=FMR_APP_BOOT_WEATHER_REJECTED
+    if(.not.self%ready())return
+    if(.not.all(ieee_is_finite([t0,t1])))return
+    if(t1<=t0)return
+    if(.not.record%same_input(self%weather_record))return
+    call record%values(day,tmin,tmax,rain,etref,ok)
+    if(.not.ok)return
+    day=day-real(self%weather_epoch_day,real64)
+    if(t0<day.or.t1>day+1.0_real64)return
+    cursor=t0
+    do while(cursor<t1)
+      endpoint=t1;rate=rain*0.1_real64
+      if(self%weather_configuration%file_weather_swrain==1)then
+        call record%rain_segment(self%weather_configuration%file_weather_raintb,self%weather_epoch_day, &
+          cursor,t1,rate,endpoint,st)
+        if(st/=SWAP_WEATHER_FILE_OK)return
+      end if
+      call production_application_run_weather_segment(self,record,cursor,endpoint,forcing_config,canopy,segment,status, &
+        crop_committed,rate,irrigation_allocation,split)
+      if(status==FMR_APP_BOOT_IRRIGATION_SPLIT)then
+        status=FMR_APP_BOOT_IRRIGATION_REJECTED
+        if(.not.ieee_is_finite(split))return
+        if(split<=cursor.or.split>=endpoint)return
+        endpoint=split
+        call production_application_run_weather_segment(self,record,cursor,endpoint,forcing_config,canopy,segment,status, &
+          crop_committed,rate,irrigation_allocation,split)
+      end if
+      if(allocated(segment))then
+        if(allocated(results))then
+          results=[results,segment]
+        else
+          results=segment
+        end if
+      end if
+      if(status/=FMR_APP_BOOT_OK)return
+      cursor=endpoint
+    end do
+  end subroutine
+
+  subroutine production_application_snapshot_weather_irrigation(self,state,selection_day,delivered_cm,status)
+    class(fmr_production_application_bootstrap_t),intent(in)::self
+    type(fmr_allocated_irrigation_state_t),intent(out)::state
+    integer,intent(out)::selection_day,status
+    real(real64),intent(out)::delivered_cm
+    state=fmr_allocated_irrigation_state_t();selection_day=-1;delivered_cm=0.0_real64
+    status=FMR_APP_BOOT_PROFILE_NOT_ADMITTED
+    if(.not.self%ready())return
+    if(.not.self%weather_configuration%file_weather_irrigation)return
+    state=self%irrigation;selection_day=self%irrigation_selection_day;delivered_cm=self%irrigation_delivered_cm
+    status=FMR_APP_BOOT_OK
+  end subroutine
+
+  subroutine production_application_run_weather_interval(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed, &
+       irrigation_allocation)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(swap_daily_weather_record_t), intent(in) :: record
     real(real64), intent(in) :: t0,t1
@@ -848,9 +949,15 @@ contains
     type(fmr_serialized_column_result_t), allocatable, intent(out) :: results(:)
     integer, intent(out) :: status
     type(kernel_committed_state_t),intent(in),optional :: crop_committed
+    type(fmr_irrigation_allocation_t),intent(in),optional :: irrigation_allocation
     type(fmr_serialized_column_result_t),allocatable :: segment_results(:)
     real(real64)::cursor,endpoint,rate
     integer::s,attempt
+    if(self%weather_configuration%file_weather_irrigation)then
+      call production_application_run_managed_weather(self,record,t0,t1,forcing_config,canopy,results,status, &
+        crop_committed,irrigation_allocation)
+      return
+    end if
     if(self%weather_configuration%file_weather_swrain==0) then
       call production_application_run_weather_segment(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed)
       return
@@ -879,7 +986,8 @@ contains
     error stop 'MC-MET01 one-day rainfall segmentation exceeded one boundary'
   end subroutine
 
-  subroutine production_application_run_weather_segment(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed,rain_rate)
+  subroutine production_application_run_weather_segment(self,record,t0,t1,forcing_config,canopy,results,status,crop_committed,rain_rate, &
+       irrigation_allocation,irrigation_split)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
     type(swap_daily_weather_record_t), intent(in) :: record
     real(real64), intent(in) :: t0,t1
@@ -889,6 +997,15 @@ contains
     integer, intent(out) :: status
     type(kernel_committed_state_t),intent(in),optional :: crop_committed
     real(real64),intent(in),optional :: rain_rate
+    type(fmr_irrigation_allocation_t),intent(in),optional :: irrigation_allocation
+    real(real64),intent(out),optional :: irrigation_split
+    type(fmr_allocated_irrigation_state_t) :: irrigation_candidate
+    type(fmr_irrigation_forcing_binding_diagnostics_t) :: irrigation_binding
+    type(irrigation_management_policy_result_t) :: irrigation_depth
+    type(irrigation_root_zone_parameters_t) :: unused_root
+    type(scheduled_irrigation_request_t) :: irrigation_request
+    type(fmr_b110_physical_forcing_t) :: irrigation_forcing
+    type(fmr_irrigation_allocation_t) :: allocation
     type(wofost_crop_owner_state_t) :: crop_owner
     type(crop_lifecycle_continuation_t) :: crop_lifecycle
     type(crop_root_uptake_input_t) :: root_input
@@ -1110,6 +1227,45 @@ contains
       if(.not.file_weather_thermal_tile_valid(self%weather_configuration%tiles(1),rooted)) return
       effective(1)%soil_temperature%air_temperature_c=(tmax+tmin)*0.5_real64
     end if
+    if(self%weather_configuration%file_weather_irrigation)then
+      status=FMR_APP_BOOT_IRRIGATION_REJECTED
+      if(.not.present(crop_committed))return
+      if(crop_committed%current_lineage_id()/=self%accepted_crop_lineage.or. &
+         crop_committed%current_revision()/=self%accepted_crop_revision)return
+      call crop_committed%current_time(crop_time,available)
+      if(.not.available)return
+      if(crop_time/=day.or.self%irrigation_time/=t0)return
+      call crop_committed%snapshot(physical,available)
+      if(.not.available)return
+      select type(physical)
+      type is(fmr_wofost_crop_transaction_state_t)
+        call physical%snapshot_owner(crop_owner,available)
+        if(.not.available)return
+      class default
+        return
+      end select
+      irrigation_request%t0=t0;irrigation_request%t1=t1
+      irrigation_request%dvs=crop_owner%development_stage
+      irrigation_request%crop_emerged=crop_owner%crop_emerged
+      irrigation_request%selection_opportunity=self%irrigation_selection_day/=int(day)+self%weather_epoch_day
+      irrigation_request%irrigation_enabled=.true.;irrigation_request%schedule_enabled=.true.
+      irrigation_request%irrigation_window_open=.true.
+      allocation=fmr_irrigation_allocation_t()
+      if(present(irrigation_allocation))allocation=irrigation_allocation
+      call fmr_prepare_allocated_sensor_irrigation(self%weather_configuration%file_weather_irrigation_sensor, &
+        unused_root,self%weather_configuration%file_weather_irrigation_depth,rain*0.1_real64, &
+        self%committed(1),effective(1),self%irrigation,irrigation_request,allocation,irrigation_candidate, &
+        irrigation_forcing,irrigation_binding,irrigation_depth)
+      if(irrigation_binding%split_required)then
+        if(.not.present(irrigation_split))return
+        irrigation_split=irrigation_binding%split_time;status=FMR_APP_BOOT_IRRIGATION_SPLIT
+        return
+      end if
+      if(irrigation_binding%status/=0)return
+      if(.not.ieee_is_finite(irrigation_binding%external_inflow_amount_cm))return
+      if(irrigation_binding%external_inflow_amount_cm>huge(0.0_real64)-self%irrigation_delivered_cm)return
+      effective(1)=irrigation_forcing
+    end if
     call self%committed(1)%capture_checkpoint(interval_checkpoint,available)
     if(.not.available) return
     call begin_wofost_trial_contribution(interval_checkpoint,t1,trial,s)
@@ -1149,6 +1305,12 @@ contains
     if(s/=FMR_WOFOST_LINEAGE_OK) error stop 'MC-CROP01 accepted hydro interval lost FKT provenance'
     call admit_wofost_accepted_trial(self%weather_window,certificate,trial,s)
     if(s/=FMR_WOFOST_LINEAGE_OK) error stop 'MC-CROP01 prevalidated accepted window admission failed'
+    if(self%weather_configuration%file_weather_irrigation)then
+      self%irrigation=irrigation_candidate
+      self%irrigation_selection_day=int(day)+self%weather_epoch_day
+      self%irrigation_time=t1
+      self%irrigation_delivered_cm=self%irrigation_delivered_cm+irrigation_binding%external_inflow_amount_cm
+    end if
   end subroutine
 
   subroutine production_application_initialize_weather_crop_daystart(self,record,controls,owner, &
@@ -1615,6 +1777,13 @@ contains
     if(.not.available.or.s/=KERNEL_PERSISTENCE_OK) return
     call export_kernel_committed_state(crop_committed,904001_int64,bundle%crop,available,s)
     if(.not.available.or.s/=KERNEL_PERSISTENCE_OK) return
+    if(self%weather_configuration%file_weather_irrigation)then
+      if(self%irrigation_time/=soil_time)return
+      call fmr_export_allocated_irrigation_restart(self%irrigation,bundle%irrigation,s)
+      if(s/=FMR_IRR_ALLOCATION_OK)return
+      bundle%irrigation_schema=1;bundle%irrigation_selection_day=self%irrigation_selection_day
+      bundle%irrigation_time=self%irrigation_time;bundle%irrigation_delivered_cm=self%irrigation_delivered_cm
+    end if
     bundle%configuration=self%weather_configuration
     bundle%weather=self%weather;bundle%record=self%weather_record
     bundle%previous_record=self%previous_weather_record
@@ -1633,6 +1802,8 @@ contains
     type(kernel_committed_state_t), intent(inout) :: crop_committed
     integer, intent(out) :: status
     type(kernel_committed_state_t) :: pending_soil,pending_crop
+    type(fmr_allocated_irrigation_state_t) :: pending_irrigation
+    real(real64) :: pending_time
     logical :: restored
     integer :: s
     status=FMR_APP_BOOT_INVALID_CONFIG
@@ -1657,6 +1828,17 @@ contains
     if(.not.restored.or.s/=KERNEL_PERSISTENCE_OK) return
     if(pending_crop%current_lineage_id()/=bundle%crop_lineage.or. &
          pending_crop%current_revision()/=bundle%crop_revision) return
+    if(bundle%configuration%file_weather_irrigation)then
+      if(bundle%irrigation_schema/=1)return
+      call fmr_restore_allocated_irrigation_restart(bundle%irrigation,pending_irrigation,s)
+      if(s/=FMR_IRR_ALLOCATION_OK)return
+      call pending_soil%current_time(pending_time,restored)
+      if(.not.restored)return
+      if(.not.all(ieee_is_finite([bundle%irrigation_time,bundle%irrigation_delivered_cm])))return
+      if(bundle%irrigation_time/=pending_time.or.bundle%irrigation_delivered_cm<0.0_real64)return
+    else
+      if(bundle%irrigation_schema/=0)return
+    end if
     call self%initialize(bundle%configuration,status)
     if(status/=FMR_APP_BOOT_OK) return
     ! The fresh startup objects have not been exposed. Publish the validated
@@ -1670,6 +1852,10 @@ contains
     self%crop_daystart_active=.true.
     self%initial_crop_daystart_committed=bundle%initial_crop_daystart_committed
     self%accepted_crop_lineage=bundle%crop_lineage;self%accepted_crop_revision=bundle%crop_revision
+    if(bundle%configuration%file_weather_irrigation)then
+      self%irrigation=pending_irrigation;self%irrigation_selection_day=bundle%irrigation_selection_day
+      self%irrigation_time=bundle%irrigation_time;self%irrigation_delivered_cm=bundle%irrigation_delivered_cm
+    end if
     crop_committed=pending_crop
     status=FMR_APP_BOOT_OK
   end subroutine
@@ -2646,6 +2832,8 @@ contains
     self%weather_revision=0_int64;self%weather_epoch_day=0;self%weather_interval_active=.false.;self%crop_daystart_active=.false.
     self%accepted_crop_lineage=0_int64;self%accepted_crop_revision=-1_int64
     self%weather_configuration=fmr_production_application_config_t()
+    self%irrigation=fmr_allocated_irrigation_state_t();self%irrigation_selection_day=-1
+    self%irrigation_time=0.0_real64;self%irrigation_delivered_cm=0.0_real64
     self%weather_window=fmr_wofost_accepted_window_t()
     self%previous_weather_window=fmr_wofost_accepted_window_t()
   end subroutine discard_owner_storage
