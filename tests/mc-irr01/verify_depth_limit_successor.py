@@ -2,7 +2,7 @@
 from pathlib import Path
 import base64,hashlib,io,json,re,subprocess,sys,tarfile,tempfile
 ROOT=Path(__file__).resolve().parents[2]
-BASE='741f8a61b66dc8a91b3e18edfcb8121548b61f64'
+BASE='63658aa0835f13c64c2bc2562f0d0f820c77e97d'
 SURFACE=['src','tests','tools','reference','.github']
 PRODUCTION={'src/process/mod_irrigation_process.f90','src/process/mod_scheduled_irrigation_management_policy.f90','src/runtime/mod_fmr_scheduled_management_irrigation_application.f90'}
 def check(ok,label):
@@ -40,9 +40,9 @@ def validate_science(data):
  r=record();p=json.loads(data['physical/RESULTS.json']);inp=json.loads(data['physical/INPUTS.json'])
  check(p['status']=='PASS'and p['head']==r['execution_commit']==inp['head'],'unfinished LIMIT application')
  for q,h in p['inputs'].items():check(sha((ROOT/q).read_bytes())==h,'stale LIMIT input '+q)
- check(p['inputs']==inp['inputs']and PRODUCTION<=set(inp['providers'])and len(inp['providers'])==295,'LIMIT missing tested owners')
+ check(p['inputs']==inp['inputs']and PRODUCTION<=set(inp['providers'])and len(inp['providers'])==296,'LIMIT missing tested owners')
  check(p['generated']==inp['generated'],'LIMIT generated identity')
- check(len(p['costs'])==2 and all(x['provider_compiles']==295 and x['external_compiles']==10 for x in p['costs']),'LIMIT incomplete fresh build')
+ check(len(p['costs'])==2 and all(x['provider_compiles']==296 and x['external_compiles']==10 for x in p['costs']),'LIMIT incomplete fresh build')
  names=['root2_lower','root3_zero_input','root4_upper','root7_inactive','root8_equal','root8_zero_max','weekly_dcs1','avail_root2']
  expected={(o,n,md,ph)for o in(0,2)for n in names for md,ph in [('continuous','neutral')]+[(md,ph)for ph in ['neutral','hydraulic']for md in ['native-write','native-resume','native-write-active','native-resume-active']]}
  expected|={(o,n,md,'neutral')for o in(0,2)for n in ['sensor7','sensor8']for md in ['continuous','restart','native-write','native-resume']}
@@ -117,6 +117,8 @@ def validate_science(data):
  check(b'MC_IRR01_MANAGEMENT_POLICY_QUALIFICATION=PASS'in raw and b'MC_IRR01_LITERAL_MANAGEMENT_48_CASES=PASS'in raw,'LIMIT original assertions missing')
  oldproof=json.loads(data['review/incumbent.json']);check(oldproof==r['incumbent_result']and sha(data['review/incumbent.json'])==r['incumbent_proof_sha256']and oldproof['qualified']and oldproof['full_capability']and oldproof['current_source_tree']==git('rev-parse',BASE+':src'),'LIMIT unqualified predecessor proof')
  check(b'AVAIL_ADMISSION_NEGATIVES=27|PASS'in data['review/incumbent-controls.stdout'],'LIMIT missing original controls')
+ check(b'DRAMET3_EVIDENCE_CORRUPTION_CONTROLS=8'in data['review/dramet3-controls.stdout']and b'MC_DRAIN01_DRAMET3_SOURCE_EVIDENCE=PASS'in data['review/dramet3-controls.stdout'],'LIMIT missing native drainage preservation controls')
+ check(oldproof['dramet3_successor'],'LIMIT missing native drainage owner')
  check(b'DISLAYER_EVIDENCE_CORRUPTION_CONTROLS=8'in data['review/dislayer-controls.stdout']and b'DISLAYER_REFERENCE_NEGATIVE_CONTROLS=3'in data['review/dislayer-controls.stdout'],'LIMIT missing admitted drainage controls')
  projections=json.loads(data['review/projections.json']);check(set(projections)=={q for q,v in r['postimages'].items()if v['status']=='M'},'LIMIT original body review incomplete')
  for q,patches in projections.items():

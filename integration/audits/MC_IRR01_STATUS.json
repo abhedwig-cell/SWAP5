@@ -5634,7 +5634,7 @@
   "limit_completion_20261016": {
     "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "branch": "work/mc-irr01-limit-20261016",
-    "phase": "DISLAYER_JOINED_SOURCE_PERSISTED_FRESH_REQUALIFICATION_REQUIRED",
+    "phase": "CANONICAL_NATIVE_JOINED_FRESH_APPLICATION_RUNNING",
     "implemented": true,
     "tested": true,
     "qualified": false,
@@ -5695,7 +5695,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Complete current joint fresh O0/O2 application matrix, preserve original admitted DISLAYER/AVAIL evidence and native endpoints, then safe merge and exact one-row master promotion.",
+    "next_action": "Complete296-provider fresh O0/O2 application/native run; seal raw evidence with original636 native drainage proof, LIMIT admission controls and owner entrypoints; safe merge and only LIMIT master promotion.",
     "retained_failures": [
       {
         "kind": "test fixture compile",
@@ -5711,6 +5711,11 @@
         "kind": "strict small-harness compile diagnostic",
         "path": "limit-small-preservation/FAILED.json",
         "cause": "New intentional exact-zero test raises compare-reals warning under old -Werror. Harness now uses the existing targeted -Wno-error=compare-reals policy for the two zero-normalization modules; all other warnings remain errors and every scientific assertion/flag is retained. Final original small owner O0/O2 PASS."
+      },
+      {
+        "kind": "fresh joined build",
+        "path": "limit-joined-physical/FAILED.json",
+        "cause": "Recorded295-provider list lacked newly admitted mod_drainage_dramet3_response required by canonical response binder. Added real module before binder; no production/science changes or reused objects."
       }
     ],
     "source_findings": [
@@ -5998,19 +6003,19 @@
     "closure_results": [
       {
         "condition": 1,
-        "status": "PASS"
+        "status": "PASS_RETAINED_SOURCE"
       },
       {
         "condition": 2,
-        "status": "PASS"
+        "status": "PASS_RETAINED_SOURCE"
       },
       {
         "condition": 3,
-        "status": "PASS"
+        "status": "PENDING"
       },
       {
         "condition": 4,
-        "status": "PASS"
+        "status": "PENDING"
       },
       {
         "condition": 5,
@@ -6099,7 +6104,7 @@
         }
       }
     },
-    "admission_baseline": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
+    "admission_baseline": "63658aa0835f13c64c2bc2562f0d0f820c77e97d",
     "canonical_reconciliation": {
       "canonical": "741f8a61b66dc8a91b3e18edfcb8121548b61f64",
       "master": "4235e1dc6f3d7d96a29a4e7bf80ebac100949239",
@@ -6111,6 +6116,15 @@
       "decision": "Both add optional procedure arguments. Rebuild all295 current application providers and execute every160 trajectory and560 decoder negative fresh O0/O2; do not inherit ABI-compatible objects from earlier LIMIT execution. Source and references are not altered to fit old evidence.",
       "expected_seconds": 700,
       "independent_owner": "Revalidate original admitted DISLAYER and its8 evidence/3 reference negatives at immutable741, exact LIMIT source and native outputs on joined candidate. No broad unrelated qualification."
+    },
+    "canonical_reconciliation_20261017": {
+      "canonical": "63658aa0835f13c64c2bc2562f0d0f820c77e97d",
+      "candidate": "dced38e78b259350dc0d7fd1495f4c7da1ee673f",
+      "master": "90708bb68a8ebf7233845268ba12566a341ff2da",
+      "production_scope": "The three LIMIT modules unchanged from c928610f. Canonical DRAMET3 and NUT source/evidence retained exact. One new build provider before the response binder,296 total.",
+      "conflict": "Keep LIMIT-first delegation plus original native DRAMET3 fallback in DISLAYER owner. Fix pre-existing malformed AVAIL successor dispatch. Keep canonical native guard and require original native controls and proof at636.",
+      "direct": "934 O0/O2 source vectors inherited only after all recorded direct input hashes revalidated.",
+      "physical": "Fresh actual production build with296 providers O0/O2; every160 trajectory and560 decoder negative rerun. No ABI/object reuse."
     }
   }
 }
