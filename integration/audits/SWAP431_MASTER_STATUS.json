@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+  "last_reconciled_upstream": "be8a49cd59815b537b46e0dac2b3d0161366c796",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -56,22 +56,22 @@
     },
     "open_capabilities": 109,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 91,
+    "confirmed_missing_production_entries": 87,
     "other_unresolved_source_admission_reviews": 4,
     "qualification_only_capabilities": 4,
     "total_unresolved_capabilities": 113,
     "active_gap_type_breakdown": {
-      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 29,
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 57,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 13,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 2,
     "missing_production_binding_or_implementation_entries": 109,
     "missing_standalone_process_implementations_not_established": 109,
-    "active_with_existing_production_source_authority": 65,
-    "active_without_listed_production_source_authority": 44,
+    "active_with_existing_production_source_authority": 69,
+    "active_without_listed_production_source_authority": 40,
     "active_missing_complete_admitted_route": 109,
     "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open.",
     "derived_gap_counter_reconciliation": {
@@ -82,7 +82,7 @@
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
     }
   },
-  "next_action": "Keep PR1072 draft: full semantic denominator and113 envelopes remain open. Preserve actual PR1251 bounded density/supply admission and concurrent PR1103 progress; next independent packages are irrigation shared application, persistent solute source/pond state and existing N-demand/DVSNLT policy.",
+  "next_action": "Keep PR1072 draft: full semantic denominator and113 source envelopes remain open. PR1103 four-profile bounded hydraulic production and PR1251 bounded daily root density/supply are canonically admitted; preserve their explicit scope and continue only existing dependency-ready PR closeouts.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -145,7 +145,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+  "last_reconciled_head": "be8a49cd59815b537b46e0dac2b3d0161366c796",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -867,9 +867,39 @@
         "head": "6f8f0321911c168ad0c5166105f231b81f942a64",
         "scope": "Explicit uniform source-window PMdirect/SWINTER1 -> dynamic-top flux -> active Feddes roots -> actual Richards physical/source atomic publication, compensation OFF, mode2, unponded/no runoff.",
         "verification": "Local O0/O2 direct wet/dry endpoints and atomic rollback,16 owner results, full default projection, canonical predecessor proof, negative controls and eight targeted GitHub workflows PASS."
+      },
+      {
+        "pr": 1103,
+        "merge_commit": "f0efbf9396ad62c52658e6e8315fe762cffddfca",
+        "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+        "scope": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
+        "verification": "Local source-bound O0/O2 native evidence, original default projection and admission controls; seven exact-source workflows terminal SUCCESS. Full source envelope remains open."
       }
     ],
-    "open_updated": [
+    "open_updated": [],
+    "capability_disposition_changes": 0,
+    "new_migration_routes_started": false,
+    "full_numerical_fci": "NOT_SELECTED",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "master_summary": {
+      "capabilities": 243,
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "QUALIFICATION_ONLY": 4,
+      "total_unresolved": 113
+    },
+    "master_pr1072": "Retain draft: historical integrity repaired, semantic denominator incomplete and113 envelopes unresolved.",
+    "hydraulic_certificate_evidence": {
+      "branch_head": "92768628951d87186d55f6d69598344a1f75d15e",
+      "checkpoint": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
+      "path": "integration/audits/evidence/MC_HYD01_CERTIFICATE_ENVELOPE_20261016.tar.xz.b64",
+      "decoded_sha256": "9d6a0e5ce4afbe952317cfcc6c41a923a3c2a589d4595e2f5308efb0e536f74b",
+      "outcome": "NEGATIVE_ENVELOPE_O0_O2_PASS_NOT_ADMISSION",
+      "master_dispositions_changed": false
+    },
+    "previous_publication_only_source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
+    "production_source_tree": "ff715244cdbfbfda7fa5df18f7c79a67c5d6ad2c",
+    "historical_open_updated": [
       {
         "pr": 1103,
         "head": "78ef244728e5009911a7a2cb2a2aab388d121742",
@@ -896,29 +926,7 @@
           "capability_disposition_changes": 0
         }
       }
-    ],
-    "capability_disposition_changes": 0,
-    "new_migration_routes_started": false,
-    "full_numerical_fci": "NOT_SELECTED",
-    "highest_low_air": "NOT_SELECTED_POLICY",
-    "master_summary": {
-      "capabilities": 243,
-      "ADMITTED": 94,
-      "ACTIVE_MIGRATION": 109,
-      "QUALIFICATION_ONLY": 4,
-      "total_unresolved": 113
-    },
-    "master_pr1072": "Retain draft: historical integrity repaired, semantic denominator incomplete and113 envelopes unresolved.",
-    "hydraulic_certificate_evidence": {
-      "branch_head": "92768628951d87186d55f6d69598344a1f75d15e",
-      "checkpoint": "f9cac7fcb7db31fc3a122f36f71dde26bb1f31f7",
-      "path": "integration/audits/evidence/MC_HYD01_CERTIFICATE_ENVELOPE_20261016.tar.xz.b64",
-      "decoded_sha256": "9d6a0e5ce4afbe952317cfcc6c41a923a3c2a589d4595e2f5308efb0e536f74b",
-      "outcome": "NEGATIVE_ENVELOPE_O0_O2_PASS_NOT_ADMISSION",
-      "master_dispositions_changed": false
-    },
-    "previous_publication_only_source_tree": "0d4b4c9f171f605b5841bf0e078f01c5183c87bf",
-    "production_source_tree": "ff715244cdbfbfda7fa5df18f7c79a67c5d6ad2c"
+    ]
   },
   "latest_int12c_application_reconciliation_20261016": {
     "pr": 1009,
@@ -1070,5 +1078,280 @@
       "decision": "Retain active original PRs and research evidence. PR1072 remains draft, PR1103 existing MODEL2/3 progress preserved without admission, PR953 still depends on TOP03 publication, canonical-to-main PR58 not selected. No other production admission or long research qualification selected by bounded PR1251. Existing NUT/SOL donor adapters require current root/lineage source reconciliation before later admission."
     },
     "canonical_closeout": "05d6b3f786b5a20cb053bf5e713ca771dafd289e"
+  },
+  "latest_hydraulic_profiles_reconciliation_20261016": {
+    "pr": 1103,
+    "canonical_merge": "f0efbf9396ad62c52658e6e8315fe762cffddfca",
+    "qualified_head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+    "baseline": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+    "production_source_tree": "65e42240e42881096fa55be896119d9301530d30",
+    "status": "FOUR_BOUNDED_HYDRAULIC_PROFILES_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": true,
+    "full_capability": false,
+    "full_master_qualification_claimed": false,
+    "scope": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
+    "remaining": "Optional-physics compositions not specifically qualified fail closed. MODEL2/3/6 do not compose with frost, macropore, roots, drainage response, evaporation, soil temperature, snow, RFM, fixed-weir, table/hysteresis, KSATEXM, elasticity or POWER in this initial admission. POWER has the analogous narrow Reference-Richards baseline envelope. General parameter, forcing and wet/dry envelope beyond the measured bounded profiles remains open.",
+    "capabilities": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-POWER"
+    ],
+    "sources": [
+      "src/solver/mod_b110_default_mvg_provider.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/solver/mod_reference_richards_temporal_indicator.f90"
+    ],
+    "records": [
+      "integration/audits/SWAP431_HYD_HYST_STATUS.json",
+      "docs/architecture/legacy-migration-hydraulic.md"
+    ],
+    "authority_at_canonical": "integration/audits/SWAP431_HYD_HYST_STATUS.json",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_HYD01_JOINT_ROOT_QUALIFICATION_20261016.tar.xz.b64",
+      "decoded_sha256": "5827b15bbc23cad1e832e5a72023de1de2e57660db3fb170ac9600e73fde187a",
+      "decoded_bytes": 115132,
+      "members": 1087
+    },
+    "qualification": {
+      "literal_cases_per_optimization": 256,
+      "hydraulic_solver_drivers_per_optimization": 7,
+      "joint_root_receiving_native_programs": 8,
+      "original_int12c_numeric_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717",
+      "selected_ci": [
+        {
+          "name": "Documentation",
+          "id": 38874363832,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721714,
+              "name": "Validate and build",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886636961,
+              "name": "Deploy GitHub Pages",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886637720,
+              "name": "Verify published site",
+              "status": "completed",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU01 production application bootstrap",
+          "id": 38874363946,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721505,
+              "name": "owner-qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU04-B Boesten evaporation admission",
+          "id": 38874363932,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885721344,
+              "name": "qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "SWAP431 HYD/HYST hydraulic coverage",
+          "id": 38874363836,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720786,
+              "name": "qualify",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "PPA-WU04-A Black evaporation admission",
+          "id": 38874363899,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720775,
+              "name": "qualification",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "F-CI canonical qualification",
+          "id": 38874363834,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885722147,
+              "name": "selection-preflight",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886647041,
+              "name": "modular-feedback",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 116886648330,
+              "name": "historical-fci03-through-fci18",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648364,
+              "name": "frozen-fci19-candidate-preservation",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648625,
+              "name": "frozen-fci19-source-lineage",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648626,
+              "name": "frozen-fci37-parallel-root-uptake-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648797,
+              "name": "frozen-fci24-reference-et-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886648998,
+              "name": "frozen-fci40-effective-forcing-executor-source-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649042,
+              "name": "frozen-fci36-divdra-active-runtime-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649150,
+              "name": "frozen-fci28-restart-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649395,
+              "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649435,
+              "name": "frozen-fci34-root-attribution-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649508,
+              "name": "frozen-fci27-reference-et-runtime-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649543,
+              "name": "frozen-fci30-restricted-parallel-v1-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886649622,
+              "name": "frozen-fci29-ptra-ownership-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886651635,
+              "name": "frozen-fci31-reference-et-root-uptake-authority",
+              "status": "completed",
+              "conclusion": "skipped"
+            },
+            {
+              "id": 116886651696,
+              "name": "current-restricted-canonical-preservation",
+              "status": "completed",
+              "conclusion": "skipped"
+            }
+          ]
+        },
+        {
+          "name": "F-MIG431-INT12-C qualification",
+          "id": 38874363828,
+          "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
+          "conclusion": "success",
+          "jobs": [
+            {
+              "id": 116885720306,
+              "name": "qualify",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ],
+      "preservation": "Byte-exact default HYD source projection; unchanged admitted five-file root production surface; original full root qualification and26 rejection controls at immutable canonical; fresh joint root receiving outputs identical to admitted originals."
+    },
+    "full_fci": "NOT_SELECTED_PROPORTIONAL_OWNER_SOURCE_PRESERVATION_AND_MODULAR_FEEDBACK",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT",
+    "post_merge_verification": "Actual merge tree equals exact qualified CI head tree; production blobs unchanged. Current source/capsule proof rerun at actual canonical merge.",
+    "counts_unchanged": {
+      "ADMITTED": 94,
+      "ACTIVE_MIGRATION": 109,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "structural_absence_flags": 87,
+    "canonical_closeout": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "previous_canonical_locator": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+    "master_integrity": {
+      "structural_source_and_pinned_locator_check": "PASS",
+      "inheritance_controls": 20,
+      "full_closure": "REJECTED_AS_EXPECTED_DENOMINATOR_INCOMPLETE",
+      "full_scientific_master_qualification_claimed": false
+    }
   }
 }

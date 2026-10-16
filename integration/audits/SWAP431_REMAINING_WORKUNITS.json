@@ -135,7 +135,7 @@
     },
     {
       "id": "MC-HYD01",
-      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "status": "BOUNDED_FOUR_PROFILE_PRODUCTION_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
       "capabilities": [
         "SW431-HYD-MODEL2",
         "SW431-HYD-MODEL3",
@@ -153,7 +153,7 @@
         "SW431-HYD-LINEAR-TABLE",
         "SW431-HYD-RIA-VAPOR"
       ],
-      "next_action": "Adjudicate individual source selector against current production/admission. Establish state, mass, parameter and retry/restart contract before physics edits.",
+      "next_action": "Preserve canonical PR1103 four-profile receipt and explicit exclusions. Review remaining already registered source envelopes independently; no automatic admission of new models, hysteresis or optional compositions.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -164,7 +164,8 @@
         "SW431-HYD-MODEL8",
         "SW431-HYD-MODEL9"
       ],
-      "closed_foundation_authorities": []
+      "closed_foundation_authorities": [],
+      "bounded_admission_receipt": "closeout_hydraulic_profiles_20261016"
     },
     {
       "id": "MC-HYST01",
