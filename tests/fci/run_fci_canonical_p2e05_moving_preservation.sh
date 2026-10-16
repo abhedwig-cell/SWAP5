@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Separate infiltration owner only; no broad numerical execution.
+if [[ "${1:-}" == --drain-inf-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/verify_inf_split_successor.py
+  echo 'FCI_DRAIN_INF_SPLIT_OWNER=PASS'
+  exit 0
+fi
+
 # Classic annual source/state owner only; never a full moving PASS.
 if [[ "${1:-}" == --crop-annual-owner-only ]]; then
   cd "$(cd "$(dirname "$0")/../.." && pwd)"
@@ -754,6 +762,9 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/process/mod_frost_divdra_drainage_effect.f90|src/process/mod_drainage_b19_separate_infiltration_adapter.f90|src/runtime/mod_fmr_divdra_separate_infiltration_binding.f90|src/runtime/mod_fmr_divdra_serialized_composition.f90|src/runtime/mod_fmr_divdra_serialized_runtime.f90 )
+        python3 -B tests/fmig431/verify_inf_split_successor.py || fail 'unqualified shared separate-infiltration successor'
+        ;;
       src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90 )
         (( joint_exact_successor )) || fail "unqualified numerical successor: $candidate_path"
         ;;

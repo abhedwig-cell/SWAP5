@@ -36,6 +36,7 @@ contains
     integer::status
     result=drainage_b19_separate_infiltration_result_t();result%authoritative_scalar_transfer=scalar_transfer
     if(.not.valid_control(parameters))return
+    if(.not.finite_distribution(distribution))return
     call distribute_single_level_signed_divdra(distribution,view,scalar_transfer,ordinary,d)
     result%component_status=d%status
     if(d%status/=DRAIN_DIST_OK)then
@@ -76,6 +77,7 @@ contains
     if(n<=1.or.size(parameters)/=n.or.size(scalar_transfer)/=n)return
     do i=1,n
       if(.not.valid_control(parameters(i)))return
+      if(.not.finite_distribution(distribution(i)))return
     end do
     ! The admitted owner computes the profile anisotropy and legacy water-table node.
     ! Its temporary row is worker scratch, never a second scalar or published forcing.
@@ -109,6 +111,23 @@ contains
     end if
     call move_alloc(scratch,flux);status=DRAIN_B19_INF_OK
   end subroutine
+
+  logical function finite_distribution(p) result(ok)
+    type(drainage_distribution_parameters_t),intent(in)::p
+    integer::n
+    ok=.false.;n=p%active_nodes
+    if(n<1)return
+    if(.not.allocated(p%dz).or..not.allocated(p%zbotcp))return
+    if(.not.allocated(p%saturated_conductivity).or..not.allocated(p%horizontal_anisotropy_factor))return
+    if(size(p%dz)/=n.or.size(p%zbotcp)/=n)return
+    if(size(p%saturated_conductivity)/=n.or.size(p%horizontal_anisotropy_factor)/=n)return
+    if(any(.not.ieee_is_finite(p%dz)))return
+    if(any(.not.ieee_is_finite(p%zbotcp)))return
+    if(any(.not.ieee_is_finite(p%saturated_conductivity)))return
+    if(any(.not.ieee_is_finite(p%horizontal_anisotropy_factor)))return
+    if(.not.ieee_is_finite(p%drain_spacing))return
+    ok=.true.
+  end function
 
   logical function valid_control(p) result(ok)
     type(drainage_b19_separate_infiltration_parameters_t),intent(in)::p
