@@ -1,6 +1,7 @@
 # MC-NUT01 partial leaf return and retained dead material
 
-Status: executable source-chain assessment; partial-return production remains
+Status: source-chain assessment canonically recorded through PR1261, merge
+`7dc1adb594c4091d7df60229af4b779485ca9558`; partial-return production remains
 unadmitted. Baseline canonical `d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15`.
 Recovery is `integration/audits/MC_NUT_SOL_STATUS.json`, field
 `leaf_return_review_20261016`. PR1260's admitted N process and the existing
