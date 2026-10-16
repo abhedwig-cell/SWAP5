@@ -88,12 +88,18 @@ def incumbent(source_only=False):
     return result
 
 def verify_source(git_reader=None):
+    if (ROOT/"tests/fmig431/verify_multilevel_divdra_successor.py").is_file():
+        import verify_multilevel_divdra_successor as successor
+        return successor.verify_source(git_reader)
     require(git_reader is None,'unregistered projected git reader')
     status,_=load_verified();old=incumbent(True)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':False}
 
 def verify_qualification():
+    if (ROOT/"tests/fmig431/verify_multilevel_divdra_successor.py").is_file():
+        import verify_multilevel_divdra_successor as successor
+        return successor.verify_qualification()
     status,_=load_verified();old=incumbent(False)
     tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
     return {**old,'incumbent':old,'current_source_tree':tree,'signed_divdra_successor':True,'qualified':True,
@@ -101,6 +107,10 @@ def verify_qualification():
             'highest_low_air':'NOT_SELECTED_POLICY'}
 
 def main():
+    if (ROOT/"tests/fmig431/verify_multilevel_divdra_successor.py").is_file():
+        import verify_multilevel_divdra_successor as successor
+        successor.main()
+        return
     ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args()
     status=json.loads((ROOT/STATUS).read_text());e=status['closure_evidence']
     blob=base64.b64decode((ROOT/e['path']).read_bytes());require(sha(blob)==e['sha256'],'archive integrity')
