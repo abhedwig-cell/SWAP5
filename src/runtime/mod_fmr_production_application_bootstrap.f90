@@ -429,6 +429,10 @@ contains
     if(view%irrigation_selection_day< -1.or.view%irrigation_selection_day>int(day)+view%configuration%file_weather_epoch_day)return
     if(soil_time>day.and.view%irrigation_selection_day/=int(day)+view%configuration%file_weather_epoch_day)return
     call fmr_restore_allocated_irrigation_restart(view%irrigation,irrigation,st);if(st/=0)return
+    if(.not.view%configuration%file_weather_irrigation_depth%fixed_interval_enabled)then
+      if(irrigation%management%policy%weekly_day_counter>6.and. &
+         irrigation%management%policy%weekly_day_counter/=366)return
+    end if
     bundle%valid=view%valid
     bundle%initial_crop_daystart_committed=view%initial_crop_daystart_committed
     bundle%irrigation_schema=view%irrigation_schema
@@ -566,6 +570,13 @@ contains
       if(config%file_weather_irrigation_sensor%salinity_excess_enabled)return
       if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
+      if(config%file_weather_irrigation_depth%fixed_interval_enabled)then
+        ! The existing management policy owns DAYFIX. Sensor preparation does
+        ! not yet carry that policy state and must not silently ignore TCSFIX.
+        if(config%file_weather_irrigation_sensor%timing_criterion>=6)return
+        if(config%file_weather_irrigation_depth%fixed_interval_days<1.or. &
+           config%file_weather_irrigation_depth%fixed_interval_days>366)return
+      end if
       select case(config%file_weather_irrigation_sensor%timing_criterion)
       case(2:4,6:8)
       case default
@@ -1999,6 +2010,10 @@ contains
       if(bundle%irrigation_schema/=1)return
       call fmr_restore_allocated_irrigation_restart(bundle%irrigation,pending_irrigation,s)
       if(s/=FMR_IRR_ALLOCATION_OK)return
+      if(.not.bundle%configuration%file_weather_irrigation_depth%fixed_interval_enabled)then
+        if(pending_irrigation%management%policy%weekly_day_counter>6.and. &
+           pending_irrigation%management%policy%weekly_day_counter/=366)return
+      end if
       call pending_soil%current_time(pending_time,restored)
       if(.not.restored)return
       if(.not.all(ieee_is_finite([bundle%irrigation_time,bundle%irrigation_delivered_cm])))return

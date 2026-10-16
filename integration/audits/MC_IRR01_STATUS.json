@@ -6221,5 +6221,102 @@
       "decoded_json_sha256": "c5db4bfd69e2b6ff4a45f6254c9e7c3007bb9ee9acac01eab81e4937d02d2d0b",
       "execution_head": "b479c212c61b68f964c69dadf00bbfd0b16dcf1a"
     }
+  },
+  "batch_experiment_1271_20261017": {
+    "authority_issue": 1271,
+    "baseline": "121ed3503638c2d3168fa30e40f6af24156348a7",
+    "branch": "work/mc-irr01-batch-1271-20261017",
+    "phase": "MODULAR_PASS_COMPOSITION_PENDING",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "full_capability_promotions": 0,
+    "selected_capabilities": [
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4",
+      "SW431-IRR-DCS1"
+    ],
+    "hypothesis": "One shared source-qualified fixed-interval implementation plus joint real weather qualification reduces qualification and coordination wall time per fully admitted existing row relative to individual TCS6 and AVAIL campaigns. At least two full promotions required; partial implementation cannot establish success.",
+    "initial_reconciliation": {
+      "pr1268": "MERGED before implementation; independent LIMIT is excluded",
+      "master_head": "90708bb68a8ebf7233845268ba12566a341ff2da",
+      "master_counts": {
+        "ADMITTED": 104,
+        "ACTIVE_MIGRATION": 100,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      }
+    },
+    "closure_conditions": [
+      "Literal TCS2/3/4, DCS1 and TCSFIX source option/parameter boundaries O0/O2, including strict boundaries, zero depth, no-trigger counter progression and invalid states.",
+      "Real accepted weather/current roots/material composition, accepted-only counter/day consumption, mass, rollback/replay, opaque and fresh native continuation.",
+      "Reconcile historical seasonal activation and all remaining existing full-row restrictions; do not promote partial parameter or profile support.",
+      "Exact postimage owner evidence, safe canonical merge and preservation of all nonselected master rows."
+    ],
+    "exclusions": {
+      "SW431-IRR-LIMIT": "Independently completed by PR1268; not an experiment promotion.",
+      "SW431-IRR-SALTEXCESS": "Requires separate accepted bottom7 chemical/weather composition; present bootstrap explicitly rejects solute.",
+      "SW431-IRR-TCS7/TCS8/SSDI": "Same eventual interval function can be reused, but current sensor preparation accepts event state only and bypasses management policy state. Not dependency-ready for this root-policy package; no second counter introduced."
+    },
+    "baseline_observed": {
+      "TCS6": {
+        "full_rows": 1,
+        "science_wall_seconds": 493.7910814099887,
+        "prior_reconciliation_wall_seconds": 264.4951728689921,
+        "trajectory_programs": 54,
+        "decoder_programs": 208,
+        "source_unit_programs": 4,
+        "analysis_seconds": "UNKNOWN",
+        "bookkeeping_seconds": "UNKNOWN"
+      },
+      "AVAIL": {
+        "full_rows": 1,
+        "science_wall_seconds": 578.324688497989,
+        "trajectory_programs": 124,
+        "decoder_programs": 480,
+        "provider_compiles": 6,
+        "verified_reused_providers": 584,
+        "analysis_seconds": "UNKNOWN",
+        "bookkeeping_seconds": "UNKNOWN"
+      }
+    },
+    "measurements": {
+      "instrumented_phase_start_utc": "2026-10-16T23:15:16.815281+00:00",
+      "prior_reconciliation_elapsed_seconds": "UNKNOWN: tool/controller elapsed not fully instrumented",
+      "test_programs": 0,
+      "compile_invocations": 0,
+      "full_rows_closed": 0
+    },
+    "test_selection": {
+      "direct": "Small real policy+management+restart production driver O0/O2 against authenticated literal TCSFIX; expected under30seconds.",
+      "physical": {
+        "changed_dependency": "TCSFIX uses existing policy DAYFIX and expands its valid interval domain; parameter layout adds two members.",
+        "scientific_claim": "Root TCS2/3/4 and DCS1 source interval recurrence over actual weather/current roots/material, water mass, rejected trials and opaque continuation. No fresh native compatibility/admission claim.",
+        "owner": "MC-IRR01",
+        "authority": "issue1271 and existing closure conditions",
+        "expected_seconds": 700,
+        "existing_evidence": "Fresh296-provider O0/O2 needed for changed derived parameter ABI. Existing inputs/oracles reused, not prior physical PASS. Four drivers shared within each optimization.",
+        "prior_execution": "NONE"
+      },
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "next_action": "Implement source TCSFIX using existing policy counter and existing restart owner; measure minimal O0/O2 source tests, then real composition.",
+    "blockers": [
+      "Full capability closure still requires historical seasonal activation and remaining full-row envelopes.",
+      "Native config writes the policy derived type directly: added configuration members change record layout. Existing codec compatibility and config binding need explicit qualification before native/admission."
+    ],
+    "retained_failures": [
+      {
+        "kind": "test closure preflight",
+        "result": "Explicit Fortran include authority required by strict closure scanner; selected actual production restart closure explicitly and appended driver plus pinned literal include. No compiler/test execution before failure."
+      }
+    ]
   }
 }

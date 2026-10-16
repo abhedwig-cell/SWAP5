@@ -12,6 +12,8 @@ module mod_scheduled_irrigation_management_policy
   type, public :: irrigation_management_policy_parameters_t
     integer :: timing_criterion = 2
     integer :: depth_criterion = 1
+    logical :: fixed_interval_enabled = .false.
+    integer :: fixed_interval_days = 1
     integer :: tcs2_knot_count = 0
     real(real64) :: tcs2_dvs(IRR_MGMT_MAX_KNOTS) = 0.0_real64
     real(real64) :: tcs2_fraction(IRR_MGMT_MAX_KNOTS) = 0.0_real64
@@ -87,6 +89,12 @@ contains
         return
       end if
     end if
+    if (parameters%fixed_interval_enabled) then
+      if (committed_state%weekly_day_counter>366) then
+        status=IRR_MGMT_INVALID_REQUEST
+        return
+      end if
+    end if
     if (.not. valid_parameters(parameters)) then
       status = IRR_MGMT_INVALID_PARAMETERS
       return
@@ -124,6 +132,18 @@ contains
       return
     end select
 
+    ! B1.11 TCSFIX shares DAYFIX with TCS6; it is not a second clock.
+    ! Called only at an eligible accepted-day selection by the application.
+    ! Counter progress is tentative until the caller commits this candidate.
+    if (parameters%fixed_interval_enabled) then
+      if (result%trigger.and.committed_state%weekly_day_counter>=parameters%fixed_interval_days) then
+        candidate_state%weekly_day_counter=1
+      else
+        result%trigger=.false.
+        if (committed_state%weekly_day_counter<parameters%fixed_interval_days) &
+          candidate_state%weekly_day_counter=committed_state%weekly_day_counter+1
+      end if
+    end if
     if (.not. result%trigger) return
 
     call evaluate_irrigation_management_depth(parameters,request,result,status)
@@ -197,6 +217,10 @@ contains
   pure logical function valid_parameters(parameters)
     type(irrigation_management_policy_parameters_t), intent(in) :: parameters
     valid_parameters = .false.
+    if (parameters%fixed_interval_enabled) then
+      if(parameters%timing_criterion==6)return
+      if(parameters%fixed_interval_days<1.or.parameters%fixed_interval_days>366)return
+    end if
     select case(parameters%timing_criterion)
     case(2)
       if (.not. valid_table(parameters%tcs2_dvs,parameters%tcs2_fraction,parameters%tcs2_knot_count)) return
