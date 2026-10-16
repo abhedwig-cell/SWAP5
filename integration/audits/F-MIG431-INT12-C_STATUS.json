@@ -3,7 +3,7 @@
   "workunit": "F-MIG431-INT12-C",
   "parent_workunit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
-  "state": "READY_FOR_REGIE_EXPLICIT_SWINTER1_APPLICATION",
+  "state": "CANONICALLY_ADMITTED_BOUNDED_EXPLICIT_SWINTER1_APPLICATION",
   "branch": "work/f-mig431-int12-c-vonhhbraden",
   "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
   "authorities": {
@@ -37,9 +37,15 @@
   ],
   "persistent_physical_state": [],
   "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
-  "production_admission": "NO_NEW_ADMISSION_YET",
-  "qualification": "Direct explicit SWINTER1 dynamic-top/active-root science and incumbent owner preservation PASS. All original ten gates covered for this bounded uniform-source profile. No broader weather/crop lifecycle or ponded/runoff admission.",
-  "next_safe_step": "Publish qualified bounded candidate and observe dedicated INT12C, F-CI feedback, Black/Boesten and crop/met prerequisite checks on exact head. Reconcile canonical and merge existing PR1009 if those gates pass.",
+  "production_admission": {
+    "merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+    "source_tree": "ff715244cdbfbfda7fa5df18f7c79a67c5d6ad2c",
+    "scope": "Uniform-source SWINTER1, frozen explicit canopy/root input, mode2, base layout, compensation OFF, unponded/nonrunoff flux regime, atomic physical/source commit.",
+    "broad_automatic_crop_weather_admitted": false
+  },
+  "qualification": "PASS original ten gates for bounded explicit source-window application, local O0/O2 direct wet/dry physics, exact default/owner preservation, and eight final targeted workflows. Canonical merge tree equals qualified head tree.",
+  "next_safe_step": "PR1009 closed by bounded canonical admission. Maintain current coverage receipt without capability count promotion. Broader automatic weather/crop lifecycle, event/detail forcing and ponded/runoff profiles remain outside this completed slice.",
   "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
   "production_process_present": "RESTRICTED_HUPSEL_ONLY",
   "qualification_evidence": {
@@ -485,7 +491,7 @@
   "direct_application_recovery_20261016": {
     "base": "8a3c560dfc7a2dbfacc3050681cd170bc04ae00b",
     "previous_qualified_checkpoint": "d694ea1e5b381188e0057e13434f2e43b4e194f6",
-    "implementation_checkpoint": "d41ccd81",
+    "implementation_checkpoint": "6f8f0321911c168ad0c5166105f231b81f942a64",
     "contract": "docs/migration/F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md",
     "scope": "Explicit frozen weather/canopy/crop-root geometry. Mode2, base layout, root compensation OFF, temporal certificate, unponded/no runoff. Automatic crop/calendar lifecycle excluded.",
     "invariants": "Trial input does not mutate committed soil or source. Process receipts only on jointly accepted physical and source commit. No new equations or numerical policy. Opt-in false preserves complete incumbent routing.",
@@ -775,6 +781,228 @@
       "event-weighted or detailed meteorology",
       "whole-season or general source envelope",
       "performance claim"
-    ]
+    ],
+    "initial_local_checkpoint": "d41ccd81",
+    "canonical_admission": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "remote_ci_final": {
+      "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+      "owning_workflows": [
+        {
+          "id": 38861395245,
+          "name": "PPA-WU04-B Boesten evaporation admission",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395262,
+          "name": "Documentation",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395188,
+          "name": "F-MIG431-INT12-C qualification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395209,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395178,
+          "name": "PPA-WU03 common forcing adapter",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395230,
+          "name": "PPA-WU01 production application bootstrap",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395219,
+          "name": "MC-CROP01 file weather production",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 38861395020,
+          "name": "PPA-WU04-A Black evaporation admission",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "result": "ALL8_TARGETED_WORKFLOWS_PASS",
+      "other_automatic_checks": [
+        {
+          "run": 38861395208,
+          "workflow": "PUB-GC E7 current-canonical preservation",
+          "job": 116844255725,
+          "name": "preserve",
+          "findings": [
+            "2026-10-16T06:28:36.5952671Z Traceback (most recent call last):",
+            "2026-10-16T06:28:36.5965157Z AssertionError"
+          ]
+        },
+        {
+          "run": 38861395246,
+          "workflow": "PUB-P2E09 Reference-only threshold freeze",
+          "job": 116844255916,
+          "name": "reference-threshold-freeze",
+          "findings": [
+            "2026-10-16T06:29:36.8708028Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+          ]
+        },
+        {
+          "run": 38861395239,
+          "workflow": "PUB-P2E07 Reference cancellation floor",
+          "job": 116844255861,
+          "name": "reference-cancellation-floor",
+          "findings": [
+            "2026-10-16T06:30:59.4255029Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+          ]
+        },
+        {
+          "run": 38861395196,
+          "workflow": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+          "job": 116844255785,
+          "name": "startup-attribution",
+          "findings": []
+        },
+        {
+          "run": 38861395196,
+          "workflow": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+          "job": 116844256059,
+          "name": "smooth-mechanism",
+          "findings": []
+        },
+        {
+          "run": 38861395244,
+          "workflow": "F-PERF-CANON01 B1 recomposition",
+          "job": 116844255930,
+          "name": "paired (directional)",
+          "findings": [
+            "2026-10-16T06:31:13.7866683Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory"
+          ]
+        },
+        {
+          "run": 38861395244,
+          "workflow": "F-PERF-CANON01 B1 recomposition",
+          "job": 116844256029,
+          "name": "paired (reference)",
+          "findings": [
+            "2026-10-16T06:31:35.0946918Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory"
+          ]
+        },
+        {
+          "run": 38861394983,
+          "workflow": "PUB-GC E7 realistic component-domain gate",
+          "job": 116844255324,
+          "name": "qualify",
+          "findings": [
+            "2026-10-16T06:28:34.8454794Z PUB_GC_E7_FAIL tile validation not called during initialization"
+          ]
+        },
+        {
+          "run": 38861395105,
+          "workflow": "F-CI96 F-ROSS12 postimage preservation",
+          "job": 116844255193,
+          "name": "preserve-fross12-postimage",
+          "findings": [
+            "2026-10-16T06:28:35.9177406Z FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90"
+          ]
+        },
+        {
+          "run": 38861395130,
+          "workflow": "PUB-P2E10 broad E0 paired matrix",
+          "job": 116844255772,
+          "name": "broad-e0-paired-matrix",
+          "findings": [
+            "2026-10-16T06:29:17.8193378Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+          ]
+        },
+        {
+          "run": 38861395160,
+          "workflow": "PUB-ME D1 transition authority",
+          "job": 116844255619,
+          "name": "d1-transition-authority",
+          "findings": [
+            "2026-10-16T06:28:43.1656493Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+          ]
+        },
+        {
+          "run": 38861394962,
+          "workflow": "PUB-ME D3 origin authority",
+          "job": 116844255597,
+          "name": "d3-origin-authority",
+          "findings": [
+            "2026-10-16T06:28:41.8166456Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+          ]
+        },
+        {
+          "run": 38861395166,
+          "workflow": "PUB-P2E06 Reference local-balance scaling",
+          "job": 116844255730,
+          "name": "reference-local-balance-scaling",
+          "findings": [
+            "2026-10-16T06:28:42.0225449Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+          ]
+        },
+        {
+          "run": 38861395027,
+          "workflow": "PUB-P1E02 post-solver rollback",
+          "job": 116844255224,
+          "name": "rollback-publication-gate",
+          "findings": [
+            "2026-10-16T06:28:43.8002701Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory"
+          ]
+        },
+        {
+          "run": 38861395075,
+          "workflow": "PUB-P2E08 Reference valid calibration domain",
+          "job": 116844255435,
+          "name": "reference-valid-calibration-domain",
+          "findings": [
+            "2026-10-16T06:29:06.0939422Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+          ]
+        },
+        {
+          "run": 38861395048,
+          "workflow": "PUB-P2E02 Reference uncertainty",
+          "job": 116844255245,
+          "name": "reference-uncertainty-gate",
+          "findings": [
+            "2026-10-16T06:29:06.1423057Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory"
+          ]
+        },
+        {
+          "run": 38861395124,
+          "workflow": "PPA-WU02 lower-boundary prescribed-qbot admission",
+          "job": 116844255429,
+          "name": "owner-qualification",
+          "findings": [
+            "2026-10-16T06:30:07.5457313Z PPA_WU02_GATE_FAIL unexpected production delta: src/adapter/fmr_groundwater_application_runtime.py"
+          ]
+        },
+        {
+          "run": 38861395023,
+          "workflow": "F-PE-ELASTIC09 application bootstrap",
+          "job": 116844255395,
+          "name": "qualify",
+          "findings": []
+        }
+      ],
+      "attribution": "Other historical/research workflows retain their red outcomes: unrelated fixed-workunit delta restrictions, unchanged canonical frozen dependency hashes and old manual compiler closure failures. No unrelated gate is rewritten or claimed PASS. Targeted owning F-CI, direct science, application, crop/weather and process preservation all pass.",
+      "unchanged_dependencies_verified": [
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "reference"
+      ]
+    },
+    "admission_scope": "Uniform-source SWINTER1, frozen explicit canopy/root input, mode2, base layout, compensation OFF, unponded/nonrunoff flux regime, atomic physical/source commit."
   }
 }

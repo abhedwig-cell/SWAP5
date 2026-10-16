@@ -167,3 +167,6 @@ preservation prerequisite, not a whole moving-F-CI or highest-stress receipt.
 No automatic crop growth/calendar, weather parser, ponding/runoff regime or
 whole-season admission follows. The existing candidate status records the final
 qualification and admission state.
+
+
+Canonical admission: existing PR1009 merged at `06c199fb512154bf4abb99b4ad23856c72a21268` after all eight final targeted workflows passed on `6f8f0321911c168ad0c5166105f231b81f942a64`. Admission is limited to the explicit application scope above. The canonical merge tree equals the qualified candidate tree; the source-window and original application records retain all earlier negative evidence.
