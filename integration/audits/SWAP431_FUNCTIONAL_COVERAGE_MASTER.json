@@ -17,33 +17,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 95,
-      "ACTIVE_MIGRATION": 109,
+      "ADMITTED": 96,
+      "ACTIVE_MIGRATION": 108,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 109,
+    "open_capabilities": 108,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 86,
+    "confirmed_missing_production_entries": 85,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 112,
+    "total_unresolved_capabilities": 111,
     "active_gap_type_breakdown": {
-      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 26,
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 8,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
       "INCOMPLETE_RUNTIME_QUALIFICATION": 18,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 109,
-    "missing_standalone_process_implementations_not_established": 109,
-    "active_with_existing_production_source_authority": 69,
+    "missing_production_binding_or_implementation_entries": 108,
+    "missing_standalone_process_implementations_not_established": 108,
+    "active_with_existing_production_source_authority": 68,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 109,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;109 full production envelopes remain open. Classic annual is a bounded missing retained-organ state, with living AMAXTB production preserved.",
+    "active_missing_complete_admitted_route": 108,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;108 full production envelopes remain open. Classic annual is now admitted for its declared source-bound typed contract.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -9438,12 +9438,10 @@
       "restrictions": [
         "Spring-barley potential-production crop-owned trajectories and event runtime do not qualify this whole source option; map exact supported replacement before final disposition"
       ],
-      "remaining_dependency": [
-        "SW431-CROP-ANNUAL"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 2,
@@ -9454,7 +9452,8 @@
       "workunit_stage": "EXISTING_IMPLEMENTATION_SOURCE_RUNTIME_QUALIFICATION_PREREGISTERED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81"
+        "SW5-CROP-WOF81",
+        "SW431-CROP-ANNUAL"
       ],
       "resolution_stage": "EXISTING_IMPLEMENTATION_QUALIFICATION_REQUIRED",
       "resolution_decision": "QUALIFY_EXISTING"
@@ -9900,12 +9899,10 @@
       "restrictions": [
         "Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open."
       ],
-      "remaining_dependency": [
-        "SW431-CROP-ANNUAL"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 2,
@@ -9916,7 +9913,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81"
+        "SW5-CROP-WOF81",
+        "SW431-CROP-ANNUAL"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "resolution_decision": "MIGRATE",
@@ -9970,9 +9968,12 @@
         "src/runtime/mod_fmr_wofost_crop_transaction.f90",
         "src/crop/mod_wofost_prepare_assimilation.f90",
         "src/crop/mod_wofost_finalize_rates.f90",
-        "src/crop/mod_wofost_two_phase_crop_window.f90"
+        "src/crop/mod_wofost_two_phase_crop_window.f90",
+        "src/crop/mod_wofost_actual_biomass_state.f90",
+        "src/crop/mod_wofost_finalize_rates.f90",
+        "src/crop/mod_wofost_one_day_structural_evolution.f90"
       ],
-      "current_disposition": "ACTIVE_MIGRATION",
+      "current_disposition": "ADMITTED",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
         "tests/fwof/pp01/MAPPING_CONTRACT.md",
@@ -9980,19 +9981,22 @@
         "integration/audits/SWAP431_CROP_RESOLUTION_REVIEW.md",
         "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
         "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
-        "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json"
+        "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_REPAIR_QUALIFICATION_20261016.tar.xz.b64",
+        "integration/audits/evidence/MC_CROP01_ANNUAL_ADMISSION_CONTROLS_20261016.tar.xz.b64"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Literal B1.11 retains cumulative DWRT/DWST/DWLV. Existing classic biomass owner and persistence cannot represent these inventories. Qualification-only label corrected; no claim that AMAXTB or living growth is absent. PASS three200-day actual classic process trajectories atO0/O2; living organs/phenology/cohorts and actual living persistence every17 days; no Richards/accepted-event/full source-state admission claim"
+        "established": true,
+        "route": "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+        "claim": "Source-bound classic AMAXTB actual annual crop in the existing typed valid parameter domain. Literal B1.11 assimilation, partitioning, phenology, anthesis/maturity, complete mortality history, daily accepted transactions and complete restart qualified O0/O2;12 real Richards/weather compositions passed."
       },
       "restrictions": [
-        "Literal B1.11 retains cumulative DWRT/DWST/DWLV. Existing classic biomass owner and persistence cannot represent these inventories. Qualification-only label corrected; no claim that AMAXTB or living growth is absent.",
-        "Existing live process and its restricted restart pass. Complete source organ inventories, accepted-event and source-state restart admission remain open. No WOFOST81 replacement authority."
+        "No new root/N/solver physics or production native codec tag.",
+        "Annual active-crop source and typed runtime are qualified; automatic initialization/harvest/reset/rotation remain separate existing capabilities.",
+        "Codec1 preserves its historical zero-counter representation; unrecorded B1.11 mortality cannot be reconstructed from an old artifact."
       ],
       "remaining_dependency": [],
-      "active_workunit": "MC-CROP01",
+      "active_workunit": null,
       "migration_priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -10001,9 +10005,9 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "implementation_absence_proven": true,
-      "workunit_stage": "BLOCKED_EXISTING_OWNER_STATE_COMPLETENESS",
+      "coverage_gap_type": "NONE_CANONICALLY_ADMITTED",
+      "implementation_absence_proven": false,
+      "workunit_stage": "CANONICALLY_ADMITTED",
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
@@ -10011,9 +10015,28 @@
         "SW_WOFOST",
         "AMAXTB"
       ],
-      "resolution_stage": "SOURCE_PROVEN_RETAINED_ORGAN_STATE_GAP",
-      "resolution_decision": "REPAIR_EXISTING_OWNER_BEFORE_QUALIFICATION",
+      "resolution_stage": "CANONICALLY_ADMITTED",
+      "resolution_decision": "ADMIT_EXISTING_WITH_BOUNDED_REPAIR",
       "annual_qualification_20261016": {
+        "pr": 1264,
+        "merge_sha": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
+        "qualified_head": "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5",
+        "tree": "fcb0ff16356cb09704baf9a61639c990740df4fa",
+        "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+        "exact_tree_verified": true,
+        "parents": [
+          "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+          "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5"
+        ],
+        "status": "CANONICALLY_ADMITTED",
+        "capability_id": "SW431-CROP-ANNUAL",
+        "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
+        "recovery": "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
+        "scope": "SW_WOFOST=1; IDSL=0; SWCROPSNM=0, existing classic AMAXTB route",
+        "full_capability_admitted": true,
+        "unresolved_count_delta": -1
+      },
+      "historical_initial_qualification_20261016": {
         "capability_id": "SW431-CROP-ANNUAL",
         "status": "BLOCKED_SOURCE_STATE_COMPLETENESS",
         "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
@@ -11961,12 +11984,10 @@
       "restrictions": [
         "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing."
       ],
-      "remaining_dependency": [
-        "SW431-CROP-ANNUAL"
-      ],
+      "remaining_dependency": [],
       "active_workunit": "MC-CROP01",
       "migration_priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 1,
         "implementation_extent": 2,
         "physical_risk": 2,
@@ -11977,7 +11998,8 @@
       "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
-        "SW5-CROP-WOF81"
+        "SW5-CROP-WOF81",
+        "SW431-CROP-ANNUAL"
       ],
       "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
       "resolution_decision": "MIGRATE"
@@ -14715,6 +14737,20 @@
   ],
   "remaining_queue": [
     {
+      "capability_id": "SW431-CROP-ATTAINABLE",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 1,
+        "implementation_extent": 2,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
+    },
+    {
       "capability_id": "SW431-DRAIN-DISLAYER",
       "work_unit": "MC-DRAIN01",
       "dependencies": [],
@@ -15695,20 +15731,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-CROP-ANNUAL",
-      "work_unit": "MC-CROP01",
-      "dependencies": [],
-      "why_open": "Literal B1.11 retains cumulative DWRT/DWST/DWLV. Existing classic biomass owner and persistence cannot represent these inventories. Qualification-only label corrected; no claim that AMAXTB or living growth is absent. PASS three200-day actual classic process trajectories atO0/O2; living organs/phenology/cohorts and actual living persistence every17 days; no Richards/accepted-event/full source-state admission claim",
-      "priority": {
-        "dependency_depth": 0,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-CROP-FIXED",
       "work_unit": "MC-CROP01",
       "dependencies": [],
@@ -15765,6 +15787,20 @@
       "implementation_absence_proven": true,
       "bounded_daily_admission": "https://github.com/abhedwig-cell/SWAP5/pull/1248",
       "implementation_absence_claim_scope": "Incomplete complete-selector binding, not absence of a depth owner or of the admitted bounded daily route."
+    },
+    {
+      "capability_id": "SW431-CROP-ROTATION",
+      "work_unit": "MC-CROP01",
+      "dependencies": [],
+      "why_open": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart. Full historical source capability not established. Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
+      "priority": {
+        "dependency_depth": 0,
+        "functional_relevance": 2,
+        "implementation_extent": 3,
+        "physical_risk": 2,
+        "regression_risk": 3
+      },
+      "implementation_absence_proven": true
     },
     {
       "capability_id": "SW431-CROP-SOW",
@@ -15847,22 +15883,6 @@
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 3,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
-      "capability_id": "SW431-CROP-ATTAINABLE",
-      "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-CROP-ANNUAL"
-      ],
-      "why_open": "Actual RELMF multiplication is implemented. Source SWPOTRELMF2 additionally scales a companion potential assimilation trajectory; current classic owner/result carries actual state/actual_pgass only. The selectable potential-path owner/policy is missing.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 1,
-        "implementation_extent": 2,
-        "physical_risk": 2,
         "regression_risk": 3
       },
       "implementation_absence_proven": true
@@ -16166,22 +16186,6 @@
       "implementation_absence_proven": true
     },
     {
-      "capability_id": "SW431-CROP-ROTATION",
-      "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-CROP-ANNUAL"
-      ],
-      "why_open": "Explicit fixed-forcing crop/soil-N harvest, final pending death, once-only seven-organ incorporation, compact retirement, accepted zero-extraction fallow and rooted successor with continuous/opaque/native restart. Full historical source capability not established. Automatic legacy input/calendar/output activation, complete seasonal rotation, retained historical dead canopy and thermal-harvest composition remain open.",
-      "priority": {
-        "dependency_depth": 1,
-        "functional_relevance": 2,
-        "implementation_extent": 3,
-        "physical_risk": 2,
-        "regression_risk": 3
-      },
-      "implementation_absence_proven": true
-    },
-    {
       "capability_id": "SW431-NUT-AMEND",
       "work_unit": "MC-NUT01",
       "dependencies": [
@@ -16400,12 +16404,10 @@
     {
       "capability_id": "SW431-CROP-WOF-OTHER",
       "work_unit": "MC-CROP01",
-      "dependencies": [
-        "SW431-CROP-ANNUAL"
-      ],
+      "dependencies": [],
       "why_open": "IDSL1 algebra exists in the common rate finalizer. MC-CROP01 must extend the source-bound classic annual runtime gate across DLC/DLO and anthesis; IDSL2 is separate persistent history.",
       "priority": {
-        "dependency_depth": 1,
+        "dependency_depth": 0,
         "functional_relevance": 2,
         "implementation_extent": 3,
         "physical_risk": 2,
@@ -17899,7 +17901,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+  "canonical_locator_head": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -19004,24 +19006,23 @@
     "next_action": "Reconcile existing historical selector/parameter activation and complete crop-N trajectory/partial-leaf-return/harvest envelope against the admitted bounded reproductive source policy. Preserve1253/default and sole crop/soil/pending owners; do not rebuild the admitted process or repeat unrelated qualification."
   },
   "latest_classic_annual_disposition_20261016": {
+    "pr": 1264,
+    "merge_sha": "f86aea792bebd77040648d1d5d9c475bc1a0b76d",
+    "qualified_head": "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5",
+    "tree": "fcb0ff16356cb09704baf9a61639c990740df4fa",
+    "source_tree": "216c756797a9ed2d6fa9ecfd51c1235df5a4e79b",
+    "exact_tree_verified": true,
+    "parents": [
+      "49f3434df92fa4864dda5cd06c80ad32dfb32f38",
+      "c1c9059105bb7ff14595aa2c23ed9504a65a1bf5"
+    ],
+    "status": "CANONICALLY_ADMITTED",
     "capability_id": "SW431-CROP-ANNUAL",
-    "status": "BLOCKED_SOURCE_STATE_COMPLETENESS",
     "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
     "recovery": "integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json",
-    "qualification_attempt": "b4deeec4bba76edff23bb82ee941057bc5cc5b3d",
-    "exact_tree": "994e08801048c81c5afcaa0bd300b1290b8da560",
-    "canonical": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
-    "reconciled_canonical": "9b05521b2df3579869f1906cb13900078fdeeda4",
-    "production_changed": false,
-    "full_capability_admitted": false,
-    "source_probe": "PASS three200-day actual classic process trajectories atO0/O2; living organs/phenology/cohorts and actual living persistence every17 days; no Richards/accepted-event/full source-state admission claim",
-    "blocker": "Literal B1.11 retains cumulative DWRT/DWST/DWLV. Existing classic biomass owner and persistence cannot represent these inventories. Qualification-only label corrected; no claim that AMAXTB or living growth is absent.",
-    "next_action": "Explicit same-owner retained mortality/persistence extension with legacy/default compatibility and actual affected consumer preservation, then source/state/event qualification. Do not inherit IDSL1/root/Soil-N dependencies or silently add a second owner.",
-    "unresolved_count_delta": 0,
-    "classification_delta": {
-      "QUALIFICATION_ONLY": -1,
-      "ACTIVE_MIGRATION": 1
-    }
+    "scope": "SW_WOFOST=1; IDSL=0; SWCROPSNM=0, existing classic AMAXTB route",
+    "full_capability_admitted": true,
+    "unresolved_count_delta": -1
   },
   "latest_mc_drain01_signed_admission_20261016": {
     "capability_id": "SW431-DRAIN-DIV-SIGNED",

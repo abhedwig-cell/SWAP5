@@ -55,3 +55,15 @@ a daily event token. These entries remain explicit source/ownership reviews.
 ## Classic annual follow-up, 16 October 2026
 
 The historical qualification-only label above is superseded for SW431-CROP-ANNUAL by the source-proven retained dead-organ state gap. Living AMAXTB/source trajectories and living persistence pass; complete B1.11 organ inventories cannot be represented by the existing classic owner. The capability is ACTIVE_MIGRATION and concretely blocked, with no added external dependency. See [source-state disposition](../../docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md). The IDSL1 entry is not reclassified or qualified by this result.
+
+
+## Final classic annual admission, 16 October 2026
+
+The initial retained mortality blocker above is resolved in the existing owner.
+SW431-CROP-ANNUAL is ADMITTED by PR1264, canonical
+`f86aea792bebd77040648d1d5d9c475bc1a0b76d`, with exact qualified-tree verification.
+Literal B1.11 source, complete organ histories, accepted transactions and restart
+pass O0/O2, including12 real Richards/weather runs. See the existing annual
+source-state disposition and recovery record for immutable raw evidence and
+contract limits. IDSL1, rotation, N-active removal and potential RELMF remain
+separate; their annual prerequisite is closed without promoting those rows.

@@ -1,128 +1,119 @@
-# Classic annual crop: source-state completeness disposition
+# Classic annual AMAXTB source and state qualification
 
-Status: **BLOCKED_SOURCE_STATE_COMPLETENESS**, 16 October 2026.
+Status: **CANONICALLY_ADMITTED**, 16 October 2026.
 Capability: `SW431-CROP-ANNUAL`, `SW_WOFOST=1; IDSL=0; SWCROPSNM=0`.
-This is a negative full-capability qualification conclusion, not an admission,
-replacement decision or new crop variant. Production is unchanged.
+Canonical reconciliation: `c62a2e69a0e604d92dcdba625c525835c2bd5224`.
+Recovery and complete evidence: `integration/audits/MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json`.
+This successor repairs and qualifies the existing classic production route. It
+introduces no second crop model, N ledger, root owner or commit authority.
 
-## Fixed authority and acceptance boundary
+## Fixed scope and source authority
 
-Canonical was pinned at `d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15`.
-The existing master/PR1072 checkpoint is
-`988b46c3246e835b6f9bcd97b3f2714c56de30d2`. Its annual row has **no remaining
-capability dependencies**. The existing source resolution and surface/crop owner
-reviews require literal B1.11 actual daily/seasonal trajectories, water stress,
-carbon/organ/leaf closure, accepted-event ownership and restart. These conditions
-were recorded before execution; they were not widened after observing a failure.
-Automatic emergence, Soil-N, soybean/grass, IDSL1/2, root-depth variants and
-companion potential RELMF remain separate. Whole sowing/harvest/rotation admission
-is not imported as an annual dependency.
+The existing master row at988b46c3 has no remaining capability dependencies.
+Its controlling crop/source reviews require literal B1.11 actual daily/seasonal
+assimilation and growth, water stress, carbon/organ/leaf closure, accepted events
+and restart. Those conditions were fixed before execution and remain unchanged.
+IDSL1/2, soybean/grass, automatic emergence, whole harvest/reset/rotation,
+root-depth variants, Soil-N and companion potential RELMF retain their separately
+registered capabilities. This admission does not close those rows or make their
+unresolved variants annual dependencies.
 
-The real archived source is `SWAP/wofost.f90`, SHA256
-`3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b`,
-from PR1072's existing `SWAP431_B111_AUTHORITY.tar.gz.b64`. The new probe verifies
-that hash before compiling literal source routines. No WOFOST81 or PCSE donor is
-used as a substitute.
+The real archived B1.11 `SWAP/wofost.f90` has SHA256
+`3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b`;
+`SWAP/functions.f90` has SHA256
+`b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527`.
+Both are authenticated before literal routines and AFGEN are compiled. The
+existing immutable archive is reused from master checkpoint988b46c3. WOFOST81's
+separate admission is preservation evidence, never the classic reference.
 
-## What is implemented and demonstrated
+## Implemented repair in existing owners
 
-The existing classic prepare/finalize/two-phase/structural production modules
-already implement AMAXTB assimilation, respiration, organ partitioning, water
-stress, leaf cohorts, thermal development and anthesis/maturity clipping.
+Classic prepare/finalize/structural evolution already implemented AMAXTB,
+respiration, partitioning, water stress, leaf cohorts, thermal development and
+anthesis/maturity clipping. The first qualification attempt established living
+source equivalence, but found no representation of B1.11 `DWRT/DWST/DWLV`.
+The earlier qualification-only label consequently overstated completeness.
 
-Three 200-day source/process trajectories were run at O0/O2: relative uptake1,
-relative uptake0.6, and a five-day cycle0/0.25/0.5/0.75/1. Each trajectory traverses
-anthesis and DVS2. Literal `totass`/`assim`, `update_dvs_rate`, `update_wofost`,
-partition/carbon checks and leaf routines form the independent source side.
-Production calls the real two-phase crop window. Source organ balance, assimilation,
-all living organs, LAI/cohorts, DVS, thermal sum and anthesis are checked every day.
-The same prepared candidate is replayed without modifying the input owner.
+The existing biomass owner now contains three finite nonnegative cumulative
+mortality scalars. Its existing clone and classic owner-controlled persistence
+carry them. The existing finalizer publishes its already computed root/stem death
+rates; classic structural evolution accumulates those and stress-plus-age leaf
+death once, in the candidate. Assimilation and living-organ arithmetic are unchanged.
+There is no additional water, N or organic-matter source/storage contribution.
 
-Every17 days the actual classic production transaction persistence API exports,
-reconstructs and returns the owner used for subsequent days. This demonstrates
-continued **living-state** equivalence, not completeness of the B1.11 state.
-O0/O2 stdout is identical. Maximum absolute living/source difference is
-`1.918465386552271e-12`; probe comparison tolerance is1e-10 relative, with a unit
-absolute floor. Existing admission tolerances were not changed. Final compile/link
-costs are3.190s/9.738s; native costs0.022s/0.014s. Separate compile/link times are
-UNKNOWN because each measured command combines both stages.
+This cumulative interpretation is scoped to the selected annual N-off growing
+crop with no within-season grass removal or daily partial-return policy. B1.11
+DWLV is a removable material stock in other source routes. PR1263's confirmed
+N-active daily/harvest overlap and reference candidate are preserved, not adopted
+as an annual dependency or silently corrected here. These three source-history
+fields do not implement the separate retained aboveground DM/N material owner.
 
-This is a discriminating process qualification with supplied weather/astronomy
-and water-ratio boundaries and constant parameter tables. It does not establish
-variable table interpolation, calibrated field behaviour, Richards coupling,
-automatic calendar/harvest scheduling or fresh-process disk restart. Growth after
-DVS2 is exercised as the literal task3 process; the fixture does not assert that
-a real application's harvest dispatcher would continue that crop.
+The existing qualification-only F-WOF40 external adapter is extended in place.
+Codec1 retains exact old bytes for zero counters. Codec2 carries nonzero counters.
+Unknown versions, missing payload, truncation, negative and nonfinite counters
+reject. Reading codec1 preserves its previously admitted zero-counter state;
+it cannot recover unrecorded historical B1.11 death. No production native codec
+is added and no crop/Soil-N native tag is allocated. Production opaque restart
+continues through the existing complete-owner persistence API.
 
-## Concrete failed full-capability precondition
+## Executed scientific and state qualification
 
-B1.11 `update_wofost`, lines1083..1085, retains three cumulative dead-organ masses:
-`DWRT += DRRT`, `DWLV += DRLV`, `DWST += DRST`. These are explicit source state,
-subsequently published through `update_wofost_interface` and end-state output.
-They are not alternative root-depth or Soil-N options.
+- Three200-day actual classic process trajectories per O0/O2 use literal B1.11
+  TOTASS/ASSIM, AFGEN, daily growth, leaf routines and thermal phenology. DVS-dependent
+  AMAXTB and nonstressed, sustained and intermittent water stress exercise organ
+  partitioning/death, cohorts, anthesis and DVS2. Daily living plus dead-organ
+  source closure and all three source counters match. Maximum measured absolute
+  difference is1.474376176702208e-12. The probe uses1e-10 relative comparison with
+  unit floor; no existing numerical tolerance was changed.
+- Every17days the existing actual opaque export/reconstruct and existing disk
+  adapter supply the owner used for subsequent days. Nonzero counters continue
+  correctly. Fourteen codec controls across O0/O2 include a fresh process,
+  corrupt/unknown payloads and legacy representation. The real canonical
+  preimage/current codec1 writers produce identical bytes at both optimizations.
+- Original F-WOF38/39 atomic publication, rejected physical trial, rollback,
+  replay, duplicate/failure and receipt-gated retirement assertions pass O0/O2.
+  Owner equality additionally compares all new counters. The two-provider-only
+  historical donor build delta is checked exactly; science assertions remain.
+- Existing F-WOF40 reference/producer/consumer programs run through the real
+  current production persistence APIs with IDSL0. Two distinct OS processes retain
+  the committed event receipt and continue; uninterrupted/restarted endpoint
+  artifacts and O0/O2 representations are exact. Existing invalid-codec2 control
+  selects99 because2 is now a valid extension; other original assertions remain.
+- Twelve real file-weather/Richards native programs cover neutral, dry and
+  hydraulic cases, continuous/joint-restored and O0/O2. Existing weather, accepted
+  uptake, mass, crop-owner and negative assertions remain, with IDSL0 selected.
+  Complete-owner and terminal vectors additionally include mortality; root/stem
+  mortality must be positive. All restart and optimization representations match.
+- The unchanged WOFOST81 case001 full-season scientific gate and its immutable
+  oracle pass O0/O2 at their original precision. Its different structural updater
+  leaves the new classic diagnostics at default zero.
 
-The common `wofost_actual_biomass_state_t` stores living root/stem/storage mass,
-leaf cohorts, specific area, leaf age and exponential LAI. It has no retained
-dead-organ masses. The classic crop owner adds phenology and minimum-temperature
-history, not those inventories. The classic transaction persistence view copies
-that owner. Its optional root/potential/lifecycle carriers do not provide the
-three missing actual-organ inventories.
+A lost executor interrupted the first physical O2 build. Its evidence is retained
+as censored, never PASS. The recovery rebuilt only missing/affected providers and
+executed all12 physical programs against the reconciled source. Fifty-four
+provider rebuild events cost77.356s; linking, including the retained unsuccessful
+object-name attempt, cost39.774s; native events cost30.867s. Earlier successful
+unaffected provider compilation is reused with recorded input identity. Separate
+costs unavailable for other compound build commands remain UNKNOWN.
 
-The source produces positive cumulative death in all three trajectories. For the
-nonstressed trajectory, terminal dead root/stem/leaf masses are respectively
-2013.711641103772,2529.122365652407 and2838.164478166315kg/ha. The corresponding
-living states match production, but the full source totals cannot be represented
-or reconstructed by the existing classic owner. Native living-restart PASS is
-therefore not a complete-organ restart PASS. This is a state-representation gap,
-not a demonstrated error in the living growth equations or the existing bounded
-persistence API.
+## Admission and preservation authority
 
-No accepted reference decision has been found that removes those retained source
-states or replaces this classic capability with WOFOST81. A SUPERSEDED or ADMITTED
-disposition would consequently lack authority.
+The existing moving runner receives one explicit `--crop-annual-owner-only`
+prerequisite and the changed shared-biomass source case. Its remaining numerical
+body projects byte-for-byte to canonicalc62a2e69. The existing signed-DIVDRA guard
+receives only an exact source/qualification successor delegation; its old scientific
+body is unchanged and its actual admitted predecessor proof is validated at the
+immutable canonical checkout. The new authority binds every source/test postimage,
+all current compiled inputs, safe archive/member identity, raw native completions,
+source optimization coverage and affected restart/preservation. Corruption controls
+must reject missing/forged/failed/stale evidence before merging.
 
-## Resolution boundary and recovery
-
-The previous qualification-only classification overstated implementation
-completeness. Reclassify this single capability as ACTIVE_MIGRATION with the
-bounded blocker `CLASSIC_RETAINED_DEAD_ORGAN_STATE`. The total unresolved denominator
-is unchanged. This does not assert that AMAXTB or the whole crop implementation is
-missing.
-
-Before another admission attempt, the existing common biomass/crop and persistence
-owners need an explicit retained-mortality/total-organ representation, initialization
-and legacy/default compatibility decision. It must preserve their single ownership
-and identify the actual affected WOFOST81/harvest/codec consumers. That shared-state
-successor is not silently introduced in a qualification-only work unit. No additional
-external permission is asserted as necessary; the next work must carry that explicit
-owner contract, implementation and its proportional preservation gates together.
-Then prove nonzero mortality through source trajectories and accepted-event rollback,
-exactly-once publication and complete source-state restart. Reuse unchanged living
-source evidence where its dependencies permit.
-
-The current full admission attempt stops at this failed state-completeness
-precondition. Accepted-event admission, a real Richards-linked trajectory and
-complete-organ restart qualification were not executed or labeled PASS. Full F-CI,
-RossFast, frost and unrelated N/root qualification were not selected. There is no
-production merge. A later canonical advance to`9b05521b` changes only NUT leaf-return
-review/status/evidence, with no overlap in the compiled classic dependency surface.
-
-Recovery, exact inputs, raw O0/O2 logs, failed harness-path attempt and executed Git
-bundle are in `MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json` and its sealed source
-qualification capsule. The existing master recovery and capability row carry the
-same bounded disposition; no duplicate migration PR is needed.
-
-Parallel reconciliation: PR1261 and master0969184b independently identify retained
-leaf/stem material and a potential daily/harvest DM overlap for Soil-N partial
-return. That reference question is not imported as an annual dependency: this
-capability has SWCROPSNM=0 and the probe does not execute soil return or harvest.
-The future shared mortality representation must coordinate with that existing
-owner work, while keeping gross source diagnostics distinct from retained
-physical material. Its records and canonical source authority are preserved.
-
-Replay the source/process test at canonical-backed qualification ref
-`b4deeec4bba76edff23bb82ee941057bc5cc5b3d`, using
-`python tests/fmig431/annual/run_classic_source.py --output <new-directory>`
-and a GNU Fortran compiler on PATH or in FC. The frozen mastercoverage production
-tree is not the numerical qualification postimage. The capsule contains the exact
-executed source/test bundle and raw dependency manifest.
+The existing fixed conditions are satisfied for the typed classic annual
+production contract and its valid parameter domain. Active-crop anthesis/maturity
+and daily accepted-event transitions are qualified. Automatic sowing, whole
+harvest/fallow/rotation and other registered variants remain outside this row.
+No full moving F-CI, RossFast, highest frost or unrelated process qualification is
+selected or claimed. Canonical admission: PR #1264 merged as `f86aea792bebd77040648d1d5d9c475bc1a0b76d`.
+The merge tree `fcb0ff16356cb09704baf9a61639c990740df4fa` exactly equals
+the qualified candidate; source tree is `216c756797a9ed2d6fa9ecfd51c1235df5a4e79b`.
+The existing master row is reconciled to ADMITTED by this receipt.

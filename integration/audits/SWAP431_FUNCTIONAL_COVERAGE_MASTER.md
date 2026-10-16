@@ -1,3 +1,17 @@
+# Current annual admission, 16 October 2026
+
+SW431-CROP-ANNUAL is **ADMITTED** through PR1264, canonical
+`f86aea792bebd77040648d1d5d9c475bc1a0b76d`; merge tree exactly matches
+the qualified candidate. Same-owner retained mortality and restart repair closes
+the initial blocker below. Source comparisons and targeted real trajectories pass
+O0/O2; existing N, root, transaction and restart owners remain authoritative.
+Current counts: **96 ADMITTED,108 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;111 unresolved,243 total**.
+These counts supersede every earlier snapshot below. IDSL1, rotation and potential
+RELMF retain their own open conditions; their admitted annual prerequisite is
+removed from blockers. Signed drainage and N-reference assessments are preserved.
+The historical denominator remains incomplete; PR1072 stays draft.
+
 # SWAP431 functional coverage master: recoverable review
 
 Latest partial-return follow-up (2026-10-16): PR1263 merged at
@@ -29,7 +43,7 @@ Multilevel,separate infiltration and native DRAMET3 remain open under their
 existing contracts. Source/evidence authority is the existing drainage recovery
 record at `c2b7ad286704798662d6a00b75f15ab81c59d2fc`.
 
-Current classic-annual qualification disposition (2026-10-16):
+Historical initial classic-annual qualification disposition (2026-10-16):
 **SW431-CROP-ANNUAL is BLOCKED_SOURCE_STATE_COMPLETENESS.** The living classic
 source/process trajectories and existing living persistence pass O0/O2, but
 B1.11 retained dead-root/stem/leaf state is absent from its owner/persistence.
