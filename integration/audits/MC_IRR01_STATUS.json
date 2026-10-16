@@ -5634,8 +5634,8 @@
   "limit_completion_20261016": {
     "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
     "branch": "work/mc-irr01-limit-20261016",
-    "phase": "FULL_CLOSURE_CONDITIONS_FROZEN_BEFORE_IMPLEMENTATION",
-    "implemented": false,
+    "phase": "SMALL_SOURCE_CONTRACT_COMPLETE_APPLICATION_PENDING",
+    "implemented": true,
     "tested": false,
     "qualified": false,
     "admitted": false,
@@ -5695,6 +5695,34 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "github_actions": "NOT_SELECTED"
     },
-    "next_action": "Run source-faithful direct preflight, retain actual failure if found; repair only existing depth owner, then physical/native and affected admission qualification."
+    "next_action": "Qualify actual rooted material and sensor limit trajectories and exact joint native tails, then original evidence/owner preservation and safe admission.",
+    "retained_failures": [
+      {
+        "kind": "test fixture compile",
+        "path": "limit-preflight/FAILED.json",
+        "cause": "Harness used non-existent hydraulic field; fixed fixture before source comparison."
+      },
+      {
+        "kind": "source preflight",
+        "path": "limit-source-preflight/FAILED.json",
+        "result": "FAIL actual O0:934 source vectors,147 rejects/mismatches, error stop10. Existing zero DCS2 rejection before limit and zero post-clamp event rejection. Raw retained; not qualified."
+      }
+    ],
+    "source_findings": [
+      "DCS2 source FID includes0; both sensor early-zero check and management policy positive-only check prevent positive DCSLIM minimum from lifting it.",
+      "Zero maximum is source-valid; existing rate normalization rejected the zero contribution. Existing owner now returns no event/water while allowing accepted day consumption.",
+      "No formula, clamp, positive-depth domain, solver, mass threshold or restart representation changed."
+    ],
+    "direct_contract": {
+      "status": "PASS",
+      "vectors_per_optimization": 934,
+      "optimizations": [
+        0,
+        2
+      ],
+      "production_providers": 4,
+      "raw": "limit-direct",
+      "invalid_caps": 5
+    }
   }
 }
