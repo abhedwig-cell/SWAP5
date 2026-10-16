@@ -10,6 +10,8 @@ program kalmthout_swap5_daily_pilot
        fmr_production_application_bootstrap_t, FMR_APP_BOOT_OK
   use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_reference_et_demand_process, only: daily_atmospheric_demand_parameters_t, traditional_pm_weather_t, &
+       reference_et_demand_canopy_view_t, reference_et_demand_result_t, evaluate_daily_atmospheric_demand, REF_ET_DEMAND_OK
   implicit none
 
   real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
@@ -22,8 +24,13 @@ program kalmthout_swap5_daily_pilot
   type(fmr_serialized_column_result_t), allocatable :: results(:)
   type(interception_source_window_t) :: window
   type(rutter_interval_input_t) :: rp
-  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub
+  type(daily_atmospheric_demand_parameters_t) :: demand_parameters
+  type(traditional_pm_weather_t) :: pm_weather
+  type(reference_et_demand_canopy_view_t) :: demand_canopy
+  type(reference_et_demand_result_t) :: atmospheric_demand
+  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub,demand_status,day_of_year
   real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day,evap_scale
+  real(real64) :: tmin_day,tmax_day,radiation_kj_day,vapour_pressure_kpa,wind2
   real(real64) :: hour_t0,hour_t1,segment_dt,hour_residual,hour_in,hour_out
   real(real64) :: total_precip,total_et0,total_in,total_out
   integer :: hour_accepted,hour_solver_rejections,hour_temporal_rejections
@@ -44,6 +51,35 @@ program kalmthout_swap5_daily_pilot
   end if
   if(len_trim(met_path)==0 .or. len_trim(out_path)==0) error stop 'usage: pilot weather.csv output.csv [max_hours] [evap_scale]'
 
+  demand_parameters%mode=0
+  demand_parameters%soil_factor_enabled=.false.
+  demand_parameters%soil_factor=1.0_real64
+  demand_parameters%crop_factor=1.0_real64
+  demand_parameters%pond_factor=1.0_real64
+  demand_parameters%site%latitude_degrees=51.359254426505835_real64
+  demand_parameters%site%altitude_m=25.0_real64
+  demand_parameters%site%wind_measurement_height_m=2.0_real64
+  demand_parameters%site%humidity_measurement_height_m=2.0_real64
+  demand_parameters%site%angstrom_a=0.25_real64
+  demand_parameters%site%angstrom_b=0.50_real64
+  demand_parameters%site%wind_function_factor=1.0_real64
+  demand_parameters%site%soil_surface_resistance_s_m=0.0_real64
+  demand_parameters%canopy%crop_emerged=.false.
+  demand_parameters%canopy%lai=0.0_real64
+  demand_parameters%canopy%vegetation_cover_fraction=0.0_real64
+  demand_parameters%canopy%cofab_cm=0.0_real64
+  demand_parameters%canopy%albedo=0.23_real64
+  demand_parameters%canopy%dry_canopy_resistance_s_m=70.0_real64
+  demand_parameters%canopy%wet_canopy_resistance_s_m=0.0_real64
+  demand_parameters%canopy%co2_transpiration_factor=1.0_real64
+  demand_parameters%canopy%use_crop_height_for_aerodynamics=.false.
+  demand_parameters%canopy%crop_height_cm=0.0_real64
+  call require(demand_parameters%ready(),'daily PM demand parameters')
+  demand_canopy%crop_emerged=.false.
+  demand_canopy%vegetation_cover_fraction=0.0_real64
+  demand_canopy%crop_factor=0.0_real64
+  demand_canopy%co2_transpiration_factor=1.0_real64
+
   call initialize_config(config)
   call app%initialize(config,status)
   call require(status==FMR_APP_BOOT_OK,'bootstrap initialize')
@@ -60,8 +96,18 @@ program kalmthout_swap5_daily_pilot
     read(UNIT_MET,'(A)',iostat=ios) line
     if(ios<0) exit
     call require(ios==0,'read weather row')
-    read(line,*,iostat=ios) ds,precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
+    read(line,*,iostat=ios) ds,precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0, &
+         tmin_day,tmax_day,radiation_kj_day,vapour_pressure_kpa,wind2,day_of_year
     call require(ios==0,'parse weather row')
+    pm_weather%day_of_year=day_of_year
+    pm_weather%radiation_j_m2_d=radiation_kj_day*1000.0_real64
+    pm_weather%minimum_air_temperature_c=tmin_day
+    pm_weather%maximum_air_temperature_c=tmax_day
+    pm_weather%vapour_pressure_kpa=vapour_pressure_kpa
+    pm_weather%wind_speed_m_s=wind2
+    pm_weather%gross_rain_cm_d=0.0_real64
+    call evaluate_daily_atmospheric_demand(demand_parameters,pm_weather,et0,demand_canopy,atmospheric_demand,demand_status)
+    call require(demand_status==REF_ET_DEMAND_OK,'SWAP traditional PM daily demand')
     day_index=day_index+1
     hour_t0=real(day_index-1,real64)*dt_day
     hour_t1=real(day_index,real64)*dt_day
@@ -98,8 +144,8 @@ program kalmthout_swap5_daily_pilot
       allocate(forcing(1)%rutter)
       forcing(1)%rutter%source_window=window
       forcing(1)%rutter%process=rp
-      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=evap_scale*et0/10.0_real64
-      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=evap_scale*et0/10.0_real64
+      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=evap_scale*atmospheric_demand%potential_soil_evaporation_cm_per_day
+      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=evap_scale*atmospheric_demand%potential_pond_evaporation_cm_per_day
       forcing(1)%rutter%ponding_max_cm=1.0_real64
       forcing(1)%rutter%runoff_resistance_day=0.1_real64
       forcing(1)%rutter%runoff_exponent=1.0_real64
