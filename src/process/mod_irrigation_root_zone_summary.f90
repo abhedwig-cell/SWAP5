@@ -2,6 +2,8 @@ module mod_irrigation_root_zone_summary
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
+  use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, constitutive_hydraulics_provider_t, &
+       CONSTITUTIVE_DEMAND_WATER_CONTENT
   implicit none
   private
 
@@ -27,8 +29,64 @@ module mod_irrigation_root_zone_summary
   end type irrigation_root_zone_summary_t
 
   public :: evaluate_irrigation_root_zone_summary
+  public :: derive_irrigation_root_zone_parameters
 
 contains
+
+  ! Disposable view of accepted material and root extent, not a new owner.
+  ! Caller supplies the already validated constitutive provider. B1.11 uses
+  ! PHFIELDCAPACITY, (HLIM3L+HLIM3H)/2 and HLIM4, not today's variable HLIM3.
+  subroutine derive_irrigation_root_zone_parameters(geometry, provider, root_depth_cm, field_capacity_head_cm, &
+       stress_head_cm, wilting_head_cm, parameters, status)
+    type(soil_water_parameter_set_t), intent(in) :: geometry
+    class(constitutive_hydraulics_provider_t), intent(in) :: provider
+    real(real64), intent(in) :: root_depth_cm, field_capacity_head_cm, stress_head_cm, wilting_head_cm
+    type(irrigation_root_zone_parameters_t), intent(out) :: parameters
+    integer, intent(out) :: status
+    type(irrigation_root_zone_parameters_t) :: candidate
+    real(real64), allocatable :: heads(:), k(:), c(:), dk(:)
+    real(real64) :: top, bottom, tolerance
+    integer :: i, n
+
+    parameters=irrigation_root_zone_parameters_t()
+    status=IRR_ROOT_ZONE_INVALID_PARAMETERS
+    n=geometry%active_nodes
+    if(n<=0) return
+    if(.not.allocated(geometry%z).or..not.allocated(geometry%dz)) return
+    if(size(geometry%z)/=n.or.size(geometry%dz)/=n) return
+    if(.not.all(ieee_is_finite(geometry%z)).or..not.all(ieee_is_finite(geometry%dz))) return
+    if(any(geometry%dz<=0.0_real64)) return
+    if(.not.all(ieee_is_finite([root_depth_cm,field_capacity_head_cm,stress_head_cm,wilting_head_cm]))) return
+    if(root_depth_cm<=0.0_real64.or.field_capacity_head_cm < -500.0_real64.or.field_capacity_head_cm>0.0_real64) return
+    if(wilting_head_cm>stress_head_cm.or.stress_head_cm>field_capacity_head_cm) return
+    ! Current typed columns are surface-anchored, descending contiguous cells.
+    ! Reject inconsistent geometry rather than guessing a root fraction.
+    top=0.0_real64
+    do i=1,n
+      tolerance=64.0_real64*epsilon(top)*max(1.0_real64,abs(top),geometry%dz(i))
+      if(abs(geometry%z(i)+0.5_real64*geometry%dz(i)-top)>tolerance) return
+      bottom=geometry%z(i)-0.5_real64*geometry%dz(i)
+      if(candidate%rooted_nodes==0.and.root_depth_cm<=-bottom) then
+        candidate%rooted_nodes=i
+        candidate%last_rooted_fraction=(top+root_depth_cm)/geometry%dz(i)
+      end if
+      top=bottom
+    end do
+    if(candidate%rooted_nodes==0) return
+    candidate%active_nodes=n
+    candidate%node_thickness_cm=geometry%dz
+    allocate(heads(n),k(n),c(n),dk(n),candidate%field_capacity_water_content(n), &
+             candidate%stress_water_content(n),candidate%wilting_water_content(n))
+    heads=field_capacity_head_cm
+    call provider%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT,candidate%field_capacity_water_content,k,c,dk)
+    heads=stress_head_cm
+    call provider%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT,candidate%stress_water_content,k,c,dk)
+    heads=wilting_head_cm
+    call provider%evaluate_demand(heads,CONSTITUTIVE_DEMAND_WATER_CONTENT,candidate%wilting_water_content,k,c,dk)
+    if(.not.valid_parameters(candidate)) return
+    parameters=candidate
+    status=IRR_ROOT_ZONE_OK
+  end subroutine derive_irrigation_root_zone_parameters
 
   pure subroutine evaluate_irrigation_root_zone_summary(parameters, hydraulic_view, summary, status)
     type(irrigation_root_zone_parameters_t), intent(in) :: parameters

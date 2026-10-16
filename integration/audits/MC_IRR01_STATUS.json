@@ -1,6 +1,30 @@
 {
   "schema_version": 1,
   "work_unit": "MC-IRR01",
+  "root_material_dcs1_20261016": {
+    "baseline": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+    "branch": "work/irr-dcs1-root-material-20261016",
+    "phase": "IMPLEMENTED_LEAF_TESTED_PHYSICAL_QUALIFICATION_PENDING",
+    "implemented": true,
+    "persisted": true,
+    "qualified": false,
+    "admitted": false,
+    "contract": "docs/science/MC_IRR01_ROOT_MATERIAL_DCS1_CONTRACT_20261016.md",
+    "scope": "Existing managed TCS7/8 DCS1 default-MvG SSDI with actual persistent SWRD2 extent, per-node material thresholds, authenticated daily rain, existing cap/allocation/event publication and opaque joint restart. No new owner.",
+    "leaf": "O0/O2 PASS6 provider/compiler requests each;1.6204s/2.6504s; heterogeneous material,6 actual-depth cases, partial cell, invalid/nonfinite/failure nonpublication and ABA.",
+    "native_selection": {
+      "expected_seconds": 650,
+      "reason": "Changed root/material-to-irrigation composition needs real Richards/crop mass and joint continuation; retain all existing managed/weather assertions and add independent DCS1 daily gift oracle.",
+      "runner": "tests/mc-irr01/run_managed_weather_application.py",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT"
+    },
+    "next_action": "Persist checkpoint remotely; execute one cold controlled O0/O2 managed/weather science build. Preserve failed/censored results and exact prior evidence. Reconcile existing source guards and require affected negative controls before canonical admission.",
+    "blockers": [],
+    "full_capability": false,
+    "master_disposition_changes": 0
+  },
   "baseline": "4e4da22bdea9fa5e5861d6d5726eddd425d20805",
   "checkpoint_commit": "cadcc63d3296e12e6a0634ee7095693454b60005",
   "last_reconciled_head": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",

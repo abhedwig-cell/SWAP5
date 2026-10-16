@@ -29,6 +29,13 @@ replace("'task2_oracle.f90','preparation_oracle.f90','sowing_oracle.f90']", "'ta
 replace("'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS'", "'managed':b'MC_IRR01_MANAGED_WEATHER_SENSOR_SSDI_ALLOCATION_MASS_RESTART=PASS','managed_rooted7':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS','managed_rooted8':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS'")
 sys.path[:0]=[str(ROOT/'tests/mc-irr01'),str(ROOT/'tests/root-growth'),str(ROOT/'tests/crop-cycle'),str(ROOT/'tests/crop-co2')]
 from managed_root_cycle_driver import prepare as rooted
+from root_material_cycle_driver import prepare as material_rooted
+replace("    inputs.update({p:sha(ROOT/p) for p in PINS})", """    drivers['material_rooted7']=material_rooted(ROOT,output/'material_rooted7.f90',7,1)
+    drivers['material_rooted8']=material_rooted(ROOT,output/'material_rooted8.f90',8,3)
+    inputs['tests/mc-irr01/root_material_cycle_driver.py']=sha(ROOT/'tests/mc-irr01/root_material_cycle_driver.py')
+    inputs.update({p:sha(ROOT/p) for p in PINS})""")
+replace("'managed_rooted8':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS'", "'managed_rooted8':b'MC_IRR01_MANAGED_ADAPTIVE_ROOTED_DAILY_SOURCE_RESTART=PASS','material_rooted7':b'MC_IRR01_MATERIAL_DCS1_ACCEPTED_ROOT_RAIN_MASS_RESTART=PASS','material_rooted8':b'MC_IRR01_MATERIAL_DCS1_ACCEPTED_ROOT_RAIN_MASS_RESTART=PASS'")
+replace("('allocation_guards','managed_rooted7','managed_rooted8')", "('allocation_guards','managed_rooted7','managed_rooted8','material_rooted7','material_rooted8')")
 from oxygen_source_oracle import prepare as oxygen_oracle
 from co2_source_oracle import prepare as co2_oracle
-exec(compile(s,str(path),'exec'),{'__file__':str(path),'__name__':'__main__','rooted':rooted,'oxygen_oracle':oxygen_oracle,'co2_oracle':co2_oracle})
+exec(compile(s,str(path),'exec'),{'__file__':str(path),'__name__':'__main__','rooted':rooted,'material_rooted':material_rooted,'oxygen_oracle':oxygen_oracle,'co2_oracle':co2_oracle})

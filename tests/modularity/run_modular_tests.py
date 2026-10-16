@@ -34,6 +34,8 @@ CASES['low_air_policy']={'driver':'tests/modularity/test_low_air_step_policy.f90
 CASES['b111_request']={'driver':'tests/nut-crop/test_b111_request_boundaries.f90',
                      'marker':'B111_REQUEST_BOUNDARY_TINY_DEMAND_MULTI_ORGAN_NONFINITE=PASS',
                      'flags':COMMON+['-I'+str(ROOT/'tests/nut-crop')]}
+CASES['irrigation_material']={'driver':'tests/mc-irr01/test_root_material.f90',
+                            'marker':'IRR_ROOT_MATERIAL_PARTIAL_CELL_MVG_INVALID_ABA=PASS','flags':COMMON}
 CASES['low_air_physical']={'driver':'tests/modularity/test_low_air_development.f90','marker':'PPA_WU05B15_LOW_AIR_LOW_AIR_DRAIN_RUNTIME=PASS','flags':COMMON}
 DEFAULT_CASES=['boesten','root_oxygen','root_contract','drainage','assimilation']
 

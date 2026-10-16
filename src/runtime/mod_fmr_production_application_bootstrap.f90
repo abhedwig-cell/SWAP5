@@ -88,7 +88,8 @@ module mod_fmr_production_application_bootstrap
        daily_atmospheric_demand_parameters_t, traditional_pm_weather_t, evaluate_daily_atmospheric_demand, REF_ET_DEMAND_OK
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
        b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary
-  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, initialize_b110_default_mvg_parameters, &
+       b110_default_mvg_provider_t, bind_b110_default_mvg_provider
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_groundwater_application_context, only: fmr_groundwater_application_context_t, &
@@ -115,7 +116,8 @@ module mod_fmr_production_application_bootstrap
        fmr_prepare_allocated_sensor_irrigation,fmr_export_allocated_irrigation_restart, &
        fmr_restore_allocated_irrigation_restart,FMR_IRR_ALLOCATION_OK
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t,scheduled_irrigation_request_t
-  use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
+  use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t, &
+       derive_irrigation_root_zone_parameters, IRR_ROOT_ZONE_OK
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, &
        irrigation_management_policy_result_t
   use mod_fmr_scheduled_irrigation_forcing_binding, only: fmr_irrigation_forcing_binding_diagnostics_t
@@ -208,6 +210,7 @@ module mod_fmr_production_application_bootstrap
     logical :: file_weather_irrigation=.false.
     type(scheduled_irrigation_parameters_t) :: file_weather_irrigation_sensor
     type(irrigation_management_policy_parameters_t) :: file_weather_irrigation_depth
+    real(real64) :: file_weather_irrigation_field_capacity_head_cm=-100.0_real64
     logical :: file_weather_co2_response=.false.
     type(crop_atmospheric_co2_forcing_t) :: file_weather_atmospheric_co2
     type(crop_co2_response_parameters_t) :: file_weather_co2_parameters
@@ -443,7 +446,19 @@ contains
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
       if(config%file_weather_irrigation_sensor%timing_criterion/=7.and. &
          config%file_weather_irrigation_sensor%timing_criterion/=8)return
-      if(config%file_weather_irrigation_depth%depth_criterion/=2)return
+      select case(config%file_weather_irrigation_depth%depth_criterion)
+      case(1)
+        ! First material-derived DCS1 profile retains admitted TCS7/8 and
+        ! requires the existing persistent SWRD2 actual-depth authority.
+        if(.not.config%file_weather_rooted.or.config%file_weather_root_depth_mode/=2)return
+        if(.not.ieee_is_finite(config%file_weather_irrigation_field_capacity_head_cm))return
+        if(config%file_weather_irrigation_field_capacity_head_cm < -500.0_real64.or. &
+           config%file_weather_irrigation_field_capacity_head_cm>0.0_real64)return
+      case(2)
+        continue
+      case default
+        return
+      end select
     end if
     if(config%file_weather_co2_response) then
       if(.not.config%file_weather_rooted) return
@@ -1006,7 +1021,7 @@ contains
     type(fmr_allocated_irrigation_state_t) :: irrigation_candidate
     type(fmr_irrigation_forcing_binding_diagnostics_t) :: irrigation_binding
     type(irrigation_management_policy_result_t) :: irrigation_depth
-    type(irrigation_root_zone_parameters_t) :: unused_root
+    type(irrigation_root_zone_parameters_t) :: irrigation_root
     type(scheduled_irrigation_request_t) :: irrigation_request
     type(fmr_b110_physical_forcing_t) :: irrigation_forcing
     type(fmr_irrigation_allocation_t) :: allocation
@@ -1030,7 +1045,7 @@ contains
     type(fmr_wofost_accepted_interval_certificate_t) :: certificate
     type(b110_dynamic_top_boundary_result_t) :: top
     type(soil_water_parameter_set_t) :: geometry
-    type(b110_default_mvg_parameters_t) :: hydraulics
+    type(b110_default_mvg_parameters_t), target :: hydraulics
     type(fmr_b110_physical_forcing_t) :: effective(1)
     class(transaction_state_t), allocatable :: physical
     type(traditional_pm_weather_t) :: pm_weather
@@ -1254,10 +1269,32 @@ contains
       irrigation_request%selection_opportunity=self%irrigation_selection_day/=int(day)+self%weather_epoch_day
       irrigation_request%irrigation_enabled=.true.;irrigation_request%schedule_enabled=.true.
       irrigation_request%irrigation_window_open=.true.
+      if(self%weather_configuration%file_weather_irrigation_depth%depth_criterion==1.and. &
+         irrigation_request%selection_opportunity.and.crop_owner%crop_emerged.and. &
+         .not.self%irrigation%management%event%active_event)then
+        select type(physical)
+        type is(fmr_wofost_crop_transaction_state_t)
+          block
+            type(crop_root_depth_rate_state_t)::depth
+            type(b110_default_mvg_provider_t)::provider
+            call physical%snapshot_root_depth(depth,available)
+            if(.not.available)return
+            call bind_b110_default_mvg_provider(provider,hydraulics,1.0_real64)
+            call derive_irrigation_root_zone_parameters(geometry,provider,depth%actual_root_depth_cm, &
+              self%weather_configuration%file_weather_irrigation_field_capacity_head_cm, &
+              0.5_real64*self%weather_configuration%file_weather_root_parameters%hlim3l+ &
+              0.5_real64*self%weather_configuration%file_weather_root_parameters%hlim3h, &
+              self%weather_configuration%file_weather_root_parameters%hlim4,irrigation_root,s)
+            if(s/=IRR_ROOT_ZONE_OK)return
+          end block
+        class default
+          return
+        end select
+      end if
       allocation=fmr_irrigation_allocation_t()
       if(present(irrigation_allocation))allocation=irrigation_allocation
       call fmr_prepare_allocated_sensor_irrigation(self%weather_configuration%file_weather_irrigation_sensor, &
-        unused_root,self%weather_configuration%file_weather_irrigation_depth,rain*0.1_real64, &
+        irrigation_root,self%weather_configuration%file_weather_irrigation_depth,rain*0.1_real64, &
         self%committed(1),effective(1),self%irrigation,irrigation_request,allocation,irrigation_candidate, &
         irrigation_forcing,irrigation_binding,irrigation_depth)
       if(irrigation_binding%split_required)then
