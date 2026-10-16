@@ -74,5 +74,14 @@
   },
   "production_admission": "NONE_REVIEW_ONLY",
   "verdict": "SCIENTIFIC_TRANSACTION_AUTHORITY_FROZEN_IMPLEMENTATION_HELD",
-  "next_action": "PPA-WU04 is closed as a review-only authority unit. Any production implementation must occur in a separate bounded slice PPA-WU04-A..D with its own source oracle, qualification and canonical admission."
+  "next_action": "PPA-WU04 is closed as a review-only authority unit. Any production implementation must occur in a separate bounded slice PPA-WU04-A..D with its own source oracle, qualification and canonical admission.",
+  "bounded_int12c_application_admission_20261016": {
+    "pr": 1009,
+    "merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "qualified_head": "6f8f0321911c168ad0c5166105f231b81f942a64",
+    "scope": "Uniform-source SWINTER1, frozen explicit canopy/root input, mode2, base layout, compensation OFF, unponded/nonrunoff flux regime, atomic physical/source commit.",
+    "status_authority": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+    "general_SWINTER_envelope_changed": false,
+    "full_legacy_capability_closure": false
+  }
 }

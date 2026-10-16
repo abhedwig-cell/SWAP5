@@ -1,0 +1,99 @@
+# Empirical wet stress in the daily production crop-water cycle
+
+Status: bounded production successor qualified and preserved; canonical admission pending.
+Baseline: `f0dd03704cd6eb19336269438e99c6bf5db08024`.
+Recovery: `integration/audits/MC_CROP01_OXYGEN_CYCLE_STATUS.json`.
+
+## Missing route and decision
+
+The empirical SWOXYGEN=1 process and committed hydraulic binding already exist.
+The file-weather rooted application explicitly refuses that parameter at initialize.
+This successor removes only that refusal, retaining the existing process parameter
+validation, ROOT_COMP_OFF prescribed-sink contract, crop and hydrological owners,
+positive accepted windows, current-day growth and opaque joint continuation.
+The existing root parameter object already belongs to retained weather configuration;
+no physical/restart field or process arithmetic is introduced.
+
+Affected invariants: 3,4,7,9,13,21,29,30. Meteorology remains an immutable authentic
+record; root geometry comes from committed DVS/RDTB; wet and dry reduction read
+committed soil pressure, not a caller-supplied profile. The submitted nodewise sink
+is the existing physical sink. Only actual accepted Full Richards dispatch certifies
+its amount for crop growth. No separate stress mass owner or accepted-state mutation.
+WOFOST81, Full Richards, numerical proposal and low-air source stay byte-identical.
+
+Historical source: B1.11 `SWAP/rootextraction.f90`, SHA256
+`8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5`,
+existing `SWAP431_B111_AUTHORITY.tar.gz.b64`. The independent oracle compiles literal
+potential allocation, hlim3, upper/lower wet reduction, dry reduction and combined
+sink statements. It does not replace the production implementation.
+
+## Qualification boundary
+
+Direct contract: three real process providers plus driver and source oracle; O0/O2,
+360 wet/dry/head/demand/layer cases per optimization, existing invalid/nonmutation
+and early-exit tests. Physical route: seven authentic consecutive Andelst weather
+records on the existing explicit four-node/30cm homogeneous test soil, cold sowing,
+germination, physical emergence, DVS roots, empirical uptake suppression, actual
+Richards and heat, growth including final real day, retries/duplicates, partial,
+pending and completed opaque restart. Each accepted interval's uptake is checked
+against the independently compiled historical sink at the actual committed heads.
+Existing default weather/PM/RAINTB drivers execute fresh in the same verified build.
+Every existing mass, growth, provenance and restart assertion is retained.
+
+Limits: interval-start sink held fixed under ROOT_COMP_OFF, not continuously
+recomputed within an internal adaptive step. This is not Bartholomeus, anaerobic
+root-growth gating, compensation, salinity, harvest, rotation, fallow, new-season,
+external disk restart or a complete historical crop lifecycle. Parameters are
+explicit qualification inputs, not an Andelst site/crop calibration claim.
+
+## Remaining shared decision and admission
+
+`MC_CROP01_HARVEST_ROTATION_PHASE_DECISION.md` still has no admitted morning-boundary
+publication contract. Do not reset carrier time/revision, replay an accepted window
+or invent a zero-duration crop event. That independent central RT/HY/F-KT decision
+is retained for trajectory 2 and is not resolved by this bounded route.
+
+The original automatic old-head source rejections are retained as historical
+diagnostics. The exact additive source/evidence successor now passes all selected
+owning prerequisites and the complete current-source moving F-CI. No scientific
+assertion, numerical threshold, or original three-file admission branch is weakened.
+Long highest low-air is NOT_SELECTED under the current programme policy; fast
+independent physical and numerical coverage passes without claiming stress PASS.
+
+## Exact source and preservation successor decision (continued trajectory 1)
+
+The user's continuation authorizes completing this same work unit's admission
+prerequisites. Extend the existing central source/evidence gates for this exact
+bootstrap postimage, not for arbitrary future application changes. The original
+PR1225 validator and immutable capsule remain unchanged for its three-file branch.
+The new branch requires byte-exact reversal of the one empirical-oxygen refusal,
+all other production/reference identity, current scientific input binding, actual
+complete O0/O2 direct/physical/raw evidence and selected shared owner preservation.
+Negative controls must reject foreign source, missing/partial/duplicate/failed
+native records, altered flags, corrupt outputs/capsules and stale dependencies.
+
+Highest low-air remains NOT_SELECTED under the programme policy. Fast original
+physical frost/drainage/restart and independent numerical/oxygen contracts replace
+its *selection for this successor*, without altering an assertion, physical
+reference or tolerance. They do not manufacture a highest PASS. Applicable full
+moving preservation still executes before admission; eligibility is no admission.
+No physics, clock, crop/calendar phase, restart layout or kernel API is changed.
+
+## Terminal qualification receipt (2026-10-14)
+
+Complete moving F-CI executed locally in SHADOW mode at
+`dbbfa73ac0c24d800c34897f3906420e7c934546`, first parent canonical
+`f0dd03704cd6eb19336269438e99c6bf5db08024`, tree
+`e41076762f3c03c23c58a8bf7a5eb5df913538cf`. Terminal exit0,
+`FCI_CANONICAL_LINEAGE_AWARE_GATE PASS`, 1879.955 seconds. All applicable scientific
+groups executed; no PASS cache was reused. Ten additional original owner gates
+passed in555.779 seconds. The 24 source/evidence corruption controls passed.
+
+The versioned full-moving capsule named in the status record retains byte-checked
+stdout/stderr, terminal results, conservative src/tests/tools blob closure and the
+verified actual executed Git bundle; private receipt key is excluded. Subsequent
+status/documentation/evidence updates do not alter that tested dependency closure.
+Direct contract compile/link/native total1.187 seconds; physical batch255.135
+seconds (compile200.178, link1.029, native51.901). No matched old-route speedup is
+claimed. Master counts stay unchanged; ROOT-OXYGEN-EMP component was already
+admitted and CROP-SOW stays active. The master-owner handoff is in the status.

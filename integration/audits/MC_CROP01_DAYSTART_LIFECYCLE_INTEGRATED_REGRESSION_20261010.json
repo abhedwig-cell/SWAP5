@@ -1,0 +1,28 @@
+{
+  "workstream": "MC-CROP01",
+  "work_unit": "Integrated certified F-KT + weather daystart lifecycle ordering regression",
+  "baseline": "c3d126d790c09c87cfd78468a48fde3d86dcbef3",
+  "files": [
+    "tests/fmig431/test_crop_weather_preflight_read_boundary.f90",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "test_blob": "529e1871966b9be4e345909197cbdb14f7f56f43",
+  "physics_scope": "No production physics modified. Existing SW431 B1.11 preparation, sowing and germination ordering composited in real committed B110 F-KT weather daystart test with heat disabled and restart.",
+  "cases": [
+    "valid daystart weather TAV with certified soil SWHEA0/SWSOW0",
+    "crop preparation then sowing then germination candidate with 7 C temperature sum",
+    "moisture-blocked preparation skips sowing and germination evaluation",
+    "missing germination proposal rejected when preparation/sowing passed",
+    "identical/conflicting meteo retries",
+    "trusted F-KT restart and stale accepted revision negative"
+  ],
+  "claim_ceiling": "The weather register is still self-declared and cannot authenticate external production meteorological source. This is read-only candidate composition; physical event publication, authoritative meteorological restart and true crop lifecycle transaction are NOT implemented.",
+  "state": {
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false
+  },
+  "next": "Run true-transitive O0/O2 through exact-head F-CI after persisted checkpoint; verify explicit test output and moving preservation before admission."
+}

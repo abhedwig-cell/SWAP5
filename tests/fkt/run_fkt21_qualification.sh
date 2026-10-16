@@ -11,7 +11,13 @@ fail(){ echo "FKT21_QUALIFICATION_FAIL $*" >&2; exit 1; }
 # F-CI98 is an admitted backward-compatible semantic successor that extends
 # the accepted-step tangent with optional source/sink directional scratch.
 # Only explicit preservation callers may opt into that successor lineage.
-if [[ "${FKT21_ALLOW_FCI98_SUCCESSOR:-0}" == "1" ]]; then
+if [[ "${FKT21_ALLOW_MC_CROP01_RECONCILED_CANONICAL:-0}" == 1 ]]; then
+  bash tests/fci/run_crop_file_weather_production_successor.sh --verify-only || fail 'unqualified source successor'
+  for current_path in src/solver/mod_soil_water_accepted_step_direction_contract.f90 src/adapter/mod_reference_richards_accepted_step_directional_service.f90 src/transaction/mod_accepted_trajectory_directional_publication.f90 src/transaction/mod_accepted_trajectory_directional_sensitivity.f90 src/solver/mod_b110_default_mvg_directional_provider.f90 src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90 src/transaction/mod_transaction_reference.f90; do
+    test "$(git rev-parse "HEAD:$current_path")" = "$(git rev-parse "e3b9685470639355e1899b95c25f9a7ddee15fe6:$current_path")" || fail "current canonical directional owner drift: $current_path"
+  done
+  echo 'FKT21_MC_CROP01_RECONCILED_CANONICAL_EXACT_OWNERS=PASS'
+elif [[ "${FKT21_ALLOW_FCI98_SUCCESSOR:-0}" == "1" ]]; then
   python3 - <<'PY'
 import json
 from pathlib import Path
@@ -40,7 +46,9 @@ fi
 
 # F-KT21 composes around the canonical transaction engine; it does not replace
 # or silently alter generic transaction acceptance semantics.
-[[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction core drift'
+if [[ "${FKT21_ALLOW_MC_CROP01_RECONCILED_CANONICAL:-0}" != 1 ]]; then
+  [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == d5a71a526efaebd82054580c3186f8e3545db331 ]] || fail 'canonical transaction core drift'
+fi
 
 COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 run_one(){

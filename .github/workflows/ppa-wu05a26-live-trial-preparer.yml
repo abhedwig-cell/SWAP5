@@ -2,6 +2,7 @@ name: PPA-WU05-A26 live trial preparer
 on:
   push:
     branches:
+      - 'work/ppa-wu05-a26-*'
 jobs:
   focused:
     runs-on: ubuntu-latest

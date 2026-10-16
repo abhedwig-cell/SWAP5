@@ -1,0 +1,71 @@
+{
+  "status": "PASS_SCOPED_RECEIPT_NO_FULL_CLOSURE",
+  "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
+  "master_before": "8c82b782725f6c3775c7aa68e9f4dddaa0b63626",
+  "master_blob_before": "c116cf97d0c16cdd1884744e8934d5940e68f15a",
+  "master_blob_after": "d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+  "changed_capability_rows": [
+    "SW431-SALT-SORPTION",
+    "SW431-SALT-DECAY"
+  ],
+  "changed_queue_rows": [
+    "SW431-SALT-DECAY",
+    "SW431-SALT-SORPTION"
+  ],
+  "all_other_241_rows_identical": true,
+  "all_dispositions_and_counts_unchanged": {
+    "capabilities": 243,
+    "dispositions": {
+      "ADMITTED": 95,
+      "ACTIVE_MIGRATION": 108,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 4
+    },
+    "open_capabilities": 108,
+    "open_workunits": 18,
+    "confirmed_missing_production_entries": 108,
+    "other_unresolved_source_admission_reviews": 4,
+    "qualification_only_capabilities": 4,
+    "total_unresolved_capabilities": 112,
+    "active_gap_type_breakdown": {
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 38,
+      "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 9,
+      "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 58,
+      "MISSING_RUNTIME_BINDING_OF_QUALIFIED_PROCESS": 2,
+      "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+    },
+    "qualified_process_missing_runtime_binding": 2,
+    "missing_production_binding_or_implementation_entries": 108,
+    "missing_standalone_process_implementations_not_established": 113,
+    "active_with_existing_production_source_authority": 62,
+    "active_without_listed_production_source_authority": 46,
+    "active_missing_complete_admitted_route": 108,
+    "confirmed_missing_production_entries_claim_scope": "Incomplete admitted production route, not 113 necessarily absent physical algorithms"
+  },
+  "row_sha256_before": {
+    "SW431-SALT-DECAY": "77d9973ca76f7baac46f04ff5933bc1d497d43e8117b3e05c2a9c1c5274de650",
+    "SW431-SALT-SORPTION": "b8b0019b6c768668e7b866497be5503962dc5702b1afcb3deae534ea52ae02a8"
+  },
+  "row_sha256_after": {
+    "SW431-SALT-DECAY": "0b9f8d652ea0ca7345e69c188fa0c4a026230ddaf1acfc2807aa993be4dd9397",
+    "SW431-SALT-SORPTION": "33cfc45bddb1adc90988fa14a484d7ca51feda675191a33012aa259a2b5deafa"
+  },
+  "checker_before": {
+    "exit": 1,
+    "seconds": 0.06239030399592593,
+    "error": "stale inheritance baseline"
+  },
+  "checker_after": {
+    "exit": 1,
+    "seconds": 0.0474441400001524,
+    "error": "stale inheritance baseline"
+  },
+  "global_checker_pass_claimed": false,
+  "master_remote_after": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+  "master_tree_after": "1beaad535e1c280835767ab23a6ca00b53acd3dc",
+  "raw_checker_before": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n",
+  "raw_checker_after": "SWAP431_COVERAGE_FAIL: stale inheritance baseline\n",
+  "checker_stderr_byte_identical": true
+}

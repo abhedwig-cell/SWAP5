@@ -1,0 +1,24 @@
+{
+  "schema": "swap431.mc_crop01.weather_heat_off_restart_integration.v1",
+  "base": "a225b30261c102821e313eaccd7ffa1c8d834687",
+  "scope": "Integration regression only, no production interfaces changed: existing weather-day register and certified F-KT soil preflight with SWHEA=0, SWSOW=0, SWPREP=1 and SWGERM=2; trusted committed F-KT restart and explicitly reconstructed local weather record.",
+  "test_blob": "a046b73bd581528c8344d42acc65880516b9ee65",
+  "tests": [
+    "real B110 heat-off accepted committed state with z/dz certified",
+    "weather daystart TAV passed to germination (sum 7)",
+    "no invented heat or sowing node",
+    "exact replay no revision advance",
+    "conflicting Tmin rejected without state mutation",
+    "trusted F-KT reconstruction and staged weather reconstruction reproduces same preflight",
+    "stale F-KT revision rejected after reconstruction"
+  ],
+  "limits": "Weather restart is self-declared local reconstruction, NOT external source authentication. Test does not prove source producer, normal MOD_meteo route, serialized crop event or trusted meteorological restart.",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "local_exact_runner": "not executed; no checkout via local git DNS",
+    "full_fci": "pending",
+    "qualified": false,
+    "admitted": false
+  }
+}

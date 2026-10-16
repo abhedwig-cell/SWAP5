@@ -1,0 +1,849 @@
+{
+  "status": "PASS",
+  "shallow": "true",
+  "candidate": "68b52b37ce3ae55c1392b20a05b1b698259719c9",
+  "checks": [
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "if git merge-base --is-ancestor 669a75ff996938fd0538c715ec43fe93d06b74de HEAD &&     [[ \"$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)\" == 7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac ]] &&     [[ \"$(git rev-parse HEAD:src/solver/mod_b110_default_mvg_provider.f90)\" == bde864f59082d0aef5bf0eb51526fa5e7c1091ed ]] &&     [[ \"$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)\" == 7b16c3fcf58179f1491104a1dce3279010b4178a ]]; then",
+      "args": [
+        "669a75ff996938fd0538c715ec43fe93d06b74de",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "if git merge-base --is-ancestor \"$MC_HEAT01_QUALIFIED\" HEAD &&     [[ \"$(git rev-parse HEAD:src/process/mod_soil_temperature_contract.f90)\" == 2c358fa353226846ce6c6e4e561aa59e5de94620 ]] &&     [[ \"$(git rev-parse HEAD:src/process/mod_restricted_soil_temperature.f90)\" == 6d881983c8d97c6d82854c59a2dc6c9fd36f7350 ]] &&     [[ \"$(git rev-parse HEAD:$BACKEND)\" == \"$MC_HEAT01_BACKEND\" ]]; then",
+      "args": [
+        "decd2e67b8a182f1448a173b18bbc232749dd5b5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$AUTH\" HEAD || fail 'Status-A authority not ancestor'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS12_AUTH\" HEAD || fail 'F-ROSS12 authority not ancestor'",
+      "args": [
+        "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_WU04B_QUALIFIED\" \"$PPA_WU04B_ADMISSION\" ||      fail 'PPA-WU04-B qualified head is not contained by canonical admission'",
+      "args": [
+        "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+        "4d40b8d4b6a1df06ff97fab55497542778431290"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_WU04A_QUALIFIED\" \"$PPA_WU04A_ADMISSION\" ||      fail 'PPA-WU04-A qualified head is not contained by canonical admission'",
+      "args": [
+        "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+        "50e7d1dece5b75d0103459d5c118d03a2665eea3"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_ROOT_HYD01_QUALIFIED\" \"$PPA_ROOT_HYD01_ADMISSION\" ||      fail 'PPA-ROOT-HYD01 qualified head is not contained by canonical admission'",
+      "args": [
+        "b7803c1cf0818677651a0eecaed4bd84ffb3059a",
+        "308a619c91d2cc3dae7f7aa143cfbe97c780c635"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 9d95eacb6619f7fece1d3bfe7b3e068304836ecd HEAD || fail 'root salt successor lineage'",
+      "args": [
+        "9d95eacb6619f7fece1d3bfe7b3e068304836ecd",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor cb841851db6a4f459835b4943cf442595898ecd3 HEAD || fail 'accepted salt PR1015 lineage'",
+      "args": [
+        "cb841851db6a4f459835b4943cf442595898ecd3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_WU04B_QUALIFIED\" \"$PPA_WU04B_ADMISSION\" ||      fail 'PPA-WU04-B qualified head is not contained by canonical admission'",
+      "args": [
+        "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+        "4d40b8d4b6a1df06ff97fab55497542778431290"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor a9a35a60409a16ef7fdf3a38d5bcffb6899c2416 HEAD || fail 'B19 lost B18 component admission'",
+      "args": [
+        "a9a35a60409a16ef7fdf3a38d5bcffb6899c2416",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail \"PPA-WU05B15 lost B10 composed closeout\"",
+      "args": [
+        "febfff8103c4d60324a103d832521bb3f3754a67",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B15 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B15 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B15 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail \"PPA-WU05B15 lost exact B11 admitted closeout\"",
+      "args": [
+        "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 703b70c49dbc5fb4f2c54381608432d13bb67cf7 HEAD || fail \"PPA-WU05B15 lost exact B12 closeout\"",
+      "args": [
+        "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 0511717b6c428d18dc223c9e81fd73da3bf5c3fd HEAD || fail \"PPA-WU05B15 lost exact B13 closeout\"",
+      "args": [
+        "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B15 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor f72d72622264111edbadca1bfc49690a47b287a9 HEAD || fail \"PPA-WU05B15 lost exact B14 closeout\"",
+      "args": [
+        "f72d72622264111edbadca1bfc49690a47b287a9",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail \"PPA-WU05B14 lost B10 composed closeout\"",
+      "args": [
+        "febfff8103c4d60324a103d832521bb3f3754a67",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B14 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B14 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B14 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail \"PPA-WU05B14 lost exact B11 admitted closeout\"",
+      "args": [
+        "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 703b70c49dbc5fb4f2c54381608432d13bb67cf7 HEAD || fail \"PPA-WU05B14 lost exact B12 closeout\"",
+      "args": [
+        "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 0511717b6c428d18dc223c9e81fd73da3bf5c3fd HEAD || fail \"PPA-WU05B14 lost exact B13 closeout\"",
+      "args": [
+        "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B14 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail \"PPA-WU05B13 lost B10 composed closeout\"",
+      "args": [
+        "febfff8103c4d60324a103d832521bb3f3754a67",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B13 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B13 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B13 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail \"PPA-WU05B13 lost exact B11 admitted closeout\"",
+      "args": [
+        "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 703b70c49dbc5fb4f2c54381608432d13bb67cf7 HEAD || fail \"PPA-WU05B13 lost exact B12 closeout\"",
+      "args": [
+        "703b70c49dbc5fb4f2c54381608432d13bb67cf7",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B13 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail \"PPA-WU05B12 lost B10 composed closeout\"",
+      "args": [
+        "febfff8103c4d60324a103d832521bb3f3754a67",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B12 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B12 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B12 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6 HEAD || fail \"PPA-WU05B12 lost exact B11 admitted closeout\"",
+      "args": [
+        "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B12 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor febfff8103c4d60324a103d832521bb3f3754a67 HEAD || fail \"PPA-WU05B11 lost B10 composed closeout\"",
+      "args": [
+        "febfff8103c4d60324a103d832521bb3f3754a67",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B11 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B11 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B11 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B11 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B10 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B10 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B10 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 86b71ad71fa74d09eee3733c3e8f0f13355257f3 HEAD || fail \"PPA-WU05B10 lost admitted B9 source/closeout\"",
+      "args": [
+        "86b71ad71fa74d09eee3733c3e8f0f13355257f3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B9 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B9 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 177b680c8992e03f8ab0c41dfcd02c660b3cf8da HEAD || fail \"PPA-WU05B9 lost admitted B8 source/closeout\"",
+      "args": [
+        "177b680c8992e03f8ab0c41dfcd02c660b3cf8da",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 024c6a5510757a02851426806248b0e2afe45a6b HEAD || fail \"PPA-WU05B8 lost normal-drain and guarded reference admissions\"",
+      "args": [
+        "024c6a5510757a02851426806248b0e2afe45a6b",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5 HEAD || fail \"PPA-WU05B8 lost selected salt/root frost admission\"",
+      "args": [
+        "2d4d540903a0a7d4cc67bd2e5f8f900834cbc2f5",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor b872ddbd930ea08b058575877a03774d313742cc HEAD || fail \"PPA-WU05B6 lost admitted frost/reference baseline\"",
+      "args": [
+        "b872ddbd930ea08b058575877a03774d313742cc",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 526258e3d78d47df657222630b2e46103cac3eb3 HEAD || fail \"PPA-WU05B4 lost admitted B2/B3/Walsum-salt baseline\"",
+      "args": [
+        "526258e3d78d47df657222630b2e46103cac3eb3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor a370f6f487c017af9931ffc46d4c5c9fb1288d8c HEAD || fail \"PPA-WU05B3 lost admitted root/Walsum-salt baseline\"",
+      "args": [
+        "a370f6f487c017af9931ffc46d4c5c9fb1288d8c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor 916035e78305cae5f88c30d5805b5d9c33a348f8 HEAD ||        fail 'PPA-WU05B2 lost canonically admitted hydraulic frost baseline'",
+      "args": [
+        "916035e78305cae5f88c30d5805b5d9c33a348f8",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_WU04A_QUALIFIED\" \"$PPA_WU04A_ADMISSION\" ||      fail 'PPA-WU04-A qualified head is not contained by canonical admission'",
+      "args": [
+        "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+        "50e7d1dece5b75d0103459d5c118d03a2665eea3"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$PPA_LOW02_QUALIFIED\" \"$PPA_LOW02_ADMISSION\" ||      fail 'PPA-LOW02 qualified head is not contained by canonical admission'",
+      "args": [
+        "8d238bb46c9d4d77e38802e75458d99f59794d11",
+        "6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+      "line": "if git merge-base --is-ancestor \"$FROSS13_PRODUCTION\" HEAD &&     [[ \"$(git rev-parse HEAD:$FROSS13_MODEL)\" == \"$FROSS13_MODEL_POSTIMAGE\" ]] &&     [[ \"$(git rev-parse HEAD:$FROSS13_PROVIDER)\" == \"$FROSS13_PROVIDER_POSTIMAGE\" ]]; then",
+      "args": [
+        "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$STATUS_A_AUTH\" HEAD || fail 'Status-A authority not ancestor'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS12_AUTH\" HEAD || fail 'F-ROSS12 authority not ancestor'",
+      "args": [
+        "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$P2E05_BASE\" HEAD || fail 'P2E05 base canonical not ancestor'",
+      "args": [
+        "dd394f33b8687e457c4d40e9765551b58fe11b6c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_p2e05_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$P2E05_QUALIFIED_HEAD\" HEAD || fail 'qualified P2E05 successor not ancestor'",
+      "args": [
+        "ff89a93bf5b49795db5cb04be0c7325c7b060f5c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$STATUS_A_AUTH\" HEAD || fail 'Status-A authority not ancestor'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS12_AUTH\" HEAD || fail 'F-ROSS12 authority not ancestor'",
+      "args": [
+        "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$P2E05_QUALIFIED_HEAD\" HEAD || fail 'qualified P2E05 successor not ancestor'",
+      "args": [
+        "ff89a93bf5b49795db5cb04be0c7325c7b060f5c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci96_fross13_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS13_PRODUCTION\" HEAD || fail 'qualified F-ROSS13 production commit not ancestor'",
+      "args": [
+        "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$STATUS_A_AUTH\" HEAD || fail 'Status-A authority not ancestor'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS12_AUTH\" HEAD || fail 'F-ROSS12 authority not ancestor'",
+      "args": [
+        "786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FROSS13_PRODUCTION\" HEAD || fail 'F-ROSS13 production authority not ancestor'",
+      "args": [
+        "0fdba1a603ffd54eff7ee92a3cd7001f2b802678",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci107_fross17_cache_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$SOURCE\" HEAD || fail 'F-CI107 canonical source not ancestor'",
+      "args": [
+        "585a8719242bf58e4c37c6283298dfad7b20a0ae",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci_fross22_tiered_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$CACHE_AUTH\" HEAD || fail 'admitted F-CI107 canonical parent not ancestor'",
+      "args": [
+        "0e68a716f655f9bba3a0962cf35ccb724b5184c3",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_crop_file_weather_production_successor.sh",
+      "line": "git merge-base --is-ancestor \"$BASE\" HEAD || fail 'reconciled canonical baseline absent'",
+      "args": [
+        "0d9f2c5da26e2214c3b19d56acdc734bf62d33f4",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_crop_fkt_b110_exact_source_successor.sh",
+      "line": "git merge-base --is-ancestor \"$BASE\" HEAD",
+      "args": [
+        "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$POSTIMAGE\" HEAD || fail 'current head does not descend from F-SI35 admission postimage'",
+      "args": [
+        "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$FCI75\" HEAD || fail 'current head does not descend from F-CI75 semantic successor'",
+      "args": [
+        "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+      "line": "git merge-base --is-ancestor \"$STATUS_A\" HEAD || fail 'current head does not descend from Status-A scientific baseline'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "line": "git merge-base --is-ancestor \"$BASE\" HEAD || fail \"canonical base absent\"",
+      "args": [
+        "d8414c1ba11bee9f061622fd2495f631a57d2383",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "line": "git merge-base --is-ancestor \"$POSTIMAGE\" HEAD || fail 'current head does not descend from F-SI35 admission postimage'",
+      "args": [
+        "3cf018a44b0d3e626fdf66cb3ab5a34e06ee165d",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "line": "git merge-base --is-ancestor \"$FCI75\" HEAD || fail 'current head does not descend from F-CI75 semantic successor'",
+      "args": [
+        "60294b4f66a2fcd19132d7c6f23457c4962b17e1",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    },
+    {
+      "path": "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+      "line": "git merge-base --is-ancestor \"$STATUS_A\" HEAD || fail 'current head does not descend from Status-A scientific baseline'",
+      "args": [
+        "50346642bd565f79134ea17d5462e544b354998c",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr": ""
+    }
+  ],
+  "complete_head_ancestor_commits": 9260,
+  "repair": "Fetched complete authentic parent graph, traversed all9260 commits without shallow boundaries, verified all84 literal runner lineage pairs, then cleared the two obsolete shallow markers; no fabricated commit or source change."
+}

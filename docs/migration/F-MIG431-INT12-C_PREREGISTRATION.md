@@ -1,0 +1,172 @@
+# F-MIG431-INT12-C preregistration
+
+Date: 2026-10-03
+
+Status: Implemented candidate; restricted workflow passes; full preregistered gate set and production admission remain pending
+Branch: `work/f-mig431-int12-c-vonhhbraden`
+Pinned canonical base: `b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9`
+
+## Goal
+
+Migrate the bounded SWAP 4.3.1 `SWINTER=1` Von Hoyningen-Hune/Braden interception capability into the current SWAP5 transaction/application route, consuming the already admitted F-MIG431-INT12-P0 source-window runtime seam.
+
+This is PPA-WU04-C. It does not implement SWINTER=2/Gash; that method has a separate nonlinear equation oracle and belongs to PPA-WU04-D / F-MIG431-INT12-D. Do not create a second WU06 record for the same capability.
+
+## Current evidence and gap
+
+The current canonical head is `b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9`. The current tree contains:
+
+- the frozen PPA-WU04 state/transaction contract and review-only closeout;
+- PPA-WU04-A and PPA-WU04-B implementations for SWREDU, not SWINTER=1/2;
+- the admitted `mod_interception_source_window_runtime` P0 seam and its qualification;
+- the admitted SWINTER=1 process and typed net-rain binding were not composed with F-MIG431-INT12-P0 accepted progress/restart on the pinned base. The candidate branch now supplies a narrow adapter and composition gate; see the recorded run in `integration/audits/F-MIG431-INT12-C_STATUS.json`.
+
+A restricted SWINTER=1 route already exists in F-APP03/F-APP04: Hupsel with SWETR=0, SWDIVIDE=1, SWMETDETAIL=0, SWRAIN=0 and SWCF=1. Its exact-source qualification covered 384 daily and 14,062 interval records with zero mismatches. Its daily forcing is uniform over the source day, so elapsed-time apportionment is the bounded profile tested here. The process is `src/process/mod_pmdirect_swetr0_process.f90`; its exact-source equation/result oracle is already admitted. F-APP04's typed root, surface-demand and net-rain-to-dynamic-top identity bindings are also admitted at merge `d223b7ab4ed297194c209f85d6b51bef86b79959`.
+
+The remaining gap is to compose those admitted outputs with P0's accepted progress, retry and restart record, synchronized to the FMR committed endpoint. This slice will not reimplement or broaden the Hupsel interception equation. P0's linear time apportionment is not claimed for event-weighted SWRAIN=1-3 or SWMETDETAIL=1 forcing; those routes need a separate event-allocation contract and qualification.
+
+PPA-WU04 explicitly records general SWINTER=1/2 implementation as not admitted. F-MIG431-INT12-P0 provides the shared progress/restart type seam and is already canonically admitted at merge `4d7be05313336e437461f05642affe80bb9bb129`. P0 supplies source-window identity, deterministic aggregate apportionment, accepted progress, rollback and mid-window restart metadata. It contains no method-specific interception equations and must not be changed by this slice.
+
+## Source and equation authority
+
+- Corrected reference snapshot: `reference/swap-4.3.1/snapshots/B1.11.yml`.
+- PPA-WU04 contract: `integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json`.
+- B1.11 source member: `SWAP/MOD_meteo.f90`, SHA-256 `99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f`.
+- F-PM06 source/call-order trace: `integration/f-pm/F-PM06_ET_MIGRATION_READINESS.md`.
+- Independent public source trace: `SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9`, `src/atmosphere/interception.f90` and `src/atmosphere/meteoday.f90`.
+
+The independent source trace is corroborating evidence, not a replacement for the B1.11 authority. F-APP03 already provides the source-bound exact-route oracle for this restricted profile. Reuse that admitted oracle and preserve its B1.11 identity, units, branch conditions and call order. Do not duplicate the equation in this slice.
+
+The source trace identifies the VonHHBraden aggregate relation as follows, subject to exact B1.11 confirmation. The restricted F-APP03 route is an already qualified special case; compare its parameterization and output semantics against this full relation before deciding whether to reuse or generalize it:
+
+- `rpd = 10*grai` when sprinkler irrigation is excluded, otherwise `rpd = 10*(grai+gird)`;
+- `cofbb = min(1, 1-exp(-kdif*kdir*lai))`;
+- for `cofab > 1e-6`, `aintc = 0.1*cofab*lai*(1 - 1/(1 + rpd*cofbb/(cofab*lai)))`; otherwise `aintc=0`.
+
+The admitted F-APP03 source oracle already covers the bounded daily and interval outputs. The new evidence must demonstrate that composing its daily aggregate with P0 progress leaves those exact outputs and the F-APP04 net-rain identity unchanged. Inactive-canopy, irrigation, snow, rain-event and detailed-meteorology generalization remain outside this restricted slice.
+
+## Frozen ownership and interfaces
+
+- Persistent physical canopy-water state for SWINTER=1: none.
+- `aintc`: accepted aggregate for one explicit forcing/source window, never hidden hydraulic or canopy storage.
+- P0 owns source-window progress/restart provenance. Do not duplicate this state in the interception process.
+- Crop/canopy and interception parameters are read-only inputs for a source window.
+- A rejected trial cannot mutate accepted aggregate progress or book interception mass.
+- A changed-`dt` retry uses the same frozen source-window aggregate and committed progress.
+- Existing accepted top-boundary/application mass owners remain authoritative. Gross and net precipitation cannot both be counted as independent water inputs.
+- Keep SWINTER=3 Rutter, SWINTER=2 Gash, meteorological file/calendar parsing, snow-state ownership, solver/timestep policy and groundwater coupling outside this slice.
+
+Before implementation, record the exact typed input/output and transaction binding against the admitted PPA-WU03/PPA-WU01 interfaces. Fail closed for unqualified combinations.
+
+## Candidate qualification result
+
+The dedicated restricted composition workflow passed on tested head
+`fdbbadfdaf3983eecac312a5402a0cf8709f9209` (run `37131283115`, O0/O2 output
+SHA-256 `98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717`).
+It covers the admitted Hupsel source vector, A/B/A and invalid-day behavior,
+rejected-trial immutability, partial accepted endpoint apportionment, restart and
+resume, the F-APP04 net-rain identity binding, and gross/interception/net
+closure. The complete qualification list below remains the admission contract;
+this single passing workflow is candidate evidence and does not by itself admit
+production behavior.
+
+## Qualification gates
+
+Persist exact scope-specific tests and a reproducible runner. Required gates:
+
+1. Reuse and independently preserve the admitted F-APP03 exact-source oracle for its SWETR=0/SWDIVIDE=1/SWMETDETAIL=0/SWRAIN=0/SWINTER=1/SWCF=1 profile.
+2. Source-window partition conservation, including unequal subspans and final bitwise aggregate closure.
+3. Rejected-trial progress immutability and failed-then-accepted retry equivalence from the same committed checkpoint.
+4. Mid-window restart with neither duplicated nor lost remaining aggregate.
+5. Exact call-order and output checks for net rain, `wfrac`, and wet/dry transpiration demand on that admitted profile.
+6. A/B/A replay determinism, invalid-input fail-closed behavior, and O0/O2 output identity.
+7. Hard accepted water-mass closure and exactly-once accepted interception accounting.
+8. Preservation of PPA-WU01, PPA-WU03, PPA-WU04-A/B, the exact F-APP03/F-APP04 postimages, P0 source-window runtime, and SWINTER=3 Rutter.
+9. Preservation of the admitted F-APP03 Hupsel vectors and F-APP04 root/surface bindings.
+10. No production or test changes beyond the preregistered ownership surface.
+
+Set numerical tolerances per quantity before running qualification. Bookkeeping identities must close tightly; trajectory comparisons must reflect the stated reference/compiler route. Do not relax a threshold to turn a failure green.
+
+## Allowed production delta
+
+Only after exact source binding, reconciliation of the restricted F-APP03 implementation, and a frozen receiving interface review:
+
+- the smallest typed extension or adapter that reuses the restricted F-APP03 provider where its semantics match, or a separate general provider only where the B1.11 comparison demonstrates a real gap;
+- narrow forcing/application binding for the qualified route;
+- transaction/restart composition needed to consume the existing P0 progress record;
+- independent equation, runtime, preservation tests, runner, workflow and persisted evidence.
+
+No P0 seam changes are permitted. Any newly discovered shared-interface requirement must be separately preregistered and admitted before changing shared runtime contracts.
+
+## Admission boundary
+
+Admission may claim only P0 progress/restart composition for the already qualified F-APP03/F-APP04 Hupsel profile. It does not broaden SWINTER=1 equations or weather envelopes; SWINTER=2, event-weighted rainfall, SWMETDETAIL=1, broad legacy meteorological IO/calendar grammar, snowfall/runon combinations and unrestricted application composition remain unadmitted. PPA-WU04-D / F-MIG431-INT12-D remains a separate follow-on slice.
+
+
+
+## Current receiving-profile recovery, 16 October 2026
+
+The existing real receiving witness was executed at canonical `a86da5b6` with unchanged forcing, head budget, mass gate and original assertions. Read-only output before failure resolves the earlier availability question: both O0 and O2 have valid predecessor history and an available certificate, but its final head-error bound is `0.003291913255370477 cm` for a `0.000001 cm` test budget. Nine temporal rejections exhaust eight retries; no state or source progress commits. This is a conservative indicator, not a measured solution error or a general solver defect.
+
+All original FMR44R assertions and failure nonmutation checks pass; the four positive endpoint/progress/accounting markers remain absent. Original restricted composition evidence remains historical. The existing status record contains the complete negative archive and exact-ref reproduction. Receiving-profile onset/history, timestep/retry limits and application accuracy require F-KT/RT and PPA-WU04-C/MC-CROP01 reconciliation before the original ten admission gates can complete. No tolerance, forcing, shared policy or production change is made by this diagnostic.
+
+
+## Bounded application qualification, 16 October 2026
+
+The separate refined execution envelope now admits all four real endpoints at
+the original 1e-6 cm head budget and 1e-12 cm mass gate. It permits24 retries,
+4096 substeps and a1e-12-day minimum solver step; no production default changes.
+The old eight-retry negative result above remains valid for its configuration.
+The refined run accepts2544 substeps. It establishes feasibility, not efficiency.
+
+The production application now has an opt-in atomic physical/source-window
+entrypoint for the explicit fixed-flux, root-inactive profile. O0/O2 executions
+are byte-identical and cover four actual HeadCalc endpoints, wrong/stale cursor
+rejection, source continuation, exact-once accounting, and actual two-column
+partial-commit rollback including pressure/water arrays and valid retry. All
+seven unchanged WU01/WU03/Black/Boesten/Rutter drivers pass O0/O2. Original
+INT12C/FAPP03/FAPP04/P0 drivers pass, and the old bootstrap body is recovered
+byte-for-byte after removing the additive entrypoint.
+
+This does not finish gate5 or authorize full original-candidate admission. The
+direct PMdirect/dynamic-top/crop physical chain is preregistered in the
+[application contract](F-MIG431-INT12-C_APPLICATION_CONTRACT_20261016.md). Existing
+standalone initialization deliberately rejects base-layout Feddes roots with
+compensation OFF outside other admitted profiles. Resolve that application
+profile explicitly before implementing the direct call; do not silently remove
+its guard or equate typed binding tests with physical crop execution. Complete
+results, source manifests and positive/failed evidence hashes are in the
+candidate status record. Coverage counts are unchanged.
+
+## Direct application completion, 16 October 2026
+
+The previously missing direct chain is now implemented behind explicit
+`explicit_pmdirect_interception` configuration, default false. It evaluates the
+admitted PMdirect daily result, carries its valid provenance into SWINTER1,
+binds net rain and wet/dry crop demand through F-APP04, evaluates the dynamic
+surface and committed-soil Feddes root providers, and jointly commits actual
+Richards state, source progress and accepted process receipts. Inconsistent
+source aggregates and invalid root geometry fail before physical execution.
+Plain Feddes standalone initialization remains rejected without the opt-in.
+
+Both wet and dry cases execute four unequal actual endpoints under O0/O2 at
+the existing head/mass budgets. Wet canopy fraction is approximately0.39648;
+the dry case selects exactly zero wet fraction. Actual root withdrawal is
+nonzero and reconciles against accepted physical mass, with source exactly-once
+closure. All16 driver/optimization results pass, including the seven unchanged
+application owners. Their numerical output is byte-identical to the prior
+qualified owner output; only the exact known source-line numbers in unchanged
+array-temporary diagnostics relocate.
+
+An exact successor checker binds the complete changed source/test/workflow
+surface and archive, checks the complete default-FALSE bootstrap projection,
+checks original native outputs, and independently validates admitted canonical
+owner evidence at its immutable checkout. The crop/meteorology predecessor
+validators retain their complete scientific bodies. This is a bounded owner
+preservation prerequisite, not a whole moving-F-CI or highest-stress receipt.
+No automatic crop growth/calendar, weather parser, ponding/runoff regime or
+whole-season admission follows. The existing candidate status records the final
+qualification and admission state.
+
+
+Canonical admission: existing PR1009 merged at `06c199fb512154bf4abb99b4ad23856c72a21268` after all eight final targeted workflows passed on `6f8f0321911c168ad0c5166105f231b81f942a64`. Admission is limited to the explicit application scope above. The canonical merge tree equals the qualified candidate tree; the source-window and original application records retain all earlier negative evidence.

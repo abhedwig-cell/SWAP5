@@ -1,0 +1,174 @@
+{
+  "schema": "swap431.mc_heat01.status.v1",
+  "work_unit": "MC-HEAT01",
+  "baseline": "c7879cdf54fce43d668877f5a0a4d71806df7426",
+  "owner_historical_checkpoint": "1afde5d7",
+  "checkpoint_commit": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "last_reconciled_head": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "last_reconciled_upstream": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+  "stage": "FOUR_CAPABILITIES_CANONICALLY_ADMITTED_ONE_SHARED_INTERFACE_BLOCKER",
+  "implemented": true,
+  "persisted": true,
+  "tested": {
+    "source_bound_process_o0_o2": "PASS, six boundary/profile cases, repeated-run and O0/O2-identical output",
+    "source_bound_process_output_sha256": "979a4cefda74c96607077c7125385da7edd02d6291bae06494956b80d38789d7",
+    "serialized_production_runtime_o0_o2": "PASS, four new routes plus inherited F-MR39 atomic commit, rollback, retry, restart and mixed-column isolation",
+    "serialized_runtime_output_sha256": "c87100f0b41e15c27f1a42e4f4e64eb1c831efdffb7d1c6604f50a03f65276bc",
+    "legacy_default_process_preservation": "PASS, exact historical F-VQ58 output sha256 e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583 at O0/O2",
+    "fkt22_serialized_trajectory_preservation": "PASS at O0/O2 with byte-identical semantic output",
+    "fkt22_stdout_sha256": "fd8fba7cee2b05c86749c1d5eee239edb626677740afc293d4350c205a5aa3c2",
+    "frost_runtime_preservation": "PASS at O0/O2 with semantic identity and frozen-boundary fail-closed behavior",
+    "frost_stdout_sha256": "0282ab4d151c1fc27f9efd4b9ce6658d5d48a88bc2f59404b8090216adee4f98",
+    "eb_i25_preservation_adjudication": "INHERITED_CANONICAL_FAILURE, the O0 outflow-fixture assertion fails identically on canonical e3b9685470639355e1899b95c25f9a7ddee15fe6 and PR head af5f048bfb08e9796aebae08d8daaf4a9663dee2 before any MC-HEAT01-specific assertion; no thermal regression",
+    "documentation_source_checks": "PASS",
+    "documentation_stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+    "diff_check": "PASS"
+  },
+  "qualified": true,
+  "complete_work_unit": false,
+  "qualified_capabilities": [
+    "SW431-TEMP-ANALYTIC",
+    "SW431-TEMP-BC3",
+    "SW431-TEMP-BC4",
+    "SW431-TEMP-BOTTOM2"
+  ],
+  "withheld_capabilities": [
+    "SW431-TEMP-SNOW"
+  ],
+  "capability_state": {
+    "SW431-TEMP-ANALYTIC": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BC3": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BC4": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-BOTTOM2": "CANONICALLY_ADMITTED",
+    "SW431-TEMP-SNOW": "SOURCE_EXACT_PROCESS_COMPONENT_PASS_RUNTIME_BINDING_BLOCKED"
+  },
+  "source_authority": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/temperature.f90",
+    "sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "analytic_lines": [605, 669],
+    "top_boundary_lines": [244, 265, 289, 306, 340, 341],
+    "bottom_boundary_lines": [267, 273, 316, 331],
+    "snow_resistance_lines": [255, 265]
+  },
+  "production_blobs": {
+    "src/process/mod_soil_temperature_contract.f90": "2c358fa353226846ce6c6e4e561aa59e5de94620",
+    "src/process/mod_restricted_soil_temperature.f90": "6d881983c8d97c6d82854c59a2dc6c9fd36f7350",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "01d1981cc7aebb1553463b1cee955bb21da05fe6"
+  },
+  "relevant_paths": [
+    "src/process/mod_soil_temperature_contract.f90",
+    "src/process/mod_restricted_soil_temperature.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "authority_paths": [
+    "integration/audits/MC_HEAT01_PREREGISTRATION.json",
+    "reference/swap-4.3.1/b1_11_frost_source/SWAP/temperature.f90",
+    "integration/f-ci/F-CI43P_STATUS.json",
+    "integration/f-ci/F-CI45P_STATUS.json"
+  ],
+  "test_paths": [
+    "tests/fmig431/run_mc_heat01_thermal_boundary.sh",
+    "tests/fmig431/test_mc_heat01_thermal_boundary.f90",
+    "tests/fmig431/run_mc_heat01_runtime.sh",
+    "tests/fmig431/test_mc_heat01_runtime.f90"
+  ],
+  "dependency_surface": [
+    "typed thermal parameters, forcing, state, result and diagnostics",
+    "restricted soil-temperature De Vries process",
+    "serialized Reference thermal parameter/forcing copy and post-Richards execution",
+    "thermal restart profile and transaction ownership",
+    "read-only thermal consumers in frost/root/energy publication"
+  ],
+  "interfaces_changed": [
+    "backward-compatible additive thermal parameter and forcing fields",
+    "additive bottom heat-flux observation field"
+  ],
+  "interfaces_held_fixed": [
+    "Richards request, state, flux and Jacobian interfaces",
+    "water mass accounting",
+    "thermal restart schema version 1 and profile-only payload",
+    "existing default prescribed-surface and zero-bottom-flux semantics",
+    "Snow state layout and one-call-daily event contract",
+    "crop/root, irrigation, nutrient/solute, drainage/frost and hydraulic owners"
+  ],
+  "blockers": [
+    {
+      "capability": "SW431-TEMP-SNOW",
+      "kind": "SHARED_RUNTIME_LAYOUT_AND_EVENT_ORDER",
+      "detail": "The source-exact snow resistance formula passes as a thermal component. Production still rejects simultaneous snow_active and soil_temperature_active because the two capabilities have separate optional-state layouts and Snow is an outer one-day event while thermal execution is per accepted Richards substep. No owner-authorized combined layout or sampling instant exists."
+    }
+  ],
+  "remote_admission": {
+    "pull_request": 1196,
+    "adjudicated_head": "af5f048bfb08e9796aebae08d8daaf4a9663dee2",
+    "adjudicated_tree": "c682392fd9736e61554e9d95ae53b0efc98f6307",
+    "mergeability_observation": "Connector reported mergeable=false for bb11e73cb484dda681a36caf0cb372b1a6cdf7ca. This boolean alone does not identify conflicts or required-check policy; central regie must independently inspect the merge state.",
+    "final_workflow_head": "bb11e73cb484dda681a36caf0cb372b1a6cdf7ca",
+    "final_workflow_census": {"total": 55, "success": 26, "failure": 29, "nonterminal": 0},
+    "central_handoff_pr": 58,
+    "central_handoff_comment_id": 6106500226,
+    "canonical_replay_provenance_correction": "The earlier baseline attempt executed in the wrong worktree. A fresh explicit-working-directory replay on e3b9685470639355e1899b95c25f9a7ddee15fe6 now confirms the inherited EB-I25 failure. Exact provenance is in the qualification evidence.",
+    "mastercoverage_handoff_pr": 1072,
+    "mastercoverage_handoff_comment_id": 6105981484,
+    "remote_check_adjudication_comment_id": 6106017024,
+    "actions_policy": "No workflow was manually dispatched or rerun. Repository-wide path-insensitive and historical exact-postimage checks were adjudicated against their owning baselines."
+  },
+  "qualification_evidence": "integration/audits/evidence/MC_HEAT01_LOCAL_QUALIFICATION.json",
+  "central_admission_20261011": {
+    "baseline": "3cc40d599970ef3f85f4dc29c4ef0b09874d92b1",
+    "initial_recomposition_baseline": "ce3986f9c4b9eb1e8eaafd3ee19853c491a92938",
+    "initial_persisted_recovery": "00573c0e9afc376714a85ae223767d91554d6ee8",
+    "owner_head": "decd2e67b8a182f1448a173b18bbc232749dd5b5",
+    "recovery_branch": "integration/regie-mc-heat01-live-20261011",
+    "stage": "CANONICALLY_ADMITTED_EXACT_SOURCE_VERIFIED",
+    "canonical_admission_commit": "e326931dbc3a518ec93574ba6cdf3024628eaddc",
+    "canonical_admission_tree": "42a1978eb0da34bdbdd2e2162e659380b0886f97",
+    "canonical_verification": "Fetched remote canonical equals published admission tree; src/tests/reference/tools/workflows/assets equal exact qualified f177b589. All three owner production blobs and original four scientific test/runner blobs preserved exactly. Lease on 99249e0f2 succeeded without force.",
+    "pull_request_disposition": "PR1196 closed and GitHub merged=true; initial recomposition merge 30246dc50da6f015eae8d0117ca8d0b23cc5b07f retained in canonical ancestry. Final scientific admission is e326931dbc3a518ec93574ba6cdf3024628eaddc.",
+    "qualified_head": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
+    "qualified_tree": "b42d3c30b3e584659a69c8ef51a32c065ba5ce4e",
+    "qualified_source_tree": "6c6534eabc150455eec2c184020c658b091c794e",
+    "last_reconciled_canonical": "99249e0f238e61abc78b69e6e5a0aebf342d38ed",
+    "later_canonical_delta": "Only three MC-IRR01 audit/status JSONs changed from 3cc40d599 to 99249e0f2; src/tests/reference/tools/workflows/assets unchanged. Those owner receipts are retained; no third numerical run is justified.",
+    "reconciliation": "Conflict-free two-parent composition; all three production paths unchanged on canonical since owner-qualified base e3b968547. Later sensor-depth/event-restart irrigation admission 3cc40d599 is retained, including its F-CI exact source pins and additional preservation gates. Owner thermal production blobs copied exactly; no new thermal physics or active owner source edited.",
+    "negative_guards": {
+      "unknown_thermal_contract_blob": "PASS_FAIL_CLOSED_EXIT_1_BEFORE_COMPILE",
+      "unknown_shared_backend_blob": "PASS_FAIL_CLOSED_EXIT_1_BEFORE_COMPILE",
+      "thermal_log_sha256": "a9c5b8251ddca45b562a84275749149aad061cfc9a77e6221df9840dc05a6199",
+      "backend_log_sha256": "96d40b0beff873bfdb71c990018b368cdfefcf39523c7cfdf699ea6589116a6d"
+    },
+    "central_delta": "Bounded F-CI successor recognition pins exact three production blobs, owner ancestry, immutable owner tests/runners, default oracle and source authority. Original process/runtime O0/O2, FKT22 and frost runtime gates remain required.",
+    "invariants": "Preserve water mass, trial/accept/retry/rollback, restart schema and committed ownership; keep Snow/thermal layout and event-order blocker open.",
+    "qualification": "PASS_EXACT_HEAD_OWNER_AND_MOVING_FCI_O0_O2",
+    "gate_command": "bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "gate_exit_code": 0,
+    "gate_terminal_marker": "FCI_CANONICAL_LINEAGE_AWARE_GATE PASS",
+    "gate_log_sha256": "e15e75bf71cc54985466b0053bcbdb28637ca01471f91fc7f793c61099654e59",
+    "owner_outputs": {
+      "thermal_process_o0_o2_repeat_identity": "979a4cefda74c96607077c7125385da7edd02d6291bae06494956b80d38789d7",
+      "thermal_runtime_o0_o2_repeat_identity": "c87100f0b41e15c27f1a42e4f4e64eb1c831efdffb7d1c6604f50a03f65276bc",
+      "original_fvq58_default_o0_o2_identity": "e62c39e6fb3e71351fde4c949fb4c639d7fa16bb19fd593b55448432ae5ae583",
+      "fkt22_trajectory_o0_o2": "PASS",
+      "bounded_frost_runtime_o0_o2": "PASS",
+      "rossfast_and_current_irrigation_preservation": "PASS_IN_COMPLETE_MOVING_GATE"
+    },
+    "frozen_fci_inheritance": "All 14 immutable checkout refs and complete fci-canonical workflow equal qualified canonical 491236f87; inherit their terminal SUCCESS from run38121781430. Moving gate is newly executed on f177b589; frozen jobs are not redundantly rerun.",
+    "durable_log_archive": "integration/audits/evidence/MC_HEAT01_REGIE_QUALIFICATION_20261011.tar.gz.b64",
+    "decoded_archive_sha256": "b9f04a141cbc2bae855f0b73dd7e4110c5786117a4ea7978a00ffc0d086232c6",
+    "eb_i25_adjudication": {
+      "baseline": "3cc40d599970ef3f85f4dc29c4ef0b09874d92b1",
+      "candidate": "f177b589516e7c775bf884b6f2e39e154f5e0fba",
+      "command": "bash tests/fkt/run_fkt22_eb_i25_preservation_gate.sh",
+      "result_both": "EXIT_1_O0_AFTER_SAME_TWO_PASS_MARKERS_AT_EXTERNAL_FULL_HALF_OUTFLOW_FIXTURE_REJECTED_BEFORE_COMMIT",
+      "baseline_log_sha256": "5179c5093b5a25e285d22d4e5d13aeb03789b20d8b22340ec2d124ed4e83ea92",
+      "candidate_log_sha256": "69b943cf33ce1cd1a1e496d86b68a955e41eaf4def6a70e9d6efc2962580d5b3",
+      "owner": "F-KT22/EB-I25 accepted energy-ledger admission authority",
+      "disposition": "OPEN_INVESTIGATING_BASELINE_EQUIVALENT_FAILURE_NOT_A_PASS; no claim about unexecuted O2 or broader EB routes"
+    },
+    "required_check_policy": "Only four independently qualified thermal capabilities are eligible. Named owner/default/runtime/trajectory/frost and complete moving F-CI gates pass; EB-I25 and F-CI93 remain separate explicit open authority debt. No assertion/tolerance changes or claim of global green CI.",
+    "actions_policy": "No new Actions or manual dispatches. Publish skip-ci qualification/admission receipts after exact local gates; this avoids repeating unchanged frozen/numerical evidence and does not waive a failing science gate.",
+    "documentation_validation": "Source checker and JSON PASS; strict MkDocs unavailable locally (module absent).",
+    "next_action": "Master owner PR1072 reconciles only the four admitted capability dispositions from this receipt. Keep Snow, Frost-SNOW, EB-I25 and F-CI93 open under their existing owners; no global coverage-count claim."
+  },
+  "next_action": "Four capabilities admitted; durable recovery is integration/regie-mc-heat01-live-20261011. Mastercoverage disposition reconciliation remains with PR1072 owner. Snow/thermal shared interface remains open."
+}

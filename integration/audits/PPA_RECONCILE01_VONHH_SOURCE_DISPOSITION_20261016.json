@@ -1,0 +1,247 @@
+{
+  "schema": "swap5.ppa_reconcile01.vonhh_source_disposition.v1",
+  "work_unit": "PPA-RECONCILE01-VONHH-SOURCE-DISPOSITION",
+  "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+  "canonical_base": "8714a32d72d51889772912938e0e4b4835a98f2f",
+  "status": "BOUNDED_SOURCE_POLICY_DISPOSITION_COMPLETE",
+  "implemented": true,
+  "tested": true,
+  "qualified_scope": "COMPILED_SOURCE_POLICY_DIAGNOSTIC_ONLY",
+  "production_admission": "NONE_NEW",
+  "scope": "336 rain-only nonsnow common-formula and wet-fraction cases, actual historical partition versus canonical SWINTER1; excluded irrigation/snow domain counterexamples. Synthetic valid daily-result input isolates interval policy; no new PMdirect, runtime or physical E2E qualification.",
+  "observations": {
+    "common_formula_and_wet_fraction": 336,
+    "net_rain_partition_differences": 48,
+    "historical_partition_threshold_cm_d": 1e-05,
+    "canonical_partition_threshold_cm_d": 1e-06,
+    "irrigation_counterexample_old_cm_d": 0.03870967741935485,
+    "irrigation_counterexample_current_rain_only_cm_d": 0.0,
+    "snow_counterexample_old_cm_d": 0.0,
+    "snow_counterexample_current_without_snow_argument_cm_d": 0.03870967741935485,
+    "optimization": "O0/O2 complete stdout byte-identical",
+    "diagnostic_tolerance_cm": 1e-14
+  },
+  "execution": {
+    "timings": {
+      "O0": {
+        "compile_link_seconds": 0.16022569999768166,
+        "native_seconds": 0.0039021530028549023,
+        "compile_seconds": "UNKNOWN",
+        "link_seconds": "UNKNOWN"
+      },
+      "O2": {
+        "compile_link_seconds": 0.3632918789953692,
+        "native_seconds": 0.001773151001543738,
+        "compile_seconds": "UNKNOWN",
+        "link_seconds": "UNKNOWN"
+      }
+    },
+    "stdout_sha256": "a2f466916d57a962da231f3c35a4903c4d5671dc624f75fda7debb7d71939f85",
+    "result": "PASS_BOUNDED_SOURCE_DISPOSITION"
+  },
+  "archive": {
+    "path": "integration/audits/evidence/PPA_RECONCILE01_VONHH_SOURCE_DISPOSITION_20261016.tar.gz.b64",
+    "decoded_sha256": "73db86aaf77af77d0bdb6ba07c35ce3fe2f43725c76f388ac760de045acf060b",
+    "members": 16,
+    "member_sha256": {
+      "O0.txt": "a2f466916d57a962da231f3c35a4903c4d5671dc624f75fda7debb7d71939f85",
+      "O2.txt": "a2f466916d57a962da231f3c35a4903c4d5671dc624f75fda7debb7d71939f85",
+      "README.txt": "24812a74dc13e5fd7c64f190b573f715c38f1145b0ba091b0e17a9ed80306ca1",
+      "count-failure-O0.txt": "6ee487fec6196ce13b6cbe76c518fc62add72b771a7a6c96b53b0114bb697463",
+      "count-failure-driver.f90": "3e56b93f73870bb817e1ecd3a14a3a96e810556f3048d99a360277e463648fb3",
+      "current.f90": "7c0561ce8b2290ced86626bab38cf6a156a7d29f2d909b2f67c7a2b235ea14d7",
+      "driver.f90": "b4fcc6a91dfb1eeee7ce2e7bc29a5b409f37f361df4e867eee7af4bd71f11cbf",
+      "failed-O0.txt": "6ee487fec6196ce13b6cbe76c518fc62add72b771a7a6c96b53b0114bb697463",
+      "first-native-failure.log": "a6a77ed3cfb728d3c72198d6ae4df90feb86c442bb30a033a1c5a48a21e450de",
+      "historical.f90": "23121d016dae7f5a53221e99e92862a0ec0f910f55360313a6f9eba6f5a2e9fb",
+      "initial-compile-failure.txt": "062aa56137bee122de63b0f88555d003c9db154bff42067e903f2b2323af03f2",
+      "initial-driver.f90": "7677bbab9cc108084200cb4530a45ad32fae7a1a2543ea8b3a78e64e15e5bcd7",
+      "manifest.json": "f85aa2239941dd4619143bea713b69fcc2010114e782af4a18003a2c8c8d0015",
+      "replay.log": "f96b3d5738e5cf42ee810d3f216b56e58762a112067fb60ef99005e3ed2f943d",
+      "replay.py": "a7dcdcedbce9f23ece8c3b7ae7bc53882ae951dcccf0fe8663e61a9ede6d7b0e",
+      "result.json": "cb6ed8249ccafbe30c9d3a48c6a1f5d09877d81f1378005584f38f2d50bf8fea"
+    },
+    "replay": "Extract and run python replay.py with GNU Fortran13.3.0; no old Git objects needed."
+  },
+  "historical_graph_disposition": [
+    {
+      "path": "src/process/mod_vonhhbraden_interception.f90",
+      "blob": "a53a26594de47da8c9a0b3dcdaacc1357d3bcb89",
+      "disposition": "DO_NOT_IMPORT_UNCHANGED_AS_CURRENT_SWINTER1",
+      "basis": "Compiled partition threshold mismatch and excluded irrigation/snow input-domain differences."
+    },
+    {
+      "path": "src/adapter/mod_ppa_wu04c_vonhhbraden_forcing_adapter.f90",
+      "blob": "544876ee46a78bf625fe856cf4bab7425ad527b2",
+      "disposition": "DO_NOT_IMPORT_UNCHANGED_AS_CURRENT_SWINTER1",
+      "basis": "Exact archived source calls or propagates the mismatched historical partition; adapter is source-inspected, not compiled in this diagnostic."
+    },
+    {
+      "path": "src/adapter/mod_ppa_wu04c_production_forcing_adapter.f90",
+      "blob": "467a5df351affaf46ce146e80df5a92b267db706",
+      "disposition": "DO_NOT_IMPORT_UNCHANGED_AS_CURRENT_SWINTER1",
+      "basis": "Exact archived source calls or propagates the mismatched historical partition; adapter is source-inspected, not compiled in this diagnostic."
+    }
+  ],
+  "current_targets": [
+    {
+      "path": "src/process/mod_pmdirect_swetr0_process.f90",
+      "blob": "3eb23d075a56ba1158f4758f75a8d94c94e09b39"
+    },
+    {
+      "path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "blob": "de01b70ac9194ae739519a812e966dade379b96e"
+    },
+    {
+      "path": "src/runtime/mod_fmr_interception_source_window_binding.f90",
+      "blob": "36f340ad425191a6149a50a21daccaf81d2bf839"
+    },
+    {
+      "path": "src/runtime/mod_interception_source_window_runtime.f90",
+      "blob": "ce18e441907eb24e142d226ff19230611e9dafee"
+    }
+  ],
+  "already_admitted_application": {
+    "pr": 1009,
+    "merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+    "closeout": "8714a32d72d51889772912938e0e4b4835a98f2f",
+    "authority": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+    "scope": "Explicit frozen canopy/root, uniform rain-only mode2, compensation OFF, unponded/nonrunoff flux. Atomic soil/source publication, dynamic top and active Feddes roots qualified by its own evidence. No irrigation/snow generalization."
+  },
+  "remaining_owner_control": {
+    "pr": 700,
+    "state": "OPEN_DRAFT",
+    "source_rows_not_adjudicated_here": "All other PR700 source/runtime rows, including receipt progress and publication, broader meteorology, irrigation, lower boundary, solute, macropore and shared contracts. Existing Gash disposition preserved.",
+    "receipt_progress_warning": "Current source-window adapter and historical receipt-lineage API are distinct contracts. This formula diagnostic does not prove API/restart equivalence."
+  },
+  "preservation": {
+    "changed_execution_subtrees": [],
+    "selection": "No component/F-CI numerical rerun selected: all src/tests/tools/reference/.github/testbank/assets unchanged. Existing qualifications retain their original dependency scope; no whole-current-canonical PASS inferred.",
+    "new_actions_runs": 0
+  },
+  "coverage_delta": 0,
+  "next_action": "Use current admitted INT12-C within its existing bounds; do not import these three historical graph files unchanged. Original PR700 remains open pending disjoint owning dispositions.",
+  "persisted_checkpoint": "54f804dfa",
+  "validation": {
+    "archive_hash_and_all16_member_hashes": "PASS",
+    "actual_historical_Git_blob_and_three_graph_postimages": "PASS",
+    "current_source_identity": "PASS",
+    "extracted_standalone_O0_O2_replay": "PASS_identical_a2f466916d57a962da231f3c35a4903c4d5671dc624f75fda7debb7d71939f85",
+    "tampered_historical_source_rejected_before_compile": "PASS",
+    "seven_execution_subtrees_unchanged": "PASS",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS_exit0_19.48seconds",
+    "whitespace": "PASS",
+    "unknown_costs": "Separate compile and link times UNKNOWN; combined compile/link and native timings retained."
+  },
+  "receipt_publication_disposition_20261016": {
+    "work_unit": "PPA-RECONCILE01-RECEIPT-PUBLICATION-DISPOSITION",
+    "canonical_base": "33b7a086098abdcbdf777142edb2549a3f09e281",
+    "historical_head": "5fcd9769c30379f461ce047f410638b0d3311f96",
+    "status": "BOUNDED_CONTRACT_DISPOSITION_COMPLETE_CARRIER_REMAINS_OPEN",
+    "scope": "Source/contract review of two historical progress/publication modules against the current admitted explicit INT12-C owner. No numerical execution or API-equivalence qualification.",
+    "original_inventory_and_archive": {
+      "authority": "integration/audits/PPA_RECONCILE01_CURRENT_LINEAGE_20261011.json",
+      "archive": {
+        "path": "integration/audits/evidence/PPA_RECONCILE01_ORIGINAL_POSTIMAGES_20261011.tar.gz.b64",
+        "decoded_sha256": "5a0e47c8ceb9df9f87030f42a0c87e06a4f338510eecc0eec8c30fe11381ab5c",
+        "original_postimages": 862,
+        "members": 863
+      },
+      "validation": "PASS: all 862 original postimages independently checked against SHA256 and Git blob identities; 863 archive members. Original rows and capsule unchanged."
+    },
+    "generic_receipt": {
+      "path": "src/runtime/mod_fmr_accepted_commit_receipt.f90",
+      "historical_and_current_blob": "6798b3296b426950bf028814585c3f5de9be950b",
+      "sha256": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0",
+      "comparison": "BYTE_IDENTICAL",
+      "interpretation": "No missing generic receipt API is established. The existing ready/lineage/origin/committed revision and interval methods remain available. This does not admit the historical caller or its progress/restart model."
+    },
+    "historical_contract": {
+      "accepted_amount_authority": "Caller-supplied accepted_interception_cm; receipt validates interval, lineage and exactly one revision increment; contiguous interval and aggregate ceiling checked before mutation.",
+      "restart_authority": "Source window identity/bounds, aggregate, accepted endpoint/amount, receipt lineage/expected revision and binding-ready flag. No current column/schema companion contract."
+    },
+    "current_contract": {
+      "accepted_amount_authority": "Prepared source window apportions the amount from the actual final committed endpoint. Result includes column, requested bounds, accepted substeps, initial/final revisions and committed-time binding. Partial accepted endpoint is explicit.",
+      "restart_authority": "Schema1, column identity and matching committed timestamp plus interception runtime restart. No receipt lineage is persisted by this companion owner.",
+      "atomic_application_authority": "Private trial_owners and saved physical committed state; result mass completeness and companion acceptance checked before owners publication; failure restores physical committed state and returns zero accepted interception."
+    },
+    "dispositions": [
+      {
+        "path": "src/runtime/mod_fmr_vonhhbraden_source_window_progress.f90",
+        "historical_blob": "f2e9121dd538b05e2165a733de10e17ecccf7408",
+        "disposition": "DO_NOT_IMPORT_UNCHANGED_AS_CURRENT_INT12C_PUBLICATION",
+        "basis": "Distinct amount, provenance and restart contract. Retain as historical source/test evidence; any future use needs explicit owner composition and qualification."
+      },
+      {
+        "path": "src/runtime/mod_ppa_wu04c_runtime_publication.f90",
+        "historical_blob": "0e21123155a99fcf0f66d812938637d5f477e6bc",
+        "disposition": "DO_NOT_IMPORT_UNCHANGED_AS_CURRENT_INT12C_PUBLICATION",
+        "basis": "Distinct amount, provenance and restart contract. Retain as historical source/test evidence; any future use needs explicit owner composition and qualification."
+      }
+    ],
+    "current_inputs": {
+      "src/runtime/mod_fmr_accepted_commit_receipt.f90": {
+        "git_blob": "6798b3296b426950bf028814585c3f5de9be950b",
+        "sha256": "f3650457a7ba519c0d9bbd23cba8e4664fa6aad0f901db818fde9e1ad2faeaa0"
+      },
+      "src/runtime/mod_fmr_interception_source_window_binding.f90": {
+        "git_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
+        "sha256": "d6753b7b0ae8af43f2d68958226cd95e0291cd1e06fbd5517b541aba8537364c"
+      },
+      "src/runtime/mod_interception_source_window_runtime.f90": {
+        "git_blob": "ce18e441907eb24e142d226ff19230611e9dafee",
+        "sha256": "2f1643e4ea1f1e1247c745aab21671efd980bc198e4e4c9e4d09ace65439ebf0"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "git_blob": "aaa58ee57e2266d2b8f2f61ecf5319eff6d38028",
+        "sha256": "0c59dc817818e15f4f6b2e25ab4ce0a729cfd6690aa9d68bb96cced6c4cbf199"
+      },
+      "tests/fpm/test_f_mig431_int12_c.f90": {
+        "git_blob": "2515eba3a7f6e8cc8cad2c555e4813dfa3f7ffd5",
+        "sha256": "58d9f3d1eccd1e6567593bd02ea2cd3d6a96b46b701e4bd094c06bc42fe96c5d"
+      },
+      "tests/fpm/test_int12c_application.inc": {
+        "git_blob": "ed7406470ef52b77870b30b7470da2103f155515",
+        "sha256": "201b76cb36810817ee02678fd5dd1365831a271e6511a557561d00a6462d5b70"
+      }
+    },
+    "owning_admission": {
+      "pr": 1009,
+      "merge": "06c199fb512154bf4abb99b4ad23856c72a21268",
+      "closeout": "8714a32d72d51889772912938e0e4b4835a98f2f",
+      "authority": "integration/audits/F-MIG431-INT12-C_STATUS.json",
+      "claim_ceiling": "Existing explicit frozen canopy/root, uniform rain-only mode2, compensation OFF, unponded/nonrunoff flux. No automatic weather, irrigation, snow or generic old-restart conversion claim."
+    },
+    "test_selection": {
+      "numerical": "NOT_SELECTED_IMPACT: metadata-only contract disposition; production, tests, tools, references, workflows and physical gates unchanged. No current-source numerical PASS inferred.",
+      "source_review": "PASS exact current source clauses, two original postimages and complete archive identities.",
+      "compiler": "No native programme selected; compiler availability is not a qualification claim.",
+      "new_actions_runs": 0
+    },
+    "remaining_owner_control": {
+      "pr": 700,
+      "state": "OPEN_DRAFT",
+      "reason": "The other original source/runtime, physical-process and shared restart/solver decisions remain under their owning authorities. Neither the complete path census nor these two source dispositions proves their equivalence.",
+      "source_files_dispositioned_by_named_reviews": 8,
+      "accounting": "Gash3 + VonHH formula/forcing3 + receipt/progress publication2; 152 other original source paths not adjudicated by these three reviews. No assertion those152 are missing or unqualified globally.",
+      "next_action": "Use current admitted owners within their own bounds. Continue disjoint owner decisions for the retained donor; never merge the862-file carrier wholesale."
+    },
+    "preservation": {
+      "production_admission_created": false,
+      "capability_disposition_delta": 0,
+      "source_branch_preserved": true,
+      "historical_rows_and_capsules_preserved": true
+    },
+    "validation": {
+      "original_owner_fields_preserved": "PASS",
+      "archive862_sha256_and_git_blob": "PASS",
+      "current_receipt_byte_identity": "PASS",
+      "current_contract_source_clauses": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS_exit0_18.84seconds",
+      "whitespace": "PASS",
+      "scientific_execution_subtrees": "UNCHANGED"
+    }
+  }
+}

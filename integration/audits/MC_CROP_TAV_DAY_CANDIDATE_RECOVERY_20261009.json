@@ -1,0 +1,26 @@
+{
+  "schema": "swap431.crop_tav_day_candidate.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "df1a8fdc3ced6b1c4b24619c810c92dbffb6611d",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "locally_tested": true,
+    "qualified": false,
+    "preserved": false,
+    "canonically_admitted": false
+  },
+  "source": "src/crop/mod_crop_tav_day_window.f90",
+  "test": "tests/fmig431/test_crop_tav_day_window.f90",
+  "local_evidence": "Real local gfortran -std=f2008 -fcheck=all -Werror -Wno-error=compare-reals O0 and O2 PASS, no GitHub Actions invoked for focused qualification",
+  "purpose": "Staging-only one-day time-weighted atmospheric temperature candidate; validates positive lineage and source IDs, monotone contiguous interval coverage, origin revision, duplicate/overlap/gap rejection and invalid temperature, with no persistent physics mutation or publication.",
+  "historical_source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90:651 atmosphere_interface only tav, :755-766 germination temperature sum",
+  "limits": [
+    "Caller-supplied interval temperatures, source IDs and revisions are declarations, not owner-certified F-KT accepted weather receipts.",
+    "Successful candidate completion is NOT authentic atmosphere_interface:tav provenance or proof of actual accepted daily forcing.",
+    "A time-weighted candidate average is a test aggregation policy only. Must verify historical SWAP atmosphere_interface tav daily derivation before interpreting it as B1.11 input.",
+    "No binding to committed F-KT interval certificates, restart persistence, actual crop event publication, or SWHEA configuration."
+  ],
+  "next_action": "Find true historical atmosphere_interface tav writer and accepted F-KT meteorological input owner, then replace caller declarations with owner-issued immutable provenance. Keep daily crop germination read-only until proven.",
+  "actions_policy": "No dedicated workflow; compile local O0/O2 and rely only on mandatory automatic F-CI before merge."
+}

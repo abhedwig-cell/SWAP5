@@ -1,0 +1,117 @@
+{
+  "scope": "READ_ONLY_V2_TERMINAL_RECONCILIATION_NOT_PILOT_PRESERVATION",
+  "published_owner_head": "4b1fc18ac5114acdf7c13b7071e035a5e6123dd3",
+  "optimizations": {
+    "o0": {
+      "executed_head": "cc76885bbc46267228c27c4f16c755d8f811fdeb",
+      "results_sha256": "9bb9834bdafedbabdea38d855c557d485de8061248cfe4b6610843fc6a702045",
+      "native_wall_sum_seconds": 315.6386510400025,
+      "child_cpu_sum_seconds": 315.58235,
+      "complete_candidate_cases": 6,
+      "failed": 0,
+      "full_owning_qualified": false,
+      "admitted": false
+    },
+    "o2": {
+      "executed_head": "cc76885bbc46267228c27c4f16c755d8f811fdeb",
+      "results_sha256": "2f88168f34dfc2b15ab9fdc78233e85263555c6a33f11852c9edafbb7910f9ee",
+      "native_wall_sum_seconds": 129.53166746499846,
+      "child_cpu_sum_seconds": 129.489651,
+      "complete_candidate_cases": 6,
+      "failed": 0,
+      "full_owning_qualified": false,
+      "admitted": false
+    }
+  },
+  "cases": [
+    {
+      "optimization": "o0",
+      "family": 1,
+      "raw_stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o0",
+      "family": 2,
+      "raw_stdout_sha256": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o0",
+      "family": 3,
+      "raw_stdout_sha256": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o0",
+      "family": 4,
+      "raw_stdout_sha256": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o0",
+      "family": 5,
+      "raw_stdout_sha256": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o0",
+      "family": 6,
+      "raw_stdout_sha256": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 1,
+      "raw_stdout_sha256": "12fd44d72997a513c8fcfde78456f0bf80ad4edea7e122d0b451b416838f30bd",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 2,
+      "raw_stdout_sha256": "10333a2f34327e6dfbed7a6e663428f167b5739d46400825aca13e9142eb70b8",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 3,
+      "raw_stdout_sha256": "b505a346257a723bc06efd20e50b9c8b98586d947324f470a688c2312156c741",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 4,
+      "raw_stdout_sha256": "cf1cfd7827a32836c1c3b14eed25a16cef9d3e4a2b0b35a01548fded3340582d",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 5,
+      "raw_stdout_sha256": "7600a2cf7da17cdfbb65b29896205282714923b4e364556adb72b564615a9cae",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    },
+    {
+      "optimization": "o2",
+      "family": 6,
+      "raw_stdout_sha256": "834ba2da240889bf9cd231f712eb2a0b66348f13346e15a61302d5d1c22280dd",
+      "v1_both_rounds_byte_equal": true,
+      "v2_O0_O2_byte_equal": true
+    }
+  ],
+  "remaining_conditions": [
+    "Owner must publish precise V2 qualification with direct extreme-ratio proof and governed source successor.",
+    "Pilot exact adapter authority and all required combined highest/frost/PPA/Full Richards/F-CI preservation remain pending.",
+    "No broad PASS inherited, no admission guard modified, no competing execution started."
+  ]
+}

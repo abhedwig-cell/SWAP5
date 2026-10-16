@@ -1,0 +1,125 @@
+{
+  "work_unit": "MC-NUT01-ACCEPTED-THERMAL",
+  "baseline": "cd64c5044a29643a068c6151720f76b2e70f570d",
+  "branch": "work/nut-accepted-thermal-20261015",
+  "contract": "docs/science/MC_NUT01_ACCEPTED_THERMAL_CONTRACT_20261015.md",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "preserved": true,
+  "canonically_admitted": false,
+  "qualification_status": "OWNER_RECONCILED_QUALIFIED_PRESERVED_PREMERGE",
+  "test_selection": {
+    "process": "One real production provider, 23 cases, original literal loop O0/O2",
+    "composition": "Existing BASE calendar driver assertions retained, new certified thermal Richards/crop/N/pending/restart driver; shared fresh O0/O2 closure; expected 5-8 minutes, selected for changed atomic heat and native codec contracts",
+    "full_fci": "NOT_SELECTED: new temperature derivation and atomic thermal restart require targeted physical discrimination; no broad unrelated solver/physics modification",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "actions": "NOT_SELECTED_NO_DUPLICATE_DISPATCH",
+    "reconciliation": "Python/source-only: exact default projections of all three shared files, retained historical 245 controls, current 30 evidence controls, new source/default controls, original NUT/CO2 owner validation; no production/physical-driver changes"
+  },
+  "invariants": [
+    2,
+    3,
+    4,
+    7,
+    13,
+    21,
+    23,
+    25,
+    29,
+    30
+  ],
+  "next_safe_step": "Verify final fetched tree and live canonical/PR head, then expected-head merge of PR1246; frozen premerge flags do not supersede its final canonical receipt",
+  "remaining": "Harvest/reset/rotation; complete legacy/default activation; simultaneous companions; pond/source open; aquifer rejected",
+  "source_tree": "fe0747d5ec38d1383666376f5e0162373faefcc0",
+  "added_blobs": {
+    "src/process/mod_soil_n_profile_temperature.f90": "929b8ced7f616ed1e1283d9c2156bf9c68a038c9",
+    "src/runtime/mod_fmr_crop_soil_n_thermal_application.f90": "7afc4a3c10c67168962a8829d09d5c7be99f7d71",
+    "src/runtime/mod_fmr_soil_n_accepted_temperature.f90": "16048604846c6dbf3158ca1e76e9abbde9275325",
+    "tests/nut-thermal/README.md": "469555390ee24e108aed865c0d8d5030b293c4b7",
+    "tests/nut-thermal/check_evidence_controls.py": "f3696fe2d23de38d93d4636491a2b2bd87db8868",
+    "tests/nut-thermal/check_restart.py": "80d84308db0ad6ec357791fc1de26a6932e1bfaa",
+    "tests/nut-thermal/check_thermal_successor_controls.py": "551d294eb38f765f4b0b4b35b9f6bb4e9cbbbcbf",
+    "tests/nut-thermal/check_trace_policy.py": "2ff96ba27ffa3ecf13a0e5923e529b32f5a2cd66",
+    "tests/nut-thermal/resume_composition.py": "bddd1819516bd241da273011f79e7b73c490431d",
+    "tests/nut-thermal/run_composition.py": "337fcbcb935127c093888ee01a9283391b03d447",
+    "tests/nut-thermal/run_profile.py": "2162c2c1f952e909b01207a0fd83c10c4ed666dd",
+    "tests/nut-thermal/test_profile.f90": "64ce680d5b1380417d354e06617f7bff5dad3e43",
+    "tests/nut-thermal/thermal_default_projection.py": "7381f80bd95d26cb6dc0897d5e93c59568ecaf8d",
+    "tests/nut-thermal/thermal_fixture.inc": "2e9bb3046340dd1f344dabd1deff523eccd6915b",
+    "tests/nut-thermal/verify_thermal_evidence.py": "ba1d296136e11f9b9ca63b416603e0fad64f2ab8",
+    "tests/nut-thermal/verify_thermal_successor.py": "d6b570bb81b4ac6d8274982ffe043a00e23f4890"
+  },
+  "changed_blobs": {
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90": "550a63f25db46c61ac4f3bd7e60b6c298bd6eab5",
+    "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90": "e1426567ed56346eddae3f5da771ec194cfc209d",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "7e1b034e5cd134050e695c9a097c44a3eaeca344",
+    "tests/crop-co2/verify_co2_successor.py": "4b259d1cc0f3884fed90d604e31a9bd196914e3c",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": "5b04ee37f086b7450a0c8e5fa33c39672c3c3212",
+    "tests/nut-input/check_input_controls.py": "8e71277c74cc233d3b9f48c5166a5af2fa6ef216",
+    "tests/nut-input/verify_input_successor.py": "6676c62430596d99c3de2a67f98539be8a8d9646"
+  },
+  "qualified_scope": "Source-literal temperature reduction; certified accepted-state access; actual thermal Richards/crop/N/material/pending continuation; opaque and native restart; BASE byte preservation",
+  "admission_blocker": null,
+  "baseline_native_sha256": {
+    "O0": {
+      "restart.bin": "090fcbe20ba5c144859856e71e4b8f507298d7928e94b170f0cf161ba3d78edc",
+      "expected.bin": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba",
+      "fresh.bin": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba",
+      "expected.bin.opaque": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba"
+    },
+    "O2": {
+      "restart.bin": "090fcbe20ba5c144859856e71e4b8f507298d7928e94b170f0cf161ba3d78edc",
+      "expected.bin": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba",
+      "fresh.bin": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba",
+      "expected.bin.opaque": "faf3cca08c96c1148967d86bc61229e311b7329479a6bb828e60bbc7857e72ba"
+    }
+  },
+  "evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_THERMAL_20261015.tar.xz.b64",
+    "sha256": "704efe955d9f99a625b7b54b944ca4ab59eb290f647c1909a1ac6b1c250f6c77",
+    "decoded_bytes": 160104,
+    "members": 3227
+  },
+  "composition_execution": "999d9580fcdd38d43ff48d454a8d1784db6df72b",
+  "profile_execution": "96e8a4288385767e0373420d5ff01ad136c50018",
+  "process_cost_seconds": {
+    "native": 0.006270038997172378,
+    "compile": 0.1382516760058934,
+    "driver_compile": 0.1589101339923218,
+    "link": 0.08639995899284258
+  },
+  "composition_cost_seconds": {
+    "compile": 148.29613816888013,
+    "driver_compile": 26.81549032597104,
+    "link": 0.9018576600064989,
+    "native": 194.5561896940344
+  },
+  "production_providers_per_optimization": 269,
+  "counts": {
+    "profile_cases_per_optimization": 23,
+    "native_corruption_controls": 22,
+    "trace_and_initial_restart_cases": 14,
+    "evidence_controls": 30,
+    "owner_controls": 289
+  },
+  "recovery": "docs/science/MC_NUT01_ACCEPTED_THERMAL_RECOVERY_20261015.md",
+  "execution_bundle": {
+    "member": "execution/history.bundle",
+    "sha256": "4b3a97b7296039500bac4a2d1e8861a36c5c0a50768eccd6269d06ac260714ca",
+    "bytes": 25172,
+    "tip": "96e8a4288385767e0373420d5ff01ad136c50018",
+    "prerequisite": "cd64c5044a29643a068c6151720f76b2e70f570d"
+  },
+  "validation_receipt": "integration/audits/MC_NUT01_ACCEPTED_THERMAL_VALIDATION.json",
+  "owner_reconciliation_contract": "docs/science/MC_NUT01_THERMAL_ADMISSION_RECONCILIATION_20261015.md",
+  "owner_execution": "66c10f635a881a5d5fc8a44280ad045bbec2f69f",
+  "preservation_scope": "Source-exact default-path projection of three shared files, unchanged full moving scientific body, original NUT/CO2 evidence assertions and BASE native O0/O2 byte identity; no fresh full-FCI claim",
+  "owner_reconciliation_evidence": {
+    "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_THERMAL_RECONCILIATION_20261015.tar.xz.b64",
+    "sha256": "5c3c25335f52bf56256fc55f941521d6ccaedf4df01a664f5274c2bf282ae6e5",
+    "decoded_bytes": 108984,
+    "members": 29
+  }
+}

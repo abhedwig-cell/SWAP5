@@ -45,15 +45,16 @@ module mod_wofost_prepare_assimilation
 
 contains
 
-  subroutine prepare_wofost_actual_assimilation(state_view, parameters, forcing, result, status)
+  subroutine prepare_wofost_actual_assimilation(state_view, parameters, forcing, result, status, attainable_multiplier_override)
     type(wofost_one_day_rate_state_view_t), intent(in) :: state_view
     type(wofost_rate_parameter_bundle_t), intent(in) :: parameters
     type(wofost_prepare_assimilation_forcing_t), intent(in) :: forcing
     type(wofost_prepare_assimilation_result_t), intent(out) :: result
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: attainable_multiplier_override
     type(wofost_rate_scalar_parameters_t) :: scalars
     real(real64) :: effc, amax_dvs, temperature_factor, amax
-    real(real64) :: minimum_temperature_factor, dtga
+    real(real64) :: minimum_temperature_factor, dtga, attainable_multiplier
     integer :: parameter_status
 
     result = wofost_prepare_assimilation_result_t()
@@ -124,7 +125,16 @@ contains
     dtga = dtga * minimum_temperature_factor
     result%actual_pgass = dtga * 30.0_real64 * &
          (0.4_real64 / scalars%co2_to_dry_matter_fraction) / 44.0_real64
-    result%actual_pgass = result%actual_pgass * scalars%attainable_yield_multiplier
+    attainable_multiplier = scalars%attainable_yield_multiplier
+    if (present(attainable_multiplier_override)) then
+      if (.not. valid_inclusive(attainable_multiplier_override, 0.0_real64, 1.0_real64)) then
+        result = wofost_prepare_assimilation_result_t()
+        status = WOFOST_PREPARE_ASSIMILATION_INVALID_FORCING
+        return
+      end if
+      attainable_multiplier = attainable_multiplier_override
+    end if
+    result%actual_pgass = result%actual_pgass * attainable_multiplier
     if (.not. ieee_is_finite(result%actual_pgass)) then
       result = wofost_prepare_assimilation_result_t()
       status = WOFOST_PREPARE_ASSIMILATION_INVALID_RESULT

@@ -1,0 +1,390 @@
+{
+  "work_unit": "MODULAR-TESTABILITY-01",
+  "baseline": "1800a1b0d5a8ec38e5e5a2c5a15e916f922dd520",
+  "branch": "work/modular-testability-20261013",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonical_admitted": true,
+  "affected_invariants": [
+    1,
+    3,
+    7,
+    13,
+    22,
+    25,
+    29,
+    30
+  ],
+  "interfaces_changed": "Opt-in dependency API and three local production-driver routes; optional-config guard and exact prepublication beginning-ledger scalar timing; no physics formula, state layout or tolerance change",
+  "next_action": "Apply protocol test-selection and cost discipline in subsequent workstreams; original investigation and admission complete",
+  "recovery_point": "This branch HEAD; local full checkout /workspace/scratch/22bca1a60c7a/SWAP5",
+  "relevant_paths": [
+    "tests/support/augment_bartholomeus_backend_sources.py",
+    "tests/modularity/",
+    "integration/audits/MODULAR_TESTABILITY_20261013.json"
+  ],
+  "dependency_surface": [
+    "src/",
+    "tests/fsi/test_fsi39_b110_ksatexm.f90",
+    "tests/fapp/test_ppa_wu04b_boesten_process.f90",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh",
+    "tests/fmig431/test_crop_accepted_soil_temperature.f90",
+    "tests/fmig431/run_crop_accepted_soil_temperature.sh",
+    "tests/fsi/fsi04_real_headcalc_stubs.f90",
+    "tests/support/",
+    "tests/modularity/",
+    "compiler toolchain and environment"
+  ],
+  "authority_paths": [
+    "AGENTS.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md",
+    "docs/status-a/TRACEABILITY.md",
+    "docs/development/FCI_BUILD_CACHE_TRIAL_20261012.md"
+  ],
+  "blockers": [],
+  "measurement_caveat": "Another SWAP5 performance/preservation execution is visible on this shared host; record overlap and do not claim exclusive hardware or a portable speed guarantee.",
+  "pr": 1219,
+  "remote_checkpoint": "2afa02aec15a199df497b0792552e096e0ac08a8",
+  "checkpoint_commit": "51152a8ee74beef7a45204101bc830247b521285",
+  "last_reconciled_head": "9f4f58c1d6ae96073211a8ce7a785265d075d55d",
+  "evidence_paths": [
+    "integration/audits/evidence/MODULAR_TESTABILITY_INITIAL_20261013.tar.gz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_RECONCILIATION_20261013.tar.gz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_OWNER_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+    "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_DOCS_20261013.json",
+    "integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64"
+  ],
+  "failed_attempts": [
+    {
+      "name": "task2 initial graph probe",
+      "reason": "selected legacy fixture lacks required array/variables; not accepted Full Richards seam"
+    },
+    {
+      "name": "richards original driver",
+      "reason": "constitutive_evaluations counter absent in earlier contract; physics unchanged by diagnostic repair"
+    },
+    {
+      "name": "modular benchmark v3",
+      "reason": "extra duplicate external headcalc compile; interrupted, excluded from speed claims"
+    },
+    {
+      "phase": "final evidence publication",
+      "status": "TRANSPORT_REPACKAGED",
+      "reason": "MCP request exceeds 16 MiB limit; no branch mutation or science failure",
+      "resolution": "Executed code bundle stored separately and exactly SHA-bound by terminal capsule; combined restored bytes unchanged"
+    }
+  ],
+  "tested_scope": [
+    "15 graph/build/native negative controls",
+    "ten compile/link API probes (not science)",
+    "54 matched baseline driver records with three alternating rounds",
+    "six recompiled postimage accessor records; O0/O2 outputs and executable identity",
+    "original Boesten full preservation O0/O2",
+    "original MIGMAC11 production compile/donor O0/O2",
+    "physical guards, F-VQ58, actual root/frost and timestep O0/O2",
+    "1206 PCSE assimilation cases per O0/O2; zero errors",
+    "literal MICRO05 historical MvG and A23BL transaction",
+    "30 matched Richards simulations plus gprof; mass PASS, earlier byte equivalence false",
+    "original PPA-WU05A9 active macropore + Boesten actual Richards top-input/reject/replay/restart O0/O2"
+  ],
+  "production_repair": {
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "commit": "51152a8ee74beef7a45204101bc830247b521285",
+    "trigger": "Boesten without allocated inactive macropore config: original gate O0 SIGSEGV",
+    "change": "nested ALLOCATED guard before optional config dereference"
+  },
+  "benchmark_head": "2daabb9d4a014c4b1616c95505abd04d5e95a439",
+  "solver_measured_head": "7c48c21e1d23dd0d57966793865a85a1531bfca0",
+  "scientific_gaps": [
+    "Boesten NaN status differs O0/O2 under preserved traps",
+    "earlier/current Richards strict physical byte comparison fails although all existing mass assertions pass",
+    "matched SWAP4.3.1 execution benchmark UNKNOWN"
+  ],
+  "canonical_reconciliation": {
+    "pr1218": "merged 2026-10-13T11:24:53Z",
+    "head": "8dac664db83dda8338ef0ffe0f92b55541876978",
+    "production_tree_unchanged": "98440388d8640d5c62ca03f9a193632b3df41ecd",
+    "reference_tree_unchanged": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8",
+    "resolution": "Retain canonical versions of all three overlapping performance files; restore measured diagnostic from bundle when reproducing old results",
+    "own_production_repair_still_unqualified": false,
+    "terminal_checks": {
+      "controls": {
+        "exit": 0,
+        "tests": 15
+      },
+      "docs": {
+        "exit": 0
+      },
+      "mkdocs_strict": {
+        "exit": 0
+      },
+      "moving_fci": {
+        "exit": 1,
+        "source_authority_refusal": true
+      }
+    },
+    "unchanged_tested_postimage_sources": 156,
+    "initial_phase_only": "terminal_checks below retain original failed source-authority attempt; superseded by sealed owner/coupling and both full preservation PASS records"
+  },
+  "backend_qualification": {
+    "status": "FRESH_OWNER_COUPLING_AND_FULL_PRESERVATION_PASS",
+    "baseline": "cfc728c42b38026ba548f6250afec00969ccda67",
+    "preimage": "01d1981cc7aebb1553463b1cee955bb21da05fe6",
+    "postimage": "7dd238a0c9fae518beba9eb9dbac5fde1bbd5c18",
+    "scope": "Only exact optional allocation guard and beginning-ledger scalar timing; every other production and reference byte retained",
+    "highest_cases_inherited": 0,
+    "owner_ready": true,
+    "moving_fci_pass": true,
+    "requested_by_user": "Doe: qualify bounded backend successor and close PR1219",
+    "planned_gates": [
+      "highest normal/low_air O0/O2, six configurations each",
+      "literal daily demand and incumbent ET oracle",
+      "daily-demand actual production",
+      "default crop/weather actual production",
+      "incumbent RAINTB actual production",
+      "MC-HEAT01 thermal runtime/restart",
+      "FKT22 actual serialized trajectory",
+      "original Boesten/macro allocation branches",
+      "existing full moving F-CI resume OFF (including coupling)"
+    ],
+    "coupling_diagnosis": {
+      "canonical_control": "same actual hard mass failure on cfc728c after dependency expansion; backend not in FGC25 buildclosure",
+      "cause_commit": "3fc6a287852538f1e53b7f7daddd7ea190c69f8e",
+      "cause": "allocation-removal moved initial_total read after ledger commit, making delta zero",
+      "repair": "move scalar initial_total read to immediately after initial valid snapshots, before staging/commit; retains allocation-free implementation",
+      "probe_commit": "2871dd4b1bbd791c46d767e78c1f1118da564aa8",
+      "probe_publication_blob": "ef2c293f9f826317dc0f072345abeb1c9c914c4a",
+      "probe_tests": "six unchanged owner programs O0/O2 PASS; unchanged F-VQ87 O0/O2 exact historical stdout SHA de9a811ebb3a85bf14c440350fb730b0fab8f576c06683f1265757669542d9d8",
+      "primary_source_mutated_during_owner_queue": false,
+      "disposition": "apply bounded scalar timing repair after owner queue terminal, then exact coupling successor qualification and full moving preservation; no mass tolerance change",
+      "live_backend_result": {
+        "head": "04f64d428fbb2f9edb50dfc210a328695cdecd60",
+        "source_tree": "b011b2c11af206d5a21b26dfcea6eaf16e6d0efd",
+        "live_fgc49d": "PASS",
+        "independent_fvq124": "PASS",
+        "wall_seconds": 351.11493136900026,
+        "corrector_iterations": 5,
+        "max_cell_residual_m_per_s": 1.1304499051568296e-20
+      },
+      "primary_repair_applied": true,
+      "combined_source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "primary_repair_commit": "34e23143289e3dcfed80f8a1c1862c9a839e2dc7"
+    },
+    "highest_normal": {
+      "exit": 0,
+      "wall_seconds": 496.8589850139979,
+      "configurations": 12,
+      "fine_comparisons": 72,
+      "output_identity": "historical exact"
+    },
+    "highest_low_air": {
+      "exit": 0,
+      "wall_seconds": 10678.726278795999,
+      "configurations": 12,
+      "fine_comparisons": 72,
+      "output_identity": "O0/O2 and historical exact",
+      "highest_cases_inherited": 0
+    },
+    "source_eligibility": "Exact optional guard; optionally exact prepublication scalar beginning-balance move. Not scientific admission.",
+    "progress_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CONTINUATION_20261013.tar.xz.b64",
+      "decoded_sha256": "20781ef9c4ea84d8796bab47759cf2be0c3f433d2f7c9debc24c3f2f6ab0e288",
+      "members": 186,
+      "decoded_bytes": 9345256,
+      "stage": "UNSEALED_PROGRESS_NOT_OWNER_ADMISSION"
+    },
+    "owner_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_OWNER_20261013.tar.xz.b64",
+      "decoded_sha256": "71025456abbfc4e0be95c77be57fed6aa7b24d141c2dd82d0b902d95b1defa3c",
+      "members": 87
+    },
+    "coupling_evidence": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_COUPLING_20261013.tar.xz.b64",
+      "decoded_sha256": "3cc121a52024c6ae20a85b24370e31352ecca8c8a1e61a8566e4b065bb4a9528",
+      "members": 74
+    },
+    "sealed_guards": {
+      "owner": {
+        "exit": 0,
+        "stdout_sha256": "97ebd44e1b10314c22568ec8554f5cc4dd3d5e27262bb77b3c9c1a62bc178516",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "joint": {
+        "exit": 0,
+        "stdout_sha256": "83d56ec36d87a5d97649690a371018a293b3f58808b89a2a0417ffdbe2341c2c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "daily": {
+        "exit": 0,
+        "stdout_sha256": "da33768fc31ca58b697d41792579d2dd8617ee076234e7dda3af8b1775916e50",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "negative": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "7c7b895035abea4c3ec8e675da819419c2a228efb919301171d7074abe1fc236",
+        "tests": 9
+      }
+    }
+  },
+  "historical_source_authority_refusal": "Initial moving gate refused extra backend source before science; superseded by exact bounded eligibility and fresh sealed owner/coupling proof, not by an inherited PASS",
+  "moving_fci_separate_route": {
+    "path": "integration/audits/evidence/MODULAR_TESTABILITY_MOVING_FCI_20261013.tar.xz.b64",
+    "decoded_sha256": "b83e65b6c8098bc797f75ce5de8e1e10189b5d08e064bd3a24af8669d901060b",
+    "decoded_bytes": 103748,
+    "members": 27,
+    "exit": 0,
+    "status": "PASS",
+    "wall_seconds": 8374.831716216002,
+    "actual_head": "587a5b29cb2556dab448fc93b5d644eb907003f8",
+    "equivalent_remote_head": "84edab9f4fb0147f9ffff4ab978e4abf7c89fdff",
+    "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7"
+  },
+  "canonical_reconciliation_20261013_shared_route": {
+    "base": "9f4f58c1d6ae96073211a8ce7a785265d075d55d",
+    "pr": 1221,
+    "source_delta": "NONE",
+    "conflict": "F-CI prerequisite insertion resolved retaining both exact repair guard and admitted SHARED route",
+    "local_combined_head": "378dbd6c8",
+    "remote_equivalent_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
+    "tree": "66f87e89d9f9f667b784a609b51efc27b1781306",
+    "focused_shared_separate": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_SHARED_FOCUSED_20261013.tar.xz.b64",
+      "decoded_sha256": "8ca42832c3d96b35423fce7d1b70d331fb10a74adcbc77a5d3a46e78cb8f968c",
+      "status": "FRESH_FOCUSED_SHARED_SEPARATE_PASS_NOT_FULL_ADMISSION",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_equivalent_remote_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
+      "science_sha256": {
+        "root": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+        "sensor": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e"
+      },
+      "byte_equivalent": true,
+      "shared_wall_seconds": 998.910658861998,
+      "separate_wall_seconds": 1069.110812437997,
+      "members": 43,
+      "compiler_requests": "UNKNOWN (uninstrumented qualification)"
+    },
+    "full_shared_resume_off": {
+      "status": "PASS",
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "wall_seconds": 7748.796257201,
+      "exit": 0,
+      "terminal_marker": true,
+      "source_unchanged": true
+    },
+    "infra_failure_recovery": {
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_INFRA_20261013.tar.xz.b64",
+      "decoded_sha256": "011e625802a1efcb27a17f8c7eaaab6eb142cc3c7fb181851df1966fc74b04f7",
+      "members": 17,
+      "status": "FAILED_INFRASTRUCTURE_ATTEMPTS_RECOVERED_NOT_QUALIFIED"
+    },
+    "fresh_rerun": "PASS: recorded compiler identities restored and verified; no science or tolerance change",
+    "sealed_full": {
+      "external_code_bundle": {
+        "path": "integration/audits/evidence/MODULAR_TESTABILITY_EXECUTED_CODE_20261013.bundle.b64",
+        "decoded_sha256": "8fdcc582ff12fef6f40e177c6295bd0fc17dadcf3f8d9a145bb458b8f22f8ac1",
+        "decoded_bytes": 10508663,
+        "reason": "Separate transport-safe Git recovery bundle; exact tested commits restored in isolated repository before qualification closeout"
+      },
+      "status": "PASS",
+      "path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+      "decoded_sha256": "79eed7b13e923a73373c0887b0a1bdc7b857dd6e0e5ef5e184bdadf72c3741fc",
+      "decoded_bytes": 3467592,
+      "members": 146,
+      "actual_head": "378dbd6c82251c6cf547d70c7ed302d322d27b27",
+      "source_equivalent_remote_head": "44b4735373d0befaf43bfa50053c718cca8365c0",
+      "tested_tree": "66f87e89d9f9f667b784a609b51efc27b1781306",
+      "source_tree": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "full_exit": 0,
+      "full_wall_seconds": 7748.796257201,
+      "focused_science_sha256": {
+        "root": "0f52a93c461b70111f58c07ddfd926858aad3cccec02d2c26d10ccb1d3c5ed6f",
+        "sensor": "8b588e92eee50b2fe1df745145e0f0743a305f8617091f8169cc80789c3e627e"
+      },
+      "shared_separate_byte_equal": true,
+      "full_shared_marker": true,
+      "resume_mode": "OFF",
+      "compiler_requests": "UNKNOWN (uninstrumented qualification)"
+    }
+  },
+  "session_cost_audit": {
+    "document": "docs/audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md",
+    "evidence_path": "integration/audits/evidence/MODULAR_TESTABILITY_CANONICAL_FCI_20261013.tar.xz.b64",
+    "measurement_status": "PASS direct native and current focused Boesten; low-air bounded observation CENSORED_NOT_QUALIFICATION",
+    "whole_session_accounting": "UNKNOWN; retained measured subsets and overlap limits explicit",
+    "new_full_runs_for_cost_audit": 0,
+    "priority": "Boesten minimal production process closure; 3 alternating benchmark rounds, cold pair 282.169 -> 1.384 seconds; 452 avoided compilations"
+  },
+  "status_snapshot": "CANONICALLY_ADMITTED; historical pre-merge snapshot superseded by verified PR #1219 merge receipt",
+  "final_docs": {
+    "status": "PASS",
+    "path": "integration/audits/evidence/MODULAR_TESTABILITY_FINAL_DOCS_20261013.json",
+    "document_sha256": {
+      "docs/audits/MODULAR_TESTABILITY_20261013.md": "166401dea6b52c2d43cf88d7a11f5f181fd3858191d971cf68762ee9c26d0f24",
+      "docs/audits/MODULAR_TESTABILITY_SESSION_COST_20261013.md": "319d227ec4d2423e45f48dd477d7b248b7744a2cfbad5d0a2fb12fcc42826926"
+    },
+    "records": [
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "tools/docs/check_docs.py"
+        ],
+        "exit": 0,
+        "wall_seconds": 0.4969405580050079,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/22bca1a60c7a/docs-final"
+        ],
+        "exit": 0,
+        "wall_seconds": 47.275499326999125,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "6ce31dcec2d771aac4fd99f52c6ebd1c0cdc775bb81c95a4bd2440841d9a92b6"
+      }
+    ]
+  },
+  "canonical_admission": {
+    "pr": 1219,
+    "merge_sha": "0181a829eb5f17267541d6b57d7e65140db7bd5a",
+    "tree": "e10aa604d5d03edfc806512507fdf79362a5959c",
+    "complete_scientific_surface_verified": true,
+    "master_capability_denominator_changed": false
+  },
+  "execution_policy": "docs/development/workstream-execution-protocol.md#test-selection-and-cost-discipline-2026-10-13",
+  "execution_policy_validation": {
+    "base": "0181a829eb5f17267541d6b57d7e65140db7bd5a",
+    "scope": "AGENTS/protocol/audit/status documentation only; existing runners and workflows unchanged",
+    "docs_source_check_exit": 0,
+    "strict_mkdocs_exit": 0,
+    "mkdocs_reported_build_seconds": 32.15,
+    "mkdocs_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mkdocs_stderr_sha256": "72f0a86323f5645a11b4099262bf488162e359d07326bb4c9a44a97c35a1fe02",
+    "operational_expensive_threshold_seconds": 300,
+    "no_new_scientific_tests": true,
+    "scientific_dependency_trees": {
+      "src": "d4412e09005f5f76eb795c748350eb502833fdc7",
+      "tests": "361f1ccba13677e8e716033787baafabc0bb4e05",
+      "tools": "3089b7df0e2b977993def1b7692f5ab716059581",
+      "reference": "c680d7a93aabfd1321c2bcee872aa0361b73fcb8"
+    }
+  }
+}

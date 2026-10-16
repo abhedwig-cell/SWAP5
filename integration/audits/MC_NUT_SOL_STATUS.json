@@ -1,0 +1,964 @@
+{
+  "schema_version": "1.1",
+  "work_unit": "MC-NUT01-MC-SOL01",
+  "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+  "branch": "work/swap431-nutsol-20261007",
+  "pull_request": 1098,
+  "phase": "SOURCE_POLICY_COMPONENT_CANONICAL_RUNTIME_BINDING_OPEN",
+  "implemented": {
+    "b111_nfixation_policy": true,
+    "this_pr_changes_soil_n_owner": false,
+    "this_pr_changes_solute_owner": false
+  },
+  "persisted": true,
+  "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+  "qualification": {
+    "b111_literal_source_oracle": "593cases x3outputs bit-identical O0/O2 PASS",
+    "invalid_inputs": "39cases per optimization PASS with IEEE traps",
+    "unchanged_WOFOST81": "Original1806 demand/arbitrationcases and edge owner O0/O2 PASS",
+    "production_runtime_admission": false
+  },
+  "owner_contract": "integration/audits/MC_NUT_SOL_OWNER_DECISION.md",
+  "invariants": [
+    "rejected trials do not mutate committed nutrient/solute state",
+    "one authoritative owner per persistent mass store",
+    "whole-system constituent mass balance is independent from local equation equality",
+    "restart reproduces all persistent nutrient/solute stores",
+    "WOFOST81 semantics remain unchanged"
+  ],
+  "historical_preregistration": {
+    "schema_version": "1.0",
+    "work_unit": "MC-NUT01-MC-SOL01",
+    "baseline": "integration/f-ci-canonical@71fecec02aabe020e9950dc6d08f9dbb35fc2413",
+    "branch": "work/swap431-nutsol-20261007",
+    "implemented": {
+      "b111_nfixation_policy": true,
+      "nutrient_soil_owner": false,
+      "solute_reactive_owner": false
+    },
+    "persisted": true,
+    "local_tests": {
+      "b111_nfixation_policy": "O0/O2 PASS with gfortran 14.2, -fcheck=all and -ffpe-trap=invalid,zero,overflow"
+    },
+    "qualification": {
+      "b111_literal_source_oracle": "PENDING_PR_ACTION",
+      "production_runtime_admission": false
+    },
+    "owner_contract": "integration/audits/MC_NUT_SOL_OWNER_DECISION.md",
+    "invariants": [
+      "rejected trials do not mutate committed nutrient/solute state",
+      "one authoritative owner per persistent mass store",
+      "whole-system constituent mass balance is independent from local equation equality",
+      "restart reproduces all persistent nutrient/solute stores",
+      "WOFOST81 semantics remain unchanged"
+    ],
+    "explicit_architecture_decision_required": {
+      "capability": "SW431-SALT-AQUIFER",
+      "reason": "B1.11 SWBR source has reproduced numnod+1 bounds defect; corrected reservoir coefficient/storage and units require approved reference-correction contract before implementation"
+    },
+    "next_safe_step": "Qualify the separate B1.11 fixation policy against the exact bundled source, then implement the Soil-N inventory owner before reactions/crop exchange. In MC-SOL01 extend the existing mobile owner with matrix reactive storage only; do not implement aquifer breakthrough until the correction decision is accepted."
+  },
+  "component_closeout_20261016": {
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "original_candidate": "d59aaa12c8312c8ecc42b1328537d5da412431a8",
+    "phase": "QUALIFIED_COMPONENT_ONLY_PENDING_CI",
+    "qualified": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "source_oracle": "Complete exact B1.11 wofostnut.f90 SHA071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2; original unchanged demand body extracted literally.",
+    "corpus": "Original6cases,75 boundary/cutoff/fraction combinations and512 independently seeded varying-demand vectors; all3outputs compared by binary64 bits.",
+    "rounding_reconciliation": "Original expanded component had157 one/few-ulp output mismatches at both optimizations, max absolute2.274e-13. Retain failed outputs; restore literal addition/partition order. No tolerance change or WOFOST81 edit.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24,
+      "member_sha256": {
+        "README.txt": "f586db17119c8bb2870825448073e8b1578447ea372de779f9693776b9c53c10",
+        "component/inputs.json": "2ea73024418646a399be74cb02c6c8cfcc285f47ef59fa9ca596236df4292636",
+        "component/native.log": "cfbd1fe68a20d6be22ea340824ac97bfc524eaf9906f72d5c169d9b894c45500",
+        "literal/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O0.stdout": "3ebb0d856630a842f98639fcaeb91d45aba50bb5ec9403f46c4330a7737ad66d",
+        "literal/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "literal/O2.stdout": "3ebb0d856630a842f98639fcaeb91d45aba50bb5ec9403f46c4330a7737ad66d",
+        "literal/inputs.txt": "7b6a56c1690e2d6b7296a7f3cf8baf099cdcf66bbf6785b6d6c4804fccdbbb78",
+        "literal/literal.f90": "095e142e51e15a3264a7638f50f7901ec11e7532ce71b2094b64a04b90bc2910",
+        "literal/result.json": "627ca7d6cde332df1c9c7b1c9f69104b95f554506b9dd5e4473cf3a4a8268030",
+        "literal/wofostnut.f90": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "retained_failures/literal_preimage/O0-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_failures/literal_preimage/O0.stderr": "26e3c2570e692a5dff4ed553b6f23a973d973a9057178953c445979177cfdfe5",
+        "retained_failures/literal_preimage/O0.stdout": "eb566c706a613a797edd49d76086dafdf19f74a427f274573d842c2718aee902",
+        "retained_failures/literal_preimage/O2-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "retained_failures/literal_preimage/O2.stderr": "4dab61cb6614c907a577b7fb940ba2048019eb077da7848b1a065963b87ed301",
+        "retained_failures/literal_preimage/O2.stdout": "eb566c706a613a797edd49d76086dafdf19f74a427f274573d842c2718aee902",
+        "retained_failures/literal_preimage/inputs.txt": "7b6a56c1690e2d6b7296a7f3cf8baf099cdcf66bbf6785b6d6c4804fccdbbb78",
+        "retained_failures/literal_preimage/literal.f90": "095e142e51e15a3264a7638f50f7901ec11e7532ce71b2094b64a04b90bc2910",
+        "retained_failures/literal_preimage/result.json": "ecb77c277e5debab1cb5eda373b8b41e45dd5511060f6550f53a817a850e70b1",
+        "retained_failures/literal_preimage/wofostnut.f90": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "retained_failures/original_six_case.log": "30443db2b429152f7a91d4f9bb2565ffb7568280d207ee353e5c7196ce3cb693"
+      }
+    },
+    "postimages": {
+      ".github/workflows/fci-canonical.yml": {
+        "status": "M",
+        "blob": "6e0cc387f552352dddb50eb7aa2a8d216af71159"
+      },
+      ".github/workflows/swap431-nutsol.yml": {
+        "status": "A",
+        "blob": "db5553b8cd29af9456d869ae29b0c1e1ecb64213"
+      },
+      "src/crop/mod_b111_nfixation_policy.f90": {
+        "status": "A",
+        "blob": "995993a4d3f788dcdae9f58e3b4ec489d93fa4a5"
+      },
+      "tests/fwof/pp02/run_b111_nfixation_policy.sh": {
+        "status": "A",
+        "blob": "cb9d189f67964583bfbc34cd3a1cec10861fccf5"
+      },
+      "tests/fwof/pp02/test_b111_nfixation_policy.f90": {
+        "status": "A",
+        "blob": "5dd4185189604299282a52e19fe781ab787a0955"
+      },
+      "tests/fwof/pp02/test_b111_nfixation_successor_controls.py": {
+        "status": "A",
+        "blob": "e660d8ae6e426a71de3a339486e6025709558f3c"
+      },
+      "tests/fwof/pp02/verify_b111_nfixation_successor.py": {
+        "status": "A",
+        "blob": "3f5e896232294089d42003f99ca26893537a1872"
+      },
+      "tools/audits/probe_swap431_b111_nfix_policy.py": {
+        "status": "A",
+        "blob": "c25ea2d43136032d36d3684e5e81ec6aaca0d653"
+      }
+    },
+    "test_selection": {
+      "owning": "Standalone source-policy O0/O2, literal complete demand outputs,39 IEEE/domain negatives",
+      "preservation": "Unchanged WOFOST81 original numerical owner drivers freshly O0/O2; exact additive unused-module source guard; unchanged current canonical owner proof at immutable base.",
+      "full_fci": "NOT_SELECTED_IMPACT_NO_EXISTING_PRODUCTION_CHANGE",
+      "highest": "NOT_SELECTED_POLICY",
+      "solver": "NOT_SELECTED_IMPACT",
+      "expected_seconds": 60
+    },
+    "record_scope": "Pre-merge component qualification; actual canonical component integration is recorded separately. Runtime admission remains false."
+  },
+  "next_safe_step": "Separate reproductive/death source assessment canonically recorded1259. Implement and qualify the explicit source-order bounded process before existing-owner composition; preserve1253 and WOFOST81 default, refuse unqualified cutoff/overdraw and resolve reachable reference defects separately.",
+  "canonical_component_integration_20261016": {
+    "pr": 1098,
+    "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+    "qualified_head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "kind": "QUALIFIED_SOURCE_COMPONENT_CANONICAL_NOT_RUNTIME_ADMISSION",
+    "component_qualified": true,
+    "canonically_integrated": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "production_reachability": false,
+    "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+    "remaining": "Explicit selection in existing crop/Soil-N request owner, accepted mass/state, exactly-once fixation receipt, rollback and restart qualification. Existing WOFOST81 remains unchanged; no second fixation booking.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24
+    },
+    "sources": [
+      "src/crop/mod_b111_nfixation_policy.f90"
+    ],
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json",
+    "records": [
+      "integration/audits/MC_NUT_SOL_STATUS.json",
+      "integration/audits/MC_NUT_SOL_OWNER_DECISION.md"
+    ],
+    "selected_ci": [
+      {
+        "id": 38877128708,
+        "name": "F-CI canonical qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754395,
+            "name": "selection-preflight",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894969180,
+            "name": "modular-feedback",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894970427,
+            "name": "frozen-fci24-reference-et-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970493,
+            "name": "frozen-fci19-source-lineage",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970556,
+            "name": "historical-fci03-through-fci18",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970830,
+            "name": "frozen-fci27-reference-et-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970855,
+            "name": "frozen-fci34-root-attribution-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970947,
+            "name": "frozen-fci36-divdra-active-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971151,
+            "name": "frozen-fci29-ptra-ownership-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971157,
+            "name": "frozen-fci28-restart-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971282,
+            "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971315,
+            "name": "frozen-fci40-effective-forcing-executor-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971494,
+            "name": "frozen-fci37-parallel-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971684,
+            "name": "frozen-fci31-reference-et-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972028,
+            "name": "frozen-fci19-candidate-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972306,
+            "name": "frozen-fci30-restricted-parallel-v1-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972984,
+            "name": "current-restricted-canonical-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "id": 38877128695,
+        "name": "SWAP431 nutrient fixation qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754050,
+            "name": "qualify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "local_checks": {
+      "literal_cases": 593,
+      "quantities_per_case": 3,
+      "invalid_input_cases": 39,
+      "WOFOST81_original_cases": 1806,
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "rejection_controls": 6,
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS_15.38s"
+    },
+    "post_merge": "Actual merge tree equals exact CI qualified candidate; source/capsule proof repeated at actual canonical merge.",
+    "full_fci": "NOT_SELECTED_IMPACT_COMPONENT_ONLY",
+    "highest": "NOT_SELECTED_POLICY",
+    "solver": "NOT_SELECTED_IMPACT"
+  },
+  "b111_request_binding_20261016": {
+    "baseline": "093bff909f38f8bfa3b1284b40a0c3736e864954",
+    "branch": "work/nut-b111-request-binding-20261016",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": true,
+    "contract": "docs/science/MC_NUT01_B111_REQUEST_BINDING_CONTRACT_20261016.md",
+    "scope": "Explicit bounded vegetative B1.11 request on existing WOFOST81 growth/Soil-N owner; not full B1.11 crop-N equivalence. Default WOFOST81 unchanged.",
+    "invariants_affected": [
+      "one accepted N input receipt",
+      "whole constituent balance",
+      "rejection nonmutation",
+      "restart identity"
+    ],
+    "next_action": "CLOSED: explicit vegetative request profile admitted. Full legacy activation, reproductive translocation, residual-concentration death and wider B1.11 crop-N equivalence remain open; no second N owner and WOFOST81 remains default.",
+    "blockers": [],
+    "test_selection": {
+      "affected": "Explicit optional request calculation, joint N accepted-state and tagged configuration identity",
+      "expected_compile_link_native_seconds": 250,
+      "full_fci": "NOT_SELECTED_IMPACT_UNCHANGED_DEFAULT_STATEMENTS_AND_TARGETED_SHARED_STATE_SCIENCE_REQUIRED",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "unexpected_cost_diagnosis": "First full affected closure completed at385.297s versus250s estimate:220.426s provider compile,26.085s driver compile,2.640s link,136.147s native. Actual incumbent crop/mineral/reactive preservation runs are retained. No identical rebuild or native repeat selected. Only newly added tiny-demand/multi-organ boundary leaf needs execution."
+    },
+    "compiler_recovery": "System gfortran absent; package attempts failed on apt cache permissions/unavailable package. Recovered existing local13.3.0 toolchain at /workspace/scratch/0fe3d4b8d201/irr-toolchain/bin/gfortran; no fabricated prior numerical PASS.",
+    "phase": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+    "postimages": {
+      "src/crop/mod_crop_b111_n_request_binding.f90": {
+        "status": "A",
+        "blob": "78f8dc0d6507e457941b2d8152466ce2e2384316"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "2b37c9ba5aec86f33d20bb9cef40eb658927b35b"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "6259e3aaaf852fc1fb3cac670c0c674602498d73"
+      },
+      "tests/mc-irr01/check_managed_weather_controls.py": {
+        "status": "M",
+        "blob": "42f13dca9f0e76eef8c5fce646384a54ad3790f1"
+      },
+      "tests/mc-irr01/verify_managed_weather_successor.py": {
+        "status": "M",
+        "blob": "bd5ee1c1a582b2d1e069ba80b4d83779722333cf"
+      },
+      "tests/modularity/run_modular_tests.py": {
+        "status": "M",
+        "blob": "e48abcce3c63364f2a6d8ef4a21ae9cd0c2caa4b"
+      },
+      "tests/nut-crop/check_b111_request_controls.py": {
+        "status": "A",
+        "blob": "10d4a9a3b229a6119a3c62ff9ab558659325e305"
+      },
+      "tests/nut-crop/run_b111_request_binding.py": {
+        "status": "A",
+        "blob": "038c56f8c8c72833a8e122f92028d53f8a22f598"
+      },
+      "tests/nut-crop/test_b111_request_boundaries.f90": {
+        "status": "A",
+        "blob": "c6361772587bb7d1dd39108dc49e66e55bc74c55"
+      },
+      "tests/nut-crop/test_b111_request_day.f90": {
+        "status": "A",
+        "blob": "a0e4932fb392f468cbfd8e7ef2ab8c93e4db463b"
+      },
+      "tests/nut-crop/test_crop_soil_joint.f90": {
+        "status": "M",
+        "blob": "da2276c3cab8c61e9e0558cc7097462d72653678"
+      },
+      "tests/nut-crop/verify_b111_request_successor.py": {
+        "status": "A",
+        "blob": "2ab110e9d6e032b037880e08686b226b6b3b957a"
+      }
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "c98f1bc2405f36f99d7e053e87e1b73e08e74013eb1cb809987531f59b17d8df",
+      "decoded_bytes": 86620,
+      "members": 1709
+    },
+    "cold_science": {
+      "compile": 220.4260660700529,
+      "driver_compile": 26.084536422000383,
+      "link": 2.6397610359999817,
+      "native": 136.14684015497915
+    },
+    "boundary_science": "O0/O2 PASS;72real soil/crop cases per optimization; real Richards plus opaque/fresh native continuation;2policy mismatch negatives per optimization; tiny-demand, multi-organ, strict gates and nonfinite direct boundary leaf PASS.",
+    "retained_failure": "First boundary leaf rejected before compilation: strict modular closure requires explicit include authority. Replaced fixture include by a small explicit real parameter/table contract, keeping closure guards unchanged. Final leaf PASS; original failed log retained.",
+    "preserved": true,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_REQUEST_BINDING_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "06594c04ae7c6f3426f9a1d62ae2fc9660d5a1592f5c402bdcd77ab532d72ee4",
+      "members": 6,
+      "decoded_bytes": 11380
+    },
+    "admission_controls": 27,
+    "actual_owner_dispatch": "PASS_EXITS_BEFORE_NUMERICAL_SELECTION",
+    "docs": "SOURCE_AND_STRICT_PASS",
+    "full_capability": false,
+    "full_master_qualification": false,
+    "canonical_admission": {
+      "pr": 1253,
+      "merge_commit": "c9e5efad50cf6cf18342a57efbee398260fdce82",
+      "qualified_head": "529451f4273d51722daefefce6d55b576598e44d",
+      "actual_tree": "73f81e9c7fb8a18979a683cf449b4d16c4c2c502",
+      "production_source_tree": "6398436eca411f7e7dac05f33286c4a37b18de33",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": [],
+      "full_capability": false,
+      "master_disposition_changes": 0
+    }
+  },
+  "reproductive_review_20261016": {
+    "baseline": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+    "stage": "SOURCE_ASSESSMENT_CANONICALLY_RECORDED_NO_PRODUCTION_ADMISSION",
+    "branch": "work/nut-b111-reproductive-review-20261016",
+    "contract": "docs/science/MC_NUT01_REPRODUCTIVE_REVIEW_20261016.md",
+    "scope": "Separate source/executable review of reproductive storage supply, FNTRT root donor, residual-concentration death, small translocation cutoff and donor overdraw. Preserve1253 and existing WOFOST81/Soil-N owner.",
+    "source_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+    "literal_lines": [
+      [
+        354,
+        370
+      ],
+      [
+        197,
+        255
+      ]
+    ],
+    "unchanged1253_production_blobs": {
+      "src/crop/mod_crop_b111_n_request_binding.f90": "78f8dc0d6507e457941b2d8152466ce2e2384316",
+      "src/crop/mod_crop_soil_n_configuration.f90": "2b37c9ba5aec86f33d20bb9cef40eb658927b35b",
+      "src/crop/mod_crop_soil_n_day.f90": "6259e3aaaf852fc1fb3cac670c0c674602498d73",
+      "src/crop/mod_wofost81_nitrogen.f90": "49d75092fd06920468eb8665a3e1138022d19751"
+    },
+    "review_result": {
+      "status": "SOURCE_REVIEW_PASS_NOT_PRODUCTION_ADMISSION",
+      "baseline": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "authority_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+      "literal_lines": [
+        [
+          354,
+          370
+        ],
+        [
+          197,
+          255
+        ]
+      ],
+      "production_provider_sha256": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce",
+      "cases_per_opt": 4,
+      "cost_seconds": 0.6673359959822847
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "7eaed2455e86a1db193be55aa73426465f895fc6d8b106488f8330605067d16a",
+      "decoded_bytes": 8604,
+      "members": 23
+    },
+    "findings": [
+      "conserving root-translocation discriminator .08 vs .01904761904761905 kg/ha/day",
+      "literal donor-overdraw/clipping algebraic counterexample gains1.5 kg/ha; reachability in complete crop not established",
+      "death discriminator .1 vs .5 kg/ha/day",
+      "active translocation cutoff algebraic counterexample gains2e-6 kg/ha; not a declared reachable reference defect"
+    ],
+    "decision": "New bounded source prepare/apply policy requires explicit selection, original order, prepublication refusal of active cutoff/overdraw; no removal of1253 vegetative guard, no WOFOST81 rewrite and no automatic broad reference correction. Reuse sole crop/soil/pending owner and complete restart.",
+    "test_selection": {
+      "executed": "two native O0/O2 review programs with4 discriminators each, one real unchanged production provider and literal source oracle; strict bounds and IEEE traps",
+      "measured_total_seconds": 0.6673359959822847,
+      "scientific_admission": "NONE; source assessment only",
+      "not_selected": "full FCI, Richards/RossFast/highest low-air; no production/caller/state/restart changes"
+    },
+    "next_safe_step": "Implement small source-order reproductive/death process contract on explicit bounded conserving donor domain; qualify before composing existing N owner. Wider source defects need a separate reachability/reference decision.",
+    "actual_senescence_admission": {
+      "pr": 1239,
+      "merge_commit": "3b661766dc59298a7f541c970c2d3a55602d926c",
+      "scope": "Existing delayed physical material owner, not new B1.11 death-equation equivalence"
+    },
+    "production_implemented": false,
+    "production_qualified": false,
+    "production_admitted": false,
+    "capability_disposition_changes": 0,
+    "pr": 1259,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1259",
+    "validation": {
+      "scientific_surface_unchanged_from_canonical": "1c28da44ba0ddf0cdb10be5930c5f6b8de33f9c8",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "source_guard": "PASS existing dynamic-pond owner source guard; no src/tests/tools/reference/.github delta",
+      "docs": "source and strict PASS;16.44s strict build",
+      "concurrent_canonical": "924b6c3eef1128f4b2a39a19754ff988cdf90df5 adds only independent1258 status/ledger receipts; all preserved",
+      "no_new_numerical_qualification": "Review probes only, not new production admission"
+    },
+    "canonical_review": {
+      "pr": 1259,
+      "merge_commit": "a0cbac6a14b952bc4a34dd105b7251803c77f445",
+      "qualified_review_head": "e72b3d42ce3401e0b8ef9774812e01ec49ad6a13",
+      "actual_tree": "8b9138257a57a301420d48c45c2060b8930c71a2",
+      "merge_tree_equals_reviewed_tree": true,
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "scientific_surface_delta": "NONE",
+      "admission_scope": "Source assessment and next bounded implementation decision only; no new N process/capability admission"
+    },
+    "independent_balance_review_20261016": {
+      "stage": "SOURCE_ASSESSMENT_AND_DIAGNOSTIC_IDENTITY_ONLY",
+      "publication_verification": {
+        "scientific_surface_delta_from114e543e": "EMPTY across src/tests/tools/reference/.github",
+        "existing_dynamic_pond_owner_source_guard": "PASS",
+        "original1259_capsule_manifest_and_literal_authority": "PASS all23 members; actual source-derived literal blocks and current provider identity verified",
+        "independent_replay": "PASS two cold O0/O2 native programs,4 discriminators each; original stdout exact;1.4597s total",
+        "documentation_source": "PASS",
+        "strict_mkdocs": "PASS exit0;17.79s",
+        "owning_master_assessment_receipt": "3aa546c24b27836f723087bb43cf870046e8bc69",
+        "capability_disposition_changes": 0,
+        "full_fci_or_highest_or_solver_runs": "NOT_SELECTED read-only source assessment"
+      },
+      "result": {
+        "status": "INDEPENDENT_SOURCE_ASSESSMENT_REPLAY_PASS_NO_PRODUCTION_ADMISSION",
+        "canonical": "114e543eff1f340dda4181c90250cc7351f4270a",
+        "source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+        "original_capsule_sha256": "7eaed2455e86a1db193be55aa73426465f895fc6d8b106488f8330605067d16a",
+        "authority_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+        "provider_sha256": "38aa4b814c7928ef462224fa68a6533a5e341d7e378cf349336581461e3f76ce",
+        "compiler_sha256": "cf80471c892125dfc504a3b9adc5b72df8f3d7ad6e73bdb9ea3b7b1c7992c3e5",
+        "compiler_version": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "source_sha256": {
+          "driver.f90": "da74b0a08e1bdfb57730e99ac8db138c00949c4ba77e4da3caf06a79e5d58959",
+          "literal.f90": "4cab03eec3ef61a845bc2814fa34433f1609edfd7bc8b851cb936ad85662e14b"
+        },
+        "cases_per_optimization": 4,
+        "native_programs": 2,
+        "stdout_sha256": "525cab9ac6f2d076c0d652a1905082514059d395a9e08613e7b5df3c45353330",
+        "original_stdout_exact": true,
+        "total_seconds": 1.4596747369942022,
+        "new_production_physics": false
+      },
+      "evidence": {
+        "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_INDEPENDENT_REVIEW_20261016.tar.xz.b64",
+        "decoded_sha256": "0ae586bd031893272200023dea90101c3c91961bea7c4869ec6f70344cdb3637",
+        "decoded_bytes": 11484,
+        "members": 24
+      },
+      "analytical_identity": "R=dt*((sum uptake partitions-U)+(storage credit-sum donor transfers))+sum(max(0,-unclipped living-organ N))",
+      "proposed_prepublication_conditions": [
+        "Independent uptake allocation/cutoff closure",
+        "Independent storage/donor translocation allocation/cutoff closure",
+        "Every living organ nonnegative before literal max(0,x) clipping"
+      ],
+      "identity_scope": "Crop-level balance including reported death loss; pending material return is internal in joint whole-N. Net residual alone can conceal cancellation between structural errors. No new tolerance or equation correction.",
+      "actual_full_crop_reachability_established": false,
+      "formal_reference_defect_declared": false,
+      "production_implemented": false,
+      "production_admitted": false,
+      "preservation": "Original1259 assessment/capsule and all1253/default production blobs unchanged. Two current cold real one-provider O0/O2 review programs reproduce all4 original discriminator records exactly; no broad numerical suite."
+    },
+    "current_bounded_successor": {
+      "pr": 1260,
+      "actual_merge": "dd3e78dfc005c11221c6d049c5fcee4ef8cd2280",
+      "recovery": "reproductive_process_20261016",
+      "scope": "Original assessment identities and non-admission flags are historical; bounded explicit production profile is now admitted."
+    }
+  },
+  "reproductive_process_20261016": {
+    "baseline": "71551d19d7f9a5e973d2deff5347049174502cbf",
+    "branch": "work/nut-reproductive-process-20261016",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED",
+    "contract": "docs/science/MC_NUT01_REPRODUCTIVE_PROCESS_CONTRACT_20261016.md",
+    "scope": "Bounded source-order reproduction/translocation/residual death in existing one-day N owner; new explicit policy mutually exclusive with1253, default unchanged. No new committed pool/codec.",
+    "invariants": [
+      "one N owner and one fixation receipt",
+      "independent allocation closure and preclipping nonnegative organs",
+      "whole-N budget",
+      "atomic trial/reject/replay",
+      "complete native/opaque policy identity"
+    ],
+    "test_selection": {
+      "small": "2-provider process with literal source oracle, O0/O2, strict runtime/FP checks; expected<5s",
+      "daily": "Real existing crop/Soil-N and selected process; expected<30s, actual31.317s direct feedback including providers/driver/link/native. No repeated broad run.",
+      "stable": "one measured full affected crop supply build plus originaldefault/1253/mineral/reactive native programs, new joint fresh-process continuation and corruption controls; expected450s, selected because actual request/apply/configuration and state/caller semantics change",
+      "unchanged": "No WOFOST81 source formula, existing1253 binding, solver, physical water state or native codec mutation selected",
+      "broad": "Full FCI/RossFast/highest-low-air NOT_SELECTED_IMPACT; owner source/evidence gates required"
+    },
+    "next_safe_step": "Update existing bounded MC-NUT master owner receipt and remaining-envelope text, retaining all243 dispositions and full-denominator guard. No rebuild of1253/default or unrelated qualification.",
+    "implementation": "Explicit source policy and private prepared context connected to existing daily soil trial and existing crop N owner; absent and PR1253 apply calls unchanged.",
+    "local_feedback": {
+      "process": "Final persisted4117743 execution: O0/O2 PASS, 2083 accepted/23 refused per opt, immutable original source blocks and independent guard checks.",
+      "daily": "n-repro-day-02 O0/O2 PASS, 72 literal real-soil cases per optimization plus donor-overdraw and replay rejection",
+      "retained_failures": [
+        "n-repro-process-01/02 invalid test death fixture > bounded DM corrected",
+        "n-repro-day-01 reproductive fixture required consistent anthesis continuation; test corrected"
+      ]
+    },
+    "live_reconciliation": {
+      "canonical": "da6f5657b6d68885a4b2a5e75eab527ad6f49bc5",
+      "scope": "Independent process/direct-day review, no production/test dependency delta; preserved in full. No numerical repeat selected.",
+      "independent_process_sha256": "913a515e869e7093155750e91dbdbabb4919a156bf46c5821c723017a7f4ae95"
+    },
+    "execution_commit": "4117743b606f86b890fb997b238e97e04add2b65",
+    "source_tree": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_PROCESS_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "e11720f8a4079435b6a44a50184ffc52d13aa9659ae576a5e30eabcc717a0a75",
+      "decoded_bytes": 55856,
+      "members": 1935
+    },
+    "postimages": {
+      "src/crop/mod_b111_reproductive_n_process.f90": {
+        "status": "A",
+        "blob": "7471d12f1b2f203415db0a5b28c83c3cce94b02f"
+      },
+      "src/crop/mod_crop_b111_reproductive_binding.f90": {
+        "status": "A",
+        "blob": "dad1308534d9276f7ffa0a90d89ea2a54de0fc1d"
+      },
+      "src/crop/mod_crop_soil_n_configuration.f90": {
+        "status": "M",
+        "blob": "07876e3d535f9108a192d2f7d5b2f2f136b4020a"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "blob": "1cc9039f6d5b1f0cec2d081d3676342d60e78f0e"
+      },
+      "tests/nut-crop/check_reproductive_controls.py": {
+        "status": "A",
+        "blob": "0496cc08641eae3e3d69324388e9f70bcace6483"
+      },
+      "tests/nut-crop/run_reproductive_binding.py": {
+        "status": "A",
+        "blob": "6b3ba74816014588bb9b793b081bf0c36a40d6a5"
+      },
+      "tests/nut-crop/run_reproductive_process.py": {
+        "status": "A",
+        "blob": "8339b6102e1d03102602777dc73b66ad157b067b"
+      },
+      "tests/nut-crop/test_b111_reproductive_day.f90": {
+        "status": "A",
+        "blob": "68db9c592eea89abef8b5cacdc4d0e357cded1a3"
+      },
+      "tests/nut-crop/test_reproductive_joint.f90": {
+        "status": "A",
+        "blob": "c676553bb1dfac425ff5e0d0e3b4d8dc1f2fdcdb"
+      },
+      "tests/nut-crop/test_reproductive_process.f90": {
+        "status": "A",
+        "blob": "c096527351553bfc7604486d6bc1cf95ddc25689"
+      },
+      "tests/nut-crop/verify_reproductive_successor.py": {
+        "status": "A",
+        "blob": "52025a5e409e2638ba82a18588c0a143317db522"
+      },
+      "tests/nut-sol/check_dynamic_pond_controls.py": {
+        "status": "M",
+        "blob": "9b1892fba1520c38a31b4d61f567971651edd881"
+      },
+      "tests/nut-sol/verify_dynamic_pond_successor.py": {
+        "status": "M",
+        "blob": "b635a6c4f5d4c9cfcdc0e336d3f66fb081079300"
+      }
+    },
+    "cost_seconds": {
+      "compile": 222.32456987706246,
+      "driver_compile": 47.00289655299275,
+      "link": 4.486756418002187,
+      "native": 190.72063837609312
+    },
+    "process_cost_seconds": {
+      "compile": 0.8160445819812594,
+      "link": 0.11170307699649129,
+      "native": 0.008392820003791712
+    },
+    "qualification_scope": "72 literal daily cases per optimization; actual Richards/material/source N/delayed pending/replay/opaque/native/fresh-process; all4 source policy fields, absent and1253 mismatch refusals; default1253 restart/endpoint exact bytes. No aquifer or complete historical activation.",
+    "pr": 1260,
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_PROCESS_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "c17c1f30e56e170eb903405181f79940b4aa1091fee4728869b8ef1fab6d08fb",
+      "decoded_bytes": 12680,
+      "members": 7
+    },
+    "admission_controls": 34,
+    "owning_fci_entries": [
+      "--sol-pond-owner-only PASS",
+      "--int12c-owner-only PASS"
+    ],
+    "docs": "source check and strict build PASS",
+    "full_capability": false,
+    "master_disposition_changes": 0,
+    "canonical_admission": {
+      "pr": 1260,
+      "merge_commit": "dd3e78dfc005c11221c6d049c5fcee4ef8cd2280",
+      "qualified_head": "d00aa609912714cdca420ae8f5d71bcd4481dffc",
+      "actual_tree": "25563e164cda762f8fa1de271fefadb9d829cc38",
+      "production_source_tree": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS actual imported GitHub merge object and owner source verification",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_runtime_admission": true,
+      "full_capability": false,
+      "master_disposition_changes": 0
+    },
+    "remaining": "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, partial-leaf return and full historical harvest equivalence remain outside this bounded option. Aquifer remains excluded."
+  },
+  "reproductive_candidate_independent_review_20261016": {
+    "stage": "PROCESS_AND_DIRECT_DAY_REVIEW_PASS_NOT_RUNTIME_ADMISSION",
+    "baseline": "71551d19d7f9a5e973d2deff5347049174502cbf",
+    "candidate": "7e28752086ee32e26b40f67ca08304a974c04e55",
+    "candidate_source_tree": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "process_sha256": "913a515e869e7093155750e91dbdbabb4919a156bf46c5821c723017a7f4ae95",
+    "evidence": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_PROCESS_INDEPENDENT_20261016.tar.xz.b64",
+    "evidence_sha256": "2e31e857a5511140bb322dacf9f37504f0e8daec39a34ea408f1aa9a1885808f",
+    "evidence_bytes": 97388,
+    "evidence_members": 429,
+    "original_corpus_per_optimization": {
+      "accepted": 2083,
+      "refused": 23
+    },
+    "logarithmic_corpus_per_optimization": {
+      "accepted": 70712,
+      "refused": 29346
+    },
+    "direct_day_cases_per_optimization": 72,
+    "production_admitted": false,
+    "default_and_1253_unchanged": true,
+    "remaining": "Actual coupled Richards/soil/crop/pending native and opaque fresh-process continuation, configuration/no-overwrite negatives, original/default1253 preservation, owner source/evidence gates and exact candidate admission remain required.",
+    "failures_preserved": [
+      "Original cutoff fixture had dead DM greater than before DM; corrected to zero death.",
+      "Original post-anthesis daily fixture lacked anthesis continuation flag; corrected fixture only.",
+      "First extreme corpus required OVERDRAW status for every algebraic overdraw; extreme rates can first fail independent ALLOCATION closure. Accept either refusal while requiring identical candidate."
+    ],
+    "scope": "Independent process and direct daily review only. No production integration/native restart admission.",
+    "roundoff": "Live organs/external ledgers exact literal; aggregate cumulative loss within pre-existing2048epsilon balance authority, preserving source aggregate representation distinction.",
+    "current_rerun": "Both small and logarithmic corpora rerun cold on current913a515e process, after explicit request initialization was added; identical counts/stdout. Older79d2d126 snapshot results retained as historical only.",
+    "post_merge_independent_reconciliation": {
+      "actual_canonical": "7c85247afaeaba4f96b86324d58ef575851b5310",
+      "actual_merge": "dd3e78dfc005c11221c6d049c5fcee4ef8cd2280",
+      "qualified_head": "d00aa609912714cdca420ae8f5d71bcd4481dffc",
+      "qualified_merge_tree": "25563e164cda762f8fa1de271fefadb9d829cc38",
+      "actual_merge_tree_equals_qualified_tree": true,
+      "source_tree": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+      "independent_full_qualification_commit": "cfc8fc05",
+      "independent_admission_controls": 34,
+      "final_delta": "12269f01 adds source-route preservation flags only; original scientific validation and control bodies unchanged. Actual source and sealed science revalidated at7c85247a. Existing incumbent proof bound to unchanged71551d19.",
+      "numerical_reruns": "None after actual merge; qualified scientific dependencies unchanged.",
+      "production_admitted": true,
+      "evidence": "integration/audits/evidence/MC_NUT01_REPRODUCTIVE_INDEPENDENT_ADMISSION_20261016.tar.xz.b64",
+      "evidence_sha256": "0753b1d3f51757859beb00c30a3f0e2d3cc331f4ed089cf4a00b39637aa1c8a0",
+      "evidence_bytes": 5408,
+      "evidence_members": 5
+    },
+    "status_scope": "Historical process/day review checkpoint; actual bounded admission and independent reconciliation are recorded below and in reproductive_process_20261016."
+  },
+  "leaf_return_review_20261016": {
+    "stage": "SOURCE_CHAIN_REVIEW_PASS_REFERENCE_DECISION_REQUIRED",
+    "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "branch": "work/nut-leaf-return-review-20261016",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "source_tree_unchanged": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.tar.xz.b64",
+      "decoded_sha256": "18c1ce8455d67c5755838ad5f2e63838d617f8361a72b2d2b13259e652ac52b4",
+      "decoded_bytes": 29188,
+      "members": 38
+    },
+    "case_counts_per_optimization": {
+      "day_harvest_cases": 27,
+      "leaf_DM_return_exceeds_death": 9
+    },
+    "counterexample": {
+      "leaf_death_DM_kg_ha": 10,
+      "daily_leaf_fraction": 1,
+      "harvest_leaf_fraction": 1,
+      "daily_leaf_soil_DM_kg_ha": 10,
+      "harvest_dead_leaf_soil_DM_kg_ha": 10,
+      "total_leaf_soil_N_kg_ha": 0.1
+    },
+    "production_providers_executed": {
+      "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+      "src/process/mod_b111_soil_n_addition.f90": "3c6c1f874cdf67cbe107e17ffbe39acb33e0ffda447c9d7b56a7fcb349485211",
+      "src/process/mod_crop_senescence_residue.f90": "ccdd7d77be2384f75927132f0a27113f002637ee15eb2f5ed04bc5d8436331ba"
+    },
+    "cost_seconds": {
+      "compile": 0.9690339189983206,
+      "link": 0.0847224110038951,
+      "native": 0.005504872999154031
+    },
+    "scope": "Immutable literal source blocks plus real current pending/material constructors; no full historical crop/calendar reachability claim, corrected reference or partial-return runtime admission.",
+    "finding": "Partial leaf return and no daily stem return require retained leaf/stem physical DM/N. Literal gross dead-leaf DM can be returned again at harvest while N is reduced by prior leaf return. N closure alone is insufficient.",
+    "test_selection": {
+      "small": "Three real current mapping providers plus immutable source-block oracle, O0/O2, bounds/FP traps; actual about1.06s",
+      "broad": "NOT_SELECTED_IMPACT: src/tests/tools/reference/.github and all admitted science dependencies unchanged; actual owner source proof plus docs integrity selected. No full FCI, alternate solver or highest-low-air run."
+    },
+    "production_admitted": false,
+    "formal_reference_defect_status": "UNADJUDICATED_SOURCE_CHAIN_COUNTEREXAMPLE",
+    "scientific_prerequisite": "Adjudicate ordinary source growth/daily-return/harvest timing and DM overlap; if confirmed, correct and qualify B1 before changing SWAP5 partial-return semantics.",
+    "next_safe_step": "Resolve B1 source-chain DM/retained-stock decision; then extend existing sole owner and native contract for retained leaf/stem DM/N and qualify source daily/harvest/restart composition. Preserve1260,1253/default, full-return, irrigation and SOL.",
+    "capability_disposition_changes": 0,
+    "aquifer": "EXCLUDED",
+    "pr": 1261,
+    "validation": {
+      "capsule_manifest_and_raw_events": "PASS 38 members;14 compile/link/native events, all runtime/FP checks retained",
+      "actual_owner_source_proof": "PASS current admitted1260 owner; all src/tests/tools/reference/.github unchanged",
+      "docs": "source checks and strict build PASS",
+      "numerical_requalification": "NOT_SELECTED_IMPACT scientific postimages unchanged",
+      "full_historical_trajectory": "NOT_ESTABLISHED",
+      "formal_reference_correction": "NOT_ADMITTED"
+    },
+    "canonical_assessment": {
+      "pr": 1261,
+      "merge_commit": "7dc1adb594c4091d7df60229af4b779485ca9558",
+      "reviewed_head": "74f8ec335a7eb7efcdb01b98b362da6d2115640a",
+      "actual_tree": "85364309d66b291213abf62a44c831d59edbf7af",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "scientific_surface": "src/tests/tools/reference/.github unchanged from d27c6abe",
+      "post_merge_source_proof": "PASS actual GitHub merge object and admitted1260 source guard",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_admitted": false,
+      "reference_correction_admitted": false
+    }
+  },
+  "leaf_return_reference_20261016": {
+    "stage": "ACTUAL_ORDINARY_SOURCE_DEFECT_CONFIRMED_CORRECTION_CANDIDATE_VERIFIED",
+    "baseline": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "branch": "work/nut-leaf-return-reference-20261016",
+    "contract": "docs/science/MC_NUT01_LEAF_RETURN_SOURCE_REVIEW_20261016.md",
+    "candidate_id": "MC-NUT01-LEAF-DM",
+    "source_tree_unchanged": "05fed58b2153f40ca26f69b7858f7e79b4553b4c",
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_NUT01_LEAF_RETURN_REFERENCE_CANDIDATE_20261016.tar.xz.b64",
+      "decoded_sha256": "81f4682477b738ee88641e34527d9b6ead6363ad4d0f35f35e5f036b3f90469c",
+      "decoded_bytes": 60240,
+      "members": 338
+    },
+    "actual_source_scope": "Exact19-helper WOFOST growth/phenology/leaf/management/interface compilation closure; unselected grass helpers are compiled, not claimed exercised, original task3/4 cases, full original nutrient scientific routines and original SoilManagement5/residue chemistry. Ordinary annual SW_WOFOST1, IDSL0, SWCROPSNM0/1; prescribed environment and PGASS0/20. No full weather/hydraulic trajectory or active grass-removal claim.",
+    "controls": {
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "source_candidate_native_programs": 96,
+      "combinations_per_variant_per_opt": 24,
+      "N_off_and_zero_return": "bit-identical complete stdout",
+      "potential_dead_leaf_stock": "positive and bit-identical",
+      "daily_N_organs_and_organ_loss_fixation_uptake_ledgers": "10 source values per day, bit-identical",
+      "actual_organic_soil_DM_and_N": "checked via original residue routine",
+      "runtime_checks": "bounds and invalid/zero/overflow traps"
+    },
+    "confirmed_ordinary_example": {
+      "initial_DM_kg_ha": 300,
+      "computed_leaf_death_kg_ha": 27.1,
+      "original_soil_DM_kg_ha": 327.1,
+      "candidate_soil_DM_kg_ha": 300,
+      "both_soil_N_kg_ha": 3
+    },
+    "positive_growth_example": {
+      "initial_DM_kg_ha": 300,
+      "actual_growth_kg_ha": 30,
+      "computed_leaf_death_kg_ha": 28.26,
+      "original_soil_DM_kg_ha": 358.26,
+      "candidate_soil_DM_kg_ha": 330,
+      "both_soil_N_kg_ha": 3
+    },
+    "candidate_reference_identity": {
+      "scope": "B1.11 plus candidate only; not admitted B1 snapshot",
+      "member_count": 63,
+      "preimage_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "candidate_manifest_sha256": "1b7ea89d87ceedd812011c55351721e2232ced67883a5a9d3e35d7e6b73d596d",
+      "preimage_bytes": 1886519,
+      "candidate_bytes": 1886733,
+      "patch_sha256": "5f96fc709e26553f7437900876eb2b77944438fd084c55d45dd8b61888b0a393",
+      "changed": {
+        "SWAP/wofost.f90": {
+          "preimage_sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+          "candidate_sha256": "b66e34cba9210420396b6e29b0612fb3f4240579f4e837bad1de0d70edef0bd6"
+        },
+        "SWAP/wofostnut.f90": {
+          "preimage_sha256": "071e65763be9e771b32b417252584d50874715d9ff11d3482c131826cc80bbb2",
+          "candidate_sha256": "f64dbc7a58bc7508fd25aa277fa09f70a9ed9206aab684ad094ef1dc61d3e346"
+        }
+      },
+      "actual_patch_apply": "PASS exact stored bytes"
+    },
+    "cost_seconds": {
+      "compile": 2.413378142984584,
+      "link": 0.22014849598053843,
+      "native": 0.28214638387726154
+    },
+    "scientific_decision": "Confirmed ordinary daily-to-harvest implementation defect: returned leaf DM remains in the physical dead-leaf stock and is returned again. DWLV is a removable stock in source management_event, not an immutable gross-death ledger. Candidate retains only (1-f) daily death in actual N-active DWLV; no change to N scientific bodies or soil chemistry.",
+    "production_admitted": false,
+    "corrected_B1_snapshot_admitted": false,
+    "published_B1_manifest_changed": false,
+    "remaining": "Formal corrected-reference admission/provenance and qualification of affected allowed removal modes before global B1 update; then retained leaf/stem DM/N, harvest, whole N/OM, rollback and native/opaque continuation in existing SWAP5 owner.",
+    "next_safe_step": "Complete the B1 correction admission against the existing ordered reference lineage, preserving immutable B1.11 and affected removal/state semantics; do not rebuild admitted1260 or enable partial-return runtime before retained physical stock and restart are qualified.",
+    "capability_disposition_changes": 0,
+    "test_selection": "Small actual scientific closure: 3s compile/link/native. Source-only owner and docs gates selected; full FCI, unrelated solver and highest-low-air NOT_SELECTED_IMPACT.",
+    "pr": 1263,
+    "validation": {
+      "sealed_capsule": "PASS 338 members;132 checked events incl96 native executions",
+      "candidate_binary_patch": "PASS exact two-source application and63-member manifest",
+      "current_owner_source": "PASS admitted1260 source guard; all scientific surfaces unchanged",
+      "docs": "source and strict PASS"
+    },
+    "canonical_reconciliation": {
+      "base": "c2b7ad286704798662d6a00b75f15ab81c59d2fc",
+      "change": "Independent admitted #1099 signed DIVDRA; no overlap with three candidate assessment files or archived legacy scientific inputs.",
+      "current_source_tree": "7f11c4d028c88aab9aaddb9b693dac5796443284",
+      "selection": "No numerical rerun for unchanged leaf scientific inputs; current signed successor owner evidence and documentation selected.",
+      "production_delta_from_reconciled_base": false
+    },
+    "canonical_assessment": {
+      "pr": 1263,
+      "merge_commit": "c62a2e69a0e604d92dcdba625c525835c2bd5224",
+      "reviewed_head": "df661c9006eaa903cf1193fd4c551266a80a24de",
+      "reviewed_tree": "25bc960b6be9f5f0781238401a2e2d21aff38cf0",
+      "actual_tree": "a092bc4b9cf1247b76853c15f232c5f9d9020eb8",
+      "actual_merge_base": "e849dbb01e4bda79dacf584fa14e9cb49ca9c764",
+      "reviewed_tree_equals_actual_merge_tree": false,
+      "merge_delta": "Only independent signed DIVDRA master receipt in its own status JSON; all three candidate assessment files and all scientific surfaces byte-identical to reviewed head.",
+      "post_merge_source_proof": "PASS actual GitHub merge; current reproductive/signed source guard; scientific surfaces equal reviewed head",
+      "owner_evidence_qualification": "PASS reproductive and signed successor capsule validation; no numerical rerun",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_check_runs": [],
+      "hosted_workflow_runs": [],
+      "production_admitted": false,
+      "reference_correction_admitted": false
+    }
+  }
+}
