@@ -217,7 +217,6 @@
       "id": "MC-IRR01",
       "status": "BOUNDED_RUNTIME_ADMITTED_SHARED_APPLICATION_BLOCKED",
       "capabilities": [
-        "SW431-IRR-AVAIL",
         "SW431-IRR-DCS1",
         "SW431-IRR-LIMIT",
         "SW431-IRR-SALTEXCESS",
@@ -228,13 +227,14 @@
         "SW431-IRR-TCS7",
         "SW431-IRR-TCS8"
       ],
-      "next_action": "Preserve admitted weekly TCS6 current-root/material weather trajectory and joint native continuation. Ten existing full irrigation envelopes remain active; salt/SALTEXCESS and wider selector/profile activation keep their own gates.",
+      "next_action": "Preserve admitted TCS6 and external-availability current-owner weather/native continuation. Nine existing full irrigation envelopes remain active; salt/SALTEXCESS and wider selector/profile activation keep their own gates.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
       "bounded_contract": "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
       "internal_sequence_dependencies": [],
       "closed_foundation_authorities": [
+        "SW431-IRR-AVAIL",
         "SW431-IRR-FIXED-SPRINK",
         "SW431-IRR-FREQ",
         "SW431-IRR-RATE-CAP",
@@ -267,10 +267,10 @@
         "SW431-IRR-FREQ",
         "SW431-IRR-RATE-DAILY",
         "SW431-IRR-RATE-CAP",
-        "SW431-IRR-TCS6"
+        "SW431-IRR-TCS6",
+        "SW431-IRR-AVAIL"
       ],
       "active_capabilities": [
-        "SW431-IRR-AVAIL",
         "SW431-IRR-DCS1",
         "SW431-IRR-LIMIT",
         "SW431-IRR-SALTEXCESS",
@@ -306,6 +306,13 @@
         "canonical_merge": "1ff5b7b8f4f5e3869fdb6d33defa2dd2ef47b23a",
         "canonical_receipt": "40c6fe4252cb80bc2adbeee2731f76199f6a7c48",
         "qualified_head": "a4804e23fb9fb9c18adc749c3349c70a4ec056ab",
+        "full_capability": true
+      },
+      "availability_admission_20261016": {
+        "pr": 1267,
+        "canonical_merge": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+        "canonical_receipt": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
+        "qualified_head": "72583ca3744271494da4a4147cbe35e46cd31e1a",
         "full_capability": true
       }
     },

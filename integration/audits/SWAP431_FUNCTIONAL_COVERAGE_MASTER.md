@@ -1,10 +1,16 @@
+# Current external availability admission, 16 October 2026
+
+`SW431-IRR-AVAIL` is **ADMITTED** through [PR1267](https://github.com/abhedwig-cell/SWAP5/pull/1267), canonical `a1a4dc8d0cf7b63f10c77aeb06843465e220d87d`; receipt `760429f1d73e4917dfbf29a0bdfdaa119b823f7a`. Literal TASK4, frozen/expired provider and fresh next-event selection, actual water balance and exact continuous/opaque/native fresh-process continuation pass O0/O2. The TCS6 byte representation and parallel drainage admissions are preserved.
+
+Current counts: **100 ADMITTED,104 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;107 unresolved,243 total**. Only the existing AVAIL row changes; all other242 capability rows remain unchanged. MC-IRR01 has7 admitted of16 and9 remaining. Global coverage remains open.
+
 # Current DISLAYER source preflight, 16 October 2026
 
 `SW431-DRAIN-DISLAYER` remains **ACTIVE_MIGRATION**. Complete B1.11 and admitted03 DIVDRA and the existing candidate reproduce18 per-level mass defects among24 cases per O0/O2 execution; six conservative controls remain exact. The1e-8 retained-sum branch loses small scalar transfers or double-books nonzero deeper flux after top-node fallback. Frozen full conditions and source-bound evidence: canonical `ce5d6b6a41462e25eacbc1b31a6a911bd809fceb`, phase `dislayer_phase_20261016` in the existing drainage recovery record.
 
 First remaining condition: qualify an isolated B1 Paragraph12 normalization correction under ADR-0005; then correct the existing transform and complete its existing process/runtime/admission conditions. No production/reference code was admitted. **Counts remain99 ADMITTED and108 unresolved of243.**
 
-# Current ordinary separate infiltration admission, 16 October 2026
+# Previous ordinary separate infiltration admission, 16 October 2026
 
 `SW431-DRAIN-INF-SPLIT` is **ADMITTED** through [PR1266](https://github.com/abhedwig-cell/SWAP5/pull/1266), canonical `09bd5913394e5e263d414b50d29f720e3ab1e21f`, source `cbf6dad5539c6ba38dcdd3481e696ab7aaac2921`. The actual full merge tree equals the qualified candidate. Shared B19 integral, original effective spacing, source-valid same-compartment geometry and actual single/multilevel mass, rejection/replay, restart and isolation pass O0/O2. Original B18, signed/multilevel and parallel TCS6 admission evidence is preserved.
 
@@ -298,7 +304,6 @@ The following entries are deliberately excluded from the missing-production-impl
 | SW431-DRAIN-DIV-TOPINTERFLOW | Separate highest interflow discharge layer and lower-layer exclusion | MC-DRAIN01 | None |
 | SW431-DRAIN-DRAMET3 | Native signed resistance response with time-varying channel head and drain-bottom clamp | MC-DRAIN01 | None |
 | SW431-HYD-LINEAR-TABLE | Explicit piecewise linear hydraulic input tables | MC-HYD01 | None |
-| SW431-IRR-AVAIL | External irrigation-availability scaling of selected event | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Reuse admitted external provider receipt; qualify its joint weather/application continuation, not another allocation algorithm. |
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | MC-IRR01 | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner. |
 | SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MC-IRR01 | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | MC-IRR01 | None |
@@ -525,7 +530,6 @@ These are individual capability decisions, not admitted implementation plans. De
 
 | Capability | Meaning | Why unresolved | Dependencies |
 |---|---|---|---|
-| SW431-IRR-AVAIL | External irrigation-availability scaling of selected event | Admitted source/runtime/event/salt/allocation; full shared application authority remains open. | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Reuse admitted external provider receipt; qualify its joint weather/application continuation, not another allocation algorithm. |
 | SW431-IRR-DCS1 | Refill-to-field-capacity with under/over depth and rainfall deduction | Admitted source/runtime/event/salt/allocation; full shared application authority remains open. | PR1204 admits a root-free bottom7 weather/crop daystart profile only. Central application/crop/root owners must admit the management hook using the same authentic rain/ET/daystart, accepted evolving roots and material thresholds, then qualify joint physical/weather/crop/event restart. Existing runtime adapters are not whole-application authority. Deduct actual same-window rain and derive rooted field-capacity from the accepted material owner. |
 | SW431-IRR-FIXED-SPRINK | Fixed scheduled-date sprinkling | MIGRATE fixed-event sprinkler-to-interception composition and qualify accepted event progress. Existing fixed process/state and nonintercepting identity binding are present. Missing intercepted binding must reuse them; no new duplicate event cursor is required. | None |
 | SW431-IRR-FREQ | Stress-triggered irrigation without minimum interval suppression | F-APP07 requires TCSFIX1 and positive minimum_interval_days; the source TCSFIX0 omits dayfix gating. Qualified TCS7 standalone component has no production binding and cannot close this scheduled no-interval route. | None |

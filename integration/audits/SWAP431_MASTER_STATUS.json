@@ -105,33 +105,33 @@
   "summary": {
     "capabilities": 243,
     "dispositions": {
-      "ADMITTED": 99,
-      "ACTIVE_MIGRATION": 105,
+      "ADMITTED": 100,
+      "ACTIVE_MIGRATION": 104,
       "SUPERSEDED": 14,
       "REJECTED": 2,
       "NOT_APPLICABLE": 20,
       "QUALIFICATION_ONLY": 3
     },
-    "open_capabilities": 105,
+    "open_capabilities": 104,
     "open_workunits": 18,
     "confirmed_missing_production_entries": 83,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
-    "total_unresolved_capabilities": 108,
+    "total_unresolved_capabilities": 107,
     "active_gap_type_breakdown": {
       "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 6,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
-    "missing_production_binding_or_implementation_entries": 105,
-    "missing_standalone_process_implementations_not_established": 105,
-    "active_with_existing_production_source_authority": 65,
+    "missing_production_binding_or_implementation_entries": 104,
+    "missing_standalone_process_implementations_not_established": 104,
+    "active_with_existing_production_source_authority": 64,
     "active_without_listed_production_source_authority": 40,
-    "active_missing_complete_admitted_route": 105,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;105 full production envelopes remain open. Signed, multilevel and INF-SPLIT ordinary drainage and parallel TCS6 remain admitted.",
+    "active_missing_complete_admitted_route": 104,
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;104 full production envelopes remain open. AVAIL closes through actual provider/joint native continuation; annual and signed-drainage admissions remain preserved.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -141,7 +141,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Continue existing remaining queue; TCS6, annual and signed DIVDRA are admitted. Coverage remains open; use243 fixed IDs and retain all remaining capability-specific gates.",
+  "next_action": "Continue existing remaining queue; AVAIL, annual and signed DIVDRA are admitted. Coverage remains open; use243 fixed IDs and retain all remaining capability-specific gates.",
   "recovery_point": "PR1109 canonically admits ordinary interacting signed multilevel DIVDRA;97 ADMITTED,110 unresolved. B1.12/SWAP-019 canonically admitted through1265. Reuse existing annual-expanded biomass owner; distinguish gross mortality diagnostics from retained physical DM/N. SWAP5 partial-return runtime remains unadmitted. Preserve1264 annual and1099 signed drainage. Master draft:96 admitted,111 unresolved.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -206,7 +206,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "09bd5913394e5e263d414b50d29f720e3ab1e21f",
+  "last_reconciled_head": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -3633,6 +3633,111 @@
       "ledger_disposition_delta": 0,
       "all243_dispositions_unchanged": true,
       "canonical_production_and_reference_unchanged": true
+    }
+  },
+  "latest_availability_admission_20261016": {
+    "capability_id": "SW431-IRR-AVAIL",
+    "pr": 1267,
+    "canonical_merge": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+    "canonical_receipt": "760429f1d73e4917dfbf29a0bdfdaa119b823f7a",
+    "qualified_head": "72583ca3744271494da4a4147cbe35e46cd31e1a",
+    "full_capability": true,
+    "disposition_delta": {
+      "ACTIVE_MIGRATION": -1,
+      "ADMITTED": 1
+    },
+    "previous_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 99,
+        "ACTIVE_MIGRATION": 105,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 105,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 83,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 108,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 6,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 17,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 105,
+      "missing_standalone_process_implementations_not_established": 105,
+      "active_with_existing_production_source_authority": 65,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 105,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;105 full production envelopes remain open. Signed, multilevel and INF-SPLIT ordinary drainage and parallel TCS6 remain admitted.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "new_summary": {
+      "capabilities": 243,
+      "dispositions": {
+        "ADMITTED": 100,
+        "ACTIVE_MIGRATION": 104,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "QUALIFICATION_ONLY": 3
+      },
+      "open_capabilities": 104,
+      "open_workunits": 18,
+      "confirmed_missing_production_entries": 83,
+      "other_unresolved_source_admission_reviews": 3,
+      "qualification_only_capabilities": 3,
+      "total_unresolved_capabilities": 107,
+      "active_gap_type_breakdown": {
+        "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+        "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 6,
+        "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 56,
+        "INCOMPLETE_RUNTIME_QUALIFICATION": 16,
+        "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+      },
+      "qualified_process_missing_runtime_binding": 0,
+      "missing_production_binding_or_implementation_entries": 104,
+      "missing_standalone_process_implementations_not_established": 104,
+      "active_with_existing_production_source_authority": 64,
+      "active_without_listed_production_source_authority": 40,
+      "active_missing_complete_admitted_route": 104,
+      "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;104 full production envelopes remain open. AVAIL closes through actual provider/joint native continuation; annual and signed-drainage admissions remain preserved.",
+      "derived_gap_counter_reconciliation": {
+        "previous_summary": 108,
+        "actual_marked_rows": 92,
+        "active_complete_route_gaps": 108,
+        "disposition_changes": 0,
+        "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+      },
+      "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+    },
+    "scope": "Exactly one existing AVAIL row closes; all other242 capability rows and all prior source/census/annual/drainage/N/SOL receipts remain byte-semantically unchanged. No new capability or numerical FCI claim."
+  },
+  "availability_closeout_checks_20261016": {
+    "source_census_pinned_authority_integrity": "PASS",
+    "unchanged_inheritance_controls": 20,
+    "inheritance_controls_status": "PASS",
+    "docs_source": "PASS",
+    "docs_strict": "PASS",
+    "full_coverage_closed": false,
+    "scope": "Exactly one existing AVAIL row promotion; other242 capability records and parallel source-blocked DISLAYER record unchanged. No numerical or global closure rerun.",
+    "raw_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_AVAIL_MASTER_CHECKS_20261016.json.gz.b64",
+      "decoded_sha256": "30d1aaa53d5519cc2a27eacfb3bd096d46524bf148ab31d18cdf2593458fa3a8",
+      "decoded_bytes": 8776
     }
   }
 }
