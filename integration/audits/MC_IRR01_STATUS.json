@@ -5630,5 +5630,71 @@
       },
       "claim": "Bounded actual application admission; no full source envelope or whole-master scientific claim."
     }
+  },
+  "limit_completion_20261016": {
+    "baseline": "c9231e1b102f9666865ced5604ef04d135b3931e",
+    "branch": "work/mc-irr01-limit-20261016",
+    "phase": "FULL_CLOSURE_CONDITIONS_FROZEN_BEFORE_IMPLEMENTATION",
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "full_capability": false,
+    "closure_target": "Exactly SW431-IRR-LIMIT, the existing B1.11 DCSLIM postselection minimum/maximum depth modifier. No new bounded variant.",
+    "candidate_reconciliation": "Canonical PR1254 supplies current-root/material DCS1; PR1262 week progression/native; PR1267 all admitted managed native profiles. PR1255 duplicate retired. Search existing LIMIT irrigation PRs found historical owners and no open LIMIT-specific candidate; preserve existing MC-IRR01 workstream.",
+    "source_authority": {
+      "snapshot": "B1.11",
+      "member": "SWAP/irrigation.f90",
+      "sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+      "source_domain": "DCSLIM0/1, IRGDEPMIN0..100mm, IRGDEPMAX>=min through1e7mm. DCS2 FID includes0. Apply max then min after DCS1 rain/adjustment or DCS2 interpolation, before salt and availability/rate."
+    },
+    "closure_conditions": [
+      {
+        "id": 1,
+        "condition": "Authenticated literal DCS1/DCS2+DCSLIM source versus both real production depth routes O0/O2: inactive, lower/interior/upper/equal/zero limits, full legal bound endpoints, raw zero with positive minimum, nonfinite/invalid rejection and immutable committed inputs."
+      },
+      {
+        "id": 2,
+        "condition": "Resolve any observed early zero-depth rejection before applying a positive minimum; retain exact positive-domain and invalid-domain results. No copied production clamp or second owner."
+      },
+      {
+        "id": 3,
+        "condition": "Actual authentic weather/current-root/material DCS1 and DCS2, selectors2/3/4/6/7/8, rain present/absent, lower/upper/inactive limits, sensor one/three-node spatial input, positive/zero rates. Use independent source depth and unchanged accepted water balance."
+      },
+      {
+        "id": 4,
+        "condition": "Exact continuous/opaque/fresh-process native tails at accepted day and active event, once-only selection, rejected trial/replay/retry and configuration binding. Reuse existing native codec and calendar owners."
+      },
+      {
+        "id": 5,
+        "condition": "Retain original AVAIL/TCS6/INF source/evidence qualification and owner entrypoints through exact reviewed successor projections, negative evidence controls, docs source and strict build. No fabricated PASS for omitted full-FCI/RossFast/highest low-air/Actions."
+      },
+      {
+        "id": 6,
+        "condition": "Reconcile live parallel changes, expected-head safe merge with qualified tree, postmerge proof; promote exactly existing LIMIT master row/queue and recovery, preserve other242 rows, validate census/inheritance/docs. State any unmet condition and retain ACTIVE until all pass."
+      }
+    ],
+    "prior_master_gates_reconciled": {
+      "material_root_DCS1": "Already admitted PR1254; actual cap extremes still need discriminating qualification.",
+      "broader_selectors": "Qualify modifier through currently admitted2/3/4/6/7/8 routes. Independent unadmitted selector physics are not silently promoted.",
+      "historical_parameter_calendar_activation": "DCSLIM is a postselection scalar with no calendar state or parser owner. Qualify full own source parameter domain and committed configuration/native binding, and gate inputs using existing admitted application selection/calendar. Generic legacy input parser and unrelated calendar/profile physics remain separately owned, as in full AVAIL/TCS6 authority. No claim all irrigation capabilities close.",
+      "native_disk": "Existing PR1267 supplies all admitted managed profiles; rerun changed depth composition, preserve bytes/codec."
+    },
+    "invariants": [
+      "single accepted water/crop/root/material/irrigation owner",
+      "no rejected publication",
+      "one calendar and native codec",
+      "unchanged solver/physical/mass thresholds",
+      "source order: depth/rain, clamp, salt, rate, availability"
+    ],
+    "test_selection": {
+      "direct": "Small actual depth policy +sensor process leaf with authenticated source O0/O2, estimated20s.",
+      "physical": "Fresh measured295-provider O0/O2 shared build, targeted LIMIT drivers and original AVAIL representative. Existing old compiled artifacts unavailable in this restored workspace; do not inherit compilation. Estimate700s justified by actual Richards/current crop/native contract.",
+      "full_fci": "NOT_SELECTED_IMPACT: local change to admitted depth modifier, select actual scientific composition and incumbent owner evidence rather than unchanged solvers.",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "github_actions": "NOT_SELECTED"
+    },
+    "next_action": "Run source-faithful direct preflight, retain actual failure if found; repair only existing depth owner, then physical/native and affected admission qualification."
   }
 }
