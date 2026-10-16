@@ -12,6 +12,7 @@ module mod_fmr_runtime_core
 
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_NONE = 0_int64
   integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY = 1_int64
+  integer(int64), parameter, public :: FMR_NUMERICAL_CONTINUATION_MACROPORE_REDUCTION = 2_int64
 
   ! Qualified optional physical-state topology identities.  The layout ID is a
   ! template capability identity; it does not imply that every column using the
@@ -21,6 +22,17 @@ module mod_fmr_runtime_core
   integer(int64), parameter, public :: &
        FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE = 390501_int64
   integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER = 43107_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION = 404001_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION = 404002_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE = 404003_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE = 404004_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_MACROPORE = 505001_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RFM = 505002_int64
+  integer(int64), parameter, public :: FMR_OPTIONAL_STATE_LAYOUT_RUTTER = 505003_int64
+
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_NONE = 0_int64
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED = 505003_int64
+  integer(int64), parameter, public :: FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE = 505004_int64
 
   type, public :: fmr_logical_column_t
     integer(int64) :: column_id = 0_int64
@@ -42,6 +54,8 @@ module mod_fmr_runtime_core
     ! numerical continuation is deliberately a separate axis so solver policy
     ! cannot overload or reinterpret the physical feature layout.
     integer(int64) :: optional_state_layout_id = 0_int64
+    ! Independent salt-state identity; orthogonal to hydraulic/thermal continuation.
+    integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
     integer(int64) :: numerical_continuation_layout_id = FMR_NUMERICAL_CONTINUATION_NONE
     integer :: compatible_backend_id = 0
   end type fmr_template_t
@@ -66,6 +80,25 @@ module mod_fmr_runtime_core
     character(len=32) :: failure_classification = 'NONE'
     real(real64) :: unrounded_mass_residual = 0.0_real64
   end type fmr_column_diagnostics_t
+
+  type, public :: fmr_serialized_execution_plan_t
+    private
+    logical :: initialized = .false.
+    integer(int64), allocatable :: column_ids(:)
+    integer(int64), allocatable :: column_template_ids(:)
+    integer(int64), allocatable :: state_handles(:)
+    integer(int64), allocatable :: template_ids(:)
+    integer, allocatable :: order(:)
+    integer, allocatable :: template_indices(:)
+    integer(int64) :: max_state_handle = 0_int64
+  contains
+    procedure, public :: ready => execution_plan_ready
+    procedure, public :: matches => execution_plan_matches
+    procedure, public :: column_count => execution_plan_column_count
+    procedure, public :: order_index => execution_plan_order_index
+    procedure, public :: template_index => execution_plan_template_index
+    procedure, public :: clear => execution_plan_clear
+  end type fmr_serialized_execution_plan_t
 
   type, public :: fmr_aggregate_diagnostics_t
     integer :: columns = 0
@@ -93,11 +126,178 @@ module mod_fmr_runtime_core
 
   public :: fmr_assignment_compatible
   public :: fmr_build_execution_order
+  public :: fmr_build_serialized_execution_plan
   public :: fmr_count_templates
   public :: fmr_metadata_bytes_per_column
   public :: fmr_optional_state_layout_known
+  public :: fmr_solute_state_layout_known
 
 contains
+
+  subroutine fmr_build_serialized_execution_plan(columns, templates, state_count, plan, valid)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer, intent(in) :: state_count
+    type(fmr_serialized_execution_plan_t), intent(out) :: plan
+    logical, intent(out) :: valid
+    integer :: i
+    logical :: canonical_identity
+
+    valid = .false.
+    canonical_identity = execution_plan_canonical_identity(columns, templates, state_count)
+    if (.not. canonical_identity) then
+      if (.not. execution_plan_registry_valid(columns, templates, state_count)) return
+    end if
+    allocate(plan%column_ids(size(columns)), plan%column_template_ids(size(columns)), &
+         plan%state_handles(size(columns)), plan%template_indices(size(columns)), &
+         plan%template_ids(size(templates)))
+    if (size(columns) > 0) then
+      plan%column_ids = columns%column_id
+      plan%column_template_ids = columns%template_id
+      plan%state_handles = columns%state_handle
+      plan%max_state_handle = maxval(columns%state_handle)
+    end if
+    if (size(templates) > 0) plan%template_ids = templates%template_id
+    if (canonical_identity) then
+      allocate(plan%order(size(columns)))
+      do i = 1, size(columns)
+        plan%order(i) = i
+        plan%template_indices(i) = i
+      end do
+    else
+      call fmr_build_execution_order(columns, plan%order)
+      do i = 1, size(columns)
+        plan%template_indices(i) = execution_plan_find_template(columns(i)%template_id, templates)
+      end do
+    end if
+    plan%initialized = .true.
+    valid = .true.
+  end subroutine fmr_build_serialized_execution_plan
+
+  logical function execution_plan_ready(self) result(ready)
+    class(fmr_serialized_execution_plan_t), intent(in) :: self
+    ready = self%initialized .and. allocated(self%column_ids) .and. &
+         allocated(self%column_template_ids) .and. allocated(self%state_handles) .and. &
+         allocated(self%template_ids) .and. allocated(self%order) .and. allocated(self%template_indices)
+  end function execution_plan_ready
+
+  logical function execution_plan_matches(self, columns, templates, state_count) result(matches)
+    class(fmr_serialized_execution_plan_t), intent(in) :: self
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer, intent(in) :: state_count
+    integer :: i
+    matches = .false.
+    if (.not. self%ready()) return
+    if (size(columns) /= size(self%column_ids)) return
+    if (size(templates) /= size(self%template_ids)) return
+    if (int(state_count,int64) < self%max_state_handle) return
+    do i = 1, size(columns)
+      if (columns(i)%column_id /= self%column_ids(i)) return
+      if (columns(i)%template_id /= self%column_template_ids(i)) return
+      if (columns(i)%state_handle /= self%state_handles(i)) return
+    end do
+    do i = 1, size(templates)
+      if (templates(i)%template_id /= self%template_ids(i)) return
+    end do
+    matches = .true.
+  end function execution_plan_matches
+
+  integer function execution_plan_column_count(self) result(value)
+    class(fmr_serialized_execution_plan_t), intent(in) :: self
+    value = 0
+    if (allocated(self%column_ids)) value = size(self%column_ids)
+  end function execution_plan_column_count
+
+  integer function execution_plan_order_index(self, position) result(index)
+    class(fmr_serialized_execution_plan_t), intent(in) :: self
+    integer, intent(in) :: position
+    index = 0
+    if (.not. allocated(self%order)) return
+    if (position < 1 .or. position > size(self%order)) return
+    index = self%order(position)
+  end function execution_plan_order_index
+
+  integer function execution_plan_template_index(self, column_index) result(index)
+    class(fmr_serialized_execution_plan_t), intent(in) :: self
+    integer, intent(in) :: column_index
+    index = 0
+    if (.not. allocated(self%template_indices)) return
+    if (column_index < 1 .or. column_index > size(self%template_indices)) return
+    index = self%template_indices(column_index)
+  end function execution_plan_template_index
+
+  subroutine execution_plan_clear(self)
+    class(fmr_serialized_execution_plan_t), intent(inout) :: self
+    if (allocated(self%column_ids)) deallocate(self%column_ids)
+    if (allocated(self%column_template_ids)) deallocate(self%column_template_ids)
+    if (allocated(self%state_handles)) deallocate(self%state_handles)
+    if (allocated(self%template_ids)) deallocate(self%template_ids)
+    if (allocated(self%order)) deallocate(self%order)
+    if (allocated(self%template_indices)) deallocate(self%template_indices)
+    self%max_state_handle = 0_int64
+    self%initialized = .false.
+  end subroutine execution_plan_clear
+
+  logical function execution_plan_canonical_identity(columns, templates, state_count) result(canonical)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer, intent(in) :: state_count
+    integer :: i
+
+    canonical = .false.
+    if (state_count < 0) return
+    if (size(columns) /= size(templates)) return
+    do i = 1, size(columns)
+      if (templates(i)%template_id <= 0_int64) return
+      if (columns(i)%column_id <= 0_int64) return
+      if (columns(i)%state_handle < 1_int64 .or. columns(i)%state_handle > int(state_count,int64)) return
+      if (columns(i)%template_id /= templates(i)%template_id) return
+      if (i > 1) then
+        if (templates(i)%template_id <= templates(i-1)%template_id) return
+        if (columns(i)%column_id <= columns(i-1)%column_id) return
+        if (columns(i)%state_handle <= columns(i-1)%state_handle) return
+      end if
+    end do
+    canonical = .true.
+  end function execution_plan_canonical_identity
+
+  logical function execution_plan_registry_valid(columns, templates, state_count) result(valid)
+    type(fmr_logical_column_t), intent(in) :: columns(:)
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer, intent(in) :: state_count
+    integer :: i, j
+    valid = .false.
+    if (state_count < 0) return
+    do i = 1, size(templates)
+      if (templates(i)%template_id <= 0_int64) return
+      do j = i + 1, size(templates)
+        if (templates(j)%template_id == templates(i)%template_id) return
+      end do
+    end do
+    do i = 1, size(columns)
+      if (columns(i)%column_id <= 0_int64) return
+      do j = i + 1, size(columns)
+        if (columns(j)%column_id == columns(i)%column_id) return
+        if (columns(j)%state_handle == columns(i)%state_handle) return
+      end do
+      if (columns(i)%state_handle < 1_int64 .or. columns(i)%state_handle > int(state_count,int64)) return
+    end do
+    valid = .true.
+  end function execution_plan_registry_valid
+
+  integer function execution_plan_find_template(template_id, templates) result(index)
+    integer(int64), intent(in) :: template_id
+    type(fmr_template_t), intent(in) :: templates(:)
+    integer :: i
+    index = 0
+    do i = 1, size(templates)
+      if (templates(i)%template_id == template_id) then
+        index = i
+        return
+      end if
+    end do
+  end function execution_plan_find_template
 
   pure logical function fmr_optional_state_layout_known(layout_id) result(known)
     integer(int64), intent(in) :: layout_id
@@ -105,12 +305,24 @@ contains
     select case (layout_id)
     case (FMR_OPTIONAL_STATE_LAYOUT_BASE, FMR_OPTIONAL_STATE_LAYOUT_SNOW, &
           FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE, &
-          FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER)
+          FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
+          FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
+          FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
+          FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
+          FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RFM, &
+          FMR_OPTIONAL_STATE_LAYOUT_RUTTER)
       known = .true.
     case default
       known = .false.
     end select
   end function fmr_optional_state_layout_known
+
+  pure logical function fmr_solute_state_layout_known(layout_id) result(known)
+    integer(int64), intent(in) :: layout_id
+    known = layout_id == FMR_SOLUTE_STATE_LAYOUT_NONE .or. &
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED .or. &
+         layout_id == FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE
+  end function fmr_solute_state_layout_known
 
   logical function fmr_assignment_compatible(template, physics_topology_id, state_layout_id, backend_id)
     type(fmr_template_t), intent(in) :: template

@@ -1,0 +1,88 @@
+name: F-PE-REPRO01 exact coupled nondeterminism
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_repro01_*.sh'
+      - 'docs/performance/F-PE-REPRO01_*.md'
+      - '.github/workflows/f-pe-repro01.yml'
+  workflow_dispatch:
+
+jobs:
+  d1-first-corrector:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d1_first_corrector.sh
+
+  d2-pretrial-reads:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d2_pretrial_reads.sh
+
+  d3-compiler-init:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d3_compiler_init.sh
+
+  d4-runtime-controls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d4_runtime_controls.sh
+
+  d5-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro01_d5_memory.sh
+
+  d6-directional-poison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d6_directional_poison.sh
+
+  d7-scratch-groups:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d7_scratch_groups.sh
+
+  d8-provider-singletons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d8_provider_singletons.sh
+
+  d9-inactive-root-qbot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro01_d9_inactive_root_qbot.sh

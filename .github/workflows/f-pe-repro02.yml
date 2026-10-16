@@ -1,0 +1,116 @@
+name: F-PE-REPRO02 difficult-origin admissibility
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_repro02_*.sh'
+      - 'docs/performance/F-PE-REPRO02_*.md'
+      - '.github/workflows/f-pe-repro02.yml'
+  workflow_dispatch:
+
+jobs:
+  r1-acceptance-signature:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r1_acceptance_signature.sh
+
+  r2-solver-caps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r2_solver_caps.sh
+
+  r3-min-step:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r3_min_step.sh
+
+  r4-context-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r4_context_binding.sh
+
+  r5-boundary-carriers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r5_boundary_carriers.sh
+
+  r6-direction-invariance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r6_direction_invariance.sh
+
+  r7-request-identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r7_request_identity.sh
+
+  r8-predictor-history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_repro02_r8_predictor_history.sh
+
+  r9-transaction-discriminator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r9_transaction_discriminator.sh
+
+  r10-attempt-context:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r10_attempt_context.sh
+
+  r11-backend-lifetime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r11_backend_lifetime.sh
+
+  r12-temporal-carrier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r12_temporal_carrier.sh
+
+  r13-attempt-order:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_repro02_r13_attempt_order.sh
+

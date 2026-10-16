@@ -1,0 +1,119 @@
+{
+  "schema": "swap5.f-romv2-d27.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D27",
+  "title": "Unstressed total root-uptake finite-volume accounting preflight",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "40f8e60531037b0ab279fdbc690c8e2fee6c1c40",
+  "purpose": "Verify that current SWAP F-CI31 and literature-bound FMC can remove the same prescribed unstressed transpiration water depth with explicit mass closure, without asserting spatial sink equivalence or authorizing a root-active FMC trajectory.",
+  "authority": {
+    "D26": "UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_AUTHORIZED_NATIVE_FMC_TRAJECTORY_ET_HELD_PENDING_STATE_UPDATE_ORACLE",
+    "SWAP_process_source": {
+      "path": "src/process/mod_root_water_uptake_process.f90",
+      "blob": "e6134587cf3c0164bbe09f2f4c87aef6886aaeb3",
+      "authority": "F-CI31 restricted macro-Feddes root uptake"
+    },
+    "SWAP_composition_precedent": "HYDRO-MEMORY-DYN01",
+    "FMC_process_authority": "Ogden et al. 2015 doi:10.1002/2015WR017126 right-most/wettest-bin root-zone withdrawal",
+    "FMC_discretization_authority": "F-ROMV2-D12/D24 200 uniform moisture-content bins"
+  },
+  "material": {
+    "id": "B01",
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "moisture_bins": 200,
+    "dtheta": 0.00203747
+  },
+  "synthetic_state": {
+    "selected_bin_index": 170,
+    "theta": "theta_r + 170*dtheta = 0.3663699",
+    "effective_saturation": 0.85,
+    "pressure_head_cm": -29.793709016906483,
+    "root_zone_depth_cm": 30,
+    "whole_column_depth_cm": 160,
+    "rationale": "Bin-aligned wet state selected before execution; pressure head is far wetter than the frozen PTRA=0.4 critical Feddes threshold hlim3=-500 cm."
+  },
+  "forcing": {
+    "potential_transpiration_cm_per_day": 0.4,
+    "process_interval_seconds": 10,
+    "process_interval_day": "10/86400",
+    "required_total_uptake_depth_cm": "0.4*10/86400 = 4.62962962962963e-5",
+    "rainfall": 0,
+    "soil_evaporation": 0,
+    "runoff": 0,
+    "groundwater_evolution": false,
+    "surface_front_evolution": false
+  },
+  "SWAP_route": {
+    "active_nodes": 16,
+    "dz_cm": 10,
+    "rooted_nodes": 3,
+    "cumulative_root_fraction": [
+      0,
+      0.1,
+      0.55,
+      1
+    ],
+    "feddes": {
+      "hlim3l_cm": -800,
+      "hlim3h_cm": -400,
+      "hlim4_cm": -16000,
+      "adcrl": 0.1,
+      "adcrh": 0.5
+    },
+    "expected_hlim3_cm": -500,
+    "expected_unstressed_actual_uptake_cm_per_day": 0.4,
+    "expected_sink_rates_cm_per_day": [
+      0.04,
+      0.18,
+      0.18
+    ],
+    "execution": "Compile and execute the current F-CI31 root-uptake process/binding on a committed uniform wet state; do not reimplement Feddes for the authoritative SWAP result."
+  },
+  "FMC_route": {
+    "state_interpretation": "Uniform bin-aligned root-zone inventory with all moisture increments through bin 170 present over 30 cm; no composite front/slug/GW geometry is evolved.",
+    "rightmost_active_bin": 170,
+    "rightmost_bin_available_water_depth_cm": "dtheta*30 = 0.0611241",
+    "withdrawal_rule": "Remove the 10-s total uptake demand from the right-most water-containing bin within the root zone.",
+    "withdrawal_length_cm": "uptake_depth/dtheta, expected about 0.0227224432 cm",
+    "post_withdrawal_requirement": "right-most-bin occupied root-zone length remains positive and all finite-volume inventories remain nonnegative",
+    "explicit_nonclaim": "This accounting operation is not a native composite FMC trajectory update."
+  },
+  "gates": [
+    "current SWAP root-uptake source blob equals the frozen D27 source identity",
+    "SWAP compiled route returns status OK and actual uptake 0.4 cm/day",
+    "SWAP sink rates are [0.04,0.18,0.18] cm/day on the three rooted nodes and sum to 0.4 cm/day",
+    "selected B01 bin-170 pressure head is finite and > hlim3=-500 cm",
+    "FMC right-most-bin finite-volume capacity exceeds 10-s uptake demand",
+    "FMC removed water depth equals 0.4*10/86400",
+    "FMC root-zone storage decrement and whole-column storage decrement equal removed water depth within 1e-14 cm",
+    "SWAP and FMC total uptake depths agree within floating-point tolerance",
+    "spatial extraction structures are explicitly reported non-equivalent",
+    "O0/O2 SWAP output identity"
+  ],
+  "decision_logic": {
+    "positive": "D27_UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_PASS",
+    "negative": "D27_UNSTRESSED_UPTAKE_AUTHORITY_OR_ACCOUNTING_NO_GO",
+    "if_positive": "Close unstressed accounting only. Native FMC root-active trajectory remains held until composite-state withdrawal/update semantics are bound to the external implementation oracle or equivalent authority.",
+    "if_negative": "Do not proceed with root-active FMC research."
+  },
+  "firewalls": [
+    "NO_TRAJECTORY_PHYSICS",
+    "NO_NATIVE_FMC_COMPOSITE_STATE_UPDATE_CLAIM",
+    "NO_SPATIAL_SINK_EQUIVALENCE_REQUIREMENT",
+    "NO_DROUGHT_STRESS",
+    "NO_RAINFALL_OR_EVAPORATION",
+    "NO_ROOT_GEOMETRY_TUNING",
+    "NO_BIN_OR_PROCESS_STEP_RETUNING",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

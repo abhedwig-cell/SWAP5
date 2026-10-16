@@ -1,0 +1,20 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0",
+  "tested_postimage": "5b6e86c852b62d6c7a5cc2fa9d1efaff037f54e7",
+  "optimization": "O0",
+  "status": "FIXTURE_RELATIVE_HEAD_TOLERANCE_OMITTED",
+  "typed3": {
+    "iterations": 100,
+    "max_residual": 4.678972731183076e-15,
+    "total_residual": 1.1867937866174086e-14
+  },
+  "same_fixture_mode5": {
+    "status": "RETRY_ADVISED",
+    "iterations": 100,
+    "max_residual": 1.2325210296815214e-14,
+    "total_residual": 3.612418490153615e-15
+  },
+  "cause": "The copied feasibility-only fixture set absolute head tolerance but left relative head tolerance at its default zero. Headcalc applies the relative criterion when abs(old_head)>=1 cm; zero demands exact stagnation even after residual convergence.",
+  "action": "Complete the test fixture numerical configuration with named 1e-12 relative head tolerance. Production/default policies and 1e-12 rate/amount mass gates are unchanged.",
+  "production_qualified": false
+}

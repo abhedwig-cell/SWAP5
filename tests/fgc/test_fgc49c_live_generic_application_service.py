@@ -140,25 +140,34 @@ class Fgc47QualificationRuntime:
         if abs(qc2 - q3) > tol2:
             return GroundwaterApplicationCorrectorBatch(False, ())
         self.last_components = (q1, q2, q3)
-        return GroundwaterApplicationCorrectorBatch(True, (qc1, qc2))
+        slopes = tuple(
+            term.hcof_m2_per_day / (AREA_M2 * DAY_TO_S) for term in self.terms
+        )
+        return GroundwaterApplicationCorrectorBatch(True, (qc1, qc2), slopes)
 
     def discard_candidates(self) -> bool:
         self.events.append("discard")
         self.swap.discard()
         return True
 
-    def reanchor_terms(self, cell_heads_m, cell_q_swap_m_per_s):
+    def relinearize_terms(
+        self, cell_heads_m, cell_q_swap_m_per_s, cell_dq_swap_dh_per_s
+    ):
         self.events.append("reanchor")
         updated = []
-        for old, head, qswap in zip(
-            self.terms, cell_heads_m, cell_q_swap_m_per_s, strict=True
+        for old, head, qswap, slope in zip(
+            self.terms,
+            cell_heads_m,
+            cell_q_swap_m_per_s,
+            cell_dq_swap_dh_per_s,
+            strict=True,
         ):
+            hcof = float(slope) * AREA_M2 * DAY_TO_S
             updated.append(
                 Term(
                     old.groundwater_cell_id,
-                    old.hcof_m2_per_day,
-                    old.hcof_m2_per_day * float(head)
-                    - float(qswap) * AREA_M2 * DAY_TO_S,
+                    hcof,
+                    hcof * float(head) - float(qswap) * AREA_M2 * DAY_TO_S,
                 )
             )
         self.terms = tuple(updated)

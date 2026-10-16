@@ -4,7 +4,7 @@ module mod_canonical_interval_runtime
   use mod_transaction_reference, only: transaction_state_t, transaction_result_t, transaction_policy_t, &
        transaction_interface_sensitivity_t, execute_reference_interval, TX_STATUS_ACCEPTED, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_NONFINITE, TX_MASS_MISSING_UNSPECIFIED, &
-       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE
+       TX_TEMPORAL_NONE, TX_TEMPORAL_MODEL_CERTIFICATE, TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_physical_model_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t, canonical_result_t, CANONICAL_STATUS_COMPLETED, &
        CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_TRANSACTION_FAILED, &
@@ -39,9 +39,10 @@ contains
     type(transaction_result_t) :: tx
     type(transaction_policy_t) :: transaction_policy
     type(transaction_interface_sensitivity_t) :: terminal_sensitivity
-    real(real64) :: cursor, next_cursor, tol, transaction_t1
-    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux
-    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid
+    real(real64) :: cursor, next_cursor, tol, transaction_t1, proposed_dt, proposal_factor
+    real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux, aggregate_transpiration
+    logical :: aggregate_transpiration_available
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, proposal_active
     integer :: isub, max_retries_cap
 
     result = canonical_result_t()
@@ -58,6 +59,13 @@ contains
       return
     end if
 
+    if (config%retain_accepted_step_proposal) then
+      if (present(target_selector) .or. config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
+        result%status = CANONICAL_STATUS_INVALID_REQUEST
+        return
+      end if
+    end if
+
     ! The externally committed physical state remains untouched until the full
     ! requested [t0,t1] interval has completed. Accepted internal substeps are
     ! committed only into this private working state. Sensitivity follows the
@@ -67,13 +75,18 @@ contains
     call model%prepare_interval(forcing, interval, config)
     result%mass%missing_contribution_mask = TX_MASS_MISSING_NONE
     aggregate_mass_complete = .true.
+    aggregate_transpiration_available=.true.
+    aggregate_transpiration=0.0_real64
     aggregate_bottom_available = .true.
     aggregate_bottom_exchange = 0.0_real64
     terminal_bottom_flux = 0.0_real64
     cursor = interval%t0
+    proposal_active = .false.
+    proposed_dt = 0.0_real64
 
     do isub = 1, config%max_committed_substeps
       transaction_t1 = interval%t1
+      if (proposal_active) transaction_t1 = min(interval%t1, cursor + proposed_dt)
       max_retries_cap = config%transaction%max_retries
       selector_valid = .true.
       if (present(target_selector)) then
@@ -105,6 +118,8 @@ contains
       end if
 
       call accumulate_accepted_mass(result, tx, aggregate_mass_complete)
+      aggregate_transpiration_available=aggregate_transpiration_available.and.tx%actual_transpiration_available
+      if(aggregate_transpiration_available) aggregate_transpiration=aggregate_transpiration+tx%actual_transpiration_amount
       call accumulate_accepted_bottom_interface(tx, aggregate_bottom_available, aggregate_bottom_exchange, &
            terminal_bottom_flux)
       terminal_sensitivity = tx%interface_sensitivity
@@ -115,6 +130,18 @@ contains
         result%mass%missing_contribution_mask = ior(result%mass%missing_contribution_mask, &
              TX_MASS_MISSING_UNSPECIFIED)
         return
+      end if
+
+      if (config%retain_accepted_step_proposal .and. (proposal_active .or. tx%temporal_rejections > 0)) then
+        proposal_factor = 2.0_real64
+        ! Clamp before division: finite budget/tiny indicator must not overflow
+        ! while calculating a proposal whose bounded factor is already known.
+        if (tx%temporal_error > 0.0_real64) then
+          if (tx%temporal_error > 0.2025_real64 * transaction_policy%temporal_tolerance) proposal_factor = &
+               max(0.5_real64, min(2.0_real64, 0.9_real64 * sqrt(transaction_policy%temporal_tolerance / tx%temporal_error)))
+        end if
+        proposed_dt = tx%accepted_dt * proposal_factor
+        proposal_active = ieee_is_finite(proposed_dt) .and. proposed_dt > 0.0_real64
       end if
 
       cursor = next_cursor
@@ -132,6 +159,10 @@ contains
           result%bottom_interface_exchange_available = .true.
           result%bottom_outward_exchange_native = aggregate_bottom_exchange
           result%terminal_bottom_outward_flux_native = terminal_bottom_flux
+        end if
+        if(aggregate_transpiration_available.and.ieee_is_finite(aggregate_transpiration).and.aggregate_transpiration>=0.0_real64) then
+          result%actual_transpiration_available=.true.
+          result%actual_transpiration_amount=aggregate_transpiration
         end if
         result%interface_sensitivity = terminal_sensitivity
         if (result%interface_sensitivity%available) then
@@ -257,6 +288,8 @@ contains
     result%diagnostics%backtracking_attempts = result%diagnostics%backtracking_attempts + tx%backtracking_attempts
     result%diagnostics%alternative_solver_calls = result%diagnostics%alternative_solver_calls + &
          tx%alternative_solver_calls
+    result%diagnostics%workspace_full_resets = result%diagnostics%workspace_full_resets + tx%workspace_full_resets
+    result%diagnostics%workspace_zeroed_bytes = result%diagnostics%workspace_zeroed_bytes + tx%workspace_zeroed_bytes
     if (ieee_is_finite(tx%temporal_indicator) .and. tx%temporal_indicator >= 0.0_real64) then
       result%diagnostics%max_temporal_indicator = max(result%diagnostics%max_temporal_indicator, &
            tx%temporal_indicator)

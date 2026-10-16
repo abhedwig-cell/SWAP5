@@ -8,22 +8,51 @@
       end if
 
 ! 2.9 determine next time step, based on numerical performance
+      timestepPreviousEventClamped = .FALSE.
+      if (present(worker)) then
+         if (worker%timestep_shadow%available) &
+            timestepPreviousEventClamped = worker%timestep_shadow%previous_event_clamped
+      end if
       if (swsolve == 1) then
-         if (numbit <= numbit_crit) dt = min(dt*fact_dt_increase,dtMax)
-         if (numbit >= MaxIt)       dt = max(dt*fact_dt_decrease,dtMin)
-         if (dt < dtmin) then
-            dt = dtmin
-            fldtmin = .TRUE.
-         end if
+         timestepDecisionInput = dt
+         timestepDecision = b1_10_legacy_accepted_step_decision(dt, dtmin, dtmax, numbit, numbit_crit, &
+              MaxIt, fact_dt_increase, fact_dt_decrease)
+         dt = timestepDecision%preferred_dt
+         if (timestepDecision%floor_reached) fldtmin = .TRUE.
       else
          dt = 1.0d0
       end if
 
 ! 2.7  maximum size of time interval (dtEvent)
       dtEvent = get_dtevent()
+      timestepEventClamped = .FALSE.
+      timestepLimitReason = A23BU_TS_LIMIT_NONE
       if (dt > dtevent) then
          dt = dtevent
+         timestepEventClamped = .TRUE.
+         timestepLimitReason = A23BU_TS_LIMIT_HARD_EVENT
          if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      end if
+      if (present(worker) .AND. swsolve == 1) then
+         if (.NOT.worker%timestep_shadow%available) then
+            timestepShadowRetain = timestepDecision%preferred_dt
+            timestepShadowEvidence = timestepDecision%preferred_dt
+         else if (timestepPreviousEventClamped) then
+            timestepShadowRetain = worker%timestep_shadow%retain_preferred_dt
+            timestepShadowDecision = b1_10_legacy_accepted_step_decision( &
+                 worker%timestep_shadow%evidence_preferred_dt, dtmin, dtmax, numbit, numbit_crit, &
+                 MaxIt, fact_dt_increase, fact_dt_decrease)
+            timestepShadowEvidence = timestepShadowDecision%preferred_dt
+         else
+            timestepShadowRetain = timestepDecision%preferred_dt
+            timestepShadowEvidence = timestepDecision%preferred_dt
+         end if
+         worker%timestep_shadow%available = .TRUE.
+         worker%timestep_shadow%retain_preferred_dt = timestepShadowRetain
+         worker%timestep_shadow%evidence_preferred_dt = timestepShadowEvidence
+         worker%timestep_shadow%previous_event_clamped = timestepEventClamped
+         call a23bu_record_timestep_trace(worker, timestepDecisionInput, timestepDecision%preferred_dt, dt, &
+              timestepDecision%reason, timestepLimitReason, timestepEventClamped)
       end if
 
 ! 2.11 set flags and variables

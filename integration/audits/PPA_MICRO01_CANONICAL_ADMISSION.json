@@ -1,0 +1,33 @@
+{
+  "work_unit": "PPA-MICRO01",
+  "status": "CANONICAL_ADMITTED_CLOSED_TYPED_TABLE_COMPONENT_ONLY",
+  "canonical_pr": 1069,
+  "canonical_merge": "efaeffcc36205f54ed3990b2efaf99ac908e5c0d",
+  "qualified_candidate": "8241ddebe8bb0b41adf1ca0ae6abf783ef9d9b2f",
+  "qualification": "integration/audits/PPA_MICRO01_FINAL_QUALIFICATION.json",
+  "execution": "3175892870dac0671a46602eca7e47d050add9fb",
+  "component_admitted": true,
+  "runtime_admitted": false,
+  "full_micro_migration_complete": false,
+  "source_subtrees": {
+    "src": "52d5b774ce12369a7113e39445886d463fbe7dd2",
+    "tests": "54989b822796e071b417649de75ad4f7b3ff2a7b"
+  },
+  "actual_admission_tree_verified": "72b5b292b4a1b7bd1b25f9a0b6fe5b67fda792b6",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_MICRO01_TABLE_FINAL_REPLAY.json.gz",
+    "sha256": "5f304f30a8aaed23bc5e5dfc2a64323df55fdc2f94a40553c1c9d2693e9df8fe"
+  },
+  "scope": "Unused typed corrected M/K table only; explicit -20000 cm endpoint policy",
+  "controlling_gate": 37417114385,
+  "cases_per_optimization": 2600,
+  "source_manifest_entries_verified": 7,
+  "documentation_gates": "PASS: check_docs.py, python -m mkdocs build --strict, git diff --check",
+  "exclusions": [
+    "Full MICRO nonlinear uptake",
+    "Real soil hydraulic provider binding",
+    "Runtime sink/state/restart",
+    "Hydraulic lift, salt/osmotic, frost and external Jarvis after MICRO"
+  ],
+  "ci_claim": "Named component gate controls; no blanket CI-green claim."
+}

@@ -393,10 +393,10 @@
       "priority_band": "P1"
     },
     {
-      "id": "PPA-ET-REDU",
+      "id": "PPA-ET-REDU1",
       "subsystem": "surface evaporation",
-      "capability": "SWREDU=1 Black and SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
-      "classification": "E_PRESERVED_BUT_NOT_TYPED",
+      "capability": "SWREDU=1 Black continuation-state evaporation reduction",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
       "legacy_present": true,
       "legacy_authority": {
         "reference": "SWAP4.3.1 B1.11 corrected reference",
@@ -408,33 +408,97 @@
       "swap5_implementation_authority": [
         "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
         "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
-        "integration/audits/PPA_WU04_STATUS.json"
+        "integration/audits/PPA_WU04A_PREREGISTRATION.json",
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/adapter/mod_ppa_wu04a_black_forcing_adapter.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/audits/PPA_WU04A_STATUS.json",
+        "docs/audits/PPA_WU04A_BLACK_EVAPORATION_ADMISSION.md"
       ],
-      "typed_input_config_authority": "Scientific/transaction contract frozen by PPA-WU04; no typed production state/config route exists yet.",
-      "state_ownership": "SWREDU=1 owns exactly LDWET. SWREDU=2 owns exactly the atomic SPEV/SAEV pair. State is option-specific accepted continuation state and may not be reconstructed from the hydraulic profile.",
-      "transaction_status": "Review authority frozen: all reduction-state updates are trial-local; rejected hydraulic trials leave committed reduction state unchanged; retries recompute from the same committed checkpoint. Legacy pre-retry mutation order is explicitly not target semantics.",
+      "typed_input_config_authority": "Restricted PPA-WU03 common-forcing result plus explicit wetting-reset event, Black parameter COFRED and option-discriminated initial LDWET.",
+      "state_ownership": "SWREDU=1 owns exactly LDWET as committed process continuation state. LDWET is not hydraulic storage and is not reconstructed from the pressure-head profile.",
+      "transaction_status": "Qualified transactional composition: trial-local LDWET is derived from the committed checkpoint at the actual trial dt; rejected/discarded candidates do not mutate committed LDWET; accepted LDWET commits atomically with the hydraulic state.",
       "qualification_evidence": [
         "F-PM06 source-bound readiness",
-        "PPA-WU04 workflow 35377826442: authority job 105706628104 PASS; independent job 105706684721 PASS"
+        "PPA-WU04 workflow 35377826442 authority/independent PASS",
+        "PPA-WU04-A workflow 35438366101 job 105884808295 PASS at O0/O2",
+        "PPA-WU04-A canonical merge 50e7d1dece5b75d0103459d5c118d03a2665eea3"
       ],
-      "production_admission": "NONE_REVIEW_ONLY",
-      "production_reachable": "NO",
+      "production_admission": "CANONICAL_ADMITTED_RESTRICTED",
+      "production_reachable": "YES_RESTRICTED",
       "restrictions": [
-        "SWREDU=1/2 equations not implemented in production",
-        "LDWET or SPEV/SAEV must commit only with the accepted outer physical transaction",
-        "EMPREVA remains demand, not authoritative water-mass removal",
-        "Runtime option switching is not admitted by PPA-WU04"
+        "Reference/serialized production route only; no RossFast composition claim",
+        "No groundwater bottom_mode=5 Black composition",
+        "Snowmelt and runon are outside this first Black forcing slice",
+        "Wetting reset must arrive as an explicit span-boundary event; no hidden calendar inference",
+        "EMPREVA remains demand; accepted actual evaporation is owned by the hydraulic dynamic-top boundary",
+        "Runtime option switching is not admitted"
       ],
-      "scientific_risk": "MEDIUM equation/oracle qualification remains; state/restart/rollback architecture risk is now bounded",
+      "scientific_risk": "LOW after exact equation, rollback, restart and mass-owner qualification within the admitted envelope",
       "use_relevance": "HIGH",
       "dependencies": [
-        "PPA-WU04-A/B implementation slices",
         "PPA-WU01 transaction owner",
         "PPA-WU03 forcing boundary",
         "surface hydraulic evaporation owner",
-        "restart schema"
+        "generic committed restart"
       ],
-      "priority_band": "P2"
+      "priority_band": "P1"
+    },
+    {
+      "id": "PPA-ET-REDU2",
+      "subsystem": "surface evaporation",
+      "capability": "SWREDU=2 Boesten-Stroosnijder continuation-state evaporation reduction",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected reference",
+        "files": [
+          "SWAP/MOD_meteo.f90",
+          "SWAP/swapoutput.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+        "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+        "integration/audits/PPA_WU04B_PREREGISTRATION.json",
+        "src/process/mod_restricted_surface_evaporation.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/adapter/mod_ppa_wu04b_boesten_forcing_adapter.f90",
+        "src/runtime/mod_fmr_restart_state_contract.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "integration/audits/PPA_WU04B_STATUS.json",
+        "docs/audits/PPA_WU04B_BOESTEN_EVAPORATION_ADMISSION.md"
+      ],
+      "typed_input_config_authority": "Restricted PPA-WU03 common-forcing result plus Boesten parameter COFRED, option-discriminated initial SPEV/SAEV pair, and the existing dynamic top-boundary hydraulic request.",
+      "state_ownership": "SWREDU=2 owns exactly the atomic SPEV/SAEV committed process continuation pair. Neither scalar is hydraulic storage or reconstructible from the instantaneous pressure-head profile.",
+      "transaction_status": "Qualified transactional composition: SPEV/SAEV are derived atomically from the same committed checkpoint at the actual trial dt; rejected/discarded candidates do not mutate the committed pair; accepted pair commits atomically with hydraulic state.",
+      "qualification_evidence": [
+        "F-PM06 source-bound readiness",
+        "PPA-WU04 workflow 35377826442 authority/independent PASS",
+        "PPA-WU04-B workflow 35439112147 job 105886744366 PASS at O0/O2"
+      ],
+      "production_admission": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "production_reachable": "YES_RESTRICTED",
+      "restrictions": [
+        "Reference/serialized production route only; no RossFast composition claim",
+        "COFRED must satisfy 0 < COFRED <= 1; legacy zero case is excluded because the exact inverse branch can divide by zero",
+        "No groundwater bottom_mode=5 Boesten composition",
+        "Snowmelt and runon are outside this first Boesten forcing slice",
+        "EMPREVA remains demand; accepted actual evaporation is owned by the hydraulic dynamic-top boundary",
+        "Runtime option switching is not admitted"
+      ],
+      "scientific_risk": "LOW within the bounded COFRED>0 production envelope after exact equation, rollback, restart and mass-owner qualification",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "PPA-WU01 transaction owner",
+        "PPA-WU03 forcing boundary",
+        "PPA-WU04-A admitted dynamic-top/reduction composition seam",
+        "surface hydraulic evaporation owner",
+        "generic committed restart"
+      ],
+      "priority_band": "P1"
     },
     {
       "id": "PPA-EVAP-ACT",
@@ -573,17 +637,24 @@
           "SWAP/frozencond.f90"
         ]
       },
-      "swap5_implementation_authority": [],
-      "typed_input_config_authority": "No admitted typed production route found.",
-      "state_ownership": "Subfamily-specific and unresolved until source-bound reviews. Existing drought-only nodewise root_extraction_sink remains the single admitted root-water mass owner.",
-      "transaction_status": "Outside qualified transaction envelope for advanced subfamilies. Oxygen, compensation and alternative uptake models require separate source/state reviews; salinity, frost and macropore routes remain dependency-blocked.",
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
       "qualification_evidence": [
         "F-PM06 and F-CI31 explicit nonclaims",
         "docs/verification/legacy-differences.md preserves oxygen-stress numerical fix only in B1",
-        "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified"
+        "PPA-WU05 review run 35379607616: advanced-root subfamily decomposition and single root-sink ownership qualified",
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json; PR1012 canonical merge4fd57c8c8",
+        "integration/audits/PPA_WU05D_D3_QUALIFICATION.json; PR1013 canonical merge a34c87db9"
       ],
-      "production_admission": "NONE",
-      "production_reachable": "NO",
+      "production_admission": "BOUNDED_SUCCESSORS: oxygen; Jarvis PR1012 and Walsum PR1013; selected matrix salinity/Jarvis PR1015 and salinity/Walsum PR1032; empirical root frost separately PR1030. Other hybrids, MICRO and macropore uptake remain held.",
+      "production_reachable": "YES_FOR_INDEPENDENTLY_ADMITTED_BOUNDED_OXYGEN_COMPENSATION_MATRIX_SALINITY_EMPIRICAL_ROOT_FROST_ROUTES",
       "restrictions": [
         "Presence in corrected reference is not SWAP5 production admission"
       ],
@@ -597,7 +668,8 @@
         "Macropore owner before macropore-related uptake",
         "Separate nonlinear/sensitivity authority for SWKIMPL=1"
       ],
-      "priority_band": "P2"
+      "priority_band": "P2",
+      "classification_note": "Aggregate remains incomplete. Separate bounded admissions do not close unqualified stress/process hybrids, MICRO or macropore uptake."
     },
     {
       "id": "PPA-SW-RICH",
@@ -748,7 +820,7 @@
         "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
         "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json"
       ],
-      "typed_input_config_authority": "B1.11 selector catalogue 1..8 is recovered. Remaining application gaps are explicit migration slices rather than authority ambiguity.",
+      "typed_input_config_authority": "B1.11 selector catalogue 1..8 is recovered. Remaining application gaps are explicit migration slices rather than authority ambiguity. Later canonical admissions close SWBOTB4 and bounded ordinary5;1/3/8 remain open.",
       "state_ownership": "Variant-specific; PPA-WU02 fixes the required state/transaction concerns per selector.",
       "transaction_status": "Not established for the remaining legacy selector families.",
       "qualification_evidence": [
@@ -756,15 +828,15 @@
         "B1.11 source-bound selector inventory",
         "F-CI95 exact SWBOTB=6 restricted mapping",
         "PPA-WU02-A canonical typed qbot admission",
-        "PPA-LOW02-TIME workflow 35426047814 PASS and PR #360 canonical admission"
+        "PPA-LOW02-TIME workflow 35426047814 PASS and PR #360 canonical admission",
+        "F-MIG431-LOW01-A PR#972 canonical q(gwl) admission",
+        "F-MIG431-LOW05-A run36964835178 / PR#974 canonical bounded ordinary head adapter"
       ],
       "production_admission": "NO broad lower-boundary family admission",
       "production_reachable": "NO_FOR_REMAINING_SELECTOR_FAMILIES",
       "restrictions": [
         "SWBOTB=1 prescribed-groundwater-level hybrid semantics not migrated",
         "SWBOTB=3 Cauchy/deep-aquifer semantics not migrated",
-        "SWBOTB=4 q(gwl) application law not migrated",
-        "legacy standalone SWBOTB=5 DATE5/HBOT5 application adapter not migrated",
         "SWBOTB=8 lysimeter active-set continuation not migrated"
       ],
       "scientific_risk": "MEDIUM to HIGH by selector",
@@ -1617,6 +1689,178 @@
         "Product configuration mapping to an admitted PPA-WU01 profile"
       ],
       "priority_band": "P0"
+    },
+    {
+      "id": "PPA-LOW05-APP",
+      "subsystem": "lower boundary",
+      "capability": "Ordinary non-groundwater-owned prescribed lower-face pressure-head DATE5/HBOT5 typed application adapter",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "SWAP4.3.1 B1.11 corrected",
+        "files": [
+          "SWAP/readswap.f90",
+          "SWAP/boundbottom.f90",
+          "SWAP/functions.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+      ],
+      "typed_input_config_authority": "Immutable numeric DATE5/HBOT5 table, explicit calendar origins/simulation window and tile ordinary_prescribed_head opt-in; no file parser",
+      "state_ownership": "Existing committed physical/restart owner; immutable control and rollback-local endpoint proposal; no GWledger/datum",
+      "transaction_status": "Original endpoint sampling before context capture; frozen full/half/retry proposal; new accepted private cursor reproposal; partial-progress rollback and restart qualified",
+      "qualification_evidence": [
+        "integration/audits/F-MIG431-LOW05A_QUALIFICATION_RESULT.json",
+        "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md"
+      ],
+      "production_admission": {
+        "work_unit": "F-MIG431-LOW05-A",
+        "state": "CANONICAL_ADMITTED_CLOSED",
+        "pull_request": 974,
+        "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+        "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+        "qualification_run": 36964835178,
+        "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+        "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+      },
+      "production_reachable": "YES_RESTRICTED_TYPED_APPLICATION_CANONICAL",
+      "restrictions": [
+        "general SWP/BBC parser",
+        "public C ABI",
+        "mixed ownership",
+        "unrestricted transient accuracy/domain",
+        "RossFast head mode",
+        "new groundwater datum/ownership"
+      ],
+      "scientific_risk": "LOW within tested bounded composition; no generic transient theorem",
+      "use_relevance": "HIGH",
+      "dependencies": [
+        "existing typed Reference bottom_mode5",
+        "F-MIG431-LOW05P0 shared timing contract"
+      ],
+      "priority_band": "CLOSED"
+    },
+    {
+      "id": "PPA-RWU-COMP-JARVIS",
+      "subsystem": "drought/stress routes",
+      "capability": "Jarvis compensation over existing Feddes sinks, optional admitted Bartholomeus oxygen, and independently admitted selected matrix Maas-Hoffman salinity",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "B1.11 exact identity and authorized D1 source-bound semantic reconstruction",
+        "files": [
+          "SWAP/rootextraction.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md",
+        "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
+      "qualification_evidence": [
+        "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+        "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json"
+      ],
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1012 merge 4fd57c8c8ed321baf6a74214a9720adc899e324d; selected matrix salinity successor PR1015 merge cb841851db6a4f459835b4943cf442595898ecd3",
+      "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
+      "restrictions": [
+        "No frost/MICRO/macropore root uptake; salinity restricted to the admitted PPA-WU05-E matrix profile",
+        "No general RFM/SCV/coupling or derivative claim",
+        "Current crop owner supplies consistent uncompensated sink and geometry"
+      ],
+      "scientific_risk": "Bounded by qualified reconstructed algebra and typed application profile",
+      "use_relevance": "HIGH for some applications",
+      "dependencies": [
+        "Existing Feddes root-sink owner",
+        "Independent Bartholomeus admission when oxygen enabled",
+        "Independent PPA-WU05-E matrix dissolved-salt state/transport owner when salinity enabled"
+      ],
+      "priority_band": "P2",
+      "selected_matrix_salt_root_frost_successor": {
+        "work_unit": "PPA-WU05-E-SALFRO01",
+        "canonical_pr": 1044,
+        "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+        "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+        "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+        "gates_passed": 24
+      },
+      "current_successor_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded",
+      "exact_macro_cutoff_successor": {
+        "work_unit": "PPA-WU05-D-EXACT01",
+        "canonical_pr": 1051,
+        "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+        "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+        "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+        "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+        "gates_passed": 29
+      }
+    },
+    {
+      "id": "PPA-RWU-COMP-WALSUM",
+      "subsystem": "drought/stress routes",
+      "capability": "Walsum compensation over supplied Feddes sinks, optional admitted Bartholomeus oxygen and independently admitted selected matrix Maas-Hoffman salinity",
+      "classification": "C_SW5_RESTRICTED_PRODUCTION",
+      "legacy_present": true,
+      "legacy_authority": {
+        "reference": "B1.11 exact identity and authorized D1 source-bound semantic reconstruction",
+        "files": [
+          "SWAP/rootextraction.f90"
+        ]
+      },
+      "swap5_implementation_authority": [
+        "src/process/mod_root_uptake_compensation.f90",
+        "src/runtime/mod_root_uptake_compensation_execution.f90",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+      ],
+      "typed_input_config_authority": "Bounded root_compensation_config_t and optional root_walsum_geometry_t via existing fmr production application forcing; see separate Jarvis/Walsum entries. Other advanced routes lack admission.",
+      "state_ownership": "Single existing root_water_uptake_flux_result_t/root-sink provider and accepted water owner. Compensation and Walsum geometry are disposable current-call inputs/results; no extra ledger, receipt or restart payload.",
+      "transaction_status": "D2/D3 fresh uncompensated trial sink, retry/replay, discard, accepted publication and restart qualified at O0/O2. Other advanced subfamilies remain dependency-blocked.",
+      "qualification_evidence": [
+        "integration/audits/PPA_WU05D_D3_QUALIFICATION.json"
+      ],
+      "production_admission": "CANONICAL_ADMITTED_CLOSED PR1013 merge a34c87db96d8f1fb33e97b13556a4d9b76758553; selected matrix Walsum salinity successor PR1032 merge 83258c02be55879cddf9918a2b80c96da7eae2a9",
+      "production_reachable": "RESTRICTED_TYPED_APPLICATION_PROFILES_2_7",
+      "restrictions": [
+        "No salinity/frost/MICRO/macropore uptake",
+        "No general RFM/SCV/coupling or derivative claim",
+        "Current crop owner supplies consistent uncompensated sink and geometry"
+      ],
+      "scientific_risk": "Bounded by qualified reconstructed algebra and typed application profile",
+      "use_relevance": "HIGH for some applications",
+      "dependencies": [
+        "Existing Feddes root-sink owner",
+        "Independent Bartholomeus admission when oxygen enabled"
+      ],
+      "priority_band": "P2",
+      "current_successor_admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+      "current_successor_scope": "Selected matrix Maas-Hoffman plus empirical root frost with no Bartholomeus, no drains, zero-flux bottom2; salt/Rutter, normal/bottom frost with salt, osmotic-head and new crop rooting models excluded",
+      "selected_matrix_salt_root_frost_successor": {
+        "work_unit": "PPA-WU05-E-SALFRO01",
+        "canonical_pr": 1044,
+        "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+        "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+        "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+        "gates_passed": 24
+      },
+      "exact_macro_cutoff_successor": {
+        "work_unit": "PPA-WU05-D-EXACT01",
+        "canonical_pr": 1051,
+        "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+        "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+        "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+        "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+        "gates_passed": 29
+      }
     }
   ],
   "backlog": {
@@ -1825,6 +2069,31 @@
       "next_slice": "PPA-WU05-A1 byte-exact B1.11 source materialization and mutable-field/mass-transfer census",
       "qualification": "Final admission: PPA-WU05-A 35399987601 PASS; parent WU05 35399987594 PASS; Documentation 35399987514 PASS; F-CI canonical 35399987540 PASS.",
       "canonical_merge_commit": "3736703b6a3b41941bfc7c57a336da3a4f3df999"
+    },
+    {
+      "id": "PPA-WU05-E",
+      "title": "Salinity state, solute mass owner, and root-stress migration",
+      "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
+      "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
+      "status": "CANONICAL_ADMITTED_SELECTED_MATRIX_CLOSED",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+      "status_record": "integration/audits/PPA_WU05E_STATUS.json",
+      "production_delta": [],
+      "reference_delta": [],
+      "current_finding": "Selected matrix dissolved-salt transport, Maas-Hoffman and the Jarvis application/transaction/restart chain are admitted with current-source preservation.",
+      "next_action": "Broader legacy solute physics and unqualified process/stress hybrids require separate work units.",
+      "limitations": [
+        "Full B1.11 numerical or bitwise equivalence: legacy centered advection and artificial dispersion correction are not ported",
+        "Sorption, decomposition, surface concentration pools, aquifer breakthrough and coupled groundwater salt state",
+        "Osmotic-head mode, frost and new macropore dispersion physics",
+        "Seasonal real Richards/FMR or field validation: the 365-day schedule is a manufactured process oracle",
+        "Combined frost/salt/root and Rutter/salt profiles remain excluded; frost and Rutter are preservation gates only.",
+        "Salinity with Walsum is not admitted: the live salinity binding requires Jarvis."
+      ],
+      "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+      "canonical_pr": 1015
     }
   ],
   "post_audit_updates": [
@@ -1921,6 +2190,289 @@
       "production_delta": "NONE",
       "reference_delta": "NONE",
       "effect": "Macropore owner-level source/state/mass/transaction review authority is canonical. Production macropore remains blocked until PPA-WU05-A1 exact source materialization and complete census."
+    },
+    {
+      "workunit": "PPA-WU04-A",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "pull_request": 395,
+      "qualified_head": "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+      "qualification": {
+        "run": 35438366101,
+        "job": 105884808295
+      },
+      "effect": "Adds restricted typed SWREDU=1 Black production reachability with transactional LDWET, exact restart, retry-local recomputation and unchanged hydraulic ownership of actual evaporation. SWREDU=2 and SWINTER=1/2 remain open."
+    },
+    {
+      "workunit": "PPA-WU04-A",
+      "state": "CANONICAL_ADMITTED_RESTRICTED",
+      "pull_request": 395,
+      "canonical_merge_commit": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+      "effect": "SWREDU=1 Black is canonically available in the restricted production envelope."
+    },
+    {
+      "workunit": "PPA-WU04-B",
+      "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "pull_request": 404,
+      "qualified_head": "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+      "qualification": {
+        "run": 35439112147,
+        "job": 105886744366
+      },
+      "effect": "Adds restricted typed SWREDU=2 Boesten-Stroosnijder production reachability for 0<COFRED<=1 with atomic transactional SPEV/SAEV and unchanged hydraulic ownership of actual evaporation."
+    },
+    {
+      "work_unit": "F-MIG431-LOW05-A",
+      "state": "CANONICAL_ADMITTED_CLOSED",
+      "pull_request": 974,
+      "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+      "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+      "qualification_run": 36964835178,
+      "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+      "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+    },
+    {
+      "work_unit": "F-MIG431-LOWGWL01-P0",
+      "state": "SHARED_AUTHORITY_BLOCKER_REPRODUCED_AND_REGISTERED",
+      "baseline": "27b271c2f3d1ea54e0110f56b73400e3b6935e11",
+      "diagnostic_postimage": "3e7e4f63183390eff6a389eae52e66b3db31b210",
+      "production_admitted": false,
+      "authority": "docs/migration/F-MIG431-LOWGWL01-P0_PREREGISTRATION.md",
+      "effect": "SWBOTB1 requires shared Richards indexing, explicit constitutive ownership and accepted candidate/mass qualification before an application adapter can be issued. Modes1/3/8 remain open; existing admitted2/4/5/6/7 unchanged."
+    },
+    {
+      "work_unit": "F-MIG431-LOWGWL01-P0",
+      "date": "2026-10-02",
+      "state": "PARKED_BY_USER_DECISION",
+      "authority": "Explicit user instruction: Dit is een vreemde optie. Laten we deze parkeren.",
+      "meaning": "Defer SWBOTB1 migration and its shared prerequisite; not migrated, not admitted, not removed or scientifically falsified.",
+      "resume_condition": "Explicit central reprioritization or user instruction",
+      "next_active_selector": 3,
+      "active_sequence": [
+        3,
+        8
+      ],
+      "canonical_basis": "90622bdcaa67aff52ccbd9035c0f48dee70cc745",
+      "production_delta": [],
+      "production_admitted": false
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "COMPOSITION_PROVEN_SHARED_TYPED_RESISTANCE_PREREQUISITE_OPEN",
+      "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+      "diagnostic_postimage": "c240a3c1c880663d86e1a702ff283a866ca809ee",
+      "diagnostic_cases_per_optimization": 6075,
+      "production_admitted": false,
+      "production_delta": [],
+      "authority": "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
+      "effect": "Implicit3 reuses Richards bottom-row physics with added series resistance, not a new solver. Ordinary mode5 is only the same-K zero-R limit; shared typed resistance and accepted mass ownership remain prerequisites. Mode1 parked,3/8 open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "BOUNDED_DIRECT_SOLVER_QUALIFIED_ADMISSION_BLOCKED_SHARED_DEPENDENCIES",
+      "canonical_basis": "0d44f0195c94a9732c67b5e77f2148912df9bbc8",
+      "qualified_postimage": "3407286de38d8d11219678257874afd3c44320a7",
+      "qualification_run": 36970096511,
+      "pull_request": 975,
+      "production_admitted": false,
+      "canonical_production_delta": [],
+      "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
+      "authority": "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+      "effect": "Branch-only direct typed Reference resistive-head solver passes source, independent compartment/whole mass, replay, physical restart and admitted application preservation. Complete transitive RossFast/shared-contract semantic qualification remains missing. Historical RossFast guard already rejects canonical and is not proof of a new regression. No LOW03-A application issued;1 parked,3/8 open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "COMPLETE_SHARED_SOLVER_QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+      "qualification_run": 36971466508,
+      "postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+      "shared_dependency_gate": "F-MIG431-LOW03-P0-DEP01",
+      "shared_dependency_state": "ACCEPTED_CLOSED",
+      "pull_request": 975,
+      "canonical_production_delta": [],
+      "production_application_admitted": false,
+      "effect": "Exact combined physical and shared binding qualification complete. Normal canonical merge may proceed; full SWBOTB3 application stays closed."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-P0",
+      "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+      "pull_request": 975,
+      "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "qualification_run": 36971466508,
+      "production_delta": [
+        "src/solver/mod_soil_water_solver_contract.f90",
+        "src/adapter/mod_reference_richards_legacy_binding.f90",
+        "src/legacy/b1_10_port/headcalc.f90"
+      ],
+      "production_application_admitted": false,
+      "effect": "Shared typed resistance prerequisite canonically admitted and closed; ordinary mode3 application still open."
+    },
+    {
+      "work_unit": "F-MIG431-LOW03-A",
+      "state": "CENTRALLY_PREREGISTERED_OFFICIAL_BRANCH_ISSUED",
+      "baseline": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+      "official_branch": "work/f-mig431-low03-a-implicit-cauchy-application",
+      "production_delta": [],
+      "canonical_admitted": false,
+      "effect": "Sole implicit ordinary Cauchy application unit preregistered; frozen aquifer head versus current-trial extra-flux timing explicit. Explicit3 remains open."
+    },
+    {
+      "work_unit": "PPA-WU05-C3A",
+      "date": "2026-10-02",
+      "state": "CANONICAL_ADMITTED_BOUNDED_CLOSED",
+      "pull_request": 962,
+      "qualified_postimage": "63b7c982d12a7df8f6f933d32fc382fbcc02bb67",
+      "qualification_run": 36972631192,
+      "qualification_job": 110729643691,
+      "canonical_merge_commit": "179673b16b84bc48fa5e0e83341a8a8e80b2211a",
+      "production_admitted": true,
+      "admitted_scope": "Bartholomeus oxygen mode2/type1; analytical MvG REFERENCE waterfilm; homogeneous serial typed Fortran Reference application; bottom2/7; existing restricted thermal owner.",
+      "remains_open": [
+        "salinity",
+        "frost",
+        "compensation",
+        "MICRO/JvL",
+        "groundwater-coupled oxygen",
+        "macropore oxygen",
+        "snow oxygen",
+        "drainage-response oxygen",
+        "elastic oxygen",
+        "hysteretic oxygen",
+        "tabular oxygen",
+        "PRACTICAL/WFT300 oxygen",
+        "worker-parallel oxygen"
+      ],
+      "effect": "Closes only the bounded C3A Bartholomeus oxygen application gap. No broad PPA-RWU-ADV closure and no frozen Status A rewrite."
+    },
+    {
+      "workunit": "PPA-WU05-E",
+      "date": "2026-10-04",
+      "state": "PREREGISTERED_RECONSTRUCTION_CHECKPOINT",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "effect": "Separate salinity root-stress work from closed D2/D3. Canonical audit finds no SWAP5 solute state/transport owner or salinity response. Work proceeds through state/mass/restart authority, then independent response, then bounded Jarvis integration. No production or reference source changed."
+    },
+    {
+      "workunit": "PPA-WU05-E",
+      "date": "2026-10-04",
+      "state": "SOURCE_FAMILY_STATE_CENSUS_COMPLETE_B111_TEXT_UNAVAILABLE",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "effect": "Added source-family state/mass/restart census: CML/CMSY, SWINCO initialization versus warm start, boundary/transport fluxes, solute substeps, and TSCF*qrot*CML root salt removal. Exact B1.11 solute lifecycle remains unclaimed; next step is the bounded typed state/mass/restart contract."
+    },
+    {
+      "workunit": "PPA-WU05-E",
+      "date": "2026-10-04",
+      "state": "E1_E2_LOCAL_PROTOTYPE_IMPLEMENTED_AND_TESTED_NOT_QUALIFIED",
+      "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+      "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+      "effect": "Implemented and locally tested (O0/O2) an unadmitted mobile salt mass candidate with water closure, explicit upwind advection, typed top/bottom concentrations, TSCF root salt uptake, separate salt balance, and a pure Maas-Hoffman response. Existing D2, D3, and oxygen composition preservation checks passed. The prototypes are not bound to production transaction/restart state; dispersion/substeps and Jarvis integration remain open."
     }
-  ]
+  ],
+  "ppa_wu05d_20261004_runtime_successor": {
+    "status": "D2_D3_CANONICAL_ADMITTED_CLOSED",
+    "qualification": [
+      "integration/audits/PPA_WU05D_D2_QUALIFICATION.json",
+      "integration/audits/PPA_WU05D_D3_QUALIFICATION.json"
+    ],
+    "scope": "Jarvis and Walsum over supplied Feddes drought sinks and optional independently admitted Bartholomeus oxygen; application profiles2/7",
+    "publication": "Accepted transaction result now publishes final compensated uptake; no second mass owner",
+    "remaining_gaps": [
+      "Salinity requires independently admitted solute-state owner, osmotic stress process, typed forcing and transactional composition qualification",
+      "Frost requires independently admitted phase-change/frozen-water state and hydraulic stress feedback; sensible heat alone is insufficient",
+      "D5 MICRO requires B1.11 RWU_micro source-bound algebra/parameter authority, independently qualified typed process returning existing root sink, state/rollback/restart census, and macro/MICRO selector compatibility; current production owner is Feddes only",
+      "No nonlinear derivative or general RFM/SCV/coupled configuration admission follows"
+    ],
+    "canonical_d2": "4fd57c8c8ed321baf6a74214a9720adc899e324d",
+    "canonical_d3": "a34c87db96d8f1fb33e97b13556a4d9b76758553",
+    "closeout": "docs/audits/PPA_WU05D_D2_D3_CANONICAL_CLOSEOUT.md"
+  },
+  "ppa_wu05e_20261004": {
+    "id": "PPA-WU05-E",
+    "title": "Salinity state, solute mass owner, and root-stress migration",
+    "goal": "Migrate the bounded salt-state/transport prerequisite and independently qualify salinity-root-stress response before composing eligible salinity stress in admitted Jarvis, while preserving one root-water sink and separate water/salt ledgers.",
+    "exit": "Source-bound state, unit, node, initialization, transport, mass, transaction and restart contracts are closed for a bounded salinity envelope; its independent response passes analytic/physical oracles; then bounded Jarvis integration and preservation gates pass. Osmotic-head/Jong-van-Lier remains separate unless its authority is independently closed.",
+    "status": "E1_E2_LOCAL_PROTOTYPE_IMPLEMENTED_AND_TESTED_NOT_QUALIFIED",
+    "result_classification": "UNDERLYING_SALINITY_PHYSICS_REQUIRES_SEPARATE_MIGRATION",
+    "baseline": "integration/f-ci-canonical@9605fbb1622d96f4691117f66264f13b6dd3a47b",
+    "branch": "work/ppa-wu05e-salinity-state-root-stress-20261004",
+    "preregistration": "docs/audits/PPA_WU05E_SALINITY_PREREGISTRATION.md",
+    "status_record": "integration/audits/PPA_WU05E_STATUS.json",
+    "production_delta": [
+      "src/process/mod_solute_mobile_salt_state.f90",
+      "src/process/mod_root_salinity_response.f90"
+    ],
+    "reference_delta": [],
+    "current_finding": "Canonical SWAP5 still has no admitted typed solute state/transport owner or salinity response. The work branch now has independent local prototypes for explicit upwind mobile salt state and Maas-Hoffman response; PPA-WU05-D2 still correctly fails closed for salinity.",
+    "next_action": "Bind candidate salt mass to the accepted water transaction and committed restart owner, qualify separate water/salt receipts and retry/restart behavior, and review missing dispersion/substep physics against source-bound evidence. Only then expose trial concentration to and integrate with Jarvis.",
+    "limitations": [
+      "B1.11 rootextraction member identity is pinned and its complete tree replay is persisted, but exact source member text is unavailable in this execution surface.",
+      "Public SWAP source-family code is corroboration, not byte-exact B1.11 equation/restart authority.",
+      "The local salt prototype is explicit advective upwind only and is not wired into production state, transaction, or restart serialization; dispersion, substeps, boundary scheduling, and drainage remain excluded.",
+      "Exact B1.11 solute member text remains unavailable in this checkout; D1 records that generic provenance searches are exhausted and no further search is warranted without a new authorized raw-byte route.",
+      "Local tests are preliminary evidence only and do not qualify or admit the prototype."
+    ],
+    "source_authority": {
+      "snapshot": "B1.11",
+      "rootextraction_sha256": "8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5",
+      "member_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "exact_tree_replay": "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json",
+      "exact_member_text": "NOT_MATERIALIZED_IN_CURRENT_EXECUTION_SURFACE",
+      "corroboration": "SWAP-model/SWAP@c22bd832ddf3e53e330a552f5e31e74f183362d1; corroboration only"
+    },
+    "current_classification": {
+      "d2": "CANONICAL_ADMITTED_DROUGHT_AND_OXYGEN; SALINITY_FAIL_CLOSED",
+      "d3": "CANONICAL_ADMITTED",
+      "solute_state_transport": "LOCAL_EXPLICIT_UPWIND_PROTOTYPE_NOT_QUALIFIED; MISSING_FROM_CANONICAL_SWAP5_TREE",
+      "maas_hoffman": "LOCAL_PURE_RESPONSE_PROTOTYPE_NOT_QUALIFIED; MISSING_FROM_CANONICAL_SWAP5_TREE",
+      "osmotic_head": "MISSING; REQUIRES D5/JONG-VAN-LIER DEPENDENCY"
+    },
+    "qualification": "integration/audits/PPA_WU05E_LOCAL_PREQUALIFICATION.json (local prequalification only; not qualification)",
+    "canonical_admission": null,
+    "initial_e1_envelope": "One conservative dissolved salt constituent in mobile water; SWSP=0; decomposition, macropore, ageing, aquifer mixing, MICRO and lateral drainage off; explicit top/bottom solute boundary traces; root salt uptake through TSCF*qrot*CML with restricted 0<=TSCF<=1; node salt mass authoritative, CML derived from matching committed/trial water content; paired water/salt trial commit/discard.",
+    "historical_snapshot": true,
+    "superseded_by": "ppa_wu05e_20261005_canonical"
+  },
+  "ppa_wu05e_20261005_canonical": {
+    "work_unit": "PPA-WU05-E",
+    "status": "CANONICAL_ADMITTED_SELECTED_MATRIX_CLOSED",
+    "canonical_merge": "cb841851db6a4f459835b4943cf442595898ecd3",
+    "canonical_pr": 1015,
+    "admission": "integration/audits/PPA_WU05E_CANONICAL_ADMISSION.json",
+    "qualification": "integration/audits/PPA_WU05E_FROST_RECONCILED_QUALIFICATION.json",
+    "full_legacy_transport_admitted": false,
+    "salinity_walsum_admitted": false,
+    "frost_root_stress_admitted": false,
+    "closeout": "docs/audits/PPA_WU05E_CANONICAL_CLOSEOUT.md"
+  },
+  "ppa_wu05e_walsal01_20261005_canonical": {
+    "work_unit": "PPA-WU05-E-WALSAL01",
+    "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_SCOPE",
+    "canonical_pr": 1032,
+    "canonical_merge": "83258c02be55879cddf9918a2b80c96da7eae2a9",
+    "scope": "Selected matrix Walsum/Maas-Hoffman with existing water and salt owners",
+    "qualification": "integration/audits/PPA_WU05E_WALSAL01_FROST_RECONCILED_QUALIFICATION.json",
+    "admission": "integration/audits/PPA_WU05E_WALSAL01_CANONICAL_ADMISSION.json",
+    "gates_passed": 14
+  },
+  "ppa_wu05e_salfro01_20261005_canonical": {
+    "work_unit": "PPA-WU05-E-SALFRO01",
+    "canonical_pr": 1044,
+    "canonical_merge": "ef83887448838acd12cd06a054729193abdb8213",
+    "admission": "integration/audits/PPA_WU05E_SALFRO01_CANONICAL_ADMISSION.json",
+    "scope": "Selected matrix Maas-Hoffman plus empirical root frost with Jarvis/Walsum, zero-flux bottom2/no drainage/no Bartholomeus",
+    "gates_passed": 24,
+    "status": "CANONICAL_ADMITTED_CLOSED_SELECTED_MATRIX_ROOT_FROST",
+    "qualification": "integration/audits/PPA_WU05E_SALFRO01_RECONCILED_QUALIFICATION.json"
+  },
+  "ppa_wu05d_exact01_20261005_canonical": {
+    "work_unit": "PPA-WU05-D-EXACT01",
+    "canonical_pr": 1051,
+    "canonical_merge": "4c0615bfdb3a3e12db2b988eff97db749cca0511",
+    "admission": "integration/audits/PPA_WU05D_EXACT01_CANONICAL_ADMISSION.json",
+    "qualification": "integration/audits/PPA_WU05D_EXACT01_RECONCILED_QUALIFICATION.json",
+    "scope": "Exact B1.11 macro compensation eligibility alptot>=1e-14; separate MICRO dispatcher routing only",
+    "gates_passed": 29,
+    "status": "CANONICAL_ADMITTED_CLOSED_EXACT_MACRO_CUTOFF",
+    "independent_micro_migration": "OPEN",
+    "external_jarvis_walsum_after_micro": "NOT_A_B1_11_OPTION"
+  }
 }

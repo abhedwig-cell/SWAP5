@@ -36,7 +36,7 @@ for forbidden in (
 
 require("modflow6preparedsolvesession" in LOW,"prepared-solve backend not consumed")
 require("evaluate_groundwater_fluxes" in LOW,"runtime-owned groundwater flux evaluation absent")
-require("reanchor_terms" in LOW,"runtime-owned reanchoring absent")
+require("relinearize_terms" in LOW,"runtime-owned physical relinearization absent")
 require("all(" in LOW and "flux_tolerance_m_per_s" in LOW,"all-cell convergence predicate absent")
 
 pub=LOW.split("def _publish_converged_window",1)[1]
@@ -81,12 +81,12 @@ class R:
     def trial_cell_heads(self,heads):
         self.calls+=1
         if self.calls==1:
-            return GroundwaterApplicationCorrectorBatch(True,(2.0e-6,-2.0e-6))
-        return GroundwaterApplicationCorrectorBatch(True,(0.0,0.0))
+            return GroundwaterApplicationCorrectorBatch(True,(2.0e-6,-2.0e-6),(0.0,0.0))
+        return GroundwaterApplicationCorrectorBatch(True,(0.0,0.0),(0.0,0.0))
     def discard_candidates(self):
         self.discards+=1
         return True
-    def reanchor_terms(self,heads,q): return (T(11,1.0,3.0),T(22,1.0,3.0))
+    def relinearize_terms(self,heads,q,dq): return (T(11,1.0,3.0),T(22,1.0,3.0))
     def swap_preflight(self):
         self.events.append("swap_preflight"); return True
     def prepare_ledgers(self):

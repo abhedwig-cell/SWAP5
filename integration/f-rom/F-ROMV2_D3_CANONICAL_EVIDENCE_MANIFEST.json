@@ -1,0 +1,44 @@
+{
+  "schema": "swap5.f-romv2-d3.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D3",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d3-representation-aware-coarse-richards",
+    "pull_request": 420,
+    "pull_request_merged": false,
+    "head": "53713dcb3ccafc78ee0e4ae771e17d0b2555f885",
+    "workflow_run": 35444680718,
+    "workflow_job": 105901462241,
+    "artifact_id": 10584293128,
+    "artifact_digest": "sha256:71350b5e2066f5cf8cf1efc7ac191c998648483b7224ae484efc0ba2181d3c44",
+    "workflow_conclusion": "failure",
+    "interpretation": "Expected negative scientific-policy evidence: all geometries were classified before the runner's R16-complete assertion failed."
+  },
+  "frozen_payload_digests": {
+    "geometry_status_sha256": "1d0374d4d91315f7fd9533dfbfe10f31133ff41a06615d65e0ef2ec987390367",
+    "R16_policy_reject_sha256": "620aadb3d64c623dfb3a32226228a11b08b75e3e9cdfe444e5ca9df7047422b9",
+    "R8_policy_reject_sha256": "7d2a3a4662095877392014e141a853f2d98234144fb2c56bf4e2391769b5d297",
+    "R4_policy_reject_sha256": "d69384d82411f58d73b4531fcf8293a6fe8ca5e1b728a072ceec2f635ceb4873",
+    "R2_policy_reject_sha256": "3ac536313c11e5d32696233625159a20bfa10f103a973f756cde2edba6c600b7"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D3_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D3_RESULT.json",
+    "integration/f-rom/F-ROMV2_D3_STATUS.json",
+    "integration/f-rom/F-ROMV2_D3_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D3_REPRESENTATION_POLICY_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_d3_representation_aware_coarse_richards.f90",
+    "tests/rom/analyze_f_romv2_d3_representation_aware_coarse_richards.py",
+    "tests/rom/run_f_romv2_d3_representation_aware_coarse_richards.sh",
+    ".github/workflows/f-romv2-d3-representation-aware.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "D3_threshold_retuned_after_result": false,
+  "hydrological_invalidity_claimed": false,
+  "production_rom_authorized": false
+}

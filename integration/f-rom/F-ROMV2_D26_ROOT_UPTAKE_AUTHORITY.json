@@ -1,0 +1,139 @@
+{
+  "schema": "swap5.f-romv2-d26.root-uptake-authority.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D26",
+  "title": "FMC versus SWAP root-uptake authority reconciliation",
+  "phase": "AUTHORITY_RECONCILIATION_CLOSED",
+  "canonical_base": "f585872cb0456d61ce98b017911fbb40142d3249",
+  "decision": "UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_AUTHORIZED_NATIVE_FMC_TRAJECTORY_ET_HELD_PENDING_STATE_UPDATE_ORACLE",
+  "governing_question": "How can root-water uptake be added to the FMC research route without silently forcing SWAP/Feddes spatial sink semantics onto a model whose published uptake architecture is structurally different?",
+  "source_authority": {
+    "FMC_primary_2015": {
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+      "doi": "10.1002/2015WR017126",
+      "authority": [
+        "potential transpiration demand is calculated first",
+        "water is removed from the right-most bin containing water within the specified root zone until demand is satisfied",
+        "root uptake may remove water from surface wetting fronts, falling slugs and groundwater fronts when present in the root zone",
+        "finite-volume accounting of all added and removed water is the mass-conservation authority"
+      ],
+      "eight_month_ET_test": [
+        "root zone depth 0.5 m in the published loam test",
+        "actual ET equals potential ET above the chosen field-capacity water content and decreases linearly toward zero at wilting-point water content",
+        "authors explicitly note that FMC wettest-bin uptake differs structurally from Hydrus spatial root-distribution uptake and can materially change profiles/infiltration/runoff"
+      ],
+      "role": "CURRENT_PRIMARY_FMC_ROOT_UPTAKE_PROCESS_AUTHORITY"
+    },
+    "FMC_historical_2008": {
+      "citation": "Ogden and Talbot (2008), Discrete Water Content Solution of the Infiltration Problem",
+      "doi": "10.1061/40976(316)384",
+      "statement": "earlier description says evapotranspiration removes water according to a root distribution",
+      "disposition": "HISTORICAL_PRECEDENT_NOT_D26_PROCESS_IDENTITY_BECAUSE_2015_GENERAL_FORMULATION_IS_LATER_AND_MORE_EXPLICIT"
+    },
+    "FMC_secondary_oracle": {
+      "repository": "University of Wyoming DataCorral M2WC70",
+      "dataset_doi": "10.15786/M2WC70",
+      "linked_paper_doi": "10.1002/2015WR017126",
+      "contents": "230 MB C-code + 8-month rainfall/ET case according to repository metadata",
+      "rights": "CC0/public-domain dedication according to repository metadata",
+      "materialization_status": "RESOURCE_IDENTIFIED_BUT_BINARY_ARCHIVE_NOT_RETRIEVABLE_THROUGH_CURRENT_TOOL_ROUTE",
+      "code_copy_authorized": false,
+      "role": "READ_ONLY_SECONDARY_IMPLEMENTATION_ORACLE_IF_MATERIALIZED"
+    },
+    "SWAP_root_uptake": {
+      "authority": "F-CI31 QUALIFIED_CLOSED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_CANONICAL_ADMISSION",
+      "process_file": "src/process/mod_root_water_uptake_process.f90",
+      "composition_file": "src/runtime/mod_fmr_reference_et_root_uptake_composition.f90",
+      "semantics": [
+        "potential root sink is distributed by cumulative spatial root fraction",
+        "nodewise drought reduction follows the restricted macro-Feddes pressure-head response",
+        "actual uptake is the sum of nodewise root_extraction_sink",
+        "sink evaluation is based on the committed hydraulic state and is stateless with respect to that state"
+      ]
+    },
+    "SWAP_composition_evidence": {
+      "authority": "HYDRO-MEMORY-DYN01",
+      "result": "DYN01_PASS_FORCING_AND_ACCEPTED_STATE_DEPENDENT_FEDDES_COMPOSITION",
+      "demonstrated": [
+        "4 mm/day reference ET -> 0.4 cm/day potential transpiration under full cover",
+        "3 mm/day -> 0.3 cm/day",
+        "wet h=-75 cm state takes full 0.4 cm/day demand",
+        "dry rooted heads [-1200,-800,-400] cm reduce actual uptake to 0.39470967741935487 cm/day under identical demand",
+        "same-state replay and O0/O2 identity"
+      ]
+    }
+  },
+  "reconciliation": {
+    "common_quantities": [
+      "potential transpiration demand in cm/day",
+      "specified physical root-zone depth",
+      "total actual root-water uptake in cm/day",
+      "finite-volume water removed over a process interval",
+      "whole-column water ledger"
+    ],
+    "intentionally_non_equivalent_quantities": [
+      "pointwise/nodewise sink distribution",
+      "which local water state is depleted first",
+      "native drought-stress response",
+      "post-uptake profile shape"
+    ],
+    "key_statement": "A valid purpose-dependent comparison must not require FMC to reproduce SWAP's nodewise Feddes sink field. The two models may be compared under common atmospheric demand/root-zone extent using total uptake and hydrological response, while their native spatial extraction semantics are reported as structural-model differences.",
+    "transport_isolation_option": "A prescribed identical sink may be used only as an explicitly named experimental transport-isolation bridge; it must not be called faithful/native FMC root uptake."
+  },
+  "D27_authority": {
+    "authorized": true,
+    "work_unit": "F-ROMV2-D27",
+    "task": "Synthetic unstressed total-uptake finite-volume accounting preflight before any root-active trajectory.",
+    "scope": [
+      "homogeneous B01 constitutive state",
+      "200-bin D12-D25 FMC discretization",
+      "10-second process interval",
+      "single bin-aligned wet root-zone state with no simultaneous surface slug or groundwater-front ambiguity",
+      "root-zone depth inherited from the already qualified DYN01 three-node geometry: 30 cm on the R16 10-cm grid",
+      "potential transpiration 0.4 cm/day",
+      "SWAP restricted Feddes parameters inherited unchanged from DYN01",
+      "choose the bin-aligned wet state such that its equivalent pressure head lies safely above the DYN01 hlim3 drought threshold",
+      "FMC removes the interval demand from the right-most water-containing bin within the root-zone inventory",
+      "no drought reduction, no rainfall, no bare-soil evaporation, no runoff, no groundwater/surface process evolution during the accounting operation"
+    ],
+    "gates": [
+      "SWAP actual uptake equals 0.4 cm/day in the frozen wet state",
+      "SWAP nodewise sink sums exactly to actual uptake",
+      "FMC right-most-bin available finite-volume water exceeds the 10-second uptake demand",
+      "FMC removed water depth equals potential uptake * dt",
+      "FMC post-withdrawal bin inventory remains nonnegative and physically representable",
+      "FMC root-zone and whole-column storage decrease exactly by the removed depth within 1e-14 cm",
+      "the SWAP and FMC total uptake depths are equal within floating-point tolerance",
+      "the spatial extraction distributions are explicitly recorded as non-equivalent"
+    ],
+    "positive": "D27_UNSTRESSED_TOTAL_UPTAKE_ACCOUNTING_PREFLIGHT_PASS",
+    "negative": "D27_UNSTRESSED_UPTAKE_AUTHORITY_OR_ACCOUNTING_NO_GO",
+    "if_positive": "A later trajectory workunit may test a root-active wet/no-stress window only after native composite-state withdrawal/update semantics are bound to primary or traceable secondary implementation authority.",
+    "if_negative": "Do not add root uptake to FMC trajectories."
+  },
+  "held_after_D26": [
+    "NATIVE_FMC_COMPOSITE_STATE_ROOT_WITHDRAWAL_TRAJECTORY",
+    "FMC_DROUGHT_STRESS_FEEDBACK",
+    "SEASONAL_ET_BALANCE",
+    "DROUGHT_MEMORY_AND_RECOVERY",
+    "APPLICATION_ACCEPTANCE"
+  ],
+  "external_source_blocker": {
+    "id": "M2WC70_NATIVE_ET_STATE_UPDATE_ORACLE",
+    "status": "IDENTIFIED_NOT_MATERIALIZED",
+    "statement": "The public CC0 archive exists and is authoritative as a secondary implementation oracle, but the current tool route could not retrieve its 230 MB binary. D26 does not invent composite front/slug/groundwater withdrawal update rules in its absence."
+  },
+  "firewalls": [
+    "NO_SWAPP_FEDDES_SPATIAL_SINK_RELABELED_AS_NATIVE_FMC",
+    "NO_DROUGHT_STRESS_MAPPING_IN_D27",
+    "NO_TRAJECTORY_ET_BEFORE_COMPOSITE_STATE_UPDATE_AUTHORITY",
+    "NO_ROOT_DEPTH_OR_BIN_TUNING_ON_SWAP_OUTCOMES",
+    "NO_CHANGE_TO_D24_D25_FMC_HYDRAULIC_PHYSICS",
+    "NO_APPLICATION_ACCEPTANCE",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

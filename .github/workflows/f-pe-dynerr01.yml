@@ -1,0 +1,36 @@
+name: F-PE-DYNERR01 dynamic-top temporal indicator
+
+on:
+  push:
+    branches:
+      - work/f-pe-dynerr01-dynamic-top-temporal-indicator
+    paths:
+      - 'docs/performance/F-PE-DYNERR01_PREREGISTRATION.md'
+      - 'tests/fpe/materialize_fpe_dynerr01_indicator.py'
+      - 'tests/fpe/test_fpe_dynerr01_indicator.f90'
+      - 'tests/fpe/run_fpe_dynerr01.py'
+      - 'tests/fpe/run_fpe_dynerr01.sh'
+      - '.github/workflows/f-pe-dynerr01.yml'
+      - 'src/solver/mod_reference_richards_temporal_indicator.f90'
+      - 'src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+      - 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mechanism:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered dynamic-top indicator mechanism test
+        run: bash tests/fpe/run_fpe_dynerr01.sh
+
+# harness repair rerun

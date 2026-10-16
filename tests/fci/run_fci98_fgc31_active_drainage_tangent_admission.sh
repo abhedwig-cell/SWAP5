@@ -192,6 +192,8 @@ MODULE_SRC=(
   src/runtime/mod_modflow6_swap_prescribed_qbot_bottom_face.f90
   src/runtime/mod_modflow6_swap_predictor_tangent_adapter.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 compile_vq(){
   local opt="$1" out="$work/vq_o$1"

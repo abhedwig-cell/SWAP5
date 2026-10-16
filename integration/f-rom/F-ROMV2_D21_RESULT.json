@@ -1,0 +1,164 @@
+{
+  "schema": "swap5.f-romv2-d21.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D21",
+  "decision": "D21_MATCHED_RAIN_PONDING_RUNOFF_BOUNDARY_NO_GO_BEFORE_TRAJECTORY_EXPOSURE",
+  "adjudication": "NATIVE_SURFACE_THRESHOLD_MISMATCH_AT_FROZEN_2KSAT_CASE",
+  "scientific_scope": "Boundary-authority result only; no R16/R2 rainfall-threshold trajectory evidence was consumed.",
+  "stage1": {
+    "decision": "D21_RAIN_PONDING_RUNOFF_BOUNDARY_PREFLIGHT_PASS",
+    "execution": {
+      "pull_request": 464,
+      "workflow_run": 35462604315,
+      "workflow_job": 105949034359,
+      "executed_head": "2ed98f1d9969a3a7ae7c31fd5a8c7fd8574b37ef",
+      "artifact_id": 10590430843,
+      "artifact_digest": "sha256:cfb0f9672b461ee94777de924a99fc49b679636f99f2ebedceb68d2dc8d1d805",
+      "provider_o0_o2_sha256": "44d17426bc80e2227126710bf6874d49af45596ff2d2fa26d78f7b19f24ca7b3",
+      "result_sha256": "f313f0e61fe2ca487027f1cac5a261666a893d73a4bc2f82559876a4bfedeaef",
+      "analyzer_sha256": "4c34d6f7a3fe88bf6a4faf46b50c07b3cd64b947b4ce8b6b16d4d48d4855b0f5"
+    },
+    "SWAP_provider_oracle": {
+      "rainfall_factor_ladder_Ksat": [
+        0.25,
+        0.5,
+        1,
+        2,
+        4,
+        8,
+        16
+      ],
+      "selected": {
+        "flux_no_ponding": 0.25,
+        "ponded_no_runoff": 2,
+        "active_linear_runoff": 4
+      },
+      "ponding_max_cm": 0.0036140064814814818,
+      "top_state": {
+        "theta": 0.42545652999999894,
+        "h_cm": -3.5900902059398048
+      },
+      "rows": [
+        {
+          "factor": 0.25,
+          "route": "surface-flux",
+          "pond_cm": 0,
+          "runoff_cm": 0,
+          "top_flux_native_cm_per_day": -7.806254
+        },
+        {
+          "factor": 0.5,
+          "route": "surface-flux",
+          "pond_cm": 0,
+          "runoff_cm": 0,
+          "top_flux_native_cm_per_day": -15.612508
+        },
+        {
+          "factor": 1,
+          "route": "surface-flux",
+          "pond_cm": 0,
+          "runoff_cm": 0,
+          "top_flux_native_cm_per_day": -31.225016
+        },
+        {
+          "factor": 2,
+          "route": "ponded-head",
+          "pond_cm": 0.0030154832241137196,
+          "runoff_cm": 0,
+          "top_flux_native_cm_per_day": -36.39625694365747
+        },
+        {
+          "factor": 4,
+          "route": "ponded-head-linear-runoff",
+          "pond_cm": 0.009553973691386858,
+          "runoff_cm": 0.0006874962048501593,
+          "top_flux_native_cm_per_day": -36.41376409651219
+        },
+        {
+          "factor": 8,
+          "route": "ponded-head-linear-runoff",
+          "pond_cm": 0.022506814156837036,
+          "runoff_cm": 0.002186667555018004,
+          "top_flux_native_cm_per_day": -36.448446009572464
+        },
+        {
+          "factor": 16,
+          "route": "ponded-head-linear-runoff",
+          "pond_cm": 0.0484124950877374,
+          "runoff_cm": 0.005185010255353694,
+          "top_flux_native_cm_per_day": -36.517809835693015
+        }
+      ]
+    },
+    "FMC_primitive_preflight": {
+      "nonzero_ponding_head_Eq18_pass": true,
+      "surface_reservoir_ledger_pass": true,
+      "trajectory_evidence_consumed": false
+    }
+  },
+  "stage2": {
+    "decision": "D21_FMC_COUPLED_BOUNDARY_MICRO_PREFLIGHT_NO_GO",
+    "execution": {
+      "pull_request": 465,
+      "workflow_run": 35462751043,
+      "workflow_job": 105949431873,
+      "executed_head": "9b83253b3dc5f328e5808b63c59cfa455c60d0fb",
+      "artifact_id": 10590176859,
+      "artifact_digest": "sha256:2660f42dc1f63f8a23c58a3241c2bca69d5cf00462a40db294866b5803ccc656",
+      "result_sha256": "335cdcf807ad7d1ede239c8e0f89fdbfe18fd5d226f79e368c8d793c57152f07",
+      "stdout_sha256": "35f8409f8359da0655c45859a7e89d6ec14aa2e9f246ce4b8dff7c9126135899"
+    },
+    "one_step_micro_histories": {
+      "M_FLUX": {
+        "factor_Ksat": 0.25,
+        "regime_label_match": true,
+        "infiltrated_cm": 0.0009035016203703707,
+        "surface_store_cm": 0,
+        "runoff_cm": 0,
+        "ledger_residual_cm": 7.105427357601002e-15
+      },
+      "M_POND": {
+        "factor_Ksat": 2,
+        "regime_label_match": false,
+        "infiltrated_cm": 0.0033995923410658534,
+        "remaining_after_infiltration_cm": 0.0038284206218971105,
+        "surface_store_cm": 0.0038061784911486017,
+        "runoff_cm": 0.000022242130748508816,
+        "ledger_residual_cm": 7.105427357601002e-15,
+        "SWAP_selected_label": "PONDED_NO_RUNOFF",
+        "FMC_observed_label": "PONDED_WITH_RUNOFF"
+      },
+      "M_RUNOFF": {
+        "factor_Ksat": 4,
+        "regime_label_match": true,
+        "infiltrated_cm": 0.0033995923410658534,
+        "surface_store_cm": 0.010284397578285526,
+        "runoff_cm": 0.0007720360065745415,
+        "ledger_residual_cm": 0
+      }
+    },
+    "preflight_pass": false,
+    "stage3_R16_R2_trajectory_authorized": false
+  },
+  "interpretation": {
+    "threshold_mismatch_established": true,
+    "general_FMC_hydrological_no_go": false,
+    "prior_D13_D20_positive_evidence_reclassified": false,
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED; native surface formulations change ponding-to-runoff regime at different rainfall supply under the frozen state/boundary scale.",
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "UNCHANGED_FROM_D20; D21 does not re-adjudicate longer-horizon balance evidence.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "UNCHANGED_FROM_D20; D21 has no groundwater front or live coupling.",
+    "next": "A separately preregistered native threshold-response sweep may characterize the already-frozen factor ladder without retuning thresholds; matched-label trajectory generation under D21 remains prohibited."
+  },
+  "firewalls": {
+    "rainfall_factor_retuned": false,
+    "ponding_max_retuned": false,
+    "runoff_resistance_retuned": false,
+    "Eq18_retuned": false,
+    "bin_count_retuned": false,
+    "process_step_retuned": false,
+    "R16_R2_threshold_trajectories_generated": false
+  },
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

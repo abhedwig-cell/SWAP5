@@ -1,0 +1,48 @@
+{
+  "schema": "trace.evidence_manifest.v0.1",
+  "trace_id": "TRACE-SWAP-0001",
+  "freeze_date": "2026-09-19",
+  "pre_resolution": {
+    "repository": "abhedwig-cell/SWAP5",
+    "ref": "integration/f-ci-canonical",
+    "commit": "8cf184955a0f366ef85bc38dd64c19aa639b7098"
+  },
+  "theory_sources": [],
+  "documentation_sources": [
+    {
+      "path": "docs/numerics/transactional-time-stepping.md",
+      "blob_sha": "eb825f635bb4213c87c242cabacf0880ae12ce2e",
+      "observed_claim": "Reviewer-facing frozen Status-A transaction semantics are documented on current canonical."
+    },
+    {
+      "path": "integration/f-doc/F-DOC30_STATUS.json",
+      "blob_sha": "351021815599c58f378758fe3a36794578984f7f",
+      "observed_claims": [
+        "phase=VERIFY",
+        "decision=CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+        "status_only_exact_head_rerun=PENDING",
+        "next_permitted_action=VERIFY_STATUS_ONLY_HEAD_THEN_GUARDED_ADMIT_IF_CANONICAL_RELEVANT_DELTA_IS_CLEAN"
+      ]
+    }
+  ],
+  "implementation_sources": [],
+  "existing_regression_evidence": [],
+  "authority_and_governance_sources": [
+    {
+      "path": "integration/f-ci/F-CI49P_STATUS.json",
+      "blob_sha": "84d5f7fc14ae1f5d231b42e522bdfb567abc2217",
+      "observed_claims": [
+        "phase=FINAL_CLOSEOUT_COMPLETE",
+        "decision=QUALIFIED_FCI49_POSTIMAGE_AND_MOVING_PRESERVATION_AUTHORITY_RECONCILIATION_FINALIZED",
+        "final_closeout_complete=true"
+      ]
+    }
+  ],
+  "inputs_and_configuration": [],
+  "runtime_environment": [],
+  "reproduction_commands": [],
+  "outputs": [],
+  "checksums": [],
+  "initial_conflict": "The current canonical contains the F-DOC30 reviewer page and its status artifact, but the status still describes a pre-admission verification state even though the underlying F-KT15/F-CI49P transaction authority is finalized and the documentation is already canonical.",
+  "notes": "Evidence frozen before reading PR #194 state, F-DOC30 branch chronology, exact-head reruns or later F-DOC30 closeout/supersession records."
+}

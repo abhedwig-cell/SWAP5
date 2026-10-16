@@ -1,0 +1,98 @@
+study:
+  study_id: PUB-GC-NATIVE-TIME-0003
+  publication_owner: PUB-GC
+  evidence_role: PROSPECTIVE_SUPPORTING_NATIVE_INTEGRATION_ADEQUACY
+  primary_h2_h3_inference_eligible: false
+  status: FROZEN_NOT_RUN
+
+chronology:
+  native_time_0002_result_commit: ec36883372c0870319ade7574e206459671a23bc
+  refinement_decision_commit: f55b87322a04977b342e00057b3bd47375580233
+  macro_high_count_qualification_receipt_commit: c60a91c6749c00300f75a6f21d8a95c17d2c970f
+  frozen_before_implementation_and_execution: true
+
+authority:
+  research_branch: research/pub-gc-native-time-0003
+  base: 2189109de15df92d6712b5a3f5b27c1a922edd42
+  frozen_source_tree: d7ef6c045263de821db7800459289efcd8a6420b
+  macro_module_blob: 0a9461368f536381ca23390b255f8c369cb1e474
+  macro_envelope_qualified_through_contributions: 128
+  allowed_mutations:
+    - tests/publication/pub_gc/native_time_0003/**
+    - .github/workflows/pub-gc-native-time-0003.yml
+  forbidden_mutations:
+    - src/**
+    - tests/publication/pub_gc/macro_window_response/**
+    - all_other_previously_qualified_publication_components
+
+common_fixture:
+  inherited_unchanged_from_native_time_0002: true
+  initial_time_day: 4200.125
+  total_macro_duration_day: 0.04
+  initial_pressure_head_cm: -80.0
+  bottom_mode: 5
+  temporal_mode: TX_TEMPORAL_MODEL_CERTIFICATE
+  model_temporal_indicator_budget: 100.0
+  transaction_hard_mass_tolerance: 1.0e-10
+  top_flux_scale: initial_state_positive_K0
+  forcing_switch_day_from_macro_start: [0.0, 0.01, 0.02, 0.03, 0.04]
+
+native_ladder:
+  N0: {native_dt_day: 0.01, interval_count: 4}
+  N1: {native_dt_day: 0.005, interval_count: 8}
+  N2: {native_dt_day: 0.0025, interval_count: 16}
+  N3: {native_dt_day: 0.00125, interval_count: 32}
+  N4: {native_dt_day: 0.000625, interval_count: 64}
+  N5: {native_dt_day: 0.0003125, interval_count: 128, role: selection_reference_conditional_on_N4_N5_stability}
+
+cases:
+  - {case_id: NT-C0, prescribed_bottom_head_cm: -80.0, top_flux_factor_by_0p01_day_segment: [-1.0, -1.0, -1.0, -1.0]}
+  - {case_id: NT-W3, prescribed_bottom_head_cm: -80.0, top_flux_factor_by_0p01_day_segment: [-3.0, -1.0, -1.0, -1.0]}
+  - {case_id: NT-D05, prescribed_bottom_head_cm: -80.0, top_flux_factor_by_0p01_day_segment: [0.5, -1.0, -1.0, -1.0]}
+  - {case_id: NT-R3, prescribed_bottom_head_cm: -80.0, top_flux_factor_by_0p01_day_segment: [-3.0, 0.5, -1.0, -1.0]}
+  - {case_id: NT-H60, prescribed_bottom_head_cm: -60.0, top_flux_factor_by_0p01_day_segment: [-1.0, -1.0, -1.0, -1.0]}
+
+frozen_tolerances:
+  dQ_cm: 1.0e-4
+  dh_cm: 1.0e-2
+  dtheta: 1.0e-5
+  dStorage_cm: 1.0e-4
+
+fine_level_guard:
+  comparison: N4_vs_N5
+  must_pass_all_metrics_in_all_cases: true
+  failure_result: NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+  postrun_threshold_relaxation: prohibited
+  postrun_case_removal: prohibited
+
+policy_selection:
+  comparison_reference: N5
+  ordering: [N0, N1, N2, N3, N4]
+  rule: select_coarsest_level_passing_all_metrics_in_all_cases
+  allowed_results:
+    - SELECT_N0_0P01000_DAY
+    - SELECT_N1_0P00500_DAY
+    - SELECT_N2_0P00250_DAY
+    - SELECT_N3_0P00125_DAY
+    - SELECT_N4_0P000625_DAY
+    - NO_POLICY_SELECTED
+    - NO_POLICY_SELECTED_FINE_LEVEL_UNSTABLE
+  terminal_surrogate_mismatch_as_selection_metric: prohibited
+  universal_SWAP_timestep_claim_allowed: false
+
+optimization:
+  modes: [O0, O2]
+  require_exact_scientific_output_identity: true
+
+nonclaims:
+  - no H2 or H3 inference
+  - no practical coupling-window threshold
+  - no MODFLOW6 result
+  - no universal SWAP timestep recommendation
+  - no PUB-SQ solver-performance inference
+
+next_permitted_action:
+  - create research/pub-gc-native-time-0003 from high-count qualified head
+  - implement only this six-level supporting oracle
+  - execute exactly once under O0/O2
+  - accept the mechanical outcome without retuning

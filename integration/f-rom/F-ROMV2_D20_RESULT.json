@@ -1,0 +1,171 @@
+{
+  "schema": "swap5.f-romv2-d20.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D20",
+  "decision": "FMC_ONE_HOUR_PERSISTENCE_RETAINS_RESEARCH_CANDIDACY",
+  "adjudication": "RELATIVE_BALANCE_PROFILE_AND_GROUNDWATER_FLUX_ADVANTAGE_PERSISTS_TO_ONE_HOUR_WITH_GROWING_ABSOLUTE_BIAS_AND_ROOT_ZONE_STORAGE_WEAKNESS",
+  "execution": {
+    "stage1": {
+      "pull_request": 462,
+      "workflow_run": 35460196880,
+      "workflow_job": 105942554405,
+      "executed_head": "aab4ff555a13e1cc0e1659fa0a5c450e497012bb",
+      "artifact_id": 10589358371,
+      "artifact_digest": "sha256:0149f5fd61d9208c89c45b838662ae31a25d1c66717e3d5ec0ac557526885204",
+      "decision": "D20_FMC_ONE_HOUR_PREFLIGHT_PASS",
+      "SWAP_trajectory_evidence_consumed": false
+    },
+    "stage2": {
+      "pull_request": 462,
+      "workflow_run": 35460468883,
+      "workflow_job": 105943287019,
+      "executed_head": "aa565fd60a3db0dd93253559594479e4f4fc7687",
+      "artifact_id": 10589368773,
+      "artifact_digest": "sha256:01ced1ca2bafd794fc966a3a5b8d883bbb48adcb4090b696fd3abad3fe294250",
+      "workflow_conclusion": "success",
+      "raw_result_sha256": "dbbd89fa075504ef7dc8e8b820ef39c8a811225165bfbd6950aa00b4253b289b",
+      "raw_preflight_sha256": "30e0d2bc71a73ef3c7945d61f5f89cc8b84c120b3652ba87fc84164aec391ccf",
+      "analyzer_stdout_sha256": "22788257fa0cd5c5c94c1a9bc0e15ca3395ddc9505a11575669baef0a8d927db",
+      "R16_o0_o2_sha256": "f1301d55f1f548833b9a7a0461491336a2c97c651abf22ba5f00231ac3361914",
+      "R2_o0_o2_sha256": "9333c589d39fa9f7e41b8f256a037c9061f03722565c197e6b398ca801eb2dfc"
+    },
+    "technical_non_scientific_attempt": {
+      "workflow_run": 35460411554,
+      "artifact_id": 10588683696,
+      "classification": "COMPILE_ONLY_NO_TRAJECTORY_EXPOSURE",
+      "failure": "stale one-argument history summary helper call",
+      "repair": "remove non-scientific per-history summary factor field",
+      "scientific_design_changed": false
+    }
+  },
+  "envelope": {
+    "material": "B01",
+    "histories": [
+      "P_UP",
+      "P_DOWN",
+      "P_ALT_A",
+      "P_ALT_B"
+    ],
+    "duration_seconds": 3600,
+    "process_step_seconds": 10,
+    "block_duration_seconds": 300,
+    "forcing_factors_of_Ksat": [
+      0.1,
+      0.25,
+      0.5,
+      0.75
+    ],
+    "cycles": 3,
+    "initial_state": "D17 I_DEEP + G25 separated surface/groundwater composite",
+    "bottom_boundary": "fixed zero pressure head",
+    "cumulative_top_input_cm": 0.520416933333335,
+    "minimum_surface_groundwater_separation_cm": 8.698376203237913,
+    "contact_merge": false,
+    "ponding_runoff": false,
+    "dry_bin_activation": false,
+    "falling_slug_state": false,
+    "ET_root_uptake": false
+  },
+  "integrity": {
+    "pass": true,
+    "max_abs_FMC_step_mass_residual_cm": 1.1701577207201552e-14,
+    "hard_mass_gate_cm": 1e-12,
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true,
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "full_hour": {
+    "FMC": {
+      "total_storage_RMSE_cm": 0.26194004369895757,
+      "cumulative_bottom_exchange_RMSE_cm": 0.26194004369895,
+      "mapped_R16_cell_theta_RMSE": 0.00702024755911923,
+      "upper_0_80_storage_RMSE_cm": 0.14113229336326624,
+      "lower_80_160_storage_RMSE_cm": 0.12141264086347478,
+      "terminal_bottom_flux_RMSE_cm_per_day": 10.763117667813795,
+      "bottom_flux_sign_error_count": 0,
+      "mean_total_storage_error_cm": -0.2257453194697104,
+      "mean_cumulative_bottom_exchange_error_cm": 0.22574531946970275
+    },
+    "R2": {
+      "total_storage_RMSE_cm": 0.4843223124666179,
+      "cumulative_bottom_exchange_RMSE_cm": 0.48432231246663016,
+      "mapped_R16_cell_theta_RMSE": 0.048185594036124435,
+      "upper_0_80_storage_RMSE_cm": 0.049050388710521316,
+      "lower_80_160_storage_RMSE_cm": 0.4353209339506204,
+      "terminal_bottom_flux_RMSE_cm_per_day": 19.365312402385655,
+      "bottom_flux_sign_error_count": 0,
+      "mean_total_storage_error_cm": -0.42440002041499564,
+      "mean_cumulative_bottom_exchange_error_cm": 0.4244000204150097
+    },
+    "ratios_FMC_over_R2": {
+      "total_storage_RMSE": 0.540842329,
+      "cumulative_bottom_exchange_RMSE": 0.540842329,
+      "mapped_theta_RMSE": 0.1456908,
+      "upper_storage_RMSE": 2.8773,
+      "lower_storage_RMSE": 0.2789,
+      "terminal_bottom_flux_RMSE": 0.55579
+    }
+  },
+  "last_quarter_steps_271_360": {
+    "FMC": {
+      "total_storage_RMSE_cm": 0.3971538915165838,
+      "cumulative_bottom_exchange_RMSE_cm": 0.3971538915165729,
+      "mapped_R16_cell_theta_RMSE": 0.01021562301780232,
+      "upper_0_80_storage_RMSE_cm": 0.21527082665859548,
+      "lower_80_160_storage_RMSE_cm": 0.18238199415137243,
+      "terminal_bottom_flux_RMSE_cm_per_day": 9.954510960685406,
+      "bottom_flux_sign_error_count": 0,
+      "mean_total_storage_error_cm": -0.3960284556402019,
+      "mean_cumulative_bottom_exchange_error_cm": 0.3960284556401909
+    },
+    "R2": {
+      "total_storage_RMSE_cm": 0.7202697137119003,
+      "cumulative_bottom_exchange_RMSE_cm": 0.7202697137119142,
+      "mapped_R16_cell_theta_RMSE": 0.04982292272854414,
+      "upper_0_80_storage_RMSE_cm": 0.07515872296778446,
+      "lower_80_160_storage_RMSE_cm": 0.645128354253687,
+      "terminal_bottom_flux_RMSE_cm_per_day": 16.767626265284697,
+      "bottom_flux_sign_error_count": 0,
+      "mean_total_storage_error_cm": -0.7185070951648099,
+      "mean_cumulative_bottom_exchange_error_cm": 0.7185070951648238
+    }
+  },
+  "frontier": {
+    "full_total": true,
+    "full_cumulative": true,
+    "full_profile": true,
+    "full_bottom_flux": true,
+    "full_bottom_flux_sign": true,
+    "late_total": true,
+    "late_cumulative": true,
+    "late_profile": true,
+    "late_bottom_flux": true,
+    "all_views_required": true,
+    "retained": true
+  },
+  "physical_interpretation": {
+    "persistence": "The FMC advantage over R2 persists through the complete hour and remains present in the last quarter rather than being only an early-transient effect.",
+    "absolute_drift": "FMC nevertheless develops a systematic storage deficit / cumulative-bottom-exchange surplus that grows with time; relative superiority to R2 is not application accuracy.",
+    "vertical_partition": "FMC strongly improves lower-zone storage and resolved profile fidelity but is worse than R2 for integrated upper-80-cm storage. This prevents promotion to root-zone soil-moisture or drought fidelity.",
+    "forcing_order": "The four histories have equal cumulative input and similar pooled balance response; D20 establishes robustness to the frozen order permutations, not arbitrary atmospheric forcing."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "PROMISING_RESEARCH_DIRECTION_NOT_QUALIFIED; one-hour relative advantage persists but absolute bias grows and the horizon is far short of seasonal.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "PROMISING_FIXED_WATER_TABLE_RESEARCH_DIRECTION_NOT_QUALIFIED; lower-zone and bottom-flux errors improve strongly versus R2, but live water-table movement is untested.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_QUALIFIED; FMC upper-80-cm storage RMSE is worse than R2 and ET/root uptake are absent.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED; no rainfall-supply/ponding/runoff threshold was exercised.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED."
+  },
+  "next": [
+    "ADMIT_D20_AS_ONE_HOUR_FIXED_WATER_TABLE_PERSISTENCE_CANDIDACY",
+    "PREREGISTER_RAINFALL_PONDING_RUNOFF_THRESHOLD_COMPARATOR_AS_NEXT_HYDRAULIC_ENVELOPE_TEST",
+    "ALLOW_SEPARATE_SAME_RUNTIME_PERFORMANCE_SCREENING_ONLY_AS_SCREENING_NOT_FORMAL_SPEEDUP",
+    "DEFER_ET_ROOT_UPTAKE_AND_DROUGHT_CLAIMS",
+    "DO_NOT_HIDE_UPPER_ZONE_STORAGE_WEAKNESS_BEHIND_TOTAL_OR_PROFILE_AGGREGATES"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

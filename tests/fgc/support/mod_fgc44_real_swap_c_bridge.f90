@@ -104,7 +104,7 @@ module mod_fgc44_real_swap_c_bridge
   public :: fgc44_swap_preflight_c, fgc44_ledger_prepare_c, fgc44_ledger_preflight_c
   public :: fgc44_swap_commit_c, fgc44_ledger_commit_c, fgc44_abort_prepublication_c
   public :: fgc44_state_c
-  public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c
+  public :: fgc44_e1_diagnostics_c, fgc44_last_trial_diagnostics_c, fgc44_last_trial_response_c
   public :: fgc44_predictor_run_diagnostics_c
 
 contains
@@ -417,6 +417,25 @@ contains
     residual=e1_mass_residual
     fgc44_e1_diagnostics_c=0_c_int
   end function fgc44_e1_diagnostics_c
+
+  integer(c_int) function fgc44_last_trial_response_c(q_swap_m_per_s,bottom_exchange_cm,dq_swap_dh_per_s, &
+       tangent_available) bind(C,name="fgc44_last_trial_response_c")
+    real(c_double), intent(out) :: q_swap_m_per_s,bottom_exchange_cm,dq_swap_dh_per_s
+    integer(c_int), intent(out) :: tangent_available
+    fgc44_last_trial_response_c=1_c_int
+    q_swap_m_per_s=0.0_c_double
+    bottom_exchange_cm=0.0_c_double
+    dq_swap_dh_per_s=0.0_c_double
+    tangent_available=0_c_int
+    if(.not.initialized .or. .not.last_trial%valid)return
+    q_swap_m_per_s=last_trial%q_swap_m_per_s
+    bottom_exchange_cm=last_trial%bottom_outward_exchange_cm
+    if(last_trial%response_tangent_available)then
+      dq_swap_dh_per_s=last_trial%dq_swap_dh_per_s
+      tangent_available=1_c_int
+    end if
+    fgc44_last_trial_response_c=0_c_int
+  end function fgc44_last_trial_response_c
 
   integer(c_int) function fgc44_last_trial_diagnostics_c(q_swap_m_per_s,bottom_exchange_cm) &
        bind(C,name="fgc44_last_trial_diagnostics_c")

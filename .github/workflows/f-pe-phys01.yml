@@ -1,0 +1,27 @@
+name: F-PE-PHYS01 physical backend decomposition
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_phys01_*.sh'
+      - 'docs/performance/F-PE-PHYS01_*.md'
+      - '.github/workflows/f-pe-phys01.yml'
+  workflow_dispatch:
+
+jobs:
+  decompose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        n: [1000, 10000, 40000]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run physical backend decomposition
+        env:
+          PHYS01_N: '${{ matrix.n }}'
+          PHYS01_REPS: '5'
+        run: bash tests/fpe/run_fpe_phys01_backend_decomposition.sh

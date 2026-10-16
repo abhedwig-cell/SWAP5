@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB12A aggregate storage floor
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB12A*.md'
+      - 'tests/fpe/run_fpe_nlglob12a*.py'
+      - 'tests/fpe/run_fpe_nlglob12a*.sh'
+      - '.github/workflows/f-pe-nlglob12a.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob12a-stagnation-subset
+    paths:
+      - 'docs/performance/F-PE-NLGLOB12A*.md'
+      - 'tests/fpe/run_fpe_nlglob12a*.py'
+      - 'tests/fpe/run_fpe_nlglob12a*.sh'
+      - '.github/workflows/f-pe-nlglob12a.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob12a-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  aggregate-storage-floor-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered aggregate storage-floor attribution
+        run: bash tests/fpe/run_fpe_nlglob12a.sh

@@ -1,0 +1,97 @@
+{
+  "schema": "swap5.hydro_memory.acc02_f2.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC02-F2",
+  "title": "Four consecutive live root-active coupling windows under governed accuracy",
+  "canonical_base": "ab8d52a3b3ab39470a989a46dc19e3bd24a01906",
+  "authorities": {
+    "acc01": "ACC01_F1_PASS_GOVERNED_TEMPORAL_ROUTE",
+    "acc02": "ACC02_GOVERNANCE_QUALIFIED",
+    "acc02_f1": "ACC02_F1_PASS_LIVE_ROOT_ACTIVE_SINGLE_WINDOW",
+    "prescribed_root_tangent": "QUALIFIED_RESTRICTED_PRESCRIBED_ROOT_TANGENT_COVERAGE",
+    "transaction_lifecycle": [
+      "F-GC43 production SWAP participant recapture semantics",
+      "F-GC24 consecutive-window/restart semantics"
+    ]
+  },
+  "production_source_change": false,
+  "reference_source_change": false,
+  "purpose": "Qualify persistence and exact-once publication across repeated live root-active SWAP-MODFLOW6 windows before any scientific drought/recovery sequence.",
+  "frozen_fixture": {
+    "modflow_version": "6.8.0",
+    "windows": 4,
+    "duration_per_window_day": 0.0001,
+    "total_duration_day": 0.0004,
+    "predictor_qbot_cm_per_day": 0.000001,
+    "root_total_cm_per_day": 0.02,
+    "root_distribution": "equal over first min(4,numnod) compartments",
+    "h_app_cm": 0.4,
+    "temporal_budget_cm": 0.1,
+    "interface_head_tolerance_m": 0.001,
+    "flux_iteration_tolerance_m_per_s": 1e-15,
+    "fixed_point_max_iterations_per_window": 6,
+    "hard_mass_tolerance_cm": 1e-12,
+    "modflow_ims_outer_dvclose": 1e-10,
+    "modflow_ims_inner_dvclose": 1e-10
+  },
+  "window_lifecycle": {
+    "before_each_window": [
+      "committed SWAP revision equals window index k-1",
+      "committed SWAP time equals (k-1)*1e-4 day",
+      "ledger committed exchange count equals k-1",
+      "no live participant candidate and no prepared ledger",
+      "predictor origin is captured from the actual previously accepted SWAP/GW interface, not reconstructed from the initial state"
+    ],
+    "predictor_lineage": [
+      "swap_origin_revision = current committed SWAP revision",
+      "groundwater_origin_revision = k-1 qualification revision",
+      "candidate revision = origin revision + 1"
+    ],
+    "after_each_window": [
+      "live MODFLOW timestep finalized exactly once",
+      "SWAP candidate committed exactly once",
+      "interface ledger committed exactly once",
+      "SWAP revision increments by one",
+      "SWAP committed time advances by exactly 1e-4 day",
+      "ledger exchange count increments by one"
+    ]
+  },
+  "pass_gates": [
+    "all four predictors retain complete prescribed-root tangent coverage and authoritative MODFLOW endpoint",
+    "all accepted predictor temporal indicators <=1 under unchanged 0.1 cm budget",
+    "each coupled fixed point converges within six iterations under unchanged 0.001 m head and 1e-15 m/s flux criteria",
+    "each SWAP hard mass ledger is complete with absolute residual <=1e-12 cm",
+    "rejected/intermediate correctors never mutate committed SWAP or ledger state",
+    "each window passes all publication preflights before any commit",
+    "revision sequence after commits is exactly [1,2,3,4]",
+    "committed-time sequence is exactly [1e-4,2e-4,3e-4,4e-4] day within epsilon-scale tolerance",
+    "ledger committed-count sequence is exactly [1,2,3,4]",
+    "next-window predictor starts from previous accepted interface and current committed state",
+    "MODFLOW current time advances monotonically across four timesteps",
+    "O0/O2 bridge behavior equivalent within the same F1 metric tolerance"
+  ],
+  "failure_decisions": [
+    "ACC02_F2_BLOCKED_PREDICTOR_RECOVERY_FROM_COMMITTED_STATE",
+    "ACC02_F2_BLOCKED_LINEAGE_OR_WINDOW_ADVANCEMENT",
+    "ACC02_F2_BLOCKED_TEMPORAL_OR_INTERFACE_ACCURACY",
+    "ACC02_F2_BLOCKED_LIVE_MODFLOW_MULTIWINDOW",
+    "ACC02_F2_BLOCKED_MASS_OR_EXACT_ONCE_PUBLICATION"
+  ],
+  "forbidden_after_execution": [
+    "relax any governed accuracy value",
+    "decrease root sink",
+    "increase six-iteration coupling ceiling",
+    "change MODFLOW IMS tolerances",
+    "change solver or mass tolerances",
+    "reinitialize SWAP state between windows",
+    "reinitialize MODFLOW state between windows",
+    "reuse initial hydrostatic predictor origin after window 1"
+  ],
+  "nonclaims": [
+    "not a drought/recovery experiment",
+    "not dynamic Feddes stress-dependent uptake",
+    "not production-bootstrap root-active admission",
+    "not Stage 0 scientific evidence"
+  ],
+  "downstream_if_pass": "Adjudicate production-owner widening versus a bounded research runner, then freeze soil hydraulics and execute only the preregistered Stage 0 falsification pilot."
+}

@@ -2,6 +2,8 @@
 
 The documentation follows a docs-as-code workflow. Markdown source is versioned with the software and reviewed with the code it describes.
 
+Documentation is also part of the quality evidence chain. Current project-wide rules for Status-A preservation, Status-AA planning, theory-documentation-code-evidence reconciliation, discrepancy handling and shared-authority integration are defined in [Quality governance after Status A](quality-governance-a-aa.md).
+
 ## Local checks
 
 Install the documentation dependency in a Python environment:
@@ -43,6 +45,8 @@ Use these labels consistently:
 
 Do not document an optimization as physically equivalent unless the qualification evidence supports that statement.
 
+For material scientific or numerical claims, distinguish intended theory/formal description, historical or corrected-reference behaviour, current SWAP5 implementation, executable evidence and canonical admission. When those layers disagree, record the discrepancy rather than resolving it silently in prose.
+
 ### Completeness and authority rule
 
 Missing documentation is not left unwritten merely because the original design record was incomplete. Apply this rule:
@@ -61,7 +65,9 @@ An important architecture change should normally include:
 1. an ADR or update to an existing ADR;
 2. the affected invariant numbers;
 3. updated API or data-ownership documentation where relevant;
-4. verification evidence or an explicit statement that qualification is still pending.
+4. verification evidence or an explicit statement that qualification is still pending;
+5. updated scientific or user documentation when model meaning, applicability, parameter semantics, state ownership or numerical policy changes;
+6. a discrepancy-register entry when theory, documentation, implementation and evidence cannot yet be reconciled.
 
 ## Parallel development
 

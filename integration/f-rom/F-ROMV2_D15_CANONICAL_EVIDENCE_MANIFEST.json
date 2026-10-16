@@ -1,0 +1,36 @@
+{
+  "schema": "swap5.f-romv2-d15.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D15",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d15-fmc-surface-accounting",
+    "pull_request": 443,
+    "pull_request_merged": false,
+    "head": "58ee8e9367f5338758477a3a3e17bdbaa3082c11",
+    "workflow_run": 35455721244,
+    "workflow_job": 105930504818,
+    "artifact_id": 10587992420,
+    "artifact_digest": "sha256:33bbd2075ceebbdfaa97aee0c88ccf05c565c4f6092dcfa12bfdc531575b1912",
+    "workflow_conclusion": "success"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D15_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D15_RESULT.json",
+    "integration/f-rom/F-ROMV2_D15_STATUS.json",
+    "integration/f-rom/F-ROMV2_D15_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D15_FMC_SURFACE_ACCOUNTING_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d15_surface_accounting.py",
+    ".github/workflows/f-romv2-d15-surface-accounting.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "SWAP_trajectory_evidence_consumed": false,
+  "bin_substep_green_ampt_allocation_retuned_after_result": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

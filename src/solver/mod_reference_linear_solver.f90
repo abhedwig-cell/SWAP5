@@ -9,13 +9,14 @@ module mod_reference_linear_solver
 
 contains
 
-  subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror, beta_factor)
+  subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror, beta_factor, capture_in_gamma_requested)
     integer, intent(in) :: n
     real(real64), intent(in) :: a(:), b(:), c(:), r(:)
     real(real64), intent(out) :: u(:)
     real(real64), intent(inout) :: gamma(:)
     integer, intent(out) :: ierror
     real(real64), intent(out), optional :: beta_factor(:)
+    logical, intent(in), optional :: capture_in_gamma_requested
 
     real(real64), parameter :: small = 0.3e-37_real64
     integer :: i
@@ -24,7 +25,8 @@ contains
 
     call require_vector_sizes(n, a, b, c, r, u, gamma)
     capture_in_gamma = size(gamma) >= 2*n
-    if (capture_in_gamma) gamma(n+1:2*n) = 0.0_real64
+    if (present(capture_in_gamma_requested)) capture_in_gamma = capture_in_gamma_requested
+    if (capture_in_gamma .and. size(gamma) < 2*n) error stop 'reference_tridag: capture requires gamma capacity >= 2*n'
     if (present(beta_factor)) then
        if (size(beta_factor) < n) error stop 'reference_tridag: beta factor shape mismatch'
        beta_factor(1:n) = 0.0_real64

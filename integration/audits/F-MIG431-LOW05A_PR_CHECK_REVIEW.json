@@ -1,0 +1,1044 @@
+{
+  "work_unit": "F-MIG431-LOW05-A",
+  "pr": 974,
+  "head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+  "reviewed_all_completed": true,
+  "global_ci_pass": false,
+  "central_disposition": "Admit only exact-source bounded LOW05-A qualification; preserve visible historical/moving workflow failures, no guard relaxed.",
+  "fci_moving_failure": "110707921224: dependency drift of mod_a23bu_worker_execution_context against historicala0fd7822; file unchanged by LOW05-A.",
+  "runs": [
+    {
+      "id": 36965152829,
+      "name": "F-SI39 B1.11 KSATEXM preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176229,
+          "errors": [
+            "2026-10-02T04:35:21.1544659Z F_SI39_FAIL unexpected production delta",
+            "2026-10-02T04:35:21.1570152Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152692,
+      "name": "PUB-P1E02 post-solver rollback",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176023,
+          "errors": [
+            "2026-10-02T04:35:13.4156514Z Fatal Error: Cannot open module file ‘mod_b110_direct_retention_provider.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:13.4205683Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152851,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success",
+      "errors": []
+    },
+    {
+      "id": 36965152760,
+      "name": "F-GC44 real FMR participant",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175884,
+          "errors": [
+            "2026-10-02T04:34:52.6430829Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:52.6439608Z FGC44_REAL_FMR_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:52.6482416Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152788,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175997,
+          "errors": [
+            "2026-10-02T04:34:51.9450633Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical",
+            "2026-10-02T04:34:51.9478679Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152748,
+      "name": "PPA-WU04-B Boesten evaporation admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176076,
+          "errors": [
+            "2026-10-02T04:34:51.7786203Z PPA_WU04B_GATE_FAIL production delta escaped preregistration",
+            "2026-10-02T04:34:51.7809029Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152954,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177164,
+          "errors": [
+            "2026-10-02T04:34:55.0858559Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference",
+            "2026-10-02T04:34:55.0876544Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152658,
+      "name": "PUB-P2E04 Reference failure census",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175794,
+          "errors": [
+            "2026-10-02T04:34:54.8059844Z Fatal Error: Cannot open module file ‘mod_drainage_extended_exchange.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:54.8073887Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152892,
+      "name": "F-ROSS12 serialized production wiring",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177050,
+          "errors": [
+            "2026-10-02T04:34:48.9520582Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:48.9591822Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152684,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175784,
+          "errors": [
+            "2026-10-02T04:34:46.2809890Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:46.2818559Z FPE_ZERO_WASTE01_POISON_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:46.2872529Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152586,
+      "name": "F-CI109R1 F-APP09 current canonical admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175731,
+          "errors": [
+            "2026-10-02T04:34:43.7136531Z FCI109R1_GATE_FAIL src delta is not exact five-file F-APP09 postimage",
+            "2026-10-02T04:34:43.7144165Z ##[error]Process completed with exit code 109."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152817,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176135,
+          "errors": [
+            "2026-10-02T04:34:58.4172449Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:58.4228055Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152589,
+      "name": "PPA-WU01 production application bootstrap",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175648,
+          "errors": [
+            "2026-10-02T04:34:49.8758897Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:34:49.8761984Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:34:57.7542739Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:57.7548308Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:57.7590264Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152750,
+      "name": "F-VQ116 F-GC44 independent qualification",
+      "conclusion": "success",
+      "errors": []
+    },
+    {
+      "id": 36965152909,
+      "name": "F-PE-ELASTIC09 application bootstrap",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177742,
+          "errors": [
+            "2026-10-02T04:35:01.7203876Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:35:01.7205998Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:35:01.7285011Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:01.7285717Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:01.7285948Z F_PE_ELASTIC09_FAIL PPA-WU01 preservation",
+            "2026-10-02T04:35:01.7293731Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152876,
+      "name": "F-CI72 EB-I23 moving preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176496,
+          "errors": [
+            "2026-10-02T04:35:02.7523456Z \u001b[36;1mecho 'FCI72_MOVING_I23_TOP_ADVECTIVE_FAIL_CLOSED=PASS'\u001b[0m",
+            "2026-10-02T04:35:02.8915966Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152719,
+      "name": "F-CI96 F-ROSS12 postimage preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175819,
+          "errors": [
+            "2026-10-02T04:35:03.1646560Z FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+            "2026-10-02T04:35:03.1669238Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152767,
+      "name": "F-PE-ELASTIC08 runtime materialization",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176291,
+          "errors": [
+            "2026-10-02T04:35:11.3194064Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:11.3203210Z F_PE_ELASTIC08_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:11.3259065Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152792,
+      "name": "PPA-WU03 common forcing adapter",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176276,
+          "errors": [
+            "2026-10-02T04:35:11.6895678Z Fatal Error: Cannot open module file ‘mod_drainage_extended_exchange.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:11.6907481Z PPA_WU03_GATE_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90",
+            "2026-10-02T04:35:11.6941770Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176431,
+          "errors": [
+            "2026-10-02T04:35:05.1983279Z PPA_WU03_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:35:09.9200492Z Fatal Error: Cannot open module file ‘mod_drainage_extended_exchange.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:09.9208982Z PPA_WU03_GATE_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90",
+            "2026-10-02T04:35:09.9260968Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176563,
+          "errors": [
+            "2026-10-02T04:35:36.0953941Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:35:36.0957665Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:35:42.6457822Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:42.6467680Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:42.6532991Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152812,
+      "name": "PUB-ME D3 origin authority",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176097,
+          "errors": [
+            "2026-10-02T04:35:41.9847661Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source",
+            "2026-10-02T04:35:41.9866675Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152803,
+      "name": "F-CI79 EB-I25 moving preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176538,
+          "errors": [
+            "2026-10-02T04:35:37.7459267Z \u001b[36;1mecho 'FCI79_MOVING_OUTFLOW_MULTIOUTER_SNOW_FAIL_CLOSED=PASS'\u001b[0m",
+            "2026-10-02T04:35:37.8581560Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152631,
+      "name": "F-PE-MULTI04 production groundwater parallel admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175627,
+          "errors": [
+            "2026-10-02T04:34:56.2643656Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:56.2725569Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175717,
+          "errors": [
+            "2026-10-02T04:35:39.7412255Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:39.7423123Z TEMPORAL08_P3_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:39.7607717Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175740,
+          "errors": [
+            "2026-10-02T04:34:54.9205610Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:54.9215136Z FPE_MULTI04_P2_FAIL compile hybrid src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:54.9279096Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175773,
+          "errors": [
+            "2026-10-02T04:34:51.1490775Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:51.1502499Z FGC49D_CONTEXT_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:51.1577724Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175801,
+          "errors": [
+            "2026-10-02T04:35:19.5488456Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:19.5490877Z FPE_MULTI04_P1C_FAIL compile w=1 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:19.5544568Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152866,
+      "name": "PPA-LOW02-TIME legacy prescribed-qbot application",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176389,
+          "errors": [
+            "2026-10-02T04:35:32.0208227Z PPA_LOW02_GATE_FAIL admitted backend successor drift",
+            "2026-10-02T04:35:32.0233360Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152929,
+      "name": "PUB-GC E7 current-canonical preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176843,
+          "errors": [
+            "2026-10-02T04:35:51.6328249Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152881,
+      "name": "PPA-WU02 lower-boundary prescribed-qbot admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176925,
+          "errors": [
+            "2026-10-02T04:35:49.6337430Z PPA_WU02_GATE_FAIL unexpected production delta: src/adapter/fmr_groundwater_application_runtime.py",
+            "2026-10-02T04:35:49.6392758Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152931,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177072,
+          "errors": [
+            "2026-10-02T04:35:51.3239180Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:51.3248006Z FGC44_REAL_FMR_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:51.3292221Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152861,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success",
+      "errors": []
+    },
+    {
+      "id": 36965152644,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176144,
+          "errors": [
+            "2026-10-02T04:35:12.8266027Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176188,
+          "errors": [
+            "2026-10-02T04:35:53.2144672Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152615,
+      "name": "F-PE-APPROX02 A2C production qualification",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175735,
+          "errors": [
+            "2026-10-02T04:34:46.6451072Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:46.6459643Z FGC44_REAL_FMR_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:46.6502160Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175815,
+          "errors": [
+            "2026-10-02T04:35:16.9242315Z urllib.error.HTTPError: HTTP Error 403: rate limit exceeded",
+            "2026-10-02T04:35:16.9246879Z ValueError: use GITHUB_TOKEN env to bypass rate limit (HTTP Error 403: rate limit exceeded)",
+            "2026-10-02T04:35:17.0221410Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175847,
+          "errors": [
+            "2026-10-02T04:35:23.1493092Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:23.1501957Z APPROX02_A2_APPLICATION_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:23.1555279Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175856,
+          "errors": [
+            "2026-10-02T04:35:47.0124836Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:47.0132434Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:47.0318940Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175881,
+          "errors": [
+            "2026-10-02T04:35:20.1282789Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:20.1424173Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175923,
+          "errors": [
+            "2026-10-02T04:35:58.9021526Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:58.9031136Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:58.9214612Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152698,
+      "name": "F-CI74 EB-I24 moving preservation",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175902,
+          "errors": [
+            "2026-10-02T04:36:02.1939664Z \u001b[36;1mecho 'FCI74_MOVING_OUTFLOW_SNOW_FAIL_CLOSED=PASS'\u001b[0m",
+            "2026-10-02T04:36:02.3390937Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152850,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176395,
+          "errors": [
+            "2026-10-02T04:36:09.9518052Z Fatal Error: Cannot open module file ‘mod_b110_direct_retention_provider.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:09.9569385Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152842,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176775,
+          "errors": [
+            "2026-10-02T04:35:57.3868346Z Fatal Error: Cannot open module file ‘mod_drainage_extended_exchange.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:57.3988026Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152819,
+      "name": "F-GC44 real SWAP MODFLOW6 end-to-end",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176163,
+          "errors": [
+            "2026-10-02T04:35:58.5706222Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:58.5716899Z FGC44_E2E_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:58.5919697Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152923,
+      "name": "PUB-ME D1 transition authority",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177138,
+          "errors": [
+            "2026-10-02T04:36:31.1169174Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source",
+            "2026-10-02T04:36:31.1199311Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152800,
+      "name": "Documentation",
+      "conclusion": "success",
+      "errors": []
+    },
+    {
+      "id": 36965152759,
+      "name": "PPA-WU04-A Black evaporation admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175890,
+          "errors": [
+            "2026-10-02T04:35:25.3654498Z PPA_WU04A_GATE_FAIL production delta escaped preregistration",
+            "2026-10-02T04:35:25.3682095Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965153070,
+      "name": "PUB-GC E7 realistic component-domain gate",
+      "conclusion": "success",
+      "errors": []
+    },
+    {
+      "id": 36965152926,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177479,
+          "errors": [
+            "2026-10-02T04:36:14.8255913Z PUB_P2E06_GATE_FAIL F-ROSS13 successor src delta above current canonical is not exactly two files",
+            "2026-10-02T04:36:14.8278172Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152815,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176262,
+          "errors": [
+            "2026-10-02T04:36:10.2540974Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference",
+            "2026-10-02T04:36:10.2566033Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152777,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176171,
+          "errors": [
+            "2026-10-02T04:36:10.9085514Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base",
+            "2026-10-02T04:36:10.9112426Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152616,
+      "name": "F-PERF-CANON01 D AHL50",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707175852,
+          "errors": [
+            "2026-10-02T04:35:05.0328993Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:05.0385736Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175880,
+          "errors": [
+            "2026-10-02T04:35:00.9584011Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:35:00.9586233Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:35:06.6232332Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:06.6243869Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:06.6306702Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175908,
+          "errors": [
+            "2026-10-02T04:35:26.8885060Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:26.8948627Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707175951,
+          "errors": [
+            "2026-10-02T04:36:07.9299953Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:07.9308971Z FGC49D_CONTEXT_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:07.9397737Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152901,
+      "name": "F-PE-ZERO-WASTE01 paired runtime",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177007,
+          "errors": [
+            "2026-10-02T04:36:06.0733022Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:06.0824871Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177106,
+          "errors": [
+            "2026-10-02T04:36:17.9668586Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:17.9743632Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152921,
+      "name": "F-PE-BALTOL02 scaled Reference balance-floor admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177025,
+          "errors": [
+            "2026-10-02T04:35:26.4654895Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:26.4662099Z BALTOL01_P2_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:26.4709511Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177267,
+          "errors": [
+            "2026-10-02T04:36:18.9375637Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:18.9385015Z BALTOL02_G12_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:18.9441939Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177316,
+          "errors": [
+            "2026-10-02T04:36:19.6252248Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:19.6263390Z BALTOL01_P0_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:19.6350624Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152859,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176328,
+          "errors": [
+            "2026-10-02T04:35:35.7687760Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:35.7696948Z FKT22_FMR_RUNTIME_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:35.7755137Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176476,
+          "errors": [
+            "2026-10-02T04:35:35.2993326Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:35.3001897Z FPE_ZERO_WASTE01_POISON_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:35.3062044Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176559,
+          "errors": [
+            "2026-10-02T04:36:17.3162632Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:36:17.3165160Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:36:23.1760202Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:23.1762603Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:23.1823163Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176564,
+          "errors": [
+            "2026-10-02T04:36:35.6637708Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:35.6729272Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176592,
+          "errors": [
+            "2026-10-02T04:36:48.4140614Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:48.4236949Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152764,
+      "name": "F-PE-ELASTIC65 mode7 C-SAFE binding",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176641,
+          "errors": [
+            "2026-10-02T04:35:57.1162640Z F_PE_ELASTIC65_A3_MISSING_BUDGET_FAIL_CLOSED=PASS",
+            "2026-10-02T04:35:57.1163239Z F_PE_ELASTIC65_A7_SWKIMPL1_FAIL_CLOSED=PASS",
+            "2026-10-02T04:36:43.4472066Z F_PE_ELASTIC65_SOURCE_SCOPE_FAIL=['src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90', 'src/runtime/mod_fmr_legacy_head_bottom_boundary_provider.f90', 'src/runtime/mod_fmr_production_application_bootstrap.f90', 'src/runtime/mod_fmr_serialized_reference_backend.f90']",
+            "2026-10-02T04:36:43.5183264Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152857,
+      "name": "F-PE-SETUP04 scalable bootstrap production admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176871,
+          "errors": [
+            "2026-10-02T04:36:02.9365050Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:02.9374321Z FPE_MULTI04_P1C_FAIL compile w=1 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:02.9422246Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177063,
+          "errors": [
+            "2026-10-02T04:36:41.6407788Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:41.6418192Z FGC49B_REGISTRY_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:41.6472191Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177065,
+          "errors": [
+            "2026-10-02T04:36:24.3872353Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:24.3881702Z FPE_SETUP04_FAIL compile baseline src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:24.3943661Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177081,
+          "errors": [
+            "2026-10-02T04:36:16.8556872Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:36:16.8557943Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:36:23.7775578Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:23.7785386Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:23.7849515Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177094,
+          "errors": [
+            "2026-10-02T04:36:33.7044300Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:33.7050016Z FPE_SETUP04_FAIL compile baseline src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:33.7121860Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177161,
+          "errors": [
+            "2026-10-02T04:36:40.0636763Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:40.0647809Z FPE_SETUP04_FAIL compile baseline src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:40.0712463Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707187594,
+          "errors": [
+            "2026-10-02T04:36:42.5988656Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:42.5997041Z FGC49D_CONTEXT_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:42.6069460Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152854,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707177436,
+          "errors": [
+            "2026-10-02T04:36:31.6346161Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:31.6353787Z FKT22_FMR_RUNTIME_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:31.6393233Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177644,
+          "errors": [
+            "2026-10-02T04:36:40.2276900Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:36:40.2279627Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:36:52.7887035Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:52.7896809Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:52.7955857Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177659,
+          "errors": [
+            "2026-10-02T04:36:14.9662935Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:14.9674954Z FPE_ZERO_WASTE01_POISON_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:14.9735934Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177668,
+          "errors": [
+            "2026-10-02T04:36:43.4623642Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:36:43.4625607Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:36:47.9028548Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:47.9034989Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:47.9086940Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177672,
+          "errors": [
+            "2026-10-02T04:36:43.2492060Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:43.2555198Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177691,
+          "errors": [
+            "2026-10-02T04:36:37.7506364Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:36:37.7509832Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:36:44.1685190Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:44.1696243Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:44.1755322Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177738,
+          "errors": [
+            "2026-10-02T04:36:52.1429925Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:52.1484862Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707177827,
+          "errors": [
+            "2026-10-02T04:36:55.0475252Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:55.0484517Z FGC49D_CONTEXT_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:55.0537539Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152863,
+      "name": "F-PE-TEMPORAL08 production c0.65 admission",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707176371,
+          "errors": [
+            "2026-10-02T04:35:01.5786719Z FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS",
+            "2026-10-02T04:35:01.5790517Z PPA_WU01_PROFILE_FAIL_CLOSED_STATIC=PASS",
+            "2026-10-02T04:35:07.4168534Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:07.4178681Z PPA_WU01_GATE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:07.4217536Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176569,
+          "errors": [
+            "2026-10-02T04:36:04.7029115Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:04.7038481Z FGC49D_LIVE_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:04.7219509Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176580,
+          "errors": [
+            "2026-10-02T04:35:59.1881313Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:35:59.1889764Z TEMPORAL08_P0_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:35:59.1946321Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176630,
+          "errors": [
+            "2026-10-02T04:36:12.2136112Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:12.2146063Z TEMPORAL08_P1_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:12.2203757Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707176684,
+          "errors": [
+            "2026-10-02T04:36:52.1972067Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:52.1978873Z TEMPORAL08_P3_FAIL compile src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:52.2103479Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152675,
+      "name": "F-KT22 current-canonical qualification",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707265366,
+          "errors": [
+            "2026-10-02T04:36:22.3233603Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:22.3241672Z FKT22_FMR_COMPILE_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:22.3298662Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707265381,
+          "errors": [
+            "2026-10-02T04:36:41.3920251Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:41.3929926Z FKT22_EB_I25_PRESERVATION_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:41.3988242Z ##[error]Process completed with exit code 1."
+          ]
+        },
+        {
+          "job": 110707265407,
+          "errors": [
+            "2026-10-02T04:36:28.7548679Z Fatal Error: Cannot open module file ‘mod_ppa_wu05_perch19_reduction_controller.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:36:28.7558818Z FKT22_FMR_RUNTIME_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:36:28.7617885Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    },
+    {
+      "id": 36965152895,
+      "name": "F-CI canonical qualification",
+      "conclusion": "failure",
+      "errors": []
+    },
+    {
+      "id": 36965151557,
+      "name": "PPA-WU05-A26 live trial preparer",
+      "conclusion": "failure",
+      "errors": [
+        {
+          "job": 110707172519,
+          "errors": [
+            "2026-10-02T04:34:54.2112071Z Fatal Error: Cannot open module file ‘mod_fmr_legacy_qgwl_bottom_boundary_provider.mod’ for reading at (1): No such file or directory",
+            "2026-10-02T04:34:54.2126997Z PPA_WU05A26_BACKEND_FAIL compile O0 src/runtime/mod_fmr_serialized_reference_backend.f90",
+            "2026-10-02T04:34:54.2285795Z ##[error]Process completed with exit code 1."
+          ]
+        }
+      ]
+    }
+  ],
+  "admission": {
+    "work_unit": "F-MIG431-LOW05-A",
+    "state": "CANONICAL_ADMITTED_CLOSED",
+    "pull_request": 974,
+    "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+    "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+    "qualification_run": 36964835178,
+    "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+    "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+  }
+}

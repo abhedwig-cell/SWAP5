@@ -1,0 +1,101 @@
+{
+  "work_unit": "F-GC-DRAINAGE-ROUTE-AUTHORITY-20261011",
+  "status": "DOCUMENTARY_CONTRACT_CLARIFIED_SYNTHETIC_CHECKS_PASS_PHYSICAL_ADMISSION_PENDING",
+  "baseline": "1e689fd2c31bac468df01540b314ea128be4554a",
+  "scientific_checkpoint": "5c100884cacb1b69789c74152d91a882ffdf32dc",
+  "checkpoint_tree": "19c7ec1e48d73dfea04901ea6e0d42c0eaea5105",
+  "owner": "central F-GC with RT/HY and application topology; physical drainage evaluators remain their existing owners",
+  "contract": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_DRAINAGE_OWNERSHIP.md",
+  "code_changed": false,
+  "production_interfaces_changed": false,
+  "invariants": [
+    7,
+    12,
+    13,
+    17,
+    23,
+    28,
+    30
+  ],
+  "decision": {
+    "mixed_evaluators_on_distinct_physical_paths": "ALLOWED_IN_DECLARED_FUTURE_APPLICATION_NOT_CURRENTLY_ADMITTED",
+    "same_path_independent_double_evaluation": "INVALID",
+    "mirrored_reporting": "ALLOWED_WITHOUT_ADDITIONAL_PHYSICAL_LEG",
+    "receiving_model": "May book a justified opposite receiving leg without becoming another drainage evaluator; no second sink against the same already-depleted water.",
+    "field_assignment": "NOT_SELECTED; no actual application drainage network or storage-domain mapping established in this unit."
+  },
+  "accepted_bounded_authority": {
+    "admission": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "contract_state": "CANONICAL_ADMITTED_CLOSED",
+    "storage": "HEAD_STATE_CAPACITANCE",
+    "active_coupled_drainage_owner": "NONE",
+    "pb01": "Physical outward corrector tangent orientation already reconciled in admitted bounded fixed-interface contract. Analytical research is a frozen oracle, not authority for new active drainage."
+  },
+  "identity_audit": {
+    "integration/f-gc/F-GC_FIXED_INTERFACE_COUPLING_CONTRACT.json": {
+      "canonical_blob": "27caad3fda4194071a77f17b7f733e8e57f29e3a",
+      "current_sha256": "706995d05cfae05e27b1fcceef70beca08d01263b8699c4b3eafc51032bb91d4",
+      "same_as_original_fixed_interface_admission": false
+    },
+    "integration/f-gc/F-GC_FIXED_INTERFACE_CANONICAL_ADMISSION.json": {
+      "canonical_blob": "84402a58a98489db403a4484ac1baee306590626",
+      "current_sha256": "ee3df719a519f8a64242545cfa9788c51164add1bb5a7e5cbf771d80f386311a",
+      "same_as_original_fixed_interface_admission": false
+    },
+    "integration/f-gc/F-GC_FIXED_INTERFACE_ANALYTICAL_TESTBANK_FREEZE.json": {
+      "canonical_blob": "d69d738c8e419e217eb6bc04ee7a01fc82353dd2",
+      "current_sha256": "882e413bca19d268b8025f4acf38cc7c38c3e63e4c8aa25dd483cbee1e386419",
+      "same_as_original_fixed_interface_admission": true
+    },
+    "src/runtime/mod_groundwater_topology_composition.f90": {
+      "canonical_blob": "d20290a612a462ef0f96f4e006edee09ef7546e9",
+      "current_sha256": "be23512b29022e3d0105d1f436aba29e06a6aa7a8e888c2796b006980453e3fc",
+      "same_as_original_fixed_interface_admission": false
+    },
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+      "canonical_blob": "851cb80954e1be909f6ec54661c0b12b80f225cd",
+      "current_sha256": "06abc12d4de59d21e7f4ff6a93491232fc3a2717bdfb416263fa9f07ec1784d7",
+      "same_as_original_fixed_interface_admission": false
+    }
+  },
+  "validation": {
+    "test": "tests/fgc/test_drainage_route_authority_contract.py",
+    "tests": 13,
+    "result": "PASS",
+    "scope": "Synthetic declaration/receipt logic and textual retention of production NONE/HEAD_STATE_CAPACITANCE guards only",
+    "raw_log": "test_current_production_stays_none (__main__.DrainageAuthorityContract.test_current_production_stays_none) ... ok\ntest_distinct_swap_and_modflow_paths_allowed (__main__.DrainageAuthorityContract.test_distinct_swap_and_modflow_paths_allowed) ... ok\ntest_duplicate_sink_rejected (__main__.DrainageAuthorityContract.test_duplicate_sink_rejected) ... ok\ntest_mirror_extra_sink_rejected (__main__.DrainageAuthorityContract.test_mirror_extra_sink_rejected) ... ok\ntest_rejected_trial_not_accepted_receipt (__main__.DrainageAuthorityContract.test_rejected_trial_not_accepted_receipt) ... ok\ntest_restart_republication_rejected (__main__.DrainageAuthorityContract.test_restart_republication_rejected) ... ok\ntest_reverse_signed_exchange_and_zero (__main__.DrainageAuthorityContract.test_reverse_signed_exchange_and_zero) ... ok\ntest_same_flux_may_be_mirrored_without_new_physical_leg (__main__.DrainageAuthorityContract.test_same_flux_may_be_mirrored_without_new_physical_leg) ... ok\ntest_same_path_under_alias_rejected (__main__.DrainageAuthorityContract.test_same_path_under_alias_rejected) ... ok\ntest_sto_capacitance_not_physical_source (__main__.DrainageAuthorityContract.test_sto_capacitance_not_physical_source) ... ok\ntest_two_independent_models_same_route_rejected (__main__.DrainageAuthorityContract.test_two_independent_models_same_route_rejected) ... ok\ntest_unconverted_rate_rejected (__main__.DrainageAuthorityContract.test_unconverted_rate_rejected) ... ok\ntest_unresolved_owner_rejected (__main__.DrainageAuthorityContract.test_unresolved_owner_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.001s\n\nOK\n",
+    "raw_log_sha256": "5eb063864f1f4ce4faf03660c9568de478c1c5bbc76b69ca0c9d9e66f9d4397a",
+    "not_claimed": [
+      "No Fortran O0/O2 or live MODFLOW experiment",
+      "No actual physical drainage budgeting",
+      "No runtime enforcement by this Python prototype",
+      "No actual restart qualification; duplicate-receipt example only",
+      "No inference of physical alias identity from different IDs or geometry",
+      "No current-source requalification of original fixed-interface E2E"
+    ]
+  },
+  "remaining_gates": [
+    "Actual physical drainage path and donor/destination/storage-role mapping",
+    "Reviewed route-specific runtime/topology carrier, not reinterpretation of per-cell scalar selector",
+    "Joint physical SWAP and MODFLOW distinct-path fixture and same-path alias negative control",
+    "Component and separate groundwater-interface mass budgets, actual sign/unit/area conversion",
+    "Active route directional/tangent qualification",
+    "Trial/rollback, accepted-window exactly-once and joint continuous/restarted physical qualification",
+    "Affected owner/F-CI preservation and explicit bounded production admission"
+  ],
+  "production_guard": "NONE remains required; no active route enabled",
+  "canonical_semantic_reconciliation": {
+    "original_admission": "b70173f315ab1b174001aeb7e67e56edfef95b0d",
+    "storage_drainage_flux_response_transaction_contract_fields": "Identical between original admission and pinned current canonical; full documentary blobs differ because admission/qualification provenance was later updated.",
+    "admission_record_admitted_contract": "Identical between original admission and pinned current canonical.",
+    "production_source_history": "Current topology/bootstrap blobs are not identical to original admission. This unit pins current identities and retained guards; it does not claim unchanged historical source or newly replayed original physical qualification.",
+    "current_unit_preservation": "Source/reference/workflow/asset/testbank trees and all incumbent tests unchanged against 1e689fd2; only the isolated Python contract check is added.",
+    "docs": "Documentation source and strict MkDocs PASS before publication."
+  },
+  "carrier_actions": {
+    "pr486": "OPEN_UNCHANGED; broad application and historical unique carrier dispositions remain unresolved",
+    "pr528": "OPEN_UNCHANGED; frozen research retained, no dummy extension or sign repair",
+    "hupsel_rerun": false,
+    "new_actions": 0
+  }
+}

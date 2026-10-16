@@ -1,0 +1,104 @@
+{
+  "work_unit": "PPA-WU05B14",
+  "status": "PREREGISTERED",
+  "scope": "Explicit rootless ordinary Reference mode2 single-level signed EXTENDED response with TUBE/OPEN_CHANNEL, highest_level false and TOP_NONE, finite supplied resolved surface-water control head; normal and B8 guarded low-air frost. Low-air physical zbotdr must equal selected frost drain depth. This is a bounded normalized constitutive composition, separate from the F-APP09 external coupling profile.",
+  "prerequisite": "B13 admitted PR1058 and exact metadata closeout PR1059 verified",
+  "interface": "Add OFF frost_extended_response_drainage_active requiring B9; exactly one actual EXTENDED_SIGNED level, TUBE or OPEN_CHANNEL, highest_level false and TOP_NONE. Reject TAB/analytic/empirical selectors and all other variants/mixed cardinality. Low-air requires B10/B8 and exact active zbotdr/frost physical depth agreement. Add PURE finite-preflight forwarding valid_extended_drainage_parameters accessor; PURE-annotate existing parameter validation only, preserve its body and process evaluator byte-for-byte.",
+  "controls": "Actual finite resolved_surface_water_head only, never substitute generic drain_head or physical frost depth; retain actual application control validators and immutable trial-start GWL/ponding carrier.",
+  "production_paths_allowed": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/process/mod_drainage_extended_exchange.f90"
+  ],
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    27,
+    29,
+    30
+  ],
+  "physical_order": "Existing disposable signed proposal -> normal/B8 modifier -> one final nodal sink/accepted receipt. Independent terminal full/half regeneration through B10. No extra state, clipping or side booking.",
+  "scientific_authority": {
+    "readiness": "a0b11f68884f7593f000af1c34aa42de8956ecfd",
+    "scientific_candidate": "48df989b098d73208eed2496005b656f588ebffd",
+    "contract_path": "integration/research/SW_RIB_SWM01_Q4A_PREREGISTRATION.json",
+    "result_path": "integration/research/SW_RIB_SWM01_Q4A_RESULT.json",
+    "oracle_path": "tests/sw-rib-swm01/test_q4a_extended_exchange_candidate.py",
+    "oracle_blob": "ac04dc0a132183f400d49d3f13cb30e956124900",
+    "driver_blob": "599ba9d809262419929163ef50f502346c230ebd",
+    "process_blob": "25d76013d25c2eaa2d254865149c740bc3257617",
+    "current_process_exact_primary": true,
+    "historical_cases_per_opt": 1507,
+    "historical_results_only": true
+  },
+  "runtime_authority": {
+    "canonical_admission": "integration/f-ci/F-CI109R1_FAPP09_ADMISSION.json",
+    "subject": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+    "independent": "181c785de059842a6361a1f57951a129ed78d8bb",
+    "independent_primary_blob": "2211c662988df713fa03cfbaae63728c89956b90",
+    "scope": "Admitted F-APP09 single-level external owner mode7, one accepted coupling substep; actual participant explicitly excludes frost and soil temperature. Its whole-window transfer ownership must not be silently broadened."
+  },
+  "gates": [
+    "Unchanged 1507-case Q4A primary oracle/driver rebound to actual current process/hydraulic carrier O0/O2; value/tangent/seam/negative-power holds unchanged",
+    "Independent selected TUBE/OPEN signed equations, GWL cap/control branch/ponding switch, active parameter bounds, inactive members, separate controls/physical depths, normal/B8 cuts/equality/qbot and corrected B7 source modifier parity",
+    "Four kind/sign configurations x six full trajectories per route with warm/partial/frozen normal and observed bracketed low-air partial/all/no cuts, both qbot signs; unchanged 8192/65536 independent fine references, hard mass, retry/replay/final step/window receipts/application/empty restart; representative finer references",
+    "Actual resolved-control activation/inactivity/positive/negative/GWLINF cap/suppression cases with fixed physical depths, observed low-air and hard mass; no Jacobian/directional claim",
+    "Active wrong selector/position/cardinality/nonfinite parameter/depth/control/missing/wrong-kind and mismatched zbotdr reject before solver, committed state unchanged; inactive parameters ignored",
+    "Fresh relevant B1..B13 whole-module preservation, four SALFRO01, immutable VQ73/74, exact F-APP09/VQ128 originals with external frost exclusion, literal root and strict canonical exact pins; docs and immutable replay, exact proposed/actual admission"
+  ],
+  "runtime_matrix": {
+    "drain_types": [
+      "TUBE",
+      "OPEN_CHANNEL"
+    ],
+    "signed_exchange": [
+      "positive",
+      "negative"
+    ],
+    "configurations": 4,
+    "trajectories_per_configuration": 6,
+    "normal_fine_steps": 8192,
+    "low_air_fine_steps": 65536,
+    "head_envelope_cm": 1e-06,
+    "temperature_envelope_c": 0.0001,
+    "hard_mass_cm": 1e-12,
+    "normal_physical_head_budget_cm": 1e-08,
+    "low_air_physical_head_budget_cm": 3e-11,
+    "temperature_budget_c": 1e-07,
+    "qualification_head_budget_cm": 2.5e-11,
+    "execution": "Fresh complete physical configuration per process; independent fine trajectory per physical case"
+  },
+  "exclusions": [
+    "F-APP09 external coupling with frost or multi-substep publication",
+    "Multilevel/mixed response selections",
+    "Highest surface resistance or power interflow",
+    "SWSRF1 and negative power interflow",
+    "Surface-water storage/availability/management owner",
+    "SWDIVD1 spatial distribution and fixed weir",
+    "Projection/directional/implicit coupling",
+    "Root/salt/macropore/snow hybrids",
+    "New phase physics",
+    "Global frost equivalence",
+    "Legacy SWDRA2 surface-water feedback and reporting-reference scope expansion"
+  ],
+  "implemented": false,
+  "qualified": false,
+  "admitted": false,
+  "aggregate_frost_migration_complete": false,
+  "baseline": "0511717b6c428d18dc223c9e81fd73da3bf5c3fd",
+  "baseline_source": "012b2e9df2fa854f19b31c98a1bcd214d8285662",
+  "dependency_sha256": {
+    "src/process/mod_drainage_extended_exchange.f90": "e235cde3b27d8af5a41e235e154a0d5327d3b5d46abdd595224229c9c219b090",
+    "src/runtime/mod_fmr_drainage_response_binding.f90": "578fce2c75b9b3e10f897e28379ac5484b3038e430221c791f8df2cc4ccbd3ed",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "1d254a6368e55dcb3b3326226e9b3c9d2dc9eb0584a014722395836e97cfaa66",
+    "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "57ae0fe188758e0f0be56499c15a7fdf9efd5bb6a52be58c52d8297bf8d4d86b",
+    "src/runtime/mod_fmr_surface_water_swap_participant.f90": "0b47566254d2dae9180b0dbb6881ee8a4670c11fd2f29f57ce539fc319c48103",
+    "src/process/mod_frost_drainage_effect.f90": "846d8b3e9ac948267e93ebfc5976b98140b6e41c93019fd46e3eefdb2c57c900",
+    "src/process/mod_frost_low_air_drainage_effect.f90": "ac1b633e7977689e7d568b24887989d0abc79145a95446b82dbd6e930711ed9d",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35"
+  }
+}

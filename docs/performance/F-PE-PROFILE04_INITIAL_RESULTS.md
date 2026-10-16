@@ -1,0 +1,133 @@
+# F-PE-PROFILE04 — initial canonical rebaseline results
+
+Date: 2026-09-26
+
+Measurement run: GitHub Actions `36220439795`
+
+Status: `INITIAL_MEASUREMENT_PASS`
+
+No production source changes.
+
+## Setup
+
+PLANVALID paired application setup:
+- N=1,000: median candidate/base init ratio `0.794129647` (~20.6% lower);
+- N=10,000: median ratio `0.331913495` (~66.8% lower);
+- repeated runtime remains approximately neutral: median `0.997181068` at N=1,000 and `1.009564701` at N=10,000.
+
+F-AHL50 direct-retention application initialization overhead relative to analytical:
+- N=1: `5.782847486`;
+- N=100: `1.522545495`;
+- N=1,000: `1.115894884`;
+- N=10,000: `1.029505412`.
+
+Thus the shared immutable representation has approximately 3.0% setup overhead at N=10,000, while the fixed cost dominates tiny N.
+
+## Repeated Reference / directional runtime
+
+ZERO-WASTE paired Reference:
+- mean ratio `0.726864148`;
+- median ratio `0.726495766`;
+- mean speedup ~27.31%.
+
+ZERO-WASTE paired directional:
+- mean ratio `0.759275664`;
+- median ratio `0.761371085`;
+- mean speedup ~24.07%.
+
+These are historical-baseline paired measurements of the admitted exact-P0 stack, not yet a full MultiSWAP end-to-end speedup.
+
+## Interpretation
+
+The initial canonical rebaseline confirms:
+1. large-N setup is no longer the dominant scaling concern after PLANVALID/B2;
+2. F-AHL50 representation construction amortizes strongly at large N;
+3. substantial exact repeated-runtime gains remain reproducible after canonical admission;
+4. the next PROFILE04 measurement must directly compare default analytical versus F-AHL50 opt-in repeated solver/application runtime on the same canonical postimage, because the current ZERO-WASTE paired runner does not measure AHL's incremental runtime benefit.
+
+Do not claim a total 20-35% end-to-end application speedup from this run alone.
+
+
+## Same-postimage F-AHL50 repeated solver timing
+
+Measurement job: PROFILE04 `ahl-repeated`, run `36220768074`.
+
+Analytical/default and direct-retention were measured on the same current postimage across B01/B12/O05/O14 × wet/mid/dry.
+
+All 12 cases passed fidelity/path gates and all 12 were speed-positive.
+
+Median candidate/analytical ratio:
+`0.827472736`
+
+Thus the median incremental repeated-solver reduction from F-AHL50 on the current postimage is approximately **17.25%**.
+
+Range:
+- fastest ratio: `0.791522277` (~20.85% reduction);
+- slowest ratio: `0.871253584` (~12.87% reduction).
+
+This is the clean current-postimage AHL increment and supersedes using older 12-15% figures for planning.
+
+It still must not be multiplied or naively added to the historical ZERO-WASTE speedup to claim total application runtime. A full same-workload end-to-end baseline comparison remains required for that claim.
+
+
+## Timing repeat / variance note
+
+A second independent AHL repeated job on the subsequent documentation head produced:
+- median ratio `0.787900653`;
+- range `0.759683287 .. 0.819395095`;
+- 12/12 speed-positive.
+
+This is materially faster than the immediately preceding median `0.827472736` despite no production change between the measurements.
+
+Therefore single-run CI timing variance is non-negligible. The robust planning statement is currently that F-AHL50 gives roughly **17-21%** repeated-solver reduction on this workload, not a falsely precise 17.25%.
+
+PROFILE04 should add multi-run aggregation before freezing a final AHL timing estimate.
+
+
+## Five-run AHL timing aggregate
+
+PROFILE04 run `36221015052` launched five independent AHL timing jobs. All five passed.
+
+Per-job 12-case median ratios:
+- `0.855926346`;
+- `0.839215952`;
+- `0.821577135`;
+- `0.846090123`;
+- `0.851187264`.
+
+Median of job medians:
+`0.846090123`.
+
+Mean of job medians:
+`0.842799364`.
+
+The robust central estimate is therefore approximately **15.4-15.7% repeated-solver reduction** from F-AHL50 on the current production-shaped 12-case workload.
+
+Observed job-median range corresponds to approximately **14.4-17.8%** reduction. Earlier isolated 20%+ CI measurements are therefore treated as timing variance rather than the planning central estimate.
+
+Planning value:
+**~15.5% F-AHL50 repeated-solver speedup**, with a conservative observed multi-run band of roughly **14-18%**.
+
+
+## Replicated canonical rebaseline confirmation
+
+PROFILE04 run `36221086108` completed fully green.
+
+Five independent AHL job medians:
+`0.822293737, 0.845257498, 0.845811822, 0.847454164, 0.850688605`.
+
+Median of job medians:
+`0.845811822` (~15.42% reduction).
+
+Mean:
+`0.842301165` (~15.77% reduction).
+
+This independently reproduces the prior five-job aggregate (`0.846090123` median), so **~15.5%** is now a stable planning estimate for F-AHL50 repeated solver gain.
+
+The same run also reproduces:
+- ZERO-WASTE Reference mean speedup: ~27.76%, median ratio `0.724142953`;
+- ZERO-WASTE directional mean speedup: ~24.26%, median ratio `0.758911185`;
+- PLANVALID N=10,000 init median ratio `0.380769720` (~61.9% reduction) with repeated runtime ratio `1.003020428`;
+- F-AHL50 N=10,000 setup median ratio `1.036369680` (~3.6% overhead).
+
+These repeated measurements strengthen the conclusion that setup has been largely amortized at large N and that remaining performance attention should focus on repeated execution.

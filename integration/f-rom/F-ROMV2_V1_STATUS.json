@@ -1,0 +1,49 @@
+{
+  "schema": "swap5.f-romv2-v1.status.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-V1",
+  "phase": "CLOSED_BLIND_HYDRAULIC_FEASIBILITY_PASS_DOMAIN_COVERAGE_LIMITING",
+  "decision": "V2_V1_C2_BLIND_HYDRAULIC_FEASIBILITY_PASS",
+  "canonical_base": "560fae8dcf9b2d9d6b55b31fbfbc07cbef2679b8",
+  "proposition": {
+    "work_unit": "F-ROMV2",
+    "pull_request": 415,
+    "admitted": true,
+    "predecessor_F_ROMV_reclassified": false
+  },
+  "execution": {
+    "workflow_run": 35441133786,
+    "workflow_job": 105891994940,
+    "executed_head": "2ef240fb390b107bffba263ad779dc2bdda23669",
+    "execution_pull_request": 416,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10583941868,
+    "artifact_digest": "sha256:26928a0dbc9dfc0c422505a86dbf70e47ccee03bef71c54932d11d97d277d276",
+    "conclusion": "success"
+  },
+  "integrity_pass": true,
+  "blind_state_information_value_pass": true,
+  "V04_failclosed": true,
+  "practical_domain_coverage": {
+    "V01_reduced_fraction": 0.9523809523809523,
+    "V02_reduced_fraction": 0.1746031746031746,
+    "V03_reduced_fraction": 0.09523809523809523,
+    "V04_reduced_fraction": 0.1111111111111111,
+    "interpretation": "C2 is locally credible but current fail-closed convex-hull coverage is too narrow in asymmetric and rapid-switch histories for broad acceleration claims."
+  },
+  "application_acceptance": {
+    "long_term_regional_water_balance": "NOT_YET_QUALIFIED",
+    "operational_soil_moisture_drought": "NOT_TESTED",
+    "groundwater_coupled_many_column": "NOT_YET_QUALIFIED",
+    "fast_event_threshold": "NOT_QUALIFIED",
+    "scientific_process_extreme_inference": "NOT_QUALIFIED"
+  },
+  "current_authority": {
+    "production_rom_authorized": false,
+    "C2_production_authorized": false,
+    "application_thresholds_final": false,
+    "performance_frontier_authorized": false,
+    "C2_ood_retuning_authorized": false
+  },
+  "next": "PURPOSE_SPECIFIC_ACCEPTANCE_AND_INDEPENDENT_PHYSICAL_REDUCTION_DISCRIMINATION_BEFORE_ANY_PRODUCTION_OR_GENERAL_SPEEDUP_CLAIM"
+}

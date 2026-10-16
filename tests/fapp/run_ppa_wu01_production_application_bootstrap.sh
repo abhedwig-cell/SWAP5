@@ -40,6 +40,22 @@ for forbidden in [
 
 assert "tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7" in src
 assert "tile%parameters%bottom_mode /= 2" in src
+runtime_src = Path("src/runtime/mod_fmr_serialized_multiswap_runtime.f90").read_text().lower()
+assert "materialize_column_diagnostics" in runtime_src
+assert "allocate(diagnostics(0))" in runtime_src
+assert "summary diagnostics require column diagnostics" in runtime_src
+assert "runtime diagnostics require column diagnostics" in runtime_src
+assert "materialize_column_diagnostics=.false." in src
+print("FPE_ZERO_WASTE01_COLUMN_DIAGNOSTICS_OPTOUT_STATIC=PASS")
+backend_src = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text().lower()
+assert "prepared_default_mvg_compatible" in backend_src
+assert "prepared_default_mvg%cofgen(1:24,:) == parameters%cofgen(1:24,:)" in backend_src
+assert "self%owned_hydraulic_parameters = parameters%prepared_default_mvg" in backend_src
+assert "self%hydraulic_parameters => self%trusted_parameter_source%prepared_default_mvg" in backend_src
+assert "nullify(self%model%trusted_parameter_source)" in backend_src
+assert "prepare_fmr_b110_default_mvg" in src
+print("FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS")
+print("FPE_ZERO_WASTE01_H22B_BORROWED_BINDING_STATIC=PASS")
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
 assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
@@ -90,6 +106,7 @@ MODULE_SRC=(
   src/process/mod_drainage_ernst_ipos45_response.f90
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
@@ -99,8 +116,11 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
@@ -112,7 +132,6 @@ MODULE_SRC=(
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -143,6 +162,8 @@ MODULE_SRC=(
   src/adapter/mod_fmr_groundwater_application_c_api.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

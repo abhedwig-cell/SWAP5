@@ -148,14 +148,17 @@ contains
   real(real64) function committed_ledger_total(snapshots, order) result(total)
     type(groundwater_interface_mass_snapshot_t), intent(in) :: snapshots(:)
     integer, intent(in) :: order(:)
-    real(real64), allocatable :: values(:)
-    integer :: i
+    real(real64) :: compensation, y, t
+    integer :: k
 
-    allocate(values(size(snapshots)))
-    do i = 1, size(snapshots)
-      values(i) = snapshots(i)%committed_swap_outward_exchange_m
+    total = 0.0_real64
+    compensation = 0.0_real64
+    do k = 1, size(order)
+      y = snapshots(order(k))%committed_swap_outward_exchange_m - compensation
+      t = total + y
+      compensation = (t - total) - y
+      total = t
     end do
-    total = stable_ordered_sum(values, order)
   end function committed_ledger_total
 
   pure logical function same_multiswap_mass(a, b) result(matches)

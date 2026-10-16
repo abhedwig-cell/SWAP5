@@ -1,0 +1,30 @@
+name: F-PE-MULTI01 current-canonical scaling
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multi01_*.sh'
+      - 'docs/performance/F-PE-MULTI01_*.md'
+      - '.github/workflows/f-pe-multi01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run current-canonical 1/2/4-worker scaling matrix
+        run: bash tests/fpe/run_fpe_multi01_p0_scaling.sh
+
+  p1-groundwater-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run production mode-5 groundwater application-context scaling
+        run: bash tests/fpe/run_fpe_multi01_p1_groundwater_scaling.sh

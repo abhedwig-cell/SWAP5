@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.f-romv2-d23.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D23",
+  "decision": "FMC_SHORT_RAINFALL_TRAJECTORY_RETAINS_FAST_SURFACE_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+  "adjudication": "ALL_PREREGISTERED_SHORT_RAINFALL_SURFACE_REDISTRIBUTION_FRONTIER_GATES_PASS_WITH_NATIVE_THRESHOLD_NON_EQUIVALENCE_PRESERVED",
+  "execution": {
+    "stage1_preflight": {
+      "workflow_run": 35467095819,
+      "workflow_job": 105961331644,
+      "artifact_id": 10591367823,
+      "artifact_digest": "sha256:5b577b876916a18c3e36d3c0abd5a12f2040f5bf9fbbfaa74eacc87fede4feb2",
+      "R16_R2_trajectory_evidence_consumed": false,
+      "decision": "D23_FMC_SHORT_RAINFALL_INTERNAL_PREFLIGHT_PASS"
+    },
+    "primary": {
+      "workflow_run": 35467238981,
+      "workflow_job": 105961724341,
+      "executed_head": "2682829ceb969cbe0e7d19b9eb14d9b8bb28b6ab",
+      "execution_pull_request": 469,
+      "execution_pull_request_merged": false,
+      "artifact_id": 10591841201,
+      "artifact_digest": "sha256:688b48f23d44ef950cbe27d8e942e714c76f3119a871f33fb78d83d70bf0a230",
+      "workflow_conclusion": "success",
+      "R16_o0_o2_sha256": "cb51595ccb41912102da4084911b329980f591585c665dfd08693748ad33bc34",
+      "R2_o0_o2_sha256": "626cf24505fa7210e17b5f0bb51c9817b3876972238ae4329cf83771c0d07090",
+      "fmc_preflight_sha256": "4f6d7fec9afcd0b9a53b42e7fdde46a9a5711bb5a9302df4c6bf6b1e1cc32ba1",
+      "raw_result_sha256": "39a42412403d97e22a499676ec758cbf8e546b961e50b6f0eebbd57e5f316626",
+      "preflight_stdout_sha256": "f14e381acb1f698e0839e608d625c36ad29cf2cb58ffb31f68375dd343f1dc6d",
+      "analyzer_stdout_sha256": "8fa8401b435526bff1a8d9cd465afd77728af3d053a2c43237c905d45bcd99ff",
+      "R16_O0_O2_identity": true,
+      "R2_O0_O2_identity": true
+    }
+  },
+  "workload": {
+    "material": "B01",
+    "histories": {
+      "R05": {
+        "rainfall_factor_Ksat": 0.5
+      },
+      "R20": {
+        "rainfall_factor_Ksat": 2
+      },
+      "R40": {
+        "rainfall_factor_Ksat": 4
+      }
+    },
+    "observation_step_seconds": 10,
+    "storm_steps": 16,
+    "hiatus_steps": 48,
+    "total_steps": 64,
+    "initial_state": "D16_D14_I_DEEP",
+    "bottom_boundary": "zero prescribed bottom flux",
+    "R16_threshold_equivalence_required": false
+  },
+  "integrity": {
+    "pass": true,
+    "all_R16_R2_accepted_trajectories_complete": true,
+    "FMC_preflight_pass": true,
+    "no_clipping": true,
+    "no_hidden_mass_correction": true,
+    "no_full_order_FMC_fallback": true
+  },
+  "pooled_rmse_vs_R16": {
+    "FMC": {
+      "cumulative_infiltration_cm": 0.009151698508148714,
+      "surface_store_cm": 0.0022440077725544546,
+      "cumulative_runoff_cm": 0.008047647006881894,
+      "upper_storage_cm": 0.024974284618744954,
+      "mapped_theta": 0.0009361783554794736,
+      "hiatus_upper_storage_cm": 0.0277003593113296,
+      "hiatus_mapped_theta": 0.0010585471181098563,
+      "total_storage_cm": 0.009151698508148875,
+      "lower_storage_cm": 0.016385204461398833
+    },
+    "R2": {
+      "cumulative_infiltration_cm": 0.01739483743465297,
+      "surface_store_cm": 0.004200369254760051,
+      "cumulative_runoff_cm": 0.015281066812366293,
+      "upper_storage_cm": 0.025645977866176367,
+      "mapped_theta": 0.032839214191983435,
+      "hiatus_upper_storage_cm": 0.028649704793441554,
+      "hiatus_mapped_theta": 0.03278714942792114,
+      "total_storage_cm": 0.017394837434650503,
+      "lower_storage_cm": 0.009982583914175388
+    }
+  },
+  "frontier_gates": {
+    "cumulative_infiltration_RMSE": true,
+    "surface_store_RMSE": true,
+    "cumulative_runoff_RMSE": true,
+    "upper_storage_RMSE": true,
+    "mapped_theta_RMSE": true,
+    "hiatus_upper_storage_RMSE": true,
+    "hiatus_mapped_theta_RMSE": true,
+    "all_required": true
+  },
+  "native_threshold_timing": {
+    "R05": {
+      "R16": {
+        "first_ponding_step": null,
+        "first_runoff_step": null,
+        "final_cumulative_runoff_cm": 0
+      },
+      "R2": {
+        "first_ponding_step": null,
+        "first_runoff_step": null,
+        "final_cumulative_runoff_cm": 0
+      },
+      "FMC": {
+        "first_ponding_step": null,
+        "first_runoff_step": null,
+        "final_cumulative_runoff_cm": 0
+      }
+    },
+    "R20": {
+      "R16": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 2,
+        "final_cumulative_runoff_cm": 0.028180982935088975
+      },
+      "R2": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 1,
+        "final_cumulative_runoff_cm": 0.046393746961849475
+      },
+      "FMC": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 1,
+        "final_cumulative_runoff_cm": 0.03765074572123072
+      }
+    },
+    "R40": {
+      "R16": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 1,
+        "final_cumulative_runoff_cm": 0.11979067897151613
+      },
+      "R2": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 1,
+        "final_cumulative_runoff_cm": 0.14522539817513097
+      },
+      "FMC": {
+        "first_ponding_step": 1,
+        "first_runoff_step": 1,
+        "final_cumulative_runoff_cm": 0.13311541380447175
+      }
+    }
+  },
+  "diagnostic_caveat": {
+    "FMC_lower_storage_RMSE_cm": 0.016385204461398833,
+    "R2_lower_storage_RMSE_cm": 0.009982583914175388,
+    "interpretation": "R2 remains better on lower-zone storage in this short zero-bottom-flux workload. Lower storage was preregistered as diagnostic, not an acceptance gate. D23 is a bounded fast surface/redistribution candidacy result, not general hydraulic dominance."
+  },
+  "scientific_interpretation": {
+    "D21_reclassified": false,
+    "D22_reclassified": false,
+    "R16_threshold_equivalence": false,
+    "statement": "FMC preserves its native threshold displacement but propagates the storm/ponding/runoff/redistribution response closer to R16 than R2 on every preregistered D23 frontier view.",
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_QUALIFIED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "CONCURRENT_RAINFALL_PLUS_GROUNDWATER_NOT_YET_QUALIFIED",
+    "FAST_SURFACE_THRESHOLD_AND_REDISTRIBUTION": "RESEARCH_CANDIDACY_RETAINED_RELATIVE_TO_R2",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "next": [
+    "ADMIT_D23_WITHOUT_RETUNING",
+    "PREREGISTER_BOUNDED_NATIVE_RAINFALL_PLUS_FIXED_WATER_TABLE_COMPOSITION_IF_NOT_ALREADY_PRESENT",
+    "PRESERVE_D21_NATIVE_THRESHOLD_NON_EQUIVALENCE",
+    "DEFER_FORMAL_PERFORMANCE_UNTIL_CONCURRENT_SURFACE_GROUNDWATER_HYDROLOGY_IS_QUALIFIED"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

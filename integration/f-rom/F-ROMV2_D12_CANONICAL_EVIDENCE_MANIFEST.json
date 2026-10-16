@@ -1,0 +1,37 @@
+{
+  "schema": "swap5.f-romv2-d12.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D12",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d12-fmc-smve-preflight",
+    "pull_request": 437,
+    "pull_request_merged": false,
+    "head": "bdd20c92121a0d7eb1dffdfef22264283bda8670",
+    "workflow_run": 35450870852,
+    "workflow_job": 105917670077,
+    "artifact_id": 10586825733,
+    "artifact_digest": "sha256:5571783a8ffb9f2ccca24a2467fd6668a541187ae6c37eef5b4e0c690e00333e"
+  },
+  "frozen_payload_digests": {
+    "result_sha256": "9ead50aea06e5f9c2f41ff93ecc1358bf9f00408d7ca2c2ee1850c84bd48d8fa",
+    "stdout_sha256": "ba606f06daebeae9b4bca8fd614e81733b6f1d8dc6f3a9ef25d95ed822493265"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D12_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D12_RESULT.json",
+    "integration/f-rom/F-ROMV2_D12_STATUS.json",
+    "integration/f-rom/F-ROMV2_D12_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D12_FMC_SMVE_PREFLIGHT_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d12_fmc_smve.py",
+    ".github/workflows/f-romv2-d12-fmc-smve-preflight.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "external_source_code_copied": false,
+  "SWAP_trajectory_evidence_consumed": false,
+  "production_rom_authorized": false
+}

@@ -1,0 +1,53 @@
+name: F-CI PPA-LOW02 moving preservation reconcile
+
+on:
+  workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing work-unit JSON selecting low02_owner and full_fci
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require explicit owner and moving selection before compilation
+        run: |
+          python3 tests/modularity/run_modular_tests.py --check-selection low02_owner
+          python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+      - name: Install gfortran
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Assert governance-only repair scope
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          changed="$(git diff --name-only "$BASE_SHA"...HEAD)"
+          echo "$changed"
+          if echo "$changed" | grep -Eq '^(src/|reference/)'; then
+            echo "Production/reference mutation is forbidden in this reconciliation." >&2
+            exit 1
+          fi
+      - name: Replay moving F-CI preservation
+        run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+      - name: Replay PPA-ROOT-HYD01 temporal preservation
+        run: bash tests/fapp/run_ppa_root_hyd01_temporal_preservation.sh
+      - name: Replay RossFast serialized compile/runtime preservation
+        run: bash tests/ross/run_ross12_serialized_production_wiring.sh
+      - name: Replay publication solver-seam preservation
+        run: bash tests/publication/run_pub_p2e01_e0_paired_pilot.sh
+      - name: Replay PPA-LOW02 owner qualification
+        run: bash tests/fapp/run_ppa_low02_time_application_admission.sh
+      - name: Replay PPA-LOW02 independent qualification
+        run: bash tests/fvq/run_ppa_low02_time_independent.sh

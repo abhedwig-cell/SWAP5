@@ -2,9 +2,9 @@
 
 ## Werkstatus
 
-Derde werkversie, redactioneel herschreven voor Stromingen, voorzien van canonical-evidence status en gecontroleerd tegen de publicatie-firewall. Niet voor indiening.
+Interne werkversie, op 16 oktober 2026 gereconcilieerd met canonical `a86da5b6931b15ef8a5432fd03adc30a72491b65` en de publicatie-firewall. Opname in de repository is geen indiening of goedkeuring door coauteurs. Niet voor indiening.
 
-**Voorlopige penvoerder:** Ab Veldhuizen. **Coauteurs:** vast te stellen op basis van inhoudelijke bijdrage en goedkeuring van de uiteindelijke scope. Actuele claims over het Nederlandse instrumentarium zijn gecontroleerd op 19 september 2026. De statusparagraaf over SWAP5 moet vlak voor indiening opnieuw worden opgebouwd uit de dan geldende canonical qualification authority.
+**Voorlopige penvoerder:** Ab Veldhuizen. **Coauteurs:** vast te stellen op basis van inhoudelijke bijdrage en goedkeuring van de uiteindelijke scope. De hieronder genoemde publieke NHI- en NHV-bronnen zijn opnieuw gelezen op 16 oktober 2026. De projectterminologie en capabilitystatus moeten vlak voor indiening opnieuw worden gecontroleerd.
 
 # SWAP in een veranderend hydrologisch instrumentarium
 
@@ -108,24 +108,44 @@ Daar hoort ook een minder zichtbaar deel van modelontwikkeling bij. Een bruikbaa
 
 ## Waar staat SWAP5 nu?
 
-### Kader 1. Momentopname SWAP5, 19 september 2026
+### Kader 1. Begrensde beschikbaarheid, 16 oktober 2026
 
-Deze momentopname is gebaseerd op de actuele canonical ontwikkellijn en de Production Physics & Application Envelope Gap Audit. Voor publicatie moet het kader opnieuw tegen de dan geldende canonical worden gecontroleerd.
+Deze momentopname volgt de canonieke ontwikkellijn op commit `a86da5b6` [7].
+De bevroren Status-A-basis en later toegelaten uitbreidingen hebben ieder hun
+vastgelegde toepassingsgrenzen. Broncode die aanwezig is, is daarmee nog niet
+voor iedere combinatie als productieroute gekwalificeerd.
 
-- **Gekwalificeerde kern:** Reference-Richards bodemwaterberekening, committed-boundary restart en serialized real-physics MultiSWAP.
-- **Gekwalificeerd maar begrensd:** onder meer bovengrensprocessen, referentieverdamping, Feddes-wortelopname, WOFOST, drainage, oppervlaktewaterberging, sneeuw, bodemtemperatuur en parallelle MultiSWAP-uitvoering binnen omschreven profielen.
-- **Grondwaterkoppeling:** een productiegerichte live SWAP5-MODFLOW 6-keten is voor begrensde toepassingen gekwalificeerd; integratie in de daadwerkelijke iMOD Coupler-productdriver blijft een afzonderlijke stap.
-- **Nog niet breed als SWAP5-productieroute beschikbaar:** volledige meteorologische/kalenderinvoer, geavanceerde wortelstress, macroporiënstroming, vorst en faseovergangen, hysterese, brede solute-hydraulische interacties, volledige management/tillage en de volledige historische uitvoerfamilie.
+- **Beschikbare kern:** Reference-Richards bodemwaterberekening, herstart vanaf
+  een vastgelegde toestand en uitvoering van meerdere bodemkolommen binnen
+  gekwalificeerde configuraties.
+- **Latere begrensde uitbreidingen:** onder meer meteorologische invoer,
+  gewasontwikkeling met oogst en opvolgend gewas, wortelopname, macroporiën,
+  vorst en verschillende routes voor stoftransport en stikstof. Elke toelating
+  geldt voor de beschreven configuratie; dit is geen volledige overname van
+  alle historische SWAP-keuzes.
+- **Koppeling en toepassing:** er zijn technische koppeltrajecten en begrensde
+  kwalificatiebewijzen voor SWAP5 en MODFLOW 6. Die maken een algemene
+  grondwaterkoppeling, een volledige iMOD Coupler-productdriver of landelijke
+  toepassing nog niet automatisch gevalideerd.
+- **Open ontwikkelwerk:** onder meer dagelijkse adaptieve worteldichtheid,
+  bredere irrigatie-integratie, persistente bron- en oppervlaktewatermassa voor
+  stoffen, hysterese en delen van de historische invoer- en uitvoerfamilie.
+  Faseovergangen en andere niet-toegelaten combinaties blijven apart te beoordelen.
 
-De huidige canonical SWAP5-basis is inmiddels veel meer dan een architectuurprototype, maar vertegenwoordigt nog niet de volledige toepassing van SWAP 4.3.1 [7]. Een productie-audit van 18 september 2026 laat juist beide kanten zien: er is een substantiële getypeerde en gekwalificeerde runtime ontstaan, terwijl verschillende historische proces- en invoerroutes nog bewust buiten de normale productieomgeving vallen.
+De voortgang laat zich dus niet goed samenvatten met een lijst processen die
+wel of niet in de code staan. Voor een toepassing moet bekend zijn welke
+combinatie van processen, invoer en uitvoering daadwerkelijk is gekwalificeerd.
+Zo bestaan er inmiddels routes voor oogst, braakperiode en een opvolgend gewas,
+terwijl dat geen algemene toelating van iedere historische rotatie- of
+kalenderconfiguratie betekent. Hetzelfde onderscheid geldt voor stoftransport:
+een gekwalificeerde configuratie kan niet zonder beoordeling worden uitgebreid
+met andere bronnen, bergingen of randvoorwaarden.
 
-De Reference-Richards bodemwaterkern is als productiecomponent gekwalificeerd. Ook committed-boundary restart, serialized real-physics MultiSWAP en een begrensde parallelle MultiSWAP-route zijn toegelaten. Rond de hoofdrekenkern zijn inmiddels beperkte maar reële productieroutes beschikbaar voor onder meer atmosferische bovengrensprocessen, referentieverdamping, Feddes-wortelopname, WOFOST, drainage, oppervlaktewaterberging, sneeuw en bodemtemperatuur. Het woord beperkt is daarbij belangrijk: de kwalificatie geldt voor omschreven configuraties en niet automatisch voor alle historische SWAP-opties.
-
-Ook de grondwaterkoppeling is verder dan een alleen conceptuele interface. De huidige canonical bevat een productiegerichte SWAP5-MODFLOW 6-keten die voor begrensde live MODFLOW 6-toepassingen is gekwalificeerd. Daarmee kan SWAP5 in een gecontroleerde modelomgeving met een externe grondwaterrekenkern worden uitgevoerd. De stap naar de daadwerkelijke productintegratie in de iMOD Coupler-driver en de bijbehorende productconfiguratie is echter nog een afzonderlijke ontwikkelstap. Een technisch werkende koppeling moet dus niet worden verward met een afgerond landelijk product.
-
-Tegelijk zijn belangrijke delen van de brede SWAP-functionaliteit nog niet als normale SWAP5-productieroute beschikbaar. Dat geldt onder meer voor volledige meteorologische en kalenderinvoer, verschillende geavanceerde wortelstressmechanismen, macroporiënstroming, vorst en faseovergangen, hysterese, brede solute-hydraulische interacties, volledige management- en tillagefunctionaliteit en volledige compatibiliteit met de historische uitvoerfamilie. Voor sommige onderdelen is de wetenschappelijke basis helder maar ontbreekt de nieuwe productieroute; andere vragen eerst aanvullende wetenschappelijke beoordeling.
-
-Deze stand van zaken is juist relevant voor de manier waarop SWAP5 wordt ontwikkeld. Het doel is niet om zo snel mogelijk iedere historische optie onder een nieuwe naam beschikbaar te maken. De nieuwe modelbasis wordt per capability uitgebreid en gekwalificeerd, waarbij beperkingen zichtbaar blijven. Daardoor is beter aan te geven wat daadwerkelijk kan worden toegepast en waar nog onderzoek of migratiewerk nodig is.
+Deze beperkingen zijn onderdeel van de toepassingsbeschrijving. Het overzicht
+presenteert geen algemene vervanging van SWAP 4.3.1 of een formeel vastgesteld
+NHI-product. Voor de precieze actuele beschikbaarheid verwijst het naar de
+capability-autoriteiten in de repository; de interne audit is geen nieuwe
+wetenschappelijke bewijsvoering in dit artikel.
 
 ## Waar gaat het instrumentarium heen?
 
@@ -153,7 +173,7 @@ SWAP5 moet in dat verband niet worden gezien als een losstaand softwareproject. 
 
 [6] NHI. iMOD5 en iMOD Suite. https://nhi.nu/tooling/imod-5-en-imod-suite/
 
-[7] SWAP5 repository. Production Physics & Application Envelope Gap Audit en actuele canonical ontwikkellijn, geraadpleegd 19 september 2026. https://github.com/abhedwig-cell/SWAP5
+[7] SWAP5 repository. Post-Status-A current canonical state, commit a86da5b6931b15ef8a5432fd03adc30a72491b65, geraadpleegd 16 oktober 2026. https://github.com/abhedwig-cell/SWAP5/blob/a86da5b6931b15ef8a5432fd03adc30a72491b65/docs/status-a/POST_STATUS_A_CURRENT_STATE.md
 
 ## Redactionele notities voor indiening
 

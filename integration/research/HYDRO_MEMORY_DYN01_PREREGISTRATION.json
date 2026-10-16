@@ -1,0 +1,76 @@
+{
+  "schema": "swap5.hydro_memory.dyn01.preregistration.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-DYN01",
+  "title": "Stage-0 forcing and accepted-state-dependent restricted Feddes composition",
+  "canonical_base": "831d1d000899422099eaa702870c3c22a4b8bb7d",
+  "production_source_change": false,
+  "reference_source_change": false,
+  "authorities": {
+    "forcing": "PPA-WU03 CANONICAL_ADMITTED_CLOSED",
+    "root_uptake": "F-CI31 QUALIFIED_CLOSED_REFERENCE_ET_TO_RESTRICTED_ROOT_UPTAKE_EXECUTION_CANONICAL_ADMISSION"
+  },
+  "frozen_composition": {
+    "canopy": {
+      "crop_emerged": true,
+      "vegetation_cover_fraction": 1,
+      "crop_factor": 1,
+      "co2_transpiration_factor": 1
+    },
+    "feddes": {
+      "hlim3l_cm": -800,
+      "hlim3h_cm": -400,
+      "hlim4_cm": -16000,
+      "adcrl": 0.1,
+      "adcrh": 0.5
+    },
+    "root_geometry": {
+      "rooted_nodes": 3,
+      "cumulative_root_fraction": [
+        0,
+        0.1,
+        0.55,
+        1
+      ],
+      "provenance": "F-VQ46 F-CI31 independent oracle root case 3"
+    },
+    "drought": {
+      "precipitation_cm_per_day": 0,
+      "reference_et_mm_per_day": 4,
+      "expected_potential_transpiration_cm_per_day": 0.4
+    },
+    "recovery": {
+      "precipitation_cm_per_day": 0.5,
+      "reference_et_mm_per_day": 3,
+      "expected_potential_transpiration_cm_per_day": 0.3
+    },
+    "interception": "none",
+    "irrigation": "none",
+    "snowmelt_cm_per_day": 0,
+    "runon_cm_per_day": 0
+  },
+  "test_states": {
+    "wet": "canonical F2/F1 equilibrium hydraulic state at h=-75 cm",
+    "dry": "same geometry with top rooted-node pressure heads set within F-CI31 drought-reduction regime; exact values frozen in test before execution"
+  },
+  "pass_gates": [
+    "full-cover reference ET maps 4 mm/day exactly to 0.4 cm/day potential transpiration and 3 mm/day exactly to 0.3 cm/day",
+    "potential bare-soil and pond evaporation demands are zero for full cover",
+    "drought P=0 materializes a pure-flux dynamic-top result with actual top flux 0 cm/day at the wet reference state",
+    "recovery P=0.5 cm/day materializes a pure-flux dynamic-top result with actual top flux -0.5 cm/day at the wet reference state",
+    "F-CI31 composition returns a finite nonnegative root sink with total uptake <= potential transpiration",
+    "wet-state drought uptake equals potential transpiration within floating-point tolerance",
+    "dry-state drought uptake is strictly lower than wet-state uptake under identical atmospheric demand",
+    "repeated evaluation from the same committed state is bit-stable and does not mutate committed revision/state",
+    "drought/recovery normal-input materialization is A-B-A deterministic",
+    "O0/O2 output identity"
+  ],
+  "nonclaims": [
+    "root geometry is not yet the final 0.60 m Stage-0 rooting discretization",
+    "no live MODFLOW coupling in DYN01",
+    "no soil-hydraulic set freeze",
+    "no 90-day scientific result",
+    "no production-bootstrap root-active widening"
+  ],
+  "downstream_if_pass": "Integrate the qualified per-window forcing/root-sink materialization into the ACC02-F2 live multi-window research bridge, then freeze grid/soil/root geometry for Stage 0."
+}

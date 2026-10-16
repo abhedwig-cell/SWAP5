@@ -1,0 +1,40 @@
+name: F-PE-NLGLOB07 accepted-state stationarity
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB07*.md'
+      - 'tests/fpe/run_fpe_nlglob07*.py'
+      - 'tests/fpe/run_fpe_nlglob07*.sh'
+      - '.github/workflows/f-pe-nlglob07.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob07-state-stationarity
+    paths:
+      - 'docs/performance/F-PE-NLGLOB07*.md'
+      - 'tests/fpe/run_fpe_nlglob07*.py'
+      - 'tests/fpe/run_fpe_nlglob07*.sh'
+      - '.github/workflows/f-pe-nlglob07.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob07-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  state-stationarity-discrimination:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered S0 state-stationarity discrimination
+        run: bash tests/fpe/run_fpe_nlglob07.sh

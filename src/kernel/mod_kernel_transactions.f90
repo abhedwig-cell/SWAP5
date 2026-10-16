@@ -17,6 +17,7 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_STATUS_NOT_ADMITTED = 101
   integer, parameter, public :: KERNEL_STATUS_UNGUARDED_STATE = 102
   integer, parameter, public :: KERNEL_STATUS_TIME_MISMATCH = 103
+  integer, parameter, public :: KERNEL_STATUS_PARAMETER_MISMATCH = 105
   integer, parameter, public :: KERNEL_STATUS_CHECKPOINT_MISMATCH = 104
 
   integer, parameter, public :: KERNEL_COMMIT_STATUS_COMMITTED = 0
@@ -43,7 +44,18 @@ module mod_kernel_transactions
 
   public :: kernel_reconstruct_committed_state_trusted
 
+  type, public :: kernel_parameter_identity_t
+    integer(int64) :: parameter_set_id=0_int64
+    integer :: active_nodes=0
+    logical :: heat_enabled=.false., valid=.false.
+    real(real64), allocatable :: z(:),dz(:)
+  contains
+    procedure :: matches => kernel_parameter_identity_matches
+  end type
   type, abstract, public :: kernel_parameters_t
+  contains
+    procedure :: capture_identity => kernel_parameters_identity_unavailable
+    procedure :: matches_physical_identity => kernel_parameters_physical_unavailable
   end type kernel_parameters_t
 
   ! Canonical F-KT-owned committed carrier. Physical continuation state is
@@ -54,6 +66,7 @@ module mod_kernel_transactions
   type, extends(transaction_state_t), public :: kernel_committed_state_t
     private
     class(transaction_state_t), allocatable :: physical_state
+    type(kernel_parameter_identity_t) :: parameter_identity
     integer(int64) :: lineage_id = 0_int64
     integer(int64) :: revision = 0_int64
     real(real64) :: committed_time_value = 0.0_real64
@@ -69,6 +82,7 @@ module mod_kernel_transactions
     procedure, public :: current_revision => kernel_current_revision
     procedure, public :: current_time => kernel_current_time
     procedure, public :: time_is_bound => kernel_time_is_bound
+    procedure, public :: certified_parameter_identity => kernel_committed_parameter_identity
   end type kernel_committed_state_t
 
   ! Reusable F-KT-owned trial base. A checkpoint is an immutable physical clone
@@ -169,6 +183,8 @@ module mod_kernel_transactions
     type(canonical_mass_accounting_t) :: mass
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
     type(accepted_trajectory_direction_result_t) :: accepted_trajectory_direction
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -208,6 +224,8 @@ module mod_kernel_transactions
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     real(real64) :: max_abs_step_mass_residual = 0.0_real64
     real(real64) :: max_temporal_indicator = 0.0_real64
     real(real64) :: min_accepted_substep_duration = huge(0.0_real64)
@@ -222,6 +240,7 @@ module mod_kernel_transactions
   contains
     procedure(configure_parameters_iface), deferred :: configure_parameters
     procedure(execution_admitted_iface), deferred :: execution_admitted
+    procedure :: matches_committed_parameter_identity => kernel_model_uncertified_identity
   end type kernel_model_t
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
@@ -256,6 +275,69 @@ module mod_kernel_transactions
   end interface
 
 contains
+  ! Default implementations never issue or approve an identity. The SELECT
+  ! TYPE guards deliberately consume abstract inputs under strict -Werror.
+  logical function kernel_model_uncertified_identity(self,identity,state) result(ok)
+    class(kernel_model_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: identity
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    if(.not.identity%valid) return
+    select type(self)
+    class default
+      select type(state)
+      class default
+        return
+      end select
+    end select
+  end function
+  subroutine kernel_parameters_identity_unavailable(self,identity,available)
+    class(kernel_parameters_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    select type(self)
+    class default
+      identity=kernel_parameter_identity_t()
+      available=.false.
+    end select
+  end subroutine
+  logical function kernel_parameters_physical_unavailable(self,state) result(ok)
+    class(kernel_parameters_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    select type(self)
+    class default
+      select type(state)
+      class default
+        return
+      end select
+    end select
+  end function
+  pure logical function kernel_parameter_identity_matches(self,other) result(ok)
+    class(kernel_parameter_identity_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(in) :: other
+    ok=.false.
+    if(.not.self%valid.or..not.other%valid) return
+    if(self%parameter_set_id<=0_int64.or.self%active_nodes<=0) return
+    if(self%parameter_set_id/=other%parameter_set_id.or.self%active_nodes/=other%active_nodes) return
+    if(self%heat_enabled.neqv.other%heat_enabled) return
+    if(.not.allocated(self%z).or..not.allocated(self%dz)) return
+    if(.not.allocated(other%z).or..not.allocated(other%dz)) return
+    if(size(self%z)/=self%active_nodes.or.size(self%dz)/=self%active_nodes) return
+    if(size(other%z)/=self%active_nodes.or.size(other%dz)/=self%active_nodes) return
+    if(.not.all(ieee_is_finite(self%z)).or..not.all(ieee_is_finite(self%dz))) return
+    if(.not.all(ieee_is_finite(other%z)).or..not.all(ieee_is_finite(other%dz))) return
+    if(any(self%dz<=0.0_real64).or.any(other%dz<=0.0_real64)) return
+    ok=all(self%z==other%z).and.all(self%dz==other%dz)
+  end function
+  subroutine kernel_committed_parameter_identity(self,identity,available)
+    class(kernel_committed_state_t), intent(in) :: self
+    type(kernel_parameter_identity_t), intent(out) :: identity
+    logical, intent(out) :: available
+    identity=kernel_parameter_identity_t()
+    available=self%ready().and.self%parameter_identity%valid
+    if(available) identity=self%parameter_identity
+  end subroutine
 
   subroutine kernel_committed_clone(self, copy)
     class(kernel_committed_state_t), intent(in) :: self
@@ -269,16 +351,19 @@ contains
       typed_copy%committed_time_value = self%committed_time_value
       typed_copy%time_bound = self%time_bound
       typed_copy%initialized = self%initialized
+      typed_copy%parameter_identity = self%parameter_identity
       if (allocated(self%physical_state)) call self%physical_state%clone(typed_copy%physical_state)
     end select
   end subroutine kernel_committed_clone
 
-  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize, initial_time)
+  subroutine kernel_initialize_committed(self, lineage_id, initial_state, did_initialize, initial_time, parameters)
     class(kernel_committed_state_t), intent(inout) :: self
     integer(int64), intent(in) :: lineage_id
     class(transaction_state_t), allocatable, intent(in) :: initial_state
     logical, intent(out) :: did_initialize
     real(real64), intent(in), optional :: initial_time
+    class(kernel_parameters_t), intent(in), optional :: parameters
+    logical :: certified
     class(transaction_state_t), allocatable :: copy
 
     did_initialize = .false.
@@ -287,6 +372,17 @@ contains
       if (.not. ieee_is_finite(initial_time)) return
     end if
 
+    if(present(parameters)) then
+      call parameters%capture_identity(self%parameter_identity,certified)
+      if(.not.certified.or..not.self%parameter_identity%valid) then
+        self%parameter_identity=kernel_parameter_identity_t()
+        return
+      end if
+      if(.not.parameters%matches_physical_identity(initial_state)) then
+        self%parameter_identity=kernel_parameter_identity_t()
+        return
+      end if
+    end if
     call initial_state%clone(copy)
     call move_alloc(copy, self%physical_state)
     self%lineage_id = lineage_id
@@ -308,7 +404,7 @@ contains
   ! Ordinary runtime code must continue to use initialize() and transaction
   ! commit. External parsing and codec selection remain outside this module.
   subroutine kernel_reconstruct_committed_state_trusted(target, lineage_id, revision, physical_state, &
-       committed_time, time_bound, reconstructed, status)
+       committed_time, time_bound, reconstructed, status, parameters, persisted_identity)
     type(kernel_committed_state_t), intent(inout) :: target
     integer(int64), intent(in) :: lineage_id
     integer(int64), intent(in) :: revision
@@ -317,6 +413,10 @@ contains
     logical, intent(in) :: time_bound
     logical, intent(out) :: reconstructed
     integer, intent(out) :: status
+    class(kernel_parameters_t), intent(in), optional :: parameters
+    type(kernel_parameter_identity_t), intent(in), optional :: persisted_identity
+    type(kernel_parameter_identity_t) :: supplied
+    logical :: certified
     class(transaction_state_t), allocatable :: copy
 
     reconstructed = .false.
@@ -336,6 +436,19 @@ contains
       if (transfer(committed_time, 0_int64) /= transfer(0.0_real64, 0_int64)) return
     end if
 
+    if(present(parameters)) then
+      ! The trusted decoder must bring the ORIGINAL separately persisted
+      ! identity. Minting a fresh identity from supplied parameters on restart
+      ! would silently authorize an entirely different but equal-sized grid.
+      if(.not.present(persisted_identity)) return
+      call parameters%capture_identity(supplied,certified)
+      if(.not.certified) return
+      if(.not.persisted_identity%matches(supplied)) return
+      if(.not.parameters%matches_physical_identity(physical_state)) return
+      target%parameter_identity=persisted_identity
+    else
+      if(present(persisted_identity)) return
+    end if
     call physical_state%clone(copy)
     if (.not. allocated(copy)) return
 
@@ -617,6 +730,23 @@ contains
       return
     end if
 
+    if(committed_state%parameter_identity%valid) then
+      block
+        type(kernel_parameter_identity_t) :: supplied
+        logical :: available
+        call parameters%capture_identity(supplied,available)
+        if(.not.available) then
+          result%status=KERNEL_STATUS_PARAMETER_MISMATCH
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+        if(.not.committed_state%parameter_identity%matches(supplied)) then
+          result%status=KERNEL_STATUS_PARAMETER_MISMATCH
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+      end block
+    end if
     call self%model%configure_parameters(parameters)
 
     ! A supplied checkpoint is an exact reusable clone of the still-current
@@ -672,7 +802,7 @@ contains
     type(canonical_interval_t) :: interval
     type(canonical_numerical_config_t) :: model_config
     real(real64) :: storage0, storage1, mass_residual
-    logical :: storage_start_complete, storage_end_complete, mass_ok
+    logical :: storage_start_complete, storage_end_complete, mass_ok, context_required
     integer(int64) :: start_missing_mask, end_missing_mask, missing_mask
 
     result = kernel_reference_floor_result_t()
@@ -711,16 +841,34 @@ contains
       return
     end if
 
+    if(committed_state%parameter_identity%valid) then
+      block
+        type(kernel_parameter_identity_t) :: supplied
+        logical :: available
+        call parameters%capture_identity(supplied,available)
+        if(.not.available) then
+          result%status=KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+        if(.not.committed_state%parameter_identity%matches(supplied)) then
+          result%status=KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+          diagnostics%admission_rejections=diagnostics%admission_rejections+1
+          return
+        end if
+      end block
+    end if
     call self%model%configure_parameters(parameters)
     interval%t0 = t0
     interval%t1 = t1
     call self%model%prepare_interval(forcing, interval, model_config)
+    context_required = self%model%attempt_context_required()
 
     call committed_state%physical_state%clone(start_state)
     call committed_state%physical_state%clone(working)
     storage0 = self%model%storage(start_state)
     call self%model%storage_accounting_status(start_state, storage_start_complete, start_missing_mask)
-    call self%model%capture_attempt_context(checkpoint_context)
+    if (context_required) call self%model%capture_attempt_context(checkpoint_context)
 
     call self%model%advance(working, t0, t1, outcome)
     result%physical_advances = 1
@@ -741,7 +889,7 @@ contains
     diagnostics%alternative_solver_calls = outcome%alternative_solver_calls
 
     if (.not. outcome%solver_ok) then
-      call self%model%restore_attempt_context(checkpoint_context)
+      if (context_required) call self%model%restore_attempt_context(checkpoint_context)
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_SOLVER_FAILED
       diagnostics%solver_rejections = 1
       return
@@ -772,7 +920,7 @@ contains
     if (mass_ok) mass_ok = abs(mass_residual) <= mass_tolerance
     result%mass%complete = mass_ok
     if (.not. mass_ok) then
-      call self%model%restore_attempt_context(checkpoint_context)
+      if (context_required) call self%model%restore_attempt_context(checkpoint_context)
       result%status = KERNEL_REFERENCE_FLOOR_STATUS_MASS_FAILED
       diagnostics%mass_rejections = 1
       if (ieee_is_finite(mass_residual)) diagnostics%max_abs_step_mass_residual = abs(mass_residual)
@@ -895,6 +1043,23 @@ contains
       return
     end if
 
+    ! Certified F-KT routes must preserve the layout of the candidate itself.
+    ! A failed validation never consumes the candidate or changes committed state.
+    if(committed_state%parameter_identity%valid) then
+      if(.not.associated(self%model)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+      if(.not.allocated(candidate_state%state)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+      if(.not.self%model%matches_committed_parameter_identity( &
+           committed_state%parameter_identity,candidate_state%state)) then
+        diagnostics%commit_rejections=diagnostics%commit_rejections+1
+        return
+      end if
+    end if
     call move_alloc(candidate_state%state, committed_state%physical_state)
     if (present(accepted_mass)) accepted_mass = candidate_state%mass
     committed_state%revision = committed_state%revision + 1_int64
@@ -1030,6 +1195,8 @@ contains
     result%mass = runtime_result%mass
     result%interface_sensitivity = runtime_result%interface_sensitivity
     result%accepted_trajectory_direction = runtime_result%accepted_trajectory_direction
+    result%actual_transpiration_available=runtime_result%actual_transpiration_available
+    result%actual_transpiration_amount=runtime_result%actual_transpiration_amount
     result%bottom_interface_exchange_available = runtime_result%bottom_interface_exchange_available
     result%bottom_outward_exchange_native = runtime_result%bottom_outward_exchange_native
     result%terminal_bottom_outward_flux_native = runtime_result%terminal_bottom_outward_flux_native
@@ -1058,6 +1225,8 @@ contains
     diagnostics%linear_solves = runtime_diagnostics%linear_solves
     diagnostics%backtracking_attempts = runtime_diagnostics%backtracking_attempts
     diagnostics%alternative_solver_calls = runtime_diagnostics%alternative_solver_calls
+    diagnostics%workspace_full_resets = runtime_diagnostics%workspace_full_resets
+    diagnostics%workspace_zeroed_bytes = runtime_diagnostics%workspace_zeroed_bytes
     diagnostics%max_abs_step_mass_residual = runtime_diagnostics%max_abs_step_mass_residual
     diagnostics%max_temporal_indicator = runtime_diagnostics%max_temporal_indicator
     diagnostics%min_accepted_substep_duration = runtime_diagnostics%min_accepted_substep_duration

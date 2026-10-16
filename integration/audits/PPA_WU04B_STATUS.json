@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-B",
+  "capability": "SWREDU=2 Boesten-Stroosnijder evaporation reduction",
+  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "branch": "work/ppa-wu04b-boesten-stroosnijder",
+  "qualified_head": "eb0e635975b77ec92084e1416038b1bc1f8232bc",
+  "canonical_reconcile": {
+    "current_checked_head": "9fa4e68adf78a71008c20c1900529e9ec184ad19",
+    "branch_origin": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+    "relevant_live_delta_since_origin": "NONE_IN_PPA_WU04B_OWNED_PRODUCTION_FILES"
+  },
+  "authority": {
+    "contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "review": "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+    "legacy_routine": "MOD_meteo.f90:reduceva(task=2)",
+    "legacy_b1_11_source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "independent_historical_trace": "SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9 src/atmosphere/et.f90"
+  },
+  "bounded_profile": {
+    "cofred": "0 < COFRED <= 1",
+    "excluded_zero_case": "Legacy input permits COFRED=0, but exact SWREDU=2 rewetting contains (SAEV/COFRED)^2. This slice fails closed instead of defining new zero-case physics.",
+    "persistent_state": [
+      "SPEV",
+      "SAEV"
+    ],
+    "state_atomicity": "SPEV/SAEV commit and restart as one option-discriminated pair."
+  },
+  "implementation": {
+    "process": "src/process/mod_restricted_surface_evaporation.f90",
+    "state_layout": "FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION",
+    "committed_state_family": "fmr_b110_boesten_evaporation_state_t",
+    "forcing_adapter": "src/adapter/mod_ppa_wu04b_boesten_forcing_adapter.f90",
+    "mass_owner": "existing B110 dynamic hydraulic top boundary",
+    "restart": "generic committed restart with explicit Boesten layout identity",
+    "solver_delta": "NONE"
+  },
+  "qualification": {
+    "workflow_run": 35439112147,
+    "job": 105886744366,
+    "conclusion": "PASS",
+    "gates": {
+      "exact_drying_equation_oracle": "PASS",
+      "exact_rewetting_equation_oracle": "PASS",
+      "ponding_atomic_pair_reset": "PASS",
+      "aba_replay": "PASS",
+      "cofred_zero_singularity_fail_closed": "PASS",
+      "production_application_reachable": "PASS",
+      "hydraulic_actual_evaporation_mass_owner": "PASS",
+      "hard_mass_1e_12": "PASS",
+      "rejected_trial_pair_immutable": "PASS",
+      "changed_dt_retry_from_same_checkpoint": "PASS",
+      "exact_restart_pair_roundtrip": "PASS",
+      "restart_option_layout_fail_closed": "PASS",
+      "o0_o2_output_identity": "PASS",
+      "ppa_wu04a_behavioral_preservation": "PASS",
+      "ppa_wu01_behavioral_preservation": "PASS",
+      "ppa_wu03_behavioral_preservation": "PASS",
+      "preregistered_production_delta": "PASS"
+    }
+  },
+  "decision": "QUALIFIED_SOURCE_BOUND_PRODUCTION_CANDIDATE_READY_FOR_CANONICAL_ADMISSION"
+}

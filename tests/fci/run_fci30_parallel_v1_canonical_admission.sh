@@ -117,6 +117,8 @@ MODULE_SRC=(
   src/runtime/mod_fmr_parallel_physical_scheduler.f90
   src/runtime/mod_fmr_parallel_worker_pool.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 export OMP_DYNAMIC=FALSE
 export OMP_THREAD_LIMIT=4
 export OMP_PROC_BIND=spread

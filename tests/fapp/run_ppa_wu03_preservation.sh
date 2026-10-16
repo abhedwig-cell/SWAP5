@@ -27,6 +27,10 @@ protected=(
 )
 
 for path in "${protected[@]}"; do
+  if [[ "$path" == src/process/mod_reference_et_demand_process.f90 && "$(git rev-parse "HEAD:$path")" == 0a8fc91570c6297a54109740de3a26153dc44283 ]]; then
+    python3 tests/mc-met01/verify_daily_demand_successor.py --owner-only || fail 'unqualified additive daily demand source'
+    continue
+  fi
   git diff --quiet "$BASE" -- "$path" || fail "protected authority drift: $path"
 done
 echo 'PPA_WU03_FAPP_M1_PROTECTED_PRODUCTION_BLOBS=PASS'
@@ -37,8 +41,8 @@ echo 'PPA_WU03_PPA_WU01_REGRESSION=PASS'
 bash tests/f-app07/run_fapp07_tcs1_dcs2_process.sh
 echo 'PPA_WU03_FAPP07_IRRIGATION_REGRESSION=PASS'
 
-bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
-env FKT21_ALLOW_FCI98_SUCCESSOR=1 bash tests/fkt/run_fkt21_qualification.sh
+FCI93_ALLOW_MC_CROP01_RECONCILED_CANONICAL=1 bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+env FKT21_ALLOW_MC_CROP01_RECONCILED_CANONICAL=1 bash tests/fkt/run_fkt21_qualification.sh
 python3 - <<'PY'
 import json
 from pathlib import Path

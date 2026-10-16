@@ -1,6 +1,6 @@
 # Stromingen external-source audit
 
-Date checked: 2026-09-19
+Date checked: 2026-10-16. Previous audit: 2026-09-19.
 
 Purpose: record current public-source authority for factual Dutch instrumentarium claims in the Stromingen overview. This is not scientific publication evidence.
 
@@ -34,7 +34,7 @@ Background concept source:
 https://nhi.nu/modelcode/ribasim/
 
 Important caution:
-The Ribasim model-code page still contains older text describing Ribasim and iMOD Coupler as beta releases and further testing during 2025. Do not use that older paragraph for 2026 release status. Use the dated 10 June 2026 release news for current status and the model page only for stable conceptual descriptions such as water balance, allocation and network representation.
+The earlier audit warned about beta/2025 wording on the model-code page. That wording is no longer present on the page read on 16 October 2026. The dated release news remains the authority for the end-2025 release claim; the model-code page supports the conceptual water-balance, allocation and network description. A release is not evidence of national schematization completeness.
 
 ### MultiSWAP terminology
 
@@ -75,6 +75,14 @@ Public sources do not by themselves establish:
 - the scientific validity of any new solver, coupling, scaling or numerical method.
 
 These must not be inferred from public NHI wording.
+
+## Current repository reconciliation, 16 October 2026
+
+The manuscript status box now cites exact canonical `a86da5b6931b15ef8a5432fd03adc30a72491b65` and its `docs/status-a/POST_STATUS_A_CURRENT_STATE.md`. Frozen Status-A is a separate denominator. Later bounded macro/frost, crop/weather and NUT/SOL admissions must not be described as blanket missing production functionality. Broad historical source envelopes and coupling application scope remain separate.
+
+Public pages reread: both dated NHI news items above, the NHI news overview (dated MultiSWAP entry), Ribasim and iMOD product pages, and the NHV SWAP-50 article page. The NHV page confirms the five listed authors, 2024 anniversary and 2025 publication. Public nomenclature does not establish SWAP5/MultiSWAP identity or formal NHI production adoption.
+
+Internal repository integration remains `PUB_CONTEXT_ONLY`. No external submission, author invitation, new performance result, coupling inference or research-portfolio reassignment is authorized by this reconciliation.
 
 ## Submission refresh rule
 

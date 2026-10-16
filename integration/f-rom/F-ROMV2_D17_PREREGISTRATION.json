@@ -1,0 +1,243 @@
+{
+  "schema": "swap5.f-romv2-d17.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D17",
+  "title": "Bounded FMC simultaneous surface-infiltration plus fixed-water-table composition comparator",
+  "phase": "PREREGISTERED_BEFORE_INTERNAL_PREFLIGHT_AND_SWAP_TRAJECTORY_EXECUTION",
+  "canonical_base": "6413adc4d29f5749105b30e45f395331b450d5f3",
+  "purpose": "Test whether the independently retained D13 groundwater-front and D16 surface-infiltration branches remain jointly mass-conservative and hydrologically competitive with R2 when they operate simultaneously in one B01 column, without introducing falling-slug/groundwater merge semantics into the first composition experiment.",
+  "scientific_role": {
+    "class": "EXPOSED_DEVELOPMENT_COMBINED_SURFACE_GROUNDWATER_COMPOSITION_COMPARATOR",
+    "blind_confirmation": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "predecessor_authority": {
+    "D12": "FMC/SMVE equation authority; 200 moisture bins and <=10 s explicit process step frozen.",
+    "D13": "FMC_GW200 fixed-water-table groundwater-front branch retained research candidacy versus R2.",
+    "D15": "Finite-volume atmospheric accounting and slug-groundwater union primitive qualified before trajectory exposure.",
+    "D16": "FMC surface infiltration/hiatus branch retained bounded research candidacy versus R2.",
+    "implication": "D17 composes existing equations/accounting only; it does not alter bin count, process step, front laws, capillary relaxation, Green-Ampt rules or finite-volume bookkeeping."
+  },
+  "primary_source_composition_authority": [
+    {
+      "doi": "10.1002/2015WR017126",
+      "retained": [
+        "finite water-content domain permits simultaneous land-surface infiltration fronts and groundwater fronts",
+        "left-most bins may be in contact with both land surface and groundwater",
+        "surface water first satisfies K(theta_i)*dt demand of bins in contact with groundwater before advancing infiltration fronts",
+        "infiltration fronts use Eq.18",
+        "groundwater fronts use Eq.21",
+        "capillary relaxation is finite-volume mass-conservative",
+        "falling-slug/groundwater merge exists but is outside D17"
+      ]
+    },
+    {
+      "doi": "10.1002/2014WR016454",
+      "retained": [
+        "fixed/shallow water-table groundwater-front validation context",
+        "surface-flux plus groundwater-table interaction is within the FMC method envelope"
+      ]
+    }
+  ],
+  "frozen_B01_identity": {
+    "theta_r": 0.02,
+    "theta_s": 0.427494,
+    "alpha_per_cm": 0.021659,
+    "n": 1.734737,
+    "m_formula": "1-1/n",
+    "Ksat_cm_per_day": 31.225016,
+    "Mualem_l": 0.98087,
+    "effective_capillary_drive_HcM_cm": 14.085215420920257
+  },
+  "discretization": {
+    "total_depth_cm": 160,
+    "moisture_bins": 200,
+    "baseline_bin_i": 100,
+    "active_bins": "j=101..199",
+    "dtheta_formula": "(theta_s-theta_r)/200",
+    "process_step_seconds": 10,
+    "process_step_day": "10/86400",
+    "observation_step_seconds": 10,
+    "process_steps_per_observation": 1,
+    "total_observations_per_history": 16
+  },
+  "initial_composite_state": {
+    "surface_component": {
+      "authority": "D16 I_DEEP",
+      "connected_fronts": "linear in j from z_101=120 cm to z_199=10 cm",
+      "falling_slugs": "none"
+    },
+    "groundwater_component": {
+      "authority": "D13 G25",
+      "lambda": 0.25,
+      "groundwater_front_height": "H_j=0.25*abs(psi(theta_j)) above fixed water table at z=160 cm"
+    },
+    "baseline": "theta_i = theta_r + 100*dtheta across the full column",
+    "occupancy": "for every active bin j, surface water occupies [0,z_j] and groundwater-connected water occupies [160-H_j,160]",
+    "required_preflight_separation": "z_j + H_j < 160 cm for every j at t=0 and after every D17 process step; any contact closes D17 before or during FMC preflight because D17 intentionally excludes contact/merge semantics",
+    "exact_cell_mapping": "R16/R2 initial theta is the exact finite-volume cell average of baseline plus disjoint surface and groundwater occupied intervals, followed by inverse B01 retention for pressure head",
+    "storage_identity_tolerance_cm": 1e-12
+  },
+  "matched_boundaries": {
+    "top": {
+      "type": "prescribed infiltrating flux",
+      "factors_of_Ksat": [
+        0.1,
+        0.25,
+        0.5,
+        0.75
+      ],
+      "native_SWAP_sign": "forcing.top_flux=-q_in for downward physical q_in",
+      "duration": "16 x 10 s with no hiatus in D17"
+    },
+    "bottom": {
+      "type": "fixed zero pressure head",
+      "SWAP": "bottom mode 5, prescribed bottom pressure head 0 cm",
+      "FMC": "fixed water table at column bottom z=160 cm using D13 groundwater-front equations"
+    },
+    "root_sink": "zero",
+    "ET": "zero",
+    "drainage": "zero",
+    "subsurface_irrigation": "zero",
+    "ponding_or_runoff": "not allowed in D17"
+  },
+  "FMC_composition_algorithm": {
+    "per_10s_step": [
+      "compute prescribed surface supply q_in*dt",
+      "reserve gray-bin throughflow demand K(theta_i)*dt from surface supply; require supply >= this demand",
+      "count that gray-bin demand as direct downward bottom exchange through the bins already in contact with both surface and groundwater",
+      "allocate all remaining surface supply to the already active D16 connected fronts using Eq.18 and D15 left-to-right finite-volume accounting; no dry-bin activation",
+      "apply D14 conservative capillary relaxation to connected-front ordering",
+      "advance D13 groundwater fronts for the same 10 s by Eq.21 forward Euler and apply D13 conservative capillary relaxation",
+      "compute groundwater-front storage change; its negative is groundwater-front bottom-outward exchange as in D13",
+      "total bottom-outward exchange = gray-bin direct throughflow - groundwater-front storage change",
+      "require all surface and groundwater occupied intervals remain disjoint; no falling slug, surface-groundwater contact, or merge occurs in D17",
+      "global ledger: delta column storage - top_infiltration + bottom_outward_exchange = 0 within 1e-12 cm"
+    ],
+    "top_flux_groundwater_interaction_boundary": "D17 tests the published simultaneous gray-bin throughflow plus independent active surface/GW-front evolution only. It does not qualify the later falling-slug-to-groundwater merge route.",
+    "clipping": false,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "histories": [
+    {
+      "id": "C10_G25",
+      "top_infiltration_factor_of_Ksat": 0.1,
+      "steps": 16
+    },
+    {
+      "id": "C25_G25",
+      "top_infiltration_factor_of_Ksat": 0.25,
+      "steps": 16
+    },
+    {
+      "id": "C50_G25",
+      "top_infiltration_factor_of_Ksat": 0.5,
+      "steps": 16
+    },
+    {
+      "id": "C75_G25",
+      "top_infiltration_factor_of_Ksat": 0.75,
+      "steps": 16
+    }
+  ],
+  "internal_preflight_before_SWAP_trajectories": {
+    "trajectory_data_consumed": false,
+    "checks": [
+      "initial D16-I_DEEP plus D13-G25 occupied intervals are disjoint for every active bin",
+      "initial composite finite-volume storage maps exactly to R16/R2 cell averages within 1e-12 cm",
+      "for all four histories every step has top supply >= K(theta_i)*dt gray-bin demand",
+      "remaining surface supply is fully absorbed by existing connected fronts with no dry-bin activation, ponding or runoff",
+      "D13 groundwater fronts remain finite, physical and monotone after relaxation",
+      "surface and groundwater intervals remain strictly separated for all 16 steps",
+      "surface relaxation and groundwater relaxation each conserve their finite-volume increments",
+      "global composite mass ledger closes to <=1e-12 cm per step"
+    ],
+    "failure_rule": "Any failure closes D17 before R16/R2 trajectory generation. Do not retune top factors, duration, lambda, initial surface profile, bin count, process step or branch equations inside D17."
+  },
+  "SWAP_comparators": {
+    "R16": {
+      "nodes": 16,
+      "dz_cm": 10,
+      "role": "development reference"
+    },
+    "R2": {
+      "nodes": 2,
+      "dz_cm": 80,
+      "role": "admitted physical-reduction comparator"
+    },
+    "numerical_authority": "D4 strict-first integrated-water-depth research policy with hard accepted-transaction mass gate 1e-12 cm; no production tolerance change",
+    "initialization": "exact cell-average mapping of the frozen composite FMC initial state",
+    "top_boundary": "same prescribed downward flux as FMC",
+    "bottom_boundary": "zero pressure head"
+  },
+  "hydrological_metrics": {
+    "balance_view": [
+      "total-storage RMSE versus R16",
+      "cumulative-bottom-exchange RMSE versus R16"
+    ],
+    "profile_view": [
+      "mapped 16-cell theta RMSE versus R16",
+      "upper 0-80 cm storage RMSE",
+      "lower 80-160 cm storage RMSE"
+    ],
+    "groundwater_flux_view": [
+      "terminal bottom-flux RMSE versus R16",
+      "bottom-flux sign-error count"
+    ],
+    "diagnostics": [
+      "per-history systematic bias",
+      "maximum/p95 mapped theta error",
+      "minimum surface-groundwater interval separation",
+      "gray-bin direct throughflow cumulative exchange",
+      "groundwater-front exchange cumulative component",
+      "FMC global mass residual",
+      "R16/R2 research reattempt counts"
+    ],
+    "no_weighted_score": true
+  },
+  "decision_logic": {
+    "positive": "FMC_COMBINED_SURFACE_GROUNDWATER_RETAINS_RESEARCH_CANDIDACY",
+    "negative": "FMC_COMBINED_SURFACE_GROUNDWATER_NOT_COMPETITIVE_OR_NOT_ROBUST",
+    "positive_rule": [
+      "internal preflight passes before SWAP trajectory exposure",
+      "all four FMC/R16/R2 histories complete with integrity",
+      "balance view: FMC total-storage RMSE <= R2 and FMC cumulative-bottom-exchange RMSE <= R2",
+      "profile view: FMC mapped 16-cell theta RMSE <= R2",
+      "groundwater-flux view: FMC terminal bottom-flux RMSE <= R2 and FMC sign-error count <= R2"
+    ],
+    "all_views_required": true,
+    "no_weighted_score": true,
+    "no_application_thresholds": true,
+    "no_percentage_acceptance_thresholds": true
+  },
+  "successor_logic": {
+    "if_positive": "Retain FMC as a broader hydraulic research candidate and preregister a separate D18 contact/merge experiment or purpose-specific longer-horizon validation before any runtime frontier or application claim.",
+    "if_negative": "Do not retune D12-D16 bins/substeps/front laws. Diagnose which composed view fails and restrict FMC candidacy accordingly.",
+    "if_preflight_contact_occurs": "Close D17 before SWAP exposure; any slug/contact/merge experiment requires a new work-unit with its own primary-source-bound transition semantics."
+  },
+  "firewalls": [
+    "NO_V01_V04_BLIND_REUSE",
+    "NO_D16_ALTERNATE_PR446_WORKLOAD_REUSE",
+    "NO_BIN_COUNT_TUNING",
+    "NO_SUBSTEP_TUNING",
+    "NO_TOP_FACTOR_OR_DURATION_RETUNING",
+    "NO_LAMBDA_RETUNING",
+    "NO_INITIAL_PROFILE_RETUNING",
+    "NO_FALLING_SLUG_BRANCH_IN_D17",
+    "NO_SURFACE_GROUNDWATER_CONTACT_OR_MERGE_IN_D17",
+    "NO_DRY_BIN_ACTIVATION",
+    "NO_PONDING_OR_RUNOFF",
+    "NO_ET_OR_ROOT_UPTAKE",
+    "NO_CLIPPING",
+    "NO_HIDDEN_MASS_CORRECTION",
+    "NO_FULL_ORDER_FALLBACK",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false
+}

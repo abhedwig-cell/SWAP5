@@ -1,0 +1,325 @@
+{
+  "work_unit": "MC-IRR01",
+  "baseline": "0de42a6abe22e7efbe1be352202ed9637a1dc3b2",
+  "phase": "BOUNDED_SENSOR_RUNTIME_CANONICALLY_ADMITTED_REALISTIC_ENVELOPE_OPEN",
+  "allowed_changes": [
+    "Irrigation owner tests and qualification evidence",
+    "Owned irrigation parameter/source resolver with no shared contract mutation after reconciliation"
+  ],
+  "excluded_changes": [
+    "Shared hydraulic state, solver, history implementation",
+    "Crop/root and solute ownership"
+  ],
+  "invariants": [
+    3,
+    7,
+    9,
+    13,
+    21,
+    22,
+    23,
+    29
+  ],
+  "scientific_question": "Does existing production execution accept a one-centimetre SSDI event at 48 cm/day with pre-existing accepted no-irrigation derivative history, and converge under independent budget refinement?",
+  "numerical_profiles_cm": [
+    1e-06,
+    1e-07,
+    1e-08
+  ],
+  "mass_gate_cm": 1e-12,
+  "profile_acceptance": "Middle profile must approach fine reference more closely than coarse profile; max head difference <2e-3 cm and water-content difference <2e-6. These are newly declared experimental profile targets, not relaxation of the existing 2.5e-11 witness or any production default.",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": false,
+  "next_action": "PR1200 stable storage and real-depth source-onset admitted. Continue independent common root salt completion and source-off/real-depth spatial sensor restart qualification. Bind accepted crop/root, solute and allocation lifecycle before fullcap promotion.",
+  "initial_probe": "1 cm, 48 cm/day, accepted zero-forcing history: rejected with 22 temporal rejections under 24 retries. Diagnostic bound available. No mass rejections. Increase numerical effort before inferring a shared-interface defect.",
+  "effort_only_successor": {
+    "max_retries": 40,
+    "min_step_days": 1e-13,
+    "mass_and_temporal_acceptance_unchanged": true
+  },
+  "realistic_effort_probe": {
+    "postimage": "ea12279a8fc09177031aedaa3b2fa55929006dac",
+    "result": "FAIL at O0 first profile; no O2 qualification",
+    "diagnostic_log": "/usr/bin/ld: warning: /tmp/swap5-mc-irr01-realistic-event-local-5/o0/src_physics_oxygen_mod_bartholomeus_response.o: requires executable stack (because the .note.GNU-stack section is executable)\nERROR STOP 1\n\nError termination. Backtrace:\n#0  0x7f3aa5127e59 in ???\n#1  0x7f3aa5128a71 in ???\n#2  0x55f14183a77d in require.0\n#3  0x55f1418548b5 in MAIN__\n#4  0x55f14185cf04 in main\n MANAGEMENT_DIAGNOSTIC           2           1           0           0 ADMITTED                                           2           1      291252           0   0.0000000000000000     \n CERTIFICATE_REASON=available                                        ROUTE=reference-richards-defect-bound          BOUND=   1.3683105708831285E-003  NORMALIZED=   1368.3105708831285     \nFVQ20_SCHEDULED_RUNTIME_MASS_FAIL management physical commit\nMC_IRR01_MANAGEMENT_PHYSICAL_FAIL runtime O0 budget 1e-6\n",
+    "temporal_rejections": 291252,
+    "mass_rejections": 0,
+    "interpretation": "Historical FAIL retained, but inherited 3-cm profile cannot store the 1-cm pulse under these equal prescribed fluxes. This fixture cannot establish a solver/history defect."
+  },
+  "independent_production_change": "Expose the existing DCS1/DCS2+DCSLIM stage once and reuse it for TCS7/TCS8. New atomic physical sensor wrapper preserves existing salinity-after-limit and availability stages. In-flight continuation never reselects depth.",
+  "sensor_qualification": {
+    "result": "PASS O0/O2",
+    "cases": 12,
+    "output_sha256": "00526addf2547d1a64bee855fd78dbd683f66ad2d804fde83dd89abab1ea1af6",
+    "literal_management": "48 cases PASS O0/O2",
+    "management_preservation_sha256": "c5cecbbc94df4d742456691d1e81bf4b83cf521736c01cd2eeb6598f98b06d6a",
+    "scientific_postimage": "7a88fea210f47e9f0c651eb1e715dfb06044e4d6",
+    "claims": [
+      "TCS7 and TCS8 use the same source DCS1/DCS2+DCSLIM stage as root triggers",
+      "One and three compartments change real Richards state with authoritative inflow",
+      "Half-event management plus physical restart preserves continuation hydraulics and mass bitwise",
+      "Selection inputs changed during an active event do not recompute its depth",
+      "Rejected physical execution publishes neither event nor physical state"
+    ],
+    "limits": [
+      "Tiny, forcing-consistent initial impulses only",
+      "Salt concentration still caller supplied in this bounded witness",
+      "Existing adapter-neutral physical/event restart; no new external file codec",
+      "Full crop/root parameter resolution and daily/mininterval binding not qualified"
+    ],
+    "qualified": true,
+    "admitted": true,
+    "canonical_merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "admission_head": "54683938c5b41322b11ca99be6adde53e7986551",
+    "pull_request": 1199,
+    "owner_run": 38125769643,
+    "fci_run": 38125769591,
+    "owner_conclusion": "success",
+    "fci_conclusion": "success",
+    "local_preservation": {
+      "result": "PASS",
+      "postimage": "54683938c5b41322b11ca99be6adde53e7986551",
+      "tree": "8f91554b8dfc3f0c501986083d2d791293d40ce5",
+      "log_sha256": "c524a8abcb2e26078cdae56f1cacf5e8a2d713fa74df7950816a55e564cc13fc",
+      "gate": "FCI_CANONICAL_MC_IRR01_EXACT_OWNER_SUCCESSOR=PASS; FCI_CANONICAL_LINEAGE_AWARE_GATE PASS"
+    },
+    "fci_moving_job": 114430244608
+  },
+  "production_postimages": {
+    "src/process/mod_scheduled_irrigation_management_policy.f90": {
+      "git_blob": "2f135457852c7256d25c19afc9eba3dd06b52f4b",
+      "sha256": "678bb20165cf9455fba85c113424f3abd5ba1cb6eb276ea7685f718c6e1c7a7d"
+    },
+    "src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90": {
+      "git_blob": "649143a63dd29df8e1ec5b15ac75e8244d05c87f",
+      "sha256": "d75a2c63833186c4ca1c5cd4010b1fc9a298174df972dbbe3aaf968d325fc144"
+    }
+  },
+  "qualified_scope": "Only bounded sensor source/runtime/restart successor; realistic event envelope remains unqualified",
+  "automatic_check_reconciliation": {
+    "admission_head": "54683938c5b41322b11ca99be6adde53e7986551",
+    "red_jobs": [
+      {
+        "run": 38125769500,
+        "name": "F-CI107 RossFast transform cache admission",
+        "job": 114429702907,
+        "diagnostics": [
+          "2026-10-11T08:42:54.9562679Z FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+          "2026-10-11T08:42:54.9592477Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769563,
+        "name": "PUB-P2E08 Reference valid calibration domain",
+        "job": 114429702786,
+        "diagnostics": [
+          "2026-10-11T08:42:59.5495730Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical",
+          "2026-10-11T08:42:59.5514997Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769586,
+        "name": "PUB-P2E02 Reference uncertainty",
+        "job": 114429702841,
+        "diagnostics": [
+          "2026-10-11T08:43:00.1243856Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory",
+          "2026-10-11T08:43:00.1291184Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769465,
+        "name": "PUB-ME D3 origin authority",
+        "job": 114429702469,
+        "diagnostics": [
+          "2026-10-11T08:42:59.7472444Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source",
+          "2026-10-11T08:42:59.7499952Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769775,
+        "name": "PUB-P2E09 Reference-only threshold freeze",
+        "job": 114429703774,
+        "diagnostics": [
+          "2026-10-11T08:43:11.9857019Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base",
+          "2026-10-11T08:43:11.9873079Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769604,
+        "name": "PUB-P2E06 Reference local-balance scaling",
+        "job": 114429703139,
+        "diagnostics": [
+          "2026-10-11T08:43:13.2509827Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base",
+          "2026-10-11T08:43:13.2536872Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769454,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "job": 114429702925,
+        "diagnostics": [
+          "TIMEINT16 declaration marker missing",
+          "2026-10-11T08:42:55.0190880Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769454,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "job": 114429702950,
+        "diagnostics": [
+          "TIMEINT16 declaration marker missing",
+          "2026-10-11T08:42:53.2466343Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769614,
+        "name": "PUB-P1E02 post-solver rollback",
+        "job": 114429703169,
+        "diagnostics": [
+          "2026-10-11T08:43:16.4800868Z Fatal Error: Cannot open module file \u2018mod_b110_direct_retention_provider.mod\u2019 for reading at (1): No such file or directory",
+          "2026-10-11T08:43:16.4844656Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769617,
+        "name": "F-CI PPA-LOW02 moving preservation reconcile",
+        "job": 114429703203,
+        "diagnostics": [
+          "2026-10-11T08:43:27.7236866Z Production/reference mutation is forbidden in this reconciliation.",
+          "2026-10-11T08:43:27.7247551Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769483,
+        "name": "PUB-ME D1 transition authority",
+        "job": 114429702577,
+        "diagnostics": [
+          "2026-10-11T08:43:01.3890495Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source",
+          "2026-10-11T08:43:01.3914810Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769625,
+        "name": "PUB-P2E07 Reference cancellation floor",
+        "job": 114429703170,
+        "diagnostics": [
+          "2026-10-11T08:43:30.7211327Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference",
+          "2026-10-11T08:43:30.7234420Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769638,
+        "name": "PUB-P2E10 broad E0 paired matrix",
+        "job": 114429703131,
+        "diagnostics": [
+          "2026-10-11T08:43:32.1228791Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference",
+          "2026-10-11T08:43:32.1255079Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769576,
+        "name": "F-PERF-CANON01 B1 recomposition",
+        "job": 114429702988,
+        "diagnostics": [
+          "2026-10-11T08:43:48.1900080Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+          "2026-10-11T08:43:48.1990638Z ##[error]Process completed with exit code 1."
+        ]
+      },
+      {
+        "run": 38125769576,
+        "name": "F-PERF-CANON01 B1 recomposition",
+        "job": 114429703032,
+        "diagnostics": [
+          "2026-10-11T08:43:49.6141401Z Fatal Error: Cannot open module file \u2018mod_ppa_wu05_perch19_reduction_controller.mod\u2019 for reading at (1): No such file or directory",
+          "2026-10-11T08:43:49.6215718Z ##[error]Process completed with exit code 1."
+        ]
+      }
+    ],
+    "review": "Non-irrigation source-mutation guards and unchanged solver/compile surfaces. No blanket claim that all checks passed; owning F-APP07 plus canonical F-CI are admission requirements."
+  },
+  "unrelated_check_observation": {
+    "run": 38125769500,
+    "job": 114429702907,
+    "conclusion": "failure",
+    "reason": "FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+    "scope": "Exact solver contract and RossFast guard unchanged by this nine-path irrigation postimage; recorded separately from passing owner/canonical preservation. No guard repair or relaxation in irrigation scope."
+  },
+  "canonical_verification": {
+    "merge": "d9a98c4e1096aa30405e5e91accd7e82e832ed7f",
+    "tree": "79b3f9cd2c8af3ce8c114b0dc951c61e23e269ab",
+    "qualified_source_and_tests": "BYTE_IDENTICAL to 54683938c5b41322b11ca99be6adde53e7986551",
+    "retained_concurrent_delta": "ce3986f9 crop trigger workflow, project-control documentation and registry; no source or tested dependency delta"
+  },
+  "sensor_depth_master_reconciliation_20261011": {
+    "owner_pr": 1072,
+    "checkpoint": "f2cfaa1c8d46e7025d7d46a891b92288d5b94e55",
+    "tree": "a970970541ac4733d9afe6618c8f348654ca5d3e",
+    "bounded_integrity": "PASS: eleven capability annotations and their queue reasons only, all dispositions/dependencies/unrelated rows/global counts retained",
+    "global_master_qualification": "Not renewed: pre-existing inheritance baseline/backend gate remains with master owner",
+    "capabilities": 16,
+    "retained_admitted": 5,
+    "retained_active_migration": 11,
+    "promotions": 0
+  },
+  "full_functional_coverage_closed": false,
+  "full_coverage_blockers": [
+    {
+      "id": "TCD-IRR-FKT-FORCING-HISTORY",
+      "owner": "central F-KT hydraulic numerical authority",
+      "affected": "Realistic physical event envelope for all eleven active fullcaps",
+      "proven": "Tiny strict-budget one/three-node hydraulic water ownership, in-flight event/physical restart and rollback",
+      "required_action": "Central admission of exact stable constitutive storage arithmetic; qualify source-off and full forcing composition. Preserved-history 1-cm source-onset refinement now passes locally on feasible 100-cm geometry; inherited 3-cm negative is not defect authority."
+    },
+    {
+      "id": "MC-CROP01-ROOT-LIFECYCLE",
+      "owner": "crop/root workstream",
+      "affected": [
+        "TCS2",
+        "TCS3",
+        "TCS4",
+        "TCS6",
+        "DCS1",
+        "LIMIT"
+      ],
+      "proven": "Accepted hydraulic root summary consumed with caller root/soil parameters; literal triggers/depth and weekly state tests pass",
+      "required_action": "Bind authoritative evolving rooted extent, material FC/stress/wilting, daily/mininterval/dayfix state and rainfall across full production lifecycle."
+    },
+    {
+      "id": "MC-SOL01-ACCEPTED-SENSOR",
+      "owner": "solute workstream",
+      "affected": [
+        "SALTEXCESS",
+        "LIMIT"
+      ],
+      "proven": "Scalar salt-excess-after-limit ordering, availability and water/event restart in twelve physical cases",
+      "required_action": "Bind accepted concentration/state identity and qualify actual solute-enabled production excess across restart."
+    },
+    {
+      "id": "MC-IRR01-EXTERNAL-ALLOCATION",
+      "owner": "irrigation/application allocation provider",
+      "affected": [
+        "AVAIL"
+      ],
+      "proven": "Literal TASK4 surface/SSDI distinctions and event duration restrictions; bounded in-flight water/event continuation",
+      "required_action": "Bind provider allocation to persisted event identity and qualify multi-day restriction with realistic rates."
+    }
+  ],
+  "onset_diagnosis_successor": "integration/audits/MC_IRR01_ONSET_DIAGNOSIS_20261011.json",
+  "stable_storage_admission": {
+    "pull_request": 1200,
+    "qualified_head": "5155c3df427fbb91fd391a9aa98f85ffad75b10b",
+    "qualified_tree": "846d71ce63efd4f5f5d3e8061a62a3f0bf996d36",
+    "canonical_merge": "ea4759a0633011f26e8ee43126db2484c0def8b3",
+    "canonical_paths_verified": 11,
+    "owner_run": 38132433330,
+    "owner_job": 114449349641,
+    "owner_result": "PASS_O0_O2_THREE_PROFILES_TWELVE_ROOT_CASES",
+    "fci_run": 38132433375,
+    "fci_moving_job": 114449871342,
+    "fci_result": "PASS_ALL_14_FROZEN_HISTORICAL_AND_MOVING",
+    "source_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+    "local_fci": "PASS",
+    "scope": "Stable constitutive storage arithmetic; feasible 1-cm retained-history root onset only. No threshold/history/API/state changes; no fullcap promotion."
+  }
+}

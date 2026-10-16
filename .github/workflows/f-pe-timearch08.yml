@@ -1,0 +1,33 @@
+name: F-PE-TIMEARCH08 preferred-step memory shadow
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch08-preferred-memory-shadow
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH08_PREREGISTRATION.md'
+      - 'src/runtime/mod_a23bu_worker_execution_context.f90'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part01.inc'
+      - 'src/legacy/b1_10_fci11_port/timecontrol_part04.inc'
+      - 'tests/fpe/guard_fpe_timearch08_source.py'
+      - 'tests/fpe/run_fpe_timearch08_shadow.py'
+      - 'tests/fpe/test_fpe_timearch08_shadow_context.f90'
+      - 'tests/fpe/run_fpe_timearch08.sh'
+      - '.github/workflows/f-pe-timearch08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preferred-memory-shadow:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preferred-memory shadow gate
+        run: bash tests/fpe/run_fpe_timearch08.sh

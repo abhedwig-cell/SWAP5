@@ -72,6 +72,10 @@ program test_fgc44_real_fmr_participant
        origin_head_m,trial1,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial1%valid,'first real FMR prescribed-head trial')
   call require(ieee_is_finite(trial1%q_swap_m_per_s),'first real FMR exchange finite')
+  call require(trial1%response_tangent_available .and. ieee_is_finite(trial1%dq_swap_dh_per_s), &
+       'first real FMR physical response tangent available')
+  call require(trial1%dq_swap_dh_per_s < 0.0_real64, &
+       'outward SWAP interface response decreases with increasing prescribed interface head')
   call require(committed%current_revision()==0_int64,'trial does not mutate real FMR committed state')
   call participant%discard_candidate(backend)
 
@@ -79,6 +83,13 @@ program test_fgc44_real_fmr_participant
        origin_head_m,trial2,status)
   call require(status==GW_SWAP_PARTICIPANT_OK .and. trial2%valid,'second real FMR prescribed-head trial')
   call require(ieee_is_finite(trial2%q_swap_m_per_s),'second real FMR exchange finite')
+  call require(trial2%response_tangent_available .and. ieee_is_finite(trial2%dq_swap_dh_per_s), &
+       'second real FMR physical response tangent available')
+  call require(trial2%dq_swap_dh_per_s < 0.0_real64, &
+       'replayed outward SWAP interface response keeps physical orientation')
+  call require(abs(trial2%dq_swap_dh_per_s-trial1%dq_swap_dh_per_s) <= &
+       64.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(trial1%dq_swap_dh_per_s)), &
+       'same-origin physical response tangent replay')
   call require(participant%publication_ready(committed,window),'real FMR candidate publication ready')
   call require(committed%current_revision()==0_int64,'real FMR preflight nonmutating')
 
@@ -99,10 +110,13 @@ program test_fgc44_real_fmr_participant
 
   write(*,'(A)') 'FGC44_REAL_FMR_MODE5_MATERIALIZER=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_SAME_ORIGIN_CORRECTORS=PASS'
+  write(*,'(A)') 'FGC44_REAL_FMR_PHYSICAL_OUTWARD_TANGENT=PASS'
+  write(*,'(A)') 'FGC44_REAL_FMR_TANGENT_REPLAY=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_PREFLIGHT_NONMUTATING=PASS'
   write(*,'(A)') 'FGC44_REAL_FMR_KERNEL_COMMIT=PASS'
   write(*,'(A,ES26.17E3)') 'FGC44_REAL_FMR_Q1_M_PER_S=',trial1%q_swap_m_per_s
   write(*,'(A,ES26.17E3)') 'FGC44_REAL_FMR_Q2_M_PER_S=',trial2%q_swap_m_per_s
+  write(*,'(A,ES26.17E3)') 'FGC44_REAL_FMR_DQ_DH_PER_S=',trial2%dq_swap_dh_per_s
   write(*,'(A)') 'F-GC44 REAL FMR PARTICIPANT GATE PASS'
 
 contains

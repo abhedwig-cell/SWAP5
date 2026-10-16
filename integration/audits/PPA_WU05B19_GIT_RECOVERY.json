@@ -1,0 +1,27 @@
+{
+  "work_unit": "PPA-WU05B19",
+  "status": "EXACT_QUALIFIED_POSTIMAGES_RECOVERED_AFTER_LOCAL_GIT_STORAGE_LOSS",
+  "baseline": "e5eab995ef04fc813dd644025fb0f32e4f5050a1",
+  "lost_local_closeout_commit": "18ad7f808552ab0372f1ae0dd98f0fc601d04a76",
+  "historical_tested_commit": "d19327ca985e54891f94bf95cfbe02cd7f335020",
+  "recovered_candidate_commit": "a9a0774500d044bd2c42d2cc6551f687e010fa80",
+  "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B19_LOCAL_REPLAY.json.gz",
+    "sha256": "d74b5df08b04bb7f720d49921e233bc0975105e0fbcb8fbb510afd7f3c4dcfb6"
+  },
+  "recovery_method": "Rebuilt isolated local Git metadata from an existing complete local clone containing the exact canonical baseline, without changing worktree files. Committed the preserved qualified postimages on the requested branch.",
+  "verification": {
+    "sealed_evidence_sha256_matches": true,
+    "every_changed_source_and_test_postimage_matches_sealed_sha256": true,
+    "qualification_contract_and_report_postimages_match_sealed_sha256": true,
+    "entire_production_source_tree_matches": true,
+    "live_canonical_matches_baseline": true,
+    "all_eleven_completed_local_gates_preserved": true,
+    "physical_or_numerical_changes_during_recovery": false
+  },
+  "qualification_policy": "Preserve completed evidence because the exact relevant source, test and documentation dependency postimages are unchanged. Historical commit IDs in immutable evidence describe the original run; they are not claimed to exist in the recovered Git database.",
+  "authorization": "User answered Ga door directly after the concrete request to push this branch to abhedwig-cell/SWAP5 and open a PR against integration/f-ci-canonical.",
+  "canonical_admitted": false,
+  "aggregate_frost_migration_complete": false
+}

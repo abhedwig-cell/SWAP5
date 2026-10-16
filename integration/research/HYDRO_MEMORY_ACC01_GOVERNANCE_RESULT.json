@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.hydro_memory.acc01.governance_result.v1",
+  "date": "2026-09-19",
+  "work_unit": "HYDRO-MEMORY-ACC01",
+  "phase": "GOVERNANCE",
+  "decision": "ACC01_GOVERNANCE_QUALIFIED",
+  "canonical_base": "308a619c91d2cc3dae7f7aa143cfbe97c780c635",
+  "exact_qualified_head": "c1a868cbd6fd7af3ef77c560fe452a69649d3f43",
+  "workflow": {
+    "run_id": 35430125964,
+    "conclusion": "success"
+  },
+  "source_sha256": "b35d4e4af46f1ed56b787e0b4c606077e2fded727cff8a16e34cc7e09d4f74b7",
+  "mapping": {
+    "qoi_kind": "GROUNDWATER_HEAD",
+    "h_app_cm": 0.4,
+    "a_temporal": 0.25,
+    "model_temporal_indicator_budget_cm": 0.1,
+    "application_provenance_id": 590201,
+    "temporal_allocation_provenance_id": 590202
+  },
+  "evidence": [
+    "exact source digest verified",
+    "pinned F-GC13 validator ACCEPT",
+    "canonical F-GC14 typed adapter PASS",
+    "canonical application contract materialization PASS",
+    "O0/O2 output identity PASS",
+    "no src/reference delta"
+  ],
+  "next": "F1_ONE_DAY_ROOT_ACTIVE_TEMPORAL_FEASIBILITY",
+  "stage0_authorized": false
+}

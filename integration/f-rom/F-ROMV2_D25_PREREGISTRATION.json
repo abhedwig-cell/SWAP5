@@ -1,0 +1,176 @@
+{
+  "schema": "swap5.f-romv2-d25.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D25",
+  "title": "Compiled same-language shared-host FMC computational-value screen",
+  "phase": "PREREGISTERED_BEFORE_COMPILED_FMC_IMPLEMENTATION_AND_TIMING_EXPOSURE",
+  "canonical_base": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+  "purpose": "Determine whether the D24-qualified FMC hydraulic architecture plausibly occupies a useful computational-cost versus hydrological-fidelity frontier when implemented in compiled Fortran and compared with R2/R16 on the exact D24 workload, without making a formal performance claim on an unadmitted shared host.",
+  "scientific_role": {
+    "class": "SHARED_HOST_COMPUTATIONAL_VALUE_SCREEN",
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false,
+    "statement": "D25 screens whether further FMC application-fidelity research is computationally justified. It does not establish a portable speedup."
+  },
+  "predecessor_authority": {
+    "D24_decision": "FMC_NATIVE_RAINFALL_GROUNDWATER_COMPOSITION_RETAINS_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+    "D24_all_eight_frontier_gates_pass": true,
+    "D24_result_sha256": "649dd06a588972c382634e8d7247e196a78409f4d590d675469b3ba01fca9ede",
+    "D24_execution_head": "0d7abc3acc374dbe6192baaca471f545caa103c3",
+    "D24_python_oracle_blob": "2ca5ddef865f964b4acec92228569154e8214b25",
+    "D24_reference_harness_blob": "482965026d7589bfd5b8dedbe8949ebcb78a3030",
+    "D24_analyzer_blob": "3ad27f781d1dcf7b4a06048bd131fea0840caff3"
+  },
+  "performance_governance": {
+    "MP7_host_result": "HOST_REJECTED_FOR_1PCT_CPU_BASELINE",
+    "MP8_isolated_runner_readiness": "INFRASTRUCTURE_PENDING",
+    "cpu_baseline_established": false,
+    "implication": "D25 timing is screening evidence only. No result may be called a formal SWAP5/MultiSWAP CPU baseline, qualified speedup or production-performance claim."
+  },
+  "frozen_workload": {
+    "material": "B01",
+    "histories": [
+      {
+        "id": "RG05",
+        "rainfall_factor_Ksat": 0.5
+      },
+      {
+        "id": "RG20",
+        "rainfall_factor_Ksat": 2
+      },
+      {
+        "id": "RG40",
+        "rainfall_factor_Ksat": 4
+      }
+    ],
+    "intervals_per_history": 16,
+    "observation_step_seconds": 10,
+    "total_intervals_per_workload": 48,
+    "surface": "D24 native rainfall + ponding/runoff",
+    "bottom": "fixed zero pressure head at 160 cm",
+    "initial_state": "D24 composite surface fronts + G25 groundwater fronts",
+    "ET_root_uptake": false,
+    "contact_merge": false,
+    "falling_slugs": false,
+    "dry_bin_activation": false
+  },
+  "compiled_FMC_identity": {
+    "language": "Fortran 2008 research-only standalone kernel",
+    "compiler": "same GNU Fortran toolchain as R2/R16 within one workflow run",
+    "optimization_for_timing": "-O2",
+    "moisture_bins": 200,
+    "process_step_seconds": 10,
+    "scientific_equations": "exact D24 FMC route: gray demand + Eq.18 surface-front advance + conservative relaxation + D22 surface reservoir + G25 Eq.21 groundwater-front advance + conservative relaxation + D24 bottom-exchange ledger",
+    "calibration": false,
+    "scientific_parameter_change": false,
+    "dynamic_algorithm_change": false,
+    "production_source": false
+  },
+  "stage1_implementation_equivalence": {
+    "timing_exposure_authorized_before_pass": false,
+    "oracle": "Frozen D24 Python equations regenerated on the D25 execution branch from the source-bound D24 oracle, before timing.",
+    "required_for_O0_and_O2": [
+      "all RG05/RG20/RG40 16-step routes complete",
+      "same runoff/no-runoff event presence by interval",
+      "same strict separation/no-contact classification",
+      "per-step soil storage absolute difference <=1e-11 cm",
+      "per-step cumulative infiltration absolute difference <=1e-11 cm",
+      "per-step surface store absolute difference <=1e-11 cm",
+      "per-step cumulative runoff absolute difference <=1e-11 cm",
+      "per-step cumulative bottom exchange absolute difference <=1e-11 cm",
+      "per-step each mapped theta16 absolute difference <=1e-12",
+      "per-step terminal bottom flux absolute difference <=1e-9 cm/day",
+      "Fortran global and local ledger gates <=1e-12 cm"
+    ],
+    "failure_rule": "Any equivalence failure closes D25 before timing. No equation, bin, process-step, ordering, surface law, lambda, threshold or tolerance may be retuned inside D25."
+  },
+  "stage2_R16_only_timing_calibration": {
+    "purpose": "Choose internal batch repetitions without seeing FMC or R2 timing effects.",
+    "route_used": "R16 only",
+    "optimization": "-O2",
+    "candidate_repetitions": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512,
+      1024
+    ],
+    "rule": "Select the first repetition count whose in-process Fortran CPU_TIME for repeated complete D24 workloads is >=0.5 s and <=8 s. If none reaches 0.5 s by 1024, close timing as unresolved. If first qualifying value exceeds 8 s, use its previous candidate only if previous CPU_TIME >=0.25 s; otherwise close unresolved.",
+    "FMC_R2_timing_exposed_during_calibration": false,
+    "post_calibration_repetition_retuning": false
+  },
+  "stage3_screening_protocol": {
+    "primary_measure": "in-process Fortran CPU_TIME around the repeated scientific workload, excluding compilation and stdout serialization",
+    "diagnostic_measure": "external monotonic elapsed time per sample",
+    "warmups_per_route": 3,
+    "measured_samples_per_route": 30,
+    "order": "six permutations of FMC/R2/R16 repeated five times in a frozen cycle",
+    "internal_repetitions": "frozen Stage-2 R16-only calibration value",
+    "no_posthoc_timing_outlier_deletion": true,
+    "physical_output_check": "Every measured sample must return the same deterministic scientific checksum as its Stage-1 qualified route.",
+    "cpu_statistics": [
+      "mean",
+      "median",
+      "p10",
+      "p90",
+      "paired FMC-minus-R16 mean",
+      "paired standard deviation",
+      "two-standard-error screening bound",
+      "FMC/R16 mean and median ratios",
+      "R2/R16 mean and median ratios",
+      "FMC/R2 mean and median ratios"
+    ]
+  },
+  "screening_decision": {
+    "primary_reference": "R16",
+    "rationale": "Because D24 already establishes that FMC is hydrologically more accurate than R2 on all eight frozen gates, FMC need not be faster than R2 to be non-dominated. It must show a credible cost advantage over R16 to remain computationally relevant.",
+    "classifications": {
+      "positive": "FMC_SHARED_HOST_COST_ADVANTAGE_RESOLVED_RELATIVE_TO_R16",
+      "unresolved": "FMC_SHARED_HOST_COST_ADVANTAGE_UNRESOLVED",
+      "negative": "FMC_SHARED_HOST_NO_COST_ADVANTAGE_RELATIVE_TO_R16"
+    },
+    "positive_rule": "Stage 1 passes; Stage 2 calibrates; all samples pass scientific checks; paired mean FMC-R16 CPU delta is <0 and its mean + 2*SE is <0.",
+    "unresolved_rule": "Stage 1 passes and timing completes, but the sign of the FMC-vs-R16 cost advantage is not resolved by the frozen two-SE screening criterion or mean/median disagree.",
+    "negative_rule": "Stage 1 passes, timing completes, and both mean and median FMC/R16 CPU ratios are >=1.",
+    "frontier_report": "Always report R2 cost position separately; do not collapse cost and fidelity into a weighted score."
+  },
+  "successor_logic": {
+    "if_positive": "Retain FMC as a computationally plausible bounded hydraulic research candidate. Next research should expand purpose-specific fidelity (ET/root uptake and longer/seasonal water balance) while preserving the D24 physics; formal speedup still waits for an admitted isolated host and a production-relevant implementation.",
+    "if_unresolved": "Do not retune science. Either repeat only on an admitted isolated performance host or continue fidelity research without a speed claim if scientifically justified.",
+    "if_negative": "Do not escalate FMC toward general ROM/application qualification until a scientifically justified cost reduction exists; no bin/process-step retuning is authorized from D25."
+  },
+  "firewalls": [
+    "NO_D24_SCIENCE_RETUNING",
+    "NO_BIN_COUNT_RETUNING",
+    "NO_PROCESS_STEP_RETUNING",
+    "NO_LAMBDA_OR_INITIAL_STATE_RETUNING",
+    "NO_EQ18_EQ21_OR_SURFACE_LAW_RETUNING",
+    "NO_EFFECT_BASED_BATCH_LENGTH_SELECTION",
+    "NO_POSTHOC_TIMING_OUTLIER_DELETION",
+    "NO_FORMAL_SPEEDUP_CLAIM",
+    "NO_APPLICATION_ACCEPTANCE_CLAIM",
+    "NO_SRC_OR_REFERENCE_MUTATION",
+    "NO_PRODUCTION_ROM_AUTHORITY"
+  ],
+  "production_rom_authorized": false,
+  "pre_execution_reconciliation": {
+    "previous_canonical_base": "5bb400c222aeade663facfef1e7d0c97df971104",
+    "reconciled_canonical_base": "e6c28770786a4cc7cb2ab6cf4b8e3f936c44b3f1",
+    "live_delta_scope": [
+      "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md",
+      "release/pub-gc-gmd/PUB_GC_GMD_AUTHORITY_INTAKE.json",
+      "release/pub-gc-gmd/PUB_GC_GMD_SUBMISSION_GOVERNANCE_HANDOFF.json"
+    ],
+    "ownership_disjunct": true,
+    "scientific_fields_changed": false,
+    "timing_protocol_changed": false,
+    "execution_started_before_reconciliation": false
+  }
+}

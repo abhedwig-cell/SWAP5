@@ -1,0 +1,45 @@
+{
+  "schema": "swap5.f-romv2-v1.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-V1",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-v1-blind-validation",
+    "pull_request": 416,
+    "pull_request_merged": false,
+    "head": "2ef240fb390b107bffba263ad779dc2bdda23669",
+    "workflow_run": 35441133786,
+    "workflow_job": 105891994940,
+    "artifact_id": 10583941868,
+    "artifact_digest": "sha256:26928a0dbc9dfc0c422505a86dbf70e47ccee03bef71c54932d11d97d277d276",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "o0_stdout_sha256": "68207a1c2d0d381cb0801fc4b74e0946145a8e8a969f4aba9e24e1ee9ef99d7a",
+    "o2_stdout_sha256": "68207a1c2d0d381cb0801fc4b74e0946145a8e8a969f4aba9e24e1ee9ef99d7a",
+    "trajectory_result_sha256": "31d989fe3d9be641faaabedef4ef5b437e50b8f4cef69d9735c9599d676ec391",
+    "c2_result_sha256": "d1202d5162daac71ad041fa0939813f2d4492ff752900a9cba5b5f7261375b20",
+    "trajectory_analyzer_sha256": "8538bffcc35e3f0804a35c2c4bfa72d0479f85e748101e27e245de67742d7ffd",
+    "c2_analyzer_sha256": "9ed6bbce00ce5b80a70df718c7b56f7688ac3ee42dad8cfa9ba089dbae02da64"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_V1_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_V1_RESULT.json",
+    "integration/f-rom/F-ROMV2_V1_STATUS.json",
+    "integration/f-rom/F-ROMV2_V1_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_V1_BLIND_HYDRAULIC_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/test_f_romv2_v1_current_canonical_trajectories.f90",
+    "tests/rom/analyze_f_romv2_v1_current_canonical_trajectories.py",
+    "tests/rom/analyze_f_romv2_v1_c2_blind.py",
+    "tests/rom/run_f_romv2_v1_current_canonical_trajectories.sh",
+    ".github/workflows/f-romv2-v1-blind-validation.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "old_H01_H04_imported_as_blind_validation": false,
+  "predecessor_F_ROMV_reclassified": false,
+  "production_rom_authorized": false
+}

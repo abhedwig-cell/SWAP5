@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-A",
+  "capability": "SWREDU=1 Black evaporation reduction",
+  "state": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "branch": "work/ppa-wu04a-black-evaporation-reduction",
+  "qualified_head": "f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938",
+  "canonical_reconcile": {
+    "current_checked_head": "7ea315285904783225741b350be292974afeec92",
+    "branch_origin": "b70abdaa8e73f6963dd6b535b482ebbf06b02d89",
+    "relevant_live_delta_since_origin": "NONE_IN_PPA_WU04A_OWNED_PRODUCTION_FILES",
+    "note": "Canonical moved concurrently, but compare showed no changes to the Black process, serialized backend, runtime-core layout, restart contract, production bootstrap, WU03 forcing adapter or dynamic-top owner."
+  },
+  "authority": {
+    "contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "review": "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+    "reference_snapshot": "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "legacy_routine": "MOD_meteo.f90:reduceva(task=2)",
+    "legacy_b1_11_source_sha256": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "independent_historical_trace": "SWAP-model/SWAP@07d74a82e9ba0465ec81a74e4d82b3dc03d856d9 src/atmosphere/et.f90"
+  },
+  "implementation": {
+    "process": "src/process/mod_restricted_surface_evaporation.f90",
+    "state_layout": "FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION",
+    "committed_state_family": "fmr_b110_black_evaporation_state_t",
+    "forcing_adapter": "src/adapter/mod_ppa_wu04a_black_forcing_adapter.f90",
+    "mass_owner": "existing B110 dynamic hydraulic top boundary",
+    "persistent_process_state": [
+      "ldwet"
+    ],
+    "restart": "generic committed restart with exact option-discriminated Black state family",
+    "solver_delta": "NONE"
+  },
+  "qualification": {
+    "workflow_run": 35438366101,
+    "job": 105884808295,
+    "conclusion": "PASS",
+    "gates": {
+      "exact_black_source_equation_oracle": "PASS",
+      "explicit_wetting_reset_oracle": "PASS",
+      "ponding_reset_oracle": "PASS",
+      "aba_replay": "PASS",
+      "invalid_input_fail_closed": "PASS",
+      "production_application_reachable": "PASS",
+      "hydraulic_actual_evaporation_mass_owner": "PASS",
+      "hard_mass_1e_12": "PASS",
+      "rejected_trial_ldwet_immutable": "PASS",
+      "changed_dt_retry_from_same_checkpoint": "PASS",
+      "exact_restart_ldwet_roundtrip": "PASS",
+      "restart_option_layout_fail_closed": "PASS",
+      "explicit_event_forcing_handoff": "PASS",
+      "o0_o2_output_identity": "PASS",
+      "ppa_wu01_behavioral_preservation": "PASS",
+      "ppa_wu03_behavioral_preservation": "PASS",
+      "preregistered_production_delta": "PASS"
+    }
+  },
+  "preservation": {
+    "behavioral_preservation": "PASS",
+    "historical_immutability_gates": {
+      "classification": "EXPECTED_SUPERSESSION_SIGNAL_NOT_PHYSICS_REGRESSION",
+      "reason": "Several older workflows intentionally assert immutable production/blob identities or zero src delta. A new admitted serialized-backend successor necessarily trips those assertions.",
+      "owner_boundary": "Do not rewrite publication/EB/solver/governance historical locks inside PPA-WU04-A. Canonical successor reconciliation remains a repository-governance action.",
+      "examples": [
+        "PUB-GC E7 current-canonical preservation: bootstrap blob assertion",
+        "F-CI72 EB-I23 moving preservation: F-ROSS12 backend blob identity",
+        "F-SI39 B1.11 KSATEXM preservation: unexpected production delta",
+        "F-CI59P postimage reconciliation: production/reference source immutability",
+        "publication experiment gates that prohibit any src mutation by design"
+      ]
+    }
+  },
+  "admitted_claim_boundary": {
+    "claims": [
+      "SWREDU=1 Black reduction is typed and reachable through the restricted PPA production application path.",
+      "LDWET is exact committed process continuation state and restart state.",
+      "Rejected/discarded trial candidates cannot mutate committed LDWET.",
+      "A changed-dt retry derives Black demand and candidate LDWET from the same committed checkpoint.",
+      "EMPREVA remains demand and actual evaporation remains owned/accounted by the hydraulic dynamic-top boundary."
+    ],
+    "nonclaims": [
+      "SWREDU=2 Boesten-Stroosnijder",
+      "SWINTER=1 or SWINTER=2",
+      "legacy weather-file/calendar parsing",
+      "snowmelt/runon composition in this Black slice",
+      "groundwater mode 5 Black composition",
+      "RossFast Black composition",
+      "new solver selection or solver internals"
+    ]
+  },
+  "decision": "QUALIFIED_SOURCE_BOUND_PRODUCTION_CANDIDATE_READY_FOR_CANONICAL_ADMISSION"
+}

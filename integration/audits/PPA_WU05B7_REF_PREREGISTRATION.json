@@ -1,0 +1,31 @@
+{
+  "work_unit": "PPA-WU05B7-REF",
+  "baseline": "1de2b874140c9f83a57c3eda8dfeddeeee19538d",
+  "status": "PREREGISTERED",
+  "scope": "Reporting-corrected B1 FrozenCond geometry-domain guards; retain exact legacy formulas, factors and decrement-before-test indexing on valid bracketed inputs",
+  "confirmed_original_defects": [
+    "uniform negative adjacent temperatures divide by zero in actual FrozenCond",
+    "epsilon-selected temperature without actual crossing can place frost bottom thousands of cm above surface",
+    "nonnegative drain depths can leave leveldeepest=0 and access invalid array index in FrozenBounds"
+  ],
+  "physical_policy": "Do not invent a front in unbracketed or degenerate geometry. Expose recomputable validity/status; FrozenBounds rejects unavailable geometry and invalid drain depths before changing fluxes. Last-node indexing policy remains legacy-compatible, not corrected here.",
+  "interface": "Corrected source component gains geometry validity/status; no SWAP5 production change and no global B1 snapshot promotion",
+  "gates": [
+    "actual original failures/out-of-domain postimage reproduced at O0/O2 in subprocesses with bounds and floating traps",
+    "valid geometry cases bitwise original/corrected factor/top/bottom parity",
+    "corrected invalid geometry reports deterministic fail-closed status without division traps",
+    "corrected invalid drainage depths reject before physical flux modification",
+    "exact source applicator and original immutable hashes",
+    "documentation checks and strict build"
+  ],
+  "exclusions": [
+    "changing last-node indexing",
+    "new fully frozen front interpretation",
+    "SWDIVD=1 redistribution",
+    "global legacy simulation equivalence",
+    "new phase-change physics",
+    "SWAP5 production admission"
+  ],
+  "next_action": "Qualify bounded corrected reference component before migrating low-air geometry",
+  "aggregate_frost_migration_complete": false
+}

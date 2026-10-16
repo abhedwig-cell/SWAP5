@@ -54,6 +54,10 @@ module mod_drainage_hooghoudt_ipos23_response
   public :: evaluate_drainage_hooghoudt_ipos2_response
   public :: evaluate_drainage_hooghoudt_ipos3_response
 
+  public :: valid_hooghoudt_ipos2_parameters
+  public :: valid_hooghoudt_ipos3_parameters
+  public :: valid_hooghoudt_prepared
+
 contains
 
   subroutine evaluate_drainage_hooghoudt_ipos2_response(parameters, prepared, hydraulic_view, response, diagnostics)
@@ -186,7 +190,7 @@ contains
     response%derivative_defined = .true.
   end subroutine evaluate_common
 
-  logical function valid_prepared(prepared) result(valid)
+  pure logical function valid_prepared(prepared) result(valid)
     type(hooghoudt_equivalent_depth_prepared_t), intent(in) :: prepared
     valid = prepared%is_valid .and. ieee_is_finite(prepared%drain_spacing) .and. &
          ieee_is_finite(prepared%drain_bottom_level) .and. ieee_is_finite(prepared%equivalent_depth)
@@ -194,7 +198,7 @@ contains
     valid = prepared%drain_spacing > 0.0_real64 .and. prepared%equivalent_depth >= 0.0_real64
   end function valid_prepared
 
-  logical function valid_ipos2_parameters(parameters) result(valid)
+  pure logical function valid_ipos2_parameters(parameters) result(valid)
     type(drainage_hooghoudt_ipos2_parameters_t), intent(in) :: parameters
     valid = ieee_is_finite(parameters%shape_factor) .and. &
          ieee_is_finite(parameters%horizontal_conductivity_top) .and. &
@@ -204,7 +208,7 @@ contains
          parameters%horizontal_conductivity_top > 0.0_real64 .and. parameters%entry_resistance >= 0.0_real64
   end function valid_ipos2_parameters
 
-  logical function valid_ipos3_parameters(parameters) result(valid)
+  pure logical function valid_ipos3_parameters(parameters) result(valid)
     type(drainage_hooghoudt_ipos3_parameters_t), intent(in) :: parameters
     valid = ieee_is_finite(parameters%shape_factor) .and. &
          ieee_is_finite(parameters%horizontal_conductivity_top) .and. &
@@ -216,5 +220,20 @@ contains
          parameters%horizontal_conductivity_bottom >= 0.0_real64 .and. &
          parameters%entry_resistance >= 0.0_real64
   end function valid_ipos3_parameters
+
+  pure logical function valid_hooghoudt_ipos2_parameters(parameters) result(valid)
+    type(drainage_hooghoudt_ipos2_parameters_t), intent(in) :: parameters
+    valid = valid_ipos2_parameters(parameters)
+  end function valid_hooghoudt_ipos2_parameters
+
+  pure logical function valid_hooghoudt_ipos3_parameters(parameters) result(valid)
+    type(drainage_hooghoudt_ipos3_parameters_t), intent(in) :: parameters
+    valid = valid_ipos3_parameters(parameters)
+  end function valid_hooghoudt_ipos3_parameters
+
+  pure logical function valid_hooghoudt_prepared(parameters) result(valid)
+    type(hooghoudt_equivalent_depth_prepared_t), intent(in) :: parameters
+    valid = valid_prepared(parameters)
+  end function valid_hooghoudt_prepared
 
 end module mod_drainage_hooghoudt_ipos23_response

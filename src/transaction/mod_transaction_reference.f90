@@ -1,5 +1,5 @@
 module mod_transaction_reference
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_value, ieee_quiet_nan
   use, intrinsic :: iso_fortran_env, only: real64, int64
   implicit none
   private
@@ -55,6 +55,8 @@ module mod_transaction_reference
     logical :: solver_ok = .false.
     real(real64) :: mass_in = 0.0_real64
     real(real64) :: mass_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -69,6 +71,8 @@ module mod_transaction_reference
     integer :: linear_solves = 0
     integer :: backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
     type(transaction_interface_sensitivity_t) :: interface_sensitivity
   end type trial_outcome_t
 
@@ -78,6 +82,7 @@ module mod_transaction_reference
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
     procedure :: storage_accounting_status => default_storage_accounting_status
+    procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
   end type transaction_model_t
@@ -118,6 +123,10 @@ module mod_transaction_reference
     integer :: accepted_backtracking_attempts = 0
     integer :: alternative_solver_calls = 0
     integer :: accepted_alternative_solver_calls = 0
+    integer :: workspace_full_resets = 0
+    integer(int64) :: workspace_zeroed_bytes = 0_int64
+    integer :: accepted_workspace_full_resets = 0
+    integer(int64) :: accepted_workspace_zeroed_bytes = 0_int64
     logical :: accepted_mass_complete = .false.
     integer(int64) :: accepted_missing_contribution_mask = TX_MASS_MISSING_UNSPECIFIED
     real(real64) :: accepted_storage_start = 0.0_real64
@@ -125,6 +134,8 @@ module mod_transaction_reference
     real(real64) :: accepted_storage_change = 0.0_real64
     real(real64) :: accepted_total_in = 0.0_real64
     real(real64) :: accepted_total_out = 0.0_real64
+    logical :: actual_transpiration_available = .false.
+    real(real64) :: actual_transpiration_amount = 0.0_real64
     logical :: bottom_interface_exchange_available = .false.
     real(real64) :: accepted_bottom_outward_exchange_native = 0.0_real64
     real(real64) :: terminal_bottom_outward_flux_native = 0.0_real64
@@ -175,6 +186,12 @@ module mod_transaction_reference
 
 contains
 
+  logical function default_attempt_context_required(self) result(required)
+    class(transaction_model_t), intent(in) :: self
+    if (.not. same_type_as(self, self)) error stop 'unreachable transaction model type'
+    required = .true.
+  end function default_attempt_context_required
+
   subroutine default_capture_attempt_context(self, context)
     class(transaction_model_t), intent(inout) :: self
     class(transaction_attempt_context_t), allocatable, intent(out) :: context
@@ -219,7 +236,7 @@ contains
     real(real64) :: attempt_dt, attempt_t1, midpoint
     real(real64) :: storage0, storage_full, storage_half
     real(real64) :: full_mass_residual, half_mass_residual, terr
-    logical :: solver_ok, mass_ok, temporal_ok
+    logical :: solver_ok, mass_ok, temporal_ok, context_required
     logical :: storage_start_complete, storage_end_complete, full_storage_end_complete
     integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer(int64) :: full_end_missing_mask, full_missing_mask
@@ -241,10 +258,15 @@ contains
     end if
     result%temporal_acceptance_source = TX_TEMPORAL_EXTERNAL_FULL_HALF
 
+    context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
-    call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
+    if (context_required) call model%capture_attempt_context(checkpoint_context)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
@@ -252,7 +274,7 @@ contains
       attempt_t1 = t0 + attempt_dt
       midpoint = t0 + 0.5_real64 * attempt_dt
 
-      call model%restore_attempt_context(checkpoint_context)
+      if (context_required) call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(full_state)
       call model%advance(full_state, t0, attempt_t1, full_outcome)
       result%full_trials = result%full_trials + 1
@@ -263,17 +285,23 @@ contains
       result%linear_solves = result%linear_solves + full_outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + full_outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + full_outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + full_outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + full_outcome%workspace_zeroed_bytes
 
       if (.not. full_outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
 
-      storage_full = model%storage(full_state)
       call model%storage_accounting_status(full_state, full_storage_end_complete, full_end_missing_mask)
+      if (full_storage_end_complete) then
+        storage_full = model%storage(full_state)
+      else
+        storage_full = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       full_mass_residual = storage_full - storage0 - (full_outcome%mass_in - full_outcome%mass_out)
       full_missing_mask = ior(start_missing_mask, full_end_missing_mask)
       full_missing_mask = ior(full_missing_mask, full_outcome%missing_mass_contribution_mask)
@@ -290,7 +318,7 @@ contains
         full_missing_mask = ior(full_missing_mask, TX_MASS_MISSING_NONFINITE)
       end if
 
-      call model%restore_attempt_context(checkpoint_context)
+      if (context_required) call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(half_state)
       call model%advance(half_state, t0, midpoint, half1_outcome)
       result%half_trials = result%half_trials + 1
@@ -301,10 +329,10 @@ contains
       result%linear_solves = result%linear_solves + half1_outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + half1_outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + half1_outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + half1_outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half1_outcome%workspace_zeroed_bytes
 
       if (half1_outcome%solver_ok) then
-        call model%capture_attempt_context(half_context)
-        call model%restore_attempt_context(half_context)
         call model%advance(half_state, midpoint, attempt_t1, half2_outcome)
         result%half_trials = result%half_trials + 1
         result%nonlinear_iterations = result%nonlinear_iterations + half2_outcome%nonlinear_iterations
@@ -314,7 +342,9 @@ contains
         result%linear_solves = result%linear_solves + half2_outcome%linear_solves
         result%backtracking_attempts = result%backtracking_attempts + half2_outcome%backtracking_attempts
         result%alternative_solver_calls = result%alternative_solver_calls + half2_outcome%alternative_solver_calls
-        call model%capture_attempt_context(half_context)
+        result%workspace_full_resets = result%workspace_full_resets + half2_outcome%workspace_full_resets
+        result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + half2_outcome%workspace_zeroed_bytes
+        if (context_required) call model%capture_attempt_context(half_context)
       else
         half2_outcome = trial_outcome_t()
       end if
@@ -322,14 +352,18 @@ contains
       solver_ok = half1_outcome%solver_ok .and. half2_outcome%solver_ok
       if (.not. solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
 
-      storage_half = model%storage(half_state)
       call model%storage_accounting_status(half_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_half = model%storage(half_state)
+      else
+        storage_half = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
@@ -371,7 +405,7 @@ contains
 
       if (.not. mass_ok) then
         result%mass_rejections = result%mass_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -379,7 +413,7 @@ contains
 
       if (.not. temporal_ok) then
         result%temporal_rejections = result%temporal_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -390,6 +424,20 @@ contains
       result%accepted_storage_change = storage_half - storage0
       result%accepted_total_in = half1_outcome%mass_in + half2_outcome%mass_in
       result%accepted_total_out = half1_outcome%mass_out + half2_outcome%mass_out
+      result%actual_transpiration_available = half1_outcome%actual_transpiration_available .and. &
+           half2_outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_available=ieee_is_finite(half1_outcome%actual_transpiration_amount).and. &
+             ieee_is_finite(half2_outcome%actual_transpiration_amount).and. &
+             half1_outcome%actual_transpiration_amount>=0.0_real64.and.half2_outcome%actual_transpiration_amount>=0.0_real64
+      end if
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount = half1_outcome%actual_transpiration_amount + &
+             half2_outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = half1_outcome%bottom_interface_exchange_available .and. &
            half2_outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
@@ -409,7 +457,7 @@ contains
            half1_outcome%mass_accounting_complete .and. half2_outcome%mass_accounting_complete .and. &
            accepted_missing_mask == TX_MASS_MISSING_NONE
 
-      call model%restore_attempt_context(half_context)
+      if (context_required) call model%restore_attempt_context(half_context)
       call move_alloc(half_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_TWO_HALF
@@ -422,13 +470,15 @@ contains
       result%accepted_linear_solves = half1_outcome%linear_solves + half2_outcome%linear_solves
       result%accepted_backtracking_attempts = half1_outcome%backtracking_attempts + half2_outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = half1_outcome%alternative_solver_calls + half2_outcome%alternative_solver_calls
+      result%accepted_workspace_full_resets = half1_outcome%workspace_full_resets + half2_outcome%workspace_full_resets
+      result%accepted_workspace_zeroed_bytes = half1_outcome%workspace_zeroed_bytes + half2_outcome%workspace_zeroed_bytes
       call publish_local_terminal_sensitivity(half2_outcome%interface_sensitivity, midpoint, attempt_t1, &
            t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
       return
     end do
 
-    call model%restore_attempt_context(checkpoint_context)
+    if (context_required) call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_reference_interval
 
@@ -446,7 +496,7 @@ contains
     type(trial_outcome_t) :: outcome
     real(real64) :: attempt_dt, attempt_t1
     real(real64) :: storage0, storage_candidate, mass_residual
-    logical :: mass_ok, temporal_ok, certificate_valid
+    logical :: mass_ok, temporal_ok, certificate_valid, context_required
     logical :: storage_start_complete, storage_end_complete
     integer(int64) :: start_missing_mask, end_missing_mask, accepted_missing_mask
     integer :: retry_index
@@ -457,17 +507,22 @@ contains
     result%accepted_t1 = t0
     result%temporal_acceptance_source = TX_TEMPORAL_MODEL_CERTIFICATE
 
+    context_required = model%attempt_context_required()
     call committed%clone(checkpoint)
-    call model%capture_attempt_context(checkpoint_context)
-    storage0 = model%storage(checkpoint)
+    if (context_required) call model%capture_attempt_context(checkpoint_context)
     call model%storage_accounting_status(checkpoint, storage_start_complete, start_missing_mask)
+    if (storage_start_complete) then
+      storage0 = model%storage(checkpoint)
+    else
+      storage0 = ieee_value(0.0_real64, ieee_quiet_nan)
+    end if
     attempt_dt = t1 - t0
 
     do retry_index = 0, policy%max_retries
       result%attempts = result%attempts + 1
       attempt_t1 = t0 + attempt_dt
 
-      call model%restore_attempt_context(checkpoint_context)
+      if (context_required) call model%restore_attempt_context(checkpoint_context)
       call checkpoint%clone(candidate_state)
       call model%advance(candidate_state, t0, attempt_t1, outcome)
       result%full_trials = result%full_trials + 1
@@ -478,18 +533,24 @@ contains
       result%linear_solves = result%linear_solves + outcome%linear_solves
       result%backtracking_attempts = result%backtracking_attempts + outcome%backtracking_attempts
       result%alternative_solver_calls = result%alternative_solver_calls + outcome%alternative_solver_calls
+      result%workspace_full_resets = result%workspace_full_resets + outcome%workspace_full_resets
+      result%workspace_zeroed_bytes = result%workspace_zeroed_bytes + outcome%workspace_zeroed_bytes
 
       if (.not. outcome%solver_ok) then
         result%solver_rejections = result%solver_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
       end if
 
-      call model%capture_attempt_context(accepted_context)
-      storage_candidate = model%storage(candidate_state)
+      if (context_required) call model%capture_attempt_context(accepted_context)
       call model%storage_accounting_status(candidate_state, storage_end_complete, end_missing_mask)
+      if (storage_end_complete) then
+        storage_candidate = model%storage(candidate_state)
+      else
+        storage_candidate = ieee_value(0.0_real64, ieee_quiet_nan)
+      end if
       mass_residual = storage_candidate - storage0 - (outcome%mass_in - outcome%mass_out)
       result%full_mass_residual = mass_residual
       result%accepted_mass_residual = mass_residual
@@ -517,7 +578,7 @@ contains
 
       if (.not. mass_ok) then
         result%mass_rejections = result%mass_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -532,7 +593,7 @@ contains
       end if
       if (.not. temporal_ok) then
         result%temporal_rejections = result%temporal_rejections + 1
-        call model%restore_attempt_context(checkpoint_context)
+        if (context_required) call model%restore_attempt_context(checkpoint_context)
         call reject_and_retry(result, retry_index, policy, attempt_dt)
         if (result%status == TX_STATUS_RETRY_EXHAUSTED) return
         cycle
@@ -543,6 +604,13 @@ contains
       result%accepted_storage_change = storage_candidate - storage0
       result%accepted_total_in = outcome%mass_in
       result%accepted_total_out = outcome%mass_out
+      result%actual_transpiration_available = outcome%actual_transpiration_available
+      if(result%actual_transpiration_available) then
+        result%actual_transpiration_amount=outcome%actual_transpiration_amount
+        if(.not.ieee_is_finite(result%actual_transpiration_amount).or.result%actual_transpiration_amount<0.0_real64) then
+          result%actual_transpiration_available=.false.;result%actual_transpiration_amount=0.0_real64
+        end if
+      end if
       result%bottom_interface_exchange_available = outcome%bottom_interface_exchange_available
       if (result%bottom_interface_exchange_available) then
         result%accepted_bottom_outward_exchange_native = outcome%bottom_outward_exchange_native
@@ -558,7 +626,7 @@ contains
       result%accepted_mass_complete = storage_start_complete .and. storage_end_complete .and. &
            outcome%mass_accounting_complete .and. accepted_missing_mask == TX_MASS_MISSING_NONE
 
-      call model%restore_attempt_context(accepted_context)
+      if (context_required) call model%restore_attempt_context(accepted_context)
       call move_alloc(candidate_state, committed)
       result%status = TX_STATUS_ACCEPTED
       result%accepted_route = TX_ROUTE_MODEL_CERTIFIED
@@ -571,13 +639,15 @@ contains
       result%accepted_linear_solves = outcome%linear_solves
       result%accepted_backtracking_attempts = outcome%backtracking_attempts
       result%accepted_alternative_solver_calls = outcome%alternative_solver_calls
+      result%accepted_workspace_full_resets = outcome%workspace_full_resets
+      result%accepted_workspace_zeroed_bytes = outcome%workspace_zeroed_bytes
       call publish_local_terminal_sensitivity(outcome%interface_sensitivity, t0, attempt_t1, &
            t0, t1, result%interface_sensitivity)
       result%commits = result%commits + 1
       return
     end do
 
-    call model%restore_attempt_context(checkpoint_context)
+    if (context_required) call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
   end subroutine execute_model_certificate_interval
 
@@ -594,8 +664,16 @@ contains
     published%method = source%method
     published%origin_t0 = origin_t0
     published%origin_t1 = origin_t1
-    published%covers_requested_interval = origin_t0 == requested_t0 .and. origin_t1 == requested_t1
+    published%covers_requested_interval = ordered_real_equal(origin_t0, requested_t0) .and. &
+         ordered_real_equal(origin_t1, requested_t1)
   end subroutine publish_local_terminal_sensitivity
+
+  pure logical function ordered_real_equal(a, b) result(matches)
+    real(real64), intent(in) :: a, b
+    ! Exact ordered IEEE equality without REAL == so strict warning builds keep
+    ! the original no-tolerance coverage semantics.
+    matches = a <= b .and. b <= a
+  end function ordered_real_equal
 
   subroutine reject_and_retry(result, retry_index, policy, attempt_dt)
     type(transaction_result_t), intent(inout) :: result

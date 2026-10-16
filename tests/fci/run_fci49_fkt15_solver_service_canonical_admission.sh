@@ -249,6 +249,8 @@ RESTART_MODULES=(
  src/runtime/mod_fmr_committed_restart.f90
  tests/fmr/mod_fmr04_fixed_top_provider.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t RESTART_MODULES < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${RESTART_MODULES[@]}")
 for opt in 0 2; do
   OUT="$BUILD/restart-o$opt"; mkdir -p "$OUT"; objs=()
   for src in "${RESTART_MODULES[@]}"; do obj="$OUT/$(basename "${src%.*}").o"; gfortran "${RFLAGS[@]}" -O"$opt" -J"$OUT" -I"$OUT" -c "$src" -o "$obj"; objs+=("$obj"); done

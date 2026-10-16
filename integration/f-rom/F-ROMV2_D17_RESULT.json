@@ -1,0 +1,207 @@
+{
+  "schema": "swap5.f-romv2-d17.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D17",
+  "decision": "FMC_COMBINED_SURFACE_GROUNDWATER_RETAINS_RESEARCH_CANDIDACY",
+  "adjudication": "BOUNDED_SIMULTANEOUS_SEPARATED_SURFACE_GROUNDWATER_FMC_BEATS_R2_ON_ALL_PREREGISTERED_VIEWS",
+  "execution": {
+    "primary_workflow_run": 35458378169,
+    "primary_workflow_job": 105937630806,
+    "executed_head": "6e6e35f5c8205d63603ead900158155589a84b06",
+    "execution_pull_request": 449,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10589330827,
+    "artifact_digest": "sha256:18c7fa490be04fd1f3d2fe67b42ebaffe84ba5d8edeecc6859cf5393137b889a",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "996f05ea8f077ca0306bdc791204e840ed3ba749e52e2bae69efdb3bad8d597f",
+    "result_sha256": "6e835c4d0528fe8334daea4e652ab2668c46e44d8757725e3abb221a9f9ea3c8",
+    "R16_o0_o2_sha256": "9f5b60ba7a29b908b989f58fff5760d1b5894315a353a0567c66a1cdc1961da5",
+    "R2_o0_o2_sha256": "6114a27ba539395dcddca5498426a104fe15aecad4d9ab11322ed97094e765f8",
+    "preflight_stdout_sha256": "6d0e5636061acba28abfa074e230408ba2e0054e8d692457fbb0eb7112bd70cb",
+    "analyzer_stdout_sha256": "d0b9739d36dee9f197a6638a0982a3d1c0e6bf52a4c16295f8d4488aedb7c6f4",
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true,
+    "technical_retry_history": [
+      {
+        "workflow_run": 35457211211,
+        "artifact_id": 10588509002,
+        "artifact_digest": "sha256:89cc023881d34efbba5d81914b3fd0903a36628eb550bb9b982f655f7a5629f2",
+        "failure": "ANALYZER_NODE_MAP_ACCESS",
+        "scientific_inputs_changed": false
+      },
+      {
+        "workflow_run": 35458313367,
+        "artifact_id": 10588991136,
+        "artifact_digest": "sha256:eb3922bb323bf2c92ef8fca432476bccea4ab3febe102e522e056d33fa14fba7",
+        "failure": "ANALYZER_NESTED_NODE_MAP_INDEXING",
+        "scientific_inputs_changed": false
+      }
+    ]
+  },
+  "authority": {
+    "D12": "FMC/SMVE equation authority and frozen 200-bin/10-s controls",
+    "D13": "groundwater-front research candidacy retained",
+    "D15": "full atmospheric-side finite-volume accounting preflight passed",
+    "D16": "surface infiltration/hiatus research candidacy retained",
+    "primary_sources": [
+      "doi:10.1002/2015WR017126",
+      "doi:10.1002/2014WR016454"
+    ],
+    "trajectory_training": false,
+    "parameter_retuning_after_exposure": false
+  },
+  "envelope": {
+    "material": "B01",
+    "histories": {
+      "C10_G25": {
+        "top_flux_factor_Ksat": 0.1,
+        "steps": 16
+      },
+      "C25_G25": {
+        "top_flux_factor_Ksat": 0.25,
+        "steps": 16
+      },
+      "C50_G25": {
+        "top_flux_factor_Ksat": 0.5,
+        "steps": 16
+      },
+      "C75_G25": {
+        "top_flux_factor_Ksat": 0.75,
+        "steps": 16
+      }
+    },
+    "process_step_seconds": 10,
+    "moisture_bins": 200,
+    "groundwater_lambda": 0.25,
+    "bottom_boundary": "fixed zero pressure head / fixed water table at column bottom",
+    "surface_component": "D16 I_DEEP connected fronts",
+    "groundwater_component": "D13 G25 capillary groundwater fronts",
+    "surface_groundwater_contact_or_merge": false,
+    "falling_slug": false,
+    "dry_bin_activation": false,
+    "ponding_or_runoff": false,
+    "ET_or_root_uptake": false
+  },
+  "preflight": {
+    "decision": "D17_FMC_COMBINED_PULSE_GW_PREFLIGHT_PASS",
+    "SWAP_trajectory_evidence_consumed": false,
+    "all_histories_pass": true,
+    "initial_minimum_separation_cm": 14.266880862402889,
+    "minimum_separation_cm": 14.01869021932935,
+    "max_abs_step_mass_residual_cm": 1.1701577207201552e-14,
+    "max_abs_surface_relaxation_storage_drift_cm": 0,
+    "max_abs_groundwater_relaxation_storage_drift_cm": 0,
+    "post_preflight_retuning_authorized": false
+  },
+  "integrity": {
+    "pass": true,
+    "FMC_max_abs_mass_residual_cm": 1.1701577207201552e-14,
+    "R16_max_abs_mass_residual_cm": 4.336808689942018e-19,
+    "R2_max_abs_mass_residual_cm": 4.336808689942018e-19,
+    "hard_mass_gate_cm": 1e-12,
+    "minimum_surface_groundwater_separation_cm": 14.01869021932935
+  },
+  "pooled_fidelity": {
+    "FMC": {
+      "total_storage_RMSE_cm": 0.009425745380846118,
+      "cumulative_bottom_exchange_RMSE_cm": 0.009425745380841894,
+      "mapped_R16_cell_theta_RMSE": 0.0005954946394993912,
+      "upper_storage_RMSE_cm": 0.007121474950548679,
+      "lower_storage_RMSE_cm": 0.004072422403777684,
+      "terminal_bottom_flux_RMSE_cm_per_day": 8.681653226347354,
+      "bottom_flux_sign_error_count": 0
+    },
+    "R2": {
+      "total_storage_RMSE_cm": 0.024039018631093808,
+      "cumulative_bottom_exchange_RMSE_cm": 0.024039018631106298,
+      "mapped_R16_cell_theta_RMSE": 0.045551968582269405,
+      "upper_storage_RMSE_cm": 0.0021762313909816037,
+      "lower_storage_RMSE_cm": 0.021862797241771946,
+      "terminal_bottom_flux_RMSE_cm_per_day": 21.484334075634102,
+      "bottom_flux_sign_error_count": 0
+    },
+    "relative_to_R2": {
+      "total_storage_RMSE_ratio": 0.3921026602701018,
+      "cumulative_bottom_exchange_RMSE_ratio": 0.392102660269721,
+      "mapped_theta_RMSE_ratio": 0.0130729141043111,
+      "terminal_bottom_flux_RMSE_ratio": 0.4040894723389006
+    }
+  },
+  "by_history_FMC": {
+    "C10_G25": {
+      "total_storage_RMSE_cm": 0.009425745380849598,
+      "cumulative_bottom_exchange_RMSE_cm": 0.009425745380844919,
+      "mapped_theta_RMSE": 0.000735787987533826,
+      "upper_storage_RMSE_cm": 0.0017326555632473345,
+      "lower_storage_RMSE_cm": 0.007693440391435866,
+      "bottom_flux_RMSE_cm_per_day": 8.681653226347876,
+      "sign_errors": 0
+    },
+    "C25_G25": {
+      "total_storage_RMSE_cm": 0.009425745380844786,
+      "cumulative_bottom_exchange_RMSE_cm": 0.009425745380840182,
+      "mapped_theta_RMSE": 0.0006499907646025383,
+      "upper_storage_RMSE_cm": 0.0069745224128061065,
+      "lower_storage_RMSE_cm": 0.0024555221216554625,
+      "bottom_flux_RMSE_cm_per_day": 8.681653226345738,
+      "sign_errors": 0
+    },
+    "C50_G25": {
+      "total_storage_RMSE_cm": 0.009425745380849344,
+      "cumulative_bottom_exchange_RMSE_cm": 0.009425745380845056,
+      "mapped_theta_RMSE": 0.0005283631359187957,
+      "upper_storage_RMSE_cm": 0.008695273535021862,
+      "lower_storage_RMSE_cm": 0.0007482923869202006,
+      "bottom_flux_RMSE_cm_per_day": 8.681653226352356,
+      "sign_errors": 0
+    },
+    "C75_G25": {
+      "total_storage_RMSE_cm": 0.009425745380840744,
+      "cumulative_bottom_exchange_RMSE_cm": 0.009425745380837416,
+      "mapped_theta_RMSE": 0.00041882681698337523,
+      "upper_storage_RMSE_cm": 0.008695273535014926,
+      "lower_storage_RMSE_cm": 0.0007482923869202006,
+      "bottom_flux_RMSE_cm_per_day": 8.681653226343446,
+      "sign_errors": 0
+    }
+  },
+  "frontier": {
+    "balance_total_storage": true,
+    "balance_cumulative_bottom_exchange": true,
+    "profile_theta": true,
+    "groundwater_bottom_flux_magnitude": true,
+    "groundwater_bottom_flux_sign": true,
+    "all_views_required": true,
+    "retained": true
+  },
+  "physical_interpretation": {
+    "statement": "The separately positive FMC surface and groundwater branches remain jointly mass-conservative and improve on R2 when run simultaneously while their occupied intervals remain separated.",
+    "profile_note": "FMC strongly improves the resolved profile relative to R2, but R2 retains lower upper-zone storage RMSE on this very short pulse experiment; the preregistered profile gate is mapped 16-cell theta, not upper-storage dominance.",
+    "bottom_flux_note": "FMC materially improves bottom-flux magnitude but still has a substantial absolute RMSE (~8.68 cm/day); zero sign errors do not imply magnitude qualification.",
+    "contact_boundary": "No surface-groundwater contact or merge occurred. D17 therefore does not qualify the falling-slug/contact/merge transition."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_YET_QUALIFIED; 160 s development pulse only.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED; no ET/root uptake or drought horizon.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "BROADER_RESEARCH_CANDIDACY_RETAINED_BUT_NOT_QUALIFIED; surface and groundwater branches now compose positively under a fixed-water-table separated-front envelope.",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED; no ponding/runoff or contact/merge transition.",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED."
+  },
+  "next": [
+    "ADMIT_D17_AS_BOUNDED_COMBINED_FMC_RESEARCH_CANDIDACY",
+    "PREREGISTER_D18_SURFACE_GROUNDWATER_CONTACT_OR_FALLING_SLUG_MERGE_TRANSITION_USING_PRIMARY_SOURCE_SEMANTICS",
+    "KEEP_R16_AND_R2_AS_COMPARATORS",
+    "DEFER_FORMAL_RUNTIME_UNTIL_CONTACT_MERGE_OR_LONGER_HORIZON_ENVELOPE_IS_HYDROLOGICALLY_RETAINED",
+    "DEFER_ET_ROOT_UPTAKE_AND_APPLICATION_ACCEPTANCE"
+  ],
+  "prohibited": [
+    "DO_NOT_GENERALIZE_TO_ARBITRARY_NONZERO_SWAP_BOTTOM_HEAD",
+    "DO_NOT_CLAIM_CONTACT_OR_MERGE_FIDELITY",
+    "DO_NOT_RETUNE_BINS_SUBSTEP_FACTORS_LAMBDA_OR_INITIAL_PROFILE",
+    "DO_NOT_CLAIM_FORMAL_SPEEDUP",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

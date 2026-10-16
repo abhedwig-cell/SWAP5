@@ -1,0 +1,77 @@
+{
+  "schema": "trace.exposure_batch_results.v1",
+  "batch": "TRACE-EXPOSURE-B02",
+  "closed_date": "2026-09-19",
+  "design": "PLANNED_STRATIFIED_NONRANDOM",
+  "protocol_version": "v0.2",
+  "totals": {
+    "scientific_elements": 6,
+    "candidate_triggers": 4,
+    "confirmed_discrepancies": 2,
+    "excluded_candidates": 2,
+    "elements_without_confirmed_discrepancy": 4
+  },
+  "by_model": {
+    "SWAP": {
+      "scientific_elements": 3,
+      "candidate_triggers": 1,
+      "confirmed_discrepancies": 1,
+      "excluded_candidates": 0,
+      "elements_without_confirmed_discrepancy": 2
+    },
+    "ANIMO": {
+      "scientific_elements": 3,
+      "candidate_triggers": 3,
+      "confirmed_discrepancies": 1,
+      "excluded_candidates": 2,
+      "elements_without_confirmed_discrepancy": 2
+    }
+  },
+  "candidates": [
+    {
+      "trace_id": "TRACE-ANIMO-0003",
+      "status": "CLOSED_CONFIRMED",
+      "consequence": [
+        "INTERPRETATIVE"
+      ],
+      "mechanism": "STALE_CONDITIONAL_REVIEWER_PROSE_AFTER_FINAL_QUALIFICATION_WITH_INCOMPLETE_STATUS_CONSISTENCY_ORACLE",
+      "regression_counterfactual": "REGRESSION_MISSED",
+      "disposition": "DOCUMENTATION_CORRECTED"
+    },
+    {
+      "trace_id": "TRACE-ANIMO-0004",
+      "status": "EXCLUDED",
+      "mechanism": "INTENTIONAL_PRE_REVIEW_AUTHORING_FREEZE_WITH_SEPARATE_POST_REVIEW_AND_ADMISSION_AUTHORITIES"
+    },
+    {
+      "trace_id": "TRACE-ANIMO-0005",
+      "status": "EXCLUDED",
+      "mechanism": "INTENTIONAL_PRE_REVIEW_AUTHORING_FREEZE_WITH_SEPARATE_POST_REVIEW_AND_ADMISSION_AUTHORITIES"
+    },
+    {
+      "trace_id": "TRACE-SWAP-0001",
+      "status": "CLOSED_CONFIRMED",
+      "consequence": [
+        "INTERPRETATIVE"
+      ],
+      "mechanism": "POST_MERGE_CLOSEOUT_STATUS_NOT_PROPAGATED_TO_CANONICAL",
+      "regression_counterfactual": "REGRESSION_NOT_APPLICABLE",
+      "disposition": "DOCUMENTATION_CORRECTED"
+    }
+  ],
+  "cumulative_after_batch_02": {
+    "scientific_elements": 12,
+    "candidate_triggers": 6,
+    "confirmed_discrepancies": 2,
+    "excluded_candidates": 4
+  },
+  "interpretation": {
+    "prevalence_inference_permitted": false,
+    "candidate_trigger_rate_descriptive_only": true,
+    "confirmed_discrepancy_rate_descriptive_only": true,
+    "confirmed_cases_are_equation_defects": false,
+    "confirmed_cases_are_authority_or_documentation_state_discrepancies": true,
+    "protocol_change_required": false,
+    "next_batch_requires_preinspection_registration": true
+  }
+}

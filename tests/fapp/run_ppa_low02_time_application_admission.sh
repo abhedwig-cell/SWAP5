@@ -11,19 +11,133 @@ trap 'rm -rf "$BUILD"' EXIT
 fail(){ echo "PPA_LOW02_GATE_FAIL $*" >&2; exit 1; }
 
 CANONICAL="e473afc2d378a2567a59cc0db1577b4c724feeb2"
-changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
-expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
-[[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
+LOW02_ADMISSION="6c63b8d0e340669d9722bc5e3d947d42d2b467a5"
+LOW02_BACKEND_BLOB="80c7ca618ea228e31ac43ae493f16dd6eccc5991"
+ROOT_HYD01_ADMISSION="308a619c91d2cc3dae7f7aa143cfbe97c780c635"
+ROOT_HYD01_TEMPORAL_BLOB="2068215a57edb1d2a59c36d6b32f519ebdc09ebd"
+PPA_WU04A_ADMISSION="50e7d1dece5b75d0103459d5c118d03a2665eea3"
+PPA_WU04A_QUALIFIED="f1fd0fa5633cea1fa5f3870eb2aa7b236d40a938"
+PPA_WU04A_BACKEND_BLOB="b1ba0549ef9149c4261b8a595c8782be01726c43"
+PPA_WU04A_BOOTSTRAP_BLOB="9ae38276a353bd08f5d971d6368eed41967086b6"
+PPA_WU04B_ADMISSION="4d40b8d4b6a1df06ff97fab55497542778431290"
+PPA_WU04B_QUALIFIED="eb0e635975b77ec92084e1416038b1bc1f8232bc"
+PPA_WU04B_BACKEND_BLOB="9bd344a83afd5e10b96178933362dbb7eeea4f30"
+PPA_WU04B_BOOTSTRAP_BLOB="356b3825a8ba13af1fed385ab17ffdb330b1058f"
+FCI110_ADMISSION="a0fd7822ea5d7ecc0bb409fd9f0439c8fd1dca6a"
+FCI110_BACKEND_BLOB="27df1d7ef2cec91501af3a0f0b3fb45e869c30f3"
+FCI110_BOOTSTRAP_BLOB="f6a5b8db6bf0795e4269ad9e39db1d63851421b7"
+DIR01_ADMISSION="b95ce4b9a27144eb400fae25de69dd5d927667a8"
+DIR01_BACKEND_BLOB="37a2381a6f124648969ca9c1bf7e5ee1f4072c72"
+BALTOL02_ADMISSION="0ac76e68a35dda95c753d255927f1dc432f7b42e"
+BALTOL02_BACKEND_BLOB="a5d472636f50a715cf64016ad9d500b401b0ebb1"
+TEMPORAL08_ADMISSION="0d50aa1b362928d58d97e23ef39da9fef90287ed"
+TEMPORAL08_BOOTSTRAP_BLOB="5816ed76774f71fff3fb669d58402a2b10ae00b5"
+SETUP04_ADMISSION="860e72284ca75182fd4182b6097883f92cac9e93"
+SETUP04_BOOTSTRAP_BLOB="8baac4f004b49aacf6638b81af9da6faffa87c4d"
+BOFEK00_ADMISSION="f670e012ab028cc1e74bb9b7aa1b8655b545619c"
+BOFEK00_SW_BLOB="f67cbe5b4612e8f4230f58f81cbffd3d44336c0d"
+BOFEK00_HEADCALC_BLOB="3310e5f89109592134e715edd73154479e2ae157"
+TEMPORAL11_ADMISSION="0928019bf826d6377d5f9324144496334bf4b0d6"
+TEMPORAL11_TEMPORAL_BLOB="7239ec1b8572e97a624515fe7dd2ff25de648baa"
+FCI110_TEMPORAL_BLOB="81a0305958e108e92224a48862358d79c765cd0a"
 
+backend_blob="$LOW02_BACKEND_BLOB"
+bootstrap_blob=""
+if git merge-base --is-ancestor "$PPA_WU04B_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04B_QUALIFIED" "$PPA_WU04B_ADMISSION" || \
+    fail 'PPA-WU04-B qualified head is not contained by canonical admission'
+  backend_blob="$PPA_WU04B_BACKEND_BLOB"
+  bootstrap_blob="$PPA_WU04B_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_WU04B_SUCCESSOR_BASELINE=ACTIVE'
+elif git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  git merge-base --is-ancestor "$PPA_WU04A_QUALIFIED" "$PPA_WU04A_ADMISSION" || \
+    fail 'PPA-WU04-A qualified head is not contained by canonical admission'
+  backend_blob="$PPA_WU04A_BACKEND_BLOB"
+  bootstrap_blob="$PPA_WU04A_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_WU04A_SUCCESSOR_BASELINE=ACTIVE'
+elif git merge-base --is-ancestor "$LOW02_ADMISSION" HEAD; then
+  echo 'PPA_LOW02_CURRENT_BACKEND_SUCCESSOR=ACTIVE'
+else
+  changed_src="$(git diff --name-only "$CANONICAL"...HEAD -- src | sort)"
+  expected_src=$'src/runtime/mod_fmr_serialized_reference_backend.f90'
+  [[ "$changed_src" == "$expected_src" ]] || fail "unexpected production delta: $changed_src"
+fi
+
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  backend_blob="$FCI110_BACKEND_BLOB"
+  bootstrap_blob="$FCI110_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_FCI110_BACKEND_BOOTSTRAP_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$DIR01_ADMISSION" HEAD; then
+  backend_blob="$DIR01_BACKEND_BLOB"
+  echo 'PPA_LOW02_DIR01_BACKEND_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$BALTOL02_ADMISSION" HEAD; then
+  backend_blob="$BALTOL02_BACKEND_BLOB"
+  echo 'PPA_LOW02_BALTOL02_BACKEND_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$TEMPORAL08_ADMISSION" HEAD; then
+  bootstrap_blob="$TEMPORAL08_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_TEMPORAL08_BOOTSTRAP_SUCCESSOR=ACTIVE'
+fi
+if git merge-base --is-ancestor "$SETUP04_ADMISSION" HEAD; then
+  bootstrap_blob="$SETUP04_BOOTSTRAP_BLOB"
+  echo 'PPA_LOW02_SETUP04_BOOTSTRAP_SUCCESSOR=ACTIVE'
+fi
+
+[[ "$(git rev-parse HEAD:src/runtime/mod_fmr_serialized_reference_backend.f90)" == "$backend_blob" ]] || \
+  fail 'admitted backend successor drift'
+if [[ -n "$bootstrap_blob" ]]; then
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == "$bootstrap_blob" ]] || \
+    fail 'admitted bootstrap successor drift'
+fi
+echo 'PPA_LOW02_BACKEND_BOOTSTRAP_SUCCESSOR=PASS'
+
+inherited_authority="$CANONICAL"
+if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+  inherited_authority="$FCI110_ADMISSION"
+fi
 for locked in \
   src/adapter/mod_b110_serialized_context_binding.f90 \
-  src/solver/mod_reference_richards_temporal_indicator.f90 \
-  src/solver/mod_soil_water_solver_contract.f90 \
-  src/legacy/b1_10_port/headcalc.f90 \
-  src/runtime/mod_fmr_production_application_bootstrap.f90 \
   src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90; do
-  [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$CANONICAL:$locked")" ]] || fail "inherited authority drift: $locked"
+  [[ "$(git rev-parse "HEAD:$locked")" == "$(git rev-parse "$inherited_authority:$locked")" ]] || fail "inherited authority drift: $locked"
 done
+sw_blob="$(git rev-parse "$inherited_authority:src/solver/mod_soil_water_solver_contract.f90")"
+headcalc_blob="$(git rev-parse "$inherited_authority:src/legacy/b1_10_port/headcalc.f90")"
+if git merge-base --is-ancestor "$BOFEK00_ADMISSION" HEAD; then
+  sw_blob="$BOFEK00_SW_BLOB"
+  headcalc_blob="$BOFEK00_HEADCALC_BLOB"
+  echo 'PPA_LOW02_BOFEK00_REFERENCE_SUCCESSOR=ACTIVE'
+fi
+[[ "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" == "$sw_blob" ]] || \
+  fail 'admitted solver-contract successor drift'
+[[ "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" == "$headcalc_blob" ]] || \
+  fail 'admitted HeadCalc successor drift'
+
+if ! git merge-base --is-ancestor "$PPA_WU04A_ADMISSION" HEAD; then
+  [[ "$(git rev-parse HEAD:src/runtime/mod_fmr_production_application_bootstrap.f90)" == \
+     "$(git rev-parse "$CANONICAL:src/runtime/mod_fmr_production_application_bootstrap.f90")" ]] || \
+    fail 'pre-PPA-WU04 bootstrap drift'
+fi
+
+if git merge-base --is-ancestor "$ROOT_HYD01_ADMISSION" HEAD; then
+  temporal_blob="$ROOT_HYD01_TEMPORAL_BLOB"
+  if git merge-base --is-ancestor "$FCI110_ADMISSION" HEAD; then
+    temporal_blob="$FCI110_TEMPORAL_BLOB"
+    echo 'PPA_LOW02_FCI110_TEMPORAL_SUCCESSOR=ACTIVE'
+  fi
+  if git merge-base --is-ancestor "$TEMPORAL11_ADMISSION" HEAD; then
+    temporal_blob="$TEMPORAL11_TEMPORAL_BLOB"
+    echo 'PPA_LOW02_TEMPORAL11_TEMPORAL_SUCCESSOR=ACTIVE'
+  fi
+  [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == "$temporal_blob" ]] || \
+    fail 'admitted temporal-indicator successor drift'
+  echo 'PPA_LOW02_ROOT_HYD01_TEMPORAL_SUCCESSOR=PASS'
+else
+  [[ "$(git rev-parse HEAD:src/solver/mod_reference_richards_temporal_indicator.f90)" == \
+     "$(git rev-parse "$CANONICAL:src/solver/mod_reference_richards_temporal_indicator.f90")" ]] || \
+    fail 'pre-ROOT-HYD01 temporal-indicator drift'
+fi
 
 grep -Fq '"production_canonical_admitted": true' integration/f-ci/F-CI62P_STATUS.json || fail 'F-CI62 prescribed-qbot canonical authority missing'
 grep -Fq '"decision": "QUALIFIED_FOR_CURRENT_CANONICAL_ADMISSION_REVIEW"' qualification/F-VQ75_STATUS.json || fail 'F-VQ75 independent qbot authority missing'
@@ -31,6 +145,7 @@ grep -Fq '"status": "CANONICAL_ADMITTED_CLOSED"' integration/audits/PPA_WU02_STA
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 
 backend = Path("src/runtime/mod_fmr_serialized_reference_backend.f90").read_text().lower()
 test = Path("tests/fapp/test_ppa_low02_time_application_admission.f90").read_text().lower()
@@ -46,7 +161,9 @@ for token in [
 ]:
     assert token in backend, token
 
-for forbidden in ["open(", "read(", "readswap", "swap_main", "ttutil"]:
+for forbidden_call in ("open", "read"):
+    assert re.search(rf"\b{forbidden_call}\s*\(", backend) is None, forbidden_call
+for forbidden in ("readswap", "swap_main", "ttutil"):
     assert forbidden not in backend, forbidden
 
 assert "legacy_swbotb2_control" in backend
@@ -97,6 +214,7 @@ MODULE_SRC=(
   src/process/mod_drainage_ernst_ipos45_response.f90
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/solver/mod_b110_smooth_freatic_projection.f90
   src/runtime/mod_fmr_drainage_qbot_directional_binding.f90
@@ -113,13 +231,15 @@ MODULE_SRC=(
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/solver/mod_b110_root_sink_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -150,6 +270,8 @@ MODULE_SRC=(
   src/adapter/mod_fmr_groundwater_application_c_api.f90
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

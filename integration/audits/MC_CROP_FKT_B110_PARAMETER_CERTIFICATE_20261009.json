@@ -1,0 +1,118 @@
+{
+  "schema": "swap431.crop_fkt_b110_parameter_certificate_work_unit.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+  "owner": "F-KT committed physical kernel + B110 parameter model; additive read-only crop forcing",
+  "status": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": "bounded owner and scientific successor PASS, central admission gate blocked",
+    "preserved": "bounded B19/MICRO suite PASS, full F-CI not admitted",
+    "canonically_admitted": false
+  },
+  "current_work_branch": "work/swap431-crop-fkt-parameter-certificate-20261009",
+  "checkpoint_commit": "f89467aa9954a1c92c676121f51a930cb8bd1988",
+  "relevant_paths": [
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_crop_certified_sowing_source.f90",
+    "src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh"
+  ],
+  "tested_intermediate": [
+    {
+      "head": "be1f1b710869a217c58d79a8b7d967e38de92195",
+      "run": 37922148138,
+      "result": "success"
+    },
+    {
+      "head": "2769bc10deee5acf2d6a80aeb5d3d07b41a39512",
+      "run": 37922487690,
+      "result": "success"
+    }
+  ],
+  "preservation_requirements": [
+    "Final exact-head gfortran O0/O2 owner including all three tests",
+    "F-CI shared kernel and B110 backend source-owner successor admission, NOT unconditional relaxation of frozen hashes",
+    "B19/MICRO, root uptake, transaction rollback and committed mass preserved",
+    "Trusted restart missing/mismatched original certificate, missing heat or inconsistent physical node layout fail closed",
+    "Existing generic F-KT and older B110 unbound routes remain unchanged"
+  ],
+  "claim_ceiling": [
+    "New F-KT certified route is optional; existing unbound B110 committed states cannot be retroactively certified.",
+    "No independent SWHEA flag mapping, accepted daily tav, crop lifecycle event publication, emergence, root initialization or two-crop harvest.",
+    "Identity compares parameter_set_id, ordered z/dz and heat option; not every constitutive parameter or full-system serializer.",
+    "Trusted reconstruction requires separately persisted original identity; no byte-oriented codec is provided.",
+    "Do not admit while frozen kernel/backend F-CI postimage checks are not superseded by accepted complete preservation."
+  ],
+  "next_action": "Decide and implement separately reviewed canonical preservation successor after proving remaining commit-reject/retry + mass/restart invariants. Do not merge on the strength of source-pinned candidate science alone.",
+  "current_exact_head_runs": [
+    {
+      "name": "B110 owner O0/O2",
+      "id": 37927098031,
+      "status": "queued",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37927098031"
+    },
+    {
+      "name": "F-CI canonical",
+      "id": 37927099009,
+      "status": "queued",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37927099009"
+    }
+  ],
+  "admission_blocker_details": {
+    "first": "F-CI current restricted preservation checks kernel blob against dependency_authority and fails before examining further postimages.",
+    "second": "F-CI independently checks current backend identity for B19/MICRO and numerous admitted historical successors. Separate scientific suite passing is evidence but not a license to skip these gates.",
+    "required": "An explicit, formally reviewed source-exact F-CI successor admission with full shared kernel/backend transitive preservation, including commit rejection/retry, restart and water/mass closure. Validate on a new exact postimage. Do not replace current source checks with unconditional allowlisting."
+  },
+  "exact_head_qualification": {
+    "head": "4126bd7cd41f6c14127829e6455afa39edb4d1cd",
+    "owner": {
+      "run": 37940490172,
+      "conclusion": "success"
+    },
+    "scientific_successor": {
+      "run": 37940489638,
+      "conclusion": "success",
+      "scope": "B110/F-KT three owner O0/O2, lifecycle continuation, calendar and transition, MICRO02/03, actual changed-source B19 O0/O2"
+    },
+    "fci": {
+      "run": 37940490277,
+      "conclusion": "failure",
+      "first_failure": "candidate changed current kernel-transaction target postimage",
+      "classification": "intentional frozen canonical dependency gate, not a numerical failure"
+    }
+  },
+  "frozen_source_identity": {
+    "kernel": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+    "backend": "b218ac657db52612bc12da671716c97430200f0a"
+  },
+  "source_exact_successor": {
+    "candidate_gate": "tests/fci/run_crop_fkt_b110_exact_source_successor.sh",
+    "baseline": "799b9a70fc1e0a436d8c32509aa640d557fbf749",
+    "kernel_blob": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+    "backend_blob": "b218ac657db52612bc12da671716c97430200f0a",
+    "allowed_source_delta": [
+      "src/kernel/mod_kernel_transactions.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "src/runtime/mod_fmr_crop_certified_sowing_source.f90",
+      "src/runtime/mod_fmr_crop_certified_hydrothermal_forcing.f90"
+    ],
+    "reference_tree_unchanged": true,
+    "does_not_modify_frozen_fci": true,
+    "gate_result": "NOT_EXECUTED_ON_THIS_NEW_COMMIT",
+    "admission": "BLOCKED UNTIL exact-head scientific plus transitive current canonical F-CI successor accepted"
+  },
+  "qualification_latest": {
+    "scientific_head": "4126bd7cd41f6c14127829e6455afa39edb4d1cd",
+    "owner_run": 37940490172,
+    "owner_result": "success",
+    "micro_b19_run": 37940489638,
+    "micro_b19_result": "success",
+    "fci_run": 37940490277,
+    "fci_result": "failure",
+    "fci_reason": "intentional unchanged hash gate on src/kernel/mod_kernel_transactions.f90",
+    "new_gate_commit": "1469f12784d2822dab47c644667b25044cf78470"
+  }
+}

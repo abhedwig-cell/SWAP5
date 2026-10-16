@@ -1,0 +1,28 @@
+name: F-PE-ELASTIC40 GDAL CLI CRS audit
+
+concurrency:
+  group: f-pe-elastic40-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - research/f-pe-elastic40-gdal-cli-audit
+    paths:
+      - 'tests/fpe/run_fpe_elastic40_gdal_cli.py'
+      - 'tests/fpe/run_fpe_elastic40.sh'
+      - 'docs/performance/F-PE-ELASTIC40_GDAL_CLI_AUDIT_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic40.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Audit GDAL CLI capability
+        run: bash tests/fpe/run_fpe_elastic40.sh

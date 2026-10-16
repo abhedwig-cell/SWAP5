@@ -1,0 +1,45 @@
+name: F-PERF-CANON01 B1 recomposition
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/fkt/run_fkt22_fmr_runtime_gate.sh'
+      - 'tests/fapp/run_ppa_wu01_production_application_bootstrap.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_poison_workspace.sh'
+      - 'tests/fpe/run_fpe_zero_waste01_paired_runtime.sh'
+      - '.github/workflows/f-perf-canon01-b1.yml'
+  workflow_dispatch:
+
+jobs:
+  fkt22:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fkt/run_fkt22_fmr_runtime_gate.sh
+
+  ppa-wu01:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fapp/run_ppa_wu01_production_application_bootstrap.sh
+
+  poison:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_zero_waste01_poison_workspace.sh
+
+  paired:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timing_mode: [reference, directional]
+    env:
+      TIMING_MODE: ${{ matrix.timing_mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh

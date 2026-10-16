@@ -1,0 +1,32 @@
+{
+  "schema": "swap5.hydro_memory.dyn02_view_binding.result.v1",
+  "date": "2026-09-20",
+  "work_unit": "HYDRO-MEMORY-DYN02-VIEW01",
+  "decision": "DYN02_VIEW01_QUALIFIED_RESTRICTED_TEMPORAL_CARRIER",
+  "authority": {
+    "canonical_base": "1caa431002d5c128c73cfcfbd31af4cc39ee9f12",
+    "qualified_head": "23c2bfe07763ba26bbcc15fb650e27a1380fb352",
+    "workflow_run": 35501364477,
+    "workflow_job": 106053581783,
+    "conclusion": "success"
+  },
+  "production_delta": [
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90"
+  ],
+  "admitted_scope": "Exact fmr_b110_temporal_indicator_state_t may be materialized as process_hydraulic_view_t using only inherited hydraulic fields.",
+  "preserved_boundary": [
+    "plain fmr_b110_physical_state_t behavior preserved",
+    "unrelated transaction carrier remains fail-closed",
+    "no broad CLASS IS admission of other physical-state extensions",
+    "no root uptake, Richards, forcing, temporal, groundwater or accuracy semantics changed"
+  ],
+  "evidence": [
+    "plain hydraulic view PASS",
+    "temporal-history hydraulic view PASS",
+    "plain/temporal hydraulic fields bit-identical",
+    "committed revision/time zero mutation",
+    "unrelated carrier fail-closed",
+    "O0/O2 output identity"
+  ],
+  "downstream": "Rebase DYN02 live recomposition on this canonical authority and rerun the unchanged DYN02 preregistered sequence."
+}

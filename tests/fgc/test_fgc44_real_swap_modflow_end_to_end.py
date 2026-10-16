@@ -22,6 +22,15 @@ DAY_TO_S=86400.0
 AREA_M2=1.0
 WINDOW_DAY=1.0e-4
 FLUX_TOL=1.0e-15
+CLOSEOUT_ONECELL=os.environ.get("FGC44_CLOSEOUT_ONECELL","0")=="1"
+CLOSEOUT_COMPATIBLE_SOLVER=os.environ.get("FGC44_CLOSEOUT_COMPATIBLE_SOLVER","0")=="1"
+CLOSEOUT_ENDPOINT_HEAD_TOL_M=5.0e-10
+CLOSEOUT_COMPAT_OUTER_DVCLOSE_M=1.0e-14
+CLOSEOUT_COMPAT_INNER_DVCLOSE_M=1.0e-15
+CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY=4.32e-11
+CLOSEOUT_GW_FIT_TOL_M_PER_S=5.0e-12
+CLOSEOUT_ROOT_HALF_WIDTH_M=2.0e-6
+CLOSEOUT_GW_PROBES_M_PER_S=(-2.0e-8,0.0,2.0e-8)
 
 @dataclass(frozen=True)
 class Binding:
@@ -55,15 +64,216 @@ def require(x:bool,msg:str)->None:
 def build_model(workdir:Path, reference_head:float)->None:
     sim=flopy.mf6.MFSimulation(sim_name="FGC44_REAL_E2E",version="mf6",sim_ws=str(workdir))
     flopy.mf6.ModflowTdis(sim,time_units="DAYS",nper=1,perioddata=[(WINDOW_DAY,1,1.0)])
-    flopy.mf6.ModflowIms(sim,complexity="MODERATE",outer_dvclose=1e-11,inner_dvclose=1e-12,outer_maximum=100,inner_maximum=100)
-    gwf=flopy.mf6.ModflowGwf(sim,modelname="GWF_1",save_flows=True,newtonoptions="NEWTON")
-    flopy.mf6.ModflowGwfdis(gwf,nlay=1,nrow=1,ncol=3,delr=1.0,delc=1.0,top=0.0,botm=-2.0)
+    ims_kwargs=dict(
+        complexity="MODERATE",
+        outer_dvclose=1e-11,
+        inner_dvclose=1e-12,
+        outer_maximum=100,
+        inner_maximum=100,
+    )
+    if CLOSEOUT_COMPATIBLE_SOLVER:
+        require(CLOSEOUT_ONECELL,"compatible stopping configuration is qualified only for one-cell closeout")
+        ims_kwargs["outer_dvclose"]=CLOSEOUT_COMPAT_OUTER_DVCLOSE_M
+        ims_kwargs["inner_dvclose"]=CLOSEOUT_COMPAT_INNER_DVCLOSE_M
+        ims_kwargs["rcloserecord"]=[CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY,"STRICT"]
+    flopy.mf6.ModflowIms(sim,**ims_kwargs)
+    gwf=flopy.mf6.ModflowGwf(
+        sim,
+        modelname="GWF_1",
+        model_nam_file="GWF_1.nam",
+        list="GWF_1.lst",
+        save_flows=True,
+        newtonoptions="NEWTON",
+    )
+    ncol=1 if CLOSEOUT_ONECELL else 3
+    flopy.mf6.ModflowGwfdis(gwf,nlay=1,nrow=1,ncol=ncol,delr=1.0,delc=1.0,top=0.0,botm=-2.0)
     flopy.mf6.ModflowGwfic(gwf,strt=reference_head)
     flopy.mf6.ModflowGwfnpf(gwf,icelltype=1,k=1.0,save_flows=True)
     flopy.mf6.ModflowGwfsto(gwf,iconvert=1,ss=0.02,sy=0.15,transient={0:True})
-    flopy.mf6.ModflowGwfchd(gwf,stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},pname="CHD_ENDS")
-    flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api")
+    if not CLOSEOUT_ONECELL:
+        flopy.mf6.ModflowGwfchd(
+            gwf,
+            stress_period_data={0:[((0,0,0),reference_head+0.002),((0,0,2),reference_head-0.002)]},
+            pname="CHD_ENDS",
+        )
+    flopy.mf6.ModflowGwfapi(gwf,maxbound=1,pname="API_SWAP",filename="api_swap.api",save_flows=True)
+    flopy.mf6.ModflowGwfoc(
+        gwf,
+        budget_filerecord="fgc44.cbc",
+        saverecord=[("BUDGET","ALL")],
+        printrecord=[("BUDGET","ALL")],
+    )
     sim.write_simulation(silent=True)
+
+def _budget_component_sum(data)->float:
+    array=np.asarray(data)
+    if array.dtype.names:
+        names={name.lower():name for name in array.dtype.names}
+        if "q" in names:
+            return float(np.sum(array[names["q"]],dtype=np.float64))
+        return 0.0
+    return float(np.sum(array,dtype=np.float64))
+
+def read_modflow_component_balance(
+    workdir:Path, expected_api_m3_per_day:float
+)->tuple[float,float,float,float,float,str,bool,bool]:
+    listing_path=workdir/"GWF_1.lst"
+    listing_budget=flopy.utils.Mf6ListBudget(str(listing_path))
+    require(listing_budget.isvalid(),"MODFLOW6 native GWF model budget unavailable")
+    inc=listing_budget.get_incremental()
+    require(inc is not None and len(inc)>0,"empty MODFLOW6 native GWF model budget")
+    names=set(inc.dtype.names or ())
+    for required in ("TOTAL_IN","TOTAL_OUT","IN-OUT","PERCENT_DISCREPANCY"):
+        require(required in names,f"MODFLOW6 native GWF budget lacks {required}")
+    row=inc[-1]
+    total_in=float(row["TOTAL_IN"])
+    total_out=float(row["TOTAL_OUT"])
+    residual=float(row["IN-OUT"])
+    percent_discrepancy=float(row["PERCENT_DISCREPANCY"])
+    scale=abs(total_in)+abs(total_out)
+    require(all(math.isfinite(v) for v in (
+        total_in,total_out,residual,percent_discrepancy,scale
+    )),"nonfinite MODFLOW6 native GWF model balance")
+    # Mf6ListBudget parses the formatted native listing; TOTAL_IN/TOTAL_OUT
+    # are presentation-rounded and must not be re-checked at binary epsilon.
+    # IN-OUT is the MODFLOW-reported model budget residual and is the authority
+    # for this acceptance gate.
+    # Preserve the pre-existing closeout balance gate. This is the same absolute
+    # and relative residual criterion used before the listing reader replaced
+    # the invalid raw-CBC aggregate; no tolerance is changed after observing a failure.
+    model_balance_gate=abs(residual)<=max(1.0e-9,1.0e-8*scale)
+
+    budget=flopy.utils.CellBudgetFile(str(workdir/"fgc44.cbc"),precision="double")
+    api_records=[]
+    for raw_name in budget.get_unique_record_names():
+        name=raw_name.decode("ascii","ignore").strip()
+        if name.upper()!="API":
+            continue
+        for data in budget.get_data(kstpkper=(0,0),text=name):
+            api_records.append(_budget_component_sum(data))
+    require(api_records,"MODFLOW6 binary budget contains no API package record")
+    api_component=float(sum(api_records))
+    api_scale=max(1.0,abs(api_component),abs(expected_api_m3_per_day))
+    api_component_gate=abs(api_component-expected_api_m3_per_day)<=256*np.finfo(float).eps*api_scale
+    return (total_in,total_out,residual,percent_discrepancy,api_component,
+            listing_path.name,model_balance_gate,api_component_gate)
+
+def solve_closeout_constant_flux(
+    libmf6:Path, swaplib:Path, href:float, q_source_m_per_s:float
+)->tuple[float,float,int]:
+    require(CLOSEOUT_ONECELL,"independent endpoint oracle is one-cell only")
+    with tempfile.TemporaryDirectory(prefix="fgc44-closeout-oracle-") as tmp:
+        workdir=Path(tmp)
+        build_model(workdir,href)
+        raw=XmiWrapper(lib_path=libmf6,working_directory=workdir)
+        kernel=CountingKernel(raw)
+        publisher=Fgc34CtypesPublisher(swaplib)
+        initialized=False
+        try:
+            raw.initialize(); initialized=True
+            require("6.8.0" in raw.get_version(),"wrong MODFLOW version in endpoint oracle")
+            raw.prepare_time_step(0.0)
+            session=Modflow6PreparedSolveSession(kernel,"GWF_1","API_SWAP",publisher,solution_id=1)
+            require(session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,session.last_error)
+            require(session.open_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
+            accepted_xold=session.accepted_xold.copy()
+            binding=[Binding(7001,1,1)]
+            term=[Term(7001,0.0,-q_source_m_per_s*AREA_M2*DAY_TO_S)]
+            converged=None
+            for _ in range(session.max_solve_iterations):
+                status,it=session.publish_and_solve_iteration(binding,term)
+                require(status==PreparedSolveStatus.OK,session.last_error)
+                require(it is not None,"missing MODFLOW endpoint-oracle iterate")
+                require(np.array_equal(it.accepted_head_old_m,accepted_xold),
+                        "endpoint-oracle MODFLOW XOLD drifted")
+                if it.modflow_converged:
+                    converged=it
+                    break
+            require(converged is not None,"endpoint-oracle MODFLOW solve did not converge")
+            head=float(converged.head_m[0])
+            qgw=(0.0*head-(-q_source_m_per_s*AREA_M2*DAY_TO_S))/(AREA_M2*DAY_TO_S)
+            require(abs(qgw-q_source_m_per_s)<=64*np.finfo(float).eps*max(1.0,abs(q_source_m_per_s)),
+                    "constant-flux endpoint oracle changed imposed groundwater source")
+            iterations=int(converged.iteration)
+            require(session.finalize_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
+            require(session.timestep_ready_for_finalize(),"endpoint-oracle timestep not publishable")
+            require(session.finalize_time_step_once()==PreparedSolveStatus.OK,session.last_error)
+            raw.finalize(); initialized=False
+            return head,qgw,iterations
+        finally:
+            if initialized:
+                try: raw.finalize()
+                except Exception: pass
+
+def closeout_independent_endpoint(
+    libmf6:Path,
+    swaplib:Path,
+    swap:Fgc44RealSwap,
+    href:float,
+    origin_state:tuple[int,float,int,float],
+)->tuple[float,float,float,float,float]:
+    require(CLOSEOUT_ONECELL,"independent endpoint oracle is one-cell only")
+    points=[]
+    for qprobe in CLOSEOUT_GW_PROBES_M_PER_S:
+        head,qgw,mf_iters=solve_closeout_constant_flux(libmf6,swaplib,href,qprobe)
+        points.append((head,qgw))
+        print(
+            f"FGC44_CLOSEOUT_GW_ORACLE_PROBE Q={qprobe:.17g} "
+            f"H={head:.17g} MF_ITERS={mf_iters}"
+        )
+
+    heads=np.asarray([x[0] for x in points],dtype=float)
+    fluxes=np.asarray([x[1] for x in points],dtype=float)
+    slope,intercept=np.polyfit(heads,fluxes,1)
+    fit_error=float(np.max(np.abs(slope*heads+intercept-fluxes)))
+    require(math.isfinite(slope) and slope>0.0,
+            "independent one-cell groundwater response slope invalid")
+    require(math.isfinite(intercept) and fit_error<=CLOSEOUT_GW_FIT_TOL_M_PER_S,
+            "independent one-cell groundwater response fit failed")
+
+    def residual(head:float)->float:
+        q_swap=swap.trial(head)
+        swap.discard()
+        require(swap.state()==origin_state,
+                "independent endpoint SWAP probe changed accepted authority")
+        value=q_swap-(slope*head+intercept)
+        require(math.isfinite(value),"nonfinite independent endpoint residual")
+        return value
+
+    lo=href-CLOSEOUT_ROOT_HALF_WIDTH_M
+    hi=href+CLOSEOUT_ROOT_HALF_WIDTH_M
+    rlo=residual(lo)
+    rhi=residual(hi)
+    require(rlo==0.0 or rhi==0.0 or rlo*rhi<0.0,
+            "independent physical endpoint is not bracketed")
+
+    if rlo==0.0:
+        root=lo; rroot=rlo
+    elif rhi==0.0:
+        root=hi; rroot=rhi
+    else:
+        root=0.5*(lo+hi)
+        rroot=math.inf
+        for _ in range(80):
+            root=0.5*(lo+hi)
+            if root==lo or root==hi:
+                rroot=residual(root)
+                break
+            rroot=residual(root)
+            if abs(rroot)<=FLUX_TOL:
+                break
+            if rlo*rroot<=0.0:
+                hi=root
+                rhi=rroot
+            else:
+                lo=root
+                rlo=rroot
+
+    require(abs(rroot)<=FLUX_TOL,
+            "independent physical endpoint oracle itself does not meet the frozen residual gate")
+    require(swap.state()==origin_state,
+            "independent endpoint qualification changed accepted authority")
+    return float(root),float(rroot),float(slope),float(intercept),fit_error
 
 def main()->None:
     libmf6=Path(os.environ["LIBMF6"]).resolve()
@@ -93,6 +303,22 @@ def main()->None:
     revision,time_day,ledger_count,ledger_exchange=swap.state()
     origin_state=(revision,time_day,ledger_count,ledger_exchange)
     require(origin_state==(0,0.0,0,0.0),"SWAP/ledger not at accepted origin")
+
+    independent_root=None
+    independent_root_residual=None
+    independent_gw_slope=None
+    independent_gw_intercept=None
+    independent_gw_fit_error=None
+    if CLOSEOUT_ONECELL:
+        (independent_root,independent_root_residual,independent_gw_slope,
+         independent_gw_intercept,independent_gw_fit_error)=closeout_independent_endpoint(
+            libmf6,swaplib,swap,href,origin_state
+        )
+        print(f"FGC44_INDEPENDENT_ENDPOINT_HEAD_M={independent_root:.17g}")
+        print(f"FGC44_INDEPENDENT_ENDPOINT_RESIDUAL_M_PER_S={independent_root_residual:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_SLOPE_PER_S={independent_gw_slope:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_INTERCEPT_M_PER_S={independent_gw_intercept:.17g}")
+        print(f"FGC44_INDEPENDENT_GW_FIT_ERROR_M_PER_S={independent_gw_fit_error:.17g}")
 
     # E2 real-participant isolation probe: a rejected corrector is a calculation,
     # not accepted hydrological history and not authoritative interface mass.
@@ -127,7 +353,7 @@ def main()->None:
             require(session.acquire_after_prepare_time_step()==PreparedSolveStatus.OK,session.last_error)
             require(session.open_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             accepted_xold=session.accepted_xold.copy()
-            binding=[Binding(7001,1,2)]
+            binding=[Binding(7001,1,1 if CLOSEOUT_ONECELL else 2)]
             current_hcof=hcof; current_rhs=rhs
             final_head=None; final_q_swap=None; final_q_gw=None; converged=False
 
@@ -137,11 +363,17 @@ def main()->None:
                 require(status==PreparedSolveStatus.OK,session.last_error)
                 require(it is not None,f"missing MODFLOW iterate {outer}")
                 require(np.array_equal(it.accepted_head_old_m,accepted_xold),"MODFLOW XOLD drifted")
-                head=float(it.head_m[1])
+                head_index=0 if CLOSEOUT_ONECELL else 1
+                head=float(it.head_m[head_index])
                 q_gw=(current_hcof*head-current_rhs)/(AREA_M2*DAY_TO_S)
                 q_swap=swap.trial(head)
+                q_diag,_,dq_swap_dh,tangent_available=swap.last_trial_response()
+                require(abs(q_diag-q_swap)<=64*np.finfo(float).eps*max(1.0,abs(q_swap)),
+                        "trial response q mismatch")
+                require(tangent_available and math.isfinite(dq_swap_dh) and dq_swap_dh<0.0,
+                        "real SWAP physical outward tangent unavailable or wrongly oriented")
                 residual=q_swap-q_gw
-                require(all(math.isfinite(x) for x in (head,q_gw,q_swap,residual)),"nonfinite coupled iterate")
+                require(all(math.isfinite(x) for x in (head,q_gw,q_swap,dq_swap_dh,residual)),"nonfinite coupled iterate")
                 print(f"FGC44_ITER={outer} H={head:.17g} QSWAP={q_swap:.17g} QGW={q_gw:.17g} RES={residual:.17g} MF={int(it.modflow_converged)}")
                 if it.modflow_converged and abs(residual)<=FLUX_TOL:
                     converged=True; final_head=head; final_q_swap=q_swap; final_q_gw=q_gw
@@ -149,9 +381,21 @@ def main()->None:
                 require(swap.state()==origin_state,"rejected coupled corrector changed authoritative state before discard")
                 swap.discard()
                 require(swap.state()==origin_state,"discarded coupled corrector changed authoritative state or mass")
+                current_hcof=dq_swap_dh*AREA_M2*DAY_TO_S
                 current_rhs=current_hcof*head-q_swap*AREA_M2*DAY_TO_S
 
             require(converged,"real SWAP + MODFLOW coupling did not converge")
+            if CLOSEOUT_ONECELL:
+                require(independent_root is not None and independent_gw_slope is not None and
+                        independent_gw_intercept is not None,
+                        "independent physical endpoint oracle unavailable")
+                independent_final_residual=final_q_swap-(
+                    independent_gw_slope*final_head+independent_gw_intercept
+                )
+                independent_head_error=final_head-independent_root
+                independent_residual_gate=abs(independent_final_residual)<=FLUX_TOL
+                require(abs(independent_head_error)<=CLOSEOUT_ENDPOINT_HEAD_TOL_M,
+                        "coupled endpoint differs from independent physical endpoint")
             require(session.finalize_prepared_solve()==PreparedSolveStatus.OK,session.last_error)
             require(kernel.prepare_solve_calls==1 and kernel.finalize_solve_calls==1,"prepared solve lifecycle mismatch")
             require(swap.swap_preflight(),"real SWAP publication preflight failed")
@@ -193,6 +437,29 @@ def main()->None:
             require(session.finalize_time_step_once()==PreparedSolveStatus.TIMESTEP_ALREADY_FINALIZED,"second MODFLOW timestep finalization not blocked")
             raw.finalize(); initialized=False
 
+            if CLOSEOUT_ONECELL:
+                print(f"FGC44_INDEPENDENT_FINAL_HEAD_ERROR_M={independent_head_error:.17g}")
+                print(f"FGC44_INDEPENDENT_FINAL_RESIDUAL_M_PER_S={independent_final_residual:.17g}")
+                print("FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS")
+                print("FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE="+("PASS" if independent_residual_gate else "FAIL"))
+                expected_api_m3_per_day=final_q_gw*AREA_M2*DAY_TO_S
+                (mf_total_in,mf_total_out,mf_budget_residual,mf_percent_discrepancy,
+                 mf_api_component,mf_listing_file,mf_model_balance_gate,
+                 mf_api_component_gate)=read_modflow_component_balance(
+                    workdir,expected_api_m3_per_day
+                )
+                print(f"FGC44_MODFLOW_TOTAL_IN_M3_PER_DAY={mf_total_in:.17g}")
+                print(f"FGC44_MODFLOW_TOTAL_OUT_M3_PER_DAY={mf_total_out:.17g}")
+                print(f"FGC44_MODFLOW_COMPONENT_BALANCE_RESIDUAL_M3_PER_DAY={mf_budget_residual:.17g}")
+                print(f"FGC44_MODFLOW_PERCENT_DISCREPANCY={mf_percent_discrepancy:.17g}")
+                print(f"FGC44_MODFLOW_API_COMPONENT_M3_PER_DAY={mf_api_component:.17g}")
+                print(f"FGC44_MODFLOW_API_EXPECTED_M3_PER_DAY={expected_api_m3_per_day:.17g}")
+                print(f"FGC44_MODFLOW_LISTING_FILE={mf_listing_file}")
+                stopping_flow_gate=abs(mf_budget_residual)<=CLOSEOUT_COMPAT_RCLOSE_M3_PER_DAY
+                print("FGC44_MODFLOW_MODEL_BALANCE_GATE="+("PASS" if mf_model_balance_gate else "FAIL"))
+                print("FGC44_MODFLOW_API_COMPONENT_GATE="+("PASS" if mf_api_component_gate else "FAIL"))
+                print("FGC44_MODFLOW_STOPPING_FLOW_GATE="+("PASS" if stopping_flow_gate else "FAIL"))
+
             print(f"FGC44_FINAL_HEAD_M={final_head:.17g}")
             print(f"FGC44_FINAL_Q_SWAP_M_PER_S={final_q_swap:.17g}")
             print(f"FGC44_FINAL_Q_GW_M_PER_S={final_q_gw:.17g}")
@@ -216,6 +483,23 @@ def main()->None:
             print("PUB_GC_E2_PUBLICATION_ORDER=PASS")
             print("FGC44_REAL_SWAP_PREDICTOR_ANALYTIC=PASS")
             print("FGC44_REAL_SWAP_CORRECTORS_FROM_ACCEPTED_ORIGIN=PASS")
+            print("FGC44_REAL_SWAP_PHYSICAL_RESPONSE_RELINEARIZATION=PASS")
+            if CLOSEOUT_ONECELL:
+                print("FGC44_CLOSEOUT_ONE_SWAP_ONE_MODFLOW_CELL=PASS")
+                require(mf_model_balance_gate,
+                        "accepted MODFLOW6 native GWF model balance does not close")
+                require(mf_api_component_gate,
+                        "MODFLOW6 API budget record differs from accepted coupling term")
+                print("FGC44_ACCEPTED_MODFLOW_COMPONENT_BALANCE=PASS")
+                if CLOSEOUT_COMPATIBLE_SOLVER:
+                    require(stopping_flow_gate,
+                            "MODFLOW6 native residual exceeds preregistered stopping-flow allocation")
+                    print("FGC44_STOPPING_FLOW_BUDGET=PASS")
+                require(independent_residual_gate,
+                        "coupled endpoint does not close independent physical residual")
+                print("FGC44_INDEPENDENT_PHYSICAL_ENDPOINT=PASS")
+                if CLOSEOUT_COMPATIBLE_SOLVER:
+                    print("FGC44_STOPPING_COMPATIBILITY_CONTRACT=PASS")
             print("FGC44_LIVE_MODFLOW680_PREPARED_SOLVE=PASS")
             print("FGC44_CONJUNCTIVE_COUPLING_CONVERGENCE=PASS")
             print("FGC44_ALL_PREFLIGHTS_BEFORE_PUBLICATION=PASS")

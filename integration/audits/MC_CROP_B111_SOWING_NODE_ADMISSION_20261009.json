@@ -1,0 +1,37 @@
+{
+  "schema": "swap431.crop_b111_sowing_node_admission.v1",
+  "workstream": "MC-CROP01",
+  "baseline": "84ff37e26c00e1d8a53ab6fd4fee76a1055d4f13",
+  "qualified_head": "76e34ef7ef6c87f10d0b16c8992b0170748de5bd",
+  "canonical_merge": "0f38b2d20058bb03b603bb531c801c4a7f70853b",
+  "pr": 1152,
+  "admitted": {
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true
+  },
+  "source_authority": "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_cropdevelopment.f90 sowing task2: first zbotcp(node) < z_tempsow + 1.d-8",
+  "implementation": "src/crop/mod_crop_b111_sowing_node.f90",
+  "tests": [
+    "tests/fmig431/test_crop_b111_sowing_node.f90",
+    "tests/fmig431/run_crop_b111_sowing_node.sh"
+  ],
+  "qualification": {
+    "owner_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37908979432",
+    "owner_result": "success",
+    "fci_run": "https://github.com/abhedwig-cell/SWAP5/actions/runs/37908979248",
+    "fci_result": "success",
+    "fci_jobs": "15/15"
+  },
+  "scope": "Pure source-faithful B1.11 ztempsow compartment index selection from an explicitly supplied ordered zbotcp grid, with invalid/out-of-profile rejection; does not mutate accepted state.",
+  "claim_ceiling": [
+    "Supplied zbotcp is NOT verified as belonging to same accepted F-KT committed physical state or B110 parameter_set_id.",
+    "SWHEA=1 option requirement is not independently authenticated; accepted tav weather provenance is absent.",
+    "No physical sowing, preparation, germination, emergence or root initialization; no harvest/fallow/rotation publication.",
+    "No physical crop restart or whole-system restart claim."
+  ],
+  "next_action": "Owner-certified B110 geometry identity bound to exact F-KT column/revision/time, with reconfiguration and restart protections; then compose accepted soil temperature and hydraulic depth views into lifecycle only after negative mismatch O0/O2 and F-CI B19/MICRO preservation."
+}

@@ -115,6 +115,7 @@ class FmrGroundwaterApplicationRuntime:
         self._ensure_open()
         heads = self._double_array(cell_heads_m, self._ncell, "cell_heads_m")
         fluxes = (ctypes.c_double * self._ncell)()
+        tangents = (ctypes.c_double * self._ncell)()
         status = int(
             self._trial(
                 ctypes.c_int64(self.context_handle),
@@ -125,8 +126,19 @@ class FmrGroundwaterApplicationRuntime:
         )
         if status != self.OK:
             return GroundwaterApplicationCorrectorBatch(False, ())
+        tangent_status = int(
+            self._trial_tangents(
+                ctypes.c_int64(self.context_handle),
+                ctypes.c_int(self._ncell),
+                tangents,
+            )
+        )
+        if tangent_status != self.OK:
+            return GroundwaterApplicationCorrectorBatch(False, ())
         return GroundwaterApplicationCorrectorBatch(
-            True, tuple(float(value) for value in fluxes)
+            True,
+            tuple(float(value) for value in fluxes),
+            tuple(float(value) for value in tangents),
         )
 
     def discard_candidates(self) -> bool:
@@ -153,6 +165,33 @@ class FmrGroundwaterApplicationRuntime:
                 fluxes,
             ),
             "reanchor-terms",
+        )
+        _, terms, _ = self._read_plan_view()
+        return terms
+
+    def relinearize_terms(
+        self,
+        cell_heads_m: Sequence[float],
+        cell_q_swap_m_per_s: Sequence[float],
+        cell_dq_swap_dh_per_s: Sequence[float],
+    ) -> tuple[FmrGroundwaterApplicationTerm, ...]:
+        self._ensure_open()
+        heads = self._double_array(cell_heads_m, self._ncell, "cell_heads_m")
+        fluxes = self._double_array(
+            cell_q_swap_m_per_s, self._ncell, "cell_q_swap_m_per_s"
+        )
+        tangents = self._double_array(
+            cell_dq_swap_dh_per_s, self._ncell, "cell_dq_swap_dh_per_s"
+        )
+        self._require_status(
+            self._relinearize(
+                ctypes.c_int64(self.context_handle),
+                ctypes.c_int(self._ncell),
+                heads,
+                fluxes,
+                tangents,
+            ),
+            "relinearize-terms",
         )
         _, terms, _ = self._read_plan_view()
         return terms
@@ -245,6 +284,10 @@ class FmrGroundwaterApplicationRuntime:
         self._trial.restype = cint
         self._trial.argtypes = [i64, cint, pd, pd]
 
+        self._trial_tangents = self._library.fgc49d_trial_response_tangents_c
+        self._trial_tangents.restype = cint
+        self._trial_tangents.argtypes = [i64, cint, pd]
+
         self._discard = self._library.fgc49d_discard_candidates_c
         self._discard.restype = cint
         self._discard.argtypes = [i64]
@@ -252,6 +295,10 @@ class FmrGroundwaterApplicationRuntime:
         self._reanchor = self._library.fgc49d_reanchor_terms_c
         self._reanchor.restype = cint
         self._reanchor.argtypes = [i64, cint, pd, pd]
+
+        self._relinearize = self._library.fgc49d_relinearize_terms_c
+        self._relinearize.restype = cint
+        self._relinearize.argtypes = [i64, cint, pd, pd, pd]
 
         self._swap_preflight = self._library.fgc49d_swap_preflight_c
         self._swap_preflight.restype = cint

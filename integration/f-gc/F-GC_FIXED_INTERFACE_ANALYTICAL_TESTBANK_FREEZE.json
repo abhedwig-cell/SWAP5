@@ -1,0 +1,34 @@
+{
+  "schema": "swap5.fgc.fixed_interface.analytical_testbank_freeze.v1",
+  "date": "2026-09-22",
+  "state": "FROZEN_REGRESSION_ORACLE",
+  "production_authority": false,
+  "canonical_baseline": "bcef9debe56d14ce9b7d75ddbfe5c60c1323d8a5",
+  "research_branch": "work/f-gc-dummy-swap-shared-storage",
+  "research_head": "4fd8861bf6300d8074051d3bd24ef993cb60dbda",
+  "source_status": "integration/research/GC_DUMMY_SWAP_TESTBANK_STATUS.json",
+  "qualified_scope": [
+    "DSW01-DSW20 analytical/manufactured fixed-interface evidence",
+    "NH fixed-interface derivation/oracles",
+    "PB01 response-sign discriminator including live MODFLOW6 fixture",
+    "G-series solver/endpoint diagnostics through G24"
+  ],
+  "preserved_dispositions": {
+    "G21_exact_internal_path_equivalence": "FALSIFIED",
+    "G23_endpoint_matrix": "PARTIAL_ENDPOINT_ENVELOPE_19_OF_21",
+    "G23_transaction_handoff": "19_OF_19_PHYSICALLY_CONVERGED_ARMS_PASS",
+    "G24_role": "CAUSAL_TOLERANCE_DIAGNOSTIC_ONLY",
+    "dummy_role": "REGRESSION_AND_ORACLE_TESTBANK_NOT_PRODUCTION_MODEL"
+  },
+  "governing_rules": [
+    "Do not add dummy functionality unless a concrete production-closeout defect cannot be decided from frozen evidence.",
+    "Do not reinterpret analytical convergence as production admission.",
+    "Preserve scientific falsifications and frozen preregistered criteria.",
+    "Use analytical cases as regression oracles for sign, mass, storage ownership and endpoint semantics."
+  ],
+  "evidence_runs": {
+    "g23_workflow_run": 35751962699,
+    "g24_research_workflow_run": 35753405389,
+    "pb01_live_modflow_workflow_run": 35604695537
+  }
+}

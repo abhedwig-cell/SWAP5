@@ -92,6 +92,7 @@ class GroundwaterApplicationPlanView:
 class GroundwaterApplicationCorrectorBatch:
     valid: bool
     cell_q_swap_m_per_s: tuple[float, ...]
+    cell_dq_swap_dh_per_s: tuple[float, ...] = ()
 
 
 @dataclass
@@ -129,10 +130,11 @@ class GroundwaterApplicationRuntime(Protocol):
 
     def discard_candidates(self) -> bool: ...
 
-    def reanchor_terms(
+    def relinearize_terms(
         self,
         cell_heads_m: Sequence[float],
         cell_q_swap_m_per_s: Sequence[float],
+        cell_dq_swap_dh_per_s: Sequence[float],
     ) -> Sequence[Any]: ...
 
     def swap_preflight(self) -> bool: ...
@@ -331,6 +333,16 @@ def run_groundwater_application_window(
                 )
             return _publish_converged_window(runtime, groundwater, result)
 
+        if not _finite_vector(corrector.cell_dq_swap_dh_per_s, ncell):
+            return _abort_and_fail(
+                runtime,
+                groundwater,
+                result,
+                GroundwaterApplicationServiceStatus.RUNTIME_EVALUATION_FAILED,
+                True,
+                "swap-response-tangent",
+            )
+
         try:
             discarded = bool(runtime.discard_candidates())
         except Exception:
@@ -347,8 +359,10 @@ def run_groundwater_application_window(
 
         try:
             next_terms = tuple(
-                runtime.reanchor_terms(
-                    heads, corrector.cell_q_swap_m_per_s
+                runtime.relinearize_terms(
+                    heads,
+                    corrector.cell_q_swap_m_per_s,
+                    corrector.cell_dq_swap_dh_per_s,
                 )
             )
         except Exception:
@@ -358,7 +372,7 @@ def run_groundwater_application_window(
                 result,
                 GroundwaterApplicationServiceStatus.RUNTIME_EVALUATION_FAILED,
                 True,
-                "term-reanchor",
+                "term-relinearize",
             )
         if len(next_terms) != ncell:
             return _abort_and_fail(
@@ -367,7 +381,7 @@ def run_groundwater_application_window(
                 result,
                 GroundwaterApplicationServiceStatus.RUNTIME_EVALUATION_FAILED,
                 True,
-                "term-reanchor",
+                "term-relinearize",
             )
         current_terms = next_terms
 

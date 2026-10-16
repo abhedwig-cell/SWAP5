@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MIG431-LOW05-A",
+  "baseline": "029453104b98d835790f2e09eb9e804aa3eaff4a",
+  "last_reconciled_upstream": "e88af3da54b743958b887d9cc15647227388333a",
+  "status": "CANONICAL_ADMITTED_CLOSED",
+  "branch": "work/f-mig431-low05a-prescribed-head-application",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_admitted": true,
+  "review_checks": "Six clean-build Fortran programs PASS at O0/O2; 137 exact source hashes; progress counts43/348 identical; immutable shared physics/ABI hashes PASS",
+  "blockers": [],
+  "next_action": "Next central reconcile: SWBOTB=1 hybrid prescribed-GWL state machine, then3 and8; no next production implementation preregistered here",
+  "recovery_point": "this record and companion feasibility review in their containing Git commit",
+  "authority_paths": [
+    "AGENTS.md",
+    "integration/audits/PPA_WU02_SWBOTB_CLASSIFICATION.json",
+    "docs/audits/PPA_WU02_SOURCE_BOUND_LOWER_BOUNDARY_ENVELOPE.md",
+    "integration/audits/production_physics_application_envelope_gap_register.json",
+    "docs/migration/F-MIG431-LOW01A_CLOSEOUT.md",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90",
+    "src/transaction/mod_transaction_reference.f90",
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_committed_restart.f90"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "integration/audits/F-MIG431-LOW05A_FEASIBILITY_RESULT.json",
+    "docs/migration/F-MIG431-LOW05A_FEASIBILITY_REVIEW.md",
+    "integration/audits/F-MIG431-LOW05P0_PREREQUISITE.json",
+    "docs/migration/F-MIG431-LOW05P0_SHARED_CONTRACT.md",
+    "integration/audits/F-MIG431-LOW05P0_RESULT.json",
+    "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
+    "docs/migration/F-MIG431-LOW05A_RESULT.md",
+    "integration/audits/F-MIG431-LOW05A_LOCAL_QUALIFICATION.json",
+    "docs/migration/F-MIG431-LOW05A_PROGRESS_PREREGISTRATION.md",
+    "integration/audits/F-MIG431-LOW05A_QUALIFICATION_RESULT.json",
+    "integration/audits/F-MIG431-LOW05A_PR_CHECK_REVIEW.json",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md"
+  ],
+  "nonclaims": [
+    "all lower boundaries migrated",
+    "unrestricted transient or mixed-ownership envelope",
+    "general nonlinear temporal-error theorem"
+  ],
+  "shared_authority_contract_checkpoint": "fe0eebb92ed2ded55a9817fcda40390b3dd968c8",
+  "preregistration": "docs/migration/F-MIG431-LOW05A_PREREGISTRATION.md",
+  "local_bounded_gates_pass": true,
+  "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+  "qualification_scope": "Six exact-source programs PASS at O0/O2, local and persisted run36964835178",
+  "same_call_progress_gate": "CLOSED_PASS",
+  "admission": {
+    "work_unit": "F-MIG431-LOW05-A",
+    "state": "CANONICAL_ADMITTED_CLOSED",
+    "pull_request": 974,
+    "admitted_head": "ee2e88ef0ca0520f56b678a4cf0eb5dabc039f21",
+    "canonical_merge_commit": "e88af3da54b743958b887d9cc15647227388333a",
+    "qualification_run": 36964835178,
+    "qualification_postimage": "85fca2c965b38d15bb3a2157d07fef00146e9aca",
+    "scope": "bounded homogeneous typed Fortran ordinary Reference DATE5/HBOT5 lower-face prescribed pressure-head application; explicit non-groundwater owner"
+  }
+}

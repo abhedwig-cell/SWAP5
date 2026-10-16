@@ -1,0 +1,50 @@
+{
+  "schema": "swap5.f-romv2-d17.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D17",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d17-fmc-combined-pulse-groundwater",
+    "pull_request": 449,
+    "pull_request_merged": false,
+    "primary_head": "6e6e35f5c8205d63603ead900158155589a84b06",
+    "primary_workflow_run": 35458378169,
+    "primary_workflow_job": 105937630806,
+    "artifact_id": 10589330827,
+    "artifact_digest": "sha256:18c7fa490be04fd1f3d2fe67b42ebaffe84ba5d8edeecc6859cf5393137b889a",
+    "workflow_conclusion": "success"
+  },
+  "frozen_payload_digests": {
+    "preflight_result_sha256": "996f05ea8f077ca0306bdc791204e840ed3ba749e52e2bae69efdb3bad8d597f",
+    "result_sha256": "6e835c4d0528fe8334daea4e652ab2668c46e44d8757725e3abb221a9f9ea3c8",
+    "R16_stdout_sha256": "9f5b60ba7a29b908b989f58fff5760d1b5894315a353a0567c66a1cdc1961da5",
+    "R2_stdout_sha256": "6114a27ba539395dcddca5498426a104fe15aecad4d9ab11322ed97094e765f8",
+    "preflight_stdout_sha256": "6d0e5636061acba28abfa074e230408ba2e0054e8d692457fbb0eb7112bd70cb",
+    "analyzer_stdout_sha256": "d0b9739d36dee9f197a6638a0982a3d1c0e6bf52a4c16295f8d4488aedb7c6f4"
+  },
+  "technical_repairs": [
+    "Strictly validate/normalize node records at parse time.",
+    "Correct nested node-map indexing from nodes[(history,step,node)] to nodes[(history,step)][node]."
+  ],
+  "scientific_inputs_changed_by_repairs": false,
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D17_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D17_RESULT.json",
+    "integration/f-rom/F-ROMV2_D17_STATUS.json",
+    "integration/f-rom/F-ROMV2_D17_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D17_COMBINED_FMC_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d17_combined_fmc.py",
+    "tests/rom/analyze_f_romv2_d17_combined_fmc.py",
+    "tests/rom/run_f_romv2_d17_combined_fmc.sh",
+    "tests/rom/test_f_romv2_d17_combined_comparators.f90",
+    ".github/workflows/f-romv2-d17-combined-fmc.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

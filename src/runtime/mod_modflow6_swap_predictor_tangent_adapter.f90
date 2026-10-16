@@ -154,7 +154,8 @@ contains
     endpoint%coverage%dynamic_top_boundary_active = dynamic_top_boundary_active
     endpoint%coverage%dynamic_top_boundary_covered = dynamic_top_boundary_active
     endpoint%coverage%root_uptake_active = root_uptake_active
-    endpoint%coverage%root_uptake_covered = .false.
+    endpoint%coverage%root_uptake_covered = root_uptake_active .and. &
+         trajectory%root_sink_direction_coverage_complete
     endpoint%coverage%drainage_active = drainage_active
     endpoint%coverage%drainage_covered = drainage_active .and. &
          trajectory%source_sink_direction_coverage_complete

@@ -1,0 +1,20 @@
+{
+  "correction": "FROST-DIVDRA-02",
+  "audit_id": "FROST-DIVDRA-TINY-UNSATURATED-KD-OMISSION",
+  "work_unit": "PPA-WU05B17",
+  "scope": "Single-level original DIVDRA with SWDIVDINF1 in B16 controlled geometry; finite positive conductivities and positive KDuns. The full original source is reconstructed byte-exact with only this numerical guard replacement. No production source edit.",
+  "original": {
+    "path": "reference/swap-4.3.1/b1_11_frost_source/SWAP/divdra.f90",
+    "blob": "b541e48d5978b53598157d773167f0a8d651b433",
+    "sha256": "d5917c80dde091f8264f875997ee7105d8b5f9b88e9d091ce162860930de8c91"
+  },
+  "corrected_sha256": "1a2f90a8d41d28c811314fb256e97e6bd74067f996c07400c8e4561614312483",
+  "patch": {
+    "old": "if (KDuns > 1.d-8) then",
+    "new": "if (KDuns > 0.d0) then",
+    "occurrences": 1
+  },
+  "qualification_pending": true,
+  "global_B1_snapshot_promoted": false,
+  "production_modified": false
+}

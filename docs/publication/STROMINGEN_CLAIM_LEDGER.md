@@ -1,6 +1,6 @@
 # Stromingen claim ledger
 
-Date: 2026-09-19
+Date: 2026-09-19. Internal reconciliation: 2026-10-16.
 Purpose: sentence-level publication control for the Dutch overview article.
 
 Each claim classifies what the manuscript is allowed to assert before submission. This ledger is not a scientific evidence ledger; it prevents context statements from drifting into claims owned by international papers.
@@ -51,6 +51,15 @@ Do not add claims of the form:
 - 'a compact state of dimension ... is sufficient...'.
 
 ## Evidence policy
+
+For the 16 October internal integration, the manuscript changes remain within
+ST-C02/04/06/14/15/16 and ST-C22/23/26/27/28: public context, terminology and
+bounded capability status only. Public pages were reread and capability status
+is pinned to canonical `a86da5b6931b15ef8a5432fd03adc30a72491b65` through its
+Post-Status-A authority. Historical September production exclusions are not
+current absence claims. No experiment, effect size, solver comparison, coupling
+semantics or unpublished research answer is added. All four figures remain
+conceptual and unchanged. Co-author and submission approval remain pending.
 
 Public facts about NHI, iMOD, MODFLOW 6, Ribasim and published SWAP history require external citations and must be refreshed before submission.
 

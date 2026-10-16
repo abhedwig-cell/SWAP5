@@ -1,0 +1,9 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0-DEP01",
+  "postimage": "b4273e7d26c60cb470e2bae30327918e8439b0cd",
+  "failure": "runner module resolver omitted test-local provider modules",
+  "classification": "Harness-only preflight failure before compilation; no production solve executed",
+  "correction": "Index module definitions declared in test translation units; keep provider semantics and test code unchanged",
+  "production_delta": [],
+  "test_gate_weakened": false
+}

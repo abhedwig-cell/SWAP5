@@ -1,0 +1,18 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0",
+  "tested_postimage": "60f4c1901ccfd506daecbd8d5695dbd62ba460ec",
+  "status": "FOCUSED_PHYSICAL_FIXTURE_RETRY",
+  "case": {
+    "head": -110,
+    "resistance": 0,
+    "include_half_cell": true,
+    "extra_flux": -0.01,
+    "dt_days": 0.001
+  },
+  "solver_status": "SW_SOLVE_RETRY_ADVISED",
+  "compiler": "GNU Fortran13.3.0",
+  "optimization": "O0",
+  "production_admitted": false,
+  "interpretation": "No candidate admitted. Investigate against same strict solver tolerances at the existing 0.125-day fixture duration; do not widen controller or mass tolerances.",
+  "tests_pass": false
+}

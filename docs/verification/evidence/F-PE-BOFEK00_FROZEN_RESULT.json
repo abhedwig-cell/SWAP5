@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-PE-BOFEK00E",
+  "phase": "FROZEN_TIMESTEP_QUALIFIED",
+  "canonical_head": "1759caebb7ca3bd62bbee65d9319f5d71d3e73f5",
+  "qualified_branch_head_before_persist": "5bdf2ce20b3507d6e5a2a6e6a0b97528885d500d",
+  "workflow_run": 36403774985,
+  "fixture": {
+    "steps": 24,
+    "dt_day_each": 0.005,
+    "horizon_day": 0.12,
+    "rain_cm_per_day": 12.0,
+    "ponding_max_cm": 0.05,
+    "runoff_resistance_day": 0.05,
+    "runoff_exponent": 1.0,
+    "bottom_flux_cm_per_day": 0.0,
+    "adaptive_timestep_controller_used": false
+  },
+  "baseline": {
+    "nonlinear_iterations": 117,
+    "backtracking_attempts": 117,
+    "cumulative_runoff_cm": 0.4493205111812004,
+    "final_top_pressure_head_cm": 0.5263806508783677,
+    "final_ponding_cm": 0.36553179889283893,
+    "max_abs_combined_water_ledger_cm": 3.3296282397898835e-14
+  },
+  "corrected": {
+    "nonlinear_iterations": 98,
+    "backtracking_attempts": 98,
+    "cumulative_runoff_cm": 0.44932051118122507,
+    "final_top_pressure_head_cm": 0.52638065087862274,
+    "final_ponding_cm": 0.36553179889284604,
+    "max_abs_combined_water_ledger_cm": 2.6145752229922437e-14
+  },
+  "deltas_corrected_minus_baseline": {
+    "cumulative_runoff_cm": 2.4646951146678475e-14,
+    "final_top_pressure_head_cm": 2.5501822875639846e-13,
+    "final_ponding_cm": 7.105427357601002e-15,
+    "nonlinear_iterations": -19,
+    "backtracking_attempts": -19
+  },
+  "interpretation": {
+    "classification": "BUG_CORRECTNESS",
+    "frozen_timestep_physical_difference": "ROUND_OFF_SCALE",
+    "solver_convergence_improved": true,
+    "timestep_policy_changed": false,
+    "active_drainage_qualified": false,
+    "note": "The fixture deliberately has zero bottom/drainage flux; no drainage-active claim is made."
+  },
+  "verdict": "CORRECTED_SOLVER_PRESERVES_FROZEN_TIMESTEP_PHYSICS_AND_REDUCES_NONLINEAR_WORK"
+}

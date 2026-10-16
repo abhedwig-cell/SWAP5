@@ -64,6 +64,22 @@ Capability-specific executable tests and independent oracles live under their ow
 
 Capability-specific moving-current or exact-head evidence is added where required, such as the restricted Snow preservation workflow. This preserves the distinction between immutable historical evidence, a moving-current regression role and exact current-head acceptance.
 
+
+### F-TA04R bounded transaction/restart locator registration
+
+The Status-A release-readiness record uses several historical suite labels that are not literal root-level repository paths. That historical evidence remains valid for its recorded acceptance conclusion, but independent reconstruction must use real locators.
+
+F-TA04R therefore registers two bounded transaction/restart chains in `docs/verification/test-bank-catalog.yaml`:
+
+- `TB-TRANSACTION-A23BL-HISTORICAL`: the real A23BL transaction-reference test and runner. It remains historical regression evidence and is **not** promoted to the current mass-completeness oracle.
+- `TB-PRESERVATION-F-TB11-TXN-RST`: the pinned F-TB11 transaction/mass/rejected-publication/Restart preservation chain through its manifest, validator, replay runner and workflow.
+
+The concrete dependencies used by these registrations are unchanged from historical PR #172 to the F-TA04R current-canonical reconciliation base `e07cea29725d822cfdb15e956a0c7b7bb0955843`.
+
+F-TB11 remains pinned to `379afd11e9a1d7fbef5ec74c9e05b0ec55884f4b`. This registration does not rebind F-TB11 to Status-A or to a later canonical head.
+
+The documentation checker now validates every bounded catalog record marked `complete`: required traceability fields must be present, duplicate stable IDs are rejected, and exact repository test/runner locators must exist. This is a static-process guard on the catalog, not a new scientific qualification.
+
 ## Canonical admission and evidence inheritance
 
 Canonical admission establishes that a bounded capability belongs to the accepted baseline. It does not require every unrelated capability to be requalified after every repository change.
@@ -91,3 +107,8 @@ A claim should be no broader than the authority that supports it. In particular:
 ## Adding later SWAP 4.3.1 equivalence evidence
 
 The parallel SWAP 4.3.1 to SWAP5 equivalence campaign can be added as an additional verification authority under the applicable capability rows once its evidence is accepted. The core Status-A description does not need to be rewritten unless that campaign changes an accepted scientific or scope conclusion.
+
+
+## Later bounded lower-boundary admission: LOW05-A
+
+PR#974 canonically admits the homogeneous typed Fortran ordinary Reference DATE5/HBOT5 prescribed lower-face pressure-head adapter at `e88af3da54b743958b887d9cc15647227388333a`. Existing typed physics, transaction/restart/mass ownership and default groundwater-owned mode5 semantics are unchanged. Original proposal endpoint is frozen through sibling/retry staging; ordinary ownership is explicit and excludes GWledger/datum. [Closeout and claim ceiling](../migration/F-MIG431-LOW05A_CLOSEOUT.md) bind source, qualification and admission. Qualification run36964835178 proves bounded progress, rollback, restart and existing2/4/6/7/defaultGW5 preservation at O0/O2. It does not assert global green CI, a generic parser, mixed ownership, broad transient accuracy or migration of1/3/8.

@@ -1,0 +1,88 @@
+name: F-PE-LIVE01 required live-trial rebaseline
+
+concurrency:
+  group: f-pe-live01-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_live01_p0_exact_matrix.sh'
+      - 'tests/fpe/test_fpe_live01_p0_exact_matrix.py'
+      - 'tests/fpe/run_fpe_live01_p1_directional_cost.sh'
+      - 'tests/fpe/test_fpe_live01_p1_directional_cost.py'
+      - 'tests/fpe/run_fpe_live01_p2_retry_cost.sh'
+      - 'tests/fpe/test_fpe_live01_p2_retry_cost.py'
+      - 'docs/performance/F-PE-LIVE01_*.md'
+      - '.github/workflows/f-pe-live01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-exact-live-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run exact live trial diagnostic matrix
+        run: |
+          bash tests/fpe/run_fpe_live01_p0_exact_matrix.sh | tee live01-p0.txt
+          grep -Fq 'FPE_LIVE01_P0=PASS' live01-p0.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-live01-p0
+          path: live01-p0.txt
+
+  p1-directional-cost:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run paired exact-trial directional cost bound
+        run: |
+          bash tests/fpe/run_fpe_live01_p1_directional_cost.sh | tee live01-p1.txt
+          grep -Fq 'FPE_LIVE01_P1=PASS' live01-p1.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-live01-p1
+          path: live01-p1.txt
+
+  p2-temporal-retry-cost:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install compiler and pinned live coupling dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Run temporal-retry cost bound
+        run: |
+          bash tests/fpe/run_fpe_live01_p2_retry_cost.sh | tee live01-p2.txt
+          grep -Fq 'FPE_LIVE01_P2=PASS' live01-p2.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f-pe-live01-p2
+          path: live01-p2.txt

@@ -1,0 +1,28 @@
+name: F-PE-TIMEINT01A temporal order
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint01-richards-temporal-discretization
+    paths:
+      - 'docs/performance/F-PE-TIMEINT01A_PREREGISTRATION.md'
+      - 'tests/fpe/run_fpe_timeint01a_order.py'
+      - 'tests/fpe/run_fpe_timeint01a_order.sh'
+      - '.github/workflows/f-pe-timeint01a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  order:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered temporal-order characterization
+        run: bash tests/fpe/run_fpe_timeint01a_order.sh

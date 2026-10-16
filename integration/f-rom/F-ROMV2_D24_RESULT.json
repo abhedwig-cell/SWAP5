@@ -1,0 +1,122 @@
+{
+  "schema": "swap5.f-romv2-d24.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D24",
+  "decision": "FMC_NATIVE_RAINFALL_GROUNDWATER_COMPOSITION_RETAINS_RESEARCH_CANDIDACY_RELATIVE_TO_R2",
+  "adjudication": "ALL_EIGHT_PREREGISTERED_NATIVE_RAIN_GROUNDWATER_FRONTIER_VIEWS_PASS_VERSUS_R2",
+  "execution": {
+    "preflight": {
+      "workflow_run": 35467798461,
+      "workflow_job": 105963213678,
+      "artifact_id": 10591189096,
+      "artifact_digest": "sha256:4f25f71cf75bf90d78cad3d11422d6a59a6c3b51da0e1f549f36b2be6728023f",
+      "result_sha256": "3ce11796b509209361e114476d5583e005c89e16eebdf4d8da1637f7217e3acd",
+      "stdout_sha256": "4d08a695b37b2f13b35db1bfada9faccf60625016d304f38e549b8936b8b0746",
+      "decision": "D24_FMC_NATIVE_RAIN_GW_PREFLIGHT_PASS",
+      "R16_R2_trajectory_evidence_consumed": false
+    },
+    "primary": {
+      "workflow_run": 35471764440,
+      "workflow_job": 105973868867,
+      "executed_head": "0d7abc3acc374dbe6192baaca471f545caa103c3",
+      "execution_pull_request": 472,
+      "execution_pull_request_merged": false,
+      "artifact_id": 10591979922,
+      "artifact_digest": "sha256:2c53b47c03ab3adf26419c169447f708daa5d5197fdedb29dd715c827a9d98cd",
+      "result_sha256": "649dd06a588972c382634e8d7247e196a78409f4d590d675469b3ba01fca9ede",
+      "analyzer_stdout_sha256": "d8346b42ce4ec4a41b267afed03683a3b7e97a94ff139c6b0177e086f84668fa",
+      "R16_o0_o2_sha256": "c0571d38427e4122a6376afb9f24aa6a1c625b2ba2524f81542c5dca3bb0c826",
+      "R2_o0_o2_sha256": "a1fec425c91e5131bccb53874ed4f8d82c65a62d8e8e3a6b901806b710e20748",
+      "R16_O0_O2_identity": true,
+      "R2_O0_O2_identity": true,
+      "workflow_conclusion": "success"
+    }
+  },
+  "scope": {
+    "material": "B01",
+    "histories": [
+      "RG05",
+      "RG20",
+      "RG40"
+    ],
+    "duration_seconds": 160,
+    "observation_step_seconds": 10,
+    "native_rainfall_factors_Ksat": [
+      0.5,
+      2,
+      4
+    ],
+    "bottom_boundary": "fixed zero pressure head",
+    "groundwater_branch": "G25 fixed-water-table FMC front",
+    "surface_branch": "native rainfall + ponding/runoff FMC route",
+    "contact_merge": false,
+    "falling_slugs": false,
+    "dry_bin_activation": false,
+    "ET_root_uptake": false
+  },
+  "integrity": {
+    "pass": true,
+    "minimum_FMC_surface_groundwater_separation_cm": 14.01869021932935,
+    "hard_mass_gate_cm": 1e-12,
+    "contact_merge_count": 0,
+    "hidden_mass_correction": false,
+    "full_order_fallback": false
+  },
+  "pooled_metrics_vs_R16": {
+    "FMC": {
+      "cumulative_infiltration_rmse_cm": 0.005882092961433374,
+      "surface_store_rmse_cm": 0.003112920266629981,
+      "cumulative_runoff_rmse_cm": 0.0028554834097215365,
+      "total_storage_rmse_cm": 0.014625921596942145,
+      "cumulative_bottom_exchange_rmse_cm": 0.009425745380845053,
+      "mapped_R16_cell_theta_rmse": 0.00042587173621866814,
+      "terminal_bottom_flux_rmse_cm_per_day": 8.681653226352257,
+      "bottom_flux_sign_error_count": 0,
+      "upper_storage_rmse_cm": 0.0139180288825698,
+      "lower_storage_rmse_cm": 0.0007482923869202006
+    },
+    "R2": {
+      "cumulative_infiltration_rmse_cm": 0.010799318094485928,
+      "surface_store_rmse_cm": 0.005727339956127973,
+      "cumulative_runoff_rmse_cm": 0.005220838673594476,
+      "total_storage_rmse_cm": 0.03344252221945571,
+      "cumulative_bottom_exchange_rmse_cm": 0.02403901861016807,
+      "mapped_R16_cell_theta_rmse": 0.04567326144339339,
+      "terminal_bottom_flux_rmse_cm_per_day": 21.48433402706513,
+      "bottom_flux_sign_error_count": 0,
+      "upper_storage_rmse_cm": 0.012646147380627915,
+      "lower_storage_rmse_cm": 0.021855964671295695
+    }
+  },
+  "preregistered_frontier_gates": {
+    "cumulative_infiltration_RMSE": true,
+    "surface_store_RMSE": true,
+    "cumulative_runoff_RMSE": true,
+    "total_storage_RMSE": true,
+    "cumulative_bottom_exchange_RMSE": true,
+    "mapped_theta_RMSE": true,
+    "terminal_bottom_flux_RMSE": true,
+    "bottom_flux_sign_error_count": true,
+    "all_required_pass": true
+  },
+  "diagnostic_caveat": {
+    "R2_upper_storage_rmse_better_than_FMC": true,
+    "interpretation": "Upper-zone storage was diagnostic rather than an independent D24 decision gate. The frozen D24 decision is therefore unchanged and this discrepancy must remain visible in later purpose-specific qualification."
+  },
+  "scientific_interpretation": {
+    "statement": "The already-qualified FMC native surface and fixed-water-table groundwater branches retain a joint cost-fidelity research candidacy when active simultaneously under the separated B01 envelope.",
+    "general_FMC_acceptance": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "live_groundwater_coupling_qualified": false,
+    "seasonal_balance_qualified": false,
+    "ET_root_uptake_qualified": false
+  },
+  "next": [
+    "ADMIT_D24_EVIDENCE_ONLY",
+    "RECONCILE_CURRENT_FMC_AUTHORITY_AND_OPEN_BOUNDARIES_BEFORE_NEW_WORK",
+    "CONSIDER_SAME_RUNTIME_COST_SCREENING_ONLY_AFTER_CONFIRMING_THE_RESEARCH_IMPLEMENTATION_PATH_DOES_NOT_CHANGE_FMC_PHYSICS",
+    "PRESERVE_PURPOSE_DEPENDENT_FIDELITY_AND_DO_NOT_INFER_APPLICATION_THRESHOLDS_FROM_D24"
+  ],
+  "production_rom_authorized": false
+}

@@ -1,0 +1,168 @@
+{
+  "schema": "swap5.f-romv2-d13.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D13",
+  "decision": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+  "adjudication": "LITERATURE_BOUND_GROUNDWATER_FRONT_BRANCH_BREAKS_R2_DEVELOPMENT_FRONTIER_WITHIN_BOUNDED_ENVELOPE",
+  "execution": {
+    "workflow_run": 35452125577,
+    "workflow_job": 105920995915,
+    "executed_head": "9d66a3e8a7fda6d1e456188cfc87cf9f884075a4",
+    "execution_pull_request": 439,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10587057124,
+    "artifact_digest": "sha256:03ef5de0264aa60bab1f2aec29a0c6800df8384e000d090729bf23c913316408",
+    "workflow_conclusion": "success",
+    "preflight_result_sha256": "ac9be533a406bd91d1941e79bb9c4bde77c3c403a564550ae762369986fb7257",
+    "hydrological_result_sha256": "28d0acdc99b45cf679449985e7d9bb20eb7b2b707f1b5b256d2af1953323b68c",
+    "R16_o0_o2_sha256": "498d2c46828055c288524fc8176cf46f5339ea8db0649b450b955b3eb3c86747",
+    "R2_o0_o2_sha256": "8188300a660b2f203b28080399b4a747b6693d617de669f23395876ddaf8c6ec",
+    "analyzer_sha256": "e4156b8359c6a89c339b1b949220eef3647922c2e00e2132d27fbdf2140e0be1",
+    "preflight_stdout_sha256": "e1bedafbc820a0672ecba58692a0381c8280d9407af7c5708a27bda6f8f72b5d",
+    "R16_O0_O2_identity": true,
+    "R2_O0_O2_identity": true
+  },
+  "authority": {
+    "D12_decision": "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+    "primary_equation_authority": [
+      "10.1002/2015WR017126",
+      "10.1002/2014WR016454",
+      "10.1002/2017MS000931"
+    ],
+    "external_source_code_copied": false,
+    "SWAP_outcome_tuning_of_bins_or_substeps": false
+  },
+  "candidate": {
+    "id": "FMC_GW200",
+    "process_scope": [
+      "capillary groundwater fronts",
+      "capillary relaxation",
+      "finite-volume groundwater exchange"
+    ],
+    "moisture_bins": 200,
+    "active_groundwater_bins": 99,
+    "baseline_effective_saturation": 0.5,
+    "observation_interval_day": 0.001,
+    "internal_substeps_per_observation": 9,
+    "internal_substep_seconds": 9.6,
+    "training_required": false,
+    "calibration_required": false,
+    "nonlinear_Richards_solve_required": false,
+    "full_order_fallback_used": false,
+    "clipping_used": false,
+    "hidden_mass_correction": false
+  },
+  "preflight": {
+    "decision": "D13_FMC_GROUNDWATER_FRONT_PREFLIGHT_PASS",
+    "SWAP_trajectory_evidence_consumed": false,
+    "cases": [
+      "G25",
+      "G50",
+      "G75",
+      "G125"
+    ],
+    "all_cases_pass": true,
+    "capillary_relaxation_storage_difference_cm": 0,
+    "finite_volume_mass_residual_cm": 0,
+    "direction_controls": {
+      "G25": "groundwater inflow / negative bottom-outward exchange",
+      "G50": "groundwater inflow / negative bottom-outward exchange",
+      "G75": "groundwater inflow / negative bottom-outward exchange",
+      "G125": "groundwater outflow / positive bottom-outward exchange"
+    }
+  },
+  "integrity": {
+    "pass": true,
+    "max_abs_substep_mass_residual_cm": 0,
+    "max_abs_capillary_relaxation_storage_difference_cm": 0,
+    "hard_mass_gate_cm": 1e-12,
+    "nonfinite_or_physical_bound_failure": false
+  },
+  "pooled": {
+    "FMC_GW200": {
+      "total_storage_rmse_cm": 0.2287373082322805,
+      "cumulative_bottom_exchange_rmse_cm": 0.2287373082322814,
+      "terminal_bottom_flux_rmse_cm_per_day": 5.885538112034192,
+      "bottom_flux_sign_error_count": 1,
+      "R16_cell_theta_rmse": 0.004113528053164359
+    },
+    "R2": {
+      "total_storage_rmse_cm": 0.39852848647148076,
+      "cumulative_bottom_exchange_rmse_cm": 0.39852848647148165,
+      "terminal_bottom_flux_rmse_cm_per_day": 10.09781094178976,
+      "bottom_flux_sign_error_count": 1
+    },
+    "relative_to_R2": {
+      "storage_rmse_reduction_fraction": 0.42604527405935066,
+      "cumulative_bottom_exchange_rmse_reduction_fraction": 0.4260452740593484,
+      "terminal_bottom_flux_rmse_reduction_fraction": 0.41714712763368245
+    }
+  },
+  "by_history": {
+    "G25": {
+      "lambda": 0.25,
+      "storage_rmse_cm": 0.3760207874079699,
+      "cumulative_bottom_exchange_rmse_cm": 0.3760207874079637,
+      "bottom_flux_rmse_cm_per_day": 9.749878819563202,
+      "sign_errors": 0,
+      "R16_cell_theta_rmse": 0.007314502092624529
+    },
+    "G50": {
+      "lambda": 0.5,
+      "storage_rmse_cm": 0.23162902428728382,
+      "cumulative_bottom_exchange_rmse_cm": 0.2316290242872903,
+      "bottom_flux_rmse_cm_per_day": 5.822882976614717,
+      "sign_errors": 0,
+      "R16_cell_theta_rmse": 0.0034094408771692575
+    },
+    "G75": {
+      "lambda": 0.75,
+      "storage_rmse_cm": 0.11166236727597263,
+      "cumulative_bottom_exchange_rmse_cm": 0.11166236727599886,
+      "bottom_flux_rmse_cm_per_day": 2.864233305946894,
+      "sign_errors": 0,
+      "R16_cell_theta_rmse": 0.0014163314423827433
+    },
+    "G125": {
+      "lambda": 1.25,
+      "storage_rmse_cm": 0.042082098195481636,
+      "cumulative_bottom_exchange_rmse_cm": 0.04208209819545144,
+      "bottom_flux_rmse_cm_per_day": 1.178261382892574,
+      "sign_errors": 1,
+      "R16_cell_theta_rmse": 0.0007431214329282756
+    }
+  },
+  "frontier": {
+    "balance_view_pass": true,
+    "transient_view_pass": true,
+    "retained": true,
+    "statement": "Within the bounded fixed-water-table capillary-fringe relaxation envelope, FMC_GW200 is the first tested non-Richards physical reduction in F-ROMV2 to improve on the admitted R2 comparator on both preregistered balance and transient views."
+  },
+  "purpose_dependent_interpretation": {
+    "GROUNDWATER_FRONT_RELAXATION": "RESEARCH_CANDIDACY_RETAINED",
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_YET_QUALIFIED; D13 has no surface forcing, ET, seasonal horizon or recharge sequence.",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "PROMISING_BOUNDED_BRANCH_ONLY; moving water table and coupled feedback remain untested in SWAP5.",
+    "SURFACE_INFILTRATION_REDISTRIBUTION": "NOT_TESTED; infiltration-front and falling-slug branches excluded from D13.",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "scientific_conclusion": "FMC/SMVE survives the first full SWAP5 hydrological discriminator where prior memoryless and two-state physical reductions did not. The positive result is process-specific: a literature-bound finite-water-content groundwater-front branch improves balance and bottom-flux fidelity relative to R2 during capillary-fringe relaxation, while remaining exactly mass-conservative. It does not yet establish a general unsaturated-zone accelerator.",
+  "next_authorized_research": [
+    "SEPARATELY_PREREGISTER_SURFACE_INFILTRATION_AND_FALLING_SLUG_BRANCH_PREFLIGHT_BEFORE_ANY_GENERAL_FMC_CLAIM",
+    "OR_SEPARATELY_PREREGISTER_MOVING_WATER_TABLE_GROUNDWATER_BRANCH_VALIDATION_USING_PRIMARY_FMC_AUTHORITY",
+    "PRESERVE_R16_AND_R2_AS_COMPARATORS",
+    "DEFER_FORMAL_RUNTIME_FRONTIER_UNTIL_AT_LEAST_ONE_BROADER_FMC_PROCESS_ENVELOPE_IS_HYDROLOGICALLY_RETAINED"
+  ],
+  "prohibited": [
+    "DO_NOT_GENERALIZE_D13_TO_ARBITRARY_NONZERO_SWAP_BOTTOM_HEAD",
+    "DO_NOT_CLAIM_SURFACE_INFILTRATION_OR_ET_FIDELITY",
+    "DO_NOT_RETUNE_200_BIN_OR_10_SECOND_CONTROLS_FROM_D13",
+    "DO_NOT_USE_D13_AS_APPLICATION_ACCEPTANCE",
+    "DO_NOT_CLAIM_FORMAL_SPEEDUP",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

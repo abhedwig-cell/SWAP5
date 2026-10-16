@@ -65,6 +65,10 @@ SOURCES=(
   "$BUILD/fgc21_fixture.f90"
   tests/fgc/mod_fgc25_multiswap_fixture.f90
 )
+# Current canonical contracts also import accepted-trajectory publication.
+# Expand its real prerequisites with the existing dependency tool; keep the
+# original six scientific drivers, compiler flags and warning policy intact.
+mapfile -t SOURCES < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${SOURCES[@]}")
 
 TESTS=(
   test_fgc25_multiswap_commit

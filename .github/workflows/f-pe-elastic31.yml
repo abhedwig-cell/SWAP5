@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC31 application request discovery
+
+concurrency:
+  group: f-pe-elastic31-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic31-request-discovery
+    paths:
+      - 'src/adapter/mod_fmr_elastic_storage_application_request_discovery.f90'
+      - 'tests/fpe/test_fpe_elastic31_request_discovery.f90'
+      - 'tests/fpe/run_fpe_elastic31.sh'
+      - 'docs/performance/F-PE-ELASTIC31_REQUEST_DISCOVERY_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic31.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Qualify application request discovery
+        run: bash tests/fpe/run_fpe_elastic31.sh

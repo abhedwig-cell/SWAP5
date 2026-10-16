@@ -194,12 +194,12 @@ contains
          'indicator does not alter solver retry counter')
 
     unsupported_request = request
-    unsupported_request%boundary%bottom_mode = 7
+    unsupported_request%boundary%bottom_mode = 8
     call solver%evaluate_temporal_indicator(unsupported_request, result, indicator_request, workspace, unsupported)
     call require(unsupported%status == SW_TEMPORAL_INDICATOR_UNAVAILABLE .and. .not. unsupported%available, &
-         'unowned bottom mode remains unavailable')
+         'still-unowned bottom mode remains unavailable')
     call require(trim(unsupported%route) == 'boundary-envelope-deferred', &
-         'unowned bottom mode fails closed at boundary envelope')
+         'still-unowned bottom mode fails closed at boundary envelope')
 
     completed_cases = completed_cases + 1
     write(*,'(A,ES16.8E3,A,ES16.8E3,A,ES26.17E3,A,ES26.17E3,A,A)') &

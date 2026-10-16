@@ -68,6 +68,19 @@ def main() -> int:
                 raise SystemExit(f"duplicate module provider {mod}: {providers[mod]} vs {path}")
             providers[mod]=path
 
+    # Qualification-only modules may be supplied as external sources. Register
+    # their module names so a test target can depend on them without moving
+    # research/oracle code into production src/.
+    for path in external_sources:
+        mods=source_modules(path)
+        if not mods:
+            continue
+        file_modules[path]=mods
+        for mod in mods:
+            if mod in providers and providers[mod] != path:
+                raise SystemExit(f"duplicate module provider {mod}: {providers[mod]} vs {path}")
+            providers[mod]=path
+
     stub_mods=source_modules(stub)
     required_files:set[pathlib.Path]=set()
     visiting:set[pathlib.Path]=set()

@@ -1,0 +1,29 @@
+name: F-PE-ELASTIC61 mode7 head-error envelope
+
+concurrency:
+  group: f-pe-elastic61-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-elastic61-mode7-error-envelope
+    paths:
+      - 'src/adapter/mod_fmr_mode7_temporal_head_envelope.f90'
+      - 'tests/fpe/test_fpe_elastic61_mode7_error_envelope.f90'
+      - 'tests/fpe/run_fpe_elastic61.sh'
+      - 'docs/performance/F-PE-ELASTIC61_MODE7_ERROR_ENVELOPE_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-elastic61.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Run ELASTIC61 qualification
+        run: bash tests/fpe/run_fpe_elastic61.sh

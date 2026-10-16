@@ -1,0 +1,32 @@
+name: F-PE-ZERO-WASTE01 paired runtime
+
+on:
+  pull_request:
+    paths:
+      - 'src/solver/mod_reference_richards_workspace.f90'
+      - 'src/solver/mod_reference_linear_solver.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/adapter/mod_reference_richards_legacy_binding.f90'
+      - 'src/adapter/mod_reference_richards_accepted_step_directional_service.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_paired_runtime.sh'
+      - '.github/workflows/f-pe-zero-waste01-paired-runtime.yml'
+  workflow_dispatch:
+
+jobs:
+  paired-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timing_mode: [reference, directional]
+    env:
+      TIMING_MODE: ${{ matrix.timing_mode }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Measure H03 baseline versus zero-waste candidate
+        run: bash tests/fpe/run_fpe_zero_waste01_paired_runtime.sh

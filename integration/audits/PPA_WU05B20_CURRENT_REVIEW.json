@@ -1,0 +1,141 @@
+{
+  "work_unit": "PPA-WU05B20",
+  "status": "FROST_BOUNDED_FUNCTIONAL_CLOSURE",
+  "reference_geometry_qualified": true,
+  "old645_screens_retained_and_resolved": true,
+  "precision_cases": 9216,
+  "precision_maxima": {
+    "absolute_partition_error": 1.1063555732896357e-14,
+    "decimal_80_100_error": 1.11182e-73,
+    "native_nodal_scalar_residual": 7.105427357601002e-15,
+    "scalar_error": 4.5695918805976136e-18,
+    "unit_rate_partition_error": 2.3180420846515488e-14
+  },
+  "policy_proposal": "FROST-MULTILEVEL-NET01",
+  "proposal_verified_in_test_scope": true,
+  "proposal_counts": {
+    "altered_cases": 1344,
+    "byte_exact_unaltered_controls": 7872
+  },
+  "proposal_maxima": {
+    "altered_signed_net_error": 1.2033729096598453e-17,
+    "decimal_80_100_error": 9.668e-77,
+    "nodal_scalar_residual": 1.0408340855860843e-17,
+    "scalar_law_error": 4.5695918805976136e-18,
+    "unit_rate_geometry_error": 2.3180420846515488e-14
+  },
+  "proposal_witnesses": {
+    "5": {
+      "bottom": -0.002,
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.01,
+        0,
+        20,
+        40,
+        60,
+        0.5
+      ],
+      "net_bottom_minus_nodal": -1.734723475976807e-18,
+      "original_final_rates": [
+        0.01,
+        -0.002
+      ],
+      "proposed_final_rates": [
+        0.009000000000000001,
+        -0.011
+      ],
+      "raw_survivor_net": 0
+    },
+    "6": {
+      "bottom": -0.002,
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.0099995,
+        0,
+        20,
+        40,
+        60,
+        0.5
+      ],
+      "net_bottom_minus_nodal": -5.000000000005e-7,
+      "original_final_rates": [
+        0.01,
+        -0.002
+      ],
+      "proposed_final_rates": [
+        0.008999974999374985,
+        -0.010999474999374984
+      ],
+      "raw_survivor_net": 5.000000000005e-7
+    },
+    "7": {
+      "bottom": -0.002,
+      "input": [
+        2,
+        0,
+        -2.25,
+        -2.5,
+        0.001,
+        -0.002,
+        0.01,
+        -0.0099985,
+        0,
+        20,
+        40,
+        60,
+        0.5
+      ],
+      "net_bottom_minus_nodal": -0.0000014999999999997654,
+      "original_final_rates": [
+        -13.32333333333542,
+        13.32133483333542
+      ],
+      "proposed_final_rates": [
+        0.008999924994374579,
+        -0.010998424994374579
+      ],
+      "raw_survivor_net": 0.0000014999999999997654
+    }
+  },
+  "production_source_tree": "24fda78fd9a38964c16c89d5505b0056185ac410",
+  "qualified": true,
+  "admitted": true,
+  "runtime_admitted": false,
+  "aggregate_frost_migration_complete": true,
+  "remaining_owner_decision": null,
+  "evidence": {
+    "prior": {
+      "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
+      "sha256": "b9722a11a7684247b90cd34e3c38e27337fbd7a9d36e43888f9893ec8bd6b368",
+      "bytes": 1787077
+    },
+    "precision": {
+      "path": "docs/audits/evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz",
+      "sha256": "ce69b00c117acd6892a1f19aa9a2b75a03eb14e36c71e5a6e714d5b6e34d5e38",
+      "bytes": 6967
+    },
+    "proposal": {
+      "path": "docs/audits/evidence/PPA_WU05B20_NET_TRANSFER_PROPOSAL.json.gz",
+      "sha256": "2d09105252d3db72ba416545a7eff992a5ab32397998fb2a4445cf35439bad6d",
+      "bytes": 523304
+    }
+  },
+  "negative_successor_evidence_tests": 8,
+  "reference_geometry_admitted": true,
+  "mixed_sign_multilevel_disposition": "INTENTIONALLY_NOT_MIGRATED",
+  "closure_basis": "Do not invent a SWAP5 multilevel mixed-sign allocation law where B1.11 source semantics are pathological and the tested alternative is not source-authoritative. Preserve B19 single-level production and fail closed outside that envelope.",
+  "historical_evidence_note": "The immutable prior/precision/proposal artifacts intentionally retain runtime_admitted=false and aggregate_frost_migration_complete=false because they describe pre-disposition experimental snapshots."
+}

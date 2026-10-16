@@ -1,0 +1,53 @@
+name: F-PE-MULTI06 mode7 generated worker pool
+
+concurrency:
+  group: f-pe-multi06-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - work/f-pe-multi06-mode7-generated-worker-pool
+    paths:
+      - 'src/runtime/mod_fmr_parallel_worker_pool.f90'
+      - 'tests/fpe/prepare_fpe_multi06_profile8016.py'
+      - 'tests/fpe/materialize_fpe_multi06_headcalc_stubs.py'
+      - 'tests/fpe/test_fpe_multi06_mode7_generated_worker_pool.f90'
+      - 'tests/fpe/run_fpe_multi06_mode7_generated_worker_pool.sh'
+      - 'docs/performance/F-PE-MULTI06_MODE7_GENERATED_WORKER_POOL_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-multi06.yml'
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/runtime/mod_fmr_parallel_worker_pool.f90'
+      - 'tests/fpe/prepare_fpe_multi06_profile8016.py'
+      - 'tests/fpe/materialize_fpe_multi06_headcalc_stubs.py'
+      - 'tests/fpe/test_fpe_multi06_mode7_generated_worker_pool.f90'
+      - 'tests/fpe/run_fpe_multi06_mode7_generated_worker_pool.sh'
+      - 'docs/performance/F-PE-MULTI06_MODE7_GENERATED_WORKER_POOL_PREREGISTRATION.md'
+      - '.github/workflows/f-pe-multi06.yml'
+  workflow_dispatch:
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fetch canonical authority
+        run: git fetch origin integration/f-ci-canonical
+      - name: Download frozen PDOK BRO Bodemkaart GeoPackage
+        uses: actions/download-artifact@v4
+        with:
+          name: f-pe-elastic12a4-pdok-atom
+          path: ${{ runner.temp }}/multi06-pdok
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: abhedwig-cell/SWAP5
+          run-id: 36550782840
+      - name: Run mode7 GENERATED worker-pool gate
+        run: bash tests/fpe/run_fpe_multi06_mode7_generated_worker_pool.sh "$RUNNER_TEMP/multi06-pdok"

@@ -1,0 +1,50 @@
+{
+  "work_unit": "PPA-WU05B3",
+  "baseline": "33cb8c94d0ed2c9578643033e414a313daf00e88",
+  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "scope": "Legacy no-drain FrozenBounds on rootless ordinary Reference mode2, explicit opt-in",
+  "source": "reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90",
+  "source_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+  "contract": {
+    "deepest_frozen_node": "max index in 1:n-1 with T <= reduction_end+1e-6; -1 if none. Deliberately preserves legacy omission, not corrected-reference claim.",
+    "air": "Sum max(theta_sat-theta,0)*dz bottom upward, stop before preceding rfcp<=0.01; bottom always included.",
+    "flux": "0 iff deepest_node>1 and available_air_cm<0.01; otherwise exact unmodified prescribed bottom proposal, both signs",
+    "geometry": "No depths or interpolation needed for no-drain policy; do not execute dead legacy depth calculations.",
+    "trial": "Recompute from immutable current trial-start fields; final boundary consumed by existing solver; existing solve_result flux is only mass/publication authority.",
+    "temporal": "Separate explicitly positive head_cm and temperature_c budgets; dimensionless full/half maximum. Different terminal block decisions require refinement. Local budget does not imply cumulative accuracy."
+  },
+  "affected_invariants": [
+    3,
+    4,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    26,
+    29
+  ],
+  "held_fixed": [
+    "solver",
+    "mass ledger",
+    "committed/restart schema",
+    "salt/root compensation semantics"
+  ],
+  "exclusions": [
+    "active drainage",
+    "root uptake/root-frost composition pending separate qualification",
+    "groundwater coupled boundary",
+    "macropores",
+    "latent heat/ice inventory",
+    "corrected last-node geometry"
+  ],
+  "required_gates": [
+    "independent unit threshold/sign/index/traversal/OFF/invalid oracles at O0/O2",
+    "real runtime blocked/allowed signs with hard 1e-12 cm mass closure and accepted flux oracle",
+    "retry versus finer direct run and fresh committed restart",
+    "incumbent B1/B2 frost, Jarvis/Walsum and active salt preservation",
+    "current canonical full-preservation exact source qualification"
+  ],
+  "admitted": false
+}

@@ -1,0 +1,342 @@
+name: PPA-WU05B bounded frost qualification and admission
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'src/process/mod_frost_hydraulic_effect.f90'
+      - 'src/process/mod_drainage_empirical_interflow_response.f90'
+      - 'src/process/mod_drainage_extended_exchange.f90'
+      - 'src/process/mod_root_frost_stress.f90'
+      - 'src/process/mod_frost_bottom_boundary_effect.f90'
+      - 'src/process/mod_root_uptake_compensation.f90'
+      - 'src/runtime/mod_root_uptake_compensation_execution.f90'
+      - 'src/runtime/mod_fmr_production_application_bootstrap.f90'
+      - 'src/solver/mod_frost_hydraulic_provider.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_committed_restart.f90'
+      - 'tests/frost/**'
+      - 'reference/swap-4.3.1/frost-corrections/**'
+      - 'docs/audits/PPA_WU05B_FROST_SOURCE_RECONSTRUCTION.md'
+      - 'integration/audits/PPA_WU05B*.json'
+      - '.github/workflows/ppa-wu05b-frost-admission.yml'
+
+  workflow_dispatch:
+    inputs:
+      selection_record:
+        description: Existing work-unit JSON with frost_owner and optional highest_low_air decisions
+        required: true
+        type: string
+      highest_low_air:
+        description: Exceptional numerical stress research; never routine admission
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ppa-wu05b-frost-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  selection-preflight:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Validate existing owner selection before broad work
+        env:
+          SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+        run: |
+          python3 tests/modularity/run_modular_tests.py --check-selection frost_owner
+          python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+  modular-feedback:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fast physical and numerical contracts; no highest qualification claim
+        run: |
+          python3 tests/modularity/run_modular_tests.py --case root_oxygen --case root_contract --case low_air_policy --output "$RUNNER_TEMP/frost-feedback"
+          bash tests/frost/run_frost_invalid_input_preservation.sh
+          bash tests/frost/run_frost_nan_guard_independent.sh
+  bounded-frost-qualification:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Frost process, typed provider, runtime, restart and retry qualification
+        run: |
+          bash tests/frost/run_ppa_wu05b_frost_effect.sh
+          bash tests/frost/run_ppa_wu05b_frost_runtime.sh
+      - name: Explicit empirical root frost and application composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b2_root_frost.sh; then
+            bash tests/frost/run_ppa_wu05b2_root_frost.sh
+            bash tests/frost/run_ppa_wu05b2_root_frost_runtime.sh
+            bash tests/physics/run_ppa_wu05d2_jarvis.sh
+            python3 tests/physics/run_ppa_wu05d3_walsum.py
+            C3A_RESULT="$RUNNER_TEMP/frost-root-salt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+            WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-root-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+          fi
+      - name: Explicit no-drain frozen bottom boundary
+        run: |
+          if test -f tests/frost/run_ppa_wu05b3_frost_bottom.sh; then
+            bash tests/frost/run_ppa_wu05b3_frost_bottom.sh
+            bash tests/frost/run_ppa_wu05b3_frost_bottom_runtime.sh
+            WU05E_COMPENSATION_METHOD=walsum C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+            WU05E_COMPENSATION_METHOD=walsum WU05E_TRANSPORT_VARIANT=dispersion C3A_RESULT="$RUNNER_TEMP/frost-bottom-walsalt-dispersion.json" python3 tests/physics/run_ppa_wu05e_mixed_salt.py
+          fi
+      - name: Joint empirical root and no-drain bottom frost
+        run: |
+          if test -f tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh; then
+            bash tests/frost/run_ppa_wu05b4_root_bottom_runtime.sh
+          fi
+      - name: Bounded original versus corrected B1 drainage accounting
+        run: |
+          if test -f tests/frost/run_ppa_wu05b5_corrected_drain_source.sh; then
+            bash tests/frost/run_ppa_wu05b5_corrected_drain_source.sh
+          fi
+      - name: Explicit normal-branch nodal frost drainage
+        run: |
+          if test -f tests/frost/run_ppa_wu05b6_normal_drain_source.sh; then
+            bash tests/frost/run_ppa_wu05b6_normal_drain_source.sh
+            bash tests/frost/run_ppa_wu05b6_normal_drain_runtime.sh
+          fi
+      - name: Guarded corrected B1 frost geometry reference
+        run: |
+          if test -f tests/frost/run_ppa_wu05b7_geometry_reference.py; then
+            python3 tests/frost/run_ppa_wu05b7_geometry_reference.py
+          fi
+      - name: Explicit bracketed low-air nodal frost drainage
+        run: |
+          if test -f tests/frost/run_ppa_wu05b8_low_air_source.sh; then
+            bash tests/frost/run_ppa_wu05b8_low_air_source.sh
+            bash tests/frost/run_ppa_wu05b8_low_air_runtime.sh
+          fi
+      - name: Explicit normal frost with admitted linear drainage generation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b9_response_drain_source.sh; then
+            bash tests/frost/run_ppa_wu05b9_response_drain_source.sh
+            bash tests/frost/run_ppa_wu05b9_response_drain_runtime.sh
+          fi
+      - name: Explicit low-air frost with admitted linear drainage generation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b10_low_air_response_source.sh; then
+            bash tests/frost/run_ppa_wu05b10_low_air_response_source.sh
+            bash tests/frost/run_ppa_wu05b10_low_air_response_runtime.sh
+          fi
+      - name: Exact current-canonical preservation for the bounded frost successor
+        run: bash tests/fci/run_fci_canonical_p2e05_moving_preservation.sh
+      - name: Explicit normal and low-air frost with admitted tabulated drainage generation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b11_tabulated_response_source.sh; then
+            bash tests/frost/run_ppa_wu05b11_tabulated_response_source.sh
+            bash tests/frost/run_ppa_wu05b11_normal_runtime.sh
+            bash tests/frost/run_ppa_wu05b11_low_air_runtime.sh
+            python3 tests/frost/run_ppa_wu05b11_activation.py
+            python3 tests/frost/run_ppa_wu05b11_refinements.py
+          fi
+      - name: Analytic drainage scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b12_scientific.py; then
+            git cat-file -e 49728b999b884a37643908c1dad40269f4e2db9b^{commit} 2>/dev/null || git fetch --no-tags origin 49728b999b884a37643908c1dad40269f4e2db9b
+            python3 tests/frost/run_ppa_wu05b12_scientific.py
+            python3 tests/frost/run_ppa_wu05b12_analytic_response_source.py
+          fi
+      - name: Empirical interflow scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b13_scientific.py; then
+            git cat-file -e 702db051bf5dd0960a962be919ea0cfbf01895a4^{commit} 2>/dev/null || git fetch --no-tags origin 702db051bf5dd0960a962be919ea0cfbf01895a4
+            python3 tests/frost/run_ppa_wu05b13_scientific.py
+            python3 tests/frost/run_ppa_wu05b13_empirical_response_source.py
+          fi
+      - name: Signed exchange scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b14_scientific.py; then
+            # Q4A is an immutable scientific authority outside canonical ancestry.
+            git cat-file -e 48df989b098d73208eed2496005b656f588ebffd^{commit} 2>/dev/null || git fetch --no-tags origin 48df989b098d73208eed2496005b656f588ebffd
+            python3 tests/frost/run_ppa_wu05b14_scientific.py
+            python3 tests/frost/run_ppa_wu05b14_extended_response_source.py
+          fi
+      - name: Highest drainage scientific and corrected frost-source composition
+        run: |
+          if test -f tests/frost/run_ppa_wu05b15_scientific.py; then
+            git cat-file -e 48df989b098d73208eed2496005b656f588ebffd^{commit} 2>/dev/null || git fetch --no-tags origin 48df989b098d73208eed2496005b656f588ebffd
+            python3 tests/frost/run_ppa_wu05b15_scientific.py
+            python3 tests/frost/run_ppa_wu05b15_extended_response_source.py
+          fi
+      - name: Install documentation dependencies
+        run: python3 -m pip install -r requirements-docs.txt
+      - name: Validate docs, JSON and whitespace
+        run: |
+          python3 tools/docs/check_docs.py
+          python3 -m mkdocs build --strict --site-dir "$RUNNER_TEMP/ppa-wu05b-site"
+          python3 - <<'PY'
+          import json
+          import pathlib
+          for path in pathlib.Path('integration/audits').glob('PPA_WU05B*.json'):
+              json.loads(path.read_text())
+          print('PPA-WU05B_JSON_PARSE=PASS')
+          PY
+          git diff --check
+
+  analytic-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: All-family actual runtime and further references
+        run: |
+          if test -f tests/frost/run_ppa_wu05b12_${{ matrix.route }}_runtime.sh; then
+            bash tests/frost/run_ppa_wu05b12_${{ matrix.route }}_runtime.sh
+            python3 tests/frost/run_ppa_wu05b12_activation.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b12_preflight.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b12_refinements.py --routes ${{ matrix.route }}
+          fi
+
+  empirical-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B13_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B13_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B13_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: All exponent and ordered-level actual runtime configurations
+        run: |
+          # B14 replays every B13 primary on its fresh modules. B13's own
+          # additional/preservation runners are deliberately pinned to B13 source.
+          if test -f tests/frost/run_ppa_wu05b13_runtime.py && ! test -f tests/frost/run_ppa_wu05b14_runtime.py; then
+            python3 tests/frost/run_ppa_wu05b13_runtime.py --route ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b13_additional.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b13_preservation.py --route ${{ matrix.route }}
+          fi
+
+  extended-frost-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B14_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B14_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B14_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Actual signed runtime, control branches, finer references and preservation
+        run: |
+          if test -f tests/frost/run_ppa_wu05b14_runtime.py && ! test -f tests/frost/run_ppa_wu05b15_runtime.py; then
+            python3 tests/frost/run_ppa_wu05b14_runtime.py --route ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b14_additional.py --routes ${{ matrix.route }}
+            python3 tests/frost/run_ppa_wu05b14_preservation.py --route ${{ matrix.route }}
+          fi
+
+  highest-runtime:
+    if: github.event_name == 'workflow_dispatch'
+    needs: selection-preflight
+    env:
+      SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        route: [normal, low_air]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Record exact PR and tested revisions
+        run: |
+          echo "PPA_WU05B15_PR_HEAD=${{ github.event.pull_request.head.sha }}"
+          echo "PPA_WU05B15_TESTED_MERGE_HEAD=$(git rev-parse HEAD)"
+          echo "PPA_WU05B15_TESTED_TREE=$(git rev-parse HEAD^{tree})"
+      - name: Install Fortran compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+      - name: Select highest route explicitly
+        env:
+          SELECT_LOW_AIR: ${{ inputs.highest_low_air }}
+        run: |
+          if [[ '${{ matrix.route }}' == low_air && "$SELECT_LOW_AIR" != true ]]; then
+            echo 'highest low-air NOT_SELECTED_POLICY'
+          else
+            python3 tests/modularity/run_modular_tests.py --check-selection ${{ matrix.route == 'low_air' && 'highest_low_air' || 'frost_owner' }}
+          fi
+      - name: Actual highest runtime, held cases, finer references and preservation
+        if: matrix.route != 'low_air' || inputs.highest_low_air
+        run: |
+          if test -f tests/frost/run_ppa_wu05b15_runtime.py; then
+            if test "$(git rev-parse HEAD:src)" = ac822aafd5403547a2c7ffad5c3ba02c9fa36496; then
+              successor=--micro-successor
+            else
+              successor=
+            fi
+            python3 tests/frost/run_ppa_wu05b15_runtime.py --route ${{ matrix.route }} $successor
+            python3 tests/frost/run_ppa_wu05b15_additional.py --routes ${{ matrix.route }} $successor
+            python3 tests/frost/run_ppa_wu05b15_preservation.py --route ${{ matrix.route }} $successor
+          fi

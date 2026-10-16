@@ -1,0 +1,68 @@
+name: F-PE-TEMPORAL07 c0.65 coupling admission
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_temporal07_*.sh'
+      - 'docs/performance/F-PE-TEMPORAL07_*.md'
+      - '.github/workflows/f-pe-temporal07.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-linear-response:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal07_p0_linear_response.sh
+
+  p1-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_temporal07_p1_cache.sh
+
+  p2-live-modflow:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - name: Reproduce frozen P2 endpoint-authority blocker
+        shell: bash
+        run: |
+          log="$RUNNER_TEMP/temporal07-p2-expected-blocker.log"
+          set +e
+          bash tests/fpe/run_fpe_temporal07_p2_live_modflow.sh >"$log" 2>&1
+          rc=$?
+          set -e
+          cat "$log"
+          test "$rc" -ne 0
+          grep -Fq 'FGC44_INDEPENDENT_HEAD_ENDPOINT=PASS' "$log"
+          grep -Fq 'FGC44_INDEPENDENT_PHYSICAL_RESIDUAL_GATE=FAIL' "$log"
+          grep -Fq 'FGC44_MODFLOW_MODEL_BALANCE_GATE=PASS' "$log"
+          grep -Fq 'FGC44_MODFLOW_API_COMPONENT_GATE=PASS' "$log"
+          grep -Fq 'FGC44_STOPPING_FLOW_GATE=PASS' "$log"
+          grep -Fq 'FGC44_FINAL_FLUX_RESIDUAL=' "$log"
+          echo 'FPE_TEMPORAL07_P2_EXPECTED_BLOCKER=PASS'
+
+  p2-attribution-c050:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler and pinned MODFLOW Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gfortran
+          python3 -m pip install --upgrade pip
+          python3 -m pip install git+https://github.com/Deltares/xmipy.git@9769f8cd4bc6153c71bcc360f602a931b102d902 git+https://github.com/modflowpy/flopy.git@1a783da6582f8203190a8d6b1d7a60659022afdb
+      - run: bash tests/fpe/run_fpe_temporal07_p2_attribution_c050.sh

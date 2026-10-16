@@ -146,16 +146,21 @@ class FakeRuntime:
     def trial_cell_heads(self, cell_heads_m):
         self.events.append("corrector")
         values = self.corrector_script.pop(0)
-        return GroundwaterApplicationCorrectorBatch(True, values)
+        return GroundwaterApplicationCorrectorBatch(
+            True, values, tuple(0.0 for _ in values)
+        )
 
     def discard_candidates(self):
         self.discard_calls += 1
         self.events.append("discard")
         return True
 
-    def reanchor_terms(self, cell_heads_m, cell_q_swap_m_per_s):
+    def relinearize_terms(
+        self, cell_heads_m, cell_q_swap_m_per_s, cell_dq_swap_dh_per_s
+    ):
         self.reanchor_calls += 1
         self.events.append("reanchor")
+        assert len(cell_dq_swap_dh_per_s) == len(cell_heads_m)
         return (
             Term(101, 2.0, 3.0 + self.reanchor_calls),
             Term(202, 4.0, 5.0 + self.reanchor_calls),

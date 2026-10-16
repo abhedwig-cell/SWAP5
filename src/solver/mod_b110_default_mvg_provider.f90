@@ -1,7 +1,9 @@
 module mod_b110_default_mvg_provider
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t
+  use mod_soil_water_solver_contract, only: constitutive_hydraulics_provider_t, &
+       CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CONDUCTIVITY, &
+       CONSTITUTIVE_DEMAND_CAPACITY, CONSTITUTIVE_DEMAND_DKDH
   implicit none
   private
 
@@ -13,6 +15,8 @@ module mod_b110_default_mvg_provider
      integer :: active_nodes = 0
      real(real64), allocatable :: cofgen(:,:)
      logical :: ksatexm_extension_enabled = .false.
+     logical :: elastic_storage_active = .false.
+     real(real64), allocatable :: specific_elastic_storage(:)
   end type b110_default_mvg_parameters_t
 
   type, extends(constitutive_hydraulics_provider_t), public :: b110_default_mvg_provider_t
@@ -20,18 +24,26 @@ module mod_b110_default_mvg_provider
      real(real64) :: step_duration = 0.0_real64
    contains
      procedure :: evaluate => b110_default_mvg_evaluate
+     procedure :: evaluate_demand => b110_default_mvg_evaluate_demand
+     procedure :: evaluate_water_content_increment => b110_default_mvg_evaluate_water_content_increment
+     procedure :: supports_point_conductivity => b110_default_mvg_supports_point_conductivity
+     procedure :: evaluate_point_conductivity => b110_default_mvg_evaluate_point_conductivity
   end type b110_default_mvg_provider_t
 
   public :: initialize_b110_default_mvg_parameters
   public :: bind_b110_default_mvg_provider
+  public :: b110_hconduc
   public :: evaluate_b110_default_mvg_conductivity
 
 contains
 
-  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension)
+  subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension, &
+                                                      enable_elastic_storage, specific_elastic_storage_input)
     type(b110_default_mvg_parameters_t), intent(out) :: parameters
     real(real64), intent(in) :: cofgen_input(:,:)
     logical, intent(in), optional :: enable_ksatexm_extension
+    logical, intent(in), optional :: enable_elastic_storage
+    real(real64), intent(in), optional :: specific_elastic_storage_input(:)
     integer :: i, n
     real(real64) :: h105, t105, c105, a, b, alfa
 
@@ -41,6 +53,24 @@ contains
     parameters%active_nodes = n
     parameters%ksatexm_extension_enabled = .false.
     if (present(enable_ksatexm_extension)) parameters%ksatexm_extension_enabled = enable_ksatexm_extension
+    parameters%elastic_storage_active = .false.
+    if (present(enable_elastic_storage)) parameters%elastic_storage_active = enable_elastic_storage
+    if (parameters%elastic_storage_active .and. parameters%ksatexm_extension_enabled) &
+         error stop 'B1.10 default MvG provider: elastic storage with KSATEXM is not qualified'
+    if (parameters%elastic_storage_active) then
+       if (.not. present(specific_elastic_storage_input)) &
+            error stop 'B1.10 default MvG provider: elastic storage active without values'
+       if (size(specific_elastic_storage_input) /= n) &
+            error stop 'B1.10 default MvG provider: elastic storage shape mismatch'
+       if (any(.not. ieee_is_finite(specific_elastic_storage_input)) .or. &
+           any(specific_elastic_storage_input < 0.0_real64)) &
+            error stop 'B1.10 default MvG provider: invalid elastic storage'
+       allocate(parameters%specific_elastic_storage(n))
+       parameters%specific_elastic_storage = specific_elastic_storage_input
+    else
+       if (present(specific_elastic_storage_input)) &
+            error stop 'B1.10 default MvG provider: elastic storage values supplied while inactive'
+    end if
     allocate(parameters%cofgen(B110_MCOF_REQUIRED,n))
     parameters%cofgen = 0.0_real64
     parameters%cofgen(1:min(size(cofgen_input,1),B110_MCOF_REQUIRED),:) = &
@@ -140,6 +170,144 @@ contains
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
 
+  subroutine b110_default_mvg_evaluate_water_content_increment(self, pressure_head, previous_pressure_head, &
+                                                                 water_content, previous_water_content, increment)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:), previous_pressure_head(:)
+    real(real64), intent(in) :: water_content(:), previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+    integer :: i, n
+
+    if (.not. associated(self%parameters)) error stop 'B1.10 default MvG provider: parameters not bound'
+    n = self%parameters%active_nodes
+    if (size(pressure_head) /= n .or. size(previous_pressure_head) /= n .or. size(water_content) /= n .or. &
+        size(previous_water_content) /= n .or. size(increment) /= n) &
+         error stop 'B1.10 default MvG provider: storage increment shape mismatch'
+
+    do i = 1, n
+      if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64 .and. &
+          previous_pressure_head(i) >= 0.0_real64) then
+        increment(i) = self%parameters%specific_elastic_storage(i) * &
+             (pressure_head(i)-previous_pressure_head(i))
+      else
+        increment(i) = b110_watcon_increment(self%parameters%cofgen(:,i), pressure_head(i), &
+             previous_pressure_head(i), water_content(i), previous_water_content(i))
+      end if
+    end do
+  end subroutine b110_default_mvg_evaluate_water_content_increment
+
+  logical function b110_default_mvg_supports_point_conductivity(self) result(supported)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    supported = associated(self%parameters)
+  end function b110_default_mvg_supports_point_conductivity
+
+  subroutine b110_default_mvg_evaluate_point_conductivity(self, node_index, pressure_head, water_content, conductivity, &
+                                                           available)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    integer, intent(in) :: node_index
+    real(real64), intent(in) :: pressure_head, water_content
+    real(real64), intent(out) :: conductivity
+    logical, intent(out) :: available
+
+    conductivity = 0.0_real64
+    available = .false.
+    if (.not. associated(self%parameters)) return
+    if (node_index < 1 .or. node_index > self%parameters%active_nodes) return
+    if (.not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
+    conductivity = b110_hconduc(self%parameters%cofgen(:,node_index), pressure_head, water_content, &
+         self%parameters%ksatexm_extension_enabled)
+    if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
+      conductivity = 0.0_real64
+      return
+    end if
+    available = .true.
+  end subroutine b110_default_mvg_evaluate_point_conductivity
+
+  subroutine b110_default_mvg_evaluate_demand(self, pressure_head, demand_mask, water_content, conductivity, &
+                                                capacity, dconductivity_dhead)
+    class(b110_default_mvg_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:)
+    integer, intent(in) :: demand_mask
+    real(real64), intent(out) :: water_content(:), conductivity(:), capacity(:), dconductivity_dhead(:)
+    integer :: i, n
+    real(real64) :: theta_local
+    logical :: need_theta, need_k, need_capacity, need_dkdh
+
+    if (.not. associated(self%parameters)) error stop 'B1.10 default MvG provider: parameters not bound'
+    n = self%parameters%active_nodes
+    if (size(pressure_head) /= n .or. size(water_content) /= n .or. size(conductivity) /= n .or. &
+        size(capacity) /= n .or. size(dconductivity_dhead) /= n) &
+         error stop 'B1.10 default MvG provider: shape mismatch'
+    if (self%step_duration <= 0.0_real64) error stop 'B1.10 default MvG provider: invalid step_duration'
+
+    select case (demand_mask)
+    case (CONSTITUTIVE_DEMAND_WATER_CONTENT)
+       do i = 1, n
+          water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               water_content(i) = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_CAPACITY)
+       do i = 1, n
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_WATER_CONTENT + CONSTITUTIVE_DEMAND_CONDUCTIVITY)
+       do i = 1, n
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
+          water_content(i) = theta_local
+          conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+       end do
+       return
+    case (CONSTITUTIVE_DEMAND_CONDUCTIVITY + CONSTITUTIVE_DEMAND_CAPACITY)
+       do i = 1, n
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
+          conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
+       end do
+       return
+    case default
+       continue
+    end select
+
+    need_theta = iand(demand_mask, CONSTITUTIVE_DEMAND_WATER_CONTENT) /= 0
+    need_k = iand(demand_mask, CONSTITUTIVE_DEMAND_CONDUCTIVITY) /= 0
+    need_capacity = iand(demand_mask, CONSTITUTIVE_DEMAND_CAPACITY) /= 0
+    need_dkdh = iand(demand_mask, CONSTITUTIVE_DEMAND_DKDH) /= 0
+
+    do i = 1, n
+       if (need_theta .or. need_k) then
+          theta_local = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               theta_local = self%parameters%cofgen(2,i) + &
+                    pressure_head(i)*self%parameters%specific_elastic_storage(i)
+          if (need_theta) water_content(i) = theta_local
+          if (need_k) conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
+               self%parameters%ksatexm_extension_enabled)
+       end if
+       if (need_capacity) then
+          capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+          if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
+               capacity(i) = self%parameters%specific_elastic_storage(i)
+       end if
+    end do
+    if (need_dkdh) dconductivity_dhead = 0.0_real64
+  end subroutine b110_default_mvg_evaluate_demand
+
   subroutine b110_default_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
     class(b110_default_mvg_provider_t), intent(in) :: self
     real(real64), intent(in) :: pressure_head(:)
@@ -156,6 +324,11 @@ contains
     do i = 1, n
        water_content(i) = b110_watcon(self%parameters%cofgen(:,i), pressure_head(i))
        capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
+       if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) then
+          water_content(i) = self%parameters%cofgen(2,i) + &
+               pressure_head(i)*self%parameters%specific_elastic_storage(i)
+          capacity(i) = self%parameters%specific_elastic_storage(i)
+       end if
        conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i), &
             self%parameters%ksatexm_extension_enabled)
     end do
@@ -191,6 +364,84 @@ contains
        end if
     end if
   end function b110_watcon
+
+  pure real(real64) function b110_watcon_increment(c, head_new, head_old, theta_new, theta_old) result(delta_theta)
+    real(real64), intent(in) :: c(:), head_new, head_old, theta_new, theta_old
+    real(real64) :: h105
+
+    delta_theta = theta_new-theta_old
+    if (head_new == head_old) then
+      delta_theta = 0.0_real64
+      return
+    end if
+    if (head_new >= 0.0_real64 .and. head_old >= 0.0_real64) then
+      delta_theta = 0.0_real64
+      return
+    end if
+    if (head_new >= 0.0_real64 .or. head_old >= 0.0_real64) return
+
+    if (c(9) > B110_H_CRIT) then
+      if (head_new > B110_H_CRIT .and. head_old > B110_H_CRIT) then
+        delta_theta = c(27)*(head_new-head_old)
+      else if (head_new <= B110_H_CRIT .and. head_old <= B110_H_CRIT) then
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,1.0_real64,delta_theta)
+      end if
+    else
+      h105 = 1.05_real64*c(9)
+      if (head_new >= h105 .and. head_old >= h105) then
+        delta_theta = c(42)*(head_new-head_old) / &
+             ((1.0_real64+c(41)*head_new)*(1.0_real64+c(41)*head_old))
+      else if (head_new < h105 .and. head_old < h105) then
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,c(28),delta_theta)
+      end if
+    end if
+  end function b110_watcon_increment
+
+  pure real(real64) function b110_vg_same_branch_increment(c,head_new,head_old,normalization,fallback) result(delta_theta)
+    real(real64), intent(in) :: c(:), head_new, head_old, normalization, fallback
+    real(real64) :: abs_old, relative_abs_change, x_old, dx, dlog_se, se_old
+
+    delta_theta = fallback
+    abs_old = abs(head_old)
+    if (abs_old <= 0.0_real64 .or. normalization <= 0.0_real64) return
+    relative_abs_change = (abs(head_new)-abs_old)/abs_old
+    if (relative_abs_change <= -1.0_real64) return
+
+    x_old = abs(c(4)*head_old)**c(6)
+    if (.not. ieee_is_finite(x_old)) return
+    dx = x_old*b110_expm1(c(6)*b110_log1p(relative_abs_change))
+    if (.not. ieee_is_finite(dx)) return
+    dlog_se = -c(7)*b110_log1p(dx/(1.0_real64+x_old))
+    if (.not. ieee_is_finite(dlog_se)) return
+    se_old = 1.0_real64/((1.0_real64+x_old)**c(7))
+    if (.not. ieee_is_finite(se_old)) return
+    delta_theta = c(25)*se_old*b110_expm1(dlog_se)/normalization
+    if (.not. ieee_is_finite(delta_theta)) delta_theta = fallback
+  end function b110_vg_same_branch_increment
+
+  pure real(real64) function b110_log1p(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x - 0.5_real64*x2 + x*x2/3.0_real64 - x2*x2/4.0_real64 + &
+           x*x2*x2/5.0_real64 - x2*x2*x2/6.0_real64
+    else
+      value = log(1.0_real64+x)
+    end if
+  end function b110_log1p
+
+  pure real(real64) function b110_expm1(x) result(value)
+    real(real64), intent(in) :: x
+    real(real64) :: x2
+    if (abs(x) < 1.0e-3_real64) then
+      x2 = x*x
+      value = x + 0.5_real64*x2 + x*x2/6.0_real64 + x2*x2/24.0_real64 + &
+           x*x2*x2/120.0_real64 + x2*x2*x2/720.0_real64
+    else
+      value = exp(x)-1.0_real64
+    end if
+  end function b110_expm1
 
   pure real(real64) function b110_moiscap(c, head, step_duration) result(capacity)
     real(real64), intent(in) :: c(:), head, step_duration

@@ -11,7 +11,11 @@ module mod_restricted_soil_temperature
        soil_temperature_field_view_t, soil_temperature_workspace_t, soil_temperature_result_t, &
        soil_temperature_diagnostics_t, initialize_soil_temperature_state, materialize_soil_temperature_trial_state, &
        commit_soil_temperature_state, build_soil_temperature_field_view, copy_soil_temperature_profile, &
-       soil_temperature_at_node, export_soil_temperature_restart, reconstruct_soil_temperature_restart
+       soil_temperature_at_node, export_soil_temperature_restart, reconstruct_soil_temperature_restart, &
+       SOIL_TEMP_SOLUTION_NUMERIC, SOIL_TEMP_SOLUTION_ANALYTIC, SOIL_TEMP_TOP_AIR_TEMPERATURE, &
+       SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE, SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX, &
+       SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION, SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX, &
+       SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE
   implicit none
   private
 
@@ -42,6 +46,10 @@ module mod_restricted_soil_temperature
   public :: SOIL_TEMP_OK, SOIL_TEMP_INVALID_PARAMETERS, SOIL_TEMP_INVALID_STATE, SOIL_TEMP_INVALID_INTERVAL
   public :: SOIL_TEMP_INVALID_FORCING, SOIL_TEMP_INVALID_HYDRAULIC_VIEW, SOIL_TEMP_WORKSPACE_FAILURE
   public :: SOIL_TEMP_LINEAR_SOLVE_FAILURE, SOIL_TEMP_ENERGY_CLOSURE_FAILURE, SOIL_TEMP_INVALID_RESTART, SOIL_TEMP_INVALID_NODE
+  public :: SOIL_TEMP_SOLUTION_NUMERIC, SOIL_TEMP_SOLUTION_ANALYTIC
+  public :: SOIL_TEMP_TOP_AIR_TEMPERATURE, SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE
+  public :: SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX, SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION
+  public :: SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX, SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE
   public :: soil_temperature_parameters_t, soil_temperature_numerical_config_t, soil_temperature_forcing_t
   public :: soil_temperature_state_t, soil_temperature_restart_payload_t, soil_temperature_field_view_t
   public :: soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t
@@ -49,14 +57,20 @@ module mod_restricted_soil_temperature
   public :: trial_restricted_soil_temperature, commit_soil_temperature_state, build_soil_temperature_field_view
   public :: copy_soil_temperature_profile, soil_temperature_at_node, export_soil_temperature_restart
   public :: reconstruct_soil_temperature_restart
+  public :: evaluate_b111_analytical_temperature_profile, resolve_b111_surface_temperature
 
 contains
 
-  subroutine initialize_soil_temperature_parameters(dz_cm, distance_above_cm, theta_sat, f_quartz, f_clay, f_organic, parameters, status)
+  subroutine initialize_soil_temperature_parameters(dz_cm, distance_above_cm, theta_sat, f_quartz, f_clay, f_organic, &
+       parameters, status, solution_mode, analytic_mean_temperature_c, analytic_amplitude_c, &
+       analytic_reference_day, analytic_damping_depth_cm)
     real(real64), intent(in) :: dz_cm(:), distance_above_cm(:), theta_sat(:)
     real(real64), intent(in) :: f_quartz(:), f_clay(:), f_organic(:)
     type(soil_temperature_parameters_t), intent(out) :: parameters
     integer, intent(out) :: status
+    integer, intent(in), optional :: solution_mode
+    real(real64), intent(in), optional :: analytic_mean_temperature_c, analytic_amplitude_c
+    real(real64), intent(in), optional :: analytic_reference_day, analytic_damping_depth_cm
     integer :: i, n
     real(real64) :: solid_sum
 
@@ -75,17 +89,27 @@ contains
       if (solid_sum<=0.0_real64 .or. solid_sum>1.0_real64) return
     end do
     parameters%active_nodes=n
-    allocate(parameters%dz_cm(n),parameters%distance_above_cm(n),parameters%theta_sat(n))
+    allocate(parameters%dz_cm(n),parameters%distance_above_cm(n),parameters%node_depth_cm(n),parameters%theta_sat(n))
     allocate(parameters%f_quartz(n),parameters%f_clay(n),parameters%f_organic(n))
     allocate(parameters%fkk_qco_dry(n),parameters%fk_qco_dry(n),parameters%fkk_qco_wet(n),parameters%fk_qco_wet(n))
     parameters%dz_cm=dz_cm; parameters%distance_above_cm=distance_above_cm; parameters%theta_sat=theta_sat
+    parameters%node_depth_cm(1)=-distance_above_cm(1)
+    do i=2,n
+      parameters%node_depth_cm(i)=parameters%node_depth_cm(i-1)-distance_above_cm(i)
+    end do
     parameters%f_quartz=f_quartz; parameters%f_clay=f_clay; parameters%f_organic=f_organic
     parameters%fkk_qco_dry=f_quartz*(K_QA*K_QUARTZ)+f_clay*(K_CA*K_CLAY)+f_organic*(K_OA*K_ORGANIC)
     parameters%fk_qco_dry=f_quartz*K_QA+f_clay*K_CA+f_organic*K_OA
     parameters%fkk_qco_wet=f_quartz*(K_QW*K_QUARTZ)+f_clay*(K_CW*K_CLAY)+f_organic*(K_OW*K_ORGANIC)
     parameters%fk_qco_wet=f_quartz*K_QW+f_clay*K_CW+f_organic*K_OW
+    if (present(solution_mode)) parameters%solution_mode=solution_mode
+    if (present(analytic_mean_temperature_c)) &
+         parameters%analytic_mean_temperature_c=analytic_mean_temperature_c
+    if (present(analytic_amplitude_c)) parameters%analytic_amplitude_c=analytic_amplitude_c
+    if (present(analytic_reference_day)) parameters%analytic_reference_day=analytic_reference_day
+    if (present(analytic_damping_depth_cm)) parameters%analytic_damping_depth_cm=analytic_damping_depth_cm
     parameters%initialized=.true.
-    status=SOIL_TEMP_OK
+    if (parameters%ready()) status=SOIL_TEMP_OK
   end subroutine initialize_soil_temperature_parameters
 
   subroutine trial_restricted_soil_temperature(parameters,numerical,forcing,hydraulic_start,hydraulic_end, &
@@ -102,7 +126,7 @@ contains
     type(soil_temperature_diagnostics_t), intent(out) :: diagnostics
     real(real64), allocatable :: committed_temperature(:)
     integer :: i,n,status
-    real(real64) :: dt,top_flux,storage_change,boundary_energy,residual
+    real(real64) :: dt,top_flux,bottom_flux,storage_change,boundary_energy,residual,surface_temperature
 
     result=soil_temperature_result_t(); diagnostics=soil_temperature_diagnostics_t()
     if (.not. parameters%ready()) then; result%status=SOIL_TEMP_INVALID_PARAMETERS; diagnostics%status=result%status; return; end if
@@ -113,7 +137,7 @@ contains
     if (.not. ieee_is_finite(t0) .or. .not. ieee_is_finite(t1) .or. t1<=t0) then
       result%status=SOIL_TEMP_INVALID_INTERVAL; diagnostics%status=result%status; return
     end if
-    if (.not. ieee_is_finite(forcing%prescribed_surface_temperature_c)) then
+    if (.not. forcing_usable(parameters,forcing)) then
       result%status=SOIL_TEMP_INVALID_FORCING; diagnostics%status=result%status; return
     end if
     if (.not. ieee_is_finite(numerical%energy_abs_tolerance_j_cm2) .or. numerical%energy_abs_tolerance_j_cm2<0.0_real64) then
@@ -139,15 +163,49 @@ contains
       workspace%face_conductivity_j_cm_k_day(i)=0.5_real64*(workspace%node_conductivity_j_cm_k_day(i-1)+ &
            workspace%node_conductivity_j_cm_k_day(i))
     end do
-    call assemble_system(parameters,forcing%prescribed_surface_temperature_c,dt,workspace)
-    call solve_tridiagonal(workspace,n,status); diagnostics%tridiagonal_solves=1
+
+    if (parameters%solution_mode==SOIL_TEMP_SOLUTION_ANALYTIC) then
+      call evaluate_b111_analytical_temperature_profile(parameters,forcing%day_number,workspace%solution,status)
+      diagnostics%analytical_profile_used=.true.
+    else
+      call resolve_b111_surface_temperature(parameters,forcing,workspace%old_temperature_c(1), &
+           workspace%node_conductivity_j_cm_k_day(1),surface_temperature,status,diagnostics%snow_thermal_resistance_used)
+      if (status/=SOIL_TEMP_OK) then; result%status=status; diagnostics%status=status; return; end if
+      call assemble_system(parameters,forcing,surface_temperature,dt,workspace)
+      call solve_tridiagonal(workspace,n,status); diagnostics%tridiagonal_solves=1
+    end if
     if (status/=SOIL_TEMP_OK) then; result%status=status; diagnostics%status=status; return; end if
+    if (parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+        forcing%top_boundary_mode==SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX) then
+      surface_temperature=workspace%solution(1)+forcing%prescribed_top_heat_flux_j_cm2_day* &
+           parameters%distance_above_cm(1)/workspace%face_conductivity_j_cm_k_day(1)
+    end if
 
     storage_change=sum(workspace%heat_capacity_j_cm3_k*parameters%dz_cm*(workspace%solution-workspace%old_temperature_c))
-    top_flux=workspace%face_conductivity_j_cm_k_day(1)*(forcing%prescribed_surface_temperature_c-workspace%solution(1))/ &
+    bottom_flux=0.0_real64
+    if (parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+        forcing%bottom_boundary_mode==SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE) then
+      bottom_flux=workspace%node_conductivity_j_cm_k_day(n)* &
+           (forcing%prescribed_bottom_temperature_c-workspace%solution(n))/(0.5_real64*parameters%dz_cm(n))
+    end if
+    select case(parameters%solution_mode)
+    case(SOIL_TEMP_SOLUTION_ANALYTIC)
+      top_flux=storage_change/dt
+      surface_temperature=workspace%solution(1)
+    case default
+      select case(forcing%top_boundary_mode)
+      case(SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX)
+        top_flux=forcing%prescribed_top_heat_flux_j_cm2_day
+      case(SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION)
+        top_flux=storage_change/dt-bottom_flux
+      case default
+        top_flux=workspace%face_conductivity_j_cm_k_day(1)*(surface_temperature-workspace%solution(1))/ &
              parameters%distance_above_cm(1)
-    boundary_energy=dt*top_flux; residual=storage_change-boundary_energy
-    if (.not. ieee_is_finite(storage_change) .or. .not. ieee_is_finite(top_flux) .or. .not. ieee_is_finite(residual)) then
+      end select
+    end select
+    boundary_energy=dt*(top_flux+bottom_flux); residual=storage_change-boundary_energy
+    if (.not. ieee_is_finite(storage_change) .or. .not. ieee_is_finite(top_flux) .or. &
+        .not. ieee_is_finite(bottom_flux) .or. .not. ieee_is_finite(residual)) then
       result%status=SOIL_TEMP_ENERGY_CLOSURE_FAILURE; diagnostics%status=result%status; return
     end if
     if (abs(residual)>numerical%energy_abs_tolerance_j_cm2) then
@@ -156,13 +214,48 @@ contains
     call materialize_soil_temperature_trial_state(workspace%solution,trial_state,status)
     if (status/=SOIL_TEMP_OK) then; result%status=status; diagnostics%status=status; return; end if
 
-    result%status=SOIL_TEMP_OK; result%produced=.true.; result%surface_temperature_c=forcing%prescribed_surface_temperature_c
-    result%top_heat_flux_into_soil_j_cm2_day=top_flux; result%sensible_storage_change_j_cm2=storage_change
+    result%status=SOIL_TEMP_OK; result%produced=.true.; result%surface_temperature_c=surface_temperature
+    result%top_heat_flux_into_soil_j_cm2_day=top_flux
+    result%bottom_heat_flux_into_soil_j_cm2_day=bottom_flux; result%sensible_storage_change_j_cm2=storage_change
     result%boundary_energy_into_soil_j_cm2=boundary_energy; result%energy_residual_j_cm2=residual
     result%min_temperature_c=minval(workspace%solution); result%max_temperature_c=maxval(workspace%solution)
-    diagnostics%status=SOIL_TEMP_OK; diagnostics%prescribed_surface_temperature_used=.true.
-    diagnostics%zero_bottom_heat_flux_used=.true.; diagnostics%energy_accounting_complete=.true.
+    diagnostics%status=SOIL_TEMP_OK
+    diagnostics%prescribed_surface_temperature_used = parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+         (forcing%top_boundary_mode==SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE .or. &
+          forcing%top_boundary_mode==SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION)
+    diagnostics%prescribed_top_heat_flux_used = parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+         forcing%top_boundary_mode==SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX
+    diagnostics%surface_temperature_flux_correction_used = parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+         forcing%top_boundary_mode==SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION
+    diagnostics%zero_bottom_heat_flux_used = parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+         forcing%bottom_boundary_mode==SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
+    diagnostics%prescribed_bottom_temperature_used = parameters%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC .and. &
+         forcing%bottom_boundary_mode==SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE
+    diagnostics%energy_accounting_complete=.true.
   end subroutine trial_restricted_soil_temperature
+
+  logical function forcing_usable(parameters,forcing) result(usable)
+    type(soil_temperature_parameters_t), intent(in) :: parameters
+    type(soil_temperature_forcing_t), intent(in) :: forcing
+    usable=.false.
+    if (parameters%solution_mode==SOIL_TEMP_SOLUTION_ANALYTIC) then
+      usable=forcing%day_number>=1 .and. forcing%day_number<=366
+      return
+    end if
+    if (forcing%top_boundary_mode<SOIL_TEMP_TOP_AIR_TEMPERATURE .or. &
+        forcing%top_boundary_mode>SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION) return
+    if (forcing%bottom_boundary_mode<SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX .or. &
+        forcing%bottom_boundary_mode>SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE) return
+    if (.not. ieee_is_finite(forcing%prescribed_surface_temperature_c) .or. &
+        .not. ieee_is_finite(forcing%prescribed_top_heat_flux_j_cm2_day) .or. &
+        .not. ieee_is_finite(forcing%prescribed_bottom_temperature_c) .or. &
+        .not. ieee_is_finite(forcing%air_temperature_c) .or. &
+        .not. ieee_is_finite(forcing%snow_water_storage_cm)) return
+    if (forcing%snow_water_storage_cm<0.0_real64) return
+    if (forcing%top_boundary_mode/=SOIL_TEMP_TOP_AIR_TEMPERATURE .and. &
+        forcing%snow_water_storage_cm>0.0_real64) return
+    usable=.true.
+  end function forcing_usable
 
   logical function hydraulic_view_usable(parameters,view) result(usable)
     type(soil_temperature_parameters_t), intent(in) :: parameters
@@ -257,17 +350,88 @@ contains
     status=SOIL_TEMP_OK
   end subroutine evaluate_devries
 
-  subroutine assemble_system(parameters,surface_temperature_c,dt,w)
+  subroutine evaluate_b111_analytical_temperature_profile(parameters,day_number,temperature_c,status)
     type(soil_temperature_parameters_t), intent(in) :: parameters
+    integer, intent(in) :: day_number
+    real(real64), intent(out) :: temperature_c(:)
+    integer, intent(out) :: status
+    real(real64) :: pi,halfpi,omega
+    integer :: i
+    status=SOIL_TEMP_INVALID_PARAMETERS
+    if (.not. parameters%ready() .or. parameters%solution_mode/=SOIL_TEMP_SOLUTION_ANALYTIC) return
+    if (size(temperature_c)/=parameters%active_nodes .or. day_number<1 .or. day_number>366) return
+    pi=4.0_real64*atan(1.0_real64); halfpi=0.5_real64*pi; omega=2.0_real64*pi/365.0_real64
+    do i=1,parameters%active_nodes
+      temperature_c(i)=parameters%analytic_mean_temperature_c+parameters%analytic_amplitude_c* &
+           sin(halfpi+omega*(real(day_number,real64)-parameters%analytic_reference_day)+ &
+               parameters%node_depth_cm(i)/parameters%analytic_damping_depth_cm)* &
+           exp(parameters%node_depth_cm(i)/parameters%analytic_damping_depth_cm)
+    end do
+    if (any(.not. ieee_is_finite(temperature_c))) return
+    status=SOIL_TEMP_OK
+  end subroutine evaluate_b111_analytical_temperature_profile
+
+  subroutine resolve_b111_surface_temperature(parameters,forcing,first_node_temperature_c, &
+       first_node_conductivity_j_cm_k_day,surface_temperature_c,status,snow_resistance_used)
+    type(soil_temperature_parameters_t), intent(in) :: parameters
+    type(soil_temperature_forcing_t), intent(in) :: forcing
+    real(real64), intent(in) :: first_node_temperature_c,first_node_conductivity_j_cm_k_day
+    real(real64), intent(out) :: surface_temperature_c
+    integer, intent(out) :: status
+    logical, intent(out) :: snow_resistance_used
+    real(real64) :: snow_density_g_cm3,snow_conductivity_j_cm_k_day,snow_depth_cm,ratio
+    surface_temperature_c=0.0_real64; status=SOIL_TEMP_INVALID_FORCING; snow_resistance_used=.false.
+    if (.not. ieee_is_finite(first_node_temperature_c) .or. &
+        .not. ieee_is_finite(first_node_conductivity_j_cm_k_day) .or. &
+        first_node_conductivity_j_cm_k_day<=0.0_real64) return
+    select case(forcing%top_boundary_mode)
+    case(SOIL_TEMP_TOP_AIR_TEMPERATURE)
+      surface_temperature_c=forcing%air_temperature_c
+      if (abs(forcing%snow_water_storage_cm)>1.0e-10_real64) then
+        snow_density_g_cm3=0.17_real64
+        snow_conductivity_j_cm_k_day=2.86e-6_real64*864.0_real64*170.0_real64**2
+        snow_depth_cm=forcing%snow_water_storage_cm/snow_density_g_cm3
+        ratio=(0.5_real64*snow_conductivity_j_cm_k_day*parameters%dz_cm(1))/ &
+             (first_node_conductivity_j_cm_k_day*snow_depth_cm)
+        surface_temperature_c=(first_node_temperature_c+ratio*forcing%air_temperature_c)/(1.0_real64+ratio)
+        snow_resistance_used=.true.
+      end if
+    case(SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE,SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION)
+      surface_temperature_c=forcing%prescribed_surface_temperature_c
+    case(SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX)
+      surface_temperature_c=first_node_temperature_c
+    case default
+      return
+    end select
+    if (.not. ieee_is_finite(surface_temperature_c)) return
+    status=SOIL_TEMP_OK
+  end subroutine resolve_b111_surface_temperature
+
+  subroutine assemble_system(parameters,forcing,surface_temperature_c,dt,w)
+    type(soil_temperature_parameters_t), intent(in) :: parameters
+    type(soil_temperature_forcing_t), intent(in) :: forcing
     real(real64), intent(in) :: surface_temperature_c,dt
     type(soil_temperature_workspace_t), intent(inout) :: w
     integer :: i,n
     n=parameters%active_nodes; w%lower=0.0_real64; w%upper=0.0_real64
     i=1
-    w%lower(i)=-dt*w%face_conductivity_j_cm_k_day(i)/(parameters%dz_cm(i)*parameters%distance_above_cm(i))
     w%upper(i)=-dt*w%face_conductivity_j_cm_k_day(i+1)/(parameters%dz_cm(i)*parameters%distance_above_cm(i+1))
-    w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%lower(i)-w%upper(i)
-    w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)-w%lower(i)*surface_temperature_c; w%lower(i)=0.0_real64
+    select case(forcing%top_boundary_mode)
+    case(SOIL_TEMP_TOP_AIR_TEMPERATURE,SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE)
+      w%lower(i)=-dt*w%face_conductivity_j_cm_k_day(i)/(parameters%dz_cm(i)*parameters%distance_above_cm(i))
+      w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%lower(i)-w%upper(i)
+      w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)-w%lower(i)*surface_temperature_c
+      w%lower(i)=0.0_real64
+    case(SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX)
+      w%lower(i)=0.0_real64
+      w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%upper(i)
+      w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)+ &
+           forcing%prescribed_top_heat_flux_j_cm2_day*dt/parameters%dz_cm(i)
+    case(SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION)
+      w%lower(i)=0.0_real64; w%upper(i)=0.0_real64; w%diagonal(i)=1.0_real64
+      w%rhs(i)=surface_temperature_c-parameters%distance_above_cm(i)/ &
+           w%face_conductivity_j_cm_k_day(i)*forcing%prescribed_top_heat_flux_j_cm2_day
+    end select
     do i=2,n-1
       w%lower(i)=-dt*w%face_conductivity_j_cm_k_day(i)/(parameters%dz_cm(i)*parameters%distance_above_cm(i))
       w%upper(i)=-dt*w%face_conductivity_j_cm_k_day(i+1)/(parameters%dz_cm(i)*parameters%distance_above_cm(i+1))
@@ -276,8 +440,17 @@ contains
     end do
     i=n
     w%lower(i)=-dt*w%face_conductivity_j_cm_k_day(i)/(parameters%dz_cm(i)*parameters%distance_above_cm(i))
-    w%upper(i)=0.0_real64; w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%lower(i)
-    w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)
+    select case(forcing%bottom_boundary_mode)
+    case(SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX)
+      w%upper(i)=0.0_real64; w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%lower(i)
+      w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)
+    case(SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE)
+      w%upper(i)=-dt*w%node_conductivity_j_cm_k_day(i)/(parameters%dz_cm(i)*0.5_real64*parameters%dz_cm(i))
+      w%diagonal(i)=w%heat_capacity_j_cm3_k(i)-w%lower(i)-w%upper(i)
+      w%rhs(i)=w%heat_capacity_j_cm3_k(i)*w%old_temperature_c(i)- &
+           w%upper(i)*forcing%prescribed_bottom_temperature_c
+      w%upper(i)=0.0_real64
+    end select
   end subroutine assemble_system
 
   subroutine solve_tridiagonal(w,n,status)

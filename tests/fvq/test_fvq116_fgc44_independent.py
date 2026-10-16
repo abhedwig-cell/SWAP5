@@ -18,13 +18,18 @@ require('self%origin_checkpoint, self%trial_result' in participant,'real FMR cor
 require('backend%run_trial' in participant,'concrete participant does not use FMR production trial path')
 require('backend%commit_trial_candidate' in participant,'concrete participant bypasses FMR kernel commit')
 require('backend%discard_trial_candidate' in participant,'concrete participant bypasses FMR rollback')
+require('sw_step_control_bottom_head' in participant.lower(),'real FMR corrector does not request bottom-head trajectory tangent')
+require('trial%response_tangent_available = .true.' in participant.lower(),'physical corrector tangent not published')
+require('dq_swap_dh_per_s = -self%trial_result%accepted_trajectory_direction%accepted_bottom_exchange_derivative' in participant.lower(),
+        'outward physical tangent orientation is not explicit')
 require('commit_trial_candidate => fmr_serialized_backend_commit_trial_candidate' in backend,'narrow backend commit delegation absent')
 require('discard_trial_candidate => fmr_serialized_backend_discard_trial_candidate' in backend,'narrow backend discard delegation absent')
 
 for token in ['XmiWrapper','Modflow6PreparedSolveSession','Fgc44RealSwap','modflow_converged','swap.trial','swap.discard','swap.swap_preflight','swap.ledger_preflight','timestep_ready_for_finalize','finalize_time_step_once','swap.commit_swap','swap.commit_ledger']:
     require(token in live,f'live end-to-end token absent: {token}')
 require('if it.modflow_converged and abs(residual)<=FLUX_TOL:' in live,'conjunctive convergence oracle absent')
-order=[live.index(x) for x in ['swap.swap_preflight()', 'swap.prepare_ledger()', 'swap.ledger_preflight()', 'session.timestep_ready_for_finalize()', 'session.finalize_time_step_once()', 'swap.commit_swap()', 'swap.commit_ledger()']]
+publication=live.split('require(swap.swap_preflight()',1)[1]
+order=[publication.index(x) for x in ['swap.prepare_ledger()', 'swap.ledger_preflight()', 'session.timestep_ready_for_finalize()', 'session.finalize_time_step_once()', 'swap.commit_swap()', 'swap.commit_ledger()']]
 require(order==sorted(order),'publication/preflight order changed')
 require('CountingKernel' in live and 'XmiWrapper' in live,'live MODFLOW kernel is not observed')
 require('FakeKernel' not in live and 'Mock' not in live,'deterministic MODFLOW double leaked into live gate')
@@ -35,6 +40,7 @@ require('Predictor/corrector ownership remains' in doc,'ownership boundary missi
 print('FVQ116_CANONICAL_HEAD_PRESSURE_MAPPING=PASS')
 print('FVQ116_REAL_FMR_BACKEND_BINDING=PASS')
 print('FVQ116_IMMUTABLE_SWAP_ORIGIN=PASS')
+print('FVQ116_PHYSICAL_OUTWARD_TANGENT_ORIENTATION=PASS')
 print('FVQ116_LIVE_MODFLOW_XMI_BINDING=PASS')
 print('FVQ116_CONJUNCTIVE_CONVERGENCE=PASS')
 print('FVQ116_PREFLIGHT_BEFORE_PUBLICATION_ORDER=PASS')

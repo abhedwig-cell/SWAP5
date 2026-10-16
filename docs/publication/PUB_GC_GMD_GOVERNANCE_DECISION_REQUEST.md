@@ -112,3 +112,29 @@ Accordingly L1 can now be answered in one line plus authority:
 L1 SWAP5 publication archive licence/redistribution statement:
 <exact authorized wording for candidate tree 9ca065553765e38eec4d4ceb611ec80d866dbae3>
 ```
+
+
+## Current-canonical handoff — 2026-09-19
+
+The publication closeout was rechecked after the E7 provenance hardening merge.
+
+Observed moving canonical:
+
+`integration/f-ci-canonical@5bb400c222aeade663facfef1e7d0c97df971104`
+
+Relative to PUB-GC closeout commit `5af1fc9841b1ba8f4dc42b312d1b505cf1a33147`, canonical is fourteen commits ahead. The delta consists of F-ROMV2-D23 and F-ROMV2-D24 evidence/authority material plus their ROM authority validator updates. It does not alter the frozen PUB-GC candidate, production/reference coupling authority, R1, or L1.
+
+Therefore:
+
+- the frozen candidate tree remains `9ca065553765e38eec4d4ceb611ec80d866dbae3`;
+- no publication-candidate reselection is required;
+- no new PUB-GC scientific experiment is required;
+- E7 remains closed as `REALISTIC_COMPONENT_DOMAIN_LIMIT`;
+- repository-controlled preparation is exhausted until controlled R1/L1 and author metadata are supplied.
+
+Machine-readable handoff:
+
+- `release/pub-gc-gmd/PUB_GC_GMD_SUBMISSION_GOVERNANCE_HANDOFF.json`;
+- `release/pub-gc-gmd/PUB_GC_GMD_AUTHORITY_INTAKE.json`.
+
+The authority intake intentionally contains null values. Those nulls are blockers, not defaults and not implied authorization.

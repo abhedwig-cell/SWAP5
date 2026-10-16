@@ -130,6 +130,8 @@ MODULE_SRC=(
   src/process/mod_restricted_surface_evaporation.f90
   src/runtime/mod_fmr_surface_evaporation_runtime_materialization.f90
 )
+# Additive C3A backend prerequisites; existing gate semantics stay fixed.
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
 
 # Replay the independently written F-VQ56 abstract-provider oracle from its exact authority.
 git show ${FVQ56}:tests/fvq/test_fvq56_surface_evaporation_runtime_independent.f90 > "$BUILD/fvq56-abstract.f90"

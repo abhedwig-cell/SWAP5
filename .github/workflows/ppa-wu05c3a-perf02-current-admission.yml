@@ -1,0 +1,24 @@
+name: PPA WU05 C3A PERF02 current-canonical admission
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90'
+      - 'src/physics/oxygen/mod_bartholomeus_factor_provider.f90'
+      - 'tests/performance/falsify_bartholomeus_gate_boundary.f90'
+      - 'tests/performance/benchmark_bartholomeus_perf02.f90'
+      - 'docs/audits/PPA_WU05C3A_PERF02_INTERIM_RESULT.md'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent boundary falsification
+        run: python3 tests/performance/run_bartholomeus_gate_boundary.py
+      - name: Corrected B1.11 O0 O2
+        run: python3 tests/physics/run_bartholomeus_b111_assembled.py
+      - name: Typed production application O0 O2
+        run: python3 tests/physics/run_bartholomeus_application.py
+      - name: PERF02 performance
+        run: python3 tests/performance/run_bartholomeus_perf02.py

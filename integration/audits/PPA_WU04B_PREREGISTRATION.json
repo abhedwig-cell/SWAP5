@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-B",
+  "title": "SWREDU=2 Boesten-Stroosnijder production admission",
+  "branch": "work/ppa-wu04b-boesten-stroosnijder",
+  "canonical_base": "50e7d1dece5b75d0103459d5c118d03a2665eea3",
+  "status": "PREREGISTERED_IMPLEMENTATION_OPEN",
+  "authority": {
+    "scientific_transaction_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "scientific_review": "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+    "reference_manifest": "reference/swap-4.3.1/b1-manifest.yml",
+    "legacy_source_routine": "MOD_meteo.f90:reduceva(task=2)",
+    "legacy_source_identity_b1_11": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "independent_equation_trace": {
+      "repository": "SWAP-model/SWAP",
+      "historical_commit": "07d74a82e9ba0465ec81a74e4d82b3dc03d856d9",
+      "path": "src/atmosphere/et.f90"
+    }
+  },
+  "frozen_science": {
+    "option": "SWREDU=2",
+    "persistent_process_state": ["spev", "saev"],
+    "state_atomicity": "SPEV and SAEV are one option-specific committed/restart pair.",
+    "drying_branch": "if wetting_rate < peva: spev1=spev0+(peva-wetting_rate)*dt; saev1=spev1 when spev1<cofred^2 else cofred*sqrt(spev1); empreva=wetting_rate+(saev1-saev0)/dt",
+    "rewetting_branch": "if wetting_rate >= peva: empreva=peva; saev1=max(0,saev0-(wetting_rate-peva)*dt); spev1=saev1 when saev1<cofred^2 else (saev1/cofred)^2",
+    "ponded_branch": "empreva=peva and candidate SPEV=SAEV=0",
+    "mass_ownership": "empreva and SPEV/SAEV deltas are not water-mass owners. Accepted actual surface evaporation remains owned by the hydraulic dynamic-top boundary.",
+    "rollback": "Rejected hydraulic trials discard the complete candidate pair; changed-dt retry starts from the identical committed pair."
+  },
+  "bounded_input_profile": {
+    "cofred": "0 < cofred <= 1",
+    "reason": "Legacy read authority permits 0..1, but the exact SWREDU=2 rewetting branch contains (saev/cofred)^2. At cofred=0 and a zero-consistent state this is 0/0. This production slice narrows admission instead of inventing repaired physics.",
+    "spev": "finite and >= 0",
+    "saev": "finite and >= 0",
+    "wetting_rate": "finite and >= 0",
+    "potential_bare_soil_evaporation": "finite and >= 0"
+  },
+  "architecture_binding": {
+    "process_state_rule": "SPEV/SAEV remain a distinct process continuation pair, not hydraulic fields or worker scratch.",
+    "transaction_state": "Introduce a separate option-discriminated FMR state family for SWREDU=2; do not overload the Black state layout.",
+    "top_boundary": "Reuse the admitted dynamic top-boundary solver provider inside each trial with Boesten demand evaluated from that trial checkpoint and dt.",
+    "forcing": "Reuse PPA-WU03 raw precipitation plus resolved surface irrigation as the net wetting-rate input under SWINTER=0. No hidden calendar or source cursor is introduced.",
+    "restart": "Reuse generic committed restart with an explicit Boesten optional-state-layout identity; reject BASE/Black/Boesten family mismatch.",
+    "solver_policy": "No solver equations, retry policy, solver selection, RossFast internals or groundwater coupling semantics may change."
+  },
+  "qualification_gates": [
+    "exact source-equation oracle for drying, rewetting and ponding branches",
+    "state-pair atomicity",
+    "O0/O2 output identity",
+    "A/B/A deterministic replay",
+    "rejected-trial committed SPEV/SAEV immutability",
+    "changed-dt retry equals direct retry from the same committed pair",
+    "exact SPEV/SAEV restart roundtrip",
+    "BASE/Black/Boesten restart-layout mismatch rejection",
+    "hard accepted water-mass closure",
+    "PPA-WU01 and PPA-WU03 behavioral preservation",
+    "PPA-WU04-A Black behavioral preservation",
+    "production delta limited to preregistered ownership surface"
+  ],
+  "nonclaims": [
+    "COFRED=0 behavior",
+    "SWREDU=1 changes",
+    "SWINTER=1 or SWINTER=2",
+    "legacy weather/calendar parsing",
+    "snowmelt/runon composition",
+    "groundwater mode 5 composition",
+    "RossFast composition"
+  ],
+  "decision": "PREREGISTERED_SOURCE_BOUND_IMPLEMENTATION_AUTHORIZED"
+}

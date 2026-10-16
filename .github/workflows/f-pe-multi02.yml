@@ -1,0 +1,81 @@
+name: F-PE-MULTI02 worker-local groundwater research
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_multi02_*.sh'
+      - 'docs/performance/F-PE-MULTI02_*.md'
+      - '.github/workflows/f-pe-multi02.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-worker-local-ownership:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run serial worker-local ownership equivalence
+        run: bash tests/fpe/run_fpe_multi02_p0_worker_local_ownership.sh
+
+  p0-worker-local-scaling:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run worker-local 1/2/4-worker scaling proof
+        run: bash tests/fpe/run_fpe_multi02_p0_worker_local.sh
+
+  p1-discrete-semantics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run worker-local discrete-route semantic matrix
+        run: bash tests/fpe/run_fpe_multi02_p1_semantics.sh
+
+  p1-trajectory-identity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run exact per-trial trajectory identity gate
+        run: bash tests/fpe/run_fpe_multi02_p1_trajectory_identity.sh
+
+  p2-performance-replication:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Replicate frozen large-N speed gates
+        run: bash tests/fpe/run_fpe_multi02_p2_performance.sh
+
+  p2-mixed-load:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run mixed-cost load-balance discriminator
+        run: bash tests/fpe/run_fpe_multi02_p2_mixed_load.sh
+
+
+  p2-mixed-cost-authority:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run history-cost mixed-load authority
+        run: bash tests/fpe/run_fpe_multi02_p2b_mixed_load.sh

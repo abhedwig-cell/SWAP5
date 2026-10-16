@@ -1,0 +1,30 @@
+name: F-PE-TIMEINT12A fully implicit dynamic-top BE
+
+on:
+  push:
+    branches:
+      - work/f-pe-timeint12a-implicit-be-current
+    paths:
+      - 'docs/performance/F-PE-TIMEINT12A_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timeint12a_implicit_be.f90'
+      - 'tests/fpe/run_fpe_timeint12a.py'
+      - 'tests/fpe/run_fpe_timeint12a.sh'
+      - 'tests/fpe/mod_fpe_timeint12_dynamic_top_provider.f90'
+      - '.github/workflows/f-pe-timeint12a.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  implicit-be:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run fully implicit dynamic-top BE qualification
+        run: bash tests/fpe/run_fpe_timeint12a.sh

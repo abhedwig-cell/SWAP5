@@ -1,0 +1,96 @@
+{
+  "work_unit": "F-MIG431-LOW03-P0",
+  "baseline": "6cc03d6e122bdcd2007c1a709476ce63a68d6e36",
+  "last_reconciled_head": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "official_branch": "work/f-mig431-low03-p0-resistive-head-authority",
+  "state": "CANONICAL_ADMITTED_CLOSED_BOUNDED_TYPED_SOLVER",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "production_mode3_admitted": false,
+  "production_delta": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "interfaces_changed": [
+    "internal Fortran soil_water_boundary_conditions_t fields bottom_external_resistance_days and bottom_include_half_cell",
+    "direct typed Reference mode3 solver path only; serialized application still rejects3"
+  ],
+  "checkpoint_commit": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+  "next_action": "Execute sole LOW03-A application branch after preregistration; no further P0 production edits",
+  "blockers": [
+    "No P0 solver/dependency blocker remains",
+    "Full mode3 application remains unadmitted; implicit LOW03-A preregistered, explicit3 still open"
+  ],
+  "relevant_paths": [
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/solver/mod_reference_richards_state_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "authority_paths": [
+    "docs/migration/F-MIG431-LOW03-P0_PREREGISTRATION.md",
+    "integration/audits/F-MIG431_LOWER_BOUNDARY_B111_SOURCE.json",
+    "docs/migration/F-MIG431-LOW05A_CLOSEOUT.md",
+    "docs/numerics/transactional-time-stepping.md",
+    "docs/capabilities/restart-v1.md",
+    "src/runtime/mod_groundwater_coupling_contract.f90",
+    "docs/migration/F-MIG431-LOW03-P0_TYPED_CONTRACT.md"
+  ],
+  "test_paths": [
+    "tests/fmig431/test_low03_boundary_composition.f90",
+    "tests/fmig431/run_low03_boundary_composition.py",
+    "tests/fmig431/test_low03_typed_solver.f90",
+    "tests/fmig431/run_low03_solver_qualification.py"
+  ],
+  "evidence_paths": [
+    "integration/audits/F-MIG431-LOW03-P0_COMPOSITION.json",
+    "integration/audits/F-MIG431-LOW03-P0_BOUNDED_QUALIFICATION.json",
+    "docs/migration/F-MIG431-LOW03-P0_QUALIFICATION_REVIEW.md",
+    "integration/audits/F-MIG431-LOW03-P0_SHARED_DEPENDENCY_BLOCKER.json",
+    "integration/audits/F-MIG431-LOW03-P0_COMPLETE_QUALIFICATION.json"
+  ],
+  "dependency_surface": [
+    "src/solver",
+    "src/adapter",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/runtime"
+  ],
+  "parked_selectors": [
+    1
+  ],
+  "active_sequence": [
+    3,
+    8
+  ],
+  "future_application_unit": "F-MIG431-LOW03-A implicit ordinary Cauchy application preregistered; explicit3 remains open",
+  "invariants_affected": [
+    "Explicit physics input/provider ownership",
+    "Solver candidate versus runtime commit",
+    "Unrounded exactly-once accepted mass",
+    "Restart of committed state",
+    "Existing groundwater owner and mode5 semantics held fixed"
+  ],
+  "recovery_point": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+  "test_scope": "Frozen B1.11 6075 bottom-row cases and 45 direct physical solves per optimization, independent compartment/whole-column mass, exact physical qbot, failed replay, fresh scratch, physical restart continuation, six existing application preservation programs",
+  "typed_solver_canonical_admitted": true,
+  "tested_postimage": "b1b5d6c22f18decd2db270531cd986ddf59af6ef",
+  "qualification_run": 36971466508,
+  "qualification_job": 110726138312,
+  "qualification_artifact_id": 11212276848,
+  "scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+  "canonical_production_implemented": true,
+  "implementation_location": "integration/f-ci-canonical via PR975",
+  "qualification_scope": "Direct typed Reference SWKIMPL0 bare-column resistive bottom boundary only; ordinary/serialized SWBOTB3 application remains closed",
+  "complete_admission_qualification": true,
+  "pull_request": 975,
+  "shared_authority_prerequisite": "F-MIG431-LOW03-P0-DEP01",
+  "shared_dependency_gate_state": "ACCEPTED_CLOSED",
+  "application_mode3_admitted": false,
+  "canonical_merge_commit": "82351099a8c5c77ce111f8ace6648b8b5ffa7167",
+  "closeout": "docs/migration/F-MIG431-LOW03-P0_CLOSEOUT.md",
+  "admission_dependency_inheritance": "Qualified b1b5d6c22f18decd2db270531cd986ddf59af6ef to merge82351099a8c5c77ce111f8ace6648b8b5ffa7167 changes six governance/evidence files only; no production/test/runner/asset/source-carrier mutation"
+}

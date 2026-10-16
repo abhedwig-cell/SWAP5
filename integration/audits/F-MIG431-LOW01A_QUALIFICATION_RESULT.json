@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "work_unit": "F-MIG431-LOW01-A",
+  "capability": "SWBOTB=4 q(gwl) lower-boundary migration",
+  "status": "QUALIFIED_PRODUCTION_ADMISSION_CANDIDATE_RECONCILE_REQUIRED",
+  "branch": "work/f-mig431-low01a-qgwl-boundary",
+  "qualification_head": "25780c186b2b1a607db84fd1208161d235bcefd8",
+  "qualification_run_id": 36923891201,
+  "qualification_run_conclusion": "success",
+  "qualification": {
+    "source_equation_provider": "PASS",
+    "provider_binding": "PASS",
+    "rejected_trial_committed_gwl_immutability": "PASS",
+    "failed_then_accepted_retry_same_checkpoint_qbot_identity": "PASS",
+    "transaction_O0_O2_identity": "PASS",
+    "existing_prescribed_qbot_preservation_FMR44R": "PASS",
+    "production_seam_static": "PASS",
+    "mass_closure_owner": "existing prescribed-qbot owner preserved by FMR44R",
+    "generic_solver_abi_changed": false,
+    "mass_owner_changed": false,
+    "transaction_policy_changed": false
+  },
+  "canonical_at_final_reconcile_check": "0c902322b9d41d034d8fdd9c1093049dc5245820",
+  "reconcile": {
+    "checkpoint_orchestrator_unchanged_from_preregistered_base": true,
+    "kernel_transactions_unchanged_from_preregistered_base": true,
+    "production_task2_unchanged_from_preregistered_base": true,
+    "reference_temporal_indicator_unchanged_from_preregistered_base": true,
+    "serialized_reference_backend_changed_on_canonical": true,
+    "disposition": "central/current-canonical replay required before admission because LOW01-A also modifies serialized backend; do not claim canonical admission"
+  },
+  "scope_claim": "SWBOTB=4 only"
+}

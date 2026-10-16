@@ -1,0 +1,96 @@
+{
+  "work_unit": "MC-NUT01-REACTIVE-DAY",
+  "master_pr": 1072,
+  "master_head": "53eb3d2f1e14d7b48efdd8d942f42f1422f4ac3a",
+  "master_path": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+  "master_blob": "d1e8c5ec20027b766a6b05b1137a7c439d7b53b8",
+  "master_sha256": "01c4de6017381d6897e518945f238441d7dcdc6eba636e8f78ca45696b888993",
+  "denominator": 243,
+  "dispositions_before": {
+    "ADMITTED": 95,
+    "ACTIVE_MIGRATION": 108,
+    "SUPERSEDED": 14,
+    "REJECTED": 2,
+    "NOT_APPLICABLE": 20,
+    "QUALIFICATION_ONLY": 4
+  },
+  "disposition_delta": 0,
+  "full_master_integrity": "NOT_CLAIMED; structural recount only, existing stale inheritance issue remains separate",
+  "master_branch_modified": false,
+  "source_status": "integration/audits/MC_NUT01_REACTIVE_DAY_STATUS.json",
+  "predecessor_canonical_admission": "PR1231 at eb03024d99ef9256335eb6e2f3f74bccce8145f0",
+  "qualified_candidate_source_tree": "6839bb0ddc6be7a6be81954206ee3f7e6cc5a975",
+  "admission": "Candidate facet receipts require this work-unit PR merge and canonical source/tree verification; no full capability promotion.",
+  "row_reconciliation": [
+    {
+      "capability_id": "SW431-NUT-ORGANIC",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "9cfd95be2a74ac815bf8c9b6fd2572d1112a9493d628c1a223b6daee6c552be8",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Bounded explicit full-column one-day production facet; not a complete SWCROPSNM crop-supply/default-application claim.",
+      "implementation_absence_proven": false,
+      "remaining": "Full source/application envelope: crop-N supply where applicable, default/bootstrap and environmental/calendar profiles beyond prescribed bounded parameters; review row-specific admission contract before disposition promotion."
+    },
+    {
+      "capability_id": "SW431-NUT-MINERAL",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "c7c7d814f82e425113e9c99e12e27bacbfc19dcece02989b7e50dd7779682591",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Bounded explicit full-column one-day production facet; not a complete SWCROPSNM crop-supply/default-application claim.",
+      "implementation_absence_proven": false,
+      "remaining": "Full source/application envelope: crop-N supply where applicable, default/bootstrap and environmental/calendar profiles beyond prescribed bounded parameters; review row-specific admission contract before disposition promotion."
+    },
+    {
+      "capability_id": "SW431-NUT-AMEND",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "e687931d5ea2ac7d1a336eeda0da9ee3ec9b5636f78ed55708bcb7fad3a3d6a4",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Shared owner is a now-present prerequisite; application/residue event route remains absent.",
+      "implementation_absence_proven": true,
+      "remaining": "Amendment/residue event route"
+    },
+    {
+      "capability_id": "SW431-NUT-RESIDUE",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "42b137b6e270223bdfaf8870dbc3745edfe29edbdc07d36414e72c50201c072d",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Shared owner is a now-present prerequisite; application/residue event route remains absent.",
+      "implementation_absence_proven": true,
+      "remaining": "Amendment/residue event route"
+    },
+    {
+      "capability_id": "SW431-NUT-NITRIF",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "ed257f4d4948e2540b17e81611e5b37d84608d540eaee6a88be54f0aec717da2",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Bounded explicit full-column one-day production facet; not a complete SWCROPSNM crop-supply/default-application claim.",
+      "implementation_absence_proven": false,
+      "remaining": "Full source/application envelope: crop-N supply where applicable, default/bootstrap and environmental/calendar profiles beyond prescribed bounded parameters; review row-specific admission contract before disposition promotion."
+    },
+    {
+      "capability_id": "SW431-NUT-DENIT",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "dfe8415b9340364302b73ed1d3f88ff15001111f493acee4b7783c1bde81daa4",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Bounded explicit full-column one-day production facet; not a complete SWCROPSNM crop-supply/default-application claim.",
+      "implementation_absence_proven": false,
+      "remaining": "Full source/application envelope: crop-N supply where applicable, default/bootstrap and environmental/calendar profiles beyond prescribed bounded parameters; review row-specific admission contract before disposition promotion."
+    },
+    {
+      "capability_id": "SW431-NUT-TRANSPORT",
+      "unchanged_disposition": "ACTIVE_MIGRATION",
+      "prior_row_sha256": "03f1f267fcb715fe0324019dadc8a8ce9f1ca759e1910f8e721b82c85d2d0a94",
+      "stale_claim": "No production Soil-N inventory/rate owner exists",
+      "correction": "Canonical PR1231 already establishes bounded NH4/NO3 owner and transport. The reactive-day candidate adds source-corrected organic turnover, environment/rates, nitrification and denitrification with actual Richards/rollback/restart.",
+      "scope": "Bounded explicit full-column one-day production facet; not a complete SWCROPSNM crop-supply/default-application claim.",
+      "implementation_absence_proven": false,
+      "remaining": "Full source/application envelope: crop-N supply where applicable, default/bootstrap and environmental/calendar profiles beyond prescribed bounded parameters; review row-specific admission contract before disposition promotion."
+    }
+  ]
+}

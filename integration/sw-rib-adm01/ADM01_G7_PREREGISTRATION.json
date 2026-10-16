@@ -1,0 +1,78 @@
+{
+  "schema": "swap5.sw_rib_adm01.g7.preregistration.v1",
+  "work_unit": "SW-RIB-ADM01-G7",
+  "date": "2026-09-23",
+  "status": "PREREGISTERED_BEFORE_LIVE_PRODUCT_EXECUTION",
+  "title": "Independent live Ribasim application qualification over F-CI109/F-APP09 transaction authority",
+  "subject": {
+    "branch": "qualification/sw-rib-adm01-g7-live-ribasim-application",
+    "base": "F-CI109 postimage",
+    "fci109_head": "2df6596eff3584cd4f0d1d323eab03a0fdee88d6",
+    "fapp09_candidate": "ba3699f970d48b6b15db24fac1d1ec619f7fcb32",
+    "production_postimages": {
+      "src/process/mod_drainage_extended_exchange.f90": "25d76013d25c2eaa2d254865149c740bc3257617",
+      "src/runtime/mod_fmr_drainage_response_binding.f90": "263cf55b2c336d149ba41b4d04f510e10c4207e2",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "0cdf05c1fc066f80aad7807c35a4e718fdecdb09",
+      "src/runtime/mod_fmr_surface_water_head_forcing_adapter.f90": "1029cd4658a28f4aaf21db3cd480872c2d17722a",
+      "src/runtime/mod_fmr_surface_water_swap_participant.f90": "5fd5007cf8e523d3b2cd4236114e887d0c383f0a"
+    }
+  },
+  "ribasim": {
+    "tag": "v2026.1.2",
+    "sha": "eae77424a4078497d40d8197237cb83e3aba6a83",
+    "version": "2026.1.2",
+    "geometry_contract": "RIBASIM_NATIVE_GEOMETRY_V1"
+  },
+  "mapping": {
+    "represented_area_m2": 100,
+    "coupling_window_day": 0.25,
+    "coupling_window_seconds": 21600,
+    "fapp09_candidate_rate_magnitude_cm_per_day": 0.01,
+    "fapp09_candidate_transfer_magnitude_cm": 0.0025,
+    "mapped_volume_m3": 0.0025,
+    "positive_external_head_cm": -12.25,
+    "negative_external_head_cm": 7.75,
+    "fapp09_groundwater_level_cm": -2.25,
+    "fapp09_infiltration_resistance_day": 1000,
+    "receipt_match_tolerance_cm": 1e-10
+  },
+  "cases": [
+    {
+      "id": "E1_POSITIVE_DRAINAGE",
+      "ribasim_initial_level_m": -0.1225,
+      "ribasim_profile_bottom_m": -1,
+      "requested_signed_volume_m3": 0.0025,
+      "forcing": "drainage",
+      "expected": "realized +0.0025 m3 within 1e-6; F-APP09 candidate +0.0025 cm; direct commit succeeds"
+    },
+    {
+      "id": "E2_NEGATIVE_INFILTRATION_SUFFICIENT",
+      "ribasim_initial_level_m": 0.0775,
+      "ribasim_profile_bottom_m": -1,
+      "requested_signed_volume_m3": -0.0025,
+      "forcing": "infiltration",
+      "expected": "realized -0.0025 m3 within 1e-6; F-APP09 candidate -0.0025 cm; direct commit succeeds"
+    },
+    {
+      "id": "E3_NEGATIVE_INFILTRATION_LIMITED",
+      "ribasim_initial_level_m": 0.0775,
+      "ribasim_profile_bottom_m": 0.0675,
+      "requested_signed_volume_m3": -0.0025,
+      "forcing": "infiltration",
+      "expected": "realized withdrawal is nonnegative in magnitude and strictly smaller than 0.0025 m3; first F-APP09 commit fails on receipt mismatch; candidate is discarded; same accepted SWAP origin is replayed with recomposed external head derived from the realized receipt; second candidate matches receipt and sole commit succeeds"
+    }
+  ],
+  "frozen_checks": [
+    "No production source files change on G7 qualification branch.",
+    "F-CI109 exact admission gate replays PASS on the G7 subject.",
+    "Ribasim git SHA, Python/core/model metadata all equal v2026.1.2 authority.",
+    "Each Ribasim physical ledger closes within 1e-8 m3.",
+    "E1 and E2 physical realization match requested volumes within 1e-6 m3.",
+    "E3 is physically availability-limited by Ribasim and never accepted by SWAP before recomposition.",
+    "F-APP09 publication/commit boundary consumes the measured Ribasim receipt, not an inferred or copied request.",
+    "E3 recomposition starts from the same accepted SWAP origin and produces exactly one committed revision.",
+    "O0/O2 stable G7 transaction markers are identical."
+  ],
+  "anti_tuning": "No case, represented area, coupling duration, F-APP09 fixture physics, Ribasim initial state, physical request or scientific tolerance may change after live execution. Technical API/build repairs must be recorded separately.",
+  "production_admission": false
+}

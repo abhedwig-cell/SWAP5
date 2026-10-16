@@ -1,0 +1,56 @@
+{
+  "schema": "trace.evidence_manifest.v0.1",
+  "trace_id": "TRACE-SWAP-0004",
+  "freeze_date": "2026-09-19",
+  "pre_resolution": {
+    "repository": "abhedwig-cell/SWAP5",
+    "ref": "integration/f-ci-canonical",
+    "commit": "d5587a650007e96e9f6008a179ac4bdf0cf77218"
+  },
+  "theory_sources": [],
+  "documentation_sources": [
+    {
+      "path": "docs/science/soil-hydraulic-constitutive-relations.md",
+      "blob_sha": "285ae75496a81fd098ff0c817d5ef2e67eb40d9b",
+      "observed_claim": "Current reviewer page documents the bounded frozen Status-A default-MvG constitutive route and separates it from F-SI37 directional derivative capability."
+    },
+    {
+      "path": "integration/f-doc/F-DOC26_STATUS.json",
+      "blob_sha": "4c7316116e9ddd301252aea22641878009592d88",
+      "observed_claims": [
+        "phase=VERIFY",
+        "decision=PASS_READY_FOR_CANONICAL_ADMISSION",
+        "verdict=PASS_READY_FOR_ADMISSION",
+        "next_permitted_action=ADMIT_IF_LIVE_CANONICAL_UNCHANGED_OR_NONCONFLICTING_AND_PR_MERGEABLE"
+      ]
+    }
+  ],
+  "implementation_sources": [
+    {
+      "path": "src/solver/mod_b110_default_mvg_provider.f90",
+      "ref": "50346642bd565f79134ea17d5462e544b354998c",
+      "blob_sha": "fea5a1681b1c3bdefce1cdbb6d48a9396c8266b6",
+      "observed_claim": "Frozen value-provider implements the branch semantics documented by the reviewer page and reserves dconductivity_dhead as zero in the admitted SWKIMPL=0 route."
+    }
+  ],
+  "existing_regression_evidence": [
+    {
+      "authority": "F-SI09_QUALIFICATION at historical head 0f9f84e6f98e43c4ada39f1a8d9b180b0f672330",
+      "observed_claim": "Qualified corrected B1.10 default-MvG provider for theta, C, K and derived rows within the restricted profile; SWKIMPL=1 not admitted."
+    }
+  ],
+  "authority_and_governance_sources": [
+    {
+      "kind": "canonical_history",
+      "commit": "95748d047325e74adf6d06eba978dea61bd51a7d",
+      "observed_claim": "Commit message records admit(F-DOC26): soil-hydraulic constitutive technical reference."
+    }
+  ],
+  "inputs_and_configuration": [],
+  "runtime_environment": [],
+  "reproduction_commands": [],
+  "outputs": [],
+  "checksums": [],
+  "initial_conflict": "The constitutive scientific content reconciles, but current F-DOC26 machine status still describes a future documentation admission although canonical history already records F-DOC26 admission.",
+  "notes": "Evidence frozen before PR #177, F-DOC26 work-branch closeout chronology, post-admission status object or any freeze/supersession semantics are inspected."
+}

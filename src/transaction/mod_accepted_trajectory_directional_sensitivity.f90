@@ -3,7 +3,7 @@ module mod_accepted_trajectory_directional_sensitivity
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_accepted_step_direction_contract, only: &
        soil_water_accepted_step_direction_request_t, soil_water_accepted_step_direction_result_t, &
-       SW_STEP_DIRECTION_AVAILABLE
+       SW_STEP_DIRECTION_AVAILABLE, SW_STEP_CONTROL_NONE
   implicit none
   private
 
@@ -37,6 +37,7 @@ module mod_accepted_trajectory_directional_sensitivity
     real(real64) :: ponding_direction = 0.0_real64
     real(real64) :: integrated_bottom_exchange_derivative = 0.0_real64
     logical :: source_sink_direction_coverage_complete = .false.
+    logical :: root_sink_direction_coverage_complete = .false.
     character(len=48) :: method = 'not-requested'
     character(len=64) :: route = 'not-requested'
     integer :: additional_tridiagonal_backsolves = 0
@@ -56,6 +57,7 @@ module mod_accepted_trajectory_directional_sensitivity
     real(real64) :: pending_ponding_direction = 0.0_real64
     real(real64) :: pending_bottom_exchange_derivative = 0.0_real64
     logical :: pending_source_sink_direction_covered = .false.
+    logical :: pending_root_sink_direction_covered = .false.
     character(len=48) :: pending_method = 'not-run'
     character(len=64) :: pending_route = 'not-run'
     integer :: pending_backsolves = 0
@@ -122,6 +124,7 @@ contains
       state%next_step_sequence = 1
       state%integrated_bottom_exchange_derivative = 0.0_real64
       state%source_sink_direction_coverage_complete = .true.
+      state%root_sink_direction_coverage_complete = .true.
       allocate(state%pressure_head_direction(active_nodes), state%water_content_direction(active_nodes))
       state%pressure_head_direction = 0.0_real64
       state%water_content_direction = 0.0_real64
@@ -159,11 +162,16 @@ contains
   subroutine build_trajectory_step_request(state, step_t0, step_t1, request, token, ok)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     real(real64), intent(in) :: step_t0, step_t1
-    type(soil_water_accepted_step_direction_request_t), intent(out) :: request
+    type(soil_water_accepted_step_direction_request_t), intent(inout) :: request
     type(trajectory_step_token_t), intent(out) :: token
     logical, intent(out) :: ok
 
-    request = soil_water_accepted_step_direction_request_t()
+    request%requested = .false.
+    request%control_coordinate = SW_STEP_CONTROL_NONE
+    request%incoming_ponding_depth = 0.0_real64
+    request%direct_control_derivative = 0.0_real64
+    if (allocated(request%incoming_source_direction)) deallocate(request%incoming_source_direction)
+    if (allocated(request%incoming_sink_direction)) deallocate(request%incoming_sink_direction)
     token = trajectory_step_token_t()
     ok = .false.
     if (.not. state%requested .or. .not. allocated(state%pressure_head_direction)) return
@@ -195,8 +203,18 @@ contains
                          state%status /= TRAJECTORY_DIRECTION_FAILED)
     request%control_coordinate = state%control_coordinate
     request%direct_control_derivative = 1.0_real64
-    allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
-    allocate(request%incoming_water_content(size(state%water_content_direction)))
+    if (allocated(request%incoming_pressure_head)) then
+      if (size(request%incoming_pressure_head) /= size(state%pressure_head_direction)) &
+           deallocate(request%incoming_pressure_head)
+    end if
+    if (allocated(request%incoming_water_content)) then
+      if (size(request%incoming_water_content) /= size(state%water_content_direction)) &
+           deallocate(request%incoming_water_content)
+    end if
+    if (.not. allocated(request%incoming_pressure_head)) &
+         allocate(request%incoming_pressure_head(size(state%pressure_head_direction)))
+    if (.not. allocated(request%incoming_water_content)) &
+         allocate(request%incoming_water_content(size(state%water_content_direction)))
     request%incoming_pressure_head = state%pressure_head_direction
     request%incoming_water_content = state%water_content_direction
     request%incoming_ponding_depth = state%ponding_direction
@@ -206,7 +224,7 @@ contains
   subroutine stage_trajectory_step_result(state, token, result, ok)
     type(accepted_trajectory_direction_t), intent(inout) :: state
     type(trajectory_step_token_t), intent(in) :: token
-    type(soil_water_accepted_step_direction_result_t), intent(in) :: result
+    type(soil_water_accepted_step_direction_result_t), intent(inout) :: result
     logical, intent(out) :: ok
     real(real64) :: dt
 
@@ -236,6 +254,7 @@ contains
     state%pending_route = result%route
     state%pending_available = result%status == SW_STEP_DIRECTION_AVAILABLE .and. result%available
     state%pending_source_sink_direction_covered = result%source_sink_direction_covered
+    state%pending_root_sink_direction_covered = result%root_sink_direction_covered
 
     if (state%pending_available) then
       if (.not. allocated(result%outgoing_pressure_head) .or. .not. allocated(result%outgoing_water_content)) then
@@ -254,8 +273,8 @@ contains
         call fail_closed(state, 'available-step-result-nonfinite')
         return
       end if
-      state%pending_pressure_head_direction = result%outgoing_pressure_head
-      state%pending_water_content_direction = result%outgoing_water_content
+      call move_alloc(result%outgoing_pressure_head, state%pending_pressure_head_direction)
+      call move_alloc(result%outgoing_water_content, state%pending_water_content_direction)
       state%pending_ponding_direction = result%outgoing_ponding_depth
       state%pending_bottom_exchange_derivative = dt*result%bottom_flux_derivative
     end if
@@ -279,13 +298,15 @@ contains
 
     if (state%pending_available .and. state%status /= TRAJECTORY_DIRECTION_UNAVAILABLE .and. &
         state%status /= TRAJECTORY_DIRECTION_FAILED) then
-      state%pressure_head_direction = state%pending_pressure_head_direction
-      state%water_content_direction = state%pending_water_content_direction
+      call move_alloc(state%pending_pressure_head_direction, state%pressure_head_direction)
+      call move_alloc(state%pending_water_content_direction, state%water_content_direction)
       state%ponding_direction = state%pending_ponding_direction
       state%integrated_bottom_exchange_derivative = state%integrated_bottom_exchange_derivative + &
            state%pending_bottom_exchange_derivative
       state%source_sink_direction_coverage_complete = &
            state%source_sink_direction_coverage_complete .and. state%pending_source_sink_direction_covered
+      state%root_sink_direction_coverage_complete = &
+           state%root_sink_direction_coverage_complete .and. state%pending_root_sink_direction_covered
       state%method = state%pending_method
       state%route = state%pending_route
       state%status = TRAJECTORY_DIRECTION_ACTIVE
@@ -348,6 +369,7 @@ contains
     state%pending_ponding_direction = 0.0_real64
     state%pending_bottom_exchange_derivative = 0.0_real64
     state%pending_source_sink_direction_covered = .false.
+    state%pending_root_sink_direction_covered = .false.
     state%pending_method = 'not-run'
     state%pending_route = 'not-run'
     state%pending_backsolves = 0

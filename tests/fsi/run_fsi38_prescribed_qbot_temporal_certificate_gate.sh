@@ -10,8 +10,8 @@ fail() { echo "FSI38_GATE_FAIL $*" >&2; exit 138; }
 
 INDICATOR=src/solver/mod_reference_richards_temporal_indicator.f90
 
-grep -Fq '(request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2)' "$INDICATOR" || \
-  fail 'mode2 boundary envelope admission missing'
+grep -Fq '(request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. request%boundary%bottom_mode /= 7)' "$INDICATOR" || \
+  fail 'mode2/mode5/mode7 boundary envelope admission missing'
 grep -Fq 'if (request%boundary%bottom_mode == 5) then' "$INDICATOR" || \
   fail 'mode5-only Dirichlet bottom stiffness guard missing'
 grep -Fq 'diagonal(n) = diagonal(n)+face_conductance' "$INDICATOR" || \

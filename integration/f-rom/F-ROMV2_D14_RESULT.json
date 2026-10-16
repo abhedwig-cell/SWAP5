@@ -1,0 +1,75 @@
+{
+  "schema": "swap5.f-romv2-d14.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D14",
+  "decision": "D14_FMC_SURFACE_KINEMATICS_PREFLIGHT_PASS",
+  "adjudication": "SURFACE_FRONT_AND_FALLING_SLUG_KINEMATICS_PASS_BEFORE_FULL_SURFACE_ACCOUNTING",
+  "execution": {
+    "workflow_run": 35452867795,
+    "workflow_job": 105922955937,
+    "executed_head": "25e2d39db6eb5638c9e27520002886197de73e49",
+    "execution_pull_request": 441,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10587342866,
+    "artifact_digest": "sha256:c8fade42571ebe039085acd1f88f2e9067733bdd5fd89757ce24ca092800a61b",
+    "workflow_conclusion": "success",
+    "raw_result_sha256": "cb2149f837f2b2821bedf24bcd274d819d0751026be274153129d4681f8e9e9a",
+    "stdout_sha256": "85d78a7453d2573fd8d76eaa3f483c96a3456b6818bfe0601b0b4a9ee4a96446"
+  },
+  "authority": {
+    "predecessor_D12": "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+    "predecessor_D13": "FMC_GW200_RETAINS_GROUNDWATER_BRANCH_RESEARCH_CANDIDACY",
+    "SWAP_trajectory_evidence_consumed": false,
+    "bins": 200,
+    "maximum_explicit_substep_seconds": 10,
+    "HcM_cm": 14.085215420920257,
+    "tuned_from_SWAP_outcomes": false
+  },
+  "infiltration_front": {
+    "profiles": [
+      "I_SHALLOW",
+      "I_MID",
+      "I_DEEP",
+      "I_RELAX"
+    ],
+    "all_finite_and_physical": true,
+    "all_surface_reservoir_ledgers_close": true,
+    "I_RELAX_raw_inversion_count": 35,
+    "capillary_relaxation_restores_monotonicity": true,
+    "max_abs_capillary_relaxation_storage_difference_cm": 0,
+    "max_surface_water_demand_cm": 0.09628493373874039
+  },
+  "falling_slug": {
+    "bin_count": 99,
+    "all_velocities_finite_positive": true,
+    "max_translation_cm_per_10s": 0.15545947233054136,
+    "max_velocity_cm_per_day": 1343.1698409358503,
+    "min_velocity_cm_per_day": 3.6789201588652505,
+    "max_abs_slug_length_change_cm": 3.552713678800501e-15,
+    "total_finite_volume_slug_water_difference_cm": 0
+  },
+  "tests": {
+    "K1_EQ18_MULTI_BIN_FINITE_ADVANCE": true,
+    "K2_EQ18_CAPILLARY_RELAXATION_CONSERVATION": true,
+    "K3_EQ18_SURFACE_RESERVOIR_LEDGER": true,
+    "K4_EQ19_FALLING_SLUG_TRANSLATION": true,
+    "K5_EQ19_TOTAL_SLUG_WATER_IDENTITY": true
+  },
+  "D15_full_surface_accounting_authorized": true,
+  "explicitly_not_qualified": [
+    "rainfall supply limitation",
+    "sequential left-to-right bin activation",
+    "dry-bin front initiation",
+    "ponding/runoff",
+    "falling-slug creation",
+    "falling-slug collision or merging",
+    "falling-slug/groundwater-front merge",
+    "redistribution water transfer between bins",
+    "groundwater-front dynamics",
+    "SWAP trajectories",
+    "ET/root uptake"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

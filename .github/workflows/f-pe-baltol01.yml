@@ -1,0 +1,46 @@
+name: F-PE-BALTOL01 Reference balance tolerance qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tests/fpe/run_fpe_baltol01_*.sh'
+      - 'docs/performance/F-PE-BALTOL01_*.md'
+      - '.github/workflows/f-pe-baltol01.yml'
+  workflow_dispatch:
+
+jobs:
+  p0-broad-tolerance-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p0_matrix.sh
+
+  p1-integrated-floor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p1_integrated_floor.sh
+
+  p2-oracle-recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p2_oracle_recovery.sh
+
+  p2r-flux-refinement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: bash tests/fpe/run_fpe_baltol01_p2r_flux_refinement.sh

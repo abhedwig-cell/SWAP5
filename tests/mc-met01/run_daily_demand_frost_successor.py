@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""Fresh unchanged highest-route science on the exact two-file RAINTB source."""
+from pathlib import Path
+import subprocess,sys
+ROOT=Path(__file__).resolve().parents[2]
+BASE='bd17f0a9a7c19516e66af8f80e2b7128890b3aee'
+PINS={'src/adapter/mod_swap_daily_weather_file_adapter.f90': '44b07cd1046632a38b36e9b1ed5608f67ca41fdd', 'src/process/mod_reference_et_demand_process.f90': '0a8fc91570c6297a54109740de3a26153dc44283', 'src/runtime/mod_fmr_production_application_bootstrap.f90': '8b480b09f47bb4443d755109c9093486853c0809'}
+def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
+assert not git('status','--porcelain','--','src')
+changed=git('diff','--name-only',BASE,'HEAD','--','src').splitlines()
+if changed!=sorted(PINS):
+ sys.path.insert(0,str(ROOT/'tests/modularity'))
+ from backend_allocation_authority import verify_source
+ source=verify_source() # Source eligibility only: all scientific cases still execute.
+ assert changed==sorted([*PINS,*source['changed_paths']])
+for p,b in PINS.items():assert git('rev-parse','HEAD:'+p)==b,p
+assert git('rev-parse','HEAD:reference')==git('rev-parse',BASE+':reference')
+runner='tests/frost/run_ppa_wu05b15_runtime.py'
+assert subprocess.check_output(['git','show',BASE+':'+runner],cwd=ROOT)==(ROOT/runner).read_bytes()
+s=(ROOT/runner).read_text();old='assert subprocess.check_output(["git","rev-parse","HEAD:src"],cwd=ROOT,text=True).strip()==source';assert s.count(old)==1
+s=s.replace(old,'assert subprocess.check_output(["git","rev-parse","HEAD:src"],cwd=ROOT,text=True).strip()=='+repr(git('rev-parse','HEAD:src')))
+old="prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime'+('-micro'if args.micro_successor else'')";assert s.count(old)==1
+s=s.replace(old,"prefix='ppa-wu05b15-'+args.route.replace('_','-')+'-runtime-mc-met01-demand'")
+# Scheduling only: unchanged original case commands and assertions in
+# separate fresh processes. Bound workers to two to preserve memory margin.
+import concurrent.futures,os,hashlib,json
+resume=None
+start=s.index(' output=[]\n');end=s.index(" (out/'output.txt').write_text",start)
+old=s[start:end]
+new=""" def run_configuration(configuration):
+  stdout=out/f'configuration-{configuration}.txt';stderr=out/f'configuration-{configuration}.err'
+  if resume is not None and opt==0 and configuration==1:
+   assert hashlib.sha256((out/'test').read_bytes()).hexdigest()==resume['executable_sha256']
+   raw=Path('/tmp/mc-met01-low-air-config1.stdout').read_bytes()
+   assert hashlib.sha256(raw).hexdigest()==resume['stdout_sha256']
+   stdout.write_bytes(raw);stderr.write_text('Inherited completed configuration1 from same source/compiler; original controller observed exit0.\\n')
+  else:
+   with stdout.open('w')as so,stderr.open('w')as se:
+    subprocess.run([str(out/'test'),str(configuration)],stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'y'},check=True)
+  text=stdout.read_text();assert text.count('_RUNTIME=PASS')==1 and text.count('FINE_COMPARISON')==6
+  assert 'PPA_WU05B15_EXTENDED_APPLICATION=PASS' in text and 'PPA_WU05B15_ACTUAL_CONTROL_PREFLIGHT=PASS' in text
+  print(f'PPA_WU05B15_{args.route.upper()}_O{opt}_CONFIGURATION_{configuration}_COMPLETE=PASS',flush=True)
+  return text
+ with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+  output=list(pool.map(run_configuration,range(1,7)))
+"""
+assert 'for configuration in range(1,7):' in old
+s=s[:start]+new+s[end:]
+exec(compile(s,str(ROOT/runner),'exec'),{'__file__':str(ROOT/runner),'__name__':'__main__','resume':resume,'concurrent':concurrent,'hashlib':hashlib,'Path':Path})

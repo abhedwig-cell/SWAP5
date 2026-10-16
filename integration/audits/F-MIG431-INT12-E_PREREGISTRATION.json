@@ -1,0 +1,13 @@
+{
+  "schema":"swap5.f_mig431_int12_e.preregistration.v1",
+  "workunit":"F-MIG431-INT12-E",
+  "title":"Detailed-meteorology interception continuation for SWINTER=1/2",
+  "base":{"branch":"integration/f-ci-canonical","sha":"89eedb63c65fcf496f2bc14153c31ec57f1d3de4"},
+  "phase":"PREREGISTERED_RECONSTRUCTION",
+  "gap":"F-MIG431-INT12-D canonically admits daily SWMETDETAIL=0 Gash only. Legacy SWMETDETAIL=1 carries interception across meteorological records through restint/interc and therefore has additional continuation, retry and restart semantics not covered by P0's uniform source-window apportionment alone.",
+  "legacy_contract_to_reconstruct":["interc = restint + aintc * arain(record)/grai","wfrac from interc, ew0 and metperiod","restint = max(interc - wet-canopy evaporation consumed in the record,0)","grain/nrain record mapping via nraida/grai","zero-grai behavior","interaction with SWINTER=1 and SWINTER=2","restart ownership and retry behavior of restint"],
+  "hypothesis":"restint is genuine accepted continuation state for detailed meteorology, unlike daily aintc itself. It should be checkpointed, trial-local and committed only with the accepted meteorological/physical interval. P0 may remain aggregate provenance owner but is not by itself sufficient to represent record-to-record wet-canopy carryover.",
+  "scope":{"included":["SWMETDETAIL=1 interception continuation for already reconstructed aggregate methods SWINTER=1/2","typed restint candidate/commit/restart semantics","record-weighted aggregate application","wet-canopy fraction and net-rain mapping","retry/restart qualification"],"excluded":["SWINTER=3 Rutter","new Gash or VonHHBraden physics","general meteorological file parser","ET provider redesign","TOP03/SCV","solver/timestep policy","RFM/Ribasim/macropores"]},
+  "gates":["exact source reconstruction before production implementation","record sequence oracle with dry/wet carryover","rejected-trial restint immutability","mid-day restart equivalence","aggregate and rain mass closure","SWINTER=1 and SWINTER=2 separate vectors","daily INT12-C/D preservation","P0 preservation","O0/O2 identity"],
+  "status":"PREREGISTERED_NO_PRODUCTION_DELTA"
+}

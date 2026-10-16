@@ -1,15 +1,16 @@
 module mod_fmr_groundwater_application_context
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: int32, int64, real64
   use mod_groundwater_application_plan, only: groundwater_application_plan_t, groundwater_application_cell_plan_t, &
        GW_APP_PLAN_OK
-  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t
+  use mod_groundwater_topology_composition, only: groundwater_topology_tile_t, groundwater_topology_cell_t
   use mod_modflow6_api_binding, only: modflow6_api_slot_binding_t
   use mod_modflow6_linear_response_backend, only: modflow6_linear_boundary_term_t, &
        evaluate_modflow6_linear_boundary_flux_density, reanchor_modflow6_linear_boundary_term, &
-       MODFLOW6_LINEAR_BACKEND_OK
+       relinearize_modflow6_linear_boundary_term, MODFLOW6_LINEAR_BACKEND_OK
   use mod_fmr_groundwater_participant_registry, only: fmr_groundwater_participant_registry_t, &
        FMR_GW_REGISTRY_OK
+  use mod_fmr_serialized_reference_backend, only: fmr_serialized_reference_backend_t
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_trial_t
   use mod_groundwater_tile_aggregation, only: groundwater_tile_exchange_t, groundwater_cell_exchange_t, &
        aggregate_groundwater_cell_tiles, GW_TILE_COMPONENT_SWAP, GW_TILE_AGG_OK
@@ -31,15 +32,31 @@ module mod_fmr_groundwater_application_context
   integer, parameter, public :: FMR_GW_APP_CONTEXT_LINEAR_RESPONSE_FAILED = 7
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PREPARED_BUSY = 8
   integer, parameter, public :: FMR_GW_APP_CONTEXT_PUBLICATION_FAILED = 9
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_SERIAL = 0
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_STATIC = 1
+  integer, parameter, public :: FMR_GW_PARALLEL_SCHEDULE_COST_AWARE = 2
+  real(real64), parameter :: FMR_GW_PARALLEL_LOAD_RATIO_THRESHOLD = 1.20_real64
+
+  type :: fmr_groundwater_context_cell_t
+    type(groundwater_topology_cell_t) :: topology
+    integer :: tile_begin = 0
+    integer :: tile_count = 0
+  end type fmr_groundwater_context_cell_t
 
   type, public :: fmr_groundwater_application_context_t
     private
     type(groundwater_application_plan_t), pointer :: plan => null()
     type(fmr_groundwater_participant_registry_t), pointer :: registry => null()
+    type(fmr_serialized_reference_backend_t), pointer :: worker_backends(:) => null()
+    integer :: worker_count = 1
+    integer :: last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    real(real64) :: last_static_load_ratio = 1.0_real64
+    real(real64) :: last_selected_load_ratio = 1.0_real64
     type(groundwater_interface_mass_ledger_t), pointer :: ledgers(:) => null()
     integer(int64), allocatable :: participant_handles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
-    type(groundwater_application_cell_plan_t), allocatable :: cells(:)
+    type(fmr_groundwater_context_cell_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: current_terms(:)
     type(groundwater_swap_trial_t), allocatable :: trials(:)
@@ -56,12 +73,16 @@ module mod_fmr_groundwater_application_context
     procedure, public :: cell_count => application_context_cell_count
     procedure, public :: quiescent => application_context_quiescent
     procedure, public :: copy_plan_view => application_context_copy_plan_view
+    procedure, public :: export_plan_view => application_context_export_plan_view
     procedure, public :: copy_tile_view => application_context_copy_tile_view
     procedure, public :: capture_origins => application_context_capture_origins
     procedure, public :: evaluate_groundwater_fluxes => application_context_evaluate_groundwater_fluxes
     procedure, public :: trial_cell_heads => application_context_trial_cell_heads
+    procedure, public :: trial_response_tangents => application_context_trial_response_tangents
+    procedure, public :: parallel_schedule_diagnostics => application_context_parallel_schedule_diagnostics
     procedure, public :: discard_candidates => application_context_discard_candidates
     procedure, public :: reanchor_terms => application_context_reanchor_terms
+    procedure, public :: relinearize_terms => application_context_relinearize_terms
     procedure, public :: swap_preflight => application_context_swap_preflight
     procedure, public :: prepare_ledgers => application_context_prepare_ledgers
     procedure, public :: ledgers_preflight => application_context_ledgers_preflight
@@ -72,25 +93,40 @@ module mod_fmr_groundwater_application_context
 
 contains
 
-  subroutine application_context_bind(self, plan, registry, participant_handles, ledgers, status)
+  subroutine application_context_bind(self, plan, registry, participant_handles, ledgers, status, worker_backends, worker_count)
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     type(groundwater_application_plan_t), target, intent(in) :: plan
     type(fmr_groundwater_participant_registry_t), target, intent(inout) :: registry
     integer(int64), intent(in) :: participant_handles(:)
     type(groundwater_interface_mass_ledger_t), target, intent(inout) :: ledgers(:)
     integer, intent(out) :: status
+    type(fmr_serialized_reference_backend_t), target, intent(inout), optional :: worker_backends(:)
+    integer, intent(in), optional :: worker_count
 
     type(groundwater_topology_tile_t), allocatable :: tiles(:)
+    integer(int64), allocatable :: expected_swap_origin_revisions(:)
     type(groundwater_application_cell_plan_t), allocatable :: cells(:)
     type(modflow6_api_slot_binding_t), allocatable :: bindings(:)
     type(modflow6_linear_boundary_term_t), allocatable :: terms(:)
     type(groundwater_interface_mass_snapshot_t) :: snapshot
     integer(int64) :: tile_id, lineage_id, revision
-    logical :: has_origin, has_candidate, available
+    logical :: has_origin, has_candidate, available, handles_strictly_increasing
     integer :: i, j, local_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
     if (self%bound) return
+    self%worker_count = 1
+    self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    self%last_static_load_ratio = 1.0_real64
+    self%last_selected_load_ratio = 1.0_real64
+    nullify(self%worker_backends)
+    if (present(worker_count)) self%worker_count = worker_count
+    if (self%worker_count /= 1 .and. self%worker_count /= 2 .and. self%worker_count /= 4) return
+    if (self%worker_count > 1) then
+      if (.not. present(worker_backends)) return
+      if (size(worker_backends) < self%worker_count) return
+      self%worker_backends => worker_backends
+    end if
     if (.not. plan%ready()) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
@@ -98,6 +134,11 @@ contains
 
     call plan%copy_tiles(tiles, local_status)
     if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(tiles)) then
+      status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+      return
+    end if
+    call plan%copy_tile_swap_origin_revisions(expected_swap_origin_revisions, local_status)
+    if (local_status /= GW_APP_PLAN_OK .or. .not. allocated(expected_swap_origin_revisions)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
     end if
@@ -122,10 +163,22 @@ contains
       return
     end if
 
-    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles)) return
+    if (size(participant_handles) /= size(tiles) .or. size(ledgers) /= size(tiles) .or. &
+        size(expected_swap_origin_revisions) /= size(tiles)) return
     if (size(cells) /= size(bindings) .or. size(cells) /= size(terms)) then
       status = FMR_GW_APP_CONTEXT_PLAN_FAILED
       return
+    end if
+
+    handles_strictly_increasing = .true.
+    if (size(participant_handles) > 0) then
+      if (participant_handles(1) <= 0_int64) handles_strictly_increasing = .false.
+      do i = 2, size(participant_handles)
+        if (participant_handles(i) <= 0_int64 .or. participant_handles(i) <= participant_handles(i-1)) then
+          handles_strictly_increasing = .false.
+          exit
+        end if
+      end do
     end if
 
     do i = 1, size(tiles)
@@ -133,18 +186,30 @@ contains
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
       end if
-      do j = 1, i - 1
-        if (participant_handles(j) == participant_handles(i)) then
-          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
-          return
-        end if
-      end do
+      if (.not. handles_strictly_increasing) then
+        do j = 1, i - 1
+          if (participant_handles(j) == participant_handles(i)) then
+            status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+            return
+          end if
+        end do
+      end if
 
       call registry%identity(participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
+      ! A participant may already hold a captured accepted origin after an
+      ! aborted/pre-evaluation context. That is reusable only when it is exactly
+      ! the origin carried by the new predictor response. Live candidates are
+      ! never reusable across application contexts.
       if (local_status /= FMR_GW_REGISTRY_OK .or. tile_id /= tiles(i)%tile_id .or. has_candidate) then
         status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
         return
+      end if
+      if (has_origin) then
+        if (lineage_id /= tiles(i)%swap_lineage_id .or. revision /= expected_swap_origin_revisions(i)) then
+          status = FMR_GW_APP_CONTEXT_HANDLE_FAILED
+          return
+        end if
       end if
 
       call ledgers(i)%snapshot(snapshot)
@@ -171,6 +236,7 @@ contains
     end do
 
     allocate(self%participant_handles(size(participant_handles)))
+    allocate(self%expected_swap_origin_revisions(size(expected_swap_origin_revisions)))
     allocate(self%tiles(size(tiles)))
     allocate(self%cells(size(cells)))
     allocate(self%bindings(size(bindings)))
@@ -181,8 +247,13 @@ contains
     allocate(self%ledger_prepared(size(tiles)))
 
     self%participant_handles = participant_handles
+    self%expected_swap_origin_revisions = expected_swap_origin_revisions
     self%tiles = tiles
-    self%cells = cells
+    do i = 1, size(cells)
+      self%cells(i)%topology = cells(i)%topology
+      self%cells(i)%tile_begin = cells(i)%tile_begin
+      self%cells(i)%tile_count = cells(i)%tile_count
+    end do
     self%bindings = bindings
     self%current_terms = terms
     self%trial_valid = .false.
@@ -200,14 +271,27 @@ contains
 
     ready = self%bound .and. associated(self%plan) .and. associated(self%registry) .and. associated(self%ledgers)
     if (.not. ready) return
-    ready = allocated(self%participant_handles) .and. allocated(self%tiles) .and. allocated(self%cells) .and. &
+    if (self%worker_count /= 1 .and. self%worker_count /= 2 .and. self%worker_count /= 4) then
+      ready = .false.
+      return
+    end if
+    if (self%worker_count > 1) then
+      ready = associated(self%worker_backends)
+      if (.not. ready) return
+      ready = size(self%worker_backends) >= self%worker_count
+      if (.not. ready) return
+    end if
+    ready = allocated(self%participant_handles) .and. allocated(self%expected_swap_origin_revisions) .and. &
+         allocated(self%tiles) .and. allocated(self%cells) .and. &
          allocated(self%bindings) .and. allocated(self%current_terms) .and. allocated(self%trials) .and. &
          allocated(self%trial_valid) .and. allocated(self%prepared_ledgers) .and. allocated(self%ledger_prepared)
     if (.not. ready) return
     ready = self%plan%ready() .and. self%window%valid()
     if (.not. ready) return
-    ready = size(self%participant_handles) == size(self%tiles) .and. size(self%ledgers) == size(self%tiles) .and. &
-         size(self%trials) == size(self%tiles) .and. size(self%trial_valid) == size(self%tiles) .and. &
+    ready = size(self%participant_handles) == size(self%tiles) .and. &
+         size(self%expected_swap_origin_revisions) == size(self%tiles) .and. &
+         size(self%ledgers) == size(self%tiles) .and. size(self%trials) == size(self%tiles) .and. &
+         size(self%trial_valid) == size(self%tiles) .and. &
          size(self%prepared_ledgers) == size(self%tiles) .and. size(self%ledger_prepared) == size(self%tiles) .and. &
          size(self%bindings) == size(self%cells) .and. size(self%current_terms) == size(self%cells)
   end function application_context_ready
@@ -263,6 +347,36 @@ contains
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_copy_plan_view
 
+  subroutine application_context_export_plan_view(self, cell_ids, binding_cell_ids, package_slots, modflow_node_ids, &
+       term_cell_ids, term_hcof, term_rhs, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    integer(int64), intent(out) :: cell_ids(:), binding_cell_ids(:), term_cell_ids(:)
+    integer, intent(out) :: package_slots(:)
+    integer(int32), intent(out) :: modflow_node_ids(:)
+    real(real64), intent(out) :: term_hcof(:), term_rhs(:)
+    integer, intent(out) :: status
+
+    integer :: i, n
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    n = size(self%cells)
+    if (size(cell_ids) /= n .or. size(binding_cell_ids) /= n .or. size(package_slots) /= n .or. &
+        size(modflow_node_ids) /= n .or. size(term_cell_ids) /= n .or. size(term_hcof) /= n .or. &
+        size(term_rhs) /= n) return
+
+    do i = 1, n
+      cell_ids(i) = self%cells(i)%topology%groundwater_cell_id
+      binding_cell_ids(i) = self%bindings(i)%groundwater_cell_id
+      package_slots(i) = self%bindings(i)%package_slot
+      modflow_node_ids(i) = self%bindings(i)%modflow_node_id
+      term_cell_ids(i) = self%current_terms(i)%groundwater_cell_id
+      term_hcof(i) = self%current_terms(i)%hcof_m2_per_day
+      term_rhs(i) = self%current_terms(i)%rhs_m3_per_day
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_export_plan_view
+
   subroutine application_context_copy_tile_view(self, tiles, participant_handles, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
     type(groundwater_topology_tile_t), allocatable, intent(out) :: tiles(:)
@@ -305,7 +419,8 @@ contains
       call self%registry%identity(self%participant_handles(i), tile_id, lineage_id, revision, &
            has_origin, has_candidate, local_status)
       if (local_status /= FMR_GW_REGISTRY_OK .or. .not. has_origin .or. has_candidate .or. &
-          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. revision < 0_int64) then
+          tile_id /= self%tiles(i)%tile_id .or. lineage_id /= self%tiles(i)%swap_lineage_id .or. &
+          revision /= self%expected_swap_origin_revisions(i)) then
         status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
         return
       end if
@@ -346,7 +461,11 @@ contains
 
     type(groundwater_tile_exchange_t), allocatable :: exchanges(:)
     type(groundwater_cell_exchange_t) :: aggregate
-    integer :: i, k, idx, first, last, participant_status, local_status
+    real(real64), allocatable :: tile_heads_m(:), predicted_cost(:), worker_load(:)
+    integer, allocatable :: registry_status(:), owner(:), order(:), merge_workspace(:)
+    logical :: cost_available
+    real(real64) :: mean_load, best_load
+    integer :: i, j, k, idx, first, last, participant_status, local_status, w, best_worker
 
     cell_q_swap_m_per_s = 0.0_real64
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
@@ -361,44 +480,155 @@ contains
       return
     end if
 
-    do i = 1, size(self%cells)
-      if (.not. ieee_is_finite(cell_heads_m(i))) return
-      first = self%cells(i)%tile_begin
-      last = first + self%cells(i)%tile_count - 1
-      if (first < 1 .or. last > size(self%tiles) .or. last < first) then
-        status = FMR_GW_APP_CONTEXT_PLAN_FAILED
-        call discard_live_candidates_internal(self)
-        return
-      end if
-      allocate(exchanges(self%cells(i)%tile_count))
-      do k = 1, self%cells(i)%tile_count
-        idx = first + k - 1
-        call self%registry%trial_from_origin(self%participant_handles(idx), self%window, cell_heads_m(i), &
-             self%trials(idx), participant_status, local_status)
-        if (local_status /= FMR_GW_REGISTRY_OK .or. .not. self%trials(idx)%valid) then
-          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+    self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_SERIAL
+    self%last_static_load_ratio = 1.0_real64
+    self%last_selected_load_ratio = 1.0_real64
+
+    if (self%worker_count == 1) then
+      do i = 1, size(self%cells)
+        if (.not. ieee_is_finite(cell_heads_m(i))) return
+        first = self%cells(i)%tile_begin
+        last = first + self%cells(i)%tile_count - 1
+        if (first < 1 .or. last > size(self%tiles) .or. last < first) then
+          status = FMR_GW_APP_CONTEXT_PLAN_FAILED
           call discard_live_candidates_internal(self)
-          deallocate(exchanges)
           return
         end if
-        self%trial_valid(idx) = .true.
-        exchanges(k)%groundwater_cell_id = self%tiles(idx)%groundwater_cell_id
-        exchanges(k)%tile_id = self%tiles(idx)%tile_id
-        exchanges(k)%tile_lineage_id = self%tiles(idx)%swap_lineage_id
-        exchanges(k)%component_kind = GW_TILE_COMPONENT_SWAP
-        exchanges(k)%area_fraction = self%tiles(idx)%area_fraction
-        exchanges(k)%q_swap_m_per_s = self%trials(idx)%q_swap_m_per_s
+        allocate(exchanges(self%cells(i)%tile_count))
+        do k = 1, self%cells(i)%tile_count
+          idx = first + k - 1
+          call self%registry%trial_from_origin(self%participant_handles(idx), self%window, cell_heads_m(i), &
+               self%trials(idx), participant_status, local_status)
+          if (local_status /= FMR_GW_REGISTRY_OK .or. .not. self%trials(idx)%valid) then
+            status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+            call discard_live_candidates_internal(self)
+            deallocate(exchanges)
+            return
+          end if
+          self%trial_valid(idx) = .true.
+          exchanges(k)%groundwater_cell_id = self%tiles(idx)%groundwater_cell_id
+          exchanges(k)%tile_id = self%tiles(idx)%tile_id
+          exchanges(k)%tile_lineage_id = self%tiles(idx)%swap_lineage_id
+          exchanges(k)%component_kind = GW_TILE_COMPONENT_SWAP
+          exchanges(k)%area_fraction = self%tiles(idx)%area_fraction
+          exchanges(k)%q_swap_m_per_s = self%trials(idx)%q_swap_m_per_s
+        end do
+
+        call aggregate_groundwater_cell_tiles(self%cells(i)%topology%groundwater_cell_id, exchanges, aggregate, local_status)
+        deallocate(exchanges)
+        if (local_status /= GW_TILE_AGG_OK .or. .not. aggregate%available) then
+          status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+          call discard_live_candidates_internal(self)
+          return
+        end if
+        cell_q_swap_m_per_s(i) = aggregate%q_swap_area_weighted_m_per_s
+      end do
+    else
+      allocate(tile_heads_m(size(self%tiles)), registry_status(size(self%tiles)), owner(size(self%tiles)), &
+           predicted_cost(size(self%tiles)), worker_load(self%worker_count), order(size(self%tiles)), &
+           merge_workspace(size(self%tiles)))
+      registry_status = FMR_GW_REGISTRY_OK
+      self%trial_valid = .false.
+
+      do i = 1, size(self%cells)
+        if (.not. ieee_is_finite(cell_heads_m(i))) return
+        first = self%cells(i)%tile_begin
+        last = first + self%cells(i)%tile_count - 1
+        if (first < 1 .or. last > size(self%tiles) .or. last < first) then
+          status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+          return
+        end if
+        tile_heads_m(first:last) = cell_heads_m(i)
       end do
 
-      call aggregate_groundwater_cell_tiles(self%cells(i)%topology%groundwater_cell_id, exchanges, aggregate, local_status)
-      deallocate(exchanges)
-      if (local_status /= GW_TILE_AGG_OK .or. .not. aggregate%available) then
-        status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+      worker_load = 0.0_real64
+      do idx = 1, size(self%tiles)
+        call self%registry%pretrial_cost_proxy(self%participant_handles(idx), predicted_cost(idx), &
+             cost_available, local_status)
+        if (local_status /= FMR_GW_REGISTRY_OK) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        if (.not. cost_available) predicted_cost(idx) = 1.0_real64
+        if (.not. ieee_is_finite(predicted_cost(idx)) .or. predicted_cost(idx) <= 0.0_real64) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        owner(idx) = 1 + mod(idx-1, self%worker_count)
+        worker_load(owner(idx)) = worker_load(owner(idx)) + predicted_cost(idx)
+        order(idx) = idx
+      end do
+
+      mean_load = sum(worker_load) / real(self%worker_count, real64)
+      if (mean_load > 0.0_real64) self%last_static_load_ratio = maxval(worker_load) / mean_load
+      self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_STATIC
+      self%last_selected_load_ratio = self%last_static_load_ratio
+
+      if (self%last_static_load_ratio > FMR_GW_PARALLEL_LOAD_RATIO_THRESHOLD) then
+        call sort_indices_by_descending_cost(predicted_cost, order, merge_workspace)
+        worker_load = 0.0_real64
+        do j = 1, size(order)
+          idx = order(j)
+          best_worker = 1
+          best_load = worker_load(1)
+          do w = 2, self%worker_count
+            if (worker_load(w) < best_load) then
+              best_worker = w
+              best_load = worker_load(w)
+            end if
+          end do
+          owner(idx) = best_worker
+          worker_load(best_worker) = worker_load(best_worker) + predicted_cost(idx)
+        end do
+        mean_load = sum(worker_load) / real(self%worker_count, real64)
+        self%last_selected_load_ratio = 1.0_real64
+        if (mean_load > 0.0_real64) self%last_selected_load_ratio = maxval(worker_load) / mean_load
+        self%last_parallel_schedule = FMR_GW_PARALLEL_SCHEDULE_COST_AWARE
+      end if
+
+!$omp parallel do default(shared) private(w,idx,participant_status,local_status) schedule(static,1) num_threads(self%worker_count)
+      do w = 1, self%worker_count
+        do idx = 1, size(self%tiles)
+          if (owner(idx) /= w) cycle
+          call self%registry%trial_from_origin_on_backend(self%participant_handles(idx), self%worker_backends(w), &
+               self%window, tile_heads_m(idx), self%trials(idx), participant_status, local_status)
+          registry_status(idx) = local_status
+          if (local_status == FMR_GW_REGISTRY_OK .and. self%trials(idx)%valid) self%trial_valid(idx) = .true.
+        end do
+      end do
+!$omp end parallel do
+
+      if (any(registry_status /= FMR_GW_REGISTRY_OK) .or. .not. all(self%trial_valid)) then
+        status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
         call discard_live_candidates_internal(self)
+        cell_q_swap_m_per_s = 0.0_real64
         return
       end if
-      cell_q_swap_m_per_s(i) = aggregate%q_swap_area_weighted_m_per_s
-    end do
+
+      do i = 1, size(self%cells)
+        first = self%cells(i)%tile_begin
+        last = first + self%cells(i)%tile_count - 1
+        allocate(exchanges(self%cells(i)%tile_count))
+        do k = 1, self%cells(i)%tile_count
+          idx = first + k - 1
+          exchanges(k)%groundwater_cell_id = self%tiles(idx)%groundwater_cell_id
+          exchanges(k)%tile_id = self%tiles(idx)%tile_id
+          exchanges(k)%tile_lineage_id = self%tiles(idx)%swap_lineage_id
+          exchanges(k)%component_kind = GW_TILE_COMPONENT_SWAP
+          exchanges(k)%area_fraction = self%tiles(idx)%area_fraction
+          exchanges(k)%q_swap_m_per_s = self%trials(idx)%q_swap_m_per_s
+        end do
+        call aggregate_groundwater_cell_tiles(self%cells(i)%topology%groundwater_cell_id, exchanges, aggregate, local_status)
+        deallocate(exchanges)
+        if (local_status /= GW_TILE_AGG_OK .or. .not. aggregate%available) then
+          status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+          call discard_live_candidates_internal(self)
+          cell_q_swap_m_per_s = 0.0_real64
+          return
+        end if
+        cell_q_swap_m_per_s(i) = aggregate%q_swap_area_weighted_m_per_s
+      end do
+    end if
 
     if (.not. all(self%trial_valid)) then
       status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
@@ -408,6 +638,68 @@ contains
     end if
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_trial_cell_heads
+
+  subroutine application_context_parallel_schedule_diagnostics(self, schedule_code, static_ratio, selected_ratio, available)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    integer, intent(out) :: schedule_code
+    real(real64), intent(out) :: static_ratio, selected_ratio
+    logical, intent(out) :: available
+
+    schedule_code = self%last_parallel_schedule
+    static_ratio = self%last_static_load_ratio
+    selected_ratio = self%last_selected_load_ratio
+    available = self%ready()
+  end subroutine application_context_parallel_schedule_diagnostics
+
+  subroutine application_context_trial_response_tangents(self, cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(in) :: self
+    real(real64), intent(out) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    integer :: i, k, idx, first, last
+    real(real64) :: tangent
+
+    cell_dq_swap_dh_per_s = 0.0_real64
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (.not. all(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    do i = 1, size(self%cells)
+      first = self%cells(i)%tile_begin
+      last = first + self%cells(i)%tile_count - 1
+      if (first < 1 .or. last > size(self%tiles) .or. last < first) then
+        status = FMR_GW_APP_CONTEXT_PLAN_FAILED
+        return
+      end if
+      tangent = 0.0_real64
+      do k = 1, self%cells(i)%tile_count
+        idx = first + k - 1
+        if (.not. self%trials(idx)%response_tangent_available) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        if (.not. ieee_is_finite(self%trials(idx)%dq_swap_dh_per_s)) then
+          status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+          return
+        end if
+        tangent = tangent + self%tiles(idx)%area_fraction * self%trials(idx)%dq_swap_dh_per_s
+      end do
+      if (.not. ieee_is_finite(tangent)) then
+        status = FMR_GW_APP_CONTEXT_AGGREGATION_FAILED
+        return
+      end if
+      cell_dq_swap_dh_per_s(i) = tangent
+    end do
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_trial_response_tangents
 
   subroutine application_context_discard_candidates(self, status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self
@@ -458,6 +750,43 @@ contains
     self%current_terms = next_terms
     status = FMR_GW_APP_CONTEXT_OK
   end subroutine application_context_reanchor_terms
+
+  subroutine application_context_relinearize_terms(self, cell_heads_m, cell_q_swap_m_per_s, &
+       cell_dq_swap_dh_per_s, status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    real(real64), intent(in) :: cell_heads_m(:)
+    real(real64), intent(in) :: cell_q_swap_m_per_s(:)
+    real(real64), intent(in) :: cell_dq_swap_dh_per_s(:)
+    integer, intent(out) :: status
+
+    type(modflow6_linear_boundary_term_t), allocatable :: next_terms(:)
+    integer :: i, local_status
+
+    status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
+    if (.not. self%ready()) return
+    if (size(cell_heads_m) /= size(self%cells) .or. size(cell_q_swap_m_per_s) /= size(self%cells) .or. &
+        size(cell_dq_swap_dh_per_s) /= size(self%cells)) return
+    if (self%published) then
+      status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
+      return
+    end if
+    if (any(self%trial_valid) .or. any(self%ledger_prepared)) then
+      status = FMR_GW_APP_CONTEXT_PREPARED_BUSY
+      return
+    end if
+
+    allocate(next_terms(size(self%current_terms)))
+    do i = 1, size(next_terms)
+      call relinearize_modflow6_linear_boundary_term(self%current_terms(i), cell_heads_m(i), &
+           cell_q_swap_m_per_s(i), cell_dq_swap_dh_per_s(i), next_terms(i), local_status)
+      if (local_status /= MODFLOW6_LINEAR_BACKEND_OK) then
+        status = FMR_GW_APP_CONTEXT_LINEAR_RESPONSE_FAILED
+        return
+      end if
+    end do
+    self%current_terms = next_terms
+    status = FMR_GW_APP_CONTEXT_OK
+  end subroutine application_context_relinearize_terms
 
   subroutine application_context_swap_preflight(self, ready, status)
     class(fmr_groundwater_application_context_t), intent(in) :: self
@@ -602,15 +931,18 @@ contains
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out) :: status
 
-    integer :: participant_status, ledger_status
+    integer :: participant_status, ledger_status, origin_status
 
     status = FMR_GW_APP_CONTEXT_INVALID_REQUEST
     if (.not. self%ready()) return
     participant_status = FMR_GW_APP_CONTEXT_OK
     ledger_status = FMR_GW_APP_CONTEXT_OK
+    origin_status = FMR_GW_APP_CONTEXT_OK
     call discard_live_candidates_internal(self, participant_status)
     call abort_ledgers_internal(self, ledger_status)
-    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK) then
+    call abandon_origins_internal(self, origin_status)
+    if (participant_status /= FMR_GW_APP_CONTEXT_OK .or. ledger_status /= FMR_GW_APP_CONTEXT_OK .or. &
+        origin_status /= FMR_GW_APP_CONTEXT_OK) then
       status = FMR_GW_APP_CONTEXT_PUBLICATION_FAILED
       return
     end if
@@ -693,6 +1025,27 @@ contains
     end if
   end subroutine discard_live_candidates_internal
 
+  subroutine abandon_origins_internal(self, aggregate_status)
+    class(fmr_groundwater_application_context_t), intent(inout) :: self
+    integer, intent(out), optional :: aggregate_status
+
+    integer :: i, local_status
+    logical :: failed
+
+    failed = .false.
+    do i = 1, size(self%participant_handles)
+      call self%registry%abandon_origin(self%participant_handles(i), local_status)
+      if (local_status /= FMR_GW_REGISTRY_OK) failed = .true.
+    end do
+    if (present(aggregate_status)) then
+      if (failed) then
+        aggregate_status = FMR_GW_APP_CONTEXT_PARTICIPANT_FAILED
+      else
+        aggregate_status = FMR_GW_APP_CONTEXT_OK
+      end if
+    end if
+  end subroutine abandon_origins_internal
+
   subroutine abort_ledgers_internal(self, aggregate_status)
     class(fmr_groundwater_application_context_t), intent(inout) :: self
     integer, intent(out), optional :: aggregate_status
@@ -722,5 +1075,65 @@ contains
       end if
     end if
   end subroutine abort_ledgers_internal
+
+  subroutine sort_indices_by_descending_cost(cost, order, workspace)
+    real(real64), intent(in) :: cost(:)
+    integer, intent(inout) :: order(:)
+    integer, intent(inout) :: workspace(:)
+
+    integer :: width, left, middle, right, i, j, k, n
+
+    n = size(order)
+    if (n <= 1) return
+    if (size(cost) /= n .or. size(workspace) /= n) return
+
+    width = 1
+    do while (width < n)
+      left = 1
+      do while (left <= n)
+        middle = min(left + width - 1, n)
+        right = min(left + 2*width - 1, n)
+        i = left
+        j = middle + 1
+        k = left
+        do while (i <= middle .and. j <= right)
+          if (cost_index_precedes(order(i), order(j), cost)) then
+            workspace(k) = order(i)
+            i = i + 1
+          else
+            workspace(k) = order(j)
+            j = j + 1
+          end if
+          k = k + 1
+        end do
+        do while (i <= middle)
+          workspace(k) = order(i)
+          i = i + 1
+          k = k + 1
+        end do
+        do while (j <= right)
+          workspace(k) = order(j)
+          j = j + 1
+          k = k + 1
+        end do
+        left = left + 2*width
+      end do
+      order = workspace
+      width = 2*width
+    end do
+  end subroutine sort_indices_by_descending_cost
+
+  pure logical function cost_index_precedes(left_index, right_index, cost) result(precedes)
+    integer, intent(in) :: left_index, right_index
+    real(real64), intent(in) :: cost(:)
+
+    if (cost(left_index) > cost(right_index)) then
+      precedes = .true.
+    else if (cost(left_index) < cost(right_index)) then
+      precedes = .false.
+    else
+      precedes = left_index < right_index
+    end if
+  end function cost_index_precedes
 
 end module mod_fmr_groundwater_application_context

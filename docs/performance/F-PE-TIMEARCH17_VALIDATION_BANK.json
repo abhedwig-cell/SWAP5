@@ -1,0 +1,23 @@
+{
+  "work_unit":"F-PE-TIMEARCH17",
+  "status":"PREREGISTERED_BLIND_VALIDATION_BANK",
+  "authority":"integration/f-ci-canonical@6dabb1d6e5baa351659363a1f938d596dddedc7c",
+  "horizon_day":0.12,
+  "materials":["B01","B12","O05","O14"],
+  "regimes":[
+    {"id":"DRY4","class":"DRY","h0_cm":-225.0,"rain_cm_day":1.2},
+    {"id":"TRANS4","class":"TRANSITION","h0_cm":-85.0,"rain_cm_day":5.5},
+    {"id":"MOIST4","class":"MOIST","h0_cm":-40.0,"rain_cm_day":7.0},
+    {"id":"WET4","class":"WET","h0_cm":-15.0,"rain_cm_day":13.0},
+    {"id":"POND4","class":"POND","h0_cm":-3.0,"rain_cm_day":22.0}
+  ],
+  "candidate":{
+    "name":"GUARD_M5",
+    "bootstrap_dt_day":0.005,
+    "normalized_head_target":0.40,
+    "top_head_guard_cm":-5.0,
+    "transition_refinement":4,
+    "retry_floor_day":0.001,
+    "fallback":"LEGACY_SAFE_PERMANENT"
+  }
+}

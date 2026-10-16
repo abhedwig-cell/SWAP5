@@ -1,0 +1,42 @@
+name: F-PE-NLGLOB02 balance-floor stagnation attribution
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-NLGLOB02*.md'
+      - 'tests/fpe/materialize_fpe_nlglob02*.py'
+      - 'tests/fpe/run_fpe_nlglob02*.py'
+      - 'tests/fpe/run_fpe_nlglob02*.sh'
+      - '.github/workflows/f-pe-nlglob02.yml'
+  push:
+    branches:
+      - research/f-pe-nlglob02-balance-floor-stagnation
+    paths:
+      - 'docs/performance/F-PE-NLGLOB02*.md'
+      - 'tests/fpe/materialize_fpe_nlglob02*.py'
+      - 'tests/fpe/run_fpe_nlglob02*.py'
+      - 'tests/fpe/run_fpe_nlglob02*.sh'
+      - '.github/workflows/f-pe-nlglob02.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-nlglob02-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  balance-floor-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run NLGLOB02 balance-floor attribution
+        run: bash tests/fpe/run_fpe_nlglob02.sh

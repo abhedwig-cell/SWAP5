@@ -1,13 +1,13 @@
 module mod_reference_richards_legacy_binding
-  use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value, ieee_is_finite
+  use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
-       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request
-  use mod_reference_richards_workspace, only: reference_richards_workspace_t, initialize_reference_workspace, &
-       reset_reference_workspace, prepare_reference_tridag_factorization_capture, &
+       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
+  use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
+       prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
   use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
@@ -29,7 +29,8 @@ module mod_reference_richards_legacy_binding
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
-  end type reference_richards_legacy_workspace_t
+     type(reference_richards_state_binding_t) :: state_binding
+   end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
      integer :: reserved = 0
@@ -113,8 +114,8 @@ contains
 
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
-    type(reference_richards_state_binding_t) :: state_binding
-    integer :: n, tangent_ierror, interface_sensitivity_backsolves
+    integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
+    integer(int64) :: reset_bytes_before
 
     if (self%reserved /= 0) error stop 'invalid legacy solver marker'
     result = soil_water_solve_result_t()
@@ -134,13 +135,14 @@ contains
        end if
        call a23bu_reset_attempt_diagnostics(ws%legacy_worker)
        call a23bu_reset_attempt_control(ws%legacy_worker)
-       call initialize_reference_workspace(ws%richards, n)
-       call reset_reference_workspace(ws%richards)
+       reset_calls_before = ws%richards%profile_full_reset_calls
+       reset_bytes_before = ws%richards%profile_zeroed_bytes
+       call ensure_reference_workspace_shape(ws%richards, n)
 
        ! F-KT owns the committed/base state. F-SI materializes only this solve's
        ! explicit candidate state and lets HeadCalc rebuild reconstructible
        ! hydraulic intermediates in worker-owned scratch/state.
-       call initialize_reference_state_binding(state_binding, request)
+       call initialize_reference_state_binding(ws%state_binding, request)
 
        ! Only the qualified prescribed-qbot route needs reusable-factor capture.
        ! Expanding the existing gamma scratch is temporary worker state; the
@@ -148,19 +150,21 @@ contains
        sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
        if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
 
-       call headcalc(ws%legacy_worker, ws%richards, call_history, state_binding, &
+       call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
             request%evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters)
 
-       ! B1.10 SWBOTB=5 prescribes head at the lower boundary face, so qbot is
+       ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
        ! leaves the exact unrounded compartment residual vector in worker scratch.
        ! Materialize qbot with exact B1.10 watstor()+fluxes() arithmetic grouping
        ! from explicit request/state/provider data; do not call legacy fluxes(),
        ! which mutates integration globals outside the focused solver service.
-       if (request%boundary%bottom_mode == 5 .and. .not. state_binding%fldecdt .and. &
+       if ((request%boundary%bottom_mode == 5 .or. request%boundary%bottom_mode == 8) .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
-          call materialize_prescribed_head_bottom_flux(request, ws%richards, state_binding)
+          if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+             call materialize_prescribed_head_bottom_flux(request, ws%richards, ws%state_binding)
+          end if
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
           result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
@@ -174,7 +178,23 @@ contains
        ! by HeadCalc's total-balance convergence criterion. Preserve that exact
        ! value in the compatibility field, expose it explicitly as cm/day, and
        ! separately publish its time-integrated equation-balance residual in cm.
-       if (request%boundary%bottom_mode == 2 .and. .not. state_binding%fldecdt .and. &
+       if ((request%boundary%bottom_mode == 2 .or. request%boundary%bottom_mode == 3) .and. &
+           .not. ws%state_binding%fldecdt .and. &
+           .not. ws%legacy_worker%control%request_dt_reduction) then
+          result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
+          result%native_balance_rate_residual_available = .true.
+          result%native_balance_rate_residual_cm_per_day = result%unrounded_mass_balance_residual
+          result%integrated_mass_balance_residual_available = .true.
+          result%integrated_mass_balance_residual_cm = &
+               request%step_duration * result%unrounded_mass_balance_residual
+       end if
+
+       ! SWBOTB=7 free drainage owns qbot inside HeadCalc. For an accepted
+       ! solve, the final unrounded compartment residual vector is already the
+       ! exact vector used by HeadCalc's total-balance convergence criterion.
+       ! Publish the same typed native-rate and integrated equation-balance
+       ! residual contract used by the already-qualified bottom modes 2 and 5.
+       if (request%boundary%bottom_mode == 7 .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction) then
           result%unrounded_mass_balance_residual = sum(ws%richards%residual(1:n))
           result%native_balance_rate_residual_available = .true.
@@ -191,7 +211,7 @@ contains
        ! second nonlinear trajectory. Any retry or alternative-solver use is
        ! fail-closed because the captured normal TRIDAG factorization is then
        ! not a qualified accepted-path authority.
-       if (sensitivity_capture .and. .not. state_binding%fldecdt .and. &
+       if (sensitivity_capture .and. .not. ws%state_binding%fldecdt .and. &
            .not. ws%legacy_worker%control%request_dt_reduction .and. &
            ws%legacy_worker%diagnostics%alternative_solver_calls == 0 .and. &
            size(ws%richards%tridag_gamma) >= 2*n) then
@@ -210,12 +230,12 @@ contains
 
        result%candidate_state%active_nodes = n
        allocate(result%candidate_state%pressure_head(n), result%candidate_state%water_content(n))
-       result%candidate_state%pressure_head = state_binding%h
-       result%candidate_state%water_content = state_binding%theta
-       result%candidate_state%ponding_depth = state_binding%pond
-       result%candidate_state%groundwater_level = state_binding%gwl
-       result%top_flux = state_binding%qtop
-       result%bottom_flux = state_binding%qbot
+       result%candidate_state%pressure_head = ws%state_binding%h
+       result%candidate_state%water_content = ws%state_binding%theta
+       result%candidate_state%ponding_depth = ws%state_binding%pond
+       result%candidate_state%groundwater_level = ws%state_binding%gwl
+       result%top_flux = ws%state_binding%qtop
+       result%bottom_flux = ws%state_binding%qbot
        result%diagnostics%nonlinear_iterations = ws%legacy_worker%diagnostics%nonlinear_iterations
        result%diagnostics%jacobian_builds = ws%legacy_worker%diagnostics%jacobian_builds
        result%diagnostics%linear_solves = ws%legacy_worker%diagnostics%linear_solves
@@ -223,10 +243,25 @@ contains
        result%diagnostics%alternative_solver_calls = ws%legacy_worker%diagnostics%alternative_solver_calls
        result%diagnostics%internal_retries = ws%legacy_worker%diagnostics%internal_retries
        result%diagnostics%interface_sensitivity_backsolves = interface_sensitivity_backsolves
+       result%diagnostics%constitutive_evaluations = ws%legacy_worker%diagnostics%constitutive_evaluations
+       result%diagnostics%constitutive_initial_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations
+       result%diagnostics%constitutive_candidate_full_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_full_evaluations
+       result%diagnostics%constitutive_candidate_demand_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_demand_evaluations
+       result%diagnostics%constitutive_capacity_only_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_capacity_only_evaluations
+       result%diagnostics%constitutive_candidate_terminal_evaluations = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_terminal_evaluations
+       result%diagnostics%constitutive_candidate_capacity_reuses = &
+            ws%legacy_worker%diagnostics%constitutive_candidate_capacity_reuses
+       result%diagnostics%workspace_full_resets = ws%richards%profile_full_reset_calls - reset_calls_before
+       result%diagnostics%workspace_zeroed_bytes = ws%richards%profile_zeroed_bytes - reset_bytes_before
 
        if (sensitivity_capture) call release_reference_tridag_factorization_capture(ws%richards)
 
-       if (state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
+       if (ws%state_binding%fldecdt .or. ws%legacy_worker%control%request_dt_reduction) then
           result%status = SW_SOLVE_RETRY_ADVISED
           result%retry_advised = .true.
           result%diagnostics%route = 'legacy-reference-retry'
@@ -282,7 +317,11 @@ contains
     n = state%active_nodes
     volm1 = sum(state%thetm1(1:n) * request%parameters%dz(1:n))
     volact = sum(state%theta(1:n) * request%parameters%dz(1:n))
-    qrosum = sum(richards%provider_root_sink(1:n))
+    if (associated(request%evaluation%root_sink)) then
+       qrosum = sum(richards%provider_root_sink(1:n))
+    else
+       qrosum = 0.0_real64
+    end if
     qdrtot = sum(richards%sink(1:n))
     qssdisum = sum(richards%source(1:n))
     state%qbot = state%qtop + qrosum + qdrtot + &
@@ -294,6 +333,10 @@ contains
     logical, intent(out) :: ok
     character(len=*), intent(out) :: route
     logical :: common_ok
+    logical :: boundary_ok
+    integer :: n
+    real(real64), allocatable :: theta_check(:), k_check(:), capacity_check(:), derivative_check(:)
+    real(real64) :: boundary_flux, boundary_conductance
 
     ok = .false.
     route = 'legacy-request-invalid'
@@ -303,8 +346,13 @@ contains
     end if
     call validate_soil_water_request(request, common_ok)
     if (.not. common_ok) return
-    if (request%physical%macropore_active) then
-       route = 'explicit-macropore-deferred'
+    if (request%physical%macropore_active .and. .not. associated(request%evaluation%macropore)) then
+       route = 'explicit-macropore-provider-required'
+       return
+    end if
+    if (request%physical%macropore_active .and. request%boundary%matrix_source_area_partition .and. &
+        request%boundary%top_mode /= FSI_TOP_MODE_DYNAMIC_PROVIDER) then
+       route = 'matrix-source-partition-requires-dynamic-top'
        return
     end if
     if (request%numerical%conductivity_implicit_mode /= 0) then
@@ -316,9 +364,43 @@ contains
        return
     end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
-        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2) then
+        request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
        route = 'legacy-bottom-mode-deferred'
        return
+    end if
+    if (request%boundary%bottom_mode == 8) then
+       route = 'lysimeter-plate-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       if (.not. ieee_is_finite(request%boundary%bottom_head)) return
+       if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+       if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+       if (.not. request%boundary%bottom_include_half_cell) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (.not. ieee_is_finite(request%parameters%node_distance(n))) return
+       if (request%parameters%node_distance(n) <= 0.0_real64) return
+       if (.not. ieee_is_finite(request%base_state%pressure_head(n))) return
+    end if
+    if (request%boundary%bottom_mode == 3) then
+       route = 'resistive-bottom-domain-deferred'
+       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       n=request%parameters%active_nodes
+       if (n < 2) return
+       if (any(.not. ieee_is_finite(request%parameters%z))) return
+       if (any(.not. ieee_is_finite(request%parameters%dz))) return
+       if (any(.not. ieee_is_finite(request%parameters%node_distance))) return
+       if (any(request%parameters%dz <= 0.0_real64)) return
+       if (any(request%parameters%node_distance <= 0.0_real64)) return
+       if (any(.not. ieee_is_finite(request%base_state%pressure_head))) return
+       if (any(abs(request%base_state%pressure_head)>1.0e10_real64)) return
+       allocate(theta_check(n),k_check(n),capacity_check(n),derivative_check(n))
+       call request%evaluation%constitutive%evaluate(request%base_state%pressure_head, &
+            theta_check,k_check,capacity_check,derivative_check)
+       call evaluate_resistive_bottom_boundary(request%boundary,request%base_state%pressure_head(n), &
+            request%parameters%z(n),0.5_real64*request%parameters%dz(n),k_check(n), &
+            boundary_flux,boundary_conductance,boundary_ok)
+       if (.not. boundary_ok) return
     end if
     select case (request%boundary%top_mode)
     case (FSI_TOP_MODE_EXPLICIT_FLUX)

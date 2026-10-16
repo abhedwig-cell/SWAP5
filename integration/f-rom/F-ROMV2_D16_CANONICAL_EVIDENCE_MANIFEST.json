@@ -1,0 +1,55 @@
+{
+  "schema": "swap5.f-romv2-d16.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D16",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "source_execution": {
+    "branch": "work/f-romv2-d16-fmc-surface-redistribution",
+    "pull_request": 445,
+    "pull_request_merged": false,
+    "head": "a223fcd5ea9b4ff642caabf60592bd491a1fe0ca",
+    "workflow_run": 35456435820,
+    "workflow_job": 105932432291,
+    "artifact_id": 10588253110,
+    "artifact_digest": "sha256:52bf33f88f63d70999620ac3a57a02b4137fb9651ef0536a8d9799a20ce1d301",
+    "workflow_conclusion": "success"
+  },
+  "pre_trajectory_preflight": {
+    "first_no_go_run": 35456224602,
+    "first_no_go_artifact_id": 10588207854,
+    "first_no_go_artifact_digest": "sha256:486fab916a2a70358b8d2c266b074b606f6e7b0375969c64a74acb42f3432ae3",
+    "SWAP_trajectory_evidence_consumed_before_repair": false,
+    "technical_repair_scientific_parameters_changed": false,
+    "successful_run": 35456288437,
+    "successful_artifact_id": 10588092943,
+    "successful_artifact_digest": "sha256:090610969f79996be6cec453006656a4ec95a30ac5d612e228c2e109dc695d83"
+  },
+  "frozen_payload_digests": {
+    "R16_stdout_sha256": "cb3912a007f5cab68b8147f30090595c5b9254fd7effd8f86832c4661faeee76",
+    "R2_stdout_sha256": "90acda8fc4f5d863a7da054392b432fe791e718d4e4b57c701053c63faf6573f",
+    "preflight_result_sha256": "08dfcb84cb98d9d8ff5207baac7c434c2fe525eaa3ebc7da3fe12438faf746c1",
+    "result_sha256": "9a4e0b2f3de6d4bc48e0955d652f18d76e9b2f0200431f646f63f57bfb4f8fda",
+    "analyzer_sha256": "c4f5fdc3b48d92c398cdbf4609de4a123febf05fdb7002998f5afdbaed5c8452"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D16_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D16_RESULT.json",
+    "integration/f-rom/F-ROMV2_D16_STATUS.json",
+    "integration/f-rom/F-ROMV2_D16_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D16_FMC_SURFACE_REDISTRIBUTION_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "tests/rom/preflight_f_romv2_d16_surface_redistribution.py",
+    "tests/rom/test_f_romv2_d16_surface_comparators.f90",
+    "tests/rom/analyze_f_romv2_d16_surface_redistribution.py",
+    "tests/rom/run_f_romv2_d16_surface_redistribution.sh",
+    ".github/workflows/f-romv2-d16-surface-redistribution.yml",
+    "raw workflow artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_exposure_pulse_bin_substep_or_gate_retuning": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

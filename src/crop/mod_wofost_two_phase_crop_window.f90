@@ -154,7 +154,7 @@ contains
   end subroutine begin_wofost_one_day_crop_window
 
   subroutine complete_wofost_one_day_crop_window(window, rate_parameters, &
-       update_parameters, accepted_aggregates, candidate, rates, diagnostics, status)
+       update_parameters, accepted_aggregates, candidate, rates, diagnostics, status, suppress_actual_root_growth)
     type(wofost_two_phase_crop_window_t), intent(in) :: window
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
@@ -163,13 +163,17 @@ contains
     type(wofost_one_day_rate_packet_t), intent(out) :: rates
     type(wofost_crop_window_complete_diagnostics_t), intent(out) :: diagnostics
     integer, intent(out) :: status
+    logical, intent(in), optional :: suppress_actual_root_growth
 
     integer :: component_status
+    logical :: suppress_root_growth
 
     candidate = wofost_crop_owner_state_t()
     rates = wofost_one_day_rate_packet_t()
     diagnostics = wofost_crop_window_complete_diagnostics_t()
     status = WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
+    suppress_root_growth = .false.
+    if (present(suppress_actual_root_growth)) suppress_root_growth = suppress_actual_root_growth
     if (.not. window%ready()) return
 
     ! A failure below can never expose a partially advanced crop candidate.
@@ -187,6 +191,14 @@ contains
         return
       end if
       diagnostics%rate_packet_built = .true.
+
+      if (suppress_root_growth) then
+        ! Pinned B1.11 SWRD3/SWWRTNONOX semantics set GRRT=0 after rates
+        ! are formed but before the actual crop state is updated. Root death
+        ! remains active, so net root change becomes -DRRT = old net - old GRRT.
+        rates%root_net_growth_rate = rates%root_net_growth_rate - rates%gross_root_growth_rate
+        rates%gross_root_growth_rate = 0.0_real64
+      end if
     end if
 
     call finalize_wofost_one_day_candidate(window%prepared_candidate, &

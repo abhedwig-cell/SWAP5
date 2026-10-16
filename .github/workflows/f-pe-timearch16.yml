@@ -1,0 +1,29 @@
+name: F-PE-TIMEARCH16 wet-zone AUTO guard
+
+on:
+  push:
+    branches:
+      - work/f-pe-timearch16-wet-zone-auto-guard
+    paths:
+      - 'docs/performance/F-PE-TIMEARCH16_PREREGISTRATION.md'
+      - 'tests/fpe/test_fpe_timearch16_wet_guard.f90'
+      - 'tests/fpe/run_fpe_timearch16.py'
+      - 'tests/fpe/run_fpe_timearch16.sh'
+      - '.github/workflows/f-pe-timearch16.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run preregistered wet-zone AUTO guard discovery
+        run: bash tests/fpe/run_fpe_timearch16.sh

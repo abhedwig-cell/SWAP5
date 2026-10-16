@@ -1,0 +1,132 @@
+{
+  "schema": "swap5.f-romv2-d12.preregistration.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D12",
+  "title": "Literature-bound FMC/SMVE equation authority and analytical preflight",
+  "phase": "PREREGISTERED_BEFORE_EXECUTION",
+  "canonical_base": "128e70aa2f4b1d0f0f542d2491634e235c84ee32",
+  "purpose": "Reconstruct and preflight the published finite-water-content / Soil Moisture Velocity Equation advection-like formulation before any SWAP5 trajectory comparison.",
+  "scientific_role": {
+    "class": "LITERATURE_BOUND_PHYSICAL_REDUCTION_PREFLIGHT",
+    "blind_confirmation": false,
+    "SWAP_trajectory_evidence_consumed": false,
+    "application_acceptance": false,
+    "formal_performance_claim": false,
+    "production_rom_authorized": false
+  },
+  "primary_authority": [
+    {
+      "citation": "Ogden et al. (2015), A new general 1-D vadose zone flow solution method, Water Resources Research 51, 4282-4300",
+      "doi": "10.1002/2015WR017126",
+      "equations": [
+        "finite-water-content bin conservation",
+        "infiltration-front equation 18",
+        "falling-slug equation 19",
+        "groundwater-front equation 21",
+        "capillary-drive adjustment equation 22",
+        "finite-volume mass accounting"
+      ]
+    },
+    {
+      "citation": "Ogden et al. (2015), Validation of finite water-content vadose zone dynamics method using column experiments with a moving water table and applied surface flux",
+      "doi": "10.1002/2014WR016454",
+      "role": "moving-water-table validation authority"
+    },
+    {
+      "citation": "Ogden et al. (2017), The Soil Moisture Velocity Equation, JAMES 9, 1473-1487",
+      "doi": "10.1002/2017MS000931",
+      "role": "SMVE derivation and analytical Richards-comparison authority"
+    },
+    {
+      "citation": "Morel-Seytoux et al. (1996), Parameter equivalence for the Brooks-Corey and van Genuchten soil characteristics: Preserving the effective capillary drive",
+      "doi": "10.1029/96WR00069",
+      "role": "effective-capillary-drive definition authority"
+    }
+  ],
+  "public_oracle": {
+    "dataset_doi": "10.15786/M22P4H",
+    "rights": "CC0/public-domain dedication reported by University of Wyoming DataCorral",
+    "use": "SECONDARY_ORACLE_ONLY_AFTER_PROVENANCE_REVIEW",
+    "code_copied_into_SWAP5": false,
+    "execution_depends_on_external_oracle": false
+  },
+  "frozen_equation_identity": {
+    "coordinate": "z positive downward",
+    "moisture_coordinate": "finite bins in volumetric water content theta",
+    "infiltration_front": "dz_j/dt = [K(theta_d)-K(theta_i)]/[theta_d-theta_i] * [1 + (G_eff+h_p)/z_j]",
+    "falling_slug": "gravity-only incremental-conductivity advance as published equation 19; not exercised in D12 preflight",
+    "groundwater_front": "dH_j/dt = [K(theta_j)-K(theta_i)]/[theta_j-theta_i] * [abs(psi(theta_j))/H_j - 1]",
+    "groundwater_front_equilibrium": "H_j=abs(psi(theta_j)) implies dH_j/dt=0",
+    "capillary_relaxation": "rank-order front depths monotonically without changing finite-volume water amount",
+    "mass_conservation": "imposed by finite-volume accounting of all added/removed water; no hidden correction flux",
+    "effective_capillary_drive": "HcM = integral_0^infinity K_rel(psi) dpsi; infiltration uses max(abs(psi(theta_d)), HcM) for the tested uniform-soil authority",
+    "approximation": "SMVE advection-like term neglects diffusion-like term; profile-shape deviations are expected and are not automatically failure"
+  },
+  "discretization": {
+    "bins": 200,
+    "rule": "uniform theta bins over the active moisture-content range unless a later literature-bound comparator explicitly aggregates the sub-initial range as allowed by the primary paper",
+    "reason": "Ogden et al. 2015 reports approximately 150-200 bins for accurate full-range infiltration-front representation; 200 is frozen before SWAP comparison",
+    "constitutive_sample": "right edge of each theta bin, following the corrected published method",
+    "SWAP_outcome_tuning": false
+  },
+  "numerical_preflight": {
+    "dynamic_integrator": "forward Euler for process ODE checks",
+    "maximum_infiltration_substep_seconds": 10,
+    "source": "published preliminary guidance for equation 18 with explicit forward Euler",
+    "capillary_relaxation_storage_tolerance_cm": 1e-14,
+    "analytical_identity_tolerance": 1e-12,
+    "no_adaptive_fit_to_SWAP": true
+  },
+  "tests": [
+    {
+      "id": "P1_GREEN_AMPT_SINGLE_BIN_IDENTITY",
+      "requirement": "Show algebraically/numerically that the one-bin infiltration-front equation reduces to the Green-Ampt form stated by the primary paper."
+    },
+    {
+      "id": "P2_GROUNDWATER_HYDROSTATIC_EQUILIBRIUM",
+      "requirement": "For finite B01 moisture states theta_j > theta_i, set H_j=abs(psi(theta_j)) and verify groundwater-front velocity is zero to floating precision."
+    },
+    {
+      "id": "P3_CAPILLARY_RELAXATION_FINITE_VOLUME_CONSERVATION",
+      "requirement": "Apply the published sorting-style capillary relaxation to a deterministic synthetic front vector and verify exact finite-volume storage preservation within the frozen tolerance."
+    },
+    {
+      "id": "P4_B01_CONSTITUTIVE_AND_CAPILLARY_DRIVE",
+      "requirement": "Verify monotonic B01 retention/conductivity over the 200-bin grid and independently evaluate a finite positive HcM from the actual B01 relative-conductivity curve."
+    },
+    {
+      "id": "P5_PUBLISHED_POWER_LAW_TIMESCALE",
+      "requirement": "Reproduce the published Ross-Parlange/SMVE power-law ponding/surface-saturation time formula for A=2 cm/h, K1=1 cm/h, D1=100 cm2/h and n=3..9, and verify the leading-front identity zmax=A*t."
+    }
+  ],
+  "D13_gate": {
+    "positive": "D12_FMC_SMVE_EQUATION_PREFLIGHT_PASS",
+    "negative": "D12_FMC_SMVE_AUTHORITY_OR_PREFLIGHT_NO_GO",
+    "if_positive": "Authorize a separately preregistered literature-faithful FMC hydraulic development comparator on a lower-boundary envelope directly supported by the primary papers.",
+    "initial_comparator_candidate": {
+      "material": "B01 homogeneous",
+      "root_extraction": false,
+      "evapotranspiration": false,
+      "bins": 200,
+      "internal_infiltration_substep_max_seconds": 10,
+      "lower_boundary_preference": "water-table / constant-head configuration directly represented by published groundwater-front equations",
+      "comparators": [
+        "current-canonical R16 research Reference",
+        "admitted R2 coarse Richards"
+      ],
+      "blind_confirmation": false
+    }
+  },
+  "boundary_firewall": [
+    "DO_NOT_MAP_ARBITRARY_SWAP_BOTTOM_PRESSURE_HEAD_TO_FMC_UNTIL_THE_GEOMETRIC_WATER_TABLE_MAPPING_AND_INTERNAL_PLANE_FLUX_ARE_EXPLICITLY_RECONCILED",
+    "DO_NOT_USE_V01_V04_AS_BLIND_CONFIRMATION",
+    "DO_NOT_ADD_ROOT_UPTAKE_OR_ET_TO_FIRST_COMPARATOR",
+    "DO_NOT_TUNE_BIN_COUNT_ON_SWAP_RESULTS",
+    "DO_NOT_TUNE_SUBSTEP_FROM_SWAP_RESULTS",
+    "DO_NOT_COPY_EXTERNAL_SOURCE_CODE_SILENTLY",
+    "DO_NOT_IMPORT_PUBLISHED_HYDRUS_RUNTIME_RATIO_AS_SWAP5_SPEEDUP",
+    "DO_NOT_CLAIM_APPLICATION_ACCEPTANCE",
+    "DO_NOT_AUTHORIZE_PRODUCTION_ROM"
+  ],
+  "production_rom_authorized": false
+}

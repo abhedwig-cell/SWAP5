@@ -1,0 +1,43 @@
+{
+  "schema": "swap5.f-romv2-d19.canonical-evidence-manifest.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D19",
+  "canonical_import_scope": "EVIDENCE_ONLY",
+  "stage1": {
+    "pull_request": 455,
+    "merged": false,
+    "workflow_run": 35459320729,
+    "artifact_id": 10589417168,
+    "artifact_digest": "sha256:7406d7faf80e451a9b24845fb053126c9da8df25ff46ff31d627cba350b5af6a"
+  },
+  "stage2": {
+    "pull_request": 458,
+    "merged": false,
+    "workflow_run": 35459595130,
+    "artifact_id": 10588638242,
+    "artifact_digest": "sha256:37177c235c65e6e65041d2e7355fe22b29a7f014866f0e93846a9293b7a6d31a",
+    "result_sha256": "15ed2980501673172204b3600801eaff6236dc42022e62d9ab479091fee3b004",
+    "R16_o0_o2_sha256": "42290146366c67ee26159abfdee83bc01c6788c1618c66f1c3ebd978dda09159",
+    "R2_o0_o2_sha256": "64d8f5dbb713cef2906e713d5cac3966b506a1b97e36790aebb52347047ee67b"
+  },
+  "imported_surfaces": [
+    "integration/f-rom/F-ROMV2_D19_PREREGISTRATION.json",
+    "integration/f-rom/F-ROMV2_D19_STAGE2_AUTHORIZATION.json",
+    "integration/f-rom/F-ROMV2_D19_RESULT.json",
+    "integration/f-rom/F-ROMV2_D19_STATUS.json",
+    "integration/f-rom/F-ROMV2_D19_CANONICAL_EVIDENCE_MANIFEST.json",
+    "docs/science/F-ROMV2_D19_EXACT_CONTACT_MERGE_ADJUDICATION.md"
+  ],
+  "non_imported_surfaces": [
+    "execution harness",
+    "preflight/analyzer scripts",
+    "workflow",
+    "raw artifact payload"
+  ],
+  "production_source_changed": false,
+  "reference_source_changed": false,
+  "post_result_retuning": false,
+  "application_acceptance_claimed": false,
+  "performance_claimed": false,
+  "production_rom_authorized": false
+}

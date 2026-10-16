@@ -1,0 +1,105 @@
+{
+  "schema": "swap5.f-romv2-d10.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D10",
+  "decision": "HE2_PUBLISHED_CORE_NOT_COMPETITIVE_ON_ITS_ZERO_HEAD_ENVELOPE",
+  "adjudication": "LITERATURE_FAITHFUL_HE2_INTEGRITY_PASS_BUT_DOMINATED_BY_MATCHED_R2_AND_FAILS_CAPILLARY_DIRECTION",
+  "execution": {
+    "workflow_run": 35449382543,
+    "workflow_job": 105913774233,
+    "executed_head": "b11fd5ec8debcfa2145574bf28bcdb0cdb6ef18d",
+    "execution_pull_request": 434,
+    "execution_pull_request_merged": false,
+    "artifact_id": 10586298491,
+    "artifact_digest": "sha256:0b89a9b02af68c5d0d8cf4a42b403623cded1f4feba9d6b834cc13965a4f2f56",
+    "workflow_conclusion": "success",
+    "R16_o0_o2_sha256": "f97b46d4d5f92bde993b7a63afe74eaa37716b98cf4a49e90562e802f6055aea",
+    "R2_o0_o2_sha256": "3fd69af0e61b668e3df84dce3558ac17b9999299dfe329b85bcf68a77c68478a",
+    "result_sha256": "8e9cd1b2a31aec95be809f3bf647d5c06ea518d87007e2b61448535c8d427c02",
+    "analyzer_sha256": "5d7806616fc293a2dfff72cab4060d4b839d86281ae418ed7feb2991c9af203b"
+  },
+  "authority": {
+    "literature_reconciliation": "integration/f-rom/F-ROMV2_D9_LITERATURE_RECONCILIATION.json",
+    "faithful_subset": true,
+    "zero_pressure_head": true,
+    "arbitrary_nonzero_bottom_head_tested": false,
+    "primary_equation_recheck": {
+      "source": "He et al. 2021 Eq. 31",
+      "q_sign": "positive downward",
+      "psi_definition": "negative of pressure head; positive capillary suction",
+      "bottom_flux_equation": "q2 = Ks * [1 + 2*(psi_b-psi_bar2)/(H-h)]",
+      "zero_pressure_case": "psi_b=0",
+      "implementation_sign_or_transcription_error_found": false
+    }
+  },
+  "HE2": {
+    "id": "HE2_PUBLISHED_FIXED_H",
+    "integrity": {
+      "pass": true,
+      "max_abs_transaction_mass_residual_cm": 4.171142597986233e-15,
+      "hard_mass_gate_cm": 1e-12
+    },
+    "iterative_Heun": {
+      "corrector_tolerance_theta": 0.0001,
+      "total_iterations": 264,
+      "max_iterations_single_seed_or_step": 1,
+      "mean_iterations_per_seed_or_step": 1
+    },
+    "pooled": {
+      "total_storage_rmse_cm": 0.858127585371341,
+      "upper_storage_rmse_cm": 0.0016350596634968641,
+      "lower_storage_rmse_cm": 0.8596635781098271,
+      "cumulative_bottom_exchange_rmse_cm": 0.8090677045271639,
+      "terminal_bottom_flux_rmse_cm_per_day": 19.942961002624564,
+      "bottom_flux_sign_error_count": 256,
+      "history_reversal_sequence_mismatch_count": 0
+    }
+  },
+  "R2_matched": {
+    "pooled": {
+      "total_storage_rmse_cm": 0.6027951622400127,
+      "upper_storage_rmse_cm": 0.0005949933289829639,
+      "lower_storage_rmse_cm": 0.6023327210628212,
+      "cumulative_bottom_exchange_rmse_cm": 0.5659948148586292,
+      "terminal_bottom_flux_rmse_cm_per_day": 13.969743038582958,
+      "bottom_flux_sign_error_count": 256,
+      "history_reversal_sequence_mismatch_count": 0
+    }
+  },
+  "raw_direction_control": {
+    "history": "P01",
+    "step": 1,
+    "R16_bottom_flux_cm_per_day": -19.39905370200716,
+    "R2_bottom_flux_cm_per_day": 1.0068454189236684,
+    "interpretation": "The matched R16 route resolves capillary inflow from the zero-pressure lower boundary while R2 predicts downward outflow. The sign disagreement is physical coarse-resolution error, not a common parser sign convention."
+  },
+  "comparative_interpretation": {
+    "HE2_beats_R2_balance": false,
+    "HE2_beats_R2_transient": false,
+    "retained": false,
+    "statement": "On the matched literature-supported zero-head envelope, the faithful HE2 core is less accurate than R2 in total balance, lower-zone storage and bottom-flux magnitude. Both reduced routes miss the capillary-flow direction at all reported endpoints, but HE2 misses it by a larger magnitude."
+  },
+  "physical_diagnosis": {
+    "initial_effective_saturation": 0.85,
+    "initial_capillary_suction_cm": 29.793709016906497,
+    "lower_layer_thickness_cm": 80,
+    "published_zero_head_closure_at_wet_B01": "Because psi_bar2 is below half the lower-layer thickness scale, Eq. 31 initially yields positive downward q2, while the resolved Richards solution sees upward capillary supply from the saturated boundary.",
+    "upper_zone": "HE2 upper storage remains close to R16.",
+    "lower_zone": "Error is dominated by lower-zone storage and water-table exchange, consistent with the lower-boundary approximation being the limiting structure for this B01 state."
+  },
+  "purpose_dependent_interpretation": {
+    "LONG_TERM_REGIONAL_WATER_BALANCE": "NOT_RETAINED_AGAINST_MATCHED_R2_ON_THIS_ZERO_HEAD_B01_ENVELOPE",
+    "OPERATIONAL_SOIL_MOISTURE_DROUGHT": "NOT_TESTED",
+    "GROUNDWATER_COUPLED_MANY_COLUMN": "NOT_RETAINED; lower-boundary flux direction and magnitude are the critical failure",
+    "FAST_EVENT_THRESHOLD": "NOT_QUALIFIED",
+    "SCIENTIFIC_PROCESS_OR_EXTREME_INFERENCE": "NOT_QUALIFIED"
+  },
+  "successor": {
+    "HE2_SWAPH_arbitrary_head_extension_authorized": false,
+    "reason": "The faithful published core does not clear the simpler matched R2 comparator on its supported zero-pressure-head envelope.",
+    "next": "RETURN_TO_BROADER_STATE_OF_THE_ART_AND_APPLICATION_SPECIFIC_REDUCTION_OPTIONS; DO_NOT_RESCUE_HE2_BY_UNAUTHORIZED_BOUNDARY_GENERALIZATION"
+  },
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

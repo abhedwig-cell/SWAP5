@@ -1,0 +1,39 @@
+{
+  "schema": "swap5.ppa.analytic-frost.canonical-admission.v1",
+  "work_unit": "PPA-WU05B12",
+  "role": "CENTRAL_REGIE",
+  "decision": "ADMIT_COMPLETED_SOURCE_BOUND_LOCAL_GATES",
+  "local_qualified_head": "736c4d0c61a8276c1fe9a23bc97dc792e53e4db1",
+  "accepted_tree": "41707675d88aed6d2e9508b8c02cd8b5cfb7bac7",
+  "production_source_tree": "7be5920b9c04eb3c985deeeb89207a2992ad2e65",
+  "entries_length": 25301,
+  "base64_length": 320720,
+  "evidence": {
+    "path": "docs/audits/evidence/PPA_WU05B12_LOCAL_REPLAY.json.gz",
+    "sha256": "018feb6fbb06db0d473ea0eae143e6530cff1938777a0e1572f621de80573eeb",
+    "bytes": 240538,
+    "manifest_entries": 465
+  },
+  "qualified_base": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "qualified_head": "2f2cc0f887ae8aef80966bb77915f4277f3d93a8",
+  "canonical_pr": 1056,
+  "verified_proposed_merge": "2e7b24c34109b0fc51839715bfdd26291df6eaeb",
+  "actual_first_parent": "879a9c65b0badb650c9b4e4fe194b7e6ffcc02f6",
+  "canonical_merge": "388a87cad21218d0519cd8cf401a41ef0b67327e",
+  "proposed_and_actual_tree_source_identity": true,
+  "qualification": "integration/audits/PPA_WU05B12_STATUS.json",
+  "scope": "Explicit rootless ordinary Reference mode2 DRAMET2 Hooghoudt IPOS1/2/3 and Ernst IPOS4/5; existing selected LINEAR/TABULATED mixtures; normal/B8 guarded low-air frost, matching analytic/frost physical drain bottoms, one final sink and separate bottom owner; no new persistent state",
+  "admission_basis": "Completed local gates and immutable source-bound replay. Exact proposed and actual tree/source/parents verified. No queued Actions success claim.",
+  "exclusions": [
+    "Empirical interflow and EXTENDED_SIGNED",
+    "SWDIVD1 spatial distribution",
+    "Fixed-weir",
+    "Projection/directional/implicit coupling",
+    "Root/salt/macropore/snow hybrids",
+    "New geometry/phase change",
+    "Global frost equivalence"
+  ],
+  "aggregate_frost_migration_complete": false,
+  "documentation": "CHECK_DOCS_PASS_STRICT_MKDOCS_EXIT0",
+  "next_action": "Reconcile exact metadata closeout then preregister source-reviewed bounded empirical interflow frost composition"
+}

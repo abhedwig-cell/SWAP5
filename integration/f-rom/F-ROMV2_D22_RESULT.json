@@ -1,0 +1,84 @@
+{
+  "schema": "swap5.f-romv2-d22.result-summary.v1",
+  "workstream": "F-ROM",
+  "work_unit": "F-ROMV2-D22",
+  "decision": "FMC_NATIVE_SURFACE_THRESHOLD_RESPONSE_COMPETITIVE_WITH_R2",
+  "execution": {
+    "pull_request": 467,
+    "pull_request_merged": false,
+    "workflow_run": 35463113484,
+    "workflow_job": 105950404333,
+    "executed_head": "ad40957754363397ad431af69d95885b11df99c1",
+    "artifact_id": 10590790990,
+    "artifact_digest": "sha256:030b31c440e6d50caca0302dff2dc85cdfd98fcf2e81d4c08780d56550b658a2",
+    "swap_o0_o2_sha256": "5d863a7f63d5dca38048ab5d5095f6c84528f919e472c2d09c0ab63b4b9c6f9c",
+    "raw_result_sha256": "dedbb131e159f1f1ac7af87ef2e51d7ac3e03b618533c9fbea59a877b5356f3d",
+    "analyzer_sha256": "81504c3be8fd3ef97279427d56c68d36c66169c634d74327bc2362047c7873fb",
+    "conclusion": "success"
+  },
+  "integrity_pass": true,
+  "onsets_Ksat": {
+    "R16": {
+      "ponding": 2,
+      "runoff": 4
+    },
+    "R2": {
+      "ponding": 1,
+      "runoff": 2
+    },
+    "FMC": {
+      "ponding": 1,
+      "runoff": 2
+    }
+  },
+  "onset_log2_distance_to_R16": {
+    "R2": {
+      "ponding": 1,
+      "runoff": 1
+    },
+    "FMC": {
+      "ponding": 1,
+      "runoff": 1
+    }
+  },
+  "response_curve_metrics_vs_R16": {
+    "R2": {
+      "infiltration_RMSE_cm": 0.001126349664203547,
+      "surface_store_RMSE_cm": 0.0010303365698923965,
+      "runoff_RMSE_cm": 0.00010258854544340577,
+      "regime_mismatch_count": 2
+    },
+    "FMC": {
+      "infiltration_RMSE_cm": 0.0006240043545644174,
+      "surface_store_RMSE_cm": 0.0005723238153564598,
+      "runoff_RMSE_cm": 0.000056339532555871876,
+      "regime_mismatch_count": 2
+    }
+  },
+  "frontier_gates": {
+    "ponding_onset_distance": true,
+    "runoff_onset_distance": true,
+    "regime_mismatch_count": true,
+    "infiltration_RMSE": true,
+    "surface_store_RMSE": true,
+    "runoff_RMSE": true,
+    "all_required": true,
+    "retained": true
+  },
+  "scientific_interpretation": {
+    "R16_threshold_equivalence": false,
+    "FMC_relative_to_R2": "BETTER_OR_EQUAL_ON_ALL_PREREGISTERED_NATIVE_SURFACE_RESPONSE_VIEWS",
+    "FAST_EVENT_THRESHOLD": "RESEARCH_CANDIDACY_RETAINED_RELATIVE_TO_R2; accepted-trajectory qualification still absent.",
+    "D21_reclassified": false,
+    "D13_D20_reclassified": false
+  },
+  "next": [
+    "ADMIT_D22_WITHOUT_RETUNING",
+    "PREREGISTER_SHORT_ACCEPTED_RAINFALL_TRAJECTORY_IF_FAST_THRESHOLD_RESEARCH_IS_CONTINUED",
+    "PRESERVE_NATIVE_ONSET_DISPLACEMENT_AS_MODEL_DISCREPANCY",
+    "NO_APPLICATION_ACCEPTANCE_OR_PRODUCTION_SPEEDUP_CLAIM"
+  ],
+  "application_acceptance": false,
+  "formal_performance_claim": false,
+  "production_rom_authorized": false
+}

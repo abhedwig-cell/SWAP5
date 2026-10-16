@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "work_unit": "PPA-WU04-A",
+  "title": "SWREDU=1 Black evaporation reduction production admission",
+  "branch": "work/ppa-wu04a-black-evaporation-reduction",
+  "canonical_base": "b70abdaa8e73f6963dd6b535b482ebbf06b02d89",
+  "status": "PREREGISTERED_IMPLEMENTATION_OPEN",
+  "authority": {
+    "scientific_transaction_contract": "integration/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_CONTRACT.json",
+    "scientific_review": "docs/audits/PPA_WU04_STATEFUL_ET_INTERCEPTION_SCIENTIFIC_REVIEW.md",
+    "reference_manifest": "reference/swap-4.3.1/b1-manifest.yml",
+    "reference_snapshot": "reference/swap-4.3.1/snapshots/B1.11.yml",
+    "legacy_source_routine": "MOD_meteo.f90:reduceva",
+    "legacy_source_identity_b1_11": "99fbf7ad4d90f71cc86012e8e1c9970ef4ca40ea879f0f0622a02a0c33be4c9f",
+    "independent_equation_trace": {
+      "repository": "SWAP-model/SWAP",
+      "historical_commit": "07d74a82e9ba0465ec81a74e4d82b3dc03d856d9",
+      "path": "src/atmosphere/et.f90",
+      "purpose": "Independent trace only. Canonical B1.11 manifests and PPA-WU04 review remain admission authority."
+    }
+  },
+  "frozen_science": {
+    "option": "SWREDU=1",
+    "persistent_process_state": ["ldwet"],
+    "restart_option_tag": "SWREDU=1",
+    "dry_trial_equation": "empreva=min(peva,cofred*(sqrt(ldwet+dt)-sqrt(ldwet))/dt); candidate_ldwet=ldwet+dt",
+    "wetting_reset": "An explicit forcing event resets trial-local ldwet to zero before the dry-trial equation. No hidden calendar-day inference.",
+    "ponded_branch": "A ponded trial uses potential pond evaporation through the existing top-boundary owner and resets candidate ldwet to zero.",
+    "mass_ownership": "empreva and ldwet are not water-mass owners. Accepted actual surface evaporation remains owned by the hydraulic dynamic-top boundary.",
+    "rollback": "Rejected hydraulic trials discard candidate ldwet. Changed-dt retry is recomputed from the same committed ldwet checkpoint."
+  },
+  "architecture_binding": {
+    "process_state_rule": "LDWET remains a distinct physical/process continuation component and is not inserted as a hydraulic state field or worker scratch.",
+    "transaction_state": "Introduce one option-discriminated composite FMR transaction-state family carrying the existing hydraulic state plus a distinct Black process-state component.",
+    "top_boundary": "Reuse the admitted F-SI29/F-SI30 dynamic-top provider/solver interface. Bind it inside each serialized model trial using that trial's t0/t1 and Black demand derived from the transaction checkpoint.",
+    "retry": "Dynamic-top request and Black demand are rebuilt for every transaction trial span. No pre-resolved full-interval top flux is reused after dt reduction.",
+    "forcing": "Carry explicit raw surface forcing required by Black/dynamic-top evaluation in a bounded optional forcing component. Existing fixed-flux forcing remains byte-semantically unchanged when Black is inactive.",
+    "application": "Extend only the PPA-WU01/WU03 production composition needed to initialize SWREDU=1 state and map admitted WU03 forcing into the optional Black forcing component.",
+    "restart": "Reuse generic FMR committed restart cloning with a new explicit optional-state-layout identity. Restore must reject BASE/SWREDU=1 layout mismatch.",
+    "solver_policy": "No Richards equations, Newton/Jacobian logic, retry policy, solver selection, RossFast internals or coupling semantics may change."
+  },
+  "production_delta_allow": [
+    "new typed Black evaporation process module",
+    "new narrow PPA-WU04-A forcing/binding adapter",
+    "new SWREDU=1 optional transaction-state family and layout identity",
+    "serialized-reference runtime composition of existing dynamic-top provider for SWREDU=1",
+    "PPA production bootstrap initialization/access limited to SWREDU=1 profile",
+    "restart/layout matching needed for exact LDWET roundtrip",
+    "direct qualification tests, runner, workflow and evidence"
+  ],
+  "production_delta_forbid": [
+    "new solver physics or solver-selection policy",
+    "RossFast changes",
+    "groundwater-coupler semantics",
+    "macropore, frost, oxygen-stress or compensated-uptake implementation",
+    "SWREDU=2 or interception implementation in this slice",
+    "hidden calendar inference",
+    "LDWET reconstruction from hydraulic state",
+    "parallel accepted evaporation mass ledger"
+  ],
+  "qualification_gates": [
+    "exact Black equation oracle over dry, wetting-reset and ponded cases",
+    "O0/O2 observable identity",
+    "A/B/A deterministic process replay",
+    "rejected-trial committed-LDWET immutability",
+    "failed-then-accepted changed-dt retry equals direct retry from identical checkpoint",
+    "exact SWREDU=1 restart roundtrip and option-layout mismatch rejection",
+    "actual evaporation remains dynamic-top mass owner and hard water-mass closure passes",
+    "PPA-WU01 BASE profile preservation",
+    "PPA-WU03 stateless common-forcing preservation",
+    "existing dynamic-top fixed behavior preservation",
+    "no production delta outside preregistered files/ownership"
+  ],
+  "admission_boundary": {
+    "claims": [
+      "bounded SWREDU=1 Black evaporation reduction is production reachable through typed application forcing",
+      "LDWET is transactional and restart-exact",
+      "retry recomputes Black demand from committed checkpoint at actual trial dt"
+    ],
+    "nonclaims": [
+      "SWREDU=2",
+      "SWINTER=1 or SWINTER=2",
+      "legacy meteorological file/calendar grammar",
+      "general dynamic-top application envelope beyond the admitted Black profile",
+      "new solver or coupling capability"
+    ]
+  },
+  "decision": "PREREGISTERED_SOURCE_BOUND_IMPLEMENTATION_AUTHORIZED"
+}

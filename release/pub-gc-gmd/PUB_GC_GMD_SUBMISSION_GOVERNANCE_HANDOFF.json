@@ -1,0 +1,82 @@
+{
+  "schema": "swap5.pub_gc_gmd.submission_governance_handoff.v1",
+  "date": "2026-09-19",
+  "status": "REPOSITORY_PREPARATION_EXHAUSTED_EXTERNAL_AUTHORITY_REQUIRED",
+  "current_canonical_observed": {
+    "branch": "integration/f-ci-canonical",
+    "commit": "5bb400c222aeade663facfef1e7d0c97df971104",
+    "prior_pub_gc_closeout_commit": "5af1fc9841b1ba8f4dc42b312d1b505cf1a33147",
+    "ahead_commits": 14,
+    "delta_classification": "F_ROMV2_D23_D24_EVIDENCE_ONLY_NO_PUB_GC_AUTHORITY_CHANGE",
+    "changed_surfaces": [
+      "docs/science/F-ROMV2_D23_SHORT_RAINFALL_TRAJECTORY_ADJUDICATION.md",
+      "integration/f-rom/F-ROMV2_D23_*",
+      "docs/science/F-ROMV2_D24_NATIVE_RAIN_GROUNDWATER_ADJUDICATION.md",
+      "integration/f-rom/F-ROMV2_D24_*",
+      "tests/rom/validate_f_rom_authority.py"
+    ],
+    "publication_candidate_reselection_required": false
+  },
+  "frozen_publication_candidate": {
+    "authority_file": "release/pub-gc-gmd/PUB_GC_GMD_UNVERSIONED_CANDIDATE.json",
+    "scientific_source_commit": "781c829943c9e5880e5ab83281112e66f439ecf2",
+    "git_tree": "9ca065553765e38eec4d4ceb611ec80d866dbae3",
+    "predecessor_release": "SWAP5-RB1-v1",
+    "final_release_authority": false
+  },
+  "scientific_state": {
+    "rq1_to_rq5": "CLOSED_BOUNDED",
+    "e7": "CLOSED_REALISTIC_COMPONENT_DOMAIN_LIMIT",
+    "new_scientific_experiment_required_for_current_claim_set": false,
+    "e7_reopen_authorized": false
+  },
+  "remaining_external_authority": {
+    "R1": {
+      "subject": "final SWAP5 publication release identifier for frozen candidate tree",
+      "value": null,
+      "state": "BLOCKED_GOVERNANCE_DECISION"
+    },
+    "L1": {
+      "subject": "authorized SWAP5 publication archive licence and redistribution statement",
+      "license_statement": null,
+      "historical_swap431_reviewer_access_statement": null,
+      "state": "BLOCKED_GOVERNANCE_OR_LEGAL_DECISION"
+    },
+    "authority": {
+      "name_or_role": null,
+      "governing_record": null,
+      "effective_date": null
+    },
+    "author_metadata": {
+      "final_author_list": null,
+      "affiliations": null,
+      "corresponding_author": null,
+      "corresponding_email": null,
+      "contributions": null,
+      "funding": null,
+      "acknowledgements": null,
+      "competing_interests": null,
+      "ai_tool_disclosure_if_required": null,
+      "state": "BLOCKED_USER_OR_PROJECT_AUTHORITY"
+    }
+  },
+  "mechanical_after_authority": [
+    "bind the governed release identifier to the frozen candidate",
+    "create the exact persistent publication archive",
+    "obtain DOI or equivalent PID",
+    "bind the GMD title to the governed release identifier",
+    "finalize Code and data availability wording",
+    "record archive identity in the reproducibility manifest",
+    "regenerate final release-bound figure PDFs and perform final visual upload review"
+  ],
+  "explicit_nonactions": [
+    "do not invent a SWAP5 semantic version",
+    "do not infer a SWAP5 licence from upstream GPLv2 evidence",
+    "do not claim a DOI or persistent archive before it exists",
+    "do not redistribute the historical SWAP 4.3.1 reference asset without authority",
+    "do not reopen E7 to obtain positive realistic coupled trajectories",
+    "do not broaden publication claims because later canonical F-ROM research exists"
+  ],
+  "authority_intake": "release/pub-gc-gmd/PUB_GC_GMD_AUTHORITY_INTAKE.json",
+  "human_decision_request": "docs/publication/PUB_GC_GMD_GOVERNANCE_DECISION_REQUEST.md"
+}

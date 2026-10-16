@@ -19,10 +19,12 @@ interface
    end subroutine swap_ok
 end interface
 interface
-   subroutine TimeControl(task, interval)
+   subroutine TimeControl(task, interval, worker)
       use mod_b1_10_interval_seam, only: b1_10_interval_seam_t
+      use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t
       integer, intent(in) :: task
       type(b1_10_interval_seam_t), intent(inout), optional :: interval
+      type(a23bu_worker_context_t), intent(inout), optional :: worker
    end subroutine TimeControl
 end interface
 

@@ -1,0 +1,44 @@
+name: F-PERF-CANON01 B2 large-N
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_groundwater_application_plan.f90'
+      - 'src/runtime/mod_groundwater_topology_composition.f90'
+      - 'src/runtime/mod_fmr_groundwater_application_context.f90'
+      - 'src/adapter/mod_fmr_groundwater_application_c_api.f90'
+      - 'tests/fpe/run_fpe_zero_waste01_gw*.sh'
+      - 'tests/fpe/test_fpe_zero_waste01_gw*.f90'
+      - '.github/workflows/f-perf-canon01-b2.yml'
+  workflow_dispatch:
+
+jobs:
+  gwplan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwplan01.sh
+  gwplan-paired:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwplan01_paired.sh
+  gwtopo-paired:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwtopo01_paired.sh
+  gwctx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwctx01.sh
+  gwview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fpe/run_fpe_zero_waste01_gwview01.sh

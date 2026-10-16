@@ -1,0 +1,38 @@
+name: F-PE-TIMEINT17 requalification
+
+on:
+  pull_request:
+    branches:
+      - integration/f-ci-canonical
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17_REQUALIFICATION*.md'
+      - 'tests/fpe/run_fpe_timeint17_requalification.sh'
+      - '.github/workflows/f-pe-timeint17-requalification.yml'
+  push:
+    branches:
+      - work/f-pe-timeint17-requalification
+    paths:
+      - 'docs/performance/F-PE-TIMEINT17_REQUALIFICATION*.md'
+      - 'tests/fpe/run_fpe_timeint17_requalification.sh'
+      - '.github/workflows/f-pe-timeint17-requalification.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: f-pe-timeint17-requal-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  requalification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: Run complete same-route policy requalification
+        run: bash tests/fpe/run_fpe_timeint17_requalification.sh

@@ -38,6 +38,7 @@ contains
 
     admitted = .false.
     if (.not. self%initialized) return
+    if (allocated(self%base_forcing%legacy_swbotb5_control)) return
     select type (typed_parameters => parameters)
     type is (fmr_b110_physical_parameters_t)
       admitted = typed_parameters%bottom_mode == 5
@@ -59,6 +60,8 @@ contains
     status = GW_SWAP_FORCING_NOT_READY
     if (.not. self%initialized) return
 
+    status = GW_SWAP_FORCING_PROFILE_NOT_ADMITTED
+    if (allocated(self%base_forcing%legacy_swbotb5_control)) return
     status = GW_SWAP_FORCING_INVALID_HEAD
     if (.not. ieee_is_finite(interface_head_m) .or. .not. datum%valid()) return
     call interface_head_m_to_swap_bottom_pressure_head_cm(interface_head_m, datum, pressure_head_cm, mapping_status)

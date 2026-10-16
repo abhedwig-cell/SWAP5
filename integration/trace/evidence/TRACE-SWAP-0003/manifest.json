@@ -1,0 +1,44 @@
+{
+  "schema": "trace.evidence_manifest.v0.1",
+  "trace_id": "TRACE-SWAP-0003",
+  "freeze_date": "2026-09-19",
+  "pre_resolution": {
+    "repository": "abhedwig-cell/SWAP5",
+    "ref": "integration/f-ci-canonical",
+    "commit": "f3a82d8f303ea371fed4b52ee47b89928cf945cf"
+  },
+  "theory_sources": [],
+  "documentation_sources": [
+    {
+      "path": "docs/science/soil-hydraulic-parameter-provenance.md",
+      "blob_sha": "da0494bc1a9ad9cbd83313345c4336e4f16e21eb",
+      "observed_claim": "Current canonical reviewer-facing provenance page records bounded exact internal aliases, activation rules and deliberately unresolved parser/unit cells."
+    },
+    {
+      "path": "integration/f-doc/F-DOC33_STATUS.json",
+      "blob_sha": "8ce9310cd97457f84d72bfbc35ab2ac0c5702816",
+      "observed_claims": [
+        "phase=VERIFY",
+        "decision=CONTENT_HEAD_VERIFIED_STATUS_ONLY_EXACT_HEAD_RERUN_REQUIRED",
+        "exact_head_rerun=PENDING",
+        "verdict=CONTENT_VERIFIED_PENDING_EXACT_HEAD_GATE",
+        "next_permitted_action=REQUIRE_DOCUMENTATION_GATE_ON_THIS_STATUS_ONLY_HEAD_THEN_RECHECK_CANONICAL_AND_MERGEABILITY"
+      ]
+    },
+    {
+      "path": "integration/f-doc/F-DOC33_AUTHORITY_MATRIX.md",
+      "blob_sha": "4007590aa30f8fc49c4ab4588ecd33d0e2b8e2cc",
+      "observed_claim": "Authority matrix supports the bounded provenance refinement and documentation verdict."
+    }
+  ],
+  "implementation_sources": [],
+  "existing_regression_evidence": [],
+  "authority_and_governance_sources": [],
+  "inputs_and_configuration": [],
+  "runtime_environment": [],
+  "reproduction_commands": [],
+  "outputs": [],
+  "checksums": [],
+  "initial_conflict": "The current canonical reviewer page and F-DOC33 artifacts coexist, but the machine status still represents a pre-admission verification state with a future merge action. It is not yet known whether this is intentionally frozen provenance or stale canonical closeout metadata.",
+  "notes": "Evidence frozen before PR #200 state, work-branch chronology, exact-head workflow evidence, post-merge closeout status or freeze semantics are inspected."
+}
