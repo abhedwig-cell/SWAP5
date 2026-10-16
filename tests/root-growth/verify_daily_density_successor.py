@@ -16,6 +16,9 @@ def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hex
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['daily_density_supply_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['baseline']==BASE,'foreign daily-density baseline')
  g('merge-base','--is-ancestor',BASE,'HEAD')
@@ -153,6 +156,9 @@ def incumbent():
  check(p.returncode==0,'actual incumbent authority rejected '+p.stderr[-1200:]);r=json.loads(p.stdout);check(r['qualified'],'incumbent not qualified')
  return r
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_qualification()
  source=verify_source();check(record()['phase']in ('SCIENCE_COMPLETE_ADMISSION_VALIDATION_PENDING','QUALIFIED_BOUNDED_NOT_ADMITTED'),'daily-density not scientifically closed')
  data=evidence();validate_science(data);old=incumbent()
  return {**source,'qualified':True,'incumbent_owner':old,

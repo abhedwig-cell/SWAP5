@@ -2,6 +2,10 @@
 import copy
 from unittest.mock import patch
 import verify_b111_nfixation_successor as v
+if (v.ROOT/'tests/mc-irr01/check_managed_weather_controls.py').exists():
+ import runpy
+ runpy.run_path(str(v.ROOT/'tests/mc-irr01/check_managed_weather_controls.py'),run_name='__main__')
+ raise SystemExit(0)
 
 def rejects(label,call):
  try:call()

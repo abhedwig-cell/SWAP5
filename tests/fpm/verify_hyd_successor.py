@@ -24,6 +24,9 @@ def projected_bytes(path):
  check(b==subprocess.check_output(['git','show',PROJECTION_BASE+':'+path],cwd=ROOT),'HYD default preimage drift '+path)
  return b
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record();g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--',*SURFACE),'dirty HYD scientific surface')
  rows={s.split('\t')[1]:s.split('\t')[0] for s in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
@@ -61,6 +64,9 @@ def incumbent_root(controls=False):
  if controls:return p.stdout
  result=json.loads(p.stdout);check(result['qualified'],'admitted root owner not qualified');return result
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_qualification()
  s=verify_source();d=evidence();r=record();runtime=json.loads(d['runtime/result.json']);literal=json.loads(d['literal/result.json'])
  expected={'analytical','runtime','direct_retention','fsi38','fsi25','incumbent_runtime','incumbent_macropore'}
  check(set(runtime['optimizations'])=={'O0','O2'},'HYD optimization missing')

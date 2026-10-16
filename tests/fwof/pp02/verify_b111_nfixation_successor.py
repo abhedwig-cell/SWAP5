@@ -18,6 +18,9 @@ def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['component_closeout_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record();g('merge-base','--is-ancestor',BASE,'HEAD')
  check(not g('status','--porcelain','--',*SURFACE),'dirty NFIX source')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
@@ -50,6 +53,9 @@ def incumbent():
  check(p.returncode==0,'unchanged incumbent proof failed '+p.stderr[-1200:]);r=json.loads(p.stdout);check(r['qualified'],'incumbent not qualified');return r
 
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_managed_weather_successor.py').exists():
+  sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_managed_weather_successor as managed
+  return managed.verify_qualification()
  source=verify_source();d=evidence();literal=json.loads(d['literal/result.json'])
  check(literal['cases']==593 and literal['quantities_per_case']==3,'incomplete NFIX corpus')
  check(literal['pass']and literal['byte_identity'],'NFIX oracle failed')

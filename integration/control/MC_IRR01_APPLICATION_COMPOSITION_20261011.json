@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-IRR01",
-  "phase": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+  "phase": "MANAGED_SENSOR_APPLICATION_QUALIFIED_CANONICAL_ADMISSION_PENDING",
   "canonical_base": "664a89b1a0e47b4c2ad2324f614d7d51c67bb90e",
   "owner_dependency": {
     "work_unit": "MC-CROP01",
@@ -29,7 +29,7 @@
     "mass and temporal thresholds",
     "existing ordinary bottom and optional-state profile admission checks"
   ],
-  "required_owner_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+  "required_owner_action": "Publish final qualified PR1252, inspect canonical/reviews/checks and merge exact head, then record actual bounded canonical admission and reconcile existing master1072 without full-capability promotion.",
   "required_proofs": [
     "same authenticated rain/TAV/ET/crop weather input",
     "accepted root extent and hydraulic material-consistent FC/stress/wilting values",
@@ -38,9 +38,9 @@
     "repeated weekly/event selection and restart",
     "O0/O2 and affected existing application/crop/F-CI preservation"
   ],
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "qualified": false,
+  "qualified": true,
   "canonical_admitted": false,
   "fullcap_promotions": 0,
   "owner_observed_interfaces": [
@@ -231,5 +231,34 @@
     "management_hook_implemented": false,
     "source_rain_policy_oracle": "PASS_O0_O2_288_CASES",
     "next_action": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+  },
+  "shared_interface_decision_20261016": {
+    "state": "ACCEPTED_IMPLEMENTED_QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "baseline": "05d6b3f786b5a20cb053bf5e713ca771dafd289e",
+    "authorization": "Programme lead authorized MC-IRR01 continuation and implementation in this canonical workstream; central RT/HY and crop/runtime integration are handled together here. No separate approval boundary.",
+    "scope": "Explicit one-column managed authentic file-weather profile. First admission cluster TCS7/8, DCS2, depth limit, SSDI single/multiple nodes and frozen typed external allocation. Root-free and then existing rooted profiles only where actual tests qualify. No bottom7 salt or other timing/depth selectors implicitly admitted. PR1103 later changes3 actual providers; current joined qualification selected explicitly, new hydraulic selectors remain excluded by managed profile.",
+    "ownership": "Existing bootstrap weather/crop/soil dispatcher; private allocated-irrigation candidate published only with a completed segment; existing allocation preparation reused. No second physics or state commit owner.",
+    "time": "One selection opportunity per authenticated weather day, derived from accepted crop lineage/revision/emergence/DVS. Split before event expiry and rain boundaries; return common committed prefix on later failure. No selection/provider consumption on failed segment.",
+    "restart": "Extend existing opaque weather/crop continuation with schema-tagged existing allocated-irrigation restart, selection day, exact time and cumulative delivered amount. Validate before publishing owners; native disk codec remains separate.",
+    "selection": {
+      "direct": "Allocation preparation and split propagation production contracts O0/O2; existing policies/oracles retained.",
+      "physical": "Final real245-provider closure expected650s: original12 weather executions;4 new managed sensor executions covering all TCS7/8 x1/3nodes xdry/rain day cases;4 managed adaptive-rooted executions, each internally current/lagged and continuous/restored;2 original allocation guards. Existing16 real application/process owners PASS266.038s. All source/oracle/physical/mass assertions retained.",
+      "owners": "Actual unchanged application owners and unchanged original weather outputs; exact source proof chain retains immutable predecessor authority plus new science and negative controls.",
+      "full_fci": "NOT_SELECTED_AFFECTED_CONTRACTS: optional new managed profile; preserve complete incumbent body and real default outputs, actual changed water/state mass/restart/coupling proofs required. Reconcile exact owner guards without claiming full numerical PASS.",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "expected_seconds": 650,
+      "authority": "docs/development/workstream-execution-protocol.md#change-impact-qualification and proportional four-level matrix; existing MC_IRR01 application composition shared proposal reconciled here."
+    },
+    "invariants": [
+      "one accepted water/crop owner",
+      "no mutation on rejected segment",
+      "separate spatial source and surface rain/ET",
+      "frozen selected allocation and next-event freshness",
+      "physical/numerical policy separation",
+      "source-bound qualification only"
+    ],
+    "qualified_schedule_bound": "Full authentic daily trajectories under existing64-interval weather schedule plus actual event endpoint splits. Broad single-tail aggregate failed stricter1e-12 test and is retained; no arbitrary long-window mass accuracy claim. Native disk codec and bottom7 salt remain excluded.",
+    "current_canonical_reconciled": "27dea4829f7025eb4701599d5dbef7b86e4fd20a"
   }
 }

@@ -4,7 +4,8 @@ module mod_fmr_irrigation_allocation_binding
   use mod_irrigation_process, only: scheduled_irrigation_parameters_t, scheduled_irrigation_request_t
   use mod_irrigation_root_zone_summary, only: irrigation_root_zone_parameters_t
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, irrigation_management_policy_result_t
-  use mod_fmr_sensor_depth_irrigation_binding, only: fmr_run_sensor_depth_ssdi_interval
+  use mod_fmr_sensor_depth_irrigation_binding, only: fmr_run_sensor_depth_ssdi_interval, &
+       fmr_prepare_sensor_depth_ssdi_forcing
   use mod_fmr_scheduled_irrigation_forcing_binding, only: fmr_irrigation_forcing_binding_diagnostics_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_canonical_contracts, only: canonical_numerical_config_t
@@ -28,6 +29,7 @@ module mod_fmr_irrigation_allocation_binding
     integer(int64) :: source_id=0_int64, revision=-1_int64
     real(real64) :: valid_t0=0.0_real64, valid_t1=0.0_real64, fraction=1.0_real64
   contains
+
     procedure :: valid => allocation_valid
   end type
   type, public :: fmr_irrigation_allocation_receipt_t
@@ -48,7 +50,63 @@ module mod_fmr_irrigation_allocation_binding
   end type
   public :: fmr_run_allocated_root_irrigation, fmr_run_allocated_sensor_irrigation
   public :: fmr_export_allocated_irrigation_restart, fmr_restore_allocated_irrigation_restart
+  public :: fmr_prepare_allocated_sensor_irrigation
 contains
+  ! Preparation only: use the same selection, frozen receipt and physical
+  ! forcing owners as the admitted standalone route. The caller owns dispatch.
+  subroutine fmr_prepare_allocated_sensor_irrigation(sensor,root,depth,rainfall,physical,base,state,request,allocation, &
+       candidate,bound,binding,depth_result)
+    type(scheduled_irrigation_parameters_t), intent(in) :: sensor
+    type(irrigation_root_zone_parameters_t), intent(in) :: root
+    type(irrigation_management_policy_parameters_t), intent(in) :: depth
+    real(real64), intent(in) :: rainfall
+    type(kernel_committed_state_t), intent(in) :: physical
+    type(fmr_b110_physical_forcing_t), intent(in) :: base
+    type(fmr_allocated_irrigation_state_t), intent(in) :: state
+    type(scheduled_irrigation_request_t), intent(in) :: request
+    type(fmr_irrigation_allocation_t), intent(in) :: allocation
+    type(fmr_allocated_irrigation_state_t), intent(out) :: candidate
+    type(fmr_b110_physical_forcing_t), intent(out) :: bound
+    type(fmr_irrigation_forcing_binding_diagnostics_t), intent(out) :: binding
+    type(irrigation_management_policy_result_t), intent(out) :: depth_result
+    type(scheduled_irrigation_request_t) :: resolved
+    logical :: selecting
+    candidate=state;bound=base;binding=fmr_irrigation_forcing_binding_diagnostics_t()
+    depth_result=irrigation_management_policy_result_t()
+    ! Invalid receipt/allocation must not look like successful zero supply.
+    binding%status=1
+    if (.not.receipt_matches(state)) return
+    resolved=request
+    selecting=sensor%scheduled_irrigation_enabled.and..not.state%management%event%active_event.and. &
+      request%selection_opportunity.and.request%irrigation_enabled.and.request%schedule_enabled.and. &
+      request%crop_emerged.and.request%irrigation_window_open.and..not.request%fixed_event_already_selected
+    resolved%availability_scaling_enabled=.false.;resolved%availability_fraction=1.0_real64
+    if(selecting)then
+      if(.not.allocation%valid(request%t0))return
+      resolved%availability_scaling_enabled=.true.;resolved%availability_fraction=allocation%fraction
+    end if
+    call fmr_prepare_sensor_depth_ssdi_forcing(sensor,root,depth,rainfall,state%management%event,resolved, &
+      physical,base,candidate%management%event,bound,binding,depth_result)
+    if(binding%status/=0)return
+    call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
+  end subroutine
+
+  pure subroutine freeze_allocation_receipt(candidate,allocation,time,selecting,amount)
+    type(fmr_allocated_irrigation_state_t), intent(inout) :: candidate
+    type(fmr_irrigation_allocation_t), intent(in) :: allocation
+    real(real64), intent(in) :: time,amount
+    logical, intent(in) :: selecting
+    if (selecting.and.amount>0.0_real64) then
+      candidate%receipt%present=.true.; candidate%receipt%allocation=allocation
+      candidate%receipt%selection_time=time
+    end if
+    candidate%receipt%active_event=candidate%management%event%active_event
+    candidate%receipt%event_index=candidate%management%event%active_event_index
+    candidate%receipt%event_origin=candidate%management%event%active_event_origin
+    candidate%receipt%event_start=candidate%management%event%active_event_start
+    candidate%receipt%event_end=candidate%management%event%active_event_end
+    candidate%receipt%event_rate=candidate%management%event%active_event_rate_cm_per_day
+  end subroutine
   pure logical function allocation_valid(self, time)
     class(fmr_irrigation_allocation_t), intent(in) :: self
     real(real64), intent(in) :: time
@@ -126,16 +184,7 @@ contains
            candidate%management,resolved,config,top,result,runtime,binding,accepted)
     end if
     if (.not.accepted) return
-    if (selecting.and.binding%external_inflow_amount_cm>0.0_real64) then
-      candidate%receipt%present=.true.; candidate%receipt%allocation=allocation
-      candidate%receipt%selection_time=request%t0
-    end if
-    candidate%receipt%active_event=candidate%management%event%active_event
-    candidate%receipt%event_index=candidate%management%event%active_event_index
-    candidate%receipt%event_origin=candidate%management%event%active_event_origin
-    candidate%receipt%event_start=candidate%management%event%active_event_start
-    candidate%receipt%event_end=candidate%management%event%active_event_end
-    candidate%receipt%event_rate=candidate%management%event%active_event_rate_cm_per_day
+    call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
     state=candidate
   end subroutine
 
@@ -188,16 +237,7 @@ contains
            candidate%management%event,resolved,config,top,result,runtime,binding,depth_result,accepted)
     end if
     if (.not.accepted) return
-    if (selecting.and.binding%external_inflow_amount_cm>0.0_real64) then
-      candidate%receipt%present=.true.; candidate%receipt%allocation=allocation
-      candidate%receipt%selection_time=request%t0
-    end if
-    candidate%receipt%active_event=candidate%management%event%active_event
-    candidate%receipt%event_index=candidate%management%event%active_event_index
-    candidate%receipt%event_origin=candidate%management%event%active_event_origin
-    candidate%receipt%event_start=candidate%management%event%active_event_start
-    candidate%receipt%event_end=candidate%management%event%active_event_end
-    candidate%receipt%event_rate=candidate%management%event%active_event_rate_cm_per_day
+    call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
     state=candidate
   end subroutine
 
