@@ -2,6 +2,7 @@
 """Exact independently qualified daily-demand successor; unknown changes fail closed."""
 from pathlib import Path
 import base64,hashlib,io,json,subprocess,tarfile,sys
+sys.dont_write_bytecode=True  # Proof imports must leave the scientific checkout clean.
 ROOT=Path(__file__).resolve().parents[2]
 if subprocess.check_output(['git','rev-parse','HEAD:src/runtime/mod_canonical_contracts.f90'],cwd=ROOT,text=True).strip()=='732cf70f9aeec59bb7dfb136ba4d6e61b918780b':
  assert sys.argv[1:] in [[],['--owner-only']]
