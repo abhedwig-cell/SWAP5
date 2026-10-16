@@ -133,21 +133,24 @@ def prepare_native(root,target,dcs=1,trigger=True):
     stop
   end if
   call test_rooted_weather_production(oxygen=.true.)''')
- replace('    integer::expected_week,invalid_selection,weekly_events', '''    integer::expected_week,invalid_selection,weekly_events,first_day,unit
+ replace('    integer::expected_week,invalid_selection,weekly_events', '''    integer::expected_week,invalid_selection,weekly_events,first_day,first_q,unit
     character(2048)::native_path
     character(16)::phase
     type(swap_daily_weather_record_t)::native_record,native_previous''')
  replace('    call managed_failure_probe(tc)','    if(index(trim(continuation_mode),\'native-\')/=1)call managed_failure_probe(tc)')
+ anchor='    do j=1,merge(1,2,index(trim(continuation_mode),'+"'native-'"+')==1)'
+ # This replacement is applied below, after the loop transformation exists.
  anchor='      do d=0,10'
- replace(anchor,'''      first_day=0
+ replace(anchor,'''      first_day=0;first_q=0
       call get_command_argument(0,native_path)
       phase='morning';if(dayend)phase='dayend'
       native_path=trim(native_path)//'.'//trim(phase)
-      if(trim(continuation_mode)=='native-resume')then
+      if(index(trim(continuation_mode),'active')>0)native_path=trim(native_path)//'.active'
+      if(index(trim(continuation_mode),'native-resume')==1)then
         call ta%close(st);cs=kernel_committed_state_t()
-        call read_swap_daily_weather_file(trim(path),1999,1,28,native_record,st)
+        call read_swap_daily_weather_file(trim(path),1999,1,merge(29,28,index(trim(continuation_mode),'active')>0),native_record,st)
         call require(st==SWAP_WEATHER_FILE_OK,'fresh process current source day28')
-        call read_swap_daily_weather_file(trim(path),1999,1,27,native_previous,st)
+        call read_swap_daily_weather_file(trim(path),1999,1,merge(28,27,index(trim(continuation_mode),'active')>0),native_previous,st)
         call require(st==SWAP_WEATHER_FILE_OK,'fresh process previous source day27')
         call read_weather_irrigation_joint_restart_file(trim(native_path)//'.checkpoint',tc,native_record,native_previous,saved,st)
         call require(st==0,'decode existing joint native adapter weather tag')
@@ -156,7 +159,8 @@ def prepare_native(root,target,dcs=1,trigger=True):
         ! This sidecar contains only independent test-oracle recurrences and
         ! cumulative diagnostics. All actual model owners come from native codec.
         read(unit)literal_nodes,literal_actual_depth,literal_potential_depth,depth_events,depth_suppressed,depth_extended, &
-          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events
+          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events,day_pot,day_red, &
+          uptake,oracle_before,oracle_depth,oracle_trigger
         close(unit)
         prior_wr=native_record
         call cs%snapshot(ps,ok);call require(ok,'fresh native crop')
@@ -165,8 +169,12 @@ def prepare_native(root,target,dcs=1,trigger=True):
           call ps%snapshot_owner(wo,ok);call require(ok,'fresh native actual owner')
         end select
         first_day=9
+        if(index(trim(continuation_mode),'active')>0)then
+          first_q=1;wr=native_record
+        end if
       end if
-      do d=first_day,10''')
+      do d=first_day,10
+        if(d/=first_day)first_q=0''')
  # Native producer stops before the second weekly opportunity. Consumer runs
  # only9..10; all actual physical prefix state is obtained from the codec.
  anchor='      prior_uptake=uptake;prior_wr=wr'
@@ -177,14 +185,15 @@ def prepare_native(root,target,dcs=1,trigger=True):
         call require(st==0,'existing joint native adapter before week boundary write')
         open(newunit=unit,file=trim(native_path)//'.oracle',access='stream',form='unformatted',status='replace')
         write(unit)literal_nodes,literal_actual_depth,literal_potential_depth,depth_events,depth_suppressed,depth_extended, &
-          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events
+          previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events,day_pot,day_red, &
+          uptake,oracle_before,oracle_depth,oracle_trigger
         close(unit)
         print '(a)','TCS6_NATIVE_PREFIX_PROCESS_EXIT=PASS'
         stop
       end if''')
  anchor="      call ta%close(st);call require(st==FMR_APP_BOOT_OK,'close rooted physical application')"
  replace(anchor,'''      call ta%capture_weather_crop_continuation(cs,saved,st);call require(st==FMR_APP_BOOT_OK,'native final capture')
-      if(trim(continuation_mode)=='native-resume')then
+      if(index(trim(continuation_mode),'native-resume')==1)then
         call write_weather_irrigation_joint_restart_file(trim(native_path)//'.resumed',saved,st)
       else if(j==1)then
         call write_weather_irrigation_joint_restart_file(trim(native_path)//'.full',saved,st)
@@ -199,4 +208,39 @@ def prepare_native(root,target,dcs=1,trigger=True):
  # Native consumer has no independently run morning reference in its address
  # space; the controller compares complete endpoint bytes across processes.
  replace('        if(dayend) then\n          call require(allocated(admitted_morning_soil)', "        if(dayend.and.index(trim(continuation_mode),'native-')/=1) then\n          call require(allocated(admitted_morning_soil)")
+ anchor="    do j=1,merge(1,2,index(trim(continuation_mode),'native-')==1)"
+ replace(anchor,"""    if(index(trim(continuation_mode),'native-reject')==1)then
+      call get_command_argument(7,native_path)
+      if(trim(continuation_mode)=='native-reject-config')tc%file_weather_irrigation_field_capacity_head_cm=-300._real64
+      call read_swap_daily_weather_file(trim(path),1999,1,28,native_record,st)
+      call require(st==SWAP_WEATHER_FILE_OK,'negative actual source current record')
+      call read_swap_daily_weather_file(trim(path),1999,1,27,native_previous,st)
+      call require(st==SWAP_WEATHER_FILE_OK,'negative actual source previous record')
+      call read_weather_irrigation_joint_restart_file(trim(native_path),tc,native_record,native_previous,saved,st)
+      call require(st/=0,'invalid native record or configuration fails closed')
+      foreign=kernel_committed_state_t()
+      call bad_app%restore_weather_crop_continuation(saved,foreign,st)
+      call require(st/=FMR_APP_BOOT_OK.and..not.bad_app%ready().and..not.foreign%ready(),'invalid native cannot publish any owner')
+      print '(a)','TCS6_NATIVE_INVALID_NO_PARTIAL_PUBLICATION=PASS'
+      stop
+    end if
+"""+anchor)
+ anchor='          valid_t0=real(d,real64),valid_t1=real(d+1,real64),fraction=.5_real64)'
+ replace(anchor,anchor+"\n        if(first_q==1.and.d==first_day)goto900")
+ replace('        do q=0,63','900     do q=first_q,63')
+ anchor='          uptake=uptake+rr(1)%actual_transpiration_amount'
+ replace(anchor,anchor+"""
+          if(trim(continuation_mode)=='native-write-active'.and.d==9.and.q==0)then
+            call ta%capture_weather_crop_continuation(cs,saved,st);call require(st==FMR_APP_BOOT_OK,'native active event capture')
+            call write_weather_irrigation_joint_restart_file(trim(native_path)//'.checkpoint',saved,st)
+            call require(st==0,'existing native codec active event write')
+            open(newunit=unit,file=trim(native_path)//'.oracle',access='stream',form='unformatted',status='replace')
+            write(unit)literal_nodes,literal_actual_depth,literal_potential_depth,depth_events,depth_suppressed,depth_extended, &
+              previous_weight,total_uptake,prior_uptake,maximum_residual,total_reduction,stress_cases,weekly_events,day_pot,day_red, &
+              uptake,oracle_before,oracle_depth,oracle_trigger
+            close(unit)
+            print '(a)','TCS6_NATIVE_PREFIX_PROCESS_EXIT=PASS'
+            stop
+          end if
+""")
  target.write_text(s);return target

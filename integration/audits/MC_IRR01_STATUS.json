@@ -4256,7 +4256,7 @@
   "tcs6_completion_20261016": {
     "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
     "branch": "work/mc-irr01-tcs6-20261016",
-    "phase": "NATIVE_EXTENSION_IMPLEMENTED_NOT_YET_COMPILED",
+    "phase": "STABLE_NATIVE_CANDIDATE_SCIENCE_PENDING",
     "implemented": true,
     "persisted": true,
     "tested": false,
@@ -4308,7 +4308,7 @@
     "next_action": "Compile/test persisted joint native extension and actual weekly trajectory; retain all failures and mandatory full closure conditions.",
     "test_selection": {
       "small_contract": "real source-bound TCS6 policy/application, expected <30s",
-      "physical_application": "actual Richards weather/crop/root weekly progression and opaque continuation; expected400-700s including compile, selected by changed root selection contract; no full FCI, RossFast, highest low-air or Actions."
+      "physical_application": "Stable native candidate actual Richards/weather/crop weekly progression, rejected trials, current/lagged opaque and native fresh processes, active event/weekly boundary and CRC-correct decoder invalid paths; expected600s including295-provider O0/O2 builds and54 trajectory native programs. Previous failure diagnosed; no inherited native PASS. No broad FCI/RossFast/highest/Actions."
     },
     "shared_domain_findings": {
       "actual_failure": "11-day actual driver d10 (30Jan morning completing29Jan): FMR_APP_BOOT14; crop model last_status10 potential error, potential detail5 assimilation error. Actual29Jan rad5267700J exceeds current5000000J guard.",
@@ -4319,15 +4319,20 @@
     "pull_request": 1262,
     "scientific_failures_retained": [
       "Initial failure-probe fixture used BOUNDED rather than TASK2; corrected test configuration, no production bypass.",
-      "11-day actual O0 first driver stops on real29Jan radiation-domain refusal; source-unit correction added with separate original/corrected O0/O2 preservation witness."
+      "11-day actual O0 first driver stops on real29Jan radiation-domain refusal; source-unit correction added with separate original/corrected O0/O2 preservation witness.",
+      "First native reader restored actual model correctly, but test oracle sidecar omitted previous-day layer potential/reduction integrals; existing literal root assertion rejected. Added only independent diagnostic/oracle sidecar values; production state codec unchanged."
     ],
     "native_extension_contract": {
       "adapter": "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
       "tag": "S5WI0001; extends existing adapter and CRC, old tag bodies unchanged",
       "state": "Existing kernel snapshots, classic crop persistence, accepted windows, weather source bytes/revision and allocated irrigation restart. No second model owner.",
       "caller": "Expected immutable configuration and actual current/previous weather records are supplied by existing application/input owners. Serialized IDs and policy/numerical/root/material fields are checked; decoder does not parse a second weather/configuration format.",
-      "fresh_process": "Producer stops after day8; consumer restores accepted model owners and runs only days9..10. Oracle sidecar contains independent literal recurrence/diagnostic totals, no model continuation. Both current and lagged schedules must exactly match continuous and opaque native endpoints.",
+      "fresh_process": "Producer exits at end day8 or within day9 active event after first1/64-day segment. New process restores only native model owners and independent numeric oracle/diagnostic sidecar, then executes the missing day9 tail and day10; never replays days0..8. Both schedules, DCS1/2 and nontrigger require exact continuous/opaque/native endpoint bytes.",
       "remaining": "Compile all affected owners, complete O0/O2 physical/native equality and invalid decoder witnesses, preserve affected original app/native owner outputs and source proof, reconcile parallel canonical then admit only if complete."
+    },
+    "diagnostic_results": {
+      "O0_actual_three_cases": "All three11-day original assertion sets pass; exact full/opaque/fresh native bytes for both schedules and both before-week/active-event checkpoint boundaries. Diagnostic reuse only of verified unchanged compiled providers, plus fresh affected bootstrap/driver; not final qualification.",
+      "native_decoder": "18 negatives pertriggered phase and16 pernontrigger phase: corrupted/truncated/trailing/tag/source/config, futureselection, NaN/Inf/wrong time, negative/NaN water, invalid/overflow counter and active provider fraction. Final qualification will execute again."
     }
   }
 }

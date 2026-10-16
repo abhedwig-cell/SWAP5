@@ -414,6 +414,7 @@ contains
     else
       if(view%previous_record%ready())return
     end if
+    if(.not.ieee_is_finite(view%irrigation_time))return
     if(view%irrigation_schema/=1.or.view%irrigation_time/=soil_time)return
     if(.not.ieee_is_finite(view%irrigation_delivered_cm))return
     if(view%irrigation_delivered_cm<0._real64)return
