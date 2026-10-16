@@ -116,6 +116,7 @@ contains
       '|ROUTE=',trim(obs%temporal_indicator_route)
     if(kind/=B111_HYD_BIMODAL_MVG_WCK)then
       if(.not.result%completed.or..not.candidate%ready())call stop_labeled(label//' analytical dynamic trial')
+      if(diag%temporal_rejections<1)call stop_labeled(label//' adaptive retry not exercised')
       if(.not.result%mass%complete.or.abs(result%mass%residual)>1e-8_real64) &
         call stop_labeled(label//' analytical dynamic mass')
       call candidate%snapshot(first,available)
