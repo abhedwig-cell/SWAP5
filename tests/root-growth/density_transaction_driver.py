@@ -6,8 +6,10 @@ def prepare(root,target):
   assert s.count(a)==1,(s.count(a),a)
   s=s.replace(a,b)
  replace('program test_swrd2_transaction','program test_daily_density_transaction')
- replace(' implicit none',' use mod_crop_adaptive_root_profile_owner\n implicit none')
+ replace(' implicit none',' use mod_crop_adaptive_root_profile_owner\n use, intrinsic :: ieee_arithmetic, only: ieee_value,ieee_quiet_nan\n implicit none')
  replace(' type(crop_root_depth_rate_parameters_t)::rp',''' type(crop_root_depth_rate_parameters_t)::rp
+ type(fmr_wofost_crop_event_identity_persistence_t)::layer_view
+ type(fmr_wofost_crop_event_identity_t)::foreign_identity
  type(adaptive_root_profile_configuration_t)::density_config
  type(adaptive_root_profile_state_t)::density_owner
  real(real64)::literal_nodes(6),grnew,grold,rr,total''')
@@ -54,6 +56,22 @@ def prepare(root,target):
  call require(maxval(abs(literal_nodes-density_owner%root_biomass_by_node))<1d-11,'literal daily adaptive nodal postimage')
  call require(abs(sum(density_owner%root_biomass_by_node)-actual%biomass%root_biomass)<1d-11,'density projection conserves WRT')
  ''')
+ anchor=" call open_wofost_accepted_window(water_checkpoint,101d0,window,status);call require(status==0,'window open')"
+ replace(anchor," call layer_controls(water_checkpoint)\n"+anchor)
+ anchor=" call identify_wofost_crop_event(token,identity,status);call require(status==0,'public event identity')"
+ replace(anchor,anchor+'''
+ if(profile/=4)then
+   call export_wofost_crop_event_identity_persistence(identity,layer_view,available)
+   call require(available,'layer identity exports')
+   layer_view%potential_root_sink_integral(1:2)=layer_view%potential_root_sink_integral([2,1])
+   call reconstruct_wofost_crop_event_identity_from_persistence(layer_view,foreign_identity,status)
+   call require(status==0.and..not.same_wofost_crop_event_identity(identity,foreign_identity),'equal totals with foreign layer identity differ')
+   deallocate(layer_view%root_sink_reduction_integral)
+   call require(.not.layer_view%ready(),'incomplete layer persistence refuses')
+   call reconstruct_wofost_crop_event_identity_from_persistence(layer_view,foreign_identity,status)
+   call require(status/=0.and..not.foreign_identity%ready(),'incomplete layer identity restores nothing')
+ end if
+ ''')
  anchor=" call require(pv%root_depth_present.eqv.rv%root_depth_present,'restart depth presence')"
  replace(anchor,anchor+'''
  call require(pv%root_profile_present.and.rv%root_profile_present,'restart adaptive presence')
@@ -70,4 +88,45 @@ def prepare(root,target):
    rf%deepest_root_biomass_available=.true.;rf%deepest_root_biomass=10d0;rf%deepest_node_top_cm=-5d0
  end if
 '''+anchor)
+ replace('\ncontains\n','\ncontains\n'+'''
+ subroutine layer_controls(checkpoint)
+ type(kernel_checkpoint_t),intent(in)::checkpoint
+ type(fmr_wofost_trial_contribution_t)::x
+ type(adaptive_root_profile_state_t)::raw,final
+ real(real64)::nan
+ integer::code
+ nan=ieee_value(0d0,ieee_quiet_nan)
+ call begin_wofost_trial_contribution(checkpoint,101d0,x,code);call require(code==0,'layer trial begin')
+ call accumulate_wofost_trial_process_rate(x,100d0,100.5d0,.8d0,1d0,code, &
+   potential_root_sink=[.6d0,.4d0],root_sink_reduction=[0d0,0d0])
+ call require(code/=0,'inconsistent layer uptake refuses')
+ call accumulate_wofost_trial_process_rate(x,100d0,100.5d0,.8d0,1d0,code, &
+   potential_root_sink=[nan,.4d0],root_sink_reduction=[.1d0,.1d0])
+ call require(code/=0,'nonfinite potential layer refuses')
+ call accumulate_wofost_trial_process_rate(x,100d0,100.5d0,1d0,1d0,code, &
+   potential_root_sink=[.6d0,.4d0],root_sink_reduction=[-.1d0,.1d0])
+ call require(code/=0,'compensated layer outside bounded envelope refuses')
+ call accumulate_wofost_trial_process_rate(x,100d0,100.5d0,.8d0,1d0,code,potential_root_sink=[.6d0,.4d0])
+ call require(code/=0,'unpaired layer arguments refuse')
+ call accumulate_wofost_trial_process_rate(x,100d0,100.5d0,.8d0,1d0,code, &
+   potential_root_sink=[.6d0,.4d0],root_sink_reduction=[.1d0,.1d0])
+ call require(code==0,'valid layer after rejected prefix')
+ call accumulate_wofost_trial_process_rate(x,100.5d0,101d0,.8d0,1d0,code)
+ call require(code/=0.and..not.x%complete(),'omitted later layer does not advance')
+ call accumulate_wofost_trial_process_rate(x,100.5d0,101d0,.8d0,1d0,code, &
+   potential_root_sink=[.6d0,.4d0,0d0],root_sink_reduction=[.1d0,.1d0,0d0])
+ call require(code/=0.and..not.x%complete(),'layer shape drift refuses')
+ call accumulate_wofost_trial_process_rate(x,100.5d0,101d0,.8d0,1d0,code, &
+   potential_root_sink=[.6d0,.4d0],root_sink_reduction=[.1d0,.1d0])
+ call require(code==0.and.x%complete(),'valid layer retry keeps original integral')
+ raw%root_biomass_by_node=[12d0,12d0]
+ call finalize_adaptive_root_profile_candidate(raw,2,10d0,final,code)
+ call require(code==0.and.all(final%root_biomass_by_node==5d0),'literal finalizer rescales floor-inflated raw shape')
+ call require(all(raw%root_biomass_by_node==12d0),'finalizer leaves raw candidate intact')
+ raw%root_biomass_by_node=0d0
+ call finalize_adaptive_root_profile_candidate(raw,2,10d0,final,code)
+ call require(code/=0,'zero raw shape refuses normalization')
+ print '(A)','DAILY_DENSITY_LAYER_IDENTITY_NONFINITE_RETRY_FINALIZATION=PASS'
+ end subroutine
+ ''')
  target.write_text(s);return target

@@ -96,7 +96,7 @@
     "implemented": true,
     "qualified": false,
     "admitted": false,
-    "scope": "Explicit active crop initialization, SWRD2 adaptive density, accepted uncompensated layer receipts, optional SWDMI2RD2 supply. Emergence/harvest/rotation remain excluded.",
+    "scope": "Explicit SWRD2 adaptive density; accepted uncompensated layer receipts; SWDMI2RD2 supply. Real existing task2 emergence initializes density atomically; harvest/rotation and native weather disk codec remain excluded. Current/lagged Richards composition running.",
     "direct": {
       "command": "python -B tests/root-growth/run_root_growth.py --swrd2 --density --output <unique-owned-directory>",
       "status": "PASS",
@@ -122,12 +122,36 @@
       "reason": "New accepted-state/forcing coupling cannot be qualified by the synthetic-water direct contracts. Existing28-programme SWRD2 physical batch measured440.8s; reuse one controlled build for current O0/O2 drivers.",
       "full_moving": "NOT_SELECTED_AT_DEVELOPMENT_CHECKPOINT",
       "highest_low_air": "NOT_SELECTED_POLICY",
-      "rossfast": "NOT_SELECTED_IMPACT"
+      "rossfast": "NOT_SELECTED_IMPACT",
+      "incumbent_owners": {
+        "command": "python -B tests/fpm/run_int12c_real_endpoint.py --profile application --preserve-owners --evidence-dir <unique-owned-directory>",
+        "expected_seconds": 240,
+        "reason": "Shared bootstrap and crop/accepted-window type changes: execute actual admitted INT12-C endpoint plus unchanged WU01/WU03/Black/Boesten/Rutter drivers against current production. Weather/root physical batch does not cover this independent explicit application seam. Existing one shared build, no solver stress or full F-CI."
+      },
+      "nodal_discriminator": {
+        "scope": "Freshly compile only two strengthened actual Richards density drivers; eight O0/O2 current/lagged and continuous/restart programme executions. Existing36-case physical PASS retained, no whole-batch repeat.",
+        "expected_seconds": 480,
+        "reason": "Verify each accepted nodal potential and reduction integral independently, beyond scalar sum. Reuse was attempted and refused on different complete environment SHA; compiler/helper/library bytes agree, but environment equality is unproven. Isolated current closure rebuild; no old objects reused.",
+        "failed_reuse": "No scientific execution or PASS from rejected attempts."
+      }
     },
     "next_action": "Real daily accepted uptake, dynamic density shape and supply/death/extension recurrence, current/lagged schedules, rejects/replay and opaque joint restart. Then reconcile owning admission guards without dropping assertions.",
     "blockers": [
       "Physical science and current owner preservation not yet executed.",
-      "No source-certified emergence/lifecycle density initialization; explicit active crop constructor only."
-    ]
+      "Source emergence composition implemented; current/lagged Richards O0 passed, O2 still running. No admission yet."
+    ],
+    "physical_development": {
+      "status": "PASS",
+      "checkpoint": "c490edd61ce61d7b317435591f59039649d4a905",
+      "native_programs": 36,
+      "wall_seconds": 531.0984224740023,
+      "providers": 233,
+      "scope": "Current/lagged real Richards, density/depth/supply literal recurrence, actual physical mass/rollback and opaque joint restart; all28 incumbent cases retained. Additional per-layer independent receipt discriminator still pending."
+    },
+    "incumbent_owners": {
+      "status": "PASS",
+      "native_programs": 16,
+      "scope": "Actual INT12-C endpoint and seven unchanged WU01/WU03/Black/Boesten/Rutter drivers O0/O2. Current scientific source; no full source-guard admission claim."
+    }
   }
 }

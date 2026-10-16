@@ -51,7 +51,23 @@ def prepare(root,target,supply=False):
         sum(profile_owner%root_biomass_by_node(:roots%rooted_nodes))
     end do''')
  replace('    integer::depth_events,depth_suppressed,depth_extended','''    integer::depth_events,depth_suppressed,depth_extended
-    real(real64)::literal_nodes(numnod),old_density_depth''')
+    real(real64)::literal_nodes(numnod),old_density_depth
+    real(real64)::expected_pot(numnod),expected_red(numnod),day_pot(numnod),day_red(numnod)''')
+ replace('subroutine oxygen_segment_oracle(app,crop,config,record,rate,unstressed)',
+   'subroutine oxygen_segment_oracle(app,crop,config,record,rate,unstressed,layer_potential,layer_reduction)')
+ replace('    real(real64),intent(out)::rate,unstressed','''    real(real64),intent(out)::rate,unstressed
+    real(real64),intent(out)::layer_potential(numnod),layer_reduction(numnod)''')
+ replace('    rate=0;unstressed=0','    rate=0;unstressed=0;layer_potential=0;layer_reduction=0')
+ replace('    rate=sum(sink);unstressed=sum(neutral)', '''    rate=sum(sink);unstressed=sum(neutral)
+    do i=1,roots%rooted_nodes
+      layer_potential(i)=(roots%cumulative_root_fraction(i+1)-roots%cumulative_root_fraction(i))*er%potential_transpiration_cm_per_day
+    end do
+    layer_reduction=layer_potential-sink''')
+ replace('          if(wet)call oxygen_segment_oracle(ta,cs,tc,wr,expected_rate,neutral_rate)', '''          if(wet)then
+            call oxygen_segment_oracle(ta,cs,tc,wr,expected_rate,neutral_rate,expected_pot,expected_red)
+            day_pot=day_pot+expected_pot/64._real64;day_red=day_red+expected_red/64._real64
+          end if''')
+ replace('        uptake=0.0_real64','        uptake=0.0_real64;day_pot=0._real64;day_red=0._real64')
  anchor="          if(d==2) call require(weight==10.0_real64.and.wo%development_stage==0.0_real64,'emergence initializes TDWI without previous-day phantom growth')"
  replace(anchor,anchor+'''
           if(d==2)then
@@ -63,7 +79,7 @@ def prepare(root,target,supply=False):
  s=s.replace(anchor,'''            old_density_depth=literal_actual_depth
             call literal_depth_receipt(crop_view,tc,literal_actual_depth,literal_potential_depth, &
               depth_events,depth_suppressed,depth_extended,literal_nodes)
-            call literal_density_receipt(crop_view,tc,before_owner,old_density_depth,literal_nodes)''')
+            call literal_density_receipt(crop_view,tc,before_owner,old_density_depth,literal_nodes,day_pot,day_red)''')
  replace('subroutine literal_depth_receipt(v,c,rd,rdpot,events,blocked,extended)',
    'subroutine literal_depth_receipt(v,c,rd,rdpot,events,blocked,extended,nodes)')
  replace('    real(real64)::rr,old','    real(real64)::rr,old,needed\n    real(real64),intent(in)::nodes(:)\n    integer::deepest')
@@ -102,11 +118,12 @@ def prepare(root,target,supply=False):
     call require(v%root_profile_present,'real emergence initializes adaptive density')
     call require(maxval(abs(nodes-v%root_profile%root_biomass_by_node))<1e-12_real64,'literal uniform RDCTB emergence')
   end subroutine
-  subroutine literal_density_receipt(v,c,before,rdold,nodes)
+  subroutine literal_density_receipt(v,c,before,rdold,nodes,expected_pot,expected_red)
     type(fmr_wofost_crop_transaction_persistence_t),intent(in)::v
     type(fmr_production_application_config_t),intent(in)::c
     type(wofost_crop_owner_state_t),intent(in)::before
     real(real64),intent(in)::rdold
+    real(real64),intent(in)::expected_pot(:),expected_red(:)
     real(real64),intent(inout)::nodes(:)
     real(real64)::g,death,newg,oldg,rr,actual,reduced,weight,frac,mass,minimum
     real(real64),allocatable::pot(:),red(:)
@@ -114,6 +131,8 @@ def prepare(root,target,supply=False):
     call require(v%root_profile_present,'accepted event has adaptive owner')
     call require(allocated(v%receipt%potential_root_sink_integral),'actual accepted layer receipt')
     pot=v%receipt%potential_root_sink_integral;red=v%receipt%root_sink_reduction_integral
+    call require(maxval(abs(pot-expected_pot))<1e-12_real64,'accepted potential per layer equals independent literal sink')
+    call require(maxval(abs(red-expected_red))<1e-12_real64,'accepted reduction per layer equals independent literal sink')
     call require(abs(sum(pot-red)-v%receipt%actual_root_uptake_integral)<1e-12_real64,'layer receipt matches actual water')
     oldn=literal_rooted(c,rdold);newn=literal_rooted(c,v%root_depth%actual_root_depth_cm)
     rr=v%root_depth%actual_root_depth_cm-rdold
