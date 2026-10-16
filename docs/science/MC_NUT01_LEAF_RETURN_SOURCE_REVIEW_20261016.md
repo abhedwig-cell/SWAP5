@@ -113,8 +113,8 @@ No capability/count promotion follows. Aquifer remains excluded.
 
 The later `leaf_return_reference_20261016` owner record supersedes the initial
 unadjudicated counterexample for the tested ordinary annual source chain.
-Original task3/4 cases execute19 original growth/phenology/leaf/management/interface
-helpers, the full original nutrient scientific routines, actual calendar harvest
+Original task3/4 cases use an exact19-helper growth/phenology/leaf/management/interface
+compilation closure, the full original nutrient scientific routines, actual calendar harvest
 and original SoilManagement5/residue chemistry. Prescribed environment and
 assimilation supply are input fixtures; no scientific routine is replaced.
 A fixture initializer/readout accesses private N parameters and10 state/ledger
