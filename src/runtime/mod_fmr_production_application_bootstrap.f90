@@ -120,6 +120,8 @@ module mod_fmr_production_application_bootstrap
   use mod_scheduled_irrigation_management_policy, only: irrigation_management_policy_parameters_t, &
        irrigation_management_policy_result_t
   use mod_fmr_scheduled_irrigation_forcing_binding, only: fmr_irrigation_forcing_binding_diagnostics_t
+  use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_window_persistence_t, &
+    export_wofost_window_persistence,reconstruct_wofost_window_persistence
   implicit none
   private
 
@@ -259,6 +261,23 @@ module mod_fmr_production_application_bootstrap
     integer(int64) :: crop_lineage=0_int64,crop_revision=-1_int64
   end type
 
+  ! Serialization-neutral view for the existing joint native adapter. This
+  ! carrier grants no setter or commit authority to a live application.
+  type, public :: fmr_weather_crop_native_view_t
+    logical :: valid=.false., initial_crop_daystart_committed=.false.
+    integer :: irrigation_schema=0,irrigation_selection_day=-1
+    real(real64) :: irrigation_time=0.0_real64,irrigation_delivered_cm=0.0_real64
+    type(fmr_allocated_irrigation_restart_t) :: irrigation
+    type(fmr_production_application_config_t) :: configuration
+    type(kernel_persistence_snapshot_t) :: soil,crop
+    type(weather_day_owner_t) :: weather
+    type(swap_daily_weather_record_t) :: record,previous_record
+    integer(int64) :: weather_revision=0_int64
+    type(fmr_wofost_accepted_window_t) :: current_window,previous_window
+    integer(int64) :: crop_lineage=0_int64,crop_revision=-1_int64
+  end type
+  public :: export_weather_crop_native_view,reconstruct_weather_crop_native_view
+
   type, public :: fmr_production_application_bootstrap_t
     private
     logical :: initialized = .false.
@@ -326,6 +345,102 @@ module mod_fmr_production_application_bootstrap
   end type fmr_production_application_bootstrap_t
 
 contains
+  subroutine export_weather_crop_native_view(bundle,view,status)
+    type(fmr_weather_crop_application_continuation_t),intent(in)::bundle
+    type(fmr_weather_crop_native_view_t),intent(out)::view
+    integer,intent(out)::status
+    view=fmr_weather_crop_native_view_t();status=FMR_APP_BOOT_INVALID_CONFIG
+    if(.not.bundle%valid)return
+    view%valid=bundle%valid
+    view%initial_crop_daystart_committed=bundle%initial_crop_daystart_committed
+    view%irrigation_schema=bundle%irrigation_schema
+    view%irrigation_selection_day=bundle%irrigation_selection_day
+    view%irrigation_time=bundle%irrigation_time
+    view%irrigation_delivered_cm=bundle%irrigation_delivered_cm
+    view%irrigation=bundle%irrigation
+    view%configuration=bundle%configuration
+    view%soil=bundle%soil
+    view%crop=bundle%crop
+    view%weather=bundle%weather
+    view%record=bundle%record
+    view%previous_record=bundle%previous_record
+    view%weather_revision=bundle%weather_revision
+    view%current_window=bundle%current_window
+    view%previous_window=bundle%previous_window
+    view%crop_lineage=bundle%crop_lineage
+    view%crop_revision=bundle%crop_revision
+    status=FMR_APP_BOOT_OK
+  end subroutine
+  subroutine reconstruct_weather_crop_native_view(view,bundle,status)
+    type(fmr_weather_crop_native_view_t),intent(in)::view
+    type(fmr_weather_crop_application_continuation_t),intent(out)::bundle
+    integer,intent(out)::status
+    type(fmr_wofost_window_persistence_t)::current,previous
+    type(fmr_allocated_irrigation_state_t)::irrigation
+    integer(int64)::source,epoch,revision
+    real(real64)::day,tmin,tmax,rain,et,weather_day,soil_time,crop_time
+    logical::ok
+    integer::st
+    bundle=fmr_weather_crop_application_continuation_t();status=FMR_APP_BOOT_INVALID_CONFIG
+    if(.not.view%valid.or..not.view%record%ready().or..not.view%soil%ready().or..not.view%crop%ready())return
+    if(.not.view%configuration%file_weather_irrigation.or..not.view%configuration%file_weather_rooted)return
+    if(view%configuration%file_weather_irrigation_sensor%timing_criterion/=6)return
+    if(.not.allocated(view%configuration%tiles))return
+    if(size(view%configuration%tiles)/=1)return
+    if(view%soil%layout_id()/=view%configuration%tiles(1)%template%template_id.or.view%crop%layout_id()/=904001_int64)return
+    if(view%crop%current_lineage_id()/=view%crop_lineage.or.view%crop%current_revision()/=view%crop_revision)return
+    call view%record%values(day,tmin,tmax,rain,et,ok);if(.not.ok)return
+    day=day-real(view%configuration%file_weather_epoch_day,real64)
+    call view%weather%snapshot(source,epoch,revision,weather_day,tmin,tmax,ok)
+    if(.not.ok.or.source/=1_int64.or.epoch/=1_int64.or.revision/=view%weather_revision.or.weather_day/=day)return
+    call view%soil%current_time(soil_time,ok);if(.not.ok)return
+    call view%crop%current_time(crop_time,ok);if(.not.ok)return
+    call export_wofost_window_persistence(view%current_window,current,st);if(st/=0)return
+    call export_wofost_window_persistence(view%previous_window,previous,st);if(st/=0)return
+    if(.not.current%initialized.or.current%lineage_id/=view%soil%current_lineage_id())return
+    if(current%t0/=day.or.current%t1/=day+1._real64.or.current%covered_t/=soil_time)return
+    if(current%next_revision/=view%soil%current_revision())return
+    if(current%event_delivered)then
+      if(.not.view%configuration%file_weather_dayend.or.crop_time/=day+1._real64)return
+    else if(previous%initialized.and..not.previous%event_delivered)then
+      if(previous%t0/=day-1._real64.or.previous%t1/=day.or.crop_time/=day-1._real64)return
+    else
+      if(crop_time/=day)return
+    end if
+    if(previous%initialized)then
+      if(.not.view%previous_record%ready().or..not.view%previous_record%same_source(view%record))return
+      call view%previous_record%values(weather_day,tmin,tmax,rain,et,ok);if(.not.ok)return
+      if(weather_day/=day-1._real64+real(view%configuration%file_weather_epoch_day,real64))return
+    else
+      if(view%previous_record%ready())return
+    end if
+    if(.not.ieee_is_finite(view%irrigation_time))return
+    if(view%irrigation_schema/=1.or.view%irrigation_time/=soil_time)return
+    if(.not.ieee_is_finite(view%irrigation_delivered_cm))return
+    if(view%irrigation_delivered_cm<0._real64)return
+    if(view%irrigation_selection_day< -1.or.view%irrigation_selection_day>int(day)+view%configuration%file_weather_epoch_day)return
+    if(soil_time>day.and.view%irrigation_selection_day/=int(day)+view%configuration%file_weather_epoch_day)return
+    call fmr_restore_allocated_irrigation_restart(view%irrigation,irrigation,st);if(st/=0)return
+    bundle%valid=view%valid
+    bundle%initial_crop_daystart_committed=view%initial_crop_daystart_committed
+    bundle%irrigation_schema=view%irrigation_schema
+    bundle%irrigation_selection_day=view%irrigation_selection_day
+    bundle%irrigation_time=view%irrigation_time
+    bundle%irrigation_delivered_cm=view%irrigation_delivered_cm
+    bundle%irrigation=view%irrigation
+    bundle%configuration=view%configuration
+    bundle%soil=view%soil
+    bundle%crop=view%crop
+    bundle%weather=view%weather
+    bundle%record=view%record
+    bundle%previous_record=view%previous_record
+    bundle%weather_revision=view%weather_revision
+    bundle%current_window=view%current_window
+    bundle%previous_window=view%previous_window
+    bundle%crop_lineage=view%crop_lineage
+    bundle%crop_revision=view%crop_revision
+    status=FMR_APP_BOOT_OK
+  end subroutine
 
   subroutine production_application_initialize(self, config, status)
     class(fmr_production_application_bootstrap_t), intent(inout) :: self
@@ -444,7 +559,7 @@ contains
       if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
       select case(config%file_weather_irrigation_sensor%timing_criterion)
-      case(2:4,7,8)
+      case(2:4,6:8)
       case default
         return
       end select

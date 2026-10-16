@@ -137,6 +137,26 @@ module mod_fmr_wofost_accepted_window_lineage
     procedure, public :: ready => crop_event_identity_persistence_ready
   end type fmr_wofost_crop_event_identity_persistence_t
 
+  ! Data view only; reconstruction remains validated by this accepted-window owner.
+  type, public :: fmr_wofost_window_persistence_t
+    logical :: initialized = .false.
+    integer(int64) :: lineage_id = 0_int64
+    integer(int64) :: start_revision = -1_int64
+    integer(int64) :: next_revision = -1_int64
+    integer :: accepted_intervals = 0
+    real(real64) :: t0 = 0.0_real64
+    real(real64) :: t1 = 0.0_real64
+    real(real64) :: covered_t = 0.0_real64
+    real(real64) :: actual_root_uptake_integral = 0.0_real64
+    real(real64) :: potential_transpiration_integral = 0.0_real64
+    logical :: deepest_root_oxygen_factor_available = .false.
+    real(real64) :: deepest_root_oxygen_factor_integral = 0.0_real64
+    logical :: rootzone_drought_uptake_factor_available = .false.
+    real(real64) :: rootzone_drought_uptake_factor_integral = 0.0_real64
+    real(real64), allocatable :: potential_root_sink_integral(:), root_sink_reduction_integral(:)
+    logical :: event_delivered = .false.
+  end type
+  public :: export_wofost_window_persistence,reconstruct_wofost_window_persistence
   public :: certify_fkt_accepted_interval
   public :: begin_wofost_trial_contribution
   public :: accumulate_wofost_trial_process_rate
@@ -153,6 +173,69 @@ module mod_fmr_wofost_accepted_window_lineage
   public :: reconstruct_wofost_crop_event_identity_from_persistence
 
 contains
+  subroutine export_wofost_window_persistence(window,view,status)
+    type(fmr_wofost_accepted_window_t),intent(in)::window
+    type(fmr_wofost_window_persistence_t),intent(out)::view
+    integer,intent(out)::status
+    view=fmr_wofost_window_persistence_t();status=FMR_WOFOST_LINEAGE_INVALID_PERSISTENCE
+    if(window%initialized.and..not.window%ready())return
+    view%initialized=window%initialized
+    view%lineage_id=window%lineage_id
+    view%start_revision=window%start_revision
+    view%next_revision=window%next_revision
+    view%accepted_intervals=window%accepted_intervals
+    view%t0=window%t0
+    view%t1=window%t1
+    view%covered_t=window%covered_t
+    view%actual_root_uptake_integral=window%actual_root_uptake_integral
+    view%potential_transpiration_integral=window%potential_transpiration_integral
+    view%deepest_root_oxygen_factor_available=window%deepest_root_oxygen_factor_available
+    view%deepest_root_oxygen_factor_integral=window%deepest_root_oxygen_factor_integral
+    view%rootzone_drought_uptake_factor_available=window%rootzone_drought_uptake_factor_available
+    view%rootzone_drought_uptake_factor_integral=window%rootzone_drought_uptake_factor_integral
+    if(allocated(window%potential_root_sink_integral))view%potential_root_sink_integral=window%potential_root_sink_integral
+    if(allocated(window%root_sink_reduction_integral))view%root_sink_reduction_integral=window%root_sink_reduction_integral
+    view%event_delivered=window%event_delivered
+    status=FMR_WOFOST_LINEAGE_OK
+  end subroutine
+  subroutine reconstruct_wofost_window_persistence(view,window,status)
+    type(fmr_wofost_window_persistence_t),intent(in)::view
+    type(fmr_wofost_accepted_window_t),intent(out)::window
+    type(fmr_wofost_accepted_window_t)::pending
+    integer,intent(out)::status
+    window=fmr_wofost_accepted_window_t();status=FMR_WOFOST_LINEAGE_INVALID_PERSISTENCE
+    if(.not.view%initialized)then
+      ! Only the canonical empty previous-window representation is accepted.
+      if(view%lineage_id/=0_int64.or.view%start_revision/=-1_int64.or.view%next_revision/=-1_int64.or. &
+        view%accepted_intervals/=0.or.view%event_delivered)return
+      if(any([view%t0,view%t1,view%covered_t,view%actual_root_uptake_integral, &
+        view%potential_transpiration_integral,view%deepest_root_oxygen_factor_integral, &
+        view%rootzone_drought_uptake_factor_integral]/=0._real64))return
+      if(view%deepest_root_oxygen_factor_available.or.view%rootzone_drought_uptake_factor_available)return
+      if(allocated(view%potential_root_sink_integral).or.allocated(view%root_sink_reduction_integral))return
+      status=FMR_WOFOST_LINEAGE_OK;return
+    end if
+    pending%initialized=view%initialized
+    pending%lineage_id=view%lineage_id
+    pending%start_revision=view%start_revision
+    pending%next_revision=view%next_revision
+    pending%accepted_intervals=view%accepted_intervals
+    pending%t0=view%t0
+    pending%t1=view%t1
+    pending%covered_t=view%covered_t
+    pending%actual_root_uptake_integral=view%actual_root_uptake_integral
+    pending%potential_transpiration_integral=view%potential_transpiration_integral
+    pending%deepest_root_oxygen_factor_available=view%deepest_root_oxygen_factor_available
+    pending%deepest_root_oxygen_factor_integral=view%deepest_root_oxygen_factor_integral
+    pending%rootzone_drought_uptake_factor_available=view%rootzone_drought_uptake_factor_available
+    pending%rootzone_drought_uptake_factor_integral=view%rootzone_drought_uptake_factor_integral
+    if(allocated(view%potential_root_sink_integral))pending%potential_root_sink_integral=view%potential_root_sink_integral
+    if(allocated(view%root_sink_reduction_integral))pending%root_sink_reduction_integral=view%root_sink_reduction_integral
+    pending%event_delivered=view%event_delivered
+    if(.not.pending%ready())return
+    if(pending%event_delivered.and..not.pending%complete())return
+    window=pending;status=FMR_WOFOST_LINEAGE_OK
+  end subroutine
 
   logical function crop_event_identity_persistence_ready(self) result(ready)
     class(fmr_wofost_crop_event_identity_persistence_t), intent(in) :: self
