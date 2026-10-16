@@ -102,3 +102,10 @@ No P0 seam changes are permitted. Any newly discovered shared-interface requirem
 
 Admission may claim only P0 progress/restart composition for the already qualified F-APP03/F-APP04 Hupsel profile. It does not broaden SWINTER=1 equations or weather envelopes; SWINTER=2, event-weighted rainfall, SWMETDETAIL=1, broad legacy meteorological IO/calendar grammar, snowfall/runon combinations and unrestricted application composition remain unadmitted. PPA-WU04-D / F-MIG431-INT12-D remains a separate follow-on slice.
 
+
+
+## Current receiving-profile recovery, 16 October 2026
+
+The existing real receiving witness was executed at canonical `a86da5b6` with unchanged forcing, head budget, mass gate and original assertions. Read-only output before failure resolves the earlier availability question: both O0 and O2 have valid predecessor history and an available certificate, but its final head-error bound is `0.003291913255370477 cm` for a `0.000001 cm` test budget. Nine temporal rejections exhaust eight retries; no state or source progress commits. This is a conservative indicator, not a measured solution error or a general solver defect.
+
+All original FMR44R assertions and failure nonmutation checks pass; the four positive endpoint/progress/accounting markers remain absent. Original restricted composition evidence remains historical. The existing status record contains the complete negative archive and exact-ref reproduction. Receiving-profile onset/history, timestep/retry limits and application accuracy require F-KT/RT and PPA-WU04-C/MC-CROP01 reconciliation before the original ten admission gates can complete. No tolerance, forcing, shared policy or production change is made by this diagnostic.

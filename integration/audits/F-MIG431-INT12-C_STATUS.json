@@ -3,7 +3,7 @@
   "workunit": "F-MIG431-INT12-C",
   "parent_workunit": "PPA-WU04-C",
   "title": "SWINTER=1 Von Hoyningen-Hune/Braden source-window interception",
-  "state": "RESTRICTED_QUALIFICATION_PASS_PENDING_FULL_GATE_AND_ADMISSION",
+  "state": "BLOCKED_REAL_RECEIVING_PROFILE_CERTIFICATE_OVER_BUDGET",
   "branch": "work/f-mig431-int12-c-vonhhbraden",
   "pinned_base": "b0d2cc0ac749e1fa60ba4f5f610d01fc0b3b6ad9",
   "authorities": {
@@ -38,8 +38,8 @@
   "persistent_physical_state": [],
   "aggregate_owner": "existing F-MIG431-INT12-P0 source-window runtime progress",
   "production_admission": "NO_NEW_ADMISSION_YET",
-  "qualification": "PASS_RESTRICTED_COMPOSITION_WORKFLOW",
-  "next_safe_step": "Complete and review the remaining frozen PPA-WU04-C preservation/admission gates; keep claims limited to the restricted Hupsel profile.",
+  "qualification": "Historical restricted composition PASS retained; current real receiving positive gate FAIL O0/O2, not production admission.",
+  "next_safe_step": "F-KT/RT and PPA-WU04-C/MC-CROP01 must reconcile physical onset/predecessor history, allowed timestep/retry envelope and application accuracy for the real receiving profile. No budget increase, forced acceptance, forcing reduction or shared temporal policy change is authorized by this restricted diagnostic. Then execute actual accepted endpoint, dynamic-top/crop and all ten existing gates.",
   "method_specific_oracle": "REUSE_ADMITTED_F_APP03_EXACT_SOURCE_ORACLE",
   "production_process_present": "RESTRICTED_HUPSEL_ONLY",
   "qualification_evidence": {
@@ -60,5 +60,91 @@
       "accepted gross/interception/net precipitation mass identity"
     ],
     "output_sha256": "98e323ef612c82510d6dd3e5741c4d51b324051db7c13a6846d14798ed194717"
+  },
+  "current_canonical_recovery_20261016": {
+    "baseline": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
+    "tested_local_postimage": "dc168c0a",
+    "candidate_head": "c0cab4f511ace7001e3e13360bc410ae950a9e3c",
+    "candidate_source_blob": "36f340ad425191a6149a50a21daccaf81d2bf839",
+    "status": "FAILED_POSITIVE_GATE_CERTIFICATE_AVAILABLE_OVER_BUDGET",
+    "scope": "Same existing four unequal-span fixed-flux, root-inactive receiving witness. Added read-only output of existing backend observation before failure; original FMR44R assertions, physical forcing, retries and tolerances unchanged. Not full dynamic-top/crop application.",
+    "observed_each_optimization": {
+      "optimization": [
+        "O0",
+        "O2"
+      ],
+      "exit_code": 1,
+      "certificate_enabled": true,
+      "previous_derivative_available": true,
+      "indicator_available": true,
+      "budget_valid": true,
+      "certificate_available": true,
+      "reason": "available",
+      "head_inf_bound_cm": 0.003291913255370477,
+      "budget_cm": 1e-06,
+      "normalized_indicator": 3291.913255370477,
+      "attempts": 9,
+      "retries": 8,
+      "temporal_rejections": 9,
+      "mass_rejections": 0,
+      "solver_rejections": 0,
+      "headcalc_calls": 9,
+      "accepted_substeps": 0,
+      "committed": false
+    },
+    "retained_passing_checks": [
+      "All original FMR44R equilibrium, positive-qbot certificate and unowned-mode assertions",
+      "Actual unsupported-mode preflight rejection preserves progress",
+      "Failed temporal endpoint preserves source progress, physical revision and time",
+      "O0/O2 semantic marker lines byte-identical"
+    ],
+    "unqualified": [
+      "First real accepted endpoint in this witness",
+      "Unequal accepted aggregate allocation",
+      "Companion progress restore after actual commit",
+      "Accepted gross/interception/net mass accounting",
+      "Full dynamic-top/crop and original ten-gate admission"
+    ],
+    "interpretation": "Availability/history propagation is not the failure in this configuration. The available certificate rejects a head-error bound approximately3292 times the unchanged test-only budget. This is a conservative temporal estimate, not a measured solution error; it does not establish a general solver defect or required application budget.",
+    "next_safe_step": "F-KT/RT and PPA-WU04-C/MC-CROP01 must reconcile physical onset/predecessor history, allowed timestep/retry envelope and application accuracy for the real receiving profile. No budget increase, forced acceptance, forcing reduction or shared temporal policy change is authorized by this restricted diagnostic. Then execute actual accepted endpoint, dynamic-top/crop and all ten existing gates.",
+    "production_source_changed": false,
+    "reference_changed": false,
+    "existing_assertions_or_tolerances_changed": false,
+    "numerical_admission": "NONE",
+    "cost": {
+      "providers": 163,
+      "generation_through_results_seconds": 123.914,
+      "expected_seconds": 180,
+      "compile_link_native_breakdown": "UNKNOWN: original runner does not split timings"
+    },
+    "execution_recovery": {
+      "initial_attempt": "NOT_EXECUTED: missing gfortran",
+      "environment_recovery": "Extracted package SHA256-verified GNU Fortran13.3.0 and development library in task workspace; system apt attempt was interrupted before install. No numerical result inferred from failed environment setup."
+    },
+    "archive": {
+      "path": "integration/audits/evidence/F-MIG431-INT12-C_CERTIFICATE_CURRENT_20261016.tar.gz.b64",
+      "decoded_sha256": "bc896da2b230a580d4cc00b9fafebd298764221709b7a4736971a745cb4d7597",
+      "members": {
+        "REPRODUCE.txt": "579cdd33e645f7753740c9bb3b241f0dbb06a9c2f0a659ae916c79bccbed9626",
+        "compile-run.log": "6ef8bf8593d8c4d1e62bc1a90050308b6203b0f597d014c518f041581425ea22",
+        "compile_sources.json": "4116c66b02656e66ee916a78982440aa450c4a24becc7fe1e05d72a028db3298",
+        "compiler.txt": "c077c93e4d08c80bcaaca8856d54d860655a989eb6820a5e807ac798e452e222",
+        "diagnostic.inc": "4aa1a03ea713412e9bd714317c8be9e4ff6b8225ce9379fcba8efa6caacdee97",
+        "driver.f90": "aeeecb189ee874288e1bbd75622456dadb30c119061753e20513fa70245527a4",
+        "o0.txt": "d44a3b2d23d1230cfda2f36f864dbdac9bd573af5db6df6ff470b9d5cc369aef",
+        "o2.txt": "73b3eab49b112549c807a7b4195e5e58a927405e7282721cae9dc895802e3c44",
+        "results.json": "32102aeeab7b3ded144c02328af0b6ae81d75d716163b0de6a010d1bcd37df23",
+        "runner.py": "5f8a21fe7934e1ed7818c49a7c8c9770a2c0eafda6d61838e7ea6f5637c81fea"
+      }
+    },
+    "validation": {
+      "archive_and_all_member_hashes": "PASS",
+      "both_failed_positive_gates_preserved": "PASS",
+      "semantic_marker_identity": "PASS",
+      "documentation_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "whitespace": "PASS",
+      "physical_positive_gate": "FAIL O0/O2"
+    }
   }
 }
