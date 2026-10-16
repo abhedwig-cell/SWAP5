@@ -12062,7 +12062,8 @@
       "meaning": "Biological nitrogen fixation as a separately booked crop N input",
       "swap5_implementation_authority": [
         "src/crop/mod_wofost81_nitrogen.f90",
-        "src/runtime/mod_fmr_wofost81_crop_transaction.f90"
+        "src/runtime/mod_fmr_wofost81_crop_transaction.f90",
+        "src/crop/mod_b111_nfixation_policy.f90 at 7d0af2fd99eb654389d79c98623a20075e8b2d2f"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -12074,15 +12075,17 @@
         "tests/fwof/pp01/MAPPING_CONTRACT.md",
         "integration/audits/SWAP431_RESOLVED_INPUT_AND_OWNER_REVIEW.md",
         "integration/audits/evidence/SWAP431_OWNER_GAPS_RECONCILIATION.json",
-        "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json"
+        "integration/audits/evidence/SWAP431_NFIX_REPLACEMENT_PROBE.json",
+        "integration/audits/MC_NUT_SOL_STATUS.json at 7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+        "integration/audits/MC_NUT_SOL_OWNER_DECISION.md at 7d0af2fd99eb654389d79c98623a20075e8b2d2f"
       ],
       "production_reachability": {
         "established": false,
         "route": null,
-        "claim": "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics."
+        "claim": "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged."
       },
       "restrictions": [
-        "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics."
+        "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -12095,13 +12098,14 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
+      "workunit_stage": "SOURCE_POLICY_COMPONENT_CANONICAL_RUNTIME_BINDING_OPEN",
       "implementation_absence_proven": true,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
-      "resolution_decision": "MIGRATE"
+      "resolution_stage": "QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED",
+      "resolution_decision": "MIGRATE",
+      "source_component_receipt": "latest_b111_nfix_component_reconciliation_20261016"
     },
     {
       "capability_id": "SW431-INIT-PROFILE",
@@ -15410,7 +15414,7 @@
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Biological fixation exists in WOFOST81. The B1.11 selectable demand policy with vegetative deficits, DVSNLT cutoff and RELTR gate is missing. Literal O0/O2 witnesses show distinct storage-demand, new-growth and cutoff outcomes; implement a separate policy without altering admitted WOFOST81 semantics.",
+      "why_open": "Separate literal B1.11 N demand/fixation component qualified and integrated via PR1098; no production caller or new N-input receipt. Explicit crop/Soil-N request selection, accepted mass/state, exactly-once fixation and rollback/restart binding remain unqualified. WOFOST81 semantics unchanged.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17177,7 +17181,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+  "canonical_locator_head": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -17522,5 +17526,179 @@
     "structural_absence_flags": 87,
     "canonical_closeout": "be8a49cd59815b537b46e0dac2b3d0161366c796",
     "previous_canonical_locator": "05d6b3f786b5a20cb053bf5e713ca771dafd289e"
+  },
+  "latest_b111_nfix_component_reconciliation_20261016": {
+    "pr": 1098,
+    "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+    "qualified_head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "kind": "QUALIFIED_SOURCE_COMPONENT_CANONICAL_NOT_RUNTIME_ADMISSION",
+    "component_qualified": true,
+    "canonically_integrated": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "production_reachability": false,
+    "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+    "remaining": "Explicit selection in existing crop/Soil-N request owner, accepted mass/state, exactly-once fixation receipt, rollback and restart qualification. Existing WOFOST81 remains unchanged; no second fixation booking.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24
+    },
+    "sources": [
+      "src/crop/mod_b111_nfixation_policy.f90"
+    ],
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json",
+    "records": [
+      "integration/audits/MC_NUT_SOL_STATUS.json",
+      "integration/audits/MC_NUT_SOL_OWNER_DECISION.md"
+    ],
+    "selected_ci": [
+      {
+        "id": 38877128708,
+        "name": "F-CI canonical qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754395,
+            "name": "selection-preflight",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894969180,
+            "name": "modular-feedback",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894970427,
+            "name": "frozen-fci24-reference-et-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970493,
+            "name": "frozen-fci19-source-lineage",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970556,
+            "name": "historical-fci03-through-fci18",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970830,
+            "name": "frozen-fci27-reference-et-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970855,
+            "name": "frozen-fci34-root-attribution-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970947,
+            "name": "frozen-fci36-divdra-active-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971151,
+            "name": "frozen-fci29-ptra-ownership-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971157,
+            "name": "frozen-fci28-restart-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971282,
+            "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971315,
+            "name": "frozen-fci40-effective-forcing-executor-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971494,
+            "name": "frozen-fci37-parallel-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971684,
+            "name": "frozen-fci31-reference-et-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972028,
+            "name": "frozen-fci19-candidate-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972306,
+            "name": "frozen-fci30-restricted-parallel-v1-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972984,
+            "name": "current-restricted-canonical-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "id": 38877128695,
+        "name": "SWAP431 nutrient fixation qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754050,
+            "name": "qualify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "local_checks": {
+      "literal_cases": 593,
+      "quantities_per_case": 3,
+      "invalid_input_cases": 39,
+      "WOFOST81_original_cases": 1806,
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "rejection_controls": 6,
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS_15.38s"
+    },
+    "post_merge": "Actual merge tree equals exact CI qualified candidate; source/capsule proof repeated at actual canonical merge.",
+    "full_fci": "NOT_SELECTED_IMPACT_COMPONENT_ONLY",
+    "highest": "NOT_SELECTED_POLICY",
+    "solver": "NOT_SELECTED_IMPACT",
+    "canonical_closeout": "27dea4829f7025eb4701599d5dbef7b86e4fd20a"
   }
 }

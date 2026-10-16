@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+  "last_reconciled_upstream": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -82,7 +82,7 @@
       "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
     }
   },
-  "next_action": "Keep PR1072 draft: full semantic denominator and113 source envelopes remain open. PR1103 four-profile bounded hydraulic production and PR1251 bounded daily root density/supply are canonically admitted; preserve their explicit scope and continue only existing dependency-ready PR closeouts.",
+  "next_action": "Keep PR1072 draft: full denominator and113 source envelopes remain open. Existing PR1098 source-policy component is closed, with NFIX production binding explicitly open. Preserve PR1103 bounded hydraulic and PR1251 density/supply admissions; continue only existing qualified/dependency-ready closeouts.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -145,7 +145,7 @@
     "docs/migration",
     "tools/audits"
   ],
-  "last_reconciled_head": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+  "last_reconciled_head": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
   "publication": {
     "branch": "work/swap431-master-coverage-20261006",
     "pr": 1072,
@@ -874,6 +874,13 @@
         "head": "f2e825d99006e5ab160f130f207903518e1efd4a",
         "scope": "Explicit serialized Reference/SWKIMPL0 MODEL2/3/6 and MvG POWER profiles; smooth positive-storage temporal certificate, actual dynamic retry/discard/replay/commit and opaque restart/next-interval identity.",
         "verification": "Local source-bound O0/O2 native evidence, original default projection and admission controls; seven exact-source workflows terminal SUCCESS. Full source envelope remains open."
+      },
+      {
+        "pr": 1098,
+        "merge_commit": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+        "verification": "593cases/all3outputs bit-identical O0/O2;39invalid cases; original1806case WOFOST81 and edge owners O0/O2;6negative controls;2selected workflows SUCCESS. Source component only, not NFIX runtime admission."
       }
     ],
     "open_updated": [],
@@ -1352,6 +1359,255 @@
       "inheritance_controls": 20,
       "full_closure": "REJECTED_AS_EXPECTED_DENOMINATOR_INCOMPLETE",
       "full_scientific_master_qualification_claimed": false
+    }
+  },
+  "latest_b111_nfix_component_reconciliation_20261016": {
+    "pr": 1098,
+    "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
+    "qualified_head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+    "baseline": "be8a49cd59815b537b46e0dac2b3d0161366c796",
+    "kind": "QUALIFIED_SOURCE_COMPONENT_CANONICAL_NOT_RUNTIME_ADMISSION",
+    "component_qualified": true,
+    "canonically_integrated": true,
+    "production_runtime_admission": false,
+    "full_capability": false,
+    "production_reachability": false,
+    "scope": "Separate pure B1.11 vegetative N deficit, strict DVSNLT/RELTR gate and NFIXF split. Existing production WOFOST81 remains unchanged. Component prerequisite only; no production caller or N-input receipt introduced.",
+    "remaining": "Explicit selection in existing crop/Soil-N request owner, accepted mass/state, exactly-once fixation receipt, rollback and restart qualification. Existing WOFOST81 remains unchanged; no second fixation booking.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_B111_NFIX_COMPONENT_20261016.tar.xz.b64",
+      "decoded_sha256": "6761ed53b96a66f5a9d4c3c92d0b5ec4d422e6dbeb50584bd832ae44c665402f",
+      "decoded_bytes": 91156,
+      "members": 24
+    },
+    "sources": [
+      "src/crop/mod_b111_nfixation_policy.f90"
+    ],
+    "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json",
+    "records": [
+      "integration/audits/MC_NUT_SOL_STATUS.json",
+      "integration/audits/MC_NUT_SOL_OWNER_DECISION.md"
+    ],
+    "selected_ci": [
+      {
+        "id": 38877128708,
+        "name": "F-CI canonical qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754395,
+            "name": "selection-preflight",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894969180,
+            "name": "modular-feedback",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "id": 116894970427,
+            "name": "frozen-fci24-reference-et-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970493,
+            "name": "frozen-fci19-source-lineage",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970556,
+            "name": "historical-fci03-through-fci18",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970830,
+            "name": "frozen-fci27-reference-et-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970855,
+            "name": "frozen-fci34-root-attribution-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894970947,
+            "name": "frozen-fci36-divdra-active-runtime-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971151,
+            "name": "frozen-fci29-ptra-ownership-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971157,
+            "name": "frozen-fci28-restart-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971282,
+            "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971315,
+            "name": "frozen-fci40-effective-forcing-executor-source-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971494,
+            "name": "frozen-fci37-parallel-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894971684,
+            "name": "frozen-fci31-reference-et-root-uptake-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972028,
+            "name": "frozen-fci19-candidate-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972306,
+            "name": "frozen-fci30-restricted-parallel-v1-authority",
+            "status": "completed",
+            "conclusion": "skipped"
+          },
+          {
+            "id": 116894972984,
+            "name": "current-restricted-canonical-preservation",
+            "status": "completed",
+            "conclusion": "skipped"
+          }
+        ]
+      },
+      {
+        "id": 38877128695,
+        "name": "SWAP431 nutrient fixation qualification",
+        "head": "2eeff7f9a0e5da033209ebbc483abfa3b1322021",
+        "status": "completed",
+        "conclusion": "success",
+        "jobs": [
+          {
+            "id": 116894754050,
+            "name": "qualify",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "local_checks": {
+      "literal_cases": 593,
+      "quantities_per_case": 3,
+      "invalid_input_cases": 39,
+      "WOFOST81_original_cases": 1806,
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "rejection_controls": 6,
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS_15.38s"
+    },
+    "post_merge": "Actual merge tree equals exact CI qualified candidate; source/capsule proof repeated at actual canonical merge.",
+    "full_fci": "NOT_SELECTED_IMPACT_COMPONENT_ONLY",
+    "highest": "NOT_SELECTED_POLICY",
+    "solver": "NOT_SELECTED_IMPACT",
+    "canonical_closeout": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
+    "master_integrity": {
+      "source_and_pinned_locator_integrity": "PASS",
+      "inheritance_controls": 20,
+      "capability_dispositions_changed": 0,
+      "source_absence_flags_unchanged": 87,
+      "full_scientific_master_qualification_claimed": false
+    },
+    "remaining_pr_navigation": {
+      "observed_after_canonical": "27dea4829f7025eb4701599d5dbef7b86e4fd20a",
+      "pagination_complete": true,
+      "current_open_pr_count": 12,
+      "rows": [
+        {
+          "number": 1252,
+          "title": "MC-IRR01: compose managed irrigation with authentic weather application and joint restart",
+          "classification": "ACTIVE_OWNER_QUALIFICATION_REQUIRED"
+        },
+        {
+          "number": 1117,
+          "title": "QUAL: consolidated SW431 NUT/SOL binding postimage and exact-source gate",
+          "classification": "HISTORICAL_NUT_SOL_DONOR_RETAIN_UNIQUE_SOURCE"
+        },
+        {
+          "number": 1072,
+          "title": "SWAP431 master coverage: source census and reconciled checkpoint (in progress)",
+          "classification": "MASTER_DRAFT_DENOMINATOR_INCOMPLETE"
+        },
+        {
+          "number": 987,
+          "title": "PPA-WU05-A28: opt-in approximate RFM sorptivity mode",
+          "classification": "NONBLOCKING_RESEARCH"
+        },
+        {
+          "number": 956,
+          "title": "SW-RIB-TOP03: transactional top-surface exchange",
+          "classification": "NONBLOCKING_SURFACE_RESEARCH"
+        },
+        {
+          "number": 953,
+          "title": "SW-RIB-TOP02: external surface-water head candidate",
+          "classification": "NONBLOCKING_SURFACE_CANDIDATE"
+        },
+        {
+          "number": 740,
+          "title": "F-PE-ELASTIC01: soil-driven near-saturation storage study",
+          "classification": "NONBLOCKING_SOIL_MAPPING_RESEARCH"
+        },
+        {
+          "number": 700,
+          "title": "PPA-RECONCILE01: reconcile local SWAP4.3.1 migration with current canonical",
+          "classification": "HISTORICAL_RECONCILIATION_DONOR_NOT_WHOLESALE_ADMISSION"
+        },
+        {
+          "number": 528,
+          "title": "Research: fixed-interface dummy SWAP coupling qualification",
+          "classification": "NONBLOCKING_COUPLING_RESEARCH"
+        },
+        {
+          "number": 486,
+          "title": "F-GC CSR: separate coupled-groundwater authority from legacy SWBOTB",
+          "classification": "COUPLING_AUTHORITY_GAPS"
+        },
+        {
+          "number": 365,
+          "title": "DIFFICULTY: preregister Phase-0 falsification experiment",
+          "classification": "NONBLOCKING_DIFFICULTY_PREREGISTRATION"
+        },
+        {
+          "number": 58,
+          "title": "F-CI canonical integration: F-CI02-F-CI13",
+          "classification": "LONG_LIVED_CANONICAL_UMBRELLA"
+        }
+      ],
+      "scope": "Live PR navigation and closeout readiness only; no new scientific PASS or full admission inferred.1119 already merged;1098 now source-component merged;1117 and700 retain distinct donor scopes."
     }
   }
 }
