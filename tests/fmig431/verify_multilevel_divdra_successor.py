@@ -114,6 +114,9 @@ def incumbent(source_only=False):
     return result
 
 def verify_source(git_reader=None):
+    if (ROOT/'tests/fmig431/verify_inf_split_successor.py').exists():
+        import verify_inf_split_successor as successor
+        return successor.verify_source(git_reader)
     if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
         sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
         return tcs6.verify_source(git_reader)
@@ -121,6 +124,9 @@ def verify_source(git_reader=None):
     load_verified();old=incumbent(True)
     return {**old,'multilevel_divdra_successor':True,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'qualified':False}
 def verify_qualification():
+    if (ROOT/'tests/fmig431/verify_inf_split_successor.py').exists():
+        import verify_inf_split_successor as successor
+        return successor.verify_qualification()
     if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
         sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
         return tcs6.verify_qualification()
@@ -130,6 +136,10 @@ def verify_qualification():
             'drainage_ledger_rows':['SW431-DRAIN-DIV-SIGNED','SW431-DRAIN-DIV-MULTI'],
             'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+    if (ROOT/'tests/fmig431/verify_inf_split_successor.py').exists():
+        import verify_inf_split_successor as successor
+        successor.main()
+        return
     if (ROOT/'tests/mc-irr01/verify_tcs6_successor.py').exists():
         sys.path.insert(0,str(ROOT/'tests/mc-irr01'));import verify_tcs6_successor as tcs6
         result=tcs6.verify_qualification()

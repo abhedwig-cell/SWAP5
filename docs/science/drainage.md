@@ -196,3 +196,32 @@ merged at `5d2518abd2b285b13f9b5f7d2177918589fd7abc`, with source tree
 `9ce06f8381c006dbc16f95880632695abbec12d5` identical to the qualified successor.
 The existing recovery record links the frozen conditions, raw O0/O2 receipts,
 parallel annual/B1.12 preservation and mastercoverage closure receipt.
+## Qualified ordinary separate infiltration successor (16 October 2026)
+
+MC-DRAIN01 `SW431-DRAIN-INF-SPLIT` selects the existing B19 transmissivity
+partition through explicit per-level separate-infiltration controls. The shared
+partition remains the sole infiltration algebra. Its ordinary opt-in accepts
+source-valid surface/GWL placement in one compartment and a zero unsaturated
+span; existing frost calls retain their original geometry guards and arithmetic.
+The immutable corrected oracle is the already admitted `FROST-DIVDRA-03`, under
+`integration/audits/PPA_WU05B20_CURRENT_REVIEW.json`. No reference bytes change.
+A zero saturated conductivity span is source-undefined and fails closed.
+
+For interacting levels, the original effective spacing factor FDisInf changes
+the spacing order, cumulative transfer and positive discharge layers before
+negative rows use the shared unsaturated/saturated integral. Each row closes to
+its signed authoritative scalar. Positive removes soil water and negative adds
+it; internal nodal attribution does not create another external booking.
+The existing accepted ledger, rejection cleanup, temporal history and restart
+codec retain state ownership. Controls are explicit request data, without a new
+persistent store or scalar response law.
+
+The existing recovery record, phase `inf_split_phase_20261016`, freezes the
+conditions and links 15,192 source cases per optimization, including 720
+same-compartment cases, 48 actual single/multilevel serialized cases per
+optimization, invalid-input publication guards, rejection/replay, empty-registry
+restart and column isolation. O0/O2 outputs agree exactly. Original signed and
+multilevel process/runtime contracts and all original B18 component assertions
+are preserved. Only `SW431-DRAIN-INF-SPLIT` is eligible for this closure;
+DRAMET3, altered layer tops and new frost-ON capabilities remain separate.
+Canonical admission and mastercoverage receipts are recorded in that phase.

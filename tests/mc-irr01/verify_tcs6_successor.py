@@ -15,6 +15,9 @@ def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['tcs6_completion_20261016']
 def verify_source(git_reader=None):
+ if (ROOT/"tests/fmig431/verify_inf_split_successor.py").exists():
+  sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_inf_split_successor as successor
+  return successor.verify_source(git_reader)
  g=git if git_reader is None else git_reader;r=record()
  check(r['admission_baseline']==BASE,'TCS6 baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines()
@@ -140,6 +143,9 @@ def run_multilevel_predecessor_controls():
  check(p.returncode==0 and 'MULTILEVEL_EVIDENCE_CORRUPTION_CONTROLS=6'in p.stdout,'original multilevel controls failed '+p.stderr[-1500:])
  print(p.stdout,end='')
 def verify_qualification():
+ if (ROOT/"tests/fmig431/verify_inf_split_successor.py").exists():
+  sys.path.insert(0,str(ROOT/"tests/fmig431"));import verify_inf_split_successor as successor
+  return successor.verify_qualification()
  s=verify_source();check(record()['phase']in ('SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'),'TCS6 unfinished')
  science=validate_science(evidence());old=incumbent()
  return {**old,**s,'qualified':True,'incumbent':old,'science':science,'full_capability':True,'full_fci':'NOT_SELECTED_AFFECTED_CONTRACTS','highest_low_air':'NOT_SELECTED_POLICY'}
