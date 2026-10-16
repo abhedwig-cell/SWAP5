@@ -28,6 +28,10 @@ after emergence, from the committed crop depth and the application's immutable
 geometry/material. Actual theta comes from the existing committed soil snapshot.
 The existing DCS1 policy owns adjustment, full authenticated daily gross rain
 deduction, zero clipping and depth limit; allocation follows that stage.
+The inherited literal TASK4 contract does not scale SSDI `qssdi`. Only a
+positive configured rate scales event duration by availability; a zero-rate
+SSDI event retains the source's one-day duration and unscaled subsurface rate.
+Do not silently substitute the surface-irrigation scaling rule.
 An in-flight event retains its frozen rate/end/allocation. There is no
 recalculation from growing roots, changing soil or allocation expiry.
 

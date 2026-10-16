@@ -64,7 +64,10 @@ def prepare(root,target,criterion=7,nodes=1):
           expected_gift=deficit
           if(.1_real64*rain>tc%file_weather_irrigation_depth%rainfall_threshold_cm)expected_gift=expected_gift-.1_real64*rain
           expected_gift=min(.04_real64,max(0._real64,expected_gift))
-          expected_gift=expected_gift*allocation%fraction
+          ! Literal TASK4 does not scale qssdi. Only a positive configured
+          ! rate scales SSDI duration; the zero-rate default stays one day.
+          if(tc%file_weather_irrigation_sensor%irr_rate_cm_per_day>0._real64) &
+            expected_gift=expected_gift*allocation%fraction
           if(.not.material_trigger)expected_gift=0._real64
           if(expected_gift>0._real64)then
             material_positive=material_positive+1
