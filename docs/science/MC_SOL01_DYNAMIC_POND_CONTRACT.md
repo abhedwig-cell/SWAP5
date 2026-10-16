@@ -1,6 +1,7 @@
 # MC-SOL01 actual changing pond application
 
-Status: qualified bounded successor PR1258 to bounded PR1257, baseline canonical
+Status: canonically admitted bounded successor PR1258 at
+`6353f109d00763fcb4f533f2f764c8eb50db99d5` to bounded PR1257, baseline canonical
 `93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694`. Implementation and qualification
 status live in `integration/audits/MC_SOL01_SURFACE_INPUT_STATUS.json`.
 

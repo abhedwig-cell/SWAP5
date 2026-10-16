@@ -177,7 +177,7 @@
     "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "CLOSED: admitted explicit zero-pond rain/irrigation matrix route; persistent pond/source/dry-deposition and nonlinear surface remain future owned scope, aquifer rejected.",
+  "next_action": "Requested persistent pond/infiltration/retained-solute/dry-deposition/restart scope closed within actual qualified dynamic application. Separate future surface evaporation/runoff/runon receipts, surface age, N companions and full historical/default activation remain open; aquifer excluded. Next user priority is separate reproductive/translocation/death crop-N assessment; preserve1253 and1254.",
   "test_selection": {
     "process": "Small production pond mixing plus real matrix process, independent literal B1.11 lines; O0/O2 domain/balance/units",
     "physical": "Actual accepted Richards trace with supply split, signed root/drain/bottom, rollback/retry, multiwindow and existing native restart; expected120s compilation, native UNKNOWN",
@@ -258,7 +258,7 @@
     "status": "SUPERSEDED_BY_EXACT_TOP_FLUX_VALIDATION",
     "scope": "Preliminary science and raw failed process/physical attempts retained in this immutable prior Git object. Final source/driver differ; do not reuse preliminary scientific PASS as final."
   },
-  "last_reconciled_upstream": "31ff3158b956183c8af19f85bd3361847f60309b",
+  "last_reconciled_upstream": "6353f109d00763fcb4f533f2f764c8eb50db99d5",
   "current_canonical_selection": {
     "canonical": "31ff3158b956183c8af19f85bd3361847f60309b",
     "reason": "Harvest changes actual compiled provider closure; select one final cold actual surface process/matrix/restart on current source. No old physical provider object is reused. All existing production bytes stay canonical; only three explicit providers added.",
@@ -478,7 +478,7 @@
     "tested": true,
     "qualified": true,
     "canonically_admitted": true,
-    "next_action": "Bounded1257 and master reconciliation complete. Next within SOL: general actual changing pond level through an explicitly admitted water/application contract, then separate gross evaporation/runoff receipts and their soil-plus-surface mass/restart. Current matrix application remains BASE/temporal only and excludes optional surface-process state; do not infer these missing gross transfers from net qtop. Then separately assess reproductive/translocation/death crop-N, preserving admitted1253 vegetative binding. Aquifer stays excluded.",
+    "next_action": "Later bounded actual evolving pond application is admitted via1258; see dynamic_pond_successor_20261016. Historical1257 fixed/dry qualification is retained. Gross evaporation/runoff and other unsupported combinations remain separately open; aquifer excluded.",
     "test_selection": {
       "leaf": "O0/O2 real production state/exchange, literal B1.11 mixing, water/mass closure, dry deposition/remobilization, rejection/replay and serialized restart; expected under10s",
       "physical": "Actual Richards per-substep pond endpoints, matrix reaction/transport, rejection/retry and restart; expected200s; no unchanged solver requalification",
@@ -744,7 +744,7 @@
     "baseline": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "baseline_tree": "53e6b022dfea342cfd0ceceb252bd92c76391be3",
     "branch": "work/sol-dynamic-pond-20261016",
-    "stage": "QUALIFIED_BOUNDED_NOT_ADMITTED",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED",
     "contract": "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md",
     "scope": "Explicit gross rain/irrigation bare surface forcing reuses existing dynamic top provider with actual committed begin depth per trial, evolving Richards pond depth and sole matrix pond_mass. No losses, no new state or restart codec. Aquifer excluded.",
     "invariants": [
@@ -769,7 +769,7 @@
       "stable_candidate": "source-bound successor projections and evidence controls; docs source/strict; safe canonical/master reconciliation only after owning preservation passes",
       "fixture": "Low-conductivity default MvG, -1 cm initial head, 0.5 cm wet pond; gross .25+.25 filling, zero-input drainage, dry deposition/rewet. Same 1e-6 cm comparison and 1e-10 cm water budget. Abrupt high-flux front stress is not the surface-storage claim."
     },
-    "recovery": "All selected science and owner gates terminal PASS. Ready for exact-head safe canonical merge, verify merged tree and update unchanged-count master receipt. No background qualification outstanding.",
+    "recovery": "Actual canonical1258 merged6353f109; exact tree2854c107 matches qualified020b88dd. All selected gates terminal PASS. Finish unchanged-count master reconciliation and source-based crop-N assessment.",
     "pr": 1258,
     "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1258",
     "reconciled_canonical": "f7ddd936b062d3f34acc8e95002799238a04b3c5",
@@ -867,6 +867,34 @@
       "decoded_bytes": 12884,
       "members": 11
     },
-    "qualification_scope": "Actual draining/filling hydraulic pond, dry deposition and rewet; default MvG/SWKIMPL0 Reference BASE external full/half policy with explicit cm tolerance. Sole1256 matrix mass and native codec; no aquifer or evaporation/runoff/surface-age/N-companion admission."
+    "qualification_scope": "Actual draining/filling hydraulic pond, dry deposition and rewet; default MvG/SWKIMPL0 Reference BASE external full/half policy with explicit cm tolerance. Sole1256 matrix mass and native codec; no aquifer or evaporation/runoff/surface-age/N-companion admission.",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "preserved": true,
+    "canonically_admitted": true,
+    "canonical_admission": {
+      "pr": 1258,
+      "merge_commit": "6353f109d00763fcb4f533f2f764c8eb50db99d5",
+      "qualified_head": "020b88ddedca90ba30de87706e262aecba2cbfe3",
+      "actual_tree": "2854c107eb85a068cde9381c16a42bc73784f018",
+      "production_source_tree": "1256564e11716c7c7d4abd6d5914b1577232f9ab",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_guard": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_workflow_runs": [],
+      "hosted_statuses": [],
+      "full_capability": false,
+      "master_disposition_changes": 0
+    },
+    "closeout_archive": {
+      "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_POND_CLOSEOUT_20261016.tar.xz.b64",
+      "decoded_sha256": "b34a7f135d18ae33a2dc9b611bf2af8ecbe8507f354a9e109a2c1d2ee800a44a",
+      "decoded_bytes": 10968,
+      "members": 5
+    },
+    "next_action": "Requested persistent pond/infiltration/retained-solute/dry-deposition/restart scope closed within actual qualified dynamic application. Separate future surface evaporation/runoff/runon receipts, surface age, N companions and full historical/default activation remain open; aquifer excluded. Next user priority is separate reproductive/translocation/death crop-N assessment; preserve1253 and1254."
   }
 }
