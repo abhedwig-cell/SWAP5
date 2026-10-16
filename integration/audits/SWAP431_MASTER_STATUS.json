@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "7f5441c5caff025e6eb95ed6044e5a851d47363a",
+  "last_reconciled_upstream": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
   "checkpoint_commit": "685e46358a7013580f88a0359e7093a760cbdcfd",
   "implemented": true,
   "persisted": true,
@@ -84,7 +84,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Existing nearly-ready PR closeout round is complete. Preserve PR1245/1247/1234 and later1251/1252/1253 bounded admissions, and retired700/1117 evidence. Full109 ACTIVE plus4 QUALIFICATION_ONLY envelopes remain; master1072 stays draft. Next three dependency-ready existing owner packages are IRR DCS1/material/evolving-root summaries, SOL persistent surface/pond mass, and DRAIN ordinary frost-OFF signed DIVDRA. Their source review and isolated contract work can proceed in parallel; shared runtime/restart admission stays serial. This closeout does not start or authorize a new migration route.",
+  "next_action": "PR1254 bounded DCS1/material/evolving-root and TCS2/3/4 application is admitted.243 dispositions remain94 ADMITTED,109 ACTIVE and4 QUALIFICATION_ONLY,113 unresolved; master1072 remains draft. Next existing independent package: SOL persistent surface/pond/source mass; ordinary frost-OFF signed DIVDRA remains separate. Shared runtime/restart integration stays serial. Retain all wider irrigation and crop-N gates.",
   "recovery_point": "integration/audits/evidence/SWAP431_MASTER_INTEGRITY_DIAGNOSTIC_20261016.json",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -2378,7 +2378,10 @@
       "1252": "cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
       "1253": "c9e5efad50cf6cf18342a57efbee398260fdce82"
     },
-    "verified_closed_without_merge": [700, 1117],
+    "verified_closed_without_merge": [
+      700,
+      1117
+    ],
     "remaining_open_prs": {
       "58": "Draft canonical-to-main umbrella, not a release admission.",
       "365": "Independent nonlinear method authority missing for H3; other research phases remain separate.",
@@ -2412,6 +2415,68 @@
       "metadata_postimage": "PASS historical source/pinned-locator integrity,20 inheritance controls, documentation source and strict MkDocs16.28s; closure correctly refused:denominator incomplete",
       "numerical_or_actions_runs": "NOT_SELECTED_METADATA_ONLY",
       "full_master_qualification": false
+    }
+  },
+  "latest_material_root_irrigation_reconciliation_20261016": {
+    "pr": 1254,
+    "canonical_merge": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+    "canonical_receipt": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
+    "authority_at_canonical": "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016",
+    "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+    "scope": "Extend existing PR1252 managed authentic weather with material/root-derived DCS1 and existing TCS2/3/4; no second physical or management owner.",
+    "full_capability": false,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "110fa6d4ec81e702a7d1ef957d2164db80d30fabccdd1bf660e022b0acdc2db3",
+      "decoded_bytes": 549232,
+      "members": 3249
+    },
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "256b1ff1065150f3fb25f50ee0ffa43c591de256148b5c601d8b64b82e53b874",
+      "decoded_bytes": 11560,
+      "members": 7
+    },
+    "native_programs": 60,
+    "negative_controls": 21,
+    "production_runtime_admission": true,
+    "full_master_qualification": false,
+    "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+    "source_proof": "PASS actual merge tree exactly equals qualified candidate; current source guard PASS; original outputs/default bodies retained.",
+    "new_actions": 0,
+    "capability_disposition_changes": 0,
+    "canonical_admission": {
+      "pr": 1254,
+      "merge_commit": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+      "qualified_head": "4c06a5baeca32edb44096d5fdf4f9536bffbab49",
+      "actual_tree": "e95dfc1c36f4d98be7f24e3064d96ba709d58a91",
+      "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": [],
+      "full_capability": false,
+      "master_disposition_changes": 0,
+      "qualification_selection": "Recorded affected-contract O0/O2 science and original owner preservation; full moving FCI/highest low-air/RossFast not selected. Empty GitHub status collection is not a hosted PASS."
+    },
+    "affected_capabilities": [
+      "SW431-IRR-DCS1",
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4"
+    ],
+    "master_predecessor": "4ace108cb4ab71b0b4f68d420cdbd65a1bb9a6ce",
+    "all243_dispositions": "UNCHANGED",
+    "flagged_absence_rows": 86,
+    "validation": {
+      "historical_source_and_pinned_authority_integrity": "PASS",
+      "inheritance_negative_controls": "20 PASS",
+      "docs_source_and_strict_mkdocs": "PASS; strict build14.11s",
+      "false_closure_guard": "EXPECTED_REJECTION: denominator incomplete",
+      "four_current_bounded_routes": "PASS; all other239 capability rows unchanged",
+      "full_master_or_new_numerical_qualification": "NOT_CLAIMED_METADATA_ONLY"
     }
   }
 }

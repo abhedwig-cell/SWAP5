@@ -7049,7 +7049,10 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_scheduled_irrigation_application.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "src/runtime/mod_fmr_irrigation_material_root_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -7064,16 +7067,18 @@
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
         "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016 at ebbc493da0b5b6a43dd031b886ea7f0b8555594e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Bind accepted evolving-root/material field-capacity and stress thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart."
+        "established": true,
+        "route": "Existing authentic-weather bootstrap -> accepted actual SWRD2 material/root preparation -> existing allocated SSDI dispatch -> accepted-only publication and opaque joint restart",
+        "claim": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
+        "bounded_receipt": "material_root_irrigation_20261016"
       },
       "restrictions": [
-        "Bind accepted evolving-root/material field-capacity and stress thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart.",
-        "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+        "Physical matrix uses existing admitted ordinary default-MvG geometry/daily schedule; heterogeneous materials and fractional root sums additionally covered at the independent minimal production leaf."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -7164,6 +7169,12 @@
         "full_capability": false,
         "bounded_route_established": false,
         "remaining": "Bind accepted evolving-root/material field-capacity and stress thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart."
+      },
+      "material_root_admission_20261016": {
+        "receipt": "material_root_irrigation_20261016",
+        "full_capability": false,
+        "bounded_route_established": true,
+        "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted."
       }
     },
     {
@@ -7189,7 +7200,10 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_scheduled_irrigation_application.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "src/runtime/mod_fmr_irrigation_material_root_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -7204,16 +7218,18 @@
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
         "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016 at ebbc493da0b5b6a43dd031b886ea7f0b8555594e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Bind accepted evolving-root/material field-capacity and wilting thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart."
+        "established": true,
+        "route": "Existing authentic-weather bootstrap -> accepted actual SWRD2 material/root preparation -> existing allocated SSDI dispatch -> accepted-only publication and opaque joint restart",
+        "claim": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
+        "bounded_receipt": "material_root_irrigation_20261016"
       },
       "restrictions": [
-        "Bind accepted evolving-root/material field-capacity and wilting thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart.",
-        "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+        "Physical matrix uses existing admitted ordinary default-MvG geometry/daily schedule; heterogeneous materials and fractional root sums additionally covered at the independent minimal production leaf."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -7304,6 +7320,12 @@
         "full_capability": false,
         "bounded_route_established": false,
         "remaining": "Bind accepted evolving-root/material field-capacity and wilting thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart."
+      },
+      "material_root_admission_20261016": {
+        "receipt": "material_root_irrigation_20261016",
+        "full_capability": false,
+        "bounded_route_established": true,
+        "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted."
       }
     },
     {
@@ -7329,7 +7351,10 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_scheduled_irrigation_application.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "src/runtime/mod_fmr_irrigation_material_root_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -7344,16 +7369,18 @@
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
         "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016 at ebbc493da0b5b6a43dd031b886ea7f0b8555594e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Bind accepted rooted deficit and strict DWATAB comparison in the existing authentic-weather management execution; qualify rain subtraction and joint restart."
+        "established": true,
+        "route": "Existing authentic-weather bootstrap -> accepted actual SWRD2 material/root preparation -> existing allocated SSDI dispatch -> accepted-only publication and opaque joint restart",
+        "claim": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
+        "bounded_receipt": "material_root_irrigation_20261016"
       },
       "restrictions": [
-        "Bind accepted rooted deficit and strict DWATAB comparison in the existing authentic-weather management execution; qualify rain subtraction and joint restart.",
-        "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+        "Physical matrix uses existing admitted ordinary default-MvG geometry/daily schedule; heterogeneous materials and fractional root sums additionally covered at the independent minimal production leaf."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -7444,6 +7471,12 @@
         "full_capability": false,
         "bounded_route_established": false,
         "remaining": "Bind accepted rooted deficit and strict DWATAB comparison in the existing authentic-weather management execution; qualify rain subtraction and joint restart."
+      },
+      "material_root_admission_20261016": {
+        "receipt": "material_root_irrigation_20261016",
+        "full_capability": false,
+        "bounded_route_established": true,
+        "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted."
       }
     },
     {
@@ -7889,7 +7922,10 @@
         "src/runtime/mod_fmr_production_application_bootstrap.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
         "src/runtime/mod_fmr_scheduled_irrigation_application.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
-        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "src/runtime/mod_fmr_scheduled_irrigation_forcing_binding.f90 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "src/runtime/mod_fmr_irrigation_material_root_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_irrigation_allocation_binding.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90 at 9d8b8df187af3a10a8a0efdc93820d63cf2c66f5"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -7904,16 +7940,18 @@
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
         "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
         "integration/audits/MC_IRR01_CAPABILITY_DISPOSITIONS_20261011.json",
-        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff"
+        "integration/audits/MC_IRR01_STATUS.json managed_application_20261016 at cbac8c1f3742dd96f6aa00d75e7e98aae6e761ff",
+        "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016 at ebbc493da0b5b6a43dd031b886ea7f0b8555594e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "Derive rooted field-capacity/refill from the accepted material and evolving-root owners, deduct authenticated whole-day rain at selection, and qualify actual delivery/restart."
+        "established": true,
+        "route": "Existing authentic-weather bootstrap -> accepted actual SWRD2 material/root preparation -> existing allocated SSDI dispatch -> accepted-only publication and opaque joint restart",
+        "claim": "PR1254 admits bounded DCS1/TCS2/3/4 material/root composition; full historical envelope remains open.",
+        "bounded_receipt": "material_root_irrigation_20261016"
       },
       "restrictions": [
-        "Derive rooted field-capacity/refill from the accepted material and evolving-root owners, deduct authenticated whole-day rain at selection, and qualify actual delivery/restart.",
-        "PR1252 admission is bounded to one-column default-MvG ordinary bottom7, TCS7/8,DCS2,1/3 nodes and existing daily interval schedule; no full historical source envelope or arbitrary long-request accuracy claim."
+        "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+        "Physical matrix uses existing admitted ordinary default-MvG geometry/daily schedule; heterogeneous materials and fractional root sums additionally covered at the independent minimal production leaf."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-IRR01",
@@ -8007,6 +8045,12 @@
         "full_capability": false,
         "bounded_route_established": false,
         "remaining": "Derive rooted field-capacity/refill from the accepted material and evolving-root owners, deduct authenticated whole-day rain at selection, and qualify actual delivery/restart."
+      },
+      "material_root_admission_20261016": {
+        "receipt": "material_root_irrigation_20261016",
+        "full_capability": false,
+        "bounded_route_established": true,
+        "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted."
       }
     },
     {
@@ -14597,7 +14641,7 @@
       "capability_id": "SW431-IRR-DCS1",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Derive rooted field-capacity/refill from the accepted material and evolving-root owners, deduct authenticated whole-day rain at selection, and qualify actual delivery/restart.",
+      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14653,7 +14697,7 @@
       "capability_id": "SW431-IRR-TCS2",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Bind accepted evolving-root/material field-capacity and stress thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart.",
+      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14667,7 +14711,7 @@
       "capability_id": "SW431-IRR-TCS3",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Bind accepted evolving-root/material field-capacity and wilting thresholds to the existing admitted managed-weather hook, then qualify its actual physical mass, retry and joint restart.",
+      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -14681,7 +14725,7 @@
       "capability_id": "SW431-IRR-TCS4",
       "work_unit": "MC-IRR01",
       "dependencies": [],
-      "why_open": "Bind accepted rooted deficit and strict DWATAB comparison in the existing authentic-weather management execution; qualify rain subtraction and joint restart.",
+      "why_open": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -17088,6 +17132,51 @@
         "actual_explicitly_tagged_active_rows": 0,
         "scope": "Structural row-stage count only; no complete-capability promotion."
       }
+    },
+    "material_root_irrigation_20261016": {
+      "pr": 1254,
+      "canonical_merge": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+      "canonical_receipt": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
+      "authority_at_canonical": "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016",
+      "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+      "scope": "Extend existing PR1252 managed authentic weather with material/root-derived DCS1 and existing TCS2/3/4; no second physical or management owner.",
+      "full_capability": false,
+      "science_archive": {
+        "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_SCIENCE_20261016.tar.xz.b64",
+        "decoded_sha256": "110fa6d4ec81e702a7d1ef957d2164db80d30fabccdd1bf660e022b0acdc2db3",
+        "decoded_bytes": 549232,
+        "members": 3249
+      },
+      "admission_archive": {
+        "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_ADMISSION_20261016.tar.xz.b64",
+        "decoded_sha256": "256b1ff1065150f3fb25f50ee0ffa43c591de256148b5c601d8b64b82e53b874",
+        "decoded_bytes": 11560,
+        "members": 7
+      },
+      "native_programs": 60,
+      "negative_controls": 21,
+      "production_runtime_admission": true,
+      "full_master_qualification": false,
+      "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+      "source_proof": "PASS actual merge tree exactly equals qualified candidate; current source guard PASS; original outputs/default bodies retained.",
+      "new_actions": 0,
+      "capability_disposition_changes": 0,
+      "canonical_admission": {
+        "pr": 1254,
+        "merge_commit": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+        "qualified_head": "4c06a5baeca32edb44096d5fdf4f9536bffbab49",
+        "actual_tree": "e95dfc1c36f4d98be7f24e3064d96ba709d58a91",
+        "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+        "merge_tree_equals_qualified_tree": true,
+        "post_merge_source_proof": "PASS",
+        "reviews": 0,
+        "unresolved_review_threads": 0,
+        "hosted_statuses": [],
+        "hosted_workflow_runs": [],
+        "full_capability": false,
+        "master_disposition_changes": 0,
+        "qualification_selection": "Recorded affected-contract O0/O2 science and original owner preservation; full moving FCI/highest low-air/RossFast not selected. Empty GitHub status collection is not a hosted PASS."
+      }
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -17478,7 +17567,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "da5482c24259a1772759335d8289944053f62332",
+  "canonical_locator_head": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -18289,6 +18378,68 @@
         }
       ],
       "scope": "Current navigation only.1072/58 are umbrella work;700 retains distinct historical donor scopes; remaining candidates are research/authority-bound and not automatically production-ready."
+    }
+  },
+  "latest_material_root_irrigation_reconciliation_20261016": {
+    "pr": 1254,
+    "canonical_merge": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+    "canonical_receipt": "ebbc493da0b5b6a43dd031b886ea7f0b8555594e",
+    "authority_at_canonical": "integration/audits/MC_IRR01_STATUS.json material_root_application_20261016",
+    "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+    "scope": "Extend existing PR1252 managed authentic weather with material/root-derived DCS1 and existing TCS2/3/4; no second physical or management owner.",
+    "full_capability": false,
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_SCIENCE_20261016.tar.xz.b64",
+      "decoded_sha256": "110fa6d4ec81e702a7d1ef957d2164db80d30fabccdd1bf660e022b0acdc2db3",
+      "decoded_bytes": 549232,
+      "members": 3249
+    },
+    "admission_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_MATERIAL_ROOT_ADMISSION_20261016.tar.xz.b64",
+      "decoded_sha256": "256b1ff1065150f3fb25f50ee0ffa43c591de256148b5c601d8b64b82e53b874",
+      "decoded_bytes": 11560,
+      "members": 7
+    },
+    "native_programs": 60,
+    "negative_controls": 21,
+    "production_runtime_admission": true,
+    "full_master_qualification": false,
+    "remaining": "Complete historical selector/parameter activation and broader material, geometry, stress and requested-window envelopes remain open; real TCS6 week/dayfix, accepted bottom7 salt/SALTEXCESS, alternate HYD/POWER weather and native weather disk codec are not admitted.",
+    "source_proof": "PASS actual merge tree exactly equals qualified candidate; current source guard PASS; original outputs/default bodies retained.",
+    "new_actions": 0,
+    "capability_disposition_changes": 0,
+    "canonical_admission": {
+      "pr": 1254,
+      "merge_commit": "9d8b8df187af3a10a8a0efdc93820d63cf2c66f5",
+      "qualified_head": "4c06a5baeca32edb44096d5fdf4f9536bffbab49",
+      "actual_tree": "e95dfc1c36f4d98be7f24e3064d96ba709d58a91",
+      "production_source_tree": "aa1c0d32463e6b8e254e098f32c9e792fb3c4bac",
+      "merge_tree_equals_qualified_tree": true,
+      "post_merge_source_proof": "PASS",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_runs": [],
+      "full_capability": false,
+      "master_disposition_changes": 0,
+      "qualification_selection": "Recorded affected-contract O0/O2 science and original owner preservation; full moving FCI/highest low-air/RossFast not selected. Empty GitHub status collection is not a hosted PASS."
+    },
+    "affected_capabilities": [
+      "SW431-IRR-DCS1",
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4"
+    ],
+    "master_predecessor": "4ace108cb4ab71b0b4f68d420cdbd65a1bb9a6ce",
+    "all243_dispositions": "UNCHANGED",
+    "flagged_absence_rows": 86,
+    "validation": {
+      "historical_source_and_pinned_authority_integrity": "PASS",
+      "inheritance_negative_controls": "20 PASS",
+      "docs_source_and_strict_mkdocs": "PASS; strict build14.11s",
+      "false_closure_guard": "EXPECTED_REJECTION: denominator incomplete",
+      "four_current_bounded_routes": "PASS; all other239 capability rows unchanged",
+      "full_master_or_new_numerical_qualification": "NOT_CLAIMED_METADATA_ONLY"
     }
   }
 }

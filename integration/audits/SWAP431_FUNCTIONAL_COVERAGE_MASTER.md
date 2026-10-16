@@ -591,3 +591,26 @@ open; SW431-NUT-NFIX stays ACTIVE_MIGRATION. All243 dispositions and113 unresolv
 envelopes remain unchanged. Structural absence/binding flags decrease87 to86;
 these are flagged rows, not a count of absent standalone algorithms. No new
 full numerical F-CI, highest low-air, RossFast or hosted PASS is claimed.
+
+## Material/root irrigation admission, 16 October 2026
+
+PR1254 admits bounded DCS1 and TCS2/3/4 through the existing authentic-weather
+management owner. Thresholds use the accepted default-MvG material; rooted extent
+uses actual accepted SWRD2 depth, including the partially rooted last compartment.
+Authenticated whole-day rain feeds selection. Existing accepted-only physical
+publication, frozen events, allocation and opaque joint restart remain the owners.
+
+The actual canonical merge is `9d8b8df187af3a10a8a0efdc93820d63cf2c66f5`;
+its tree exactly equals the qualified candidate. Admission receipt:
+`ebbc493da0b5b6a43dd031b886ea7f0b8555594e`,
+`integration/audits/MC_IRR01_STATUS.json`, field `material_root_application_20261016`.
+All60 native O0/O2 executions and21 negative admission controls passed. Original
+managed/weather outputs and application owners are preserved; strict docs passed.
+
+Four existing capability rows now record this bounded production route. All243
+dispositions remain unchanged:94 ADMITTED,109 ACTIVE_MIGRATION and4
+QUALIFICATION_ONLY;113 full envelopes remain unresolved. The86 active structural
+absence/binding flags remain unchanged. Full historical activation and broader
+material, geometry, stress and requested-window envelopes remain open, as do
+TCS6 real week/dayfix, bottom7 accepted salt, HYD/POWER weather and native disk
+codec. Master PR1072 remains draft. No hosted or full moving F-CI PASS is inferred.
