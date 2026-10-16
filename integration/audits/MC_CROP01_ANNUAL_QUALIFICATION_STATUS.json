@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-CROP01 / SW431-CROP-ANNUAL",
-  "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+  "baseline": "9b05521b2df3579869f1906cb13900078fdeeda4",
   "master_checkpoint": "988b46c3246e835b6f9bcd97b3f2714c56de30d2",
   "scope": "SW_WOFOST=1; IDSL=0; SWCROPSNM=0, existing classic AMAXTB route",
   "implemented": true,
@@ -25,7 +25,7 @@
     "potential RELMF"
   ],
   "preexecution_finding": "B1.11 retains DWRT/DWST/DWLV; classic living biomass owner and persistence retain no dead-organ inventories. Verify the exact source/production discrepancy before any full-capability claim. WOFOST81 is not an equivalent reference authority.",
-  "next_action": "Resolve the explicit existing-owner mortality/persistence extension before further full annual admission. Reuse the authenticated living-source result. Accepted-event and complete source-state restart admission remain unexecuted; no broad F-CI is justified for a failed state-completeness precondition.",
+  "next_action": "Implement source gross cumulative death counters in existing biomass/clone/structural owner; extend existing qualification-only codec in place; execute fixed annual source/event/restart gates.",
   "recovery_point": "This record and tests/fmig431/annual/; production unchanged",
   "dependency_surface": [
     "src/crop/mod_wofost_*",
@@ -41,7 +41,7 @@
       "required_resolution": "Within the existing shared biomass/crop owner and persistence contracts, select retained mortality/total-organ representation and legacy/default compatibility, including all dependent WOFOST81/harvest/codec consumers. Then implement and qualify only that bounded successor. No second owner, inferred WOFOST81 replacement, or silent restart layout change."
     }
   ],
-  "status": "BLOCKED_SOURCE_STATE_COMPLETENESS",
+  "status": "EXISTING_OWNER_MORTALITY_REPAIR_CONTRACT_SELECTED",
   "checkpoint_commit": "33f072a4e68d4fd064309dfb11386db98b07172d",
   "exact_tested_tree": "e0f115963ca10955739569e998345d0ffb280467",
   "remote_preexecution_checkpoint": "1a5bca4b4f683686c954e388bd9f2c2a32e2ebac",
@@ -260,5 +260,7 @@
     "No production edit or admitted capability reopened. No full F-CI, RossFast, frost or unrelated N/root rerun."
   ],
   "review": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md",
-  "documentation_source_check": "PASS tools/docs/check_docs.py"
+  "documentation_source_check": "PASS tools/docs/check_docs.py",
+  "selected_repair_contract": "docs/science/MC_CROP01_ANNUAL_SOURCE_DISPOSITION_20261016.md#selected-same-owner-repair-16-october-2026",
+  "diagnostic_not_physical_storage": true
 }

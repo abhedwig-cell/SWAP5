@@ -1,17 +1,22 @@
 program annual_source_probe
- use, intrinsic :: iso_fortran_env, only: real64
+ use, intrinsic :: iso_fortran_env, only: real64,int64
  use mod_wofost_crop_owner_state
  use mod_wofost_rate_table
  use mod_wofost_rate_parameters
  use mod_wofost_one_day_structural_evolution
  use mod_wofost_two_phase_crop_window
  use mod_fmr_wofost_crop_transaction
+ use mod_transaction_reference, only: transaction_state_t
+ use mod_kernel_transactions, only: kernel_committed_state_t
+ use mod_fwof40_external_crop_restart_adapter
  use b111_oracle, only: p,p_wof,s_act,r_act,m_act,sw_wofost,fl_anthesis, &
    update_dvs_rate,update_wofost,totass
  use atmosphere_interface, only: tav,rad
  use plant_interface, only: dvs,tsum,kdif
  implicit none
  type(wofost_crop_owner_state_t):: state,next,before,replayed
+ class(transaction_state_t),allocatable:: payload,snap
+ type(kernel_committed_state_t):: disk_state,disk_restored
  type(fmr_wofost_crop_transaction_state_t):: tx,restored
  type(fmr_wofost_crop_transaction_persistence_t):: persisted
  type(wofost_rate_parameter_bundle_t):: bundle
@@ -22,9 +27,35 @@ program annual_source_probe
  type(wofost_crop_window_begin_diagnostics_t):: bd
  type(wofost_crop_window_complete_diagnostics_t):: cd
  type(wofost_one_day_rate_packet_t):: rates
- real(real64):: pgass,dtga,reltr,maxerr,delta,dead_before,live_before,live_after,gross
+ real(real64):: pgass,dtga,reltr,maxerr,delta,dead_before,live_before,live_after,gross,afgen
  integer:: day,st,i,phase,run
+ character(len=512)::mode,path
  logical:: available,exported,reconstructed
+ call get_command_argument(1,mode)
+ if(trim(mode)=='--reject'.or.trim(mode)=='--read')then
+  call get_command_argument(2,path)
+  call read_fwof40_crop_restart_artifact(trim(path),disk_restored,reconstructed,st)
+  if(trim(mode)=='--reject')then
+   call require(.not.reconstructed.and.st/=0,'corrupt codec rejected')
+   print '(a,i0)','CLASSIC_CORRUPT_CODEC_REJECTED ',st
+  else
+   call require(reconstructed.and.st==0,'fresh process codec restoration')
+   call disk_restored%snapshot(snap,available)
+   call require(available,'fresh snapshot')
+   select type(t=>snap)
+   type is(fmr_wofost_crop_transaction_state_t)
+    call t%snapshot_owner(replayed,available)
+   class default
+    error stop 'fresh type'
+   end select
+   call require(available,'fresh owner')
+   print '(a,3(1x,z16.16))','CLASSIC_FRESH_PROCESS_DEAD_BITS', &
+    transfer(replayed%biomass%cumulative_dead_root_biomass,0_int64), &
+    transfer(replayed%biomass%cumulative_dead_stem_biomass,0_int64), &
+    transfer(replayed%biomass%cumulative_dead_leaf_biomass,0_int64)
+  endif
+  stop
+ endif
  maxerr=0
  do run=1,3
  call seed_active_owner(state)
@@ -35,10 +66,11 @@ program annual_source_probe
  ! The independent source model receives the same initial living state and parameters.
  ! Dead source organs start at zero, and remain independently cumulative.
  sw_wofost=1; fl_anthesis=.false.
- p_wof%idsl=0; p_wof%tsumea=1000; p_wof%tsumam=800; p_wof%dtsmtb=[0d0,10d0]
- p%rfsetb=[0d0,1d0];p%frtb=[0d0,0.2d0];p%fltb=[0d0,0.4d0]
- p%fstb=[0d0,0.4d0];p%fotb=[0d0,0.2d0];p%rdrrtb=[0d0,0.01d0]
- p%rdrstb=[0d0,0.01d0];p%slatb=[0d0,0.02d0]
+ p_wof%idsl=0; p_wof%tsumea=1000; p_wof%tsumam=800; p_wof%dtsmtb=[0d0,10d0,1d0,10d0,3d0,10d0]
+ p%rfsetb=[0d0,1d0,1d0,1d0,3d0,1d0];p%frtb=[0d0,0.2d0,1d0,0.2d0,3d0,0.2d0];p%fltb=[0d0,0.4d0,1d0,0.4d0,3d0,0.4d0]
+ p%fstb=[0d0,0.4d0,1d0,0.4d0,3d0,0.4d0];p%fotb=[0d0,0.2d0,1d0,0.2d0,3d0,0.2d0];p%rdrrtb=[0d0,0.01d0,1d0,0.01d0,3d0,0.01d0]
+ p%rdrstb=[0d0,0.01d0,1d0,0.01d0,3d0,0.01d0];p%slatb=[0d0,0.02d0,1d0,0.02d0,3d0,0.02d0]
+ p%amaxtb=[0d0,30d0,1d0,20d0,2d0,5d0]
  p%rmr=0.01d0;p%rml=0.02d0;p%rms=0.015d0;p%rmo=0.005d0;p%q10=2
  p%cvr=0.7d0;p%cvs=0.65d0;p%cvl=0.72d0;p%cvo=0.8d0
  p%perdl=0.03d0;p%tbase=0;p%rgrlai=0.04d0;p%span=30;p%ssa=0.005d0;p%spa=0.002d0;p%dvsend=2
@@ -61,7 +93,7 @@ program annual_source_probe
    call require(st==0,'production begin')
    call window%read_prepared_actual_pgass(pgass,available)
    call require(available,'production assimilation available')
-   call totass(forcing%daylength_hours,31.5d0,0.495d0,s_act%lai, &
+   call totass(forcing%daylength_hours,1.05d0*afgen(p%amaxtb,6,dvs),0.495d0,s_act%lai, &
       forcing%diffuse_perpendicular_radiation,forcing%daily_sine_solar_elevation_integral, &
       forcing%sinld,forcing%cosld,dtga)
    dtga=dtga*30d0*(0.4d0/0.4d0)/44d0
@@ -81,6 +113,9 @@ program annual_source_probe
    call check(next%evolution_continuation%temperature_sum,tsum,'temperature sum')
    call check(next%biomass%root_biomass,s_act%wrt,'root')
    call check(next%biomass%stem_biomass,s_act%wst,'stem')
+   call check(next%biomass%cumulative_dead_root_biomass,s_act%dwrt,'DWRT')
+   call check(next%biomass%cumulative_dead_stem_biomass,s_act%dwst,'DWST')
+   call check(next%biomass%cumulative_dead_leaf_biomass,s_act%dwlv,'DWLV')
    call check(next%biomass%storage_biomass,s_act%wso,'storage')
    call check(next%biomass%living_leaf_biomass(),s_act%wlv,'leaf')
    call check(next%biomass%leaf_area_sum(),s_act%lasum,'leaf area')
@@ -109,6 +144,31 @@ program annual_source_probe
     call require(all(replayed%biomass%leaf_biomass==next%biomass%leaf_biomass),'restored leaf cohorts')
     call require(replayed%biomass%root_biomass==next%biomass%root_biomass,'restored living roots')
     call require(replayed%development_stage==next%development_stage,'restored DVS')
+    call check(replayed%biomass%cumulative_dead_root_biomass,next%biomass%cumulative_dead_root_biomass,'opaque dead root')
+    call check(replayed%biomass%cumulative_dead_stem_biomass,next%biomass%cumulative_dead_stem_biomass,'opaque dead stem')
+    call check(replayed%biomass%cumulative_dead_leaf_biomass,next%biomass%cumulative_dead_leaf_biomass,'opaque dead leaf')
+    if(allocated(payload))deallocate(payload)
+    call tx%clone(payload)
+    disk_state=kernel_committed_state_t()
+    call disk_state%initialize(81001_int64,payload,available,real(day+1,real64))
+    call require(available,'disk state initialization')
+    call write_fwof40_crop_restart_artifact('annual.restart',disk_state,exported,st)
+    call require(exported.and.st==0,'existing codec write cumulative death')
+    call read_fwof40_crop_restart_artifact('annual.restart',disk_restored,reconstructed,st)
+    call require(reconstructed.and.st==0,'existing codec read cumulative death')
+    if(allocated(snap))deallocate(snap)
+    call disk_restored%snapshot(snap,available)
+    call require(available,'disk restored transaction')
+    select type(t=>snap)
+    type is(fmr_wofost_crop_transaction_state_t)
+     call t%snapshot_owner(replayed,available)
+    class default
+     error stop 'disk restored type'
+    end select
+    call require(available,'disk restored owner')
+    call check(replayed%biomass%cumulative_dead_root_biomass,next%biomass%cumulative_dead_root_biomass,'disk DWRT')
+    call check(replayed%biomass%cumulative_dead_stem_biomass,next%biomass%cumulative_dead_stem_biomass,'disk DWST')
+    call check(replayed%biomass%cumulative_dead_leaf_biomass,next%biomass%cumulative_dead_leaf_biomass,'disk DWLV')
     next=replayed
    endif
    state=next
@@ -119,7 +179,7 @@ program annual_source_probe
  enddo
  print '(a,es24.15)','MAX_ABS_LIVING_SOURCE_ERROR ',maxerr
  print '(a)','CLASSIC_LIVING_SOURCE_TRAJECTORIES_O0_O2_PROBE=PASS'
- print '(a)','CLASSIC_EXISTING_LIVING_PERSISTENCE_CONTINUATION=PASS'
+ print '(a)','CLASSIC_COMPLETE_ORGAN_OPAQUE_AND_EXISTING_DISK_CODEC_CONTINUATION=PASS'
 contains
  subroutine check(a,b,label)
  real(real64),intent(in)::a,b
@@ -196,7 +256,9 @@ contains
     s%maximum_relative_lai_growth_rate = 0.04_real64
 
     call constant_table(10.0_real64, t%temperature_sum_increment)
-    call constant_table(30.0_real64, t%maximum_assimilation)
+    call construct_wofost_rate_table([0.0_real64,1.0_real64,2.0_real64], &
+         [30.0_real64,20.0_real64,5.0_real64],t%maximum_assimilation,st)
+    call require(st==0,'AMAXTB piecewise production table')
     call constant_table(1.0_real64, t%daytime_temperature_factor)
     call constant_table(1.0_real64, t%minimum_temperature_factor)
     call constant_table(1.0_real64, t%maintenance_respiration_factor)

@@ -12,7 +12,7 @@ AUTH='988b46c3246e835b6f9bcd97b3f2714c56de30d2'
 ARCH='integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 HASH='3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b'
 STUBS='''module MOD_arrays
- integer,parameter::macroptb=2,mahrv=1
+ integer,parameter::macroptb=6,mahrv=1
 end module
 module parameters
  real(8),parameter::pi=3.1415926535897932384626433832795d0
@@ -58,14 +58,6 @@ SUPPORT='''
  end subroutine
 '''
 EXTERNAL='''
-real(8) function afgen(table,n,x)
- implicit none
- integer,intent(in)::n
- real(8),intent(in)::table(n),x
- ! Every table in this witness is constant; interpolation is not a claim.
- if(n/=2)error stop 'constant table adapter length'
- afgen=table(2)
-end function
 subroutine swap_error(where,message)
  character(*)::where,message
  print *,where,message
@@ -79,7 +71,12 @@ def main():
  raw=base64.b64decode(subprocess.check_output(['git','show',f'{AUTH}:{ARCH}'],cwd=ROOT))
  with tarfile.open(fileobj=io.BytesIO(raw),mode='r:gz') as tar:
   source=tar.extractfile('SWAP/wofost.f90').read()
+  functions=tar.extractfile('SWAP/functions.f90').read()
  assert sha(source)==HASH
+ assert sha(functions)=='b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527'
+ ftext=functions.decode().replace('\r\n','\n')
+ fstart=ftext.index('   real(8) function afgen ('); fend=ftext.index('   end function afgen',fstart)+len('   end function afgen')
+ afgen=ftext[fstart:fend]
  s=source.decode().replace('\r\n','\n')
  # Preserve type and variable declarations. Only module visibility changes.
  header=s[:s.index('   contains')]
@@ -93,14 +90,14 @@ def main():
   if not m: raise ValueError(name)
   pieces.append(m.group())
  # lvwgli has four rather than three leading spaces.
- oracle=STUBS+header+'\ncontains\n'+'\n'.join(pieces)+SUPPORT+'\nend module\n'+EXTERNAL
+ oracle=STUBS+header+'\ncontains\n'+'\n'.join(pieces)+SUPPORT+'\nend module\n'+EXTERNAL+'\n'+afgen+'\n'
  (out/'oracle.f90').write_text(oracle)
  spec=importlib.util.spec_from_file_location('dep',ROOT/'tests/support/augment_bartholomeus_backend_sources.py')
  dep=importlib.util.module_from_spec(spec);spec.loader.exec_module(dep)
  driver='tests/fmig431/annual/test_classic_source.f90'
  # Exclude the explicit source-side adapter from production provider discovery.
  # It is used only to resolve b111_oracle and its source-side dependency modules.
- ordered,_=dep.strict_closure(ROOT,['src/crop/mod_wofost_two_phase_crop_window.f90','src/runtime/mod_fmr_wofost_crop_transaction.f90'])
+ ordered,_=dep.strict_closure(ROOT,['src/crop/mod_wofost_two_phase_crop_window.f90','src/runtime/mod_fmr_wofost_crop_transaction.f90','tests/fwof/mod_fwof40_external_crop_restart_adapter.f90'])
  ordered += [out/'oracle.f90',ROOT/driver]
  records=[]
  compiler=os.environ.get('FC','gfortran')
@@ -118,22 +115,17 @@ def main():
   rec.update(native_seconds=time.monotonic()-t,native_exit=cp.returncode,stdout_sha256=sha(cp.stdout.encode()))
   if cp.returncode:break
  result={'baseline':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
- 'source_authority_ref':AUTH,'source_member_sha256':HASH,'source_archive_sha256':sha(raw),
+ 'source_functions_sha256':sha(functions),'source_authority_ref':AUTH,'source_member_sha256':HASH,'source_archive_sha256':sha(raw),
  'extracted_routines':{n:sha(v.encode()) for n,v in zip(names,pieces)},'source_adapter_sha256':sha(oracle.encode()),
  'compiled_inputs':{str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p):sha(p.read_bytes()) for p in ordered},
- 'runs':records,'scope':'Three 200-day classic IDSL0 actual-crop process trajectories; supplied weather, constant tables and water ratios; actual classic persistence export/reconstruct every17 days; not Richards, accepted-event or complete-organ restart admission.',
+ 'runs':records,'scope':'Three 200-day classic IDSL0 actual-crop process trajectories; supplied weather and water ratios, literal AFGEN and DVS-dependent AMAXTB; actual classic opaque and existing disk-codec continuation every17 days, including cumulative organ mortality; not Richards or accepted-event admission.',
  'cost_limits':{'separate_compile_seconds':'UNKNOWN','separate_link_seconds':'UNKNOWN'},
  'disposition':'NOT_QUALIFIED'}
  ok=len(records)==2 and all(x.get('native_exit')==0 for x in records)
- # Full B1.11 state is not equivalent to the existing restricted living view.
- # This is a structural qualification blocker, independently of native PASS.
- biomass=(ROOT/'src/crop/mod_wofost_actual_biomass_state.f90').read_text().lower()
- body=biomass.split('type, extends(transaction_state_t), public :: wofost_actual_biomass_state_t',1)[1].split('contains',1)[0]
- fields=re.findall(r'::\s*(\w+)',body)
- assert set(fields)=={'root_biomass','stem_biomass','storage_biomass','exponential_leaf_area_index','leaf_biomass','specific_leaf_area','leaf_age'}
- for term in ['s%dwrt = s%dwrt + r%drrt * delt','s%dwlv = s%dwlv + r%drlv * delt','s%dwst = s%dwst + r%drst * delt']:
-  assert term in s.lower(),term
- result['source_state_completeness']={'B111_retained_dead_organs':['dwrt','dwst','dwlv'],'classic_biomass_fields':fields,'mapping_complete':False,'existing_living_restart':'PASS only when native probe passes','disposition':'BLOCKED_SOURCE_STATE_COMPLETENESS'}
+ if ok: result['disposition']='SOURCE_AND_PERSISTENCE_QUALIFIED_PENDING_ACCEPTED_EVENT_ADMISSION'
+ result['source_state_completeness']={'B111_retained_dead_organs':['dwrt','dwst','dwlv'],
+ 'mapping_complete_for_tested_trajectories':ok,'diagnostic_not_physical_storage':True,
+ 'opaque_and_existing_disk_codec_continuation':ok}
  result['living_source_probe_pass']=ok
  result['O0_O2_stdout_identity']=ok and records[0]['stdout_sha256']==records[1]['stdout_sha256']
  (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')

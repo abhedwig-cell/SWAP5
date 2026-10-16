@@ -111,3 +111,38 @@ Recovery, exact inputs, raw O0/O2 logs, failed harness-path attempt and executed
 bundle are in `MC_CROP01_ANNUAL_QUALIFICATION_STATUS.json` and its sealed source
 qualification capsule. The existing master recovery and capability row carry the
 same bounded disposition; no duplicate migration PR is needed.
+
+## Selected same-owner repair, 16 October 2026
+
+Following the explicit continuation instruction, canonical is pinned at
+`9b05521b2df3579869f1906cb13900078fdeeda4`. No newer production candidate overlaps
+this work. The three DW variables are **cumulative gross mortality diagnostics**,
+not additional physical retained-material pools. In particular dead roots may
+already have been returned to soil; their cumulative diagnostic must not be added
+to the physical water, N or organic-matter storage balance. This clarifies the
+previous inventory terminology without weakening the full source-state gate.
+
+Selected representation: three zero-initialized, finite nonnegative cumulative
+organ-death scalars in the existing `wofost_actual_biomass_state_t`, copied by its
+existing clone and the existing classic owner/persistence API. The classic rate
+packet exposes the already computed root/stem deaths; structural evolution adds
+stress plus age leaf death exactly once. No growth/assimilation equation, N state,
+root owner or transaction authority changes. WOFOST81 uses its existing independent
+structural updater and keeps the new diagnostics at their default zero until its
+separate source/diagnostic policy is selected; no WOFOST81 equivalence is claimed.
+
+Extend the existing qualification-only F-WOF40 external adapter in place: codec1
+bytes stay unchanged for zero counters, codec2 carries nonzero counters. Codec1
+restores the previously admitted zero-counter representation; it cannot recover
+unrecorded historical B1.11 mortality and does not claim that equivalence. Unknown
+codec, nonfinite/negative counter and truncated extension fail closed. The existing
+opaque production persistence carries the complete owner directly. This adds no
+production codec and allocates no native crop/Soil-N codec tag.
+
+The fixed annual acceptance conditions remain controlling. Execute small literal
+source O0/O2 trajectories including all three counters, same-owner clone,
+rollback/replay, real accepted-event publication/retirement and existing persistence
+continuation. Extend existing true-process restart tests, preserve the WOFOST81
+source trajectory and old codec bytes, and select only affected owner gates. Any
+remaining physical-runtime/admission gap must stay explicit; these repairs alone
+are not permission to declare the whole capability admitted.
