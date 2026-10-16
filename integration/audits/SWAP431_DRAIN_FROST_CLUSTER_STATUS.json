@@ -3,11 +3,11 @@
   "work_unit": "SWAP431-MC-DRAIN01-FOUNDATION",
   "baseline": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
   "branch": "work/swap431-drain-frost-coverage-20261007",
-  "checkpoint_commit": "2a3b88f7abefeeae520f32859ac2b7adb64925f4",
+  "checkpoint_commit": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "implemented_capabilities": [
     "SW431-DRAIN-DIV-SIGNED"
   ],
@@ -41,7 +41,7 @@
     "B19 frost physics is not duplicated or changed"
   ],
   "current_test_state": {
-    "execution": "PROCESS_O0_O2_PASS_RUNTIME_O0_DIAGNOSTIC_PASS_FINAL_O0_O2_PENDING",
+    "execution": "PASS_LOCAL_O0_O2_COMPLETE",
     "focused_runner": "tests/fmig431/run_swap431_signed_divdra_runtime.py",
     "expected_optimizations": [
       "O0",
@@ -55,12 +55,23 @@
       "Exact bitwise sum assertion was inconsistent with incumbent floating-point partition. Uses admitted B19 nodal closure 1e-14 and unchanged hard total mass 1e-12 cm.",
       "Diagnostic retain-step-proposal was rejected by existing certificate compatibility guard; removed without changing production policy.",
       "Mode2 explicit water balance and mode7 free drainage both execute 24 signed cases; four actual reject/replay/empty-registry restart controls pass in O0 diagnostic."
-    ]
+    ],
+    "current_cases": {
+      "process": "literal overlap, B19 warm donor, immutable positive body and FCI32/33 smoke",
+      "runtime": 24,
+      "rejection_replay_restart": 4,
+      "inactive": 2,
+      "two_column_isolation": 1,
+      "negative_preflight": 7,
+      "mass_gate_cm": 1e-12,
+      "nodal_roundoff_cm": 1e-14
+    },
+    "owner_reconciliation": "Source-only inherited N validator rejected foreign reproductive science for four drainage providers. Additive delegation validates complete new exact scope and original predecessor source/science in immutable d27 incumbent. No old assertions removed."
   },
   "active_ci_observation": {
     "status": "NO_CURRENT_HEAD_RUN_STARTED"
   },
-  "next_action": "Remote persist current postimage through connector because local Git push has no credentials, then execute final O0/O2 selected gates and source-bound admission evidence.",
+  "next_action": "Safe normal merge of PR1099 on reconciled canonical, verify exact qualified source, then canonical metadata closeout and targeted +1 master-ledger reconciliation.",
   "recovery_point": "work/swap431-drain-frost-coverage-20261007",
   "blockers": [],
   "last_reconciled_upstream": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
@@ -93,5 +104,195 @@
       "rossfast": "NOT_SELECTED_IMPACT, unchanged implementation and input contract"
     }
   },
-  "prior_recovery": "PR1109 record carried forward for retrieval, narrowed explicitly to earlier PR1099. No prior qualified claim exists."
+  "prior_recovery": "PR1109 record carried forward for retrieval, narrowed explicitly to earlier PR1099. No prior qualified claim exists.",
+  "canonically_admitted": false,
+  "closure_evidence": {
+    "path": "integration/audits/evidence/MC_DRAIN01_SIGNED_20261016.json.gz.b64",
+    "sha256": "0856eab8f6dc454a562ad899fa91ee4c0a094a420b1d5c813ac89c3bbb42daca",
+    "source_commit": "f88ef521fb17ecf5eae42822c4e566c7990e194b",
+    "result": "PASS_LOCAL_O0_O2",
+    "bytes": 94083
+  },
+  "qualification_inputs_sha256": {
+    "tests/fmig431/run_swap431_signed_divdra_runtime.py": "190466732ced3c4a88b720724c175524c4e40707ae7c694a2eeaed86761511c3",
+    "tests/fmig431/verify_signed_divdra_successor.py": "97def8a013f6d6888b88fe50b41e0646f4a6fae1cef697aa68196449969da79f",
+    "tests/modularity/run_modular_tests.py": "e46abe571b740aec67f495c1b568879d7086d8ef94cc79b24e61dcb4c4e2eca0",
+    "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2"
+  },
+  "measurements": [
+    {
+      "case": "signed_contract",
+      "optimization": 0,
+      "compile_seconds": 0.8403410440078005,
+      "link_seconds": 0.04043583699967712,
+      "execution_seconds": 0.004086875997018069,
+      "total_seconds": 1.1291786060028244,
+      "compiler_requests": 7,
+      "reused_compilations": 0,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "signed_contract",
+      "optimization": 2,
+      "compile_seconds": 1.485019140993245,
+      "link_seconds": 0.04522561500198208,
+      "execution_seconds": 0.002414204995147884,
+      "total_seconds": 1.7200128949916689,
+      "compiler_requests": 7,
+      "reused_compilations": 0,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "positive_process",
+      "optimization": 0,
+      "compile_seconds": 0.04608173899760004,
+      "link_seconds": 0.03685946500627324,
+      "execution_seconds": 0.002941081009339541,
+      "total_seconds": 0.24463184499472845,
+      "compiler_requests": 2,
+      "reused_compilations": 3,
+      "ordered_source_count": 4
+    },
+    {
+      "case": "positive_process",
+      "optimization": 2,
+      "compile_seconds": 0.07625808799639344,
+      "link_seconds": 0.046236088004661724,
+      "execution_seconds": 0.00178912200499326,
+      "total_seconds": 0.2847821219911566,
+      "compiler_requests": 2,
+      "reused_compilations": 3,
+      "ordered_source_count": 4
+    },
+    {
+      "case": "positive_binder",
+      "optimization": 0,
+      "compile_seconds": 0.16557715002272744,
+      "link_seconds": 0.048927967000054196,
+      "execution_seconds": 0.0019640730024548247,
+      "total_seconds": 0.3947926959954202,
+      "compiler_requests": 4,
+      "reused_compilations": 3,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "positive_binder",
+      "optimization": 2,
+      "compile_seconds": 0.3135729859932326,
+      "link_seconds": 0.03869383200071752,
+      "execution_seconds": 0.002040477003902197,
+      "total_seconds": 0.5307539950008504,
+      "compiler_requests": 4,
+      "reused_compilations": 3,
+      "ordered_source_count": 6
+    },
+    {
+      "case": "signed_runtime",
+      "optimization": 0,
+      "compile_seconds": 24.900075538054807,
+      "link_seconds": 0.10892746000899933,
+      "execution_seconds": 4.6216854130034335,
+      "total_seconds": 30.68959547500708,
+      "compiler_requests": 170,
+      "reused_compilations": 0,
+      "ordered_source_count": 169
+    },
+    {
+      "case": "signed_runtime",
+      "optimization": 2,
+      "compile_seconds": 71.78606795307132,
+      "link_seconds": 0.08404404899920337,
+      "execution_seconds": 1.9788507420016686,
+      "total_seconds": 74.81952142900263,
+      "compiler_requests": 170,
+      "reused_compilations": 0,
+      "ordered_source_count": 169
+    }
+  ],
+  "preservation": {
+    "positive_process_and_binder": "FRESH_O0_O2_PLUS_BYTE_EXACT_INCUMBENT_BODIES",
+    "B19": "Existing warm partition exercised O0/O2; all frost science sources/tests and positive dependency bodies byte-exact. No new complete frost or low-air PASS claimed.",
+    "solver_transaction_restart": "UNCHANGED_IMPLEMENTATION; actual affected signed compositions/reject/replay/restart execute fresh",
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "RossFast": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "canonical_reconciliation": {
+    "base": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "observed_head": "9b05521b2df3579869f1906cb13900078fdeeda4",
+    "delta": "Three N leaf-return review/status/evidence paths; no production/tests or drainage dependency change. Fresh numeric evidence preserved."
+  },
+  "successor_postimages": {
+    ".github/workflows/swap431-drain-signed.yml": {
+      "status": "A",
+      "blob": "44e206fa63b7da835cbeee0891bd88029f45662d"
+    },
+    "src/process/mod_drainage_spatial_distribution.f90": {
+      "status": "M",
+      "blob": "3414a170ba01af906dbb1d3b1b854eb1fd375a6b"
+    },
+    "src/runtime/mod_fmr_divdra_runtime_binding.f90": {
+      "status": "M",
+      "blob": "a20113bbd756b353ecc9997e4fbfacf9f1d551f4"
+    },
+    "src/runtime/mod_fmr_divdra_serialized_composition.f90": {
+      "status": "M",
+      "blob": "9e76812048d4621e167aa120a1977128cab4b973"
+    },
+    "src/runtime/mod_fmr_divdra_serialized_runtime.f90": {
+      "status": "M",
+      "blob": "70585d183ea68e0bee64210baab7de3adb8c514f"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "blob": "c500c4f03975b460123ede71a8bf1cb2f38364dd"
+    },
+    "tests/fmig431/run_swap431_signed_divdra_runtime.py": {
+      "status": "A",
+      "blob": "ceb361178e7f193d5b2649a8428c3ce916a3840b"
+    },
+    "tests/fmig431/test_swap431_signed_divdra_contract.f90": {
+      "status": "A",
+      "blob": "7fbd40b707ec04694ffb12ce3701406eb2fb0fa6"
+    },
+    "tests/fmig431/test_swap431_signed_divdra_runtime.f90": {
+      "status": "A",
+      "blob": "f2f2a43896b36685c93b41e5fcbc1d9a050b6a44"
+    },
+    "tests/fmig431/verify_signed_divdra_successor.py": {
+      "status": "A",
+      "blob": "9b64d6d2ac681de51eb082c5cd99df7ea17828a9"
+    },
+    "tests/nut-crop/verify_reproductive_successor.py": {
+      "status": "M",
+      "blob": "7effeb38d1429c591ed8ce748ce9cfc4cfd09410"
+    }
+  },
+  "owner_qualification_preservation": {
+    "terminal": "PASS",
+    "entry": "tests/fwof/pp02/verify_b111_nfixation_successor.py",
+    "incumbent": "d27c6abe023eecd4f2e63ae42ad2fb330ad2ef15",
+    "current_signed_successor": true,
+    "reproductive_preserved": true,
+    "stdout_sha256": "6d736b0e2faaf22eb8ba357ded8a9ee9ee0583ab839663fd60878d56d239b234",
+    "receipt_in_archive": true,
+    "execution": "Evidence/source verification through original immutable owner chain; no repeated numerical FCI or low-air run."
+  },
+  "automatic_ci_reconciliation": {
+    "run_id": 38932004068,
+    "job_id": 117078288219,
+    "conclusion": "failure",
+    "actual_failure": "ValueError: foreign reproductive science",
+    "disposition": "Old exact source-only guard rejected the four new drainage providers. Additive successor delegation now checks new exact scope and reruns original complete predecessor evidence validator. Actual same owner entry passes locally. No failed numerical test or full FCI PASS inferred."
+  },
+  "validation": {
+    "source_evidence": "PASS",
+    "corruption_controls": 6,
+    "focused_FCI_owner_entry": "PASS",
+    "original_incumbent_owner_entry": "PASS",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "shell_syntax": "PASS",
+    "whitespace": "PASS"
+  }
 }
