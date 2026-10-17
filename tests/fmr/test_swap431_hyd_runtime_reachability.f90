@@ -158,12 +158,6 @@ contains
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
          forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
     observation=backend%observation()
-    if (.not. (output%completed.and.output%committed)) then
-      write(*,'(A,L1,A,L1,A,L1,A,A,A,I0,A,I0)') 'HYST_DEBUG completed=', output%completed, &
-           ' committed=', output%committed, ' admitted=', output%admitted, &
-           ' admission=', trim(output%admission_status), ' kernel=', output%kernel_status, &
-           ' solver=', output%solver_status
-    end if
     write(0,'(A,1X,A,1X,6(I0,1X))') 'HYST_ADMISSION_DEBUG',trim(output%admission_status), &
          merge(1,0,output%completed),merge(1,0,output%committed),merge(1,0,output%admitted), &
          output%kernel_status,output%solver_status,output%commit_status
@@ -327,12 +321,6 @@ contains
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
          forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
     observation=backend%observation()
-    if (.not. (output%completed.and.output%committed)) then
-      write(*,'(A,L1,A,L1,A,L1,A,A,A,I0,A,I0)') 'LINEAR_DEBUG completed=', output%completed, &
-           ' committed=', output%committed, ' admitted=', output%admitted, &
-           ' admission=', trim(output%admission_status), ' kernel=', output%kernel_status, &
-           ' solver=', output%solver_status
-    end if
     if (.not. (output%completed.and.output%committed)) &
       write(*,'(a,1x,a,1x,l1,1x,l1,1x,i0,1x,i0)') &
       'LINEAR_TABLE_DIAGNOSTIC',trim(output%admission_status),output%admission_assessed, &
