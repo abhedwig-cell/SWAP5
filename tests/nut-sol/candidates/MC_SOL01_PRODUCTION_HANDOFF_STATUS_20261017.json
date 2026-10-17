@@ -131,8 +131,16 @@
     "commit": "1eddfd89d2adaade4fe5f18ae0560ae3e8c88de6",
     "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "behavior": "Before publishing converged-surface availability into an accepted substep, enforce pond_end-pond_start = net_potential*dt - runoff_depth + signed_qtop*dt, using final provider provenance and a bounded numerical tolerance.",
-    "state": "PERSISTED_UNTESTED",
+    "state": "COMPILED_AND_FOCUSED_ROLLBACK_TESTED_NOT_PHYSICALLY_QUALIFIED",
     "scientific_limit": "This validation is not yet accepted gross solute accounting; no source-aligned runoff chemistry or native restart admitted.",
-    "preservation": "F-ROSS22 shared solver-contract qualification still required"
+    "preservation": "F-ROSS22 shared solver-contract qualification still required",
+    "qualification": {
+      "tested_head": "c1c192ed0767ae6e6b1a913adccf1717b11452ba",
+      "publication_run": 39070588616,
+      "publication": "SUCCESS; O0=PASS O2=PASS postsolver rollback=PASS",
+      "fross_run": 39070588476,
+      "fross": "FAIL qualified dependency drift mod_soil_water_solver_contract.f90",
+      "limit": "Gate exercise does not prove positive gross runoff, pond evaporation or solute continuity and native V2 restart."
+    }
   }
 }
