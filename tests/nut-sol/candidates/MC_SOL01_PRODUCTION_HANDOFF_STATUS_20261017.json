@@ -126,5 +126,13 @@
     "admitted": false,
     "publication_run": 39069637594,
     "fross_run": 39069637686
+  },
+  "accepted_surface_water_balance_gate_20261017": {
+    "commit": "1eddfd89d2adaade4fe5f18ae0560ae3e8c88de6",
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "behavior": "Before publishing converged-surface availability into an accepted substep, enforce pond_end-pond_start = net_potential*dt - runoff_depth + signed_qtop*dt, using final provider provenance and a bounded numerical tolerance.",
+    "state": "PERSISTED_UNTESTED",
+    "scientific_limit": "This validation is not yet accepted gross solute accounting; no source-aligned runoff chemistry or native restart admitted.",
+    "preservation": "F-ROSS22 shared solver-contract qualification still required"
   }
 }
