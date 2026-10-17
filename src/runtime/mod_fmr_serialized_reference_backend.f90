@@ -4231,8 +4231,24 @@ contains
         if (hyd_status /= B111_LEGACY_HYD_OK) return
         call bind_b111_legacy_hydraulic_provider(self%extended_legacy, self%constitutive, step_duration, hyd_status)
         if (hyd_status /= B111_LEGACY_HYD_OK) return
-        call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
-             self%extended_legacy, hyd_status)
+        if (self%extended_pdi_vapor_active) then
+          select type (physical => state)
+          class is (fmr_b110_physical_state_t)
+            if (.not. allocated(physical%soil_temperature)) return
+            block
+              type(soil_temperature_field_view_t) :: thermal
+              call build_soil_temperature_field_view(physical%soil_temperature, thermal, hyd_status)
+              if (hyd_status /= SOIL_TEMP_OK) return
+              call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
+                   self%extended_legacy, hyd_status, thermal%temperature_c)
+            end block
+          class default
+            return
+          end select
+        else
+          call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
+               self%extended_legacy, hyd_status)
+        end if
         if (hyd_status /= B111_EXT_OK) return
       end block
     else if (self%analytical_hydraulics_active) then
