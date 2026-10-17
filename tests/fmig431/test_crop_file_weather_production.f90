@@ -569,6 +569,8 @@ contains
         call read_swap_daily_weather_file(trim(path),1999,1,20+d,wr,st)
         call require(st==SWAP_WEATHER_FILE_OK,'rooted authentic consecutive source record')
         call wr%growth_values(52.0_real64,iday,rad,solar,ok)
+
+        call require(ok.and.iday==20+d,'Gregorian DOY from authenticated record')
         if(j==1.and.d==3) then
           call wr%values(wd,tmn,tmx,rain,etref,ok)
           call require(ok,'EXT01 accepted source meteorology available')
@@ -576,7 +578,6 @@ contains
                19990123,tmn,tmx,rain,etref,rad
         end if
 
-        call require(ok.and.iday==20+d,'Gregorian DOY from authenticated record')
         call b111_astro_oracle(iday,52.0_real64,rad,expected_solar)
         call require(all(transfer(solar,[0_int64],6)==transfer(expected_solar,[0_int64],6)), &
              'literal source astronomy arithmetic identity')
