@@ -5,7 +5,7 @@ program test_historical_activation
  use mod_soil_n_pool_state
  implicit none
  type(soil_n_historical_selection_t)::sel
- type(reactive_parameters_t)::p,p_source
+ type(reactive_parameters_t)::p,p_source,p_bound
  type(reactive_state_t)::owner,other
  type(soil_n_pool_state_t)::pools,derived
  type(soil_n_historical_initial_t)::legacy
@@ -27,16 +27,16 @@ program test_historical_activation
  rates%tcsf_n=.5d0;rates%lai_crit_nupt=3d0;rates%depth_m=.3d0
  rates%nh4_lat=.3d0;rates%no3_lat=.4d0
  rates%nh4_seep=.1d0;rates%no3_seep=.2d0
- call bind_historical_soil_n_rates(rates,p,p_source,tcsf,lai,code)
+ call bind_historical_soil_n_rates(rates,p,p_bound,tcsf,lai,code)
  if(code/=N_ACTIVATION_OK)error stop 'source parameter binding'
- if(any(p_source%mineral%c_bottom/=[.1d0,.2d0]))error stop 'distinct seepage'
- if(any(p_source%mineral%c_lateral/=[.3d0,.4d0]))error stop 'distinct lateral'
+ if(any(p_bound%mineral%c_bottom/=[.1d0,.2d0]))error stop 'distinct seepage'
+ if(any(p_bound%mineral%c_lateral/=[.3d0,.4d0]))error stop 'distinct lateral'
  if(tcsf/=.5d0.or.lai/=3d0)error stop 'crop uptake parameters'
  rates%wfpscrit=1.5d0
- call bind_historical_soil_n_rates(rates,p,p_source,tcsf,lai,code)
+ call bind_historical_soil_n_rates(rates,p,p_bound,tcsf,lai,code)
  if(code/=N_ACTIVATION_INVALID.or.tcsf/=0d0.or.lai/=0d0)error stop 'invalid rate accepted'
  rates%wfpscrit=.6d0
- call bind_historical_soil_n_rates(rates,p,p_source,tcsf,lai,code)
+ call bind_historical_soil_n_rates(rates,p,p_bound,tcsf,lai,code)
  if(code/=N_ACTIVATION_OK)error stop 'restore rate binding'
  legacy%fom_kg_m3=[1d0,2d0,3d0,4d0,5d0,6d0,7d0,8d0]
  legacy%bio_kg_m3=5d0;legacy%hum_kg_m3=40d0
