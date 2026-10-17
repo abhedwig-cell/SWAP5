@@ -7,13 +7,45 @@ module mod_crop_soil_n_historical_project_binding
  use mod_b111_soil_n_reactive_owner,only:reactive_parameters_t,reactive_state_t
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_crop_soil_n_configuration,only:crop_n_configuration_t
+ use mod_crop_soil_n_day,only:crop_soil_state_t,initialize_crop_soil
+ use mod_wofost81_crop_owner_state,only:wofost81_crop_owner_state_t
  use mod_crop_senescence_residue,only:crop_senescence_policy_t
  use mod_crop_soil_n_residue_age_binding,only:bind_historical_residue_ages,RESIDUE_AGE_BIND_OK
  use mod_soil_n_historical_named_input,only:soil_n_residue_age_t
  implicit none
  private
- public::initialize_historical_crop_soil_project
+ public::initialize_historical_crop_soil_project,initialize_historical_crop_soil_owner
 contains
+ subroutine initialize_historical_crop_soil_owner(selection,soil_template,crop_template,crop_owner, &
+   soil_id,crop_id,clock,water,path,origin,plan,coupled,senescence,status,error_line)
+ type(soil_n_historical_selection_t),intent(in)::selection
+ type(reactive_parameters_t),intent(in)::soil_template
+ type(crop_n_configuration_t),intent(in)::crop_template
+ type(wofost81_crop_owner_state_t),intent(in)::crop_owner
+ integer(int64),intent(in)::soil_id,crop_id
+ real(real64),intent(in)::clock,water
+ character(*),intent(in)::path,origin
+ type(soil_n_amendment_calendar_t),intent(out)::plan
+ type(crop_soil_state_t),intent(out)::coupled
+ type(crop_senescence_policy_t),intent(out)::senescence
+ integer,intent(out)::status,error_line
+ type(soil_n_amendment_calendar_t)::candidate_plan
+ type(crop_soil_state_t)::candidate_coupled
+ type(reactive_state_t)::soil
+ type(reactive_parameters_t)::parameters
+ type(crop_n_configuration_t)::configuration
+ type(crop_senescence_policy_t)::candidate_senescence
+ integer::code
+ plan=soil_n_amendment_calendar_t();coupled=crop_soil_state_t()
+ senescence=crop_senescence_policy_t();status=1;error_line=0
+ call initialize_historical_crop_soil_project(selection,soil_template,crop_template,soil_id,clock,water, &
+   path,origin,candidate_plan,soil,parameters,configuration,candidate_senescence,code,error_line)
+ if(code/=0)return
+ call initialize_crop_soil(soil,crop_owner,configuration,crop_id,candidate_coupled,code)
+ if(code/=0.or..not.candidate_coupled%ready())return
+ plan=candidate_plan;coupled=candidate_coupled;senescence=candidate_senescence
+ status=0;error_line=0
+ end subroutine
  subroutine initialize_historical_crop_soil_project(selection,soil_template,crop_template, &
    id,clock,water,path,origin,plan,soil,soil_parameters,crop,senescence,status,error_line)
  type(soil_n_historical_selection_t),intent(in)::selection
