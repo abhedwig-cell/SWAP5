@@ -82,7 +82,7 @@ jobs:
             gfortran "${COMMON[@]}" -O"$opt" "${objs[@]}" "../build/o$opt/driver.o" -o "../build/o$opt/driver"
             "../build/o$opt/driver" ../build/forcing.dat "../build/fortran_o$opt.csv"
             python tests/fwof/ext01/compare_new_barley.py "../build/fortran_o$opt.csv" ../input/ext01_barley_python_crop_only.csv "../build/difference_o$opt.json"
-            echo "EXT01_O$opt_NATIVE_RESEARCH_COMPLETE"
+            echo "EXT01_O${opt}_NATIVE_RESEARCH_COMPLETE"
           done
           cmp ../build/fortran_o0.csv ../build/fortran_o2.csv
           echo EXT01_O0_O2_IDENTICAL_NO_SCIENCE_ADMISSION
