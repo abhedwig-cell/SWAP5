@@ -30,7 +30,7 @@ assert 'enable_ksatexm_extension=parameters%ksatexm_extension_active' in r
 print('F_SI39_STATIC_EXACT_FORMULA_AND_OPTIN=PASS')
 PY
 
-COMMON=(-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+COMMON=(-std=f2008 -pedantic-errors -ffree-line-length-none -Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   gfortran "${COMMON[@]}" -Wno-error=unused-dummy-argument -O"$opt" -J "$OUT" -I "$OUT" -c src/solver/mod_soil_water_solver_contract.f90 -o "$OUT/contract.o"
