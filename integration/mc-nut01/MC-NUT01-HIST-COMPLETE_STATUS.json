@@ -1,0 +1,17 @@
+{
+  "workstream": "MC-NUT01",
+  "work_unit": "MC-NUT01-HIST-COMPLETE",
+  "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
+  "checkpoint_commit": "55dd969b1df674d92aa36b512280a165df13240d",
+  "implemented": ["31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained"],
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "relevant_paths": ["tests/nut-crop/test_b112_retained_joint.f90", "tests/nut-crop/run_b112_retained_joint.py", "tests/nut-crop/audit_legacy_snm_source.py", "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90", "src/process/mod_soil_n_amendment_input.f90", "src/process/mod_soil_n_unified_input.f90"],
+  "authority_paths": ["AGENTS.md", "docs/development/workstream-execution-protocol.md", "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"],
+  "dependency_surface": ["Richards daily transaction and forcing", "crop-N and Soil-N one-day ownership", "source amendment input", "native joint restart", "legacy TTUTIL/SNM grammar"],
+  "next_action": "Qualify 31-day coupled execution on exact persisted commit; then reconstruct true TTUTIL/SNM source grammar, implement source-matched parser and expand to the accepted year-long coupled test only when physical evidence supports it.",
+  "recovery_point": "work/nut-hist-complete-20261018@55dd969b1df674d92aa36b512280a165df13240d",
+  "blockers": ["Full legacy TTUTIL grammar not yet reconstructed; 366-day coupled Richards and crop rotation not yet qualified"],
+  "mastercoverage_promotion": false
+}
