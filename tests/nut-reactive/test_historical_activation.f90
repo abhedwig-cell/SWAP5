@@ -44,12 +44,19 @@ program test_historical_activation
  call parameters(p)
  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
  if(code/=0)error stop 'pools'
- p_source=p
- p_source%mineral%inventory%nfrac_fom=[.015d0,.025d0,.015d0,.025d0,.015d0,.025d0,.015d0,.025d0]
- p_source%organic_reference%ratecon_fom=[.04d0,.015d0,.04d0,.015d0,.04d0,.015d0,.04d0,.015d0]
- p_source%organic_reference%asfa_fom_bio=[.2d0,.25d0,.2d0,.25d0,.2d0,.25d0,.2d0,.25d0]
- p_source%organic_reference%asfa_fom_hum=[.15d0,.1d0,.15d0,.1d0,.15d0,.1d0,.15d0,.1d0]
- p_source%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
+ call bind_historical_organic_source_profile(p,p_source,code)
+ if(code/=N_ACTIVATION_OK)error stop 'source organic authority profile'
+ if(size(p_source%organic_reference%ratecon_fom)/=8)error stop 'source eight rates'
+ if(any(abs(p_source%organic_reference%ratecon_fom(1:4)-3d0/365.2425d0)>1d-15)) &
+   error stop 'source fast FOM rates'
+ if(any(abs(p_source%organic_reference%ratecon_fom(5:8)-.3d0/365.2425d0)>1d-15)) &
+   error stop 'source slow FOM rates'
+ if(any(p_source%mineral%inventory%nfrac_fom/=[.06d0,.002d0,.06d0,.002d0, &
+       .06d0,.002d0,.06d0,.002d0]))error stop 'source eight N fractions'
+ if(any(abs(p_source%organic_reference%asfa_fom_bio(3:4)-.28d0*.46d0)>1d-15)) &
+   error stop 'source third fourth assimilation'
+ if(abs(p_source%cfrac_biomass-.58d0)>1d-15.or.abs(p_source%cfrac_humus-.58d0)>1d-15) &
+   error stop 'source C fraction'
  rates%temp_ref=20d0;rates%sorpcoef=.0002d0
  rates%ratecon_nitrif_ref=.02d0;rates%ratecon_denitr_ref=.03d0
  rates%wfpscrit=.6d0;rates%wfpscrit2=.5d0;rates%cdissi_half=.1d0
