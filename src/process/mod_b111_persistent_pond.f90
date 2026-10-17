@@ -105,7 +105,8 @@ contains
   if(.not.bounded_values(s%t1,s%depth_end,mix%mass_after,committed%revision+1))return
   r%rain_input=mix%rain_input;r%irrigation_input=mix%irrigation_input;r%runon_input=mix%runon_input
   r%soil_transfer=mix%soil_transfer;r%runoff_output=mix%runoff_output;r%mass_after=mix%mass_after
-  r%mass_residual=r%mass_after+r%soil_transfer+r%runoff_output-r%mass_before-r%dry_input-r%rain_input-r%irrigation_input-r%runon_input
+  r%mass_residual=r%mass_after+r%soil_transfer+r%runoff_output-r%mass_before-r%dry_input- &
+    r%rain_input-r%irrigation_input-r%runon_input
   scale=max(1d0,r%mass_before,r%mass_after,r%dry_input,r%rain_input,r%irrigation_input,r%runon_input,r%runoff_output)
   if(abs(r%mass_residual)>8192d0*epsilon(1d0)*scale)return
   candidate=committed;candidate%clock=s%t1;candidate%depth=s%depth_end;candidate%mass=mix%mass_after
