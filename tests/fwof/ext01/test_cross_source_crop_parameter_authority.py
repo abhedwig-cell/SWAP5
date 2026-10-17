@@ -7,6 +7,9 @@ must not be admitted as a positive coupled scientific comparison.
 """
 from pathlib import Path
 import re
+import hashlib
+import json
+import os
 import sys
 import unittest
 import yaml
@@ -49,6 +52,19 @@ class TestParameterAuthority(unittest.TestCase):
         self.assertEqual(result["pcse_barley_daylength_mode"],0)
         self.assertNotEqual(result["source_synthetic_TSUM1"],result["pcse_barley_TSUM1"])
         self.assertNotEqual(result["source_daylength_mode"],result["pcse_barley_daylength_mode"])
+        manifest={
+            "schema":"F-WOF-EXT01/CROP-PARAMETER-PAIR/1",
+            "swap5_source":"tests/fmig431/test_crop_file_weather_production.f90",
+            "swap5_source_sha256":hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
+            "pcse_source":"pcse/tests/test_data/ext01_barley_wofost81_source.yaml",
+            "pcse_source_sha256":hashlib.sha256(YAML.read_bytes()).hexdigest(),
+            "values":result,
+            "same_crop_parameter_case":False,
+            "positive_daily_science_admitted":False
+        }
+        output=os.environ.get("EXT01_MANIFEST_PATH")
+        if output:
+            Path(output).write_text(json.dumps(manifest,sort_keys=True,indent=2)+"\\n")
         print("EXT01_AUTHENTIC_SWAP_VS_PCSE_CROP_PARAMETER_NONMATCH_PROVEN")
 if __name__=="__main__":
     sys.argv=[sys.argv[0]]
