@@ -53,12 +53,16 @@ def main():
                 raise ValueError(f"duplicate selected provider for {key}: {chosen[key]} / {path}")
             chosen[key] = path
 
+    ambiguous = {}
     for name, choices in definitions.items():
         if name in chosen:
             continue
-        if len(choices) != 1:
-            raise ValueError(f"ambiguous unselected provider {name}: {choices}")
-        chosen[name] = choices[0]
+        if len(choices) == 1:
+            chosen[name] = choices[0]
+        else:
+            # Unrelated duplicate historical modules may exist in the tree.
+            # Fail only when the selected dependency graph actually needs one.
+            ambiguous[name] = choices
 
     seen = set()
     active = set()
@@ -76,6 +80,8 @@ def main():
                 continue
             provider = chosen.get(key)
             if provider is None:
+                if key in ambiguous:
+                    raise ValueError(f"{path} requires ambiguous Fortran module {key}: {ambiguous[key]}")
                 raise ValueError(f"{path} requires missing Fortran module {key}")
             visit(provider)
         active.remove(path)
