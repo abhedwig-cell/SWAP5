@@ -220,3 +220,10 @@ cmp -s "$BUILD/o0/output.txt" "$BUILD/o2/output.txt" || {
 
 echo "PUB_P1E02_O0_O2_SHA256=$(sha256sum "$BUILD/o0/output.txt" | awk '{print $1}')"
 echo 'PUB_P1E02_POSTSOLVER_ROLLBACK_GATE=PASS'
+
+# Owning MC-SOL01 real Reference water + reactive chemistry composition:
+# actual accepted substeps, chemical rollback/retry, native V2 disk restart,
+# independent fresh-process continuation, CRC-correct corrupted payloads,
+# O0/O2 endpoint and incumbent surface preservation. Not a mock integrator.
+POND_JOINT_RESULT_DIR="$BUILD/pond-joint" python3 tests/nut-sol/run_pond_joint.py
+
