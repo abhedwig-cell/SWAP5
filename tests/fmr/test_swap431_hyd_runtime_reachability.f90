@@ -347,6 +347,7 @@ contains
       coni(j,:)=k
       cons(j,:)=0.0_real64
     end do
+    p%tabulated_hydraulics_active=.true.
     allocate(p%linear_hydraulic_table)
     call initialize_b111_linear_table_parameters(p%linear_hydraulic_table,bp%cofgen,wci,wcs,capi,caps,coni,cons,status)
     call require(status==B111_LINEAR_TABLE_OK,'linear-table configure')
