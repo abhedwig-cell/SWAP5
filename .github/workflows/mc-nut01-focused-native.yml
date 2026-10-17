@@ -1,0 +1,47 @@
+name: MC-NUT01 focused native qualification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mc-nut01-focused-native.yml'
+      - 'src/crop/**'
+      - 'src/process/**'
+      - 'tests/nut-crop/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  retained-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Fortran compiler
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran
+      - name: Execute real B1.12 production O0 and O2 contracts
+        run: python3 -B tests/nut-crop/run_b112_retained.py --output /tmp/nut-b112-focused
+      - name: Preserve raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mc-nut01-retained-native
+          path: /tmp/nut-b112-focused/
+          if-no-files-found: warn
+      - name: Publish check status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          JOB_STATUS: ${{ job.status }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import json,os,urllib.request
+          state={'success':'success','failure':'failure'}.get(os.environ['JOB_STATUS'],'error')
+          payload=json.dumps({'state':state,'context':'MC-NUT01/retained-native-O0-O2','description':'Existing real production B1.12 focused native gate: '+os.environ['JOB_STATUS'],'target_url':'https://github.com/'+os.environ['GH_REPOSITORY']+'/actions/runs/'+os.environ['GH_RUN_ID']}).encode()
+          url='https://api.github.com/repos/'+os.environ['GH_REPOSITORY']+'/statuses/'+os.environ['COMMIT_SHA']
+          request=urllib.request.Request(url,data=payload,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'},method='POST')
+          with urllib.request.urlopen(request,timeout=20) as response:
+              print('MC_NUT01_STATUS',response.status,state)
+          PY
