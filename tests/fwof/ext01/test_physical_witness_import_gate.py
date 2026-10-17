@@ -47,14 +47,14 @@ def accept_for_pcse(witness, expected_day):
     factor=witness["unit_conversion_to_cm"]
     if not isinstance(factor,(int,float)) or not math.isfinite(factor) or factor<=0:
         raise ValueError("missing documented unit mapping")
-    raise ValueError("witness-v2 has no independent unit authority or same-day meteo; use future fully attested contract")
+    raise ValueError("witness-v3 has no independent unit authority or same-day meteo; use future fully attested contract")
 
 class TestPhysicalGate(unittest.TestCase):
     def setUp(self):
-        self.witness=dict(schema="F-WOF-EXT01/SWAP-WITNESS/2",
+        self.witness=dict(schema="F-WOF-EXT01/SWAP-WITNESS/3",
             source="test_crop_file_weather_production.f90",
             witness_column=1,source_fortran_day=2,independent_matching_confirmations=3,
-            accepted_lineage_id=1,accepted_final_revision=192,
+            accepted_lineage_id=630101,accepted_final_revision=192,
             accepted_t0=2.0,accepted_t1=3.0,
             source_weather_epoch="1999-01-20",source_calendar_date="1999-01-23",
             actual_root_uptake_native_integral=1.0370706377336118e-3,
