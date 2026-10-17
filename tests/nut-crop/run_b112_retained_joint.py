@@ -2,6 +2,9 @@
 from pathlib import Path
 import base64,hashlib,io,json,os,runpy,struct,tarfile,zlib
 ROOT=Path(__file__).resolve().parents[2]
+# The B1.11 exact-byte source audit is printed before compiling the real driver.
+from audit_legacy_snm_source import audit as audit_legacy_snm_source
+audit_legacy_snm_source()
 # One shared stable build executes the original default/1253/1260 science first.
 original=runpy.run_path(str(ROOT/('tests/nut-crop/reuse_b112_stable.py'if os.environ.get('B112_REUSE_STABLE')else'tests/nut-crop/run_reproductive_binding.py')))
 ns=original['ns'];OUT=ns['OUT'];cmd=ns['cmd'];FC=ns['FC'];sha=ns['sha'];result=original['result'];result['b112_retained']={}
