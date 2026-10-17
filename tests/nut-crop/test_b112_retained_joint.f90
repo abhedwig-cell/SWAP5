@@ -302,8 +302,8 @@ contains
    write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
    write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
    write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
-   write(unit,'(A)')'1900-01-01 1 100 0.1'
-   write(unit,'(A)')'1900-01-03 1 50 0.1'
+   write(unit,'(A)')'1900-12-30 1 100 0.1'
+   write(unit,'(A)')'1901-01-01 1 50 0.1'
    write(unit,'(A)')'[soil_n_parameters]'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
@@ -323,10 +323,11 @@ contains
    call require(ok,'source water state')
    source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
-      0d0,source_water,'source-crop-startup.txt','1900-01-01',startup_plan, &
+      0d0,source_water,'source-crop-startup.txt','1900-12-30',startup_plan, &
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
+   ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
    do day=0,3
      call select_soil_n_amendments(startup_plan,real(day,real64),real(day+1,real64), &
        scheduled,record_indices,code)
