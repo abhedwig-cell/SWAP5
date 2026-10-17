@@ -27,8 +27,11 @@ def verify_execution_inventory(name,files,result):
    if e['category'] in ('compile','provider_compile','driver_compile'):
     require('-c' in command and '-o' in command,'invalid compilation record')
     source=command[command.index('-c')+1]
-    require(source not in compiled or e['category']=='driver_compile','duplicate provider compilation')
-    if e['category']!='driver_compile':compiled.add(source)
+    build_group=next((opt for opt in ('O0','O2') if any('/'+opt+'/' in x for x in command)),None)
+    require(build_group is not None,'unidentified compilation optimization')
+    key=(build_group,source)
+    require(key not in compiled,'duplicate compilation')
+    compiled.add(key)
     require(any(x in command for x in ('-fcheck=all','-fcheck=bounds')),'missing runtime bounds checks')
     require(any(x.startswith('-ffpe-trap=') and all(y in x for y in ('invalid','zero','overflow')) for x in command),'missing IEEE traps')
    if e['category']=='native':
