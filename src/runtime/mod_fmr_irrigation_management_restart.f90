@@ -131,7 +131,9 @@ contains
     type(fmr_irrigation_management_state_t), intent(in) :: state
     ok = .false.
     if (state%policy%weekly_day_counter < 0) return
-    if (state%policy%weekly_day_counter > 6 .and. state%policy%weekly_day_counter /= 366) return
+    ! DAYFIX also represents the source TCSFIX interval (1..366).
+    ! TCS6 retains its narrower domain in the policy, where configuration is available.
+    if (state%policy%weekly_day_counter > 366) return
     if (.not. valid_event_state(state%event)) return
     ok = .true.
   end function
