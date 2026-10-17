@@ -571,6 +571,12 @@ contains
         call wr%growth_values(52.0_real64,iday,rad,solar,ok)
 
         call require(ok.and.iday==20+d,'Gregorian DOY from authenticated record')
+        if(j==1) then
+          call wr%values(wd,tmn,tmx,rain,etref,ok)
+          call require(ok,'EXT01 1999 sequential physical source weather available')
+          write(*,'(a,1x,i0,5(1x,es24.16))') 'F_WOF_EXT01_1999_SOURCE_SEQUENCE', &
+               19990120+d,tmn,tmx,rain,etref,rad
+        end if
         if(j==1.and.d==3) then
           call wr%values(wd,tmn,tmx,rain,etref,ok)
           call require(ok,'EXT01 accepted source meteorology available')
