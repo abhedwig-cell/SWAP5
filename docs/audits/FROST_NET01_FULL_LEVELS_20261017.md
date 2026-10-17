@@ -1,7 +1,15 @@
 # NET01 source count completion
 
-Status: qualified local O0/O2 successor, safe canonical admission pending in
-PR#1276. Baseline `f9f1614a794cf5a7e2f219a60fd1a61da245176b`.
+Status: canonically admitted via PR#1276 at
+`719c6c67107ebf7113020e425e725731b26f73a3`.
+Baseline `f9f1614a794cf5a7e2f219a60fd1a61da245176b`.
+Qualified head `1b271e95993cf72c284a40a6d278a40e72d121a6`; actual complete merge
+tree `13519301d6b2c95dc660ea421d83161f78917ab5` equals the qualified tree.
+Qualified source `cfc2191f6a9e5e491e7fca53db82faeea0024c72` is unchanged by admission.
+The exact-head PR was mergeable on the unchanged baseline; no Actions run or
+status existed and no dispatch was selected. This is bounded scientific admission,
+not a claim that a full moving F-CI ran. The existing work-unit status and
+`FROST_NET01_FULL_LEVELS_CANONICAL_ADMISSION_20261017.json` record the receipt.
 
 ## Result and production change
 

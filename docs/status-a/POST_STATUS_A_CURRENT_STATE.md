@@ -1,6 +1,20 @@
 # SWAP5 post-Status-A current canonical state
 
-## Owner-approved NET01 multilevel frost successor, 17 October 2026
+## NET01 complete source counts2..25, 17 October 2026
+
+PR #1276 admits all24 multilevel counts at
+`719c6c67107ebf7113020e425e725731b26f73a3`; the complete merge tree equals its
+qualified tree. Both B1.11 drainage array profiles (5/25) are covered by one
+parameter/forcing limit. At O0/O2 all18,432 full-source cases and1,536 actual
+physical configurations pass, including hard1e-12 cm mass, real rejected-trial
+rollback, empty-registry restart, two-column isolation and original preservation.
+The accepted NET01 physical policy, state/restart and trial ledger are unchanged.
+[Current evidence and claim ceiling](../audits/FROST_NET01_FULL_LEVELS_20261017.md)
+close the count gap. Strict depth ordering and top discharge-layer options remain
+bounded; separate root/snow/bottom-owner coverage is unchanged. This does not
+close the entire MC-FROST01/master capability or aggregate frost migration.
+
+## Initial two/three-level NET01 admission, 17 October 2026
 
 PR #1275 admits NET01 at `5f919cbb5de933bff62e715045533a5c63faba4d`;
 the actual complete merge tree equals the qualified candidate. The explicit owner-approved absolute-rate policy
@@ -9,8 +23,9 @@ ordinary Reference mode-2 route passes all 9,216 source cases and 128 actual
 physical configurations per optimization, hard mass, rejected-trial rollback,
 exact restart, application and column isolation, plus original B18 and ordinary
 multilevel/separate-infiltration preservation. [Contract, evidence and claim ceiling](../audits/FROST_NET01_PRODUCTION_20261017.md)
-remain controlling. Other level counts, roots, snow and other boundary owners
-retain separate coverage; this is not a full-frost or global coverage closure.
+remain controlling for that initial admission. PR #1276 above supersedes its
+two/three-level ceiling. Roots, snow and other boundary owners retain separate
+coverage; this is not a full-frost or global coverage closure.
 
 Date: 2026-10-01
 
