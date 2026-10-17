@@ -4224,7 +4224,7 @@ contains
         integer :: hyd_status
         call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
         call configure_b111_legacy_hydraulic_provider(self%extended_legacy, &
-             self%hydraulic_parameters%cofgen, self%trusted_parameter_source%hydraulic_model_kind, hyd_status)
+             self%hydraulic_parameters%cofgen, self%extended_parameters%model, hyd_status)
         if (hyd_status /= B111_LEGACY_HYD_OK) return
         call bind_b111_legacy_hydraulic_provider(self%extended_legacy, self%constitutive, step_duration, hyd_status)
         if (hyd_status /= B111_LEGACY_HYD_OK) return
