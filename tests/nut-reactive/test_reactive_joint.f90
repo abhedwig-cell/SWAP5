@@ -208,6 +208,13 @@ program test_reactive_joint
        [1.27d0,.99d0,1.27d0,1.27d0]),'historical project harvest policy')
      call require(crop_initialized%tcsf_n==historical_tcsf.and. &
        crop_initialized%lai_crit_nupt==historical_lai,'project crop-N supply parameters')
+     deallocate(crop_profile%harvest)
+     call initialize_historical_crop_soil_project(historical,eight,crop_profile,9001_int64, &
+       0d0,theta,'historical-unified.txt','1900-01-01',historical_plan,eight_n, &
+       eight_bound,crop_initialized,death_policy,status,input_line)
+     call require(status/=0.and..not.eight_n%ready().and..not.historical_plan%ready(), &
+       'invalid crop owner rejects combined project without partial soil/calendar')
+
    end block
    ! Late malformed parameter after valid management rows must publish no owner or calendar.
    open(newunit=input_unit,file='historical-unified.txt',position='append')
