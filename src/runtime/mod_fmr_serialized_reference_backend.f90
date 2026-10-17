@@ -5637,6 +5637,16 @@ contains
           solve_result%converged_surface_result%runoff_depth < 0.0_real64) return
       if (abs(solve_result%converged_surface_result%candidate_ponding_depth-step%pond_end_cm) > &
           128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(step%pond_end_cm))) return
+      ! HeadCalc's final dynamic-top balance, checked again at the accepted
+      ! transaction carrier rather than trusting a Newton candidate receipt.
+      ! qtop is signed (upward positive); runoff is a depth in cm.
+      if (.not.ieee_is_finite(solve_result%converged_surface_result%net_potential_surface_flux)) return
+      if (abs(step%pond_end_cm-step%pond_start_cm - &
+          solve_result%converged_surface_result%net_potential_surface_flux*(t1-t0) + &
+          solve_result%converged_surface_result%runoff_depth - step%top_flux*(t1-t0)) > &
+          1.0e-8_real64*max(1.0_real64,abs(step%pond_start_cm),abs(step%pond_end_cm), &
+          abs(step%top_flux*(t1-t0)), &
+          abs(solve_result%converged_surface_result%net_potential_surface_flux*(t1-t0)))) return
       step%converged_surface_available = .true.
       step%converged_pond_evaporation_cm_day = solve_result%converged_surface_result%ponded_water_evaporation
       step%converged_runoff_depth_cm = solve_result%converged_surface_result%runoff_depth
