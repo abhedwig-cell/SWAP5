@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CONSTITUTIVE_PROVIDERS_AND_HYST_LAYOUT_REGISTERED",
-  "tested": false,
+  "stage": "CANONICAL_COMPONENT_TESTED_RUNTIME_PORT_PENDING",
+  "tested": "CANONICAL_COMPONENT_O0_O2_PASS",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,6 +27,16 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Forward-port hyst committed physical state and restart checks with current canonical owner contracts, then runtime dispatch; run new exact-head O0/O2 and preservation tests before PR/admission.",
-  "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199"
+  "next_action": "Forward-port accepted hysteresis physical state/restart and dispatch onto canonical runtime, preserve current owners, then run native runtime O0/O2 plus dependency-owner preservation; do not promote coverage yet.",
+  "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
+  "canonical_component_qualification": {
+    "workflow_run": 39021520599,
+    "head": "b439e197ee2cec80c0c191a04a8f01f0c8d5b5c1",
+    "result": "PASS",
+    "checks": [
+      "hydraulic families O0/O2",
+      "HYST state O0/O2"
+    ],
+    "ceiling": "component only: not runtime, rollback, restart or canonical admitted"
+  }
 }
