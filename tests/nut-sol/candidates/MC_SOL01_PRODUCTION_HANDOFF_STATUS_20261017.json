@@ -56,5 +56,21 @@
     "latest_rollback_run": 39066797372,
     "latest_fross_run": 39066797507,
     "next_owner_gate": "Qualify changed shared solver-contract postimage with RossFast owner and full preservation; then implement accepted gross receipts & integrated chemical rollback/restart. Current surface joint route explicitly demands ponding_depth==0 and does not support evaporation/runoff."
+  },
+  "production_safety_patch_20261017": {
+    "commit": "88caef3fca94d22870afec672be29b456082924b",
+    "path": "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+    "behavior": "Fail closed when an available final-converged receipt proves positive pond evaporation or runoff, rather than apply incumbent zero-loss water budget to a nonzero-loss step.",
+    "not_claimed": [
+      "gross receipt integration",
+      "wet-pond solute chemistry",
+      "O0/O2 qualification on this head",
+      "F-ROSS admission"
+    ],
+    "auto_runs": {
+      "publication": 39067687732,
+      "fross": 39067688044
+    },
+    "next": "Implement independently verified accepted gross water ledger, retain source-aligned pond mixing, qualify shared RossFast contract, joint O0/O2 and restart before merge."
   }
 }
