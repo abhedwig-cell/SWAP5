@@ -517,6 +517,11 @@ module mod_fmr_serialized_reference_backend
     logical :: converged_surface_available = .false.
     real(real64) :: converged_pond_evaporation_cm_day = 0.0_real64
     real(real64) :: converged_runoff_depth_cm = 0.0_real64
+    logical :: converged_gross_sources_available = .false.
+    real(real64) :: converged_rain_rate_cm_day = 0.0_real64
+    real(real64) :: converged_irrigation_rate_cm_day = 0.0_real64
+    real(real64) :: converged_snowmelt_rate_cm_day = 0.0_real64
+    real(real64) :: converged_runon_rate_cm_day = 0.0_real64
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
@@ -5635,6 +5640,21 @@ contains
       step%converged_surface_available = .true.
       step%converged_pond_evaporation_cm_day = solve_result%converged_surface_result%ponded_water_evaporation
       step%converged_runoff_depth_cm = solve_result%converged_surface_result%runoff_depth
+      if (solve_result%converged_surface_result%gross_surface_sources_available) then
+        if (.not.all(ieee_is_finite([solve_result%converged_surface_result%precipitation_rate_cm_day, &
+            solve_result%converged_surface_result%irrigation_rate_cm_day, &
+            solve_result%converged_surface_result%snowmelt_rate_cm_day, &
+            solve_result%converged_surface_result%runon_rate_cm_day]))) return
+        if (min(solve_result%converged_surface_result%precipitation_rate_cm_day, &
+            solve_result%converged_surface_result%irrigation_rate_cm_day, &
+            solve_result%converged_surface_result%snowmelt_rate_cm_day, &
+            solve_result%converged_surface_result%runon_rate_cm_day) < 0.0_real64) return
+        step%converged_gross_sources_available = .true.
+        step%converged_rain_rate_cm_day = solve_result%converged_surface_result%precipitation_rate_cm_day
+        step%converged_irrigation_rate_cm_day = solve_result%converged_surface_result%irrigation_rate_cm_day
+        step%converged_snowmelt_rate_cm_day = solve_result%converged_surface_result%snowmelt_rate_cm_day
+        step%converged_runon_rate_cm_day = solve_result%converged_surface_result%runon_rate_cm_day
+      end if
     end if
     step%water_start = request%base_state%water_content
     step%water_end = solve_result%candidate_state%water_content
