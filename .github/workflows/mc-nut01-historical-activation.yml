@@ -4,6 +4,8 @@ on:
     paths:
       - 'src/process/mod_soil_n_historical_activation.f90'
       - 'tests/nut-reactive/test_historical_activation.f90'
+      - 'src/runtime/mod_fmr_b111_reactive_n_route.f90'
+      - 'tests/nut-reactive/test_reactive_joint.f90'
       - '.github/workflows/mc-nut01-historical-activation.yml'
   workflow_dispatch:
 permissions:
