@@ -308,6 +308,8 @@ contains
    write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
    write(unit,'(A)')'1900-12-30 1 100 0.1'
    write(unit,'(A)')'1901-01-01 1 50 0.1'
+   write(unit,'(A)')'1901-12-31 1 75 0.1'
+   write(unit,'(A)')'1902-01-01 1 25 0.1'
    write(unit,'(A)')'[soil_n_parameters]'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
@@ -332,19 +334,33 @@ contains
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
    ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
-   do day=0,3
+   ! Exact source-event selection across a complete crop-free calendar year.
+   ! The expensive Richards driver remains four days, while the complete
+   ! immutable source forcing plan is checked at every daily boundary.
+   do day=0,368
      call select_soil_n_amendments(startup_plan,base_day+real(day,real64),base_day+real(day+1,real64), &
        scheduled,record_indices,code)
      call require(code==N_CALENDAR_OK,'source calendar selection')
-     if(day==0.or.day==2)then
+     if(day==0.or.day==2.or.day==366.or.day==367)then
        call require(size(scheduled)==1.and.size(record_indices)==1,'source event count')
-       call require(record_indices(1)==day/2+1,'source event identity')
+       select case(day)
+       case(0);call require(record_indices(1)==1,'first event identity')
+       case(2);call require(record_indices(1)==2,'second event identity')
+       case(366);call require(record_indices(1)==3,'next-year event identity')
+       case(367);call require(record_indices(1)==4,'new-year event identity')
+       end select
        if(day==0)call require(abs(scheduled(1)%application_kg_m2-.01d0)<1d-14,'first source dose')
        if(day==2)call require(abs(scheduled(1)%application_kg_m2-.005d0)<1d-14,'second source dose')
+       if(day==366)call require(abs(scheduled(1)%application_kg_m2-.0075d0)<1d-14,'next-year source dose')
+       if(day==367)call require(abs(scheduled(1)%application_kg_m2-.0025d0)<1d-14,'new-year source dose')
      else
        call require(size(scheduled)==0,'source event not duplicated')
      end if
    end do
+   ! Outside the daily grid must fail closed without selecting material.
+   call select_soil_n_amendments(startup_plan,base_day+.5d0,base_day+1.5d0, &
+     scheduled,record_indices,code)
+   call require(code/=N_CALENDAR_OK,'fractional calendar time rejected')
    policy=startup_policy
    call state%configuration(cp,sid)
    call state%snapshot(source_soil,source_crop)
