@@ -4075,6 +4075,8 @@ contains
     class(transaction_state_t), intent(inout) :: state
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
+    type(b110_default_mvg_parameters_t), target :: scan_parameters
+    real(real64), allocatable :: scan_cofgen(:,:)
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
     type(macropore_runtime_result_t) :: macropore_result
@@ -4269,16 +4271,12 @@ contains
       select type (physical => state)
       class is (fmr_b110_physical_state_t)
         if (.not. allocated(physical%hysteresis)) return
-        block
-          type(b110_default_mvg_parameters_t), target :: scan_parameters
-          real(real64), allocatable :: scan_cofgen(:,:)
-          scan_cofgen = self%hydraulic_parameters%cofgen
-          scan_cofgen(1,:) = physical%hysteresis%theta_r_scan
-          scan_cofgen(2,:) = physical%hysteresis%theta_s_scan
-          scan_cofgen(4,:) = physical%hysteresis%alpha_active
-          call initialize_b110_default_mvg_parameters(scan_parameters, scan_cofgen)
-          call bind_b110_default_mvg_provider(self%constitutive, scan_parameters, step_duration)
-        end block
+        scan_cofgen = self%hydraulic_parameters%cofgen
+        scan_cofgen(1,:) = physical%hysteresis%theta_r_scan
+        scan_cofgen(2,:) = physical%hysteresis%theta_s_scan
+        scan_cofgen(4,:) = physical%hysteresis%alpha_active
+        call initialize_b110_default_mvg_parameters(scan_parameters, scan_cofgen)
+        call bind_b110_default_mvg_provider(self%constitutive, scan_parameters, step_duration)
       class default
         return
       end select
