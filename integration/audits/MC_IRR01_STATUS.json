@@ -7905,7 +7905,7 @@
     }
   },
   "salt_completion_1271_20261017": {
-    "phase": "IMPLEMENTED_PRODUCTION_QUALIFICATION_PENDING",
+    "phase": "SCIENCE_COMPLETE_ADMISSION_PENDING",
     "baseline": "0747fd7c8a5e754d73fa5d981e8f5437ee4c12f3",
     "phase_start_utc": "2026-10-17T01:09:09.643906+00:00",
     "capabilities": [
@@ -7934,14 +7934,112 @@
     },
     "implemented": true,
     "persisted": true,
-    "tested": false,
+    "tested": true,
     "qualified": false,
     "admitted": false,
     "measurements": {
       "source_analysis_and_initial_reconciliation": "UNKNOWN; phase timer starts at contract persistence",
-      "historical_development_and_coordination": "UNKNOWN"
+      "historical_development_and_coordination": "UNKNOWN",
+      "attempts": [
+        {
+          "attempt": "salt-physical-v5",
+          "compile_invocations": 624,
+          "link_invocations": 10,
+          "native_invocations": 338,
+          "command_seconds": 552.6920256820267,
+          "controller_wall_seconds": 555.9787139830005
+        },
+        {
+          "attempt": "salt-contract-final",
+          "compile_invocations": 12,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.1066132750056568,
+          "controller_wall_seconds": 1.2266611820014077
+        },
+        {
+          "attempt": "salt-rollback-final",
+          "compile_invocations": 616,
+          "link_invocations": 2,
+          "native_invocations": 4,
+          "command_seconds": 220.22958184800154,
+          "controller_wall_seconds": 221.08990837499732
+        },
+        {
+          "attempt": "salt-physical-v1",
+          "compile_invocations": 308,
+          "link_invocations": 0,
+          "native_invocations": 0,
+          "command_seconds": 35.86593898099454,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "salt-physical-v2",
+          "compile_invocations": 308,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 49.298286948025634,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "salt-physical-v3",
+          "compile_invocations": 308,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 61.144068728001,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "salt-physical-v4",
+          "compile_invocations": 308,
+          "link_invocations": 1,
+          "native_invocations": 33,
+          "command_seconds": 69.2266389389697,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "salt-contract-v1",
+          "compile_invocations": 6,
+          "link_invocations": 0,
+          "native_invocations": 0,
+          "command_seconds": 0.30718074399919715,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "salt-contract-v2",
+          "compile_invocations": 12,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.0594451109936927,
+          "controller_wall_seconds": 1.1553330970018578
+        },
+        {
+          "attempt": "salt-contract-order",
+          "compile_invocations": 6,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 0.34568000900253537,
+          "controller_wall_seconds": "UNKNOWN"
+        }
+      ],
+      "all_recorded_attempt_totals": {
+        "compile_invocations": 2508,
+        "link_invocations": 20,
+        "native_invocations": 382,
+        "command_seconds": 991.2754602650202
+      },
+      "selected_totals": {
+        "compile_invocations": 1252,
+        "link_invocations": 14,
+        "native_invocations": 344,
+        "command_seconds": 774.0282208050339
+      },
+      "terminal_science_wall_seconds": 778.2952835399992,
+      "terminal_physical_wall_seconds": 555.9787139830005,
+      "instrumented_elapsed_through_science_sealing_seconds": 1479.304086,
+      "active_engineering_and_coordination_times": "UNKNOWN; phase elapsed includes wall waiting and tool overhead, not active engineering category timers"
     },
-    "next_action": "Fresh complete O0/O2 rooted/sensor accepted salt weather/native qualification plus three unchanged water-only endpoint representatives; salt-specific CRC-valid negatives; exact source/evidence admission and full master-row close only after all gates.",
+    "next_action": "Run exact bound source/science admission, fail-closed controls and four existing owning entries; safe canonical merge PR1274, promote only the existing SALTEXCESS row preserving all242 other rows.",
     "pull_request": 1274,
     "incumbent_result": {
       "qualified": true,
@@ -8238,7 +8336,9 @@
       "salt-contract-order: FAILED actual source order, retained raw",
       "salt-contract-final: 360+6 O0/O2 PASS",
       "salt-physical-v1:297 O0 providers compiled; generated failure-probe q undeclared, corrected rank-one initialization",
-      "salt-physical-v2: compiled real source; actual rooted weather failed rate oracle, root allocation carrier defect corrected"
+      "salt-physical-v2: compiled real source; actual rooted weather failed rate oracle, root allocation carrier defect corrected",
+      "salt-physical-v3: full rooted salt/mass/opaque cycles passed, then unrelated root-free main called salt-specific endpoint print. Select existing full rooted boundary explicitly; no changed rooted assertion omitted.",
+      "salt-physical-v4:9 actual rooted trajectories including fresh-native checkpoints PASS, then CRC-correct NaN salt negative trapped in existing ready() real comparison. Decoder now checks finite values first and configured salt source identity before publication."
     ],
     "additional_targeted_rollback_selection": {
       "risk": "Final qualification review found that the selected annual/single drivers did not invoke the existing actual internally-progressed incomplete dispatcher probe. Preflight allocation rejection alone does not distinguish salt/event publication after an internally accepted then discarded physical prefix.",
@@ -8246,6 +8346,93 @@
       "expected_cost_seconds": "300-360, existing 297-provider production closure plus one driver per optimization. No repeated full production matrix.",
       "why_small_module_insufficient": "The changed composition is at the real application dispatcher publication boundary, not the unchanged salinity formula. The existing incomplete-prefix probe observes private application state through public snapshots; a copied formula/preflight-only rejection cannot prove this failure mechanism.",
       "compile_reuse": "No cross-session object reuse. The earlier live Session did not include this additional driver; its closure must be freshly compiled under existing policy. This is reported as qualification workflow cost, not physical coupling necessity."
+    },
+    "postimages": {
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+        "status": "M",
+        "blob": "aef356664edae84f8347270cade5f9e974497192"
+      },
+      "src/process/mod_irrigation_process.f90": {
+        "status": "M",
+        "blob": "b461296635537a1274acebe1a7ed4fa7287d8ab8"
+      },
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90": {
+        "status": "M",
+        "blob": "0678b6ee244c04d2cfaf0f499ca60d2d9e98a280"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "424037b5606e08839a9be1d071d2b982565cd2d1"
+      },
+      "tests/mc-irr01/check_salt_completion_controls.py": {
+        "status": "A",
+        "blob": "13362d07a40d102194589f988da0ecc654b82c6f"
+      },
+      "tests/mc-irr01/run_salt_completion_application.py": {
+        "status": "A",
+        "blob": "b5053cb16cc1a3ee3c3f2b5e7d5819a8cda122d1"
+      },
+      "tests/mc-irr01/run_salt_completion_contract.py": {
+        "status": "A",
+        "blob": "80061be989aac5e43659113b48fd403b42fd938e"
+      },
+      "tests/mc-irr01/run_salt_rollback_application.py": {
+        "status": "A",
+        "blob": "d66753015a8c11f79a6013ea81bc1df4f52ffae9"
+      },
+      "tests/mc-irr01/salt_completion_cycle_driver.py": {
+        "status": "A",
+        "blob": "222c1180e0ed63ef22dfe563823bd358415e9671"
+      },
+      "tests/mc-irr01/salt_completion_native_controls.py": {
+        "status": "A",
+        "blob": "8e2e8b8b3180b093244630babfc89e869be6f6f4"
+      },
+      "tests/mc-irr01/salt_rollback_cycle_driver.py": {
+        "status": "A",
+        "blob": "bbc1d0f5488dbb27a1ccaed14a6a024f61a33cdd"
+      },
+      "tests/mc-irr01/test_salt_completion_contract.f90": {
+        "status": "A",
+        "blob": "7fa05ca132a7cae1b67ae806b783b493c359ee36"
+      },
+      "tests/mc-irr01/verify_salt_completion_successor.py": {
+        "status": "A",
+        "blob": "c6d150aabf584c24fdd0e1c69329383d7b6a3e0c"
+      },
+      "tests/mc-irr01/verify_sensor_batch_successor.py": {
+        "status": "M",
+        "blob": "26161b5659295cae2ca4056b8ebba7e66674694c"
+      }
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_SALT_COMPLETION_20261017.tar.xz.b64",
+      "decoded_sha256": "450dffca7b95918906f8a5635345ec233e5faa8d66c1110370b344c4bf7739a1",
+      "decoded_bytes": 308540,
+      "members": 6365
+    },
+    "execution_commit": "d3af41ac10d75091d2649f92c8b0c2c2f84898a7",
+    "source_tree": "f4aec497a245287d4a2bbeff340e0396d8c86cde",
+    "incumbent_proof_sha256": "47c2d8d895b1ed501cc94e8ef29cf56056b96533b5b627e9852041091b66a1ee",
+    "inheritance": {
+      "incumbent_owner_successor_flags": 30,
+      "incumbent_full_rows": 15,
+      "original_sensor_admission_controls": 32,
+      "original_root_admission_controls": 35,
+      "source_and_solver": "Richards/transport/root/calendar source unchanged; accepted salt mass ledger, concentration stale/layout/error policy and physical temporal tests inherited from PR1015/1203. Existing15-row proof anchored to exact0747 source, plus full source body projection and three fresh default native byte preservation witnesses.",
+      "not_selected": [
+        "full F-CI",
+        "RossFast",
+        "highest low-air",
+        "unchanged standalone source/solver/crop/calendar campaigns"
+      ]
+    },
+    "results": {
+      "literal_cases_per_optimization": 360,
+      "invalid_direct_per_optimization": 6,
+      "real_trajectories": 90,
+      "native_decoder_negatives": 248,
+      "full_capability_promotions": 0
     }
   }
 }
