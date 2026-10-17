@@ -3000,6 +3000,7 @@ contains
       else
         ok = ok .and. .not. parameters%tabulated_hydraulics_active
       end if
+      if (allocated(parameters%linear_hydraulic_table)) write(*,'(A,L1)') 'LINEAR_GATE_AFTER_TABLE=',ok
       if (parameters%macropore_active) then
         ! Admission precedes configure_parameters(). Validate the immutable
         ! production config from the parameter carrier here; configure_parameters
@@ -3206,6 +3207,11 @@ contains
       end if
     class default
       ok = .false.
+    end select
+    select type (parameters)
+    type is (fmr_b110_physical_parameters_t)
+      if (allocated(parameters%linear_hydraulic_table)) write(*,'(A,L1,A,L1)') 'LINEAR_GATE_FINAL=',ok, &
+           ' STATE_PROFILE=',self%state_profile_admitted
     end select
     fmr_serialized_execution_admitted = ok
   end function fmr_serialized_execution_admitted
