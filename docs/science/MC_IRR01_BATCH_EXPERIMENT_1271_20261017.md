@@ -108,8 +108,8 @@ files that also link are counted in both compilation and link categories;
 | Final batch selected qualification controllers combined |530.066s,30 linked test executables,390 native invocations |
 | All resumed attempts including failed and superseded work |1134 compilation invocations,55 links,547 native invocations |
 | First partial campaign, retained separately |987 compile-only invocations,21 links,325 native invocations;406.385s successful terminal qualification;799.472s instrumented elapsed |
-| Final batch qualification per selected complete row, once admitted |132.516s |
-| Both successful partial and final qualification phases per selected row |234.113s |
+| Final batch qualification per admitted row |132.516s |
+| Both successful partial and final qualification phases per admitted row |234.113s |
 | Earlier mean terminal physical cost per full row |536.058s |
 | Source analysis/implementation category |UNKNOWN; no complete continuous timer |
 | Evidence/recovery/coordination and total engineering time |UNKNOWN; historical campaigns lack comparable category timers |
@@ -139,9 +139,17 @@ Session. The batch still pays that cost, and the attempt totals expose it.
 
 The full science, batch admission validator,35 fail-closed evidence controls and
 four existing owning/reference entrypoints pass. Admission verification took
-44.850s in one parallel controller. Exact qualified-tree merge and four-row
-master promotion are the next admission actions; the recovery record carries
-the final receipt and distinguishes tested, qualified and admitted.
+44.850s in one parallel controller. Four complete existing rows are now canonically admitted by PR1272 at
+`bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c`. Qualified head `841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e`;
+full merge tree exactly equals `1b9441ebee5258154db683b416601e525418f607`,
+source `ecc1249b9c4fc012b3382011b7c630ce98b42e60`. Postmerge source/science
+validation passes. Existing master branch receipt `1afb72288e88333b45c061cca78b87e4ca51c780`
+promotes precisely those four rows and preserves the other239 capability records.
+Counts are **243 total,109 ADMITTED,95 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE,98 unresolved**. Historical-source
+and pinned-locator integrity,20 inheritance controls and source/strict docs pass.
+The global coverage denominator remains incomplete. The full speed experiment
+remains inconclusive because coordination/engineering baseline timers are absent.
 
 Across both experiment phases, including retained failed and superseded attempts,
 actual execution totals are2,121 compilation invocations,76 links and872 native

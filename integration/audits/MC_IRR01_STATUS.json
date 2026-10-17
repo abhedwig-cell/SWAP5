@@ -6253,13 +6253,13 @@
     "authority_issue": 1271,
     "baseline": "121ed3503638c2d3168fa30e40f6af24156348a7",
     "branch": "work/mc-irr01-batch-1271-20261017",
-    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
+    "phase": "CANONICALLY_ADMITTED_FULL",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "admitted": false,
-    "full_capability_promotions": 0,
+    "admitted": true,
+    "full_capability_promotions": 4,
     "selected_capabilities": [
       "SW431-IRR-TCS2",
       "SW431-IRR-TCS3",
@@ -6323,7 +6323,10 @@
       "source_analysis_seconds": "UNKNOWN",
       "implementation_seconds": "UNKNOWN",
       "coordination_seconds": "UNKNOWN",
-      "total_development_qualification_seconds": "UNKNOWN: no complete category timers; measured controller and instrumented elapsed time kept separate"
+      "total_development_qualification_seconds": "UNKNOWN: no complete category timers; measured controller and instrumented elapsed time kept separate",
+      "full_rows_closed": 4,
+      "instrumented_observed_elapsed_through_admission_seconds": 3056.17039,
+      "elapsed_scope": "Wall duration from first instrumented phase start through receipt preparation, including gaps; not active engineering time or a complete category split."
     },
     "test_selection": {
       "direct": "Small real policy+management+restart production driver O0/O2 against authenticated literal TCSFIX; expected under30seconds.",
@@ -6342,7 +6345,7 @@
       "rossfast": "NOT_SELECTED_IMPACT",
       "highest_low_air": "NOT_SELECTED_POLICY"
     },
-    "next_action": "Safe expected-head canonical merge of existing PR1272, exact merge-tree proof, four existing master promotions with other239 rows unchanged.",
+    "next_action": "Experiment closed with four full admissions and an inconclusive complete speed criterion. Continue the four remaining irrigation rows through existing sensor-policy and bottom7 composition owners; preserve this source/native evidence.",
     "blockers": [],
     "retained_failures": [
       {
@@ -6360,82 +6363,78 @@
     ],
     "canonical_metadata_reconciliation": "f5504d30391baff52143ac6441ba231264cee5a0; retain full LIMIT master105/102 receipt. No production/test delta.",
     "science_archive": {
-      "path": "integration/audits/evidence/MC_IRR01_BATCH1271_20261017.tar.xz.b64",
-      "decoded_sha256": "1b1c5a41acc91706bd423d4e1c65e3ef570c1b060ab118805b5883d296d8ab96",
-      "decoded_bytes": 182628,
-      "members": 3029
+      "path": "integration/audits/evidence/MC_IRR01_BATCH1271_FULL_20261017.tar.xz.b64",
+      "decoded_sha256": "abe93fca2f886556ae19de2a2ef1afed55a88e38b1b266608bd7b8d415818ddf",
+      "decoded_bytes": 248036,
+      "members": 4051
     },
     "pull_request": 1272,
-    "execution_commit": "dcb8de76c9d90cbf2a5a52b9f4f2863e39130819",
+    "execution_commit": "6a58c1ea3131d49c7b36bd9756a6f51deb08ce4d",
     "results": {
-      "direct_vectors_per_optimization": 4452,
-      "direct_O0_O2": "PASS",
-      "physical_trajectory_programs": 72,
-      "decoder_negative_programs": 240,
-      "incumbent_small_programs": 8,
-      "full_capability_promotions": 0,
-      "default_weekly_native_byte_equivalence": [
-        {
-          "opt": 0,
-          "phase": "morning",
-          "sha256": "9b433e7ca5b1c49df1c16ddeef1a9fbc840cd99117233fb13e5543fcfd044e9b"
-        },
-        {
-          "opt": 0,
-          "phase": "dayend",
-          "sha256": "781ca74d7fb6a83448aeca6267fc121714dbb82907d772ceabee7b7b992bc8c7"
-        },
-        {
-          "opt": 2,
-          "phase": "morning",
-          "sha256": "9b433e7ca5b1c49df1c16ddeef1a9fbc840cd99117233fb13e5543fcfd044e9b"
-        },
-        {
-          "opt": 2,
-          "phase": "dayend",
-          "sha256": "781ca74d7fb6a83448aeca6267fc121714dbb82907d772ceabee7b7b992bc8c7"
-        }
-      ],
-      "mass_reject_replay_opaque_fresh_native": "PASS_SELECTED_COMPOSITION_ONLY",
-      "original_owner_admission": "NOT_COMPLETE_FULL_ROW_GATES_OPEN",
-      "docs_source": "PASS",
-      "strict_docs": "PASS"
+      "full_capability_promotions": 4,
+      "source_O0_O2": "PASS",
+      "physical_trajectories": 108,
+      "decoder_negatives": 264,
+      "full_admission_negatives": 35,
+      "owner_entrypoints": 4,
+      "exact_continuous_opaque_fresh_native": true,
+      "TCS6_AVAIL_native_bytes_preserved": true
     },
     "inheritance": {
-      "prior_physical_passes_reused": 0,
-      "shared_providers_per_optimization": 296,
-      "historical_fixture_and_oracles_reused": true,
-      "native_default_evidence": "Fresh new bytes compared directly with authenticated LIMIT capsule; all four full endpoint files identical.",
-      "unaffected_solvers": "NOT_SELECTED_IMPACT, no fabricated fresh PASS",
-      "highest_low_air": "NOT_SELECTED_POLICY",
+      "incumbent_owner_successor_receipt_flags_preserved": 28,
+      "original_incumbent_evidence_controls_passed": 29,
+      "historical_forcing_and_oracles_reused": true,
+      "fresh_providers_per_optimization": 297,
+      "fresh_TCS6_AVAIL_default_endpoint_identity": true,
+      "unaffected_component_science": "INHERITED_EXACT_RELEVANT_INPUTS",
       "full_fci": "NOT_SELECTED_IMPACT",
-      "hosted_actions": "NOT_SELECTED"
+      "RossFast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY"
     },
     "experiment_result": {
       "success": false,
-      "interpretation": "INCONCLUSIVE: complete four-row science/admission qualification now passed; canonical/master admission next. Final terminal science132.516s per row, both successful phases234.113s per row, compared with earlier mean536.058s. Historical coordination/engineering timings are UNKNOWN, so the full success criterion is not demonstrated.",
-      "limitation": "Missing application activation was resolved through existing owners. Failed fixture rebuilds and repeated evidence coordination remain observed workflow costs; no physical coupling requires separate campaigns."
+      "interpretation": "INCONCLUSIVE overall: four full existing rows canonically admitted in one PR; selected terminal science132.516s/row and both successful science phases234.113s/row versus earlier mean536.058s/row. Qualification throughput improves on these observed workloads, but missing historical coordination/total engineering timers prevent establishing the complete success criterion. No scientific assertions weakened.",
+      "limitation": "Missing application activation was resolved through existing owners. Failed fixture rebuilds and repeated evidence coordination remain observed workflow costs; no physical coupling requires separate campaigns.",
+      "full_rows_closed": 4,
+      "reliability": "All declared source, hard mass, accepted-only/rollback/once-only, opaque/native, incumbent and negative admission gates pass; no universal reliability or portable speed claim."
     },
     "master_receipt": {
-      "head": "6bad61262c2a510c8048b81d5a930f391b7d634e",
+      "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+      "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+      "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+      "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+      "merged_full_tree_exact": true,
+      "merge_expected_head_protected": true,
+      "postmerge_source_science": "PASS",
+      "master_branch": "work/swap431-master-coverage-20261006",
+      "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+      "only_promoted": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-DCS1"
+      ],
+      "all_other239_rows": "EXACT_UNCHANGED",
       "counts": {
-        "ADMITTED": 105,
-        "ACTIVE_MIGRATION": 99,
+        "total": 243,
+        "ADMITTED": 109,
+        "ACTIVE_MIGRATION": 95,
+        "QUALIFICATION_ONLY": 3,
         "SUPERSEDED": 14,
         "REJECTED": 2,
         "NOT_APPLICABLE": 20,
-        "QUALIFICATION_ONLY": 3
+        "unresolved": 98
       },
-      "unresolved": 102,
-      "experiment_promotions": 0,
-      "canonical_merge": null
+      "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+      "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+      "no_full_fci_rossfast_highest_low_air_or_actions": true
     },
     "resume_20261017": {
       "baseline": "48fb7fa3a9df7561efff4ee845a4e46341c3e45f",
       "candidate": "90167ddb13575ce4e270ec8d4c61e1d411024800",
       "delta": "Two publication docs only, no irrigation/science delta.",
       "phase_start_utc": "2026-10-16T23:35:33.880348+00:00",
-      "phase": "QUALIFIED_FULL_NOT_ADMITTED",
+      "phase": "CANONICALLY_ADMITTED_FULL",
       "contract": "Reuse immutable mod_crop_rotation_calendar plan, accepted weather Gregorian ordinal and accepted emerged crop. Add readonly plan snapshot and existing date utility inverse-year. Runtime window branch remains within existing irrigation policy; normal-year source uses elapsed days since actual Jan1 versus1900 STARTIRR/ENDIRR offsets (including historical leap-year arithmetic). Cross-year source maps STARTIRR into crop start year and ENDIRR into crop end year, strict lower1e-3 and inclusive upper1e-3. No second calendar/time counter, crop transition owner or codec. Existing configuration binds immutable plan and source option. Defaults preserve prior bytes.",
       "remaining_gates_fixed": [
         "Source full selected TCS2/3/4+DCS1 envelope via existing direct source/material tests, distinguish invalid, strict boundary and activation domains.",
@@ -6743,7 +6742,7 @@
           "result": "Season4 different_config negative mistakenly set the same Jan30 bound. Native correctly accepted identical config; witness now changes to valid Feb1 and generator asserts distinctness. Retain all27 completed O0 trajectories and native control failure; do not label this controller PASS."
         }
       ],
-      "next_action": "Safe expected-head canonical merge of existing PR1272, exact merge-tree proof, four existing master promotions with other239 rows unchanged.",
+      "next_action": "Experiment closed with four full admissions and an inconclusive complete speed criterion. Continue the four remaining irrigation rows through existing sensor-policy and bottom7 composition owners; preserve this source/native evidence.",
       "postimages": {
         "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
           "status": "M",
@@ -6847,7 +6846,7 @@
       "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
       "tested": true,
       "qualified": true,
-      "admitted": false,
+      "admitted": true,
       "science_archive": {
         "path": "integration/audits/evidence/MC_IRR01_BATCH1271_FULL_20261017.tar.xz.b64",
         "decoded_sha256": "abe93fca2f886556ae19de2a2ef1afed55a88e38b1b266608bd7b8d415818ddf",
@@ -7065,7 +7064,7 @@
         "all_successful_terminal_phases_seconds_per_selected_row": 234.1125817244988,
         "coordination_speed_result": "INCONCLUSIVE_UNKNOWN_BASELINE",
         "full_experiment_success": false,
-        "reason": "Four complete rows qualified, awaiting canonical/master admission. Lower observed terminal science per row is established for selected workloads; historical coordination/total engineering timings are unavailable."
+        "reason": "Four whole existing rows now admitted. Lower observed successful terminal science per row established for selected differing workloads; historical coordination/total engineering timings remain unavailable."
       },
       "remaining_exclusions": {
         "SW431-IRR-TCS7": "Sensor event-only boundary does not carry management DAYFIX option; extend existing interface.",
@@ -7083,7 +7082,46 @@
       "admission_controls": 35,
       "owning_entrypoints": 4,
       "admission_controller_wall_seconds": 44.84965717199884,
-      "admission_programs": 6
+      "admission_programs": 6,
+      "full_capability_promotions": 4,
+      "completion_receipt_20261017": {
+        "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+        "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+        "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+        "only_promoted": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-DCS1"
+        ],
+        "all_other239_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 109,
+          "ACTIVE_MIGRATION": 95,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 98
+        },
+        "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      },
+      "postmerge_proof": {
+        "command": "python -B tests/mc-irr01/verify_batch_activation_successor.py",
+        "canonical_head": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "returncode": 0,
+        "stdout_sha256": "8dfc73e8f829787d80ebcfbf33643ea9f7f90f525d1039849ddd3c65659caa65",
+        "qualified": true
+      }
     },
     "historical_first_partial_phase": {
       "phase": "FOCUSED_OPTION_TESTED_FULL_CAPABILITY_GATES_OPEN",
@@ -7212,6 +7250,44 @@
         "experiment_promotions": 0,
         "canonical_merge": null
       }
-    }
+    },
+    "completion_receipt_20261017": {
+      "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+      "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+      "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+      "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+      "merged_full_tree_exact": true,
+      "merge_expected_head_protected": true,
+      "postmerge_source_science": "PASS",
+      "master_branch": "work/swap431-master-coverage-20261006",
+      "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+      "only_promoted": [
+        "SW431-IRR-TCS2",
+        "SW431-IRR-TCS3",
+        "SW431-IRR-TCS4",
+        "SW431-IRR-DCS1"
+      ],
+      "all_other239_rows": "EXACT_UNCHANGED",
+      "counts": {
+        "total": 243,
+        "ADMITTED": 109,
+        "ACTIVE_MIGRATION": 95,
+        "QUALIFICATION_ONLY": 3,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "unresolved": 98
+      },
+      "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+      "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+      "no_full_fci_rossfast_highest_low_air_or_actions": true
+    },
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_BATCH1271_ADMISSION_20261017.json.gz.b64",
+      "sha256": "e326ac02868fabf5d210521b188af5af1651f1810ff5c3263d5ee545cadb2b02",
+      "decoded_json_sha256": "adf9e1e18649944cbcdf0b1d5518d08be5a4da47399037a434908c0263597eaf",
+      "execution_head": "1fd692446a5542f45217404dfd3c3fef615c19aa"
+    },
+    "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60"
   }
 }

@@ -1,62 +1,179 @@
 {
   "work_unit": "MC-IRR01",
-  "last_reconciled_canonical": "a1a4dc8d0cf7b63f10c77aeb06843465e220d87d",
+  "last_reconciled_canonical": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
   "original_capabilities": 16,
-  "admitted_fullcaps": 7,
-  "blocked_shared_application_authority": 9,
+  "admitted_fullcaps": 12,
+  "blocked_shared_application_authority": 4,
   "functional_coverage_closed": false,
   "independent_runtime_cluster_qualified_and_admitted": true,
   "canonical_allocation_pr": 1205,
-  "claim_ceiling": "Seven existing MC-IRR01 capabilities admitted, including full TCS6 and external availability through existing owners/native adapter. Nine remaining capabilities keep their independent source/selector/salt/profile gates.",
+  "claim_ceiling": "Twelve existing irrigation rows are fully admitted. TCS7/TCS8/SSDI policy-state interface and SALTEXCESS bottom7 composition remain open; no full irrigation closure claim.",
   "source_authority_sha256": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
   "capabilities": [
     {
       "capability_id": "SW431-IRR-TCS2",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Accepted evolving rooted extent plus material FC/stress threshold.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Full own historical source capability through existing accepted weather/root/material/native owners; independent sensor/salt/HYD/POWER/crop variants retain their separate admissions.",
+      "remaining_specific_action": null,
+      "shared_authority_required": null,
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json at bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c"
       ],
-      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION",
+      "prior_owner_disposition_20261017": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "fullcap_admitted": false,
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Accepted evolving rooted extent plus material FC/stress threshold.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261017": {
+        "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+        "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+        "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+        "only_promoted": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-DCS1"
+        ],
+        "all_other239_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 109,
+          "ACTIVE_MIGRATION": 95,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 98
+        },
+        "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS3",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Accepted evolving rooted extent plus material FC/wilting threshold.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Full own historical source capability through existing accepted weather/root/material/native owners; independent sensor/salt/HYD/POWER/crop variants retain their separate admissions.",
+      "remaining_specific_action": null,
+      "shared_authority_required": null,
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json at bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c"
       ],
-      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION",
+      "prior_owner_disposition_20261017": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "fullcap_admitted": false,
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Accepted evolving rooted extent plus material FC/wilting threshold.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261017": {
+        "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+        "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+        "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+        "only_promoted": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-DCS1"
+        ],
+        "all_other239_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 109,
+          "ACTIVE_MIGRATION": 95,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 98
+        },
+        "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS4",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Accepted rooted deficit and strict DWATAB comparison in weather/daystart execution.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Full own historical source capability through existing accepted weather/root/material/native owners; independent sensor/salt/HYD/POWER/crop variants retain their separate admissions.",
+      "remaining_specific_action": null,
+      "shared_authority_required": null,
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json at bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c"
       ],
-      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION",
+      "prior_owner_disposition_20261017": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "fullcap_admitted": false,
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Accepted rooted deficit and strict DWATAB comparison in weather/daystart execution.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261017": {
+        "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+        "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+        "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+        "only_promoted": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-DCS1"
+        ],
+        "all_other239_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 109,
+          "ACTIVE_MIGRATION": 95,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 98
+        },
+        "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      }
     },
     {
       "capability_id": "SW431-IRR-TCS6",
@@ -131,19 +248,58 @@
     },
     {
       "capability_id": "SW431-IRR-DCS1",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Same-window actual rain subtraction and material-consistent rooted field-capacity refill.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Full own historical source capability through existing accepted weather/root/material/native owners; independent sensor/salt/HYD/POWER/crop variants retain their separate admissions.",
+      "remaining_specific_action": null,
+      "shared_authority_required": null,
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json at bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c"
       ],
-      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION"
+      "proposed_application_cluster": "ROOTED_SALINE_WEEKLY_APPLICATION",
+      "prior_owner_disposition_20261017": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "fullcap_admitted": false,
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Same-window actual rain subtraction and material-consistent rooted field-capacity refill.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261017": {
+        "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+        "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+        "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+        "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+        "only_promoted": [
+          "SW431-IRR-TCS2",
+          "SW431-IRR-TCS3",
+          "SW431-IRR-TCS4",
+          "SW431-IRR-DCS1"
+        ],
+        "all_other239_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 109,
+          "ACTIVE_MIGRATION": 95,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 98
+        },
+        "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      }
     },
     {
       "capability_id": "SW431-IRR-FIXED-SPRINK",
@@ -199,19 +355,53 @@
     },
     {
       "capability_id": "SW431-IRR-LIMIT",
-      "master_disposition": "ACTIVE_MIGRATION",
-      "fullcap_admitted": false,
-      "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+      "master_disposition": "ADMITTED",
+      "fullcap_admitted": true,
+      "scientific_disposition": "CANONICALLY_ADMITTED_FULL",
       "algorithm_absence_proven": false,
-      "works_now": "PR1198/1199/1200/1201/1203/1205: literal policy/TASK4, realistic source onset/off, physical spatial water/salt, retry/rollback/event restart and persistent external provider allocation admitted.",
-      "remaining_specific_action": "Depth caps with accepted root/material bounds through actual shared management entry.",
-      "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners.",
+      "works_now": "Full own historical source capability through existing accepted weather/root/material/native owners; independent sensor/salt/HYD/POWER/crop variants retain their separate admissions.",
+      "remaining_specific_action": null,
+      "shared_authority_required": null,
       "evidence": [
         "integration/audits/MC_IRR01_ROOT_SALT_20261011.json",
         "integration/audits/MC_IRR01_ACCEPTED_SALT_20261011.json",
-        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json"
+        "integration/audits/MC_IRR01_ALLOCATION_BINDING_20261011.json",
+        "integration/audits/MC_IRR01_STATUS.json at 121ed3503638c2d3168fa30e40f6af24156348a7"
       ],
-      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION"
+      "proposed_application_cluster": "ROOT_FREE_SENSOR_APPLICATION",
+      "prior_owner_disposition_20261017": {
+        "master_disposition": "ACTIVE_MIGRATION",
+        "fullcap_admitted": false,
+        "scientific_disposition": "BLOCKED_SHARED_APPLICATION_AUTHORITY",
+        "remaining_specific_action": "Depth caps with accepted root/material bounds through actual shared management entry.",
+        "shared_authority_required": "Central RT/HY with MC-CROP01 must decide the managed-weather preparation, dispatch/publication and joint continuation interface against admitted PR1207, then implement the root-free sensor cluster through existing bootstrap/dispatcher owners. PR1207 already supplies bounded crop emergence, growth and positive rooted weather uptake. Evolving accepted root extent/material FC-stress-wilting authority, rooted salt bottom7, calendar-week progression and complete joint restart remain separate gates. Use authenticated whole-day rain at DCS1 selection, never subinterval rain; do not duplicate crop/root or allocation owners."
+      },
+      "canonical_admission_20261017": {
+        "canonical_merge": "121ed3503638c2d3168fa30e40f6af24156348a7",
+        "qualified_head": "627a74c4a684026c263fce7d624f33486bd0735e",
+        "qualified_full_tree": "c28073b67812eab4136cdc6a578b534527f31c5b",
+        "source_tree": "788ddc0786027dddad876ea61ee258b024c5f172",
+        "merged_full_tree_exact": true,
+        "merge_expected_head_protected": true,
+        "postmerge_source_science": "PASS",
+        "master_branch": "work/swap431-master-coverage-20261006",
+        "master_commit": "6bad61262c2a510c8048b81d5a930f391b7d634e",
+        "only_promoted": "SW431-IRR-LIMIT",
+        "all_other_242_rows": "EXACT_UNCHANGED",
+        "counts": {
+          "total": 243,
+          "ADMITTED": 105,
+          "ACTIVE_MIGRATION": 99,
+          "QUALIFICATION_ONLY": 3,
+          "SUPERSEDED": 14,
+          "REJECTED": 2,
+          "NOT_APPLICABLE": 20,
+          "unresolved": 102
+        },
+        "master_checks": "PASS original source/census and pinned later locators;20 inheritance tests;242-row exact comparison;docs source and strict build. Metadata-only receipt does not alter qualified production or science.",
+        "master_evidence": "integration/audits/evidence/MC_IRR01_LIMIT_MASTER_CHECKS_20261017.json.gz.b64 at 6bad61262c2a510c8048b81d5a930f391b7d634e",
+        "no_full_fci_rossfast_highest_low_air_or_actions": true
+      }
     },
     {
       "capability_id": "SW431-IRR-SALTEXCESS",
@@ -322,5 +512,36 @@
     "global_full_fci": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "github_actions": "NOT_SELECTED"
+  },
+  "batch_fullcap_admission_20261017": {
+    "canonical_merge": "bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c",
+    "qualified_head": "841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e",
+    "qualified_full_tree": "1b9441ebee5258154db683b416601e525418f607",
+    "source_tree": "ecc1249b9c4fc012b3382011b7c630ce98b42e60",
+    "merged_full_tree_exact": true,
+    "merge_expected_head_protected": true,
+    "postmerge_source_science": "PASS",
+    "master_branch": "work/swap431-master-coverage-20261006",
+    "master_commit": "1afb72288e88333b45c061cca78b87e4ca51c780",
+    "only_promoted": [
+      "SW431-IRR-TCS2",
+      "SW431-IRR-TCS3",
+      "SW431-IRR-TCS4",
+      "SW431-IRR-DCS1"
+    ],
+    "all_other239_rows": "EXACT_UNCHANGED",
+    "counts": {
+      "total": 243,
+      "ADMITTED": 109,
+      "ACTIVE_MIGRATION": 95,
+      "QUALIFICATION_ONLY": 3,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "unresolved": 98
+    },
+    "master_checks": "PASS historical source/census and pinned locators;20 inheritance controls;239-row exact comparison;source/strict documentation",
+    "master_evidence": "integration/audits/evidence/MC_IRR01_BATCH1271_MASTER_20261017.json.gz.b64 at 1afb72288e88333b45c061cca78b87e4ca51c780",
+    "no_full_fci_rossfast_highest_low_air_or_actions": true
   }
 }
