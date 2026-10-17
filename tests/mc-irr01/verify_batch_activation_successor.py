@@ -16,6 +16,9 @@ def blob(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['batch_experiment_1271_20261017']['resume_20261017']
 def verify_source(git_reader=None):
+ if (ROOT/'tests/mc-irr01/verify_sensor_batch_successor.py').is_file():
+  from verify_sensor_batch_successor import verify_source as successor
+  return successor(git_reader)
  g=git if git_reader is None else git_reader;r=record();check(r['admission_baseline']==BASE,'batch baseline drift');g('merge-base','--is-ancestor',BASE,'HEAD')
  dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines();check(not[x for x in dirty if not re.fullmatch(r'\?\? .*/__pycache__/[^/]+\.pyc',x)],'dirty batch science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in g('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
@@ -124,6 +127,9 @@ def validate_science(data):
   check(''.join(lines).encode()==subprocess.check_output(['git','show',BASE+':'+q],cwd=ROOT),'batch original body projection '+q)
  return dict(trajectories=108,decoder_negatives=264,root_source_vectors_per_optimization=2079,activation_boundaries_per_optimization=72,material_root_cases_per_optimization=360,continuous_opaque_fresh_native_exact=True,incumbent_native_bytes_preserved=True)
 def verify_qualification():
+ if (ROOT/'tests/mc-irr01/verify_sensor_batch_successor.py').is_file():
+  from verify_sensor_batch_successor import verify_qualification as successor
+  return successor()
  result=verify_source();check(record()['phase']in ['SCIENCE_COMPLETE_ADMISSION_PENDING','QUALIFIED_FULL_NOT_ADMITTED','CANONICALLY_ADMITTED_FULL'],'unfinished batch admission')
  science=validate_science(evidence());return {**result,'qualified':True,'full_capability':True,'batch_capabilities':CAPABILITIES,'science':science,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 if __name__=='__main__':print(json.dumps(verify_source()if'--source-only'in sys.argv else verify_qualification(),indent=2))
