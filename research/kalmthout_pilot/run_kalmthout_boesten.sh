@@ -36,6 +36,8 @@ for source in "${SOURCES[@]}"; do
   gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c "$source" -o "$obj"
   objects+=("$obj")
 done
+gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c src/legacy/b1_10_port/headcalc.f90 -o "$BUILD/headcalc.o"
+objects+=("$BUILD/headcalc.o")
 gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_boesten_pilot.f90 -o "$BUILD/pilot.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/pilot.o" -o "$BUILD/kalmthout_boesten"
 
