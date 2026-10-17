@@ -36,22 +36,25 @@ contains
   type(material_day_receipt_t),intent(out)::r
   type(reactive_state_t)::soil,reconstructed
   type(reactive_parameters_t)::p
-  type(wofost81_crop_owner_state_t)::crop
+  type(wofost81_crop_owner_state_t)::crop,staged_crop
+  type(wofost81_harvest_retired_t)::retired
   type(crop_n_configuration_t)::cp
-  type(soil_n_pool_state_t)::pools,next
+  type(soil_n_pool_state_t)::pools,next,original_pools
   type(soil_n_transfer_t)::x
   type(soil_n_receipt_t)::budget
   integer(int64)::sid,cid,revision
   real(real64)::clock,water,want(8),splitv(5)
   integer::i,code
   type(crop_residue_pending_t)::pending
-  logical::has_pending
+  logical::has_pending,has_retired
+  real(real64)::delta_n,delta_om
   candidate=committed;r=material_day_receipt_t()
   if(.not.committed%ready().or..not.ieee_is_finite(t0))return
   if(size(items)>64)return
   call committed%snapshot(soil,crop);call soil%snapshot(clock,water,pools,revision)
   if(clock/=t0)return
   call soil%configuration(p,sid);call committed%configuration(cp,cid)
+  original_pools=pools
   r%mass_before=pools%nitrogen_total(p%mineral%inventory)+crop_n_live(crop)
   if(size(items)==0)then;r%status=MATERIAL_OK;return;end if
   splitv=[split%nfrac_fom_min,split%nfrac_fom_max,split%nfrac_humus,split%asfa_min,split%asfa_max]
@@ -80,6 +83,20 @@ contains
    pools=next;r%gross_n=r%gross_n+budget%external_n_input_kg_m2
    r%volatilized_n=r%volatilized_n+budget%external_n_output_kg_m2
   end do
+  if(crop%harvest_retired())then
+   ! Source material changes whole-system totals without advancing the
+   ! retired crop clock. Stage in existing owners before any acceptance.
+   call crop%retired_snapshot(retired,has_retired)
+   if(.not.has_retired)return
+   delta_n=pools%nitrogen_total(p%mineral%inventory)-original_pools%nitrogen_total(p%mineral%inventory)
+   delta_om=(sum(pools%fom_kg_m3-original_pools%fom_kg_m3)+ &
+      pools%biomass_kg_m3-original_pools%biomass_kg_m3+ &
+      pools%humus_kg_m3-original_pools%humus_kg_m3)*p%mineral%inventory%depth_m
+   call stage_wofost81_retired_material_totals(crop,clock, &
+      retired%continuation_totals+[delta_n,delta_om],staged_crop,code)
+   if(code/=0)return
+   crop=staged_crop
+  end if
   call reconstruct_reactive_trusted(p,sid,revision,clock,water,pools,reconstructed,code)
   if(code/=MINERAL_OK)return
   call committed%pending_snapshot(pending,has_pending)
