@@ -1,0 +1,9 @@
+# MC-SOL01 restricted source-aligned pond transfer decision
+
+Canonical inspected: `d4fca1d351ed0ff6f88288bf23857c69a1224998`. Experimental PR #1288 remains unadmitted.
+
+The earlier pre-loss mixed candidate is not faithful to the admitted zero-macropore SWAP5 pond expression under evaporation. In the narrower no-runoff, no-runon case, retain the existing `mod_b111_pond_solute_exchange` mixing denominator: `pond_end + infiltration * dt` for `qtop = -infiltration`. Evaporation removes water but not mass. Do not replace the admitted production implementation; reuse it when the accepted water-owner receipt makes this wider case valid.
+
+Local independent Fortran source-aligned leaf created and executed with GNU Fortran at O0 and O2 using `-std=f2008 -Wall -Wextra -Werror -fcheck=all`. Both printed `SOURCE_ALIGNED_POND=PASS`. Cases: 0.5 cm evaporation + 0.25 cm infiltration from 1 cm depth and 2 mg/cm² pond solute yields **1.0 mg/cm² infiltrated** and 1.0 mg/cm² retained; dry 3 mg/cm² remains 3 mg/cm²; an inconsistent pond endpoint is rejected. This is NOT SWAP5 production qualification or exact SWAP 4.3.1 donor verification. Local test files have not been added to this GitHub branch, so this note is a research checkpoint, not a source-bound admission result.
+
+The known production blocker remains final-converged HeadCalc gross evaporation/runoff propagation through `soil_water_solve_result_t` and the accepted water trace. Gross input potentials or intermediate Newton evaluation data are not accepted receipts. A safe production route additionally needs full coupled water/solute rollback and restart and preservation of PRs #1234, #1256, #1257 and #1258. No canonical merge or mastercoverage promotion is justified.
