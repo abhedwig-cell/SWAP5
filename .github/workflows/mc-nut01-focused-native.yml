@@ -13,7 +13,7 @@ permissions:
 jobs:
   retained-native:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Install Fortran compiler
@@ -24,6 +24,10 @@ jobs:
         env:
           MATERIAL_RESULT_DIR: /tmp/nut-material-focused
         run: python3 -B tests/nut-material/run_material.py process
+      - name: Execute existing reactive organic/mineral O0/O2 production contract
+        env:
+          REACTIVE_RESULT_DIR: /tmp/nut-reactive-focused
+        run: python3 -B tests/nut-reactive/run_reactive.py --direct
       - name: Preserve raw results
         if: always()
         uses: actions/upload-artifact@v4
@@ -32,6 +36,7 @@ jobs:
           path: |
             /tmp/nut-b112-focused/
             /tmp/nut-material-focused/
+            /tmp/nut-reactive-focused/
           if-no-files-found: warn
       - name: Publish check status
         if: always()
