@@ -11,7 +11,7 @@ import base64, hashlib, json, os, subprocess, sys, tempfile
 
 ROOT=Path(__file__).resolve().parents[2]
 CORE="src/runtime/mod_fmr_runtime_core.f90"
-B112_COMMIT="47421ae0ec4145a25cb805bf38b63a6f1d32ea3a"
+B112_COMMIT="f1f1e99e8e2bf352a75aec97145e01853530d9fe"
 RECORD="integration/audits/MC_NUT_SOL_STATUS.json"
 ARCHIVE="integration/audits/evidence/MC_NUT01_B112_RETAINED_QUALIFICATION_20261017.tar.xz.b64"
 

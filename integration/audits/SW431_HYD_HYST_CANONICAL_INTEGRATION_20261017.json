@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Observe focused integrated checks through completion. If B112 bridge and all science passes, pin live canonical merge tree; update admission records and coverage, then safe merge PR1281. If bridge fails, repair genuine impact, never bypass.",
+  "next_action": "Read terminal current-source NUT B112 successor workflow, then reconcile exact live canonical and PR merge tree; admit and merge only on owner-qualified green evidence.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -196,7 +196,7 @@
   "current_canonical_seen": "dcda2dded1ecd6bed9d29d09c9b4025ba5785579",
   "b112_preservation_successor_20261017": {
     "reasoning": "Old INT12C/HYD delegated verifier follows immutable B112 exact-input records and rejects opt-in HYST layout source changes. Preserve original evidence at the exact original admitted B112 HEAD; prove default layout as byte-exact current canonical parent projection and NUT owner blobs unchanged, plus fresh O0/O2 real B112 state/harvest/negative-input production tests on the final PR merge tree. No historical evidence rewriting.",
-    "verified_original_b112_commit": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "verified_original_b112_commit": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
     "tested_path": "tests/fpm/verify_sw431_hyst_b112_bridge.py",
     "coverage_authority": ".github/workflows/swap431-hydraulic-coverage.yml",
     "related_immutable_archive": "integration/audits/evidence/MC_NUT01_B112_RETAINED_QUALIFICATION_20261017.tar.xz.b64",
@@ -204,6 +204,23 @@
     "missing": "Full NUT B1.12 moving joint rerun NOT_SELECTED_IMPACT unless new source/behavioral overlap emerges; future failure must remain fail-closed.",
     "qualification": "PENDING_CURRENT_MERGE_TREE_ACTIONS",
     "expected_seconds": 120,
-    "test_selection": "Dependency-impact bridge rather than rebind immutable source hashes; use unchanged original science controls on original exact-science tree."
+    "test_selection": "Dependency-impact bridge rather than rebind immutable source hashes; use unchanged original science controls on original exact-science tree.",
+    "original_retained_source_base": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "last_run": {
+      "id": 39039607360,
+      "result": "FAILED_AT_HISTORICAL_CHECKOUT_PATH",
+      "passed": [
+        "hyd analytical O0/O2",
+        "power O0/O2",
+        "256-case literal O0/O2",
+        "shared full certificate O0/O2",
+        "daily root supply O0/O2",
+        "current default layout projection",
+        "NUT owner byte identity",
+        "immutable NUT archive hash"
+      ],
+      "cause": "The original source baseline 47421 predates tests/nut-crop/verify_b112_retained_successor.py; use verified science/admission commit f1f1 instead",
+      "corrective_gate": ".github/workflows/swap431-hyst-b112-successor.yml"
+    }
   }
 }

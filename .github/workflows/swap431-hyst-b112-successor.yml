@@ -1,0 +1,30 @@
+name: SW431 HYD HYST NUT B112 current successor
+on:
+  push:
+    branches: [work/swap431-hyd-hyst-canonical-rebase-20261017]
+    paths:
+      - 'tests/fpm/verify_sw431_hyst_b112_bridge.py'
+      - '.github/workflows/swap431-hyst-b112-successor.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  successor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - name: Checkout actual PR merge tree
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/1281/merge
+          fetch-depth: 0
+      - name: Require exact trigger head in merge tree
+        env:
+          CANDIDATE_SHA: ${{ github.sha }}
+        run: |
+          actual="$(git rev-parse HEAD^2)"
+          test "$actual" = "$CANDIDATE_SHA" || { echo "STALE MERGE TREE $actual != $CANDIDATE_SHA"; exit 1; }
+          echo "HYD_B112_MERGE_TREE=$(git rev-parse HEAD)"
+          echo "HYD_B112_CANONICAL_PARENT=$(git rev-parse HEAD^1)"
+      - name: Independent bounded NUT original and current O0 O2 preservation
+        run: python3 -B tests/fpm/verify_sw431_hyst_b112_bridge.py
