@@ -32,7 +32,8 @@ contains
   integer::k,n,code
   receipt=matrix_solute_receipt_t()
   if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
-    supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
+    supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate, &
+    supply%runon_rate,supply%runon_c])))return
   if(.not.committed%ready().or.size(steps)<1.or.size(steps)>100000)return
   call committed%snapshot(clock,water,mobile,amount,revision)
   call committed%configuration(p,id)
@@ -107,7 +108,8 @@ contains
         t%converged_runon_rate_cm_day])))return
       if(t%converged_rain_rate_cm_day/=supply%rain_rate.or. &
          t%converged_irrigation_rate_cm_day/=supply%irrigation_rate)return
-      if(t%converged_snowmelt_rate_cm_day/=0d0.or.t%converged_runon_rate_cm_day/=0d0)return
+      if(t%converged_snowmelt_rate_cm_day/=0d0.or. &
+         t%converged_runon_rate_cm_day/=supply%runon_rate)return
     end if
     ! The incumbent pond water balance contains no gross evaporative or
     ! runoff loss. A converged hydraulic receipt proving either loss must
@@ -133,6 +135,7 @@ contains
     f%q_face_up_cm_day=-faces;f%root_sink_cm_day=t%root_sink;f%qdra_cm_day=t%drainage_sink_by_level
     f%rain_rate_cm_day=supply%rain_rate;f%rain_c_mg_cm3=supply%rain_c
     f%irrigation_rate_cm_day=supply%irrigation_rate;f%irrigation_c_mg_cm3=supply%irrigation_c
+    f%runon_rate_cm_day=supply%runon_rate;f%runon_c_mg_cm3=supply%runon_c
     f%pond_end_cm=t%pond_end_cm;f%macropore_area_fraction=0d0
     call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r)
     receipt%status=MATRIX_PROCESS;receipt%process_status=r%status
