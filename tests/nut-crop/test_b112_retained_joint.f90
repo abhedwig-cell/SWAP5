@@ -16,6 +16,9 @@ program test_b112_retained_joint
  use mod_b111_soil_n_addition
  use mod_crop_soil_n_material_day
  use mod_fmr_crop_soil_n_material_application
+ use mod_crop_soil_n_historical_project_binding,only:initialize_historical_crop_soil_owner
+ use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
+ use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_crop_soil_n_day
  use mod_crop_soil_n_configuration
  use mod_wofost81_crop_owner_state
@@ -132,6 +135,45 @@ program test_b112_retained_joint
  call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id,cfg%tiles(1)%initial_state,0d0,ok, &
    spread(0d0,1,numnod));call require(ok,'water initialize')
  theta=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
+
+ ! Actual source-export startup through the already owned crop+Soil-N state,
+ ! before exercising incumbent daily Richards and opaque restart scenarios.
+ if(trim(mode)=='write'.and.len_trim(selected)==0)then
+ block
+   type(soil_n_historical_selection_t)::selection
+   type(soil_n_amendment_calendar_t)::startup_calendar
+   type(crop_soil_state_t)::startup_state
+   type(crop_senescence_policy_t)::startup_policy
+   integer::unit,i,errline
+   character(16)::key
+   selection%swcropsnm=1;selection%sw_wofost=1;selection%source_parameters_complete=.true.
+   open(newunit=unit,file='source-crop-startup.txt',status='replace')
+   write(unit,'(A)')'[management]'
+   write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
+   write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
+   write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
+   write(unit,'(A)')'1900-01-01 1 100 0.1'
+   write(unit,'(A)')'[soil_n_parameters]'
+   do i=1,8
+     write(key,'(A,I1,A)')'FOM',i,'_t'
+     write(unit,'(A)')trim(key)//' = 1.0'
+   end do
+   write(unit,'(A)')'Bio_t = 5','Hum_t = 40','cNH4_t = 0.02','cNO3_t = 0.03', &
+     'Temp_ref = 20','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
+     'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
+     'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1', &
+     'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
+     'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
+   close(unit)
+   call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
+      0d0,theta,'source-crop-startup.txt','1900-01-01',startup_calendar, &
+      startup_state,startup_policy,status,errline)
+   call require(status==0.and.startup_state%ready().and.startup_calendar%ready(), &
+     'real crop and Soil-N state jointly initialized by one source export')
+   call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]), &
+     'actual coupled owner has source apparent ages')
+ end block
+ end if
  call initialize_reactive(sp,9001_int64,0d0,theta,pools,soil,status);call require(status==0,'reactive initialize')
  call initialize_crop_soil(soil,crop,cp,9101_int64,state,status);call require(status==0,'three-owner initialize')
  call state%snapshot(after_soil,crop)
