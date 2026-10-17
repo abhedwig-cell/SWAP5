@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CANONICAL_INTEGRATION_FOCUSED_GREEN_PENDING_ADMISSION_PRESERVATION",
-  "tested": "FOCUSED_CANONICAL_RUNTIME_O0_O2_PASS",
+  "stage": "CURRENT_CANONICAL_INTEGRATION_BLOCKED_BY_MODEL6_OWNER_PRESERVATION",
+  "tested": "HYD_HYST_FOCUSED_RUNTIME_PASS_FSI39_PASS_ROSS12_CURRENT_OWNER_REPLAY_PENDING",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Inspect focused FSI39/ROSS12 full workflow run and HYD/HYST coverage run; record exact PASS/FAIL on current postimage. Do not merge PR1281 or promote master until current-source owner preservation and merge tree identity passed.",
+  "next_action": "Resolve analytical MODEL6 versus extended MODEL6 production dispatch without weakening fail-closed; qualify incumbent certificate O0/O2 and current RossFast/FSI39 preservation, then inspect exact canonical merge tree and update admission/coverage only on PASS.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -122,5 +122,33 @@
     "workflow_commit": "6dbf87571134b92feaa9481747898bf30dbbf9d7",
     "execution_status": "PENDING: status not returned for focused workflow; separate SWAP431 HYD/HYST hydraulic coverage run 39036197738 queued",
     "claim": "NOT_QUALIFIED until tests execute and transitive owner preservation checked"
+  },
+  "preserving_owner_reconciliation_20261017": {
+    "fsi39": {
+      "run_id": 39036782614,
+      "result": "PASS_O0_O2",
+      "note": "FSI39 passes; same workflow failed on outdated RossFast historical blob pins"
+    },
+    "ross12": {
+      "old_pin_failure_run": 39036782614,
+      "current_canonical_byte_identity": [
+        "src/runtime/mod_rossfast_d3r_model_binding.f90",
+        "src/solver/mod_rossfast_d3r_table_kernel.f90",
+        "src/solver/mod_rossfast_d3r_table_provider.f90"
+      ],
+      "updated_driver_commit": "6454a8bf918dfac8f3274697845842d11d717748",
+      "new_run": 39037210570,
+      "result": "PENDING_NOT_OBSERVED"
+    },
+    "hyd_certificate": {
+      "run_id": 39037055849,
+      "result": "FAIL",
+      "failure": "Existing MODEL6 analytical certificate cannot initialize the new extended model6 parameter route; ERROR STOP extended hydraulic model parameters invalid at both O0/O2. This is an incumbent scientific route preservation failure, not merely a missing dependency.",
+      "drainage_module_build_closed": "a3f29cb23f30f5d9fac0e21e822b253c3bed69a0",
+      "required_action": "Preserve prior admitted analytical MODEL6 and separately admitted extended model6 through explicit disambiguation, qualify both O0/O2 and restart/rollback; do not silently fall back from invalid extended params"
+    },
+    "coverage_new_run": 39037214508,
+    "canonical_pinned": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+    "disposition": "NO_MERGE_NO_PROMOTION_UNTIL_EXISTING_MODEL6_OWNER_PRESERVED_AND_ALL_GATES_PASS"
   }
 }
