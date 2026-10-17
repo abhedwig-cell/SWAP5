@@ -6,7 +6,7 @@
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
   "stage": "MODEL5_11_PROVIDER_DISPATCH_IMPLEMENTED_PENDING_FULL_RUNTIME_GATE",
-  "tested": "CANONICAL_MODEL2_3_5_11_RUNTIME_PASS; PDI_VAPOR_HYST_PENDING",
+  "tested": "MODEL2_3_5_11_RUNTIME_PASS_PRE_VAPOR; NEW_PDI_BINDING_UNVERIFIED",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Bind PDI 8-11 vapor conductivity to immutable trial-start soil temperature; qualify runtime O0/O2, then POWER and HYST1/2 accepted rollback/restart and owner preservation; reconcile newer canonical before admission.",
+  "next_action": "Inspect exact new Actions result; correct PDI compiler/runtime if needed, then accepted-only HYST and POWER runtime, restart/rollback and canonical preservation. No master promotion yet.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -77,5 +77,11 @@
     "models": "2,3,5,6,7,8,9,10,11 runtime accepted; each zero reported residual",
     "next_failure": "first PDI vapor runtime not committed",
     "status": "PARTIAL_PASS_NOT_ADMISSION"
+  },
+  "pdi_vapor_forward_port": {
+    "implementation_commit": "ac2074e7f70c8b70af130b18051619b4f4b6883a",
+    "summary": "Opt-in PDI 8-11 thermal carrier uses trial-start soil_temperature field view",
+    "verification": "PENDING_ACTIONS_TERMINAL_STATUS",
+    "source_regression": "Prior model2/3/5-11 runtime passes at 39031265198, vapor initially not committed"
   }
 }
