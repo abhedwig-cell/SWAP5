@@ -9,6 +9,8 @@ module mod_frost_multilevel_divdra_effect
        drainage_b19_separate_infiltration_parameters_t, distribute_multilevel_separate_infiltration_b19, DRAIN_B19_INF_OK
   implicit none
   private
+  ! Covers both B1.11 MOD_arrays drainage profiles (madr=5 and madr=25).
+  integer, parameter, public :: FROST_DIVDRA_MAX_LEVELS=25
   type, public :: frost_multilevel_divdra_result_t
     logical :: available=.false., low_air=.false., net_policy_applied=.false.
     integer :: status=1
@@ -22,7 +24,7 @@ contains
     type(frost_divdra_parameters_t), intent(in) :: p(:)
     integer :: l
     ok=.false.
-    if(size(p)<2.or.size(p)>3)return
+    if(size(p)<2.or.size(p)>FROST_DIVDRA_MAX_LEVELS)return
     do l=1,size(p)
       if(.not.valid_frost_divdra_parameters(p(l)))return
       if(l>1)then

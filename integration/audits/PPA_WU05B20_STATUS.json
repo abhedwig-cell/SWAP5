@@ -231,7 +231,7 @@
     "qualification_pending": false
   },
   "blockers": [],
-  "next_action": "NET01 frozen production contract is complete. Preserve admitted two/three-level policy; remaining full-envelope, rooted, other-bottom and snow frost work stays in existing MC-FROST01/master coverage, without full-row/global closure.",
+  "next_action": "Complete qualified count2..25 successor owner/evidence controls and canonical admission via PR1276, then reconcile existing MC-FROST01/master option gaps.",
   "publication": {
     "pr": 1275,
     "url": "https://github.com/abhedwig-cell/SWAP5/pull/1275",
@@ -284,5 +284,113 @@
     ],
     "report": "docs/audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md",
     "current_review": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json"
+  },
+  "full_levels_20261017": {
+    "baseline": "f9f1614a794cf5a7e2f219a60fd1a61da245176b",
+    "branch": "work/frost-net01-full-levels-20261017",
+    "contract": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md",
+    "stage": "QUALIFIED_SAFE_ADMISSION_PENDING",
+    "implemented": true,
+    "qualified": true,
+    "admitted": false,
+    "invariants": [
+      3,
+      5,
+      7,
+      13,
+      21,
+      22,
+      23,
+      25,
+      27,
+      29,
+      30
+    ],
+    "test_selection": {
+      "component": "All24 counts actual process/full NET01 FrozenBounds+DIVDRA03 source at O0/O2, 18432 cases plus26invalid/ABA percount and26level refusal; original9216 preservation",
+      "runtime": "Every count 2..25, 1536 actual physical configurations/opt plus96 restart/reject/isolation and672 invalid/application refusals; ordinary multi/INF and single-level preservation",
+      "expected_seconds": 400,
+      "costs": "Prior 200s compile; link/native new count matrix UNKNOWN",
+      "owner_clause": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md completion conditions",
+      "not_selected": [
+        "full FCI NOT_SELECTED_IMPACT",
+        "RossFast NOT_SELECTED_IMPACT",
+        "highest low-air NOT_SELECTED_POLICY"
+      ]
+    },
+    "next_action": "Publish exact final source/guard postimage; inspect current canonical/PR/check state and safely merge qualified scope. Reconcile existing master source-count gap.",
+    "persisted": true,
+    "tested": true,
+    "qualified_source": "cfc2191f6a9e5e491e7fca53db82faeea0024c72",
+    "qualification_commit": "e0aee7891dfc9aff46f083d3bfda073d5445ba77",
+    "contract_sha256": "6088283ee07621b2eb63523304c50fbe3f5b04df70edf940c059f23496106bc8",
+    "evidence": {
+      "path": "integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64",
+      "sha256": "5fc04d7df653b98de8fd15bb74c405e2235de0de3a248e631149a1e316063b95",
+      "bytes": 5651084
+    },
+    "costs": {
+      "compile": 157.44568940397585,
+      "link": 0.610938151996379,
+      "native": 72.75579974200082,
+      "validation": 11.676520091012208
+    },
+    "postimages": {
+      "src/process/mod_frost_multilevel_divdra_effect.f90": {
+        "status": "M",
+        "blob": "c1ecae54c1ddd606081918ab2f6572348a64ca8b"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "ffd00a79b3b9734f4cfea7ab460b52f9659c191d"
+      },
+      "tests/frost/run_net01_full_levels.py": {
+        "status": "A",
+        "blob": "d3fa889b0523bbe0530adb8b68a37c50a584fe0a"
+      },
+      "tests/frost/run_net01_full_levels_runtime.py": {
+        "status": "A",
+        "blob": "dbfca9106a9d2ca60a747d2408362491f70a7bba"
+      },
+      "tests/frost/seal_net01_full_levels.py": {
+        "status": "A",
+        "blob": "8bcd604c04ce7f8b63f3e7a69b97c9c34ae82648"
+      },
+      "tests/frost/verify_net01_full_levels.py": {
+        "status": "A",
+        "blob": "a0d978391988aede59d63f6c11be6aadc8b4d822"
+      },
+      "tests/frost/verify_net01_successor.py": {
+        "status": "M",
+        "blob": "c8d1161bbb2d9fb203b3dbd954bd96dbe9789bf5"
+      }
+    },
+    "report": "docs/audits/FROST_NET01_FULL_LEVELS_20261017.md",
+    "publication": {
+      "pr": 1276,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1276",
+      "draft": true,
+      "merged": false
+    },
+    "evidence_reader_correction": "First guard refused unchanged CRLF FrozenBounds after generic newline normalization; literal dependencies now read as bytes. Intact capsule positive validation precedes corruption controls. No numerical input changed.",
+    "validation": {
+      "exact_source_and_qualification": "PASS",
+      "intact_capsule_before_negative_controls": "PASS",
+      "evidence_corruption_controls": 10,
+      "current_owner_entry": "PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "git_whitespace": "PASS"
+    },
+    "guard_diagnostics": [
+      {
+        "output_sha256": "8e25d0c5f50bafb02bc18cac957aec34a8cb71a58e10d5a47ea9a79d618374ad",
+        "finding": "Unchanged original CRLF FrozenBounds normalized by generic text reader"
+      },
+      {
+        "output_sha256": "515af88efc55d7255251bf54298e9ab781181962fba6e16285bec7722e280952",
+        "finding": "Generated CRLF reference compared to normalized generated snapshot; raw identity comparison now explicit"
+      }
+    ]
   }
 }
