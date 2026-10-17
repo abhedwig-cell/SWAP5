@@ -143,6 +143,23 @@ call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
 if(status/=POND_OK) error stop 'pond restore'
 call restored%snapshot(clock,depth,mass,revision)
 if(depth/=0.25d0.or.mass/=1d0.or.revision/=1_int64) error stop 'restart identity'
+! Drying removes the residual 0.25 cm water but no remaining solute.
+s=pond_step_t(1d0,2d0,0.25d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0)
+s%pond_evaporation_rate=0.25d0
+call advance_persistent_pond(restored,s,candidate,r)
+if(r%status/=POND_OK.or.r%mass_after/=1d0.or.r%soil_transfer/=0d0) &
+ error stop 'dry residual solute retention'
+! After dry restart, chemically specified rain re-wets the existing owner.
+call candidate%snapshot(clock,depth,mass,revision)
+call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+if(status/=POND_OK) error stop 'dry restart'
+s=pond_step_t(2d0,3d0,0d0,0.25d0,-0.25d0,0.5d0,0.2d0,0d0,0d0,0d0)
+call advance_persistent_pond(restored,s,candidate,r)
+if(r%status/=POND_OK) error stop 'rewet acceptance'
+if(abs(r%soil_transfer-0.55d0)>1d-13.or.abs(r%mass_after-0.55d0)>1d-13) &
+ error stop 'rewet historical mixing'
+if(abs(r%mass_residual)>1d-13.or.abs(r%water_residual)>1d-13) &
+ error stop 'multi-step accepted balances'
 bad=s;bad%pond_evaporation_rate=0.25d0
 call advance_persistent_pond(original,bad,rejected,r)
 if(r%status/=POND_WATER) error stop 'unbalanced evaporation accepted'
