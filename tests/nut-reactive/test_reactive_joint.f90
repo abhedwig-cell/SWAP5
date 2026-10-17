@@ -15,7 +15,8 @@ program test_reactive_joint
  use mod_reactive_n_joint_restart_file
  use mod_mineral_joint_restart_file,only:write_mineral_joint_restart_file
  use mod_fmr_b111_mineral_joint_application,only:run_mineral_joint_interval,mineral_joint_result_t
- use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace
+ use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route
+ use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use MOD_texture_orgmat,only:bdens
  implicit none
@@ -29,6 +30,7 @@ program test_reactive_joint
  type(reactive_n_joint_restart_t)::payload
  type(reactive_n_joint_result_t)::result
  type(reactive_parameters_t)::p,pbad
+ type(soil_n_historical_selection_t)::historical
  type(soil_n_pool_state_t)::pools,s
  type(fmr_b110_physical_forcing_t)::invalid
  real(real64)::k,time,theta
@@ -74,7 +76,9 @@ program test_reactive_joint
  call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id,cfg%tiles(1)%initial_state,0d0,ok, &
    spread(0d0,1,numnod));call require(ok,'water initialization')
  theta=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
- call initialize_reactive(p,9001_int64,0d0,theta,pools,nitrogen,status);call require(status==0,'N initialization')
+ historical%swcropsnm=1;historical%sw_wofost=1;historical%source_parameters_complete=.true.
+ call initialize_historical_reactive_n_route(historical,p,pools,9001_int64,0d0,theta,nitrogen,status)
+ call require(status==0,'historical N initialization into actual Richards route')
  initial_water=water;initial_n=nitrogen
  ! Invalid water forcing does not mutate either committed owner.
  invalid=cfg%tiles(1)%base_forcing;invalid%root_extraction_sink=-1d0
