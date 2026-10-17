@@ -1,6 +1,6 @@
 ! Restricted named-field source export, NOT a full TTUTIL/SNM parser.
 module mod_soil_n_historical_named_input
- use iso_fortran_env,only:real64,iostat_end
+ use iso_fortran_env,only:real64,iostat_end,iostat_eor
  use ieee_arithmetic,only:ieee_is_finite
  use mod_soil_n_historical_activation,only:soil_n_historical_initial_t,soil_n_historical_rates_t
  implicit none
@@ -46,17 +46,18 @@ contains
    character(512)::line,field,token
    logical::seen(COUNT)
    real(real64)::v(COUNT),x
-   integer::unit,ios,n,pos,field_index,i,close_code
+   integer::unit,ios,n,pos,field_index,i,close_code,read_size
    initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
    status=N_NAMED_IO;error_line=0;seen=.false.;v=0d0
    open(newunit=unit,file=path,status='old',action='read',iostat=ios)
    if(ios/=0)return
    n=0
    do
-     read(unit,'(A)',iostat=ios)line
+     ! Nonadvancing read rejects overlong records rather than truncating them.
+     read(unit,'(A)',advance='no',size=read_size,iostat=ios)line
      if(ios==iostat_end)exit
      n=n+1
-     if(ios/=0.or.n>512)exit
+     if(ios/=iostat_eor.or.n>512)exit
      if(len_trim(line)==0.or.line(1:1)=='!')cycle
      pos=index(line,'=')
      if(pos<=1.or.pos>=len_trim(line))exit
