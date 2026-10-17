@@ -17,7 +17,7 @@ program test_reactive_joint
  use mod_fmr_b111_mineral_joint_application,only:run_mineral_joint_interval,mineral_joint_result_t
  use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route, &
    initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables, &
-   initialize_historical_reactive_n_named_files
+   initialize_historical_reactive_n_named_files,initialize_historical_reactive_n_unified_export
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t,soil_n_historical_rates_t,soil_n_historical_initial_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
@@ -161,6 +161,44 @@ program test_reactive_joint
    write(input_unit,'(A,ES20.12)') 'cNH4N_seep = ',historical_rates%nh4_seep
    write(input_unit,'(A,ES20.12)') 'cNO3N_seep = ',historical_rates%no3_seep
    close(input_unit)
+   ! Feed exactly the same management and nutrient records through a single
+   ! bounded export, without silently selecting a second calendar or owner.
+   block
+     integer::source_unit,target_unit,ios
+     character(2048)::buffer
+     open(newunit=target_unit,file='historical-unified.txt',status='replace')
+     write(target_unit,'(A)')'[management]'
+     open(newunit=source_unit,file='historical-actual-input.snm',status='old',action='read')
+     do
+       read(source_unit,'(A)',iostat=ios)buffer
+       if(ios/=0)exit
+       write(target_unit,'(A)')trim(buffer)
+     end do
+     close(source_unit)
+     write(target_unit,'(A)')'[soil_n_parameters]'
+     open(newunit=source_unit,file='historical-params.txt',status='old',action='read')
+     do
+       read(source_unit,'(A)',iostat=ios)buffer
+       if(ios/=0)exit
+       write(target_unit,'(A)')trim(buffer)
+     end do
+     close(source_unit);close(target_unit)
+   end block
+   call initialize_historical_reactive_n_unified_export(historical,eight,9001_int64,0d0,theta, &
+      'historical-unified.txt','1900-01-01',historical_plan,eight_n,eight_bound, &
+      historical_tcsf,historical_lai,status,input_line)
+   call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
+      'unified original-material and eight-pool source accepted in actual Richards owner')
+   ! Late malformed parameter after valid management rows must publish no owner or calendar.
+   open(newunit=input_unit,file='historical-unified.txt',position='append')
+   write(input_unit,'(A)')'FOM1_t = 1.0'
+   close(input_unit)
+   call initialize_historical_reactive_n_unified_export(historical,eight,9001_int64,0d0,theta, &
+      'historical-unified.txt','1900-01-01',historical_plan,eight_n,eight_bound, &
+      historical_tcsf,historical_lai,status,input_line)
+   call require(status/=0.and..not.eight_n%ready().and..not.historical_plan%ready(), &
+      'unified malformed late record returns no partial committed owner or calendar')
+
    call initialize_historical_reactive_n_named_files(historical,eight,9001_int64,0d0,theta, &
       'historical-params.txt','historical-actual-input.snm','1900-01-01',historical_plan, &
       eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)

@@ -3,6 +3,8 @@ on:
   pull_request:
     paths:
       - 'src/process/mod_soil_n_historical_activation.f90'
+      - 'src/process/mod_soil_n_historical_named_input.f90'
+      - 'src/process/mod_soil_n_unified_input.f90'
       - 'tests/nut-reactive/test_historical_activation.f90'
       - 'src/runtime/mod_fmr_b111_reactive_n_route.f90'
       - 'tests/nut-reactive/test_reactive_joint.f90'
@@ -28,10 +30,10 @@ jobs:
           for opt in O0 O2; do
             b=/tmp/nut-historical/$opt
             flags="-$opt -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -ffpe-trap=invalid,zero,overflow"
-            gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_activation.f90 -o "$b/historical.o"
-            gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_named_input.f90 -o "$b/named-input.o"
+            # Reuse the exact compiled full Richards production dependency closure,
+            # rather than a partial direct driver graph with missing calendar objects.
             gfortran $flags -I"$b" -Itests/nut-reactive -J"$b" -c tests/nut-reactive/test_historical_activation.f90 -o "$b/historical-driver.o"
-            gfortran $flags "$b"/direct[0-9]*.o "$b/historical.o" "$b/named-input.o" "$b/historical-driver.o" -o "$b/historical-test"
+            gfortran $flags "$b"/physical[0-9]*.o "$b/historical-driver.o" -o "$b/historical-test"
             "$b/historical-test"
           done
       - name: Save raw proof
