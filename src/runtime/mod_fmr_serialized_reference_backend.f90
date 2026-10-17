@@ -315,6 +315,8 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: cofgen(:,:)
     ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.
     integer, allocatable :: hydraulic_model_kind(:)
+    ! Explicitly select the extended MODEL6 route; default preserves admitted analytical MODEL6.
+    logical :: extended_model6_active = .false.
     logical :: conductivity_power_tail_active = .false.
     logical :: pdi_vapor_active = .false.
     type(b111_linear_table_parameters_t), allocatable :: linear_hydraulic_table
@@ -3349,8 +3351,9 @@ contains
       self%extended_pdi_vapor_active = parameters%pdi_vapor_active
       self%extended_hydraulics_active = .false.
       if (allocated(parameters%hydraulic_model_kind)) &
-        self%extended_hydraulics_active = any(parameters%hydraulic_model_kind >= 5 .and. &
-                                              parameters%hydraulic_model_kind <= 11)
+        self%extended_hydraulics_active = any(parameters%hydraulic_model_kind == 5 .or. &
+             (parameters%hydraulic_model_kind >= 7 .and. parameters%hydraulic_model_kind <= 11) .or. &
+             (parameters%hydraulic_model_kind == 6 .and. parameters%extended_model6_active))
       self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind) .and. &
                                          .not. self%extended_hydraulics_active
       if (self%analytical_hydraulics_active) then
