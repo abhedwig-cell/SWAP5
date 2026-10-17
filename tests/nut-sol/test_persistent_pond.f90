@@ -80,6 +80,25 @@ program test_persistent_pond
  call advance_persistent_pond(state,bad,next,r)
  call require(r%status==POND_WATER,'runoff mismatch rejected')
  call same(state,next,'runoff rejection nonmutation')
+ ! Runoff-only withdrawal is bounded by available water, not counted as
+ ! infiltration or evaporation; the pond remains the sole mass owner.
+ call initialize_persistent_pond(0d0,1d0,3d0,state,status)
+ s=pond_step_t(0d0,1d0,1d0,0.6d0,0d0,0d0,0d0,0d0,0d0,0d0)
+ s%runoff_depth=0.4d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'runoff without infiltration')
+ call require(abs(r%runoff_output-1.2d0)<1d-13,'runoff-only export')
+ call require(abs(r%mass_after-1.8d0)<1d-13,'runoff-only retained mass')
+ call require(abs(r%mass_residual)<1d-13.and.abs(r%water_residual)<1d-13,'runoff-only balance')
+ saved=next
+ call saved%snapshot(clock,depth,mass,revision)
+ call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+ call require(status==POND_OK,'runoff pond restart accepted')
+ call same(saved,restored,'runoff pond restart identity')
+ bad=s;bad%runoff_depth=-0.1d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status/=POND_OK,'negative runoff rejected')
+ call same(state,next,'negative runoff nonmutation')
  ! Dry deposition persists across a dry hiatus and restart, then remobilizes.
  call initialize_persistent_pond(0d0,0d0,0d0,state,status)
  s=pond_step_t(0d0,1d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0,0.25d0)
