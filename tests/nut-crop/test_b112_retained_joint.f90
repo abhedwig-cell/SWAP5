@@ -18,7 +18,7 @@ program test_b112_retained_joint
  use mod_fmr_crop_soil_n_material_application
  use mod_crop_soil_n_historical_project_binding,only:initialize_historical_crop_soil_owner
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
- use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
+ use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t,select_soil_n_amendments,N_CALENDAR_OK
  use mod_crop_soil_n_day
  use mod_crop_soil_n_configuration
  use mod_wofost81_crop_owner_state
@@ -289,7 +289,9 @@ contains
    type(wofost81_crop_owner_state_t)::source_crop
    type(soil_n_day_environment_t)::day2_env
    type(senescence_joint_result_t)::day_receipt
-   integer::unit,j,error_line,code
+   type(b111_soil_n_material_t),allocatable::scheduled(:)
+   integer,allocatable::record_indices(:)
+   integer::unit,j,error_line,code,day
    integer(int64)::sid
    character(16)::key
    real(real64)::source_water
@@ -301,6 +303,7 @@ contains
    write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
    write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
    write(unit,'(A)')'1900-01-01 1 100 0.1'
+   write(unit,'(A)')'1900-01-03 1 50 0.1'
    write(unit,'(A)')'[soil_n_parameters]'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
@@ -324,6 +327,19 @@ contains
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
+   do day=0,3
+     call select_soil_n_amendments(startup_plan,real(day,real64),real(day+1,real64), &
+       scheduled,record_indices,code)
+     call require(code==N_CALENDAR_OK,'source calendar selection')
+     if(day==0.or.day==2)then
+       call require(size(scheduled)==1.and.size(record_indices)==1,'source event count')
+       call require(record_indices(1)==day/2+1,'source event identity')
+       if(day==0)call require(abs(scheduled(1)%application_kg_m2-.01d0)<1d-14,'first source dose')
+       if(day==2)call require(abs(scheduled(1)%application_kg_m2-.005d0)<1d-14,'second source dose')
+     else
+       call require(size(scheduled)==0,'source event not duplicated')
+     end if
+   end do
    policy=startup_policy
    call state%configuration(cp,sid)
    call state%snapshot(source_soil,source_crop)
@@ -344,16 +360,18 @@ contains
        670001_int64,water,state,code)
      call require(code==0,'source day-one native restart')
    end if
-   day2_env=soil_n_day_environment_t(1d0,2d0,30d0)
-   call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
-     cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
-     state,weather,1d0,2d0,startup_plan,split,policy,day_receipt,day2_env)
-   if(day_receipt%status/=JOINT_OK)print *,'source day 2 failure',day_receipt%status
-   call require(day_receipt%status==JOINT_OK,'source actual Richards day two')
+   do day=1,3
+     day2_env=soil_n_day_environment_t(real(day,real64),real(day+1,real64),30d0)
+     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+       cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
+       state,weather,real(day,real64),real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
+     if(day_receipt%status/=JOINT_OK)print *,'source day failure',day,day_receipt%status
+     call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
+   end do
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
-   print '(A)','NUT_SOURCE_TWO_DAY_FRESH_RESTART=PASS'
+   print '(A)','NUT_SOURCE_FOUR_DAY_TWO_EVENTS_FRESH_RESTART=PASS'
  end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
