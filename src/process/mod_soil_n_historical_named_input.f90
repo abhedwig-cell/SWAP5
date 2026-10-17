@@ -6,7 +6,7 @@ module mod_soil_n_historical_named_input
  implicit none
  private
  integer,parameter,public::N_NAMED_OK=0,N_NAMED_INVALID=1,N_NAMED_IO=2
- integer,parameter::COUNT=26
+ integer,parameter::COUNT=30
  character(32),parameter::names(COUNT)=[character(32):: &
  'FOM1_t', &
  'FOM2_t', &
@@ -33,11 +33,19 @@ module mod_soil_n_historical_named_input
  'cNH4N_lat', &
  'cNO3N_lat', &
  'cNH4N_seep', &
- 'cNO3N_seep']
+ 'cNO3N_seep', &
+ 'AppAgeRt', &
+ 'AppAgeLv', &
+ 'AppAgeSt', &
+ 'AppAgeSo']
+ type,public::soil_n_residue_age_t
+   real(real64)::root=1.27d0,leaf=.99d0,stem=1.27d0,storage=1.27d0
+ end type
  public::read_historical_soil_n_named_export,parse_historical_soil_n_named_lines
 contains
- subroutine read_historical_soil_n_named_export(path,initial,rates,status,error_line)
+ subroutine read_historical_soil_n_named_export(path,initial,rates,status,error_line,ages)
    character(*),intent(in)::path
+   type(soil_n_residue_age_t),intent(out),optional::ages
    type(soil_n_historical_initial_t),intent(out)::initial
    type(soil_n_historical_rates_t),intent(out)::rates
    integer,intent(out)::status,error_line
@@ -70,11 +78,12 @@ contains
      if(ios/=iostat_end.or.close_code/=0)then
        status=N_NAMED_INVALID;error_line=n+1;return
      end if
-     call parse_historical_soil_n_named_lines(lines(:n),initial,rates,status,error_line)
+     call parse_historical_soil_n_named_lines(lines(:n),initial,rates,status,error_line,ages)
    end block
  end subroutine
- subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line)
+ subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line,ages)
    character(*),intent(in)::lines(:)
+   type(soil_n_residue_age_t),intent(out),optional::ages
    type(soil_n_historical_initial_t),intent(out)::initial
    type(soil_n_historical_rates_t),intent(out)::rates
    integer,intent(out)::status,error_line
@@ -84,6 +93,7 @@ contains
    integer::i,n,pos,field_index,ios
    initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
    status=N_NAMED_INVALID;error_line=0;seen=.false.;v=0d0
+   if(present(ages))ages=soil_n_residue_age_t()
    if(size(lines)>512)return
    do n=1,size(lines)
      error_line=n
@@ -106,7 +116,8 @@ contains
      if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return
      seen(field_index)=.true.;v(field_index)=x
    end do
-   if(any(.not.seen(:20)).or.any(.not.seen(22:)))return
+   if(any(.not.seen(:20)).or.any(.not.seen(22:26)))return
+   if(any(seen(27:30).and.v(27:30)>100d0))return
    initial%fom_kg_m3(1)=v(1)
    initial%fom_kg_m3(2)=v(2)
    initial%fom_kg_m3(3)=v(3)
@@ -133,6 +144,12 @@ contains
    rates%no3_lat=v(24)
    rates%nh4_seep=v(25)
    rates%no3_seep=v(26)
+   if(present(ages))then
+     if(seen(27))ages%root=v(27)
+     if(seen(28))ages%leaf=v(28)
+     if(seen(29))ages%stem=v(29)
+     if(seen(30))ages%storage=v(30)
+   end if
    status=N_NAMED_OK;error_line=0
  end subroutine
 end module
