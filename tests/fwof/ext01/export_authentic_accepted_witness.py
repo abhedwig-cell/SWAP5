@@ -12,7 +12,7 @@ from pathlib import Path
 NUMBER=r"([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)[Ee][+-]?[0-9]+)"
 PAIR=re.compile(r"^\s*F_WOF_EXT01_ACCEPTED_PAIR\s+"+NUMBER+r"\s+"+NUMBER+r"\s*$",re.M)
 UPTAKE=re.compile(r"^\s*F_WOF_EXT01_REAL_ACCEPTED_UPTAKE\s+1\s+2\s+"+NUMBER+r"\s*$",re.M)
-IDENTITY=re.compile(r"^\\s*F_WOF_EXT01_ACCEPTED_IDENTITY\\s+([0-9]+)\\s+([0-9]+)\\s+"+NUMBER+r"\\s+"+NUMBER+r"\\s*$",re.M)
+IDENTITY=re.compile(r"^\s*F_WOF_EXT01_ACCEPTED_IDENTITY\s+([0-9]+)\s+([0-9]+)\s+"+NUMBER+r"\s+"+NUMBER+r"\s*$",re.M)
 PASS="CROP_DAYEND_ADMITTED_HYDROLOGY_ROOT_UPTAKE_BITWISE=PASS"
 
 def extract(text):
