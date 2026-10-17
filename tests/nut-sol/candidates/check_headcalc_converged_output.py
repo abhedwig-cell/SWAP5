@@ -10,6 +10,8 @@ converged=s.rfind("if (.NOT.flnonconv) then",0,publication)
 assert converged>=0 and publication>converged
 assert "provider_dynamic_top_result%runoff_resolved" in s[converged:publication]
 assert "provider_dynamic_top_result%candidate_ponding_depth-state%pond" in s[converged:publication]
+assert "provider_dynamic_top_result%actual_top_flux-state%qtop" in s[converged:publication]
+assert "provider_dynamic_top_result%runoff_depth-state%runots" in s[converged:publication]
 assert "ctx%control%request_dt_reduction = .TRUE." in s[publication:]
 assert s.count("accepted_top_result = provider_dynamic_top_result")==1
 print("HEADCALC_CONVERGED_OUTPUT_SOURCE_GUARD=PASS (static only)")
