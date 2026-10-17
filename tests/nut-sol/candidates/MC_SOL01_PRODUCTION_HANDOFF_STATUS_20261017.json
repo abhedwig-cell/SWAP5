@@ -112,5 +112,17 @@
       "gross_joint_qualified": false,
       "scientific_admission": false
     }
+  },
+  "source_alignment_safety_20261017": {
+    "head": "7f10604205e0569048e1577f0d7e61d18347df59",
+    "production_files": [
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+      "src/runtime/mod_fmr_b111_surface_solute_route.f90"
+    ],
+    "implemented": "When final-converged gross provenance is available, both incumbent routes reject rain/irrigation mismatch, nonzero unsupported melt or runon, and nonzero pond evaporation/runoff; fail closed without changing admitted mixing or persistently owning another pond mass.",
+    "test_status": "NOT YET TESTED ON THIS HEAD",
+    "science_scope": "Safety restriction only, no accepted gross chemistry implementation",
+    "fross": "Requires joint RossFast solver-contract requalification",
+    "admitted": false
   }
 }
