@@ -1,5 +1,11 @@
 name: F-WOF-EXT01 matched native O0 O2 research
 on:
+  push:
+    branches:
+      - research/f-wof-ext01-contract-feasibility-20261017
+    paths:
+      - 'tests/fwof/ext01/**'
+      - '.github/workflows/f-wof-ext01-matched-native.yml'
   pull_request:
     paths:
       - 'tests/fwof/ext01/prepare_research_fortran.py'
