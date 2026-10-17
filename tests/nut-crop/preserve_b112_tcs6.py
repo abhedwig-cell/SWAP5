@@ -32,6 +32,13 @@ for opt in [0,2]:
  for path in inp['providers']:
   if path=='tests/fsi/fsi04_real_headcalc_stubs.f90':continue
   q=base/mapping[path];assert q.exists();objects.append(q);result['artifacts'][str(q)]=sha(q)
+ # Current canonical added calendar, DRAMET3 and frost providers to the
+ # shared native adapter/backend closure. Reuse their checked joint objects
+ # too; the historical TCS6 provider list alone is no longer link-complete.
+ for path,objname in mapping.items():
+  if path.startswith('src/'):
+   q=base/objname
+   if q not in objects:objects.append(q);result['artifacts'][str(q)]=sha(q)
  for i,name in enumerate(fixture_order):
   q=OUT/'fixture'/name;obj=b/f'oracle-{i}.o';run(fc+flags+['-c',q,'-o',obj],b,'fixture_compile');objects.append(obj)
  for name in ['weekly_dcs1','weekly_dcs2','weekly_nontrigger']:

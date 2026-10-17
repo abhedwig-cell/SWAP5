@@ -187,8 +187,17 @@ def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
 def load_verified():
  p=json.loads((ROOT/STATUS).read_text())[KEY];require(p['reconciled_upstream']==INTEGRATED,'unreconciled retained admission');e=p['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
  require(sha(raw)==e['sha256'],'archive integrity')
- with tarfile.open(fileobj=io.BytesIO(raw))as t:files={m.name:t.extractfile(m).read()for m in t if m.isfile()}
+ require(len(raw)==e['bytes'],'archive size')
+ with tarfile.open(fileobj=io.BytesIO(raw))as t:
+  members=t.getmembers()
+  require(len(members)==e['members'] and len({m.name for m in members})==len(members),'archive member inventory')
+  require(all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in members),'unsafe archive member')
+  files={m.name:t.extractfile(m).read()for m in members}
+ manifest=json.loads(files['MANIFEST.json']);require(set(manifest)==set(files)-{'MANIFEST.json'},'archive manifest inventory')
+ for path,h in manifest.items():require(sha(files[path])==h,'archive member integrity '+path)
  verify(p,files)
+ dirty=subprocess.check_output(['git','status','--porcelain','--untracked-files=all','--','src','tests','tools','reference','.github'],cwd=ROOT,text=True).strip()
+ require(not dirty,'dirty retained scientific surface')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in subprocess.check_output(['git','diff','--name-status',INTEGRATED,'--','src','tests','tools','reference','.github'],cwd=ROOT,text=True).splitlines()}
  require(rows=={k:v['status']for k,v in p['successor_postimages'].items()},'foreign retained successor')
  for path,v in p['successor_postimages'].items():
@@ -206,11 +215,11 @@ def incumbent(source_only=False):
  if not source_only:require(r['qualified']and r['tcs6_successor']and r['multilevel_divdra_successor']and r['reference_leaf_successor']and r['classic_annual_successor'],'incumbent authorities')
  return r
 def verify_source(git_reader=None):
- require(git_reader is None,'unregistered projected reader');load_verified();old=incumbent(True)
- return {**old,'b112_retained_successor':True,'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
+ require(git_reader is None,'unregistered projected reader');p,files=load_verified();old=incumbent(True)
+ return {**old,'b112_retained_successor':True,'full_capability':False,'admitted':p['production_admitted'],'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
 def verify_qualification():
- load_verified();old=incumbent(False)
- return {**old,'incumbent':old,'b112_retained_successor':True,'qualified':True,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
+ p,files=load_verified();old=incumbent(False)
+ return {**old,'incumbent':old,'b112_retained_successor':True,'full_capability':False,'admitted':p['production_admitted'],'qualified':True,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args();p,files=load_verified()
  if a.self_test:

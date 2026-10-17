@@ -697,3 +697,22 @@ records the existing `SW431-IRR-LIMIT` source contract and qualification. Exact
 scientific, admission and master receipts are held in the existing MC-IRR01
 recovery field `limit_completion_20261016`. Other irrigation capabilities retain
 their independent admission conditions; the frozen Status-A denominator is unchanged.
+
+
+## MC-NUT01 corrected B1.12 retained material (2026-10-17)
+
+The explicit B1.12/SWAP-019 profile keeps physical unreturned leaf/stem dry matter
+and nitrogen in the existing crop/Soil-N hierarchy, distinct from gross mortality.
+Root mortality returns fully, leaf mortality uses the selected fraction, and
+retained material is included once in harvest/export, pending incorporation and
+whole-N/organic-material transfer budgets. New native profile tags preserve
+physical and gross stocks through empty, live, thermal, pending and harvest phases.
+
+The [bounded contract](../science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md)
+and `integration/audits/MC_NUT_SOL_STATUS.json`, field
+`b112_retained_stock_20261016`, distinguish physical qualification from actual
+canonical admission. Standard WOFOST81, admitted vegetative/reproductive options,
+classic source/codec, thermal and TCS6 endpoint bytes are preservation boundaries.
+This profile does not admit complete historical NUT selector/parameter activation
+or promote a whole mastercoverage capability. The frozen Status-A denominator
+is unchanged.

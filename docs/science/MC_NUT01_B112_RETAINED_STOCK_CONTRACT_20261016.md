@@ -1,6 +1,8 @@
 # B1.12 partial leaf return in the existing crop/Soil-N owner
 
-Status: implementation contract; not production admission.
+Status: bounded production contract. Qualification and actual canonical admission
+are recorded in `integration/audits/MC_NUT_SOL_STATUS.json`,
+`b112_retained_stock_20261016`; this contract alone is not admission evidence.
 Baseline:5d2518abd2b285b13f9b5f7d2177918589fd7abc, including admitted B1.12,
 classic annual1264 and independent signed multilevel drainage1109.
 
@@ -69,3 +71,22 @@ joint compile/native gate may cost several minutes because it closes the actual
 shared water/soil/crop/restart boundary; that is the justified integration gate,
 not routine process feedback. Retain measured compile/link/native costs and raw
 failed results. Aquifer remains excluded.
+
+
+## Executed-evidence boundary, 17 October 2026
+
+The current successor requires unique checked O0/O2 compilation and link records
+for every exercised production provider and driver, actual native commands with
+raw output, every named configuration/decoder rejection, and the joint-provider
+digest for thermal reuse. Missing native runs, duplicated providers, changed
+optimization/IEEE flags or unexecuted rejection labels fail closed. The separate
+independent guard review qualifies the validator only, never production physics.
+The current annual source and old codec are executed and checked, rather than
+accepted from summary booleans. The current TCS6 shared native boundary is checked
+with the source-bound provider closure, including later canonical dependencies.
+
+The new profile remains explicit. Standard WOFOST81 growth, the bounded B1.11
+vegetative/reproductive N options and corrected B1.12 residue semantics retain
+their distinct scientific authorities. Complete historical selector/parameter
+activation and the full historical NUT capability envelopes remain outside this
+bounded admission. No whole mastercoverage promotion follows from this profile.
