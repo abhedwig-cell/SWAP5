@@ -1,0 +1,35 @@
+{
+ "work_unit":"MC-SOL01-SURFACE-LOSS-PRODUCTION-HANDOFF",
+ "canonical_baseline":"d6ce79dfdcea27e8322fa5a060c6d5715c30f417",
+ "work_branch":"work/sol-surface-loss-budget-candidate-20261017",
+ "candidate_head_before_record":"dab894d1540b50498037585d67a0669a009454ea",
+ "implemented":true,
+ "implementation_scope":"experimental, unqualified production HeadCalc-to-Reference-solve-result-to-read-only-accepted-trace diagnostics",
+ "persisted":true,
+ "tested":false,
+ "qualified":false,
+ "admitted":false,
+ "mastercoverage_promoted":false,
+ "production_files":[
+  "src/legacy/b1_10_port/headcalc.f90",
+  "src/solver/mod_soil_water_solver_contract.f90",
+  "src/adapter/mod_reference_richards_legacy_binding.f90",
+  "src/runtime/mod_fmr_serialized_reference_backend.f90"
+ ],
+ "science_boundary":"Actual pond evaporation/runoff only; no complete gross rain/irrigation/runon receipt, no chemical integration; preserve incumbent pond solute formula",
+ "tests_not_run":[
+  "clean production compile including all dependents of changed public derived type",
+  "Reference HeadCalc O0/O2 and original admitted SOL preservation",
+  "retry/rollback full-half numerical selection",
+  "whole accepted water+solute balance and native restart",
+  "SWAP4.3.1 exact chemical source"
+ ],
+ "blockers":[
+  "full checkout unavailable to local compiler",
+  "connector has no new workflow dispatch capability",
+  "final converged output still needs joint production tests and no intermediate-iteration leakage proof",
+  "full gross flux accepted-provenance and historic chemistry not completed"
+ ],
+ "next_action":"Do not merge. Compile full changed dependency closure and exercise strict real accepted substep rollback/restart, preserve previous SOL admission, then integrate complete gross water receipts with existing pond_mass and perform source-aligned chemistry before canonical admission.",
+ "previous_admissions_to_preserve":[1234,1256,1257,1258]
+}
