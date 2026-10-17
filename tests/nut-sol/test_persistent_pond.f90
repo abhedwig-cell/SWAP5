@@ -24,6 +24,28 @@ program test_persistent_pond
   call state%snapshot(clock,depth,mass,revision)
   call require(clock==0d0.and.depth==0.5d0.and.mass==0.25d0.and.revision==0,'input nonmutation')
  end do
+ ! Final accepted pond evaporation removes water, not chemical mass.
+ ! This pins incumbent SWAP5 / historical B1.11 denominator: 1 mg/cm2
+ ! infiltrates from an initial 2 mg/cm2 for this evaporation fixture.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ call require(status==POND_OK,'evap initialization')
+ s=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%pond_evaporation_rate=0.5d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'accepted evap water budget')
+ call require(abs(r%soil_transfer-1d0)<1d-14.and.abs(r%mass_after-1d0)<1d-14, &
+   'evap preserved historical mixing')
+ call require(abs(r%mass_residual)<1d-14.and.abs(r%water_residual)<1d-14, &
+   'evap coupled water and chemical balance')
+ saved=next
+ bad=s;bad%pond_evaporation_rate=0.25d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'unbalanced evaporation rejected')
+ call same(state,next,'evap rejection does not mutate committed pond')
+ call saved%snapshot(clock,depth,mass,revision)
+ call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+ call require(status==POND_OK,'evap restart')
+ call same(saved,restored,'evap restart identity')
  ! Dry deposition persists across a dry hiatus and restart, then remobilizes.
  call initialize_persistent_pond(0d0,0d0,0d0,state,status)
  s=pond_step_t(0d0,1d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0,0.25d0)
