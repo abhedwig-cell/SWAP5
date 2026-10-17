@@ -1,0 +1,52 @@
+name: SW431 HYD canonical component qualification
+on:
+  push:
+    branches: [work/swap431-hyd-hyst-canonical-rebase-20261017]
+    paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
+      - 'src/solver/mod_b111_*.f90'
+      - 'tests/fsi/*b111*.f90'
+      - 'tests/fsi/*b111*.py'
+      - 'tests/fsi/run_b111_*.sh'
+      - 'tests/fmr/run_swap431_hyd_runtime_reachability.sh'
+      - 'tests/fmr/test_swap431_hyd_runtime_reachability.f90'
+      - 'tests/fsi/run_sw431_fsi39_current_preservation.sh'
+      - 'tests/ross/run_sw431_ross12_current_preservation.sh'
+      - '.github/workflows/swap431-hyd-canonical-component.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  statuses: write
+jobs:
+  focused:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fsi/run_b111_hydraulic_families.sh
+      - run: bash tests/fsi/run_b111_hysteresis_state.sh
+      - run: bash tests/fmr/run_swap431_hyd_runtime_reachability.sh
+      - run: bash tests/fsi/run_sw431_fsi39_current_preservation.sh
+      - run: bash tests/ross/run_sw431_ross12_current_preservation.sh
+      - name: Publish actual component result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_STATUS: ${{ job.status }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_RUN_ID: ${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request
+          state = {'success':'success','failure':'failure'}.get(os.environ['JOB_STATUS'],'error')
+          base='https://api.github.com/repos/'+os.environ['GH_REPOSITORY']
+          req=urllib.request.Request(base+'/statuses/'+os.environ['COMMIT_SHA'],
+            data=json.dumps({'state':state,'context':'SW431/HYD-canonical-component',
+            'target_url':'https://github.com/'+os.environ['GH_REPOSITORY']+'/actions/runs/'+os.environ['GH_RUN_ID'],
+            'description':'Actual canonical-based O0/O2 provider and HYST component'}).encode(),
+            headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json',
+            'Content-Type':'application/json'},method='POST')
+          with urllib.request.urlopen(req,timeout=20) as response: print('RESULT',response.status,state)
+          PY

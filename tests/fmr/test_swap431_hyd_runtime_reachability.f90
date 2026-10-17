@@ -1,0 +1,546 @@
+program test_swap431_hyd_runtime_reachability
+  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use MOD_grid, only: numnod, z, dz, disnod
+  use mod_transaction_reference, only: transaction_state_t, TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_canonical_contracts, only: canonical_numerical_config_t
+  use mod_kernel_transactions, only: kernel_executor_t, kernel_committed_state_t
+  use mod_fmr_runtime_core, only: fmr_logical_column_t, fmr_template_t, fmr_column_diagnostics_t, &
+       FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS, &
+       FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, &
+       fmr_b110_physical_state_t, fmr_serialized_reference_backend_t, fmr_serialized_physical_observation_t, &
+       fmr_new_b110_committed_state
+  use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
+       fmr_serialized_batch_diagnostics_t, fmr_execute_serialized_resolved_physical_column
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, b110_default_mvg_provider_t, &
+       initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
+  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t, &
+       configure_b111_legacy_hydraulic_provider, bind_b111_legacy_hydraulic_provider, B111_LEGACY_HYD_OK
+  use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
+       b111_extended_hydraulic_provider_t, initialize_b111_extended_hydraulic_parameters, &
+       bind_b111_extended_hydraulic_provider, B111_EXT_OK
+  use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t, &
+       configure_b111_conductivity_power_tail, bind_b111_conductivity_power_tail, B111_POWER_OK
+  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
+       initialize_b111_linear_table_parameters, bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
+  use mod_b111_hysteresis_state, only: initialize_b111_hysteresis, initialize_b111_hysteresis_state, B111_HYST_OK
+  use mod_fmr_committed_restart, only: fmr_committed_restart_bundle_t, fmr_export_committed_restart, &
+       fmr_restore_committed_restart, FMR_RESTART_OK
+  use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
+  use mod_restricted_soil_temperature, only: SOIL_TEMP_OK, initialize_soil_temperature_parameters, &
+       initialize_soil_temperature_state
+  implicit none
+
+  real(real64), parameter :: initial_head=-100.0_real64
+  real(real64), parameter :: dt=0.05_real64
+  real(real64), parameter :: mass_tol=1.0e-10_real64
+  integer, parameter :: models(9)=[2,3,5,6,7,8,9,10,11]
+  integer :: i
+
+  do i=1,size(models)
+    call run_case(models(i),.false.,.false.)
+  end do
+  do i=8,11
+    call run_case(i,.false.,.true.)
+  end do
+  call run_case(1,.true.,.false.)
+  call run_linear_table_case()
+  call run_hysteresis_case(1)
+  call run_hysteresis_case(2)
+  call run_hysteresis_rejection_case(1)
+  call run_hysteresis_rejection_case(2)
+  write(*,'(A)') 'SW431_HYD_RUNTIME_REACHABILITY=PASS'
+
+contains
+
+  subroutine run_case(model,power,vapor)
+    integer,intent(in)::model
+    logical,intent(in)::power,vapor
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    real(real64) :: k0
+    integer :: active_calls
+    logical :: ok
+
+    call initialize_parameters(parameters,model,power,vapor)
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'committed state init')
+    call initialize_forcing(forcing,-k0,vapor)
+    call initialize_column(column,template,vapor)
+    call initialize_config(config)
+
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+    observation=backend%observation()
+
+    call require(output%completed.and.output%committed,'runtime commit')
+    call require(output%mass%complete,'mass complete')
+    call require(abs(output%mass%residual)<=mass_tol,'hard mass')
+    call require(observation%solver_executed,'solver executed')
+    call require(output%accepted_substeps>0,'accepted substep')
+    if(power)then
+      write(*,'(A,1X,ES16.8)')'SW431_HYD_POWER_RUNTIME_PASS',output%mass%residual
+    else if(vapor)then
+      write(*,'(A,I0,1X,ES16.8)')'SW431_HYD_PDI_VAPOR_RUNTIME_PASS=',model,output%mass%residual
+    else
+      write(*,'(A,I0,1X,ES16.8)')'SW431_HYD_MODEL_RUNTIME_PASS=',model,output%mass%residual
+    end if
+  end subroutine
+
+  subroutine run_hysteresis_case(mode)
+    integer,intent(in)::mode
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(kernel_committed_state_t) :: states(1), restored_states(1)
+    type(fmr_logical_column_t) :: column, columns(1)
+    type(fmr_template_t) :: template, templates(1)
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    type(fmr_committed_restart_bundle_t) :: bundle
+    class(transaction_state_t),allocatable :: restored_snapshot
+    real(real64) :: k0
+    integer :: active_calls,status
+    logical :: ok,exported,restored,available
+
+    call initialize_parameters(parameters,1,.false.,.false.)
+    if (allocated(parameters%hydraulic_model_kind)) deallocate(parameters%hydraulic_model_kind)
+    parameters%hysteresis_active=.true.
+    parameters%hysteresis_initial_mode=mode
+    allocate(parameters%hysteresis_parameters)
+    call initialize_b111_hysteresis(parameters%hysteresis_parameters, &
+         spread(0.06_real64,1,numnod),spread(0.44_real64,1,numnod), &
+         spread(0.018_real64,1,numnod),spread(0.026_real64,1,numnod), &
+         spread(1.62_real64,1,numnod),spread(0.01_real64,1,numnod),status)
+    call require(status==B111_HYST_OK,'hysteresis parameter init')
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'hysteresis committed state init')
+    call initialize_forcing(forcing,-k0,.false.)
+    call initialize_column(column,template,.false.)
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
+    call initialize_config(config)
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+    observation=backend%observation()
+    write(0,'(A,1X,A,1X,6(I0,1X))') 'HYST_ADMISSION_DEBUG',trim(output%admission_status), &
+         merge(1,0,output%completed),merge(1,0,output%committed),merge(1,0,output%admitted), &
+         output%kernel_status,output%solver_status,output%commit_status
+    flush(0)
+    call require(output%completed.and.output%committed,'hysteresis runtime commit')
+    call require(output%mass%complete,'hysteresis mass complete')
+    call require(abs(output%mass%residual)<=mass_tol,'hysteresis hard mass')
+    call require(observation%solver_executed,'hysteresis solver executed')
+
+    columns(1)=column;templates(1)=template;states(1)=committed
+    call fmr_export_committed_restart(columns,templates,states,777001_int64,bundle,exported,status)
+    call require(exported.and.status==FMR_RESTART_OK,'hysteresis restart export')
+    call fmr_restore_committed_restart(bundle,777001_int64,columns,templates,restored_states,restored,status)
+    call require(restored.and.status==FMR_RESTART_OK,'hysteresis restart restore')
+    call restored_states(1)%snapshot(restored_snapshot,available)
+    call require(available.and.allocated(restored_snapshot),'hysteresis restored snapshot')
+    select type(restored_physical=>restored_snapshot)
+    type is(fmr_b110_physical_state_t)
+      call require(allocated(restored_physical%hysteresis),'hysteresis restored state')
+      call require(all(restored_physical%hysteresis%branch==merge(1,-1,mode==1)),'hysteresis branch preserved')
+    class default
+      call require(.false.,'hysteresis restored type')
+    end select
+    write(*,'(A,I0,1X,ES16.8)')'SW431_HYST_RUNTIME_RESTART_PASS=',mode,output%mass%residual
+  end subroutine
+
+  subroutine run_hysteresis_rejection_case(mode)
+    integer,intent(in)::mode
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    class(transaction_state_t),allocatable :: before_state,after_state
+    real(real64) :: k0
+    integer :: active_calls,status
+    integer(int64) :: before_revision,after_revision
+    logical :: ok,before_available,after_available
+
+    call initialize_parameters(parameters,1,.false.,.false.)
+    if (allocated(parameters%hydraulic_model_kind)) deallocate(parameters%hydraulic_model_kind)
+    parameters%hysteresis_active=.true.
+    parameters%hysteresis_initial_mode=mode
+    allocate(parameters%hysteresis_parameters)
+    call initialize_b111_hysteresis(parameters%hysteresis_parameters, &
+         spread(0.06_real64,1,numnod),spread(0.44_real64,1,numnod), &
+         spread(0.018_real64,1,numnod),spread(0.026_real64,1,numnod), &
+         spread(1.62_real64,1,numnod),spread(0.01_real64,1,numnod),status)
+    call require(status==B111_HYST_OK,'hysteresis reject parameter init')
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'hysteresis reject committed init')
+    ! Deliberately perturb the equilibrium forcing so full and two-half
+    ! candidates diverge and temporal_tolerance=0 rejects the post-solver trial.
+    call initialize_forcing(forcing,0.0_real64,.false.)
+    call initialize_column(column,template,.false.)
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS
+    call initialize_config(config)
+    config%transaction%temporal_tolerance=0.0_real64
+    config%transaction%max_retries=0
+    config%max_committed_substeps=1
+
+    before_revision=committed%current_revision()
+    call committed%snapshot(before_state,before_available)
+    call require(before_available.and.allocated(before_state),'hysteresis reject pre snapshot')
+
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+
+    call require(.not.output%committed,'hysteresis rejected trial not committed')
+    after_revision=committed%current_revision()
+    call committed%snapshot(after_state,after_available)
+    call require(after_available.and.allocated(after_state),'hysteresis reject post snapshot')
+    call require(after_revision==before_revision,'hysteresis rejection revision unchanged')
+    call require_hysteresis_identity(before_state,after_state)
+    write(*,'(A,I0)')'SW431_HYST_ROLLBACK_PASS=',mode
+  end subroutine
+
+  subroutine require_hysteresis_identity(left_state,right_state)
+    class(transaction_state_t),allocatable,intent(in)::left_state,right_state
+    select type(left=>left_state)
+    type is(fmr_b110_physical_state_t)
+      select type(right=>right_state)
+      type is(fmr_b110_physical_state_t)
+        call require(allocated(left%hysteresis).and.allocated(right%hysteresis),'hysteresis rollback state allocated')
+        call require(left%hysteresis%active_nodes==right%hysteresis%active_nodes,'hysteresis rollback node identity')
+        call require(all(left%hysteresis%branch==right%hysteresis%branch),'hysteresis rollback branch identity')
+        call require(all(transfer(left%hysteresis%theta_r_scan,0_int64,size(left%hysteresis%theta_r_scan)) == &
+             transfer(right%hysteresis%theta_r_scan,0_int64,size(right%hysteresis%theta_r_scan))), &
+             'hysteresis rollback theta-r identity')
+        call require(all(transfer(left%hysteresis%theta_s_scan,0_int64,size(left%hysteresis%theta_s_scan)) == &
+             transfer(right%hysteresis%theta_s_scan,0_int64,size(right%hysteresis%theta_s_scan))), &
+             'hysteresis rollback theta-s identity')
+        call require(all(transfer(left%hysteresis%alpha_active,0_int64,size(left%hysteresis%alpha_active)) == &
+             transfer(right%hysteresis%alpha_active,0_int64,size(right%hysteresis%alpha_active))), &
+             'hysteresis rollback alpha identity')
+        call require(all(transfer(left%hysteresis%accepted_head,0_int64,size(left%hysteresis%accepted_head)) == &
+             transfer(right%hysteresis%accepted_head,0_int64,size(right%hysteresis%accepted_head))), &
+             'hysteresis rollback head-history identity')
+        call require(all(transfer(left%hysteresis%accepted_theta,0_int64,size(left%hysteresis%accepted_theta)) == &
+             transfer(right%hysteresis%accepted_theta,0_int64,size(right%hysteresis%accepted_theta))), &
+             'hysteresis rollback theta-history identity')
+      class default
+        call require(.false.,'hysteresis rollback right type')
+      end select
+    class default
+      call require(.false.,'hysteresis rollback left type')
+    end select
+  end subroutine
+
+  subroutine run_linear_table_case()
+    type(fmr_serialized_reference_backend_t) :: backend
+    type(kernel_executor_t) :: transaction_control
+    type(kernel_committed_state_t) :: committed
+    type(fmr_logical_column_t) :: column
+    type(fmr_template_t) :: template
+    type(fmr_b110_physical_parameters_t) :: parameters
+    type(fmr_b110_physical_forcing_t) :: forcing
+    type(canonical_numerical_config_t) :: config
+    type(fmr_column_diagnostics_t) :: diagnostic
+    type(fmr_serialized_batch_diagnostics_t) :: runtime
+    type(fmr_serialized_column_result_t) :: output
+    type(fmr_serialized_physical_observation_t) :: observation
+    type(fixed_flux_top_boundary_provider_t), target :: top
+    real(real64) :: k0
+    integer :: active_calls
+    logical :: ok
+
+    call initialize_parameters(parameters,1,.false.,.false.)
+    deallocate(parameters%hydraulic_model_kind) ! table uses canonical default material selection
+    call initialize_linear_table(parameters)
+    call initialize_committed_state(committed,parameters,k0,ok)
+    call require(ok,'linear-table committed state init')
+    call initialize_forcing(forcing,-k0,.false.)
+    call initialize_column(column,template,.false.)
+    call initialize_config(config)
+    output=fmr_serialized_column_result_t()
+    output%column_id=910000_int64
+    output%requested_t0=0.0_real64
+    output%requested_t1=dt
+    diagnostic=fmr_column_diagnostics_t()
+    diagnostic%column_id=output%column_id
+    runtime=fmr_serialized_batch_diagnostics_t()
+    active_calls=0
+    call backend%initialize(top)
+    call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
+         forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
+    observation=backend%observation()
+    if (.not. (output%completed.and.output%committed)) &
+      write(*,'(a,1x,a,1x,l1,1x,l1,1x,i0,1x,i0)') &
+      'LINEAR_TABLE_DIAGNOSTIC',trim(output%admission_status),output%admission_assessed, &
+      output%admitted,output%kernel_status,output%commit_status
+    call require(output%completed.and.output%committed,'linear-table runtime commit')
+    call require(output%mass%complete,'linear-table mass complete')
+    call require(abs(output%mass%residual)<=mass_tol,'linear-table hard mass')
+    call require(observation%solver_executed,'linear-table solver executed')
+    write(*,'(A,1X,ES16.8)')'SW431_HYD_LINEAR_TABLE_RUNTIME_PASS',output%mass%residual
+  end subroutine
+
+  subroutine initialize_linear_table(p)
+    type(fmr_b110_physical_parameters_t),intent(inout)::p
+    type(b110_default_mvg_parameters_t)::bp
+    real(real64),allocatable::wci(:,:),wcs(:,:),capi(:,:),caps(:,:),coni(:,:),cons(:,:)
+    real(real64)::heads(501),theta(numnod),k(numnod),cap(numnod),dk(numnod),hv(numnod)
+    type(b110_default_mvg_provider_t)::base
+    integer::j,status
+    allocate(wci(501,numnod),wcs(501,numnod),capi(501,numnod),caps(501,numnod),coni(501,numnod),cons(501,numnod))
+    call initialize_b110_default_mvg_parameters(bp,p%cofgen)
+    call bind_b110_default_mvg_provider(base,bp,dt)
+    do j=1,501
+      if(j<=100)then
+        heads(j)=-real(j-1,real64)/100.0_real64
+      else
+        heads(j)=-10.0_real64**(real(j-101,real64)/100.0_real64)
+      end if
+      hv=heads(j)
+      call base%evaluate(hv,theta,k,cap,dk)
+      wci(j,:)=theta
+      wcs(j,:)=0.0_real64
+      capi(j,:)=cap
+      caps(j,:)=0.0_real64
+      coni(j,:)=k
+      cons(j,:)=0.0_real64
+    end do
+    p%tabulated_hydraulics_active=.true.
+    p%tabulated_hydraulics_active=.true.
+    allocate(p%linear_hydraulic_table)
+    call initialize_b111_linear_table_parameters(p%linear_hydraulic_table,bp%cofgen,wci,wcs,capi,caps,coni,cons,status)
+    call require(status==B111_LINEAR_TABLE_OK,'linear-table configure')
+  end subroutine
+
+  subroutine initialize_parameters(p,model,power,vapor)
+    type(fmr_b110_physical_parameters_t),intent(out)::p
+    integer,intent(in)::model
+    logical,intent(in)::power,vapor
+    integer::j,status
+    real(real64)::m1,m2
+    real(real64)::theta_sat(numnod),fq(numnod),fc(numnod),fo(numnod),distance(numnod)
+
+    m1=1.0_real64-1.0_real64/1.62_real64
+    m2=1.0_real64-1.0_real64/1.35_real64
+    p%parameter_set_id=910001_int64+int(model,int64)
+    p%active_nodes=numnod
+    allocate(p%z(numnod),p%dz(numnod),p%node_distance(numnod),p%cofgen(24,numnod),p%hydraulic_model_kind(numnod))
+    p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod);p%cofgen=0.0_real64;p%hydraulic_model_kind=model
+    do j=1,numnod
+      p%cofgen(1,j)=0.06_real64;p%cofgen(2,j)=0.44_real64;p%cofgen(3,j)=12.5_real64
+      p%cofgen(4,j)=0.018_real64;p%cofgen(5,j)=0.45_real64;p%cofgen(6,j)=1.62_real64;p%cofgen(7,j)=m1
+      p%cofgen(8,j)=p%cofgen(4,j);p%cofgen(9,j)=0.0_real64
+      p%cofgen(10,j)=p%cofgen(3,j);p%cofgen(11,j)=0.999_real64;p%cofgen(12,j)=0.99_real64*p%cofgen(3,j)
+      p%cofgen(13,j)=0.0035_real64;p%cofgen(14,j)=1.35_real64;p%cofgen(15,j)=m2
+      p%cofgen(16,j)=0.63_real64;p%cofgen(17,j)=0.37_real64
+      p%cofgen(18,j)=1.0e6_real64;p%cofgen(19,j)=100.0_real64;p%cofgen(20,j)=-1.5_real64;p%cofgen(21,j)=0.04_real64
+      p%cofgen(22,j)=-200.0_real64;p%cofgen(23,j)=default_k_at(-200.0_real64,p%cofgen(:,j))
+    end do
+    p%extended_model6_active=(model==6)
+    p%conductivity_power_tail_active=power
+    if (power) deallocate(p%hydraulic_model_kind) ! canonical POWER is default-MvG only
+    p%pdi_vapor_active=vapor
+    p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%swsophy=0
+    p%max_iterations=20;p%max_backtracking=8;p%min_step_duration=1.0e-9_real64
+    p%compartment_balance_tolerance=mass_tol;p%total_balance_tolerance=mass_tol
+    p%head_abs_tolerance=1.0e-11_real64;p%head_rel_tolerance=1.0e-11_real64;p%ponding_tolerance=1.0e-11_real64
+    p%root_extraction_active=.false.;p%macropore_active=.false.;p%snow_active=.false.
+    p%hysteresis_active=.false.;p%tabulated_hydraulics_active=.false.;p%elasticity_active=.false.
+    p%frost_active=.false.;p%soil_temperature_active=vapor;p%drainage_response_active=.false.
+    if(vapor)then
+      allocate(p%soil_temperature)
+      theta_sat=p%cofgen(2,:);fq=0.35_real64;fc=0.15_real64;fo=0.05_real64
+      distance=p%node_distance
+      where(distance<=0.0_real64) distance=max(0.5_real64*p%dz,1.0e-6_real64)
+      call initialize_soil_temperature_parameters(p%dz,distance,theta_sat,fq,fc,fo,p%soil_temperature,status)
+      call require(status==SOIL_TEMP_OK .and. p%soil_temperature%ready(),'PDI vapor thermal parameters')
+    end if
+  end subroutine
+
+  subroutine initialize_committed_state(committed,p,k0,ok)
+    type(kernel_committed_state_t),intent(out)::committed
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    real(real64),intent(out)::k0
+    logical,intent(out)::ok
+    type(fmr_b110_physical_state_t)::state
+    real(real64)::head(numnod),theta(numnod),k(numnod),cap(numnod),dk(numnod)
+    type(b110_default_mvg_parameters_t),target::bp
+    type(b110_default_mvg_provider_t),target::base
+    type(b111_legacy_hydraulic_provider_t),target::legacy
+    type(b111_extended_hydraulic_parameters_t),target::ep
+    type(b111_extended_hydraulic_provider_t),target::ext
+    type(b111_conductivity_power_tail_t)::pw
+    type(b111_linear_table_provider_t)::linear
+    type(b110_default_mvg_parameters_t),target::scan_bp
+    type(b110_default_mvg_provider_t),target::scan_base
+    real(real64),allocatable::scan_cofgen(:,:)
+    real(real64),target::vapor_temperature(numnod)
+    integer::status, model_kind(numnod)
+    model_kind=1
+    if (allocated(p%hydraulic_model_kind)) model_kind=p%hydraulic_model_kind
+
+    call initialize_b110_default_mvg_parameters(bp,p%cofgen)
+    call bind_b110_default_mvg_provider(base,bp,dt)
+    call configure_b111_legacy_hydraulic_provider(legacy,bp%cofgen,model_kind,status)
+    call require(status==B111_LEGACY_HYD_OK,'legacy configure')
+    call bind_b111_legacy_hydraulic_provider(legacy,base,dt,status)
+    call require(status==B111_LEGACY_HYD_OK,'legacy bind')
+    call initialize_b111_extended_hydraulic_parameters(ep,model_kind,bp%cofgen,status,p%pdi_vapor_active)
+    call require(status==B111_EXT_OK,'extended configure')
+    if(p%pdi_vapor_active)then
+      vapor_temperature=20.0_real64
+      call bind_b111_extended_hydraulic_provider(ext,ep,legacy,status,vapor_temperature)
+    else
+      call bind_b111_extended_hydraulic_provider(ext,ep,legacy,status)
+    end if
+    call require(status==B111_EXT_OK,'extended bind')
+
+    head=initial_head
+    if(p%hysteresis_active)then
+      call require(allocated(p%hysteresis_parameters),'hysteresis parameters present')
+      allocate(scan_cofgen(size(p%cofgen,1),numnod))
+      scan_cofgen=p%cofgen
+      if(p%hysteresis_initial_mode==1)then
+        scan_cofgen(4,:)=p%hysteresis_parameters%alpha_wet
+      else
+        scan_cofgen(4,:)=p%hysteresis_parameters%alpha_dry
+      end if
+      call initialize_b110_default_mvg_parameters(scan_bp,scan_cofgen)
+      call bind_b110_default_mvg_provider(scan_base,scan_bp,dt)
+      call scan_base%evaluate(head,theta,k,cap,dk)
+    else if(allocated(p%linear_hydraulic_table))then
+      call bind_b111_linear_table_provider(linear,p%linear_hydraulic_table,dt,status)
+      call require(status==B111_LINEAR_TABLE_OK,'linear-table bind')
+      call linear%evaluate(head,theta,k,cap,dk)
+    else if(p%conductivity_power_tail_active)then
+      call configure_b111_conductivity_power_tail(pw,bp%cofgen,model_kind,status)
+      call require(status==B111_POWER_OK,'power configure')
+      call bind_b111_conductivity_power_tail(pw,ext,status)
+      call require(status==B111_POWER_OK,'power bind')
+      call pw%evaluate(head,theta,k,cap,dk)
+    else
+      call ext%evaluate(head,theta,k,cap,dk)
+    end if
+    k0=k(1)
+    call require(k0>0.0_real64,'positive initial K')
+    state%active_nodes=numnod
+    allocate(state%pressure_head(numnod),state%water_content(numnod))
+    state%pressure_head=head;state%water_content=theta;state%ponding_depth=0.0_real64;state%groundwater_level=-999.0_real64
+    if(p%pdi_vapor_active)then
+      allocate(state%soil_temperature)
+      call initialize_soil_temperature_state(vapor_temperature,state%soil_temperature,status)
+      call require(status==SOIL_TEMP_OK,'PDI vapor thermal state')
+    end if
+    if(p%hysteresis_active)then
+      allocate(state%hysteresis)
+      call initialize_b111_hysteresis_state(p%hysteresis_parameters,p%hysteresis_initial_mode,head,theta, &
+           state%hysteresis,status)
+      call require(status==B111_HYST_OK,'hysteresis state init')
+    end if
+    call fmr_new_b110_committed_state(committed,910000_int64,state,0.0_real64,ok)
+  end subroutine
+
+  subroutine initialize_forcing(f,q,vapor)
+    type(fmr_b110_physical_forcing_t),intent(out)::f
+    real(real64),intent(in)::q
+    logical,intent(in)::vapor
+    f%top_flux=q;f%top_head=initial_head;f%bottom_flux=q;f%bottom_head=-999999.0_real64
+    allocate(f%drainage_flux_by_level(1,numnod),f%subsurface_irrigation_source(numnod),f%root_extraction_sink(numnod))
+    f%drainage_flux_by_level=0.0_real64;f%subsurface_irrigation_source=0.0_real64;f%root_extraction_sink=0.0_real64
+    if(vapor)then
+      allocate(f%soil_temperature)
+      f%soil_temperature%prescribed_surface_temperature_c=20.0_real64
+    end if
+  end subroutine
+
+  subroutine initialize_column(column,template,vapor)
+    type(fmr_logical_column_t),intent(out)::column
+    type(fmr_template_t),intent(out)::template
+    logical,intent(in)::vapor
+    template%template_id=910001_int64;template%physics_topology_id=910002_int64
+    template%vertical_layout_id=910003_int64;template%state_layout_id=910004_int64;template%solver_interface_id=910005_int64
+    template%optional_state_layout_id=merge(FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE,0_int64,vapor)
+    template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+    column%column_id=910000_int64;column%template_id=template%template_id;column%parameter_ref=1_int64
+    column%state_handle=1_int64;column%forcing_handle=1_int64;column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  end subroutine
+
+  subroutine initialize_config(c)
+    type(canonical_numerical_config_t),intent(out)::c
+    c=canonical_numerical_config_t()
+    c%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF;c%transaction%temporal_tolerance=1.0e-5_real64
+    c%transaction%max_retries=6;c%transaction%retry_scale=0.5_real64;c%transaction%mass_tolerance=mass_tol
+    c%max_committed_substeps=64;c%progress_tolerance=0.0_real64
+  end subroutine
+
+  pure real(real64) function default_k_at(h,c) result(k)
+    real(real64),intent(in)::h,c(:)
+    real(real64)::m,se,t
+    m=1.0_real64-1.0_real64/c(6)
+    se=(1.0_real64+abs(c(4)*h)**c(6))**(-m)
+    t=(1.0_real64-se**(1.0_real64/m))**m
+    k=c(3)*se**c(5)*(1.0_real64-t)**2
+  end function
+
+  subroutine require(condition,label)
+    logical,intent(in)::condition
+    character(len=*),intent(in)::label
+    if(.not.condition)then
+      write(*,'(A,1X,A)')'SW431_HYD_RUNTIME_FAIL',trim(label)
+      error stop 1
+    end if
+  end subroutine
+end program test_swap431_hyd_runtime_reachability

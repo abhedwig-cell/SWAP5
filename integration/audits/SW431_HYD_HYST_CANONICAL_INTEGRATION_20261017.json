@@ -1,0 +1,267 @@
+{
+  "work_unit": "MC-HYD01_MC-HYST01_CANONICAL_INTEGRATION",
+  "baseline": "9705f65fc43dd25528a1cf0197f83e63ab9f5bc1",
+  "qualified_source_branch": "work/swap431-hyd-hyst-closeout",
+  "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
+  "qualified_workflow_run": 39020045073,
+  "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
+  "stage": "SCIENTIFICALLY_QUALIFIED_READY_FOR_CANONICAL_MERGE",
+  "tested": "HYD_HYST_FULL_COMPONENT_AND_FSI39_ROSS_O0_O2_PASS_PLUS_NATIVE_B112_SUCCESSOR_PASS",
+  "qualified": true,
+  "admitted": false,
+  "transplanted": [
+    "src/solver/mod_b111_conductivity_power_tail.f90",
+    "src/solver/mod_b111_extended_hydraulic_provider.f90",
+    "src/solver/mod_b111_hysteresis_state.f90",
+    "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+    "src/solver/mod_b111_linear_table_provider.f90"
+  ],
+  "runtime_overlap": [
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "disposition": "DO_NOT_OVERWRITE_CANONICAL_RUNTIME_WITH_OLDER_CANDIDATE; forward-port specific dispatch, state and restart semantics with preservation of admitted current owners",
+  "open_source": [
+    "SW431-HYD-MODEL12_RIA",
+    "SW431-HYD-TABLE",
+    "SW431-HYD-RIA-VAPOR"
+  ],
+  "next_action": "Check new documentation-only PR merge tree against qualified source/reference identities and unchanged test drivers; mark PR ready and merge with expected-head lease. Then update current canonical HYD/HYST owner admission/coverage status and verify canonical HEAD.",
+  "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
+  "canonical_component_qualification": {
+    "workflow_run": 39021520599,
+    "head": "b439e197ee2cec80c0c191a04a8f01f0c8d5b5c1",
+    "result": "PASS",
+    "checks": [
+      "hydraulic families O0/O2",
+      "HYST state O0/O2"
+    ],
+    "ceiling": "component only: not runtime, rollback, restart or canonical admitted"
+  },
+  "committed_hysteresis_clone_commit": "70e5d3f0ec7321cb823302eb65c4dd61824eec32",
+  "restart_guard_commit": "72afe072cf8a69363eca58e80d47f8df5152ea01",
+  "runtime_parameter_forward_port_commit": "0a300c486dd257e503c701393947f9bcbebfce20",
+  "runtime_probe_20261017": {
+    "run_id": 39022151175,
+    "head": "c89f6e955579dcf4b889dbe37c1ca9731f8fb30b",
+    "result": "INVALID_BUILD_CLOSURE",
+    "failure": "mod_transaction_reference.mod missing during isolated -fsyntax-only",
+    "interpretation": "No production runtime compile/failure conclusion; test harness omission",
+    "cleanup_commit": "fafcdd50f21578869282b809dae214ed77a9b164"
+  },
+  "runtime_gate_20261017": {
+    "head": "462d362eb3417e02be3fcf290886e76117e28e64",
+    "run_id": 39022431600,
+    "compile": "PASS",
+    "model2": "PASS_MASS_ZERO",
+    "model3": "PASS_MASS_ZERO",
+    "model5": "BLOCKED_RUNTIME_NOT_COMMITTED",
+    "cause": "Canonical hydraulic_model_kind admission bound to existing analytical model 2/3/6 envelope; adding extended provider files and state/restart members does not activate extended model 5-11 dispatch.",
+    "qualified": false
+  },
+  "current_canonical_head_seen": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+  "model5_dispatch_risk_20261017": {
+    "finding": "The canonical admission gate accepts only analytical types 2/3/6; the runtime points selected models to analytical_constitutive. Merely admitting types 5..11 in the predicate would route them to the wrong provider.",
+    "unsafe_partial_commit": "6c4715b964c6eb41e7235d4c1908adb044864635",
+    "revert_commit": "4521c88b631950b58b27001ced5aa579ff076c17",
+    "disposition": "FAIL_CLOSED_RESTORED",
+    "required_change": "Compose extended provider and parameter initialization, qualified selection, trial-start temperature for PDI vapor, and accepted-only HYST transition before enabling model5..11."
+  },
+  "dispatch_commit": "68f05c86d492cd85aae02ce05319c3a2f86563cf",
+  "workflow_trigger_commit": "001f663b71147374b43dc4eb99d7efb0d83bdf66",
+  "runtime_gate_20261017_latest": {
+    "run": 39031265198,
+    "commit": "6bc0d0621ed39ea4033df6f60f3757de96c6949e",
+    "compile": "PASS",
+    "models": "2,3,5,6,7,8,9,10,11 runtime accepted; each zero reported residual",
+    "next_failure": "first PDI vapor runtime not committed",
+    "status": "PARTIAL_PASS_NOT_ADMISSION"
+  },
+  "pdi_vapor_forward_port": {
+    "implementation_commit": "ac2074e7f70c8b70af130b18051619b4f4b6883a",
+    "summary": "Opt-in PDI 8-11 thermal carrier uses trial-start soil_temperature field view",
+    "verification": "PENDING_ACTIONS_TERMINAL_STATUS",
+    "source_regression": "Prior model2/3/5-11 runtime passes at 39031265198, vapor initially not committed"
+  },
+  "latest_runtime_gate": {
+    "commit": "174591b5681c3ed160afa31fa4736b75719ae87b",
+    "run_id": 39034968506,
+    "result": "PASS",
+    "scope": [
+      "MODEL2,3,5..11",
+      "PDI vapor8..11",
+      "POWER",
+      "LINEAR-TABLE",
+      "HYST1/HYST2 accepted runtime",
+      "HYST1/HYST2 restart",
+      "HYST1/HYST2 rejected trial rollback",
+      "native mass O0/O2 identity"
+    ],
+    "status_context": "SW431/HYD-canonical-component"
+  },
+  "canonical_reconciliation": {
+    "baseline": "9705f65fc43dd25528a1cf0197f83e63ab9f5bc1",
+    "observed_canonical": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+    "ahead_canonical_commits": 4,
+    "changed_files": [
+      ".github/workflows/mc-nut01-focused-native.yml"
+    ],
+    "declared_hyd_dependency_intersection": false
+  },
+  "preservation_20261017": {
+    "fsi39_run_script": "tests/fsi/run_sw431_fsi39_current_preservation.sh",
+    "source_provider_blob": "226dec2740dd3cf2eb677928f54f433086354c3f",
+    "workflow_head": "d2ca802a4fa1a2a8631aca458f478f954a06cbe1",
+    "workflow_status": "PENDING_NOT_OBSERVED",
+    "ross12": "HISTORICAL_TEST_REQUIRES_OLD_SOLVER_CONTRACT_BLOB_40a1; CURRENT_SOLVER_CONTRACT_BLOB_7b16; REBIND_REQUIRED_WITH_OWNER_APPROVAL",
+    "canonical_head": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+    "delta_from_baseline": "NUT workflow only, no HYD scientific dependency overlap",
+    "fsi39_test": "tests/fsi/run_sw431_fsi39_current_preservation.sh",
+    "ross12_test": "tests/ross/run_sw431_ross12_current_preservation.sh",
+    "workflow_commit": "6dbf87571134b92feaa9481747898bf30dbbf9d7",
+    "execution_status": "PENDING: status not returned for focused workflow; separate SWAP431 HYD/HYST hydraulic coverage run 39036197738 queued",
+    "claim": "NOT_QUALIFIED until tests execute and transitive owner preservation checked"
+  },
+  "preserving_owner_reconciliation_20261017": {
+    "fsi39": {
+      "run_id": 39036782614,
+      "result": "PASS_O0_O2",
+      "note": "FSI39 passes; same workflow failed on outdated RossFast historical blob pins"
+    },
+    "ross12": {
+      "old_pin_failure_run": 39036782614,
+      "current_canonical_byte_identity": [
+        "src/runtime/mod_rossfast_d3r_model_binding.f90",
+        "src/solver/mod_rossfast_d3r_table_kernel.f90",
+        "src/solver/mod_rossfast_d3r_table_provider.f90"
+      ],
+      "updated_driver_commit": "6454a8bf918dfac8f3274697845842d11d717748",
+      "new_run": 39037210570,
+      "result": "PENDING_NOT_OBSERVED"
+    },
+    "hyd_certificate": {
+      "run_id": 39037055849,
+      "result": "FAIL",
+      "failure": "Existing MODEL6 analytical certificate cannot initialize the new extended model6 parameter route; ERROR STOP extended hydraulic model parameters invalid at both O0/O2. This is an incumbent scientific route preservation failure, not merely a missing dependency.",
+      "drainage_module_build_closed": "a3f29cb23f30f5d9fac0e21e822b253c3bed69a0",
+      "required_action": "Preserve prior admitted analytical MODEL6 and separately admitted extended model6 through explicit disambiguation, qualify both O0/O2 and restart/rollback; do not silently fall back from invalid extended params"
+    },
+    "coverage_new_run": 39037214508,
+    "canonical_pinned": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+    "disposition": "NO_MERGE_NO_PROMOTION_UNTIL_EXISTING_MODEL6_OWNER_PRESERVED_AND_ALL_GATES_PASS"
+  },
+  "preservation_closeout_20261017": {
+    "fsi39": {
+      "run": 39036782614,
+      "result": "PASS O0/O2 after warning-policy-only update",
+      "commit": "b43e4f031cdd97c6d1c99f2458622f5d4e72599d"
+    },
+    "ross12": {
+      "run": 39037210570,
+      "result": "FAIL ROSS12 real D3R table kernel executed with admitted workload",
+      "branch_commit": "6454a8bf918dfac8f3274697845842d11d717748",
+      "detail": "Historical SHA pins replaced only after verifying current canonical and PR source blobs byte-identical; behavioral oracle fails. Do not waive."
+    },
+    "certificate": {
+      "run": 39037055849,
+      "result": "FAIL O0/O2 runtime for MODEL6: extended hydraulic model parameters invalid; other incumbent drivers exit 0",
+      "detail": "Dependency closure fixed; surviving error is actual owner preservation incompatibility, not compilation."
+    },
+    "coverage_run": 39037214508,
+    "next": "Determine MODEL6 parameter mapping and ROSS12 compatibility against accepted current canonical owners; preserve admitted behaviors; rerun narrow postimage gates; do not merge until all pass."
+  },
+  "latest_terminal_evidence_20261017": {
+    "component_run": 39037695449,
+    "component_conclusion": "SUCCESS",
+    "component_checks": [
+      "B111 component O0/O2",
+      "HYST state O0/O2",
+      "joint real FMR runtime O0/O2",
+      "F-SI39 current preservation O0/O2",
+      "RossFast modern current owner and 36-material O0/O2"
+    ],
+    "coverage_run": 39037701781,
+    "coverage_conclusion": "FAIL_LAST_OWNER_GATE",
+    "coverage_checks_passed": [
+      "MODEL2/3/6 POWER analytical literal O0/O2",
+      "shared production certificate O0/O2",
+      "admitted daily root receiving O0/O2"
+    ],
+    "failed_step": "Exact source, immutable evidence and incumbent composition controls",
+    "first_failure": "tests/nut-crop/verify_b112_retained_successor.py refuses qualification_inputs_sha256 drift on src/runtime/mod_fmr_runtime_core.f90",
+    "reason": "HYSTERESIS optional-state-layout constant and recognition modifies previously NUT-proof pinned file; no automatic evidence inheritance",
+    "disposition": "BLOCK_MERGE_UNTIL_OWNER_SCIENTIFIC_REQUALIFICATION_OR_EXPLICIT_ACCEPTED_SUCCESSOR_PROOF; DO_NOT_EDIT_HISTORICAL_EVIDENCE_DIGESTS"
+  },
+  "current_canonical_seen": "dcda2dded1ecd6bed9d29d09c9b4025ba5785579",
+  "b112_preservation_successor_20261017": {
+    "reasoning": "Old INT12C/HYD delegated verifier follows immutable B112 exact-input records and rejects opt-in HYST layout source changes. Preserve original evidence at the exact original admitted B112 HEAD; prove default layout as byte-exact current canonical parent projection and NUT owner blobs unchanged, plus fresh O0/O2 real B112 state/harvest/negative-input production tests on the final PR merge tree. No historical evidence rewriting.",
+    "verified_original_b112_commit": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+    "tested_path": "tests/fpm/verify_sw431_hyst_b112_bridge.py",
+    "coverage_authority": ".github/workflows/swap431-hydraulic-coverage.yml",
+    "related_immutable_archive": "integration/audits/evidence/MC_NUT01_B112_RETAINED_QUALIFICATION_20261017.tar.xz.b64",
+    "current_physical_scope": "20 B112 partition cases, 54 daily/partial harvest cases, 27 invalid-state rejections, original admitted full native owner proof on frozen checkout, joint HYD/HYST physics O0/O2 from owning workflow",
+    "missing": "Full NUT B1.12 moving joint rerun NOT_SELECTED_IMPACT unless new source/behavioral overlap emerges; future failure must remain fail-closed.",
+    "qualification": "SUCCESS_MERGED_TREE_39040202846",
+    "expected_seconds": 120,
+    "test_selection": "Dependency-impact bridge rather than rebind immutable source hashes; use unchanged original science controls on original exact-science tree.",
+    "original_retained_source_base": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "last_run": {
+      "id": 39039607360,
+      "result": "FAILED_AT_HISTORICAL_CHECKOUT_PATH",
+      "passed": [
+        "hyd analytical O0/O2",
+        "power O0/O2",
+        "256-case literal O0/O2",
+        "shared full certificate O0/O2",
+        "daily root supply O0/O2",
+        "current default layout projection",
+        "NUT owner byte identity",
+        "immutable NUT archive hash"
+      ],
+      "cause": "The original source baseline 47421 predates tests/nut-crop/verify_b112_retained_successor.py; use verified science/admission commit f1f1 instead",
+      "corrective_gate": ".github/workflows/swap431-hyst-b112-successor.yml"
+    }
+  },
+  "qualified_merge_tree_20261017": {
+    "canonical_parent": "95cc79bd40cc26083e5944a4369fade4eb3ba53d",
+    "head": "abc172cbaf2b547ce92c735c1094a0d6feae14e8",
+    "merge_sha": "6894d310e7bc0c52107aa9fe974f9667ad5245a1",
+    "production_src_tree": "0fc6a5eb1b23b1932cfb596c7ebfdfff0b217294",
+    "reference_tree": "39b0c3b3983102367532dea5edabb889be072b4a",
+    "component_and_ross_fsi_run": {
+      "id": 39037695449,
+      "conclusion": "SUCCESS"
+    },
+    "full_shared_coverage_run": {
+      "id": 39039607360,
+      "physical_steps": "ALL_PASS",
+      "overall": "FAIL_ONLY_SUPERSEDED_OLDER_B112_VERIFIER_PATH"
+    },
+    "bounded_b112_owner_successor_run": {
+      "id": 39040202846,
+      "conclusion": "SUCCESS",
+      "actual_merge_sha": "6894d310e7bc0c52107aa9fe974f9667ad5245a1",
+      "original_b112_record": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+      "fresh_b112_native": "O0_O2_PASS"
+    },
+    "identity": "Full-shared-coverage merge tree 09802a3a and bounded B112 successor merge tree 6894d310 share identical src and reference tree. Only test/workflow/audit differences; scientific observations inherited on byte-identical relevant source and original oracle input.",
+    "preserved_models": [
+      "MODEL2",
+      "MODEL3",
+      "MODEL6 analytical standard",
+      "MODEL5,7..11",
+      "MODEL6 extended opt-in",
+      "PDI8..11",
+      "POWER",
+      "LINEAR-TABLE",
+      "HYST1",
+      "HYST2"
+    ],
+    "open_source": [
+      "SW431-HYD-MODEL12_RIA",
+      "SW431-HYD-TABLE",
+      "SW431-HYD-RIA-VAPOR"
+    ]
+  }
+}

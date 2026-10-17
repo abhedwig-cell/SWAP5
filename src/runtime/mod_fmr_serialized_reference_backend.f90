@@ -167,6 +167,16 @@ module mod_fmr_serialized_reference_backend
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
+  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t, b111_hysteresis_parameters_t, &
+       b111_hysteresis_transition_t, advance_b111_hysteresis_accepted, B111_HYST_OK
+  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t, &
+       configure_b111_legacy_hydraulic_provider, bind_b111_legacy_hydraulic_provider, B111_LEGACY_HYD_OK
+  use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
+       b111_extended_hydraulic_provider_t, initialize_b111_extended_hydraulic_parameters, &
+       bind_b111_extended_hydraulic_provider, B111_EXT_OK
+  use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t
+  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
+       bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -237,6 +247,7 @@ module mod_fmr_serialized_reference_backend
     type(macropore_continuation_state_t), allocatable :: macropore
     type(fmr_mobile_salt_component_t), allocatable :: salt
     type(rutter_source_state_t), allocatable :: rutter
+    type(b111_hysteresis_state_t), allocatable :: hysteresis
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -304,7 +315,11 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: cofgen(:,:)
     ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.
     integer, allocatable :: hydraulic_model_kind(:)
+    ! Explicitly select the extended MODEL6 route; default preserves admitted analytical MODEL6.
+    logical :: extended_model6_active = .false.
     logical :: conductivity_power_tail_active = .false.
+    logical :: pdi_vapor_active = .false.
+    type(b111_linear_table_parameters_t), allocatable :: linear_hydraulic_table
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
@@ -356,6 +371,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
+    integer :: hysteresis_initial_mode = 0
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     logical :: tabulated_hydraulics_active = .false.
     logical :: direct_retention_active = .false.
     integer :: prepared_direct_retention_slot = 0
@@ -687,6 +704,15 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()
     logical :: analytical_hydraulics_active = .false.
+    logical :: extended_hydraulics_active = .false.
+    logical :: extended_pdi_vapor_active = .false.
+    logical :: hysteresis_active = .false.
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
+    type(b111_linear_table_provider_t), pointer :: linear_table_constitutive => null()
+    type(b111_linear_table_parameters_t), allocatable :: linear_table_parameters
+    type(b111_legacy_hydraulic_provider_t), pointer :: extended_legacy => null()
+    type(b111_extended_hydraulic_parameters_t), pointer :: extended_parameters => null()
+    type(b111_extended_hydraulic_provider_t), pointer :: extended_constitutive => null()
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     integer :: direct_retention_slot = 0
@@ -1395,6 +1421,11 @@ contains
       allocate(target%rutter)
       target%rutter = source%rutter
     end if
+    if (allocated(target%hysteresis)) deallocate(target%hysteresis)
+    if (allocated(source%hysteresis)) then
+      allocate(target%hysteresis)
+      target%hysteresis = source%hysteresis
+    end if
   end subroutine copy_b110_physical_state
 
   logical function fmr_mobile_salt_ready(self,active_nodes,active_domains) result(ready)
@@ -1784,10 +1815,12 @@ contains
                                                                macropore_reduction_enabled, &
                                                                fixed_weir_surface_water_active, &
                                                                black_evaporation_active, &
-                                                               boesten_evaporation_active, macropore_active, rutter_active) result(matches)
+                                                               boesten_evaporation_active, macropore_active, rutter_active, &
+                                                               hysteresis_active) result(matches)
     class(transaction_state_t), intent(in) :: state
     logical, intent(in) :: temporal_history_enabled, macropore_reduction_enabled, fixed_weir_surface_water_active
     logical, intent(in) :: black_evaporation_active, boesten_evaporation_active, macropore_active, rutter_active
+    logical, intent(in) :: hysteresis_active
     if (black_evaporation_active .and. boesten_evaporation_active) then
       matches = .false.
       return
@@ -1822,7 +1855,8 @@ contains
       matches = .not. temporal_history_enabled .and. .not. macropore_reduction_enabled .and. &
            .not. fixed_weir_surface_water_active .and. &
            .not. black_evaporation_active .and. .not. boesten_evaporation_active .and. &
-           (allocated(state%rutter) .eqv. rutter_active)
+           (allocated(state%rutter) .eqv. rutter_active) .and. &
+           (allocated(state%hysteresis) .eqv. hysteresis_active)
     class default
       matches = .false.
     end select
@@ -1873,7 +1907,19 @@ contains
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
                                                            model%boesten_evaporation_active, model%macropore_active, &
-                                                           model%rutter_active)) return
+                                                           model%rutter_active, parameters%hysteresis_active)) then
+      write(0,'(a,7(1x,l1))') 'HYST_PROFILE_REJECT_DEBUG', model%temporal_indicator_history_enabled, &
+           model%macropore_reduction_continuation_enabled, model%fixed_weir_surface_water_active, &
+           model%black_evaporation_active, model%boesten_evaporation_active, &
+           model%rutter_active, parameters%hysteresis_active
+      select type (dbg => snapshot)
+      type is (fmr_b110_physical_state_t)
+        write(0,'(a,2(1x,l1))') 'HYST_PROFILE_STATE_DEBUG',allocated(dbg%hysteresis),allocated(dbg%rutter)
+      class default
+        write(0,'(a)') 'HYST_PROFILE_DIFFERENT_TYPE'
+      end select
+      return
+    end if
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
@@ -2929,7 +2975,8 @@ contains
         ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
              all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
                  parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &
-                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK .or. &
+                 (parameters%hydraulic_model_kind >= 5 .and. parameters%hydraulic_model_kind <= 11)) .and. &
              self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
              .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
              .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
@@ -2937,7 +2984,8 @@ contains
              .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
-             .not. parameters%soil_temperature_active .and. .not. parameters%snow_active .and. &
+             (parameters%soil_temperature_active .eqv. parameters%pdi_vapor_active) .and. &
+             .not. parameters%snow_active .and. &
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active
       end if
       if (parameters%conductivity_power_tail_active) then
@@ -2959,6 +3007,19 @@ contains
              all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &
              all(parameters%cofgen(23,:) > 0.0_real64)
       end if
+      if (allocated(parameters%linear_hydraulic_table)) then
+        ok = ok .and. parameters%tabulated_hydraulics_active .and. &
+             .not. allocated(parameters%hydraulic_model_kind) .and. &
+             .not. parameters%conductivity_power_tail_active .and. .not. parameters%pdi_vapor_active .and. &
+             .not. parameters%hysteresis_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0
+      else
+        ok = ok .and. .not. parameters%tabulated_hydraulics_active
+      end if
       if (parameters%macropore_active) then
         ! Admission precedes configure_parameters(). Validate the immutable
         ! production config from the parameter carrier here; configure_parameters
@@ -2977,7 +3038,22 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
+           (.not. parameters%tabulated_hydraulics_active .or. allocated(parameters%linear_hydraulic_table))
+      if (parameters%hysteresis_active) then
+        ok = ok .and. parameters%bottom_mode == 2 .and. &
+             allocated(parameters%hysteresis_parameters) .and. &
+             (parameters%hysteresis_initial_mode == 1 .or. parameters%hysteresis_initial_mode == 2) .and. &
+             .not. allocated(parameters%hydraulic_model_kind) .and. &
+             .not. parameters%tabulated_hydraulics_active .and. &
+             .not. parameters%conductivity_power_tail_active .and. &
+             .not. parameters%pdi_vapor_active .and. &
+             .not. parameters%soil_temperature_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active
+        if (ok) ok = parameters%hysteresis_parameters%active_nodes == parameters%active_nodes
+      else
+        ok = ok .and. .not. allocated(parameters%hysteresis_parameters)
+      end if
        if (parameters%bottom_mode == 3) then
          if (parameters%swbotb3_explicit_active) then
            ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
@@ -3221,6 +3297,10 @@ contains
       if (.not. associated(self%analytical_hydraulic_parameters)) allocate(self%analytical_hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
       if (.not. associated(self%analytical_constitutive)) allocate(self%analytical_constitutive)
+      if (.not. associated(self%extended_legacy)) allocate(self%extended_legacy)
+      if (.not. associated(self%extended_parameters)) allocate(self%extended_parameters)
+      if (.not. associated(self%extended_constitutive)) allocate(self%extended_constitutive)
+      if (.not. associated(self%linear_table_constitutive)) allocate(self%linear_table_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3262,11 +3342,34 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
-      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind)
+      self%hysteresis_active = parameters%hysteresis_active
+      if (allocated(self%hysteresis_parameters)) deallocate(self%hysteresis_parameters)
+      if (self%hysteresis_active) then
+        if (.not. allocated(parameters%hysteresis_parameters)) error stop 'hysteresis requires parameters'
+        self%hysteresis_parameters = parameters%hysteresis_parameters
+      end if
+      self%extended_pdi_vapor_active = parameters%pdi_vapor_active
+      self%extended_hydraulics_active = .false.
+      if (allocated(parameters%hydraulic_model_kind)) &
+        self%extended_hydraulics_active = any(parameters%hydraulic_model_kind == 5 .or. &
+             (parameters%hydraulic_model_kind >= 7 .and. parameters%hydraulic_model_kind <= 11) .or. &
+             (parameters%hydraulic_model_kind == 6 .and. parameters%extended_model6_active))
+      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind) .and. &
+                                         .not. self%extended_hydraulics_active
       if (self%analytical_hydraulics_active) then
         call initialize_b111_analytical_hydraulic_parameters(self%analytical_hydraulic_parameters, &
              parameters%hydraulic_model_kind, parameters%cofgen)
       end if
+      if (self%extended_hydraulics_active) then
+        block
+          integer :: hyd_status
+          call initialize_b111_extended_hydraulic_parameters(self%extended_parameters, &
+               parameters%hydraulic_model_kind, parameters%cofgen, hyd_status, parameters%pdi_vapor_active)
+          if (hyd_status /= B111_EXT_OK) error stop 'extended hydraulic model parameters invalid'
+        end block
+      end if
+      if (allocated(self%linear_table_parameters)) deallocate(self%linear_table_parameters)
+      if (allocated(parameters%linear_hydraulic_table)) self%linear_table_parameters = parameters%linear_hydraulic_table
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
@@ -3998,6 +4101,8 @@ contains
     class(transaction_state_t), intent(inout) :: state
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
+    type(b110_default_mvg_parameters_t), target :: scan_parameters
+    real(real64), allocatable :: scan_cofgen(:,:)
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
     type(macropore_runtime_result_t) :: macropore_result
@@ -4126,7 +4231,7 @@ contains
                                                            self%fixed_weir_surface_water_active, &
                                                            self%black_evaporation_active, &
                                                            self%boesten_evaporation_active, self%macropore_active, &
-                                                           self%rutter_active)) return
+                                                           self%rutter_active, self%hysteresis_active)) return
     step_duration = t1 - t0
     if (step_duration <= 0.0_real64) return
     rutter_trial_prepared = .false.
@@ -4180,7 +4285,60 @@ contains
         return
       end select
     end if
-    if (self%analytical_hydraulics_active) then
+    if (allocated(self%linear_table_parameters)) then
+      block
+        integer :: table_status
+        call bind_b111_linear_table_provider(self%linear_table_constitutive, self%linear_table_parameters, &
+             step_duration, table_status)
+        if (table_status /= B111_LINEAR_TABLE_OK) return
+      end block
+    end if
+    if (self%hysteresis_active) then
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%hysteresis)) return
+        scan_cofgen = self%hydraulic_parameters%cofgen
+        scan_cofgen(1,:) = physical%hysteresis%theta_r_scan
+        scan_cofgen(2,:) = physical%hysteresis%theta_s_scan
+        scan_cofgen(4,:) = physical%hysteresis%alpha_active
+        call initialize_b110_default_mvg_parameters(scan_parameters, scan_cofgen)
+        call bind_b110_default_mvg_provider(self%constitutive, scan_parameters, step_duration)
+      class default
+        return
+      end select
+    end if
+    if (self%extended_hydraulics_active) then
+      block
+        integer :: hyd_status
+        call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+        call configure_b111_legacy_hydraulic_provider(self%extended_legacy, &
+             self%hydraulic_parameters%cofgen, self%extended_parameters%model, hyd_status)
+        if (hyd_status /= B111_LEGACY_HYD_OK) return
+        call bind_b111_legacy_hydraulic_provider(self%extended_legacy, self%constitutive, step_duration, hyd_status)
+        if (hyd_status /= B111_LEGACY_HYD_OK) return
+        if (self%extended_pdi_vapor_active) then
+          select type (physical => state)
+          class is (fmr_b110_physical_state_t)
+            if (.not. allocated(physical%soil_temperature)) return
+            block
+              type(soil_temperature_field_view_t) :: thermal
+              call build_soil_temperature_field_view(physical%soil_temperature, thermal, hyd_status)
+              if (hyd_status /= SOIL_TEMP_OK) return
+              call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
+                   self%extended_legacy, hyd_status, thermal%temperature_c)
+            end block
+          class default
+            return
+          end select
+        else
+          call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
+               self%extended_legacy, hyd_status)
+        end if
+        if (hyd_status /= B111_EXT_OK) return
+      end block
+    else if (self%hysteresis_active) then
+      continue ! scanning provider already bound to trial-local parameters
+    else if (self%analytical_hydraulics_active) then
       call bind_b111_analytical_hydraulic_provider(self%analytical_constitutive, self%analytical_hydraulic_parameters)
     else if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
@@ -4725,6 +4883,10 @@ contains
         return
       end if
       request%evaluation%constitutive => self%frost_constitutive
+    else if (allocated(self%linear_table_parameters)) then
+      request%evaluation%constitutive => self%linear_table_constitutive
+    else if (self%extended_hydraulics_active) then
+      request%evaluation%constitutive => self%extended_constitutive
     else if (self%analytical_hydraulics_active) then
       request%evaluation%constitutive => self%analytical_constitutive
     else if (self%direct_retention_active) then
@@ -5002,6 +5164,27 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%hysteresis_active) then
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%hysteresis) .or. .not. allocated(self%hysteresis_parameters)) return
+        block
+          type(b111_hysteresis_transition_t), allocatable :: transitions(:)
+          integer :: status_hyst, i_hyst
+          allocate(transitions(self%soil_parameters%active_nodes))
+          call advance_b111_hysteresis_accepted(self%hysteresis_parameters, physical%hysteresis, &
+               solve_result%candidate_state%pressure_head, solve_result%candidate_state%water_content, &
+               transitions, status_hyst)
+          if (status_hyst /= B111_HYST_OK) return
+          do i_hyst=1,size(transitions)
+            if (transitions(i_hyst)%head_reconstruction_required) &
+              solve_result%candidate_state%pressure_head(i_hyst)=transitions(i_hyst)%corrected_head
+          end do
+        end block
+      class default
+        return
+      end select
+    end if
     if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
       select type (salt_physical => state)
       class is (fmr_b110_physical_state_t)
