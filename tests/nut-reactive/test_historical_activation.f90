@@ -27,7 +27,7 @@ program test_historical_activation
  rates%tcsf_n=.5d0;rates%lai_crit_nupt=3d0;rates%depth_m=.3d0
  rates%nh4_lat=.3d0;rates%no3_lat=.4d0
  rates%nh4_seep=.1d0;rates%no3_seep=.2d0
- call bind_historical_soil_n_rates(rates,p_source,p_source,tcsf,lai,code)
+ call bind_historical_soil_n_rates(rates,p,p_source,tcsf,lai,code)
  if(code/=N_ACTIVATION_OK)error stop 'source parameter binding'
  if(any(p_source%mineral%c_bottom/=[.1d0,.2d0]))error stop 'distinct seepage'
  if(any(p_source%mineral%c_lateral/=[.3d0,.4d0]))error stop 'distinct lateral'
