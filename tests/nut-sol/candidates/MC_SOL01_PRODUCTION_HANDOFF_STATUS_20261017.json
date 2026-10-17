@@ -71,6 +71,14 @@
       "publication": 39067687732,
       "fross": 39067688044
     },
-    "next": "Implement independently verified accepted gross water ledger, retain source-aligned pond mixing, qualify shared RossFast contract, joint O0/O2 and restart before merge."
+    "next": "Implement independently verified accepted gross water ledger, retain source-aligned pond mixing, qualify shared RossFast contract, joint O0/O2 and restart before merge.",
+    "qualification": {
+      "tested_head": "ae11b87bfec1bcb1fa4c1cf52da55128fed39133",
+      "publication_run": 39067719378,
+      "publication_result": "PASS O0/O2, 170 resolved sources, rollback, state identity, excluded rejected transfer, identical output SHA256 ba5d3b995d855c271bc6b8d6f7b5b2f142870fcecc17961414be6cb5d3730626",
+      "fross_run": 39067719230,
+      "fross_result": "FAIL exact shared solver contract qualified dependency drift; RossFast owner source surface pass",
+      "decision": "HOLD DRAFT; no full gross water/solute/transaction/restart qualification"
+    }
   }
 }
