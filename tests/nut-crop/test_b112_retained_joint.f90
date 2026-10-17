@@ -116,6 +116,10 @@ program test_b112_retained_joint
  call initialize_soil_n_pool_state(sp%mineral%inventory,spread(1d0,1,8),5d0,40d0,.02d0,.03d0,pools,status)
  call require(status==0,'soil inventory initialize')
  call backend%initialize(top);call second%initialize(top)
+ if(trim(selected)=='source-profile')then
+  call source_continuation()
+  stop
+ end if
  if(trim(mode)=='reject')then
   call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template,670001_int64,9001_int64,9101_int64, &
     sp,cp,water,state,status)
@@ -276,6 +280,77 @@ program test_b112_retained_joint
  call require(status==0,'opaque complete endpoint')
  print '(A)','B112_ACTUAL_RICHARDS_RETAINED_PENDING_HARVEST_OPAQUE_NATIVE=PASS'
 contains
+ subroutine source_continuation()
+   type(soil_n_historical_selection_t)::selection
+   type(soil_n_amendment_calendar_t)::startup_plan
+   type(crop_senescence_policy_t)::startup_policy
+   type(reactive_state_t)::source_soil
+   type(wofost81_crop_owner_state_t)::source_crop
+   type(soil_n_day_environment_t)::day2_env
+   type(senescence_joint_result_t)::day_receipt
+   integer::unit,j,error_line,code
+   integer(int64)::sid
+   character(16)::key
+   real(real64)::source_water
+   selection%swcropsnm=1;selection%sw_wofost=1
+   selection%source_parameters_complete=.true.
+   open(newunit=unit,file='source-crop-startup.txt',status='replace')
+   write(unit,'(A)')'[management]'
+   write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
+   write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
+   write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
+   write(unit,'(A)')'1900-01-01 1 100 0.1'
+   write(unit,'(A)')'[soil_n_parameters]'
+   do j=1,8
+     write(key,'(A,I1,A)')'FOM',j,'_t'
+     write(unit,'(A)')trim(key)//' = 1.0'
+   end do
+   write(unit,'(A)')'Bio_t = 5','Hum_t = 40','cNH4_t = 0.02','cNO3_t = 0.03', &
+     'Temp_ref = 20','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
+     'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
+     'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1', &
+     'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
+     'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
+   close(unit)
+   ! Source owner is reconstructed from the same input in each fresh process.
+   ! The restart decoder verifies its parameter identity against these values.
+   call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
+      cfg%tiles(1)%initial_state,0d0,ok,spread(0d0,1,numnod))
+   call require(ok,'source water state')
+   source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
+   call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
+      0d0,source_water,'source-crop-startup.txt','1900-01-01',startup_plan, &
+      state,startup_policy,status,error_line)
+   call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
+   call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
+   policy=startup_policy
+   call state%configuration(cp,sid)
+   call state%snapshot(source_soil,source_crop)
+   call source_soil%configuration(sp,sid)
+   if(trim(mode)=='resume')then
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+        670001_int64,9001_int64,9101_int64,sp,cp,water,state,code)
+     call require(code==0,'source restart decoded with exact source parameters')
+   else
+     call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template, &
+       cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
+       state,weather,0d0,1d0,items,split,policy,day_receipt,env)
+     call require(day_receipt%status==JOINT_OK,'source actual Richards day one')
+     call write_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+       670001_int64,water,state,code)
+     call require(code==0,'source day-one native restart')
+   end if
+   day2_env=soil_n_day_environment_t(1d0,2d0,30d0)
+   call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template, &
+     cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
+     state,weather,1d0,2d0,items(:0),split,policy,day_receipt,day2_env)
+   if(day_receipt%status/=JOINT_OK)print *,'source day 2 failure',day_receipt%status
+   call require(day_receipt%status==JOINT_OK,'source actual Richards day two')
+   call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
+      670001_int64,water,state,code)
+   call require(code==0,'source day-two native endpoint')
+   print '(A)','NUT_SOURCE_TWO_DAY_FRESH_RESTART=PASS'
+ end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
   type(crop_soil_state_t),intent(inout)::n
