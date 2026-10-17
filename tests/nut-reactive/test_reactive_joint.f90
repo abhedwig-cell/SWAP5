@@ -166,6 +166,14 @@ program test_reactive_joint
       eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
    call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
      'named historical file accepted by real Richards owner')
+   call require(all(abs(eight_bound%organic_reference%ratecon_fom(1:4)-3d0/365.2425d0)<1d-15), &
+     'historical source fast organic kinetics in actual owner')
+   call require(all(abs(eight_bound%organic_reference%ratecon_fom(5:8)-.3d0/365.2425d0)<1d-15), &
+     'historical source slow organic kinetics in actual owner')
+   call require(all(eight_bound%mineral%inventory%nfrac_fom==[.06d0,.002d0,.06d0,.002d0, &
+      .06d0,.002d0,.06d0,.002d0]),'historical eight FOM N signatures')
+   call require(abs(eight_bound%organic_reference%asfa_bio-.092d0)<1d-15, &
+      'historical original biomass routing')
 
    call require(status==0.and.eight_n%ready().and.historical_plan%ready(),'eight-pool positive source activation')
    call fmr_new_b110_temporal_indicator_committed_state(eight_water,column%column_id, &
