@@ -9,23 +9,23 @@ module test_b111_power_base
     procedure :: evaluate_point_conductivity => base_point
   end type
 contains
-  subroutine base_eval(self,h,theta,k,c,dk)
+  subroutine base_eval(self,pressure_head,water_content,conductivity,capacity,dconductivity_dhead)
     class(base_t),intent(in)::self
-    real(real64),intent(in)::h(:)
-    real(real64),intent(out)::theta(:),k(:),c(:),dk(:)
-    theta=0.30_real64;k=3.25_real64;c=0.02_real64;dk=0.0_real64
+    real(real64),intent(in)::pressure_head(:)
+    real(real64),intent(out)::water_content(:),conductivity(:),capacity(:),dconductivity_dhead(:)
+    water_content=0.30_real64;conductivity=3.25_real64;capacity=0.02_real64;dconductivity_dhead=0.0_real64
   end subroutine
   logical function base_support(self)
     class(base_t),intent(in)::self
     base_support=.true.
   end function
-  subroutine base_point(self,node,h,theta,k,available)
+  subroutine base_point(self,node_index,pressure_head,water_content,conductivity,available)
     class(base_t),intent(in)::self
-    integer,intent(in)::node
-    real(real64),intent(in)::h,theta
-    real(real64),intent(out)::k
+    integer,intent(in)::node_index
+    real(real64),intent(in)::pressure_head,water_content
+    real(real64),intent(out)::conductivity
     logical,intent(out)::available
-    k=3.25_real64;available=.true.
+    conductivity=3.25_real64;available=.true.
   end subroutine
 end module
 
