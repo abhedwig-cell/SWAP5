@@ -11,7 +11,9 @@ PATTERN = re.compile(r"^\s*F_WOF_EXT01_PHYSICAL_SOURCE_WEATHER\s+(\d{8})\s+" +
                      r"\s+".join([r"([+-]?\d+(?:\.\d*)?[Ee][+-]?\d+)"]*5) + r"\s*$",re.M)
 def extract(log):
     matches=PATTERN.findall(log)
-    if len(matches)!=1: raise ValueError("expected one native 1999 weather witness")
+    if not matches: raise ValueError("missing native 1999 weather witness")
+    if any(row != matches[0] for row in matches[1:]):
+        raise ValueError("inconsistent repeated physical weather witnesses")
     date,*numbers=matches[0]
     if date!="19990123": raise ValueError("wrong source calendar")
     values=[float(x) for x in numbers]
@@ -24,7 +26,8 @@ def extract(log):
                 rain_source_units=values[2],reference_et_source_units=values[3],
                 radiation_source_j_m2_day=values[4],
                 pcse_weather_conversion_qualified=False,
-                pcse_crop_day_admitted=False)
+                pcse_crop_day_admitted=False,
+                matching_observations=len(matches))
 if __name__=="__main__":
     output=extract(Path(sys.argv[1]).read_text())
     Path(sys.argv[2]).write_text(json.dumps(output,indent=2,sort_keys=True)+"\n")
