@@ -8,7 +8,7 @@ from salt_completion_cycle_driver import salt_cycle,CASES
 from batch_activation_cycle_driver import rooted as root_preservation
 from availability_cycle_driver import rooted as original_root,sensor
 from tcs6_cycle_driver import prepare_native
-from availability_native_controls import execute as decoder_controls
+from salt_completion_native_controls import execute as decoder_controls
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',required=True);a=p.parse_args();out=Path(a.output).resolve();session=m.Session(out);start=time.perf_counter()
@@ -36,7 +36,7 @@ def main():
  drivers['avail_root2']=original_root(ROOT,out/'avail_root2.f90',2,1,.08);kinds['avail_root2']='preservation'
  # Sensor state does not yet own the fixed interval; no sensor scope claim.
  paths=set(providers)|set(inp['inputs'])
- paths|={'tests/mc-irr01/run_salt_completion_application.py','tests/mc-irr01/salt_completion_cycle_driver.py','tests/mc-irr01/batch_activation_cycle_driver.py','tests/mc-irr01/sensor_batch_cycle_driver.py','tests/mc-irr01/availability_cycle_driver.py','tests/mc-irr01/availability_native_controls.py'}
+ paths|={'tests/mc-irr01/run_salt_completion_application.py','tests/mc-irr01/salt_completion_cycle_driver.py','tests/mc-irr01/salt_completion_native_controls.py','tests/mc-irr01/batch_activation_cycle_driver.py','tests/mc-irr01/sensor_batch_cycle_driver.py','tests/mc-irr01/availability_cycle_driver.py','tests/mc-irr01/availability_native_controls.py'}
  inputs={q:m.sha(ROOT/q)for q in paths};generated={q.name:m.sha(q)for q in drivers.values()}
  identity=session.identity;head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  m.write(out/'INPUTS.json',dict(head=head,inputs=inputs,generated=generated,providers=providers,flags=flags,compiler=identity,fixture=fixture_pins,fixture_authority=rec))

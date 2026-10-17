@@ -51,6 +51,15 @@ def salt_cycle(root,target,criterion,dcs,kind):
 '''
  # Parameter exact names reconciled below.
  replace(a,a+extra,2)
+ # Salt carrier/config identity is independently discriminating after native
+ # restore, even with recomputed CRC and otherwise unchanged weather input.
+ a="      call read_weather_irrigation_joint_restart_file(trim(native_path),tc,native_record,native_previous,saved,st)"
+ b="""      if(trim(continuation_mode)=='native-reject-salt-policy')tc%base_salt_temporal_policy%salt_tolerance_mg_cm2=2.e-7_real64
+      if(trim(continuation_mode)=='native-reject-salt-boundary')tc%tiles(1)%base_forcing%c_drain_salt%concentration_mg_cm3=3._real64
+      if(trim(continuation_mode)=='native-reject-salt-threshold')tc%file_weather_irrigation_sensor%salinity_threshold=2._real64
+      if(trim(continuation_mode)=='native-reject-salt-tscf')tc%tiles(1)%parameters%solute_tscf=.5_real64
+"""+a
+ replace(a,b)
  # Same accepted dynamic CML as literal historical cml(nodsen), with exact
  # source operation after LIMIT and before availability/rate.
  start=s.index('  subroutine literal_irrigation_selection(');end=s.index('  end subroutine',start)
