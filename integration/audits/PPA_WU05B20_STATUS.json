@@ -231,7 +231,7 @@
     "qualification_pending": false
   },
   "blockers": [],
-  "next_action": "NET01 frozen production contract is complete. Preserve admitted two/three-level policy; remaining full-envelope, rooted, other-bottom and snow frost work stays in existing MC-FROST01/master coverage, without full-row/global closure.",
+  "next_action": "Complete qualified count2..25 successor owner/evidence controls and canonical admission via PR1276, then reconcile existing MC-FROST01/master option gaps.",
   "publication": {
     "pr": 1275,
     "url": "https://github.com/abhedwig-cell/SWAP5/pull/1275",
@@ -289,9 +289,9 @@
     "baseline": "f9f1614a794cf5a7e2f219a60fd1a61da245176b",
     "branch": "work/frost-net01-full-levels-20261017",
     "contract": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md",
-    "stage": "IMPLEMENTED_NOT_TESTED",
+    "stage": "QUALIFIED_ADMISSION_PENDING",
     "implemented": true,
-    "qualified": false,
+    "qualified": true,
     "admitted": false,
     "invariants": [
       3,
@@ -318,6 +318,59 @@
         "highest low-air NOT_SELECTED_POLICY"
       ]
     },
-    "next_action": "Persist then execute small actual source driver, inspect terminal evidence before actual physical composition; seal and current-owner exact successor before admission."
+    "next_action": "Verify sealed source/qualification and current owner, then reconcile and safely admit exact candidate; update existing master count gap.",
+    "persisted": true,
+    "tested": true,
+    "qualified_source": "cfc2191f6a9e5e491e7fca53db82faeea0024c72",
+    "qualification_commit": "e0aee7891dfc9aff46f083d3bfda073d5445ba77",
+    "contract_sha256": "6088283ee07621b2eb63523304c50fbe3f5b04df70edf940c059f23496106bc8",
+    "evidence": {
+      "path": "integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64",
+      "sha256": "5fc04d7df653b98de8fd15bb74c405e2235de0de3a248e631149a1e316063b95",
+      "bytes": 5651084
+    },
+    "costs": {
+      "compile": 157.44568940397585,
+      "link": 0.610938151996379,
+      "native": 72.75579974200082,
+      "validation": 11.676520091012208
+    },
+    "postimages": {
+      "src/process/mod_frost_multilevel_divdra_effect.f90": {
+        "status": "M",
+        "blob": "c1ecae54c1ddd606081918ab2f6572348a64ca8b"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "ffd00a79b3b9734f4cfea7ab460b52f9659c191d"
+      },
+      "tests/frost/run_net01_full_levels.py": {
+        "status": "A",
+        "blob": "d3fa889b0523bbe0530adb8b68a37c50a584fe0a"
+      },
+      "tests/frost/run_net01_full_levels_runtime.py": {
+        "status": "A",
+        "blob": "dbfca9106a9d2ca60a747d2408362491f70a7bba"
+      },
+      "tests/frost/seal_net01_full_levels.py": {
+        "status": "A",
+        "blob": "8bcd604c04ce7f8b63f3e7a69b97c9c34ae82648"
+      },
+      "tests/frost/verify_net01_full_levels.py": {
+        "status": "A",
+        "blob": "7d7d3b62908efc96a17b8037b1833496b90db792"
+      },
+      "tests/frost/verify_net01_successor.py": {
+        "status": "M",
+        "blob": "c8d1161bbb2d9fb203b3dbd954bd96dbe9789bf5"
+      }
+    },
+    "report": "docs/audits/FROST_NET01_FULL_LEVELS_20261017.md",
+    "publication": {
+      "pr": 1276,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1276",
+      "draft": true,
+      "merged": false
+    }
   }
 }
