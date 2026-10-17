@@ -50,6 +50,11 @@
     "fross12_run": 39066311834,
     "fross12_result": "FAIL: FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
     "decision": "not admitted; solver contract change requires F-ROSS22 owner requalification, full gross receipt and joint chemistry/restart tests absent",
-    "canonical_observed": "5372304a2e23d67ae5589af79fe90a8dda4eb7a0"
+    "canonical_observed": "5372304a2e23d67ae5589af79fe90a8dda4eb7a0",
+    "fross_root_cause": "F-ROSS22 successor script compares HEAD solver-contract blob against pinned BOFEK00 admitted blob; PR changes shared soil_water_solve_result_t with converged_surface_result. Guard correctly blocks unqualified successor; do not loosen or claim numerical regression.",
+    "latest_run_head": "5c352f72b81ab906a04a2fe15c42d75afab5648a",
+    "latest_rollback_run": 39066797372,
+    "latest_fross_run": 39066797507,
+    "next_owner_gate": "Qualify changed shared solver-contract postimage with RossFast owner and full preservation; then implement accepted gross receipts & integrated chemical rollback/restart. Current surface joint route explicitly demands ponding_depth==0 and does not support evaporation/runoff."
   }
 }
