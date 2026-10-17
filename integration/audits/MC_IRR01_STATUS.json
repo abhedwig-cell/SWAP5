@@ -7903,5 +7903,44 @@
       "stdout_sha256": "47c2d8d895b1ed501cc94e8ef29cf56056b96533b5b627e9852041091b66a1ee",
       "qualified": true
     }
+  },
+  "salt_completion_1271_20261017": {
+    "phase": "CONTRACT_RECONCILED_IMPLEMENTATION_PENDING",
+    "baseline": "0747fd7c8a5e754d73fa5d981e8f5437ee4c12f3",
+    "phase_start_utc": "2026-10-17T01:09:09.643906+00:00",
+    "capabilities": [
+      "SW431-IRR-SALTEXCESS"
+    ],
+    "scientific_contract": "Compose existing accepted matrix CML = mass/(theta*dz) at selection time with authentic bottom7 weather, evolving accepted roots/material DCS1 and sensor DCS2; source order DCSLIM -> SALTEXCESS -> rate/availability. Active events retain original rate/depth/end. No caller concentration authority. Salt-disabled remains unchanged. Publish event, allocation, DAYFIX and physical only after accepted water+salt dispatch. Extend existing native weather codec conditionally for existing salt mass/concentration and numerical/boundary configuration, preserving salt-disabled bytes. CRC-valid invalid/mismatched mass/config fails before publishing owners.",
+    "interfaces_allowed": [
+      "Bootstrap read-only reuse fmr_read_committed_irrigation_cml; no new accepted-state owner",
+      "Existing S5WI0001 native payload conditional salt extension; existing salt state and restart owner remain authoritative"
+    ],
+    "held_fixed": [
+      "Historical irrigation formula and salinity strict > comparison",
+      "Richards equations, temporal acceptance budgets, water/salt ledgers, crop/root state owners, calendar",
+      "Existing 15 full capability scientific contracts and disabled native bytes"
+    ],
+    "test_selection": {
+      "A": "Small direct real production salinity modifier, literal authenticated historical block: disabled/solute-off/equality/strictly-above, threshold0/100 percent0/100, invalid values O0/O2; reuse unchanged source driver where sufficient.",
+      "B": "Select fresh real application closure O0/O2: rooted weekly DCS1 with accepted CML; sensor DCS2 and interval; representative SSDI/availability interaction; real water/salt mass, rollback, once-only and opaque/native process restart; salt-disabled byte preservation. Expected 600-750s compilation dominated. A smaller module cannot expose missing accepted weather forwarding or native salt omission; do not repeat unrelated stress suites.",
+      "C": "Exact postimage successor guard bound to incumbent fifteen-row proof, fail-closed evidence/config/native controls, existing four owning entries and source/strict docs.",
+      "not_selected": [
+        "full moving F-CI",
+        "RossFast",
+        "highest low-air",
+        "unmodified solver/transport/root/calendar standalone campaigns"
+      ]
+    },
+    "implemented": false,
+    "persisted": false,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "measurements": {
+      "source_analysis_and_initial_reconciliation": "UNKNOWN; phase timer starts at contract persistence",
+      "historical_development_and_coordination": "UNKNOWN"
+    },
+    "next_action": "Implement existing bootstrap/codec composition, direct local tests, then exact candidate proportional production qualification; no full-row promotion before admission."
   }
 }
