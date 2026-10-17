@@ -167,7 +167,12 @@ module mod_fmr_serialized_reference_backend
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
-  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t
+  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t, b111_hysteresis_parameters_t
+  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t
+  use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
+       b111_extended_hydraulic_provider_t
+  use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t
+  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -307,6 +312,8 @@ module mod_fmr_serialized_reference_backend
     ! Optional per-node semantic constitutive family. Absence preserves admitted default MvG.
     integer, allocatable :: hydraulic_model_kind(:)
     logical :: conductivity_power_tail_active = .false.
+    logical :: pdi_vapor_active = .false.
+    type(b111_linear_table_parameters_t), allocatable :: linear_hydraulic_table
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
@@ -358,6 +365,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_macropore_physical_config_t), allocatable :: macropore
     logical :: snow_active = .false.
     logical :: hysteresis_active = .false.
+    integer :: hysteresis_initial_mode = 0
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     logical :: tabulated_hydraulics_active = .false.
     logical :: direct_retention_active = .false.
     integer :: prepared_direct_retention_slot = 0
