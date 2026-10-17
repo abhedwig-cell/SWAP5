@@ -103,6 +103,7 @@ contains
     ! A chemical runon receipt requires source identity from the accepted
     ! converged water substep, never a caller-only unverified rate.
     if(supply%runon_rate>0d0.and..not.t%converged_gross_sources_available)return
+    if(t%converged_gross_sources_available.and..not.t%converged_surface_available)return
     ! Reject gross forcing that the admitted pond water/solute receipt cannot
     ! represent; do not silently map runon or melt to chemically clean rain.
     if(t%converged_gross_sources_available)then
