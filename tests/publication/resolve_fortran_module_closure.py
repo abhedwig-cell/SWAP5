@@ -83,7 +83,11 @@ def main():
                 if key in ambiguous:
                     raise ValueError(f"{path} requires ambiguous Fortran module {key}: {ambiguous[key]}")
                 raise ValueError(f"{path} requires missing Fortran module {key}")
-            visit(provider)
+            # A source can define several modules. A USE of another module
+            # from the same compilation unit is not a file dependency edge.
+            # The compiler checks declaration order inside that source.
+            if provider != path:
+                visit(provider)
         active.remove(path)
         seen.add(path)
         ordered.append(path)
