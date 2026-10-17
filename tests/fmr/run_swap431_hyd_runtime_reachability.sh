@@ -64,6 +64,13 @@ MODULE_SRC=(
   src/runtime/mod_fmr_accepted_commit_receipt.f90
   src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_bottom_external_thermal_binding.f90
+  src/process/mod_solute_mobile_salt_state.f90
+  src/process/mod_solute_mobile_advection_dispersion.f90
+  src/runtime/mod_fmr_base_salt_temporal_policy.f90
+  src/runtime/mod_fmr_bottom_thermal_carrier.f90
+  src/runtime/mod_fmr_bottom_external_thermal_provider.f90
+  src/process/mod_liquid_water_sensible_enthalpy.f90
+  src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
