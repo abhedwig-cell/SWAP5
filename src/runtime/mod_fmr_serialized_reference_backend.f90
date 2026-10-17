@@ -167,7 +167,8 @@ module mod_fmr_serialized_reference_backend
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
-  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t, b111_hysteresis_parameters_t
+  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t, b111_hysteresis_parameters_t, &
+       b111_hysteresis_transition_t, advance_b111_hysteresis_accepted, B111_HYST_OK
   use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t, &
        configure_b111_legacy_hydraulic_provider, bind_b111_legacy_hydraulic_provider, B111_LEGACY_HYD_OK
   use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
@@ -703,6 +704,8 @@ module mod_fmr_serialized_reference_backend
     logical :: analytical_hydraulics_active = .false.
     logical :: extended_hydraulics_active = .false.
     logical :: extended_pdi_vapor_active = .false.
+    logical :: hysteresis_active = .false.
+    type(b111_hysteresis_parameters_t), allocatable :: hysteresis_parameters
     type(b111_linear_table_provider_t), pointer :: linear_table_constitutive => null()
     type(b111_linear_table_parameters_t), allocatable :: linear_table_parameters
     type(b111_legacy_hydraulic_provider_t), pointer :: extended_legacy => null()
@@ -3314,6 +3317,12 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
+      self%hysteresis_active = parameters%hysteresis_active
+      if (allocated(self%hysteresis_parameters)) deallocate(self%hysteresis_parameters)
+      if (self%hysteresis_active) then
+        if (.not. allocated(parameters%hysteresis_parameters)) error stop 'hysteresis requires parameters'
+        self%hysteresis_parameters = parameters%hysteresis_parameters
+      end if
       self%extended_pdi_vapor_active = parameters%pdi_vapor_active
       self%extended_hydraulics_active = .false.
       if (allocated(parameters%hydraulic_model_kind)) &
@@ -4256,6 +4265,24 @@ contains
         if (table_status /= B111_LINEAR_TABLE_OK) return
       end block
     end if
+    if (self%hysteresis_active) then
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%hysteresis)) return
+        block
+          type(b110_default_mvg_parameters_t), target :: scan_parameters
+          real(real64), allocatable :: scan_cofgen(:,:)
+          scan_cofgen = self%hydraulic_parameters%cofgen
+          scan_cofgen(1,:) = physical%hysteresis%theta_r_scan
+          scan_cofgen(2,:) = physical%hysteresis%theta_s_scan
+          scan_cofgen(4,:) = physical%hysteresis%alpha_active
+          call initialize_b110_default_mvg_parameters(scan_parameters, scan_cofgen)
+          call bind_b110_default_mvg_provider(self%constitutive, scan_parameters, step_duration)
+        end block
+      class default
+        return
+      end select
+    end if
     if (self%extended_hydraulics_active) then
       block
         integer :: hyd_status
@@ -5111,6 +5138,27 @@ contains
       outcome%headcalc_calls = outcome%headcalc_calls + direction_result%additional_full_nonlinear_solves
     end if
     if (solve_result%status /= SW_SOLVE_CONVERGED) return
+    if (self%hysteresis_active) then
+      select type (physical => state)
+      class is (fmr_b110_physical_state_t)
+        if (.not. allocated(physical%hysteresis) .or. .not. allocated(self%hysteresis_parameters)) return
+        block
+          type(b111_hysteresis_transition_t), allocatable :: transitions(:)
+          integer :: status_hyst, i_hyst
+          allocate(transitions(self%soil_parameters%active_nodes))
+          call advance_b111_hysteresis_accepted(self%hysteresis_parameters, physical%hysteresis, &
+               solve_result%candidate_state%pressure_head, solve_result%candidate_state%water_content, &
+               transitions, status_hyst)
+          if (status_hyst /= B111_HYST_OK) return
+          do i_hyst=1,size(transitions)
+            if (transitions(i_hyst)%head_reconstruction_required) &
+              solve_result%candidate_state%pressure_head(i_hyst)=transitions(i_hyst)%corrected_head
+          end do
+        end block
+      class default
+        return
+      end select
+    end if
     if (self%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
       select type (salt_physical => state)
       class is (fmr_b110_physical_state_t)
