@@ -2945,8 +2945,7 @@ contains
         ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
              all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
                  parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &
-                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK .or. &
-                 (parameters%hydraulic_model_kind >= 5 .and. parameters%hydraulic_model_kind <= 11)) .and. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &
              self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
              .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
              .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
