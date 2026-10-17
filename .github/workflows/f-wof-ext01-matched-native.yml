@@ -12,6 +12,7 @@ on:
       - 'tests/fwof/ext01/compare_new_barley.py'
       - '.github/workflows/f-wof-ext01-matched-native.yml'
   workflow_dispatch:
+  workflow_call:
 jobs:
   native-fortran:
     runs-on: ubuntu-latest
