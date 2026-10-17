@@ -11,6 +11,7 @@ import unittest
 
 REQUIRED={"schema","source","witness_column","source_fortran_day",
           "independent_matching_confirmations",
+          "accepted_lineage_id","accepted_final_revision","accepted_t0","accepted_t1",
           "actual_root_uptake_native_integral",
           "potential_transpiration_native_integral",
           "matched_accepted_uptake_native_integral",
@@ -18,8 +19,11 @@ REQUIRED={"schema","source","witness_column","source_fortran_day",
           "pcse_daily_import_permitted","reason"}
 
 def accept_for_pcse(witness, expected_day):
-    if set(witness)!=REQUIRED or witness.get("schema")!="F-WOF-EXT01/SWAP-WITNESS/1":
+    if set(witness)!=REQUIRED or witness.get("schema")!="F-WOF-EXT01/SWAP-WITNESS/2":
         raise ValueError("wrong SWAP witness schema")
+    if (witness["accepted_lineage_id"]<=0 or witness["accepted_final_revision"]<0 or
+        witness["accepted_t1"]-witness["accepted_t0"]!=1):
+        raise ValueError("invalid native accepted lineage, revision or day interval")
     if witness.get("acceptance")!="observed-passing-native-test":
         raise ValueError("unaccepted SWAP hydrology")
     for k in ("actual_root_uptake_native_integral","potential_transpiration_native_integral",
@@ -43,6 +47,8 @@ class TestPhysicalGate(unittest.TestCase):
         self.witness=dict(schema="F-WOF-EXT01/SWAP-WITNESS/1",
             source="test_crop_file_weather_production.f90",
             witness_column=1,source_fortran_day=2,independent_matching_confirmations=3,
+            accepted_lineage_id=1,accepted_final_revision=192,
+            accepted_t0=2.0,accepted_t1=3.0,
             actual_root_uptake_native_integral=1.0370706377336118e-3,
             potential_transpiration_native_integral=1.0370706377336118e-3,
             matched_accepted_uptake_native_integral=1.0370706377336118e-3,
