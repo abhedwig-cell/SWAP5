@@ -82,6 +82,13 @@ def salt_cycle(root,target,criterion,dcs,kind):
     end select
 '''
  s=s[:start]+sub+s[end:]
+ # Select the complete authentic rooted weather test at its existing main
+ # boundary. The later unchanged root-free demonstration is independently
+ # inherited and has no salt state. Its assertions remain in the fixture.
+ anchor="  call test_rooted_weather_production(.true.,.true.)"
+ assert s.count(anchor)==1
+ pos=s.index(anchor)+len(anchor)
+ s=s[:pos]+"\n  print '(a)','SALT_COMPLETION_FULL_SOURCE_MASS_NATIVE=PASS'\n  stop"+s[pos:]
  # New salt layout uses the original NONE continuation, not Richards history.
  start=s.index('  subroutine print_exact_postimage(');end=s.index('  subroutine initialize_crop(',start)
  sub=s[start:end];sub=sub.replace('type is(fmr_b110_temporal_indicator_state_t)','class is(fmr_b110_physical_state_t)')
