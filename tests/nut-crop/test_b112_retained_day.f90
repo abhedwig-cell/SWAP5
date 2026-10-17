@@ -5,6 +5,8 @@ program test_b112_retained_day
  use mod_crop_soil_n_configuration
  use mod_crop_soil_n_senescence_day
  use mod_crop_soil_n_material_day
+ use mod_crop_soil_n_residue_age_binding
+ use mod_soil_n_historical_named_input,only:soil_n_residue_age_t
  use mod_crop_senescence_residue
  use mod_b111_soil_n_addition
  use mod_b111_soil_n_reactive_owner
@@ -21,6 +23,7 @@ program test_b112_retained_day
  type(crop_soil_state_t)::state,previous
  type(wofost_one_day_forcing_t)::weather,invalid_weather
  type(crop_senescence_policy_t)::policy
+ type(soil_n_residue_age_t)::source_ages
  type(crop_residue_pending_t)::pending
  type(soil_n_material_input_t)::items(2)
  type(b111_soil_n_split_parameters_t)::split
@@ -34,6 +37,7 @@ program test_b112_retained_day
  integer::i,j,k,l,day,code,cases,rejected_material
  logical::has
  call parameters(sp);call materials(items,split)
+ source_ages=soil_n_residue_age_t()
  policy%application_age=[1d0,2d0,3d0]
  weather%minimum_temperature=3d0;weather%average_temperature=10d0;weather%daytime_average_temperature=15d0
  weather%global_radiation=1d7;weather%daylength_hours=12d0;weather%photoperiodic_daylength_hours=12d0
@@ -53,6 +57,21 @@ program test_b112_retained_day
   cp%harvest%crop_identity=1;cp%harvest%crop_end=2d0;cp%harvest%sw_harv=0;cp%harvest%sw_wofost=1
   cp%harvest%policy%return_fraction=[fractions(j),fractions(k),1d0]
   cp%harvest%policy%application_age=[1d0,2d0,3d0,4d0]
+  ! One immutable original 4.3.1 source profile feeds *both* existing policies.
+  block
+   type(crop_n_configuration_t)::source_cp
+   type(crop_senescence_policy_t)::source_policy
+   call bind_historical_residue_ages(source_ages,cp,source_policy,source_cp,code)
+   call require(code==RESIDUE_AGE_BIND_OK,'source historical ages bound to crop ownership')
+   call require(all(source_policy%application_age==[1.27d0,.99d0,1.27d0]), &
+     'source daily dead material apparent age')
+   call require(all(source_cp%harvest%policy%application_age== &
+     [1.27d0,.99d0,1.27d0,1.27d0]),'source harvest organ ages')
+   if(l==2)then
+      policy=source_policy
+      cp=source_cp
+   end if
+  end block
   call configure_owner(crop,cp,code);call require(code==0,'seed N initialize')
   crop%nitrogen%value%namountlv=2d0;crop%nitrogen%value%namountst=1d0;crop%nitrogen%value%namountrt=.5d0
   crop%nitrogen%value%initial_total=3.5d0
