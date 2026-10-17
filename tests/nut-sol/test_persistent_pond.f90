@@ -46,6 +46,25 @@ program test_persistent_pond
  call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
  call require(status==POND_OK,'evap restart')
  call same(saved,restored,'evap restart identity')
+ ! Explicit chemically loaded runon has its own provenance and mass budget.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ call require(status==POND_OK,'runon initialization')
+ s=pond_step_t(0d0,1d0,1d0,1.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%runon_rate=0.5d0;s%runon_c=4d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'accepted chemically loaded runon')
+ call require(abs(r%runon_input-2d0)<1d-14,'runon source mass')
+ call require(abs(r%soil_transfer-(4d0/1.5d0)*0.25d0)<1d-13,'runon source-aligned mixing')
+ call require(abs(r%mass_after+r%soil_transfer-4d0)<1d-13,'runon conservation')
+ call require(abs(r%water_residual)<1d-14.and.abs(r%mass_residual)<1d-13,'runon budgets')
+ bad=s;bad%runon_c=-1d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status/=POND_OK,'negative runon concentration rejected')
+ call same(state,next,'invalid runon preserves committed state')
+ bad=s;bad%runon_rate=0.25d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'runon water mismatch rejected')
+ call same(state,next,'runon water rejection nonmutation')
  ! Dry deposition persists across a dry hiatus and restart, then remobilizes.
  call initialize_persistent_pond(0d0,0d0,0d0,state,status)
  s=pond_step_t(0d0,1d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0,0.25d0)
