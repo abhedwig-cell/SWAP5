@@ -5659,6 +5659,28 @@ contains
             solve_result%converged_surface_result%irrigation_rate_cm_day, &
             solve_result%converged_surface_result%snowmelt_rate_cm_day, &
             solve_result%converged_surface_result%runon_rate_cm_day) < 0.0_real64) return
+        ! For an unpartitioned dynamic upper boundary, the net potential
+        ! must equal its separately supplied gross sources minus actual
+        ! evaporation. This is an independent consistency gate on the
+        ! converged provider receipt, never an inference from qtop.
+        if (.not.request%boundary%matrix_source_area_partition .or. &
+            request%boundary%macropore_surface_area_fraction < 0.0_real64) then
+          if (.not.ieee_is_finite(solve_result%converged_surface_result%bare_soil_evaporation)) return
+          if (solve_result%converged_surface_result%bare_soil_evaporation < 0.0_real64) return
+          if (abs(solve_result%converged_surface_result%net_potential_surface_flux - &
+              (solve_result%converged_surface_result%precipitation_rate_cm_day + &
+               solve_result%converged_surface_result%irrigation_rate_cm_day + &
+               solve_result%converged_surface_result%snowmelt_rate_cm_day + &
+               solve_result%converged_surface_result%runon_rate_cm_day - &
+               solve_result%converged_surface_result%bare_soil_evaporation - &
+               solve_result%converged_surface_result%ponded_water_evaporation)) > &
+              1024.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+              abs(solve_result%converged_surface_result%net_potential_surface_flux), &
+              solve_result%converged_surface_result%precipitation_rate_cm_day + &
+              solve_result%converged_surface_result%irrigation_rate_cm_day + &
+              solve_result%converged_surface_result%snowmelt_rate_cm_day + &
+              solve_result%converged_surface_result%runon_rate_cm_day)) return
+        end if
         step%converged_gross_sources_available = .true.
         step%converged_rain_rate_cm_day = solve_result%converged_surface_result%precipitation_rate_cm_day
         step%converged_irrigation_rate_cm_day = solve_result%converged_surface_result%irrigation_rate_cm_day
