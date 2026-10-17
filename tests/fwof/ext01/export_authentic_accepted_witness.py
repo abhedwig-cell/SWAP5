@@ -4,6 +4,7 @@ The witness is deliberately NOT a portable dated acceptance certificate.
 Never manufacture PCSE calendar alignment or invent physical units.
 """
 import json
+import datetime
 import math
 import re
 import sys
@@ -37,12 +38,16 @@ def extract(text):
         raise ValueError("invalid accepted flux relationship")
     if observed!=actual:
         raise ValueError("real accepted uptake does not match receipt")
-    return dict(schema="F-WOF-EXT01/SWAP-WITNESS/2",
+    return dict(schema="F-WOF-EXT01/SWAP-WITNESS/3",
         source="test_crop_file_weather_production.f90",
         witness_column=1, source_fortran_day=2,
         independent_matching_confirmations=n,
         accepted_lineage_id=lineage,accepted_final_revision=revision,
         accepted_t0=t0,accepted_t1=t1,
+        # Source Fortran rooted test reads 1999-01-(20+d), d=0..6
+        # and t1=d. This is its source date, NOT PCSE alignment.
+        source_weather_epoch="1999-01-20",
+        source_calendar_date=(datetime.date(1999,1,20)+datetime.timedelta(days=t1)).isoformat(),
         actual_root_uptake_native_integral=actual,
         potential_transpiration_native_integral=potential,
         matched_accepted_uptake_native_integral=observed,
