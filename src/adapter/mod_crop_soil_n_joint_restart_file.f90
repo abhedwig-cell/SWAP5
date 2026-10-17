@@ -703,7 +703,15 @@ contains
         read(u,iostat=io)physical%salt%mass_mg_cm2,physical%salt%cdrain_source_id,physical%salt%cdrain_revision
         if(io/=0)return
         io=1
+        ! Untrusted bytes must pass finiteness before the existing ready()
+        ! predicate, whose compound real comparisons need not short circuit.
+        if(.not.all(ieee_is_finite(physical%salt%mass_mg_cm2)))return
+        if(any(physical%salt%mass_mg_cm2<0._real64))return
         if(.not.physical%salt%ready(n))return
+        if(physical%salt%cdrain_source_id/=0_int64)then
+          if(physical%salt%cdrain_source_id/=c%tiles(1)%base_forcing%c_drain_salt%source_id.or. &
+            physical%salt%cdrain_revision/=c%tiles(1)%base_forcing%c_drain_salt%revision)return
+        end if
         call fmr_new_b110_committed_state(temporary,1_int64,physical,0._real64,ok,parameters=c%tiles(1)%parameters)
         if(.not.ok)return
       end if

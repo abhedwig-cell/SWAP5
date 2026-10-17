@@ -13,7 +13,7 @@ def execute(session,exe,fixture,phase,build,opt,name,sensor=False,interval_days=
  masses=struct.unpack_from('<'+str(n)+'d',original,salt);assert all(x>=0 for x in masses)and sum(masses)>0
  sourceid,revision=struct.unpack_from('<qq',original,salt+8*n);assert sourceid==1 and revision>=0
  cases={}
- for label,offset,fmt,value in [('negative_salt',0,'d',-1.),('nan_salt',0,'d',float('nan')),('inf_salt',0,'d',float('inf')),('salt_source',8*n,'q',-1),('salt_revision',8*n+8,'q',-2)]:
+ for label,offset,fmt,value in [('negative_salt',0,'d',-1.),('nan_salt',0,'d',float('nan')),('inf_salt',0,'d',float('inf')),('salt_source',8*n,'q',2),('salt_revision',8*n+8,'q',-2)]:
   raw=bytearray(original);struct.pack_into('<'+fmt,raw,salt+offset,value);raw=bytes(raw);raw=raw[:-4]+struct.pack('<I',zlib.crc32(raw[:-4]));cases[label]=raw
  for label,raw in cases.items():
   target=build/f'{name}-{phase}-{label}.bad';target.write_bytes(raw)
