@@ -1,0 +1,11 @@
+# MC-SOL01 PR1288 reconciliation and decision, 2026-10-17
+
+**Authority:** canonical `aa73ca4350eaa715b2ae42655f1073caeffd18cb`, candidate `8ec536aaed0bdc22da90a8a98cd1ccf5f66db78d`. The pinned comparison from candidate base `e51efd1f14de328db22d2c32a6ca78bc228d01b0` to current canonical has 7 commits and no paths matching solute/pond/surface/FMR-B111/runon in the returned file delta. This is bounded source-dependency reconciliation, **not** a new numerical qualification.
+
+**Historical donor:** `integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64` is present at this canonical with blob SHA `8d5d088f31d1101b7224395e5413c1e1fac643d9`. Its content was fetched through the connector, but the compressed donor was not unpacked or inspected during this phase. Therefore no claim of historical SWAP 4.3.1 chemical surface-loss equivalence is justified. `SWAP431_RUNON_REPAIR_STATUS.json` establishes hydraulic runon routing alone; it does not qualify runon chemistry.
+
+**Fresh local test:** unmodified candidate `mod_b111_surface_loss_budget.f90` + `test_surface_loss_budget.f90` reconstructed from the existing local files compiled and executed with GNU Fortran, `-std=f2008 -Wall -Wextra -Werror -fcheck=all`, both `-O0` and `-O2`. Output `SURFACE_LOSS_BUDGET=PASS` at both levels, exit zero. This rechecks the isolated budget only; do not present it as current postimage full qualification.
+
+**Admission decision:** remain DRAFT / NOT ADMITTED. The linked existing-production test already proves different transfer with evaporation: 1 versus 0.5 mg/cm2 for the pinned fixture. That is an actual scientific incompatibility with the incumbent contract, not a numerical tolerance issue. Neither the historical source order nor accepted gross surface-loss traces are demonstrated. Do not wire this standalone module into production or promote any mastercoverage row.
+
+**Next justified implementation gate:** source-exact B1.11 loss chronology and confirmed admitted per-substep gross evaporation, runoff, runon and infiltration water receipts. Subsequently build a single-owner joint water/solute experiment with error-path rollback and native restart against the real production modules. The accepted no-loss PRs #1234/#1256/#1257/#1258 remain untouched. TOP03 #956 is unmerged research.
