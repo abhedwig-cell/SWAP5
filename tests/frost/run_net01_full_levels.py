@@ -42,7 +42,7 @@ def fixtures(out):
     frozen=ROOT/'reference/swap-4.3.1/b1_11_frost_source/SWAP/frozencond.f90'
     (out/'frozen.f90').write_bytes(prop.proposal_source(frozen.read_bytes())[0])
     subprocess.run(['python',str(ROOT/'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-03/apply.py'),
-        str(ROOT/'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90'),str(out/'divdra.f90')],check=True)
+        str(ROOT/'reference/swap-4.3.1/frost-corrections/FROST-DIVDRA-02/divdra.f90'),str(out/'divdra.f90')],check=True,capture_output=True)
 
 def cases():
     rows=[]

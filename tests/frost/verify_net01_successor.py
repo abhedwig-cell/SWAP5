@@ -73,6 +73,9 @@ def validate(r,data):
         check(sha(raw.encode())==data['retained_output_sha256'][path],'raw retained output changed')
     return True
 def verify_source(git_reader=None):
+    if (ROOT/'tests/frost/verify_net01_full_levels.py').is_file():
+        from verify_net01_full_levels import verify_source as successor
+        return successor(git_reader)
     g=git if git_reader is None else git_reader;r=record()
     check(r['baseline']==BASE,'NET01 baseline changed');g('merge-base','--is-ancestor',BASE,'HEAD')
     dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines()
@@ -87,11 +90,17 @@ def verify_source(git_reader=None):
             'projection_policy':'Original complete backend/application bodies reconstruct exactly; legacy selectors without multilevel parameters retain their original branches. New active semantics require the sealed NET01 native source and actual runtime evidence.',
             'qualified':False,'admitted':False,'full_capability':False}
 def verify_qualification():
+    if (ROOT/'tests/frost/verify_net01_full_levels.py').is_file():
+        from verify_net01_full_levels import verify_qualification as successor
+        return successor()
     result=verify_source();data=capsule();validate(record(),data)
     return {**result,'qualified':True,'full_capability':True,'net01_policy':'OWNER_APPROVED_SWAP5_DIFFERENCE',
             'scope':'two/three signed interacting levels; rootless ordinary Reference mode2; normal/low air and separate infiltration',
             'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 def self_test():
+    if (ROOT/'tests/frost/verify_net01_full_levels.py').is_file():
+        from verify_net01_full_levels import self_test as successor
+        return successor()
     r=record();data=capsule()
     mutations=[lambda a,b:a.update(owner_policy_accepted=False),lambda a,b:a.update(qualified=False),
         lambda a,b:b['component'].update(cases=9215),lambda a,b:b['runtime']['results'].pop(),
