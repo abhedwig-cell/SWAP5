@@ -170,6 +170,31 @@ call advance_persistent_pond(original,bad,rejected,r)
 if(r%status/=POND_WATER) error stop 'unbalanced evaporation accepted'
 call rejected%snapshot(clock,depth,mass,revision)
 if(depth/=1d0.or.mass/=2d0.or.revision/=0_int64) error stop 'rejected mutation'
+! The real production pond owner exports separately mixed runon and runoff.
+call initialize_persistent_pond(0d0,1d0,2d0,original,status)
+s=pond_step_t(0d0,1d0,1d0,0.5d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+s%runoff_depth=0.25d0
+call advance_persistent_pond(original,s,candidate,r)
+if(r%status/=POND_OK) error stop 'runoff production accepted'
+if(abs(r%soil_transfer-0.5d0)>1d-13.or.abs(r%runoff_output-0.5d0)>1d-13) &
+ error stop 'runoff production exports'
+if(abs(r%mass_after-1d0)>1d-13.or.abs(r%mass_residual)>1d-13.or. &
+ abs(r%water_residual)>1d-13) error stop 'runoff production budgets'
+bad=s;bad%runoff_depth=0.5d0
+call advance_persistent_pond(original,bad,rejected,r)
+if(r%status/=POND_WATER) error stop 'runoff bad water accepted'
+call rejected%snapshot(clock,depth,mass,revision)
+if(depth/=1d0.or.mass/=2d0.or.revision/=0_int64) error stop 'runoff rejected mutation'
+call initialize_persistent_pond(0d0,1d0,2d0,original,status)
+s=pond_step_t(0d0,1d0,1d0,1.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+s%runon_rate=0.5d0;s%runon_c=4d0
+call advance_persistent_pond(original,s,candidate,r)
+if(r%status/=POND_OK) error stop 'chemical runon production rejected'
+if(abs(r%runon_input-2d0)>1d-13.or.abs(r%soil_transfer-2d0/3d0)>1d-13) &
+ error stop 'chemical runon production mixing'
+if(abs(r%mass_after-10d0/3d0)>1d-13.or.abs(r%mass_residual)>1d-13.or. &
+ abs(r%water_residual)>1d-13) error stop 'chemical runon production budgets'
+print '(A)', 'MC_SOL01_POND_RUNON_RUNOFF_PRODUCTION=PASS'
 print '(A)', 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS'
 end program
 F90
@@ -181,7 +206,9 @@ F90
   done
   gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" "$OUT/test_pond_evap.f90" "${POND_OBJECTS[@]}" -o "$OUT/test_pond_evap"
   "$OUT/test_pond_evap" | tee "$OUT/pond_evap.txt"
-  grep -Fq 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS' "$OUT/pond_evap.txt" || fail "pond evaporation O$opt"
+  for pond_marker in MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS MC_SOL01_POND_RUNON_RUNOFF_PRODUCTION=PASS; do
+    grep -Fq "$pond_marker" "$OUT/pond_evap.txt" || fail "pond science O$opt marker $pond_marker"
+  done
   cat "$OUT/output.txt"
   echo "PUB_P1E02_O${opt}=PASS"
 done
