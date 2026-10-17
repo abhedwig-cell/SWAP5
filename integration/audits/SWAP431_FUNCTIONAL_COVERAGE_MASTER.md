@@ -1,3 +1,22 @@
+# NET01 bounded frost production admission, 17 October 2026
+
+[PR1275](https://github.com/abhedwig-cell/SWAP5/pull/1275) admits the explicitly
+owner-approved net-preserving two/three-level frost policy. Actual production
+merge `5f919cbb5de933bff62e715045533a5c63faba4d` has the exact qualified full tree;
+canonical authority receipt `14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7` binds
+the completed O0/O2 source, physical mass, rollback, restart and isolation proof.
+All 9,216 source inputs, 128 physical configurations per optimization and original
+B18/ordinary multilevel/separate-infiltration preservation pass.
+
+`SW431-FROST-DIV-MULTI` remains **ACTIVE_MIGRATION**: higher source level counts
+and any remaining source options must still be completed or explicitly disposed.
+The bounded owner receipt corrects its old complete-absence assertion but does
+not close the full rule. All other 242 capability records remain exact.
+Counts stay **112 ADMITTED, 92 ACTIVE_MIGRATION, 3 QUALIFICATION_ONLY;
+95 unresolved of 243**. The structural absence flag count falls from 79 to 78;
+that is not a new full-capability admission count. No master numerical rerun was
+selected. Earlier receipts and their counts below are historical.
+
 # MC-IRR01 coherent batch admission, 17 October 2026
 
 Three existing rows **TCS7, TCS8 and SSDI** close through [PR1273](https://github.com/abhedwig-cell/SWAP5/pull/1273), canonical `dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e`. Qualified head `0b2fe122dbb3e0ffaa724fd725d5585e8c173d83`; full merge tree exactly equals qualified tree `3386518a39919d8ce709733c6491ae04eaf354a3`, source `bae023dab2bb91a91d6a48c4d2a5429a94897873`. All240 other capability records are unchanged.

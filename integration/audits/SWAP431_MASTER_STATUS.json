@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e",
+  "last_reconciled_upstream": "14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -114,7 +114,7 @@
     },
     "open_capabilities": 92,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 79,
+    "confirmed_missing_production_entries": 78,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
     "total_unresolved_capabilities": 95,
@@ -131,7 +131,7 @@
     "active_with_existing_production_source_authority": 54,
     "active_without_listed_production_source_authority": 38,
     "active_missing_complete_admitted_route": 92,
-    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;92 full production envelopes remain active. Three full sensor/SSDI rows close in existing MC-IRR01; all other240 capability records unchanged.",
+    "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms. NET01 bounded production removes one old complete-absence assertion; full SW431-FROST-DIV-MULTI remains ACTIVE. Counts112 admitted/95 unresolved remain unchanged.",
     "derived_gap_counter_reconciliation": {
       "previous_summary": 108,
       "actual_marked_rows": 92,
@@ -141,7 +141,7 @@
     },
     "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
   },
-  "next_action": "Continue existing workstreams; 112 admitted, 95 unresolved; global coverage remains open.",
+  "next_action": "Continue existing workstreams;112 admitted,95 unresolved. NET01 two/three-level policy is admitted, but full frost envelope remains ACTIVE.",
   "recovery_point": "PR1109 canonically admits ordinary interacting signed multilevel DIVDRA;97 ADMITTED,110 unresolved. B1.12/SWAP-019 canonically admitted through1265. Reuse existing annual-expanded biomass owner; distinguish gross mortality diagnostics from retained physical DM/N. SWAP5 partial-return runtime remains unadmitted. Preserve1264 annual and1099 signed drainage. Master draft:96 admitted,111 unresolved.",
   "relevant_paths": [
     "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
@@ -4316,6 +4316,41 @@
         "sha256": "f86c811f2178b382a6b8a600d093beea8185255e7cf439d19383fdc6abfb07c2",
         "decoded_json_sha256": "0c9f95d91f11bf5a82bad2932904db37734484167279bf7b14d507871479c8a8"
       }
+    }
+  },
+  "frost_net01_bounded_reconciliation_20261017": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1275",
+    "canonical_merge": "14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
+    "production_merge": "5f919cbb5de933bff62e715045533a5c63faba4d",
+    "admission_head": "97bc7d14965122db21abe7fd8bf4a2259061bb7d",
+    "qualified_source_tree": "4144f9895e5b97d1506e0db68fab28e276630d76",
+    "authority_at_canonical": "integration/audits/PPA_WU05B20_STATUS.json production_reopening_20261017",
+    "full_capability": false,
+    "scope": "Owner-approved NET01 SWAP5 policy; two/three strictly depth-ordered signed interacting levels, rootless ordinary Reference mode2, normal/low air, separate infiltration.",
+    "qualification": "9216 actual-source vectors and128 actual physical configurations per O0/O2; hard1e-12cm mass,8 solved rollback/replay/empty-registry restart and8 two-column cases;26 invalid contracts,48 pre-solver/application controls; all4536 original B18 plus ordinary multilevel/INF preservation; ten evidence corruption controls; current owning entry and source/strict docs PASS.",
+    "limitations": [
+      "Not a B1 correction; no original-reference mutation.",
+      "Two/three levels only. Full source array envelope including higher counts remains open; roots, other bottom owners, snow and other source options retain their own rules."
+    ],
+    "evidence": "integration/audits/evidence/FROST_NET01_PRODUCTION_20261017.json.gz.b64 at 14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
+    "master_source_branch_note": "Frozen historical master science checkout is not implementation absence evidence for the admitted later canonical route.",
+    "prior_master": "c5d6a675c321024a8488d2eeaa39b62000e3fae3",
+    "capability": "SW431-FROST-DIV-MULTI",
+    "disposition_changes": 0,
+    "all_other242_capability_records": "EXACT_UNCHANGED",
+    "remaining": "Full source level/option envelope requires completion or explicit disposition; do not infer full capability from bounded NET01.",
+    "master_numerical_run": false,
+    "validation_receipts": {
+      "historical_source_census_and_pinned_authorities": "PASS 63 original source members and all current locators",
+      "inheritance_negative_controls": "20 PASS",
+      "all_other242_capability_records": "EXACT_UNCHANGED",
+      "disposition_counts": "UNCHANGED112 ADMITTED/95 unresolved of243",
+      "confirmed_absence_flag_count": 78,
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "master_numerical_or_Actions_run": false,
+      "source_tree": "UNCHANGED frozen historical master science",
+      "canonical_recovery_head": "f9f1614a794cf5a7e2f219a60fd1a61da245176b; metadata-only successor of14c4dc15, identical qualified source"
     }
   }
 }
