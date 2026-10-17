@@ -93,7 +93,7 @@ contains
   if(max(s%rain_rate,s%irrigation_rate,s%runon_rate,s%pond_evaporation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
   r%status=POND_WATER
   r%water_residual=s%depth_end-s%depth_begin- &
-    (s%rain_rate+s%irrigation_rate+s%runon_rate-s%pond_evaporation_rate+s%qtop)*dt-s%runoff_depth
+    (s%rain_rate+s%irrigation_rate+s%runon_rate-s%pond_evaporation_rate+s%qtop)*dt+s%runoff_depth
   if(abs(r%water_residual)>1d-10)return
   r%status=POND_MASS
   r%mass_before=committed%mass;r%dry_input=s%dry_deposition_rate*dt
