@@ -174,7 +174,8 @@ module mod_fmr_serialized_reference_backend
        b111_extended_hydraulic_provider_t, initialize_b111_extended_hydraulic_parameters, &
        bind_b111_extended_hydraulic_provider, B111_EXT_OK
   use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t
-  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t
+  use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t, &
+       bind_b111_linear_table_provider, B111_LINEAR_TABLE_OK
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -702,6 +703,8 @@ module mod_fmr_serialized_reference_backend
     logical :: analytical_hydraulics_active = .false.
     logical :: extended_hydraulics_active = .false.
     logical :: extended_pdi_vapor_active = .false.
+    type(b111_linear_table_provider_t), pointer :: linear_table_constitutive => null()
+    type(b111_linear_table_parameters_t), allocatable :: linear_table_parameters
     type(b111_legacy_hydraulic_provider_t), pointer :: extended_legacy => null()
     type(b111_extended_hydraulic_parameters_t), pointer :: extended_parameters => null()
     type(b111_extended_hydraulic_provider_t), pointer :: extended_constitutive => null()
@@ -3249,6 +3252,7 @@ contains
       if (.not. associated(self%extended_legacy)) allocate(self%extended_legacy)
       if (.not. associated(self%extended_parameters)) allocate(self%extended_parameters)
       if (.not. associated(self%extended_constitutive)) allocate(self%extended_constitutive)
+      if (.not. associated(self%linear_table_constitutive)) allocate(self%linear_table_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3309,6 +3313,8 @@ contains
           if (hyd_status /= B111_EXT_OK) error stop 'extended hydraulic model parameters invalid'
         end block
       end if
+      if (allocated(self%linear_table_parameters)) deallocate(self%linear_table_parameters)
+      if (allocated(parameters%linear_hydraulic_table)) self%linear_table_parameters = parameters%linear_hydraulic_table
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
@@ -4222,6 +4228,14 @@ contains
         return
       end select
     end if
+    if (allocated(self%linear_table_parameters)) then
+      block
+        integer :: table_status
+        call bind_b111_linear_table_provider(self%linear_table_constitutive, self%linear_table_parameters, &
+             step_duration, table_status)
+        if (table_status /= B111_LINEAR_TABLE_OK) return
+      end block
+    end if
     if (self%extended_hydraulics_active) then
       block
         integer :: hyd_status
@@ -4796,6 +4810,8 @@ contains
         return
       end if
       request%evaluation%constitutive => self%frost_constitutive
+    else if (allocated(self%linear_table_parameters)) then
+      request%evaluation%constitutive => self%linear_table_constitutive
     else if (self%extended_hydraulics_active) then
       request%evaluation%constitutive => self%extended_constitutive
     else if (self%analytical_hydraulics_active) then
