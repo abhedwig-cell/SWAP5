@@ -123,12 +123,13 @@ contains
           t%converged_runoff_depth_cm])))return
       ! The admitted B1.11 mixing denominator is preserved. Pond evaporation
       ! changes accepted water depth only, not dissolved solute mass.
-      if(t%converged_pond_evaporation_cm_day<0d0.or.t%converged_runoff_depth_cm/=0d0)return
+      if(t%converged_pond_evaporation_cm_day<0d0.or.t%converged_runoff_depth_cm<0d0)return
     end if
     pond_step=supply;pond_step%t0=t%t0;pond_step%t1=t%t1
-    pond_step%pond_evaporation_rate=0d0
+    pond_step%pond_evaporation_rate=0d0;pond_step%runoff_depth=0d0
     if(t%converged_surface_available) &
       pond_step%pond_evaporation_rate=t%converged_pond_evaporation_cm_day
+    if(t%converged_surface_available) pond_step%runoff_depth=t%converged_runoff_depth_cm
     pond_step%depth_begin=t%pond_start_cm;pond_step%depth_end=t%pond_end_cm;pond_step%qtop=t%top_flux
     call advance_persistent_pond(pond_trial,pond_step,pond_next,pond_receipt)
     if(pond_receipt%status/=POND_OK)return
@@ -139,13 +140,15 @@ contains
     f%rain_rate_cm_day=supply%rain_rate;f%rain_c_mg_cm3=supply%rain_c
     f%irrigation_rate_cm_day=supply%irrigation_rate;f%irrigation_c_mg_cm3=supply%irrigation_c
     f%runon_rate_cm_day=supply%runon_rate;f%runon_c_mg_cm3=supply%runon_c
-    f%pond_end_cm=t%pond_end_cm;f%macropore_area_fraction=0d0
+    f%pond_end_cm=t%pond_end_cm;f%runoff_depth_cm=pond_step%runoff_depth
+    f%macropore_area_fraction=0d0
     call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r)
     receipt%status=MATRIX_PROCESS;receipt%process_status=r%status
     if(r%status/=B111_REACTIVE_OK)return
     scale=max(1d0,pond_receipt%soil_transfer,pond_receipt%mass_after)
     if(abs(r%pond_to_soil_mg_cm2-pond_receipt%soil_transfer)>4096d0*epsilon(1d0)*scale)return
     if(abs(next_amount%pond_mass-pond_receipt%mass_after)>4096d0*epsilon(1d0)*scale)return
+    if(abs(r%runoff_output_mg_cm2-pond_receipt%runoff_output)>4096d0*epsilon(1d0)*scale)return
     ! Accepted1256 matrix companion is the sole persistent surface-mass owner.
     pond_trial=pond_next
     if(any(next_mobile%concentration_mg_cm3>1d6).or.any(next_mobile%mass_mg_cm2>1d12).or. &
