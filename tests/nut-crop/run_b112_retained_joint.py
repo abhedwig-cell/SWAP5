@@ -6,10 +6,18 @@ ROOT=Path(__file__).resolve().parents[2]
 original=runpy.run_path(str(ROOT/('tests/nut-crop/reuse_b112_stable.py'if os.environ.get('B112_REUSE_STABLE')else'tests/nut-crop/run_reproductive_binding.py')))
 ns=original['ns'];OUT=ns['OUT'];cmd=ns['cmd'];FC=ns['FC'];sha=ns['sha'];result=original['result'];result['b112_retained']={}
 more_original=original['more']
+# Extend the measured production closure for source-driven amendment calendar execution.
+start=len(ns['ordered'])
+ns['visit'](ROOT/'src/runtime/mod_fmr_crop_soil_n_calendar_application.f90')
+calendar_providers=ns['ordered'][start:]
 for opt in ('O0','O2'):
  b=OUT/opt;flags=[x.replace(str(OUT/'O2'),str(b))for x in ns['flags']];flags[0]='-'+opt;flags+=['-I'+str(ROOT/'tests/nut-material')]
  objects=sorted(b.glob('provider-*.o'),key=lambda p:int(p.stem.split('-')[-1]))
  more=[Path(str(p).replace(str(OUT/'O2'),str(b)))for p in more_original]
+ for i,p in enumerate(calendar_providers):
+  obj=b/('calendar-provider-'+str(i)+'.o')
+  cmd(FC+flags+['-c',p,'-o',obj],b,'compile');more.append(obj)
+  result['input_sha256'][str(p.relative_to(ROOT))]=sha(p)
  driver=ROOT/'tests/nut-crop/test_b112_retained_joint.f90';obj=b/(driver.stem+'.o');exe=b/driver.stem
  cmd(FC+flags+['-c',driver,'-o',obj],b,'driver_compile');cmd(FC+flags+objects+more+[b/'reproductive_literal.o',obj,'-o',exe],b,'link')
  restart=b/'b112-restart.bin';expected=b/'b112-expected.bin';fresh=b/'b112-fresh.bin'

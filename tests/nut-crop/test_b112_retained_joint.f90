@@ -31,6 +31,7 @@ program test_b112_retained_joint
  use mod_crop_senescence_residue
  use mod_crop_soil_n_senescence_day
  use mod_fmr_crop_soil_n_senescence_application
+ use mod_fmr_crop_soil_n_calendar_application,only:run_crop_soil_n_calendar_interval
  implicit none
  real(real64),parameter::T0=0d0,T1=1d0,HARD_MASS_GATE=1d-10
  type(fmr_production_application_config_t)::cfg
@@ -335,18 +336,18 @@ contains
         670001_int64,9001_int64,9101_int64,sp,cp,water,state,code)
      call require(code==0,'source restart decoded with exact source parameters')
    else
-     call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template, &
+     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
-       state,weather,0d0,1d0,items,split,policy,day_receipt,env)
+       state,weather,0d0,1d0,startup_plan,split,policy,day_receipt,env)
      call require(day_receipt%status==JOINT_OK,'source actual Richards day one')
      call write_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
        670001_int64,water,state,code)
      call require(code==0,'source day-one native restart')
    end if
    day2_env=soil_n_day_environment_t(1d0,2d0,30d0)
-   call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template, &
+   call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
      cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
-     state,weather,1d0,2d0,items(:0),split,policy,day_receipt,day2_env)
+     state,weather,1d0,2d0,startup_plan,split,policy,day_receipt,day2_env)
    if(day_receipt%status/=JOINT_OK)print *,'source day 2 failure',day_receipt%status
    call require(day_receipt%status==JOINT_OK,'source actual Richards day two')
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
