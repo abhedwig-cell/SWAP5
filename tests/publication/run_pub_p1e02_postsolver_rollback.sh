@@ -82,6 +82,10 @@ MODULE_SRC=(
   src/process/mod_liquid_water_sensible_enthalpy.f90
   src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+  # Compile the actual B1.11 pond solute and joint-transaction dependencies
+  # on both optimization levels, not merely the isolated pond process.
+  src/runtime/mod_fmr_b111_pond_solute_route.f90
+  src/runtime/mod_fmr_b111_pond_joint_application.f90
 )
 
 # Resolve the full real module closure once, without reimplementing physics.
