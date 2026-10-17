@@ -34,6 +34,12 @@ program test_historical_activation
  close(unit)
  call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
  if(code/=N_NAMED_INVALID)error stop 'duplicate name accepted'
+ open(newunit=unit,file='historical-fields.txt',status='replace')
+ write(unit,'(A)')repeat('X',700)
+ close(unit)
+ call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
+ if(code/=N_NAMED_INVALID)error stop 'overlong record accepted'
+
  call parameters(p)
  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
  if(code/=0)error stop 'pools'
