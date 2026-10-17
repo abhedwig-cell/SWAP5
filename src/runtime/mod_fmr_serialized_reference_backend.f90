@@ -167,6 +167,7 @@ module mod_fmr_serialized_reference_backend
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux, WATER_FACE_FLUX_OK
   use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
+  use mod_b111_hysteresis_state, only: b111_hysteresis_state_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
   use mod_fmr_macropore_top_input, only: fmr_macropore_top_input_forcing_t
   use mod_macropore_single_column_runtime, only: macropore_single_column_runtime_t, macropore_runtime_policy_t, &
@@ -237,6 +238,7 @@ module mod_fmr_serialized_reference_backend
     type(macropore_continuation_state_t), allocatable :: macropore
     type(fmr_mobile_salt_component_t), allocatable :: salt
     type(rutter_source_state_t), allocatable :: rutter
+    type(b111_hysteresis_state_t), allocatable :: hysteresis
   contains
     procedure :: clone => fmr_b110_state_clone
   end type fmr_b110_physical_state_t
@@ -1394,6 +1396,11 @@ contains
     if (allocated(source%rutter)) then
       allocate(target%rutter)
       target%rutter = source%rutter
+    end if
+    if (allocated(target%hysteresis)) deallocate(target%hysteresis)
+    if (allocated(source%hysteresis)) then
+      allocate(target%hysteresis)
+      target%hysteresis = source%hysteresis
     end if
   end subroutine copy_b110_physical_state
 
