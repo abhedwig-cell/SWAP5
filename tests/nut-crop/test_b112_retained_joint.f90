@@ -389,7 +389,10 @@ contains
        670001_int64,water,state,code)
      call require(code==0,'source day-one native restart')
    end if
-   do day=1,3
+   ! Full Richards hydrology and production Soil-N are integrated every day,
+   ! preserving the one-day native restart split. This month-scale run is
+   ! separate from the accepted annual constant-water chemistry qualification.
+   do day=1,30
      day2_env=soil_n_day_environment_t(base_day+real(day,real64),base_day+real(day+1,real64),30d0)
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
@@ -400,7 +403,7 @@ contains
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
-   print '(A)','NUT_SOURCE_FOUR_DAY_TWO_EVENTS_FRESH_RESTART=PASS'
+   print '(A)','NUT_SOURCE_31_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
  end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
