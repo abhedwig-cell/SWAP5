@@ -38,7 +38,7 @@ jobs:
       - name: Verify independent SWAP rooted crop parameters are not pinned PCSE barley
         run: |
           python -m pip install PyYAML
-          python swap/tests/fwof/ext01/test_cross_source_crop_parameter_authority.py swap pcse
+          EXT01_MANIFEST_PATH=ext01-crop-parameter-pair.json python swap/tests/fwof/ext01/test_cross_source_crop_parameter_authority.py swap pcse
       - name: Build Python reference and Fortran-source forcing in one runner
         run: |
           python -m pip install -e pcse
@@ -129,4 +129,5 @@ jobs:
           path: |
             build/
             input/
+            ext01-crop-parameter-pair.json
           if-no-files-found: warn
