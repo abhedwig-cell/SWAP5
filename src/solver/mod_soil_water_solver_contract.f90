@@ -83,6 +83,13 @@ module mod_soil_water_solver_contract
      real(real64) :: ponded_water_evaporation = 0.0_real64
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
+     ! Gross forcing provenance in cm/day from the evaluated dynamic provider.
+     ! Values are diagnostic until the water transaction accepts its substep.
+     logical :: gross_surface_sources_available = .false.
+     real(real64) :: precipitation_rate_cm_day = 0.0_real64
+     real(real64) :: irrigation_rate_cm_day = 0.0_real64
+     real(real64) :: snowmelt_rate_cm_day = 0.0_real64
+     real(real64) :: runon_rate_cm_day = 0.0_real64
      real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
      logical :: surface_head_derivative_available = .false.
      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
