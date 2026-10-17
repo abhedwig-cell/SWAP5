@@ -17,10 +17,14 @@ PASS="CROP_DAYEND_ADMITTED_HYDROLOGY_ROOT_UPTAKE_BITWISE=PASS"
 def extract(text):
     pair=PAIR.findall(text)
     uptake=UPTAKE.findall(text)
-    if text.count(PASS)!=1 or len(pair)!=1 or len(uptake)!=1:
-        raise ValueError("missing, duplicated or unsuccessful authentic SWAP acceptance witness")
+    n=text.count(PASS)
+    if n<1 or len(pair)!=n or len(uptake)!=n:
+        raise ValueError("missing or incomplete authentic SWAP acceptance confirmations")
     actual,potential=map(float,pair[0])
     observed=float(uptake[0])
+    for candidate,confirmed in zip(pair,uptake):
+        if tuple(map(float,candidate))!=(actual,potential) or float(confirmed)!=observed:
+            raise ValueError("different accepted fluxes across physical repetitions")
     if not all(map(math.isfinite,(actual,potential,observed))):
         raise ValueError("nonfinite witness")
     if actual<0 or potential<0 or actual>potential:
@@ -30,6 +34,7 @@ def extract(text):
     return dict(schema="F-WOF-EXT01/SWAP-WITNESS/1",
         source="test_crop_file_weather_production.f90",
         witness_column=1, source_fortran_day=2,
+        independent_matching_confirmations=n,
         actual_root_uptake_native_integral=actual,
         potential_transpiration_native_integral=potential,
         matched_accepted_uptake_native_integral=observed,
