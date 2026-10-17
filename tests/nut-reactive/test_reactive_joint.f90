@@ -16,7 +16,8 @@ program test_reactive_joint
  use mod_mineral_joint_restart_file,only:write_mineral_joint_restart_file
  use mod_fmr_b111_mineral_joint_application,only:run_mineral_joint_interval,mineral_joint_result_t
  use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route, &
-   initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables
+   initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables, &
+   initialize_historical_reactive_n_named_files
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t,soil_n_historical_rates_t,soil_n_historical_initial_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
@@ -132,9 +133,40 @@ program test_reactive_joint
    eight%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
    historical_initial%bio_kg_m3=5d0;historical_initial%hum_kg_m3=40d0
    historical_initial%cnh4_kg_m3=.02d0;historical_initial%cno3_kg_m3=.03d0
-   call initialize_historical_reactive_n_complete_tables(historical,historical_rates,historical_initial, &
-     eight,9001_int64,0d0,theta,'historical-actual-input.snm','1900-01-01',historical_plan, &
-     eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
+   open(newunit=input_unit,file='historical-params.txt',status='replace')
+   block
+     integer::pool_i
+     character(16)::pool_name
+     do pool_i=1,8
+       write(pool_name,'(A,I1,A)')'FOM',pool_i,'_t'
+       write(input_unit,'(A,ES20.12)')trim(pool_name)//' = ',historical_initial%fom_kg_m3(pool_i)
+     end do
+   end block
+   write(input_unit,'(A,ES20.12)') 'Bio_t = ',historical_initial%bio_kg_m3
+   write(input_unit,'(A,ES20.12)') 'Hum_t = ',historical_initial%hum_kg_m3
+   write(input_unit,'(A,ES20.12)') 'cNH4_t = ',historical_initial%cnh4_kg_m3
+   write(input_unit,'(A,ES20.12)') 'cNO3_t = ',historical_initial%cno3_kg_m3
+   write(input_unit,'(A,ES20.12)') 'Temp_ref = ',historical_rates%temp_ref
+   write(input_unit,'(A,ES20.12)') 'SorpCoef = ',historical_rates%sorpcoef
+   write(input_unit,'(A,ES20.12)') 'RateConNitrif_ref = ',historical_rates%ratecon_nitrif_ref
+   write(input_unit,'(A,ES20.12)') 'RateConDenitr_ref = ',historical_rates%ratecon_denitr_ref
+   write(input_unit,'(A,ES20.12)') 'WFPSCrit = ',historical_rates%wfpscrit
+   write(input_unit,'(A,ES20.12)') 'WFPScrit2 = ',historical_rates%wfpscrit2
+   write(input_unit,'(A,ES20.12)') 'CdissiHalf = ',historical_rates%cdissi_half
+   write(input_unit,'(A,ES20.12)') 'TCSF_N = ',historical_rates%tcsf_n
+   write(input_unit,'(A,ES20.12)') 'LaiCritNupt = ',historical_rates%lai_crit_nupt
+   write(input_unit,'(A,ES20.12)') 'dz_WSN = ',historical_rates%depth_m
+   write(input_unit,'(A,ES20.12)') 'cNH4N_lat = ',historical_rates%nh4_lat
+   write(input_unit,'(A,ES20.12)') 'cNO3N_lat = ',historical_rates%no3_lat
+   write(input_unit,'(A,ES20.12)') 'cNH4N_seep = ',historical_rates%nh4_seep
+   write(input_unit,'(A,ES20.12)') 'cNO3N_seep = ',historical_rates%no3_seep
+   close(input_unit)
+   call initialize_historical_reactive_n_named_files(historical,eight,9001_int64,0d0,theta, &
+      'historical-params.txt','historical-actual-input.snm','1900-01-01',historical_plan, &
+      eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
+   call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
+     'named historical file accepted by real Richards owner')
+
    call require(status==0.and.eight_n%ready().and.historical_plan%ready(),'eight-pool positive source activation')
    call fmr_new_b110_temporal_indicator_committed_state(eight_water,column%column_id, &
      cfg%tiles(1)%initial_state,0d0,ok,spread(0d0,1,numnod))
