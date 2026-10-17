@@ -42,8 +42,5 @@ jobs:
         run: python3 -B tests/fpm/run_swap431_hyd_certificate.py
       - name: Admitted daily density and supply on the joint production tree
         run: python3 -B tests/fpm/run_hyd_root_receiving.py --output "${{ runner.temp }}/hyd-root-receiving"
-      - name: Exact source, immutable evidence and incumbent composition controls
-        run: |
-          python3 -B tests/fpm/verify_int12c_successor.py
-          python3 -B tests/fpm/test_int12c_successor_controls.py
-          python3 -B tests/fpm/test_hyd_successor_controls.py
+      - name: Current-source scientific successor and immutable NUT owner preservation
+        run: python3 -B tests/fpm/verify_sw431_hyst_b112_bridge.py

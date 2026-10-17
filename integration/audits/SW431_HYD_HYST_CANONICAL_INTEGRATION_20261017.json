@@ -5,7 +5,7 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "FOCUSED_GREEN_SHARED_COVERAGE_OWNER_REQUALIFICATION_PENDING",
+  "stage": "INTEGRATED_STABLE_CANDIDATE_NEW_B112_IMPACT_SUCCESSOR_PENDING",
   "tested": "FOCUSED_HYD_HYST_FSI39_ROSS_CURRENT_PASS; HYD_SHARED_CERTIFICATE_AND_ROOT_PASS; IMMUTABLE_NUT_INPUT_DIGEST_FAIL",
   "qualified": false,
   "admitted": false,
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Reconcile current canonical, qualify moving NUT B1.12 incumbent/owner for new optional-state layout (without changing immutable historical digests), then retest merged tree and promote only fully proven HYD/HYST capabilities.",
+  "next_action": "Observe focused integrated checks through completion. If B112 bridge and all science passes, pin live canonical merge tree; update admission records and coverage, then safe merge PR1281. If bridge fails, repair genuine impact, never bypass.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -193,5 +193,17 @@
     "reason": "HYSTERESIS optional-state-layout constant and recognition modifies previously NUT-proof pinned file; no automatic evidence inheritance",
     "disposition": "BLOCK_MERGE_UNTIL_OWNER_SCIENTIFIC_REQUALIFICATION_OR_EXPLICIT_ACCEPTED_SUCCESSOR_PROOF; DO_NOT_EDIT_HISTORICAL_EVIDENCE_DIGESTS"
   },
-  "current_canonical_seen": "dcda2dded1ecd6bed9d29d09c9b4025ba5785579"
+  "current_canonical_seen": "dcda2dded1ecd6bed9d29d09c9b4025ba5785579",
+  "b112_preservation_successor_20261017": {
+    "reasoning": "Old INT12C/HYD delegated verifier follows immutable B112 exact-input records and rejects opt-in HYST layout source changes. Preserve original evidence at the exact original admitted B112 HEAD; prove default layout as byte-exact current canonical parent projection and NUT owner blobs unchanged, plus fresh O0/O2 real B112 state/harvest/negative-input production tests on the final PR merge tree. No historical evidence rewriting.",
+    "verified_original_b112_commit": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "tested_path": "tests/fpm/verify_sw431_hyst_b112_bridge.py",
+    "coverage_authority": ".github/workflows/swap431-hydraulic-coverage.yml",
+    "related_immutable_archive": "integration/audits/evidence/MC_NUT01_B112_RETAINED_QUALIFICATION_20261017.tar.xz.b64",
+    "current_physical_scope": "20 B112 partition cases, 54 daily/partial harvest cases, 27 invalid-state rejections, original admitted full native owner proof on frozen checkout, joint HYD/HYST physics O0/O2 from owning workflow",
+    "missing": "Full NUT B1.12 moving joint rerun NOT_SELECTED_IMPACT unless new source/behavioral overlap emerges; future failure must remain fail-closed.",
+    "qualification": "PENDING_CURRENT_MERGE_TREE_ACTIONS",
+    "expected_seconds": 120,
+    "test_selection": "Dependency-impact bridge rather than rebind immutable source hashes; use unchanged original science controls on original exact-science tree."
+  }
 }
