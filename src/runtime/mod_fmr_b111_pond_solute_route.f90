@@ -99,6 +99,16 @@ contains
     receipt%max_water_residual=max(receipt%max_water_residual,abs(closure)*dt)
     if(code/=WATER_FACE_FLUX_OK)return
     if(.not.t%pond_storage_available)return
+    ! Reject gross forcing that the admitted pond water/solute receipt cannot
+    ! represent; do not silently map runon or melt to chemically clean rain.
+    if(t%converged_gross_sources_available)then
+      if(.not.all(ieee_is_finite([t%converged_rain_rate_cm_day, &
+        t%converged_irrigation_rate_cm_day,t%converged_snowmelt_rate_cm_day, &
+        t%converged_runon_rate_cm_day])))return
+      if(t%converged_rain_rate_cm_day/=supply%rain_rate.or. &
+         t%converged_irrigation_rate_cm_day/=supply%irrigation_rate)return
+      if(t%converged_snowmelt_rate_cm_day/=0d0.or.t%converged_runon_rate_cm_day/=0d0)return
+    end if
     ! The incumbent pond water balance contains no gross evaporative or
     ! runoff loss. A converged hydraulic receipt proving either loss must
     ! reject this chemical trial rather than silently conserve the wrong
