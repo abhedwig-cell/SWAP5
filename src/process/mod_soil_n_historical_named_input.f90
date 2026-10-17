@@ -34,7 +34,7 @@ module mod_soil_n_historical_named_input
  'cNO3N_lat', &
  'cNH4N_seep', &
  'cNO3N_seep']
- public::read_historical_soil_n_named_export
+ public::read_historical_soil_n_named_export,parse_historical_soil_n_named_lines
 contains
  subroutine read_historical_soil_n_named_export(path,initial,rates,status,error_line)
    character(*),intent(in)::path
@@ -52,37 +52,61 @@ contains
    open(newunit=unit,file=path,status='old',action='read',iostat=ios)
    if(ios/=0)return
    n=0
-   do
-     ! Nonadvancing read rejects overlong records rather than truncating them.
-     read(unit,'(A)',advance='no',size=read_size,iostat=ios)line
-     if(ios==iostat_end)exit
-     n=n+1
-     if(ios/=iostat_eor.or.n>512)exit
+   block
+     character(512)::lines(512)
+     lines=''
+     do
+       if(n==512)then
+         read(unit,'(A)',iostat=ios)line
+         if(ios/=iostat_end)exit
+         exit
+       end if
+       read(unit,'(A)',advance='no',size=read_size,iostat=ios)line
+       if(ios==iostat_end)exit
+       if(ios/=iostat_eor)exit
+       n=n+1;lines(n)=line
+     end do
+     close(unit,iostat=close_code)
+     if(ios/=iostat_end.or.close_code/=0)then
+       status=N_NAMED_INVALID;error_line=n+1;return
+     end if
+     call parse_historical_soil_n_named_lines(lines(:n),initial,rates,status,error_line)
+   end block
+ end subroutine
+ subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line)
+   character(*),intent(in)::lines(:)
+   type(soil_n_historical_initial_t),intent(out)::initial
+   type(soil_n_historical_rates_t),intent(out)::rates
+   integer,intent(out)::status,error_line
+   character(512)::line,field,token
+   logical::seen(COUNT)
+   real(real64)::v(COUNT),x
+   integer::i,n,pos,field_index,ios
+   initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
+   status=N_NAMED_INVALID;error_line=0;seen=.false.;v=0d0
+   if(size(lines)>512)return
+   do n=1,size(lines)
+     error_line=n
+     if(len(lines(n))>512)return
+     line=lines(n)
      if(len_trim(line)==0.or.line(1:1)=='!')cycle
      pos=index(line,'=')
-     if(pos<=1.or.pos>=len_trim(line))exit
+     if(pos<=1.or.pos>=len_trim(line))return
      field=adjustl(line(:pos-1));token=adjustl(line(pos+1:))
      field_index=0
      do i=1,COUNT
        if(trim(field)==trim(names(i)))field_index=i
      end do
-     if(field_index==0)exit
-     if(seen(field_index))exit
-     if(scan(trim(token),' /,;*!')/=0)exit
-     if(len_trim(token)>32.or.len_trim(token)==0)exit
-     ! Internal Fortran reads are bounded and nonfinite results are rejected.
+     if(field_index==0)return
+     if(seen(field_index))return
+     if(scan(trim(token),' /,;*!')/=0)return
+     if(len_trim(token)>32.or.len_trim(token)==0)return
      read(token,*,iostat=ios)x
-     if(ios/=0)exit
-     if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)exit
+     if(ios/=0)return
+     if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return
      seen(field_index)=.true.;v(field_index)=x
    end do
-   close(unit,iostat=close_code)
-   ! Original SWAP431 treats LaiCritNupt as optional and defaults it to zero.
-   ! The other 25 historical fields remain mandatory.
-   if(ios/=iostat_end.or.close_code/=0.or.any(.not.seen(:20)).or.any(.not.seen(22:)))then
-     status=N_NAMED_INVALID;error_line=n
-     return
-   end if
+   if(any(.not.seen(:20)).or.any(.not.seen(22:)))return
    initial%fom_kg_m3(1)=v(1)
    initial%fom_kg_m3(2)=v(2)
    initial%fom_kg_m3(3)=v(3)
@@ -109,6 +133,6 @@ contains
    rates%no3_lat=v(24)
    rates%nh4_seep=v(25)
    rates%no3_seep=v(26)
-   status=N_NAMED_OK
+   status=N_NAMED_OK;error_line=0
  end subroutine
 end module
