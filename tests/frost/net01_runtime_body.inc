@@ -92,6 +92,7 @@
         do tile=1,2
           cfg%tiles(tile)%tile_id=column_id+tile-1;cfg%tiles(tile)%ledger_id=column_id+10+tile
           call identities(columns(1),cfg%tiles(tile)%template)
+          cfg%tiles(tile)%template%template_id=cfg%tiles(tile)%template%template_id+tile-1
           cfg%tiles(tile)%parameters=p;cfg%tiles(tile)%initial_state=initial;cfg%tiles(tile)%base_forcing=f
           cfg%tiles(tile)%base_forcing%frost_divdra_scalars_cm_per_day= &
                real(tile,real64)*f%frost_divdra_scalars_cm_per_day
