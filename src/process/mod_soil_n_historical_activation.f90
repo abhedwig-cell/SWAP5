@@ -26,8 +26,39 @@ module mod_soil_n_historical_activation
    real(real64)::nh4_lat=0d0,no3_lat=0d0,nh4_seep=0d0,no3_seep=0d0
  end type
  public::activate_soil_n_historical,build_historical_soil_n_inventory,bind_historical_soil_n_rates
- public::initialize_historical_soil_n_complete
+ public::initialize_historical_soil_n_complete,bind_historical_organic_source_profile
 contains
+ ! SWAP 4.3.1 wofost_soil_parameters.f90 lines 18-61, executable
+ ! source archive SWAP431_B111_AUTHORITY; no fixture/default inference.
+ subroutine bind_historical_organic_source_profile(template,parameter,status)
+   type(reactive_parameters_t),intent(in)::template
+   type(reactive_parameters_t),intent(out)::parameter
+   integer,intent(out)::status
+   real(real64),parameter::year=365.2425d0,asfa_min=.04d0,asfa_max=.28d0
+   real(real64),parameter::asfa(8)=[asfa_min,asfa_min,asfa_max,asfa_max, &
+                                    asfa_min,asfa_min,asfa_max,asfa_max]
+   parameter=reactive_parameters_t();status=N_ACTIVATION_INVALID
+   if(.not.reactive_parameters_valid(template))return
+   parameter=template
+   parameter%mineral%inventory%nfrac_fom=[.06d0,.002d0,.06d0,.002d0, &
+                                            .06d0,.002d0,.06d0,.002d0]
+   parameter%mineral%inventory%nfrac_biomass=.58d0/10d0
+   parameter%mineral%inventory%nfrac_humus=.58d0/14d0
+   parameter%organic_reference%ratecon_fom=[3d0/year,3d0/year,3d0/year,3d0/year, &
+       .3d0/year,.3d0/year,.3d0/year,.3d0/year]
+   parameter%organic_reference%ratecon_bio=.66d0/year
+   parameter%organic_reference%ratecon_hum=.02d0/year
+   parameter%organic_reference%asfa_fom_bio=asfa*.46d0
+   parameter%organic_reference%asfa_fom_hum=asfa*.54d0
+   parameter%organic_reference%asfa_bio=.46d0*.2d0
+   parameter%organic_reference%asfa_hum=.54d0*.2d0
+   parameter%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
+   parameter%cfrac_biomass=.58d0;parameter%cfrac_humus=.58d0
+   if(.not.reactive_parameters_valid(parameter))then
+      parameter=reactive_parameters_t();return
+   end if
+   status=N_ACTIVATION_OK
+ end subroutine
  subroutine initialize_historical_soil_n_complete(selection,rates,initial,template,id,clock,wfrac, &
        owner,parameters,tcsf,lai,status)
    type(soil_n_historical_selection_t),intent(in)::selection
