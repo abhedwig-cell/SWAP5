@@ -4,6 +4,7 @@ on:
     paths:
       - 'src/crop/mod_crop_soil_n_historical_project_binding.f90'
       - 'tests/nut-crop/test_b112_retained_joint.f90'
+      - 'tests/nut-crop/run_b112_retained_joint.py'
       - '.github/workflows/mc-nut01-actual-coupled-project.yml'
   workflow_dispatch:
 permissions:
