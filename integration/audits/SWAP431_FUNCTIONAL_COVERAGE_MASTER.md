@@ -1,3 +1,9 @@
+# MC-IRR01 coherent batch admission, 17 October 2026
+
+Four existing rows **TCS2, TCS3, TCS4 and DCS1** close through [PR1272](https://github.com/abhedwig-cell/SWAP5/pull/1272), canonical `bda0d91eb3deb99e450926d0cd8ea134e2e7eb5c`. Qualified head `841078b7c4cf3c85a1b2b31ab7cd3159d1936d1e`; full merge tree exactly equals qualified tree `1b9441ebee5258154db683b416601e525418f607`, source `ecc1249b9c4fc012b3382011b7c630ce98b42e60`. All239 other capability records are unchanged.
+
+Current counts: **{'ADMITTED': 109, 'ACTIVE_MIGRATION': 95, 'SUPERSEDED': 14, 'REJECTED': 2, 'NOT_APPLICABLE': 20, 'QUALIFICATION_ONLY': 3}; 98 unresolved,243 total**. The denominator remains incomplete. Shared O0/O2 qualification has108 actual trajectories,264 native negatives, literal source and parameter boundaries, accepted mass/rollback/once-only events and exact opaque/fresh native endpoints. No global solver/stress rerun was selected. Qualification controller costs per row fall; historical coordination/total engineering time is UNKNOWN, so the full experiment speed criterion remains inconclusive. Recovery: `MC_IRR01_STATUS.json`, `batch_experiment_1271_20261017.resume_20261017` at the canonical merge. Earlier counts below are historical.
+
 # Full irrigation depth-limit admission, 17 October 2026
 
 `SW431-IRR-LIMIT` is **ADMITTED** through [PR1268](https://github.com/abhedwig-cell/SWAP5/pull/1268), canonical `121ed3503638c2d3168fa30e40f6af24156348a7`. Full merge tree equals qualified tree `c28073b67812eab4136cdc6a578b534527f31c5b`. O0/O2:934 source vectors per optimization,160 actual application/continuation trajectories,560 decoder negatives and29 admission controls. Original AVAIL/TCS6 endpoints and admitted drainage remain preserved.
