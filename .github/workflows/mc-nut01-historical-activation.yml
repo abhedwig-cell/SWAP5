@@ -32,9 +32,10 @@ jobs:
             flags="-$opt -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -ffpe-trap=invalid,zero,overflow"
             gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_activation.f90 -o "$b/historical.o"
             gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_named_input.f90 -o "$b/named-input.o"
+            gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_amendment_input.f90 -o "$b/amendment-input.o"
             gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_unified_input.f90 -o "$b/unified-input.o"
             gfortran $flags -I"$b" -Itests/nut-reactive -J"$b" -c tests/nut-reactive/test_historical_activation.f90 -o "$b/historical-driver.o"
-            gfortran $flags "$b"/direct[0-9]*.o "$b/historical.o" "$b/named-input.o" "$b/unified-input.o" "$b/historical-driver.o" -o "$b/historical-test"
+            gfortran $flags "$b"/direct[0-9]*.o "$b/historical.o" $b/amendment-input.o "$b/named-input.o" "$b/unified-input.o" "$b/historical-driver.o" -o "$b/historical-test"
             "$b/historical-test"
           done
       - name: Save raw proof
