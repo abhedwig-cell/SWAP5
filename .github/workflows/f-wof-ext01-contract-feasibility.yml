@@ -16,3 +16,6 @@ jobs:
           python-version: '3.11'
       - name: Test crop process-boundary prototype
         run: python -m unittest -v tests/fwof/ext01/test_external_crop_contract.py
+
+  native-fortran:
+    uses: ./.github/workflows/f-wof-ext01-matched-native.yml
