@@ -1,0 +1,34 @@
+name: MC-NUT01 source field inventory
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/mc-nut01-source-fields.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract pinned original soil N parameter reader
+        run: |
+          python3 - <<'PY'
+          import base64,tarfile,io,hashlib,re,pathlib
+          a=pathlib.Path('integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64')
+          with tarfile.open(fileobj=io.BytesIO(base64.b64decode(a.read_bytes())),mode='r:gz') as t:
+              for name in ('management_soil.f90','wofost_soil_parameters.f90','wofost_soil_declarations.f90'):
+                  data=t.extractfile('SWAP/'+name).read()
+                  print('SOURCE',name,'SHA256',hashlib.sha256(data).hexdigest())
+                  lines=data.decode(errors='replace').splitlines()
+                  print('BEGIN_RELEVANT',name)
+                  for n,line in enumerate(lines,1):
+                      if name=='management_soil.f90':
+                          if 100<=n<=330:print(f'{n:04d} {line}')
+                      elif name=='wofost_soil_parameters.f90':
+                          if n<=270:print(f'{n:04d} {line}')
+                      elif re.search('SWCROPSNM|SorpCoef|RateCon|NFrac|Asfa|FOM_t0|Hum_t0|cNH4|cNO3|WFrac|dz_WSN|DryBD',line,re.I):
+                          print(f'{n:04d} {line}')
+                  print('END_RELEVANT',name)
+          PY

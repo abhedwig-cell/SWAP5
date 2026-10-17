@@ -15,7 +15,11 @@ program test_reactive_joint
  use mod_reactive_n_joint_restart_file
  use mod_mineral_joint_restart_file,only:write_mineral_joint_restart_file
  use mod_fmr_b111_mineral_joint_application,only:run_mineral_joint_interval,mineral_joint_result_t
- use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace
+ use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route, &
+   initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables, &
+   initialize_historical_reactive_n_named_files
+ use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
+ use mod_soil_n_historical_activation,only:soil_n_historical_selection_t,soil_n_historical_rates_t,soil_n_historical_initial_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use MOD_texture_orgmat,only:bdens
  implicit none
@@ -28,7 +32,13 @@ program test_reactive_joint
  type(reactive_state_t)::nitrogen,other_n,initial_n
  type(reactive_n_joint_restart_t)::payload
  type(reactive_n_joint_result_t)::result
- type(reactive_parameters_t)::p,pbad
+ type(reactive_parameters_t)::p,pbad,historical_params
+ type(soil_n_historical_rates_t)::historical_rates
+ type(soil_n_historical_initial_t)::historical_initial
+ real(real64)::historical_tcsf,historical_lai
+ type(soil_n_historical_selection_t)::historical
+ type(soil_n_amendment_calendar_t)::historical_plan
+ integer::input_line,input_unit
  type(soil_n_pool_state_t)::pools,s
  type(fmr_b110_physical_forcing_t)::invalid
  real(real64)::k,time,theta
@@ -74,7 +84,107 @@ program test_reactive_joint
  call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id,cfg%tiles(1)%initial_state,0d0,ok, &
    spread(0d0,1,numnod));call require(ok,'water initialization')
  theta=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
- call initialize_reactive(p,9001_int64,0d0,theta,pools,nitrogen,status);call require(status==0,'N initialization')
+ historical%swcropsnm=1;historical%sw_wofost=1;historical%source_parameters_complete=.true.
+ open(newunit=input_unit,file='historical-actual-input.snm',status='replace')
+ write(input_unit,'(A)') 'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
+ write(input_unit,'(A)') "1 'Mineral' 0 0 0 0.21 0.10"
+ write(input_unit,'(A)') 'smedate iMat Dosagekgha VolatFraction'
+ write(input_unit,'(A)') '1900-01-01 1 100 0.1'
+ close(input_unit)
+ call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
+   'does-not-exist.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
+ call require(status/=0.and..not.nitrogen%ready().and..not.historical_plan%ready(),'no half-published read')
+ call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
+   'historical-actual-input.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
+ call require(status==0.and.nitrogen%ready().and.historical_plan%ready(), &
+   'historical file+N activation into actual Richards route')
+
+ historical_rates%temp_ref=20d0;historical_rates%sorpcoef=p%mineral%sorption
+ historical_rates%ratecon_nitrif_ref=p%environment%nitrification_ref_per_day
+ historical_rates%ratecon_denitr_ref=p%environment%denitrification_ref_per_day
+ historical_rates%wfpscrit=p%wfpscrit;historical_rates%wfpscrit2=p%environment%wfpscrit2
+ historical_rates%cdissi_half=p%environment%cdissi_half_kg_m2
+ historical_rates%tcsf_n=.5d0;historical_rates%lai_crit_nupt=3d0
+ historical_rates%depth_m=p%mineral%inventory%depth_m
+ historical_rates%nh4_lat=p%mineral%c_lateral(1);historical_rates%no3_lat=p%mineral%c_lateral(2)
+ historical_rates%nh4_seep=p%mineral%c_bottom(1);historical_rates%no3_seep=p%mineral%c_bottom(2)
+ historical_initial%fom_kg_m3=[10d0,20d0,10d0,20d0,10d0,20d0,10d0,20d0]
+ ! The full legacy profile requires eight FOM fractions. Keep the existing two-pool
+ ! Richards fixture intact and verify rejection before any owner or calendar publication.
+ call initialize_historical_reactive_n_complete_tables(historical,historical_rates,historical_initial, &
+   p,9001_int64,0d0,theta,'historical-actual-input.snm','1900-01-01',historical_plan, &
+   nitrogen,historical_params,historical_tcsf,historical_lai,status,input_line)
+ call require(status/=0.and..not.nitrogen%ready().and..not.historical_plan%ready(), &
+   'complete historical route rejects unqualified pool layout atomically')
+ ! Positive eight-pool historical profile on the actual accepted Richards carrier.
+ block
+   type(reactive_parameters_t)::eight,eight_bound
+   type(reactive_state_t)::eight_n
+   type(kernel_committed_state_t)::eight_water
+   type(reactive_n_joint_result_t)::eight_result
+   type(soil_n_pool_state_t)::eight_after
+   real(real64)::et,ew
+   integer(int64)::erev
+   eight=p
+   eight%mineral%inventory%nfrac_fom=[.015d0,.025d0,.015d0,.025d0,.015d0,.025d0,.015d0,.025d0]
+   eight%organic_reference%ratecon_fom=[.04d0,.015d0,.04d0,.015d0,.04d0,.015d0,.04d0,.015d0]
+   eight%organic_reference%asfa_fom_bio=[.2d0,.25d0,.2d0,.25d0,.2d0,.25d0,.2d0,.25d0]
+   eight%organic_reference%asfa_fom_hum=[.15d0,.1d0,.15d0,.1d0,.15d0,.1d0,.15d0,.1d0]
+   eight%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
+   historical_initial%bio_kg_m3=5d0;historical_initial%hum_kg_m3=40d0
+   historical_initial%cnh4_kg_m3=.02d0;historical_initial%cno3_kg_m3=.03d0
+   open(newunit=input_unit,file='historical-params.txt',status='replace')
+   block
+     integer::pool_i
+     character(16)::pool_name
+     do pool_i=1,8
+       write(pool_name,'(A,I1,A)')'FOM',pool_i,'_t'
+       write(input_unit,'(A,ES20.12)')trim(pool_name)//' = ',historical_initial%fom_kg_m3(pool_i)
+     end do
+   end block
+   write(input_unit,'(A,ES20.12)') 'Bio_t = ',historical_initial%bio_kg_m3
+   write(input_unit,'(A,ES20.12)') 'Hum_t = ',historical_initial%hum_kg_m3
+   write(input_unit,'(A,ES20.12)') 'cNH4_t = ',historical_initial%cnh4_kg_m3
+   write(input_unit,'(A,ES20.12)') 'cNO3_t = ',historical_initial%cno3_kg_m3
+   write(input_unit,'(A,ES20.12)') 'Temp_ref = ',historical_rates%temp_ref
+   write(input_unit,'(A,ES20.12)') 'SorpCoef = ',historical_rates%sorpcoef
+   write(input_unit,'(A,ES20.12)') 'RateConNitrif_ref = ',historical_rates%ratecon_nitrif_ref
+   write(input_unit,'(A,ES20.12)') 'RateConDenitr_ref = ',historical_rates%ratecon_denitr_ref
+   write(input_unit,'(A,ES20.12)') 'WFPSCrit = ',historical_rates%wfpscrit
+   write(input_unit,'(A,ES20.12)') 'WFPScrit2 = ',historical_rates%wfpscrit2
+   write(input_unit,'(A,ES20.12)') 'CdissiHalf = ',historical_rates%cdissi_half
+   write(input_unit,'(A,ES20.12)') 'TCSF_N = ',historical_rates%tcsf_n
+   write(input_unit,'(A,ES20.12)') 'LaiCritNupt = ',historical_rates%lai_crit_nupt
+   write(input_unit,'(A,ES20.12)') 'dz_WSN = ',historical_rates%depth_m
+   write(input_unit,'(A,ES20.12)') 'cNH4N_lat = ',historical_rates%nh4_lat
+   write(input_unit,'(A,ES20.12)') 'cNO3N_lat = ',historical_rates%no3_lat
+   write(input_unit,'(A,ES20.12)') 'cNH4N_seep = ',historical_rates%nh4_seep
+   write(input_unit,'(A,ES20.12)') 'cNO3N_seep = ',historical_rates%no3_seep
+   close(input_unit)
+   call initialize_historical_reactive_n_named_files(historical,eight,9001_int64,0d0,theta, &
+      'historical-params.txt','historical-actual-input.snm','1900-01-01',historical_plan, &
+      eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
+   call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
+     'named historical file accepted by real Richards owner')
+
+   call require(status==0.and.eight_n%ready().and.historical_plan%ready(),'eight-pool positive source activation')
+   call fmr_new_b110_temporal_indicator_committed_state(eight_water,column%column_id, &
+     cfg%tiles(1)%initial_state,0d0,ok,spread(0d0,1,numnod))
+   call require(ok,'eight-pool water state')
+   call run_reactive_n_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters, &
+     eight_water,cfg%tiles(1)%base_forcing,cfg%numerical,eight_n,0d0,1d0,eight_result)
+   call require(eight_result%status==JOINT_OK,'eight-pool actual Richards accepted')
+   call require(abs(eight_result%chemical%residual)<=1d-12,'eight-pool whole N')
+   call eight_n%snapshot(et,ew,eight_after,erev)
+   call require(et==1d0.and.erev==1,'eight-pool committed time and revision')
+   call require(size(eight_after%fom_kg_m3)==8,'eight-pool retained physical inventory')
+ end block
+ ! Recreate the already-qualified two-pool owner for incumbent Richards execution.
+ call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
+   'historical-actual-input.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
+ call require(status==0.and.nitrogen%ready().and.historical_plan%ready(), &
+   'incumbent historical reader restored after rejected complete route')
+
  initial_water=water;initial_n=nitrogen
  ! Invalid water forcing does not mutate either committed owner.
  invalid=cfg%tiles(1)%base_forcing;invalid%root_extraction_sink=-1d0

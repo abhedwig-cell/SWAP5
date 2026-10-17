@@ -1,0 +1,43 @@
+name: MC-NUT01 historical activation focused
+on:
+  pull_request:
+    paths:
+      - 'src/process/mod_soil_n_historical_activation.f90'
+      - 'tests/nut-reactive/test_historical_activation.f90'
+      - 'src/runtime/mod_fmr_b111_reactive_n_route.f90'
+      - 'tests/nut-reactive/test_reactive_joint.f90'
+      - '.github/workflows/mc-nut01-historical-activation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  focused:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran
+      - name: Existing corrected-source and reactive actual production
+        env:
+          REACTIVE_RESULT_DIR: /tmp/nut-historical
+        run: python3 -B tests/nut-reactive/run_reactive.py
+      - name: Compile and execute new owner activation O0 O2
+        run: |
+          set -euo pipefail
+          for opt in O0 O2; do
+            b=/tmp/nut-historical/$opt
+            flags="-$opt -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -ffpe-trap=invalid,zero,overflow"
+            gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_activation.f90 -o "$b/historical.o"
+            gfortran $flags -I"$b" -J"$b" -c src/process/mod_soil_n_historical_named_input.f90 -o "$b/named-input.o"
+            gfortran $flags -I"$b" -Itests/nut-reactive -J"$b" -c tests/nut-reactive/test_historical_activation.f90 -o "$b/historical-driver.o"
+            gfortran $flags "$b"/direct[0-9]*.o "$b/historical.o" "$b/named-input.o" "$b/historical-driver.o" -o "$b/historical-test"
+            "$b/historical-test"
+          done
+      - name: Save raw proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nut-historical-activation
+          path: /tmp/nut-historical/
+          if-no-files-found: warn
