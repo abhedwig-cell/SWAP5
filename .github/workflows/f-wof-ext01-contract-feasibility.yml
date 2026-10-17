@@ -53,21 +53,7 @@ jobs:
           src=src.replace(old,'aggregates%actual_root_uptake=0.5_real64')
           marker='    call apply_wofost81_one_day_n_supply(prepared,p81,prepared%nitrogen_request%soil_request,candidate,flux,status)'
           assert src.count(marker)==1
-          trace="""    if (day>=18.and.day<=23) then
-      write(*,'(a,i0,1x,11(es24.16,1x))') 'EXT01_LEAF_TRACE ',day, &
-        committed%crop%development_stage, &
-        sum(committed%crop%biomass%leaf_biomass*committed%crop%biomass%specific_leaf_area), &
-        committed%crop%biomass%exponential_leaf_area_index, &
-        prepared%corrected_rates%relative_transpiration_used, &
-        prepared%rate_diagnostics%rfrgrl, &
-        prepared%corrected_rates%leaf_growth_rate, &
-        prepared%corrected_rates%youngest_specific_leaf_area, &
-        prepared%corrected_rates%lai_exponential_growth_rate, &
-        prepared%corrected_rates%leaf_stress_death_rate, &
-        prepared%corrected_rates%leaf_age_increment, &
-        prepared%rate_diagnostics%nstress_index_dlv
-    endif
-"""
+          trace='\n' + "    if (day>=18.and.day<=23) then\n      write(*,'(a,i0,1x,11(es24.16,1x))') 'EXT01_LEAF_TRACE ',day, &\n        committed%crop%development_stage, &\n        sum(committed%crop%biomass%leaf_biomass*committed%crop%biomass%specific_leaf_area), &\n        committed%crop%biomass%exponential_leaf_area_index, &\n        prepared%corrected_rates%relative_transpiration_used, &\n        prepared%rate_diagnostics%rfrgrl, &\n        prepared%corrected_rates%leaf_growth_rate, &\n        prepared%corrected_rates%youngest_specific_leaf_area, &\n        prepared%corrected_rates%lai_exponential_growth_rate, &\n        prepared%corrected_rates%leaf_stress_death_rate, &\n        prepared%corrected_rates%leaf_age_increment, &\n        prepared%rate_diagnostics%nstress_index_dlv\n    endif\n"
           src=src.replace(marker,trace+marker)
           Path(sys.argv[1]).write_text(src)
           PY
