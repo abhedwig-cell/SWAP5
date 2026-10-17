@@ -19,6 +19,9 @@ program test_reactive_joint
    initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables, &
    initialize_historical_reactive_n_named_files,initialize_historical_reactive_n_unified_export
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
+ use mod_crop_soil_n_historical_project_binding,only:initialize_historical_crop_soil_project
+ use mod_crop_soil_n_configuration,only:crop_n_configuration_t
+ use mod_crop_senescence_residue,only:crop_senescence_policy_t
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t,soil_n_historical_rates_t,soil_n_historical_initial_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use MOD_texture_orgmat,only:bdens
@@ -189,6 +192,23 @@ program test_reactive_joint
       historical_tcsf,historical_lai,status,input_line)
    call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
       'unified original-material and eight-pool source accepted in actual Richards owner')
+   block
+     type(crop_n_configuration_t)::crop_profile,crop_initialized
+     type(crop_senescence_policy_t)::death_policy
+     allocate(crop_profile%harvest)
+     crop_profile%harvest%sw_wofost=1
+     call initialize_historical_crop_soil_project(historical,eight,crop_profile,9001_int64, &
+       0d0,theta,'historical-unified.txt','1900-01-01',historical_plan,eight_n, &
+       eight_bound,crop_initialized,death_policy,status,input_line)
+     call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
+       'same-file historical project initializes crop and soil together')
+     call require(all(death_policy%application_age==[1.27d0,.99d0,1.27d0]), &
+       'historical crop senescence policy bound by project')
+     call require(all(crop_initialized%harvest%policy%application_age== &
+       [1.27d0,.99d0,1.27d0,1.27d0]),'historical project harvest policy')
+     call require(crop_initialized%tcsf_n==historical_tcsf.and. &
+       crop_initialized%lai_crit_nupt==historical_lai,'project crop-N supply parameters')
+   end block
    ! Late malformed parameter after valid management rows must publish no owner or calendar.
    open(newunit=input_unit,file='historical-unified.txt',position='append')
    write(input_unit,'(A)')'FOM1_t = 1.0'
