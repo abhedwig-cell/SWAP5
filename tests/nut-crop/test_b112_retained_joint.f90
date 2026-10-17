@@ -328,6 +328,9 @@ contains
    call state%snapshot(source_soil,source_crop)
    call source_soil%configuration(sp,sid)
    if(trim(mode)=='resume')then
+     ! The native decoder requires blank destination owners; the reconstructed
+     ! source project above supplies ONLY the exact parameter identity.
+     water=kernel_committed_state_t();state=crop_soil_state_t()
      call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
         670001_int64,9001_int64,9101_int64,sp,cp,water,state,code)
      call require(code==0,'source restart decoded with exact source parameters')
