@@ -51,12 +51,12 @@ MODULE_SRC=(
   src/solver/mod_b111_hysteresis_state.f90
   src/solver/mod_b110_source_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_serialized_reference_backend.f90
   src/runtime/mod_fmr_restart_state_contract.f90
