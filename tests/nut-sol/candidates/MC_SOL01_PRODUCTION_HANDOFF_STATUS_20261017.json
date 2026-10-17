@@ -142,5 +142,16 @@
       "fross": "FAIL qualified dependency drift mod_soil_water_solver_contract.f90",
       "limit": "Gate exercise does not prove positive gross runoff, pond evaporation or solute continuity and native V2 restart."
     }
+  },
+  "net_gross_identity_test_20261017": {
+    "tested_head": "663b812e91b9889131c4679766cf5423bc09fddb",
+    "run": 39071748110,
+    "compile_O0": "PASS",
+    "compile_O2": "PASS",
+    "postsolver_rollback": "PASS",
+    "positive_runoff_pond_evaporation_test": "NOT_RUN",
+    "historical_mixing": "unchanged",
+    "rossfast_shared_contract": "BLOCKED",
+    "next_action": "Implement a qualified per-substep gross-loss water receipt and source-exact pond solute transfer; do not conflate typed diagnostic availability with admission."
   }
 }
