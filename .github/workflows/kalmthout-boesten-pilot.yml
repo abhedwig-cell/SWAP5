@@ -1,0 +1,25 @@
+name: Kalmthout Boesten pilot
+on:
+  push:
+    branches:
+      - work/kalmthout-boesten-20261017
+    paths:
+      - research/kalmthout_pilot/RUN_BOESTEN
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: sudo apt-get update && sudo apt-get install -y gfortran
+      - name: Run Boesten pilot
+        run: chmod +x research/kalmthout_pilot/run_kalmthout_boesten.sh && research/kalmthout_pilot/run_kalmthout_boesten.sh "$RUNNER_TEMP/kalmthout-output"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kalmthout-boesten-pilot
+          path: ${{ runner.temp }}/kalmthout-output
