@@ -143,25 +143,33 @@ program kalmthout_swap5_daily_pilot
       else
         t1=hour_t0+real(isub,real64)*segment_dt
       end if
+      common=ppa_wu03_common_forcing_result_t()
+      common%valid=.true.
+      common%top_request%conductivity_mean_method=config%tiles(1)%parameters%swkmean
+      common%top_request%step_duration_day=t1-t0
+      common%top_request%precipitation_rate_cm_per_day=(precip_mm/10.0_real64)/dt_day
+      common%top_request%irrigation_rate_cm_per_day=0.0_real64
+      common%top_request%snowmelt_rate_cm_per_day=0.0_real64
+      common%top_request%runon_rate_cm_per_day=0.0_real64
+      common%top_request%potential_bare_soil_evaporation_cm_per_day= &
+           evap_scale*atmospheric_demand%potential_soil_evaporation_cm_per_day
+      common%top_request%potential_pond_evaporation_cm_per_day= &
+           evap_scale*atmospheric_demand%potential_pond_evaporation_cm_per_day
+      common%top_request%ponding_max_cm=1.0_real64
+      common%top_request%runoff_resistance_day=0.1_real64
+      common%top_request%runoff_exponent=1.0_real64
       allocate(forcing(1))
-      forcing(1)=config%tiles(1)%base_forcing
-      allocate(forcing(1)%rutter)
-      forcing(1)%rutter%source_window=window
-      forcing(1)%rutter%process=rp
-      forcing(1)%rutter%potential_bare_soil_evaporation_cm_per_day=evap_scale*atmospheric_demand%potential_soil_evaporation_cm_per_day
-      forcing(1)%rutter%potential_pond_evaporation_cm_per_day=evap_scale*atmospheric_demand%potential_pond_evaporation_cm_per_day
-      forcing(1)%rutter%ponding_max_cm=1.0_real64
-      forcing(1)%rutter%runoff_resistance_day=0.1_real64
-      forcing(1)%rutter%runoff_exponent=1.0_real64
+      call bind_ppa_wu04b_boesten_runtime_forcing(config%tiles(1)%base_forcing,common,forcing(1),bind_status)
+      call require(bind_status==PPA_WU04B_BIND_OK,'Boesten atmospheric forcing binding')
 
       call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
       if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
         failures=failures+1
-        write(*,'(A,1X,A,1X,I0,1X,I0,6(1X,F12.6))') 'KALMTHOUT_SUBHOUR_FAIL',trim(ds),isub,status, &
+        write(*,'(A,1X,A,1X,I0,1X,I0,6(1X,F12.6))') 'KALMTHOUT_BOESTEN_HOUR_FAIL',trim(ds),isub,status, &
              precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
         if(allocated(results)) then
           write(*,'(A,1X,I0,1X,A,3(1X,L1),4(1X,I0),3(1X,ES18.10),1X,A,1X,I0)') &
-               'KALMTHOUT_RESULT_DEBUG',size(results),trim(results(1)%admission_status), &
+               'KALMTHOUT_BOESTEN_RESULT',size(results),trim(results(1)%admission_status), &
                results(1)%admitted,results(1)%completed,results(1)%committed,results(1)%accepted_substeps, &
                results(1)%solver_rejections,results(1)%temporal_rejections,results(1)%mass_rejections, &
                results(1)%mass%residual,results(1)%mass%total_in,results(1)%mass%total_out, &
@@ -206,7 +214,7 @@ program kalmthout_swap5_daily_pilot
   write(*,'(A,ES18.10)') 'KALMTHOUT_MAX_MASS_RESIDUAL_CM=',max_residual
   write(*,'(A,ES18.10)') 'KALMTHOUT_LEDGER_TOTAL_IN_CM=',total_in
   write(*,'(A,ES18.10)') 'KALMTHOUT_LEDGER_TOTAL_OUT_CM=',total_out
-  write(*,'(A)') 'KALMTHOUT_SWAP5_PILOT=PASS'
+  write(*,'(A)') 'KALMTHOUT_BOESTEN_PILOT=PASS'
 
 contains
   subroutine initialize_config(value)
