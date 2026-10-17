@@ -131,6 +131,7 @@ contains
     logical :: ok,exported,restored,available
 
     call initialize_parameters(parameters,1,.false.,.false.)
+    if (allocated(parameters%hydraulic_model_kind)) deallocate(parameters%hydraulic_model_kind)
     parameters%hysteresis_active=.true.
     parameters%hysteresis_initial_mode=mode
     allocate(parameters%hysteresis_parameters)
@@ -210,6 +211,7 @@ contains
     logical :: ok,before_available,after_available
 
     call initialize_parameters(parameters,1,.false.,.false.)
+    if (allocated(parameters%hydraulic_model_kind)) deallocate(parameters%hydraulic_model_kind)
     parameters%hysteresis_active=.true.
     parameters%hysteresis_initial_mode=mode
     allocate(parameters%hysteresis_parameters)
