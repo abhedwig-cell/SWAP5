@@ -1,0 +1,31 @@
+{
+  "work_unit": "MC-HYD01_MC-HYST01_CANONICAL_INTEGRATION",
+  "baseline": "9705f65fc43dd25528a1cf0197f83e63ab9f5bc1",
+  "qualified_source_branch": "work/swap431-hyd-hyst-closeout",
+  "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
+  "qualified_workflow_run": 39020045073,
+  "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
+  "stage": "PERSISTED_CONSTITUTIVE_PROVIDERS_ONLY",
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "transplanted": [
+    "src/solver/mod_b111_conductivity_power_tail.f90",
+    "src/solver/mod_b111_extended_hydraulic_provider.f90",
+    "src/solver/mod_b111_hysteresis_state.f90",
+    "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+    "src/solver/mod_b111_linear_table_provider.f90"
+  ],
+  "runtime_overlap": [
+    "src/runtime/mod_fmr_restart_state_contract.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "disposition": "DO_NOT_OVERWRITE_CANONICAL_RUNTIME_WITH_OLDER_CANDIDATE; forward-port specific dispatch, state and restart semantics with preservation of admitted current owners",
+  "open_source": [
+    "SW431-HYD-MODEL12_RIA",
+    "SW431-HYD-TABLE",
+    "SW431-HYD-RIA-VAPOR"
+  ],
+  "next_action": "Reconcile runtime code hunks and dependent type interfaces, transplant integrated tests, run exact-head O0/O2 owner and shared preservation tests, then prepare one coherent admission PR. Do not infer original candidate PASS applies to this unfinished canonical descendant."
+}
