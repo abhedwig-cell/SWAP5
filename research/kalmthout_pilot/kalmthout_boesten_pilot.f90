@@ -235,12 +235,13 @@ contains
     value%tiles(1)%template%vertical_layout_id=6102201_int64
     value%tiles(1)%template%state_layout_id=6102301_int64
     value%tiles(1)%template%solver_interface_id=6102401_int64
-    value%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+    value%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
     value%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     value%tiles(1)%template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
     call initialize_parameters(value%tiles(1)%parameters)
     call initialize_state_and_forcing(value%tiles(1)%parameters,value%tiles(1)%initial_state,value%tiles(1)%base_forcing,conductivity0)
-    value%tiles(1)%initial_rutter_canopy_storage_cm=0.0_real64
+    value%tiles(1)%initial_boesten_spev=0.0_real64
+    value%tiles(1)%initial_boesten_saev=0.0_real64
   end subroutine
 
   subroutine initialize_parameters(p)
@@ -256,10 +257,13 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
-    p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
+    p%bottom_mode=7; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
     p%frost_active=.false.; p%soil_temperature_active=.false.; p%drainage_response_active=.false.
+    p%black_evaporation_active=.false.; p%boesten_evaporation_active=.true.
+    allocate(p%boesten_evaporation)
+    p%boesten_evaporation%cofred=COFRED
   end subroutine
 
   subroutine initialize_state_and_forcing(p,state,base,conductivity0)
@@ -276,7 +280,7 @@ contains
     call provider%evaluate(heads,water,conductivity,capacity,dkdh); conductivity0=conductivity(1)
     state%active_nodes=numnod; allocate(state%pressure_head(numnod),state%water_content(numnod))
     state%pressure_head=heads; state%water_content=water; state%ponding_depth=0.0_real64; state%groundwater_level=-2.0_real64
-    base%top_flux=0.0_real64; base%top_head=H0_CM; base%bottom_flux=0.0_real64; base%bottom_head=-100.0_real64
+    base%top_flux=0.0_real64; base%top_head=H0_CM; base%bottom_flux=-conductivity0; base%bottom_head=-100.0_real64
     allocate(base%drainage_flux_by_level(2,numnod),base%subsurface_irrigation_source(numnod),base%root_extraction_sink(numnod))
     base%drainage_flux_by_level=0.0_real64; base%subsurface_irrigation_source=0.0_real64; base%root_extraction_sink=0.0_real64
   end subroutine
