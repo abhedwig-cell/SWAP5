@@ -310,6 +310,7 @@ contains
    write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
    write(unit,'(A)')'1900-12-30 1 100 0.1'
    write(unit,'(A)')'1901-01-01 1 50 0.1'
+   write(unit,'(A)')'1901-01-01 1 25 0.1'
    write(unit,'(A)')'1901-12-31 1 75 0.1'
    write(unit,'(A)')'1902-01-01 1 25 0.1'
    write(unit,'(A)')'[soil_n_parameters]'
@@ -344,12 +345,17 @@ contains
        scheduled,record_indices,code)
      call require(code==N_CALENDAR_OK,'source calendar selection')
      if(day==0.or.day==2.or.day==366.or.day==367)then
-       call require(size(scheduled)==1.and.size(record_indices)==1,'source event count')
+       if(day==2)then
+         call require(size(scheduled)==2.and.size(record_indices)==2,'same-day source batch')
+       else
+         call require(size(scheduled)==1.and.size(record_indices)==1,'source event count')
+       end if
        select case(day)
        case(0);call require(record_indices(1)==1,'first event identity')
-       case(2);call require(record_indices(1)==2,'second event identity')
-       case(366);call require(record_indices(1)==3,'next-year event identity')
-       case(367);call require(record_indices(1)==4,'new-year event identity')
+       case(2);call require(all(record_indices==[2,3]),'same-day source order')
+         call require(abs(scheduled(2)%application_kg_m2-.0025d0)<1d-14,'same-day dose')
+       case(366);call require(record_indices(1)==4,'next-year event identity')
+       case(367);call require(record_indices(1)==5,'new-year event identity')
        end select
        if(day==0)call require(abs(scheduled(1)%application_kg_m2-.01d0)<1d-14,'first source dose')
        if(day==2)call require(abs(scheduled(1)%application_kg_m2-.005d0)<1d-14,'second source dose')
