@@ -303,17 +303,19 @@ contains
    day1_env=soil_n_day_environment_t(base_day,base_day+1d0,5d0)
    selection%swcropsnm=1;selection%sw_wofost=1
    selection%source_parameters_complete=.true.
-   open(newunit=unit,file='source-crop-startup.txt',status='replace')
-   write(unit,'(A)')'[management]'
-   write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
-   write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
-   write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
-   write(unit,'(A)')'1900-12-30 1 100 0.1'
-   write(unit,'(A)')'1901-01-01 1 50 0.1'
-   write(unit,'(A)')'1901-01-01 1 25 0.1'
-   write(unit,'(A)')'1901-12-31 1 75 0.1'
-   write(unit,'(A)')'1902-01-01 1 25 0.1'
-   write(unit,'(A)')'[soil_n_parameters]'
+   ! Source keyword-array subset, preserving original named TTUTIL fields.
+   open(newunit=unit,file='source-crop-startup.snm',status='replace')
+   write(unit,'(A)')'MatNum = 1'
+   write(unit,'(A)')"MatName = 'Mineral'"
+   write(unit,'(A)')'AppAge = 0'
+   write(unit,'(A)')'OrgMatFrac = 0'
+   write(unit,'(A)')'OrgNFrac = 0'
+   write(unit,'(A)')'NH4NFrac = 0.21'
+   write(unit,'(A)')'NO3NFrac = 0.10'
+   write(unit,'(A)')'smedate = 1900-12-30, 1901-01-01, 1901-01-01, 1901-12-31, 1902-01-01'
+   write(unit,'(A)')'iMat = 1 1 1 1 1'
+   write(unit,'(A)')'Dosagekgha = 100 50 25 75 25'
+   write(unit,'(A)')'VolatFraction = 0.1 0.1 0.1 0.1 0.1'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
      write(unit,'(A)')trim(key)//' = 1.0'
@@ -332,7 +334,7 @@ contains
    call require(ok,'source water state')
    source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
-      base_day,source_water,'source-crop-startup.txt','1900-12-30',startup_plan, &
+      base_day,source_water,'source-crop-startup.snm','1900-12-30',startup_plan, &
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
@@ -389,7 +391,10 @@ contains
        670001_int64,water,state,code)
      call require(code==0,'source day-one native restart')
    end if
-   do day=1,3
+   ! Full Richards hydrology and production Soil-N are integrated every day,
+   ! preserving the one-day native restart split. This month-scale run is
+   ! separate from the accepted annual constant-water chemistry qualification.
+   do day=1,30
      day2_env=soil_n_day_environment_t(base_day+real(day,real64),base_day+real(day+1,real64),30d0)
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
@@ -400,7 +405,7 @@ contains
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
-   print '(A)','NUT_SOURCE_FOUR_DAY_TWO_EVENTS_FRESH_RESTART=PASS'
+   print '(A)','NUT_SOURCE_31_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
  end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
