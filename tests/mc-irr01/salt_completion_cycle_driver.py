@@ -27,7 +27,7 @@ def salt_cycle(root,target,criterion,dcs,kind):
     tc%base_salt_temporal_policy%salt_tolerance_mg_cm2=1.e-7_real64
     tc%base_salt_temporal_policy%temperature_tolerance_c=.01_real64
     call fmr_initialize_mobile_salt_profile(tc%tiles(1)%initial_state,tc%tiles(1)%parameters%dz, &
-      [(2._real64,q=1,numnod)],st)
+      spread(2._real64,1,numnod),st)
     call require(st==0,'existing accepted salt initializer')
     allocate(tc%tiles(1)%base_forcing%c_drain_salt,tc%tiles(1)%base_forcing%soil_salt_boundary)
     tc%tiles(1)%base_forcing%c_drain_salt%available=.true.
