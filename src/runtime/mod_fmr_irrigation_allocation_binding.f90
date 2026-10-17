@@ -123,6 +123,7 @@ contains
     resolved%irrigation_enabled=request%irrigation_enabled;resolved%schedule_enabled=request%schedule_enabled
     resolved%crop_emerged=request%crop_emerged;resolved%irrigation_window_open=request%irrigation_window_open
     resolved%fixed_event_already_selected=request%fixed_event_already_selected
+    resolved%solute_enabled=request%solute_enabled;resolved%sensor_concentration=request%sensor_concentration
     if(selecting)then
       if(.not.allocation%valid(request%t0))return
       resolved%availability_scaling_enabled=.true.;resolved%availability_fraction=allocation%fraction
