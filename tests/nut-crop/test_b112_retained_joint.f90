@@ -138,7 +138,7 @@ program test_b112_retained_joint
 
  ! Actual source-export startup through the already owned crop+Soil-N state,
  ! before exercising incumbent daily Richards and opaque restart scenarios.
- if(trim(mode)=='write'.and.trim(selected)=='retained')then
+ if(trim(mode)=='write'.and.len_trim(selected)==0)then
  block
    type(soil_n_historical_selection_t)::selection
    type(soil_n_amendment_calendar_t)::startup_calendar
