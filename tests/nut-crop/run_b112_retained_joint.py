@@ -54,9 +54,9 @@ for opt in ('O0','O2'):
  source_endpoint=b/'source-startup-expected.bin'
  source_fresh=b/'source-startup-fresh.bin'
  source_out=cmd([exe,'write',source_restart,source_endpoint,'source-profile'],b,'source_native')
- assert 'NUT_SOURCE_TWO_DAY_FRESH_RESTART=PASS' in source_out
+ assert 'NUT_SOURCE_FOUR_DAY_TWO_EVENTS_FRESH_RESTART=PASS' in source_out
  fresh_out=cmd([exe,'resume',source_restart,source_fresh,'source-profile'],b,'source_native')
- assert 'NUT_SOURCE_TWO_DAY_FRESH_RESTART=PASS' in fresh_out
+ assert 'NUT_SOURCE_FOUR_DAY_TWO_EVENTS_FRESH_RESTART=PASS' in fresh_out
  assert source_endpoint.read_bytes()==source_fresh.read_bytes(),'source project fresh continuation differs'
  result['b112_retained'][opt]={'joint_stdout':output,'fresh_stdout':continuation,'endpoint_sha256':sha(expected),'restart_sha256':sha(restart),'profile_negatives':negatives,'decoder_negatives':list(mutants),'native_tags':[10,13,14],'source_fresh_endpoint_sha256':sha(source_fresh)}
  result['input_sha256'][str(driver.relative_to(ROOT))]=sha(driver)
