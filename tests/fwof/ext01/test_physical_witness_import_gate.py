@@ -12,6 +12,7 @@ import unittest
 REQUIRED={"schema","source","witness_column","source_fortran_day",
           "independent_matching_confirmations",
           "accepted_lineage_id","accepted_final_revision","accepted_t0","accepted_t1",
+          "source_weather_epoch","source_calendar_date",
           "actual_root_uptake_native_integral",
           "potential_transpiration_native_integral",
           "matched_accepted_uptake_native_integral",
@@ -19,11 +20,17 @@ REQUIRED={"schema","source","witness_column","source_fortran_day",
           "pcse_daily_import_permitted","reason"}
 
 def accept_for_pcse(witness, expected_day):
-    if set(witness)!=REQUIRED or witness.get("schema")!="F-WOF-EXT01/SWAP-WITNESS/2":
+    if set(witness)!=REQUIRED or witness.get("schema")!="F-WOF-EXT01/SWAP-WITNESS/3":
         raise ValueError("wrong SWAP witness schema")
     if (witness["accepted_lineage_id"]<=0 or witness["accepted_final_revision"]<0 or
         witness["accepted_t1"]-witness["accepted_t0"]!=1):
         raise ValueError("invalid native accepted lineage, revision or day interval")
+    import datetime
+    source_epoch=datetime.date.fromisoformat(witness["source_weather_epoch"])
+    if witness["source_calendar_date"]!=(
+        source_epoch+datetime.timedelta(days=witness["accepted_t1"])
+    ).isoformat():
+        raise ValueError("forged source calendar")
     if witness.get("acceptance")!="observed-passing-native-test":
         raise ValueError("unaccepted SWAP hydrology")
     for k in ("actual_root_uptake_native_integral","potential_transpiration_native_integral",
@@ -49,6 +56,7 @@ class TestPhysicalGate(unittest.TestCase):
             witness_column=1,source_fortran_day=2,independent_matching_confirmations=3,
             accepted_lineage_id=1,accepted_final_revision=192,
             accepted_t0=2.0,accepted_t1=3.0,
+            source_weather_epoch="1999-01-20",source_calendar_date="1999-01-23",
             actual_root_uptake_native_integral=1.0370706377336118e-3,
             potential_transpiration_native_integral=1.0370706377336118e-3,
             matched_accepted_uptake_native_integral=1.0370706377336118e-3,
@@ -62,6 +70,10 @@ class TestPhysicalGate(unittest.TestCase):
         w={**self.witness, "calendar_date":"2010-05-17",
            "unit_conversion_to_cm":1.0,"pcse_daily_import_permitted":True}
         with self.assertRaisesRegex(ValueError,"future fully attested"):
+            accept_for_pcse(w,"2010-05-17")
+    def test_wrong_source_calendar_rejected(self):
+        w={**self.witness,"source_calendar_date":"2010-05-17"}
+        with self.assertRaisesRegex(ValueError,"source calendar"):
             accept_for_pcse(w,"2010-05-17")
     def test_mismatched_repeated_flux_rejected(self):
         w={**self.witness,"matched_accepted_uptake_native_integral":.01}
