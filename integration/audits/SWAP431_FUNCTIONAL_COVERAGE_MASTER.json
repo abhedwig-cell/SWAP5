@@ -11155,7 +11155,7 @@
         "claim": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset. Full historical source capability not established. Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open."
       },
       "restrictions": [
-        "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open."
+        "Complete historical source/application envelope and automatic management/input activation remain open outside the explicit qualified B1.12 profile. Thermal/pending/harvest/native continuation for that profile is admitted by1277."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -11195,7 +11195,21 @@
         "full_capability": false,
         "full_master_qualification_claimed": false
       },
-      "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist."
+      "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
+      "b112_retained_stock_admission_20261017": {
+        "pr": 1277,
+        "canonical_merge": "c60185dbda371c66e4b8f18b4d8c8c068bca00ff",
+        "qualified_head": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+        "production_source_tree": "bf55ea67b5d6182c11143ff942e2d59e7369ec1b",
+        "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json#b112_retained_stock_20261016",
+        "contract_at_canonical": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md",
+        "scope": "Explicit corrected B1.12 retained leaf/stem DM/N, complete root and partial leaf death return, harvest/export, pending incorporation and native/opaque live/thermal/empty/harvest continuation in existing owner. Current default/1253/1260/classic/TCS6 bytes preserved.",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "whole_master_promotion": false,
+        "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
+      }
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -13513,7 +13527,7 @@
         "bounded_receipt": "reproductive_process_20261016"
       },
       "restrictions": [
-        "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, partial-leaf return and full historical harvest equivalence remain outside this bounded option. Aquifer remains excluded.",
+        "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, full historical partial-return/harvest equivalence outside the explicit B1.12 profile remain outside this bounded option. Aquifer remains excluded.",
         "Active positive demand at the source cutoff and unfunded storage or negative preclipping donor N are refused atomically; no silent source correction.",
         "Explicit source N policy with existing WOFOST81 growth/allocation/senescence ownership; not complete B1.11 crop-N equivalence."
       ],
@@ -13536,7 +13550,21 @@
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED",
       "resolution_decision": "MIGRATE",
       "source_component_receipt": "latest_b111_nfix_component_reconciliation_20261016",
-      "bounded_runtime_receipt": "reproductive_process_20261016"
+      "bounded_runtime_receipt": "reproductive_process_20261016",
+      "b112_retained_stock_admission_20261017": {
+        "pr": 1277,
+        "canonical_merge": "c60185dbda371c66e4b8f18b4d8c8c068bca00ff",
+        "qualified_head": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+        "production_source_tree": "bf55ea67b5d6182c11143ff942e2d59e7369ec1b",
+        "authority_at_canonical": "integration/audits/MC_NUT_SOL_STATUS.json#b112_retained_stock_20261016",
+        "contract_at_canonical": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md",
+        "scope": "Explicit corrected B1.12 retained leaf/stem DM/N, complete root and partial leaf death return, harvest/export, pending incorporation and native/opaque live/thermal/empty/harvest continuation in existing owner. Current default/1253/1260/classic/TCS6 bytes preserved.",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "whole_master_promotion": false,
+        "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
+      }
     },
     {
       "capability_id": "SW431-INIT-PROFILE",
@@ -19543,7 +19571,7 @@
         "merged": true,
         "merge_commit": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
         "qualified_head": "8c4e02dff8482600d0d432a0448b8b284684eb44",
-        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water\u2013soil\u2013crop restart",
+        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water–soil–crop restart",
         "url": "https://github.com/abhedwig-cell/SWAP5/pull/1235"
       },
       {
