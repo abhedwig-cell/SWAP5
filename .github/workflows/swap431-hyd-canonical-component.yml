@@ -3,6 +3,8 @@ on:
   push:
     branches: [work/swap431-hyd-hyst-canonical-rebase-20261017]
     paths:
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/runtime/mod_fmr_restart_state_contract.f90'
       - 'src/solver/mod_b111_*.f90'
       - 'tests/fsi/*b111*.f90'
       - 'tests/fsi/*b111*.py'
