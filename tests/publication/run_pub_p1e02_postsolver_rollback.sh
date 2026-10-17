@@ -160,7 +160,8 @@ if(abs(r%soil_transfer-0.55d0)>1d-13.or.abs(r%mass_after-0.55d0)>1d-13) &
  error stop 'rewet historical mixing'
 if(abs(r%mass_residual)>1d-13.or.abs(r%water_residual)>1d-13) &
  error stop 'multi-step accepted balances'
-bad=s;bad%pond_evaporation_rate=0.25d0
+bad=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+bad%pond_evaporation_rate=0.25d0
 call advance_persistent_pond(original,bad,rejected,r)
 if(r%status/=POND_WATER) error stop 'unbalanced evaporation accepted'
 call rejected%snapshot(clock,depth,mass,revision)
