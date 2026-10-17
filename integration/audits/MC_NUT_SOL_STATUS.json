@@ -144,7 +144,7 @@
     },
     "record_scope": "Pre-merge component qualification; actual canonical component integration is recorded separately. Runtime admission remains false."
   },
-  "next_safe_step": "Separate reproductive/death source assessment canonically recorded1259. Implement and qualify the explicit source-order bounded process before existing-owner composition; preserve1253 and WOFOST81 default, refuse unqualified cutoff/overdraw and resolve reachable reference defects separately.",
+  "next_safe_step": "CLOSED: B1.12 retained-stock profile qualified and canonically admitted. Next migration: complete historical NUT selector/parameter activation and remaining source/application envelopes on existing owners; preserve distinct B1.11,B1.12 and WOFOST81 authorities.",
   "canonical_component_integration_20261016": {
     "pr": 1098,
     "canonical_merge": "7d0af2fd99eb654389d79c98623a20075e8b2d2f",
@@ -1157,16 +1157,16 @@
     }
   },
   "b112_retained_stock_20261016": {
-    "stage": "QUALIFIED_BOUNDED_PENDING_CANONICAL_ADMISSION",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_RETAINED_STOCK",
     "baseline": "5d2518abd2b285b13f9b5f7d2177918589fd7abc",
     "branch": "work/nut-b112-retained-stock-20261016",
     "contract": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md",
     "reference": "B1.12/SWAP-019",
-    "production_admitted": false,
+    "production_admitted": true,
     "capability_disposition_changes": 0,
     "existing_owners": "actual biomass (physical DM plus separate gross mortality diagnostics), nested N, current crop/Soil-N state, existing pending and native adapter",
     "test_selection": "Small real production state/split O0/O2 first; actual daily/harvest/pending and one stable current Richards/native composition. No full moving FCI, unrelated solver or highest-low-air. Integration cost several minutes justified by changed physical state/native boundary.",
-    "next_safe_step": "Exact remote candidate tree readback, lease-checked current canonical, merge existing1277 and verify actual source/evidence; then record admission without whole-row promotions.",
+    "next_safe_step": "CLOSED: B1.12 retained-stock profile qualified and canonically admitted. Next migration: complete historical NUT selector/parameter activation and remaining source/application envelopes on existing owners; preserve distinct B1.11,B1.12 and WOFOST81 authorities.",
     "small_production": {
       "split_cases_per_opt": 20,
       "daily_harvest_cases_per_opt": 54,
@@ -1718,6 +1718,37 @@
       "strict_mkdocs": "PASS12.65s",
       "independent_review_mutations": "10 PASS",
       "native_reexecution_after_guard_only_changes": "NOT_SELECTED_IDENTICAL_PRODUCTION_INPUTS"
+    },
+    "canonically_admitted": true,
+    "full_capability": false,
+    "canonical_assessment": {
+      "pr": 1277,
+      "canonical_merge": "c60185dbda371c66e4b8f18b4d8c8c068bca00ff",
+      "reviewed_head": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+      "actual_tree": "ad1f8eaef0f1ef11023236cde61cf0173f6f9539",
+      "reviewed_tree_equals_actual_merge_tree": true,
+      "production_source_tree": "bf55ea67b5d6182c11143ff942e2d59e7369ec1b",
+      "post_merge_source_and_full_sealed_qualification": "PASS actual canonical merge; no numerical rerun on identical postimage",
+      "post_merge_raw_sha256": "dcdc8e7d4a89d0d722f882142cc89d4fe527804f98f9bb83b6654ca7668e75c4",
+      "reviews": 0,
+      "unresolved_review_threads": 0,
+      "hosted_statuses": [],
+      "hosted_workflow_dispatches": 0,
+      "production_admitted": true,
+      "full_master_capability": false
+    },
+    "mastercoverage_reconciliation": {
+      "branch": "work/swap431-master-coverage-20261006",
+      "commit": "d77939e08b841fc0456d76a883450f4f15a9c099",
+      "record": "integration/audits/SWAP431_FUNCTIONAL_COVERAGE_MASTER.json",
+      "bounded_rows": [
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-NFIX"
+      ],
+      "newly_admitted_whole_capabilities": 0,
+      "remaining_NUT_active_rows": 9,
+      "243_dispositions_and_summary_unchanged": true,
+      "full_master_integrity_qualification": "NOT_CLAIMED; scoped two-row evidence reconciliation only"
     }
   }
 }
