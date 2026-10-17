@@ -180,5 +180,14 @@
     "fross22_guard": "UNCHANGED; FAIL on shared-contract drift; not PASS",
     "mc_sol01": "Continue Reference physical integration without requiring new RossFast support",
     "merge": "Require Reference science and affected incumbent RossFast preservation and branch protections"
+  },
+  "reference_first_followup_20261017": {
+    "tested_head": "6999b3533296a215958a4506aa4190b895585363",
+    "pub_run": 39077365598,
+    "pub_result": "PASS O0 O2, pond evaporation historical mixing, multistep drying rewetting, rejected trial and rollback",
+    "fross_run": 39077365716,
+    "fross_result": "FAIL exact solver contract identity, RossFast optional freeze remains",
+    "next_physics_gate": "Source-exact runoff solute concentration/transfer chronology in accepted pond B1.11 and joint real V2 restart. Do not merge until these owner gates qualify.",
+    "decision": "NOT_ADMITTED"
   }
 }
