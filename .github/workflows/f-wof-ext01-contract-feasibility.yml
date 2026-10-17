@@ -16,6 +16,8 @@ jobs:
           python-version: '3.11'
       - name: Test crop process-boundary prototype
         run: python -m unittest -v tests/fwof/ext01/test_external_crop_contract.py
+      - name: Verify physical witness cannot masquerade as accepted PCSE day
+        run: python -m unittest -v tests/fwof/ext01/test_physical_witness_import_gate.py
   native-fortran:
     runs-on: ubuntu-latest
     timeout-minutes: 18
