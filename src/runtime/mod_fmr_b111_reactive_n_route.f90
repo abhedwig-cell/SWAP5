@@ -2,7 +2,8 @@ module mod_fmr_b111_reactive_n_route
  use mod_b111_soil_n_mineral_owner,only:mineral_state_t,MINERAL_OK
  use mod_b111_soil_n_reactive_owner
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t,soil_n_historical_rates_t, &
-   soil_n_historical_initial_t,activate_soil_n_historical,initialize_historical_soil_n_complete
+   soil_n_historical_initial_t,activate_soil_n_historical,initialize_historical_soil_n_complete, &
+   bind_historical_organic_source_profile
  use mod_soil_n_pool_state,only:soil_n_pool_state_t
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_amendment_input,only:read_soil_n_amendment_tables,N_INPUT_OK
@@ -28,13 +29,16 @@ contains
    integer,intent(out)::status,error_line
    type(soil_n_historical_rates_t)::rates
    type(soil_n_historical_initial_t)::initial
+   type(reactive_parameters_t)::historical_organic
    integer::code
    plan=soil_n_amendment_calendar_t();state=reactive_state_t()
    parameters=reactive_parameters_t();tcsf=0d0;lai=0d0;status=1;error_line=0
    if(selection%swcropsnm/=1.or.selection%sw_wofost/=1.or..not.selection%source_parameters_complete)return
    call read_historical_soil_n_named_export(parameter_path,initial,rates,code,error_line)
    if(code/=N_NAMED_OK)return
-   call initialize_historical_reactive_n_complete_tables(selection,rates,initial,template,id,clock,water, &
+   call bind_historical_organic_source_profile(template,historical_organic,code)
+   if(code/=0)return
+   call initialize_historical_reactive_n_complete_tables(selection,rates,initial,historical_organic,id,clock,water, &
       management_path,origin,plan,state,parameters,tcsf,lai,status,error_line)
  end subroutine
  subroutine initialize_historical_reactive_n_complete_tables(selection,rates,initial,template,id,clock,water, &
