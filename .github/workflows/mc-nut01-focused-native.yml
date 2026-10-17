@@ -20,12 +20,18 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran
       - name: Execute real B1.12 production O0 and O2 contracts
         run: python3 -B tests/nut-crop/run_b112_retained.py --output /tmp/nut-b112-focused
+      - name: Execute existing organic and mineral material process O0/O2 contracts
+        env:
+          MATERIAL_RESULT_DIR: /tmp/nut-material-focused
+        run: python3 -B tests/nut-material/run_material.py process
       - name: Preserve raw results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mc-nut01-retained-native
-          path: /tmp/nut-b112-focused/
+          path: |
+            /tmp/nut-b112-focused/
+            /tmp/nut-material-focused/
           if-no-files-found: warn
       - name: Publish check status
         if: always()
@@ -39,7 +45,7 @@ jobs:
           python3 - <<'PY'
           import json,os,urllib.request
           state={'success':'success','failure':'failure'}.get(os.environ['JOB_STATUS'],'error')
-          payload=json.dumps({'state':state,'context':'MC-NUT01/retained-native-O0-O2','description':'Existing real production B1.12 focused native gate: '+os.environ['JOB_STATUS'],'target_url':'https://github.com/'+os.environ['GH_REPOSITORY']+'/actions/runs/'+os.environ['GH_RUN_ID']}).encode()
+          payload=json.dumps({'state':state,'context':'MC-NUT01/retained-native-O0-O2','description':'Existing NUT B1.12 and material O0/O2 native gates: '+os.environ['JOB_STATUS'],'target_url':'https://github.com/'+os.environ['GH_REPOSITORY']+'/actions/runs/'+os.environ['GH_RUN_ID']}).encode()
           url='https://api.github.com/repos/'+os.environ['GH_REPOSITORY']+'/statuses/'+os.environ['COMMIT_SHA']
           request=urllib.request.Request(url,data=payload,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json'},method='POST')
           with urllib.request.urlopen(request,timeout=20) as response:
