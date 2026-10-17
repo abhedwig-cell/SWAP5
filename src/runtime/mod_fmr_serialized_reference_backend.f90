@@ -1905,7 +1905,19 @@ contains
                                                            model%fixed_weir_surface_water_active, &
                                                            model%black_evaporation_active, &
                                                            model%boesten_evaporation_active, model%macropore_active, &
-                                                           model%rutter_active, parameters%hysteresis_active)) return
+                                                           model%rutter_active, parameters%hysteresis_active)) then
+      write(0,'(a,7(1x,l1))') 'HYST_PROFILE_REJECT_DEBUG', model%temporal_indicator_history_enabled, &
+           model%macropore_reduction_continuation_enabled, model%fixed_weir_surface_water_active, &
+           model%black_evaporation_active, model%boesten_evaporation_active, &
+           model%rutter_active, parameters%hysteresis_active
+      select type (dbg => snapshot)
+      type is (fmr_b110_physical_state_t)
+        write(0,'(a,2(1x,l1))') 'HYST_PROFILE_STATE_DEBUG',allocated(dbg%hysteresis),allocated(dbg%rutter)
+      class default
+        write(0,'(a)') 'HYST_PROFILE_DIFFERENT_TYPE'
+      end select
+      return
+    end if
     select type (physical => snapshot)
     class is (fmr_b110_physical_state_t)
       if (parameters%snow_active) then
