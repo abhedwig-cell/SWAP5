@@ -38,6 +38,8 @@ MODULE_SRC=(
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
+  # DRAMET3 production dependency must compile before the shared drain binding.
+  src/process/mod_drainage_dramet3_response.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
