@@ -23,12 +23,13 @@ program test_historical_activation
  write(unit,'(A)')'Bio_t = 5.0','Hum_t = 40.0','cNH4_t = 0.2','cNO3_t = 0.3', &
     'Temp_ref = 20.0','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
     'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
-    'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 3.0','dz_WSN = 0.3', &
+    'CdissiHalf = 0.1','TCSF_N = 0.5','dz_WSN = 0.3', &
     'cNH4N_lat = 0.3','cNO3N_lat = 0.4','cNH4N_seep = 0.1','cNO3N_seep = 0.2'
  close(unit)
  call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
  if(code/=N_NAMED_OK)error stop '26 named fields'
  if(rates%no3_seep/=.2d0.or.rates%no3_lat/=.4d0)error stop 'distinct no3 routes'
+ if(rates%lai_crit_nupt/=0d0)error stop 'original optional LaiCritNupt default'
  open(newunit=unit,file='historical-fields.txt',position='append')
  write(unit,'(A)')'SorpCoef = 0.1'
  close(unit)
