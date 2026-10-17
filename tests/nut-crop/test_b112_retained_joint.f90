@@ -389,6 +389,11 @@ contains
   type(reactive_state_t)::chemical
   type(wofost81_crop_owner_state_t)::owner
   type(wofost81_harvest_record_t)::h
+  type(crop_soil_receipt_t)::fallow,fallow_disk
+  type(crop_n_configuration_t)::successor_config
+  type(soil_n_day_environment_t)::fallow_environment
+  type(crop_soil_state_t)::invalid_successor
+  type(crop_soil_harvest_receipt_t)::successor_receipt
   type(reactive_state_t)::chemical_after
   type(wofost81_crop_owner_state_t)::crop_after
   type(soil_n_pool_state_t)::before_pools,after_pools,disk_pools
@@ -443,6 +448,48 @@ contains
   call acknowledge_crop_soil_harvest(n,observation,receipt);call require(receipt%status==0,'retire acknowledged harvest')
   call n%snapshot(chemical,owner)
   call require(owner%harvest_retired().and.owner%nitrogen%b112_residue_profile,'retired profile identity remains explicit')
+  call observe_crop_soil_harvest(disk,observation,code)
+  call require(code==0,'restored harvest observation')
+  call acknowledge_crop_soil_harvest(disk,observation,receipt)
+  call require(receipt%status==0,'restored harvest retire')
+  ! Both accepted physical continuations preserve the same soil-N owner during a
+  ! no-crop day, and a successor receives that inventory rather than a new one.
+  fallow_environment=soil_n_day_environment_t(2d0,3d0,20d0)
+  call advance_crop_soil_fallow_day(n,2d0,3d0,after_water,0d0,0d0,0d0,0d0,0d0,fallow,fallow_environment)
+  call require(fallow%status==CROP_SOIL_OK,'real Soil-N fallow reaction')
+  call advance_crop_soil_fallow_day(disk,2d0,3d0,disk_water_content,0d0,0d0,0d0,0d0,0d0, &
+    fallow_disk,fallow_environment)
+  call require(fallow_disk%status==CROP_SOIL_OK,'restart Soil-N fallow reaction')
+  call n%snapshot(chemical,owner)
+  call chemical%snapshot(after_time,after_water,after_pools,after_revision)
+  call disk%snapshot(chemical_after,crop_after)
+  call chemical_after%snapshot(disk_time,disk_water_content,disk_pools,disk_revision)
+  call require(after_time==3d0.and.disk_time==3d0.and.after_revision==disk_revision, &
+    'fallow advances accepted soil N clock')
+  call require(all(after_pools%fom_kg_m3==disk_pools%fom_kg_m3).and. &
+    after_pools%biomass_kg_m3==disk_pools%biomass_kg_m3.and. &
+    after_pools%humus_kg_m3==disk_pools%humus_kg_m3.and. &
+    after_pools%ammonium_n_kg_m2==disk_pools%ammonium_n_kg_m2.and. &
+    after_pools%nitrate_n_kg_m2==disk_pools%nitrate_n_kg_m2, &
+    'fallow keeps identical native soil-N inventories')
+  successor_config=cp
+  successor_config%harvest%crop_identity=2
+  successor_config%harvest%crop_end=3d0
+  invalid_successor=n
+  call initialize_crop_soil_successor(invalid_successor,crop,cp,9102_int64,successor_receipt)
+  call require(successor_receipt%status/=CROP_SOIL_OK,'same crop identity rejected without mutation')
+  call initialize_crop_soil_successor(n,crop,successor_config,9102_int64,successor_receipt)
+  call require(successor_receipt%status==CROP_SOIL_OK,'successor crop with same soil-N owner')
+  call initialize_crop_soil_successor(disk,crop,successor_config,9102_int64,successor_receipt)
+  call require(successor_receipt%status==CROP_SOIL_OK,'restored successor crop with same soil-N owner')
+  call n%snapshot(chemical,owner)
+  call chemical%snapshot(after_time,after_water,after_pools,after_revision)
+  call disk%snapshot(chemical_after,crop_after)
+  call chemical_after%snapshot(disk_time,disk_water_content,disk_pools,disk_revision)
+  call require(all(after_pools%fom_kg_m3==disk_pools%fom_kg_m3).and. &
+    after_pools%ammonium_n_kg_m2==disk_pools%ammonium_n_kg_m2.and. &
+    after_pools%nitrate_n_kg_m2==disk_pools%nitrate_n_kg_m2, &
+    'successor retains soil inventory after restart')
  end subroutine
  subroutine literal_actual()
   type(fmr_serialized_physical_observation_t)::obs
