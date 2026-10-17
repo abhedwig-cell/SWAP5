@@ -126,3 +126,41 @@ After completion of the main SWAP4.3.1-to-SWAP5 migration, jointly reassess PUB-
 
 Decision rule: prefer a smaller number of papers with a clear scientific claim and independent falsification over papers that mainly report implementation progress.
 
+
+
+# Strategy update — 2026-10-17
+
+This update records evidence emerging after the initial INBOX freeze. It changes prioritisation, not novelty status.
+
+## Portfolio layers
+
+### Layer 1 — expected publications
+- **SWAP5 GMD reference paper**: preferred broad model-description/reference publication. The increasingly integrated water–crop/root–solute–nutrient–irrigation–drainage state strengthens this route.
+- **Stromingen**: Dutch community article on the SWAP–MODFLOW6–Ribasim instrument direction, behind the agreed publication firewall.
+
+### Layer 2 — serious PhD candidates
+- **TRACE / INBOX-PUB-10**: promoted to serious candidate. Source assessments, explicit legacy defects/corrections, exclusions and executable-evidence decisions are accumulating into a prospective dataset rather than isolated anecdotes. Do not analyse final frequencies/taxonomy until the migration denominator closes.
+- **DIFFICULTY / INBOX-PUB-02**: remains serious. Future response variables must separate actual model/solver difficulty from compilation, CI, test-selection and infrastructure cost.
+- **NUM-UNC / INBOX-PUB-03**: remains separate from DIFFICULTY; its target is scientific inference sensitivity to admissible numerical choices.
+- **HYDRO-MEMORY / INBOX-PUB-12**: unchanged; wait for a stable research instrument.
+- **COUPLE / INBOX-PUB-05**: increasingly promising, but hold activation until the SWAP5–MODFLOW6 interface and F-GC-STRIP01 are stable enough to test general ownership claims.
+
+### Layer 3 — hypotheses requiring due diligence
+- **TOP03 / INBOX-PUB-06**: elevated within the inbox as an interesting hydrological-methods hypothesis. Next step is literature due diligence on continuous/complementarity/atmospheric surface-boundary formulations.
+- **ACCELERATE / INBOX-PUB-01, -08, -09, -13**: downgraded as an automatic standalone paper. Engineering speedup is insufficient. Reactivate only if computation can be reduced under an explicit hydrological error/applicability contract.
+- **ROM / INBOX-PUB-04**: retain around purpose-specific minimum sufficient hydrological state; surrogate construction alone is insufficient.
+- **Macropore / INBOX-PUB-07**: retain pending observational/generalisation evidence.
+
+## TRACE evidence policy
+The migration has produced further cases where legacy source is evidence to reconcile rather than an unquestioned oracle, including source-bound crop/N assessments, an identified/corrected leaf dry-matter/dead-leaf residue defect, superseded routes and intentionally excluded legacy capabilities.
+
+Preserve for later TRACE analysis: final capability denominator; discovery trigger; theory/documentation/source/executable evidence; scientific consequence; preserve/correct/supersede/reject/not-applicable/qualification-only decision; and whether conventional regression alone would have exposed the issue. Freeze the taxonomy before final quantitative analysis rather than retrospectively fitting categories.
+
+## DIFFICULTY versus infrastructure
+Recent proportional testing, impact-based regression, shared-build and fail-closed preflight work shows that development/qualification wall time can be dominated by infrastructure rather than hydrological solver difficulty. Future DIFFICULTY experiments must control compilation, harness startup, CI scheduling, unrelated preservation tests and irrelevant I/O. Negative performance results remain evidence.
+
+## GMD implication
+Do not start the manuscript yet. Use `docs/publication/SWAP5_GMD_PROVISIONAL_EXPERIMENT_MATRIX_2026-10-17.md` to preserve candidate evidence, then select and regenerate the final small suite against the exact paper release.
+
+## Portfolio decision
+Do not open nutrient, irrigation, crop or drainage papers merely because those workstreams now have substantial migration evidence. Their present publication value is mainly that they strengthen SWAP5 as an integrated model and therefore the GMD reference paper. Reassess the whole portfolio after main migration/coverage closure.

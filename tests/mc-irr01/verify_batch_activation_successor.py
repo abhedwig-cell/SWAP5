@@ -23,6 +23,8 @@ def verify_source(git_reader=None):
  for p,v in r['postimages'].items():check(g('rev-parse','HEAD:'+p)==v['blob']==blob((ROOT/p).read_bytes()),'batch postimage '+p)
  check(g('rev-parse','HEAD:src')==r['source_tree'],'batch source tree');check(g('rev-parse','HEAD:reference')==g('rev-parse',BASE+':reference'),'batch reference drift')
  check(r['selected_capabilities']==CAPABILITIES,'batch capability drift')
+ for path in ['integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64','integration/audits/evidence/MC_IRR01_TCS6_SCIENCE_20261016.tar.xz.b64','integration/audits/evidence/MC_IRR01_LIMIT_SCIENCE_20261016.tar.xz.b64']:
+  check(g('rev-parse','HEAD:'+path)==g('rev-parse',BASE+':'+path)==blob((ROOT/path).read_bytes()),'batch inherited archive changed '+path)
  top=json.loads((ROOT/'integration/audits/MC_IRR01_STATUS.json').read_text())['batch_experiment_1271_20261017']
  frozen=json.loads(subprocess.check_output(['git','show','90167ddb13575ce4e270ec8d4c61e1d411024800:integration/audits/MC_IRR01_STATUS.json'],cwd=ROOT))['batch_experiment_1271_20261017']['closure_conditions']
  check(top['closure_conditions']==frozen,'batch frozen closure conditions changed')
@@ -47,6 +49,9 @@ def validate_science(data):
  r=record();p=json.loads(data['physical/RESULTS.json']);inp=json.loads(data['physical/INPUTS.json'])
  check(p['status']=='PASS'and p['head']==r['execution_commit']==inp['head'],'unfinished batch physical')
  check(p['inputs']==inp['inputs']and p['generated']==inp['generated'],'batch executed input identity')
+ raw_commit=data['review/execution-commit.txt'];check(hashlib.sha1(b'commit '+str(len(raw_commit)).encode()+b'\0'+raw_commit).hexdigest()==r['execution_commit'],'batch original execution commit')
+ check(raw_commit.splitlines()[0].decode()=='tree '+r['execution_remote_equivalent']['full_tree'],'batch durable execution tree')
+ check(git('rev-parse',r['execution_remote_equivalent']['commit']+':')==r['execution_remote_equivalent']['full_tree'],'batch persisted execution equivalent')
  for q,h in p['inputs'].items():check(sha((ROOT/q).read_bytes())==h,'stale batch input '+q)
  check(PRODUCTION<=set(inp['providers'])and len(inp['providers'])==297,'batch provider closure')
  check(len(p['costs'])==2 and all(x['provider_compiles']==297 and x['external_compiles']==10 for x in p['costs']),'batch missing fresh O0/O2')

@@ -1,155 +1,156 @@
-# MC-IRR01 batch experiment, issue 1271
+# MC-IRR01 coherent irrigation migration experiment, issue 1271
 
-## Authority and scientific question
+## Authority and hypothesis
 
-[Issue 1271](https://github.com/abhedwig-cell/SWAP5/issues/1271) authorizes one
-coherent migration campaign, not weaker scientific admission. This candidate is
-[PR 1272](https://github.com/abhedwig-cell/SWAP5/pull/1272). Its recovery authority
-is the existing `MC_IRR01_STATUS.json` field `batch_experiment_1271_20261017`.
-PR 1268 completed independently before implementation. The experiment production
-baseline is `121ed3503638c2d3168fa30e40f6af24156348a7`; the later `f5504d30`
-canonical change only seals that LIMIT admission and master receipt.
+[Issue1271](https://github.com/abhedwig-cell/SWAP5/issues/1271) authorizes this
+actual migration in existing [PR1272](https://github.com/abhedwig-cell/SWAP5/pull/1272).
+Recovery is `MC_IRR01_STATUS.json`, `batch_experiment_1271_20261017.resume_20261017`.
+PR1268 LIMIT was merged separately before implementation. The admission baseline
+is `f5504d30391baff52143ac6441ba231264cee5a0`; canonical
+`48fb7fa3a9df7561efff4ee845a4e46341c3e45f` adds only publication documents.
+The four existing selected rows are **TCS2, TCS3, TCS4 and DCS1**. No new
+capability, calendar, state owner, codec, framework or governance register is created.
 
-The hypothesis concerns qualification and coordination time **per fully admitted
-existing capability**, with at least two such admissions. Counting parameter
-cases, a PR, or a partial option implementation cannot establish success.
+The frozen hypothesis requires at least two whole-row canonical admissions and
+lower qualification plus coordination effort per admitted row, with unchanged
+scientific reliability. Parameter cases or one merged PR cannot establish success.
+The frozen closure conditions remain byte-semantically unchanged from `90167ddb`.
 
-## Shared implementation and scope
+## Actual implementation and source qualification
 
-The selected root-policy package comprises existing TCS2, TCS3, TCS4 and DCS1.
-The root/material/weather implementation already exists. The concrete missing
-composition implemented here is historical `TCSFIX=1` with `IRGDAYFIX=1..366`
-through those selectors. Minimum interval is already admitted for the separate
-bounded TCS1+DCS2 route; this is not a new capability or a second TCS1 migration.
+The historical authority is B1.11 `SWAP/irrigation.f90`, SHA256
+`65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1`.
+The existing policy's DAYFIX now implements TCSFIX/IRGDAYFIX1..366 across the
+three root selectors. It advances only at eligible accepted-day selection,
+resets to1 after an eligible trigger and saturates without a trigger. TCS6 with
+TCSFIX is rejected as in the source. Existing management restart owns the counter.
 
-Authenticated B1.11 `SWAP/irrigation.f90`, SHA256
-`65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1`,
-sets DAYFIX to one on an eligible triggered gift, advances a suppressed counter
-only while below IRGDAYFIX, and preserves a saturated counter on a nontrigger.
-It forbids TCS6 together with TCSFIX. The literal recurrence is extracted into
-the test include and verified against that exact archived source before builds.
+Historical STARTIRR/ENDIRR activation now consumes accepted weather Gregorian
+time, existing immutable `crop_calendar_t` periods and accepted crop emergence.
+A readonly plan snapshot and inverse-year function extend those existing owners.
+Same-year crops compare days since actual Jan1 with1900 offsets, including the
+historical leap-year offset quirk. Cross-year bounds use crop first/last years,
+strict lower `>1e-3` and inclusive upper `<=1e-3`; annual lower is `>=-1e-3`.
+The plan creates no crop emergence or transition. Disabled activation preserves
+the established route. Native configuration binds the interval, schedule,
+dates and immutable plan inside the existing codec; default bytes remain exact.
 
-The existing root management policy now uses its existing DAYFIX storage for
-this option. Accepted-day dispatch and transaction acceptance remain the owners
-of whether a candidate counter is published. No independent clock, calendar,
-restart owner, physics tolerance or water accounting is introduced.
+The complete typed parameter partitions cover1..7 AFGEN knots, end clamping,
+interior interpolation, strict trigger boundaries, rainfall subtraction,
+under/over refill and invalid input. One-knot tests explicitly normalize the
+unused source table tail to a descending sentinel. They qualify a constant typed
+AFGEN prefix; they do not claim migration of generic legacy parsing or
+unspecified/uninitialized raw source tails.
 
-The generic management restart validates DAYFIX through 366. The weather
-reconstruction additionally checks its configured domain, retaining the original
-TCS6 rejection domain when TCSFIX is disabled. Sensor preparation currently
-passes event state without root-policy state. It explicitly rejects this new
-option until its existing interface is extended; silently ignoring the option
-would be incorrect. SALTEXCESS still needs the separately unadmitted bottom7
-chemical/weather composition.
+Two production defects were found, with original failures retained:
 
-## Persistence and test selection
+* The literal AFGEN boundary comparison caught a four-knot TCS2 case at DVS1
+  and7cm available water: division before multiplication rounded the old
+  threshold to0.49999999999999989 and incorrectly triggered. The policy now uses
+  the exact historical slope-then-multiply operation order.
+* The invalid-domain O0 test caught SIGFPE on a NaN rainfall threshold. Fortran
+  need not short circuit logical operands. Finite rejection now precedes ordered
+  comparisons. No valid-domain formula or tolerance was relaxed.
 
-Adding derived-type configuration fields would otherwise change even default
-native files. The existing codec now emits the original policy components in
-their original order. Disabled TCSFIX retains original bytes; enabled TCSFIX
-adds an identified interval configuration extension in the existing config block.
-The expected configuration remains caller-owned and mismatches fail atomically.
-This is the same codec and tag, not a replacement persistence architecture.
+A native negative fixture also attempted to change season4 Jan30 into Jan30.
+Correct acceptance of an identical configuration exposed the fixture mistake.
+The witness now uses distinct valid Feb1, with a generator assertion. The failed
+controller is retained, rather than counted as a pass. Earlier interval fixture
+and closure/generator failures remain in the original immutable capsule.
 
-The direct O0/O2 driver executes 4,452 source transitions per optimization,
-including maximum interval saturation, wet/no-trigger days, nonmutation,
-existing restart round trips and invalid interval/overflow/conflicting options.
+## Proportionate qualification and inheritance
 
-The actual composition uses three selectors and one unchanged weekly
-representative. Each O0/O2 build compiles the same 296 production providers and
-ten historical/oracle providers once, then links and executes every selected
-program. It retains authentic weather, evolving accepted SWRD2 roots, material
-moisture thresholds, Richards acceptance, hard water balance, rejected trial,
-retry/replay, opaque continuation, and fresh native endpoints. Existing native
-corruption controls are extended with an optional interval domain; default
-controls keep their original assertions. No solver/stress/full F-CI run is
-selected merely because irrigation inputs or configuration values changed.
+| Level | Actual evidence on the selected postimage |
+| --- | --- |
+| A, policy physics | O0/O2 exact authenticated source blocks:2,079 TCS2/3/4+DCS1 comparisons and10 invalid domains per optimization;4,452 literal interval transitions;934 LIMIT preservation cases |
+| A, existing interfaces |72 literal seasonal boundary cases per optimization, schedule/off/outside/invalid/leap checks and Gregorian inverse endpoints for years1..9999;360 heterogeneous material/fractional-root cases, invalid inputs and ABA |
+| B, real production | One fresh297-provider plus10 historical/oracle build per optimization; six drivers,108 trajectory programs and264 CRC-correct native rejection programs |
+| B, persistence | Current accepted SWRD2 roots/material moisture, actual weather/rain, Richards acceptance, original hard mass assertions, rejected trials/replay, once-only day/counter/event selection, opaque and fresh native continuation; in-flight seasonal gift checkpoint |
+| C, admission | Exact source/test postimages, source-generated oracles, raw command/output hashes, default TCS6 and AVAIL endpoint bytes compared with the immutable LIMIT capsule, incumbent proof and original29 controls, new fail-closed evidence controls and owning entry points |
 
-Measured terminal results, failures, compiler flags, inputs, commands, raw
-outputs, counts and evidence hashes are recorded in the existing recovery
-field. Tests are not called complete before their controller terminates.
+The six profiles are seasonal TCS2 winter window, seasonal TCS3 annual window,
+seasonal TCS4 with one-knot typed tables, schedule off, unchanged weekly DCS1
+and unchanged AVAIL. Both optimization outputs and all continuous/opaque/fresh
+native endpoints are exact. Native rejection binds changed dates, calendar,
+schedule, counter domain and the retained corruption cases.
 
-## Limits of closure and comparison
+The immutable incumbent proof was rerun at canonical48fb with the same source
+tree asf550. Its28 existing owner-successor receipt flags are preserved; this
+is not28 new numerical runs. Relevant changed root/policy/config/restart seams
+receive fresh targeted evidence above. Unchanged drainage, solvers, crop physics,
+reference files, historical forcing and oracles inherit their bound evidence.
+RossFast, highest low-air, full F-CI and hosted Actions are NOT_SELECTED, not
+new PASS claims. Broader solver runs cannot distinguish these changes better
+than the direct source and real accepted-state tests.
 
-The full selected capability rows retain historical activation and profile
-conditions. In the current bootstrap, `schedule_enabled` and
-`irrigation_window_open` are set true rather than derived from historical
-STARTIRR/ENDIRR and crop-season boundaries. These bounds are not supplied by the
-root policy's current interface. Removing that gate or calling an always-open
-season a full historical envelope would overstate migration. Broader historical
-selector/material/geometry envelopes also remain separate original row gates.
-No master row can be promoted solely from the interval results.
+Original full-row restrictions were reconciled explicitly. Accepted evolving
+root/material binding, real rain deduction, weekly progression and native weather
+restart have canonical predecessors; this package closes the missing own
+parameter, interval and historical activation envelope. Heterogeneous materials
+and partial root cells are checked at the real minimal material interface.
+Independently unadmitted HYD/POWER, salt and crop variants keep their own gates,
+as for already admitted AVAIL/LIMIT. They are not silently promoted or added as
+automatic dependencies of every irrigation selector. Full row admission concerns
+the selected own source contract through admitted physical profiles.
 
-The retained TCS6 terminal physical evidence records 493.791 seconds, 616 compile
-invocations and 264 native program invocations. AVAIL records 578.325 seconds,
-22 compile invocations and 604 native program invocations with verified provider
-reuse. Those counts include scientific and corruption programs; direct
-compile/link commands need separate classification because some runners compile
-multiple sources in one invocation. Prior failed/reconciliation histories must
-not be added to parent totals twice. Historical analysis and bookkeeping time
-are UNKNOWN, so these observations cannot prove a reduction in total engineering
-or coordination time by themselves.
+## Measurements and critical comparison
 
-A failed controller also exposes an execution-cost issue: the current protocol
-permits provider reuse only within one live Session. A fixture correction after
-controller failure therefore selects a fresh build even with unchanged physics.
-This is an observed test-workflow cost, not evidence that water equations demand
-those repeated compilations. No cross-session reuse exception is assumed here.
+All times are observed, not synthetic benchmark data. Parent controller times
+are not added to their child command times. Compilation invocations with source
+files that also link are counted in both compilation and link categories;
+`compile_only_invocations` preserves the narrower count for audit.
 
-The experiment cannot succeed without two full row closures. Its outcome must
-remain incomplete/inconclusive if only this common option is qualified. The
-remaining barrier is application activation/interface scope and complete-row
-qualification, with additional workflow overhead. It is not evidence that the
-three root-trigger equations require separate migration campaigns.
+| Observation | Measured result |
+| --- | --- |
+| Earlier single-row TCS6 terminal physical controller |493.791s,1 closed row,616 compile-only invocations,264 native invocations |
+| Earlier single-row AVAIL terminal physical controller |578.325s,1 closed row,22 compile-only invocations with verified reused providers,604 native invocations |
+| Final full batch physical controller |517.363s |
+| Final batch selected qualification controllers combined |530.066s,30 linked test executables,390 native invocations |
+| All resumed attempts including failed and superseded work |1134 compilation invocations,55 links,547 native invocations |
+| First partial campaign, retained separately |987 compile-only invocations,21 links,325 native invocations;406.385s successful terminal qualification;799.472s instrumented elapsed |
+| Final batch qualification per selected complete row, once admitted |132.516s |
+| Both successful partial and final qualification phases per selected row |234.113s |
+| Earlier mean terminal physical cost per full row |536.058s |
+| Source analysis/implementation category |UNKNOWN; no complete continuous timer |
+| Evidence/recovery/coordination and total engineering time |UNKNOWN; historical campaigns lack comparable category timers |
 
-## Recorded terminal observation
+The resumed instrumented phase through evidence sealing spans
+1532.211s; this elapsed session duration is
+not an invented active development total. Failed controller elapsed totals that
+were not recorded remain UNKNOWN; executed command durations are retained.
+See the recovery attempt ledger and raw capsules for all measurements.
 
-The persisted execution candidate is
-`dcb8de76c9d90cbf2a5a52b9f4f2863e39130819`. Its focused physical controller
-completed in 401.950 seconds. Both optimizations passed 72 trajectory invocations
-and 240 checksum-correct/native rejection invocations in total. The direct final
-controller took 1.698 seconds and the incumbent small preservation controller
-2.736 seconds. The combined terminal qualification cost is 406.385 seconds;
-these totals are not added again to their child command times.
+Shared qualification lowers observed successful terminal controller time per
+row if all four are admitted. These are different physical scenarios, not a
+controlled same-workload speed benchmark. More importantly, the complete
+qualification-plus-coordination success criterion is **INCONCLUSIVE** because
+historical coordination/engineering timings are missing. No reliability loss was
+observed in the declared source/mass/transaction/restart gates, but that is not a
+universal reliability proof.
 
-Including the retained failed physical attempt and direct preflight, the actual
-observed counts are 987 compile invocations, 21 link invocations and 325 native
-program invocations. The instrumented implementation/qualification phase through
-evidence sealing spans 799.472 seconds. Earlier reconciliation and the failed
-physical controller's full elapsed time are UNKNOWN; its retained commands total
-45.064 seconds. A complete engineering-time split cannot be reconstructed by
-inventing missing timers.
+The first partial campaign correctly closed zero rows; its bootstrap lacked
+historical activation. Resuming the same PR resolved that interface through
+existing owners. The observed limitation was application binding and test
+workflow overhead, not a need for separate root-trigger physics campaigns.
+Failed fixture controllers required rebuilding unchanged providers in a new
+Session. The batch still pays that cost, and the attempt totals expose it.
 
-All four fresh default weekly native full endpoints match the original LIMIT
-capsule exactly. No old physical PASS substituted for fresh execution. Historical
-forcing and independent oracles were reused. Unchanged solver/stress suites were
-not selected; omitted tests are not reported as newly passing.
+## Admission and remaining work
 
-**Outcome: zero full capability admissions, no canonical merge, no master
-promotion.** PR 1272 remains a draft. The success threshold is unmet and the
-speed/reliability hypothesis is inconclusive. In particular, 401.950 seconds
-must not be divided by four and reported as time per closed capability.
+The full science, batch admission validator,35 fail-closed evidence controls and
+four existing owning/reference entrypoints pass. Admission verification took
+44.850s in one parallel controller. Exact qualified-tree merge and four-row
+master promotion are the next admission actions; the recovery record carries
+the final receipt and distinguishes tested, qualified and admitted.
 
-The observed master receipt is `6bad61262c2a510c8048b81d5a930f391b7d634e`:
-243 total, 105 ADMITTED, 99 ACTIVE_MIGRATION, 14 SUPERSEDED, 2 REJECTED,
-20 NOT_APPLICABLE and 3 QUALIFICATION_ONLY, hence 102 unresolved. These counts
-include the independent LIMIT admission and no experiment promotion. The existing
-recovery field and its hashed raw capsule preserve the exact measurements and
-remaining admission gates.
+Across both experiment phases, including retained failed and superseded attempts,
+actual execution totals are2,121 compilation invocations,76 links and872 native
+Fortran program invocations. Final selected science alone uses710 compilation
+invocations,30 links and390 native invocations. Six Python admission entrypoints
+are measured separately. These totals expose repeated failed-controller builds;
+they are not presented as a reduction in total compilation count.
 
-## Resumed activation contract
-
-The existing immutable `crop_calendar_t` plan is the crop-period authority. A
-readonly snapshot exposes its configured starts/ends; no alternate calendar is
-created. Times are Gregorian ordinals consistent with the accepted weather
-epoch. The existing date adapter provides the inverse year partition.
-
-The existing irrigation policy resolves source STARTIRR/ENDIRR against the
-selected crop period. Same-year crops compare actual elapsed days since Jan1
-with the source1900 date offsets, preserving the historical leap-year arithmetic.
-Cross-year crops map bounds into the start/end years and use the literal strict
-lower `>1e-3` and inclusive upper `<=1e-3` comparison. Same-year lower bound is
-`>=-1e-3`. Selection consumes the existing accepted weather time and crop
-emergence; the plan cannot create emergence or a crop transition. Configuration
-and plan are immutable inputs, serialized only in the existing config extension.
-Disabled activation retains the original admitted default path and bytes.
+TCS7, TCS8 and SSDI still need the existing event-only sensor preparation boundary
+to carry management DAYFIX state. SALTEXCESS still requires accepted bottom7
+chemical/weather composition. No second counter or route was introduced to
+bypass those dependencies. Other239 master rows must remain unchanged.
