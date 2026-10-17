@@ -1,0 +1,42 @@
+name: F-WOF-EXT01 physical accepted flux extraction
+on:
+  pull_request:
+    paths:
+      - 'tests/fmig431/test_crop_file_weather_production.f90'
+      - 'tests/fwof/ext01/inspect_case001_matched_transition.py'
+      - 'tests/fwof/ext01/export_authentic_accepted_witness.py'
+      - 'tests/fwof/ext01/export_1999_native_weather.py'
+      - 'tests/fwof/ext01/export_1999_weather_sequence.py'
+      - '.github/workflows/f-wof-ext01-physical-flux.yml'
+  workflow_dispatch:
+jobs:
+  flux-extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract immutable matched crop reference transition
+        run: python3 tests/fwof/ext01/inspect_case001_matched_transition.py
+      - name: Install Fortran compiler
+        run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Run existing authentic-weather physically accepted crop test
+        run: bash tests/fmig431/run_crop_file_weather_production.sh > fwof-ext01-physical.log 2>&1
+      - name: Read accepted receipt from passing test
+        run: |
+          grep 'F_WOF_EXT01_' fwof-ext01-physical.log
+          grep 'CROP_DAYEND_ADMITTED_HYDROLOGY_ROOT_UPTAKE_BITWISE=PASS' fwof-ext01-physical.log
+      - name: Export bounded authentic accepted hydrology witness
+        run: python3 tests/fwof/ext01/export_authentic_accepted_witness.py fwof-ext01-physical.log fwof-ext01-accepted-witness.json
+      - name: Export real dated meteorology without unqualified PCSE conversion
+        run: python3 tests/fwof/ext01/export_1999_native_weather.py fwof-ext01-physical.log fwof-ext01-native-weather-1999.json
+      - name: Export independently repeated real 1999 seven-day source sequence
+        run: python3 tests/fwof/ext01/export_1999_weather_sequence.py fwof-ext01-physical.log fwof-ext01-native-weather-sequence.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fwof-ext01-authentic-swap5-flux-log
+          path: |
+            fwof-ext01-physical.log
+            fwof-ext01-accepted-witness.json
+            fwof-ext01-native-weather-1999.json
+            fwof-ext01-native-weather-sequence.json
+          if-no-files-found: error
