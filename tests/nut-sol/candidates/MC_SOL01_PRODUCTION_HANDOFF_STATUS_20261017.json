@@ -80,5 +80,19 @@
       "fross_result": "FAIL exact shared solver contract qualified dependency drift; RossFast owner source surface pass",
       "decision": "HOLD DRAFT; no full gross water/solute/transaction/restart qualification"
     }
+  },
+  "gross_source_handoff_20261017": {
+    "head": "517c9fdaa040e99c34e577c5c2fc92349e277331",
+    "files": [
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "scope": "Typed provider exact gross precipitation, irrigation, snowmelt and runon rates published only through converged top result and accepted trace; read-only diagnostic provenance, no new stored pool",
+    "outstanding": "Cannot consume chemically until per-substep whole pond balance includes gross surface losses and runoff and source-aligned mixing; shared RossFast contract qualification required",
+    "publication_run": 39068455819,
+    "fross_run": 39068455584,
+    "results": "QUEUED at record creation",
+    "admitted": false
   }
 }
