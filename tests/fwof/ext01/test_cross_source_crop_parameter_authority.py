@@ -18,6 +18,8 @@ swap=Path(sys.argv[1]) if len(sys.argv)>1 else Path("swap")
 pcse=Path(sys.argv[2]) if len(sys.argv)>2 else Path("pcse")
 SOURCE=swap/"tests/fmig431/test_crop_file_weather_production.f90"
 YAML=pcse/"pcse/tests/test_data/ext01_barley_wofost81_source.yaml"
+SWAP_WEATHER=swap/"tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-andelst_meteo.999.gz"
+PCSE_WEATHER=pcse/"pcse/tests/test_data/wofost81_qualification_weather.yaml"
 
 def compare():
     source=SOURCE.read_text()
@@ -59,6 +61,11 @@ class TestParameterAuthority(unittest.TestCase):
             "pcse_source":"pcse/tests/test_data/ext01_barley_wofost81_source.yaml",
             "pcse_source_sha256":hashlib.sha256(YAML.read_bytes()).hexdigest(),
             "values":result,
+            "swap5_weather_source_sha256":hashlib.sha256(SWAP_WEATHER.read_bytes()).hexdigest(),
+            "pcse_weather_source_sha256":hashlib.sha256(PCSE_WEATHER.read_bytes()).hexdigest(),
+            "swap5_source_crop_calendar":"1999-01-20 physical rooted weather fixture",
+            "pcse_crop_calendar":"2010-04-16 Spring_barley_301",
+            "same_calendar_and_weather_case":False,
             "same_crop_parameter_case":False,
             "positive_daily_science_admitted":False
         }
