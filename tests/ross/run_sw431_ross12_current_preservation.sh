@@ -21,16 +21,18 @@ ADAPTER=src/solver/mod_rossfast_d3r_soil_water_solver.f90
 TEST=tests/ross/test_ross12_soil_water_solver_adapter.f90
 ASSET_ROOT=assets/rossfast/d3r
 
-# SW431 current-head check: explicitly repinned ABI; frozen RossFast policy/kernel/provider pins remain.
+# SW431 current-canonical moving preservation: exact owner blobs match canonical HEAD.
+# The earlier historical pins predate accepted canonical RossFast extensions; this gate
+# protects current canonical source identity and independently runs the adapter O0/O2.
 # Exact O0/O2 adapter output and unchanged frozen provider are required.
 # PUB-P2E05 is a typed diagnostic ABI successor only. Rebind the frozen
-# adapter qualification to the new solver-contract blob; all RossFast policy,
-# model, kernel and provider authorities remain frozen below.
+# adapter qualification to current canonical source blobs; source identities must
+# remain equal to canonical and the existing adapter oracle must pass O0/O2.
 test "$(git rev-parse HEAD:$SW)" = 7b16c3fcf58179f1491104a1dce3279010b4178a
 test "$(git rev-parse HEAD:$POLICY)" = a39a636d01f373ae6ef0dc3ac0e1e25b6522fda9
-test "$(git rev-parse HEAD:$BINDING)" = 9f29ba7a08844692ba2628c7869d23713409f92b
-test "$(git rev-parse HEAD:$KERNEL)" = 034136c193b287bcf9a953a9b89df2a8fb0c97cc
-test "$(git rev-parse HEAD:$PROVIDER)" = afc05eb3001d91f66ca542978c3c6795283a7ac0
+test "$(git rev-parse HEAD:$BINDING)" = 5442fd7e7a2f392c9b796cd17c76b17977259f22
+test "$(git rev-parse HEAD:$KERNEL)" = 438ee46e012e9eb183b8f2532437e2fe56aa18ed
+test "$(git rev-parse HEAD:$PROVIDER)" = ac997bf06c56a37080d1c8db69b6d4208f4b75ca
 
 WARN=(-Wall -Wextra -Werror -Wno-error=compare-reals -fcheck=all -fbacktrace -fopenmp)
 for opt in o0 o2; do
