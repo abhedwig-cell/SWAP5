@@ -3018,7 +3018,8 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%hysteresis_active .and. .not. parameters%tabulated_hydraulics_active
+           .not. parameters%hysteresis_active .and. &
+           (.not. parameters%tabulated_hydraulics_active .or. allocated(parameters%linear_hydraulic_table))
        if (parameters%bottom_mode == 3) then
          if (parameters%swbotb3_explicit_active) then
            ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
