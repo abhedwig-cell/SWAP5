@@ -10,6 +10,56 @@ INTEGRATED='40c6fe4252cb80bc2adbeee2731f76199f6a7c48'
 def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(b):return hashlib.sha256(b).hexdigest()
+def verify_execution_inventory(name,files,result):
+  """Fail closed when stored endpoints are not backed by executed native commands."""
+  events=json.loads(files[name+'/events.json']) if name in ('small','joint') else result['events']
+  require(isinstance(events,list) and bool(events),'missing execution inventory '+name)
+  observed=set()
+  native=[]
+  compiled=set()
+  for e in events:
+   command=e['command']
+   require(isinstance(command,list) and all(isinstance(x,str) for x in command) and command,'invalid command')
+   signature=tuple(command)
+   require(signature not in observed,'duplicate execution command '+name)
+   observed.add(signature)
+   require(e['returncode']==0,'failed executed command '+name)
+   if e['category'] in ('compile','provider_compile','driver_compile'):
+    require('-c' in command and '-o' in command,'invalid compilation record')
+    source=command[command.index('-c')+1]
+    require(source not in compiled or e['category']=='driver_compile','duplicate provider compilation')
+    if e['category']!='driver_compile':compiled.add(source)
+    require(any(x in command for x in ('-fcheck=all','-fcheck=bounds')),'missing runtime bounds checks')
+    require(any(x.startswith('-ffpe-trap=') and all(y in x for y in ('invalid','zero','overflow')) for x in command),'missing IEEE traps')
+   if e['category']=='native':
+    native.append(command)
+    require('stdout' in e and 'stderr' in e,'unrecorded native output')
+    for stream in ('stdout','stderr'):
+     require(name+'/'+e[stream] in files,'missing executed stream '+name)
+  require(native,'no native programs executed '+name)
+  for opt in ('O0','O2'):
+   selected=[c for c in native if any('/'+opt+'/' in x for x in c)]
+   require(selected,'missing native optimization '+name+':'+opt)
+   if name=='small':
+    expected={'test_b112_retained_split','test_b112_retained_day'}
+    require({Path(c[0]).name for c in selected}==expected,'incomplete small native matrix')
+    require(len(selected)==len(expected),'missing/duplicated small programs')
+   elif name=='joint':
+    matched=[c for c in selected if Path(c[0]).name=='test_b112_retained_joint']
+    require(any(len(c)>1 and c[1]=='write' for c in matched),'missing joint write')
+    require(any(len(c)>1 and c[1]=='resume' for c in matched),'missing joint restart')
+    seen_reject={c[4] for c in matched if len(c)>4 and c[1]=='reject'}
+    require(seen_reject=={'absent','old-profile','legacy','wrong-return','wrong-dvsnlt','wrong-dvsnt','wrong-nfixf','wrong-fntrt'},'missing named configuration rejects')
+    require(sum(len(c)>1 and c[1]=='reject' and len(c)==4 for c in matched)==11,'missing decoder negatives')
+   elif name=='phases':
+    names={Path(c[0]).name for c in selected}
+    require(names=={'original_thermal','test_b112_retained_thermal','test_b112_retained_empty'},'missing phase native drivers')
+    require(sum(Path(c[0]).name=='test_b112_retained_empty' for c in selected)==1,'missing empty phase')
+    for prog,profiles in [('original_thermal',('manual','calendar')),('test_b112_retained_thermal',('selected',))]:
+     for profile in profiles:
+      for action in ('write','resume'):
+       require(sum(Path(c[0]).name==prog and len(c)>4 and c[1]==action and c[4]==profile for c in selected)==1,'missing phase '+prog+' '+profile+' '+action)
+
 def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
  require(p['baseline']==BASE and p['qualified']is True,'unqualified retained profile')
  require(p['ledger_promotion']==[],'unqualified denominator promotion')
@@ -27,6 +77,7 @@ def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
  require(joint['b112_retained']['O0']==joint['b112_retained']['O2'],'joint optimization identity')
  phases=results['phases'];require(phases['status']=='B112_THERMAL_PHASES_AND_ORIGINAL_BYTES_PASS','thermal phases')
  require(phases['runs']['O0']==phases['runs']['O2'],'thermal optimization identity')
+ for name in ('small','joint','phases'):verify_execution_inventory(name,files,results[name])
  for name,r in results.items():
   for path,h in r.get('input_sha256',r.get('inputs',{})).items():require(sha(reader(path))==h,'executed source drift '+path)
   if name in ['small','joint']:
