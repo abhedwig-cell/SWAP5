@@ -5,7 +5,7 @@ program test_historical_activation
  use mod_soil_n_pool_state
  implicit none
  type(soil_n_historical_selection_t)::sel
- type(reactive_parameters_t)::p
+ type(reactive_parameters_t)::p,p_source
  type(reactive_state_t)::owner,other
  type(soil_n_pool_state_t)::pools,derived
  type(soil_n_historical_initial_t)::legacy
@@ -13,10 +13,16 @@ program test_historical_activation
  call parameters(p)
  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
  if(code/=0)error stop 'pools'
+ p_source=p
+ p_source%mineral%inventory%nfrac_fom=[.015d0,.025d0,.015d0,.025d0,.015d0,.025d0,.015d0,.025d0]
+ p_source%organic_reference%ratecon_fom=[.04d0,.015d0,.04d0,.015d0,.04d0,.015d0,.04d0,.015d0]
+ p_source%organic_reference%asfa_fom_bio=[.2d0,.25d0,.2d0,.25d0,.2d0,.25d0,.2d0,.25d0]
+ p_source%organic_reference%asfa_fom_hum=[.15d0,.1d0,.15d0,.1d0,.15d0,.1d0,.15d0,.1d0]
+ p_source%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
  legacy%fom_kg_m3=[1d0,2d0,3d0,4d0,5d0,6d0,7d0,8d0]
  legacy%bio_kg_m3=5d0;legacy%hum_kg_m3=40d0
  legacy%cnh4_kg_m3=.2d0;legacy%cno3_kg_m3=.3d0
- call build_historical_soil_n_inventory(legacy,p,.34d0,derived,code)
+ call build_historical_soil_n_inventory(legacy,p_source,.34d0,derived,code)
  if(code/=N_ACTIVATION_OK)error stop 'historical inventory'
  if(abs(derived%ammonium_n_kg_m2-(.34d0+1300d0*.0002d0)*.2d0*.3d0)>1d-14) &
    error stop 'NH4 sorption storage wrong'
