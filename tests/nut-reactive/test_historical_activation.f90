@@ -67,6 +67,7 @@ program test_historical_activation
    owner,p_complete,tcsf,lai,code)
  if(code==N_ACTIVATION_OK.or.owner%ready())error stop 'combined incomplete accepted'
  sel%source_parameters_complete=.true.
+ sel%source_parameters_complete=.false.
  call activate_soil_n_historical(sel,p,pools,9001_int64,0d0,.34d0,owner,code)
  if(code/=N_ACTIVATION_INVALID.or.owner%ready())error stop 'incomplete source accepted'
  sel%source_parameters_complete=.true.
