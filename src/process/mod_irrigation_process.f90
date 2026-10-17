@@ -133,7 +133,7 @@ module mod_irrigation_process
   end type irrigation_diagnostics_t
 
   public :: evaluate_fixed_irrigation_interval
-  public :: evaluate_scheduled_irrigation_interval
+  public :: evaluate_scheduled_irrigation_interval, evaluate_irrigation_sensor_trigger
   public :: apply_irrigation_salinity_excess
 
 contains
@@ -303,7 +303,7 @@ contains
     type(irrigation_state_t), intent(out) :: candidate_state
     type(irrigation_flux_result_t), intent(out) :: fluxes
     type(irrigation_diagnostics_t), intent(out) :: diagnostics
-    real(real64) :: threshold, depth, duration, event_end, effective_t0, effective_t1, effective_rate
+    real(real64) :: depth, duration, event_end, effective_t0, effective_t1, effective_rate
     integer :: availability_status
     logical :: ok, finishes_at_event_end
 
@@ -398,30 +398,10 @@ contains
       return
     end if
 
-    select case (parameters%timing_criterion)
-    case (7)
-      call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
-                            request%dvs, threshold, ok)
-      if (.not. ok) then
-        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
-        return
-      end if
-      diagnostics%interpolated_threshold = threshold
-      if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
-    case (8)
-      call restricted_afgen(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count, &
-                            request%dvs, threshold, ok)
-      if (.not. ok) then
-        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
-        return
-      end if
-      diagnostics%interpolated_threshold = threshold
-      if (hydraulic_view%water_content(parameters%sensor_node) > threshold) return
-    case default
-      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
-      return
-    end select
-    diagnostics%triggered = .true.
+    call evaluate_irrigation_sensor_trigger(parameters,request%dvs,hydraulic_view,diagnostics)
+    diagnostics%selection_evaluated=.true.
+    if(diagnostics%status/=IRRIGATION_OK.or..not.diagnostics%triggered)return
+
 
     call restricted_afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, &
                           request%dvs, depth, ok)
@@ -490,6 +470,50 @@ contains
       call clear_active_event(candidate_state)
     end if
   end subroutine evaluate_scheduled_irrigation_interval
+
+  ! Existing sensor physics exposed independently of depth/event creation.
+  pure subroutine evaluate_irrigation_sensor_trigger(parameters,dvs,hydraulic_view,diagnostics)
+    type(scheduled_irrigation_parameters_t),intent(in)::parameters
+    real(real64),intent(in)::dvs
+    type(process_hydraulic_view_t),intent(in)::hydraulic_view
+    type(irrigation_diagnostics_t),intent(out)::diagnostics
+    real(real64)::threshold
+    logical::ok
+    diagnostics=irrigation_diagnostics_t()
+    if(.not.ieee_is_finite(dvs))then
+      diagnostics%status=IRRIGATION_INVALID_PARAMETERS;return
+    end if
+    if(.not.valid_scheduled_parameters(parameters))then
+      diagnostics%status=IRRIGATION_INVALID_PARAMETERS;return
+    end if
+    if(.not.valid_scheduled_hydraulic_view(parameters,hydraulic_view))then
+      diagnostics%status=IRRIGATION_INVALID_HYDRAULIC_VIEW;return
+    end if
+    select case (parameters%timing_criterion)
+    case (7)
+      call restricted_afgen(parameters%tcs7_dvs, parameters%tcs7_pressure_head, parameters%tcs7_knot_count, &
+                            dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%pressure_head(parameters%sensor_node) > threshold) return
+    case (8)
+      call restricted_afgen(parameters%tcs8_dvs, parameters%tcs8_water_content, parameters%tcs8_knot_count, &
+                            dvs, threshold, ok)
+      if (.not. ok) then
+        diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+        return
+      end if
+      diagnostics%interpolated_threshold = threshold
+      if (hydraulic_view%water_content(parameters%sensor_node) > threshold) return
+    case default
+      diagnostics%status = IRRIGATION_INVALID_PARAMETERS
+      return
+    end select
+    diagnostics%triggered = .true.
+  end subroutine
 
   pure logical function valid_state(state)
     type(irrigation_state_t), intent(in) :: state
@@ -600,7 +624,7 @@ contains
     integer :: i
 
     valid_table = .false.
-    if (knot_count < 2 .or. knot_count > IRRIGATION_MAX_SCHEDULED_KNOTS) return
+    if (knot_count < 1 .or. knot_count > IRRIGATION_MAX_SCHEDULED_KNOTS) return
     do i = 1, knot_count
       if (.not. ieee_is_finite(knots(i)) .or. .not. ieee_is_finite(values(i))) return
       if (knots(i) < 0.0_real64 .or. knots(i) > 2.0_real64) return
@@ -653,7 +677,6 @@ contains
       return
     end if
     if (x > knots(knot_count)) then
-      if (knot_count < IRRIGATION_MAX_SCHEDULED_KNOTS) return
       value = values(knot_count)
       ok = .true.
       return
@@ -661,8 +684,8 @@ contains
 
     do i = 2, knot_count
       if (x <= knots(i)) then
-        fraction = (x-knots(i-1)) / (knots(i)-knots(i-1))
-        value = values(i-1) + fraction * (values(i)-values(i-1))
+        fraction = (values(i)-values(i-1)) / (knots(i)-knots(i-1))
+        value = values(i-1) + (x-knots(i-1))*fraction
         ok = ieee_is_finite(value)
         return
       end if

@@ -59,7 +59,7 @@ module mod_scheduled_irrigation_management_policy
   end type irrigation_management_policy_result_t
 
   public :: evaluate_irrigation_management_policy
-  public :: evaluate_irrigation_management_depth
+  public :: evaluate_irrigation_management_depth, apply_irrigation_minimum_interval
 
 contains
 
@@ -132,23 +132,40 @@ contains
       return
     end select
 
-    ! B1.11 TCSFIX shares DAYFIX with TCS6; it is not a second clock.
-    ! Called only at an eligible accepted-day selection by the application.
-    ! Counter progress is tentative until the caller commits this candidate.
-    if (parameters%fixed_interval_enabled) then
-      if (result%trigger.and.committed_state%weekly_day_counter>=parameters%fixed_interval_days) then
-        candidate_state%weekly_day_counter=1
-      else
-        result%trigger=.false.
-        if (committed_state%weekly_day_counter<parameters%fixed_interval_days) &
-          candidate_state%weekly_day_counter=committed_state%weekly_day_counter+1
-      end if
+    if(parameters%fixed_interval_enabled)then
+      call apply_irrigation_minimum_interval(parameters,committed_state,result%trigger,candidate_state,status)
+      if(status/=IRR_MGMT_OK)return
     end if
     if (.not. result%trigger) return
 
     call evaluate_irrigation_management_depth(parameters,request,result,status)
 
   end subroutine evaluate_irrigation_management_policy
+
+  ! Shared B1.11 DAYFIX filter. The caller supplies an eligible selection only;
+  ! acceptance remains the existing transaction owner's responsibility.
+  pure subroutine apply_irrigation_minimum_interval(parameters,committed,trigger,candidate,status)
+    type(irrigation_management_policy_parameters_t),intent(in)::parameters
+    type(irrigation_management_policy_state_t),intent(in)::committed
+    logical,intent(inout)::trigger
+    type(irrigation_management_policy_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    candidate=committed;status=IRR_MGMT_OK
+    if(.not.parameters%fixed_interval_enabled)return
+    if(parameters%timing_criterion==6.or.parameters%fixed_interval_days<1.or.parameters%fixed_interval_days>366)then
+      status=IRR_MGMT_INVALID_PARAMETERS;return
+    end if
+    if(committed%weekly_day_counter<0.or.committed%weekly_day_counter>366)then
+      status=IRR_MGMT_INVALID_REQUEST;return
+    end if
+    if(trigger.and.committed%weekly_day_counter>=parameters%fixed_interval_days)then
+      candidate%weekly_day_counter=1
+    else
+      trigger=.false.
+      if(committed%weekly_day_counter<parameters%fixed_interval_days) &
+        candidate%weekly_day_counter=committed%weekly_day_counter+1
+    end if
+  end subroutine
 
   ! Shared source DCS1/DCS2 plus DCSLIM stage. Timing and salinity remain
   ! separate stages, so sensor and root triggers use the same depth authority.

@@ -86,7 +86,7 @@ contains
       resolved%availability_scaling_enabled=.true.;resolved%availability_fraction=allocation%fraction
     end if
     call fmr_prepare_sensor_depth_ssdi_forcing(sensor,root,depth,rainfall,state%management%event,resolved, &
-      physical,base,candidate%management%event,bound,binding,depth_result)
+      physical,base,candidate%management%event,bound,binding,depth_result,state%management%policy,candidate%management%policy)
     if(binding%status/=0)return
     call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)
   end subroutine
@@ -288,7 +288,7 @@ contains
            candidate%management%event,resolved,config,policy,top,result,runtime,binding,depth_result,salt_diag,accepted)
     else
       call fmr_run_sensor_depth_ssdi_interval(column,template,parameters,base,physical,sensor,root,depth,rainfall, &
-           candidate%management%event,resolved,config,top,result,runtime,binding,depth_result,accepted)
+           candidate%management%event,resolved,config,top,result,runtime,binding,depth_result,accepted,candidate%management%policy)
     end if
     if (.not.accepted) return
     call freeze_allocation_receipt(candidate,allocation,request%t0,selecting,binding%external_inflow_amount_cm)

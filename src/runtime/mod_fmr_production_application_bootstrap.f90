@@ -588,9 +588,8 @@ contains
       if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
       if(config%file_weather_irrigation_depth%fixed_interval_enabled)then
-        ! The existing management policy owns DAYFIX. Sensor preparation does
-        ! not yet carry that policy state and must not silently ignore TCSFIX.
-        if(config%file_weather_irrigation_sensor%timing_criterion>=6)return
+        ! All scheduled selectors share the existing accepted DAYFIX owner.
+        if(config%file_weather_irrigation_sensor%timing_criterion==6)return
         if(config%file_weather_irrigation_depth%fixed_interval_days<1.or. &
            config%file_weather_irrigation_depth%fixed_interval_days>366)return
       end if
