@@ -5,7 +5,7 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CANONICAL_RUNTIME_COMPILES_MODEL5_11_DISPATCH_NOT_FORWARD_PORTED",
+  "stage": "BLOCKED_BY_INCOMPLETE_RUNTIME_PROVIDER_DISPATCH__FAIL_CLOSED",
   "tested": "CANONICAL_COMPONENT_O0_O2_PASS; CANONICAL_RUNTIME_MODEL2_3_PASS_MODEL5_REJECTED",
   "qualified": false,
   "admitted": false,
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Forward-port cohesive model5-11 provider selection/binding, accepted-only HYST state transitions and restart initialization from historical qualified backend into CURRENT canonical backend. Preserve analytical MODEL2/3/6, frost, root, drainage, NUT/SOL and other admitted owners. Then one scoped end-to-end O0/O2 runtime gate plus transitive preservation and coverage qualification. No admission until this succeeds.",
+  "next_action": "Port entire extended-hydraulic binding and state transitions as one atomic candidate; perform actual O0/O2 runtime gate and preservation before enabling 5-11 in admission gate. Reconcile current canonical changes first.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -59,5 +59,13 @@
     "model5": "BLOCKED_RUNTIME_NOT_COMMITTED",
     "cause": "Canonical hydraulic_model_kind admission bound to existing analytical model 2/3/6 envelope; adding extended provider files and state/restart members does not activate extended model 5-11 dispatch.",
     "qualified": false
+  },
+  "current_canonical_head_seen": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+  "model5_dispatch_risk_20261017": {
+    "finding": "The canonical admission gate accepts only analytical types 2/3/6; the runtime points selected models to analytical_constitutive. Merely admitting types 5..11 in the predicate would route them to the wrong provider.",
+    "unsafe_partial_commit": "6c4715b964c6eb41e7235d4c1908adb044864635",
+    "revert_commit": "4521c88b631950b58b27001ced5aa579ff076c17",
+    "disposition": "FAIL_CLOSED_RESTORED",
+    "required_change": "Compose extended provider and parameter initialization, qualified selection, trial-start temperature for PDI vapor, and accepted-only HYST transition before enabling model5..11."
   }
 }
