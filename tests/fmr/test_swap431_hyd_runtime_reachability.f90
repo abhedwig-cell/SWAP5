@@ -388,6 +388,7 @@ contains
       p%cofgen(18,j)=1.0e6_real64;p%cofgen(19,j)=100.0_real64;p%cofgen(20,j)=-1.5_real64;p%cofgen(21,j)=0.04_real64
       p%cofgen(22,j)=-200.0_real64;p%cofgen(23,j)=default_k_at(-200.0_real64,p%cofgen(:,j))
     end do
+    p%extended_model6_active=(model==6)
     p%conductivity_power_tail_active=power
     if (power) deallocate(p%hydraulic_model_kind) ! canonical POWER is default-MvG only
     p%pdi_vapor_active=vapor
