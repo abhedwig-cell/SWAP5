@@ -5,9 +5,9 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "INTEGRATED_STABLE_CANDIDATE_NEW_B112_IMPACT_SUCCESSOR_PENDING",
-  "tested": "FOCUSED_HYD_HYST_FSI39_ROSS_CURRENT_PASS; HYD_SHARED_CERTIFICATE_AND_ROOT_PASS; IMMUTABLE_NUT_INPUT_DIGEST_FAIL",
-  "qualified": false,
+  "stage": "SCIENTIFICALLY_QUALIFIED_READY_FOR_CANONICAL_MERGE",
+  "tested": "HYD_HYST_FULL_COMPONENT_AND_FSI39_ROSS_O0_O2_PASS_PLUS_NATIVE_B112_SUCCESSOR_PASS",
+  "qualified": true,
   "admitted": false,
   "transplanted": [
     "src/solver/mod_b111_conductivity_power_tail.f90",
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Read terminal current-source NUT B112 successor workflow, then reconcile exact live canonical and PR merge tree; admit and merge only on owner-qualified green evidence.",
+  "next_action": "Check new documentation-only PR merge tree against qualified source/reference identities and unchanged test drivers; mark PR ready and merge with expected-head lease. Then update current canonical HYD/HYST owner admission/coverage status and verify canonical HEAD.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -202,7 +202,7 @@
     "related_immutable_archive": "integration/audits/evidence/MC_NUT01_B112_RETAINED_QUALIFICATION_20261017.tar.xz.b64",
     "current_physical_scope": "20 B112 partition cases, 54 daily/partial harvest cases, 27 invalid-state rejections, original admitted full native owner proof on frozen checkout, joint HYD/HYST physics O0/O2 from owning workflow",
     "missing": "Full NUT B1.12 moving joint rerun NOT_SELECTED_IMPACT unless new source/behavioral overlap emerges; future failure must remain fail-closed.",
-    "qualification": "PENDING_CURRENT_MERGE_TREE_ACTIONS",
+    "qualification": "SUCCESS_MERGED_TREE_39040202846",
     "expected_seconds": 120,
     "test_selection": "Dependency-impact bridge rather than rebind immutable source hashes; use unchanged original science controls on original exact-science tree.",
     "original_retained_source_base": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
@@ -222,5 +222,46 @@
       "cause": "The original source baseline 47421 predates tests/nut-crop/verify_b112_retained_successor.py; use verified science/admission commit f1f1 instead",
       "corrective_gate": ".github/workflows/swap431-hyst-b112-successor.yml"
     }
+  },
+  "qualified_merge_tree_20261017": {
+    "canonical_parent": "95cc79bd40cc26083e5944a4369fade4eb3ba53d",
+    "head": "abc172cbaf2b547ce92c735c1094a0d6feae14e8",
+    "merge_sha": "6894d310e7bc0c52107aa9fe974f9667ad5245a1",
+    "production_src_tree": "0fc6a5eb1b23b1932cfb596c7ebfdfff0b217294",
+    "reference_tree": "39b0c3b3983102367532dea5edabb889be072b4a",
+    "component_and_ross_fsi_run": {
+      "id": 39037695449,
+      "conclusion": "SUCCESS"
+    },
+    "full_shared_coverage_run": {
+      "id": 39039607360,
+      "physical_steps": "ALL_PASS",
+      "overall": "FAIL_ONLY_SUPERSEDED_OLDER_B112_VERIFIER_PATH"
+    },
+    "bounded_b112_owner_successor_run": {
+      "id": 39040202846,
+      "conclusion": "SUCCESS",
+      "actual_merge_sha": "6894d310e7bc0c52107aa9fe974f9667ad5245a1",
+      "original_b112_record": "f1f1e99e8e2bf352a75aec97145e01853530d9fe",
+      "fresh_b112_native": "O0_O2_PASS"
+    },
+    "identity": "Full-shared-coverage merge tree 09802a3a and bounded B112 successor merge tree 6894d310 share identical src and reference tree. Only test/workflow/audit differences; scientific observations inherited on byte-identical relevant source and original oracle input.",
+    "preserved_models": [
+      "MODEL2",
+      "MODEL3",
+      "MODEL6 analytical standard",
+      "MODEL5,7..11",
+      "MODEL6 extended opt-in",
+      "PDI8..11",
+      "POWER",
+      "LINEAR-TABLE",
+      "HYST1",
+      "HYST2"
+    ],
+    "open_source": [
+      "SW431-HYD-MODEL12_RIA",
+      "SW431-HYD-TABLE",
+      "SW431-HYD-RIA-VAPOR"
+    ]
   }
 }
