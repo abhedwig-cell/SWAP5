@@ -5,7 +5,7 @@ program test_historical_activation
  use mod_soil_n_pool_state
  implicit none
  type(soil_n_historical_selection_t)::sel
- type(reactive_parameters_t)::p,p_source,p_bound
+ type(reactive_parameters_t)::p,p_source,p_bound,p_complete
  type(reactive_state_t)::owner,other
  type(soil_n_pool_state_t)::pools,derived
  type(soil_n_historical_initial_t)::legacy
@@ -52,7 +52,21 @@ program test_historical_activation
  call build_historical_soil_n_inventory(legacy,p,.34d0,derived,code)
  if(code/=N_ACTIVATION_INVALID.or.derived%valid())error stop 'invalid historical store accepted'
  legacy%cno3_kg_m3=.3d0
- sel%swcropsnm=1;sel%sw_wofost=1
+ sel%swcropsnm=1;sel%sw_wofost=1;sel%source_parameters_complete=.true.
+ call initialize_historical_soil_n_complete(sel,rates,legacy,p_source,9001_int64,0d0,.34d0, &
+   owner,p_complete,tcsf,lai,code)
+ if(code/=N_ACTIVATION_OK.or..not.owner%ready())error stop 'combined historical activation'
+ if(any(p_complete%mineral%c_bottom/=[.1d0,.2d0]))error stop 'combined seepage'
+ rates%wfpscrit=1.5d0
+ call initialize_historical_soil_n_complete(sel,rates,legacy,p_source,9001_int64,0d0,.34d0, &
+   owner,p_complete,tcsf,lai,code)
+ if(code==N_ACTIVATION_OK.or.owner%ready().or.tcsf/=0d0.or.lai/=0d0)error stop 'combined rollback'
+ rates%wfpscrit=.6d0
+ sel%source_parameters_complete=.false.
+ call initialize_historical_soil_n_complete(sel,rates,legacy,p_source,9001_int64,0d0,.34d0, &
+   owner,p_complete,tcsf,lai,code)
+ if(code==N_ACTIVATION_OK.or.owner%ready())error stop 'combined incomplete accepted'
+ sel%source_parameters_complete=.true.
  call activate_soil_n_historical(sel,p,pools,9001_int64,0d0,.34d0,owner,code)
  if(code/=N_ACTIVATION_INVALID.or.owner%ready())error stop 'incomplete source accepted'
  sel%source_parameters_complete=.true.
