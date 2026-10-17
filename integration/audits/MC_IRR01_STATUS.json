@@ -7294,7 +7294,7 @@
     "authority": "issue1271; user continuation after completed PR1272",
     "baseline": "a8d65af4c1ab4cb53d1cd9609d21062752b13026",
     "branch": "work/mc-irr01-sensor-batch-1271-20261017",
-    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
+    "phase": "CANONICALLY_ADMITTED_FULL",
     "phase_start_utc": "2026-10-17T00:16:25.670944+00:00",
     "selected_capabilities": [
       "SW431-IRR-TCS7",
@@ -7340,8 +7340,8 @@
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "admitted": false,
-    "next_action": "Reconcile current canonical, expected-head safe merge PR1273, exact full merge tree proof, promote exactly3 existing master rows and preserve240.",
+    "admitted": true,
+    "next_action": "Three-row sensor batch closed. Fifteen of16 existing MC-IRR01 rows admitted; only SALTEXCESS bottom7 chemistry/weather composition remains. Preserve existing source/native and all prior seven issue1271 admissions.",
     "incumbent_result": {
       "qualified": true,
       "admitted": false,
@@ -7826,7 +7826,8 @@
         "compile_invocations": 802,
         "link_invocations": 48,
         "native_invocations": 424
-      }
+      },
+      "instrumented_elapsed_through_completion_receipt_seconds": 1426.458171
     },
     "inheritance": {
       "calendar_and_material_direct_input_hashes": "SOURCE_EXACT_UNCHANGED; original inputs/flags/native outputs compared. Fresh4 native executions because prior all-environment fingerprint differs and its original environment payload is unavailable. No cross-Session object reuse.",
@@ -7846,12 +7847,12 @@
       "limit_cases_per_optimization": 934,
       "real_trajectory_programs": 126,
       "native_decoder_negatives": 264,
-      "full_capability_promotions": 0
+      "full_capability_promotions": 3
     },
     "comparison": {
       "previous_selected_mean_seconds_per_closed_row": 536.0578849539888,
       "selected_science_seconds_per_target_row": 207.88771534866706,
-      "overall_experiment_verdict": "INCONCLUSIVE overall: three complete rows qualified and awaiting admission; selected science207.888s per row, historical coordination/total engineering timers unavailable. No weakened source/mass/transaction/restart gates."
+      "overall_experiment_verdict": "INCONCLUSIVE overall:3 full existing rows admitted in this continuation;7 closed across two coherent PRs1272/1273. Selected science207.888s/row for this batch, historical single-row mean536.058s. Complete historical coordination/engineering timers unavailable; no controlled same-workload or universal reliability/speed claim."
     },
     "remaining_exclusion": "SALTEXCESS needs independently admitted accepted bottom7 chemistry/weather composition. Generic legacy parser/raw uninitialized table tails and alternate hydraulic/crop options retain independent scope.",
     "admission_evidence": {
@@ -7863,6 +7864,44 @@
     "admission_controls": 32,
     "owning_entrypoints": 4,
     "admission_programs": 6,
-    "blockers": []
+    "blockers": [],
+    "full_capability_promotions": 3,
+    "completion_receipt_20261017": {
+      "canonical_merge": "dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e",
+      "qualified_head": "0b2fe122dbb3e0ffaa724fd725d5585e8c173d83",
+      "qualified_full_tree": "3386518a39919d8ce709733c6491ae04eaf354a3",
+      "source_tree": "bae023dab2bb91a91d6a48c4d2a5429a94897873",
+      "merged_full_tree_exact": true,
+      "merge_expected_head_protected": true,
+      "postmerge_source_science": "PASS",
+      "master_branch": "work/swap431-master-coverage-20261006",
+      "master_commit": "c5d6a675c321024a8488d2eeaa39b62000e3fae3",
+      "only_promoted": [
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8",
+        "SW431-IRR-SSDI"
+      ],
+      "all_other240_rows": "EXACT_UNCHANGED",
+      "counts": {
+        "total": 243,
+        "ADMITTED": 112,
+        "ACTIVE_MIGRATION": 92,
+        "QUALIFICATION_ONLY": 3,
+        "SUPERSEDED": 14,
+        "REJECTED": 2,
+        "NOT_APPLICABLE": 20,
+        "unresolved": 95
+      },
+      "master_checks": "PASS original source/census and pinned locators;20 inheritance controls;240-row exact comparison;source/strict docs",
+      "master_evidence": "integration/audits/evidence/MC_IRR01_SENSOR_MASTER_20261017.json.gz.b64 at c5d6a675c321024a8488d2eeaa39b62000e3fae3",
+      "no_full_fci_rossfast_highest_low_air_or_actions": true
+    },
+    "postmerge_proof": {
+      "command": "python -B tests/mc-irr01/verify_sensor_batch_successor.py",
+      "canonical_head": "dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e",
+      "returncode": 0,
+      "stdout_sha256": "47c2d8d895b1ed501cc94e8ef29cf56056b96533b5b627e9852041091b66a1ee",
+      "qualified": true
+    }
   }
 }

@@ -129,7 +129,7 @@ The instrumented phase through science sealing spans
 1030.061s, an elapsed duration,
 not a reconstructed active engineering timer.
 
-Once all three whole rows are admitted, selected terminal science costs
+For the three admitted whole rows, selected terminal science costs
 **207.888s per row**, versus prior single-row terminal
 physical observations493.791s(TCS6) and578.325s(AVAIL), mean536.058s. The workloads
 differ and historical coordination totals are UNKNOWN. Therefore the complete
@@ -162,3 +162,21 @@ control flow are **802 compilation invocations,48 links,424 native invocations**
 The raw Session counts above remain772/40/416; the additional failed six-compile
 O0 prefix and completed24-compile/eight-link/eight-native shell are distinguished
 in recovery. No elapsed time is invented for either uninstrumented shell.
+
+## Canonical completion receipt
+
+Three complete existing rows are **ADMITTED** by PR1273, canonical merge
+`dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e`, qualified head `0b2fe122dbb3e0ffaa724fd725d5585e8c173d83`.
+The complete merged tree exactly equals `3386518a39919d8ce709733c6491ae04eaf354a3`;
+source `bae023dab2bb91a91d6a48c4d2a5429a94897873`. Postmerge source/science
+validation passes. Master receipt `c5d6a675c321024a8488d2eeaa39b62000e3fae3`
+promotes exactly TCS7/TCS8/SSDI and preserves all other240 capability records,
+including the four earlier PR1272 admissions. Source/census/pinned-locator
+integrity,20 inheritance controls and source/strict docs pass.
+
+Current counts: **243 total,112 ADMITTED,92 ACTIVE_MIGRATION,3 QUALIFICATION_ONLY,
+14 SUPERSEDED,2 REJECTED,20 NOT_APPLICABLE;95 unresolved**. MC-IRR01 has15/16
+existing rows admitted; only SALTEXCESS remains open. Issue1271 has closed7
+complete rows across two coherent PRs. The global denominator remains incomplete.
+The complete qualification-plus-coordination speed criterion remains inconclusive
+because historical category timers are unavailable.
