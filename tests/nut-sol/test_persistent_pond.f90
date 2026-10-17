@@ -65,6 +65,21 @@ program test_persistent_pond
  call advance_persistent_pond(state,bad,next,r)
  call require(r%status==POND_WATER,'runon water mismatch rejected')
  call same(state,next,'runon water rejection nonmutation')
+ ! Runoff after accepted infiltration exports its own mass while retaining
+ ! the incumbent denominator for the zero-runoff regression above.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ s=pond_step_t(0d0,1d0,1d0,0.5d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%runoff_depth=0.25d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'runoff accepted pond budget')
+ call require(abs(r%soil_transfer-(2d0/1d0)*0.25d0)<1d-13,'runoff infiltration transfer')
+ call require(abs(r%runoff_output-(2d0/1d0)*0.25d0)<1d-13,'runoff solute export')
+ call require(abs(r%mass_after-1d0)<1d-13,'runoff retained pond solute')
+ call require(abs(r%mass_residual)<1d-13.and.abs(r%water_residual)<1d-13,'runoff closure')
+ bad=s;bad%runoff_depth=0.5d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'runoff mismatch rejected')
+ call same(state,next,'runoff rejection nonmutation')
  ! Dry deposition persists across a dry hiatus and restart, then remobilizes.
  call initialize_persistent_pond(0d0,0d0,0d0,state,status)
  s=pond_step_t(0d0,1d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0,0.25d0)
