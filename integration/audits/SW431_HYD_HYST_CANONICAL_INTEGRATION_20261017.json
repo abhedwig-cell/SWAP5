@@ -6,7 +6,7 @@
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
   "stage": "MODEL5_11_PROVIDER_DISPATCH_IMPLEMENTED_PENDING_FULL_RUNTIME_GATE",
-  "tested": "MODEL2_3_5_11_PDI_VAPOR_POWER_O0_PASS; LINEAR_TABLE_BLOCKS_FULL_RUN",
+  "tested": "CANONICAL_RUNTIME_O0_MODELS_PDI_POWER_LINEAR_TABLE_PASS; HYST_BLOCKS_O0_O2_FULL",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Port and bind SWSOPHY=-1 LINEAR-TABLE provider on canonical runtime, rather than only carrying parameter type; then accepted HYST integration, full O0/O2 and owner preservation before safe admission.",
+  "next_action": "Atomic HYST runtime port: guarded admission for HYST1/2, initialize from physical parameters, build wet/dry scan at trial start, advance state only after converged accepted solver result, test real rejection/nonmutation, continuation and restart O0/O2; preserve existing owners. Reconcile latest canonical then promote only complete rows.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -85,19 +85,15 @@
     "source_regression": "Prior model2/3/5-11 runtime passes at 39031265198, vapor initially not committed"
   },
   "latest_runtime_gate": {
-    "run_id": 39033545335,
-    "head": "6d1f734415f7f00a00eff1aabc49b0601294869e",
-    "result": "PARTIAL_PASS",
-    "passed": [
-      "models2,3,5-11 runtime O0 zero printed mass",
-      "PDI vapor models8-11 runtime O0 zero printed mass",
-      "POWER runtime O0 zero printed mass"
-    ],
-    "failed": "LINEAR-TABLE runtime commit",
-    "not_reached": [
-      "HYST accepted/restart/rollback",
-      "O2 runtime after O0 failure"
-    ],
-    "interpretation": "No full qualification or master admission"
+    "run_id": 39034283142,
+    "code_head": "5ffcf47b45fc81f546a0559e573e0addc9f9dea5",
+    "models": "2,3,5,6,7,8,9,10,11 PASS",
+    "pdi_vapor": "8,9,10,11 PASS",
+    "power": "PASS",
+    "linear_table": "PASS",
+    "mass": "zero printed residual on accepted cases",
+    "hysteresis": "first HYST runtime not committed",
+    "O2_complete": false,
+    "qualification": "NOT_COMPLETE"
   }
 }
