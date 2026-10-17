@@ -389,14 +389,30 @@ contains
   type(reactive_state_t)::chemical
   type(wofost81_crop_owner_state_t)::owner
   type(wofost81_harvest_record_t)::h
+  type(reactive_state_t)::chemical_after
+  type(wofost81_crop_owner_state_t)::crop_after
+  type(soil_n_pool_state_t)::before_pools,after_pools,disk_pools
+  real(real64)::soil_time,soil_water,after_time,after_water,disk_time,disk_water_content
+  integer(int64)::soil_revision,after_revision,disk_revision
   real(real64)::before_n,before_dm
   logical::has
   integer::code
   before_n=crop_soil_whole_n(n);before_dm=crop_soil_organic_mass(n)
+  call n%snapshot(chemical,owner)
+  call chemical%snapshot(soil_time,soil_water,before_pools,soil_revision)
   call harvest_crop_soil_boundary(n,receipt)
   if(receipt%status/=0)print *,'joint harvest rejected',receipt%rejection_stage
   call require(receipt%status==0,'actual Richards accepted-boundary harvest')
   call n%snapshot(chemical,owner);call owner%harvest_snapshot(h,has)
+  call chemical%snapshot(after_time,after_water,after_pools,after_revision)
+  call require(after_time==soil_time.and.after_water==soil_water.and.after_revision==soil_revision, &
+    'harvest preserves soil-N accepted clock water revision')
+  call require(all(after_pools%fom_kg_m3==before_pools%fom_kg_m3).and. &
+    after_pools%biomass_kg_m3==before_pools%biomass_kg_m3.and. &
+    after_pools%humus_kg_m3==before_pools%humus_kg_m3.and. &
+    after_pools%ammonium_n_kg_m2==before_pools%ammonium_n_kg_m2.and. &
+    after_pools%nitrate_n_kg_m2==before_pools%nitrate_n_kg_m2, &
+    'harvest must not reinitialize any soil-N pool')
   call require(has.and.all(owner%nitrogen%retained_dead_n==0d0),'harvest clears physical retained N once')
   call require(abs(before_n-crop_soil_whole_n(n)-sum(h%exported_n)*1d-4)<1d-12,'actual harvest whole N')
   call require(abs(before_dm-crop_soil_organic_mass(n)-sum(h%exported_dm)*1d-4)<1d-12,'actual harvest whole OM')
@@ -407,6 +423,18 @@ contains
   call require(code==0,'native retained harvest snapshot reconstructs before incorporation')
   call consume_crop_soil_harvest_pending(n,receipt);call require(receipt%status==0,'accepted harvest and daily pending incorporate')
   call consume_crop_soil_harvest_pending(disk,receipt);call require(receipt%status==0,'restored harvest incorporates once')
+  call n%snapshot(chemical,owner)
+  call chemical%snapshot(after_time,after_water,after_pools,after_revision)
+  call disk%snapshot(chemical_after,crop_after)
+  call chemical_after%snapshot(disk_time,disk_water_content,disk_pools,disk_revision)
+  call require(after_time==disk_time.and.after_water==disk_water_content.and.after_revision==disk_revision, &
+    'native restore retains soil-N state identity after harvest incorporation')
+  call require(all(after_pools%fom_kg_m3==disk_pools%fom_kg_m3).and. &
+    after_pools%biomass_kg_m3==disk_pools%biomass_kg_m3.and. &
+    after_pools%humus_kg_m3==disk_pools%humus_kg_m3.and. &
+    after_pools%ammonium_n_kg_m2==disk_pools%ammonium_n_kg_m2.and. &
+    after_pools%nitrate_n_kg_m2==disk_pools%nitrate_n_kg_m2, &
+    'harvest incorporated all eight FOM, biomass humus NH4 NO3 identically')
   call write_crop_soil_n_joint_restart_file(prefix//'.consumed',column,cfg%tiles(1)%template,670001_int64,w,n,code)
   call require(code==0,'selected native consumed harvest version')
   call write_crop_soil_n_joint_restart_file(prefix//'.disk-consumed',column,cfg%tiles(1)%template,670001_int64,disk_water,disk,code)
