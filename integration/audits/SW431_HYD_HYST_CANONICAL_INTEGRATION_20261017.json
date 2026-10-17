@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CURRENT_CANONICAL_INTEGRATION_BLOCKED_BY_MODEL6_OWNER_PRESERVATION",
-  "tested": "HYD_HYST_FOCUSED_RUNTIME_PASS_FSI39_PASS_ROSS12_CURRENT_OWNER_REPLAY_PENDING",
+  "stage": "BLOCKED_OWNER_PRESERVATION_FAIL_CLOSED",
+  "tested": "HYD_HYST_RUNTIME_O0_O2_PASS_FSI39_PASS_ROSS12_FAIL_CERTIFICATE_MODEL6_FAIL",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -150,5 +150,25 @@
     "coverage_new_run": 39037214508,
     "canonical_pinned": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
     "disposition": "NO_MERGE_NO_PROMOTION_UNTIL_EXISTING_MODEL6_OWNER_PRESERVED_AND_ALL_GATES_PASS"
+  },
+  "preservation_closeout_20261017": {
+    "fsi39": {
+      "run": 39036782614,
+      "result": "PASS O0/O2 after warning-policy-only update",
+      "commit": "b43e4f031cdd97c6d1c99f2458622f5d4e72599d"
+    },
+    "ross12": {
+      "run": 39037210570,
+      "result": "FAIL ROSS12 real D3R table kernel executed with admitted workload",
+      "branch_commit": "6454a8bf918dfac8f3274697845842d11d717748",
+      "detail": "Historical SHA pins replaced only after verifying current canonical and PR source blobs byte-identical; behavioral oracle fails. Do not waive."
+    },
+    "certificate": {
+      "run": 39037055849,
+      "result": "FAIL O0/O2 runtime for MODEL6: extended hydraulic model parameters invalid; other incumbent drivers exit 0",
+      "detail": "Dependency closure fixed; surviving error is actual owner preservation incompatibility, not compilation."
+    },
+    "coverage_run": 39037214508,
+    "next": "Determine MODEL6 parameter mapping and ROSS12 compatibility against accepted current canonical owners; preserve admitted behaviors; rerun narrow postimage gates; do not merge until all pass."
   }
 }
