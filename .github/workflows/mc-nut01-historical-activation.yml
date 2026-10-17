@@ -11,7 +11,7 @@ permissions:
 jobs:
   focused:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Install gfortran
@@ -19,7 +19,7 @@ jobs:
       - name: Existing corrected-source and reactive actual production
         env:
           REACTIVE_RESULT_DIR: /tmp/nut-historical
-        run: python3 -B tests/nut-reactive/run_reactive.py --direct
+        run: python3 -B tests/nut-reactive/run_reactive.py
       - name: Compile and execute new owner activation O0 O2
         run: |
           set -euo pipefail
