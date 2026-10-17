@@ -57,6 +57,20 @@ jobs:
           src=src.replace(marker,trace+marker)
           Path(sys.argv[1]).write_text(src)
           PY
+          # Research-only matched PCSE juvenile water-stress condition.
+          # Patch a disposable source copy, never admitted src/crop.
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('src/crop/mod_wofost_finalize_rates.f90').read_text()
+          old='glaiex = reltr * state_view%exponential_leaf_area_index * &'
+          new=('glaiex = merge(reltr, 1.0_real64, &\n'
+               '           state_view%development_stage < 0.2_real64 .and. &\n'
+               '           state_view%actual_leaf_area_index < 0.75_real64) * &\n'
+               '           state_view%exponential_leaf_area_index * &')
+          assert src.count(old)==1
+          Path('../build/mod_wofost_finalize_rates_ext01_probe.f90').write_text(src.replace(old,new))
+          print('EXT01_RESEARCH_ONLY_GLAIEX_JUVENILE_PROBE')
+          PY
           COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
           SOURCES=(
             src/transaction/mod_transaction_reference.f90
@@ -71,7 +85,7 @@ jobs:
             src/crop/mod_wofost_one_day_rate_state_view.f90
             src/crop/mod_wofost_rate_parameters.f90
             src/crop/mod_wofost_prepare_assimilation.f90
-            src/crop/mod_wofost_finalize_rates.f90
+            ../build/mod_wofost_finalize_rates_ext01_probe.f90
             src/crop/mod_wofost81_assimilation.f90
             src/crop/mod_wofost81_nitrogen.f90
             src/crop/mod_wofost81_n_stress.f90
