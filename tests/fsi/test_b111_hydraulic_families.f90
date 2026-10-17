@@ -81,4 +81,20 @@ program test_b111_hydraulic_families
 
   if(theta(1)/=0.25_real64 .or. k(1)/=1.25_real64 .or. cap(1)/=0.005_real64) error stop 'model1 preservation failed'
   if(any(dk/=0.0_real64)) error stop 'K0 derivative reservation changed'
+  ! B1.11 SWAP-013: for all PDI variants, require 0 < HA < H0.
+  ! Check the production parameter initializer, not a copied predicate.
+  do i=7,n
+    c(19,i)=0.0_real64
+    call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
+    if(status==B111_EXT_OK) error stop 'PDI accepted HA=0'
+    c(19,i)=c(18,i)
+    call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
+    if(status==B111_EXT_OK) error stop 'PDI accepted HA=H0'
+    c(19,i)=2.0_real64*c(18,i)
+    call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
+    if(status==B111_EXT_OK) error stop 'PDI accepted HA>H0'
+    c(19,i)=1.0e2_real64
+  end do
+  call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
+  if(status/=B111_EXT_OK) error stop 'valid PDI parameters rejected after domain guards'
 end program
