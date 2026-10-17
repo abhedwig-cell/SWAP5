@@ -89,6 +89,7 @@ def validate_science(data):
   for n in ['salt_root','salt_sensor']:
    for ph in ['neutral','hydraulic']:
     rows=json.loads(data[f'physical/DECODER_{opt}_{n}_{ph}.json']);check(len(rows)==31 and len({x['case']for x in rows})==31,'salt decoder coverage')
+    check({'negative_salt','nan_salt','inf_salt','salt_source','salt_revision','salt-policy','salt-boundary','salt-threshold','salt-tscf'}<=set(x['case']for x in rows),'salt missing discriminating controls')
     for row in rows:
      raw=data[f'physical/o{opt}/'+row['input']];check(sha(raw)==row['input_sha256']and row['returncode']==0,'salt unbound decoder')
      mode={'different_config':'native-reject-config','different_calendar':'native-reject-calendar','different_schedule':'native-reject-schedule'}.get(row['case'],'native-reject-'+row['case']if row['case'].startswith('salt-')else'native-reject')
@@ -102,6 +103,21 @@ def validate_science(data):
  check(literal().encode()==data['direct/literal.f90'],'salt literal generator drift')
  check(d['rows'][0]['stdout_sha256']==d['rows'][1]['stdout_sha256'],'salt direct optimization drift')
  check(sum(b'SALT_COMPLETION_LITERAL360_INVALID6=PASS'in b for q,b in data.items()if q.startswith('direct/')and q.endswith('.stdout'))==2,'salt missing direct assertions')
+ rollback=json.loads(data['rollback/RESULTS.json']);ri=json.loads(data['rollback/INPUTS.json'])
+ check(rollback['status']=='PASS'and len(rollback['rows'])==4,'salt real prefix rollback incomplete')
+ check({(x['opt'],x['mode'])for x in rollback['rows']}=={(o,m)for o in (0,2)for m in ['continuous','restart']},'salt rollback mode coverage')
+ check(rollback['inputs']==ri['inputs']and rollback['generated']==ri['generated'],'salt rollback input identity')
+ for q,h in rollback['inputs'].items():check(sha((ROOT/q).read_bytes())==h,'salt stale rollback '+q)
+ check(all(rollback['inputs'].get(q)==p['inputs'][q]for q in inp['providers']),'salt rollback provider drift')
+ events(data,'rollback',rollback['events'])
+ from salt_rollback_cycle_driver import rollback as rollback_generator
+ with tempfile.TemporaryDirectory()as tmp:
+  f=rollback_generator(ROOT,Path(tmp)/'salt_rollback.f90');check(f.read_bytes()==data['rollback/salt_rollback.f90'],'salt rollback generator drift')
+ check(sum(b'SALT_REAL_INCOMPLETE_PREFIX_MASS_EVENT_RETRY_OPAQUE=PASS'in b for q,b in data.items()if q.startswith('rollback/')and q.endswith('.stdout'))==4,'salt real incomplete-prefix assertions absent')
+ for x in rollback['rows']:
+  match=[e for e in rollback['events']if Path(e['command'][0]).name=='test-salt_rollback'and'/o'+str(x['opt'])+'/'in e['command'][0]and e['command'][-2:]==[x['mode'],x['phase']]]
+  check(len(match)==1 and match[0]['stdout_sha256']==x['stdout_sha256'],'salt rollback command missing')
+  other=next(z for z in rollback['rows']if z['opt']==2-x['opt']and z['mode']==x['mode']);check(other['stdout_sha256']==x['stdout_sha256'],'salt rollback optimization drift')
  proof=json.loads(data['review/incumbent-proof.json']);check(proof==r['incumbent_result']and sha(data['review/incumbent-proof.json'])==r['incumbent_proof_sha256'],'salt incumbent proof drift')
  check(proof['qualified']and proof['full_capability']and proof['current_source_tree']==git('rev-parse',BASE+':src'),'salt unqualified old source')
  projections=json.loads(data['review/projections.json']);check(set(projections)=={q for q,v in r['postimages'].items()if v['status']=='M'},'salt body review incomplete')
