@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "MODEL5_11_PROVIDER_DISPATCH_IMPLEMENTED_PENDING_FULL_RUNTIME_GATE",
-  "tested": "CANONICAL_RUNTIME_O0_MODELS_PDI_POWER_LINEAR_TABLE_PASS; HYST_BLOCKS_O0_O2_FULL",
+  "stage": "CANONICAL_INTEGRATION_FOCUSED_GREEN_PENDING_ADMISSION_PRESERVATION",
+  "tested": "FOCUSED_CANONICAL_RUNTIME_O0_O2_PASS",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Atomic HYST runtime port: guarded admission for HYST1/2, initialize from physical parameters, build wet/dry scan at trial start, advance state only after converged accepted solver result, test real rejection/nonmutation, continuation and restart O0/O2; preserve existing owners. Reconcile latest canonical then promote only complete rows.",
+  "next_action": "Review exact science scope and dependent legacy owner preservation, run required checks on merge candidate and verify merge tree, then admit and reconcile full-row master coverage. RIA/TABLE generic remain open.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -85,15 +85,28 @@
     "source_regression": "Prior model2/3/5-11 runtime passes at 39031265198, vapor initially not committed"
   },
   "latest_runtime_gate": {
-    "run_id": 39034283142,
-    "code_head": "5ffcf47b45fc81f546a0559e573e0addc9f9dea5",
-    "models": "2,3,5,6,7,8,9,10,11 PASS",
-    "pdi_vapor": "8,9,10,11 PASS",
-    "power": "PASS",
-    "linear_table": "PASS",
-    "mass": "zero printed residual on accepted cases",
-    "hysteresis": "first HYST runtime not committed",
-    "O2_complete": false,
-    "qualification": "NOT_COMPLETE"
+    "commit": "174591b5681c3ed160afa31fa4736b75719ae87b",
+    "run_id": 39034968506,
+    "result": "PASS",
+    "scope": [
+      "MODEL2,3,5..11",
+      "PDI vapor8..11",
+      "POWER",
+      "LINEAR-TABLE",
+      "HYST1/HYST2 accepted runtime",
+      "HYST1/HYST2 restart",
+      "HYST1/HYST2 rejected trial rollback",
+      "native mass O0/O2 identity"
+    ],
+    "status_context": "SW431/HYD-canonical-component"
+  },
+  "canonical_reconciliation": {
+    "baseline": "9705f65fc43dd25528a1cf0197f83e63ab9f5bc1",
+    "observed_canonical": "6c3f59617fa11593ae69ead5eed7891a8ac66dab",
+    "ahead_canonical_commits": 4,
+    "changed_files": [
+      ".github/workflows/mc-nut01-focused-native.yml"
+    ],
+    "declared_hyd_dependency_intersection": false
   }
 }
