@@ -189,6 +189,16 @@ program test_reactive_joint
       historical_tcsf,historical_lai,status,input_line)
    call require(status==0.and.eight_n%ready().and.historical_plan%ready(), &
       'unified original-material and eight-pool source accepted in actual Richards owner')
+   ! Late malformed parameter after valid management rows must publish no owner or calendar.
+   open(newunit=input_unit,file='historical-unified.txt',position='append')
+   write(input_unit,'(A)')'FOM1_t = 1.0'
+   close(input_unit)
+   call initialize_historical_reactive_n_unified_export(historical,eight,9001_int64,0d0,theta, &
+      'historical-unified.txt','1900-01-01',historical_plan,eight_n,eight_bound, &
+      historical_tcsf,historical_lai,status,input_line)
+   call require(status/=0.and..not.eight_n%ready().and..not.historical_plan%ready(), &
+      'unified malformed late record returns no partial committed owner or calendar')
+
    call initialize_historical_reactive_n_named_files(historical,eight,9001_int64,0d0,theta, &
       'historical-params.txt','historical-actual-input.snm','1900-01-01',historical_plan, &
       eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
