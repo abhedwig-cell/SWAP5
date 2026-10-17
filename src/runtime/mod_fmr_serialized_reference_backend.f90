@@ -511,6 +511,10 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
     logical :: pond_storage_available = .false.
     real(real64) :: pond_start_cm = 0.0_real64, pond_end_cm = 0.0_real64
+    ! Read-only converged diagnostics, NOT yet an accepted gross-flux receipt.
+    logical :: converged_surface_available = .false.
+    real(real64) :: converged_pond_evaporation_cm_day = 0.0_real64
+    real(real64) :: converged_runoff_depth_cm = 0.0_real64
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
@@ -5616,6 +5620,20 @@ contains
     if (.not.all(ieee_is_finite([step%pond_start_cm,step%pond_end_cm]))) return
     if (min(step%pond_start_cm,step%pond_end_cm)<0.0_real64) return
     step%pond_storage_available = .true.
+    ! Publish only explicitly available final-converged numerical provenance.
+    ! These diagnostics must not be consumed as complete gross solute receipts.
+    if (solve_result%converged_surface_result%status == SW_TOP_BOUNDARY_AVAILABLE .and. &
+        solve_result%converged_surface_result%runoff_resolved) then
+      if (.not.all(ieee_is_finite([solve_result%converged_surface_result%ponded_water_evaporation, &
+          solve_result%converged_surface_result%runoff_depth]))) return
+      if (solve_result%converged_surface_result%ponded_water_evaporation < 0.0_real64 .or. &
+          solve_result%converged_surface_result%runoff_depth < 0.0_real64) return
+      if (abs(solve_result%converged_surface_result%candidate_ponding_depth-step%pond_end_cm) > &
+          128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(step%pond_end_cm))) return
+      step%converged_surface_available = .true.
+      step%converged_pond_evaporation_cm_day = solve_result%converged_surface_result%ponded_water_evaporation
+      step%converged_runoff_depth_cm = solve_result%converged_surface_result%runoff_depth
+    end if
     step%water_start = request%base_state%water_content
     step%water_end = solve_result%candidate_state%water_content
     step%subsurface_source = self%qssdi
