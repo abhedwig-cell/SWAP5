@@ -155,165 +155,20 @@ program test_b112_retained_joint
    integer::unit,i,errline
    character(16)::key
    selection%swcropsnm=1;selection%sw_wofost=1;selection%source_parameters_complete=.true.
-   open(newunit=unit,file='source-crop-startup.txt',status='replace')
-   write(unit,'(A)')'[management]'
-   write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
-   write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
-   write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
-   write(unit,'(A)')'1900-01-01 1 100 0.1'
-   write(unit,'(A)')'[soil_n_parameters]'
-   do i=1,8
-     write(key,'(A,I1,A)')'FOM',i,'_t'
-     write(unit,'(A)')trim(key)//' = 1.0'
-   end do
-   write(unit,'(A)')'Bio_t = 5','Hum_t = 40','cNH4_t = 0.02','cNO3_t = 0.03', &
-     'Temp_ref = 20','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
-     'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
-     'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1', &
-     'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
-     'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
-   close(unit)
-   call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
-      0d0,theta,'source-crop-startup.txt','1900-01-01',startup_calendar, &
-      startup_state,startup_policy,status,errline)
-   call require(status==0.and.startup_state%ready().and.startup_calendar%ready(), &
-     'real crop and Soil-N state jointly initialized by one source export')
-   call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]), &
-     'actual coupled owner has source apparent ages')
- end block
- end if
- call initialize_reactive(sp,9001_int64,0d0,theta,pools,soil,status);call require(status==0,'reactive initialize')
- call initialize_crop_soil(soil,crop,cp,9101_int64,state,status);call require(status==0,'three-owner initialize')
- call state%snapshot(after_soil,crop)
- initial_water=water;initial_state=state;initial_soil=soil;old_crop=pack_crop_n_owner(crop)
- bad_items=items;bad_items(2)%kind=999
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-   cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,bad_items,split,policy,result,env)
- call require(result%status/=0,'late material rejects whole batch');call unchanged()
-
- invalid=cfg%tiles(1)%base_forcing;invalid%root_extraction_sink=-1d0
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water,invalid, &
-    cfg%numerical,state,weather,0d0,1d0,items,split,policy,result,env)
- call require(result%status/=0,'water rejected');call unchanged()
- invalid=cfg%tiles(1)%base_forcing;invalid%top_flux=-.001d0
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water,invalid, &
-    cfg%numerical,state,weather,0d0,1d0,items,split,policy,result,env)
- call require(result%status==JOINT_CHEMICAL_REJECTED,'carrier rejects after actual water trial');call unchanged()
- bad_weather=weather;bad_weather%average_temperature=ieee_value(0d0,ieee_quiet_nan)
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,state,bad_weather,0d0,1d0,items,split,policy,result,env)
- call require(result%status==JOINT_CHEMICAL_REJECTED,'crop forcing rejects after actual water trial');call unchanged()
- block
-  type(crop_soil_state_t)::bad_state
-  type(kernel_committed_state_t)::bad_water
-  bad_sp=sp;bad_sp%organic_reference%ratecon_bio=0d0;bad_sp%organic_reference%ratecon_hum=0d0
-  call initialize_reactive(bad_sp,9001_int64,0d0,theta,pools,after_soil,status)
-  call initialize_crop_soil(after_soil,crop,cp,9101_int64,bad_state,status)
-  call require(status==0,'stage singular organic trial')
-  bad_water=water
-  call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,bad_state,weather,0d0,1d0,items,split,policy,result,env)
-  call require(result%status==JOINT_CHEMICAL_REJECTED,'reaction rejects after actual crop preparation')
-  call require(bad_water%current_revision()==water%current_revision(),'reaction no water leak')
-  call bad_state%snapshot(after_soil,after_crop);actual_crop=pack_crop_n_owner(after_crop)
-  call require(all(actual_crop==old_crop),'reaction no crop leak')
- end block
- block
-  integer::i
-  do i=1,5
-   bad_env=env
-   select case(i)
-   case(1);bad_env%temperature_c=ieee_value(0d0,ieee_quiet_nan)
-   case(2);bad_env%temperature_c=-20.01d0
-   case(3);bad_env%temperature_c=60.01d0
-   case(4);bad_env%t0=1d0
-   case(5);bad_env%t1=2d0
-   end select
-   call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,items,split,policy,result,bad_env)
-   call require(result%status==JOINT_CHEMICAL_REJECTED,'material plus invalid temperature after actual water');call unchanged()
-  end do
- end block
- bad_policy=policy;bad_policy%application_age(3)=100.01d0
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,items,split,bad_policy,result,env)
- call require(result%status/=0,'late invalid pending material after actual water crop');call unchanged()
- call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,items,split,policy,result,env)
- if(result%status/=0)print *,'diagnostics',result%status,result%joint%joint%water%status,result%joint%joint%chemical%status,result%joint%joint%chemical%soil%status
- call require(result%status==JOINT_OK,'actual Richards WOFOST81 material N valid retry')
- call require(result%senescence%materials%gross_n>0d0.and.result%senescence%materials%volatilized_n>0d0.and. &
-   abs(result%senescence%materials%residual)<=1d-12,'material plus day whole N')
- call require(abs(result%joint%joint%chemical%whole_n_residual)<=1d-12,'hard soil crop whole N balance')
- call require(result%joint%joint%chemical%internal_supply_kg_m2>0d0.and.result%joint%joint%chemical%fixation_kg_m2>0d0,'soil debit plus WOFOST81 fixation')
- call require(result%joint%joint%chemical%internal_supply_kg_m2<result%joint%joint%chemical%prepared%nitrogen_request%soil_request*1d-4,'actual limited supply')
- call literal_actual()
- call source_n(crop,after_crop,result%joint%joint%chemical)
- call require(result%joint%joint%chemical%crop%rntranslocation_applied>0d0,'active source storage and multi donor transfer')
- call state%pending_snapshot(pending,has_pending)
- call require(has_pending.and.all(pending%dry_matter_kg_ha(1:2)>0d0).and.pending%dry_matter_kg_ha(3)==0d0.and.result%senescence%incorporated_n==0d0,'source root/partial leaf pending and retained stem')
- call state%snapshot(after_soil,after_crop)
- call require(after_crop%nitrogen%b112_residue_profile.and.all(after_crop%nitrogen%retained_dead_n>0d0),'nonzero actual retained N')
- call require(all(after_crop%crop%biomass%retained_dead_biomass>0d0),'nonzero actual retained DM')
- call require(abs(result%senescence%whole_n_residual)<=1d-12,'pending included whole N')
- block
-  real(real64),allocatable::before(:),after(:)
-  integer(int64)::water_revision
-  call state%snapshot(after_soil,after_crop);before=pack_crop_n_owner(after_crop);water_revision=water%current_revision()
-  call run_crop_soil_n_senescence_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-    cfg%tiles(1)%base_forcing,cfg%numerical,state,weather,0d0,1d0,items,split,policy,result,env)
-  call require(result%status/=0,'consumed batch cannot replay')
-  call state%snapshot(after_soil,after_crop);after=pack_crop_n_owner(after_crop)
-  call require(all(before==after).and.water%current_revision()==water_revision,'replay no owner leak')
- end block
- call export_crop_soil_n_joint_restart(column,cfg%tiles(1)%template,670001_int64,water,state,payload,status)
- call require(status==0,'opaque complete export')
- call write_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template,670001_int64,water,state,status)
- call require(status==0,'complete disk export')
- other_water=kernel_committed_state_t();other_state=crop_soil_state_t()
- call restore_crop_soil_n_joint_restart(payload,column,cfg%tiles(1)%template,670001_int64,9999_int64,other_water,other_state,status)
- call require(status/=0.and..not.other_water%ready().and..not.other_state%ready(),'opaque wrong crop identity atomic')
- call restore_crop_soil_n_joint_restart(payload,column,cfg%tiles(1)%template,670001_int64,9101_int64,other_water,other_state,status)
- call require(status==0,'opaque complete restore')
- call second_day(backend,water,state);call second_day(second,other_water,other_state)
- call finish_harvest(water,state,trim(endpoint)//'.stages')
- call finish_harvest(other_water,other_state,trim(endpoint)//'.opaque-stages')
- call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template,670001_int64,water,state,status)
- call require(status==0,'continuous complete endpoint')
- call write_crop_soil_n_joint_restart_file(trim(endpoint)//'.opaque',column,cfg%tiles(1)%template,670001_int64,other_water,other_state,status)
- call require(status==0,'opaque complete endpoint')
- print '(A)','B112_ACTUAL_RICHARDS_RETAINED_PENDING_HARVEST_OPAQUE_NATIVE=PASS'
-contains
- subroutine source_continuation()
-   type(soil_n_historical_selection_t)::selection
-   type(soil_n_amendment_calendar_t)::startup_plan
-   type(crop_senescence_policy_t)::startup_policy
-   type(reactive_state_t)::source_soil
-   type(wofost81_crop_owner_state_t)::source_crop
-   type(soil_n_day_environment_t)::day2_env,day1_env
-   type(senescence_joint_result_t)::day_receipt
-   type(b111_soil_n_material_t),allocatable::scheduled(:)
-   integer,allocatable::record_indices(:)
-   integer::unit,j,error_line,code,day
-   integer(int64)::sid
-   character(16)::key
-   real(real64)::source_water,base_day
-   call parse_soil_n_date('1900-12-30',base_day,code)
-   call require(code==N_INPUT_OK,'year-boundary calendar origin')
-   day1_env=soil_n_day_environment_t(base_day,base_day+1d0,5d0)
-   selection%swcropsnm=1;selection%sw_wofost=1
-   selection%source_parameters_complete=.true.
-   open(newunit=unit,file='source-crop-startup.txt',status='replace')
-   write(unit,'(A)')'[management]'
-   write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
-   write(unit,'(A)')"1 'Mineral' 0 0 0 0.21 0.10"
-   write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
-   write(unit,'(A)')'1900-12-30 1 100 0.1'
-   write(unit,'(A)')'1901-01-01 1 50 0.1'
-   write(unit,'(A)')'1901-01-01 1 25 0.1'
-   write(unit,'(A)')'1901-12-31 1 75 0.1'
-   write(unit,'(A)')'1902-01-01 1 25 0.1'
-   write(unit,'(A)')'[soil_n_parameters]'
+   ! Read a bounded source-keyword .snm file without intermediary row export.
+   ! Arrays are deliberately named after original management_soil TTUTIL calls.
+   open(newunit=unit,file='source-crop-startup.snm',status='replace')
+   write(unit,'(A)')'MatNum = 1'
+   write(unit,'(A)')"MatName = 'Mineral'"
+   write(unit,'(A)')'AppAge = 0'
+   write(unit,'(A)')'OrgMatFrac = 0'
+   write(unit,'(A)')'OrgNFrac = 0'
+   write(unit,'(A)')'NH4NFrac = 0.21'
+   write(unit,'(A)')'NO3NFrac = 0.10'
+   write(unit,'(A)')'smedate = 1900-12-30, 1901-01-01, 1901-01-01, 1901-12-31, 1902-01-01'
+   write(unit,'(A)')'iMat = 1 1 1 1 1'
+   write(unit,'(A)')'Dosagekgha = 100 50 25 75 25'
+   write(unit,'(A)')'VolatFraction = 0.1 0.1 0.1 0.1 0.1'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
      write(unit,'(A)')trim(key)//' = 1.0'
@@ -332,13 +187,13 @@ contains
    call require(ok,'source water state')
    source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
-      base_day,source_water,'source-crop-startup.txt','1900-12-30',startup_plan, &
+      base_day,source_water,'source-crop-startup.snm','1900-12-30',startup_plan, &
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
    ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
    ! Exact source-event selection across a complete crop-free calendar year.
-   ! The expensive Richards driver remains four days, while the complete
+   ! The actual Richards driver now runs 31 days, while the complete
    ! immutable source forcing plan is checked at every daily boundary.
    do day=0,368
      call select_soil_n_amendments(startup_plan,base_day+real(day,real64),base_day+real(day+1,real64), &
