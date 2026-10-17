@@ -38,6 +38,8 @@ MODULE_SRC=(
   src/process/mod_drainage_empirical_interflow_response.f90
   src/process/mod_drainage_multilevel_aggregation.f90
   src/process/mod_drainage_extended_exchange.f90
+  # DRAMET3 production dependency must compile before the shared drain binding.
+  src/process/mod_drainage_dramet3_response.f90
   src/runtime/mod_fmr_drainage_response_binding.f90
   src/process/mod_soil_temperature_contract.f90
   src/process/mod_restricted_soil_temperature.f90
@@ -46,19 +48,22 @@ MODULE_SRC=(
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
   src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_core.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b110_source_sink_provider.f90
+  src/solver/mod_b110_root_sink_provider.f90
   src/solver/mod_fixed_flux_top_boundary_provider.f90
   src/process/mod_restricted_surface_evaporation.f90
   src/solver/mod_b110_dynamic_top_boundary_provider.f90
   src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
   src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90
+  src/process/mod_pond_water_temporal_difference.f90
   src/solver/mod_reference_richards_temporal_indicator.f90
   src/legacy/b1_10_port/headcalc.f90
   src/adapter/mod_reference_richards_legacy_binding.f90
   src/adapter/mod_reference_richards_accepted_step_directional_service.f90
   src/adapter/mod_b110_serialized_context_binding.f90
   src/process/mod_snow_process.f90
-  src/solver/mod_b110_root_sink_provider.f90
   src/process/mod_restricted_fixed_weir_surface_water.f90
   src/runtime/mod_fmr_soil_water_application_host.f90
   src/runtime/mod_rossfast_d3r_execution_policy.f90
@@ -77,7 +82,17 @@ MODULE_SRC=(
   src/process/mod_liquid_water_sensible_enthalpy.f90
   src/runtime/mod_fmr_bottom_sensible_energy.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
+  # Compile the actual B1.11 pond solute and joint-transaction dependencies
+  # on both optimization levels, not merely the isolated pond process.
+  src/runtime/mod_fmr_b111_pond_solute_route.f90
+  src/runtime/mod_fmr_b111_pond_joint_application.f90
 )
+
+# Resolve the full real module closure once, without reimplementing physics.
+# A missing/ambiguous provider or dependency cycle rejects before compilation.
+python3 tests/publication/resolve_fortran_module_closure.py "${MODULE_SRC[@]}" > "$BUILD/module_sources.txt" || fail 'Fortran module closure'
+mapfile -t MODULE_SRC < "$BUILD/module_sources.txt"
+echo "PUB_P1E02_RESOLVED_MODULE_SOURCES=${#MODULE_SRC[@]}"
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
@@ -103,6 +118,70 @@ for opt in 0 2; do
     'PUB_P1E02_PRODUCTION_POSTSOLVER_ROLLBACK=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
+  # Exercise the production B1.11 pond owner, not a reconstructed process.
+  # Historical accepted mixing: initial 1 cm, 2 mg/cm2, evaporation
+  # 0.5 cm, infiltration 0.25 cm => 1 mg/cm2 infiltrates.
+  cat > "$OUT/test_pond_evap.f90" <<'F90'
+program test_pond_evap
+use iso_fortran_env, only: real64,int64
+use mod_b111_persistent_pond
+implicit none
+type(persistent_pond_state_t) :: original,candidate,restored,rejected
+type(pond_step_t) :: s,bad
+type(persistent_pond_receipt_t) :: r
+real(real64) :: clock,depth,mass
+integer(int64) :: revision
+integer :: status
+call initialize_persistent_pond(0d0,1d0,2d0,original,status)
+if(status/=POND_OK) error stop 'pond init'
+s=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+s%pond_evaporation_rate=0.5d0
+call advance_persistent_pond(original,s,candidate,r)
+if(r%status/=POND_OK) error stop 'evap acceptance'
+if(abs(r%soil_transfer-1d0)>1d-13.or.abs(r%mass_after-1d0)>1d-13) &
+ error stop 'historical production mixing'
+if(abs(r%mass_residual)>1d-13.or.abs(r%water_residual)>1d-13) &
+ error stop 'pond water or mass imbalance'
+call candidate%snapshot(clock,depth,mass,revision)
+call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+if(status/=POND_OK) error stop 'pond restore'
+call restored%snapshot(clock,depth,mass,revision)
+if(depth/=0.25d0.or.mass/=1d0.or.revision/=1_int64) error stop 'restart identity'
+! Drying removes the residual 0.25 cm water but no remaining solute.
+s=pond_step_t(1d0,2d0,0.25d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0)
+s%pond_evaporation_rate=0.25d0
+call advance_persistent_pond(restored,s,candidate,r)
+if(r%status/=POND_OK.or.r%mass_after/=1d0.or.r%soil_transfer/=0d0) &
+ error stop 'dry residual solute retention'
+! After dry restart, chemically specified rain re-wets the existing owner.
+call candidate%snapshot(clock,depth,mass,revision)
+call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+if(status/=POND_OK) error stop 'dry restart'
+s=pond_step_t(2d0,3d0,0d0,0.25d0,-0.25d0,0.5d0,0.2d0,0d0,0d0,0d0)
+call advance_persistent_pond(restored,s,candidate,r)
+if(r%status/=POND_OK) error stop 'rewet acceptance'
+if(abs(r%soil_transfer-0.55d0)>1d-13.or.abs(r%mass_after-0.55d0)>1d-13) &
+ error stop 'rewet historical mixing'
+if(abs(r%mass_residual)>1d-13.or.abs(r%water_residual)>1d-13) &
+ error stop 'multi-step accepted balances'
+bad=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+bad%pond_evaporation_rate=0.25d0
+call advance_persistent_pond(original,bad,rejected,r)
+if(r%status/=POND_WATER) error stop 'unbalanced evaporation accepted'
+call rejected%snapshot(clock,depth,mass,revision)
+if(depth/=1d0.or.mass/=2d0.or.revision/=0_int64) error stop 'rejected mutation'
+print '(A)', 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS'
+end program
+F90
+  POND_OBJECTS=()
+  for pond_source in src/process/mod_b111_pond_solute_exchange.f90 src/process/mod_b111_persistent_pond.f90; do
+    pond_obj="$OUT/$(basename "${pond_source%.f90}")-evap.o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$pond_source" -o "$pond_obj"
+    POND_OBJECTS+=("$pond_obj")
+  done
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" "$OUT/test_pond_evap.f90" "${POND_OBJECTS[@]}" -o "$OUT/test_pond_evap"
+  "$OUT/test_pond_evap" | tee "$OUT/pond_evap.txt"
+  grep -Fq 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS' "$OUT/pond_evap.txt" || fail "pond evaporation O$opt"
   cat "$OUT/output.txt"
   echo "PUB_P1E02_O${opt}=PASS"
 done

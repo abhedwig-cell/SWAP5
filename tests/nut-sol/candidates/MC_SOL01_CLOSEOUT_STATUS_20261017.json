@@ -1,0 +1,33 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-LOSS-CLOSEOUT",
+  "baseline_canonical": "d4fca1d351ed0ff6f88288bf23857c69a1224998",
+  "candidate_pre_record": "96bd9b0737f897ba43ad186979764244e07965bf",
+  "existing_pr": 1288,
+  "stage": "BLOCKED_PRODUCTION_ADMISSION",
+  "implemented": true,
+  "implementation_scope": "standalone research leaf under tests/nut-sol/candidates only",
+  "persisted": true,
+  "tested": true,
+  "test_scope": "local independent O0/O2 Fortran candidate, not SWAP5 production",
+  "qualified": false,
+  "canonically_admitted": false,
+  "mastercoverage_promoted": false,
+  "local_retest_20261017": {
+    "compiler": "gfortran",
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all",
+    "optimizations": ["O0", "O2"],
+    "output_each": ["SOURCE_ALIGNED_POND=PASS", "JOINT_SURFACE_CANDIDATE_PASS"],
+    "exit_code": 0
+  },
+  "scientific_decision": "retain existing mod_b111_pond_solute_exchange; do not integrate pre-loss mixing candidate",
+  "blockers": [
+    "final-converged HeadCalc gross evaporation/runoff receipt missing from soil_water_solve_result_t",
+    "accepted water trace lacks proven actual gross source/loss receipts",
+    "historical SWAP4.3.1 source-level chemical routing unverified",
+    "joint production rollback/retry and native restart qualification absent"
+  ],
+  "preserve_admitted_prs": [1234,1256,1257,1258],
+  "next_action": "Implement and qualify final-converged water-owner gross exchange receipt at HeadCalc to soil_water_solve_result_t boundary; propagate only accepted substeps; reuse existing sole pond_mass owner, compare historic source, run source-bound joint O0/O2 rollback and native restart before admission",
+  "branch": "work/sol-surface-loss-budget-candidate-20261017",
+  "note": "No new production code or shared solver-owner change is claimed by this record. PR1288 must not be merged in current form."
+}

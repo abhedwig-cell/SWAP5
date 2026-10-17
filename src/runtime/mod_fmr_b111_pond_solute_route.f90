@@ -32,7 +32,8 @@ contains
   integer::k,n,code
   receipt=matrix_solute_receipt_t()
   if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
-    supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
+    supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate, &
+    supply%runon_rate,supply%runon_c])))return
   if(.not.committed%ready().or.size(steps)<1.or.size(steps)>100000)return
   call committed%snapshot(clock,water,mobile,amount,revision)
   call committed%configuration(p,id)
@@ -99,7 +100,37 @@ contains
     receipt%max_water_residual=max(receipt%max_water_residual,abs(closure)*dt)
     if(code/=WATER_FACE_FLUX_OK)return
     if(.not.t%pond_storage_available)return
+    ! A chemical runon receipt requires source identity from the accepted
+    ! converged water substep, never a caller-only unverified rate.
+    if(supply%runon_rate>0d0.and..not.t%converged_gross_sources_available)return
+    if(t%converged_gross_sources_available.and..not.t%converged_surface_available)return
+    ! Reject gross forcing that the admitted pond water/solute receipt cannot
+    ! represent; do not silently map runon or melt to chemically clean rain.
+    if(t%converged_gross_sources_available)then
+      if(.not.all(ieee_is_finite([t%converged_rain_rate_cm_day, &
+        t%converged_irrigation_rate_cm_day,t%converged_snowmelt_rate_cm_day, &
+        t%converged_runon_rate_cm_day])))return
+      if(t%converged_rain_rate_cm_day/=supply%rain_rate.or. &
+         t%converged_irrigation_rate_cm_day/=supply%irrigation_rate)return
+      if(t%converged_snowmelt_rate_cm_day/=0d0.or. &
+         t%converged_runon_rate_cm_day/=supply%runon_rate)return
+    end if
+    ! The incumbent pond water balance contains no gross evaporative or
+    ! runoff loss. A converged hydraulic receipt proving either loss must
+    ! reject this chemical trial rather than silently conserve the wrong
+    ! water volume and export an unqualified solute mass.
+    if(t%converged_surface_available)then
+      if(.not.all(ieee_is_finite([t%converged_pond_evaporation_cm_day, &
+          t%converged_runoff_depth_cm])))return
+      ! The admitted B1.11 mixing denominator is preserved. Pond evaporation
+      ! changes accepted water depth only, not dissolved solute mass.
+      if(t%converged_pond_evaporation_cm_day<0d0.or.t%converged_runoff_depth_cm<0d0)return
+    end if
     pond_step=supply;pond_step%t0=t%t0;pond_step%t1=t%t1
+    pond_step%pond_evaporation_rate=0d0;pond_step%runoff_depth=0d0
+    if(t%converged_surface_available) &
+      pond_step%pond_evaporation_rate=t%converged_pond_evaporation_cm_day
+    if(t%converged_surface_available) pond_step%runoff_depth=t%converged_runoff_depth_cm
     pond_step%depth_begin=t%pond_start_cm;pond_step%depth_end=t%pond_end_cm;pond_step%qtop=t%top_flux
     call advance_persistent_pond(pond_trial,pond_step,pond_next,pond_receipt)
     if(pond_receipt%status/=POND_OK)return
@@ -109,13 +140,16 @@ contains
     f%q_face_up_cm_day=-faces;f%root_sink_cm_day=t%root_sink;f%qdra_cm_day=t%drainage_sink_by_level
     f%rain_rate_cm_day=supply%rain_rate;f%rain_c_mg_cm3=supply%rain_c
     f%irrigation_rate_cm_day=supply%irrigation_rate;f%irrigation_c_mg_cm3=supply%irrigation_c
-    f%pond_end_cm=t%pond_end_cm;f%macropore_area_fraction=0d0
+    f%runon_rate_cm_day=supply%runon_rate;f%runon_c_mg_cm3=supply%runon_c
+    f%pond_end_cm=t%pond_end_cm;f%runoff_depth_cm=pond_step%runoff_depth
+    f%macropore_area_fraction=0d0
     call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r)
     receipt%status=MATRIX_PROCESS;receipt%process_status=r%status
     if(r%status/=B111_REACTIVE_OK)return
     scale=max(1d0,pond_receipt%soil_transfer,pond_receipt%mass_after)
     if(abs(r%pond_to_soil_mg_cm2-pond_receipt%soil_transfer)>4096d0*epsilon(1d0)*scale)return
     if(abs(next_amount%pond_mass-pond_receipt%mass_after)>4096d0*epsilon(1d0)*scale)return
+    if(abs(r%runoff_output_mg_cm2-pond_receipt%runoff_output)>4096d0*epsilon(1d0)*scale)return
     ! Accepted1256 matrix companion is the sole persistent surface-mass owner.
     pond_trial=pond_next
     if(any(next_mobile%concentration_mg_cm3>1d6).or.any(next_mobile%mass_mg_cm2>1d12).or. &

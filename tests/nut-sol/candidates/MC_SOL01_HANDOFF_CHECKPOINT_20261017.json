@@ -1,0 +1,33 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-LOSS-PRODUCTION-HANDOFF",
+  "candidate_head_before_status": "b6216eb0218ce3e804ac2df2ea89e6a8dcc22f79",
+  "last_checked_canonical": "1c88c088acbfbeb5c697f8e7b4f5407fc72772a7",
+  "implementation": "Four changed production modules form an opt-in converged dynamic-top diagnostic path (HeadCalc, water solver contract, Reference binding and accepted water trace). A final HeadCalc guard checks the candidate pond depth, actual top flux and runoff against the final HeadCalc state to reject stale intermediate Newton evaluations.",
+  "implemented": true,
+  "persisted": true,
+  "local_candidate_tests": {
+    "date": "2026-10-17",
+    "compiler": "gfortran",
+    "flags": "-std=f2008 -Wall -Wextra -Werror -fcheck=all",
+    "results": [
+      "O0 JOINT_SURFACE_CANDIDATE_PASS",
+      "O0 SOURCE_ALIGNED_POND=PASS",
+      "O2 JOINT_SURFACE_CANDIDATE_PASS",
+      "O2 SOURCE_ALIGNED_POND=PASS"
+    ],
+    "scope": "Independent research candidates, NOT the four modified production modules."
+  },
+  "production_compiled": false,
+  "production_qualified": false,
+  "canonically_admitted": false,
+  "mastercoverage_changes": 0,
+  "blocking_gates": [
+    "Compile entire affected dependency closure on exact candidate SHA",
+    "Physical O0/O2 HeadCalc final-converged output and rejected/retry tests",
+    "Prove no previous Reference/F-CI/SOL behavioral regression",
+    "Provide complete accepted gross rain/irrigation/runon/evaporation/runoff source and loss receipt",
+    "Integrate source-aligned solute with sole matrix pond_mass and atomic rollback/native restart",
+    "Verify historical SWAP 4.3.1 exact chemical treatment"
+  ],
+  "next_action": "Compile and physically qualify the four-file shared owner seam before using its diagnostics for a full gross water/solute exchange. Do not merge PR1288 until then."
+}

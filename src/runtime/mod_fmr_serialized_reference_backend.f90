@@ -38,7 +38,9 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, &
+       soil_water_top_boundary_result_t, top_boundary_provider_t, &
+       SW_SOLVE_CONVERGED, SW_TOP_BOUNDARY_AVAILABLE, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -511,6 +513,15 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
     logical :: pond_storage_available = .false.
     real(real64) :: pond_start_cm = 0.0_real64, pond_end_cm = 0.0_real64
+    ! Read-only converged diagnostics, NOT yet an accepted gross-flux receipt.
+    logical :: converged_surface_available = .false.
+    real(real64) :: converged_pond_evaporation_cm_day = 0.0_real64
+    real(real64) :: converged_runoff_depth_cm = 0.0_real64
+    logical :: converged_gross_sources_available = .false.
+    real(real64) :: converged_rain_rate_cm_day = 0.0_real64
+    real(real64) :: converged_irrigation_rate_cm_day = 0.0_real64
+    real(real64) :: converged_snowmelt_rate_cm_day = 0.0_real64
+    real(real64) :: converged_runon_rate_cm_day = 0.0_real64
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
@@ -5616,6 +5627,67 @@ contains
     if (.not.all(ieee_is_finite([step%pond_start_cm,step%pond_end_cm]))) return
     if (min(step%pond_start_cm,step%pond_end_cm)<0.0_real64) return
     step%pond_storage_available = .true.
+    ! Publish only explicitly available final-converged numerical provenance.
+    ! These diagnostics must not be consumed as complete gross solute receipts.
+    if (solve_result%converged_surface_result%status == SW_TOP_BOUNDARY_AVAILABLE .and. &
+        solve_result%converged_surface_result%runoff_resolved) then
+      if (.not.all(ieee_is_finite([solve_result%converged_surface_result%ponded_water_evaporation, &
+          solve_result%converged_surface_result%runoff_depth]))) return
+      if (solve_result%converged_surface_result%ponded_water_evaporation < 0.0_real64 .or. &
+          solve_result%converged_surface_result%runoff_depth < 0.0_real64) return
+      if (abs(solve_result%converged_surface_result%candidate_ponding_depth-step%pond_end_cm) > &
+          128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(step%pond_end_cm))) return
+      ! HeadCalc's final dynamic-top balance, checked again at the accepted
+      ! transaction carrier rather than trusting a Newton candidate receipt.
+      ! qtop is signed (upward positive); runoff is a depth in cm.
+      if (.not.ieee_is_finite(solve_result%converged_surface_result%net_potential_surface_flux)) return
+      if (abs(step%pond_end_cm-step%pond_start_cm - &
+          solve_result%converged_surface_result%net_potential_surface_flux*(t1-t0) + &
+          solve_result%converged_surface_result%runoff_depth - step%top_flux*(t1-t0)) > &
+          1.0e-8_real64*max(1.0_real64,abs(step%pond_start_cm),abs(step%pond_end_cm), &
+          abs(step%top_flux*(t1-t0)), &
+          abs(solve_result%converged_surface_result%net_potential_surface_flux*(t1-t0)))) return
+      step%converged_surface_available = .true.
+      step%converged_pond_evaporation_cm_day = solve_result%converged_surface_result%ponded_water_evaporation
+      step%converged_runoff_depth_cm = solve_result%converged_surface_result%runoff_depth
+      if (solve_result%converged_surface_result%gross_surface_sources_available) then
+        if (.not.all(ieee_is_finite([solve_result%converged_surface_result%precipitation_rate_cm_day, &
+            solve_result%converged_surface_result%irrigation_rate_cm_day, &
+            solve_result%converged_surface_result%snowmelt_rate_cm_day, &
+            solve_result%converged_surface_result%runon_rate_cm_day]))) return
+        if (min(solve_result%converged_surface_result%precipitation_rate_cm_day, &
+            solve_result%converged_surface_result%irrigation_rate_cm_day, &
+            solve_result%converged_surface_result%snowmelt_rate_cm_day, &
+            solve_result%converged_surface_result%runon_rate_cm_day) < 0.0_real64) return
+        ! For an unpartitioned dynamic upper boundary, the net potential
+        ! must equal its separately supplied gross sources minus actual
+        ! evaporation. This is an independent consistency gate on the
+        ! converged provider receipt, never an inference from qtop.
+        if (.not.request%boundary%matrix_source_area_partition .or. &
+            request%boundary%macropore_surface_area_fraction < 0.0_real64) then
+          if (.not.ieee_is_finite(solve_result%converged_surface_result%bare_soil_evaporation)) return
+          if (solve_result%converged_surface_result%bare_soil_evaporation < 0.0_real64) return
+          if (abs(solve_result%converged_surface_result%net_potential_surface_flux - &
+              (solve_result%converged_surface_result%precipitation_rate_cm_day + &
+               solve_result%converged_surface_result%irrigation_rate_cm_day + &
+               solve_result%converged_surface_result%snowmelt_rate_cm_day + &
+               solve_result%converged_surface_result%runon_rate_cm_day - &
+               solve_result%converged_surface_result%bare_soil_evaporation - &
+               solve_result%converged_surface_result%ponded_water_evaporation)) > &
+              1024.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
+              abs(solve_result%converged_surface_result%net_potential_surface_flux), &
+              solve_result%converged_surface_result%precipitation_rate_cm_day + &
+              solve_result%converged_surface_result%irrigation_rate_cm_day + &
+              solve_result%converged_surface_result%snowmelt_rate_cm_day + &
+              solve_result%converged_surface_result%runon_rate_cm_day)) return
+        end if
+        step%converged_gross_sources_available = .true.
+        step%converged_rain_rate_cm_day = solve_result%converged_surface_result%precipitation_rate_cm_day
+        step%converged_irrigation_rate_cm_day = solve_result%converged_surface_result%irrigation_rate_cm_day
+        step%converged_snowmelt_rate_cm_day = solve_result%converged_surface_result%snowmelt_rate_cm_day
+        step%converged_runon_rate_cm_day = solve_result%converged_surface_result%runon_rate_cm_day
+      end if
+    end if
     step%water_start = request%base_state%water_content
     step%water_end = solve_result%candidate_state%water_content
     step%subsurface_source = self%qssdi

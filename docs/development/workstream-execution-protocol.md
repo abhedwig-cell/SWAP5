@@ -624,3 +624,13 @@ its complete RossFast source/test/own-workflow triggers are retained with a
 record), because the
 wrapper preflight changes none of its scientific recipes. Other capability-specific workflows retain their
 own authority and need the same documented cost selection before deliberate execution.
+
+## MC-SOL01 Reference-first and optional RossFast freeze (2026-10-17)
+
+Decision: finish the SWAP4.3.1 migration using the Reference solver as the required hydraulic production route. RossFast remains an optional, frozen alternative only within its previously admitted scope. No MC-SOL01 feature expansion or support for newly introduced gross surface flux / pond solute contracts is required from RossFast during migration.
+
+Selection rule: a change to a shared solver-contract source file is an impact trigger, not proof of a RossFast numerical regression. Identify the exact public-interface delta and its consumers. For unchanged RossFast implementations, existing admitted routes remain protected by focused compilation and behavioral/semantic preservation tests where affected. For new Reference-only diagnostics, record RossFast support as UNSUPPORTED_OPTIONAL for the new capability, not PASS and not ADMITTED. Never dispatch an unsupported RossFast route as though it supplied accepted gross fluxes.
+
+Existing exact-blob F-ROSS22 controls remain unchanged; when their qualified-dependency identity guard fails on a newer shared contract, record FROZEN_OPTIONAL_CONTRACT_DRIFT as a non-admission result for RossFast on that contract. Do not falsify a pass, weaken the guard, or silently merge shared-contract changes under a misleading green check. A separately reviewed admission decision must explicitly document the pinned older RossFast authority, the new Reference-only contract surface, executable evidence for preservation of any affected *old* RossFast path, and the appropriate branch/ruleset requirements before canonical merge.
+
+For MC-SOL01, the work unit still requires actual accepted gross water and solute receipts, historical mixing, water/solute balances, rollback, V2 restart, O0/O2 and its owning preservation gates. A red old RossFast blob-identity check must be attributed separately; it is not grounds to stop developing Reference chemistry. Do not split this work into micro-PRs. Defer broad RossFast compatibility expansion until after the migration, preserving its existing admitted production code and evidence.

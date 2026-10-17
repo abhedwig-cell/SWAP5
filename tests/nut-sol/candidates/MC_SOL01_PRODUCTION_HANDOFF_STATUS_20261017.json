@@ -1,0 +1,193 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-LOSS-PRODUCTION-HANDOFF",
+  "canonical_baseline": "d6ce79dfdcea27e8322fa5a060c6d5715c30f417",
+  "work_branch": "work/sol-surface-loss-budget-candidate-20261017",
+  "candidate_head_before_record": "dab894d1540b50498037585d67a0669a009454ea",
+  "implemented": true,
+  "implementation_scope": "experimental, unqualified production HeadCalc-to-Reference-solve-result-to-read-only-accepted-trace diagnostics",
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "admitted": false,
+  "mastercoverage_promoted": false,
+  "production_files": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/solver/mod_soil_water_solver_contract.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "science_boundary": "Actual pond evaporation/runoff only; no complete gross rain/irrigation/runon receipt, no chemical integration; preserve incumbent pond solute formula",
+  "tests_not_run": [
+    "clean production compile including all dependents of changed public derived type",
+    "Reference HeadCalc O0/O2 and original admitted SOL preservation",
+    "retry/rollback full-half numerical selection",
+    "whole accepted water+solute balance and native restart",
+    "SWAP4.3.1 exact chemical source"
+  ],
+  "blockers": [
+    "full checkout unavailable to local compiler",
+    "connector has no new workflow dispatch capability",
+    "final converged output still needs joint production tests and no intermediate-iteration leakage proof",
+    "full gross flux accepted-provenance and historic chemistry not completed"
+  ],
+  "next_action": "Do not merge. Compile full changed dependency closure and exercise strict real accepted substep rollback/restart, preserve previous SOL admission, then integrate complete gross water receipts with existing pond_mass and perform source-aligned chemistry before canonical admission.",
+  "previous_admissions_to_preserve": [
+    1234,
+    1256,
+    1257,
+    1258
+  ],
+  "qualification_update_20261017": {
+    "head": "ac820393638cb0035c2b8b601efa170b2da85cc7",
+    "resolver_fix": "intra-source USE edges are not inter-file cycles",
+    "publication_run": 39066311614,
+    "publication_result": "PASS; O0/O2 actual production compile and rollback",
+    "publication_markers": [
+      "PUB_P1E02_POSTSOLVER_COMMITTED_STATE_IDENTITY=PASS",
+      "PUB_P1E02_REJECTED_TRANSFER_EXCLUSION=PASS",
+      "PUB_P1E02_PRODUCTION_POSTSOLVER_ROLLBACK=PASS"
+    ],
+    "fross12_run": 39066311834,
+    "fross12_result": "FAIL: FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+    "decision": "not admitted; solver contract change requires F-ROSS22 owner requalification, full gross receipt and joint chemistry/restart tests absent",
+    "canonical_observed": "5372304a2e23d67ae5589af79fe90a8dda4eb7a0",
+    "fross_root_cause": "F-ROSS22 successor script compares HEAD solver-contract blob against pinned BOFEK00 admitted blob; PR changes shared soil_water_solve_result_t with converged_surface_result. Guard correctly blocks unqualified successor; do not loosen or claim numerical regression.",
+    "latest_run_head": "5c352f72b81ab906a04a2fe15c42d75afab5648a",
+    "latest_rollback_run": 39066797372,
+    "latest_fross_run": 39066797507,
+    "next_owner_gate": "Qualify changed shared solver-contract postimage with RossFast owner and full preservation; then implement accepted gross receipts & integrated chemical rollback/restart. Current surface joint route explicitly demands ponding_depth==0 and does not support evaporation/runoff."
+  },
+  "production_safety_patch_20261017": {
+    "commit": "88caef3fca94d22870afec672be29b456082924b",
+    "path": "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+    "behavior": "Fail closed when an available final-converged receipt proves positive pond evaporation or runoff, rather than apply incumbent zero-loss water budget to a nonzero-loss step.",
+    "not_claimed": [
+      "gross receipt integration",
+      "wet-pond solute chemistry",
+      "O0/O2 qualification on this head",
+      "F-ROSS admission"
+    ],
+    "auto_runs": {
+      "publication": 39067687732,
+      "fross": 39067688044
+    },
+    "next": "Implement independently verified accepted gross water ledger, retain source-aligned pond mixing, qualify shared RossFast contract, joint O0/O2 and restart before merge.",
+    "qualification": {
+      "tested_head": "ae11b87bfec1bcb1fa4c1cf52da55128fed39133",
+      "publication_run": 39067719378,
+      "publication_result": "PASS O0/O2, 170 resolved sources, rollback, state identity, excluded rejected transfer, identical output SHA256 ba5d3b995d855c271bc6b8d6f7b5b2f142870fcecc17961414be6cb5d3730626",
+      "fross_run": 39067719230,
+      "fross_result": "FAIL exact shared solver contract qualified dependency drift; RossFast owner source surface pass",
+      "decision": "HOLD DRAFT; no full gross water/solute/transaction/restart qualification"
+    }
+  },
+  "gross_source_handoff_20261017": {
+    "head": "517c9fdaa040e99c34e577c5c2fc92349e277331",
+    "files": [
+      "src/solver/mod_soil_water_solver_contract.f90",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90"
+    ],
+    "scope": "Typed provider exact gross precipitation, irrigation, snowmelt and runon rates published only through converged top result and accepted trace; read-only diagnostic provenance, no new stored pool",
+    "outstanding": "Cannot consume chemically until per-substep whole pond balance includes gross surface losses and runoff and source-aligned mixing; shared RossFast contract qualification required",
+    "publication_run": 39068455819,
+    "fross_run": 39068455584,
+    "results": "PASS O0/O2 targeted production compile and rollback on heads 517c9fd and 839ed72; F-ROSS source-identity preservation fails as expected, unadmitted solver-contract change",
+    "admitted": false,
+    "qualification": {
+      "tested_heads": [
+        "517c9fdaa040e99c34e577c5c2fc92349e277331",
+        "839ed72e91fb5fb086e8c982a52400c1ff360ff6"
+      ],
+      "publication_runs": [
+        39068455819,
+        39068480378
+      ],
+      "publication_conclusion": "SUCCESS both (O0/O2 and postsolver rollback)",
+      "fross_runs": [
+        39068455584,
+        39068480418
+      ],
+      "fross_conclusion": "FAIL both; FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+      "gross_joint_qualified": false,
+      "scientific_admission": false
+    }
+  },
+  "source_alignment_safety_20261017": {
+    "head": "7f10604205e0569048e1577f0d7e61d18347df59",
+    "production_files": [
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+      "src/runtime/mod_fmr_b111_surface_solute_route.f90"
+    ],
+    "implemented": "When final-converged gross provenance is available, both incumbent routes reject rain/irrigation mismatch, nonzero unsupported melt or runon, and nonzero pond evaporation/runoff; fail closed without changing admitted mixing or persistently owning another pond mass.",
+    "test_status": "PASS focused O0/O2 compile and PUB-P1E02 production rollback on head 4d628adce9f17cb8bf650dcf32158877f7958cb0, run 39069637594; F-ROSS source preservation FAIL run 39069637686 (qualified dependency drift in shared solver contract). Not full MC-SOL01 physical qualification.",
+    "science_scope": "Safety restriction only, no accepted gross chemistry implementation",
+    "fross": "Requires joint RossFast solver-contract requalification",
+    "admitted": false,
+    "publication_run": 39069637594,
+    "fross_run": 39069637686
+  },
+  "accepted_surface_water_balance_gate_20261017": {
+    "commit": "1eddfd89d2adaade4fe5f18ae0560ae3e8c88de6",
+    "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "behavior": "Before publishing converged-surface availability into an accepted substep, enforce pond_end-pond_start = net_potential*dt - runoff_depth + signed_qtop*dt, using final provider provenance and a bounded numerical tolerance.",
+    "state": "COMPILED_AND_FOCUSED_ROLLBACK_TESTED_NOT_PHYSICALLY_QUALIFIED",
+    "scientific_limit": "This validation is not yet accepted gross solute accounting; no source-aligned runoff chemistry or native restart admitted.",
+    "preservation": "F-ROSS22 shared solver-contract qualification still required",
+    "qualification": {
+      "tested_head": "c1c192ed0767ae6e6b1a913adccf1717b11452ba",
+      "publication_run": 39070588616,
+      "publication": "SUCCESS; O0=PASS O2=PASS postsolver rollback=PASS",
+      "fross_run": 39070588476,
+      "fross": "FAIL qualified dependency drift mod_soil_water_solver_contract.f90",
+      "limit": "Gate exercise does not prove positive gross runoff, pond evaporation or solute continuity and native V2 restart."
+    }
+  },
+  "net_gross_identity_test_20261017": {
+    "tested_head": "663b812e91b9889131c4679766cf5423bc09fddb",
+    "run": 39071748110,
+    "compile_O0": "PASS",
+    "compile_O2": "PASS",
+    "postsolver_rollback": "PASS",
+    "positive_runoff_pond_evaporation_test": "NOT_RUN",
+    "historical_mixing": "unchanged",
+    "rossfast_shared_contract": "BLOCKED",
+    "next_action": "Implement a qualified per-substep gross-loss water receipt and source-exact pond solute transfer; do not conflate typed diagnostic availability with admission."
+  },
+  "pond_evaporation_native_gate_20261017": {
+    "tested_head": "cf2baa4a75b9d157e533665fcea8f75e6c33d963",
+    "run": 39075823844,
+    "result": "SUCCESS",
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "marker": "MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS",
+    "tested": "Actual production mod_b111_pond_solute_exchange + mod_b111_persistent_pond, 1 cm pond, 2 mg/cm2 initial, 0.5 cm evaporation, 0.25 cm infiltration, 1 mg/cm2 soil transfer, 1 mg/cm2 remaining, water/solute balance, rejected candidate nonmutation, pond snapshot/restore",
+    "publication": "PUB_P1E02_O0=PASS PUB_P1E02_O2=PASS",
+    "fross": {
+      "run": 39075823928,
+      "status": "FAIL qualified dependency drift mod_soil_water_solver_contract.f90"
+    },
+    "limits": "Not integrated hydraulic dynamic boundary to reactive chemistry with V2 restart; no runoff/runon; not FROSS admission.",
+    "admitted": false
+  },
+  "solver_policy_20261017": {
+    "decision": "REFERENCE_FIRST_ROSSFAST_FROZEN_OPTIONAL",
+    "protocol_commit": "3e917a2c2834a5154e86caa762325e365e22c6d6",
+    "existing_admissions": "PRESERVE",
+    "new_gross_contract": "UNSUPPORTED_OPTIONAL",
+    "fross22_guard": "UNCHANGED; FAIL on shared-contract drift; not PASS",
+    "mc_sol01": "Continue Reference physical integration without requiring new RossFast support",
+    "merge": "Require Reference science and affected incumbent RossFast preservation and branch protections"
+  },
+  "reference_first_followup_20261017": {
+    "tested_head": "6999b3533296a215958a4506aa4190b895585363",
+    "pub_run": 39077365598,
+    "pub_result": "PASS O0 O2, pond evaporation historical mixing, multistep drying rewetting, rejected trial and rollback",
+    "fross_run": 39077365716,
+    "fross_result": "FAIL exact solver contract identity, RossFast optional freeze remains",
+    "next_physics_gate": "Source-exact runoff solute concentration/transfer chronology in accepted pond B1.11 and joint real V2 restart. Do not merge until these owner gates qualify.",
+    "decision": "NOT_ADMITTED"
+  }
+}
