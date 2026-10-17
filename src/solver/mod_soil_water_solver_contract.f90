@@ -189,6 +189,8 @@ module mod_soil_water_solver_contract
      integer :: status = SW_SOLVE_NOT_RUN
      logical :: retry_advised = .false.
      type(soil_water_physical_state_t) :: candidate_state
+     ! Optional final-converged top-boundary diagnostic; absent on unsupported routes.
+     type(soil_water_top_boundary_result_t) :: converged_surface_result
      real(real64) :: top_flux = 0.0_real64
      real(real64) :: bottom_flux = 0.0_real64
      ! Compatibility-only legacy diagnostic. Historical producers assigned
