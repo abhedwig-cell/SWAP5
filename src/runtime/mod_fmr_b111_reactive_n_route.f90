@@ -7,7 +7,7 @@ module mod_fmr_b111_reactive_n_route
  use mod_soil_n_pool_state,only:soil_n_pool_state_t
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_amendment_input,only:read_soil_n_amendment_tables,N_INPUT_OK
- use mod_soil_n_historical_named_input,only:read_historical_soil_n_named_export,N_NAMED_OK
+ use mod_soil_n_historical_named_input,only:read_historical_soil_n_named_export,N_NAMED_OK,soil_n_residue_age_t
  use mod_soil_n_unified_input,only:read_soil_n_unified_export,N_UNIFIED_OK
  use iso_fortran_env,only:real64,int64
  use mod_fmr_b111_mineral_route,only:mineral_daily_carrier_t,aggregate_mineral_trace
@@ -17,7 +17,7 @@ module mod_fmr_b111_reactive_n_route
  public::consume_reactive_n_trace,initialize_historical_reactive_n_route,initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables,initialize_historical_reactive_n_named_files,initialize_historical_reactive_n_unified_export
 contains
  subroutine initialize_historical_reactive_n_unified_export(selection,template,id,clock,water, &
-    path,origin,plan,state,parameters,tcsf,lai,status,error_line)
+    path,origin,plan,state,parameters,tcsf,lai,status,error_line,ages)
    type(soil_n_historical_selection_t),intent(in)::selection
    type(reactive_parameters_t),intent(in)::template
    integer(int64),intent(in)::id
@@ -28,6 +28,8 @@ contains
    type(reactive_parameters_t),intent(out)::parameters
    real(real64),intent(out)::tcsf,lai
    integer,intent(out)::status,error_line
+   type(soil_n_residue_age_t),intent(out),optional::ages
+   type(soil_n_residue_age_t)::candidate_ages
    type(soil_n_amendment_calendar_t)::candidate_plan
    type(soil_n_historical_initial_t)::initial
    type(soil_n_historical_rates_t)::rates
@@ -37,8 +39,9 @@ contains
    integer::code
    plan=soil_n_amendment_calendar_t();state=reactive_state_t()
    parameters=reactive_parameters_t();tcsf=0d0;lai=0d0;status=1;error_line=0
+   if(present(ages))ages=soil_n_residue_age_t()
    if(selection%swcropsnm/=1.or.selection%sw_wofost/=1.or..not.selection%source_parameters_complete)return
-   call read_soil_n_unified_export(path,origin,candidate_plan,initial,rates,code,error_line)
+   call read_soil_n_unified_export(path,origin,candidate_plan,initial,rates,code,error_line,candidate_ages)
    if(code/=N_UNIFIED_OK)return
    call bind_historical_organic_source_profile(template,organic,code)
    if(code/=0)return
@@ -47,6 +50,7 @@ contains
    if(code/=0)return
    plan=candidate_plan;state=candidate;parameters=derived
    tcsf=candidate_tcsf;lai=candidate_lai;status=0
+   if(present(ages))ages=candidate_ages
  end subroutine
  subroutine initialize_historical_reactive_n_named_files(selection,template,id,clock,water, &
       parameter_path,management_path,origin,plan,state,parameters,tcsf,lai,status,error_line)
