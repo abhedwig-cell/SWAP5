@@ -62,6 +62,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_restart_state_contract.f90
   src/runtime/mod_fmr_committed_restart.f90
   src/runtime/mod_fmr_accepted_commit_receipt.f90
+  src/runtime/mod_fmr_owned_commit_receipt.f90
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
