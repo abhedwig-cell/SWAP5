@@ -6,7 +6,7 @@
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
   "stage": "MODEL5_11_PROVIDER_DISPATCH_IMPLEMENTED_PENDING_FULL_RUNTIME_GATE",
-  "tested": "PREVIOUS_COMPONENT_PASS; NEW_DISPATCH_RUNTIME_NOT_VERIFIED",
+  "tested": "CANONICAL_MODEL2_3_5_11_RUNTIME_PASS; PDI_VAPOR_HYST_PENDING",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Inspect workflow status on new commit; fix any compiler/runtime errors, complete PDI vapor trial-start binding and HYST accepted transition; retain fail-closed unsupported compositions, then canonical overlap/preservation and admission.",
+  "next_action": "Bind PDI 8-11 vapor conductivity to immutable trial-start soil temperature; qualify runtime O0/O2, then POWER and HYST1/2 accepted rollback/restart and owner preservation; reconcile newer canonical before admission.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -69,5 +69,13 @@
     "required_change": "Compose extended provider and parameter initialization, qualified selection, trial-start temperature for PDI vapor, and accepted-only HYST transition before enabling model5..11."
   },
   "dispatch_commit": "68f05c86d492cd85aae02ce05319c3a2f86563cf",
-  "workflow_trigger_commit": "001f663b71147374b43dc4eb99d7efb0d83bdf66"
+  "workflow_trigger_commit": "001f663b71147374b43dc4eb99d7efb0d83bdf66",
+  "runtime_gate_20261017_latest": {
+    "run": 39031265198,
+    "commit": "6bc0d0621ed39ea4033df6f60f3757de96c6949e",
+    "compile": "PASS",
+    "models": "2,3,5,6,7,8,9,10,11 runtime accepted; each zero reported residual",
+    "next_failure": "first PDI vapor runtime not committed",
+    "status": "PARTIAL_PASS_NOT_ADMISSION"
+  }
 }
