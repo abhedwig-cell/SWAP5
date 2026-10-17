@@ -1,0 +1,53 @@
+{
+  "name": "Kalmthoutse Heide PCP-WISE pilot",
+  "crs": "EPSG:32631",
+  "source": {
+    "total_extent_file": "Kalmthoutseheide_extent(1).gpkg",
+    "minimal_extent_file": "Kalmthoutseheide_minimal_extent(1).gpkg",
+    "received": "2026-10-09",
+    "note": "The minimal-extent GeoPackage stores srs_id=99999/Undefined SRS, but its coordinates are on the same EPSG:32631 grid as the total extent. The pilot treats both extents as EPSG:32631."
+  },
+  "total_extent": {
+    "xmin": 579980.0,
+    "ymin": 5674020.0,
+    "xmax": 619980.0,
+    "ymax": 5715020.0,
+    "width_m": 40000.0,
+    "height_m": 41000.0
+  },
+  "minimal_extent": {
+    "xmin": 592980.0,
+    "ymin": 5683020.0,
+    "xmax": 608980.0,
+    "ymax": 5699020.0,
+    "width_m": 16000.0,
+    "height_m": 16000.0
+  },
+  "pilot_grid": {
+    "cell_size_m": 500.0,
+    "ncols": 32,
+    "nrows": 32,
+    "cell_count": 1024,
+    "index_order": "row-major from southwest, one-based",
+    "central_tie_break": "west and south of the geometric centre"
+  },
+  "representative_cell": {
+    "cell_id": "KAL_0496",
+    "col": 16,
+    "row": 16,
+    "xmin": 600480.0,
+    "ymin": 5690520.0,
+    "xmax": 600980.0,
+    "ymax": 5691020.0,
+    "easting": 600730.0,
+    "northing": 5690770.0,
+    "longitude": 4.44675648715192,
+    "latitude": 51.359254426505835
+  },
+  "domain_centroid": {
+    "easting": 600980.0,
+    "northing": 5691020.0,
+    "longitude": 4.450416921256215,
+    "latitude": 51.36145730474482
+  }
+}
