@@ -7294,7 +7294,7 @@
     "authority": "issue1271; user continuation after completed PR1272",
     "baseline": "a8d65af4c1ab4cb53d1cd9609d21062752b13026",
     "branch": "work/mc-irr01-sensor-batch-1271-20261017",
-    "phase": "IMPLEMENTED_DIRECT_TESTED_PHYSICAL_PENDING",
+    "phase": "QUALIFIED_FULL_NOT_ADMITTED",
     "phase_start_utc": "2026-10-17T00:16:25.670944+00:00",
     "selected_capabilities": [
       "SW431-IRR-TCS7",
@@ -7338,10 +7338,10 @@
       "highest_low_air": "NOT_SELECTED_POLICY"
     },
     "implemented": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "admitted": false,
-    "next_action": "Persist corrected stable candidate remotely, run seven-profile297-provider actual physical/native sensor matrix O0/O2, seal source/postimage/evidence admission and promote only three whole rows after all gates.",
+    "next_action": "Reconcile current canonical, expected-head safe merge PR1273, exact full merge tree proof, promote exactly3 existing master rows and preserve240.",
     "incumbent_result": {
       "qualified": true,
       "admitted": false,
@@ -7618,6 +7618,251 @@
       "sensor-small-preflight: Werror caught newly unused local after trigger extraction; declaration removed.",
       "sensor-contract-final and endpoint-diagnostic: literal seven-knot last-node interpolation gives-499950.00000000006 while early clamp gave-499950; strict source final-knot interpolation restored.",
       "Code review before qualification caught shared helper overwriting disabled TCS6 candidate; filtered call now only enabled, original management suite PASS."
-    ]
+    ],
+    "postimages": {
+      "src/process/mod_irrigation_process.f90": {
+        "status": "M",
+        "blob": "dc03d81e977cfc1b9466f2f83560393b60872cc4"
+      },
+      "src/process/mod_scheduled_irrigation_management_policy.f90": {
+        "status": "M",
+        "blob": "3317d82cd9c4a32e99bdd6a4703f2b368dbfc405"
+      },
+      "src/runtime/mod_fmr_irrigation_allocation_binding.f90": {
+        "status": "M",
+        "blob": "c5f560253b5f30860afea86106bf668342aa8d70"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "985f61534a20952f2150675031ecfdfceea1fa80"
+      },
+      "src/runtime/mod_fmr_sensor_depth_irrigation_binding.f90": {
+        "status": "M",
+        "blob": "e0ba708eb60191909e569df615d9ca7489e3b39f"
+      },
+      "tests/mc-irr01/check_sensor_batch_controls.py": {
+        "status": "A",
+        "blob": "7f8bfb1d34f48305224f5b5c48afa18992cb489a"
+      },
+      "tests/mc-irr01/run_sensor_batch_application.py": {
+        "status": "A",
+        "blob": "0d33d980b44ba0637a1e49da13009871cf50e0f4"
+      },
+      "tests/mc-irr01/run_sensor_batch_contract.py": {
+        "status": "A",
+        "blob": "1de1d379b650ac27a1e872baaa7e596e29b13945"
+      },
+      "tests/mc-irr01/sensor_batch_cycle_driver.py": {
+        "status": "A",
+        "blob": "aa80c7d2ccf6af67ba854e08810fb20a958321b9"
+      },
+      "tests/mc-irr01/test_sensor_batch_contract.f90": {
+        "status": "A",
+        "blob": "9343daaaf143bd71503911febb5d6929a8056daf"
+      },
+      "tests/mc-irr01/verify_batch_activation_successor.py": {
+        "status": "M",
+        "blob": "54f8cbdf8db245201627a15b33844b7f17ea8962"
+      },
+      "tests/mc-irr01/verify_sensor_batch_successor.py": {
+        "status": "A",
+        "blob": "e525e42b67eb45972eaeed58113ae6b6fe61eb5a"
+      }
+    },
+    "science_archive": {
+      "path": "integration/audits/evidence/MC_IRR01_SENSOR_BATCH_20261017.tar.xz.b64",
+      "decoded_sha256": "809e1a36a873cfdc77332db0752fb81907eaaf15e7300471445ad1f433375a57",
+      "decoded_bytes": 209380,
+      "members": 2888
+    },
+    "execution_commit": "04402332c972a3864046d7f563a8ed1340ce3380",
+    "source_tree": "bae023dab2bb91a91d6a48c4d2a5429a94897873",
+    "admission_baseline": "a8d65af4c1ab4cb53d1cd9609d21062752b13026",
+    "pull_request": 1273,
+    "measurements": {
+      "attempts": [
+        {
+          "attempt": "sensor-physical-v1",
+          "compile_invocations": 628,
+          "compile_only_invocations": 628,
+          "link_invocations": 14,
+          "native_invocations": 390,
+          "command_seconds": 604.8458174660482,
+          "controller_wall_seconds": 609.1220923479996
+        },
+        {
+          "attempt": "sensor-contract-corrected",
+          "compile_invocations": 14,
+          "compile_only_invocations": 14,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.323183673008316,
+          "controller_wall_seconds": 1.4225117989990395
+        },
+        {
+          "attempt": "sensor-root-final",
+          "compile_invocations": 6,
+          "compile_only_invocations": 6,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 0.4096038130046509,
+          "controller_wall_seconds": 0.4935143809998408
+        },
+        {
+          "attempt": "sensor-interval-final",
+          "compile_invocations": 18,
+          "compile_only_invocations": 18,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.8731916719953006,
+          "controller_wall_seconds": 1.95775524200144
+        },
+        {
+          "attempt": "sensor-limit-final",
+          "compile_invocations": 2,
+          "compile_only_invocations": 0,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.243609679997462,
+          "controller_wall_seconds": 1.327703532002488
+        },
+        {
+          "attempt": "sensor-small-sealed",
+          "returncode": 0,
+          "wall_seconds": 2.604428741000447,
+          "head": "04402332c972a3864046d7f563a8ed1340ce3380",
+          "compile_invocations": 24,
+          "link_invocations": 8,
+          "native_invocations": 8
+        },
+        {
+          "attempt": "sensor-calendar-final",
+          "compile_invocations": 18,
+          "compile_only_invocations": 18,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 3.4373123769983067,
+          "controller_wall_seconds": 3.55366284000047
+        },
+        {
+          "attempt": "sensor-material-final",
+          "compile_invocations": 16,
+          "compile_only_invocations": 16,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 3.086953056994389,
+          "controller_wall_seconds": 3.1814771629979077
+        },
+        {
+          "attempt": "sensor-contract-v1",
+          "compile_invocations": 14,
+          "compile_only_invocations": 14,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.253387078995729,
+          "controller_wall_seconds": 1.346813634998398
+        },
+        {
+          "attempt": "sensor-contract-final",
+          "compile_invocations": 7,
+          "compile_only_invocations": 7,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 0.41382954999426147,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "sensor-contract-endpoint-diagnostic",
+          "compile_invocations": 7,
+          "compile_only_invocations": 7,
+          "link_invocations": 1,
+          "native_invocations": 1,
+          "command_seconds": 0.4587276129932434,
+          "controller_wall_seconds": "UNKNOWN"
+        },
+        {
+          "attempt": "sensor-interval-preflight",
+          "compile_invocations": 18,
+          "compile_only_invocations": 18,
+          "link_invocations": 2,
+          "native_invocations": 2,
+          "command_seconds": 1.6862592039906303,
+          "controller_wall_seconds": 1.7737990530004026
+        }
+      ],
+      "recorded_attempt_totals": {
+        "compile_invocations": 772,
+        "link_invocations": 40,
+        "native_invocations": 416
+      },
+      "unrecorded_shell_attempts": {
+        "sensor-small-preflight": "FAILED O0 Werror; command clocks UNKNOWN; source script stops before any link/native.",
+        "sensor-small-final": "PASS complete8 native executables; clock UNKNOWN. Known24 compilation and8 link command occurrences implied by full unchanged source shell completion. Counted separately from sealed instrumented shell."
+      },
+      "terminal_science_wall_seconds": 623.6631460460012,
+      "terminal_physical_wall_seconds": 609.1220923479996,
+      "terminal_native_invocations": 410,
+      "terminal_executables": 34,
+      "admission_timing": "PASS six Python admission programs in one parallel controller",
+      "instrumented_elapsed_through_science_sealing_seconds": 1030.060736,
+      "initial_reconciliation_and_category_times": "UNKNOWN; phase clock begins at contract persistence",
+      "active_engineering_and_coordination_times": "UNKNOWN: no complete comparable category timers",
+      "admission_controller_wall_seconds": 36.635171154001,
+      "counts_reconstructed_from_shell_control_flow": {
+        "sensor-small-preflight": {
+          "compile_invocations": 6,
+          "link_invocations": 0,
+          "native_invocations": 0,
+          "basis": "Unchanged strict-e shell fails on sixth O0 compile mod_irrigation_process; no subsequent commands execute."
+        },
+        "sensor-small-final": {
+          "compile_invocations": 24,
+          "link_invocations": 8,
+          "native_invocations": 8,
+          "basis": "Full original qualification marker requires both fixed loops and all unconditional commands; uninstrumented command clocks remain UNKNOWN."
+        }
+      },
+      "all_attempt_counts_including_reconstructed_shells": {
+        "compile_invocations": 802,
+        "link_invocations": 48,
+        "native_invocations": 424
+      }
+    },
+    "inheritance": {
+      "calendar_and_material_direct_input_hashes": "SOURCE_EXACT_UNCHANGED; original inputs/flags/native outputs compared. Fresh4 native executions because prior all-environment fingerprint differs and its original environment payload is unavailable. No cross-Session object reuse.",
+      "incumbent_owner_successor_flags": 29,
+      "original_incumbent_admission_controls": 35,
+      "three_default_native_profiles": "Fresh season3/weekly/AVAIL full native endpoints compare with original full batch capsule",
+      "original_codec_and_calendar_source": "UNCHANGED",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "RossFast": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "results": {
+      "direct_sensor_cases_per_optimization": 2604,
+      "spatial_intervals_per_optimization": 6,
+      "root_source_cases_per_optimization": 2079,
+      "interval_transitions_per_optimization": 4452,
+      "limit_cases_per_optimization": 934,
+      "real_trajectory_programs": 126,
+      "native_decoder_negatives": 264,
+      "full_capability_promotions": 0
+    },
+    "comparison": {
+      "previous_selected_mean_seconds_per_closed_row": 536.0578849539888,
+      "selected_science_seconds_per_target_row": 207.88771534866706,
+      "overall_experiment_verdict": "INCONCLUSIVE overall: three complete rows qualified and awaiting admission; selected science207.888s per row, historical coordination/total engineering timers unavailable. No weakened source/mass/transaction/restart gates."
+    },
+    "remaining_exclusion": "SALTEXCESS needs independently admitted accepted bottom7 chemistry/weather composition. Generic legacy parser/raw uninitialized table tails and alternate hydraulic/crop options retain independent scope.",
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_IRR01_SENSOR_ADMISSION_20261017.json.gz.b64",
+      "sha256": "62a8e7f65d7b5efae5f3f2fc630553df05bdf4484b007f72daf0465c3d04abfa",
+      "decoded_json_sha256": "87c00a9b4dab5c39b0a129969b3290cd8e992798400e7dfe5d3634859f0ba4a4",
+      "execution_head": "38894d6ee9433633b456a00719f3d2ce66c11bde"
+    },
+    "admission_controls": 32,
+    "owning_entrypoints": 4,
+    "admission_programs": 6,
+    "blockers": []
   }
 }
