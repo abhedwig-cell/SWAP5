@@ -284,5 +284,40 @@
     ],
     "report": "docs/audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md",
     "current_review": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json"
+  },
+  "full_levels_20261017": {
+    "baseline": "f9f1614a794cf5a7e2f219a60fd1a61da245176b",
+    "branch": "work/frost-net01-full-levels-20261017",
+    "contract": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md",
+    "stage": "IMPLEMENTED_NOT_TESTED",
+    "implemented": true,
+    "qualified": false,
+    "admitted": false,
+    "invariants": [
+      3,
+      5,
+      7,
+      13,
+      21,
+      22,
+      23,
+      25,
+      27,
+      29,
+      30
+    ],
+    "test_selection": {
+      "component": "All24 counts actual process/full NET01 FrozenBounds+DIVDRA03 source at O0/O2, 18432 cases plus26invalid/ABA percount and26level refusal; original9216 preservation",
+      "runtime": "Every count 2..25, 1536 actual physical configurations/opt plus96 restart/reject/isolation and672 invalid/application refusals; ordinary multi/INF and single-level preservation",
+      "expected_seconds": 400,
+      "costs": "Prior 200s compile; link/native new count matrix UNKNOWN",
+      "owner_clause": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md completion conditions",
+      "not_selected": [
+        "full FCI NOT_SELECTED_IMPACT",
+        "RossFast NOT_SELECTED_IMPACT",
+        "highest low-air NOT_SELECTED_POLICY"
+      ]
+    },
+    "next_action": "Persist then execute small actual source driver, inspect terminal evidence before actual physical composition; seal and current-owner exact successor before admission."
   }
 }

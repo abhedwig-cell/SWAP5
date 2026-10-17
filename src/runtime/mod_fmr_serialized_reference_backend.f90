@@ -106,7 +106,7 @@ module mod_fmr_serialized_reference_backend
        compose_legacy_bracketed_frost_drainage
   use mod_frost_divdra_drainage_effect, only: frost_divdra_parameters_t, frost_divdra_result_t, &
        compose_single_level_signed_frost_divdra, valid_frost_divdra_parameters
-  use mod_frost_multilevel_divdra_effect, only: frost_multilevel_divdra_result_t, &
+  use mod_frost_multilevel_divdra_effect, only: frost_multilevel_divdra_result_t, FROST_DIVDRA_MAX_LEVELS, &
        compose_multilevel_signed_frost_divdra, valid_multilevel_frost_divdra
   use mod_frost_geometry_effect, only: frost_geometry_result_t, evaluate_legacy_bracketed_frost_geometry
   use mod_frost_drainage_effect, only: frost_drainage_config_t, frost_drainage_result_t, &
@@ -1019,7 +1019,8 @@ contains
     end if
     if(allocated(forcing%frost_divdra_scalars_cm_per_day))then
       if(scalar/=0.0_real64)return
-      if(size(forcing%frost_divdra_scalars_cm_per_day)<2.or.size(forcing%frost_divdra_scalars_cm_per_day)>3)return
+      if(size(forcing%frost_divdra_scalars_cm_per_day)<2.or. &
+           size(forcing%frost_divdra_scalars_cm_per_day)>FROST_DIVDRA_MAX_LEVELS)return
       if(any(.not.ieee_is_finite(forcing%frost_divdra_scalars_cm_per_day)))return
       if(any(abs(forcing%frost_divdra_scalars_cm_per_day)>1.e6_real64))return
       if(any(abs(forcing%frost_divdra_scalars_cm_per_day)>0.0_real64.and. &
