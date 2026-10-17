@@ -701,6 +701,7 @@ module mod_fmr_serialized_reference_backend
     type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()
     logical :: analytical_hydraulics_active = .false.
     logical :: extended_hydraulics_active = .false.
+    logical :: extended_pdi_vapor_active = .false.
     type(b111_legacy_hydraulic_provider_t), pointer :: extended_legacy => null()
     type(b111_extended_hydraulic_parameters_t), pointer :: extended_parameters => null()
     type(b111_extended_hydraulic_provider_t), pointer :: extended_constitutive => null()
@@ -2960,7 +2961,8 @@ contains
              .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
              .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
              .not. parameters%black_evaporation_active .and. .not. parameters%boesten_evaporation_active .and. &
-             .not. parameters%soil_temperature_active .and. .not. parameters%snow_active .and. &
+             (parameters%soil_temperature_active .eqv. parameters%pdi_vapor_active) .and. &
+             .not. parameters%snow_active .and. &
              .not. self%rfm_configuration%enabled .and. .not. self%fixed_weir_surface_water_active
       end if
       if (parameters%conductivity_power_tail_active) then
@@ -3288,6 +3290,7 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
+      self%extended_pdi_vapor_active = parameters%pdi_vapor_active
       self%extended_hydraulics_active = .false.
       if (allocated(parameters%hydraulic_model_kind)) &
         self%extended_hydraulics_active = any(parameters%hydraulic_model_kind >= 5 .and. &
@@ -3302,7 +3305,7 @@ contains
         block
           integer :: hyd_status
           call initialize_b111_extended_hydraulic_parameters(self%extended_parameters, &
-               parameters%hydraulic_model_kind, parameters%cofgen, hyd_status)
+               parameters%hydraulic_model_kind, parameters%cofgen, hyd_status, parameters%pdi_vapor_active)
           if (hyd_status /= B111_EXT_OK) error stop 'extended hydraulic model parameters invalid'
         end block
       end if
