@@ -77,7 +77,9 @@ contains
      seen(field_index)=.true.;v(field_index)=x
    end do
    close(unit,iostat=close_code)
-   if(ios/=iostat_end.or.close_code/=0.or..not.all(seen))then
+   ! Original SWAP431 treats LaiCritNupt as optional and defaults it to zero.
+   ! The other 25 historical fields remain mandatory.
+   if(ios/=iostat_end.or.close_code/=0.or.any(.not.seen(:20)).or.any(.not.seen(22:)))then
      status=N_NAMED_INVALID;error_line=n
      return
    end if
