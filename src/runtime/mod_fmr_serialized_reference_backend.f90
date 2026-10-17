@@ -3227,6 +3227,11 @@ contains
     class default
       ok = .false.
     end select
+    select type (parameters)
+    type is (fmr_b110_physical_parameters_t)
+      if (parameters%hysteresis_active) write(*,'(A,L1,A,L1)') 'HYST_GATE_FINAL=',ok, &
+           ' STATE_PROFILE=',self%state_profile_admitted
+    end select
     fmr_serialized_execution_admitted = ok
   end function fmr_serialized_execution_admitted
 
