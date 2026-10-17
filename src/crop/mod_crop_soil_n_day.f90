@@ -44,6 +44,7 @@ module mod_crop_soil_n_day
   procedure::snapshot=>harvest_observation_snapshot
  end type
  type,public::crop_soil_harvest_receipt_t
+  integer::rejection_stage=0
   integer::status=CROP_SOIL_INVALID
   real(real64)::initial_n=0d0,final_n=0d0,exported_n=0d0,incorporated_n=0d0,residual=0d0,seed_n=0d0
  end type
@@ -56,7 +57,7 @@ module mod_crop_soil_n_day
   real(real64)::actual_root_cm=0d0,potential_root_cm=0d0
  end type
  public::initialize_crop_soil,advance_crop_soil_day,pack_crop_n_owner,unpack_crop_n_owner,crop_n_live
- public::harvest_crop_soil_boundary,consume_crop_soil_harvest_pending,crop_soil_whole_n
+ public::harvest_crop_soil_boundary,consume_crop_soil_harvest_pending,crop_soil_whole_n,crop_soil_organic_mass
  public::observe_crop_soil_harvest,acknowledge_crop_soil_harvest,advance_crop_soil_fallow_day,initialize_crop_soil_successor
  public::pack_crop_n_continuation,unpack_crop_n_continuation,harvest_incorporation_valid
 contains
@@ -68,6 +69,8 @@ contains
   ok=self%initialized.and.self%soil%ready()
   if(.not.ok)return
   ok=self%crop%validate()==0
+  if(.not.ok)return
+  ok=allocated(self%p%b112_return).eqv.self%crop%nitrogen%b112_residue_profile
   if(.not.ok)return
   if(self%crop%harvest_retired())then
    block
@@ -136,6 +139,7 @@ contains
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
   type(reactive_parameters_t)::sp
+  type(wofost81_crop_owner_state_t)::accepted_crop
   integer(int64)::sid
   real(real64),allocatable::v(:)
   integer::code
@@ -146,9 +150,14 @@ contains
   call soil%configuration(sp,sid)
   if(.not.sp%enabled)return
   if(abs(p%root_depth_cm-sum(sp%mineral%dz_cm))>0d0)return
-  v=pack_crop_n_continuation(crop)
+  accepted_crop=crop
+  if(allocated(p%b112_return).and..not.crop%nitrogen%b112_residue_profile)then
+   if(crop%nitrogen%value%nlosses_total/=0d0.or.crop%harvested())return
+   accepted_crop%nitrogen%b112_residue_profile=.true.
+  endif
+  v=pack_crop_n_continuation(accepted_crop)
   if(size(v)==0)return
-  state%soil=soil;state%crop=crop;state%p=p;state%parameter_id=id;state%initialized=.true.
+  state%soil=soil;state%crop=accepted_crop;state%p=p;state%parameter_id=id;state%initialized=.true.
   if(present(pending))then
    allocate(state%pending,source=pending)
    if(.not.state%ready())then;state=crop_soil_state_t();return;end if
@@ -161,6 +170,7 @@ contains
   associate(n=>crop%nitrogen%value)
    total=(n%namountlv+n%namountst+n%namountrt+n%namountso)*1d-4
   end associate
+  if(crop%nitrogen%b112_residue_profile)total=total+sum(crop%nitrogen%retained_dead_n)*1d-4
  end function
  subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment)
   type(crop_soil_state_t),intent(inout)::state
@@ -279,16 +289,42 @@ contains
    deallocate(v);allocate(v(0));return
   end if
   if(crop%validate()/=WOFOST81_CROP_OWNER_OK)then
-   deallocate(v);allocate(v(0))
+   deallocate(v);allocate(v(0));return
   end if
+  if(crop%nitrogen%b112_residue_profile)then
+   associate(b=>crop%crop%biomass)
+    v=[-81003d0,real(size(v),real64),v,b%cumulative_dead_root_biomass,b%cumulative_dead_stem_biomass, &
+      b%cumulative_dead_leaf_biomass,b%retained_dead_biomass,crop%nitrogen%retained_dead_n]
+   end associate
+  endif
  end function
- subroutine unpack_crop_n_owner(v,crop,status)
+ recursive subroutine unpack_crop_n_owner(v,crop,status)
   real(real64),intent(in)::v(:)
   type(wofost81_crop_owner_state_t),intent(out)::crop
   integer,intent(out)::status
   real(real64),allocatable::proof(:)
   integer::n
   crop=wofost81_crop_owner_state_t();status=CROP_SOIL_INVALID
+  if(size(v)>1)then
+   if(v(1)==-81003d0)then
+    if(.not.all(ieee_is_finite(v)))return
+    if(v(2)<29d0.or.v(2)>1562d0.or.v(2)/=real(int(v(2)),real64))return
+    n=int(v(2));if(size(v)/=n+9)return
+    if(v(3)<0d0)return ! no nested envelope
+    call unpack_crop_n_owner(v(3:2+n),crop,status);if(status/=0)return
+    crop%nitrogen%b112_residue_profile=.true.
+    associate(b=>crop%crop%biomass)
+     b%cumulative_dead_root_biomass=v(3+n);b%cumulative_dead_stem_biomass=v(4+n)
+     b%cumulative_dead_leaf_biomass=v(5+n);b%retained_dead_biomass=v(6+n:7+n)
+    end associate
+    crop%nitrogen%retained_dead_n=v(8+n:9+n)
+    status=CROP_SOIL_INVALID
+    proof=pack_crop_n_owner(crop)
+    if(size(proof)/=size(v))then;crop=wofost81_crop_owner_state_t();return;endif
+    if(any(proof/=v))then;crop=wofost81_crop_owner_state_t();return;endif
+    status=CROP_SOIL_OK;return
+   endif
+  endif
   if(size(v)<29)return
   if(.not.all(ieee_is_finite(v)))return
   if(any(abs(v)>1d9))return
@@ -329,6 +365,11 @@ contains
   logical::has
   call state%soil%configuration(p,id);call state%soil%snapshot(clock,theta,pools,rev)
   total=(sum(pools%fom_kg_m3)+pools%biomass_kg_m3+pools%humus_kg_m3)*p%mineral%inventory%depth_m
+  if(state%crop%nitrogen%b112_residue_profile.and.allocated(state%crop%crop%biomass))then
+   associate(b=>state%crop%crop%biomass)
+    total=total+sum([b%root_biomass,b%living_leaf_biomass(),b%stem_biomass,b%storage_biomass,b%retained_dead_biomass])*1d-4
+   end associate
+  endif
   if(allocated(state%pending))total=total+sum(state%pending%dry_matter_kg_ha)*1d-4
   call state%crop%harvest_snapshot(h,has)
   if(has)then
@@ -465,22 +506,28 @@ contains
   if(.not.state%ready().or..not.allocated(state%p%harvest))return
   call state%soil%snapshot(clock,theta,pools,rev)
   if(rev<=0_int64)return ! requires actual completed daily chemical execution
+  r%rejection_stage=1
   associate(p=>state%p%harvest)
    call prepare_wofost81_harvest(state%crop,clock,int(p%crop_identity,int64),p%crop_end,p%sw_harv, &
     p%sw_wofost,state%p%update%development_stage_end,p%policy,crop,code)
   end associate
   if(code/=0)return
+  r%rejection_stage=2
   trial=state;trial%crop=crop
   call stage_wofost81_harvest_continuation_totals(crop, &
    [crop_soil_whole_n(trial),crop_soil_organic_mass(trial)],trial%crop,code)
-  if(code/=0.or..not.trial%ready())return
+  if(code/=0)return
+  r%rejection_stage=3
+  if(.not.trial%ready())return
   call crop%harvest_snapshot(h,has);if(.not.has)return
+  r%rejection_stage=4
   r%initial_n=crop_soil_whole_n(state);r%final_n=crop_soil_whole_n(trial)
   r%exported_n=sum(h%exported_n)*1d-4;r%residual=r%initial_n-r%final_n-r%exported_n
   if(.not.ieee_is_finite(r%residual))return
   if(abs(r%residual)>1d-12*max(1d0,r%initial_n,r%final_n,r%exported_n))return
+  r%rejection_stage=5
   if(.not.harvest_incorporation_valid(trial))return
-  state=trial;r%status=0
+  state=trial;r%status=0;r%rejection_stage=0
  end subroutine
  subroutine consume_crop_soil_harvest_pending(state,r)
   type(crop_soil_state_t),intent(inout)::state
@@ -573,6 +620,7 @@ contains
     v=[-81002d0,retired%clock,real(retired%crop_identity,real64),retired%continuation_totals, &
        n%nuptake_total,n%nfix_total,n%nlosses_total,n%initial_total]
    end associate
+   if(crop%nitrogen%b112_residue_profile)v=[-81004d0,v]
    return
   end if
   call crop%harvest_snapshot(h,has);if(.not.has)return
@@ -582,7 +630,7 @@ contains
    h%policy%return_fraction,h%policy%application_age,h%pending_dm,h%pending_n,h%exported_dm,h%exported_n,h%continuation_totals, &
    real(size(base),real64),base]
  end function
- subroutine unpack_crop_n_continuation(v,crop,status)
+ recursive subroutine unpack_crop_n_continuation(v,crop,status)
   real(real64),intent(in)::v(:)
   type(wofost81_crop_owner_state_t),intent(out)::crop
   integer,intent(out)::status
@@ -594,6 +642,16 @@ contains
   crop=wofost81_crop_owner_state_t();status=CROP_SOIL_INVALID
   if(size(v)==0)return
   if(.not.all(ieee_is_finite(v)))return
+  if(v(1)==-81004d0)then
+   if(size(v)/=10)return
+   if(v(2)/=-81002d0)return
+   call unpack_crop_n_continuation(v(2:),crop,status);if(status/=0)return
+   crop%nitrogen%b112_residue_profile=.true.
+   proof=pack_crop_n_continuation(crop);status=CROP_SOIL_INVALID
+   if(size(proof)/=size(v))return
+   if(any(proof/=v))return
+   status=0;return
+  endif
   if(v(1)==-81002d0)then
    if(size(v)/=9)return
    if(any(abs(v)>1d9))return
@@ -614,7 +672,7 @@ contains
   if(any(abs(v)>1d9))return
   if(v(3)<1d0.or.v(3)>1d6.or.v(3)/=real(int(v(3)),real64))return
   if(v(4)/=0d0.and.v(4)/=1d0)return
-  if(v(30)<29d0.or.v(30)>1562d0)return
+  if(v(30)<29d0.or.v(30)>1571d0)return
   n=int(v(30));if(v(30)/=real(n,real64).or.size(v)/=30+n)return
   call unpack_crop_n_owner(v(31:),end_owner,status);if(status/=0)return
   h%clock=v(2);h%crop_identity=int(v(3),int64);h%pending_incorporated=v(4)==1d0

@@ -111,6 +111,10 @@ def validate(r,d):
           'size(forcing%frost_divdra_scalars_cm_per_day)>FROST_DIVDRA_MAX_LEVELS'in b,'parameter/forcing bound ownership')
     return True
 def verify_source(git_reader=None):
+    if (ROOT/'tests/nut-crop/verify_b112_retained_successor.py').is_file():
+        sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+        from verify_b112_retained_successor import verify_source as successor
+        return successor(git_reader)
     g=git if git_reader is None else git_reader;r=record();check(r['baseline']==BASE,'count baseline')
     g('merge-base','--is-ancestor',BASE,'HEAD')
     dirty=g('status','--porcelain','--untracked-files=all','--',*SURFACE).splitlines()
@@ -125,6 +129,10 @@ def verify_source(git_reader=None):
     return {**capsule()['incumbent_proof'],'net01_full_levels_successor':True,'source_tree':g('rev-parse','HEAD:src'),
             'current_source_tree':g('rev-parse','HEAD:src'),'baseline':BASE,'qualified':False,'admitted':False,'full_capability':False}
 def verify_qualification():
+    if (ROOT/'tests/nut-crop/verify_b112_retained_successor.py').is_file():
+        sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+        from verify_b112_retained_successor import verify_qualification as successor
+        return successor()
     result=verify_source();validate(record(),capsule())
     return {**result,'qualified':True,'full_capability':True,'scope':'NET01 2..25 strictly depth-ordered signed interacting levels; rootless ordinary Reference mode2; normal/low air and INF',
             'full_master_row':False,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}

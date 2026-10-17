@@ -48,17 +48,46 @@ module mod_crop_soil_n_joint_restart_file
   public::write_weather_irrigation_joint_restart_file,read_weather_irrigation_joint_restart_file
 
 contains
+  function base_tag(tag)result(base)
+    character(8),intent(in)::tag
+    character(8)::base
+    base=tag
+    select case(tag)
+    case('S5NC0009');base=MAGIC
+    case('S5NC0010');base=PENDING_MAGIC
+    case('S5NC0011');base=HEAT_MAGIC
+    case('S5NC0012');base=HEAT_PENDING_MAGIC
+    case('S5NC0013');base=HARVEST_MAGIC
+    case('S5NC0014');base=HARVEST_PENDING_MAGIC
+    case('S5NC0015');base=HEAT_HARVEST_MAGIC
+    case('S5NC0016');base=HEAT_HARVEST_PENDING_MAGIC
+    end select
+  end function
+  logical function b112_tag(tag)result(selected)
+    character(8),intent(in)::tag
+    selected=base_tag(tag)/=tag
+  end function
+  function encode_b112_tag(tag)result(selected)
+    character(8),intent(in)::tag
+    character(8)::selected
+    integer::number,io
+    read(tag(5:8),*,iostat=io)number
+    selected='INVALID!'
+    if(io/=0)return
+    if(number<1.or.number>8)return
+    write(selected,'("S5NC",I4.4)')number+8
+  end function
   logical function pending_tag(tag)result(pending)
     character(8),intent(in)::tag
-    pending=tag==PENDING_MAGIC.or.tag==HEAT_PENDING_MAGIC.or.tag==HARVEST_PENDING_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+    pending=base_tag(tag)==PENDING_MAGIC.or.base_tag(tag)==HEAT_PENDING_MAGIC.or.base_tag(tag)==HARVEST_PENDING_MAGIC.or.base_tag(tag)==HEAT_HARVEST_PENDING_MAGIC
   end function
   logical function thermal_tag(tag)result(thermal)
     character(8),intent(in)::tag
-    thermal=tag==HEAT_MAGIC.or.tag==HEAT_PENDING_MAGIC.or.tag==HEAT_HARVEST_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+    thermal=base_tag(tag)==HEAT_MAGIC.or.base_tag(tag)==HEAT_PENDING_MAGIC.or.base_tag(tag)==HEAT_HARVEST_MAGIC.or.base_tag(tag)==HEAT_HARVEST_PENDING_MAGIC
   end function
   logical function harvest_tag(tag)result(harvest)
     character(8),intent(in)::tag
-    harvest=tag==HARVEST_MAGIC.or.tag==HARVEST_PENDING_MAGIC.or.tag==HEAT_HARVEST_MAGIC.or.tag==HEAT_HARVEST_PENDING_MAGIC
+    harvest=base_tag(tag)==HARVEST_MAGIC.or.base_tag(tag)==HARVEST_PENDING_MAGIC.or.base_tag(tag)==HEAT_HARVEST_MAGIC.or.base_tag(tag)==HEAT_HARVEST_PENDING_MAGIC
   end function
   subroutine write_crop_soil_n_joint_restart_file(path,column,template,water_parameter_id,water,coupled,status)
     character(*),intent(in)::path
@@ -108,6 +137,7 @@ contains
         tag=HEAT_HARVEST_MAGIC;if(has_pending)tag=HEAT_HARVEST_PENDING_MAGIC
       end if
     end if
+    if(allocated(cp%b112_return))tag=encode_b112_tag(tag)
     cv=crop_n_configuration_vector(cp);ov=pack_crop_n_continuation(crop)
     if(size(cv)==0.or.size(ov)==0)return
     call fmr_export_committed_restart([column],[template],[water],water_parameter_id,b,ok,io)
@@ -227,7 +257,8 @@ contains
         if(io/=0)exit decoding
         io=1
         thermal=thermal_tag(tag)
-        if((tag/=MAGIC.and.tag/=PENDING_MAGIC.and..not.thermal.and..not.harvest_tag(tag)).or. &
+        if(b112_tag(tag).neqv.allocated(cp%b112_return))exit decoding
+        if((base_tag(tag)/=MAGIC.and.base_tag(tag)/=PENDING_MAGIC.and..not.thermal.and..not.harvest_tag(tag)).or. &
           n/=size(p%mineral%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(thermal.neqv.soil_n_thermal_template(template))exit decoding
         if(thermal.and..not.present(heat_parameters))exit decoding
@@ -293,6 +324,7 @@ contains
         call unpack_crop_n_continuation(ov,crop_trial,io)
         if(io/=CROP_SOIL_OK)exit decoding
         io=1
+        if(crop_trial%nitrogen%b112_residue_profile.neqv.b112_tag(tag))exit decoding
         if(crop_trial%harvested().neqv.harvest_tag(tag))exit decoding
         if(.not.all(ieee_is_finite(v)))exit decoding
         if(any(abs(v-expected)>0.0_real64))exit decoding

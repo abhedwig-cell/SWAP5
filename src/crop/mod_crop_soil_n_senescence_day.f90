@@ -115,12 +115,12 @@ contains
   type(senescence_day_receipt_t),intent(inout)::r
   type(crop_soil_state_t),intent(out)::candidate
   type(crop_residue_pending_t)::pending
-  type(crop_soil_state_t)::probe
+  type(crop_soil_state_t)::probe,physical_day
   type(reactive_state_t)::soil
   type(wofost81_crop_owner_state_t)::crop
   type(crop_n_configuration_t)::cp
   integer(int64)::id
-  real(real64)::dm(3),n(3),external_in,external_out,final
+  real(real64)::dm(3),n(3),external_in,external_out,final,retained_dm(2),retained_n(2)
   integer::code
   candidate=day_state;r%status=SENESCENCE_DAY_CROP
   if(r%materials%status/=MATERIAL_OK)return
@@ -128,15 +128,31 @@ contains
    dm=[d%prepared%drrt,d%prepared%drlv,d%prepared%drst]
    n=[d%crop%rndeathrt,d%crop%rndeathlv,d%crop%rndeathst]
    if(abs(d%prepared%leaf_diagnostics%applied_leaf_death-dm(2))>1d-12)return
-   call create_crop_residue_pending(t1,dm,n,policy,pending,code)
-   r%status=SENESCENCE_DAY_RETURN;if(code/=SENESCENCE_OK)return
-   if(abs(pending%nitrogen_kg_m2()-d%crop_loss_kg_m2)>1d-12)return
-   call stage_pending(day_state,pending,probe,code);if(code/=0)return
    call day_state%snapshot(soil,crop);call day_state%configuration(cp,id)
-   if(any(dm>0d0))then
+   physical_day=day_state;retained_dm=0d0;retained_n=0d0
+   if(allocated(cp%b112_return))then
+    call split_b112_retained_residue(t1,dm,n,cp%b112_return%leaf_fraction,policy,pending,retained_dm,retained_n,code)
+    if(code/=SENESCENCE_OK)return
+    ! This N application uses its own structural update; record its gross deaths
+    ! explicitly without relabelling them as physical retained material.
+    crop%crop%biomass%cumulative_dead_root_biomass=crop%crop%biomass%cumulative_dead_root_biomass+dm(1)
+    crop%crop%biomass%cumulative_dead_leaf_biomass=crop%crop%biomass%cumulative_dead_leaf_biomass+dm(2)
+    crop%crop%biomass%cumulative_dead_stem_biomass=crop%crop%biomass%cumulative_dead_stem_biomass+dm(3)
+    crop%crop%biomass%retained_dead_biomass=crop%crop%biomass%retained_dead_biomass+retained_dm
+    crop%nitrogen%retained_dead_n=crop%nitrogen%retained_dead_n+retained_n
+    call initialize_crop_soil(soil,crop,cp,id,physical_day,code)
+    if(code/=CROP_SOIL_OK)return
+   else
+   call create_crop_residue_pending(t1,dm,n,policy,pending,code)
+   endif
+   r%status=SENESCENCE_DAY_RETURN;if(code/=SENESCENCE_OK)return
+   if(abs(pending%nitrogen_kg_m2()+sum(retained_n)*1d-4-d%crop_loss_kg_m2)>1d-12)return
+   call stage_pending(physical_day,pending,probe,code);if(code/=0)return
+   call physical_day%snapshot(soil,crop);call physical_day%configuration(cp,id)
+   if(any(pending%dry_matter_kg_ha>0d0))then
     call initialize_crop_soil(soil,crop,cp,id,candidate,code,pending)
    else
-    candidate=day_state;code=CROP_SOIL_OK
+    candidate=physical_day;code=CROP_SOIL_OK
    end if
    if(code/=0)return
    r%pending_n=pending%nitrogen_kg_m2()

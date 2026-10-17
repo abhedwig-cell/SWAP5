@@ -61,6 +61,10 @@ contains
     end select
     if (.not. view_ok .or. crop_status /= FMR_WOFOST_CROP_PERSISTENCE_OK .or. .not. view%ready()) return
     if (view%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if(allocated(view%owner%biomass))then
+      ! Classic codec has no N-profile physical retained-material payload.
+      if(any(view%owner%biomass%retained_dead_biomass/=0d0))return
+    endif
 
     call snapshot%current_time(committed_time, time_available)
     if (.not. time_available) return

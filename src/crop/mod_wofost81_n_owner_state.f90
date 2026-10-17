@@ -15,6 +15,8 @@ module mod_wofost81_n_owner_state
 
   type, extends(transaction_state_t), public :: wofost81_n_owner_state_t
     type(WOFOST81_n_state) :: value
+    logical :: b112_residue_profile = .false.
+    real(real64) :: retained_dead_n(2) = 0d0 ! physical leaf/stem N; subset of gross N losses
   contains
     procedure :: clone => clone_wofost81_n_owner_state
     procedure, public :: validate => validate_wofost81_n_owner_state
@@ -31,6 +33,8 @@ contains
     select type (typed_copy => copy)
     type is (wofost81_n_owner_state_t)
       typed_copy%value = self%value
+      typed_copy%b112_residue_profile=self%b112_residue_profile
+      typed_copy%retained_dead_n=self%retained_dead_n
     class default
       error stop 'WOFOST81 N owner state: clone allocation failure'
     end select
@@ -44,6 +48,10 @@ contains
     status = WOFOST81_N_OWNER_INVALID_STATE
     if (.not. all(ieee_is_finite(values))) return
     if (any(values < 0.0_real64)) return
+    if (.not.all(ieee_is_finite(self%retained_dead_n))) return
+    if (any(self%retained_dead_n<0d0).or.any(self%retained_dead_n>5d5)) return
+    if (.not.self%b112_residue_profile.and.any(self%retained_dead_n/=0d0)) return
+    if (sum(self%retained_dead_n)>self%value%nlosses_total+1d-12) return
     total_now = sum(values(1:4))
     residual = self%value%initial_total + self%value%nuptake_total + self%value%nfix_total - &
                total_now - self%value%nlosses_total

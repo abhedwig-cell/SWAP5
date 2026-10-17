@@ -25,6 +25,8 @@ module mod_wofost_actual_biomass_state
     real(real64), allocatable :: leaf_biomass(:)
     real(real64), allocatable :: specific_leaf_area(:)
     real(real64), allocatable :: leaf_age(:)
+    ! Physical unreturned dead leaf/stem DM, kg/ha; never the gross diagnostics.
+    real(real64) :: retained_dead_biomass(2) = 0.0_real64
   contains
     procedure :: clone => wofost_actual_biomass_clone
     procedure, public :: validate => wofost_actual_biomass_validate
@@ -43,6 +45,7 @@ contains
     allocate(wofost_actual_biomass_state_t :: copy)
     select type (typed_copy => copy)
     type is (wofost_actual_biomass_state_t)
+      typed_copy%retained_dead_biomass = self%retained_dead_biomass
       typed_copy%root_biomass = self%root_biomass
       typed_copy%stem_biomass = self%stem_biomass
       typed_copy%storage_biomass = self%storage_biomass
@@ -63,6 +66,12 @@ contains
     logical :: has_leaf, has_sla, has_age
 
     status = WOFOST_BIOMASS_STATE_OK
+    if (.not.all(ieee_is_finite(self%retained_dead_biomass))) then
+      status=WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS;return
+    end if
+    if (any(self%retained_dead_biomass<0d0).or.any(self%retained_dead_biomass>5d5)) then
+      status=WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS;return
+    end if
 
     if (.not. valid_nonnegative(self%root_biomass)) then
       status = WOFOST_BIOMASS_STATE_INVALID_ORGAN_BIOMASS
