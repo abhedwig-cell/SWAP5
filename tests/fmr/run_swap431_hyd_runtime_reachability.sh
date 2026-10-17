@@ -24,6 +24,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_checkpoint_orchestrator.f90
   src/solver/mod_soil_water_solver_contract.f90
   src/solver/mod_process_hydraulic_view.f90
+  src/process/mod_drainage_extended_exchange.f90
   src/process/mod_drainage_process.f90
   src/process/mod_drainage_tabulated_response.f90
   src/process/mod_drainage_hooghoudt_equivalent_depth.f90
