@@ -171,5 +171,14 @@
     },
     "limits": "Not integrated hydraulic dynamic boundary to reactive chemistry with V2 restart; no runoff/runon; not FROSS admission.",
     "admitted": false
+  },
+  "solver_policy_20261017": {
+    "decision": "REFERENCE_FIRST_ROSSFAST_FROZEN_OPTIONAL",
+    "protocol_commit": "3e917a2c2834a5154e86caa762325e365e22c6d6",
+    "existing_admissions": "PRESERVE",
+    "new_gross_contract": "UNSUPPORTED_OPTIONAL",
+    "fross22_guard": "UNCHANGED; FAIL on shared-contract drift; not PASS",
+    "mc_sol01": "Continue Reference physical integration without requiring new RossFast support",
+    "merge": "Require Reference science and affected incumbent RossFast preservation and branch protections"
   }
 }
