@@ -55,7 +55,8 @@ contains
     real(real64)::clock
     result=matrix_joint_result_t()
     if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
-      supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate])))return
+      supply%irrigation_rate,supply%irrigation_c,supply%dry_deposition_rate, &
+      supply%runon_rate,supply%runon_c])))return
     if(supply%t0/=t0.or.supply%t1/=t1)return
     if(.not.ieee_is_finite(forcing%top_flux))return
     if(allocated(forcing%black_evaporation).or.allocated(forcing%boesten_evaporation).or. &
