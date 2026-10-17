@@ -221,12 +221,9 @@
       "id": "MC-IRR01",
       "status": "BOUNDED_RUNTIME_ADMITTED_SHARED_APPLICATION_BLOCKED",
       "capabilities": [
-        "SW431-IRR-SALTEXCESS",
-        "SW431-IRR-SSDI",
-        "SW431-IRR-TCS7",
-        "SW431-IRR-TCS8"
+        "SW431-IRR-SALTEXCESS"
       ],
-      "next_action": "Preserve twelve admitted existing irrigation rows. Complete TCS7/TCS8/SSDI management-state interface and SALTEXCESS bottom7 composition through existing owners.",
+      "next_action": "Preserve fifteen admitted existing irrigation rows. Complete the remaining SALTEXCESS bottom7 composition through existing accepted chemistry/weather owners.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -241,11 +238,14 @@
         "SW431-IRR-RATE-CAP",
         "SW431-IRR-RATE-DAILY",
         "SW431-IRR-SCHED-SURF",
+        "SW431-IRR-SSDI",
         "SW431-IRR-TCS1",
         "SW431-IRR-TCS2",
         "SW431-IRR-TCS3",
         "SW431-IRR-TCS4",
-        "SW431-IRR-TCS6"
+        "SW431-IRR-TCS6",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8"
       ],
       "original_capabilities": [
         "SW431-IRR-TCS2",
@@ -388,9 +388,12 @@
       },
       "closed_capabilities": [
         "SW431-IRR-DCS1",
+        "SW431-IRR-SSDI",
         "SW431-IRR-TCS2",
         "SW431-IRR-TCS3",
-        "SW431-IRR-TCS4"
+        "SW431-IRR-TCS4",
+        "SW431-IRR-TCS7",
+        "SW431-IRR-TCS8"
       ],
       "batch_admission_20261017": {
         "capability_ids": [
@@ -456,6 +459,81 @@
           "active_without_listed_production_source_authority": 38,
           "active_missing_complete_admitted_route": 99,
           "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;99 full production envelopes remain active. Full LIMIT modifier closes through real current-root/material weather and native continuation; all other242 rows preserved.",
+          "derived_gap_counter_reconciliation": {
+            "previous_summary": 108,
+            "actual_marked_rows": 92,
+            "active_complete_route_gaps": 108,
+            "disposition_changes": 0,
+            "scope": "Correct stale derived counter only; no new semantic absence or admission claim."
+          },
+          "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
+        }
+      },
+      "sensor_admission_20261017": {
+        "capability_ids": [
+          "SW431-IRR-TCS7",
+          "SW431-IRR-TCS8",
+          "SW431-IRR-SSDI"
+        ],
+        "pr": 1273,
+        "canonical_merge": "dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e",
+        "qualified_head": "0b2fe122dbb3e0ffaa724fd725d5585e8c173d83",
+        "full_tree": "3386518a39919d8ce709733c6491ae04eaf354a3",
+        "source_tree": "bae023dab2bb91a91d6a48c4d2a5429a94897873",
+        "production_merge_full_tree_identity": true,
+        "authority": "integration/audits/MC_IRR01_STATUS.json at dc6c80ee1ad6af20b74e5beb6fcc4a7e9a8f2e4e",
+        "phase": "sensor_batch_1271_20261017",
+        "full_capabilities": true,
+        "optimizations": [
+          0,
+          2
+        ],
+        "literal_sensor_cases_per_optimization": 2604,
+        "spatial_intervals_per_optimization": 6,
+        "root_cases_per_optimization": 2079,
+        "interval_transitions_per_optimization": 4452,
+        "season_boundaries_per_optimization": 72,
+        "material_root_cases_per_optimization": 360,
+        "production_providers_per_optimization": 297,
+        "trajectories": 126,
+        "decoder_negatives": 264,
+        "continuous_opaque_fresh_native": "EXACT_ENDPOINT_BYTES",
+        "water_balance": "PASS_UNCHANGED_HARD_ASSERTIONS",
+        "other240_rows": "UNCHANGED",
+        "disposition_delta": {
+          "ADMITTED": 3,
+          "ACTIVE_MIGRATION": -3
+        },
+        "previous_summary": {
+          "capabilities": 243,
+          "dispositions": {
+            "ADMITTED": 109,
+            "ACTIVE_MIGRATION": 95,
+            "SUPERSEDED": 14,
+            "REJECTED": 2,
+            "NOT_APPLICABLE": 20,
+            "QUALIFICATION_ONLY": 3
+          },
+          "open_capabilities": 95,
+          "open_workunits": 18,
+          "confirmed_missing_production_entries": 79,
+          "other_unresolved_source_admission_reviews": 3,
+          "qualification_only_capabilities": 3,
+          "total_unresolved_capabilities": 98,
+          "active_gap_type_breakdown": {
+            "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+            "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
+            "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
+            "INCOMPLETE_RUNTIME_QUALIFICATION": 11,
+            "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
+          },
+          "qualified_process_missing_runtime_binding": 0,
+          "missing_production_binding_or_implementation_entries": 95,
+          "missing_standalone_process_implementations_not_established": 95,
+          "active_with_existing_production_source_authority": 57,
+          "active_without_listed_production_source_authority": 38,
+          "active_missing_complete_admitted_route": 95,
+          "confirmed_missing_production_entries_claim_scope": "Structural flagged-row count, not absent standalone algorithms;95 full production envelopes remain active. Four full root-management rows close in existing MC-IRR01; all other239 capability records unchanged.",
           "derived_gap_counter_reconciliation": {
             "previous_summary": 108,
             "actual_marked_rows": 92,
