@@ -93,6 +93,9 @@ program test_b111_hydraulic_families
     c(19,i)=2.0_real64*c(18,i)
     call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
     if(status==B111_EXT_OK) error stop 'PDI accepted HA>H0'
+    c(19,i)=0.5_real64*c(18,i)
+    call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
+    if(status/=B111_EXT_OK) error stop 'PDI rejected valid HA below H0'
     c(19,i)=1.0e2_real64
   end do
   call initialize_b111_extended_hydraulic_parameters(extp,model,c,status)
