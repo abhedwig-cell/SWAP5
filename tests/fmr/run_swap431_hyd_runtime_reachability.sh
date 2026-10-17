@@ -41,6 +41,8 @@ MODULE_SRC=(
   src/solver/mod_reference_richards_state_binding.f90
   src/solver/mod_reference_linear_solver.f90
   src/solver/mod_b110_default_mvg_provider.f90
+  src/solver/mod_b110_default_mvg_directional_provider.f90
+  src/solver/mod_b110_direct_retention_provider.f90
   src/solver/mod_b111_legacy_hydraulic_provider.f90
   src/solver/mod_b111_extended_hydraulic_provider.f90
   src/solver/mod_b111_conductivity_power_tail.f90
