@@ -22,3 +22,7 @@ At the time of this scientific note, the V3 physical-export and import-gate jobs
 ## Decision
 
 **PASS** real PCSE crop journal concurrency and rejection of false physical provenance. **UNQUALIFIED** true same-day SWAP5 hydrological acceptance to PCSE, native-to-PCSE unit and meteorological mapping, and distributed cross-authority atomic commit. Continue only on research PRs SWAP5 #1279 and PCSE #9. SWAP5 canonical and its admitted WOFOST81 crop equations unchanged.
+
+## Physical V3 exporter requalification after earlier note
+
+[SWAP5 Actions run 39066877106](https://github.com/abhedwig-cell/SWAP5/actions/runs/39066877106) finished **SUCCESS**, Fortran rooted hydrology PASS with **three identical** physical event identities `lineage_id=630101`, `final_revision=192`, `t0=2`, `t1=3`; actual/potential native integrated uptake both `1.0370706377336118E-03`. Test-only V3 accepted witness exporter completed (`EXT01_AUTHENTIC_ACCEPTED_FLUX_WITNESS_EXPORTED`). Artifact `fwof-ext01-authentic-swap5-flux-log` id **12113523934** records the actual log and V3 JSON. Its original fixture epoch 1999-01-20 and interval end Jan 23, 1999 are **not** matched PCSE 2010 barley forcing. The witness remains non-admissible for production crop import; no positive end-to-end science claim.
