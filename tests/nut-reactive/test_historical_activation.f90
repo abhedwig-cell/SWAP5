@@ -11,6 +11,7 @@ program test_historical_activation
  type(soil_n_pool_state_t)::pools,derived
  type(soil_n_historical_initial_t)::legacy
  type(soil_n_historical_rates_t)::rates
+ type(soil_n_residue_age_t)::ages
  real(real64)::tcsf,lai
  integer::code,unit,line_number,i
  character(32)::key
@@ -26,7 +27,8 @@ program test_historical_activation
     'CdissiHalf = 0.1','TCSF_N = 0.5','dz_WSN = 0.3', &
     'cNH4N_lat = 0.3','cNO3N_lat = 0.4','cNH4N_seep = 0.1','cNO3N_seep = 0.2'
  close(unit)
- call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
+ call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number,ages)
+ if(abs(ages%root-1.27d0)>1d-14.or.abs(ages%leaf-.99d0)>1d-14)error stop 'historical age defaults'
  if(code/=N_NAMED_OK)error stop '26 named fields'
  if(rates%no3_seep/=.2d0.or.rates%no3_lat/=.4d0)error stop 'distinct no3 routes'
  if(rates%lai_crit_nupt/=0d0)error stop 'original optional LaiCritNupt default'

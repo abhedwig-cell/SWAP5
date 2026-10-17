@@ -5,14 +5,15 @@ module mod_soil_n_unified_input
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_amendment_input,only:parse_soil_n_amendment_tables,N_INPUT_OK
  use mod_soil_n_historical_activation,only:soil_n_historical_initial_t,soil_n_historical_rates_t
- use mod_soil_n_historical_named_input,only:parse_historical_soil_n_named_lines,N_NAMED_OK
+ use mod_soil_n_historical_named_input,only:parse_historical_soil_n_named_lines,N_NAMED_OK,soil_n_residue_age_t
  implicit none
  private
  integer,parameter,public::N_UNIFIED_OK=0,N_UNIFIED_INVALID=1,N_UNIFIED_IO=2
  public::read_soil_n_unified_export
 contains
- subroutine read_soil_n_unified_export(path,origin,plan,initial,rates,status,error_line)
+ subroutine read_soil_n_unified_export(path,origin,plan,initial,rates,status,error_line,ages)
  character(*),intent(in)::path,origin
+ type(soil_n_residue_age_t),intent(out),optional::ages
  type(soil_n_amendment_calendar_t),intent(out)::plan
  type(soil_n_historical_initial_t),intent(out)::initial
  type(soil_n_historical_rates_t),intent(out)::rates
@@ -20,12 +21,14 @@ contains
  type(soil_n_amendment_calendar_t)::candidate_plan
  type(soil_n_historical_initial_t)::candidate_initial
  type(soil_n_historical_rates_t)::candidate_rates
+ type(soil_n_residue_age_t)::candidate_ages
  character(2048)::line
  character(2048)::tables(4096)
  character(512)::parameters(512)
  integer::unit,ios,read_size,close_code,section,nmat,nparam,code
  plan=soil_n_amendment_calendar_t();initial=soil_n_historical_initial_t()
  rates=soil_n_historical_rates_t();status=N_UNIFIED_IO;error_line=0
+ if(present(ages))ages=soil_n_residue_age_t()
  nmat=0;nparam=0;section=0
  open(newunit=unit,file=path,status='old',action='read',iostat=ios)
  if(ios/=0)return
@@ -58,11 +61,12 @@ contains
  if(code/=N_INPUT_OK)then
    status=N_UNIFIED_INVALID;return
  end if
- call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial,candidate_rates,code,error_line)
+ call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial,candidate_rates,code,error_line,candidate_ages)
  if(code/=N_NAMED_OK)then
    status=N_UNIFIED_INVALID;error_line=error_line+nmat+2;return
  end if
  plan=candidate_plan;initial=candidate_initial;rates=candidate_rates
+ if(present(ages))ages=candidate_ages
  status=N_UNIFIED_OK;error_line=0
  end subroutine
 end module
