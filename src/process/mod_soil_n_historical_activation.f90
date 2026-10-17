@@ -26,7 +26,39 @@ module mod_soil_n_historical_activation
    real(real64)::nh4_lat=0d0,no3_lat=0d0,nh4_seep=0d0,no3_seep=0d0
  end type
  public::activate_soil_n_historical,build_historical_soil_n_inventory,bind_historical_soil_n_rates
+ public::initialize_historical_soil_n_complete
 contains
+ subroutine initialize_historical_soil_n_complete(selection,rates,initial,template,id,clock,wfrac, &
+       owner,parameters,tcsf,lai,status)
+   type(soil_n_historical_selection_t),intent(in)::selection
+   type(soil_n_historical_rates_t),intent(in)::rates
+   type(soil_n_historical_initial_t),intent(in)::initial
+   type(reactive_parameters_t),intent(in)::template
+   integer(int64),intent(in)::id
+   real(real64),intent(in)::clock,wfrac
+   type(reactive_state_t),intent(out)::owner
+   type(reactive_parameters_t),intent(out)::parameters
+   real(real64),intent(out)::tcsf,lai
+   integer,intent(out)::status
+   type(soil_n_pool_state_t)::pools
+   integer::code
+   owner=reactive_state_t();parameters=reactive_parameters_t()
+   tcsf=0d0;lai=0d0;status=N_ACTIVATION_UNSUPPORTED
+   if(selection%swcropsnm/=1.or.selection%sw_wofost/=1)return
+   status=N_ACTIVATION_INVALID
+   if(.not.selection%source_parameters_complete)return
+   call bind_historical_soil_n_rates(rates,template,parameters,tcsf,lai,code)
+   if(code/=N_ACTIVATION_OK)goto 900
+   call build_historical_soil_n_inventory(initial,parameters,wfrac,pools,code)
+   if(code/=N_ACTIVATION_OK)goto 900
+   call activate_soil_n_historical(selection,parameters,pools,id,clock,wfrac,owner,code)
+   if(code/=N_ACTIVATION_OK)goto 900
+   status=N_ACTIVATION_OK
+   return
+900 continue
+   owner=reactive_state_t();parameters=reactive_parameters_t()
+   tcsf=0d0;lai=0d0
+ end subroutine
  subroutine bind_historical_soil_n_rates(source,template,parameter,root_tcsf,lai_crit,status)
    type(soil_n_historical_rates_t),intent(in)::source
    type(reactive_parameters_t),intent(in)::template
