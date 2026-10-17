@@ -4480,7 +4480,7 @@
       },
       "meaning": "Multilevel frost spatial redistribution",
       "swap5_implementation_authority": [
-        "src/process/mod_frost_multilevel_divdra_effect.f90 at 5f919cbb5de933bff62e715045533a5c63faba4d",
+        "src/process/mod_frost_multilevel_divdra_effect.f90 at 719c6c67107ebf7113020e425e725731b26f73a3",
         "src/runtime/mod_fmr_serialized_reference_backend.f90",
         "src/runtime/mod_fmr_production_application_bootstrap.f90"
       ],
@@ -4490,17 +4490,18 @@
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
         "integration/audits/SWAP431_SOURCE_REVIEW.md",
         "integration/audits/evidence/SWAP431_B19_MASTER_RECONCILIATION.json",
-        "integration/audits/PPA_WU05B20_STATUS.json production_reopening_20261017 at 14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7"
+        "integration/audits/PPA_WU05B20_STATUS.json production_reopening_20261017 at 14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
+        "integration/audits/PPA_WU05B20_STATUS.json full_levels_20261017 at 47421ae0ec4145a25cb805bf38b63a6f1d32ea3a"
       ],
       "production_reachability": {
         "established": true,
         "route": "frost_divdra_active + frost_divdra_levels/scalars -> actual immutable trial-start NET01 -> existing nodal/bottom mass and committed runtime",
-        "claim": "Owner-approved NET01 SWAP5 policy; two/three strictly depth-ordered signed interacting levels, rootless ordinary Reference mode2, normal/low air, separate infiltration.",
-        "bounded_receipt": "frost_net01_20261017"
+        "claim": "Owner-approved NET01 SWAP5 policy; every source-supported count2..25, strictly depth-ordered signed interacting levels, rootless ordinary Reference mode2, normal/low air and separate INF.",
+        "bounded_receipt": "frost_net01_full_levels_20261017"
       },
       "restrictions": [
         "Not a B1 correction; no original-reference mutation.",
-        "Two/three levels only. Full source array envelope including higher counts remains open; roots, other bottom owners, snow and other source options retain their own rules."
+        "Source count envelope2..25 is complete. Strict depth ordering and no top discharge-layer projection remain bounded; separate rooted, other-bottom and snow compositions retain their own rows."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-FROST01",
@@ -4513,9 +4514,9 @@
       },
       "classification": "CORE_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "BOUNDED_PRODUCTION_CANONICALLY_ADMITTED_WIDER_SOURCE_ENVELOPE_OPEN",
+      "workunit_stage": "SOURCE_COUNTS_2_25_CANONICALLY_ADMITTED_REMAINING_OPTIONS_OPEN",
       "implementation_absence_proven": false,
-      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_SOURCE_CAPABILITY_STILL_OPEN",
+      "resolution_stage": "FULL_SOURCE_COUNT_GAP_CLOSED_FULL_OPTION_CAPABILITY_STILL_OPEN",
       "closed_foundation_authorities": [
         "SW431-FROST-DIVDRA",
         "SW431-DRAIN-DIV-MULTI"
@@ -15953,7 +15954,7 @@
       "capability_id": "SW431-FROST-DIV-MULTI",
       "work_unit": "MC-FROST01",
       "dependencies": [],
-      "why_open": "Ordinary frost-OFF interacting multilevel DIVDRA is admitted by PR1109. Frost-ON multilevel nodal/bottom composition, its proposal regeneration, mass and transactional restart remain a separate qualification; B19 single-level frost admission is unchanged.",
+      "why_open": "NET01 frost-ON counts2..25, trial regeneration,mass,rollback,restart and isolation are canonically admitted by1276. Strict depth ordering/top discharge-layer option bounds still prevent full source-option row closure; separate ROOTDRAIN/GW/SNOW rows keep their own contracts.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 1,
@@ -15961,7 +15962,7 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false
     },
     {
       "capability_id": "SW431-FROST-EXT-MULTI",
@@ -18435,6 +18436,26 @@
       ],
       "evidence": "integration/audits/evidence/FROST_NET01_PRODUCTION_20261017.json.gz.b64 at 14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
       "master_source_branch_note": "Frozen historical master science checkout is not implementation absence evidence for the admitted later canonical route."
+    },
+    "frost_net01_full_levels_20261017": {
+      "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1276",
+      "canonical_merge": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+      "production_merge": "719c6c67107ebf7113020e425e725731b26f73a3",
+      "admission_head": "1b271e95993cf72c284a40a6d278a40e72d121a6",
+      "qualified_source_tree": "cfc2191f6a9e5e491e7fca53db82faeea0024c72",
+      "qualified_full_tree": "13519301d6b2c95dc660ea421d83161f78917ab5",
+      "actual_merge_full_tree": "13519301d6b2c95dc660ea421d83161f78917ab5",
+      "authority_at_canonical": "integration/audits/PPA_WU05B20_STATUS.json full_levels_20261017",
+      "full_capability": false,
+      "source_count_gap_closed": true,
+      "scope": "Owner-approved NET01 SWAP5 policy; every source-supported count2..25, strictly depth-ordered signed interacting levels, rootless ordinary Reference mode2, normal/low air and separate INF.",
+      "qualification": "O0/O2 exact:18432 full-source vectors and1536 actual physical configurations/opt;564 active NET01;96 solved rejection/rollback,96 empty-registry restarts and96 two-column isolations;672 invalid backend/application preflights; original9216 source cases and single/ordinary multi/INF runtime retained; intact capsule+10 corruption controls,current owner and docs PASS; hard column mass1e-12cm.",
+      "limitations": [
+        "Not a B1 correction; no original-reference mutation.",
+        "Source count envelope2..25 is complete. Strict depth ordering and no top discharge-layer projection remain bounded; separate rooted, other-bottom and snow compositions retain their own rows."
+      ],
+      "evidence": "integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64 at 47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+      "master_source_branch_note": "Historical master science is unchanged; current production reachability follows exact later canonical source/admission."
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -18825,7 +18846,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
+  "canonical_locator_head": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",

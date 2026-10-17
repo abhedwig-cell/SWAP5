@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "work_unit": "SWAP431-MASTER-COVERAGE",
   "baseline": "5c079127c41643419dc59bb03fe76daa3c7cf24f",
-  "last_reconciled_upstream": "14c4dc15dc2ff0fd56ce7bcfbd88507853aa7bf7",
+  "last_reconciled_upstream": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
   "existing_pr_inventory_after1257_20261016": {
     "canonical": "93c4cb62f0a6c0dbe8bf47b6eeeef0752c39d694",
     "verified_merged": {
@@ -4352,5 +4352,43 @@
       "source_tree": "UNCHANGED frozen historical master science",
       "canonical_recovery_head": "f9f1614a794cf5a7e2f219a60fd1a61da245176b; metadata-only successor of14c4dc15, identical qualified source"
     }
+  },
+  "frost_net01_full_levels_reconciliation_20261017": {
+    "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1276",
+    "canonical_merge": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "production_merge": "719c6c67107ebf7113020e425e725731b26f73a3",
+    "admission_head": "1b271e95993cf72c284a40a6d278a40e72d121a6",
+    "qualified_source_tree": "cfc2191f6a9e5e491e7fca53db82faeea0024c72",
+    "qualified_full_tree": "13519301d6b2c95dc660ea421d83161f78917ab5",
+    "actual_merge_full_tree": "13519301d6b2c95dc660ea421d83161f78917ab5",
+    "authority_at_canonical": "integration/audits/PPA_WU05B20_STATUS.json full_levels_20261017",
+    "full_capability": false,
+    "source_count_gap_closed": true,
+    "scope": "Owner-approved NET01 SWAP5 policy; every source-supported count2..25, strictly depth-ordered signed interacting levels, rootless ordinary Reference mode2, normal/low air and separate INF.",
+    "qualification": "O0/O2 exact:18432 full-source vectors and1536 actual physical configurations/opt;564 active NET01;96 solved rejection/rollback,96 empty-registry restarts and96 two-column isolations;672 invalid backend/application preflights; original9216 source cases and single/ordinary multi/INF runtime retained; intact capsule+10 corruption controls,current owner and docs PASS; hard column mass1e-12cm.",
+    "limitations": [
+      "Not a B1 correction; no original-reference mutation.",
+      "Source count envelope2..25 is complete. Strict depth ordering and no top discharge-layer projection remain bounded; separate rooted, other-bottom and snow compositions retain their own rows."
+    ],
+    "evidence": "integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64 at 47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+    "master_source_branch_note": "Historical master science is unchanged; current production reachability follows exact later canonical source/admission.",
+    "prior_master": "5b04066dde4ab9b3ba67713dc9154f94209b6851",
+    "capability": "SW431-FROST-DIV-MULTI",
+    "disposition_changes": 0,
+    "all_other242_capability_records": "EXACT_UNCHANGED",
+    "remaining_queue": "Same row retained, stale total-absence field corrected tofalse; real remaining option bounds explicit.",
+    "validation": {
+      "historical_source_census_and_pinned_authorities": "PASS63 source members and current immutable locators",
+      "inheritance_negative_controls": "20 PASS",
+      "other242_capabilities_and_other91_queue_records": "EXACT_UNCHANGED",
+      "summary_and_disposition_counts": "EXACT_UNCHANGED112 ADMITTED/95 unresolved of243",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS11.35s",
+      "git_whitespace": "PASS",
+      "master_numerical_or_Actions_run": false,
+      "canonical_recovery_head": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+      "source_tree": "UNCHANGED historical master science"
+    },
+    "master_numerical_or_Actions_run": false
   }
 }

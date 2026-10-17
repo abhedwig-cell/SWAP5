@@ -1,4 +1,23 @@
-# NET01 bounded frost production admission, 17 October 2026
+# NET01 complete source count admission, 17 October 2026
+
+PR#1276 at `719c6c67107ebf7113020e425e725731b26f73a3`, canonical receipt
+`47421ae0ec4145a25cb805bf38b63a6f1d32ea3a`, admits every source count2..25.
+The actual complete merge tree equals qualified tree
+`13519301d6b2c95dc660ea421d83161f78917ab5`; source
+`cfc2191f6a9e5e491e7fca53db82faeea0024c72` is unchanged by metadata admission.
+O0/O2 pass18,432 full-source and1,536 actual physical configurations per opt,
+hard1e-12cm mass,96 solved rollback/restart/isolation and672 invalid preflights,
+original9,216 source preservation, original single-level and ordinary multi/INF,
+intact capsule/10 corruption controls and current owner/source/strict docs.
+
+Exactly the existing `SW431-FROST-DIV-MULTI` bounded receipt and its queue
+explanation are reconciled. The count gap is closed; strict depth ordering/top
+discharge-layer option bounds keep the full row **ACTIVE_MIGRATION**. Separate
+root/GW/snow rows are unchanged. Other242 capability records remain exact;
+counts stay112 ADMITTED/92 ACTIVE/3 QUALIFICATION_ONLY,95 unresolved of243.
+No master numerical run, Actions dispatch or global closure is claimed.
+
+## Historical initial two/three-level NET01 admission
 
 [PR1275](https://github.com/abhedwig-cell/SWAP5/pull/1275) admits the explicitly
 owner-approved net-preserving two/three-level frost policy. Actual production
@@ -535,7 +554,7 @@ These are individual capability decisions, not admitted implementation plans. De
 | SW431-FROST-GW | Frost with other legacy lower-boundary owners | Current frost admission requires bottom_mode==2. The other source-relevant lower-boundary frost compositions have no admitted runtime route. | None |
 | SW431-FROST-ROOTDRAIN | Root uptake composed with frost drainage | Current frost drainage admission explicitly rejects root_extraction_active and root_frost.active. Admitted empirical root frost does not close its composition with ordinary/extended drainage. | None |
 | SW431-FROST-SNOW | Snow-insulated sensible temperature driving empirical frost hydraulics | Legacy snow resistance changes the soil-interface temperature consumed by FrozenCond; current frost admission rejects snow_active, and the current numerical thermal owner also rejects snow. This needs the TEMP-SNOW route followed by bounded snow/frost ownership qualification. No ice or latent heat is implied. | SW431-TEMP-SNOW |
-| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | Ordinary frost-OFF multilevel is admitted by PR1109; frost-ON composition, proposal regeneration and its mass/rollback/restart remain open. | None |
+| SW431-FROST-DIV-MULTI | Multilevel frost spatial redistribution | NET01 frost-ON counts2..25, regeneration/mass/rollback/restart/isolation are admitted by PR1276. Strict depth ordering/top discharge-layer option bounds keep full source-option coverage open. | None |
 
 ### MC-HEAT01
 
