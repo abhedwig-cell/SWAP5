@@ -5,9 +5,10 @@ module mod_crop_soil_n_joint_restart_file
   use mod_transaction_reference,only:transaction_state_t
   use mod_kernel_transactions,only:kernel_committed_state_t,kernel_parameter_identity_t, &
        kernel_reconstruct_committed_state_trusted
-  use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
+  use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t,FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
   use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t, &
-       fmr_new_b110_temporal_indicator_committed_state,fmr_b110_physical_parameters_t
+       fmr_new_b110_temporal_indicator_committed_state,fmr_b110_physical_parameters_t, &
+       fmr_new_b110_committed_state
   use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
        initialize_soil_temperature_state,SOIL_TEMP_OK
   use mod_fmr_crop_soil_n_thermal_application,only:thermal_crop_soil_states_match,soil_n_thermal_template
@@ -416,14 +417,24 @@ contains
          c%file_weather_irrigation_depth%depth_criterion/=2)return
     end if
     if(c%file_weather_co2_response.or.c%file_weather_daily_demand.or.c%file_weather_swrain/=0)return
-    if(c%explicit_pmdirect_interception.or.c%base_salt_temporal_policy%enabled)return
+    if(c%explicit_pmdirect_interception)return
     select case(c%file_weather_irrigation_sensor%timing_criterion)
     case(2:4,6:8)
     case default
       return
     end select
     if(c%tiles(1)%parameters%bottom_mode/=7)return
-    if(c%tiles(1)%template%solute_state_layout_id/=0_int64)return
+    select case(c%tiles(1)%template%solute_state_layout_id)
+    case(0_int64)
+      if(c%base_salt_temporal_policy%enabled)return
+    case(FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)
+      if(.not.c%base_salt_temporal_policy%valid())return
+      if(allocated(c%tiles(1)%parameters%mobile_dispersion))return
+      if(.not.allocated(c%tiles(1)%base_forcing%c_drain_salt).or. &
+        .not.allocated(c%tiles(1)%base_forcing%soil_salt_boundary))return
+    case default
+      return
+    end select
     ok=.true.
   end function
 
@@ -533,6 +544,18 @@ contains
       c%file_weather_irrigation_field_capacity_head_cm, &
       p%active_nodes,p%z,p%dz,p%node_distance,p%cofgen,p%soil_temperature_active
     if(io/=0)then;close(scratch);return;end if
+    if(t%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+      write(scratch,iostat=io)'IRRSALT1',c%base_salt_temporal_policy,p%solute_tscf, &
+        p%salt_temporal_tolerance_mg_cm2,c%tiles(1)%base_forcing%c_drain_salt, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%available, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%matrix_top_outflow_carries_solute, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%matrix_top_mg_cm3, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%matrix_bottom_mg_cm3, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%valid_t0,c%tiles(1)%base_forcing%soil_salt_boundary%valid_t1, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%source_id,c%tiles(1)%base_forcing%soil_salt_boundary%revision, &
+        c%tiles(1)%base_forcing%soil_salt_boundary%unit_id
+      if(io/=0)then;close(scratch);return;end if
+    end if
     ! Keep the original native byte contract exactly for disabled TCSFIX.
     ! Bind enabled options as an extension within this existing config block.
     ! The expected config is caller-owned; mismatched extension/domain fails
@@ -605,6 +628,9 @@ contains
       type is(fmr_b110_temporal_indicator_state_t)
         physical=state%fmr_b110_physical_state_t
         call state%temporal_history_snapshot(derivative,history)
+      type is(fmr_b110_physical_state_t)
+        if(c%tiles(1)%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)return
+        physical=state;history=.false.
       class default
         return
       end select
@@ -623,6 +649,14 @@ contains
         call build_soil_temperature_field_view(physical%soil_temperature,heat,st)
         if(st/=0)then;io=1;return;end if
         write(u,iostat=io)heat%temperature_c
+      end if
+      if(io/=0)return
+      if(c%tiles(1)%template%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+        io=1
+        if(.not.allocated(physical%salt))return
+        if(.not.physical%salt%ready(n))return
+        if(allocated(physical%salt%macro_mass_mg_cm2))return
+        write(u,iostat=io)physical%salt%mass_mg_cm2,physical%salt%cdrain_source_id,physical%salt%cdrain_revision
       end if
     else
       read(u,iostat=io)layout,lineage,revision,time,bound,n,history,thermal,identity%parameter_set_id, &
@@ -659,6 +693,18 @@ contains
         else
           call fmr_new_b110_temporal_indicator_committed_state(temporary,1_int64,physical,0._real64,ok)
         end if
+        if(.not.ok)return
+      end if
+      if(c%tiles(1)%template%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
+        io=1
+        if(history)return
+        allocate(physical%salt)
+        allocate(physical%salt%mass_mg_cm2(n))
+        read(u,iostat=io)physical%salt%mass_mg_cm2,physical%salt%cdrain_source_id,physical%salt%cdrain_revision
+        if(io/=0)return
+        io=1
+        if(.not.physical%salt%ready(n))return
+        call fmr_new_b110_committed_state(temporary,1_int64,physical,0._real64,ok,parameters=c%tiles(1)%parameters)
         if(.not.ok)return
       end if
       call temporary%snapshot(state,ok);if(.not.ok)return

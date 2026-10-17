@@ -57,6 +57,7 @@ module mod_fmr_production_application_bootstrap
        fmr_new_b110_boesten_evaporation_committed_state, prepare_fmr_b110_default_mvg, &
        fmr_c_drain_salt_matches_trial, fmr_soil_salt_boundary_matches_trial, fmr_mobile_dispersion_matches_hydraulic_owner
   use mod_fmr_base_salt_temporal_policy, only: fmr_base_salt_temporal_policy_t
+  use mod_fmr_accepted_salt_irrigation_binding, only: fmr_read_committed_irrigation_cml
   use mod_restricted_surface_evaporation, only: black_evaporation_state_t, boesten_evaporation_state_t
   use mod_fmr_serialized_multiswap_runtime, only: fmr_serialized_column_result_t, &
        fmr_serialized_batch_diagnostics_t, fmr_run_serialized_physical_multiswap, FMR_SERIAL_DISPATCH_OK
@@ -582,9 +583,10 @@ contains
       ! composed with this default-MvG managed weather profile.
       if(allocated(config%tiles(1)%parameters%hydraulic_model_kind).or. &
          config%tiles(1)%parameters%conductivity_power_tail_active)return
-      if(config%explicit_pmdirect_interception.or.config%base_salt_temporal_policy%enabled) return
-      if(config%tiles(1)%template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)return
-      if(config%file_weather_irrigation_sensor%salinity_excess_enabled)return
+      if(config%explicit_pmdirect_interception)return
+      ! Matrix salt uses the already validated physical salt layout and external
+      ! full/half temporal policy above. No independent concentration owner.
+      if(allocated(config%tiles(1)%parameters%mobile_dispersion))return
       if(.not.config%file_weather_irrigation_sensor%scheduled_irrigation_enabled)return
       if(config%file_weather_irrigation_sensor%active_nodes/=config%tiles(1)%parameters%active_nodes)return
       if(config%file_weather_irrigation_depth%fixed_interval_enabled)then
@@ -1200,6 +1202,7 @@ contains
     type(traditional_pm_weather_t) :: pm_weather
     type(crop_co2_response_t) :: co2_response
     real(real64) :: day,tmin,tmax,rain,etref,time,crop_time,qrot,ptra,deepest_oxygen
+    integer(int64) :: salt_revision
     logical :: available,rooted
     integer :: s
     status=FMR_APP_BOOT_NOT_READY
@@ -1424,6 +1427,13 @@ contains
           self%weather_configuration%file_weather_irrigation_crop_calendar,t0+real(self%weather_epoch_day,real64), &
           self%weather_configuration%file_weather_irrigation_startirr,self%weather_configuration%file_weather_irrigation_endirr, &
           irrigation_request%schedule_enabled,irrigation_request%irrigation_window_open,available)
+        if(.not.available)return
+      end if
+      irrigation_request%solute_enabled=self%templates(1)%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED
+      if(irrigation_request%solute_enabled.and..not.self%irrigation%management%event%active_event)then
+        call fmr_read_committed_irrigation_cml(self%committed(1),self%parameters(1), &
+          self%weather_configuration%file_weather_irrigation_sensor%sensor_node,t0, &
+          irrigation_request%sensor_concentration,salt_revision,available)
         if(.not.available)return
       end if
       allocation=fmr_irrigation_allocation_t()

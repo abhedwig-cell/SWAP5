@@ -158,7 +158,7 @@ contains
     if (.not. ieee_is_finite(concentration)) return
     if (concentration < 0.0_real64) return
     if (concentration > threshold) then
-      depth = depth * (1.0_real64 + 0.01_real64*percent)
+      depth = depth + 0.01_real64*percent*depth
       applied = .true.
     end if
     ok = .true.
