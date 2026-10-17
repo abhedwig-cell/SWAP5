@@ -18,6 +18,8 @@ module mod_b111_persistent_pond
  type,public::pond_step_t
   real(real64)::t0=0d0,t1=0d0,depth_begin=0d0,depth_end=0d0,qtop=0d0
   real(real64)::rain_rate=0d0,rain_c=0d0,irrigation_rate=0d0,irrigation_c=0d0,dry_deposition_rate=0d0
+  ! Accepted gross pond evaporation removes water, never dissolved solute.
+  real(real64)::pond_evaporation_rate=0d0
  end type
  type,public::persistent_pond_receipt_t
   integer::status=POND_INVALID
@@ -78,17 +80,19 @@ contains
   if(.not.committed%ready())return
   if(committed%revision>=100000000_int64)return
   if(.not.all(ieee_is_finite([s%t0,s%t1,s%depth_begin,s%depth_end,s%qtop, &
-    s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c,s%dry_deposition_rate])))return
+    s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c,s%dry_deposition_rate, &
+    s%pond_evaporation_rate])))return
   if(abs(s%t0)>1d8.or.abs(s%t1)>1d8.or.s%t1<=s%t0)return
   if(s%t0/=committed%clock.or.s%depth_begin/=committed%depth)return
   dt=s%t1-s%t0
   if(dt<1d-100.or.dt>1d3)return
   if(min(s%depth_begin,s%depth_end,s%rain_rate,s%rain_c,s%irrigation_rate, &
-    s%irrigation_c,s%dry_deposition_rate)<0d0)return
+    s%irrigation_c,s%dry_deposition_rate,s%pond_evaporation_rate)<0d0)return
   if(max(s%depth_begin,s%depth_end,s%rain_c,s%irrigation_c,s%dry_deposition_rate)>1d6)return
-  if(max(s%rain_rate,s%irrigation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
+  if(max(s%rain_rate,s%irrigation_rate,s%pond_evaporation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
   r%status=POND_WATER
-  r%water_residual=s%depth_end-s%depth_begin-(s%rain_rate+s%irrigation_rate+s%qtop)*dt
+  r%water_residual=s%depth_end-s%depth_begin- &
+    (s%rain_rate+s%irrigation_rate-s%pond_evaporation_rate+s%qtop)*dt
   if(abs(r%water_residual)>1d-10)return
   r%status=POND_MASS
   r%mass_before=committed%mass;r%dry_input=s%dry_deposition_rate*dt
