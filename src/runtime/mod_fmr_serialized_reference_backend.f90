@@ -168,9 +168,11 @@ module mod_fmr_serialized_reference_backend
   use mod_root_salinity_response, only: evaluate_mobile_root_salinity_sink, SALINITY_OK
 
   use mod_b111_hysteresis_state, only: b111_hysteresis_state_t, b111_hysteresis_parameters_t
-  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t
+  use mod_b111_legacy_hydraulic_provider, only: b111_legacy_hydraulic_provider_t, &
+       configure_b111_legacy_hydraulic_provider, bind_b111_legacy_hydraulic_provider, B111_LEGACY_HYD_OK
   use mod_b111_extended_hydraulic_provider, only: b111_extended_hydraulic_parameters_t, &
-       b111_extended_hydraulic_provider_t
+       b111_extended_hydraulic_provider_t, initialize_b111_extended_hydraulic_parameters, &
+       bind_b111_extended_hydraulic_provider, B111_EXT_OK
   use mod_b111_conductivity_power_tail, only: b111_conductivity_power_tail_t
   use mod_b111_linear_table_provider, only: b111_linear_table_parameters_t, b111_linear_table_provider_t
   use mod_fmr_macropore_configuration, only: fmr_macropore_physical_config_t
@@ -698,6 +700,10 @@ module mod_fmr_serialized_reference_backend
     type(b110_default_mvg_provider_t), pointer :: constitutive => null()
     type(b111_analytical_hydraulic_provider_t), pointer :: analytical_constitutive => null()
     logical :: analytical_hydraulics_active = .false.
+    logical :: extended_hydraulics_active = .false.
+    type(b111_legacy_hydraulic_provider_t), pointer :: extended_legacy => null()
+    type(b111_extended_hydraulic_parameters_t), pointer :: extended_parameters => null()
+    type(b111_extended_hydraulic_provider_t), pointer :: extended_constitutive => null()
     type(b110_direct_retention_provider_t), pointer :: direct_retention_constitutive => null()
     logical :: direct_retention_active = .false.
     integer :: direct_retention_slot = 0
@@ -2945,7 +2951,8 @@ contains
         ok = ok .and. size(parameters%hydraulic_model_kind) == parameters%active_nodes .and. &
              all(parameters%hydraulic_model_kind == B111_HYD_EXPONENTIAL .or. &
                  parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG .or. &
-                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK) .and. &
+                 parameters%hydraulic_model_kind == B111_HYD_BIMODAL_MVG_WCK .or. &
+                 (parameters%hydraulic_model_kind >= 5 .and. parameters%hydraulic_model_kind <= 11)) .and. &
              self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0 .and. &
              .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
              .not. parameters%conductivity_power_tail_active .and. .not. parameters%elasticity_active .and. &
@@ -3237,6 +3244,9 @@ contains
       if (.not. associated(self%analytical_hydraulic_parameters)) allocate(self%analytical_hydraulic_parameters)
       if (.not. associated(self%constitutive)) allocate(self%constitutive)
       if (.not. associated(self%analytical_constitutive)) allocate(self%analytical_constitutive)
+      if (.not. associated(self%extended_legacy)) allocate(self%extended_legacy)
+      if (.not. associated(self%extended_parameters)) allocate(self%extended_parameters)
+      if (.not. associated(self%extended_constitutive)) allocate(self%extended_constitutive)
       if (.not. associated(self%direct_retention_constitutive)) allocate(self%direct_retention_constitutive)
       if (.not. associated(self%source_sink)) allocate(self%source_sink)
       if (.not. associated(self%root_sink)) allocate(self%root_sink)
@@ -3278,10 +3288,23 @@ contains
         end if
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
-      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind)
+      self%extended_hydraulics_active = .false.
+      if (allocated(parameters%hydraulic_model_kind)) &
+        self%extended_hydraulics_active = any(parameters%hydraulic_model_kind >= 5 .and. &
+                                              parameters%hydraulic_model_kind <= 11)
+      self%analytical_hydraulics_active = allocated(parameters%hydraulic_model_kind) .and. &
+                                         .not. self%extended_hydraulics_active
       if (self%analytical_hydraulics_active) then
         call initialize_b111_analytical_hydraulic_parameters(self%analytical_hydraulic_parameters, &
              parameters%hydraulic_model_kind, parameters%cofgen)
+      end if
+      if (self%extended_hydraulics_active) then
+        block
+          integer :: hyd_status
+          call initialize_b111_extended_hydraulic_parameters(self%extended_parameters, &
+               parameters%hydraulic_model_kind, parameters%cofgen, hyd_status)
+          if (hyd_status /= B111_EXT_OK) error stop 'extended hydraulic model parameters invalid'
+        end block
       end if
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
@@ -4196,7 +4219,20 @@ contains
         return
       end select
     end if
-    if (self%analytical_hydraulics_active) then
+    if (self%extended_hydraulics_active) then
+      block
+        integer :: hyd_status
+        call bind_b110_default_mvg_provider(self%constitutive, self%hydraulic_parameters, step_duration)
+        call configure_b111_legacy_hydraulic_provider(self%extended_legacy, &
+             self%hydraulic_parameters%cofgen, self%trusted_parameter_source%hydraulic_model_kind, hyd_status)
+        if (hyd_status /= B111_LEGACY_HYD_OK) return
+        call bind_b111_legacy_hydraulic_provider(self%extended_legacy, self%constitutive, step_duration, hyd_status)
+        if (hyd_status /= B111_LEGACY_HYD_OK) return
+        call bind_b111_extended_hydraulic_provider(self%extended_constitutive, self%extended_parameters, &
+             self%extended_legacy, hyd_status)
+        if (hyd_status /= B111_EXT_OK) return
+      end block
+    else if (self%analytical_hydraulics_active) then
       call bind_b111_analytical_hydraulic_provider(self%analytical_constitutive, self%analytical_hydraulic_parameters)
     else if (self%direct_retention_active) then
       call bind_b110_direct_retention_provider(self%direct_retention_constitutive, self%hydraulic_parameters, &
@@ -4741,6 +4777,8 @@ contains
         return
       end if
       request%evaluation%constitutive => self%frost_constitutive
+    else if (self%extended_hydraulics_active) then
+      request%evaluation%constitutive => self%extended_constitutive
     else if (self%analytical_hydraulics_active) then
       request%evaluation%constitutive => self%analytical_constitutive
     else if (self%direct_retention_active) then
