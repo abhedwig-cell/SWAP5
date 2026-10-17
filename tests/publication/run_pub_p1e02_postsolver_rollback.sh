@@ -114,6 +114,52 @@ for opt in 0 2; do
     'PUB_P1E02_PRODUCTION_POSTSOLVER_ROLLBACK=PASS'; do
     grep -Fq "$marker" "$OUT/output.txt" || { cat "$OUT/output.txt" >&2; fail "missing O$opt marker $marker"; }
   done
+  # Exercise the production B1.11 pond owner, not a reconstructed process.
+  # Historical accepted mixing: initial 1 cm, 2 mg/cm2, evaporation
+  # 0.5 cm, infiltration 0.25 cm => 1 mg/cm2 infiltrates.
+  cat > "$OUT/test_pond_evap.f90" <<'F90'
+program test_pond_evap
+use iso_fortran_env, only: real64,int64
+use mod_b111_persistent_pond
+implicit none
+type(persistent_pond_state_t) :: original,candidate,restored,rejected
+type(pond_step_t) :: s,bad
+type(persistent_pond_receipt_t) :: r
+real(real64) :: clock,depth,mass
+integer(int64) :: revision
+integer :: status
+call initialize_persistent_pond(0d0,1d0,2d0,original,status)
+if(status/=POND_OK) error stop 'pond init'
+s=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+s%pond_evaporation_rate=0.5d0
+call advance_persistent_pond(original,s,candidate,r)
+if(r%status/=POND_OK) error stop 'evap acceptance'
+if(abs(r%soil_transfer-1d0)>1d-13.or.abs(r%mass_after-1d0)>1d-13) &
+ error stop 'historical production mixing'
+if(abs(r%mass_residual)>1d-13.or.abs(r%water_residual)>1d-13) &
+ error stop 'pond water or mass imbalance'
+call candidate%snapshot(clock,depth,mass,revision)
+call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+if(status/=POND_OK) error stop 'pond restore'
+call restored%snapshot(clock,depth,mass,revision)
+if(depth/=0.25d0.or.mass/=1d0.or.revision/=1_int64) error stop 'restart identity'
+bad=s;bad%pond_evaporation_rate=0.25d0
+call advance_persistent_pond(original,bad,rejected,r)
+if(r%status/=POND_WATER) error stop 'unbalanced evaporation accepted'
+call rejected%snapshot(clock,depth,mass,revision)
+if(depth/=1d0.or.mass/=2d0.or.revision/=0_int64) error stop 'rejected mutation'
+print '(A)', 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS'
+end program
+F90
+  POND_OBJECTS=()
+  for pond_source in src/process/mod_b111_pond_solute_exchange.f90 src/process/mod_b111_persistent_pond.f90; do
+    pond_obj="$OUT/$(basename "${pond_source%.f90}")-evap.o"
+    gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" -c "$pond_source" -o "$pond_obj"
+    POND_OBJECTS+=("$pond_obj")
+  done
+  gfortran "${COMMON[@]}" -O"$opt" -J "$OUT" -I "$OUT" "$OUT/test_pond_evap.f90" "${POND_OBJECTS[@]}" -o "$OUT/test_pond_evap"
+  "$OUT/test_pond_evap" | tee "$OUT/pond_evap.txt"
+  grep -Fq 'MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS' "$OUT/pond_evap.txt" || fail "pond evaporation O$opt"
   cat "$OUT/output.txt"
   echo "PUB_P1E02_O${opt}=PASS"
 done
