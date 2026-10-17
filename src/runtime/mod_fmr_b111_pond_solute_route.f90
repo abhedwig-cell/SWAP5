@@ -106,7 +106,7 @@ contains
     if(t%converged_surface_available)then
       if(.not.all(ieee_is_finite([t%converged_pond_evaporation_cm_day, &
           t%converged_runoff_depth_cm])))return
-      if(t%converged_pond_evaporation_cm_day>0d0.or.t%converged_runoff_depth_cm>0d0)return
+      if(t%converged_pond_evaporation_cm_day/=0d0.or.t%converged_runoff_depth_cm/=0d0)return
     end if
     pond_step=supply;pond_step%t0=t%t0;pond_step%t1=t%t1
     pond_step%depth_begin=t%pond_start_cm;pond_step%depth_end=t%pond_end_cm;pond_step%qtop=t%top_flux
