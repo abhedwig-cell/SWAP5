@@ -92,7 +92,25 @@
     "outstanding": "Cannot consume chemically until per-substep whole pond balance includes gross surface losses and runoff and source-aligned mixing; shared RossFast contract qualification required",
     "publication_run": 39068455819,
     "fross_run": 39068455584,
-    "results": "QUEUED at record creation",
-    "admitted": false
+    "results": "PASS O0/O2 targeted production compile and rollback on heads 517c9fd and 839ed72; F-ROSS source-identity preservation fails as expected, unadmitted solver-contract change",
+    "admitted": false,
+    "qualification": {
+      "tested_heads": [
+        "517c9fdaa040e99c34e577c5c2fc92349e277331",
+        "839ed72e91fb5fb086e8c982a52400c1ff360ff6"
+      ],
+      "publication_runs": [
+        39068455819,
+        39068480378
+      ],
+      "publication_conclusion": "SUCCESS both (O0/O2 and postsolver rollback)",
+      "fross_runs": [
+        39068455584,
+        39068480418
+      ],
+      "fross_conclusion": "FAIL both; FROSS22_ADMISSION_FAIL qualified dependency drift: src/solver/mod_soil_water_solver_contract.f90",
+      "gross_joint_qualified": false,
+      "scientific_admission": false
+    }
   }
 }
