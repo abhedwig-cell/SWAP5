@@ -1,7 +1,7 @@
 # NET01 source count completion
 
-Status: local O0/O2 science complete, evidence/owner validation and canonical
-admission pending in PR#1276. Baseline `f9f1614a794cf5a7e2f219a60fd1a61da245176b`.
+Status: qualified local O0/O2 successor, safe canonical admission pending in
+PR#1276. Baseline `f9f1614a794cf5a7e2f219a60fd1a61da245176b`.
 
 ## Result and production change
 
@@ -84,9 +84,11 @@ Archive: `integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b
 Decoded gzip SHA256 `5fc04d7df653b98de8fd15bb74c405e2235de0de3a248e631149a1e316063b95`,
 5,651,084 bytes. Deduplicated raw streams retain failed and successful diagnostics,
 exact inputs/generated fixtures/toolchain/flags/outputs, source identities and
-full predecessor projections. Current source and corruption guards must pass
-before admission; the owning current-entry guard delegates only to this exact
-successor. No predecessor evidence/assertion is weakened.
+full predecessor projections. Current exact source/qualification guard PASS;
+intact capsule and all ten corruption controls PASS; current owning entry
+`tests/mc-irr01/verify_sensor_batch_successor.py` PASS through exact successor
+delegation. Documentation source checks and strict MkDocs PASS. No predecessor
+evidence/assertion is weakened.
 
 ## Claim ceiling
 

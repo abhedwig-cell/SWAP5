@@ -289,7 +289,7 @@
     "baseline": "f9f1614a794cf5a7e2f219a60fd1a61da245176b",
     "branch": "work/frost-net01-full-levels-20261017",
     "contract": "docs/science/FROST_NET01_FULL_LEVELS_20261017.md",
-    "stage": "QUALIFIED_ADMISSION_PENDING",
+    "stage": "QUALIFIED_SAFE_ADMISSION_PENDING",
     "implemented": true,
     "qualified": true,
     "admitted": false,
@@ -318,7 +318,7 @@
         "highest low-air NOT_SELECTED_POLICY"
       ]
     },
-    "next_action": "Verify sealed source/qualification and current owner, then reconcile and safely admit exact candidate; update existing master count gap.",
+    "next_action": "Publish exact final source/guard postimage; inspect current canonical/PR/check state and safely merge qualified scope. Reconcile existing master source-count gap.",
     "persisted": true,
     "tested": true,
     "qualified_source": "cfc2191f6a9e5e491e7fca53db82faeea0024c72",
@@ -358,7 +358,7 @@
       },
       "tests/frost/verify_net01_full_levels.py": {
         "status": "A",
-        "blob": "ecaebaedccee26db67498d94d3fc7bf5494ab9c8"
+        "blob": "a0d978391988aede59d63f6c11be6aadc8b4d822"
       },
       "tests/frost/verify_net01_successor.py": {
         "status": "M",
@@ -372,6 +372,25 @@
       "draft": true,
       "merged": false
     },
-    "evidence_reader_correction": "First guard refused unchanged CRLF FrozenBounds after generic newline normalization; literal dependencies now read as bytes. Intact capsule positive validation precedes corruption controls. No numerical input changed."
+    "evidence_reader_correction": "First guard refused unchanged CRLF FrozenBounds after generic newline normalization; literal dependencies now read as bytes. Intact capsule positive validation precedes corruption controls. No numerical input changed.",
+    "validation": {
+      "exact_source_and_qualification": "PASS",
+      "intact_capsule_before_negative_controls": "PASS",
+      "evidence_corruption_controls": 10,
+      "current_owner_entry": "PASS",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS",
+      "git_whitespace": "PASS"
+    },
+    "guard_diagnostics": [
+      {
+        "output_sha256": "8e25d0c5f50bafb02bc18cac957aec34a8cb71a58e10d5a47ea9a79d618374ad",
+        "finding": "Unchanged original CRLF FrozenBounds normalized by generic text reader"
+      },
+      {
+        "output_sha256": "515af88efc55d7255251bf54298e9ab781181962fba6e16285bec7722e280952",
+        "finding": "Generated CRLF reference compared to normalized generated snapshot; raw identity comparison now explicit"
+      }
+    ]
   }
 }

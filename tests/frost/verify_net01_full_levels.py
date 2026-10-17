@@ -46,7 +46,8 @@ def validate(r,d):
     with tempfile.TemporaryDirectory()as temp:
         fixtures(Path(temp))
         for p in Path(temp).glob('*.f90'):
-            check(p.read_text()==c['generated'][p.name]==stream(d,'component/'+p.name),'unexecuted full-source fixture '+p.name)
+            check(p.read_text()==c['generated'][p.name]and p.read_bytes().decode()==stream(d,'component/'+p.name),
+                  'unexecuted full-source fixture '+p.name)
     check(len(c['executions'])==4 and {(x['name'],x['opt'])for x in c['executions']}==
           {(n,o)for n in ('production','reference')for o in (0,2)},'missing component optimization')
     for row in c['executions']:
