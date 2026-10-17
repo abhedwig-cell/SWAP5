@@ -1,5 +1,6 @@
 program test_historical_activation
  use iso_fortran_env,only:real64,int64
+ use mod_soil_n_historical_named_input
  use mod_soil_n_historical_activation
  use mod_b111_soil_n_reactive_owner
  use mod_soil_n_pool_state
@@ -11,7 +12,28 @@ program test_historical_activation
  type(soil_n_historical_initial_t)::legacy
  type(soil_n_historical_rates_t)::rates
  real(real64)::tcsf,lai
- integer::code
+ integer::code,unit,line_number,i
+ character(32)::key
+ character(128)::record
+ open(newunit=unit,file='historical-fields.txt',status='replace')
+ do i=1,8
+   write(key,'(A,I1,A)')'FOM',i,'_t'
+   write(unit,'(A)')trim(key)//' = 1.0'
+ end do
+ write(unit,'(A)')'Bio_t = 5.0','Hum_t = 40.0','cNH4_t = 0.2','cNO3_t = 0.3', &
+    'Temp_ref = 20.0','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
+    'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
+    'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 3.0','dz_WSN = 0.3', &
+    'cNH4N_lat = 0.3','cNO3N_lat = 0.4','cNH4N_seep = 0.1','cNO3N_seep = 0.2'
+ close(unit)
+ call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
+ if(code/=N_NAMED_OK)error stop '26 named fields'
+ if(rates%no3_seep/=.2d0.or.rates%no3_lat/=.4d0)error stop 'distinct no3 routes'
+ open(newunit=unit,file='historical-fields.txt',position='append')
+ write(unit,'(A)')'SorpCoef = 0.1'
+ close(unit)
+ call read_historical_soil_n_named_export('historical-fields.txt',legacy,rates,code,line_number)
+ if(code/=N_NAMED_INVALID)error stop 'duplicate name accepted'
  call parameters(p)
  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
  if(code/=0)error stop 'pools'
