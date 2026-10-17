@@ -153,5 +153,23 @@
     "historical_mixing": "unchanged",
     "rossfast_shared_contract": "BLOCKED",
     "next_action": "Implement a qualified per-substep gross-loss water receipt and source-exact pond solute transfer; do not conflate typed diagnostic availability with admission."
+  },
+  "pond_evaporation_native_gate_20261017": {
+    "tested_head": "cf2baa4a75b9d157e533665fcea8f75e6c33d963",
+    "run": 39075823844,
+    "result": "SUCCESS",
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "marker": "MC_SOL01_POND_EVAP_SOURCE_MIX_BALANCE_RESTART_REJECT=PASS",
+    "tested": "Actual production mod_b111_pond_solute_exchange + mod_b111_persistent_pond, 1 cm pond, 2 mg/cm2 initial, 0.5 cm evaporation, 0.25 cm infiltration, 1 mg/cm2 soil transfer, 1 mg/cm2 remaining, water/solute balance, rejected candidate nonmutation, pond snapshot/restore",
+    "publication": "PUB_P1E02_O0=PASS PUB_P1E02_O2=PASS",
+    "fross": {
+      "run": 39075823928,
+      "status": "FAIL qualified dependency drift mod_soil_water_solver_contract.f90"
+    },
+    "limits": "Not integrated hydraulic dynamic boundary to reactive chemistry with V2 restart; no runoff/runon; not FROSS admission.",
+    "admitted": false
   }
 }
