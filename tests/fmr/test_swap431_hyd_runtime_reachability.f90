@@ -163,6 +163,10 @@ contains
            ' admission=', trim(output%admission_status), ' kernel=', output%kernel_status, &
            ' solver=', output%solver_status
     end if
+    write(0,'(A,1X,A,1X,6(I0,1X))') 'HYST_ADMISSION_DEBUG',trim(output%admission_status), &
+         merge(1,0,output%completed),merge(1,0,output%committed),merge(1,0,output%admitted), &
+         output%kernel_status,output%solver_status,output%commit_status
+    flush(0)
     call require(output%completed.and.output%committed,'hysteresis runtime commit')
     call require(output%mass%complete,'hysteresis mass complete')
     call require(abs(output%mass%residual)<=mass_tol,'hysteresis hard mass')
