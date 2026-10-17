@@ -1,7 +1,7 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
-  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
+  use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window, INTWIN_OK
   use mod_rutter_interception_process, only: rutter_interval_input_t
   use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_parameters_t, fmr_b110_physical_forcing_t, fmr_b110_physical_state_t
@@ -12,10 +12,13 @@ program kalmthout_swap5_daily_pilot
        initialize_b110_default_mvg_parameters, bind_b110_default_mvg_provider
   use mod_reference_et_demand_process, only: daily_atmospheric_demand_parameters_t, traditional_pm_weather_t, &
        reference_et_demand_canopy_view_t, reference_et_demand_result_t, evaluate_daily_atmospheric_demand, REF_ET_DEMAND_OK
+  use mod_ppa_wu03_common_forcing_adapter, only: ppa_wu03_common_forcing_result_t
+  use mod_ppa_wu04b_boesten_forcing_adapter, only: bind_ppa_wu04b_boesten_runtime_forcing, PPA_WU04B_BIND_OK
   implicit none
 
   real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
   real(real64), parameter :: H0_CM=-75.0_real64
+  real(real64), parameter :: COFRED=0.35_real64
   integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=1
   character(len=256) :: met_path, out_path, line, ds, max_hours_arg, evap_scale_arg
   type(fmr_production_application_config_t) :: config
@@ -28,7 +31,8 @@ program kalmthout_swap5_daily_pilot
   type(traditional_pm_weather_t) :: pm_weather
   type(reference_et_demand_canopy_view_t) :: demand_canopy
   type(reference_et_demand_result_t) :: atmospheric_demand
-  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub,demand_status,day_of_year
+  type(ppa_wu03_common_forcing_result_t) :: common
+  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub,demand_status,day_of_year,bind_status
   real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day,evap_scale
   real(real64) :: tmin_day,tmax_day,radiation_kj_day,vapour_pressure_kpa,wind2
   real(real64) :: hour_t0,hour_t1,segment_dt,hour_residual,hour_in,hour_out
