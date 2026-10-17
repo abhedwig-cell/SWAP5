@@ -115,6 +115,38 @@ program test_reactive_joint
    nitrogen,historical_params,historical_tcsf,historical_lai,status,input_line)
  call require(status/=0.and..not.nitrogen%ready().and..not.historical_plan%ready(), &
    'complete historical route rejects unqualified pool layout atomically')
+ ! Positive eight-pool historical profile on the actual accepted Richards carrier.
+ block
+   type(reactive_parameters_t)::eight,eight_bound
+   type(reactive_state_t)::eight_n
+   type(kernel_committed_state_t)::eight_water
+   type(reactive_n_joint_result_t)::eight_result
+   type(soil_n_pool_state_t)::eight_after
+   real(real64)::et,ew
+   integer(int64)::erev
+   eight=p
+   eight%mineral%inventory%nfrac_fom=[.015d0,.025d0,.015d0,.025d0,.015d0,.025d0,.015d0,.025d0]
+   eight%organic_reference%ratecon_fom=[.04d0,.015d0,.04d0,.015d0,.04d0,.015d0,.04d0,.015d0]
+   eight%organic_reference%asfa_fom_bio=[.2d0,.25d0,.2d0,.25d0,.2d0,.25d0,.2d0,.25d0]
+   eight%organic_reference%asfa_fom_hum=[.15d0,.1d0,.15d0,.1d0,.15d0,.1d0,.15d0,.1d0]
+   eight%cfrac_fom=[.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0,.45d0]
+   historical_initial%bio_kg_m3=5d0;historical_initial%hum_kg_m3=40d0
+   historical_initial%cnh4_kg_m3=.02d0;historical_initial%cno3_kg_m3=.03d0
+   call initialize_historical_reactive_n_complete_tables(historical,historical_rates,historical_initial, &
+     eight,9001_int64,0d0,theta,'historical-actual-input.snm','1900-01-01',historical_plan, &
+     eight_n,eight_bound,historical_tcsf,historical_lai,status,input_line)
+   call require(status==0.and.eight_n%ready().and.historical_plan%ready(),'eight-pool positive source activation')
+   call fmr_new_b110_temporal_indicator_committed_state(eight_water,column%column_id, &
+     cfg%tiles(1)%initial_state,0d0,ok,spread(0d0,1,numnod))
+   call require(ok,'eight-pool water state')
+   call run_reactive_n_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters, &
+     eight_water,cfg%tiles(1)%base_forcing,cfg%numerical,eight_n,0d0,1d0,eight_result)
+   call require(eight_result%status==JOINT_OK,'eight-pool actual Richards accepted')
+   call require(abs(eight_result%chemical%residual)<=1d-12,'eight-pool whole N')
+   call eight_n%snapshot(et,ew,eight_after,erev)
+   call require(et==1d0.and.erev==1,'eight-pool committed time and revision')
+   call require(size(eight_after%fom_kg_m3)==8,'eight-pool retained physical inventory')
+ end block
  ! Recreate the already-qualified two-pool owner for incumbent Richards execution.
  call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
    'historical-actual-input.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
