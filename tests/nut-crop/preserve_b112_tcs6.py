@@ -9,7 +9,7 @@ with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive.read_bytes())))as 
 for path,raw in old.items():
  if path.startswith('physical/fixture/')or path in ['physical/weekly_dcs1.f90','physical/weekly_dcs2.f90','physical/weekly_nontrigger.f90']:
   q=OUT/path.removeprefix('physical/');q.parent.mkdir(exist_ok=True);q.write_bytes(raw)
-record=json.loads(old['physical/RESULTS.json']);inp=json.loads(old['physical/INPUTS.json']);origin=json.loads((BASE.parent/'n-b112-retained-joint-01/events.json').read_text());mapping={}
+record=json.loads(old['physical/RESULTS.json']);inp=json.loads(old['physical/INPUTS.json']);origin=json.loads((BASE/'events.json').read_text());mapping={}
 for e in origin:
  if e['category']=='compile'and'-O0'in e['command']:
   p=Path(e['command'][e['command'].index('-c')+1])

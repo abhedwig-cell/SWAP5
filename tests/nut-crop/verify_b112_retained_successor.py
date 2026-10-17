@@ -6,7 +6,7 @@ import argparse,base64,copy,hashlib,io,json,os,subprocess,sys,tarfile
 ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/audits/MC_NUT_SOL_STATUS.json';KEY='b112_retained_stock_20261016'
 BASE='5d2518abd2b285b13f9b5f7d2177918589fd7abc'
-INTEGRATED='40c6fe4252cb80bc2adbeee2731f76199f6a7c48'
+INTEGRATED='47421ae0ec4145a25cb805bf38b63a6f1d32ea3a'
 def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(b):return hashlib.sha256(b).hexdigest()
@@ -109,8 +109,8 @@ def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
  for name in ('small','joint','phases'):verify_execution_inventory(name,files,results[name])
  for name,r in results.items():
   for path,h in r.get('input_sha256',r.get('inputs',{})).items():require(sha(reader(path))==h,'executed source drift '+path)
-  if name in ['small','joint']:
-   events=json.loads(files[name+'/events.json'])
+  if name in ['small','joint','phases']:
+   events=results['phases']['events'] if name=='phases' else json.loads(files[name+'/events.json'])
    require(all(e['returncode']==0 for e in events),'failed current science')
    for e in events:
     for stream in ['stdout','stderr']:
@@ -123,6 +123,39 @@ def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
    require(all(e['returncode']==0 for e in r['events']),'failed thermal science')
  require(results['annual-source']['living_source_probe_pass']and results['annual-source']['O0_O2_stdout_identity'],'classic source preservation')
  require(results['annual-codec']['zero_counter_codec1_bytes_identical'],'classic codec preservation')
+ # Re-executed classic preservation is evidence, not two unverified booleans.
+ annual=results['annual-source']
+ require({x['optimization'] for x in annual['runs']}=={0,2} and len(annual['runs'])==2,'classic optimization inventory')
+ for path,h in annual['compiled_inputs'].items():
+  if Path(path).is_absolute():
+   require(Path(path).name=='oracle.f90' and sha(files['annual-source/oracle.f90'])==h,'classic generated oracle')
+  else:require(sha(reader(path))==h,'classic executed input drift '+path)
+ for row in annual['runs']:
+  opt=row['optimization'];prefix='annual-source/o'+str(opt)+'/'
+  require(row['compile_exit']==row['native_exit']==0,'failed classic source execution')
+  require(all(f in row['command'] for f in ['-O'+str(opt),'-fcheck=all','-ffpe-trap=invalid,zero,overflow']),'unchecked classic source')
+  require(sha(files[prefix+'native.stdout'])==row['stdout_sha256'],'classic raw native')
+  require(prefix+'compile.stderr' in files and prefix+'compile.stdout' in files,'missing classic compilation')
+ require(files['annual-source/o0/native.stdout']==files['annual-source/o2/native.stdout'],'classic native optimization drift')
+ codec=results['annual-codec'];require(len(codec['runs'])==4 and {(x['opt'],x['profile']) for x in codec['runs']}=={(o,n) for o in (0,2) for n in ('baseline','current')},'classic codec inventory')
+ for row in codec['runs']:
+  require(row['compile_exit']==row['native_exit']==0,'failed classic codec')
+  require(all(f in row['command'] for f in ['-O'+str(row['opt']),'-fcheck=all','-ffpe-trap=invalid,zero,overflow']),'unchecked classic codec')
+  prefix='annual-codec/o'+str(row['opt'])+'-'+row['profile']+'/'
+  for stream in ('compile.stdout','compile.stderr','stdout','stderr'):require(prefix+stream in files,'missing classic codec execution')
+  require(sha(files[prefix+'zero.restart'])==codec['artifact_sha256'],'classic codec bytes drift')
+ if p.get('reconciled_upstream')==INTEGRATED:
+  tcs=json.loads(files['tcs6/result.json']);require(tcs['status']=='B112_CURRENT_TCS6_54_NATIVE_AND_ENDPOINT_BYTES_PASS','current TCS6 boundary')
+  for path,h in tcs['input_sha256'].items():require(sha(reader(path))==h,'TCS6 executed source drift '+path)
+  native=[e for e in tcs['events'] if e['category']=='native']
+  require(len(native)==54 and len({tuple(e['command']) for e in native})==54 and len(tcs['runs'])==54,'TCS6 execution inventory')
+  for e in tcs['events']:
+   require(e['returncode']==0,'failed current TCS6')
+   for stream in ('stdout','stderr'):require('tcs6/'+e[stream] in files,'missing current TCS6 stream')
+  for row in tcs['runs']:
+   matches=[e for e in native if '/o'+str(row['opt'])+'/' in e['command'][0] and Path(e['command'][0]).name=='test-'+row['driver'] and e['command'][-2:]==[row['mode'],row['phase']]]
+   require(len(matches)==1 and sha(files['tcs6/'+matches[0]['stdout']])==row['stdout_sha256'],'unexecuted TCS6 result')
+
  for opt in ['O0','O2']:
   r=joint['b112_retained'][opt]
   require(len(r['profile_negatives'])==8 and len(r['decoder_negatives'])==11,'missing native rejection')
@@ -152,7 +185,7 @@ def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
  return results
 
 def load_verified():
- p=json.loads((ROOT/STATUS).read_text())[KEY];e=p['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
+ p=json.loads((ROOT/STATUS).read_text())[KEY];require(p['reconciled_upstream']==INTEGRATED,'unreconciled retained admission');e=p['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes())
  require(sha(raw)==e['sha256'],'archive integrity')
  with tarfile.open(fileobj=io.BytesIO(raw))as t:files={m.name:t.extractfile(m).read()for m in t if m.isfile()}
  verify(p,files)
@@ -160,7 +193,7 @@ def load_verified():
  require(rows=={k:v['status']for k,v in p['successor_postimages'].items()},'foreign retained successor')
  for path,v in p['successor_postimages'].items():
   b=(ROOT/path).read_bytes();require(hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==v['blob'],'unqualified successor '+path)
- require(subprocess.check_output(['git','diff',BASE,'--','reference'],cwd=ROOT)==b'','reference changed in production unit')
+ require(subprocess.check_output(['git','diff',INTEGRATED,'--','reference'],cwd=ROOT)==b'','reference changed in production unit')
  return p,files
 @lru_cache(None)
 def incumbent(source_only=False):
@@ -207,6 +240,27 @@ def main():
   r['events']=[e for e in r['events'] if e['category']!='native']
   f['phases/result.json']=json.dumps(r).encode()
   reject('missing phase native',p,f)
+  # Independent review controls plus same-count and named decoder mutations.
+  for owner,category in [('joint','compile'),('joint','driver_compile'),('small','compile')]:
+   rows=json.loads(files[owner+'/events.json']);f=dict(files)
+   if category=='compile' and owner=='joint':rows=[e for e in rows if e['category']!=category]
+   else:next(e for e in rows if e['category']==category)['command'].remove('-ffpe-trap=invalid,zero,overflow')
+   f[owner+'/events.json']=json.dumps(rows).encode();reject(owner+' unchecked '+category,p,f)
+  for label in ('duplicate provider same count','wrong native optimization','unexecuted profile','unexecuted decoder','missing link','wrong compiler optimization'):
+   rows=json.loads(files['joint/events.json']);f=dict(files)
+   if label=='duplicate provider same count':
+    indices=[i for i,e in enumerate(rows) if e['category']=='compile'];rows[indices[1]]=copy.deepcopy(rows[indices[0]])
+   elif label=='wrong native optimization':
+    e=next(e for e in rows if e['category']=='native');e['command'][0]=e['command'][0].replace('/O0/','/O2/')
+   elif label=='unexecuted profile':
+    e=next(e for e in rows if e['category']=='native' and e['command'][0].endswith('test_b112_retained_joint') and e['command'][-1]=='wrong-return');e['command'][-1]='unqualified-case'
+   elif label=='unexecuted decoder':
+    e=next(e for e in rows if e['category']=='native' and e['command'][0].endswith('test_b112_retained_joint') and 'b112-invalid-crc.bin' in e['command'][2]);e['command'][2]=e['command'][2].replace('invalid-crc','invalid-unqualified')
+   elif label=='missing link':rows=[e for e in rows if not(e['category']=='link' and e['command'][-1].endswith('test_b112_retained_joint'))]
+   else:
+    e=next(e for e in rows if e['category']=='compile');e['command'][e['command'].index('-O0')]='-O2'
+   f['joint/events.json']=json.dumps(rows).encode();reject(label,p,f)
+  f=dict(files);r=json.loads(f['phases/result.json']);r['provider_result_sha256']='0'*64;f['phases/result.json']=json.dumps(r).encode();reject('unbound thermal provider',p,f)
   print('B112_RETAINED_EVIDENCE_CORRUPTION_CONTROLS='+str(len(controls)))
  verify_qualification();print('B112_RETAINED_SOURCE_EVIDENCE=PASS')
 if __name__=='__main__':main()
