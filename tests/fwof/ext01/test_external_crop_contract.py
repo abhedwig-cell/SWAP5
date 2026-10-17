@@ -28,7 +28,7 @@ s["dvs"]=round(s["dvs"]+0.03, 12)
 s["lai"]=round(s["lai"]+0.15, 12)
 reply={"schema":"F-WOF-EXT01/1","event":request["event"],
        "candidate":s,"crop_view":{"dvs":s["dvs"],"lai":s["lai"]}}
-sys.stdout.write(json.dumps(reply,sort_keys=True)+"\\n")
+sys.stdout.write(json.dumps(reply,sort_keys=True)+"\n")
 '''
 
 
