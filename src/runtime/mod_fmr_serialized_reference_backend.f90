@@ -106,6 +106,8 @@ module mod_fmr_serialized_reference_backend
        compose_legacy_bracketed_frost_drainage
   use mod_frost_divdra_drainage_effect, only: frost_divdra_parameters_t, frost_divdra_result_t, &
        compose_single_level_signed_frost_divdra, valid_frost_divdra_parameters
+  use mod_frost_multilevel_divdra_effect, only: frost_multilevel_divdra_result_t, &
+       compose_multilevel_signed_frost_divdra, valid_multilevel_frost_divdra
   use mod_frost_geometry_effect, only: frost_geometry_result_t, evaluate_legacy_bracketed_frost_geometry
   use mod_frost_drainage_effect, only: frost_drainage_config_t, frost_drainage_result_t, &
        compose_legacy_normal_frost_drainage, FROST_DRAIN_OK
@@ -336,6 +338,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_divdra_active = .false.
     type(frost_divdra_parameters_t) :: frost_divdra
+    type(frost_divdra_parameters_t), allocatable :: frost_divdra_levels(:)
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
@@ -451,6 +454,7 @@ module mod_fmr_serialized_reference_backend
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
+    real(real64), allocatable :: frost_divdra_scalars_cm_per_day(:)
     real(real64) :: top_flux = 0.0_real64
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
@@ -507,6 +511,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: frost_divdra_signed_exchange_native = 0.0_real64, frost_divdra_trial_duration = 0.0_real64
     type(frost_geometry_result_t) :: frost_divdra_geometry
     type(frost_divdra_result_t) :: frost_divdra
+    type(frost_multilevel_divdra_result_t) :: frost_multilevel_divdra
     logical :: frost_drainage_executed = .false.
     type(frost_drainage_result_t) :: frost_drainage
     logical :: frost_bottom_executed = .false.
@@ -714,7 +719,9 @@ module mod_fmr_serialized_reference_backend
     type(frost_drainage_config_t) :: frost_drainage
     logical :: frost_divdra_active = .false.
     type(frost_divdra_parameters_t) :: frost_divdra
+    type(frost_divdra_parameters_t), allocatable :: frost_divdra_levels(:)
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
+    real(real64), allocatable :: frost_divdra_scalars_cm_per_day(:)
     logical :: frost_response_drainage_active = .false.
     logical :: frost_low_air_response_drainage_active = .false.
     logical :: frost_tabulated_response_drainage_active = .false.
@@ -946,10 +953,12 @@ contains
 
   pure logical function fmr_frost_divdra_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t), intent(in) :: parameters
-    integer :: n, i
+    integer :: n, i, level
     real(real64) :: bottom
     ok=.true.
-    if(.not.parameters%frost_divdra_active)return
+    if(.not.parameters%frost_divdra_active)then
+      ok=.not.allocated(parameters%frost_divdra_levels);return
+    end if
     ok=.false.
     if(.not.parameters%frost_active.or..not.parameters%soil_temperature_active)return
     if(.not.parameters%frost_drainage%active.or..not.parameters%frost_drainage%valid())return
@@ -974,6 +983,16 @@ contains
     if(any(.not.ieee_is_finite(parameters%z)).or.any(.not.ieee_is_finite(parameters%node_distance)))return
     if(any(parameters%frost_divdra%distribution%dz/=parameters%dz))return
     if(any(parameters%frost_divdra%distribution%saturated_conductivity/=parameters%cofgen(3,:)))return
+    if(allocated(parameters%frost_divdra_levels))then
+      if(.not.valid_multilevel_frost_divdra(parameters%frost_divdra_levels))return
+      do level=1,size(parameters%frost_divdra_levels)
+        if(parameters%frost_divdra_levels(level)%distribution%active_nodes/=n)return
+        if(any(parameters%frost_divdra_levels(level)%distribution%dz/=parameters%dz))return
+        if(any(parameters%frost_divdra_levels(level)%distribution%zbotcp/= &
+             parameters%frost_divdra%distribution%zbotcp))return
+        if(any(parameters%frost_divdra_levels(level)%distribution%saturated_conductivity/=parameters%cofgen(3,:)))return
+      end do
+    end if
     bottom=0.0_real64
     do i=1,n
       if(parameters%z(i)/=bottom-0.5_real64*parameters%dz(i))return
@@ -995,7 +1014,15 @@ contains
     ok=.false.;scalar=forcing%frost_divdra_scalar_cm_per_day
     if(.not.ieee_is_finite(scalar))return
     if(.not.active)then
-      ok=scalar==0.0_real64;return
+      ok=scalar==0.0_real64.and..not.allocated(forcing%frost_divdra_scalars_cm_per_day);return
+    end if
+    if(allocated(forcing%frost_divdra_scalars_cm_per_day))then
+      if(scalar/=0.0_real64)return
+      if(size(forcing%frost_divdra_scalars_cm_per_day)<2.or.size(forcing%frost_divdra_scalars_cm_per_day)>3)return
+      if(any(.not.ieee_is_finite(forcing%frost_divdra_scalars_cm_per_day)))return
+      if(any(abs(forcing%frost_divdra_scalars_cm_per_day)>1.e6_real64))return
+      if(any(abs(forcing%frost_divdra_scalars_cm_per_day)>0.0_real64.and. &
+           abs(forcing%frost_divdra_scalars_cm_per_day)<=1.e-10_real64))return
     end if
     if(abs(scalar)>1.e6_real64)return
     if(scalar/=0.0_real64.and.abs(scalar)<=1.e-10_real64)return
@@ -3275,6 +3302,8 @@ contains
       self%frost_drainage = parameters%frost_drainage
       self%frost_divdra_active = parameters%frost_divdra_active
       self%frost_divdra = parameters%frost_divdra
+      if(allocated(self%frost_divdra_levels))deallocate(self%frost_divdra_levels)
+      if(allocated(parameters%frost_divdra_levels))self%frost_divdra_levels=parameters%frost_divdra_levels
       self%frost_response_drainage_active = parameters%frost_response_drainage_active
       self%frost_low_air_response_drainage_active = parameters%frost_low_air_response_drainage_active
       self%frost_tabulated_response_drainage_active = parameters%frost_tabulated_response_drainage_active
@@ -3464,6 +3493,12 @@ contains
       end if
       if(.not.fmr_frost_divdra_forcing_valid(self%frost_divdra_active,forcing))return
       self%frost_divdra_scalar_cm_per_day=forcing%frost_divdra_scalar_cm_per_day
+      if(allocated(self%frost_divdra_scalars_cm_per_day))deallocate(self%frost_divdra_scalars_cm_per_day)
+      if(allocated(self%frost_divdra_levels).neqv.allocated(forcing%frost_divdra_scalars_cm_per_day))return
+      if(allocated(self%frost_divdra_levels))then
+        if(size(forcing%frost_divdra_scalars_cm_per_day)/=size(self%frost_divdra_levels))return
+        self%frost_divdra_scalars_cm_per_day=forcing%frost_divdra_scalars_cm_per_day
+      end if
       if(self%frost_divdra_active)then
         ! A scalar owner is mutually exclusive with every materialized nodal owner.
         if(abs(forcing%bottom_flux)>1.e6_real64)return
@@ -3665,8 +3700,14 @@ contains
       if(self%frost_divdra_active)then
         if(allocated(self%drainage_response_controls))deallocate(self%drainage_response_controls)
         if(allocated(self%unfrozen_drainage_flux))deallocate(self%unfrozen_drainage_flux)
+        if(allocated(self%frost_divdra_levels))then
+          if(associated(self%qdra))deallocate(self%qdra)
+          allocate(self%qdra(size(self%frost_divdra_levels),n))
+        end if
         if(associated(self%qdra))then
-          if(size(self%qdra,1)/=1.or.size(self%qdra,2)/=n)deallocate(self%qdra)
+          if(.not.allocated(self%frost_divdra_levels))then
+            if(size(self%qdra,1)/=1.or.size(self%qdra,2)/=n)deallocate(self%qdra)
+          end if
         end if
         if(.not.associated(self%qdra))allocate(self%qdra(1,n))
         self%qdra=0.0_real64
@@ -4403,6 +4444,17 @@ contains
             self%last_observation%frost_divdra_raw_scalar=self%frost_divdra_scalar_cm_per_day
             self%last_observation%frost_divdra_start_gwl=hydraulic_start%groundwater_level
             if(.not.self%last_observation%frost_divdra_geometry%available)return
+            if(allocated(self%frost_divdra_levels))then
+              call compose_multilevel_signed_frost_divdra(self%frost_divdra_levels,hydraulic_start,frost_factors, &
+                   self%last_observation%frost_divdra_geometry%deepest_node, &
+                   self%last_observation%frost_divdra_geometry%bottom_depth_cm, &
+                   physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+                   self%frost_divdra_scalars_cm_per_day,effective_bottom_flux,self%last_observation%frost_multilevel_divdra)
+              self%last_observation%frost_divdra_executed=.true.
+              if(.not.self%last_observation%frost_multilevel_divdra%available)return
+              self%qdra=self%last_observation%frost_multilevel_divdra%final_nodal_sink
+              request%boundary%bottom_flux=self%last_observation%frost_multilevel_divdra%final_bottom
+            else
             call compose_single_level_signed_frost_divdra(self%frost_divdra,hydraulic_start,frost_factors, &
                  self%last_observation%frost_divdra_geometry%deepest_node, &
                  self%last_observation%frost_divdra_geometry%bottom_depth_cm, &
@@ -4412,6 +4464,7 @@ contains
             if(.not.self%last_observation%frost_divdra%available)return
             self%qdra(1,:)=self%last_observation%frost_divdra%final_nodal_sink
             request%boundary%bottom_flux=self%last_observation%frost_divdra%final_bottom
+            end if
           else if(self%frost_drainage%active)then
             if(allocated(physical%salt).or..not.allocated(self%unfrozen_drainage_flux))return
             if(self%frost_low_air_drainage%active)then
@@ -5866,6 +5919,7 @@ contains
     class(fmr_serialized_reference_model_t),intent(in)::self
     class(transaction_state_t),intent(in)::full_state,half_state
     type(frost_divdra_result_t)::bf,bh
+    type(frost_multilevel_divdra_result_t)::mf,mh
     type(frost_geometry_result_t)::gf,gh
     real(real64),allocatable::tf(:),th(:)
     real(real64)::head_error,temperature_error
@@ -5876,12 +5930,16 @@ contains
     type is(fmr_b110_physical_state_t)
       select type(half=>half_state)
       type is(fmr_b110_physical_state_t)
-        call regenerate(full,bf,gf,tf,status)
+        call regenerate(full,bf,gf,tf,status,mf)
         if(status/=0)return
-        call regenerate(half,bh,gh,th,status)
+        call regenerate(half,bh,gh,th,status,mh)
         if(status/=0)return
         if(bf%low_air.neqv.bh%low_air)return
         if(bf%blocked.neqv.bh%blocked)return
+        if(allocated(self%frost_divdra_levels))then
+          if(any(mf%blocked.neqv.mh%blocked))return
+          if(mf%net_policy_applied.neqv.mh%net_policy_applied)return
+        end if
         if(gf%deepest_node/=gh%deepest_node)return
         head_error=max(maxval(abs(full%pressure_head-half%pressure_head)), &
              abs(full%ponding_depth-half%ponding_depth),abs(full%groundwater_level-half%groundwater_level))
@@ -5890,16 +5948,18 @@ contains
       end select
     end select
   contains
-    subroutine regenerate(physical,result,geometry,temperature,status)
+    subroutine regenerate(physical,result,geometry,temperature,status,multilevel)
       type(fmr_b110_physical_state_t),intent(in)::physical
       type(frost_divdra_result_t),intent(out)::result
       type(frost_geometry_result_t),intent(out)::geometry
       real(real64),allocatable,intent(out)::temperature(:)
       integer,intent(out)::status
+      type(frost_multilevel_divdra_result_t),intent(out)::multilevel
       type(process_hydraulic_view_t)::view
       real(real64),allocatable::factor(:)
       integer::n
       status=1;n=self%soil_parameters%active_nodes
+      multilevel=frost_multilevel_divdra_result_t()
       if(physical%active_nodes/=n)return
       if(.not.allocated(physical%pressure_head).or..not.allocated(physical%water_content))return
       if(size(physical%pressure_head)/=n.or.size(physical%water_content)/=n)return
@@ -5919,6 +5979,16 @@ contains
       if(.not.geometry%available)return
       view%active_nodes=n;view%pressure_head=physical%pressure_head;view%water_content=physical%water_content
       view%ponding_depth=physical%ponding_depth;view%groundwater_level=physical%groundwater_level
+      if(allocated(self%frost_divdra_levels))then
+        call compose_multilevel_signed_frost_divdra(self%frost_divdra_levels,view,factor,geometry%deepest_node, &
+             geometry%bottom_depth_cm,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
+             self%frost_divdra_scalars_cm_per_day,self%bottom_flux,multilevel)
+        result=frost_divdra_result_t();result%available=multilevel%available;result%low_air=multilevel%low_air
+        if(multilevel%available)then
+          result%blocked=any(multilevel%blocked);status=0
+        end if
+        return
+      end if
       call compose_single_level_signed_frost_divdra(self%frost_divdra,view,factor,geometry%deepest_node, &
            geometry%bottom_depth_cm,physical%water_content,self%hydraulic_parameters%cofgen(2,:), &
            self%frost_divdra_scalar_cm_per_day,self%bottom_flux,result)
