@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CANONICAL_RUNTIME_HYST_STATE_RESTART_TYPED_PARAMETERS_FORWARDED_DISPATCH_PENDING",
-  "tested": "CANONICAL_COMPONENT_O0_O2_PASS; CANONICAL_RUNTIME_UNTESTED",
+  "stage": "CANONICAL_RUNTIME_COMPILES_MODEL5_11_DISPATCH_NOT_FORWARD_PORTED",
+  "tested": "CANONICAL_COMPONENT_O0_O2_PASS; CANONICAL_RUNTIME_MODEL2_3_PASS_MODEL5_REJECTED",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Use an actual canonical full module-closure runtime driver, not isolated gfortran syntax-only; forward-port provider dispatch and accepted-step transitions, then O0/O2 runtime with rollback/restart and transitive owner preservation.",
+  "next_action": "Forward-port cohesive model5-11 provider selection/binding, accepted-only HYST state transitions and restart initialization from historical qualified backend into CURRENT canonical backend. Preserve analytical MODEL2/3/6, frost, root, drainage, NUT/SOL and other admitted owners. Then one scoped end-to-end O0/O2 runtime gate plus transitive preservation and coverage qualification. No admission until this succeeds.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -49,5 +49,15 @@
     "failure": "mod_transaction_reference.mod missing during isolated -fsyntax-only",
     "interpretation": "No production runtime compile/failure conclusion; test harness omission",
     "cleanup_commit": "fafcdd50f21578869282b809dae214ed77a9b164"
+  },
+  "runtime_gate_20261017": {
+    "head": "462d362eb3417e02be3fcf290886e76117e28e64",
+    "run_id": 39022431600,
+    "compile": "PASS",
+    "model2": "PASS_MASS_ZERO",
+    "model3": "PASS_MASS_ZERO",
+    "model5": "BLOCKED_RUNTIME_NOT_COMMITTED",
+    "cause": "Canonical hydraulic_model_kind admission bound to existing analytical model 2/3/6 envelope; adding extended provider files and state/restart members does not activate extended model 5-11 dispatch.",
+    "qualified": false
   }
 }
