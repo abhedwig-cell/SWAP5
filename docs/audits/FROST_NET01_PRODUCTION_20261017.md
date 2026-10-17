@@ -1,6 +1,9 @@
 # Owner-approved signed multilevel frost transfer
 
-Status: qualified production successor, canonical admission pending.
+Status: canonically admitted via PR #1275 at
+`5f919cbb5de933bff62e715045533a5c63faba4d`. The actual complete merge tree
+`643ea38bd08407cf779286854bca1ced6e5297c9` exactly equals the qualified remote
+candidate. Scientific source is `4144f9895e5b97d1506e0db68fab28e276630d76`.
 
 The explicit programme-owner decision reopens the mixed-sign exclusion of
 PR #1080. NET01 is a SWAP5 physical allocation policy, not a retroactive B1 fix.

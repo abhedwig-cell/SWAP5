@@ -2,8 +2,8 @@
 
 ## Owner-approved NET01 multilevel frost successor, 17 October 2026
 
-NET01 production qualification is complete on the existing B20 recovery branch;
-canonical admission is pending. The explicit owner-approved absolute-rate policy
+PR #1275 admits NET01 at `5f919cbb5de933bff62e715045533a5c63faba4d`;
+the actual complete merge tree equals the qualified candidate. The explicit owner-approved absolute-rate policy
 is a SWAP5 difference, not a B1 correction. The typed two/three-level rootless
 ordinary Reference mode-2 route passes all 9,216 source cases and 128 actual
 physical configurations per optimization, hard mass, rejected-trial rollback,

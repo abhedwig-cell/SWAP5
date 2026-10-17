@@ -1,16 +1,16 @@
 {
   "work_unit": "PPA-WU05B20",
   "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "last_reconciled_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "status": "NET01_PRODUCTION_SCIENCE_COMPLETE_ADMISSION_PENDING",
+  "last_reconciled_head": "5f919cbb5de933bff62e715045533a5c63faba4d",
+  "last_reconciled_upstream": "5f919cbb5de933bff62e715045533a5c63faba4d",
+  "status": "NET01_CANONICALLY_ADMITTED_BOUNDED_RUNTIME",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
   "admitted": true,
-  "runtime_admitted": false,
-  "aggregate_frost_migration_complete": true,
+  "runtime_admitted": true,
+  "aggregate_frost_migration_complete": false,
   "preregistration": "integration/audits/PPA_WU05B20_PREREGISTRATION.json",
   "authority_paths": [
     "docs/decisions/ADR-0005-reference-baseline-chain.md",
@@ -54,12 +54,12 @@
     "branch": "work/frost-net01-production-20261017",
     "owner_authority": "Explicit Ja to the concrete NET01 production-implementation and qualification decision, followed by Go and Ga door in the same frost workstream.",
     "contract": "docs/science/FROST_NET01_PRODUCTION_CONTRACT_20261017.md",
-    "stage": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_NET01",
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "admitted": false,
-    "next_action": "Verify sealed evidence and all incumbent owner projections, reconcile current canonical, then safe production admission.",
+    "admitted": true,
+    "next_action": "NET01 frozen production contract is complete. Preserve admitted two/three-level policy; remaining full-envelope, rooted, other-bottom and snow frost work stays in existing MC-FROST01/master coverage, without full-row/global closure.",
     "test_selection": "Small source/component O0/O2 first; targeted actual Richards/mass/reject/restart and affected preservation next. No full FCI, RossFast or highest low-air stress selected.",
     "persisted": true,
     "owner_policy_accepted": true,
@@ -129,6 +129,41 @@
       "ordinary_multilevel_runtime": 24,
       "ordinary_separate_infiltration_runtime": 48,
       "original_B18": 4536
+    },
+    "runtime_admitted": true,
+    "canonical_admission": {
+      "work_unit": "PPA-WU05B20-NET01",
+      "canonical_branch": "integration/f-ci-canonical",
+      "pr": 1275,
+      "baseline": "0747fd7c8a5e754d73fa5d981e8f5437ee4c12f3",
+      "qualified_remote_head": "97bc7d14965122db21abe7fd8bf4a2259061bb7d",
+      "qualified_full_tree": "643ea38bd08407cf779286854bca1ced6e5297c9",
+      "canonical_merge": "5f919cbb5de933bff62e715045533a5c63faba4d",
+      "actual_merge_full_tree": "643ea38bd08407cf779286854bca1ced6e5297c9",
+      "whole_tree_identity": true,
+      "scientific_source": "4144f9895e5b97d1506e0db68fab28e276630d76",
+      "owner_authorized_policy": "FROST-MULTILEVEL-NET01 explicit SWAP5 difference, not a B1 correction",
+      "scope": "Two/three strictly depth-ordered signed interacting levels; rootless ordinary serialized Reference mode2; normal/guarded low air; separate infiltration",
+      "evidence": {
+        "path": "integration/audits/evidence/FROST_NET01_PRODUCTION_20261017.json.gz.b64",
+        "sha256": "c01146c363c22c148fd414366a873bc263887b9c75c81e74c5c31f1ab5549d1c",
+        "bytes": 1285234
+      },
+      "qualification": "Full source/component and actual runtime O0/O2 terminal PASS with exact optimization output; original B18 and ordinary multilevel/INF preservation; ten evidence corruption controls and current owner entry PASS",
+      "documentation": "Source checks PASS; mkdocs --strict PASS12.91s",
+      "actions": "No workflow run or status existed for exact qualified head; no new Actions dispatch. Local exact-source evidence is admission authority under frozen contract and proportional execution policy.",
+      "master_row": "SW431-FROST-DIV-MULTI remains ACTIVE until its remaining level/option envelope is explicitly covered or disposed",
+      "aggregate_frost_migration_complete": false
+    },
+    "remote_qualified_postimage": "97bc7d14965122db21abe7fd8bf4a2259061bb7d",
+    "validation": {
+      "source_guard": "PASS",
+      "evidence_corruption_controls": 10,
+      "current_owner_entry": "PASS",
+      "historical_B20_at_9f60": "PASS 7 original and 8 successor evidence controls; prior initial645 negatives retained",
+      "docs_source": "PASS",
+      "strict_mkdocs": "PASS12.91s",
+      "git_whitespace": "PASS"
     }
   },
   "precision_adjudication": {
@@ -186,14 +221,15 @@
     "qualification_pending": false
   },
   "blockers": [],
-  "next_action": "Complete exact NET01 owner/evidence checks and safe canonical admission; all wider frost compositions retain separate coverage.",
+  "next_action": "NET01 frozen production contract is complete. Preserve admitted two/three-level policy; remaining full-envelope, rooted, other-bottom and snow frost work stays in existing MC-FROST01/master coverage, without full-row/global closure.",
   "publication": {
-    "pr": 1080,
-    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1080",
-    "draft": true,
+    "pr": 1275,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1275",
+    "draft": false,
+    "merged": true,
     "canonical_merge_authorized": true
   },
-  "recovery_point": "Evidence and source postimages committed on work/ppa-wu05b20-multilevel-owner-20261006; tested probe postimage 43fa981f2cc613d852a0d9e2b69f0493005cd0d6, whole published tree checked against local before publication.",
+  "recovery_point": "Canonical PR1275 merge5f919cbb exactly equals qualified remote tree643ea38b/source4144f989. Resume from canonical and production_reopening_20261017; local execution commit IDs in immutable raw receipts are observations, remote postimages/actual merge are durable recovery authority.",
   "negative_observations": [
     "First original/O0 whole matrix stopped after 2304 complete rows, case2305 SIGFPE. Final census isolates all 728 failed inputs at each optimization and variant rather than skipping or relabelling them.",
     "Case7 absolute source/oracle difference 5.760725230175012e-12 arose for near-cancellation-amplified signed rates. Audit records absolute and unit-rate errors separately; final 2e-12 unit-rate screen still fails 645 candidate cases and is not relaxed.",
@@ -202,12 +238,24 @@
     "All645 old double comparison screens remain in the sealed artifact. Independent80/100-digit exact-input geometry later resolves the comparator round-trip cancellation error, with unchanged2e-12 screen and exact fresh native source outputs. Runtime/admission and aggregate closure remain false.",
     "Test-only net proposal preserves signed net numerically but is not a proven legacy bug correction or owner-approved physical allocation; it remains outside production and reference authority."
   ],
-  "multilevel_mixed_sign_disposition": "OWNER_APPROVED_NET01_PRODUCTION_QUALIFICATION_COMPLETE_ADMISSION_PENDING",
+  "multilevel_mixed_sign_disposition": "OWNER_APPROVED_NET01_BOUNDED_RUNTIME_CANONICALLY_ADMITTED",
   "multilevel_mixed_sign_reason": "Explicit owner accepted the concrete absolute-rate policy after the historical PR1080 disposition. Current successor is qualified only within its frozen two/three-level ordinary Reference envelope.",
   "closure_classification": {
     "B19_single_level_frost_DIVDRA": "ALREADY_COVERED",
     "FROST_DIVDRA_03_reference_geometry": "QUALIFICATION_ONLY_COMPLETED_AND_ADMITTED",
+    "mixed_sign_multilevel_frost_DIVDRA": "OWNER_APPROVED_NET01_BOUNDED_RUNTIME_ADMITTED",
+    "net_preserving_multilevel_proposal": "OWNER_APPROVED_SWAP5_POLICY_ADMITTED_NOT_B1_CORRECTION"
+  },
+  "historical_PR1080_closure_classification": {
+    "B19_single_level_frost_DIVDRA": "ALREADY_COVERED",
+    "FROST_DIVDRA_03_reference_geometry": "QUALIFICATION_ONLY_COMPLETED_AND_ADMITTED",
     "mixed_sign_multilevel_frost_DIVDRA": "INTENTIONALLY_NOT_MIGRATED",
     "net_preserving_multilevel_proposal": "INTENTIONALLY_NOT_MIGRATED"
+  },
+  "historical_publication_PR1080": {
+    "pr": 1080,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1080",
+    "draft": true,
+    "canonical_merge_authorized": true
   }
 }
