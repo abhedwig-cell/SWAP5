@@ -376,6 +376,7 @@ contains
       p%cofgen(22,j)=-200.0_real64;p%cofgen(23,j)=default_k_at(-200.0_real64,p%cofgen(:,j))
     end do
     p%conductivity_power_tail_active=power
+    if (power) deallocate(p%hydraulic_model_kind) ! canonical POWER is default-MvG only
     p%pdi_vapor_active=vapor
     p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%swsophy=0
     p%max_iterations=20;p%max_backtracking=8;p%min_step_duration=1.0e-9_real64
@@ -412,15 +413,17 @@ contains
     type(b110_default_mvg_provider_t),target::scan_base
     real(real64),allocatable::scan_cofgen(:,:)
     real(real64),target::vapor_temperature(numnod)
-    integer::status
+    integer::status, model_kind(numnod)
+    model_kind=1
+    if (allocated(p%hydraulic_model_kind)) model_kind=p%hydraulic_model_kind
 
     call initialize_b110_default_mvg_parameters(bp,p%cofgen)
     call bind_b110_default_mvg_provider(base,bp,dt)
-    call configure_b111_legacy_hydraulic_provider(legacy,bp%cofgen,p%hydraulic_model_kind,status)
+    call configure_b111_legacy_hydraulic_provider(legacy,bp%cofgen,model_kind,status)
     call require(status==B111_LEGACY_HYD_OK,'legacy configure')
     call bind_b111_legacy_hydraulic_provider(legacy,base,dt,status)
     call require(status==B111_LEGACY_HYD_OK,'legacy bind')
-    call initialize_b111_extended_hydraulic_parameters(ep,p%hydraulic_model_kind,bp%cofgen,status,p%pdi_vapor_active)
+    call initialize_b111_extended_hydraulic_parameters(ep,model_kind,bp%cofgen,status,p%pdi_vapor_active)
     call require(status==B111_EXT_OK,'extended configure')
     if(p%pdi_vapor_active)then
       vapor_temperature=20.0_real64
@@ -448,7 +451,7 @@ contains
       call require(status==B111_LINEAR_TABLE_OK,'linear-table bind')
       call linear%evaluate(head,theta,k,cap,dk)
     else if(p%conductivity_power_tail_active)then
-      call configure_b111_conductivity_power_tail(pw,bp%cofgen,p%hydraulic_model_kind,status)
+      call configure_b111_conductivity_power_tail(pw,bp%cofgen,model_kind,status)
       call require(status==B111_POWER_OK,'power configure')
       call bind_b111_conductivity_power_tail(pw,ext,status)
       call require(status==B111_POWER_OK,'power bind')
