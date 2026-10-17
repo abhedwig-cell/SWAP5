@@ -1,0 +1,18 @@
+name: F-WOF-EXT01 external crop contract feasibility
+on:
+  pull_request:
+    paths:
+      - 'tests/fwof/ext01/**'
+      - '.github/workflows/f-wof-ext01-contract-feasibility.yml'
+  workflow_dispatch:
+jobs:
+  protocol-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test crop process-boundary prototype
+        run: python -m unittest -v tests/fwof/ext01/test_external_crop_contract.py
