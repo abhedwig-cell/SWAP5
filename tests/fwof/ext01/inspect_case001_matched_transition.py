@@ -11,6 +11,7 @@ tar=gzip.decompress(base64.b64decode(data))
 assert hashlib.sha256(base64.b64decode(data)).hexdigest()=="d9ac276be4ecea1c7fca0d6ba720ae9e1532549c33a592962634867e0fd0dafd"
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(data)),mode="r:gz") as archive:
     members={Path(x.name).name:archive.extractfile(x).read() for x in archive.getmembers() if x.isfile()}
+print('EXT01_CASE001_ARCHIVE_MEMBERS='+json.dumps(sorted(members)))
 for name, sha in [
     ("forcing.dat","ae6c330055134df713aef3e9d7bc27b5220c0d39fcaa2e022fd954d38c149e45"),
     ("reference.csv","94daa08000097f4a124847c89b6ba3de1d29ca5d08fa07ae13dbcbb5b9efeaed"),
