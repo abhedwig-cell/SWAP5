@@ -665,6 +665,9 @@ contains
         end do
         if(d<2) call require(uptake==0.0_real64,'pre-emergence root sink is physically zero')
         if(d>=2) call require(uptake>0.0_real64,'emerged crop drives actual nonzero soil extraction')
+        if (dayend .and. j==1 .and. d==2) then
+          write(*,'(a,1x,i0,1x,i0,1x,es24.16)') 'F_WOF_EXT01_REAL_ACCEPTED_UPTAKE',j,d,uptake
+        end if
         total_uptake=total_uptake+uptake
         if(.not.dayend.and.d==2) then
           crop_revision=cs%current_revision()
