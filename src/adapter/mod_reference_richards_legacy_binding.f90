@@ -2,7 +2,7 @@ module mod_reference_richards_legacy_binding
   use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value, ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, &
+       soil_water_solve_request_t, soil_water_solve_result_t, soil_water_top_boundary_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
