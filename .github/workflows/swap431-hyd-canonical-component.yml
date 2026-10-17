@@ -20,6 +20,11 @@ jobs:
       - uses: actions/checkout@v4
       - run: bash tests/fsi/run_b111_hydraulic_families.sh
       - run: bash tests/fsi/run_b111_hysteresis_state.sh
+      - name: Compile current canonical HYD runtime module
+        run: |
+          bash tests/fsi/run_b111_hydraulic_families.sh >/dev/null
+          gfortran -std=f2008 -ffree-line-length-none -fsyntax-only src/runtime/mod_fmr_serialized_reference_backend.f90 2>&1 | head -45
+          test ${PIPESTATUS[0]} -eq 0
       - name: Publish actual component result
         if: always()
         env:
