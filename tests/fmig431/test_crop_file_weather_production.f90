@@ -626,8 +626,15 @@ contains
             aggregates%actual_root_uptake=crop_view%receipt%actual_root_uptake_integral
             aggregates%potential_transpiration=crop_view%receipt%potential_transpiration_integral
             if (dayend .eqv. .false.) then
-              if(j==1.and.d==3) write(*,'(a,2(1x,es24.16))') 'F_WOF_EXT01_ACCEPTED_PAIR', &
-                   aggregates%actual_root_uptake,aggregates%potential_transpiration
+              if(j==1.and.d==3) then
+                write(*,'(a,2(1x,es24.16))') 'F_WOF_EXT01_ACCEPTED_PAIR', &
+                     aggregates%actual_root_uptake,aggregates%potential_transpiration
+                call require(crop_view%receipt%valid.and.crop_view%receipt%final_revision>=0_int64, &
+                     'EXT01 real event identity must be ready')
+                write(*,'(a,2(1x,i0),2(1x,es24.16))') 'F_WOF_EXT01_ACCEPTED_IDENTITY', &
+                     crop_view%receipt%lineage_id,crop_view%receipt%final_revision, &
+                     crop_view%receipt%t0,crop_view%receipt%t1
+              endif
             end if
             call expected_growth_from_record(before_owner,prior_wr,d,bundle,update,aggregates,expected_owner)
             call compare_complete_wofost_owners(wo,expected_owner)
