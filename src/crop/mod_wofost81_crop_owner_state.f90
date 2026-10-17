@@ -34,6 +34,7 @@ module mod_wofost81_crop_owner_state
   end type
   public :: stage_wofost81_harvest_retired,restore_wofost81_retired_trusted,stage_wofost81_fallow_continuation
   public :: stage_wofost81_harvest_continuation_totals
+  public :: stage_wofost81_retired_material_totals
 
   type, extends(transaction_state_t), public :: wofost81_crop_owner_state_t
     type(wofost_crop_owner_state_t) :: crop
@@ -181,6 +182,23 @@ contains
     if(.not.all(ieee_is_finite([t0,t1])))return
     if(abs(t0-committed%retired%clock)>0d0.or.abs(t1-t0-1d0)>0d0)return
     h=committed%retired;h%clock=t1;h%continuation_totals=totals
+    call restore_wofost81_retired_trusted(h,committed%nitrogen,candidate,status)
+  end subroutine
+
+  subroutine stage_wofost81_retired_material_totals(committed,clock,totals,candidate,status)
+    ! Source amendment staging changes inventory, not the retired crop clock.
+    ! Construct a trial with revised continuation totals under the existing owner.
+    type(wofost81_crop_owner_state_t),intent(in)::committed
+    real(real64),intent(in)::clock,totals(2)
+    type(wofost81_crop_owner_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(wofost81_harvest_retired_t)::h
+    candidate=wofost81_crop_owner_state_t();status=WOFOST81_HARVEST_INVALID
+    if(.not.committed%harvest_retired())return
+    if(committed%validate()/=0)return
+    if(.not.all(ieee_is_finite([clock,totals])))return
+    if(clock/=committed%retired%clock.or.any(totals<0d0))return
+    h=committed%retired;h%continuation_totals=totals
     call restore_wofost81_retired_trusted(h,committed%nitrogen,candidate,status)
   end subroutine
 

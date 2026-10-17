@@ -18,7 +18,8 @@ program test_b112_retained_joint
  use mod_fmr_crop_soil_n_material_application
  use mod_crop_soil_n_historical_project_binding,only:initialize_historical_crop_soil_owner
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
- use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t,select_soil_n_amendments,N_CALENDAR_OK
+ use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t,select_soil_n_amendments, &
+  create_soil_n_amendment_calendar,N_CALENDAR_OK
  use mod_soil_n_amendment_input,only:parse_soil_n_date,N_INPUT_OK
  use mod_crop_soil_n_day
  use mod_crop_soil_n_configuration
@@ -33,6 +34,7 @@ program test_b112_retained_joint
  use mod_crop_soil_n_senescence_day
  use mod_fmr_crop_soil_n_senescence_application
  use mod_fmr_crop_soil_n_calendar_application,only:run_crop_soil_n_calendar_interval
+ use mod_crop_soil_n_calendar_day,only:advance_crop_soil_fallow_calendar_day
  implicit none
  real(real64),parameter::T0=0d0,T1=1d0,HARD_MASS_GATE=1d-10
  type(fmr_production_application_config_t)::cfg
@@ -410,6 +412,9 @@ contains
   type(soil_n_day_environment_t)::fallow_environment
   type(crop_soil_state_t)::invalid_successor,successor_continuous,successor_disk
   type(crop_soil_harvest_receipt_t)::successor_receipt
+  type(soil_n_amendment_calendar_t)::fallow_plan
+  type(b111_soil_n_material_t)::fallow_definitions(2)
+  type(material_day_receipt_t)::fallow_material,fallow_material_disk
   type(reactive_state_t)::chemical_after
   type(wofost81_crop_owner_state_t)::crop_after
   type(soil_n_pool_state_t)::before_pools,after_pools,disk_pools
@@ -469,6 +474,11 @@ contains
   call acknowledge_crop_soil_harvest(disk,observation,receipt)
   call require(receipt%status==0,'restored harvest retire')
   successor_continuous=n;successor_disk=disk
+  fallow_definitions=items(1)%material
+  fallow_definitions%application_kg_m2=0d0
+  call create_soil_n_amendment_calendar(2d0,[2d0,366d0],[100d0,50d0], &
+    fallow_definitions,fallow_plan,code)
+  call require(code==N_CALENDAR_OK,'fallow calendar constructed')
   ! Both accepted physical continuations preserve the same soil-N owner during a
   ! no-crop day, and a successor receives that inventory rather than a new one.
   ! An entire crop-free growing year uses the existing reactive Soil-N owner,
@@ -477,12 +487,19 @@ contains
   ! not an annual Richards hydrologic simulation.
   do fallow_day=2,367
     fallow_environment=soil_n_day_environment_t(real(fallow_day,real64),real(fallow_day+1,real64),20d0)
-    call advance_crop_soil_fallow_day(successor_continuous,real(fallow_day,real64), &
-      real(fallow_day+1,real64),after_water,0d0,0d0,0d0,0d0,0d0,fallow,fallow_environment)
-    call require(fallow%status==CROP_SOIL_OK,'annual real Soil-N fallow reaction')
-    call advance_crop_soil_fallow_day(successor_disk,real(fallow_day,real64), &
-      real(fallow_day+1,real64),disk_water_content,0d0,0d0,0d0,0d0,0d0,fallow_disk,fallow_environment)
-    call require(fallow_disk%status==CROP_SOIL_OK,'annual restart Soil-N fallow reaction')
+    call advance_crop_soil_fallow_calendar_day(successor_continuous,real(fallow_day,real64), &
+      real(fallow_day+1,real64),after_water,0d0,0d0,0d0,fallow_plan,split,fallow_material,fallow_environment)
+    call require(fallow_material%status==MATERIAL_OK,'annual real Soil-N calendar reaction')
+    call advance_crop_soil_fallow_calendar_day(successor_disk,real(fallow_day,real64), &
+      real(fallow_day+1,real64),disk_water_content,0d0,0d0,0d0,fallow_plan,split, &
+      fallow_material_disk,fallow_environment)
+    call require(fallow_material_disk%status==MATERIAL_OK,'annual restarted calendar reaction')
+    if(fallow_day==2.or.fallow_day==366)then
+      call require(fallow_material%material_count==1.and.fallow_material%gross_n>0d0, &
+        'fallow material delivered once')
+    else
+      call require(fallow_material%material_count==0,'no duplicate fallow material')
+    end if
   end do
   call successor_continuous%snapshot(chemical,owner)
   call chemical%snapshot(after_time,after_water,after_pools,after_revision)
