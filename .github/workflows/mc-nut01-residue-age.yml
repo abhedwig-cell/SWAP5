@@ -1,0 +1,27 @@
+name: MC-NUT01 source ages B1.12 owner
+on:
+  pull_request:
+    paths:
+      - 'src/crop/mod_crop_soil_n_residue_age_binding.f90'
+      - 'tests/nut-crop/test_b112_retained_day.f90'
+      - '.github/workflows/mc-nut01-residue-age.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  focused:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install gfortran
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran
+      - name: Actual B1.12 crop and Soil-N state O0 O2
+        run: python3 -B tests/nut-crop/run_b112_retained.py --output /tmp/nut-source-ages
+      - name: Save raw native proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nut-source-residue-ages
+          path: /tmp/nut-source-ages/
+          if-no-files-found: warn
