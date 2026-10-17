@@ -16,35 +16,44 @@
     "docs/decisions/ADR-0005-reference-baseline-chain.md",
     "docs/development/quality-governance-a-aa.md",
     "reference/swap-4.3.1/b1_11_frost_source/manifest.json",
-    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json"
+    "integration/audits/PPA_WU05B19_CANONICAL_ADMISSION.json",
+    "docs/science/FROST_NET01_PRODUCTION_CONTRACT_20261017.md",
+    "integration/audits/FROST_NET01_CANONICAL_ADMISSION_20261017.json"
   ],
-  "owned_surface": "Reference-only multilevel frost/DIVDRA probe and evidence",
+  "owned_surface": "Owner-approved NET01 signed multilevel production composition and qualification; earlier B20 reference audit remains historical.",
   "interfaces_allowed_to_change": [
-    "new isolated test globals",
-    "new test driver",
-    "new reference probe runner",
-    "new work-unit metadata"
+    "src/process/mod_frost_multilevel_divdra_effect.f90",
+    "Explicit optional NET01 vector parameters/forcing and diagnostic fields in the existing serialized Reference backend",
+    "Paired owner preflight in the existing production application",
+    "Exact evidence/source successor delegation and work-unit metadata"
   ],
   "interfaces_held_fixed": [
-    "all production source",
-    "original and corrected reference source",
-    "solver and numerical policy",
-    "committed state and restart",
-    "mass and coupling ownership"
+    "Original and corrected B1 reference source",
+    "Existing single-level source branch and all ordinary partition equations",
+    "Solver equations and numerical policy",
+    "Committed physical state and restart codec",
+    "Single existing trial mass ledger and coupling ownership"
   ],
   "relevant_paths": [
-    "tests/frost/test_ppa_wu05b20_multilevel_globals.f90",
-    "tests/frost/test_ppa_wu05b20_multilevel_owner.f90",
-    "tests/frost/run_ppa_wu05b20_multilevel_owner.py"
+    "src/process/mod_frost_multilevel_divdra_effect.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "tests/frost/run_net01_component.py",
+    "tests/frost/run_net01_runtime.py",
+    "tests/frost/run_net01_preservation.py",
+    "tests/frost/verify_net01_successor.py",
+    "docs/science/FROST_NET01_PRODUCTION_CONTRACT_20261017.md"
   ],
   "dependency_surface": [
-    "full FrozenBounds",
-    "full original and B17-corrected DIVDRA",
-    "8-node reference globals"
+    "Admitted ordinary interacting multilevel DIVDRA and B19 separate-infiltration adapter",
+    "Trial-start process hydraulic view and empirical frost factors/geometry",
+    "Immutable paired level parameters/forcing; worker-local final nodal and bottom flux",
+    "Existing actual Richards transaction, model temporal regeneration, single mass ledger and committed restart",
+    "Immutable B20 9216-case source-policy evidence and original B17/B18 reference corpus"
   ],
   "summary": "integration/audits/PPA_WU05B20_REFERENCE_SUMMARY.json",
   "historical_summary_policy": "Original summary/replay retain the initial645 failed double-precision comparison screens. Later exact-input adjudication resolves them without rewriting those snapshots.",
-  "current_review": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json",
+  "current_review": "integration/audits/FROST_NET01_CANONICAL_ADMISSION_20261017.json",
   "reference_geometry_qualified": true,
   "policy_proposal": "FROST-MULTILEVEL-NET01",
   "test_only_policy_proposal_verified": true,
@@ -164,7 +173,8 @@
       "docs_source": "PASS",
       "strict_mkdocs": "PASS12.91s",
       "git_whitespace": "PASS"
-    }
+    },
+    "remaining_owner_decision": "NONE for NET01. Explicit accepted policy is recorded; do not ask for the same approval again. Complete any wider source level/option envelope through the existing frost workstream and qualification."
   },
   "precision_adjudication": {
     "path": "docs/audits/evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz",
@@ -190,7 +200,7 @@
     "complete_B17_preservation_per_opt": 4536,
     "production_or_reference_authority_modified": false
   },
-  "report": "docs/audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md",
+  "report": "docs/audits/FROST_NET01_PRODUCTION_20261017.md",
   "evidence": {
     "path": "docs/audits/evidence/PPA_WU05B20_MULTILEVEL_REFERENCE_REPLAY.json.gz",
     "sha256": "b9722a11a7684247b90cd34e3c38e27337fbd7a9d36e43888f9893ec8bd6b368",
@@ -229,7 +239,7 @@
     "merged": true,
     "canonical_merge_authorized": true
   },
-  "recovery_point": "Canonical PR1275 merge5f919cbb exactly equals qualified remote tree643ea38b/source4144f989. Resume from canonical and production_reopening_20261017; local execution commit IDs in immutable raw receipts are observations, remote postimages/actual merge are durable recovery authority.",
+  "recovery_point": "Canonical production merge5f919cbb and admission receipt14c4dc15, source4144f989. Use current relevant_paths and production_reopening_20261017; historical B20 local execution IDs are observations, actual remote merge/tree authority is durable. Existing master SW431-FROST-DIV-MULTI retains full-envelope OPEN.",
   "negative_observations": [
     "First original/O0 whole matrix stopped after 2304 complete rows, case2305 SIGFPE. Final census isolates all 728 failed inputs at each optimization and variant rather than skipping or relabelling them.",
     "Case7 absolute source/oracle difference 5.760725230175012e-12 arose for near-cancellation-amplified signed rates. Audit records absolute and unit-rate errors separately; final 2e-12 unit-rate screen still fails 645 candidate cases and is not relaxed.",
@@ -257,5 +267,22 @@
     "url": "https://github.com/abhedwig-cell/SWAP5/pull/1080",
     "draft": true,
     "canonical_merge_authorized": true
+  },
+  "historical_reference_only_interfaces": {
+    "allowed": [
+      "new isolated test globals",
+      "new test driver",
+      "new reference probe runner",
+      "new work-unit metadata"
+    ],
+    "held_fixed": [
+      "all production source",
+      "original and corrected reference source",
+      "solver and numerical policy",
+      "committed state and restart",
+      "mass and coupling ownership"
+    ],
+    "report": "docs/audits/PPA_WU05B20_MULTILEVEL_REFERENCE_ADJUDICATION.md",
+    "current_review": "integration/audits/PPA_WU05B20_CURRENT_REVIEW.json"
   }
 }
