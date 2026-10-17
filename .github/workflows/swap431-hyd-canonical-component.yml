@@ -12,6 +12,7 @@ on:
       - 'tests/fmr/run_swap431_hyd_runtime_reachability.sh'
       - 'tests/fmr/test_swap431_hyd_runtime_reachability.f90'
       - 'tests/fsi/run_sw431_fsi39_current_preservation.sh'
+      - 'tests/ross/run_sw431_ross12_current_preservation.sh'
       - '.github/workflows/swap431-hyd-canonical-component.yml'
   workflow_dispatch:
 permissions:
@@ -27,6 +28,7 @@ jobs:
       - run: bash tests/fsi/run_b111_hysteresis_state.sh
       - run: bash tests/fmr/run_swap431_hyd_runtime_reachability.sh
       - run: bash tests/fsi/run_sw431_fsi39_current_preservation.sh
+      - run: bash tests/ross/run_sw431_ross12_current_preservation.sh
       - name: Publish actual component result
         if: always()
         env:
