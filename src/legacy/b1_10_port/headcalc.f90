@@ -741,7 +741,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
                 ieee_is_finite(provider_dynamic_top_result%ponded_water_evaporation) .and. &
                 ieee_is_finite(provider_dynamic_top_result%bare_soil_evaporation)) then
                if (abs(provider_dynamic_top_result%candidate_ponding_depth-state%pond) <= &
-                   128d0*epsilon(1d0)*max(1d0,abs(state%pond))) then
+                   128d0*epsilon(1d0)*max(1d0,abs(state%pond)) .and. &
+                   abs(provider_dynamic_top_result%runoff_depth-state%runots) <= &
+                   128d0*epsilon(1d0)*max(1d0,abs(state%runots)) .and. &
+                   abs(provider_dynamic_top_result%actual_top_flux-state%qtop) <= &
+                   128d0*epsilon(1d0)*max(1d0,abs(state%qtop))) then
                   accepted_top_result = provider_dynamic_top_result
                end if
             end if
