@@ -321,6 +321,10 @@ contains
            ' admission=', trim(output%admission_status), ' kernel=', output%kernel_status, &
            ' solver=', output%solver_status
     end if
+    if (.not. (output%completed.and.output%committed)) &
+      write(*,'(a,1x,a,1x,l1,1x,l1,1x,i0,1x,i0)') &
+      'LINEAR_TABLE_DIAGNOSTIC',trim(output%admission_status),output%admission_assessed, &
+      output%admitted,output%kernel_status,output%commit_status
     call require(output%completed.and.output%committed,'linear-table runtime commit')
     call require(output%mass%complete,'linear-table mass complete')
     call require(abs(output%mass%residual)<=mass_tol,'linear-table hard mass')
