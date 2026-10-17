@@ -1,11 +1,11 @@
 {
   "work_unit": "MC-HYD01 / MC-HYST01",
   "workstream": "SWAP 4.3.1 B1.11 hydraulic constitutive coverage",
-  "canonical_reconciled_against": "integration/f-ci-canonical@f0efbf9396ad62c52658e6e8315fe762cffddfca",
+  "canonical_reconciled_against": "integration/f-ci-canonical@8d9ce10b1514c1ea67f814ff21d0b9372bbe715b",
   "branch": "work/swap431-hydraulic-coverage-20261007",
   "pull_request": 1103,
-  "checkpoint_head": "f2e825d99006e5ab160f130f207903518e1efd4a",
-  "phase": "FOUR_BOUNDED_HYDRAULIC_PROFILES_ADMITTED_FULL_SOURCE_ENVELOPE_OPEN",
+  "checkpoint_head": "8d9ce10b1514c1ea67f814ff21d0b9372bbe715b",
+  "phase": "BOUNDED_MODEL2_3_5_TO_11_POWER_PDI_LINEAR_TABLE_HYST_ADMITTED_GENERIC_TABLE_RIA_OPEN",
   "authority": [
     "reference/swap-4.3.1/snapshots/B1.11.yml",
     "reference/swap-4.3.1/b1_11_frost_source/SWAP/MOD_MvG_functions.f90",
@@ -26,7 +26,7 @@
         "SW431-HYD-MODEL2"
       ],
       "disposition": "IMPLEMENTED_NARROW_PRODUCTION_ROUTE",
-      "note": "Exponential retention/conductivity family."
+      "note": "Existing MODEL2/3/6 analytical route preserved; extended MODEL6 is explicit opt-in, not a silent replacement. Native O0/O2 preservation PASS."
     },
     {
       "owner": "b111_analytical_hydraulic_provider_t",
@@ -36,7 +36,7 @@
         "SW431-HYD-MODEL6"
       ],
       "disposition": "IMPLEMENTED_NARROW_PRODUCTION_ROUTE",
-      "note": "MODEL6 is the WC_K representation of the same unscaled bimodal MvG constitutive family; bit-identity is an explicit test."
+      "note": "Existing MODEL2/3/6 analytical route preserved; extended MODEL6 is explicit opt-in, not a silent replacement. Native O0/O2 preservation PASS."
     },
     {
       "owner": "b111_scaled_mvg_family",
@@ -45,8 +45,8 @@
         "SW431-HYD-MODEL5",
         "SW431-HYD-MODEL7"
       ],
-      "disposition": "SOURCE_PINNED_PARTIAL_NOT_ADMITTED",
-      "note": "SWAP-010/SWAP-011 establish scaled retention/capacity/conductivity algebra, but exact dry-bound branch behavior is not yet fully source-extracted in this workstream. No production claim."
+      "disposition": "ADMITTED_BOUNDED_REFERENCE_RICHARDS",
+      "note": "MODEL5 and MODEL7 qualified in the full material, component and production O0/O2 gate; historical source and parameter envelope still constrain usage."
     },
     {
       "owner": "b111_pdi_family",
@@ -58,8 +58,8 @@
         "SW431-HYD-MODEL11",
         "SW431-HYD-VAPOR"
       ],
-      "disposition": "GROUPED_NOT_ADMITTED",
-      "note": "One family with structural variants; vapor is a compositional conductivity term, not a standalone Richards owner."
+      "disposition": "ADMITTED_BOUNDED_REFERENCE_RICHARDS_PDI_VAPOR8_TO11",
+      "note": "MODEL8..11 and PDI vapor8..11 admitted only for the tested thermal carrier/current solver and bounded configurations."
     },
     {
       "owner": "b111_ria_family",
@@ -68,7 +68,7 @@
         "SW431-HYD-MODEL12",
         "SW431-HYD-RIA-VAPOR"
       ],
-      "disposition": "GROUPED_NOT_ADMITTED",
+      "disposition": "SOURCE_BLOCKED_FAIL_CLOSED",
       "note": "RIA base law plus optional vapor contribution."
     },
     {
@@ -78,8 +78,8 @@
         "SW431-HYD-TABLE",
         "SW431-HYD-LINEAR-TABLE"
       ],
-      "disposition": "GROUPED_NOT_ADMITTED",
-      "note": "Selectors encode representation/preprocessing differences; they should not become separate production components."
+      "disposition": "PARTIAL_ADMISSION_LINEAR_TABLE_ONLY",
+      "note": "LINEAR-TABLE admitted after O0/O2 native production and mass; general historical TABLE remains source-blocked, not interchangeable."
     },
     {
       "owner": "b110_default_mvg_provider_t",
@@ -97,8 +97,8 @@
         "SW431-HYST1",
         "SW431-HYST2"
       ],
-      "disposition": "GROUPED_STATEFUL_NOT_ADMITTED",
-      "note": "Initial wetting/drying are initialization modes of one stateful component. Historical node state must be candidate/commit/restart owned; stateless parameter migration is prohibited."
+      "disposition": "ADMITTED_BOUNDED_ACCEPTED_STEP_ROLLBACK_RESTART",
+      "note": "HYST1/HYST2 scanning history is physically accepted-state-owned with rollback and restart; tested Reference Richards only."
     }
   ],
   "implemented_scope": {
@@ -135,8 +135,12 @@
     "Mass closure and replay identity are required by the serialized runtime qualification.",
     "Hysteresis cannot be represented as immutable parameters because accepted-history state affects later constitutive evaluation."
   ],
-  "blockers": [],
-  "next_action": "Existing PR1103 merged within its four-profile bounded qualified scope. Preserve exclusions and original failure evidence; master records bounded production without full-family promotion. No additional migration family started.",
+  "blockers": [
+    "GENERAL_SW431_HYD_TABLE_SOURCE_BLOCKED",
+    "SW431_HYD_MODEL12_RIA_SOURCE_BLOCKED",
+    "SW431_HYD_RIA_VAPOR_SOURCE_BLOCKED"
+  ],
+  "next_action": "Batched MC-HYD01/MC-HYST01 production migration merged and admitted within bounded scopes above; obtain original SWAP 4.3.1 MODEL12 RIA, general TABLE and RIA vapor sources before separate scientific qualification. Keep current canonical preserving qualified branch.",
   "recovery_20261016": {
     "original_head": "6309199ed41a150d72d646ad6fa200da40ec3d17",
     "canonical": "a86da5b6931b15ef8a5432fd03adc30a72491b65",
@@ -2660,5 +2664,60 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "rossfast": "NOT_SELECTED_IMPACT",
     "post_merge_verification": "Actual merge tree equals exact qualified CI head tree; production blobs unchanged. Current source/capsule proof rerun at actual canonical merge."
+  },
+  "current_canonical_qualified_scope_20261017": {
+    "canonical_admission": "8d9ce10b1514c1ea67f814ff21d0b9372bbe715b",
+    "pr": 1281,
+    "admitted_bounded_capabilities": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL5",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-MODEL7",
+      "SW431-HYD-MODEL8",
+      "SW431-HYD-MODEL9",
+      "SW431-HYD-MODEL10",
+      "SW431-HYD-MODEL11",
+      "SW431-HYD-POWER",
+      "SW431-HYD-VAPOR",
+      "SW431-HYD-LINEAR-TABLE",
+      "SW431-HYST1",
+      "SW431-HYST2"
+    ],
+    "newly_qualified_and_canonically_admitted_facets": [
+      "SW431-HYD-MODEL5",
+      "SW431-HYD-MODEL7",
+      "SW431-HYD-MODEL8",
+      "SW431-HYD-MODEL9",
+      "SW431-HYD-MODEL10",
+      "SW431-HYD-MODEL11",
+      "SW431-HYD-VAPOR",
+      "SW431-HYD-LINEAR-TABLE",
+      "SW431-HYST1",
+      "SW431-HYST2"
+    ],
+    "model6": "Existing analytical MODEL6 remains the default qualified route. Extended MODEL6 requires explicit extended_model6_active; both tested O0/O2.",
+    "execution": "Actual serialized FMR Reference Richards route, qualifying provider/material combinations, SWKIMPL=0; rollback, accepted-state HYST scanning, restart, hard native mass, PDI thermal carrier and source-independent material oracles are bounded by the named qualification drivers.",
+    "owner_evidence": {
+      "hyd_and_hyst_components": 39037695449,
+      "shared_hydraulic_cover": 39039607360,
+      "nut_b112_current_successor": 39040202846
+    },
+    "qualification_qualification": "SUCCESS: current-source HYD/HYST+FSI39+RossFast O0/O2; shared O0/O2 owner physical checks; B112 original immutable receipt plus fresh current B112 native O0/O2 at merged tree 6894d310.",
+    "bridge_scope": "F-ROSS12 historical six-material test replaced for the admitted modern RossFast 36-material owner; frozen original B112 verified on f1f1e99 and exact default optional layout projection current merged tree.",
+    "science_source_tree": "0fc6a5eb1b23b1932cfb596c7ebfdfff0b217294",
+    "original_four_capabilities": [
+      "SW431-HYD-MODEL2",
+      "SW431-HYD-MODEL3",
+      "SW431-HYD-MODEL6",
+      "SW431-HYD-POWER"
+    ],
+    "exclusions_source_blocked": [
+      "SW431-HYD-MODEL12_RIA",
+      "SW431-HYD-TABLE",
+      "SW431-HYD-RIA-VAPOR"
+    ],
+    "mastercoverage_scope": "Only the ten newly qualified bounded facet rows listed here may be marked ADMITTED in any external master queue. No whole-HYD/HYST or generic TABLE/RIA denominator closure is claimed.",
+    "globally_managed_master_queue": "NOT_WRITTEN: no versioned global master queue file found in this repository; do not invent one"
   }
 }

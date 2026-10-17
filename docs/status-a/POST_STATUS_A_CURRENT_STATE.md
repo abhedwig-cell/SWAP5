@@ -1,5 +1,34 @@
 # SWAP5 post-Status-A current canonical state
 
+## MC-HYD01 and MC-HYST01 bounded canonical admission, 17 October 2026
+
+PR [#1281](https://github.com/abhedwig-cell/SWAP5/pull/1281) was
+merged at `8d9ce10b1514c1ea67f814ff21d0b9372bbe715b`. The merged production source tree is
+`0fc6a5eb1b23b1932cfb596c7ebfdfff0b217294`, identical to the
+qualified merge tree. The existing analytical MODEL2/3/6 and POWER owners
+remain available; an extended MODEL6 route requires explicit opt-in.
+MODEL5, MODEL7 through MODEL11, PDI vapor for MODEL8 through MODEL11,
+the restricted LINEAR-TABLE route, and HYST1/HYST2 accepted scanning history
+(including trial rollback and restart) are qualified in their bounded
+Reference Richards production configurations.
+
+The real O0/O2 HYD/HYST, F-SI39 and current RossFast preservation completed in
+[39037695449](https://github.com/abhedwig-cell/SWAP5/actions/runs/39037695449).
+Shared analytical, native hydraulic certificate and daily root-receiving checks
+all passed in run 39039607360; its former global incumbent guard was replaced
+by a source-exact NUT B1.12 preservation successor. The successor passed
+[39040202846](https://github.com/abhedwig-cell/SWAP5/actions/runs/39040202846)
+on the actual merge tree, preserving original immutable B1.12 evidence and
+fresh NUT O0/O2 native production checks. Only unaffected source-dependent
+evidence is inherited.
+
+The general historical TABLE, MODEL12 RIA and RIA vapor capabilities remain
+source-blocked and fail closed. This admission does not close the complete
+MC-HYD01/MC-HYST01 historical source envelope or retrospectively change the
+frozen September Status-A denominator.
+[Owning admission and open scope](../../integration/audits/SWAP431_HYD_HYST_STATUS.json)
+remain the authority for capability disposition.
+
 ## NET01 complete source counts2..25, 17 October 2026
 
 PR #1276 admits all24 multilevel counts at
