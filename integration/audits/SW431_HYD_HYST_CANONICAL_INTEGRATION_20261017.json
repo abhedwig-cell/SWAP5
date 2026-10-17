@@ -5,8 +5,8 @@
   "qualified_source_commit": "4e3c7eed49942bb7ac2937355798c093478fe5ff",
   "qualified_workflow_run": 39020045073,
   "branch": "work/swap431-hyd-hyst-canonical-rebase-20261017",
-  "stage": "CANONICAL_HYST_CLONE_AND_RESTART_VALIDATION_PORTED_UNTESTED",
-  "tested": "PREVIOUS_COMPONENT_PASS_ONLY; RESTART_RUNTIME_NOT_YET_TESTED",
+  "stage": "CANONICAL_RUNTIME_HYST_STATE_RESTART_TYPED_PARAMETERS_FORWARDED_DISPATCH_PENDING",
+  "tested": "COMPONENT_ONLY_PASS_AT_B439E197; RUNTIME_CHANGED_POSTIMAGE_NOT_COMPILED",
   "qualified": false,
   "admitted": false,
   "transplanted": [
@@ -27,7 +27,7 @@
     "SW431-HYD-TABLE",
     "SW431-HYD-RIA-VAPOR"
   ],
-  "next_action": "Compile actual current-canonical runtime and restart using existing supported source closure, test accepted-only hysteresis transitions, rejected attempts and restart. Preserve previous component PASS; no promotion until full exact-head tests.",
+  "next_action": "Forward-port actual existing provider binding and accepted-step HYST transition into current runtime using hydraulic_model_kind (not duplicate legacy selector), then current canonical runtime compile and O0/O2 full rollback/restart preservation; no admission before gate.",
   "hysteresis_layout_commit": "5ecbd350acae00c000dc3964006b19cd3281c199",
   "canonical_component_qualification": {
     "workflow_run": 39021520599,
@@ -40,5 +40,6 @@
     "ceiling": "component only: not runtime, rollback, restart or canonical admitted"
   },
   "committed_hysteresis_clone_commit": "70e5d3f0ec7321cb823302eb65c4dd61824eec32",
-  "restart_guard_commit": "72afe072cf8a69363eca58e80d47f8df5152ea01"
+  "restart_guard_commit": "72afe072cf8a69363eca58e80d47f8df5152ea01",
+  "runtime_parameter_forward_port_commit": "0a300c486dd257e503c701393947f9bcbebfce20"
 }
