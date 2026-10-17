@@ -25,6 +25,9 @@ contains
     if(size(p)<2.or.size(p)>3)return
     do l=1,size(p)
       if(.not.valid_frost_divdra_parameters(p(l)))return
+      if(l>1)then
+        if(p(l)%drain_bottom_cm>=p(l-1)%drain_bottom_cm)return
+      end if
       if(p(l)%distribution%active_nodes/=p(1)%distribution%active_nodes)return
       if(any(p(l)%distribution%dz/=p(1)%distribution%dz))return
       if(any(p(l)%distribution%zbotcp/=p(1)%distribution%zbotcp))return

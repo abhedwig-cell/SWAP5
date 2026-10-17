@@ -34,6 +34,10 @@ def main():
             entry.update(native_seconds=time.perf_counter()-start,exit=p.returncode,stdout_sha256=sha(p.stdout),executable_sha256=sha((build/'test').read_bytes()))
             (build/'stdout').write_bytes(p.stdout);(build/'stderr').write_bytes(p.stderr)
             assert p.returncode==0,p.stdout.decode()[-1000:]+p.stderr.decode();outputs.append(p.stdout)
+            controls=subprocess.run([str(build/'test'),'contracts'],input=evidence['prior']['inputs'].splitlines()[0].encode()+b'\n',capture_output=True,cwd=build)
+            (build/'contracts.stdout').write_bytes(controls.stdout);(build/'contracts.stderr').write_bytes(controls.stderr)
+            assert controls.returncode==0 and b'NET01_INVALID_NONMUTATION_ABA_26=PASS' in controls.stdout
+            entry['invalid_nonmutation_ABA_controls']=26
         assert outputs[0]==outputs[1]
         rows=outputs[0].decode().splitlines();expected=evidence['proposal']['output'].splitlines()
         assert len(rows)==len(expected)==9216

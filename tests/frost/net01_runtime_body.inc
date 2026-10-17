@@ -46,8 +46,9 @@
     print '(A,I0,A,ES24.16)','NET01_CASE_',case_count,' MASS=',out%mass%residual
     if(vector_case==1.and.bsign==1.and.blocking==0)then
       call identities(columns(1),templates(1));registry(1)=captured
-      call fmr_export_committed_restart(p%parameter_set_id,columns,templates,registry,bundle,ok,status)
+      call fmr_export_committed_restart(columns,templates,registry,p%parameter_set_id,bundle,ok,status)
       call require(ok.and.status==FMR_RESTART_OK,'export existing committed restart')
+      restored=kernel_committed_state_t()
       call fmr_restore_committed_restart(bundle,p%parameter_set_id,columns,templates,restored,ok,status)
       call require(ok.and.status==FMR_RESTART_OK,'restore into empty registry')
       call run(p,f,final,duration,duration,out,obs,restart_a,resumed=captured)
@@ -70,8 +71,54 @@
         call run(badp,badf,initial,0._real64,duration,out,obs,again)
         call require(.not.out%committed.and..not.obs%solver_executed,'invalid ownership rejects before solver')
         call require(all(again%pressure_head==initial%pressure_head),'rejected trial nonmutation')
+        call application_rejects(badp,badf,initial)
         rejected_count=rejected_count+1
       end do
+      call application(p,f,initial)
+      badp=p;badp%frost_drainage%head_budget_cm=1.e-30_real64
+      badp%frost_drainage%temperature_budget_c=1.e-30_real64
+      call run(badp,f,initial,0._real64,1.e-8_real64,out,obs,again)
+      call require(.not.out%committed.and.obs%solver_executed,'actual solved candidate is rejected')
+      call require(out%temporal_rejections>0,'actual temporal rejection observed')
+      call require(all(again%pressure_head==initial%pressure_head),'solved rejection exact rollback')
+      block
+        type(fmr_production_application_config_t)::cfg
+        type(fmr_production_application_bootstrap_t)::app
+        type(fmr_serialized_column_result_t),allocatable::both(:)
+        type(kernel_committed_state_t)::one
+        class(transaction_state_t),allocatable::physical
+        integer::tile
+        allocate(cfg%tiles(2))
+        do tile=1,2
+          cfg%tiles(tile)%tile_id=column_id+tile-1;cfg%tiles(tile)%ledger_id=column_id+10+tile
+          call identities(columns(1),cfg%tiles(tile)%template)
+          cfg%tiles(tile)%parameters=p;cfg%tiles(tile)%initial_state=initial;cfg%tiles(tile)%base_forcing=f
+          cfg%tiles(tile)%base_forcing%frost_divdra_scalars_cm_per_day= &
+               real(tile,real64)*f%frost_divdra_scalars_cm_per_day
+        end do
+        cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+        cfg%numerical%transaction%temporal_tolerance=1._real64;cfg%numerical%transaction%max_retries=20
+        cfg%numerical%transaction%mass_tolerance=hard_mass_gate;cfg%numerical%transaction%retry_scale=.5_real64
+        cfg%numerical%max_committed_substeps=100000
+        call app%initialize(cfg,status);call require(status==FMR_APP_BOOT_OK,'two column initialize')
+        call app%run_standalone(0._real64,1.e-8_real64,both,status)
+        call require(status==FMR_APP_BOOT_OK.and.size(both)==2,'two column execute')
+        do tile=1,2
+          call require(both(tile)%committed.and.abs(both(tile)%mass%residual)<=hard_mass_gate,'two column mass')
+          call run(p,cfg%tiles(tile)%base_forcing,initial,0._real64,1.e-8_real64,out,obs,again)
+          call app%copy_committed_for_crop(tile,one,status)
+          call require(status==FMR_APP_BOOT_OK,'two column snapshot')
+          call one%snapshot(physical,ok);call require(ok,'two column physical snapshot')
+          select type(s=>physical)
+          type is(fmr_b110_physical_state_t)
+            call require(all(s%pressure_head==again%pressure_head),'two-column isolated exact pressure')
+            call require(all(s%water_content==again%water_content),'two-column isolated exact storage')
+          class default
+            error stop 'wrong two-column snapshot'
+          end select
+        end do
+        call app%close(status);call require(status==FMR_APP_BOOT_OK,'two column shutdown')
+      end block
     end if
   end do
   end do
@@ -79,6 +126,17 @@
   end do
   end do
   end do
-  call require(case_count==256.and.policy_count>0.and.rejected_count==48,'complete physical matrix')
+  call require(case_count==128.and.policy_count>0.and.rejected_count==48,'complete physical matrix')
+  do air=1,2
+  do separate=0,1
+  do signum=-1,1,2
+    call configure_case(p,f,initial,air,signum,separate,0)
+    call run(p,f,initial,0._real64,duration,out,obs,final)
+    call require(out%committed.and.obs%frost_divdra%available,'original single-level runtime preserved')
+    call require(.not.obs%frost_multilevel_divdra%available,'no hidden multilevel activation')
+    call require(abs(out%mass%residual)<=hard_mass_gate,'original single-level hard mass')
+  end do
+  end do
+  end do
   print '(A,I0)','NET01_POLICY_CASES=',policy_count
   print '(A)','NET01_ACTUAL_RUNTIME=PASS'

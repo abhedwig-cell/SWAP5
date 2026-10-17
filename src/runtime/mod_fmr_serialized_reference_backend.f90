@@ -179,6 +179,7 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_frost_response_drainage_configuration_valid
   public :: fmr_b110_certified_candidate_layout_matches
   public :: fmr_frost_divdra_configuration_valid, fmr_frost_divdra_forcing_valid
+  public :: fmr_frost_divdra_pair_valid
 
   integer, parameter, public :: B110_SWBOTB2_OK = 0
   real(real64), parameter :: FMR_PRACTICAL_RICHARDS_A2C_TOL = 1.0e-8_real64
@@ -1037,6 +1038,19 @@ contains
     if(any(forcing%subsurface_irrigation_source/=0.0_real64).or.any(forcing%root_extraction_sink/=0.0_real64))return
     ok=.true.
   end function fmr_frost_divdra_forcing_valid
+
+  pure logical function fmr_frost_divdra_pair_valid(parameters,forcing) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    type(fmr_b110_physical_forcing_t),intent(in)::forcing
+    ok=.false.
+    if(.not.fmr_frost_divdra_configuration_valid(parameters))return
+    if(.not.fmr_frost_divdra_forcing_valid(parameters%frost_divdra_active,forcing))return
+    if(allocated(parameters%frost_divdra_levels).neqv.allocated(forcing%frost_divdra_scalars_cm_per_day))return
+    if(allocated(parameters%frost_divdra_levels))then
+      if(size(parameters%frost_divdra_levels)/=size(forcing%frost_divdra_scalars_cm_per_day))return
+    end if
+    ok=.true.
+  end function fmr_frost_divdra_pair_valid
 
   pure logical function fmr_frost_response_drainage_configuration_valid(parameters) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::parameters
@@ -2464,7 +2478,7 @@ contains
         return
       end if
     end if
-    if(.not.fmr_frost_divdra_forcing_valid(parameters%frost_divdra_active,forcing))then
+    if(.not.fmr_frost_divdra_pair_valid(parameters,forcing))then
       call reject_backend_trial(result,candidate,diagnostics)
       return
     end if
