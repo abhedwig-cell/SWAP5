@@ -32,7 +32,7 @@ module mod_swap_daily_weather_file_adapter
     procedure :: same_source => record_same_source
     procedure :: source_identity => record_source_identity
   end type
-  public :: read_swap_daily_weather_file, swap_weather_calendar_day
+  public :: read_swap_daily_weather_file, swap_weather_calendar_day, swap_weather_calendar_year
 contains
   subroutine record_source_identity(self,bytes,day,available)
     class(swap_daily_weather_record_t),intent(in)::self
@@ -197,6 +197,22 @@ contains
     if(day<1.or.day>lengths(month)) return
     y=year-1
     ordinal=365*y+y/4-y/100+y/400+sum(lengths(:month-1))+day
+  end function
+  pure integer function swap_weather_calendar_year(ordinal) result(year)
+    integer,intent(in)::ordinal
+    integer::lo,hi,mid
+    year=0
+    if(ordinal<1.or.ordinal>swap_weather_calendar_day(9999,12,31))return
+    lo=1;hi=9999
+    do while(lo<hi)
+      mid=(lo+hi+1)/2
+      if(swap_weather_calendar_day(mid,1,1)<=ordinal)then
+        lo=mid
+      else
+        hi=mid-1
+      end if
+    end do
+    year=lo
   end function
   logical function record_ready(self) result(ok)
     class(swap_daily_weather_record_t),intent(in)::self

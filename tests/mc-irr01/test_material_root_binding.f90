@@ -20,7 +20,7 @@ program material_root_binding
  call initialize_b110_default_mvg_parameters(material,cof);original=material
  dz=[5._real64,10._real64,15._real64];view%active_nodes=3
  allocate(view%water_content(3));cases=0
- do j=0,3
+ do j=0,5
  hfc=-real(j,real64)*100._real64
  do k=1,60
  rd=real(k,real64)*.5_real64

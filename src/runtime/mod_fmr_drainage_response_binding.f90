@@ -24,9 +24,12 @@ module mod_fmr_drainage_response_binding
        extended_drainage_result_t, extended_drainage_diagnostics_t, evaluate_extended_drainage_exchange, EXT_DRAIN_OK
   use mod_drainage_multilevel_aggregation, only: drainage_level_exchange_t, drainage_multilevel_aggregate_t, &
        drainage_multilevel_diagnostics_t, aggregate_drainage_levels, DRAINAGE_AGGREGATION_OK
+  use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &
+       dramet3_level_result_t, evaluate_dramet3_level, valid_dramet3_parameters, DRAMET3_OK
   implicit none
   private
 
+  integer, parameter, public :: FMR_DRAIN_VARIANT_DRAMET3 = 10
   integer, parameter, public :: FMR_DRAIN_VARIANT_LINEAR = 1
   integer, parameter, public :: FMR_DRAIN_VARIANT_TABULATED = 2
   integer, parameter, public :: FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS1 = 3
@@ -51,6 +54,8 @@ module mod_fmr_drainage_response_binding
   ! registry, not in persistent column state.
   type, public :: fmr_drainage_response_level_parameters_t
     integer :: variant = 0
+    type(dramet3_level_parameters_t) :: dramet3
+    type(dramet3_channel_control_t) :: dramet3_channel
     type(drainage_linear_parameters_t) :: linear
     type(drainage_tabulated_parameters_t) :: tabulated
     type(drainage_hooghoudt_ipos1_parameters_t) :: hooghoudt_ipos1
@@ -76,6 +81,7 @@ module mod_fmr_drainage_response_binding
     integer :: level_index = 0
     integer :: variant = 0
     integer :: binding_status = FMR_DRAIN_BIND_INVALID_CONFIGURATION
+    type(dramet3_level_result_t) :: dramet3
     integer :: process_status = -1
     logical :: flux_defined = .false.
     real(real64) :: signed_soil_to_drain_rate = 0.0_real64
@@ -113,6 +119,10 @@ contains
 
     do i = 1, size(parameters)
       select case (parameters(i)%variant)
+      case (FMR_DRAIN_VARIANT_DRAMET3)
+        if (controls(i)%drain_head_supplied.or.controls(i)%resolved_surface_water_head_supplied) return
+        if (.not.valid_dramet3_parameters(parameters(i)%dramet3)) return
+        if (.not.parameters(i)%dramet3_channel%ready()) return
       case (FMR_DRAIN_VARIANT_LINEAR, FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW)
         if (.not. controls(i)%drain_head_supplied .or. .not. ieee_is_finite(controls(i)%drain_head)) return
         if (controls(i)%resolved_surface_water_head_supplied) return
@@ -139,12 +149,13 @@ contains
     valid = fmr_drainage_response_configuration_status(parameters, controls, active_nodes) == FMR_DRAIN_BIND_OK
   end function fmr_drainage_response_configuration_valid
 
-  subroutine evaluate_fmr_drainage_response_bottom_lumped(parameters, controls, hydraulic_view, qdra, diagnostics)
+  subroutine evaluate_fmr_drainage_response_bottom_lumped(parameters, controls, hydraulic_view, qdra, diagnostics, substep_t1)
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters(:)
     type(fmr_drainage_response_level_control_t), intent(in) :: controls(:)
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(out) :: qdra(:,:)
     type(fmr_drainage_response_diagnostics_t), intent(out) :: diagnostics
+    real(real64), intent(in), optional :: substep_t1
 
     type(drainage_level_exchange_t), allocatable :: exchanges(:)
     logical :: view_ok
@@ -170,7 +181,7 @@ contains
 
     allocate(exchanges(size(parameters)), diagnostics%level(size(parameters)))
     do i = 1, size(parameters)
-      call evaluate_one_level(i, parameters(i), controls(i), hydraulic_view, exchanges(i), diagnostics%level(i), status)
+      call evaluate_one_level(i, parameters(i), controls(i), hydraulic_view, exchanges(i), diagnostics%level(i), status, substep_t1)
       if (status /= FMR_DRAIN_BIND_OK) then
         diagnostics%status = status
         qdra = 0.0_real64
@@ -195,7 +206,7 @@ contains
     diagnostics%evaluated = .true.
   end subroutine evaluate_fmr_drainage_response_bottom_lumped
 
-  subroutine evaluate_one_level(level_index, parameters, control, hydraulic_view, exchange, diagnostic, status)
+  subroutine evaluate_one_level(level_index, parameters, control, hydraulic_view, exchange, diagnostic, status, substep_t1)
     integer, intent(in) :: level_index
     type(fmr_drainage_response_level_parameters_t), intent(in) :: parameters
     type(fmr_drainage_response_level_control_t), intent(in) :: control
@@ -203,6 +214,7 @@ contains
     type(drainage_level_exchange_t), intent(out) :: exchange
     type(fmr_drainage_response_level_diagnostics_t), intent(out) :: diagnostic
     integer, intent(out) :: status
+    real(real64), intent(in), optional :: substep_t1
 
     type(drainage_control_t) :: linear_control
     type(drainage_transfer_t) :: linear_result
@@ -229,6 +241,13 @@ contains
     status = FMR_DRAIN_BIND_PROCESS_REJECTED
 
     select case (parameters%variant)
+    case (FMR_DRAIN_VARIANT_DRAMET3)
+      if (.not.present(substep_t1)) return
+      call evaluate_dramet3_level(parameters%dramet3,parameters%dramet3_channel, &
+           hydraulic_view%groundwater_level,substep_t1,diagnostic%dramet3)
+      diagnostic%process_status=diagnostic%dramet3%status
+      if (.not.diagnostic%dramet3%available.or.diagnostic%process_status/=DRAMET3_OK) return
+      call bind_result(diagnostic%dramet3%signed_exchange_cm_per_day,.false.,0.0_real64,.false.)
     case (FMR_DRAIN_VARIANT_LINEAR)
       linear_control%drain_head = control%drain_head
       call evaluate_single_level_linear_drainage(parameters%linear, hydraulic_view, linear_control, linear_result, linear_diag)

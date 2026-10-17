@@ -12,6 +12,8 @@ module mod_scheduled_irrigation_management_policy
   type, public :: irrigation_management_policy_parameters_t
     integer :: timing_criterion = 2
     integer :: depth_criterion = 1
+    logical :: fixed_interval_enabled = .false.
+    integer :: fixed_interval_days = 1
     integer :: tcs2_knot_count = 0
     real(real64) :: tcs2_dvs(IRR_MGMT_MAX_KNOTS) = 0.0_real64
     real(real64) :: tcs2_fraction(IRR_MGMT_MAX_KNOTS) = 0.0_real64
@@ -57,7 +59,7 @@ module mod_scheduled_irrigation_management_policy
   end type irrigation_management_policy_result_t
 
   public :: evaluate_irrigation_management_policy
-  public :: evaluate_irrigation_management_depth
+  public :: evaluate_irrigation_management_depth, apply_irrigation_minimum_interval
 
 contains
 
@@ -83,6 +85,12 @@ contains
     ! particular, never increment an invalid/overflowing integer counter.
     if (parameters%timing_criterion==6) then
       if (committed_state%weekly_day_counter>6.and.committed_state%weekly_day_counter/=366) then
+        status=IRR_MGMT_INVALID_REQUEST
+        return
+      end if
+    end if
+    if (parameters%fixed_interval_enabled) then
+      if (committed_state%weekly_day_counter>366) then
         status=IRR_MGMT_INVALID_REQUEST
         return
       end if
@@ -124,11 +132,40 @@ contains
       return
     end select
 
+    if(parameters%fixed_interval_enabled)then
+      call apply_irrigation_minimum_interval(parameters,committed_state,result%trigger,candidate_state,status)
+      if(status/=IRR_MGMT_OK)return
+    end if
     if (.not. result%trigger) return
 
     call evaluate_irrigation_management_depth(parameters,request,result,status)
 
   end subroutine evaluate_irrigation_management_policy
+
+  ! Shared B1.11 DAYFIX filter. The caller supplies an eligible selection only;
+  ! acceptance remains the existing transaction owner's responsibility.
+  pure subroutine apply_irrigation_minimum_interval(parameters,committed,trigger,candidate,status)
+    type(irrigation_management_policy_parameters_t),intent(in)::parameters
+    type(irrigation_management_policy_state_t),intent(in)::committed
+    logical,intent(inout)::trigger
+    type(irrigation_management_policy_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    candidate=committed;status=IRR_MGMT_OK
+    if(.not.parameters%fixed_interval_enabled)return
+    if(parameters%timing_criterion==6.or.parameters%fixed_interval_days<1.or.parameters%fixed_interval_days>366)then
+      status=IRR_MGMT_INVALID_PARAMETERS;return
+    end if
+    if(committed%weekly_day_counter<0.or.committed%weekly_day_counter>366)then
+      status=IRR_MGMT_INVALID_REQUEST;return
+    end if
+    if(trigger.and.committed%weekly_day_counter>=parameters%fixed_interval_days)then
+      candidate%weekly_day_counter=1
+    else
+      trigger=.false.
+      if(committed%weekly_day_counter<parameters%fixed_interval_days) &
+        candidate%weekly_day_counter=committed%weekly_day_counter+1
+    end if
+  end subroutine
 
   ! Shared source DCS1/DCS2 plus DCSLIM stage. Timing and salinity remain
   ! separate stages, so sensor and root triggers use the same depth authority.
@@ -163,7 +200,7 @@ contains
       result%selected_depth_cm = max(0.0_real64, request%field_capacity_deficit_cm + 0.1_real64*adjustment-rain_reduction)
     case (2)
       call afgen(parameters%dcs2_dvs, parameters%dcs2_depth_cm, parameters%dcs2_knot_count, request%dvs, fixed_depth, ok)
-      if (.not. ok .or. fixed_depth <= 0.0_real64) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
+      if (.not. ok .or. fixed_depth < 0.0_real64) then; status=IRR_MGMT_INVALID_PARAMETERS; return; end if
       result%selected_depth_cm = fixed_depth
     case default
       status = IRR_MGMT_INVALID_PARAMETERS
@@ -197,6 +234,10 @@ contains
   pure logical function valid_parameters(parameters)
     type(irrigation_management_policy_parameters_t), intent(in) :: parameters
     valid_parameters = .false.
+    if (parameters%fixed_interval_enabled) then
+      if(parameters%timing_criterion==6)return
+      if(parameters%fixed_interval_days<1.or.parameters%fixed_interval_days>366)return
+    end if
     select case(parameters%timing_criterion)
     case(2)
       if (.not. valid_table(parameters%tcs2_dvs,parameters%tcs2_fraction,parameters%tcs2_knot_count)) return
@@ -227,11 +268,13 @@ contains
       if (.not. valid_table(parameters%dcs1_dvs,parameters%dcs1_adjustment_mm,parameters%dcs1_knot_count)) return
       if (any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)<-100.0_real64) .or. &
           any(parameters%dcs1_adjustment_mm(1:parameters%dcs1_knot_count)>100.0_real64)) return
-      if (.not. ieee_is_finite(parameters%rainfall_threshold_cm) .or. parameters%rainfall_threshold_cm<0.0_real64 .or. &
-          parameters%rainfall_threshold_cm>1000.0_real64) return
+      ! Fortran logical evaluation need not short circuit. Reject NaN before
+      ! ordered comparisons under the retained invalid-operation trap.
+      if (.not. ieee_is_finite(parameters%rainfall_threshold_cm)) return
+      if (parameters%rainfall_threshold_cm<0.0_real64 .or. parameters%rainfall_threshold_cm>1000.0_real64) return
     case(2)
       if (.not. valid_table(parameters%dcs2_dvs,parameters%dcs2_depth_cm,parameters%dcs2_knot_count)) return
-      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<=0.0_real64)) return
+      if (any(parameters%dcs2_depth_cm(1:parameters%dcs2_knot_count)<0.0_real64)) return
     case default
       return
     end select
@@ -248,7 +291,8 @@ contains
     integer,intent(in)::n
     integer::i
     valid_table=.false.
-    if(n<2 .or. n>IRR_MGMT_MAX_KNOTS)return
+    ! A one-knot AFGEN table is source-valid and constant.
+    if(n<1 .or. n>IRR_MGMT_MAX_KNOTS)return
     do i=1,n
       if(.not.ieee_is_finite(knots(i)) .or. .not.ieee_is_finite(values(i)))return
       if(knots(i)<0.0_real64 .or. knots(i)>2.0_real64)return
@@ -272,7 +316,7 @@ contains
     if(x>=knots(n))then; value=values(n); ok=.true.; return; end if
     do i=2,n
       if(x<=knots(i))then
-        f=(x-knots(i-1))/(knots(i)-knots(i-1)); value=values(i-1)+f*(values(i)-values(i-1)); ok=.true.; return
+        f=(values(i)-values(i-1))/(knots(i)-knots(i-1)); value=values(i-1)+(x-knots(i-1))*f; ok=.true.; return
       end if
     end do
   end subroutine afgen

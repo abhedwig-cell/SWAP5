@@ -1,6 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${1:-}" == --drain-dramet3-owner-only ]]; then
+  cd "$(dirname "$0")/../.."
+  python3 -B tests/fmig431/verify_dramet3_successor.py
+  exit $?
+fi
+if [[ "${1:-}" == --drain-dislayer-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/verify_dislayer_successor.py
+  echo 'FCI_DRAIN_DISLAYER_OWNER=PASS'
+  exit 0
+fi
+
+# Separate infiltration owner only; no broad numerical execution.
+if [[ "${1:-}" == --drain-inf-owner-only ]]; then
+  cd "$(cd "$(dirname "$0")/../.." && pwd)"
+  python3 -B tests/fmig431/verify_inf_split_successor.py
+  echo 'FCI_DRAIN_INF_SPLIT_OWNER=PASS'
+  exit 0
+fi
+
 # Current full TCS6 owner, selected by exact science/postimages, with immutable
 # incumbent proof and fresh native application preservation. No full-FCI claim.
 if [[ "${1:-}" == --mc-irr01-owner-only ]] && [[ -f "$(dirname "$0")/../mc-irr01/verify_tcs6_successor.py" ]]; then
@@ -732,6 +752,11 @@ if [[ "${1:-}" == --mc-irr01-owner-only ]]; then
 fi
 
 check_b19_micro_root_recomposition() {
+  if [[ -f tests/fmig431/verify_dislayer_successor.py ]]; then
+    python3 -B tests/fmig431/verify_dislayer_successor.py
+    echo 'FCI_B19_DISLAYER_CURRENT_OWNER_RECONCILIATION=PASS'
+    return 0
+  fi
   local ppa_weather_guard_changed=0
   local crop_positive_window_changed=0
   local crop_event_constructor_changed=0
@@ -764,6 +789,9 @@ check_b19_micro_root_recomposition() {
   local candidate_path
   while IFS= read -r candidate_path; do
     case "$candidate_path" in
+      src/process/mod_frost_divdra_drainage_effect.f90|src/process/mod_drainage_b19_separate_infiltration_adapter.f90|src/runtime/mod_fmr_divdra_separate_infiltration_binding.f90|src/runtime/mod_fmr_divdra_serialized_composition.f90|src/runtime/mod_fmr_divdra_serialized_runtime.f90 )
+        python3 -B tests/fmig431/verify_inf_split_successor.py || fail 'unqualified shared separate-infiltration successor'
+        ;;
       src/runtime/mod_canonical_contracts.f90|src/runtime/mod_canonical_interval_runtime.f90 )
         (( joint_exact_successor )) || fail "unqualified numerical successor: $candidate_path"
         ;;

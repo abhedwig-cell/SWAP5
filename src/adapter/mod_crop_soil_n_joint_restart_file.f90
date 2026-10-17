@@ -438,11 +438,22 @@ contains
     ok=.false.
     if(.not.allocated(c%tiles))return
     if(size(c%tiles)/=1)return
-    ! Reuse the currently admitted weather/material-root profile only.
-    if(.not.c%file_weather_irrigation.or..not.c%file_weather_rooted.or.c%file_weather_root_depth_mode/=2)return
+    ! Reuse the existing managed profiles; selector admission stays with
+    ! the bootstrap. The payload/CRC and parameter/source bindings are shared.
+    if(.not.c%file_weather_irrigation)return
+    if(c%file_weather_rooted)then
+      if(c%file_weather_root_depth_mode/=2)return
+    else
+      if(c%file_weather_irrigation_sensor%timing_criterion<7.or. &
+         c%file_weather_irrigation_depth%depth_criterion/=2)return
+    end if
     if(c%file_weather_co2_response.or.c%file_weather_daily_demand.or.c%file_weather_swrain/=0)return
     if(c%explicit_pmdirect_interception.or.c%base_salt_temporal_policy%enabled)return
-    if(c%file_weather_irrigation_sensor%timing_criterion/=6)return
+    select case(c%file_weather_irrigation_sensor%timing_criterion)
+    case(2:4,6:8)
+    case default
+      return
+    end select
     if(c%tiles(1)%parameters%bottom_mode/=7)return
     if(c%tiles(1)%template%solute_state_layout_id/=0_int64)return
     ok=.true.
@@ -539,9 +550,37 @@ contains
       c%file_weather_swrd2_parameters,c%file_weather_root_parameters, &
       c%file_weather_latitude,c%file_weather_emergence_dry_weight,c%file_weather_maximum_root_depth_cm, &
       c%file_weather_stem_area_coefficient,c%file_weather_storage_area_coefficient, &
-      c%file_weather_irrigation_sensor,c%file_weather_irrigation_depth,c%file_weather_irrigation_field_capacity_head_cm, &
+      c%file_weather_irrigation_sensor, &
+      c%file_weather_irrigation_depth%timing_criterion,c%file_weather_irrigation_depth%depth_criterion, &
+      c%file_weather_irrigation_depth%tcs2_knot_count,c%file_weather_irrigation_depth%tcs2_dvs, &
+      c%file_weather_irrigation_depth%tcs2_fraction,c%file_weather_irrigation_depth%tcs3_knot_count, &
+      c%file_weather_irrigation_depth%tcs3_dvs,c%file_weather_irrigation_depth%tcs3_fraction, &
+      c%file_weather_irrigation_depth%tcs4_knot_count,c%file_weather_irrigation_depth%tcs4_dvs, &
+      c%file_weather_irrigation_depth%tcs4_depletion_mm,c%file_weather_irrigation_depth%tcs6_threshold_mm, &
+      c%file_weather_irrigation_depth%dcs1_knot_count,c%file_weather_irrigation_depth%dcs1_dvs, &
+      c%file_weather_irrigation_depth%dcs1_adjustment_mm,c%file_weather_irrigation_depth%dcs2_knot_count, &
+      c%file_weather_irrigation_depth%dcs2_dvs,c%file_weather_irrigation_depth%dcs2_depth_cm, &
+      c%file_weather_irrigation_depth%rainfall_threshold_cm,c%file_weather_irrigation_depth%depth_limit_enabled, &
+      c%file_weather_irrigation_depth%minimum_depth_cm,c%file_weather_irrigation_depth%maximum_depth_cm, &
+      c%file_weather_irrigation_field_capacity_head_cm, &
       p%active_nodes,p%z,p%dz,p%node_distance,p%cofgen,p%soil_temperature_active
     if(io/=0)then;close(scratch);return;end if
+    ! Keep the original native byte contract exactly for disabled TCSFIX.
+    ! Bind enabled options as an extension within this existing config block.
+    ! The expected config is caller-owned; mismatched extension/domain fails
+    ! before any reconstructed owner is published. No second codec or tag.
+    if(c%file_weather_irrigation_depth%fixed_interval_enabled)then
+      write(scratch,iostat=io)'TCSFIX01',c%file_weather_irrigation_depth%fixed_interval_days
+      if(io/=0)then;close(scratch);return;end if
+    end if
+    if(c%file_weather_irrigation_historical_activation)then
+      write(scratch,iostat=io)'IRRWIN01',c%file_weather_irrigation_schedule_enabled, &
+        c%file_weather_irrigation_startirr,c%file_weather_irrigation_endirr
+      if(io/=0)then;close(scratch);return;end if
+      call c%file_weather_irrigation_crop_calendar%snapshot_periods(x,y,ok)
+      write(scratch,iostat=io)ok,size(x),x,y
+      if(io/=0)then;close(scratch);return;end if
+    end if
     call c%file_weather_root_depth%snapshot_values(x,y,ok)
     write(scratch,iostat=io)ok,size(x),x,y
     if(io/=0)then;close(scratch);return;end if

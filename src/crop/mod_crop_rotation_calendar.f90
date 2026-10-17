@@ -13,6 +13,7 @@ module mod_crop_rotation_calendar
     procedure :: ready => calendar_ready
     procedure :: select_at => calendar_select
     procedure :: size => calendar_size
+    procedure :: snapshot_periods => calendar_snapshot_periods
   end type
   public :: initialize_crop_calendar
 contains
@@ -36,6 +37,19 @@ contains
     calendar%starts=starts
     calendar%ends=ends
     status=CROP_CAL_OK
+  end subroutine
+  ! Immutable plan view for existing application consumers. No calendar state
+  ! is created or advanced by copying configured period bounds.
+  subroutine calendar_snapshot_periods(self,starts,ends,available)
+    class(crop_calendar_t),intent(in)::self
+    real(real64),allocatable,intent(out)::starts(:),ends(:)
+    logical,intent(out)::available
+    available=self%ready()
+    if(.not.available)then
+      allocate(starts(0),ends(0))
+      return
+    end if
+    starts=self%starts;ends=self%ends
   end subroutine
   logical function calendar_ready(self)
     class(crop_calendar_t), intent(in) :: self

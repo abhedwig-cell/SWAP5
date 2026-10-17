@@ -11,57 +11,83 @@ def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(b):return hashlib.sha256(b).hexdigest()
 def verify_execution_inventory(name,files,result):
-  """Fail closed when stored endpoints are not backed by executed native commands."""
+  """Bind required executions to unique checked builds and their raw streams.
+
+  Combine the independent 17 October review with the chat repair. Provider
+  counts follow the sealed source inventory, not a historical closure size.
+  """
+  from collections import Counter
   events=json.loads(files[name+'/events.json']) if name in ('small','joint') else result['events']
   require(isinstance(events,list) and bool(events),'missing execution inventory '+name)
-  observed=set()
-  native=[]
-  compiled=set()
+  drivers={
+   'small':{'test_b112_retained_split':1,'test_b112_retained_day':1},
+   'joint':{'test_crop_soil_day':1,'test_crop_soil_joint':24,'test_reactive_joint':12,
+            'test_mineral_joint':12,'test_reproductive_joint':8,'test_b111_request_day':1,
+            'test_b111_reproductive_day':1,'test_b112_retained_joint':21},
+   'phases':{'original_thermal':4,'test_b112_retained_thermal':2,'test_b112_retained_empty':1}}
+  observed=set();compiled={};objects={};linked={};native=[]
   for e in events:
-   command=e['command']
-   require(isinstance(command,list) and all(isinstance(x,str) for x in command) and command,'invalid command')
-   signature=tuple(command)
-   require(signature not in observed,'duplicate execution command '+name)
-   observed.add(signature)
+   command=e['command'];category=e['category']
+   require(isinstance(command,list) and command and all(isinstance(x,str) for x in command),'invalid command')
+   require(category in ('compile','provider_compile','driver_compile','link','native'),'unknown execution category')
+   require(tuple(command) not in observed,'duplicate execution command '+name);observed.add(tuple(command))
    require(e['returncode']==0,'failed executed command '+name)
-   if e['category'] in ('compile','provider_compile','driver_compile'):
-    require('-c' in command and '-o' in command,'invalid compilation record')
-    source=command[command.index('-c')+1]
-    build_group=next((opt for opt in ('O0','O2') if any('/'+opt+'/' in x for x in command)),None)
-    require(build_group is not None,'unidentified compilation optimization')
-    key=(build_group,source)
-    require(key not in compiled,'duplicate compilation')
-    compiled.add(key)
-    require(any(x in command for x in ('-fcheck=all','-fcheck=bounds')),'missing runtime bounds checks')
-    require(any(x.startswith('-ffpe-trap=') and all(y in x for y in ('invalid','zero','overflow')) for x in command),'missing IEEE traps')
-   if e['category']=='native':
-    native.append(command)
-    require('stdout' in e and 'stderr' in e,'unrecorded native output')
-    for stream in ('stdout','stderr'):
-     require(name+'/'+e[stream] in files,'missing executed stream '+name)
+   for stream in ('stdout','stderr'):
+    path=name+'/'+e.get(stream+'_file',e.get(stream,''))
+    require(path in files,'missing executed stream '+name)
+    if stream+'_sha256' in e:require(sha(files[path])==e[stream+'_sha256'],'raw science integrity')
+   if category=='native':
+    require(command[0] in linked,'native without preceding link '+command[0])
+    native.append((command,e));continue
+   require('-o' in command,'missing build output')
+   output=command[command.index('-o')+1]
+   opts=[opt for opt in ('O0','O2') if '/'+opt+'/' in output]
+   require(len(opts)==1,'unidentified build optimization');opt=opts[0]
+   require('-'+opt in command and not any('-'+other in command for other in ('O0','O1','O2','O3','Ofast') if other!=opt),'mismatched build optimization')
+   require('-fcheck=all' in command,'missing runtime checks')
+   require('-ffpe-trap=invalid,zero,overflow' in command,'missing IEEE traps')
+   if category!='link':
+    require('-c' in command,'invalid compilation record')
+    source=command[command.index('-c')+1];key=(opt,source)
+    require(key not in compiled and output not in objects,'duplicate compilation')
+    compiled[key]=e;objects[output]=e
+   else:
+    require(output not in linked,'duplicate link')
+    inputs=[x for x in command if x.endswith('.o')]
+    require(inputs and len(set(inputs))==len(inputs),'invalid link objects')
+    if name!='phases':require(all(x in objects for x in inputs),'link without compiled object')
+    linked[output]=e
   require(native,'no native programs executed '+name)
   for opt in ('O0','O2'):
-   selected=[c for c in native if any('/'+opt+'/' in x for x in c)]
-   require(selected,'missing native optimization '+name+':'+opt)
-   if name=='small':
-    expected={'test_b112_retained_split','test_b112_retained_day'}
-    require({Path(c[0]).name for c in selected}==expected,'incomplete small native matrix')
-    require(len(selected)==len(expected),'missing/duplicated small programs')
-   elif name=='joint':
-    matched=[c for c in selected if Path(c[0]).name=='test_b112_retained_joint']
-    require(any(len(c)>1 and c[1]=='write' for c in matched),'missing joint write')
-    require(any(len(c)>1 and c[1]=='resume' for c in matched),'missing joint restart')
-    seen_reject={c[4] for c in matched if len(c)>4 and c[1]=='reject'}
-    require(seen_reject=={'absent','old-profile','legacy','wrong-return','wrong-dvsnlt','wrong-dvsnt','wrong-nfixf','wrong-fntrt'},'missing named configuration rejects')
-    require(sum(len(c)>1 and c[1]=='reject' and len(c)==4 for c in matched)==11,'missing decoder negatives')
-   elif name=='phases':
-    names={Path(c[0]).name for c in selected}
-    require(names=={'original_thermal','test_b112_retained_thermal','test_b112_retained_empty'},'missing phase native drivers')
-    require(sum(Path(c[0]).name=='test_b112_retained_empty' for c in selected)==1,'missing empty phase')
+   selected=[(c,e) for c,e in native if '/'+opt+'/' in c[0]]
+   require(Counter(Path(c[0]).name for c,e in selected)==drivers[name],'incomplete native matrix '+name+' '+opt)
+   sources=result.get('input_sha256',result.get('inputs',{}))
+   for path in sources:
+    if path.startswith('src/') and path.endswith('.f90'):
+     matches=[e for (o,source),e in compiled.items() if o==opt and source.endswith('/'+path)]
+     # Phases inherit the already executed joint build, bound below by digest.
+     if name!='phases':require(len(matches)==1,'missing actual provider '+opt+' '+path)
+   for prog in drivers[name]:
+    require(sum(o==opt and Path(source).stem==prog for o,source in compiled)==1,'missing driver compilation '+prog+' '+opt)
+   if name=='joint':
+    matched=[(c,e) for c,e in selected if Path(c[0]).name=='test_b112_retained_joint']
+    row=result['b112_retained'][opt]
+    for action,key in (('write','joint_stdout'),('resume','fresh_stdout')):
+     matches=[e for c,e in matched if len(c)==4 and c[1]==action]
+     require(len(matches)==1,'missing joint '+action)
+     require(files[name+'/'+matches[0]['stdout_file']].decode()==row[key],'joint raw result '+action)
+    expected_profiles={'absent','old-profile','legacy','wrong-return','wrong-dvsnlt','wrong-dvsnt','wrong-nfixf','wrong-fntrt'}
+    require(set(row['profile_negatives'])==expected_profiles and len(row['profile_negatives'])==8,'invalid profile inventory')
+    require(Counter(c[4] for c,e in matched if len(c)==5 and c[1]=='reject')==Counter({x:1 for x in expected_profiles}),'missing named configuration rejects')
+    expected_decoders={'retained_N_nan','retained_N_orphan','retained_DM_negative','gross_mortality_negative','owner_profile_marker_missing','owner_envelope_size','old_native_tag','unsupported_native_tag','crc','truncated','trailing'}
+    require(set(row['decoder_negatives'])==expected_decoders and len(row['decoder_negatives'])==11,'invalid decoder inventory')
+    require(Counter(Path(c[2]).name for c,e in matched if len(c)==4 and c[1]=='reject')==Counter({'b112-invalid-'+x+'.bin':1 for x in expected_decoders}),'missing named decoder rejects')
+   if name=='phases':
     for prog,profiles in [('original_thermal',('manual','calendar')),('test_b112_retained_thermal',('selected',))]:
      for profile in profiles:
       for action in ('write','resume'):
-       require(sum(Path(c[0]).name==prog and len(c)>4 and c[1]==action and c[4]==profile for c in selected)==1,'missing phase '+prog+' '+profile+' '+action)
+       require(sum(Path(c[0]).name==prog and len(c)==5 and c[1]==action and c[4]==profile for c,e in selected)==1,'missing phase '+prog+' '+profile+' '+action)
+  if name=='phases':require(result['provider_result_sha256']==sha(files['joint/result.json']),'unbound reused phase providers')
 
 def verify(p,files,reader=lambda path:(ROOT/path).read_bytes()):
  require(p['baseline']==BASE and p['qualified']is True,'unqualified retained profile')

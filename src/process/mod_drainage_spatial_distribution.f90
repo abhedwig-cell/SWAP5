@@ -66,12 +66,13 @@ module mod_drainage_spatial_distribution
 
 contains
 
-  subroutine distribute_single_level_positive_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+  subroutine distribute_single_level_positive_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics, preclosure_transfer)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(in) :: scalar_transfer
     type(drainage_node_transfer_t), intent(out) :: node_transfer
     type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:)
 
     real(real64), allocatable :: khor(:), kver(:)
     real(real64) :: wlev, dz_top_sat, kd_hor, kd_ver, saturated_depth
@@ -214,14 +215,19 @@ contains
     diagnostics%profile_anisotropy_factor = fac_aniso
     diagnostics%discharge_layer_bottom_depth = discharge_bottom
     diagnostics%discharge_transmissivity = kd_drain
+    if(present(preclosure_transfer))then
+      preclosure_transfer=node_transfer%soil_to_drain_rate
+      if(bottom_node/=wt_node)preclosure_transfer(bottom_node)=raw_bottom
+    end if
   end subroutine distribute_single_level_positive_divdra
 
   subroutine distribute_multilevel_signed_divdra(level_parameters, hydraulic_view, scalar_transfer, &
-       drainage_flux_by_level, diagnostics)
+       drainage_flux_by_level, diagnostics, preclosure_transfer)
     type(drainage_distribution_parameters_t), intent(in) :: level_parameters(:)
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(in) :: scalar_transfer(:)
     real(real64), allocatable, intent(out) :: drainage_flux_by_level(:,:)
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:,:)
     type(drainage_multilevel_diagnostics_t), intent(out) :: diagnostics
 
     real(real64), allocatable :: khor(:), kver(:), dmax(:), flow_discharge(:), kd_drain(:)
@@ -276,6 +282,9 @@ contains
 
     allocate(drainage_flux_by_level(levels,n))
     drainage_flux_by_level = 0.0_real64
+    if(present(preclosure_transfer))then
+      allocate(preclosure_transfer(levels,n));preclosure_transfer=0.0_real64
+    end if
     allocate(diagnostics%discharge_layer_bottom_depth(levels), diagnostics%discharge_transmissivity(levels), &
          diagnostics%closure_correction(levels))
     diagnostics%discharge_layer_bottom_depth = 0.0_real64
@@ -407,6 +416,10 @@ contains
         drainage_flux_by_level(idr,bottom_node(idr))=scalar_transfer(idr)-sum_previous
         diagnostics%closure_correction(idr)=drainage_flux_by_level(idr,bottom_node(idr))-raw_bottom
       end if
+      if(present(preclosure_transfer))then
+        preclosure_transfer(idr,:)=drainage_flux_by_level(idr,:)
+        if(bottom_node(idr)/=wt_node)preclosure_transfer(idr,bottom_node(idr))=raw_bottom
+      end if
       diagnostics%discharge_layer_bottom_depth(idr)=bottom_depth(idr)
       diagnostics%discharge_transmissivity(idr)=kd_drain(idr)
     end do
@@ -497,22 +510,26 @@ contains
 
   ! SWDIVDINF=0 uses exactly the admitted positive conductivity weights for
   ! either direction. This adapter changes only orientation, never the law.
-  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics)
+  subroutine distribute_single_level_signed_divdra(parameters, hydraulic_view, scalar_transfer, node_transfer, diagnostics, preclosure_transfer)
     type(drainage_distribution_parameters_t), intent(in) :: parameters
     type(process_hydraulic_view_t), intent(in) :: hydraulic_view
     real(real64), intent(in) :: scalar_transfer
     type(drainage_node_transfer_t), intent(out) :: node_transfer
     type(drainage_distribution_diagnostics_t), intent(out) :: diagnostics
+    real(real64),allocatable,optional,intent(out)::preclosure_transfer(:)
 
     if (.not. ieee_is_finite(scalar_transfer)) then
       diagnostics = drainage_distribution_diagnostics_t()
       diagnostics%status = DRAIN_DIST_INVALID_TRANSFER
       return
     end if
-    call distribute_single_level_positive_divdra(parameters, hydraulic_view, abs(scalar_transfer), node_transfer, diagnostics)
+    call distribute_single_level_positive_divdra(parameters, hydraulic_view, abs(scalar_transfer), node_transfer, diagnostics, preclosure_transfer)
     if (diagnostics%status /= DRAIN_DIST_OK) return
     if (scalar_transfer < 0.0_real64) then
       node_transfer%soil_to_drain_rate = -node_transfer%soil_to_drain_rate
+      if(present(preclosure_transfer))then
+        if(allocated(preclosure_transfer))preclosure_transfer=-preclosure_transfer
+      end if
       diagnostics%raw_partition_sum = -diagnostics%raw_partition_sum
       diagnostics%closure_correction = -diagnostics%closure_correction
     end if

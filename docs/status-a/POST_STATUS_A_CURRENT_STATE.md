@@ -1,5 +1,32 @@
 # SWAP5 post-Status-A current canonical state
 
+## NET01 complete source counts2..25, 17 October 2026
+
+PR #1276 admits all24 multilevel counts at
+`719c6c67107ebf7113020e425e725731b26f73a3`; the complete merge tree equals its
+qualified tree. Both B1.11 drainage array profiles (5/25) are covered by one
+parameter/forcing limit. At O0/O2 all18,432 full-source cases and1,536 actual
+physical configurations pass, including hard1e-12 cm mass, real rejected-trial
+rollback, empty-registry restart, two-column isolation and original preservation.
+The accepted NET01 physical policy, state/restart and trial ledger are unchanged.
+[Current evidence and claim ceiling](../audits/FROST_NET01_FULL_LEVELS_20261017.md)
+close the count gap. Strict depth ordering and top discharge-layer options remain
+bounded; separate root/snow/bottom-owner coverage is unchanged. This does not
+close the entire MC-FROST01/master capability or aggregate frost migration.
+
+## Initial two/three-level NET01 admission, 17 October 2026
+
+PR #1275 admits NET01 at `5f919cbb5de933bff62e715045533a5c63faba4d`;
+the actual complete merge tree equals the qualified candidate. The explicit owner-approved absolute-rate policy
+is a SWAP5 difference, not a B1 correction. The typed two/three-level rootless
+ordinary Reference mode-2 route passes all 9,216 source cases and 128 actual
+physical configurations per optimization, hard mass, rejected-trial rollback,
+exact restart, application and column isolation, plus original B18 and ordinary
+multilevel/separate-infiltration preservation. [Contract, evidence and claim ceiling](../audits/FROST_NET01_PRODUCTION_20261017.md)
+remain controlling for that initial admission. PR #1276 above supersedes its
+two/three-level ceiling. Roots, snow and other boundary owners retain separate
+coverage; this is not a full-frost or global coverage closure.
+
 Date: 2026-10-01
 
 This page is the current development-state supplement to the frozen Status-A review authority. It does **not** retroactively expand the first colleague-review denominator fixed on 2026-09-16. It records later canonically admitted capabilities that are relevant when deciding what may be developed next.
@@ -658,3 +685,15 @@ and no full moving F-CI, highest low-air or independent RossFast rerun is claime
 ## MC-IRR01 weekly irrigation continuation (2026-10-16)
 
 The existing SW431-IRR-TCS6 closure is traced by the [weekly irrigation and joint continuation contract](../science/MC_IRR01_TCS6_CONTINUATION_20261016.md) and `integration/audits/MC_IRR01_STATUS.json`, field `tcs6_completion_20261016`. The recovery record distinguishes executed science, qualification and canonical admission. This successor uses accepted actual roots and material moisture limits, the existing weekly event owner and the existing native restart adapter. It does not change the frozen Status-A denominator or promote other irrigation profiles.
+
+## MC-IRR01 external availability continuation, 16 October 2026
+
+[External availability and joint continuation](../science/MC_IRR01_AVAIL_CONTINUATION_20261016.md) records the existing AVAIL full-capability closure contract and qualification. The MC-IRR01 recovery admission receipt identifies the exact qualified source, canonical merge and current admission status. Existing TCS6 admission remains unchanged.
+
+## Existing irrigation depth-limit closure
+
+[Minimum and maximum irrigation depth](../science/MC_IRR01_DEPTH_LIMIT_20261016.md)
+records the existing `SW431-IRR-LIMIT` source contract and qualification. Exact
+scientific, admission and master receipts are held in the existing MC-IRR01
+recovery field `limit_completion_20261016`. Other irrigation capabilities retain
+their independent admission conditions; the frozen Status-A denominator is unchanged.
