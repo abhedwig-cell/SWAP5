@@ -320,7 +320,7 @@ contains
       if (c(18)<=0.0_real64) return
     end if
     if (model>=8) then
-      if (c(19)<=0.0_real64 .or. c(18)==c(19) .or. c(21)<0.0_real64 .or. c(21)>1.0_real64) return
+      if (c(19)<=0.0_real64 .or. c(19)>=c(18) .or. c(21)<0.0_real64 .or. c(21)>1.0_real64) return
     end if
     ok=.true.
   end function
