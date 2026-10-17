@@ -2987,6 +2987,19 @@ contains
              all(parameters%cofgen(22,:) <= parameters%cofgen(9,:)) .and. &
              all(parameters%cofgen(23,:) > 0.0_real64)
       end if
+      if (allocated(parameters%linear_hydraulic_table)) then
+        ok = ok .and. parameters%tabulated_hydraulics_active .and. &
+             .not. allocated(parameters%hydraulic_model_kind) .and. &
+             .not. parameters%conductivity_power_tail_active .and. .not. parameters%pdi_vapor_active .and. &
+             .not. parameters%hysteresis_active .and. .not. parameters%soil_temperature_active .and. &
+             .not. parameters%direct_retention_active .and. .not. parameters%ksatexm_extension_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active .and. &
+             self%soil_water_selection%uses_reference() .and. parameters%swkimpl == 0
+      else
+        ok = ok .and. .not. parameters%tabulated_hydraulics_active
+      end if
       if (parameters%macropore_active) then
         ! Admission precedes configure_parameters(). Validate the immutable
         ! production config from the parameter carrier here; configure_parameters
