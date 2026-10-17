@@ -1,5 +1,17 @@
 # SWAP5 post-Status-A current canonical state
 
+## Owner-approved NET01 multilevel frost successor, 17 October 2026
+
+NET01 production qualification is complete on the existing B20 recovery branch;
+canonical admission is pending. The explicit owner-approved absolute-rate policy
+is a SWAP5 difference, not a B1 correction. The typed two/three-level rootless
+ordinary Reference mode-2 route passes all 9,216 source cases and 128 actual
+physical configurations per optimization, hard mass, rejected-trial rollback,
+exact restart, application and column isolation, plus original B18 and ordinary
+multilevel/separate-infiltration preservation. [Contract, evidence and claim ceiling](../audits/FROST_NET01_PRODUCTION_20261017.md)
+remain controlling. Other level counts, roots, snow and other boundary owners
+retain separate coverage; this is not a full-frost or global coverage closure.
+
 Date: 2026-10-01
 
 This page is the current development-state supplement to the frozen Status-A review authority. It does **not** retroactively expand the first colleague-review denominator fixed on 2026-09-16. It records later canonically admitted capabilities that are relevant when deciding what may be developed next.

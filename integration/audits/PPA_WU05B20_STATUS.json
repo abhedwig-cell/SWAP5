@@ -3,7 +3,7 @@
   "baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_head": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
   "last_reconciled_upstream": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
-  "status": "FUNCTIONALLY_CLOSED_BOUNDED_FROST_SCOPE",
+  "status": "NET01_PRODUCTION_SCIENCE_COMPLETE_ADMISSION_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -48,7 +48,89 @@
   "reference_geometry_qualified": true,
   "policy_proposal": "FROST-MULTILEVEL-NET01",
   "test_only_policy_proposal_verified": true,
-  "owner_policy_accepted": false,
+  "owner_policy_accepted": true,
+  "production_reopening_20261017": {
+    "baseline": "0747fd7c8a5e754d73fa5d981e8f5437ee4c12f3",
+    "branch": "work/frost-net01-production-20261017",
+    "owner_authority": "Explicit Ja to the concrete NET01 production-implementation and qualification decision, followed by Go and Ga door in the same frost workstream.",
+    "contract": "docs/science/FROST_NET01_PRODUCTION_CONTRACT_20261017.md",
+    "stage": "SCIENCE_COMPLETE_ADMISSION_PENDING",
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "admitted": false,
+    "next_action": "Verify sealed evidence and all incumbent owner projections, reconcile current canonical, then safe production admission.",
+    "test_selection": "Small source/component O0/O2 first; targeted actual Richards/mass/reject/restart and affected preservation next. No full FCI, RossFast or highest low-air stress selected.",
+    "persisted": true,
+    "owner_policy_accepted": true,
+    "qualified_source": "4144f9895e5b97d1506e0db68fab28e276630d76",
+    "qualification_commit": "fed4ba59b6d57f7b29d7a890685b3eee54e288b0",
+    "contract_sha256": "1d5783834e42dc996c9f41514a97eeff307e42ee3127ee7753d03db0a6268ca9",
+    "evidence": {
+      "path": "integration/audits/evidence/FROST_NET01_PRODUCTION_20261017.json.gz.b64",
+      "sha256": "c01146c363c22c148fd414366a873bc263887b9c75c81e74c5c31f1ab5549d1c",
+      "bytes": 1285234
+    },
+    "postimages": {
+      "src/process/mod_frost_multilevel_divdra_effect.f90": {
+        "status": "A",
+        "blob": "185b12b47aad188f795e16739f3d259897e8669c"
+      },
+      "src/runtime/mod_fmr_production_application_bootstrap.f90": {
+        "status": "M",
+        "blob": "be921017d95a437d0fa0e44d2d090ca35dce1277"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "blob": "24e0dc9a25b45cae8d2b23274f4e7c3fec78dce3"
+      },
+      "tests/frost/net01_runtime_body.inc": {
+        "status": "A",
+        "blob": "a1f4d69d8216124c2d3dde4045305fe1cf37a5a3"
+      },
+      "tests/frost/run_net01_component.py": {
+        "status": "A",
+        "blob": "f7cca69a78f2e89f02115cc6fb74b58bc609ae40"
+      },
+      "tests/frost/run_net01_preservation.py": {
+        "status": "A",
+        "blob": "811d43f78e4d2e6ca651639516c2672053a82f78"
+      },
+      "tests/frost/run_net01_runtime.py": {
+        "status": "A",
+        "blob": "11152b985e035e543060b0f34587dd10f6ee068e"
+      },
+      "tests/frost/seal_net01_evidence.py": {
+        "status": "A",
+        "blob": "f2511ec70b77942304099b78a9939089e8a2e1e8"
+      },
+      "tests/frost/test_net01_component.f90": {
+        "status": "A",
+        "blob": "090266f17305f73577cfbbfd10e84484b544f3f0"
+      },
+      "tests/frost/verify_net01_successor.py": {
+        "status": "A",
+        "blob": "6dc61cb934142e71529c75bcdaf38ab0381ab0fc"
+      },
+      "tests/mc-irr01/verify_sensor_batch_successor.py": {
+        "status": "M",
+        "blob": "2a5a31a7dc7a363f8d4b5efa51f124aaf5a7b972"
+      }
+    },
+    "native_counts_per_optimization": {
+      "source_matrix": 9216,
+      "invalid_nonmutation_ABA": 26,
+      "physical_configurations": 128,
+      "net_policy_configurations": 36,
+      "physical_reject_replay_restart": 8,
+      "invalid_pre_solver_and_application": 48,
+      "two_column_isolation": 8,
+      "single_level_runtime_preservation": 8,
+      "ordinary_multilevel_runtime": 24,
+      "ordinary_separate_infiltration_runtime": 48,
+      "original_B18": 4536
+    }
+  },
   "precision_adjudication": {
     "path": "docs/audits/evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz",
     "sha256": "ce69b00c117acd6892a1f19aa9a2b75a03eb14e36c71e5a6e714d5b6e34d5e38",
@@ -104,7 +186,7 @@
     "qualification_pending": false
   },
   "blockers": [],
-  "next_action": "No remaining frost migration action in this bounded tranche. Reopen mixed-sign multilevel frost/DIVDRA only with explicit scientific owner authority for a SWAP5 policy difference.",
+  "next_action": "Complete exact NET01 owner/evidence checks and safe canonical admission; all wider frost compositions retain separate coverage.",
   "publication": {
     "pr": 1080,
     "url": "https://github.com/abhedwig-cell/SWAP5/pull/1080",
@@ -120,8 +202,8 @@
     "All645 old double comparison screens remain in the sealed artifact. Independent80/100-digit exact-input geometry later resolves the comparator round-trip cancellation error, with unchanged2e-12 screen and exact fresh native source outputs. Runtime/admission and aggregate closure remain false.",
     "Test-only net proposal preserves signed net numerically but is not a proven legacy bug correction or owner-approved physical allocation; it remains outside production and reference authority."
   ],
-  "multilevel_mixed_sign_disposition": "INTENTIONALLY_NOT_MIGRATED",
-  "multilevel_mixed_sign_reason": "B1.11 native semantics are source-authentic but physically pathological near cancellation; the tested net-preserving alternative is a new physical allocation policy without source authority. Existing B19 single-level production envelope remains fail-closed outside admitted scope.",
+  "multilevel_mixed_sign_disposition": "OWNER_APPROVED_NET01_PRODUCTION_QUALIFICATION_COMPLETE_ADMISSION_PENDING",
+  "multilevel_mixed_sign_reason": "Explicit owner accepted the concrete absolute-rate policy after the historical PR1080 disposition. Current successor is qualified only within its frozen two/three-level ordinary Reference envelope.",
   "closure_classification": {
     "B19_single_level_frost_DIVDRA": "ALREADY_COVERED",
     "FROST_DIVDRA_03_reference_geometry": "QUALIFICATION_ONLY_COMPLETED_AND_ADMITTED",
