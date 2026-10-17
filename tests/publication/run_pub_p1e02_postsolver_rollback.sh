@@ -84,6 +84,12 @@ MODULE_SRC=(
   src/runtime/mod_fmr_serialized_multiswap_runtime.f90
 )
 
+# Resolve the full real module closure once, without reimplementing physics.
+# A missing/ambiguous provider or dependency cycle rejects before compilation.
+python3 tests/publication/resolve_fortran_module_closure.py "${MODULE_SRC[@]}" > "$BUILD/module_sources.txt" || fail 'Fortran module closure'
+mapfile -t MODULE_SRC < "$BUILD/module_sources.txt"
+echo "PUB_P1E02_RESOLVED_MODULE_SOURCES=${#MODULE_SRC[@]}"
+
 for opt in 0 2; do
   OUT="$BUILD/o$opt"
   objects=()
