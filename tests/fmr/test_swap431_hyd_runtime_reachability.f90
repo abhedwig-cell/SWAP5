@@ -296,6 +296,7 @@ contains
     logical :: ok
 
     call initialize_parameters(parameters,1,.false.,.false.)
+    deallocate(parameters%hydraulic_model_kind) ! table uses canonical default material selection
     call initialize_linear_table(parameters)
     call initialize_committed_state(committed,parameters,k0,ok)
     call require(ok,'linear-table committed state init')
