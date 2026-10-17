@@ -3021,8 +3021,22 @@ contains
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
            parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
-           .not. parameters%hysteresis_active .and. &
            (.not. parameters%tabulated_hydraulics_active .or. allocated(parameters%linear_hydraulic_table))
+      if (parameters%hysteresis_active) then
+        ok = ok .and. parameters%bottom_mode == 2 .and. &
+             allocated(parameters%hysteresis_parameters) .and. &
+             (parameters%hysteresis_initial_mode == 1 .or. parameters%hysteresis_initial_mode == 2) .and. &
+             .not. allocated(parameters%hydraulic_model_kind) .and. &
+             .not. parameters%tabulated_hydraulics_active .and. &
+             .not. parameters%conductivity_power_tail_active .and. &
+             .not. parameters%pdi_vapor_active .and. &
+             .not. parameters%soil_temperature_active .and. &
+             .not. parameters%frost_active .and. .not. parameters%macropore_active .and. &
+             .not. parameters%root_extraction_active .and. .not. parameters%drainage_response_active
+        if (ok) ok = parameters%hysteresis_parameters%active_nodes == parameters%active_nodes
+      else
+        ok = ok .and. .not. allocated(parameters%hysteresis_parameters)
+      end if
        if (parameters%bottom_mode == 3) then
          if (parameters%swbotb3_explicit_active) then
            ok = ok .and. ieee_is_finite(parameters%swbotb3_explicit_hdrain_cm) .and. &
