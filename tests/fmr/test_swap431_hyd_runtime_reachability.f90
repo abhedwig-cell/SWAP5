@@ -157,6 +157,12 @@ contains
     call fmr_execute_serialized_resolved_physical_column(backend,transaction_control,column,template,parameters, &
          forcing,committed,config,0.0_real64,dt,output,diagnostic,runtime,active_calls)
     observation=backend%observation()
+    if (.not. (output%completed.and.output%committed)) then
+      write(*,'(A,L1,A,L1,A,L1,A,A,A,I0,A,I0)') 'HYST_DEBUG completed=', output%completed, &
+           ' committed=', output%committed, ' admitted=', output%admitted, &
+           ' admission=', trim(output%admission_status), ' kernel=', output%kernel_status, &
+           ' solver=', output%solver_status
+    end if
     call require(output%completed.and.output%committed,'hysteresis runtime commit')
     call require(output%mass%complete,'hysteresis mass complete')
     call require(abs(output%mass%residual)<=mass_tol,'hysteresis hard mass')
