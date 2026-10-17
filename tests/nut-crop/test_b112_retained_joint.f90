@@ -19,6 +19,7 @@ program test_b112_retained_joint
  use mod_crop_soil_n_historical_project_binding,only:initialize_historical_crop_soil_owner
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
  use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t,select_soil_n_amendments,N_CALENDAR_OK
+ use mod_soil_n_amendment_input,only:parse_soil_n_date,N_INPUT_OK
  use mod_crop_soil_n_day
  use mod_crop_soil_n_configuration
  use mod_wofost81_crop_owner_state
@@ -287,14 +288,17 @@ contains
    type(crop_senescence_policy_t)::startup_policy
    type(reactive_state_t)::source_soil
    type(wofost81_crop_owner_state_t)::source_crop
-   type(soil_n_day_environment_t)::day2_env
+   type(soil_n_day_environment_t)::day2_env,day1_env
    type(senescence_joint_result_t)::day_receipt
    type(b111_soil_n_material_t),allocatable::scheduled(:)
    integer,allocatable::record_indices(:)
    integer::unit,j,error_line,code,day
    integer(int64)::sid
    character(16)::key
-   real(real64)::source_water
+   real(real64)::source_water,base_day
+   call parse_soil_n_date('1900-12-30',base_day,code)
+   call require(code==N_INPUT_OK,'year-boundary calendar origin')
+   day1_env=soil_n_day_environment_t(base_day,base_day+1d0,5d0)
    selection%swcropsnm=1;selection%sw_wofost=1
    selection%source_parameters_complete=.true.
    open(newunit=unit,file='source-crop-startup.txt',status='replace')
@@ -319,17 +323,17 @@ contains
    ! Source owner is reconstructed from the same input in each fresh process.
    ! The restart decoder verifies its parameter identity against these values.
    call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
-      cfg%tiles(1)%initial_state,0d0,ok,spread(0d0,1,numnod))
+      cfg%tiles(1)%initial_state,base_day,ok,spread(0d0,1,numnod))
    call require(ok,'source water state')
    source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
-      0d0,source_water,'source-crop-startup.txt','1900-12-30',startup_plan, &
+      base_day,source_water,'source-crop-startup.txt','1900-12-30',startup_plan, &
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
    ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
    do day=0,3
-     call select_soil_n_amendments(startup_plan,real(day,real64),real(day+1,real64), &
+     call select_soil_n_amendments(startup_plan,base_day+real(day,real64),base_day+real(day+1,real64), &
        scheduled,record_indices,code)
      call require(code==N_CALENDAR_OK,'source calendar selection')
      if(day==0.or.day==2)then
@@ -355,17 +359,17 @@ contains
    else
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
-       state,weather,0d0,1d0,startup_plan,split,policy,day_receipt,env)
+       state,weather,base_day,base_day+1d0,startup_plan,split,policy,day_receipt,day1_env)
      call require(day_receipt%status==JOINT_OK,'source actual Richards day one')
      call write_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
        670001_int64,water,state,code)
      call require(code==0,'source day-one native restart')
    end if
    do day=1,3
-     day2_env=soil_n_day_environment_t(real(day,real64),real(day+1,real64),30d0)
+     day2_env=soil_n_day_environment_t(base_day+real(day,real64),base_day+real(day+1,real64),30d0)
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
-       state,weather,real(day,real64),real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
+       state,weather,base_day+real(day,real64),base_day+real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
      if(day_receipt%status/=JOINT_OK)print *,'source day failure',day,day_receipt%status
      call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
    end do
