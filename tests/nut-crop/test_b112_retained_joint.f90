@@ -417,7 +417,7 @@ contains
   integer(int64)::soil_revision,after_revision,disk_revision
   real(real64)::before_n,before_dm
   logical::has
-  integer::code
+  integer::code,fallow_day
   before_n=crop_soil_whole_n(n);before_dm=crop_soil_organic_mass(n)
   call n%snapshot(chemical,owner)
   call chemical%snapshot(soil_time,soil_water,before_pools,soil_revision)
@@ -471,17 +471,24 @@ contains
   successor_continuous=n;successor_disk=disk
   ! Both accepted physical continuations preserve the same soil-N owner during a
   ! no-crop day, and a successor receives that inventory rather than a new one.
-  fallow_environment=soil_n_day_environment_t(2d0,3d0,20d0)
-  call advance_crop_soil_fallow_day(successor_continuous,2d0,3d0,after_water,0d0,0d0,0d0,0d0,0d0,fallow,fallow_environment)
-  call require(fallow%status==CROP_SOIL_OK,'real Soil-N fallow reaction')
-  call advance_crop_soil_fallow_day(successor_disk,2d0,3d0,disk_water_content,0d0,0d0,0d0,0d0,0d0, &
-    fallow_disk,fallow_environment)
-  call require(fallow_disk%status==CROP_SOIL_OK,'restart Soil-N fallow reaction')
+  ! An entire crop-free growing year uses the existing reactive Soil-N owner,
+  ! not a synthetic concentration update or repeated project initialization.
+  ! Accepted water content is held fixed: this qualifies chemical continuity,
+  ! not an annual Richards hydrologic simulation.
+  do fallow_day=2,367
+    fallow_environment=soil_n_day_environment_t(real(fallow_day,real64),real(fallow_day+1,real64),20d0)
+    call advance_crop_soil_fallow_day(successor_continuous,real(fallow_day,real64), &
+      real(fallow_day+1,real64),after_water,0d0,0d0,0d0,0d0,0d0,fallow,fallow_environment)
+    call require(fallow%status==CROP_SOIL_OK,'annual real Soil-N fallow reaction')
+    call advance_crop_soil_fallow_day(successor_disk,real(fallow_day,real64), &
+      real(fallow_day+1,real64),disk_water_content,0d0,0d0,0d0,0d0,0d0,fallow_disk,fallow_environment)
+    call require(fallow_disk%status==CROP_SOIL_OK,'annual restart Soil-N fallow reaction')
+  end do
   call successor_continuous%snapshot(chemical,owner)
   call chemical%snapshot(after_time,after_water,after_pools,after_revision)
   call successor_disk%snapshot(chemical_after,crop_after)
   call chemical_after%snapshot(disk_time,disk_water_content,disk_pools,disk_revision)
-  call require(after_time==3d0.and.disk_time==3d0.and.after_revision==disk_revision, &
+  call require(after_time==368d0.and.disk_time==368d0.and.after_revision==disk_revision, &
     'fallow advances accepted soil N clock')
   call require(all(after_pools%fom_kg_m3==disk_pools%fom_kg_m3).and. &
     after_pools%biomass_kg_m3==disk_pools%biomass_kg_m3.and. &
@@ -491,7 +498,7 @@ contains
     'fallow keeps identical native soil-N inventories')
   successor_config=cp
   successor_config%harvest%crop_identity=2
-  successor_config%harvest%crop_end=3d0
+  successor_config%harvest%crop_end=368d0
   invalid_successor=successor_continuous
   call initialize_crop_soil_successor(invalid_successor,crop,cp,9102_int64,successor_receipt)
   call require(successor_receipt%status/=CROP_SOIL_OK,'same crop identity rejected without mutation')
