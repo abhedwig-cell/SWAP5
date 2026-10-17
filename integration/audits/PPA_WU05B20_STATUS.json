@@ -358,7 +358,7 @@
       },
       "tests/frost/verify_net01_full_levels.py": {
         "status": "A",
-        "blob": "7d7d3b62908efc96a17b8037b1833496b90db792"
+        "blob": "ecaebaedccee26db67498d94d3fc7bf5494ab9c8"
       },
       "tests/frost/verify_net01_successor.py": {
         "status": "M",
@@ -371,6 +371,7 @@
       "url": "https://github.com/abhedwig-cell/SWAP5/pull/1276",
       "draft": true,
       "merged": false
-    }
+    },
+    "evidence_reader_correction": "First guard refused unchanged CRLF FrozenBounds after generic newline normalization; literal dependencies now read as bytes. Intact capsule positive validation precedes corruption controls. No numerical input changed."
   }
 }

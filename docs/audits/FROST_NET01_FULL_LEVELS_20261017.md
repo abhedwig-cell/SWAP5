@@ -73,6 +73,13 @@ changed `case(3)` to `case(25)`, causing duplicate labels at first compilation.
 The generator now expands only named array declarations. No production equation
 or tolerance was changed. The corrected full matrix then passed at both opts.
 
+The first successor guard rejected the immutable CRLF FrozenBounds source because
+its generic projection reader normalized every text file to LF. The guard now
+reads unchanged dependencies as exact bytes and only reconstructs the three
+explicitly changed LF files. Its corruption self-test validates the intact
+capsule first, preventing an unrelated baseline refusal from satisfying negative
+controls. This is an evidence-reader correction, with no changed scientific input.
+
 Archive: `integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64`.
 Decoded gzip SHA256 `5fc04d7df653b98de8fd15bb74c405e2235de0de3a248e631149a1e316063b95`,
 5,651,084 bytes. Deduplicated raw streams retain failed and successful diagnostics,

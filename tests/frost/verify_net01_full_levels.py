@@ -18,6 +18,8 @@ def capsule():
     check(sha(raw)==e['sha256']and len(raw)==e['bytes'],'full levels capsule changed')
     return json.loads(gzip.decompress(raw))
 def restored(path,data):
+    if path not in data['projections']:
+        return (ROOT/path).read_bytes()
     lines=(ROOT/path).read_text().splitlines(True)
     for p in reversed(data['projections'].get(path,[])):
         lo,hi=p['range'];check(lines[lo:hi]==p['current'],'projection postimage '+path);lines[lo:hi]=p['baseline']
@@ -26,6 +28,7 @@ def stream(d,path):
     h=d['files'][path];raw=d['streams'][h];check(sha(raw.encode())==h,'raw output identity '+path);return raw
 def validate(r,d):
     check(r['qualified']and d['baseline']==BASE,'unqualified count successor')
+    check(d['source']==r['qualified_source']==git('rev-parse','HEAD:src'),'qualified physical source changed')
     check(sha((ROOT/r['contract']).read_bytes())==r['contract_sha256'],'count contract changed')
     check(d['incumbent_proof']['qualified']and d['incumbent_proof']['net01_successor'],'unqualified bounded incumbent')
     for p in d['projections']:
@@ -126,6 +129,7 @@ def verify_qualification():
             'full_master_row':False,'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 def self_test():
     r=record();d=capsule()
+    validate(r,d)
     mutations=[lambda a,b:a.update(qualified=False),lambda a,b:b['component'].update(cases=18431),
         lambda a,b:b['component'].update(counts=list(range(2,25))),lambda a,b:b['component']['executions'].pop(),
         lambda a,b:b['runtime']['results'].pop(),lambda a,b:b['runtime']['events'][0].update(returncode=1),
