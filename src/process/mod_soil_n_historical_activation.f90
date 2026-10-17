@@ -4,7 +4,8 @@ module mod_soil_n_historical_activation
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_soil_n_reactive_owner,only:reactive_parameters_t,reactive_state_t, &
    reactive_parameters_valid,initialize_reactive
- use mod_soil_n_pool_state,only:soil_n_pool_state_t
+ use mod_soil_n_pool_state,only:soil_n_pool_state_t,initialize_soil_n_pool_state,SOIL_N_OK
+ use mod_b111_soil_n_storage_conversion,only:b111_soil_n_mass_from_concentrations,B111_NSTORE_OK
  use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
  implicit none
  private
@@ -14,8 +15,41 @@ module mod_soil_n_historical_activation
    integer::sw_wofost=-1
    logical::source_parameters_complete=.false.
  end type
- public::activate_soil_n_historical
+ type,public::soil_n_historical_initial_t
+   real(real64)::fom_kg_m3(8)=0d0,bio_kg_m3=0d0,hum_kg_m3=0d0
+   real(real64)::cnh4_kg_m3=0d0,cno3_kg_m3=0d0
+ end type
+ public::activate_soil_n_historical,build_historical_soil_n_inventory
 contains
+ subroutine build_historical_soil_n_inventory(source,p,wfrac,pools,status)
+   type(soil_n_historical_initial_t),intent(in)::source
+   type(reactive_parameters_t),intent(in)::p
+   real(real64),intent(in)::wfrac
+   type(soil_n_pool_state_t),intent(out)::pools
+   integer,intent(out)::status
+   real(real64)::nh4,no3
+   integer::code
+   pools=soil_n_pool_state_t();status=N_ACTIVATION_INVALID
+   if(.not.reactive_parameters_valid(p))return
+   if(size(p%mineral%inventory%nfrac_fom)/=8)return
+   if(.not.ieee_is_finite(wfrac))return
+   if(.not.all(ieee_is_finite([source%fom_kg_m3,source%bio_kg_m3,source%hum_kg_m3, &
+      source%cnh4_kg_m3,source%cno3_kg_m3])))return
+   if(minval(source%fom_kg_m3)<0d0.or.min(source%bio_kg_m3,source%hum_kg_m3, &
+       source%cnh4_kg_m3,source%cno3_kg_m3)<0d0)return
+   if(maxval(source%fom_kg_m3)>1000d0.or.max(source%bio_kg_m3,source%hum_kg_m3, &
+       source%cnh4_kg_m3,source%cno3_kg_m3)>1000d0)return
+   call b111_soil_n_mass_from_concentrations(p%mineral%inventory%depth_m,wfrac, &
+      p%mineral%drybd,p%mineral%sorption,source%cnh4_kg_m3,source%cno3_kg_m3,nh4,no3,code)
+   if(code/=B111_NSTORE_OK)return
+   call initialize_soil_n_pool_state(p%mineral%inventory,source%fom_kg_m3,source%bio_kg_m3, &
+      source%hum_kg_m3,nh4,no3,pools,code)
+   if(code/=SOIL_N_OK)then
+     pools=soil_n_pool_state_t()
+     return
+   end if
+   status=N_ACTIVATION_OK
+ end subroutine
  subroutine activate_soil_n_historical(selection,parameters,pools,identity,clock,theta,owner,status)
    type(soil_n_historical_selection_t),intent(in)::selection
    type(reactive_parameters_t),intent(in)::parameters
