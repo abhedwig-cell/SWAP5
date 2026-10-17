@@ -15,7 +15,9 @@ program test_reactive_joint
  use mod_reactive_n_joint_restart_file
  use mod_mineral_joint_restart_file,only:write_mineral_joint_restart_file
  use mod_fmr_b111_mineral_joint_application,only:run_mineral_joint_interval,mineral_joint_result_t
- use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route
+ use mod_fmr_b111_reactive_n_route,only:consume_reactive_n_trace,initialize_historical_reactive_n_route, &
+   initialize_historical_reactive_n_from_tables
+ use mod_soil_n_amendment_calendar,only:soil_n_amendment_calendar_t
  use mod_soil_n_historical_activation,only:soil_n_historical_selection_t
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use MOD_texture_orgmat,only:bdens
@@ -31,6 +33,8 @@ program test_reactive_joint
  type(reactive_n_joint_result_t)::result
  type(reactive_parameters_t)::p,pbad
  type(soil_n_historical_selection_t)::historical
+ type(soil_n_amendment_calendar_t)::historical_plan
+ integer::input_line,input_unit
  type(soil_n_pool_state_t)::pools,s
  type(fmr_b110_physical_forcing_t)::invalid
  real(real64)::k,time,theta
@@ -77,8 +81,19 @@ program test_reactive_joint
    spread(0d0,1,numnod));call require(ok,'water initialization')
  theta=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
  historical%swcropsnm=1;historical%sw_wofost=1;historical%source_parameters_complete=.true.
- call initialize_historical_reactive_n_route(historical,p,pools,9001_int64,0d0,theta,nitrogen,status)
- call require(status==0,'historical N initialization into actual Richards route')
+ open(newunit=input_unit,file='historical-actual-input.snm',status='replace')
+ write(input_unit,'(A)') 'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
+ write(input_unit,'(A)') "1 'Mineral' 0 0 0 0.21 0.10"
+ write(input_unit,'(A)') 'smedate iMat Dosagekgha VolatFraction'
+ write(input_unit,'(A)') '1900-01-01 1 100 0.1'
+ close(input_unit)
+ call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
+   'does-not-exist.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
+ call require(status/=0.and..not.nitrogen%ready().and..not.historical_plan%ready(),'no half-published read')
+ call initialize_historical_reactive_n_from_tables(historical,p,pools,9001_int64,0d0,theta, &
+   'historical-actual-input.snm','1900-01-01',historical_plan,nitrogen,status,input_line)
+ call require(status==0.and.nitrogen%ready().and.historical_plan%ready(), &
+   'historical file+N activation into actual Richards route')
  initial_water=water;initial_n=nitrogen
  ! Invalid water forcing does not mutate either committed owner.
  invalid=cfg%tiles(1)%base_forcing;invalid%root_extraction_sink=-1d0
