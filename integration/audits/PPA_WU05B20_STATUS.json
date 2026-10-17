@@ -48,7 +48,20 @@
   "reference_geometry_qualified": true,
   "policy_proposal": "FROST-MULTILEVEL-NET01",
   "test_only_policy_proposal_verified": true,
-  "owner_policy_accepted": false,
+  "owner_policy_accepted": true,
+  "production_reopening_20261017": {
+    "baseline": "0747fd7c8a5e754d73fa5d981e8f5437ee4c12f3",
+    "branch": "work/frost-net01-production-20261017",
+    "owner_authority": "Explicit Ja to the concrete NET01 production-implementation and qualification decision, followed by Go and Ga door in the same frost workstream.",
+    "contract": "docs/science/FROST_NET01_PRODUCTION_CONTRACT_20261017.md",
+    "stage": "OWNER_AUTHORIZED_IMPLEMENTATION",
+    "implemented": false,
+    "tested": false,
+    "qualified": false,
+    "admitted": false,
+    "next_action": "Implement and qualify the full frozen contract. Earlier bounded closure remains a historical admission, not authorization to claim new runtime admission.",
+    "test_selection": "Small source/component O0/O2 first; targeted actual Richards/mass/reject/restart and affected preservation next. No full FCI, RossFast or highest low-air stress selected."
+  },
   "precision_adjudication": {
     "path": "docs/audits/evidence/PPA_WU05B20_PRECISION_ADJUDICATION.json.gz",
     "sha256": "ce69b00c117acd6892a1f19aa9a2b75a03eb14e36c71e5a6e714d5b6e34d5e38",
