@@ -191,5 +191,16 @@
         "prior_execution": "NONE"
       }
     }
+  },
+  "surface_extension_contract": {
+    "status": "PROPOSED_IMPLEMENTATION_NOT_QUALIFIED",
+    "owner": "existing mineral/reactive/crop owners; Richards state remains sole water authority",
+    "scope": "Optional signed clean surface-water carrier, m/day. Positive infiltration adds zero dissolved N. Negative evaporation removes water without advective N. No runoff/exfiltration solute, nonzero c_top, surface pond or macropore inference. Default absent carrier remains zero. Legacy carrier default remains fail-closed.",
+    "invariants": [
+      "Use only accepted reconstructed water trace, never balance-inferred extra water",
+      "No new persisted N parameter or state; existing restart parameter vectors remain byte-identical",
+      "Daily whole-water and whole-N closure unchanged; rejection before commit",
+      "Explicit opt-in to accepted-trace aggregation in crop composition only"
+    ]
   }
 }

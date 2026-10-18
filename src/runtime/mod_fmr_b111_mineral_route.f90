@@ -9,7 +9,7 @@ module mod_fmr_b111_mineral_route
  private
  type,public::mineral_daily_carrier_t
    real(real64)::t0=0d0,t1=0d0,water_start=0d0,water_end=0d0
-   real(real64)::outflow=0d0,in_bottom=0d0,in_lateral=0d0,root_water=0d0
+   real(real64)::outflow=0d0,in_bottom=0d0,in_lateral=0d0,root_water=0d0,surface_water=0d0
  end type
  public::consume_mineral_trace,aggregate_mineral_trace
 contains
@@ -24,11 +24,14 @@ contains
    if(status/=MINERAL_OK)return
    call advance_mineral_day(state,c%t0,c%t1,c%water_end,c%outflow,c%in_bottom,c%in_lateral,c%root_water,receipt)
  end subroutine
- subroutine aggregate_mineral_trace(state,steps,carrier,status)
+ subroutine aggregate_mineral_trace(state,steps,carrier,status,clean_surface_water)
    type(mineral_state_t),intent(in)::state
    type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
    type(mineral_daily_carrier_t),intent(out)::carrier
    integer,intent(out)::status
+   logical,intent(in),optional::clean_surface_water
+   logical::allow_surface
+   real(real64)::surface
    type(mineral_parameters_t)::p
    type(soil_n_pool_state_t)::s
    real(real64),allocatable::water(:),faces(:)
@@ -36,6 +39,8 @@ contains
    integer(int64)::id,revision
    integer::k,n,code
    carrier=mineral_daily_carrier_t();status=MINERAL_INVALID
+   allow_surface=.false.;if(present(clean_surface_water))allow_surface=clean_surface_water
+   surface=0d0
    if(.not.state%ready().or.size(steps)<1)return
    call state%configuration(p,id);call state%snapshot(time,theta,s,revision)
    n=size(p%dz_cm);clock=time;outflow=0d0;inbot=0d0;inlat=0d0;root=0d0
@@ -76,8 +81,9 @@ contains
          if(.not.all(ieee_is_finite(t%subsurface_source)))return
          if(any(abs(t%subsurface_source)>0d0))return
        end if
-       if(abs(t%top_flux)>0d0)return
+       if(.not.allow_surface.and.abs(t%top_flux)>0d0)return
        dt=t%t1-t%t0
+       surface=surface-dt*t%top_flux*.01d0
        call reconstruct_interval_water_face_flux(p%dz_cm,t%water_start,t%water_end,t%net_node_source, &
           -t%top_flux,-t%bottom_flux,dt,1d-10/dt,faces,closure,code)
        if(code/=WATER_FACE_FLUX_OK)return
@@ -90,7 +96,7 @@ contains
    end do
    water_end=sum(p%dz_cm*water)/sum(p%dz_cm)
    ! Whole route requires exactly a day; daily integrals become rates numerically.
-   carrier=mineral_daily_carrier_t(time,clock,theta,water_end,outflow,inbot,inlat,root)
+   carrier=mineral_daily_carrier_t(time,clock,theta,water_end,outflow,inbot,inlat,root,surface)
    status=MINERAL_OK
  end subroutine
 end module

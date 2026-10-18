@@ -138,6 +138,7 @@ contains
      if(seen(field_index))return
      if(scan(trim(token),' /,;*!')/=0)return
      if(len_trim(token)>32.or.len_trim(token)==0)return
+     if(native.and.scan(trim(token),'.eEdD')==0)return
      read(token,*,iostat=ios)x
      if(ios/=0)return
      if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return

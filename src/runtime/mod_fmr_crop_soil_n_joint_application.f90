@@ -81,7 +81,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -94,7 +94,7 @@ contains
     real(real64),intent(in)::t0,t1
     type(crop_soil_n_joint_result_t),intent(out)::result
     type(soil_n_day_environment_t),intent(in),optional::environment
-    logical,intent(in),optional::fallow
+    logical,intent(in),optional::fallow,clean_surface_water
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
@@ -143,7 +143,7 @@ contains
     end if
     chemical_trial=chemical
     call soil%mineral_snapshot(base)
-    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status)
+    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status,clean_surface_water)
     if(status/=MINERAL_OK)then
       result%status=JOINT_CHEMICAL_REJECTED
       call backend%discard_trial_candidate(candidate,result%diagnostics)
@@ -151,10 +151,10 @@ contains
     end if
     if(inactive)then
       call advance_crop_soil_fallow_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment)
+        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water)
     else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water)
     end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then
