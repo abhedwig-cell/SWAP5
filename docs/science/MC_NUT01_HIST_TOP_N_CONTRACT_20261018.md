@@ -1,6 +1,6 @@
 # Historical atmospheric nitrogen boundary
 
-Status: proposed implementation contract, successor to the bounded native/rotation
+Status: locally and integrated-qualified bounded candidate in PR1314, successor to the bounded native/rotation
 admission in PR1313 at canonical8bf52bf23277d193039ea5162e7100b6889bc7c0.
 This contract alone does not qualify or admit the extension.
 
@@ -58,3 +58,14 @@ commands. Do not inherit native PASS across changed physics.
 
 The separate B0 cNO3N_seep assignment defect requires an explicit corrected B1
 input-reference witness. It must not be silently described as B0 equivalence.
+
+## Hydrological reference limit
+
+Original management_soil lines400..402 derives top input from gross precipitation,
+irrigation, runon, interception and runoff; evaporation is a separate term. The
+original source itself questions the ponding interpretation. This successor tests
+a daily fixed-flux boundary with one sign per interval and no surface storage,
+runoff or simultaneous rain/evaporation carrier. The accepted infiltration carrier
+is physically interpretable in that bounded scenario; general atmospheric/ponding
+source equivalence is not established. No full-model historical carrier claim is
+allowed from these tests. The original failed drying stress stays failed.
