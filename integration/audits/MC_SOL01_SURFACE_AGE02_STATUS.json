@@ -2,9 +2,9 @@
   "workstream": "MC-SOL01",
   "work_unit": "MC-SOL01-SURFACE-AGE02",
   "baseline": "65db94901eba8222b070920827621fdffddb2180",
-  "stage": "IMPLEMENTED_NOT_TESTED",
+  "stage": "COST_DIAGNOSED_REVISED_PILOT",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "canonically_admitted": false,
@@ -37,6 +37,17 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Persist drivers then measured pilot and complete selected local qualification",
-  "blockers": []
+  "next_action": "Persist existing proposal selection and single-pass multiple snapshots, then measured pilot and complete selected local O0/O2 run",
+  "blockers": [],
+  "checkpoint_commit": "87f5149b8664d25b614c1acc40fe4651776a0837",
+  "prior_executions": [
+    {
+      "directory": "age02-pilot",
+      "result": "CENSORED_NOT_PASS",
+      "lower_bound_cpu_seconds": 182.91,
+      "first_window_completed": false,
+      "termination": "SIGINT exit130 through session control; manual namespace SIGTERM attempt failed without effect",
+      "diagnosis": "Default-OFF accepted-step proposal was left off. Existing controller repeatedly requests full remaining interval; select existing explicit true option while preserving mass1e-10 and temporal1e-6 and all acceptance gates. Actual retry distribution remains UNKNOWN because pilot did not complete."
+    }
+  ]
 }

@@ -57,7 +57,7 @@ for opt in (['O0'] if a.pilot else ['O0','O2']):
  for level in levels:
   snapshot=build/f'level{level}.snapshot';endpoint=build/f'level{level}.endpoint'
   # Save in wet phase; also take independent checkpoints at transitions and drying.
-  cut=level
+  cut=-1 if level==4 and not a.pilot else level
   stdout=run([build/'driver','write',level,snapshot,endpoint,cut],build,'long_native')
   assert 'SURFACE_AGE_TWO_DAY_REFERENCE=PASS' in stdout
   summaries=[list(map(float,l.split()[1:]))for l in stdout.splitlines()if l.startswith('SUMMARY ')]
@@ -67,10 +67,7 @@ for opt in (['O0'] if a.pilot else ['O0','O2']):
   if a.pilot:continue
   # At finest mesh check wet, wet->dry, dry, dry->wet; all in fresh OS processes.
   for cut in ([level,2*level,7*level,10*level] if level==4 else [level]):
-   if cut!=level:
-    snapshot=build/f'level{level}-cut{cut}.snapshot';again=build/f'level{level}-cut{cut}.endpoint'
-    run([build/'driver','write',level,snapshot,again,cut],build,'checkpoint_native')
-    assert again.read_bytes()==endpoint.read_bytes()
+   if level==4:snapshot=build/f'level{level}.snapshot.cut{cut}'
    fresh=build/f'level{level}-fresh{cut}.endpoint'
    resumed=run([build/'driver','resume',level,snapshot,fresh,cut],build,'restart_native')
    assert fresh.read_bytes()==endpoint.read_bytes()

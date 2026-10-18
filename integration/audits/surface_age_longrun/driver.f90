@@ -50,6 +50,7 @@ program surface_age_longrun
   real(real64)::max_combined,max_water,elapsed,accwater,scale_sum,change
   real(real64)::waterdepths(6),intervaldepths(6),initial_depth
   character(32)::arg
+  character(512)::snapshot_name
   call get_command_argument(1,mode)
   call get_command_argument(2,arg);read(arg,*)level
   call get_command_argument(3,restart_path)
@@ -77,6 +78,7 @@ program surface_age_longrun
   end associate
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   cfg%numerical%transaction%temporal_tolerance=1d-6
+  cfg%numerical%retain_accepted_step_proposal=.true.
   cfg%numerical%transaction%max_retries=30;cfg%numerical%max_committed_substeps=10000
   column%column_id=cfg%tiles(1)%tile_id;column%template_id=cfg%tiles(1)%template%template_id
   column%parameter_ref=1_int64;column%state_handle=1_int64;column%forcing_handle=1_int64
@@ -170,8 +172,14 @@ program surface_age_longrun
    waterdepths=waterdepths+intervaldepths;min_depth=min(min_depth,depth);max_depth=max(max_depth,depth)
    print '(A,I6,9ES24.15)','WINDOW ',i,t,depth,stock,final_soil,combined,water_residual, &
        result%water%mass%residual,result%chemical%infiltrated_age,result%chemical%surface_runoff
-   if(trim(mode)=='write'.and.i==cut)then
-    call write_age_snapshot_disk(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,8801_int64, &
+   flush(6)
+   if(trim(mode)=='write'.and.(i==cut.or.(cut==-1.and.any(i==level*[1,2,7,10]))))then
+    snapshot_name=restart_path
+    if(cut==-1)then
+     write(arg,'(I0)')i
+     snapshot_name=trim(restart_path)//'.cut'//trim(arg)
+    end if
+    call write_age_snapshot_disk(trim(snapshot_name),column,cfg%tiles(1)%template,670001_int64,8801_int64, &
        water,soil,surface,status)
     call require(status==0,'long snapshot publication')
    end if
