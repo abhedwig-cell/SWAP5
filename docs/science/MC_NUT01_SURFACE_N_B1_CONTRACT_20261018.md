@@ -157,3 +157,22 @@ the Dirichlet face stiffness, and `mod_fmr_groundwater_head_forcing_adapter`.
 This input experiment is not itself a new admission. Eight days are selected
 to discriminate the first rain pulse, expected native cost up to ten minutes;
 a full rotation requires actual water and nitrogen budgets and transition restarts.
+
+## Native transition comparison and measured execution cost
+
+The measured eight-day flux-boundary exploratory execution costs 310 seconds
+(O2 native only). A full 730-day repetition after each of six restart points
+would multiply a costly native baseline without strengthening state equality.
+For the fixed-head experiment the observational driver writes a complete native
+checkpoint after every accepted day. The continuous baseline must still cover
+all 730 days at both optimization levels. Fresh processes will resume before
+and after harvest and successor transitions and across the first calendar-year
+boundary, then compare the entire next native state with the continuous
+checkpoint, byte for byte. Equality includes water, every N pool, crop state,
+calendar/event identity and numerical state, so a duplicated or skipped event
+changes the compared payload. This changes test execution selection, not the
+model, codec, event order, physical/numerical tolerance or rejection criteria.
+The earlier admitted full-to-730 restart proofs remain untouched. The short
+eight-day independent water/N audit is selected before the expensive baseline;
+its expected cost is ten minutes. Long-run cost is measured and selected only
+after that audit passes, without claiming a completed rotation from a prefix.

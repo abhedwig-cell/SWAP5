@@ -7,6 +7,7 @@ from pathlib import Path
 import hashlib,json,os,shutil,subprocess,time
 PROFILE='surface-profile'
 DAYS=int(os.environ.get('N_SURFACE_DAYS','730'));assert 1<=DAYS<=730
+BOUNDARY=os.environ.get('N_SURFACE_AUDIT_BOUNDARY','provider');assert BOUNDARY in ['provider','fixed-head']
 ROOT=Path(__file__).resolve().parents[2];BASE=Path(os.environ['N_SURFACE_PROVIDERS']).resolve();OUT=Path(os.environ['N_SURFACE_ROTATION_DIR']).resolve();OUT.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 prior=json.loads((BASE/'result.json').read_text());original=json.loads((BASE/'events.json').read_text())
@@ -118,7 +119,19 @@ replace("   print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w",'''   wat
    print *,'AUDIT_STATE_RANGE',theta_min,theta_max,head_min,head_max
    print *,'AUDIT_NUMERICAL',accepted_total,rejected_total,solver_total,retry_total,min_dt,max_indicator
    print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w''')
-source=source[:start]+body+source[end:];generated=OUT/'water_audit.f90';generated.write_text(source)
+if BOUNDARY=='fixed-head':
+ assert prior.get('hydrology')=='field-loam' and prior.get('max_committed_substeps')==10000
+ # Every day has a complete native checkpoint. Fresh transition windows can
+ # compare whole native states rather than re-executing years after each restart.
+ replace('    if(d+1==1.or.d+1==120.or.d+1==121.or.d+1==365.or.d+1==366.or.d+1==500)then',
+         '    if(.true.)then')
+ replace('     forcing%bottom_flux=sum(forcing%root_extraction_sink)-.003d0',
+         '     forcing%bottom_head=-75d0 ! independently responding prescribed-head mode 5')
+source=source[:start]+body+source[end:]
+if BOUNDARY=='fixed-head':
+ old='  cfg%tiles(1)%initial_state%ponding_depth=0d0';assert source.count(old)==1
+ source=source.replace(old,old+'\n  cfg%tiles(1)%parameters%bottom_mode=5\n  cfg%tiles(1)%base_forcing%bottom_head=-75d0')
+generated=OUT/'water_audit.f90';generated.write_text(source)
 events=[];results={};artifacts={}
 def run(c,b,category):
  c=list(map(str,c));t=time.perf_counter();i=len(events)
@@ -153,5 +166,5 @@ assert results['O0']==results['O2']
 for p,h in artifacts.items():assert sha(Path(p))==h,p
 for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
 assert sha(Path(__file__))==SELF_SHA
-r=dict(status='SURFACE_N_B1_ROTATION_WATER_N_AUDIT_PASS_NOT_ADMITTED',days=DAYS,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
+r=dict(status='SURFACE_N_B1_ROTATION_WATER_N_AUDIT_PASS_NOT_ADMITTED',days=DAYS,boundary=BOUNDARY,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r['results']['O0']['metrics'],indent=2))
