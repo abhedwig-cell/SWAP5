@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "342e77d438f205b18a7a8321198c0fa03b481541",
+  "checkpoint_commit": "ef067e80addf04db34cb63d253da83d98242875b",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -32,11 +32,11 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Diagnose exact day 67 actual Richards/crop/Soil-N JOINT status 2 with production receipt stage and water/chemical status on candidate. Preserve 62-day canonical baseline; do not suppress rejected day or loosen balances. Fix only evidenced physical/coupling cause, then rerun exact-head O0/O2.",
-  "recovery_point": "work/nut-coupled-124day-20261018@342e77d438f205b18a7a8321198c0fa03b481541",
+  "next_action": "Investigate kernel_result_t status=4, trial diagnostics and day-67 Richards numerical/physical driver cause at immutable forcing; do not change Soil-N chemistry or falsely label chemistry rejection. Preserve 62-day accepted canonical and avoid simply extending runtime.",
+  "recovery_point": "work/nut-coupled-124day-20261018@ef067e80addf04db34cb63d253da83d98242875b",
   "blockers": [
-    "124-day coupled native qualification FAILED run 39114243770: source day 67 JOINT status 2; focused native run 39114243790 SUCCESS",
-    "Full TTUTIL grammar and multi-year crop rotation still open"
+    "124-day actual coupled source day 67 rejects at water trial (run 39116009031), detailed water status 4; reason within water kernel to diagnose",
+    "Full TTUTIL and multiple crop rotation not qualified"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -66,6 +66,9 @@
     "actual": "failure",
     "failure_day": 67,
     "reported_status": 2,
-    "canonical_admitted": false
+    "canonical_admitted": false,
+    "diagnostic_run": 39116009031,
+    "diagnostic_head": "ef067e80addf04db34cb63d253da83d98242875b",
+    "failure_layer": "JOINT_WATER_REJECTED; kernel result water.status=4, water trial not completed; senescence.status=0 and material.status=0; chemical.status=1 and soil.status=1 are unexecuted defaults, not chemical failures"
   }
 }
