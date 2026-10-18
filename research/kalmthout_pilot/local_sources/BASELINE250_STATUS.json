@@ -10,5 +10,13 @@
   "runtime_limits": "120s time censor per native cell; failures retained; eight workers; no native source or acceptance changes.",
   "implementation_scope": "Independent column model; common European source maps plus explicit defaults. No SWAP5/canonical or Actions selection.",
   "recovery": "Restore the two repository archive parts using the manifest, then rerun the same command; exact native results are reused and per-cell receipts survive partial completion.",
-  "local_improvement_register": "local_sources/baseline250_heath_refinement_register.csv;159 majority-heath candidates,62 wet-heath review cells, no v01 inputs edited."
+  "local_improvement_register": "local_sources/baseline250_heath_refinement_register.csv;159 majority-heath candidates,62 wet-heath review cells, no v01 inputs edited.",
+  "next_selected_action": "After full WorldCover reference finishes, run229 explicitly prepared vegetation overrides;156 common-European CORINE cells,73 additional BWK cells; all soil/boundary/numerics unchanged.",
+  "vegetation_delta_expected_cost": "About1-3min, eight native workers;229 changed-input cases and no unrelated solver tests.",
+  "model_versions": {
+    "worldcover_reference": "4096 original independent columns",
+    "european_common": "4096 columns with156 CORINE322 heath vegetation replacements",
+    "local_improved": "4096 columns with229 total heath replacements:156 CORINE plus73 positive BWK additions"
+  },
+  "corine_coverage": "237 actual source polygons; all4096 cells >=95% coverage; dataset2018 with25ha minimum mapping unit;660 conifer-dominant cells identified for a later phenology refinement, not changed in this block."
 }

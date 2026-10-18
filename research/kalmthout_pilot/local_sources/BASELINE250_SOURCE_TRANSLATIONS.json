@@ -1,0 +1,126 @@
+{
+  "version": "BASELINE250-v01",
+  "scope": "First pilot, explicit defaults; no crop or site calibration",
+  "sources": {
+    "soil": "SoilGrids250m2.0 mean, six intervals, real WCS regional rasters",
+    "landcover": "ESA WorldCover2021v200, native10m, dominant terrestrial class after10m UTM regridding",
+    "meteorology": "Already aligned ERA5 reanalysis at the existing representative point,24120 actual hourly records; not4096 independent meteorological measurements",
+    "lai": "NHI fact_svat.inp static annual curves as external analogues; compression and smoothing individually recorded"
+  },
+  "units": {
+    "texture": "SoilGrids g/kg -> percent, then renormalized to100%",
+    "bulk_density": "cg/cm3 -> g/cm3 by/100; SWAP metadata kg/m3 byx1000",
+    "carbon": "dg/kg -> percent C by/100",
+    "hydraulic_alpha": "cm^-1",
+    "hydraulic_conductivity": "cm/day",
+    "water_contents": "m3/m3",
+    "soil_depth": "cm",
+    "pressure_head": "cm"
+  },
+  "ptf": {
+    "implementation": "rosetta-soil",
+    "package_version": "0.3.2",
+    "version": 3,
+    "model": 3,
+    "input": "sand,silt,clay,bulk density",
+    "estimate_type": "geo",
+    "mualem_lambda": 0.5,
+    "conductivity_fields": "Use estimated Ksat in both native SWAP fields; retain predicted K0 and L as raw outputs only"
+  },
+  "priors": {
+    "vegetation": {
+      "10": {
+        "name": "generic_forest",
+        "nhi_index": 11,
+        "root_cm": 100.0,
+        "height_cm": 1000.0,
+        "rsc": 150.0,
+        "albedo": 0.15
+      },
+      "20": {
+        "name": "shrub_heath_analogue",
+        "nhi_index": 14,
+        "root_cm": 50.0,
+        "height_cm": 40.0,
+        "rsc": 288.84,
+        "albedo": 0.3
+      },
+      "30": {
+        "name": "generic_grass",
+        "nhi_index": 1,
+        "root_cm": 50.0,
+        "height_cm": 20.0,
+        "rsc": 100.0,
+        "albedo": 0.23
+      },
+      "40": {
+        "name": "generic_cropland_no_wofost",
+        "nhi_index": 5,
+        "root_cm": 80.0,
+        "height_cm": 70.0,
+        "rsc": 100.0,
+        "albedo": 0.23
+      },
+      "50": {
+        "name": "built_up_pervious_soil_surrogate",
+        "nhi_index": 1,
+        "root_cm": 30.0,
+        "height_cm": 10.0,
+        "rsc": 150.0,
+        "albedo": 0.2
+      },
+      "60": {
+        "name": "bare_soil",
+        "nhi_index": null,
+        "root_cm": 0.0,
+        "height_cm": 0.0,
+        "rsc": 0.0,
+        "albedo": 0.2
+      },
+      "90": {
+        "name": "wetland_herbaceous_analogue",
+        "nhi_index": 1,
+        "root_cm": 50.0,
+        "height_cm": 70.0,
+        "rsc": 100.0,
+        "albedo": 0.23
+      }
+    },
+    "vegetation_parameter_authority": "Heath RSC and LAI from documented NHI route. Other RSC, height and root values are explicit project defaults, not claimed to be locally measured or jointly calibrated.",
+    "soil_column_depth_cm": 200,
+    "bedrock_depth_status": "UNKNOWN",
+    "initial_uniform_head_cm": -75,
+    "spinup": false,
+    "irrigation": false,
+    "lateral_surfacewater_exchange": false,
+    "soil_heat": false,
+    "solute": false,
+    "oxygen_stress": false,
+    "crop_growth_wofost": false,
+    "canopy_capacity_cm_per_lai": 0.05
+  },
+  "boundary": {
+    "default": "SWBOTB7 free drainage",
+    "exception": "Six mapped herbaceous-wetland columns: SWBOTB5 and an assumed constant groundwater depth50cm below surface; unmeasured",
+    "managed_polders": "Not positively identified from broad land-cover alone; grass/cropland review flags retained",
+    "future": "European/regional groundwater-model heads and fluxes, including surface-water/drainage interaction"
+  },
+  "local_layers": {
+    "preserved": [
+      "DOV soil and texture",
+      "BWK/habitats",
+      "historical retention",
+      "shallow groundwater",
+      "DTM point heights",
+      "MODIS LAI"
+    ],
+    "application": "Not silently assimilated in v01;159 majority-heath candidates are a separately prepared vegetation-only variant"
+  },
+  "geometry": {
+    "domain": "Minimal pilot extent,16x16km including surroundings,256km2",
+    "crs": "EPSG32631",
+    "cells": 4096,
+    "cell_size_m": 250,
+    "source_effective_resolution": "Target grid spacing does not create independent source information"
+  }
+}

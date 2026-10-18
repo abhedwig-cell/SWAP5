@@ -1,0 +1,26 @@
+{
+  "dataset": "CORINE Land Cover2018 vector",
+  "source_url": "https://image.discomap.eea.europa.eu/arcgis/rest/services/Corine/CLC2018_LAEA/MapServer/0",
+  "polygons": 237,
+  "source_files": [
+    {
+      "file": "vectors_000.geojson",
+      "sha256": "3b96cfc5dbc8bac961039a7711f94444e1dc82712897f5d2de229368fa07eab4",
+      "features": 200
+    },
+    {
+      "file": "vectors_001.geojson",
+      "sha256": "b5f25b0df8941a515b89d7afb5eb53e7db4d22081763d05dd0bbd40bd36f7daf",
+      "features": 37
+    }
+  ],
+  "grid_cells": 4096,
+  "majority_heath322_cells": 156,
+  "majority_conifer312_cells": 660,
+  "cells_95pct_coverage": 4096,
+  "minimum_mapping_unit_ha": 25,
+  "nominal_minimum_width_m": 100,
+  "interpretation": "Older common-European categorical context; not a2024-2026 land-use observation, not a250m independent survey.",
+  "native_model_inputs_edited": false,
+  "source_landing": "https://land.copernicus.eu/en/products/corine-land-cover/clc2018"
+}

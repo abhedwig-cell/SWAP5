@@ -25,11 +25,14 @@ def main():
     p.add_argument('root',type=Path);p.add_argument('output',type=Path)
     p.add_argument('--require-complete',action='store_true')
     args=p.parse_args();args.output.mkdir(parents=True,exist_ok=True)
+    version=json.loads((args.root/'model_version.json').read_text())['version'] if (args.root/'model_version.json').exists() else 'WORLDCOVER_REFERENCE'
     grid=json.loads((args.root/'grid_250m.geojson').read_text());annual=[];summary=[]
     for feature in grid['features']:
         props=feature['properties'];identity=props['cell_id'];case=args.root/'cells'/identity
         path=case/'run_receipt.json';r=json.loads(path.read_text()) if path.exists() else {}
         record=dict(cell_id=identity,parent_500m=props['parent_500m'],worldcover_class=props['dominant_land_class'],
+                    model_vegetation_class=props.get('model_vegetation_class',props['dominant_land_class']),
+                    vegetation_source=props.get('vegetation_source','WorldCover broad class'),
                     water_fraction=props['water_fraction'],boundary=props['boundary'],status=r.get('status','NOT_RUN'))
         props.update(record)
         if r.get('status') not in ('SUCCESS','COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG'):
@@ -72,24 +75,24 @@ def main():
 CREATE TABLE gpkg_spatial_ref_sys(srs_name TEXT NOT NULL,srs_id INTEGER NOT NULL PRIMARY KEY,organization TEXT NOT NULL,organization_coordsys_id INTEGER NOT NULL,definition TEXT NOT NULL,description TEXT);
 CREATE TABLE gpkg_contents(table_name TEXT NOT NULL PRIMARY KEY,data_type TEXT NOT NULL,identifier TEXT UNIQUE,description TEXT DEFAULT '',last_change DATETIME NOT NULL,min_x DOUBLE,min_y DOUBLE,max_x DOUBLE,max_y DOUBLE,srs_id INTEGER);
 CREATE TABLE gpkg_geometry_columns(table_name TEXT NOT NULL,column_name TEXT NOT NULL,geometry_type_name TEXT NOT NULL,srs_id INTEGER NOT NULL,z TINYINT NOT NULL,m TINYINT NOT NULL,PRIMARY KEY(table_name,column_name));
-CREATE TABLE cells(fid INTEGER PRIMARY KEY,geom BLOB NOT NULL,cell_id TEXT UNIQUE,landcover INTEGER,status TEXT,bottom_out_mm REAL,transpiration_mm REAL,soil_evap_mm REAL,interception_term_mm REAL,runoff_mm REAL,storage_change_mm REAL,water_fraction REAL,flags TEXT);
+CREATE TABLE cells(fid INTEGER PRIMARY KEY,geom BLOB NOT NULL,cell_id TEXT UNIQUE,landcover INTEGER,vegetation INTEGER,veg_source TEXT,status TEXT,bottom_out_mm REAL,transpiration_mm REAL,soil_evap_mm REAL,interception_term_mm REAL,runoff_mm REAL,storage_change_mm REAL,water_fraction REAL,flags TEXT);
 ''')
         db.executemany('INSERT INTO gpkg_spatial_ref_sys VALUES(?,?,?,?,?,?)',[
             ('Undefined Cartesian',-1,'NONE',-1,'undefined',''),('Undefined geographic',0,'NONE',0,'undefined',''),
             ('WGS84 UTM31N',32631,'EPSG',32631,CRS.from_epsg(32631).to_wkt(version='WKT1_GDAL'),'')])
         db.execute('INSERT INTO gpkg_geometry_columns VALUES(?,?,?,?,?,?)',('cells','geom','POLYGON',32631,0,0))
-        db.execute('INSERT INTO gpkg_contents VALUES(?,?,?,?,?,?,?,?,?,?)',('cells','features','SWAP431 initial250m v01',
+        db.execute('INSERT INTO gpkg_contents VALUES(?,?,?,?,?,?,?,?,?,?)',('cells','features','SWAP431 initial250m '+version,
             'Independent one-dimensional initial soil-column responses; water and impervious fractions remain explicit limitations.',
             '2026-10-18T00:00:00.000Z',592980.,5683020.,608980.,5699020.,32631))
         for f in grid['features']:
             r=f['properties'];geom=b'GP'+bytes([0,1])+struct.pack('<i',32631)+shape(f['geometry']).wkb
-            db.execute('INSERT INTO cells(geom,cell_id,landcover,status,bottom_out_mm,transpiration_mm,soil_evap_mm,interception_term_mm,runoff_mm,storage_change_mm,water_fraction,flags) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',
-                (geom,r['cell_id'],r['dominant_land_class'],r.get('status','NOT_RUN'),r.get('net_bottom_outflow_mm'),
+            db.execute('INSERT INTO cells(geom,cell_id,landcover,vegetation,veg_source,status,bottom_out_mm,transpiration_mm,soil_evap_mm,interception_term_mm,runoff_mm,storage_change_mm,water_fraction,flags) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                (geom,r['cell_id'],r['dominant_land_class'],r.get('model_vegetation_class',r['dominant_land_class']),r.get('vegetation_source','WorldCover broad class'),r.get('status','NOT_RUN'),r.get('net_bottom_outflow_mm'),
                  r.get('TACT_mm'),r.get('EACT_mm'),r.get('EIC_mm'),r.get('RUNOFF_mm'),r.get('storage_change_mm'),r['water_fraction'],r['flags']))
         assert db.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
         assert db.execute('SELECT count(*) FROM cells').fetchone()[0]==4096
     completed=[r for r in summary if 'RAIN_mm' in r]
-    totals=dict(total_cells=4096,completed_cells=len(completed),full_period_days=1005,
+    totals=dict(model_version=version,total_cells=4096,completed_cells=len(completed),full_period_days=1005,
                 annual_records=len(annual),full_grid_complete=len(completed)==4096,
                 native_year_boundary_flagged=sum(r['status']=='COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG' for r in summary),
                 eic_contract='Native EIC includes annual canopy capacity loss, not pure interception evaporation.',
