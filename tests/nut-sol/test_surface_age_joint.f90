@@ -23,7 +23,7 @@ program test_surface_age_joint
   use mod_solute_water_face_flux_reconstruction
   use mod_solute_compartment_state,only:solute_compartment_state_t
   implicit none
-  real(real64),parameter::T0=0d0,T1=1d-3
+  real(real64),parameter::T0=0d0,T1=1d-3,HARD_MASS_GATE=1d-10
   type(fmr_production_application_config_t)::cfg
   type(fmr_serialized_reference_backend_t)::backend
   type(fixed_flux_top_boundary_provider_t),target::top
