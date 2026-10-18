@@ -32,12 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Investigate fixed forcing physical net extraction and head boundary modes against source units. Build a scientifically justified finite-rainfall/recharge scenario or source-realistic forcing with negative control; qualify long Richards–WOFOST81–Soil-N without loosening temporal threshold or cap. Reconcile canonical Reference/backend/headcalc delta first.",
+  "next_action": "Evaluate source test imposed bottom flux -0.1, drainage 1e-4, zero top flux and root sink 1e-4 for physical domain and units, compare with sensible documented boundary/forcing. Design discriminating 124-day production driver variant with defensible boundary condition, same numerical budget and O0/O2 restart parity. Keep original failing stress case as negative regression/research evidence. Reconcile headcalc/backend current canonical before merge.",
   "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "blockers": [
-    "Proven progressive dehydration of the test water column, growing substep demand and day67 rejection; do not present as yet-proven kernel defect",
-    "Current canonical moves Reference/backend/headcalc: requalification/reconciliation needed",
-    "Full legacy TTUTIL grammar and multiyear crop rotations remain open"
+    "Fixed-forcing dryness drives 4096-step exhaustion day67, source case beyond 62 days not qualified",
+    "Shared Reference/headcalc canonical overlap demands reconciliation",
+    "Complete TTUTIL grammar, annual/multiyear crop rotation incomplete"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -143,6 +143,15 @@
         "rejected": true,
         "committed_state_unchanged": true
       }
+    },
+    "water_state_result": {
+      "outcome": "failure day67 expected (diagnostic run)",
+      "start_day60_mean_theta": 0.15482059975963416,
+      "end_day66_mean_theta": 0.13359038934285145,
+      "start_day60_min_head": -5420.491642178313,
+      "end_day66_min_head": -28276.52381076077,
+      "day67_committed_rollback_identical": true,
+      "interpretation": "severe continuous drying under imposed fixed forcing, strongest at bottom, causes shrinking accepted timestep demand; numerical error beyond tested forcing not established"
     }
   }
 }
