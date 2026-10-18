@@ -155,8 +155,9 @@ contains
     type(canonical_numerical_config_t)::nc
     type(fmr_template_t)::plain
     type(kernel_committed_state_t)::w
-    type(matrix_solute_state_t)::chem
-    type(matrix_joint_result_t)::outcome
+    type(matrix_solute_state_t)::chem,chem_restart
+    type(kernel_committed_state_t)::w_restart
+    type(matrix_joint_result_t)::outcome,outcome_restart
     type(pond_step_t)::chem_supply
     type(fmr_serialized_physical_observation_t)::observation
     logical::created
@@ -218,7 +219,22 @@ contains
     call require(seen_runoff,'positive runoff carried from Reference')
     call require(abs(outcome%chemical%residual)<1d-11,'gross joint chemical closure')
     call require(abs(outcome%water%mass%residual)<HARD_MASS_GATE,'gross joint water closure')
-    print '(A)','MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT=PASS'
+    call write_matrix_joint_restart_file(trim(restart_path)//'.gross',column,plain, &
+      670001_int64,w,chem,code,allow_surface_mass=.true.)
+    call require(code==JOINT_OK,'gross native V2 restart writer')
+    call read_matrix_joint_restart_file(trim(restart_path)//'.gross',column,plain, &
+      670001_int64,9001_int64,p,w_restart,chem_restart,code,allow_surface_mass=.true.)
+    call require(code==JOINT_OK,'gross native V2 restart reader')
+    call compare_water(w,w_restart);call compare_chemical(chem,chem_restart)
+    chem_supply%t0=T1;chem_supply%t1=2*T1
+    call run_pond_joint_interval(backend,column,plain,gross_parameters,w,gross,nc,chem, &
+      chem_supply,T1,2*T1,outcome)
+    call require(outcome%status==JOINT_OK,'gross next accepted window')
+    call run_pond_joint_interval(second,column,plain,gross_parameters,w_restart,gross,nc,chem_restart, &
+      chem_supply,T1,2*T1,outcome_restart)
+    call require(outcome_restart%status==JOINT_OK,'gross restarted accepted window')
+    call compare_water(w,w_restart);call compare_chemical(chem,chem_restart)
+    print '(A)','MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS'
   end subroutine
   subroutine initialize_owners(w,s,p)
     type(kernel_committed_state_t),intent(out)::w
