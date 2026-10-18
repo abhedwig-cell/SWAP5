@@ -120,7 +120,7 @@ program test_b112_retained_joint
  call initialize_soil_n_pool_state(sp%mineral%inventory,spread(1d0,1,8),5d0,40d0,.02d0,.03d0,pools,status)
  call require(status==0,'soil inventory initialize')
  call backend%initialize(top);call second%initialize(top)
- if(trim(selected)=='source-profile'.or.(trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
+ if(trim(selected)=='source-profile'.or.(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
   call source_continuation()
   stop
  end if
@@ -299,7 +299,7 @@ contains
    character(16)::key
    real(real64)::source_water,base_day
    call parse_soil_n_date('1900-12-30',base_day,code)
-   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
     cp%harvest%crop_end=base_day+119d0
     cp%scalars%vegetative_temperature_sum_required=1500d0
     cp%scalars%generative_temperature_sum_required=1500d0
@@ -310,7 +310,7 @@ contains
    selection%source_parameters_complete=.true.
    ! Source keyword-array subset, preserving original named TTUTIL fields.
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
-   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
     write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
     write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
     write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
@@ -340,13 +340,15 @@ contains
      'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
      'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1.', &
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4'
-   if(trim(selected)=='atmospheric-profile')then
+   if((trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile'))then
     write(unit,'(A)')'cNH4N_seep = 0.001','cNO3N_seep = 0.002', &
       'cNH4N_top = 0.0005','cNO3N_top = 0.0015'
    else
     write(unit,'(A)')'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
       'cNH4N_top = 0.','cNO3N_top = 0.'
    end if
+   if(trim(selected)=='humus-profile')write(unit,'(A)') &
+     'RateconHum_exp = 0.04','tstartHumexp = 1901-12-30'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal
@@ -366,7 +368,7 @@ contains
      type(crop_senescence_policy_t)::rejected_policy
      integer::input_unit,output_unit,ios,case_number,source_record,nitrif_record
      character(512)::source_line
-     do case_number=1,merge(0,9,(trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))
+     do case_number=1,merge(0,9,(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
        source_record=0;nitrif_record=0
@@ -412,7 +414,7 @@ contains
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
-   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
     policy=startup_policy
     call state%configuration(cp,sid)
     call state%snapshot(source_soil,source_crop)
@@ -547,7 +549,7 @@ contains
    character(32)::arg
    logical::inactive,atmospheric
    initial_cp=cp
-   atmospheric=trim(selected)=='atmospheric-profile'
+   atmospheric=(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')
    call get_command_argument(5,arg)
    first=0
    if(trim(mode)=='resume')then
@@ -570,6 +572,27 @@ contains
       670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
      call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
       'atmospheric restart wrong top concentrations rejected atomically')
+    end if
+   end if
+   if(trim(selected)=='humus-profile')then
+    call require(sp%hum_exp_start_day==base_day+365d0,'source humus absolute day epoch')
+    call require(sp%hum_exp_daily==.04d0/365.2425d0,'source annual humus rate conversion')
+    if(trim(mode)=='resume')then
+     bad_sp=sp;bad_sp%hum_exp_daily=-1d0;bad_sp%hum_exp_start_day=0d0
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
+     call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
+      'humus restart absent experiment rejected atomically')
+     bad_sp=sp;bad_sp%hum_exp_daily=2d0*sp%hum_exp_daily
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
+     call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
+      'humus restart wrong rate rejected atomically')
+     bad_sp=sp;bad_sp%hum_exp_start_day=sp%hum_exp_start_day+1d0
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
+     call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
+      'humus restart wrong start rejected atomically')
     end if
    end if
    uptake=0d0;max_n=0d0;max_w=0d0

@@ -23,6 +23,7 @@ module mod_soil_n_historical_activation
    real(real64)::temp_ref=0d0,sorpcoef=0d0,ratecon_nitrif_ref=0d0,ratecon_denitr_ref=0d0
    real(real64)::wfpscrit=0d0,wfpscrit2=0d0,cdissi_half=0d0
    real(real64)::tcsf_n=0d0,lai_crit_nupt=0d0,depth_m=0d0
+   real(real64)::hum_exp_per_year=-1d0,hum_exp_start_day=0d0
    real(real64)::nh4_lat=0d0,no3_lat=0d0,nh4_seep=0d0,no3_seep=0d0,nh4_top=0d0,no3_top=0d0
  end type
  public::activate_soil_n_historical,build_historical_soil_n_inventory,bind_historical_soil_n_rates
@@ -108,11 +109,23 @@ contains
    if(source%cdissi_half>1000d0.or.source%tcsf_n>1d0.or.source%lai_crit_nupt>10d0)return
    if(source%depth_m<1d-3.or.source%depth_m>100d0)return
    if(any(v(11:16)>1d6))return
+   if(.not.all(ieee_is_finite([source%hum_exp_per_year,source%hum_exp_start_day])))return
+   if(source%hum_exp_per_year<0d0.and.abs(source%hum_exp_per_year+1d0)>0d0)return
+   if(source%hum_exp_per_year>100d0)return
+   if(source%hum_exp_start_day<0d0.or.source%hum_exp_start_day>3d6)return
+   if(abs(source%hum_exp_start_day-anint(source%hum_exp_start_day))>0d0)return
+   if(source%hum_exp_per_year<0d0.and.abs(source%hum_exp_start_day)>0d0)return
    ! Top concentrations bind to the same immutable mineral owner. Only an
    ! explicitly admitted accepted-water surface route may deliver their flux.
    if(.not.reactive_parameters_valid(template))return
    if(abs(template%mineral%inventory%depth_m-source%depth_m)>1d-12)return
    parameter=template
+   if(source%hum_exp_per_year>=0d0)then
+     parameter%hum_exp_daily=source%hum_exp_per_year/365.2425d0
+   else
+     parameter%hum_exp_daily=-1d0
+   end if
+   parameter%hum_exp_start_day=source%hum_exp_start_day
    parameter%mineral%sorption=source%sorpcoef
    parameter%mineral%c_lateral=[source%nh4_lat,source%no3_lat]
    parameter%mineral%c_bottom=[source%nh4_seep,source%no3_seep]

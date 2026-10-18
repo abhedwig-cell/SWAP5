@@ -1,6 +1,6 @@
  ! This setup/receipt wrapper calls complete literal historical routines.
  ! The explicit one-line Nminer reference repair is made before compilation.
- subroutine literal_day(p,before,w0,w1,qout,qbot,qlat,root,after,nit,denit,carbon,surface_water)
+ subroutine literal_day(p,before,w0,w1,qout,qbot,qlat,root,after,nit,denit,carbon,surface_water,soil_clock)
    use wofost_soil_declarations
    use MOD_texture_orgmat,only:bdens
    type(reactive_parameters_t),intent(in)::p
@@ -8,7 +8,7 @@
    real(real64),intent(in)::w0,w1,qout,qbot,qlat,root
    type(soil_n_pool_state_t),intent(out)::after
    real(real64),intent(out)::nit,denit,carbon
-   real(real64),optional,intent(in)::surface_water
+   real(real64),optional,intent(in)::surface_water,soil_clock
    real(real64)::top_water
    real(real64)::nh4c,no3c,nh4end,no3end,nh4avg,no3avg,pa,prod
    top_water=0d0;if(present(surface_water))top_water=max(0d0,surface_water)
@@ -18,7 +18,8 @@
    WFPScrit=p%wfpscrit;WFPScrit2=p%environment%wfpscrit2;CdissiHalf=p%environment%cdissi_half_kg_m2
    RateconFOM_ref(1:nf)=p%organic_reference%ratecon_fom
    RateconBio_ref=p%organic_reference%ratecon_bio;RateconHum_ref=p%organic_reference%ratecon_hum
-   RateconHum_exp=0d0;t1900Soil=0d0;tstartHumexp=0d0
+   RateconHum_exp=p%hum_exp_daily;t1900Soil=1d0;tstartHumexp=p%hum_exp_start_day+1d0
+   if(present(soil_clock))t1900Soil=soil_clock+1d0
    RateConNitrif_ref=p%environment%nitrification_ref_per_day;RateConDenitr_ref=p%environment%denitrification_ref_per_day
    AsfaFOM_Bio(1:nf)=p%organic_reference%asfa_fom_bio;AsfaFOM_Hum(1:nf)=p%organic_reference%asfa_fom_hum
    AsfaBio=p%organic_reference%asfa_bio;AsfaHum=p%organic_reference%asfa_hum

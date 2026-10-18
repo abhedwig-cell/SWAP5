@@ -23,8 +23,9 @@ oracle='''program oracle
  implicit none
  character(512)::path
  character(80)::names(20)
+ logical::rdinqr
  integer::mat(20),ids(1000),nm,ne,i
- real(8)::dose(1000),dates(1000),x,v(20)
+ real(8)::dose(1000),dates(1000),x,v(20),humrate,humstart
  character(8)::key
  call get_command_argument(1,path)
  call rdinit(20,0,trim(path))
@@ -51,6 +52,13 @@ oracle='''program oracle
  if(x/=40d0)error stop 8
  call rdsdor('RateConNitrif_ref',0d0,1000d0,x)
  if(abs(x-.02d0)>1d-14)error stop 9
+ if(rdinqr('RateconHum_exp'))then
+  call rdsdor('RateconHum_exp',0d0,100d0,humrate)
+  call rdstim('tstartHumexp',humstart)
+  if(abs(humrate-.1d0)>1d-14.and.humrate/=0d0.and.abs(humrate-.0001d0)>1d-14)error stop 10
+  if(humstart-1d0/=365d0)error stop 11
+  print '(A)','ORIGINAL_TTUTIL_OPTIONAL_HUMUS_RATE_DATE=PASS'
+ end if
  close(20)
  print '(A)','ORIGINAL_TTUTIL_TYPED_ARRAY_TABLE_DATE_INTERPRETATION=PASS'
 end program
@@ -64,7 +72,7 @@ for opt in ['O0','O2']:
   run(['gfortran','-'+opt,'-std=legacy','-fallow-argument-mismatch','-ffixed-line-length-none','-ffree-line-length-none','-I'+str(source),'-I'+str(b),'-J'+str(b),'-c',p,'-o',o],b,'compile')
  exe=b/'oracle';run(['gfortran','-'+opt,b/'oracle.f90',*objects,'-o',exe],b,'link')
  results[opt]={}
- for name in ['arrays','table','continuation','case_comments']:
+ for name in ['arrays','table','continuation','case_comments','hum_experiment','hum_zero','hum_small']:
   (b/(name+'.snm')).write_bytes((FIXTURES/(name+'.snm')).read_bytes())
   _,output=run([exe,name+'.snm'],b,'native');assert 'ORIGINAL_TTUTIL_TYPED_ARRAY_TABLE_DATE_INTERPRETATION=PASS'in output
   results[opt][name]=output
@@ -74,5 +82,5 @@ for opt in ['O0','O2']:
  assert code!=0 and 'variable is scalar'in output
  results[opt]['scalar_material']='REJECTED_SOURCE_SCALAR_NOT_ARRAY'
 assert results['O0']==results['O2']
-r=dict(status='ORIGINAL_TTUTIL_O0_O2_PASS',authority_zip_sha256=hashlib.sha256(raw).hexdigest(),results=results,source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest()for p in source.iterdir()if p.is_file()},fixture_sha256={n:hashlib.sha256((FIXTURES/(n+'.snm')).read_bytes()).hexdigest()for n in ['arrays','table','continuation','case_comments']},runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['compile','link','native','negative_native']})
+r=dict(status='ORIGINAL_TTUTIL_O0_O2_PASS',authority_zip_sha256=hashlib.sha256(raw).hexdigest(),results=results,source_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest()for p in source.iterdir()if p.is_file()},fixture_sha256={n:hashlib.sha256((FIXTURES/(n+'.snm')).read_bytes()).hexdigest()for n in ['arrays','table','continuation','case_comments','hum_experiment','hum_zero','hum_small']},runner_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['compile','link','native','negative_native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(r['status'])

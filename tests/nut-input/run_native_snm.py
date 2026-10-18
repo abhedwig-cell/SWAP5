@@ -52,7 +52,7 @@ for key,text in {
  'missing_required_top':array+params.replace('cNH4N_top = 0.\n',''),
  'range':array+params.replace('Hum_t = 40.','Hum_t = 1001.'),
  'negative_top':array+params.replace('cNH4N_top = 0.','cNH4N_top = -.1'),
- 'unsupported_hum_exp':array+params+'RateconHum_exp = .1\n',
+ 'missing_hum_start':array+params+'RateconHum_exp = .1\n',
  'zero_repeat':array.replace('1 1 1','0*1')+params,
  'scalar_material':array.replace('MatNum = 1*1','MatNum = 1')+params,
  'cardinality':array.replace('100. 50. 25.','100 50')+params,
@@ -73,6 +73,22 @@ for key,field,value in [('negative_nitrif','RateConNitrif_ref','-.02'),('lai_ran
 fixtures['capacity20x1000']=(table.splitlines()[0]+'\n'+"1 'Mineral ! fertiliser' 0. 0. 0. .21 .10\n"+''.join(f"{i} 'M{i}' 0. 0. 0. .21 .10\n"for i in range(2,21))+table[table.index('smedate'):table.index(';')]+''.join(f"{datetime.date(1901,1,2)+datetime.timedelta(days=i)} 1 0. 0.\n"for i in range(997))+';\n'+params,0)
 fixtures['too_many_records']=('\n'*4096+array+params,-1)
 fixtures['nonzero_top']=(array+params.replace('cNH4N_top = 0.','cNH4N_top = .0005').replace('cNO3N_top = 0.','cNO3N_top = .0015'),1)
+for name,rate,expected in [('hum_experiment','.1',2),('hum_zero','0.',3),('hum_small','.0001',4)]:
+ fixtures[name]=(array+params+'RateconHum_exp = '+rate+'\ntstartHumexp = 01-JAN-1901\n',expected)
+for name,extra in {
+ 'hum_start_without_rate':'tstartHumexp = 01-JAN-1901\n',
+ 'hum_negative':'RateconHum_exp = -.1\ntstartHumexp = 01-JAN-1901\n',
+ 'hum_too_large':'RateconHum_exp = 100.1\ntstartHumexp = 01-JAN-1901\n',
+ 'hum_integer_token':'RateconHum_exp = 1\ntstartHumexp = 01-JAN-1901\n',
+ 'hum_impossible_date':'RateconHum_exp = .1\ntstartHumexp = 29-FEB-1901\n',
+ 'hum_fractional_date':'RateconHum_exp = .1\ntstartHumexp = 1901-01-01.5\n',
+ 'hum_duplicate_start':'RateconHum_exp = .1\ntstartHumexp = 1901-01-01\ntstartHumexp = 1901-01-02\n',
+}.items():
+ text=array+params+extra
+ if name=='hum_start_without_rate':line=len(text.splitlines())
+ elif name in ['hum_impossible_date','hum_fractional_date','hum_duplicate_start']:line=len(text.splitlines())
+ else:line=next(i+1 for i,l in enumerate(text.splitlines())if l.startswith('RateconHum_exp'))
+ fixtures[name]=(text,-line)
 for name,(text,_)in fixtures.items():(OUT/(name+'.snm')).write_text(text)
 providers={}
 for p in (ROOT/'src').rglob('*.f90'):
