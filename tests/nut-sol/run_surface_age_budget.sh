@@ -18,6 +18,14 @@ for opt in 0 2; do
   "$build/owner-o$opt" > "$build/owner-out-o$opt"
   grep -Fq "MC_SOL01_SURFACE_AGE_OWNER=PASS" "$build/owner-out-o$opt"
   echo "MC_SOL01_SURFACE_AGE_OWNER_O${opt}=PASS"
+  gfortran -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J "$build" -I "$build" \
+    src/process/mod_b111_surface_age_budget.f90 \
+    src/process/mod_b111_surface_age_owner.f90 \
+    src/adapter/mod_b111_surface_age_disk.f90 \
+    tests/nut-sol/test_surface_age_disk.f90 -o "$build/disk-o$opt"
+  (cd "$build"; "./disk-o$opt" > "disk-out-o$opt")
+  grep -Fq 'MC_SOL01_SURFACE_AGE_DISK=PASS' "$build/disk-out-o$opt"
+  echo "MC_SOL01_SURFACE_AGE_DISK_O${opt}=PASS"
   gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -O"$opt" -J "$build" -I "$build" \
     src/process/mod_b111_surface_age_budget.f90 src/process/mod_b111_surface_age_soil_handoff.f90 \
@@ -41,6 +49,7 @@ for opt in 0 2; do
 done
 cmp "$build/out-o0" "$build/out-o2"
 cmp "$build/owner-out-o0" "$build/owner-out-o2"
+cmp "$build/disk-out-o0" "$build/disk-out-o2"
 cmp "$build/handoff-out-o0" "$build/handoff-out-o2"
 cmp "$build/native-top-out-o0" "$build/native-top-out-o2"
 echo 'MC_SOL01_SURFACE_AGE_BUDGET_O0_O2=PASS'
