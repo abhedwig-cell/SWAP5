@@ -26,6 +26,16 @@ for opt in 0 2; do
   (cd "$build"; "./disk-o$opt" > "disk-out-o$opt")
   grep -Fq 'MC_SOL01_SURFACE_AGE_DISK=PASS' "$build/disk-out-o$opt"
   echo "MC_SOL01_SURFACE_AGE_DISK_O${opt}=PASS"
+  gfortran -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J "$build" -I "$build" \
+    src/process/mod_b111_surface_age_budget.f90 \
+    src/process/mod_b111_surface_age_owner.f90 \
+    src/adapter/mod_b111_surface_age_disk.f90 \
+    tests/nut-sol/test_surface_age_disk_process.f90 -o "$build/fresh-disk-o$opt"
+  (cd "$build"; "./fresh-disk-o$opt" write > "fresh-write-o$opt"; \
+    "./fresh-disk-o$opt" read > "fresh-read-o$opt")
+  grep -Fq 'SURFACE_AGE_FRESH_WRITE=PASS' "$build/fresh-write-o$opt"
+  grep -Fq 'SURFACE_AGE_FRESH_CONTINUATION=PASS' "$build/fresh-read-o$opt"
+  echo "MC_SOL01_SURFACE_AGE_FRESH_PROCESS_O${opt}=PASS"
   gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -O"$opt" -J "$build" -I "$build" \
     src/process/mod_b111_surface_age_budget.f90 src/process/mod_b111_surface_age_soil_handoff.f90 \
