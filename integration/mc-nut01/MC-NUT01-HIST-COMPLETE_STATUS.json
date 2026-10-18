@@ -54,7 +54,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Implement corrected B1 surface N within existing Soil-N inventory and accepted water provenance, direct O0/O2 then actual production/native qualification.",
+  "next_action": "Measure physically justified original-loam alternative with unchanged strict solver gates before costly730-day pond extension; execute selected incumbent/thermal/TCS6 preservation on verified current provider closure.",
   "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
@@ -1107,7 +1107,7 @@
     "post_merge_guard": "Current complete HIST/age/retained owning chain PASS; reviewed and merged trees identical; full capability false"
   },
   "surface_n_b1_successor": {
-    "status": "DIRECT_AND_TWO_DAY_MAIN_DEVELOPMENT_PASS_FRESH_PROCESS_HARNESS_FIXED",
+    "status": "DIRECT_ORIGINAL_CHEMISTRY_AND_REAL_TWO_DAY_O0_O2_NATIVE_PASS_NOT_ADMITTED",
     "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
     "branch": "work/nut-surface-b1-20261018",
     "contract": "docs/science/MC_NUT01_SURFACE_N_B1_CONTRACT_20261018.md",
@@ -1116,10 +1116,92 @@
     "canonical_admitted": false,
     "mastercoverage_promotion": false,
     "direct_feedback": "O0/O2 real mineral owner: gross rain/evaporation dry retention, rewetting, infiltration/runoff, whole-N, opaque reconstruction, rejection/NaN/net-only guards PASS",
-    "next_action": "Execute corrected exact persisted O0/O2 positive-pond/native probe and expanded independent reservoir/original-chemistry cases before full rotation/owner qualification.",
+    "next_action": "Measure physically justified original-loam alternative with unchanged strict solver gates before costly730-day pond extension; execute selected incumbent/thermal/TCS6 preservation on verified current provider closure.",
     "failed_attempts": [
       "Initial maintained mineral runner extended Werror policy to unchanged generic pond source; corrected selection retains strict flags on all four original providers",
       "Initial physical2-day main PASS, fresh comparison FAIL: harness overwrote argument5 with argument6, causing first=2 instead of1. Actual checkpoint main stocks preserved; no restart PASS claimed."
-    ]
+    ],
+    "checkpoint_commit": "d3f96c752da4ee07f52fe0846febe1c7643c4b39",
+    "last_reconciled_canonical": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "upstream_delta": "PR1321 governance-only, no production/reference/test changes; compose exact source authority before integration",
+    "local_receipts": {
+      "surface-direct-final": {
+        "result_sha256": "b7bfdd9a20a56f354d48bd06a51ae9f5b76adcf1447a5b5b4d828a40563eb8c0",
+        "status": "SURFACE_N_B1_DIRECT_PASS_NOT_INTEGRATED",
+        "cost_seconds": {
+          "compile": 3.4798454490010045,
+          "link": 0.16264126999885775,
+          "native": 0.0054592619999311864
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-mineral-final": {
+        "result_sha256": "2b0726078244bd06fcedf6525dfb6f73da9dba91321bf8d82f37e522d84a8b4b",
+        "status": "DIRECT_PASS",
+        "cost_seconds": {
+          "direct_compile": 4.2432527110031515,
+          "direct_link": 0.15700991499397787,
+          "direct_native": 0.01227446800112375
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-reactive-final": {
+        "result_sha256": "7375dd2dd167ece30ccbd144e1639a8bfbf1160755472b76e94bce2c5df5d06f",
+        "status": "DIRECT_PASS",
+        "cost_seconds": {
+          "direct_compile": 14.838853995002864,
+          "direct_link": 0.1308533429983072,
+          "direct_native": 0.007837390003260225,
+          "reference_compile": 0.8072072279974236,
+          "reference_link": 0.2814989330036042,
+          "reference_native": 0.022477449998405064
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-input-final": {
+        "result_sha256": "bb4d87e6e55f4b366835f23b658dd3e3527e8906a5f4c37b1e19989e5bb918e6",
+        "status": "NATIVE_POSITION_LABEL_SUPPLEMENT_PASS",
+        "cost_seconds": {
+          "compile": 0.13085314599811682,
+          "link": 0.11411091999980272,
+          "native": 0.137611152997124,
+          "original_link": 0.2750610709990724,
+          "original_native": 0.03145921300165355
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-retained-small": {
+        "result_sha256": "3f3aa3fae2742eab175a66b702898aaa714913a83c3a1e335cddb6a555248c37",
+        "status": "B112_SMALL_PRODUCTION_PASS_NOT_ADMITTED",
+        "cost_seconds": {
+          "driver_compile": 3.0775396500030183,
+          "compile": 32.08722850999766,
+          "link": 0.6170596259980812,
+          "native": 0.6047781459965336
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-physical-qualified": {
+        "result_sha256": "ed6c55049e83cf48e51dc99b5153d35ee9e82e3adf51ac6e2a418ebe355ffebb",
+        "status": "SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED",
+        "cost_seconds": {
+          "compile": 366.7360856289779,
+          "link": 0.6366295330044522,
+          "native": 202.09282734999942,
+          "restart_native": 73.30034440600139
+        },
+        "scope": "local raw logs and inputs retained, capsule pending"
+      }
+    },
+    "two_day_physics": {
+      "days": 2,
+      "providers": 326,
+      "o0_o2": "EXACT_RESULTS_AND_ENDPOINT",
+      "fresh_process_restart": "DAY1_EXACT_ENDPOINT_BOTH_OPTIMIZATIONS",
+      "whole_n_residual_kg_m2": -5.670377362099188e-17,
+      "max_water_step_residual_cm": 5.5156346070311946e-15,
+      "qualification": "NOT_ADMITTED_NOT_FULL_ROTATION",
+      "runtime_risk": "202.093s total native for two model days at each optimization, not acceptable to silently select many-hour stress; measure original loam alternative with fixed numerical gates"
+    }
   }
 }
