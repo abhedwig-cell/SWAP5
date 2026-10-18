@@ -57,6 +57,7 @@ contains
    else if(section==2)then
      if(nparam==512.or.len_trim(line)>512)exit
      nparam=nparam+1;parameters(nparam)=line
+    parameter_source_line(nparam)=record
    else
      exit
    end if
@@ -97,6 +98,7 @@ contains
   character(512)::parameters(512),line
   character(256)::word,field
   integer::nvalues(11),nparam,nmat,nevt,unit,ios,nbytes,code,closed,record,j,k,eq,nt
+  integer::parameter_source_line(512),parameter_error_line
   logical::ok
   type(soil_n_amendment_calendar_t)::candidate_plan
   type(soil_n_historical_initial_t)::candidate_initial
@@ -154,8 +156,14 @@ contains
   call parse_soil_n_amendment_tables(rows(:nmat+2+nevt),origin,candidate_plan,code,error_line)
   if(code/=N_INPUT_OK)return
   call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial, &
-    candidate_rates,code,error_line,candidate_ages)
-  if(code/=N_NAMED_OK)return
+    candidate_rates,code,parameter_error_line,candidate_ages)
+  if(code/=N_NAMED_OK)then
+    ! The named parser counts only extracted nutrient fields. Report the
+    ! physical source file record instead, including interleaved TTUTIL arrays.
+    if(parameter_error_line>=1.and.parameter_error_line<=nparam) &
+      error_line=parameter_source_line(parameter_error_line)
+    return
+  end if
   plan=candidate_plan;initial=candidate_initial;rates=candidate_rates
   if(present(ages))ages=candidate_ages
   status=N_UNIFIED_OK;error_line=0
