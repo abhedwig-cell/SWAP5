@@ -459,6 +459,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     incorporate Jacobian information in coefficient matrix elements
       ctx%diagnostics%jacobian_builds = ctx%diagnostics%jacobian_builds + 1
       call jacobian_F()
+      call kalmthout_check_production_jacobian()
 
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
@@ -1260,6 +1261,53 @@ subroutine vector_F(iTask)
         fsi_ws%residual(1:NN)=fsi_ws%residual(1:NN)-provider_macropore_exchange(1:NN)
 
 end subroutine vector_F
+
+! Research-only one-sided FD of the actual vector_F, frozen conductivity SWKIMPL=0.
+! Save/restore both physical candidate and all workspace arrays.
+subroutine kalmthout_check_production_jacobian()
+   type(reference_richards_state_binding_t) :: saved_state
+   type(reference_richards_workspace_t) :: saved_ws
+   type(soil_water_top_boundary_result_t) :: saved_top
+   character(len=1) :: flag
+   integer :: env_status, col, row, regime0
+   real(8) :: eps, fd, analytic, err, scale
+   logical :: saved_resolved
+   call get_environment_variable('KALMTHOUT_JACOBIAN_FD',flag,status=env_status)
+   if(env_status/=0.or.flag/='1')return
+   if(.not.provider_dynamic_top_active.or.SwKimpl/=0.or.provider_macropore_active)return
+   if(state%pondm1<=0.d0.or.state%pondm1>=1.d-3)return
+   if(state%h(1)<0.99d0.or.state%h(1)>1.01d0)return
+   saved_state=state; saved_ws=fsi_ws; saved_top=provider_dynamic_top_result
+   saved_resolved=provider_runoff_resolved; regime0=saved_top%regime
+   do col=1,NN
+      state=saved_state; fsi_ws=saved_ws; provider_dynamic_top_result=saved_top
+      eps=1.d-5*max(1.d0,abs(state%h(col)))
+      state%h(col)=state%h(col)+eps
+      call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
+           CONSTITUTIVE_DEMAND_WATER_CONTENT,fsi_ws%provider_theta,fsi_ws%provider_k, &
+           fsi_ws%provider_capacity,fsi_ws%provider_dkdh)
+      state%theta(1:numnod)=fsi_ws%provider_theta(1:numnod)
+      do row=2,NN
+         fsi_ws%head_gradient(row)=(state%h(row-1)-state%h(row))/grid_disnod(row)+1.d0
+      end do
+      call vector_F(2)
+      if(provider_dynamic_top_result%regime==regime0)then
+         do row=1,NN
+            analytic=0.d0
+            if(row==col)analytic=saved_ws%dfdh_main(row)
+            if(col==row-1)analytic=saved_ws%dfdh_upper(row)
+            if(col==row+1)analytic=saved_ws%dfdh_lower(row)
+            fd=(fsi_ws%residual(row)-saved_ws%residual(row))/eps
+            scale=max(1.d0,abs(analytic),abs(fd)); err=abs(fd-analytic)/scale
+            write(*,'(A,3(1X,I0),4(1X,ES24.16))') 'KALMTHOUT_PRODUCT_FD',regime0,row,col,eps,analytic,fd,err
+         end do
+      else
+         write(*,'(A,2(1X,I0))') 'KALMTHOUT_FD_SWITCH_EXCLUDED',regime0,col
+      end if
+   end do
+   state=saved_state; fsi_ws=saved_ws; provider_dynamic_top_result=saved_top
+   provider_runoff_resolved=saved_resolved
+end subroutine kalmthout_check_production_jacobian
 
 subroutine jacobian_F()
 

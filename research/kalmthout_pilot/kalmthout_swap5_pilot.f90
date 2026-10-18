@@ -1,6 +1,6 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
-  use MOD_grid, only: numnod, z, dz, disnod
+  use MOD_grid, only: fixture_n => numnod, fixture_z => z, fixture_dz => dz, fixture_distance => disnod
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
@@ -19,6 +19,14 @@ program kalmthout_swap5_daily_pilot
   real(real64), parameter :: HARD_MASS_GATE=1.0e-10_real64
   real(real64), parameter :: H0_CM=-75.0_real64
   integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=1
+  character(len=256) :: policy_arg
+  integer :: backtracking_limit=4, iteration_limit=8, numnod=4
+  real(real64),allocatable :: z(:),dz(:),disnod(:)
+  real(real64) :: initial_storage,final_storage,current_soil,current_pond,accepted_time
+  logical :: time_available
+  character(len=256) :: restart_path
+  real(real64) :: restart_time=0.0_real64, restart_pond=0.0_real64
+  character(len=32) :: grid_profile="original"
   character(len=256) :: met_path, out_path, line, ds, max_hours_arg, evap_scale_arg
   type(fmr_production_application_config_t) :: config
   type(fmr_production_application_bootstrap_t) :: app
@@ -86,7 +94,38 @@ program kalmthout_swap5_daily_pilot
   demand_canopy%crop_factor=0.0_real64
   demand_canopy%co2_transpiration_factor=1.0_real64
 
+  call get_command_argument(5,policy_arg)
+  if(len_trim(policy_arg)>0) read(policy_arg,*) backtracking_limit
+  call get_command_argument(6,policy_arg)
+  if(len_trim(policy_arg)>0) read(policy_arg,*) iteration_limit
+  call get_command_argument(7,policy_arg)
+  if(len_trim(policy_arg)>0) grid_profile=trim(policy_arg)
+  if(grid_profile=='matched200') then
+    numnod=34
+    allocate(dz(numnod),z(numnod),disnod(numnod))
+    dz(1:10)=1.0_real64; dz(11:20)=5.0_real64; dz(21:34)=10.0_real64
+    z(1)=-0.5_real64*dz(1); disnod(1)=0.5_real64*dz(1)
+    do k=2,numnod
+      disnod(k)=0.5_real64*(dz(k-1)+dz(k)); z(k)=z(k-1)-disnod(k)
+    end do
+  else
+    call require(grid_profile=='original','known grid profile')
+    numnod=fixture_n; z=fixture_z; dz=fixture_dz; disnod=fixture_distance(1:numnod)
+  end if
+  call get_command_argument(8,restart_path)
   call initialize_config(config)
+  if(len_trim(restart_path)>0)then
+    open(99,file=trim(restart_path),status='old')
+    read(99,*) restart_time,restart_pond
+    do k=1,numnod
+      read(99,*) config%tiles(1)%initial_state%pressure_head(k),config%tiles(1)%initial_state%water_content(k)
+    end do
+    close(99)
+    config%initial_time=restart_time
+    config%tiles(1)%initial_state%ponding_depth=restart_pond
+  end if
+  initial_storage=sum(config%tiles(1)%initial_state%water_content*dz)+config%tiles(1)%initial_state%ponding_depth
+  write(*,'(A,1X,A,1X,I0,3(1X,ES24.16))') 'KALMTHOUT_GRID',trim(grid_profile),numnod,sum(dz),initial_storage,H0_CM
   call app%initialize(config,status)
   call require(status==FMR_APP_BOOT_OK,'bootstrap initialize')
 
@@ -114,9 +153,11 @@ program kalmthout_swap5_daily_pilot
     pm_weather%gross_rain_cm_d=0.0_real64
     call evaluate_daily_atmospheric_demand(demand_parameters,pm_weather,et0,demand_canopy,atmospheric_demand,demand_status)
     call require(demand_status==REF_ET_DEMAND_OK,'SWAP traditional PM daily demand')
+    if(max_hours==1) write(*,'(A,2(1X,ES24.16))') 'KALMTHOUT_PM_DEMAND', &
+      atmospheric_demand%potential_soil_evaporation_cm_per_day,atmospheric_demand%potential_pond_evaporation_cm_per_day
     day_index=day_index+1
-    hour_t0=real(day_index-1,real64)*dt_day
-    hour_t1=real(day_index,real64)*dt_day
+    hour_t0=restart_time+real(day_index-1,real64)*dt_day
+    hour_t1=restart_time+real(day_index,real64)*dt_day
     segment_dt=dt_day/real(NSUB,real64)
     call initialize_interception_window(int(1000000+day_index,int64),hour_t0,hour_t1,precip_mm/10.0_real64,window,wstatus)
     call require(wstatus==INTWIN_OK,'hourly precipitation source window')
@@ -166,6 +207,11 @@ program kalmthout_swap5_daily_pilot
             select type(accepted=>accepted_physical)
             class is(fmr_b110_physical_state_t)
               if(accepted%active_nodes>0.and.allocated(accepted%pressure_head).and.allocated(accepted%water_content)) then
+                call accepted_snapshot%current_time(accepted_time,time_available)
+                write(*,'(A,3(1X,ES24.16))') 'KALMTHOUT_EXACT_INTERVAL',accepted_time,t0,t1
+                write(*,'(A,*(1X,ES24.16))') 'KALMTHOUT_NODE_DISTANCES',disnod
+                if(allocated(accepted%rutter)) write(*,'(A,2(1X,ES24.16))') 'KALMTHOUT_RUTTER_STATE', &
+                  accepted%rutter%canopy_storage(),accepted%rutter%accepted_until()
                 ! Read-only accepted-state dump for independent SWAP4.3.1 replay.
                 ! Every line belongs to the *committed* snapshot, never to a Newton candidate.
                 write(*,'(A,1X,A,1X,I0,3(1X,ES24.16))') 'KALMTHOUT_STATE_HEADER', trim(ds), &
@@ -229,7 +275,26 @@ program kalmthout_swap5_daily_pilot
          hour_residual,hour_in,hour_out
     if(max_hours>0 .and. day_index>=max_hours) exit
   end do
+  call app%copy_committed_for_crop(1,accepted_snapshot,snapshot_status)
+  call accepted_snapshot%current_time(accepted_time,time_available)
+  call accepted_snapshot%snapshot(accepted_physical,snapshot_ok)
+  if(snapshot_ok)then
+    select type(accepted=>accepted_physical)
+    class is(fmr_b110_physical_state_t)
+      final_storage=sum(accepted%water_content*dz)+accepted%ponding_depth
+      write(*,'(A,4(1X,ES24.16))') 'KALMTHOUT_FINAL_STORAGE',accepted_time,final_storage, &
+        final_storage-initial_storage,total_in-total_out-(final_storage-initial_storage)
+    end select
+  end if
   close(UNIT_MET); close(UNIT_OUT)
+  if(max_hours==1.and.snapshot_ok)then
+    select type(accepted=>accepted_physical)
+    class is(fmr_b110_physical_state_t)
+      write(*,'(A,*(1X,ES24.16))') 'KALMTHOUT_MATCHED_HEAD',accepted%pressure_head
+      write(*,'(A,*(1X,ES24.16))') 'KALMTHOUT_MATCHED_THETA',accepted%water_content
+      write(*,'(A,1X,ES24.16)') 'KALMTHOUT_MATCHED_POND',accepted%ponding_depth
+    end select
+  end if
   call app%close(status); call require(status==FMR_APP_BOOT_OK,'clean close')
   call require(failures==0,'no failed days')
   expected_hours=24120
@@ -285,6 +350,7 @@ contains
       p%cofgen(10,k)=p%cofgen(3,k); p%cofgen(11,k)=0.999_real64; p%cofgen(12,k)=0.99_real64*p%cofgen(3,k)
       p%cofgen(22,k)=-1.0e6_real64; p%cofgen(23,k)=1.0e-12_real64
     end do
+    p%max_backtracking=backtracking_limit; p%max_iterations=iteration_limit
     p%bottom_mode=2; p%swkimpl=0; p%swkmean=1; p%swsophy=0
     p%root_extraction_active=.false.; p%macropore_active=.false.; p%snow_active=.false.
     p%hysteresis_active=.false.; p%tabulated_hydraulics_active=.false.; p%elasticity_active=.false.
