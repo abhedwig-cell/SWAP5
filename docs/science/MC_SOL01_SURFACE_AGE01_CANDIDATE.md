@@ -1,5 +1,8 @@
 # MC-SOL01-SURFACE-AGE01 | isolated candidate (2026-10-18)
 
+**Current checkpoint, 18 October 2026:** targeted physical qualification completed on `2aaf0a1258c1b70c5746bbdd136320a1021462fe`, locally and in all three jobs of Actions `39153649970`. Actual Reference positive pond, aged runon, rain, irrigation, infiltration, runoff and evaporation close individual/combined age balances. O0/O2 and fresh-process endpoints are byte-identical. SIGKILL immediately before/after atomic snapshot rename preserves a reconstructible complete generation. The existing dry-pond age endpoint equals the immutable admitted endpoint. Full moving F-CI is selected once because the stable admission source guard changes, as required by MC_SOL01_ACCEPTED_AGE_CONTRACT; earlier impact-only selection notes below are superseded. **Not canonically admitted until this preservation and exact live admission finish.** The versioned MC_SOL01_SURFACE_AGE01_STATUS.json and its manifest-protected capsule are the current recovery authority. Remaining sections are chronological development evidence, not current limitations unless repeated in the status scope limits.
+
+
 Baseline: canonical `fa09e2982cc73a43d1e81bfcd192c5bf5639dd23`.
 The admitted Reference pond water and solute model is untouched. RossFast remains frozen/optional. Aquifer excluded.
 

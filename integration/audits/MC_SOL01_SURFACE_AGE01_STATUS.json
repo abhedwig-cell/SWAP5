@@ -2,13 +2,13 @@
   "work_unit": "MC-SOL01-SURFACE-AGE01",
   "workstream": "MC-SOL01",
   "baseline": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
-  "stage": "PHYSICAL_FINAL_QUALIFICATION_PENDING",
+  "stage": "TARGETED_QUALIFIED_FULL_PRESERVATION_PENDING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
-  "execution_commit": null,
+  "execution_commit": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
   "postimages": {
     ".github/workflows/mc-sol01-surface-age01.yml": {
       "status": "A",
@@ -158,12 +158,24 @@
     "docs/architecture/invariants.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Execute persisted final real Reference triplet O0/O2 plus isolated tests; publish evidence; exact-source successor controls; reconcile admission",
+  "next_action": "Validate exact source and scientific archive controls, then run selected full moving F-CI locally; reconcile live canonical and admit only after terminal required PASS.",
   "blockers": [],
   "test_selection": {
     "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
     "level3": "Existing literal 150-step age and actual Reference zero-pond joint with immutable endpoint equality; new actual positive pond ages, rain/irrigation/runon/infiltration/runoff/evaporation; joint/individual closure, failed numerical attempt, private commit, partition sensitivity, paired fresh-process snapshot and corruption checks O0/O2",
-    "level4": "NOT_SELECTED_IMPACT: no shared hydraulic model/kernel/solver/source policy implementation changed. Full closure is compiled by real driver. HIST guard accepts only exact recorded age delta, still validates every incumbent HIST scientific payload and input. New source guard changes eligibility for this bounded age companion only; no unrelated full preservation or highest low-air selected."
+    "level4": "SELECTED local full moving F-CI once for stable source guard change, per existing accepted age contract. Highest low-air remains NOT_SELECTED_POLICY. Prior development notes of impact-only selection are superseded by this owner selection.",
+    "candidate": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
+    "groups": {
+      "full_fci": {
+        "changed_dependency": "Exact scientific successor eligibility at HIST and moving F-CI guard plus accepted age companion owner and disk snapshot",
+        "scientific_claim": "Stable bounded age source admission including incumbent preservation; full F-CI required by accepted age admission contract when stable source guard changes",
+        "owner": "MC-SOL01 / F-CI canonical admission",
+        "authority": "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+        "existing_evidence": "Final targeted O0/O2 real Reference and isolated age evidence; previous admitted age and HIST immutable capsules",
+        "expected_seconds": 1800,
+        "prior_execution": "NONE"
+      }
+    }
   },
   "scope_limits": [
     "Reference only",
@@ -178,5 +190,38 @@
     "01: two optional declarations generated in CRC helpers, compiler rejected, corrected",
     "02: development driver refined while O2 compiled; final source-immutability assertion rejected run; not qualification",
     "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency."
-  ]
+  ],
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_20261018.tar.xz.b64",
+    "decoded_sha256": "c656f1953c7b12db775711b57472938c9c82c3b82b830cffc54857a826574c41",
+    "members": 3004,
+    "decoded_bytes": 58536
+  },
+  "cost_seconds": {
+    "physical_compile": 264.23940163702173,
+    "physical_link": 0.3860758019982313,
+    "physical_native": 9.712340793004842,
+    "process_compile": 2.6461989840026945,
+    "process_link": 0.1291687289995025,
+    "process_native": 0.007153743999879225,
+    "surface_compile": 7.439388327000415,
+    "surface_link": 0.32732095800020033,
+    "surface_native": 6.656194587003483
+  },
+  "native_result": {
+    "stdout": "REJECTED_NUMERICAL_TRIAL        1       0       0\nACTUAL_REFINEMENT_POND_CM_DAY    1.502072656275369E+00   1.502072652665710E+00   1.502072644175111E+00\nACTUAL_REFINEMENT_SOIL_CM_DAY    3.980731007077760E+00   3.980731006378781E+00   3.980731004897032E+00\nACCEPTED_WATER_DEPTHS_CM    2.500000000000000E-04   2.500000000000000E-04   5.000000000000000E-04   7.372026734119991E-04   7.148137332359105E-05   5.000000000000000E-05\nAGE_RESIDUALS_CM_DAY   -2.193991516241667E-15  -3.256048859354155E-15  -1.338583107204916E-16\nSURFACE_AGE_REAL_REFERENCE_TRIPLET=PASS\n",
+    "endpoint_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+    "fresh_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+    "snapshot_negatives": [
+      "truncated",
+      "overlong",
+      "outer_crc",
+      "inner_crc"
+    ]
+  },
+  "hosted_targeted": {
+    "run_id": 39153649970,
+    "head": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
+    "all_three_jobs": "SUCCESS"
+  }
 }
