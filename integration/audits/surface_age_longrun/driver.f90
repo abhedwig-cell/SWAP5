@@ -45,6 +45,8 @@ program surface_age_longrun
   logical::ok
   character(512)::mode,restart_path,endpoint_path
   integer::level,cut,nsteps,i,first,cycle,substeps
+  integer::temporal_rejections,solver_rejections,mass_rejections
+  real(real64)::actual_min_dt,actual_max_dt
   real(real64)::dt,begin_pond,begin_soil,previous_depth,min_depth,max_depth
   real(real64)::total_input,total_production,total_other,total_output,total_surface_output
   real(real64)::max_combined,max_water,elapsed,accwater,scale_sum,change
@@ -57,7 +59,7 @@ program surface_age_longrun
   call get_command_argument(4,endpoint_path)
   call get_command_argument(5,arg);read(arg,*)cut
   call require(any(level==[1,2,4,8]),'defined temporal partitions')
-  nsteps=40*level;dt=2d0/nsteps
+  nsteps=2000*level;dt=2d0/nsteps
   call initialize_application_config(cfg,-75d0,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
   cfg%tiles(1)%initial_state%ponding_depth=0.5d0
@@ -106,11 +108,13 @@ program surface_age_longrun
   call soil%snapshot(t,theta,c,revision);begin_soil=sum(c%age_amount)
   total_input=0d0;total_production=0d0;total_other=0d0;total_output=0d0;total_surface_output=0d0
   max_combined=0d0;max_water=0d0;waterdepths=0d0;accwater=0d0;scale_sum=0d0;substeps=0
+  actual_min_dt=huge(1d0);actual_max_dt=0d0
+  temporal_rejections=0;solver_rejections=0;mass_rejections=0
   do i=first,nsteps
    ! Four identical half-day cycles: 0.1 d wet followed by 0.4 d drying.
-   cycle=mod(i-1,10*level)
+   cycle=mod(i-1,500*level)
    associate(g=>cfg%tiles(1)%base_forcing%pond_input)
-    if(cycle<2*level)then
+    if(cycle<100*level)then
      g%rain_rate_cm_day=4d0;g%irrigation_rate_cm_day=1d0;g%runon_rate_cm_day=2d0
      g%potential_pond_evaporation_cm_day=.05d0
     else
@@ -132,6 +136,7 @@ program surface_age_longrun
    do j=1,size(obs%accepted_water_flux_substeps)
     associate(q=>obs%accepted_water_flux_substeps(j))
      elapsed=q%t1-q%t0
+     actual_min_dt=min(actual_min_dt,elapsed);actual_max_dt=max(actual_max_dt,elapsed)
      intervaldepths=intervaldepths+[q%converged_rain_rate_cm_day*elapsed, &
       q%converged_irrigation_rate_cm_day*elapsed,q%converged_runon_rate_cm_day*elapsed, &
       -q%top_flux*elapsed,q%converged_runoff_depth_cm,q%converged_pond_evaporation_cm_day*elapsed]
@@ -139,10 +144,13 @@ program surface_age_longrun
     end associate
    end do
    substeps=substeps+size(obs%accepted_water_flux_substeps)
+   temporal_rejections=temporal_rejections+result%diagnostics%temporal_rejections
+   solver_rejections=solver_rejections+result%diagnostics%solver_rejections
+   mass_rejections=mass_rejections+result%diagnostics%mass_rejections
    call snapshot_surface_age_owner(surface,t,depth,stock,revision,ok)
    call require(ok.and.abs(t-i*dt)<=1d-14,'accepted surface clock')
    call require(depth>0d0,'strictly positive pond in bounded wet-dry profile')
-   if(cycle>=2*level)call require(depth<previous_depth,'actual drying phase')
+   if(cycle>=100*level)call require(depth<previous_depth,'actual drying phase')
    call soil%snapshot(t,theta,c,revision);final_soil=sum(c%age_amount)
    scale=max(1d0,initial_stock+initial_soil,stock+final_soil)
    scale_sum=scale_sum+scale
@@ -173,7 +181,7 @@ program surface_age_longrun
    print '(A,I6,9ES24.15)','WINDOW ',i,t,depth,stock,final_soil,combined,water_residual, &
        result%water%mass%residual,result%chemical%infiltrated_age,result%chemical%surface_runoff
    flush(6)
-   if(trim(mode)=='write'.and.(i==cut.or.(cut==-1.and.any(i==level*[1,2,7,10]))))then
+   if(trim(mode)=='write'.and.(i==cut.or.(cut==-1.and.any(i==level*[1550,1600,1850,1500]))))then
     snapshot_name=restart_path
     if(cut==-1)then
      write(arg,'(I0)')i
@@ -191,6 +199,8 @@ program surface_age_longrun
   print '(A,8ES24.15)','TOTAL_AGE_CM_DAY ',begin_pond+begin_soil,total_input,total_production, &
       total_other,total_output,total_surface_output,stock+final_soil,combined
   print '(A,6ES24.15,I9)','SUMMARY ',t,min_depth,max_depth,stock,final_soil,max_combined,substeps
+  print '(A,2ES24.15,3I10)','ACTUAL_STEPS ',actual_min_dt,actual_max_dt, &
+       temporal_rejections,solver_rejections,mass_rejections
   print '(A,3ES24.15)','MAX_CLOSURE ',max_combined,max_water,water_residual
   call endpoint(trim(endpoint_path))
   print '(A)','SURFACE_AGE_TWO_DAY_REFERENCE=PASS'

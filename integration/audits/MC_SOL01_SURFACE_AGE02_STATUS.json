@@ -26,7 +26,7 @@
     "docs/development/workstream-execution-protocol.md"
   ],
   "test_selection": {
-    "focused": "Two-day real Reference four wet/drying cycles O0/O2, 1/2/4 interval refinements and fresh process snapshots at wet and dry transitions; exact separate dry-limit counterexample",
+    "focused": "Two-day actual Reference profile unchanged: 4 half-day cycles, .1d wet/.4d drying. Outer window limits .001/.0005/.00025d, actual full-half tolerance1e-6, hard mass1e-10. Fresh-process snapshots in final-cycle wet, wet->dry, drying, dry->wet; standalone exact dry limit. Explicit existing retained-step proposals; no production changes.",
     "expected_seconds": 600,
     "reason": "Named uncovered multi-cycle state/flux and refinement failure modes. No unchanged solver or full F-CI repetition; verified local provider reuse",
     "full_fci": "NOT_SELECTED_IMPACT: no production, scientific contract, source guard or old runner changed",
@@ -37,7 +37,7 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Persist existing proposal selection and single-pass multiple snapshots, then measured pilot and complete selected local O0/O2 run",
+  "next_action": "Persist bounded trace-window selection then complete selected O0/O2 qualification; retain all censored and failed attempts",
   "blockers": [],
   "checkpoint_commit": "87f5149b8664d25b614c1acc40fe4651776a0837",
   "prior_executions": [
@@ -48,6 +48,13 @@
       "first_window_completed": false,
       "termination": "SIGINT exit130 through session control; manual namespace SIGTERM attempt failed without effect",
       "diagnosis": "Default-OFF accepted-step proposal was left off. Existing controller repeatedly requests full remaining interval; select existing explicit true option while preserving mass1e-10 and temporal1e-6 and all acceptance gates. Actual retry distribution remains UNKNOWN because pilot did not complete."
+    },
+    {
+      "directory": "age02-proposal-pilot",
+      "result": "CENSORED_NOT_PASS",
+      "minimum_cpu_seconds": 174.79,
+      "first_window_completed": false,
+      "diagnosis": "Existing accepted trace deep copies growing prefix during append and checkpoint/restore. Probes: .001d103transactions .082s, .01d952transactions11.448s; extra40Newton iterations did not change .001d results. Use smaller outer windows to bound receipt collection cost. Do not change runtime here."
     }
   ]
 }

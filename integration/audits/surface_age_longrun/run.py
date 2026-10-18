@@ -12,12 +12,14 @@ FC=shlex.split(os.environ.get('FC','gfortran'));events=[];inputs={}
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def bind(p):inputs[str(p.relative_to(ROOT))]=sha(p)
 def run(cmd,cwd,category):
- t=time.perf_counter();r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True)
- n=f'{len(events):04d}';(OUT/(n+'.stdout')).write_bytes(r.stdout);(OUT/(n+'.stderr')).write_bytes(r.stderr)
+ t=time.perf_counter();n=f'{len(events):04d}'
+ with (OUT/(n+'.stdout')).open('wb')as so,(OUT/(n+'.stderr')).open('wb')as se:
+  r=subprocess.run(list(map(str,cmd)),cwd=cwd,stdout=so,stderr=se)
+ stdout=(OUT/(n+'.stdout')).read_text();stderr=(OUT/(n+'.stderr')).read_text()
  events.append(dict(command=list(map(str,cmd)),category=category,seconds=time.perf_counter()-t,returncode=r.returncode,stdout=n+'.stdout',stderr=n+'.stderr'))
  (OUT/'events.json').write_text(json.dumps(events,indent=2)+'\n')
- if r.returncode:print(r.stdout.decode(errors='replace'),r.stderr.decode(errors='replace'),flush=True);r.check_returncode()
- return r.stdout.decode()
+ if r.returncode:print(stdout,stderr,flush=True);r.check_returncode()
+ return stdout
 for path in HERE.glob('*'):
  if path.is_file():bind(path)
 compiler=subprocess.check_output(FC+['--version'],text=True).splitlines()[0]
@@ -57,16 +59,17 @@ for opt in (['O0'] if a.pilot else ['O0','O2']):
  for level in levels:
   snapshot=build/f'level{level}.snapshot';endpoint=build/f'level{level}.endpoint'
   # Save in wet phase; also take independent checkpoints at transitions and drying.
-  cut=-1 if level==4 and not a.pilot else level
+  cut=-1 if level==4 and not a.pilot else 1550*level
   stdout=run([build/'driver','write',level,snapshot,endpoint,cut],build,'long_native')
   assert 'SURFACE_AGE_TWO_DAY_REFERENCE=PASS' in stdout
   summaries=[list(map(float,l.split()[1:]))for l in stdout.splitlines()if l.startswith('SUMMARY ')]
   totals=[list(map(float,l.split()[1:]))for l in stdout.splitlines()if l.startswith('TOTAL_AGE_CM_DAY ')]
   assert len(summaries)==len(totals)==1 and summaries[0][0]==2.
+  assert len([l for l in stdout.splitlines()if l.startswith('WINDOW ')])==2000*level
   results[opt][str(level)]=dict(summary=summaries[0],age_budget=totals[0],endpoint_sha256=sha(endpoint),restarts=[])
   if a.pilot:continue
   # At finest mesh check wet, wet->dry, dry, dry->wet; all in fresh OS processes.
-  for cut in ([level,2*level,7*level,10*level] if level==4 else [level]):
+  for cut in ([1550*level,1600*level,1850*level,1500*level] if level==4 else [1550*level]):
    if level==4:snapshot=build/f'level{level}.snapshot.cut{cut}'
    fresh=build/f'level{level}-fresh{cut}.endpoint'
    resumed=run([build/'driver','resume',level,snapshot,fresh,cut],build,'restart_native')
