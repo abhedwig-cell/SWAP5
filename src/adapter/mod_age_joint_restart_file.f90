@@ -203,7 +203,6 @@ contains
   subroutine append_crc(path,status)
     character(*),intent(in)::path
     integer,intent(out)::status
-    type(surface_age_owner_t),intent(in),optional::surface_owner
     integer(int8),allocatable::bytes(:)
     integer::u,n,io
     integer(int32)::crc
@@ -224,7 +223,6 @@ contains
   subroutine check_crc(path,status)
     character(*),intent(in)::path
     integer,intent(out)::status
-    type(surface_age_owner_t),intent(in),optional::surface_owner
     integer(int8),allocatable::bytes(:)
     integer::u,n,io
     integer(int32)::actual,expected
