@@ -1,6 +1,6 @@
 # MC-SOL01-SURFACE-AGE03-CI: restore three current CI entry points
 
-Status: three owner routes locally qualified; complete moving preservation pending. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
+Status: locally qualified and preserved; canonical admission and hosted confirmation pending. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
 Recovery: `integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json`.
 
 The three automatic merge failures observed by SURFACE-AGE02 are the scope:
@@ -99,3 +99,16 @@ postimage. Any changed compiled provider is rejected. This is bounded dependency
 reconciliation, not a blanket source exemption or claim that inventoried files ran.
 Fresh combined controls pass:11 CI,9 native-label,18 historical-N and8 longrun.
 All new upstream production and original scientific evidence are preserved.
+
+Complete original local moving preservation passed on9de996d43bb7fcc7cbd898755fcf510e4707fd28
+in781.268s, resume OFF, persisted selection preflight PASS,
+complete protected input hashes unchanged and original terminal marker present.
+No highest low-air or RossFast stress extension was selected.
+
+The complete moving execution is frozen at9de996d4. Its later upstream native-label
+parser delta has the independently registered original/native equivalence and
+unchanged730-day physical endpoint proof. Current shared guards have46 fresh
+negative controls. Thus the complete numerical preservation is inherited after
+this bounded reconciliation; no second unrelated full moving or solver stress
+execution is selected under the repository change-impact policy. This does not
+claim a second monolithic moving run on the later source tree.

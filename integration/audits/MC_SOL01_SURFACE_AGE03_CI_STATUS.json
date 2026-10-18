@@ -2,11 +2,11 @@
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
   "baseline": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
-  "stage": "RECONCILING_QUALIFIED_NATIVE_LABEL_SUCCESSOR",
+  "stage": "LOCALLY_QUALIFIED_AND_PRESERVED_READY_FOR_CANONICAL",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_AGE03_CI_REPAIR.md",
@@ -17,7 +17,7 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "One fresh complete local moving gate, resume OFF; no additional native component retesting selected",
+  "next_action": "Review exact live canonical delta, merge existing PR1317, actively follow the three automatic postmerge workflow runs to terminal",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
@@ -103,7 +103,8 @@
         "authority": "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
         "expected_seconds": 600,
         "existing_evidence": "Inherited unchanged numerical sources; previous complete moving proof459s does not cover modified guard/build postimage",
-        "prior_execution": "NONE"
+        "prior_execution": "PASS",
+        "diagnosis": "Complete original current-canonical moving gate, original assertions, actual execution and unchanged conservative inputs; no identical rerun selected; later upstream parser and two guards reconciled through independent current native owner evidence and46 fresh controls, unchanged numerical provider closures"
       }
     }
   },
@@ -246,5 +247,30 @@
       "decoded_bytes": 3120,
       "members": 10
     }
+  },
+  "preserved": true,
+  "full_moving": {
+    "status": "PASS",
+    "execution_commit": "9de996d43bb7fcc7cbd898755fcf510e4707fd28",
+    "seconds": 781.2684518620008,
+    "resume": "OFF",
+    "inputs_unchanged": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_FULL_MOVING_20261018.tar.xz.b64",
+      "decoded_sha256": "81a6f98acd455383d8f9a22c2b6d7f96db776546d6aff980877ef85580c7f977",
+      "decoded_bytes": 166440,
+      "members": 9
+    },
+    "inheritance_after_execution": {
+      "canonical": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+      "current_source_receipt": "90523044f9d03a0eb45c40986e1670b8debbe9a1",
+      "scope": "Actual complete moving PASS on frozen9de source; exact registered parser original/native equivalence and730-day unchanged physical endpoints verified, both current guard compositions and46 negative controls fresh. No new solver or physical closure changes, no second unrelated full rerun selected under change-impact policy.",
+      "current_monolithic_full_rerun": false
+    }
+  },
+  "documentation_checks": {
+    "source": "PASS",
+    "mkdocs_strict": "PASS",
+    "strict_log_sha256": "b7e51288b3411345ea9742e958d5a8cb5cbeabea3683e32d06e3b0f0775b42ab"
   }
 }
