@@ -225,7 +225,9 @@ contains
     type(surface_age_owner_t)::surface_trial
     type(kernel_committed_state_t)::water_trial(1)
     type(age_state_t)::chemical_trial
-    logical::ok
+    logical::ok,surface_available
+    integer(int64)::surface_revision
+    real(real64)::surface_time,surface_depth,surface_stock
     integer::code
     status=JOINT_INVALID
     if(present(surface_owner).neqv.present(surface_identity))return
@@ -238,6 +240,11 @@ contains
     end if
     if(water%ready())return
     if(chemical%ready())return
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,surface_time,surface_depth,surface_stock, &
+           surface_revision,surface_available)
+      if(surface_available)return
+    end if
     if(column%state_handle/=1.or..not.bounded_template(template))return
     call fmr_restore_committed_restart(payload%water,water_parameter_id,[column],[template],water_trial,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK)return
