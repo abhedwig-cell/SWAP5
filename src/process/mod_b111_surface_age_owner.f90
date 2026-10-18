@@ -98,7 +98,7 @@ contains
     if(.not.all(ieee_is_finite([payload%saved%time_day,payload%saved%depth_cm, &
         payload%saved%stock_cm_day])))return
     if(payload%saved%depth_cm<0.0_real64.or.payload%saved%stock_cm_day<0.0_real64)return
-    if(payload%saved%depth_cm==0.0_real64.and.payload%saved%stock_cm_day>0.0_real64)return
+    if(payload%saved%depth_cm<=0.0_real64.and.payload%saved%stock_cm_day>0.0_real64)return
     if(payload%saved%revision<0_int64)return
     state=payload%saved
     status=AGE_OWNER_OK
