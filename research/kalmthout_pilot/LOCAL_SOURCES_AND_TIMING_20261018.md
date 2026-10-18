@@ -4,6 +4,10 @@ Datum: 18 oktober 2026. Voortzetting van de technische vergelijking, geen afrond
 
 Herstelbranch: `research/kalmthout-local-sources-20261018`, voortbouwend op de remote technische vergelijking `3ca98e1499940b4f2a3b3077018f28498158912d`. De eerdere reparatiebranch en concept-PR1312 blijven een afzonderlijk herstelpunt.
 
+## Leidende projectkeuze na de rekentijdmeting
+
+De gebruiker heeft op18oktober2026 expliciet gekozen voor SWAP4.3.1 als rekenmodel voor SYMPHONICA. SWAP5 wordt hier niet verder getest, geoptimaliseerd of als productievereiste behandeld. Het gemeten performanceprobleem blijft gedocumenteerd voor een afzonderlijk SWAP5-traject. De onderstaande oorspronkelijke performancevraag is dus buiten dit project geparkeerd. Het doel hier is automatisch verzamelde, traceerbare lokale invoer en uitgevoerde SWAP4-berekeningen over meerdere cellen.
+
 ## Gemeten volledige native runs
 
 De bestaande GNU13.3.0/O2-executables zijn opnieuw uitgevoerd met dezelfde kalendercorrecte ERA5-invoer, 24.120 uren en volledige PM-vraag. Compilatie is uitgesloten. Eén waarneming per variant, op dezelfde gedeelde x86_64-omgeving met Intel Xeon Platinum 8573C. Geen geïsoleerde performancekwalificatie; de 3cm-meting overlapt gedeeltelijk met GIS-verwerking. De JSON-bestanden leggen ook CPU-tijd, commando en executablehash vast.
