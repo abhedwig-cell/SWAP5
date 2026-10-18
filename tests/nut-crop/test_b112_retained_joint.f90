@@ -327,6 +327,11 @@ contains
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
      'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
    close(unit)
+   ! Long-horizon physical variant: remove the prescribed sustained bottom
+   ! extraction while retaining root uptake, drainage and strict temporal
+   ! certificate. The historic -0.1 bottom-flux stress result remains recorded
+   ! as a separate failed diagnostic, not rewritten as a passing experiment.
+   cfg%tiles(1)%base_forcing%bottom_flux=0d0
    ! Source owner is reconstructed from the same input in each fresh process.
    ! The restart decoder verifies its parameter identity against these values.
    call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
