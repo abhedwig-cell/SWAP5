@@ -1,0 +1,102 @@
+{
+  "status": "COMPLETE_INITIAL_REGIONAL_MODEL_NOT_CALIBRATED",
+  "period": [
+    "2024-01-01",
+    "2026-10-01"
+  ],
+  "days": 1005,
+  "grid_cells": 4096,
+  "cell_size_m": 250,
+  "domain_area_km2": 256,
+  "versions": {
+    "model": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    },
+    "heath_variant": {
+      "cells": 229,
+      "status_counts": {
+        "SUCCESS": 229
+      },
+      "all_selected_cases_complete": true,
+      "scope": "229-cell vegetation delta",
+      "full_grid_complete": false
+    },
+    "model_european": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    },
+    "model_local": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    }
+  },
+  "european_heath_cells": 156,
+  "local_heath_cells": 229,
+  "local_additional_heath_cells": 73,
+  "local_comparison": {
+    "TACT_mm": {
+      "mean_changed_cells_mm": -279.02696027397263,
+      "min_changed_cells_mm": -670.3294,
+      "max_changed_cells_mm": -108.97379999999993,
+      "domain_area_mean_delta_mm": -4.972892602539063
+    },
+    "TPOT_mm": {
+      "mean_changed_cells_mm": -793.6031657534246,
+      "min_changed_cells_mm": -1873.2469999999998,
+      "max_changed_cells_mm": -425.12840000000006,
+      "domain_area_mean_delta_mm": -14.143806420898436
+    },
+    "EACT_mm": {
+      "mean_changed_cells_mm": 242.31625616438356,
+      "min_changed_cells_mm": -21.44370000000015,
+      "max_changed_cells_mm": 417.08670000000006,
+      "domain_area_mean_delta_mm": 4.3186246826171875
+    },
+    "EIC_mm": {
+      "mean_changed_cells_mm": -158.60997670617812,
+      "min_changed_cells_mm": -642.5368,
+      "max_changed_cells_mm": 53.0686,
+      "domain_area_mean_delta_mm": -2.826789135632569
+    },
+    "RUNOFF_mm": {
+      "mean_changed_cells_mm": 0.0,
+      "min_changed_cells_mm": 0.0,
+      "max_changed_cells_mm": 0.0,
+      "domain_area_mean_delta_mm": 0.0
+    },
+    "net_bottom_outflow_mm": {
+      "mean_changed_cells_mm": 168.16369692009317,
+      "min_changed_cells_mm": 43.14340000000004,
+      "max_changed_cells_mm": 493.77927516679995,
+      "domain_area_mean_delta_mm": 2.997058074991895
+    },
+    "storage_change_mm": {
+      "mean_changed_cells_mm": 27.157635616438355,
+      "min_changed_cells_mm": 0.11830000000003338,
+      "max_changed_cells_mm": 82.3766,
+      "domain_area_mean_delta_mm": 0.484010595703125
+    }
+  },
+  "physical_delta": "Only vegetation changes in73 additional BWK-majority-heath cells between European and local versions; no boundary or soil changes.",
+  "warning": "Free drainage and shallow wetland head are explicit priors, not validated groundwater boundaries. Year-boundary accounting flags remain visible.",
+  "preparation_receipts": "native_runs_completed=0 in original preparation/inventory receipts records their preparation stage; this completion receipt and native execution receipts record the final state."
+}

@@ -44,7 +44,7 @@ def main():
                  total_grid_cells=len(grid),heath_override_cells=len(candidates),
                  unchanged_parent_cells=len(grid)-len(candidates),
                  model_contract='Full grid assembled by explicit parent/delta links; no new native calculation or parameter alteration.',
-                 source_priority='European CORINE322 heath plus positive local BWK majority-heath additions; no negative local habitat inference from absence of a listed Natura2000 habitat.',
+                 source_priority='European CORINE322 majority-heath only; no local habitat data determine vegetation.' if args.common_only else 'European CORINE322 heath plus positive local BWK majority-heath additions; no negative local habitat inference from absence of a listed Natura2000 habitat.',
                  groundwater='All parent lower boundaries preserved;62 local wet-heath review cells remain separately flagged.')
     (args.output/'model_version.json').write_text(json.dumps(version,indent=2)+'\n');print(json.dumps(version,indent=2))
 

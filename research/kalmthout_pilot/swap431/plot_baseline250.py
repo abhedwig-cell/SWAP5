@@ -59,7 +59,9 @@ def main():
                         **({'vmin':0,'vmax':100} if k==4 else {}))
         cb=fig.colorbar(image,ax=ax,orientation='horizontal',fraction=.045,pad=.09)
         cb.ax.tick_params(labelsize=8)
-        if k==0:cb.set_ticks(range(len(codes)),labels=[{10:'Bos',20:'Heide',30:'Gras',40:'Landbouw',50:'Stedelijk',90:'Moeras'}[c] for c in codes])
+        if k==0:
+            cb.set_ticks(range(len(codes)),labels=[{10:'Bos',20:'Heide',30:'Gras',40:'Landbouw',50:'Stedelijk',90:'Moeras'}[c] for c in codes])
+            cb.ax.tick_params(labelsize=7)
         elif k==1:cb.set_ticks([0,1],labels=['Directe kaartwaarde','Nabijgelegen kaartwaarde'])
         elif k in (2,3):cb.set_label('mm over 1 januari 2024 t/m 1 oktober 2026')
         elif k==4:cb.set_label('% van native potentiële transpiratie')

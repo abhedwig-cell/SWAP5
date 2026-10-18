@@ -1,22 +1,108 @@
 {
-  "work_unit": "BASELINE250-v01",
-  "source_checkpoint": "a40ddbb736ed57839de94d13bf25e10617261583",
-  "status": "RUNNING_FULL_GRID",
-  "model": "SWAP4.3.1",
+  "status": "COMPLETE_INITIAL_REGIONAL_MODEL_NOT_CALIBRATED",
+  "period": [
+    "2024-01-01",
+    "2026-10-01"
+  ],
+  "days": 1005,
   "grid_cells": 4096,
-  "selected_command": "python3 research/kalmthout_pilot/swap431/run_baseline250.py RUNROOT/model SWAP431_EXE --workers 8",
-  "justification": "User Go of2026-10-18T23:02 Europe/Amsterdam continues authorized complete initial regional model.4096 prepared columns and69 complete native cells already persisted with verified fresh restoration.",
-  "expected_cost": "Approximately30-60min based on selected69-cell execution and8 available CPU cores; not a measured full-grid time.",
-  "runtime_limits": "120s time censor per native cell; failures retained; eight workers; no native source or acceptance changes.",
-  "implementation_scope": "Independent column model; common European source maps plus explicit defaults. No SWAP5/canonical or Actions selection.",
-  "recovery": "Restore the two repository archive parts using the manifest, then rerun the same command; exact native results are reused and per-cell receipts survive partial completion.",
-  "local_improvement_register": "local_sources/baseline250_heath_refinement_register.csv;159 majority-heath candidates,62 wet-heath review cells, no v01 inputs edited.",
-  "next_selected_action": "After full WorldCover reference finishes, run229 explicitly prepared vegetation overrides;156 common-European CORINE cells,73 additional BWK cells; all soil/boundary/numerics unchanged.",
-  "vegetation_delta_expected_cost": "About1-3min, eight native workers;229 changed-input cases and no unrelated solver tests.",
-  "model_versions": {
-    "worldcover_reference": "4096 original independent columns",
-    "european_common": "4096 columns with156 CORINE322 heath vegetation replacements",
-    "local_improved": "4096 columns with229 total heath replacements:156 CORINE plus73 positive BWK additions"
+  "cell_size_m": 250,
+  "domain_area_km2": 256,
+  "versions": {
+    "model": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    },
+    "heath_variant": {
+      "cells": 229,
+      "status_counts": {
+        "SUCCESS": 229
+      },
+      "all_selected_cases_complete": true,
+      "scope": "229-cell vegetation delta",
+      "full_grid_complete": false
+    },
+    "model_european": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    },
+    "model_local": {
+      "cells": 4096,
+      "status_counts": {
+        "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 396,
+        "SUCCESS": 3700
+      },
+      "all_selected_cases_complete": true,
+      "scope": "4096-cell full regional grid",
+      "full_grid_complete": true
+    }
   },
-  "corine_coverage": "237 actual source polygons; all4096 cells >=95% coverage; dataset2018 with25ha minimum mapping unit;660 conifer-dominant cells identified for a later phenology refinement, not changed in this block."
+  "european_heath_cells": 156,
+  "local_heath_cells": 229,
+  "local_additional_heath_cells": 73,
+  "local_comparison": {
+    "TACT_mm": {
+      "mean_changed_cells_mm": -279.02696027397263,
+      "min_changed_cells_mm": -670.3294,
+      "max_changed_cells_mm": -108.97379999999993,
+      "domain_area_mean_delta_mm": -4.972892602539063
+    },
+    "TPOT_mm": {
+      "mean_changed_cells_mm": -793.6031657534246,
+      "min_changed_cells_mm": -1873.2469999999998,
+      "max_changed_cells_mm": -425.12840000000006,
+      "domain_area_mean_delta_mm": -14.143806420898436
+    },
+    "EACT_mm": {
+      "mean_changed_cells_mm": 242.31625616438356,
+      "min_changed_cells_mm": -21.44370000000015,
+      "max_changed_cells_mm": 417.08670000000006,
+      "domain_area_mean_delta_mm": 4.3186246826171875
+    },
+    "EIC_mm": {
+      "mean_changed_cells_mm": -158.60997670617812,
+      "min_changed_cells_mm": -642.5368,
+      "max_changed_cells_mm": 53.0686,
+      "domain_area_mean_delta_mm": -2.826789135632569
+    },
+    "RUNOFF_mm": {
+      "mean_changed_cells_mm": 0.0,
+      "min_changed_cells_mm": 0.0,
+      "max_changed_cells_mm": 0.0,
+      "domain_area_mean_delta_mm": 0.0
+    },
+    "net_bottom_outflow_mm": {
+      "mean_changed_cells_mm": 168.16369692009317,
+      "min_changed_cells_mm": 43.14340000000004,
+      "max_changed_cells_mm": 493.77927516679995,
+      "domain_area_mean_delta_mm": 2.997058074991895
+    },
+    "storage_change_mm": {
+      "mean_changed_cells_mm": 27.157635616438355,
+      "min_changed_cells_mm": 0.11830000000003338,
+      "max_changed_cells_mm": 82.3766,
+      "domain_area_mean_delta_mm": 0.484010595703125
+    }
+  },
+  "physical_delta": "Only vegetation changes in73 additional BWK-majority-heath cells between European and local versions; no boundary or soil changes.",
+  "warning": "Free drainage and shallow wetland head are explicit priors, not validated groundwater boundaries. Year-boundary accounting flags remain visible.",
+  "preparation_receipts": "native_runs_completed=0 in original preparation/inventory receipts records their preparation stage; this completion receipt and native execution receipts record the final state.",
+  "work_unit": "BASELINE250_COMPLETE_20261018",
+  "model": "SWAP4.3.1",
+  "reference_wall_seconds": 1775.5862030499993,
+  "vegetation_delta_wall_seconds": 100.37261956699876,
+  "recovery": "Complete archive and part manifest under evidence; original sample archive retained as historical checkpoint.",
+  "next_action": "Review62 wet-heath boundaries and potential managed grass/cropland systems using local groundwater, terrain and surface-water evidence; no automatic local groundwater changes."
 }
