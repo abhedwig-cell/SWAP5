@@ -61,6 +61,17 @@ done
 gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_swap5_pilot.f90 -o "$BUILD/pilot.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/pilot.o" -o "$BUILD/kalmthout_pilot"
 
+if [[ "${KALMTHOUT_DRY_DIAG_ONLY:-0}" == "1" ]]; then
+  set +e
+  "$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/dry_diagnostic.csv" 1700 1.0 > "$OUTDIR/dry_diagnostic.log" 2>&1
+  code=$?
+  set -e
+  grep -E '^KALMTHOUT_(ACCEPTED_DRY_STATE|SUBHOUR_FAIL|RESULT_DEBUG)' "$OUTDIR/dry_diagnostic.log" || true
+  echo "KALMTHOUT_DRY_DIAGNOSTIC_EXIT=$code"
+  test "$code" -eq 0
+  exit
+fi
+
 # Diagnostic-only owner-backed pilot: failure in a preliminary scenario
 # must not prevent the independent atmospheric sensitivity matrix.
 for entry in "48:1.0:probe_48h" "0:0.0:full_rainfall_2024_2026"; do
