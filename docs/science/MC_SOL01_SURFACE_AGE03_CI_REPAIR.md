@@ -46,3 +46,11 @@ continue frozen on1d2d5082; new admission must identify separate execution point
 and prove complete unchanged actual scientific dependencies before inheriting any
 F-GC result. Source inventory alone does not imply all inventoried files executed.
 Fresh current F-CI51/58 dispatch and combined negative controls remain required.
+
+
+The local execution service changed executor keys while the first F-GC ABI build
+was still running. No process remains. Completed participant/application O0/O2
+markers and1126compiler records are retained, but this interrupted prefix is NOT
+a complete F-GC PASS. Final qualification executes all three routes fresh on the
+merged source. Only exact recovered compiler artifacts may be reused with source,
+flags, provider/module and toolchain hashes; every native assertion executes again.

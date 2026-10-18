@@ -2,7 +2,7 @@
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
   "baseline": "1e8bf36ec52544e50f5b2720031228f9a6369525",
-  "stage": "RECONCILING_CONCURRENT_HUMUS_WITH_FROZEN_OWNER_RUN",
+  "stage": "RECOVERING_ENVIRONMENT_INTERRUPTION",
   "implemented": true,
   "persisted": true,
   "tested": false,
@@ -17,12 +17,12 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "Persist useful candidate then three original local owner gates; compose evidence and run stable full moving gate",
+  "next_action": "Persist simplified direct-current qualification and rerun all three original routes on merged source; no frozen complete F-GC inheritance claim",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
       "status": "A",
-      "sha256": "4ebc4c360c27288c20001042ba98cbecdea8dd7618e1464939abcfc53ede7ee6"
+      "sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4"
     },
     "integration/audits/surface_age_ci/run.py": {
       "status": "A",
@@ -84,7 +84,7 @@
     "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "test_selection": {
-    "candidate": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+    "candidate": "f3339f0c922d5291a786f714943e0ae30edc2701",
     "groups": {
       "fgc_closeout": {
         "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
@@ -112,6 +112,12 @@
       "execution": "e42eb9b6eddf3631b36d510035cad8fb31c7373f",
       "status": "FAILED_NOT_PASS",
       "reason": "After rate pin reconciliation original FCI51 next rejects already admitted read-only configuration_values provider extension7e007ea0. Diff to qualified donor only adds immutable configuration export. Current CO2 resolver/binding match historical qualified donor. Add exact bounded provider eligibility under unchanged whole-production authority; keep historical pins and original tests."
+    },
+    {
+      "path": "age03-local-02",
+      "execution": "1d2d508258eeb28debb7b0cdf01ba35ceb14cf45",
+      "status": "ENVIRONMENT_INTERRUPTED_NO_FGC_FULL_PASS",
+      "reason": "exec-server transport disconnected and executor key changed; original process gone. FCI51 full workflow22.610s and FCI5830.545s passed; FGC participant and application O0/O2 prefix passed, checksum-pinned MODFLOW downloaded, ABI build incomplete.1126 compiler records retained; no full FGC or ABI PASS inferred. Final all cases selected fresh on merged source."
     }
   ],
   "initial_baseline": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
@@ -120,6 +126,6 @@
     "upstream_pr": 1316,
     "kind": "Independent qualified humus/residue owner; production held at new canonical",
     "retained_execution": "1d2d508258eeb28debb7b0cdf01ba35ceb14cf45",
-    "rule": "Do not mutate original frozen execution. Only unchanged compiled providers, runtime Python callers, fixtures, assertions and pinned assets may support F-GC inheritance; execute updated source/owner dispatch and current F-CI51/58 fresh. Full moving preservation selected on merged source only."
+    "rule": "Original environment-interrupted prefix is retained without full F-GC PASS. All three existing routes will execute fresh on merged source; any exact recovered compiler artifacts require immutable source/flags/provider hashes and fresh native assertions. No NUT/source mutation enters this work unit."
   }
 }

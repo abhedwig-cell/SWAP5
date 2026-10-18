@@ -28,25 +28,6 @@ def validate(f):
  r=json.loads(f['result.json']);check(r['status']=='THREE_EXISTING_CI_ROUTES_LOCAL_PASS','unfinished CI science')
  check(r['execution_commit']==record()['execution_commit'],'unbound CI execution')
  for p,h in r['input_sha256'].items():check(sha((ROOT/p).read_bytes())==h,'stale CI science input '+p)
- if 'fgc_inheritance'in r:
-  inherited=r['fgc_inheritance'];origin=json.loads(f['fgc-origin/result.json'])
-  check(origin['execution_commit']==record()['coexistence']['retained_execution'],'unregistered F-GC execution')
-  old=next(e for e in origin['events']if e['case']=='fgc')
-  check(old['returncode']==0 and f['fgc-origin/'+old['stdout']]==f['fgc.stdout'],'F-GC frozen native proof')
-  build=json.loads(f['fgc-origin/compiler-events.json']);old_inputs=origin['input_sha256']
-  origin_root=inherited['origin_root'].rstrip('/')+'/'
-  compiled=set()
-  for e in build:
-   for arg in e['args']:
-    rel=arg[len(origin_root):]if arg.startswith(origin_root)else arg
-    if rel in old_inputs and rel.endswith(('.f90','.F90')):compiled.add(rel)
-  check(compiled,'missing actual compiler input closure')
-  required=compiled|{p for p in old_inputs if p.startswith(('tests/fgc/','tests/fapp/','tests/fsi/','tests/support/','reference/'))or(p.startswith('src/adapter/')and p.endswith('.py'))}
-  check(set(inherited['relevant_input_sha256'])==required,'incomplete F-GC execution dependency binding')
-  for p in required:
-   check(inherited['relevant_input_sha256'][p]==old_inputs[p]and sha((ROOT/p).read_bytes())==old_inputs[p],'changed F-GC scientific dependency '+p)
-  check(inherited['claim']=='UNCHANGED_EXECUTED_INPUTS_NOT_MERGED_NATIVE_RERUN','ambiguous F-GC inherited claim')
-
  required={'fci51':'FCI51P_SUCCESSOR_O0_O2_PRESERVATION=PASS','fci58':'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS','fgc':'F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS'}
  check({e['case']for e in r['events']}==set(required),'missing CI route')
  for e in r['events']:
