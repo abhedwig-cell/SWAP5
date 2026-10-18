@@ -4,7 +4,8 @@ program test_surface_age_budget
   implicit none
   type(surface_age_request_t)::q
   type(surface_age_receipt_t)::r
-  real(real64)::tol
+  real(real64)::tol, x
+  integer::k
   tol=1.0e-11_real64
   q%dt_day=0.25_real64
   q%pond_start_cm=1.0_real64
@@ -54,5 +55,27 @@ program test_surface_age_budget
   q%pond_age_stock_cm_day=1.0_real64
   call advance_surface_age_budget(q,r)
   if(r%status/=SURFACE_AGE_INVALID) error stop 'dry stock without water accepted'
+  ! Deterministic positive-gross sequence, including dry-to-wet input.
+  do k=1,200
+    q=surface_age_request_t()
+    q%dt_day=0.01_real64*real(mod(k,17)+1,real64)
+    q%pond_start_cm=real(mod(k,11),real64)*0.1_real64
+    q%rain_depth_cm=0.04_real64+real(mod(k,5),real64)*0.02_real64
+    q%runon_depth_cm=real(mod(k,7),real64)*0.01_real64
+    q%irrigation_depth_cm=0.01_real64
+    q%infiltration_depth_cm=0.03_real64
+    q%runoff_depth_cm=0.01_real64
+    q%evaporation_depth_cm=0.005_real64
+    q%pond_end_cm=q%pond_start_cm+q%rain_depth_cm+q%runon_depth_cm+ &
+         q%irrigation_depth_cm-q%infiltration_depth_cm-q%runoff_depth_cm-q%evaporation_depth_cm
+    q%pond_age_stock_cm_day=2.0_real64*q%pond_start_cm
+    q%runon_age_day=1.0_real64
+    q%irrigation_age_day=0.3_real64
+    call advance_surface_age_budget(q,r)
+    if(r%status/=SURFACE_AGE_OK) error stop 'positive gross sweep rejected'
+    x=r%pond_end_stock_cm_day+r%infiltration_age_export_cm_day+ &
+      r%runoff_age_export_cm_day-q%pond_age_stock_cm_day-r%external_age_input_cm_day-r%age_production_cm_day
+    if(abs(x)>tol) error stop 'positive gross sweep age closure'
+  end do
   print *, 'MC_SOL01_SURFACE_AGE_BUDGET=PASS'
 end program
