@@ -12,3 +12,7 @@ The admitted Reference pond water and solute model is untouched. RossFast remain
 **Required before admission:** a separately persistent pond age amount and revised joint restart schema; actual Reference accepted-substep provenance bound atomically to the water trial; top age injection into matrix age process; handling of dry-down and total pond evaporation; independent fresh-process restart; O0/O2 real physical joint, negative rollback and preservation of admitted age, pond chemistry, NUT and canonical. Do not confuse an isolated process PASS with scientific admission. No mastercoverage promotion.
 
 The current isolated operator is a **research candidate**, not a production API nor a complete MC-SOL01-SURFACE-AGE01 outcome.
+
+## Additional execution record (2026-10-18)
+
+Native gfortran is available in the local environment, but this chat container cannot resolve github.com for a repository checkout. The PR includes a narrowly scoped O0/O2 Actions workflow (`.github/workflows/mc-sol01-surface-age01.yml`) to execute the actual source exact script if triggered. As of the check on head `f4acd6f509704f104468f34e4afa14f71d0fb9f4`, no workflow run carrying its name was listed. Therefore compiled qualification is **NOT YET ESTABLISHED**. The updated negative oracle refuses the complete-evaporation age-stock singularity. No code from this candidate is called by the admitted runtime.
