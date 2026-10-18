@@ -30,6 +30,7 @@ replace(needle,''' if(trim(selected)=='surface-profile')then
   cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   cfg%numerical%model_temporal_indicator_budget_available=.false.
   cfg%numerical%transaction%temporal_tolerance=1d-6
+  cfg%numerical%retain_accepted_step_proposal=.true.
  end if
 '''+needle)
 needle='   call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &\n      cfg%tiles(1)%initial_state,base_day,ok,spread(0d0,1,numnod))'
@@ -58,6 +59,11 @@ replace(needle,needle+'''
      forcing%pond_input%potential_pond_evaporation_cm_day=.01d0*(1d0+.4d0*season)
      forcing%pond_input%ponding_max_cm=.2d0;forcing%pond_input%runoff_resistance_day=.1d0
     end if''')
+needle="    call require(r%status==0,'rotation actual daily Richards crop Soil-N')"
+replace(needle,"""    print *,'SURFACE_DAY_NUMERICS',d+1,r%joint%joint%diagnostics%accepted_substeps, &
+      r%joint%joint%diagnostics%attempts,r%joint%joint%diagnostics%temporal_rejections, &
+      r%joint%joint%diagnostics%solver_rejections,r%joint%joint%diagnostics%max_abs_step_mass_residual
+"""+needle)
 replace('   type is(fmr_b110_temporal_indicator_state_t)','   class is(fmr_b110_physical_state_t)')
 needle="   print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w"
 replace(needle,"   if(trim(selected)=='surface-profile')print *,'SURFACE_N_B1_PHYSICAL_DAYS',last\n"+needle)
