@@ -1,6 +1,6 @@
 # F-CI73 current qualified successor preservation
 
-Locally qualified successor on canonical101ff877; canonical admission pending. Existing authority and recovery record:
+Canonically admitted via PR1321 at6153b540; all five automatic workflows PASS. Existing authority and recovery record:
 `integration/f-ci/F-CI73P_STATUS.json`, current_successor_20261018.
 
 The moving workflow still pins the historical topology2ce4e9f7 and
@@ -40,3 +40,18 @@ historical-N and8 age longrun controls, plus actual untracked-source rejection
 and an intentionally corrupted F-CI73 capsule rejected by the incumbent CI
 authority. The corrupted capsule was restored exactly before final qualification.
 No native model ran while a source or evidence fault was present.
+
+Actual admission merge:6153b5407dcb22a1f800b5359c39c3c12e9b8959.
+Automatic moving F-CI73 run39168835969 now succeeds, preserving historical
+source/evidence checks and requiring the exact current original-native successor.
+F-CI51P39168835956, F-CI58P39168835957, F-CI canonical39168836087 and actual
+complete SWAP/MODFLOW closeout39168835955 also finish SUCCESS on that merge.
+Canonical push runs selection/feedback; its skipped broad jobs do not constitute
+a fresh full moving science run. The separate actual781.268s local full moving
+proof remains inherited under the unchanged numerical source/contract boundary.
+No manual hosted run was started. All production, tests, tools and reference
+trees remain byte-identical to101ff877; only governance/source validation changed.
+Both postmerge source/qualification authorities pass on a clean actual checkout.
+The prior F-CI73 failure onf9731ff6 is historical evidence, not a current failure.
+Complete evaporative surface-age dry-down remains separately outside the current
+qualified wet-pond convention; no safety boundary or numerical tolerance changed.

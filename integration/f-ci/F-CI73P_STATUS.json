@@ -106,12 +106,12 @@
   ],
   "current_successor_20261018": {
     "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
-    "phase": "LOCALLY_QUALIFIED_READY_FOR_CANONICAL",
+    "phase": "CANONICALLY_ADMITTED_ALL_FIVE_AUTOMATIC_WORKFLOWS_PASS",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "historical_admission": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
     "execution_commit": "101ff877d850311d7552fd852014b0ec65fde508",
     "validator_sha256": "0839867ca18baf12145b443cc1b9c539c6310fa1afc7368293d96e57d034fbc3",
@@ -154,7 +154,7 @@
       "rossfast": "FROZEN_UNCHANGED",
       "hosted": "Only automatic integrated workflows, no manual runs"
     },
-    "next_action": "Integrate existing successor PR; actively follow automatic workflows through terminal; no new physical numerical qualification selected",
+    "next_action": "Scoped moving successor repair complete; retain original historical qualification and all current-source science. No new solver or physical scope claim.",
     "controls": {
       "total": 59,
       "current_fci73": 11,
@@ -175,6 +175,52 @@
       "source": "PASS",
       "mkdocs_strict": "PASS",
       "strict_log_sha256": "4a18b5610a0b1d5f267274aab757e44faf0a06ceedbfc4dea5d0ffc8829fb647"
+    },
+    "canonical_merge": "6153b5407dcb22a1f800b5359c39c3c12e9b8959",
+    "hosted": {
+      "head": "6153b5407dcb22a1f800b5359c39c3c12e9b8959",
+      "all_triggered_workflows_green": true,
+      "manual_runs": 0,
+      "runs": [
+        {
+          "id": 39168835957,
+          "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835957"
+        },
+        {
+          "id": 39168836087,
+          "name": "F-CI canonical qualification",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168836087"
+        },
+        {
+          "id": 39168835956,
+          "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835956"
+        },
+        {
+          "id": 39168835969,
+          "name": "F-CI73 F-GC25 moving preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835969"
+        },
+        {
+          "id": 39168835955,
+          "name": "F-GC fixed-interface groundwater closeout",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835955"
+        }
+      ],
+      "evidence": {
+        "path": "integration/audits/evidence/FCI73_CURRENT_HOSTED_20261018.tar.xz.b64",
+        "decoded_sha256": "2dc34b35e4a3893ef9254ab1fd3590762e0113b318cebb3fdcec8b3258bc0e3c",
+        "decoded_bytes": 180104,
+        "members": 11
+      },
+      "scope": "Five automatic workflow conclusions PASS. Canonical workflow is selection/feedback only; skipped broad jobs are not a new full scientific PASS. Separate original full781.268s moving proof and current59 guard controls retained. F-GC actual whole SWAP/MODFLOW/restart closeout SUCCESS on merge.",
+      "source_authorities": "Both current F-CI73 and incumbent age/NUT CI qualifications PASS on actual merge, clean checkout"
     }
   }
 }

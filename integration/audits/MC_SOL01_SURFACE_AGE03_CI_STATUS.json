@@ -17,7 +17,7 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "Scoped surface-age CI repair complete. Separate pre-existing F-CI73 topology/publication pin reconciliation remains a distinct owner task; complete evaporative age dry-down remains scientifically blocked.",
+  "next_action": "Surface-age scoped CI repair and F-CI73 follow-up canonically closed. Complete evaporative age dry-down remains the separate scientific convention blocker.",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
@@ -286,7 +286,7 @@
   "canonical_merge": "f9731ff618759bd5d421a7603f8c7bd9f86ea5aa",
   "pull_request": 1317,
   "three_repaired_ci_green": true,
-  "global_ci_green": false,
+  "global_ci_green": true,
   "hosted": {
     "head": "f9731ff618759bd5d421a7603f8c7bd9f86ea5aa",
     "runs": [
@@ -335,8 +335,55 @@
     "validator": "integration/audits/fci73_current.py",
     "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
     "science_guard": "F-CI73 current original-native proof additionally required by CI qualification; no blanket inventory waiver",
-    "phase": "LOCALLY_QUALIFIED_59_CONTROLS_READY_FOR_INTEGRATION",
+    "phase": "CANONICALLY_ADMITTED_ALL_FIVE_AUTOMATIC_WORKFLOWS_PASS",
     "pull_request": 1321,
-    "controls": 59
-  }
+    "controls": 59,
+    "canonical_merge": "6153b5407dcb22a1f800b5359c39c3c12e9b8959",
+    "hosted": {
+      "head": "6153b5407dcb22a1f800b5359c39c3c12e9b8959",
+      "all_triggered_workflows_green": true,
+      "manual_runs": 0,
+      "runs": [
+        {
+          "id": 39168835957,
+          "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835957"
+        },
+        {
+          "id": 39168836087,
+          "name": "F-CI canonical qualification",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168836087"
+        },
+        {
+          "id": 39168835956,
+          "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835956"
+        },
+        {
+          "id": 39168835969,
+          "name": "F-CI73 F-GC25 moving preservation",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835969"
+        },
+        {
+          "id": 39168835955,
+          "name": "F-GC fixed-interface groundwater closeout",
+          "conclusion": "success",
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39168835955"
+        }
+      ],
+      "evidence": {
+        "path": "integration/audits/evidence/FCI73_CURRENT_HOSTED_20261018.tar.xz.b64",
+        "decoded_sha256": "2dc34b35e4a3893ef9254ab1fd3590762e0113b318cebb3fdcec8b3258bc0e3c",
+        "decoded_bytes": 180104,
+        "members": 11
+      },
+      "scope": "Five automatic workflow conclusions PASS. Canonical workflow is selection/feedback only; skipped broad jobs are not a new full scientific PASS. Separate original full781.268s moving proof and current59 guard controls retained. F-GC actual whole SWAP/MODFLOW/restart closeout SUCCESS on merge.",
+      "source_authorities": "Both current F-CI73 and incumbent age/NUT CI qualifications PASS on actual merge, clean checkout"
+    }
+  },
+  "global_ci_scope": "All five automatic workflows on6153b540 after qualified F-CI73 successor repair; historical failures onf9731ff6 are retained as historical facts"
 }
