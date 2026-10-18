@@ -27,6 +27,7 @@ program kalmthout_swap5_daily_pilot
   type(kernel_committed_state_t) :: accepted_snapshot
   class(transaction_state_t), allocatable :: accepted_physical
   logical :: snapshot_ok
+  integer :: snapshot_status
   type(interception_source_window_t) :: window
   type(rutter_interval_input_t) :: rp
   type(daily_atmospheric_demand_parameters_t) :: demand_parameters
@@ -158,8 +159,8 @@ program kalmthout_swap5_daily_pilot
       call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
       if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
         failures=failures+1
-        call app%copy_committed_for_crop(1,accepted_snapshot,status)
-        if(status==FMR_APP_BOOT_OK) then
+        call app%copy_committed_for_crop(1,accepted_snapshot,snapshot_status)
+        if(snapshot_status==FMR_APP_BOOT_OK) then
           call accepted_snapshot%snapshot(accepted_physical,snapshot_ok)
           if(snapshot_ok) then
             select type(accepted=>accepted_physical)
