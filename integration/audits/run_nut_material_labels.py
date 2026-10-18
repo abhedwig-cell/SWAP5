@@ -36,7 +36,7 @@ def run(args,b,cat):
 original='''program original_labels
  implicit none
  integer::mat(1000),n,nm,i,expect1,expect2
- real(8)::frac(20)
+ real(8)::frac(20),dates(1000)
  character(512)::path,a,b
  call get_command_argument(1,path);call get_command_argument(2,a);call get_command_argument(3,b)
  read(a,*)expect1;read(b,*)expect2
@@ -44,6 +44,7 @@ original='''program original_labels
  call rdainr('MatNum',1,20,mat,20,nm)
  if(nm/=2.or.any(mat(:2)/=[expect1,expect2]))error stop 1
  call rdfdor('NH4NFrac',0d0,1d0,frac,20,nm)
+ call rdatim('smedate',dates,1000,n)
  call rdfinr('iMat',1,1000,mat,1000,n)
  if(n/=3.or.any(mat(:n)/=[2,1,2]))error stop 2
  if(any(frac(mat(:n))/=[.07d0,.21d0,.07d0]))error stop 3
