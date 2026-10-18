@@ -694,6 +694,16 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 irrigation_owner_verified=0
 verify_mc_irr01_owner_successor() {
   if (( irrigation_owner_verified )); then return; fi
+  if [[ -f integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json ]]; then
+    # This unit changes no irrigation code. The complete exact-delta age
+    # validator and the current irrigation/HIST owner retain its native proof;
+    # do not compare current management against an obsolete intermediate donor.
+    python3 -B tests/nut-sol/verify_surface_age_successor.py || fail 'surface-age exact boundary for irrigation owner'
+    python3 -B tests/mc-irr01/verify_tcs6_successor.py || fail 'current irrigation owner science under surface-age successor'
+    irrigation_owner_verified=1
+    echo 'FCI_CANONICAL_MC_IRR01_CURRENT_OWNER_SOURCE_AND_EVIDENCE=PASS'
+    return
+  fi
   local candidate_path
   declare -A irrigation_owner_blobs=(
     [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
