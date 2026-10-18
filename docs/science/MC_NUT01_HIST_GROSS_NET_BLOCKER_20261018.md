@@ -74,3 +74,17 @@ counterexample and rejection checks only. It cannot authorize full migration.
 The versioned evidence capsule and exact execution commit are recorded in the
 existing work-unit status. No solver, chemistry, parser, restart or existing
 qualification input is changed by this audit.
+
+## Executed receipt
+
+Persisted execution8432fff5b593b67a1380f89bd32304e0965d64b1 passed both
+optimizations with exact stdout. Compilation2.034s, linking0.105s and native
+execution0.005s. Current historical owning validation and all18 original
+corruption controls pass with unchanged production tree
+`ad87d0fdf6e8c7cb3e33efb6ee073cdd2ea8ac91`. Documentation source checks and
+strict MkDocs build pass. The [raw evidence](../../integration/audits/evidence/MC_NUT01_HIST_GROSS_NET_WITNESS_20261018.tar.xz.b64)
+contains every compiler/link/native log, generated original source, pinned
+management excerpt, measured result, preservation output and corruption results.
+A failed initial preservation invocation caused solely by generated untracked
+Python cache files was corrected by removing those generated files and disabling
+bytecode generation; it was not counted as a preservation PASS.
