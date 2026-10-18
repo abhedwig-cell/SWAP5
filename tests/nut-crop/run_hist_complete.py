@@ -63,6 +63,12 @@ for opt in ['O0','O2']:
   o=b/f'{i}.o';run(['gfortran',*flags,'-c',p,'-o',o],b,'compile');objects.append(o)
   if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
  exe=b/'hist';run(['gfortran',*flags,*objects,'-o',exe],b,'link')
+ # Original two-day owner has independent historical chemistry/N assertions,
+ # harvest, annual chemical fallow and successor preservation inside the driver.
+ default_restart=b/'default.restart';default_endpoint=b/'default.endpoint';default_fresh=b/'default.fresh'
+ default_out=run([exe,'write',default_restart,default_endpoint],b,'native')
+ run([exe,'resume',default_restart,default_fresh],b,'native')
+ assert default_endpoint.read_bytes()==default_fresh.read_bytes()==Path(str(default_endpoint)+'.opaque').read_bytes()
  # Original composition and its fresh-process endpoint stay selected.
  outputs={}
  for profile in ['source-profile','rotation-profile']:
@@ -76,7 +82,7 @@ for opt in ['O0','O2']:
    for day in [1,120,121,365,366,500]:
     fresh=b/('rotation-fresh-'+str(day));run([exe,'resume',str(restart)+'.'+str(day),fresh,profile,str(day)],b,'restart_native')
     assert endpoint.read_bytes()==fresh.read_bytes(),('fresh rotation drift',day)
- results[opt]=dict(endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile']},stdout=outputs,providers=len(ordered)-1)
+ results[opt]=dict(default_endpoint=sha(default_endpoint),default_stdout=default_out,endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile']},stdout=outputs,providers=len(ordered)-1)
  assert all(sha(ROOT/p)==v for p,v in inputs.items()),'source changed during execution'
 assert results['O0']==results['O2'],'O0/O2 endpoint or observable mismatch'
 inputs[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__))

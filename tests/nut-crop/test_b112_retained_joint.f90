@@ -340,7 +340,8 @@ contains
      'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
      'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1.', &
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
-     'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
+     'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
+     'cNH4N_top = 0.','cNO3N_top = 0.'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal

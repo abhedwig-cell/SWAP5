@@ -160,6 +160,9 @@ contains
      seen(field_index)=.true.;v(field_index)=x
    end do
    if(any(.not.seen(:20)).or.any(.not.seen(22:26)))return
+   if(native)then
+    if(any(.not.seen(31:32)))return
+   end if
    if(any(seen(27:30).and.v(27:30)>100d0))return
    initial%fom_kg_m3(1)=v(1)
    initial%fom_kg_m3(2)=v(2)

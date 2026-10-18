@@ -49,6 +49,7 @@ fixtures={'arrays':(array+params,0),'table':(table+params,0),
 for key,text in {
  'missing':(array+params).replace('FOM1_t = 1.\n',''),
  'duplicate':array+params+'Hum_t = 40.\n',
+ 'missing_required_top':array+params.replace('cNH4N_top = 0.\n',''),
  'range':array+params.replace('Hum_t = 40.','Hum_t = 1001.'),
  'nonzero_top':array+params.replace('cNH4N_top = 0.','cNH4N_top = .1'),
  'unsupported_hum_exp':array+params+'RateconHum_exp = .1\n',
