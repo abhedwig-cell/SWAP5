@@ -429,6 +429,13 @@ contains
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
        state,weather,base_day+real(day,real64),base_day+real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
+     if(day>=60.and.day<=67)then
+       print *,'source Richards day trace',day,'status',day_receipt%status, &
+         'accepted',day_receipt%joint%joint%diagnostics%accepted_substeps, &
+         'temporal_reject',day_receipt%joint%joint%diagnostics%temporal_rejections, &
+         'min_dt',day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
+         'max_indicator_normalized',day_receipt%joint%joint%diagnostics%max_temporal_indicator
+     end if
      if(day_receipt%status/=JOINT_OK)then
        print *,'source day failure',day,'joint',day_receipt%status, &
          'senescence',day_receipt%senescence%status, &
@@ -451,7 +458,7 @@ contains
          day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
          day_receipt%joint%joint%diagnostics%max_accepted_substep_duration, &
          day_receipt%joint%joint%diagnostics%max_abs_step_mass_residual
-       print *,'temporal model max indicator / budget / source', &
+       print *,'normalized max temporal indicator / raw head budget / source', &
          day_receipt%joint%joint%diagnostics%max_temporal_indicator, &
          cfg%numerical%model_temporal_indicator_budget, &
          day_receipt%joint%joint%diagnostics%temporal_acceptance_source
