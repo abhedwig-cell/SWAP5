@@ -3969,7 +3969,7 @@ contains
     type(fmr_macropore_top_input_forcing_t) :: macro_top_input_trial
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
     type(rfm_live_trial_prepare_result_t) :: rfm_live
-    type(soil_water_top_boundary_result_t) :: rfm_preflight
+    type(soil_water_top_boundary_result_t) :: rfm_preflight, kalm_top_probe
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider, &
@@ -4724,6 +4724,22 @@ contains
              self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent, fixed_top_conductivity)
       end if
       request%evaluation%dynamic_top_boundary => rutter_top_provider
+      ! Pilot-only observation of the atmospheric regime at the exact
+      ! accepted trial start. This call is read-only: it does not alter the
+      ! solver request, provider or committed physical state.
+      if (t0 >= 68.54_real64 .and. t0 < 68.59_real64) then
+        call rutter_top_provider%evaluate(request%base_state%pressure_head(1), &
+             request%base_state%water_content(1),request%base_state%ponding_depth, &
+             request%boundary,kalm_top_probe)
+        write(*,'(A,1X,ES18.10,3(1X,I0),8(1X,ES18.10),1X,A)') &
+             'KALMTHOUT_TOP_REGIME',t0,kalm_top_probe%status,kalm_top_probe%regime, &
+             merge(1,0,kalm_top_probe%surface_head_derivative_available), &
+             request%base_state%pressure_head(1),request%base_state%ponding_depth, &
+             kalm_top_probe%actual_top_flux,kalm_top_probe%surface_head, &
+             kalm_top_probe%candidate_ponding_depth,kalm_top_probe%runoff_depth, &
+             kalm_top_probe%surface_head_dpressure_head_top, &
+             self%rutter_forcing%potential_bare_soil_evaporation_cm_per_day,trim(kalm_top_probe%route)
+      end if
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
     end if
