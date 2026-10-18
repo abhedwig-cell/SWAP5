@@ -2,10 +2,10 @@
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
   "baseline": "1e8bf36ec52544e50f5b2720031228f9a6369525",
-  "stage": "RECOVERING_ENVIRONMENT_INTERRUPTION",
+  "stage": "THREE_OWNER_ROUTES_LOCALLY_QUALIFIED_FULL_PRESERVATION_PENDING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "authority_paths": [
@@ -17,7 +17,7 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "Persist simplified direct-current qualification and rerun all three original routes on merged source; no frozen complete F-GC inheritance claim",
+  "next_action": "Fresh combined source/evidence negative controls; persist qualification capsule and current selection; run required complete local moving preservation once",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
@@ -84,7 +84,7 @@
     "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "test_selection": {
-    "candidate": "f4d5aab67ce194af9ef658f883d589dae41db71e",
+    "candidate": "9721f08752454d26a8c366ecffad11e4b5a7a7b4",
     "groups": {
       "fgc_closeout": {
         "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
@@ -93,7 +93,8 @@
         "authority": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
         "expected_seconds": 900,
         "existing_evidence": "Prior historical admitted original gate; current3source build failure cannot qualify current closure",
-        "prior_execution": "NONE"
+        "prior_execution": "PASS",
+        "diagnosis": "All original science and restart assertions complete; segmented recovery and earlier infra failures retained"
       },
       "full_fci": {
         "changed_dependency": "CI eligibility/source authority composition and owner runner closure",
@@ -127,5 +128,87 @@
     "kind": "Independent qualified humus/residue owner; production held at new canonical",
     "retained_execution": "1d2d508258eeb28debb7b0cdf01ba35ceb14cf45",
     "rule": "Original environment-interrupted prefix is retained without full F-GC PASS. All three existing routes will execute fresh on merged source; any exact recovered compiler artifacts require immutable source/flags/provider hashes and fresh native assertions. No NUT/source mutation enters this work unit."
-  }
+  },
+  "local_runtime_link_failure": {
+    "execution_commit": "db37cd91a9543317099ad8ede1d2eeb78e6bc771",
+    "returncode": 1,
+    "fgc_seconds": 620.5917610130018,
+    "diagnosis": "Missing installed shared runtime target caused fallback to non-PIC libgfortran.a; restored runtime symlink, no compiler/source/flag changes"
+  },
+  "pipefail_abi_failure": {
+    "execution_commit": "db37cd91a9543317099ad8ede1d2eeb78e6bc771",
+    "returncode": 1,
+    "fgc_seconds": 240.5562262900021,
+    "diagnosis": "Required ABI symbol exists. Identical-library100-repeat reproduces old nm|grep-q SIGPIPE141 in21cases; full consuming original symbol check100/100PASS",
+    "production_changed": false
+  },
+  "preserved_upstream": {
+    "canonical": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
+    "pull_request": 1318,
+    "protected_input_changed": false
+  },
+  "execution_commit": "9721f08752454d26a8c366ecffad11e4b5a7a7b4",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_SCIENCE_20261018.tar.xz.b64",
+    "decoded_sha256": "1ea0801a5cc1caf3b42113f393a09d40df40d5a2a27af6ac47406e8ad2922624",
+    "decoded_bytes": 352756,
+    "members": 112
+  },
+  "targeted_cost_seconds": {
+    "compile": 160.10925982207482,
+    "link": 15.030954981008108,
+    "cases": {
+      "fci51": 22.984594296998694,
+      "fci58": 39.154514276000555,
+      "fgc": 327.78908724899884
+    }
+  },
+  "case_events": [
+    {
+      "case": "fci51",
+      "command": [
+        "bash",
+        "/workspace/scratch/7ca2da0b0ead/age03-symbol-final/fci51-workflow.sh"
+      ],
+      "returncode": 0,
+      "seconds": 22.984594296998694,
+      "stdout": "fci51.stdout",
+      "stderr": "fci51.stderr"
+    },
+    {
+      "case": "fci58",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh"
+      ],
+      "returncode": 0,
+      "seconds": 39.154514276000555,
+      "stdout": "fci58.stdout",
+      "stderr": "fci58.stderr"
+    },
+    {
+      "case": "fgc",
+      "command": [
+        "original full F-GC script through e2e replay",
+        "exact original restart suffix after fetching absent immutable Git fixture"
+      ],
+      "returncode": 0,
+      "seconds": 327.78908724899884,
+      "stdout": "fgc.stdout",
+      "stderr": "fgc.stderr"
+    }
+  ],
+  "controls": {
+    "ci_negative": 9,
+    "historical_negative": 18,
+    "longrun_negative": 8,
+    "all_pass": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_CONTROLS_20261018.tar.xz.b64",
+      "decoded_sha256": "9cec3072093d89affcefcc79b9f2e1754901d3f9931850e76500506f4ebab355",
+      "decoded_bytes": 2684,
+      "members": 9
+    }
+  },
+  "fgc_execution_mode": "Complete original assertions in two same-source immutable segments: original full body through exact two fresh physical endpoints, restart suffix after fetching missing historical Git object; no monolithic shell PASS claimed"
 }

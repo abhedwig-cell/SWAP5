@@ -1,6 +1,6 @@
 # MC-SOL01-SURFACE-AGE03-CI: restore three current CI entry points
 
-Status: qualification in progress. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
+Status: three owner routes locally qualified; complete moving preservation pending. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
 Recovery: `integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json`.
 
 The three automatic merge failures observed by SURFACE-AGE02 are the scope:
@@ -69,3 +69,19 @@ consumer exit makes the producer fail with SIGPIPE although its symbol exists.
 Both ABI entry scripts now consume the entire symbol listing and retain exactly
 the original required symbol expressions. This repairs orchestration, not ABI
 requirements. The failed route is retained without a scientific PASS.
+
+Local result on9721f087: WOF43A/CO2 workflow22.985s; F-SI35 fixed-K39.155s;
+F-GC327.789s including317.883s full physical prefix and9.906s exact
+restart continuation. The original first F-GC segment exited128 only because the
+local checkout lacked historical fixture1da854e4; the object was fetched unchanged.
+Every original full-route assertion executed, with exact same complete source
+hashes across both segments. This is a segmented local qualification, not a
+monolithic shell PASS. Hosted postmerge CI will execute the original whole script.
+
+The complete negative controls pass:9 CI evidence/source controls,18 retained
+historical nitrogen controls and8 surface-age longrun controls. Original physical
+triplet and current source coexistence also pass. Compiler wrapper invocation wall
+time160.109s and link15.031s include exact artifact validation/reuse; these are
+not cold-build timings or exclusive native execution costs. The independent final
+head is-0.71499997000580917m, SWAP/GW flux mismatch6.0920812080313045e-23m/s.
+All scoped sources are unchanged by the canonical PR1318 diagnostic.
