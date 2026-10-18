@@ -54,7 +54,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Resolve B0/B1 reference for gross atmospheric N versus corrected surface-solute balance before claiming complete migration; native label and other parser gaps remain independently open.",
+  "next_action": "Qualify persisted native label candidate, register exact current supplemental source and preservation evidence, then integrate if all gates pass. Gross atmospheric decision remains open.",
   "recovery_point": "Bounded canonical PR1316 retained; gross/net diagnostic execution8432fff5, evidence receipt36496735, branch work/nut-hist-carrier-witness-20261018. Full HIST remains unqualified.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
@@ -231,6 +231,21 @@
         "expected_seconds": 350,
         "existing_evidence": "Only reuse byte-bound current main providers after terminal PASS; execute three new O0/O2 diagnostic drivers",
         "prior_execution": "NONE"
+      },
+      "native_material_labels": {
+        "owner": "MC-NUT01",
+        "changed_dependency": "Native SNM lexical-to-table normalization only",
+        "scientific_claim": "Original TTUTIL overwrites material labels with event row positions; modern export remains strict; exact old physical endpoints/restart preserved",
+        "expected_seconds": 700,
+        "selection": "SELECTED_OWNING_ADMISSION",
+        "existing_evidence": "Old retained chemistry/restart/thermal/TCS6 bodies unchanged, direct input dependency is only native parser",
+        "gates": [
+          "native38+label9 O0/O2",
+          "original TTUTIL10+label4 O0/O2",
+          "unchanged modern export suite O0/O2",
+          "fresh full current actual124+three730-day profiles O0/O2, all36 transition restarts and rollback",
+          "strict registered supplemental guard, original retained source-bound archive and18 negative controls"
+        ]
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1006,5 +1021,14 @@
     "guard_negative_controls": 18,
     "docs_checks": "check_docs and mkdocs --strict PASS",
     "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441"
+  },
+  "material_label_successor": {
+    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "baseline": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
+    "branch": "work/nut-native-material-labels-20261018",
+    "contract": "docs/science/MC_NUT01_NATIVE_MATERIAL_LABELS_20261018.md",
+    "changed_source": "src/process/mod_soil_n_unified_input.f90",
+    "scope": "Native definition labels validated1..20 then normalized to row positions; iMat unchanged; modern export unchanged",
+    "mastercoverage_promotion": false
   }
 }
