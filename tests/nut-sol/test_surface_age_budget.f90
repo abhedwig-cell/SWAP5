@@ -77,5 +77,31 @@ program test_surface_age_budget
       r%runoff_age_export_cm_day-q%pond_age_stock_cm_day-r%external_age_input_cm_day-r%age_production_cm_day
     if(abs(x)>tol) error stop 'positive gross sweep age closure'
   end do
-  print *, 'MC_SOL01_SURFACE_AGE_BUDGET=PASS'
+  ! Independent continuous stirred reservoir: V=1, inflow=outflow=1,
+  ! incoming age=2, initial age amount=1. Exact M(t)=3-2 exp(-t).
+  block
+    real(real64)::dt,stock,exact,err,previous_error
+    integer::level,step,n
+    exact=3.0_real64-2.0_real64*exp(-1.0_real64)
+    previous_error=huge(1.0_real64)
+    do level=1,7
+      n=2**level;dt=1.0_real64/n;stock=1.0_real64
+      do step=1,n
+        q=surface_age_request_t()
+        q%dt_day=dt;q%pond_start_cm=1.0_real64;q%pond_end_cm=1.0_real64
+        q%pond_age_stock_cm_day=stock
+        q%runon_depth_cm=dt;q%runon_age_day=2.0_real64;q%infiltration_depth_cm=dt
+        call advance_surface_age_budget(q,r)
+        if(r%status/=SURFACE_AGE_OK)error stop 'analytic reservoir rejected'
+        stock=r%pond_end_stock_cm_day
+      end do
+      err=abs(stock-exact)
+      if(err>=previous_error)error stop 'analytic reservoir does not converge'
+      if(level>1.and.err/previous_error>0.6_real64)error stop 'first order age consistency'
+      previous_error=err
+    end do
+    if(err>0.003_real64)error stop 'analytic reservoir accuracy'
+  end block
+  print *, 'MC_SOL01_SURFACE_AGE_ANALYTIC_FIRST_ORDER=PASS'
+  print *, 'MC_SOL01_SURFACE_AGE_BUDGET=PASS' 
 end program

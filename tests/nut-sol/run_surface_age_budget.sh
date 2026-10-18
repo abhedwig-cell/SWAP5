@@ -10,6 +10,8 @@ for opt in 0 2; do
     tests/nut-sol/test_surface_age_budget.f90 -o "$build/age-o$opt"
   "$build/age-o$opt" > "$build/out-o$opt"
   grep -Fq 'MC_SOL01_SURFACE_AGE_BUDGET=PASS' "$build/out-o$opt"
+  grep -Fq 'MC_SOL01_SURFACE_AGE_ANALYTIC_FIRST_ORDER=PASS' "$build/out-o$opt"
+  echo "MC_SOL01_SURFACE_AGE_ANALYTIC_FIRST_ORDER=PASS"
   echo "MC_SOL01_SURFACE_AGE_BUDGET_O${opt}=PASS"
   gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -ffpe-trap=invalid,zero,overflow \
     -O"$opt" -J "$build" -I "$build" \

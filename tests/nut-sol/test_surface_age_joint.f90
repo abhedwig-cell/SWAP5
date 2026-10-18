@@ -105,7 +105,12 @@ program test_surface_age_joint
    call step(T0,1d0,ages)
    call require(result%status==JOINT_WATER_REJECTED,'numerical failure of long attempt')
    call compare_all(w0,s0,a0)
+   call require(result%diagnostics%temporal_rejections+result%diagnostics%solver_rejections+ &
+       result%diagnostics%mass_rejections>0,'actual numerical rejection diagnostic')
+   print '(A,3I8)','REJECTED_NUMERICAL_TRIAL ',result%diagnostics%temporal_rejections, &
+       result%diagnostics%solver_rejections,result%diagnostics%mass_rejections
    cfg%numerical=bad_config
+   call refinement()
    call soil%snapshot(t,theta,c,revision);initial_soil=sum(c%age_amount)
    initial_stock=1.5d0
    call step(T0,T1,ages)
@@ -147,6 +152,11 @@ program test_surface_age_joint
    call write_age_snapshot_disk(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,8801_int64, &
        water,soil,surface,status)
    call require(status==0,'single published restart envelope')
+   w0=water;s0=soil;a0=surface
+   call read_age_snapshot_disk(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64, &
+       8801_int64,p,water,soil,surface,status)
+   call require(status/=0,'initialized triplet cannot be overwritten')
+   call compare_all(w0,s0,a0)
    ! Existing destination stays unchanged if a pending writer cannot acquire lock.
    open(newunit=u,file=trim(restart_path)//'.pending',status='new');close(u)
    call write_age_snapshot_disk(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,8801_int64, &
@@ -159,6 +169,28 @@ program test_surface_age_joint
   call endpoint(trim(endpoint_path))
   print '(A)','SURFACE_AGE_REAL_REFERENCE_TRIPLET=PASS'
 contains
+  subroutine refinement()
+   real(real64)::pond(3),soil_amount(3),dt,clock
+   integer::level,i,nn
+   do level=1,3
+    water=w0;soil=s0;surface=a0
+    nn=2**(level-1);dt=T1/nn
+    do i=1,nn
+     clock=(i-1)*dt
+     call step(clock,i*dt,ages)
+     call require(result%status==JOINT_OK,'actual Reference partition refinement')
+    end do
+    call snapshot_surface_age_owner(surface,t,depth,stock,revision,ok);pond(level)=stock
+    call soil%snapshot(t,theta,c,revision);soil_amount(level)=sum(c%age_amount)
+   end do
+   ! Interval partitioning changes the adaptive hydraulic meshes. It is a
+   ! sensitivity check, not a fixed-mesh monotonic-convergence test.
+   call require(maxval(abs(pond-pond(3)))<1d-6*max(1d0,pond(3)),'pond partition sensitivity')
+   call require(maxval(abs(soil_amount-soil_amount(3)))<1d-6*max(1d0,soil_amount(3)),'soil partition sensitivity')
+   print '(A,3ES24.15)','ACTUAL_REFINEMENT_POND_CM_DAY ',pond
+   print '(A,3ES24.15)','ACTUAL_REFINEMENT_SOIL_CM_DAY ',soil_amount
+   water=w0;soil=s0;surface=a0
+  end subroutine
   subroutine step(t0,t1,a)
    real(real64),intent(in)::t0,t1
    type(surface_age_source_ages_t),intent(in)::a

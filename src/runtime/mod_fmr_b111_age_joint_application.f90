@@ -179,7 +179,10 @@ contains
     ! Commit privately first. No rejected commit can publish a partial triplet.
     water_trial=water
     call backend%commit_trial_candidate(water_trial,candidate,result%diagnostics,did_commit,status)
-    if(.not.did_commit)return
+    if(.not.did_commit)then
+      call backend%discard_trial_candidate(candidate,result%diagnostics)
+      return
+    end if
     if(present(surface_owner))then
       if(.not.age_joint_states_match(water_trial,chemical_trial,surface_trial))return
     else

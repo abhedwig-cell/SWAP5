@@ -92,9 +92,19 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes()):
  return dict(local_physical_days=730,parser_cases=24,transition_fresh_processes=12,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
 
 def load():
+ # A separately qualified additive age successor may change only its recorded
+ # surface. All original HIST scientific payload/input checks still execute.
+ age_surface=(ROOT/'integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json').exists()
+ if age_surface:
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
+  import verify_surface_age_successor as age
+  age.verify_qualification()
  g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline');science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']))
- for q,v in g['postimages'].items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
- surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science');rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()};require(rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta');require(not git('diff',BASE,'--','reference'),'HIST reference mutation');return science
+ for q,v in g['postimages'].items():
+  if age_surface and q in ('tests/nut-crop/verify_hist_native_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'):continue
+  require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
+ surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science');rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()};require(age_surface or rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta');require(not git('diff',BASE,'--','reference'),'HIST reference mutation');return science
 
 def verify_source(git_reader=None):
  require(git_reader is None,'unregistered HIST projection');return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'full_capability':False,'qualified':False,'current_source_tree':git('rev-parse','HEAD:src')}

@@ -1,0 +1,182 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-AGE01",
+  "workstream": "MC-SOL01",
+  "baseline": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+  "stage": "PHYSICAL_FINAL_QUALIFICATION_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "execution_commit": null,
+  "postimages": {
+    ".github/workflows/mc-sol01-surface-age01.yml": {
+      "status": "A",
+      "sha256": "e6805ab50bb73e7695439078d0125936feb1256c684c2c7228370d970a7a7584"
+    },
+    "src/adapter/mod_age_joint_restart_file.f90": {
+      "status": "M",
+      "sha256": "ff03a0f733e3d681c3b71cd4bb1ac3b2224cf933014ff6510cb14ef4da48e364"
+    },
+    "src/adapter/mod_b111_age_snapshot_disk.f90": {
+      "status": "A",
+      "sha256": "57f8131c4db88a49958489bb5e78863e8c3bcc2e1e349bd733165903e6733295"
+    },
+    "src/adapter/mod_b111_age_triplet_disk.f90": {
+      "status": "A",
+      "sha256": "56222d1954ea91fedc55c7c6cca1b3fafafa2321b8ad1a19e3600b43ce2a4584"
+    },
+    "src/adapter/mod_b111_surface_age_disk.f90": {
+      "status": "A",
+      "sha256": "1974b7febd6cd561abbc05ce9484a3f64a4e20c7c2381e445e417d3aa5c0ff32"
+    },
+    "src/process/mod_b111_age_tracer_substep.f90": {
+      "status": "M",
+      "sha256": "be5c5d7b8f4b2db63ed80786ca48ff5208e9ab5227777d8f4e62809b2335b5db"
+    },
+    "src/process/mod_b111_surface_age_budget.f90": {
+      "status": "A",
+      "sha256": "79d0b6dc8101d58a61d166345fa8dcc2d89f0ca3fea674ce51a39ca1f8bb89fe"
+    },
+    "src/process/mod_b111_surface_age_owner.f90": {
+      "status": "A",
+      "sha256": "ee4058b331134ffed68f2c528b56518b9502365fa0117bef0e237fc8d023e855"
+    },
+    "src/process/mod_b111_surface_age_soil_handoff.f90": {
+      "status": "A",
+      "sha256": "110da6d1fdf6e479e1657ec1a0c226f66b17440cdc74c4aaac04c512ca163570"
+    },
+    "src/runtime/mod_b111_surface_age_trace_bridge.f90": {
+      "status": "A",
+      "sha256": "a3754179c3ff63c3d310cf77e2cd79bb4374dbafa10165e8039d99bee7e99c36"
+    },
+    "src/runtime/mod_fmr_b111_age_joint_application.f90": {
+      "status": "M",
+      "sha256": "c73f6f03df022f394f5db0edad4ad83c1bf454fdd55fd6c51ef77a83cc69e366"
+    },
+    "src/runtime/mod_fmr_b111_age_route.f90": {
+      "status": "M",
+      "sha256": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "sha256": "c970f0efee50a09934a8a0ac4fd3da472aee0bcf9c58330c10825fc2d3ba5e50"
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "status": "M",
+      "sha256": "1d18c5ca9ef2795024952a5e55acbf9dec02587a00e06315d493d9c5daad1b75"
+    },
+    "tests/nut-sol/run_age.py": {
+      "status": "M",
+      "sha256": "9ecead15f5fb13b3823f3ff0514b55a47faf2376a7c1c8a71e0718a86b925530"
+    },
+    "tests/nut-sol/run_surface_age_budget.sh": {
+      "status": "A",
+      "sha256": "fed2c15e23cf586e5c0b136587c00454cbfd28827548da336762423a454fd9bb"
+    },
+    "tests/nut-sol/run_surface_age_trace_bridge.sh": {
+      "status": "A",
+      "sha256": "e9e69c1a5ef7dcda71d7a3910c852db5de02a6df294cc4e45ed6a1555c2c847d"
+    },
+    "tests/nut-sol/test_age_joint.f90": {
+      "status": "M",
+      "sha256": "31478cd3c7e8397bea708be8768c63be5f7b4364332cca03194192faa689dbf3"
+    },
+    "tests/nut-sol/test_surface_age_budget.f90": {
+      "status": "A",
+      "sha256": "9ca651196367671b3faa807c20f79d5cb36314343a99c67c827a2ae14c639849"
+    },
+    "tests/nut-sol/test_surface_age_disk.f90": {
+      "status": "A",
+      "sha256": "3a6a4e25fd5881aa04c848868008cd2105430dca3790609f8d4d5bf5136a7307"
+    },
+    "tests/nut-sol/test_surface_age_disk_process.f90": {
+      "status": "A",
+      "sha256": "cfceb82d491ab656e0a5939eaf70679d41ab13a68e521a1d239e3fab80c302b2"
+    },
+    "tests/nut-sol/test_surface_age_joint.f90": {
+      "status": "A",
+      "sha256": "07a73aebdf3d36f2d96e8b59c0a8ff40494f4450e03d0892996c4ab1ed7ae7f4"
+    },
+    "tests/nut-sol/test_surface_age_native_top.f90": {
+      "status": "A",
+      "sha256": "f16f4dc49a8cb8c0c80bb2a7bbcbd9f04967a4c4401575b683261eca2829458c"
+    },
+    "tests/nut-sol/test_surface_age_owner.f90": {
+      "status": "A",
+      "sha256": "a4883ad292fc34892235264cc91d28f3e098231704bec436e1374d60b7ac2509"
+    },
+    "tests/nut-sol/test_surface_age_route_trial.f90": {
+      "status": "A",
+      "sha256": "e705be6aa5d4b6846e1e00c4284c95a0a549b0da2f96ea885c9114d32cd1093c"
+    },
+    "tests/nut-sol/test_surface_age_soil_handoff.f90": {
+      "status": "A",
+      "sha256": "68bc67a1535521924f3092c6085a7554b5832de54d1ab2f5efcbf1554452ae9c"
+    },
+    "tests/nut-sol/test_surface_age_trace_bridge.f90": {
+      "status": "A",
+      "sha256": "651ac368be8c963bdcad3f824d68e99ac0a0579f0e8be3db04390fc1cea3949a"
+    },
+    "tests/nut-sol/verify_surface_age_successor.py": {
+      "status": "A",
+      "sha256": "73bf84c63f0b918a39f1af2c4dab2fefa26721f1c1bb848c9b0345c40596f000"
+    }
+  },
+  "relevant_paths": [
+    ".github/workflows/mc-sol01-surface-age01.yml",
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_b111_age_snapshot_disk.f90",
+    "src/adapter/mod_b111_age_triplet_disk.f90",
+    "src/adapter/mod_b111_surface_age_disk.f90",
+    "src/process/mod_b111_age_tracer_substep.f90",
+    "src/process/mod_b111_surface_age_budget.f90",
+    "src/process/mod_b111_surface_age_owner.f90",
+    "src/process/mod_b111_surface_age_soil_handoff.f90",
+    "src/runtime/mod_b111_surface_age_trace_bridge.f90",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90",
+    "src/runtime/mod_fmr_b111_age_route.f90",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/nut-crop/verify_hist_native_successor.py",
+    "tests/nut-sol/run_age.py",
+    "tests/nut-sol/run_surface_age_budget.sh",
+    "tests/nut-sol/run_surface_age_trace_bridge.sh",
+    "tests/nut-sol/test_age_joint.f90",
+    "tests/nut-sol/test_surface_age_budget.f90",
+    "tests/nut-sol/test_surface_age_disk.f90",
+    "tests/nut-sol/test_surface_age_disk_process.f90",
+    "tests/nut-sol/test_surface_age_joint.f90",
+    "tests/nut-sol/test_surface_age_native_top.f90",
+    "tests/nut-sol/test_surface_age_owner.f90",
+    "tests/nut-sol/test_surface_age_route_trial.f90",
+    "tests/nut-sol/test_surface_age_soil_handoff.f90",
+    "tests/nut-sol/test_surface_age_trace_bridge.f90",
+    "tests/nut-sol/verify_surface_age_successor.py"
+  ],
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "next_action": "Execute persisted final real Reference triplet O0/O2 plus isolated tests; publish evidence; exact-source successor controls; reconcile admission",
+  "blockers": [],
+  "test_selection": {
+    "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
+    "level3": "Existing literal 150-step age and actual Reference zero-pond joint with immutable endpoint equality; new actual positive pond ages, rain/irrigation/runon/infiltration/runoff/evaporation; joint/individual closure, failed numerical attempt, private commit, partition sensitivity, paired fresh-process snapshot and corruption checks O0/O2",
+    "level4": "NOT_SELECTED_IMPACT: no shared hydraulic model/kernel/solver/source policy implementation changed. Full closure is compiled by real driver. HIST guard accepts only exact recorded age delta, still validates every incumbent HIST scientific payload and input. New source guard changes eligibility for this bounded age companion only; no unrelated full preservation or highest low-air selected."
+  },
+  "scope_limits": [
+    "Reference only",
+    "No exfiltration or snowmelt age source",
+    "Complete evaporative dry-down with retained age stock rejected",
+    "Serialized logical transaction, no concurrent owner mutation",
+    "Same-platform POSIX snapshot",
+    "No simultaneous reactive-solute and age companion admission",
+    "No mastercoverage full-capability promotion"
+  ],
+  "prior_failures": [
+    "01: two optional declarations generated in CRC helpers, compiler rejected, corrected",
+    "02: development driver refined while O2 compiled; final source-immutability assertion rejected run; not qualification",
+    "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency."
+  ]
+}

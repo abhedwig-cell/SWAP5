@@ -915,6 +915,9 @@ check_b19_micro_root_recomposition() {
           python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
         fi
         ;;
+      src/process/mod_b111_surface_age_budget.f90|src/process/mod_b111_surface_age_owner.f90|src/process/mod_b111_surface_age_soil_handoff.f90|src/runtime/mod_b111_surface_age_trace_bridge.f90|src/adapter/mod_b111_surface_age_disk.f90|src/adapter/mod_b111_age_triplet_disk.f90|src/adapter/mod_b111_age_snapshot_disk.f90 )
+        python3 -B tests/nut-sol/verify_surface_age_successor.py || fail "unqualified surface-age successor: $candidate_path"
+        ;;
       src/process/mod_b111_age_tracer_substep.f90|src/runtime/mod_fmr_b111_age_route.f90|src/runtime/mod_fmr_b111_age_joint_application.f90|src/adapter/mod_age_joint_restart_file.f90 )
         python3 tests/nut-sol/verify_age_successor.py || fail "unqualified accepted age successor: $candidate_path"
         ;;
