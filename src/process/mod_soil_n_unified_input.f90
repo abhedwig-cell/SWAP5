@@ -208,7 +208,14 @@ contains
   if(any(nvalues(2:7)/=nmat).or.any(nvalues(9:11)/=nevt))return
   rows(1)='MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
   do k=1,nmat
-   rows(k+1)=trim(values(1,k))//' '//trim(values(2,k))//' '//trim(values(3,k))// &
+   ! Original rdainr validates definition labels in 1..maxmat, then rdfinr
+   ! overwrites MatNum with event row positions. Definition labels are not keys.
+   error_line=value_line(1,k)
+   read(values(1,k),*,iostat=code)idx
+   if(code/=0)return
+   if(idx<1.or.idx>20)return
+   write(word,'(I0)')k
+   rows(k+1)=trim(word)//' '//trim(values(2,k))//' '//trim(values(3,k))// &
     ' '//trim(values(4,k))//' '//trim(values(5,k))//' '//trim(values(6,k))//' '//trim(values(7,k))
   end do
   rows(nmat+2)='smedate iMat Dosagekgha VolatFraction'
