@@ -16,7 +16,8 @@ module mod_fmr_b111_age_joint_application
        age_receipt_t,consume_accepted_age_trace,export_age_restart, &
        restore_age_restart,AGE_OK
   use mod_solute_compartment_state,only:solute_compartment_state_t
-  use mod_b111_surface_age_owner,only:surface_age_owner_t,snapshot_surface_age_owner
+  use mod_b111_surface_age_owner,only:surface_age_owner_t,surface_age_restart_t, &
+       snapshot_surface_age_owner,export_surface_age_restart,restore_surface_age_restart,AGE_OWNER_OK
   use mod_b111_surface_age_trace_bridge,only:surface_age_source_ages_t
   implicit none
   private
@@ -33,6 +34,7 @@ module mod_fmr_b111_age_joint_application
     integer::schema=1
     type(fmr_committed_restart_bundle_t)::water
     type(age_restart_t)::chemical
+    type(surface_age_restart_t)::surface
   end type
   public::run_age_joint_interval,age_joint_states_match
   public::export_age_joint_restart,restore_age_joint_restart
@@ -180,7 +182,7 @@ contains
     result%status=JOINT_OK
   end subroutine
 
-  subroutine export_age_joint_restart(column,template,parameter_set_id,water,chemical,payload,status)
+  subroutine export_age_joint_restart(column,template,parameter_set_id,water,chemical,payload,status,surface_owner)
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
     integer(int64),intent(in)::parameter_set_id
@@ -188,12 +190,20 @@ contains
     type(age_state_t),intent(in)::chemical
     type(age_joint_restart_t),intent(out)::payload
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     type(age_joint_restart_t)::trial
     logical::ok
     integer::code
     payload=age_joint_restart_t();status=JOINT_INVALID
     if(column%state_handle/=1.or..not.bounded_template(template))return
-    if(.not.age_joint_states_match(water,chemical))return
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water,chemical,surface_owner))return
+      trial%schema=2
+      call export_surface_age_restart(surface_owner,trial%surface,code)
+      if(code/=AGE_OWNER_OK)return
+    else
+      if(.not.age_joint_states_match(water,chemical))return
+    end if
     call fmr_export_committed_restart([column],[template],[water],parameter_set_id,trial%water,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK)return
     call export_age_restart(chemical,trial%chemical,code)
@@ -202,7 +212,7 @@ contains
   end subroutine
 
   subroutine restore_age_joint_restart(payload,column,template,water_parameter_id,chemical_parameter_id, &
-       water,chemical,status)
+       water,chemical,status,surface_owner,surface_identity)
     type(age_joint_restart_t),intent(in)::payload
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -210,12 +220,22 @@ contains
     type(kernel_committed_state_t),intent(inout)::water
     type(age_state_t),intent(inout)::chemical
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(inout),optional::surface_owner
+    integer(int64),intent(in),optional::surface_identity
+    type(surface_age_owner_t)::surface_trial
     type(kernel_committed_state_t)::water_trial(1)
     type(age_state_t)::chemical_trial
     logical::ok
     integer::code
     status=JOINT_INVALID
-    if(payload%schema/=1)return
+    if(present(surface_owner).neqv.present(surface_identity))return
+    if(present(surface_owner))then
+      if(payload%schema/=2)return
+      call restore_surface_age_restart(payload%surface,surface_identity,surface_trial,code)
+      if(code/=AGE_OWNER_OK)return
+    else
+      if(payload%schema/=1)return
+    end if
     if(water%ready())return
     if(chemical%ready())return
     if(column%state_handle/=1.or..not.bounded_template(template))return
@@ -223,7 +243,13 @@ contains
     if(.not.ok.or.code/=FMR_RESTART_OK)return
     call restore_age_restart(payload%chemical,chemical_parameter_id,chemical_trial,code)
     if(code/=AGE_OK)return
-    if(.not.age_joint_states_match(water_trial(1),chemical_trial))return
-    water=water_trial(1);chemical=chemical_trial;status=JOINT_OK
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water_trial(1),chemical_trial,surface_trial))return
+    else
+      if(.not.age_joint_states_match(water_trial(1),chemical_trial))return
+    end if
+    water=water_trial(1);chemical=chemical_trial
+    if(present(surface_owner))surface_owner=surface_trial
+    status=JOINT_OK
   end subroutine
 end module
