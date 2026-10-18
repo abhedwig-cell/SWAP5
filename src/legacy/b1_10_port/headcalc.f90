@@ -583,8 +583,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             if (trace_status==0 .and. trace_flag=='1' .and. provider_dynamic_top_active) then
                if (state%pondm1 > 0.0d0 .and. state%pondm1 < 1.0d-3 .and. &
                    fsi_ws%old_head(1) > 0.99d0 .and. fsi_ws%old_head(1) < 1.01d0) then
-                  write(*,'(A,3(1X,I0),5(1X,ES24.16),1X,L1,1X,A)') 'KALMTHOUT_BACKTRACK_DECISION', &
-                       state%numbit,iBackTr,merge(1,0,state%ftoph),dt,factor,sump,sumold,Fmax, &
+                  write(*,'(A,3(1X,I0),6(1X,ES24.16),1X,L1,1X,A)') 'KALMTHOUT_BACKTRACK_DECISION', &
+                       state%numbit,iBackTr,merge(1,0,state%ftoph),dt,factor,sump,sumold,Fmax,CritDevBalCp, &
                        (sump < sumold .OR. Fmax < CritDevBalCp),trim(provider_dynamic_top_result%route)
                end if
             end if
