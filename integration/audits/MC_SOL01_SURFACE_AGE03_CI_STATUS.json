@@ -2,7 +2,7 @@
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
   "baseline": "1e8bf36ec52544e50f5b2720031228f9a6369525",
-  "stage": "THREE_OWNER_ROUTES_LOCALLY_QUALIFIED_FULL_PRESERVATION_PENDING",
+  "stage": "FULL_MOVING_SELECTED_OWNER_SCIENCE_QUALIFIED",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -17,7 +17,7 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "Fresh combined source/evidence negative controls; persist qualification capsule and current selection; run required complete local moving preservation once",
+  "next_action": "One fresh complete local moving gate, resume OFF; no additional native component retesting selected",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
@@ -84,7 +84,7 @@
     "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "test_selection": {
-    "candidate": "9721f08752454d26a8c366ecffad11e4b5a7a7b4",
+    "candidate": "f29cc65938ea26b4dd02a52266de0f26d9c5b1b0",
     "groups": {
       "fgc_closeout": {
         "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
