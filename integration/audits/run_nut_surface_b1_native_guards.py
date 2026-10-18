@@ -12,7 +12,7 @@ text=(BASE/'generated_driver.f90').read_text()
 changes={'initial_state%ponding_depth=.2d0':'initial_state%ponding_depth=0d0','rain_rate_cm_day=.05d0*(1d0+.4d0*season)':'rain_rate_cm_day=.4d0','irrigation_rate_cm_day=.005d0':'irrigation_rate_cm_day=0d0','runon_rate_cm_day=.01d0':'runon_rate_cm_day=0d0','potential_pond_evaporation_cm_day=.01d0*(1d0+.4d0*season)':'potential_pond_evaporation_cm_day=.4d0'}
 for a,b in changes.items():assert text.count(a)==1,a;text=text.replace(a,b)
 a=text.index(' subroutine rotation_continuation(');b=text.index(' subroutine report_water_state(',a);body=text[a:b]
-needle="   if(trim(mode)=='resume')then";assert body.count(needle)==1
+needle="   if(trim(mode)=='resume')then\n    read(arg,*)first";assert body.count(needle)==1
 body=body.replace(needle,"""   if(trim(mode)=='check'.or.trim(mode)=='reject')then
     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
       670001_int64,9001_int64,9101_int64,sp,cp,water,state,code)
