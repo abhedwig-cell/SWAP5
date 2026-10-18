@@ -38,3 +38,16 @@ This is a structural source-ownership conflict, not a positive-runoff solute mas
 F-ROSS12's separate compile error `mod_drainage_dramet3_response.mod` indicates an incomplete legacy compilation closure. It does not demonstrate a numerical RossFast regression, nor can it be called PASS. Fix that closure only when justified by the admitted RossFast preservation owner.
 
 Current PR #1304 remains deliberately draft until the structural contract problem is resolved with owner-backed proof. This documented diagnosis changes no physical source and never constitutes acceptance.
+
+
+## Canonical admission closeout, 2026-10-18 (supersedes the earlier draft/blocker status above)
+
+The Reference-only positive-runon/runoff formulation was **canonically admitted** through [PR #1304](https://github.com/abhedwig-cell/SWAP5/pull/1304), merge `ce0291246e9bb732388214098a7a9fe0f44f4a5e`, qualified candidate head `0cc3fe1ff61bb9fc9d082c8958b80d050d1d8cfc`. Earlier sections retain the historical investigation and must not be read as the current PR state.
+
+The original shared-interface conflict was resolved by placing the converged surface result and exact gross forcing source provenance in the Reference-owned workspace. Both shared postimages remained exact against their canonical counterparts: `mod_soil_water_solver_contract.f90` blob `7b16c3fcf58179f1491104a1dce3279010b4178a`; `mod_b110_dynamic_top_boundary_solver_adapter.f90` blob `abe2d699017300e890eeb69a56448bb071660d2d`. RossFast implementation is unmodified and remains optional/frozen on its previous domain. Three missing DRAMET3 compile dependencies were repaired in preserved test source lists; existing full first-parent preservation retains immutable qualification checks.
+
+Actual **final-head** hosted gates all SUCCESS: F-CI96 preservation run `39115709736`; existing F-ROSS12 production wiring run `39115709442`; PUB-P1E02 Reference production / O0,O2 positive gross chemistry, balance, rejection, rollback, continuation run `39115709818`. Earlier failing gates and recovery runs remain historical evidence, not separate successes.
+
+After merge, the GitHub canonical head was verified exactly equal to `ce0291246e9bb732388214098a7a9fe0f44f4a5e` and the MC-NUT01 Soil-N postimage blob `771f01ec201b5807a9e3cb0f36db9a747be95186` was preserved. No distinct numerical postmerge rerun was observed or claimed.
+
+The admission is **bounded to this Reference-only surface-solute formulation**. It does not admit unsupported RossFast routes, aquifer, blanket historic/default activation or remaining MC-SOL01 capabilities, nor does it by itself change mastercoverage dispositions.
