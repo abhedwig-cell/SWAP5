@@ -968,5 +968,15 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "mastercoverage_promotion": false
     }
+  },
+  "gross_net_completion_blocker": {
+    "status": "IMPLEMENTED_DIAGNOSTIC_NOT_YET_PERSISTED_TESTED",
+    "base_canonical": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+    "contract": "docs/science/MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md",
+    "runner": "integration/audits/run_nut_hist_carrier_gap.py",
+    "driver": "integration/audits/test_nut_hist_carrier_gap.f90",
+    "scope": "Original transport versus real mineral owner: equal net flux, distinct gross N input. Not a new production contract.",
+    "next_action": "Run exact persisted O0/O2 diagnostic and current owning preservation validator. Full completion requires explicit B0/B1 gross atmosphere/surface-solute reference decision.",
+    "mastercoverage_promotion": false
   }
 }
