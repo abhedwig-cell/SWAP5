@@ -1,7 +1,7 @@
 ! Candidate composite read: stage all three disk owners before publishing any.
 ! Existing S5AJ0001 writer/reader is not changed.
 module mod_b111_age_triplet_disk
- use, intrinsic :: iso_fortran_env, only: int64
+ use, intrinsic :: iso_fortran_env, only: int64,real64
  use mod_kernel_transactions, only: kernel_committed_state_t
  use mod_fmr_runtime_core, only: fmr_logical_column_t,fmr_template_t
  use mod_b111_age_tracer_substep, only: b111_age_tracer_substep_forcing_t
@@ -29,7 +29,7 @@ contains
   type(kernel_committed_state_t)::water_trial
   type(age_state_t)::soil_trial
   type(surface_age_owner_t)::surface_trial
-  real(kind=8)::clock,depth,stock
+  real(real64)::clock,depth,stock
   integer(int64)::revision
   logical::available
   integer::code
