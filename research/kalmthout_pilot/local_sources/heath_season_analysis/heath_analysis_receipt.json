@@ -1,0 +1,1531 @@
+{
+  "cases": 16,
+  "daily_states": 16080,
+  "new_native_runs": 0,
+  "period_rows": 656,
+  "paired_contrast_rows": 10496,
+  "scope": "Historical profile sensitivities; no current cell predictions or probability intervals.",
+  "eic_contract": "Native EIC includes annual canopy capacity loss; not pure evaporation.",
+  "season_definition": "April 1 through September 30; complete in 2024, 2025, 2026.",
+  "factor_contrasts": "High minus low; all other factors fixed; 8 matched pairs per factor and period.",
+  "whole_period_contrasts_mm": {
+    "a1_variant": {
+      "TACT_mm": {
+        "min": -64.31639999999999,
+        "max": -34.95990000000006,
+        "mean": -48.75772500000002
+      },
+      "transpiration_shortfall_mm": {
+        "min": 34.95990000000006,
+        "max": 64.31639999999999,
+        "mean": 48.75772500000002
+      },
+      "EACT_mm": {
+        "min": 37.104499999999916,
+        "max": 82.57693206099998,
+        "mean": 59.86680506775002
+      },
+      "EIC_mm": {
+        "min": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "EPD_mm": {
+        "min": 0.0,
+        "max": 4.1799000000000035,
+        "mean": 1.9695250000000009
+      },
+      "RUNOFF_mm": {
+        "min": 0.0,
+        "max": 9.117099999999994,
+        "mean": 4.530149999999992
+      },
+      "BOT_mm": {
+        "min": 0.0,
+        "max": 14.249099999999999,
+        "mean": 6.341012499999991
+      },
+      "storage_change_mm": {
+        "min": -16.735000000000007,
+        "max": -4.4114,
+        "mean": -11.268012499999982
+      }
+    },
+    "root_depth_cm": {
+      "TACT_mm": {
+        "min": -9.654699999999934,
+        "max": 8.230199999999968,
+        "mean": -0.0707999999999771
+      },
+      "transpiration_shortfall_mm": {
+        "min": -8.230199999999968,
+        "max": 9.654699999999934,
+        "mean": 0.0707999999999771
+      },
+      "EACT_mm": {
+        "min": 1.5551999999998998,
+        "max": 13.054232060999993,
+        "mean": 7.1824550677499985
+      },
+      "EIC_mm": {
+        "min": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "EPD_mm": {
+        "min": -0.003999999999990678,
+        "max": 0.0,
+        "mean": -0.0006499999999967088
+      },
+      "RUNOFF_mm": {
+        "min": -0.00010000000003174137,
+        "max": 0.0015000000000213731,
+        "mean": 0.00017499999999870397
+      },
+      "BOT_mm": {
+        "min": 0.0,
+        "max": 4.824200000000019,
+        "mean": 1.7039375000000092
+      },
+      "storage_change_mm": {
+        "min": -10.862700000000025,
+        "max": 1.4168999999999983,
+        "mean": -5.407812500000006
+      }
+    },
+    "capacity_cm_per_lai": {
+      "TACT_mm": {
+        "min": -40.87100000000004,
+        "max": -37.0514,
+        "mean": -39.516925
+      },
+      "transpiration_shortfall_mm": {
+        "min": 1.2520000000000095,
+        "max": 5.071600000000046,
+        "mean": 3.717525000000009
+      },
+      "EACT_mm": {
+        "min": -10.966099999999983,
+        "max": -6.346400000000017,
+        "mean": -8.61937794749997
+      },
+      "EIC_mm": {
+        "min": 79.77940000000001,
+        "max": 79.77940000000001,
+        "mean": 79.77940000000001
+      },
+      "EPD_mm": {
+        "min": -6.1539000000000215,
+        "max": 0.0,
+        "mean": -2.9573750000000025
+      },
+      "RUNOFF_mm": {
+        "min": -20.669399999999996,
+        "max": 0.0,
+        "mean": -10.305924999999988
+      },
+      "BOT_mm": {
+        "min": 0.0,
+        "max": 27.009000000000015,
+        "mean": 13.259512500000014
+      },
+      "storage_change_mm": {
+        "min": -6.381100000000011,
+        "max": -3.078899999999976,
+        "mean": -5.120087499999988
+      }
+    },
+    "bottom_mode": {
+      "TACT_mm": {
+        "min": -134.51429999999988,
+        "max": -92.20009999999996,
+        "mean": -112.06404999999997
+      },
+      "transpiration_shortfall_mm": {
+        "min": 92.20009999999996,
+        "max": 134.51429999999988,
+        "mean": 112.06404999999997
+      },
+      "EACT_mm": {
+        "min": -55.282232060999945,
+        "max": -1.0897999999999683,
+        "mean": -27.775955067750004
+      },
+      "EIC_mm": {
+        "min": 0.0,
+        "max": 0.0,
+        "mean": 0.0
+      },
+      "EPD_mm": {
+        "min": -186.35459999999998,
+        "max": -176.5005,
+        "mean": -181.54682499999998
+      },
+      "RUNOFF_mm": {
+        "min": -316.74399999999997,
+        "max": -287.0718,
+        "mean": -301.879525
+      },
+      "BOT_mm": {
+        "min": -749.1753,
+        "max": -706.7586,
+        "mean": -727.8288625
+      },
+      "storage_change_mm": {
+        "min": -115.25160000000002,
+        "max": -93.6814,
+        "mean": -104.56343749999999
+      }
+    }
+  },
+  "verified_cases": [
+    {
+      "case": "wetheath_a1_r35_ic05_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "8f9d00a0bccfb41d9a9c74c2678bafbf1888264c7d8b76098e812ce44904024f",
+        "heath2026.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "swap.swp": "9fd9d976fcad71580d38b8dd894dfd9a0a36b99ac7d77ef390d07145b48f8b77",
+        "result_output.csv": "4e32508c89371d4aa3657135bc72328911505e4a6073c54a31c340bf5f85f9d0",
+        "swap.log": "2a269f5b1f999659a1c59e13f5514ccd8681334782f39eb3b74afa25be7d611e",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "7719a91868395f26a40ebf91cb592e613fbc01ce3005172184f168b5f9338ba8",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 30.76269,
+          "EACT": 83.28801,
+          "EPD": 18.26544,
+          "TACT": 54.69657,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 21.84935,
+        "storage_change": 0.34469999999999956,
+        "period_closure": -8.000000000762952e-05,
+        "max_daily_native_baldev": 5.09067e-06,
+        "max_daily_printed_component_closure": 2.0000000002774743e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-5.43765E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.46174E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-1.70044E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-1.86071E-07"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-9.07324E-08"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r35_ic05_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "8f9d00a0bccfb41d9a9c74c2678bafbf1888264c7d8b76098e812ce44904024f",
+        "heath2026.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "swap.swp": "f6ad394d59decd820cee7c201db282cc210ff4c502bbbecd7bdcd678b010cc0f",
+        "result_output.csv": "9ed7b876ebbd53400b9b68c7bd9732a675f61d5db6332e22cf38e2d65d0b9551",
+        "swap.log": "1ce7f188a89e3720d2f27e54c3d9322ab49a6ae507af16e0a2a7686abaa684a5",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "a728b10e853d08dc6f5ab2b5d7f0106b946390b3e114064455f74851c3ed728b",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -74.91753,
+          "RUNOFF": 0.0,
+          "EACT": 78.1437291519,
+          "EPD": 0.0,
+          "TACT": 45.47656,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 10.32419,
+        "storage_change": -11.180460000000002,
+        "period_closure": -2.915189999086465e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.000000000279556e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r35_ic10_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e1b5b7d466d08feea00041551712ef293a2cbe6e237d3a90bbec41a2b8145064",
+        "heath2026.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "swap.swp": "00b2e18fa8455a49f49046bb065fb0007e0dc453fd4216f7a8aa7c00b2eb0cd2",
+        "result_output.csv": "22861c55f102938ef7cf939ed357f91bcd31f808a11354973f1c25b246700609",
+        "swap.log": "8492e99585ab3c086ccbdd8b345a15487807cdec8255f8249c60ac92518a19f4",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "f7ae43397a9a0afaf2daa840f7e21558a3124bb28fd9f1b2fe756d1e899b0e5f",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 28.70719,
+          "EACT": 82.65337,
+          "EPD": 17.65005,
+          "TACT": 50.66231,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 21.21124,
+        "storage_change": -0.2934100000000015,
+        "period_closure": -0.0001200000000025625,
+        "max_daily_native_baldev": 5.0224e-06,
+        "max_daily_printed_component_closure": 2.0000000007958096e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-6.66934E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.49756E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-2.04870E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-1.23263E-07"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-9.46481E-08"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r35_ic10_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e1b5b7d466d08feea00041551712ef293a2cbe6e237d3a90bbec41a2b8145064",
+        "heath2026.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "swap.swp": "737d8c8b7cb86713a240e1181ecb684f813b0269d2c3134ec756f1465c70d512",
+        "result_output.csv": "d8c13ece38a8834ca1df613160a80edba5e604fab2eab5ca1f8a99e2b28dbcbe",
+        "swap.log": "5fbc2d23afbbd45f254940e1bb1ed5dec07998b1ed224de7e031888558e730a6",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "4d9b31d234d42e17810542113372d97c9580022bf2f14299d751b6d1317d7b24",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -72.35307,
+          "RUNOFF": 0.0,
+          "EACT": 77.1251467939,
+          "EPD": 0.0,
+          "TACT": 41.38946,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 10.016300000000001,
+        "storage_change": -11.48835,
+        "period_closure": 6.320609998411442e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.0136100000067714e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r50_ic05_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e5823e661337c5dfbfd3ba1ec1e14fbe7fc97d2efa6fd99332c89b2caf65817a",
+        "heath2026.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "swap.swp": "6addd21e035724baff40b826f306f04c190794a392a691979f11839b23afda48",
+        "result_output.csv": "c1f9909753a6782a6080bcf0d0c248bb904334665d0e26c58c024b38236cc41a",
+        "swap.log": "1954f2807e13b0ef18ae7c745d70ad849e9689423e3b49d2af911ff778165320",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "c0dd0cdd9799574ccf0652383738e8b48e8345ef95b2f68cc2bab3943fe659a9",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 30.76269,
+          "EACT": 83.69899,
+          "EPD": 18.26538,
+          "TACT": 55.37182,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 20.76308,
+        "storage_change": -0.741570000000003,
+        "period_closure": 2.00000000134537e-05,
+        "max_daily_native_baldev": 5.0907e-06,
+        "max_daily_printed_component_closure": 2.000000000455804e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-5.42072E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.46174E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-1.70044E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-2.10255E-07"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-9.23887E-08"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r50_ic05_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e5823e661337c5dfbfd3ba1ec1e14fbe7fc97d2efa6fd99332c89b2caf65817a",
+        "heath2026.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "swap.swp": "161298a1466d0386628afcbf88d06a62e3d673345c62fba86f96df0761e889f5",
+        "result_output.csv": "bc46f5be2a9c58a7c2d1cbcb2ead7f61ec8bac897428c2ae3f6dd317e92bc92d",
+        "swap.log": "02ed2316f9588ca9319e761c4f15e5c34bb4050533d3ebb349dbc6b84a05d297",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "fc74e65bb1a26a68228764c89718bc500a8090d0cac746a697c9790da94f71a9",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -74.5267,
+          "RUNOFF": 0.0,
+          "EACT": 79.40399,
+          "EPD": 0.0,
+          "TACT": 44.78867,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 10.14268,
+        "storage_change": -11.361970000000001,
+        "period_closure": -6.000000000128125e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.000000000468294e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r50_ic10_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "109d48bc2c9daed0c61a37f073fd107dd7a168da16b96ef5d13a4b4ddffd227e",
+        "heath2026.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "swap.swp": "e2135e7778105d3e8c86a13d14cdb8498af64f6272f90d3857ea3f34147c6c5a",
+        "result_output.csv": "bbcd9edfbbd7f1433516c4bf3b77f69090fd16ac5dd0eef43cf2a718a4f387c1",
+        "swap.log": "ddba4aa5f5728f49bae6d50b839c9c5ba84b6de8b11135957c6dd2cb209fde19",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "6c3000a35b35e36969a455e05d20ada5fdfc86ef50966893efc1742a1a98c7e0",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 28.70718,
+          "EACT": 83.02782,
+          "EPD": 17.65005,
+          "TACT": 51.3721,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 20.127,
+        "storage_change": -1.3776500000000027,
+        "period_closure": -0.00011000000002070465,
+        "max_daily_native_baldev": 5.02242e-06,
+        "max_daily_printed_component_closure": 2.0000000007958096e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-6.64979E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.49756E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-2.04870E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-1.21998E-07"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-9.69606E-08"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a1_r50_ic10_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "109d48bc2c9daed0c61a37f073fd107dd7a168da16b96ef5d13a4b4ddffd227e",
+        "heath2026.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "swap.swp": "6239df2b9025354d6d258156731cca7c236dbb06d203f0afdf58031ad54f5cda",
+        "result_output.csv": "539af2725c003ffcfbc1a016789b01e13adae77849f23c001b78f98a04d29fb0",
+        "swap.log": "f75c98695a0c548a8fad9231ceffd67e2391dcd45e26883b359de067e1682dad",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "3f3c36a98e59277e0c8a83dbd3455b4dc1514ec4a939c7991b72518b8be19b11",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -71.87065,
+          "RUNOFF": 0.0,
+          "EACT": 78.43057,
+          "EPD": 0.0,
+          "TACT": 40.83267,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 21.50465,
+        "final_soil_pond_canopy_storage": 9.7502,
+        "storage_change": -11.754450000000002,
+        "period_closure": -5.000000000521254e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.000000000434987e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          4.434115917990795,
+          41.805
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r35_ic05_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "8f9d00a0bccfb41d9a9c74c2678bafbf1888264c7d8b76098e812ce44904024f",
+        "heath2026.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "swap.swp": "302f8e6ae6e2a63373196a273975847a5fd0f696606073f8e3cc4e1371252c15",
+        "result_output.csv": "48a5252272815fe85eed9d09a99da143b82057669e947ed3a35f7d22a64a2ceb",
+        "swap.log": "8311b747660b5c8bb256775c0eff83eed1db16092e2fafe7c40789b471cae04b",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "b2508afb3e3257a385dbdff59d8fc74ae5c6ff1a83d21bb2a994e15e871fb5ba",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 31.6744,
+          "EACT": 87.3041,
+          "EPD": 18.63546,
+          "TACT": 51.07223,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 23.15498,
+        "storage_change": -1.328800000000001,
+        "period_closure": -5.999999999062311e-05,
+        "max_daily_native_baldev": 5.09067e-06,
+        "max_daily_printed_component_closure": 2.000000000768054e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-2.82462E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.46174E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-1.70044E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-4.70205E-09"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-1.95776E-09"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r35_ic05_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "8f9d00a0bccfb41d9a9c74c2678bafbf1888264c7d8b76098e812ce44904024f",
+        "heath2026.crp": "b07969d1c4eeaed2f87a193750115f0c0fd230891703c3684aa76858e94a67b7",
+        "swap.swp": "15fc2b76c5d8495fd89330dbc5d63fd44430a7ee8b6397b00503323b1da21b1d",
+        "result_output.csv": "f60380725fbb501be1415abe93c87f1ce7f0aa952a65c60c9abefa682a91299a",
+        "swap.log": "4b719232d703f3984aeb35453a0fd6444fb694e373c506bbafe9ee9bcb9b271a",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "e493721a6b8191eadb11524d1a779125448e2a8e661cc5e299a1bb1ebaa2ada8",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -73.61436,
+          "RUNOFF": 0.0,
+          "EACT": 86.36542,
+          "EPD": 0.0,
+          "TACT": 39.3225,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 12.538979999999999,
+        "storage_change": -11.9448,
+        "period_closure": -0.00015000000000497948,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.0000000003461693e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r35_ic10_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e1b5b7d466d08feea00041551712ef293a2cbe6e237d3a90bbec41a2b8145064",
+        "heath2026.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "swap.swp": "572c02afd3a60930f1b2aebe912999e8fce36af1f75fa420ea7faadf53f37ef2",
+        "result_output.csv": "cdd2db157cd25148afa1a7abf5f9ed8676e22e0886e71e6c22727f1a94037ea4",
+        "swap.log": "e9a18dd6aa43343b0225e7ba690dc231c03239ead44ed2059003dac0f3c881f8",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "2e8dfe5b9e28dab9ceb185e390ec3310dba86a101a12404683ca4a1c1373fbd4",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 29.60746,
+          "EACT": 86.58275,
+          "EPD": 18.06804,
+          "TACT": 47.05309,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 22.55198,
+        "storage_change": -1.931799999999999,
+        "period_closure": -0.00015000000000142677,
+        "max_daily_native_baldev": 5.0224e-06,
+        "max_daily_printed_component_closure": 2.0000000009678942e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-2.23422E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.49756E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-2.04870E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-2.25688E-08"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-1.99709E-09"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r35_ic10_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e1b5b7d466d08feea00041551712ef293a2cbe6e237d3a90bbec41a2b8145064",
+        "heath2026.crp": "b180080369bb12fd74bb3573edb808922051f657712d4e7fc47d0b01caa1abce",
+        "swap.swp": "f4e250f86181058a06317fcbc8c6a36465089c9d19c0c6bff60175e6e10dbc16",
+        "result_output.csv": "58343cad2ea1ec086959b9fd1992c1336e52ed063b448904130d42dac9de546c",
+        "swap.log": "c6ab146b55b9eede574c1a7eac96018ba574a470d790c506405e866c727ed2be",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "16a9d25adb39913b158292b460be81c63fd6a28148c4fe6796bed03b8f3353ef",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -70.92816,
+          "RUNOFF": 0.0,
+          "EACT": 85.38284,
+          "EPD": 0.0,
+          "TACT": 35.44267,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 12.10946,
+        "storage_change": -12.374319999999999,
+        "period_closure": 3.9999999973616696e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.0000000004627427e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r50_ic05_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e5823e661337c5dfbfd3ba1ec1e14fbe7fc97d2efa6fd99332c89b2caf65817a",
+        "heath2026.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "swap.swp": "6aa2683ce104034ee3caee9c374305e0b3ab2430630184693cbd22d794824d97",
+        "result_output.csv": "5b9278ddfe0f5c33573f79b57844415af31b74804eca5e6d499f18af17456ffe",
+        "swap.log": "252d5c2204a3f5491880b58c660fd28353a64052082c42abc97c9a6390f64e09",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "844987f6403dfbc50bec2f34c7cdd1fdf608a509f802e651afb913280074302d",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 31.6744,
+          "EACT": 87.53542,
+          "EPD": 18.6354,
+          "TACT": 51.80846,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 22.187459999999998,
+        "storage_change": -2.2963200000000015,
+        "period_closure": -2.9999999988206127e-05,
+        "max_daily_native_baldev": 5.0907e-06,
+        "max_daily_printed_component_closure": 2.000000000768054e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-2.81843E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.46174E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-1.70044E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-4.69323E-09"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-1.93202E-09"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r50_ic05_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "e5823e661337c5dfbfd3ba1ec1e14fbe7fc97d2efa6fd99332c89b2caf65817a",
+        "heath2026.crp": "15cbc6e9ee818f62c95dc0a7f112af9e1fc06511dc68d07b4b73910b30c070fa",
+        "swap.swp": "e7054aa8a6deadfb47f7ae6d6d7b91773becedc1ea289b674b4f427d4f0696d1",
+        "result_output.csv": "3e81fe59800e2354f4467cdfe408a35bfcbe8529e3307f3795f0a385eadd46fd",
+        "swap.log": "53bfc0bc707e5d277ac9194322b0a2136d0cd824361993f69b4636b94037e3c3",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "8cc1c2dbed2778543e60ca22293f46bbdec90704739cbfd93de2eacdfd316abb",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -73.37676,
+          "RUNOFF": 0.0,
+          "EACT": 87.42644,
+          "EPD": 0.0,
+          "TACT": 38.35703,
+          "EIC": 34.30267,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 12.68067,
+        "storage_change": -11.80311,
+        "period_closure": 0.00020999999997783902,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.000000000329516e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".05000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r50_ic10_bot6",
+      "verified_sha256": {
+        "heath2025.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "109d48bc2c9daed0c61a37f073fd107dd7a168da16b96ef5d13a4b4ddffd227e",
+        "heath2026.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "swap.swp": "d607163ee4d23c317960982b1665fc5159ca458ca6410b7c8970532063816016",
+        "result_output.csv": "27614da78fd2ea1c62cab4847494c1b65719335bdef653ca24f76a662b736a06",
+        "swap.log": "214997f4a04dbb5c6cd57e143544fdfbd90dce1c782678334cf66819d376a869",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "73794d9f59b618ded72d0297eeadea6da4948f322e609e8926fe013a4e74d75f",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": 0.0,
+          "RUNOFF": 29.60761,
+          "EACT": 86.73827,
+          "EPD": 18.06764,
+          "TACT": 47.87611,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 21.57364,
+        "storage_change": -2.9101399999999984,
+        "period_closure": -0.00010000000001753051,
+        "max_daily_native_baldev": 5.02242e-06,
+        "max_daily_printed_component_closure": 2.0000000009678942e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-2.22848E-08"
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-3.49756E-07"
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-2.04870E-07"
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "-2.34500E-08"
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "-1.97921E-09"
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    },
+    {
+      "case": "wetheath_a2_r50_ic10_bot7",
+      "verified_sha256": {
+        "heath2025.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "hourly.met": "fed9b6ada21ecafa2deec655c40f0293da70e434d9f85fd962e9976554574428",
+        "kalmthout.rain": "7c1d101c49d3202154433eb93cc68499c5d61c6662b3a6341e292910dfd0f4c7",
+        "heath2024.crp": "109d48bc2c9daed0c61a37f073fd107dd7a168da16b96ef5d13a4b4ddffd227e",
+        "heath2026.crp": "c97cf7388de5bf44fa492254103816c58588a9f81cfad296562365ad8cbf008c",
+        "swap.swp": "80c59441117fa27af67829c4fac1cc8b9fcd29b7a715d44fdecf5f1527d6294e",
+        "result_output.csv": "c77277642ed578be61b06cd40dc0cc9d054dabe506676e13769efa266d972b01",
+        "swap.log": "870e8b247b38beb59de2a0fc01406a6b106318b1a6d9d2b41671beefccc89154",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout.log": "8240fc7a12c27c19c04dc12e2b4856c0cb9177301f4389d7ed7247b63fedecdc"
+      },
+      "manifest_sha256": "89973bf2857f54217e493cd9cd40676f16eca593e24240490ce592dec95c3cdf",
+      "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07",
+      "balance": {
+        "water_unit": "cm",
+        "days": 1005,
+        "totals": {
+          "RAIN": 221.66,
+          "IRRIG": 0.0,
+          "RUNON": 0.0,
+          "SSDI": 0.0,
+          "BOT": -70.67586,
+          "RUNOFF": 0.0,
+          "EACT": 86.32983,
+          "EPD": 0.0,
+          "TACT": 34.65189,
+          "EIC": 42.28061,
+          "DRN": 0.0
+        },
+        "initial_soil_pond_canopy_storage": 24.48378,
+        "final_soil_pond_canopy_storage": 12.2055,
+        "storage_change": -12.278279999999999,
+        "period_closure": 8.999999997527652e-05,
+        "max_daily_native_baldev": 0.0,
+        "max_daily_printed_component_closure": 2.0000000005349072e-05,
+        "physical_daily_states_checked": 1005,
+        "soil_storage_limits_cm": [
+          6.382114446359714,
+          43.795
+        ],
+        "year_boundary_days": [
+          {
+            "DATE": "2023-12-31",
+            "IC_VOL": "0.",
+            "EIC": "0.",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2024-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".04784",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2024-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00636",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-01-01",
+            "IC_VOL": ".10000",
+            "EIC": ".01638",
+            "BALDEV": "-0."
+          },
+          {
+            "DATE": "2025-12-31",
+            "IC_VOL": "0.",
+            "EIC": ".00725",
+            "BALDEV": "0."
+          },
+          {
+            "DATE": "2026-01-01",
+            "IC_VOL": ".04138",
+            "EIC": ".03472",
+            "BALDEV": "0."
+          }
+        ],
+        "eic_contract": "Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation."
+      }
+    }
+  ],
+  "output_sha256": {
+    "heath_period_balances.csv": "c45da246efdea2ff9a6aa267fd7df64f98cadf112ae679c90b806b084b7efd1f",
+    "heath_paired_sensitivities.csv": "7605a448c510e4c54f095d039eeebe246f5f651ee0f3e17a2e95a2c0802491a4"
+  }
+}
