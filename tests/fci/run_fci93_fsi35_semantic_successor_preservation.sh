@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Generated Python caches must not mutate the guarded source working tree.
+export PYTHONDONTWRITEBYTECODE=1
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 fail(){ echo "FCI93_FAIL $*" >&2; exit 93; }

@@ -1,0 +1,104 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
+  "workstream": "MC-SOL01 / F-CI / F-GC",
+  "baseline": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
+  "stage": "IMPLEMENTED_NOT_TESTED",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_AGE03_CI_REPAIR.md",
+    "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+    "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md"
+  ],
+  "scope_limits": [
+    "No production/reference/physical test assertion changes",
+    "No RossFast or complete evaporative dry-down extension"
+  ],
+  "next_action": "Persist useful candidate then three original local owner gates; compose evidence and run stable full moving gate",
+  "blockers": [],
+  "postimages": {
+    "integration/audits/surface_age_ci/authority.py": {
+      "status": "A",
+      "sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4"
+    },
+    "integration/audits/surface_age_ci/run.py": {
+      "status": "A",
+      "sha256": "51e4cfab65941800a39167033ea3533e91c4038cde79a4df0f70c34a3dbca6c1"
+    },
+    "integration/audits/surface_age_longrun/verify.py": {
+      "status": "M",
+      "sha256": "e467646caa42877a01da4c92fb9554a1fd65a51e205dd6ab4a9dd1c61f497eb0"
+    },
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh": {
+      "status": "M",
+      "sha256": "2fb865c0978089d1ba02bbc368cc8fc73c8cf8801d07116329e897b04b202cf0"
+    },
+    "tests/fci/run_fci51p_wof43a_successor_preservation.sh": {
+      "status": "M",
+      "sha256": "0ca82b7212b505c69f68a6cbab4e606368a7512346d10989ee1434798db46333"
+    },
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh": {
+      "status": "M",
+      "sha256": "7508daa03850705cf34dbcdae574cda12131bd2dd65cbf57a01be801d1de28eb"
+    },
+    "tests/fgc/run_fgc44_real_fmr_participant.sh": {
+      "status": "M",
+      "sha256": "42744a875fa629f8305edd3a490f114e7ef1feeba56d50865b1227f26d0d6341"
+    },
+    "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh": {
+      "status": "M",
+      "sha256": "9a1da6f13e2877556de07c7bbbc7a289a28dba55610fa1400c0c8ec626f7fd4a"
+    },
+    "tests/fgc/run_fgc49d_live_production_application_context.sh": {
+      "status": "M",
+      "sha256": "d3611d15a349858195ae7731e46abef5350759bdff068282a0bccee2e01e3b14"
+    },
+    "tests/fgc/run_fgc_fixed_interface_closeout.sh": {
+      "status": "M",
+      "sha256": "7f8049779ddfb4e73b008555c4f44eed8079dc7127cb34ab3209889e2bc2d0a9"
+    },
+    "tests/nut-sol/verify_surface_age_successor.py": {
+      "status": "M",
+      "sha256": "d9ec41bff92e85b17281ba97ce449d6bf6253fdeee4057283f7bab39ccbde6ca"
+    }
+  },
+  "relevant_paths": [
+    "integration/audits/surface_age_ci/authority.py",
+    "integration/audits/surface_age_ci/run.py",
+    "integration/audits/surface_age_longrun/verify.py",
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "tests/fci/run_fci51p_wof43a_successor_preservation.sh",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+    "tests/fgc/run_fgc44_real_fmr_participant.sh",
+    "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh",
+    "tests/fgc/run_fgc49d_live_production_application_context.sh",
+    "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+    "tests/nut-sol/verify_surface_age_successor.py"
+  ],
+  "test_selection": {
+    "candidate": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
+    "groups": {
+      "fgc_closeout": {
+        "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
+        "scientific_claim": "Original whole fixed-interface real Reference/MODFLOW composition remains valid on unchanged production",
+        "owner": "F-GC fixed-interface",
+        "authority": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+        "expected_seconds": 900,
+        "existing_evidence": "Prior historical admitted original gate; current3source build failure cannot qualify current closure",
+        "prior_execution": "NONE"
+      },
+      "full_fci": {
+        "changed_dependency": "CI eligibility/source authority composition and owner runner closure",
+        "scientific_claim": "Stable guard successor retains complete existing moving preservation",
+        "owner": "MC-SOL01 / F-CI canonical",
+        "authority": "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+        "expected_seconds": 600,
+        "existing_evidence": "Inherited unchanged numerical sources; previous complete moving proof459s does not cover modified guard/build postimage",
+        "prior_execution": "NONE"
+      }
+    }
+  }
+}
