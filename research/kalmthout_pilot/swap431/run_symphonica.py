@@ -22,6 +22,8 @@ def main():
     parser.add_argument('grid', type=Path)
     parser.add_argument('--recorded-studies', action='store_true',
                         help='Use archived study identities and repository factual tables without reacquiring undistributed PDFs')
+    parser.add_argument('--dutch-sources', action='store_true',
+                        help='Collect complementary Dutch modal soil profiles and dated land-cover polygons; does not qualify additional cell runs')
     parser.add_argument('--wet-heath', action='store_true',
                         help='Also collect current LAI/terrain and run explicitly provisional historical wet-heath scenarios')
     args = parser.parse_args()
@@ -88,6 +90,8 @@ def main():
         run(scripts / 'collect_modis_lai.py', target_grid, results / 'modis_lai')
         run(scripts / 'collect_terrain_points.py', root, results / 'terrain_points')
         run(scripts / 'run_wet_heath_scenarios.py', root, results / 'wet_heath_scenarios', exe)
+    if args.dutch_sources:
+        run(scripts / 'collect_dutch_sources.py', root, results / 'dutch_sources')
     batch = json.loads((results / 'swap431_grid_soil_scenarios/batch_results.json').read_text())
     status = {'model': 'SWAP4.3.1', 'executable_sha256': sha(exe),
               'study_document_mode': 'RECORDED_IDENTITIES_ONLY' if args.recorded_studies else 'PDF_BYTES_VERIFIED',
@@ -101,6 +105,11 @@ def main():
         status.update({'provisional_wet_heath_ecotope_runs':len(heath),
                        'wet_heath_daily_states_checked':sum(r['water_balance']['physical_daily_states_checked'] for r in heath),
                        'wet_heath_current_cell_assignment':False})
+    if args.dutch_sources:
+        dutch = json.loads((results / 'dutch_sources/dutch_source_manifest.json').read_text())
+        status.update({'dutch_modal_soil_centres': dutch['soil_profile_count'],
+                       'dutch_landcover_cells_95pct': dutch['landcover_cells_95pct'],
+                       'dutch_data_status': 'SOURCE_CONTEXT_ONLY_NO_ADDITIONAL_CELL_QUALIFICATION'})
     (results / 'symphonica_pipeline_status.json').write_text(json.dumps(status, indent=2) + '\n')
     print(json.dumps(status))
 
