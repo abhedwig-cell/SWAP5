@@ -56,8 +56,9 @@ def main():
     state = threading.local()
     # The official container token serves all assets. Signing every individual
     # band needlessly exhausts the public signing API's request allowance.
-    token = None
-    for attempt in range(4):
+    need_download = any(not (out/(identity+'.npz')).exists() or not (out/(identity+'.json')).exists() for identity in items)
+    token = '' if not need_download else None
+    for attempt in range(4 if need_download else 0):
         response = requests.get('https://planetarycomputer.microsoft.com/api/sas/v1/token/modiseuwest/modis-061-cogs', timeout=60)
         if response.status_code == 429:
             delay = int(response.headers.get('Retry-After', '60')) + 1
@@ -120,7 +121,10 @@ def main():
             try:
                 records.append(future.result())
             except Exception as error:
-                errors.append({'id': futures[future], 'error': str(error)})
+                # Signed download URLs contain ephemeral credentials and are
+                # never written into evidence, including failed-transfer logs.
+                status = getattr(getattr(error,'response',None),'status_code',None)
+                errors.append({'id': futures[future], 'error_type':type(error).__name__, 'http_status':status})
             if (len(records)+len(errors)) % 10 == 0:
                 print('LAI cached', len(records), 'errors', len(errors), 'of', len(items), flush=True)
     records.sort(key=lambda r: r['start'])
@@ -155,8 +159,8 @@ def main():
                            'No interpolation, no gap filling, no LAI applied automatically to SWAP.',
                            'Composite start/end retained, including intervals overlapping the simulation edges.']}
     (out / 'lai_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    print(json.dumps({k: manifest[k] for k in ['items_found', 'items_collected', 'cell_count', 'counts']},
-                     )[:-1] + ', "error_count": ' + str(len(errors)) + '}')
+    print(json.dumps({**{k: manifest[k] for k in ['items_found', 'items_collected', 'cell_count', 'counts']},
+                      'error_count': len(errors)}))
     if errors:
         raise SystemExit('Some source retrievals failed; rerun to resume verified caches.')
 

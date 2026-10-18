@@ -55,11 +55,20 @@ def balance(case):
     # Printed-component uncertainty, not a changed solver tolerance.
     assert max(abs(x) for x in residual) <= native + 20 * .0000051
     assert all(val(r, 'IC_VOL') >= 0 and val(r, 'PD_VOL') >= 0 for r in rows)
+    contract = json.loads((case / 'case_manifest.json').read_text())
+    lower = sum((h['bottom_cm']-h['top_cm'])*h['swap_mvg'][0] for h in contract['layers'])
+    upper = sum((h['bottom_cm']-h['top_cm'])*h['swap_mvg'][1] for h in contract['layers'])
+    for row in rows[1:]:
+        assert lower-1e-4 <= val(row,'WTOT') <= upper+1e-4
+        assert val(row,'IC_VOL') <= contract['canopy_capacity_cm_per_lai']*val(row,'LAI') + 1e-5
+        assert abs(val(row,'RD')-contract['root_depth_cm']) < 1e-5
+        assert val(row,'TACT') <= val(row,'TPOT')+1e-5
     return {'water_unit': 'cm', 'days': 1005, 'totals': totals,
             'initial_soil_pond_canopy_storage': storage[0], 'final_soil_pond_canopy_storage': storage[-1],
             'storage_change': storage[-1]-storage[0],
             'period_closure': sum(totals[k] for k in incoming)-sum(totals[k] for k in outgoing)-storage[-1]+storage[0],
             'max_daily_native_baldev': native, 'max_daily_printed_component_closure': max(abs(x) for x in residual),
+            'physical_daily_states_checked':len(rows)-1,'soil_storage_limits_cm':[lower,upper],
             'year_boundary_days': [{k: r[k] for k in ['DATE', 'IC_VOL', 'EIC', 'BALDEV']}
                                    for r in rows if r['DATE'][5:] in ['12-31', '01-01']],
             'eic_contract': 'Native interception term includes canopy-capacity loss at annual crop reset; not pure measured evaporation.'}
@@ -165,6 +174,8 @@ def main():
     shutil.copyfile(daily / 'kalmthout.rain', shared / 'kalmthout.rain')
     template = (daily / 'swap.swp').read_text()
     fits = json.loads((root / 'results/local_studies/historical_retention_fits.json').read_text())['fits']
+    ksource = Path(__file__).resolve().parent.parent/'local_sources/staring2018_parameters.csv'
+    staring = {r['code']:r for r in csv.DictReader(ksource.open())}
     source_lai = root / 'results/nhi_ecosystem_priors/selected/Basisdata/msw_templates/fact_svat.inp'
     facts = [l.split() for l in source_lai.read_text().splitlines() if l.split() and l.split()[0] == '14']
     assert len(facts) == 366 and [int(r[1]) for r in facts] == list(range(1,367))
@@ -198,7 +209,7 @@ def main():
             f = next(f for f in fits if f['profile']=='2' and f['horizon']==horizon and
                      f['row_variant']==str(variant if horizon=='A1' else 1))
             # External fitted class-scale K prior, not a measurement of the iron pan.
-            ksat = 31.23 if horizon=='A1' else 22.32
+            ksat = float(staring['B01' if horizon=='A1' else 'O01']['Ksat_fit_cm_day'])
             values = [f['theta_r'],f['theta_s'],f['alpha_per_cm'],f['alpha_per_cm'],f['n'],.5,ksat,ksat,0,1500]
             grids.append(f'{i} {i} {bot-top:.8f} {math.ceil((bot-top)/(1 if top<10 else 5))}')
             hydraulics.append(' '.join(f'{v:.12e}' for v in values))
@@ -210,6 +221,7 @@ def main():
         text = re.sub(r'(?m)^ -200\.0 -75\.0$', ' -106.0 -75.0', text)
         (case / 'swap.swp').write_text(text)
         contract = {'case':name,'executable_sha256':sha(exe),'weather_sha256':sha(weather),'lai_source_sha256':sha(source_lai),
+                    'conductivity_source_sha256':sha(ksource),
                     'layers':layers,'root_depth_cm':root_depth,'canopy_capacity_cm_per_lai':capacity,'bottom_mode':bottom,
                     'status':'PROVISIONAL_HISTORICAL_WET_HEATH_ECOTOPE_NOT_VALIDATED_GRID_CELL',
                     'assumptions':['Profile2 Wilgenduinen 1980, retention from1981 tables; column truncated at106cm.',

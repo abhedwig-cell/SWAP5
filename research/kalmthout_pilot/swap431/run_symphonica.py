@@ -20,6 +20,8 @@ def main():
     parser.add_argument('weather', type=Path)
     parser.add_argument('endpoint', type=Path)
     parser.add_argument('grid', type=Path)
+    parser.add_argument('--wet-heath', action='store_true',
+                        help='Also collect current LAI/terrain and run explicitly provisional historical wet-heath scenarios')
     args = parser.parse_args()
     root, exe = args.root.resolve(), args.executable.resolve()
     results, export = root / 'results', root / 'export'
@@ -78,12 +80,23 @@ def main():
     run(scripts / 'collect_local_studies.py', results / 'local_studies')
     run(scripts / 'fit_historical_retention.py', results / 'local_studies/historical_retention_fits.json')
     run(scripts / 'run_local_soil_scenarios.py', root, results / 'swap431_grid_soil_scenarios', exe, '--all-cells')
+    if args.wet_heath:
+        run(scripts / 'collect_nhi_ecosystem_priors.py', results / 'nhi_ecosystem_priors')
+        run(scripts / 'collect_modis_lai.py', target_grid, results / 'modis_lai')
+        run(scripts / 'collect_terrain_points.py', root, results / 'terrain_points')
+        run(scripts / 'run_wet_heath_scenarios.py', root, results / 'wet_heath_scenarios', exe)
     batch = json.loads((results / 'swap431_grid_soil_scenarios/batch_results.json').read_text())
     status = {'model': 'SWAP4.3.1', 'executable_sha256': sha(exe),
               'source_grid_cells': batch['candidate_cells'], 'assigned_soil_response_cells': batch['assigned_cells'],
               'unique_native_runs': len(batch['runs']), 'native_successes': sum(r['native_success'] for r in batch['runs']),
               'unassigned_cells': len(batch['unassigned']),
               'status': 'EXPLORATORY_SOIL_RESPONSE_RESULTS; LOCAL_VEGETATION_AND_BOUNDARY_PARAMETERIZATION_OPEN'}
+    if args.wet_heath:
+        heath = json.loads((results/'wet_heath_scenarios/batch_results.json').read_text())['runs']
+        assert len(heath)==16 and all(r['native_success'] for r in heath)
+        status.update({'provisional_wet_heath_ecotope_runs':len(heath),
+                       'wet_heath_daily_states_checked':sum(r['water_balance']['physical_daily_states_checked'] for r in heath),
+                       'wet_heath_current_cell_assignment':False})
     (results / 'symphonica_pipeline_status.json').write_text(json.dumps(status, indent=2) + '\n')
     print(json.dumps(status))
 
