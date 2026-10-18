@@ -2,14 +2,15 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "dade43aa837fbe9cf66099f6de731b4c9aec9518",
+  "checkpoint_commit": "3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
     "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
     "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria",
-    "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation"
+    "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation",
+    "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line"
   ],
   "persisted": true,
   "tested": false,
@@ -34,15 +35,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Compile and run actual B112 O0/O2 full restart tests against exact postimage; only admit bounded negative input regression if successful; full TTUTIL parser and multiple crop rotation remain open",
-  "recovery_point": "work/nut-snm-negative-completeness-20261018@dade43aa837fbe9cf66099f6de731b4c9aec9518",
+  "next_action": "Run exact-head focused O0/O2 and actual source-project qualification; admit only native SNM line diagnostic if successful. Historical TTUTIL completeness and multi-year rotations remain open.",
+  "recovery_point": "work/nut-snm-source-diagnostics-20261018@3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
   "blockers": [
     "Extended source parser negatives not yet executed",
     "Full TTUTIL grammar and multiyear crop rotation still not qualified"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
-  "last_reconciled_upstream": "b3eb4241ea1d9c990e85aaa2dbeea7d11d6f1be1",
+  "last_reconciled_upstream": "9bfb06b672260e2462d78f37daefca98da594735",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
