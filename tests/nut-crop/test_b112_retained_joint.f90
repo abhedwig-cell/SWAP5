@@ -343,13 +343,15 @@ contains
      type(crop_soil_state_t)::rejected_state
      type(soil_n_amendment_calendar_t)::rejected_plan
      type(crop_senescence_policy_t)::rejected_policy
-     integer::input_unit,output_unit,ios,case_number
+     integer::input_unit,output_unit,ios,case_number,source_record,nitrif_record
      character(512)::source_line
      do case_number=1,9
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
+       source_record=0;nitrif_record=0
        do
          read(input_unit,'(A)',iostat=ios)source_line
+         if(ios==0)source_record=source_record+1
          if(ios/=0)exit
          if(index(source_line,'iMat = ')==1)then
            select case(case_number)
@@ -368,8 +370,10 @@ contains
          end if
          if(index(source_line,'smedate = ')==1.and.case_number==8) &
            source_line='smedate = 1900-12-30 1901-02-29 1901-01-01 1901-12-31 1902-01-01'
-         if(index(source_line,'RateConNitrif_ref = ')==1.and.case_number==9) &
+         if(index(source_line,'RateConNitrif_ref = ')==1.and.case_number==9)then
+           nitrif_record=source_record
            source_line='RateConNitrif_ref = -0.02'
+         end if
          write(output_unit,'(A)')trim(source_line)
        end do
        close(input_unit);close(output_unit)
@@ -378,6 +382,8 @@ contains
          rejected_plan,rejected_state,rejected_policy,code,error_line)
        call require(code/=0.and..not.rejected_plan%ready().and..not.rejected_state%ready(), &
          'malformed source SNM rejected atomically')
+       if(case_number==9)call require(nitrif_record>0.and.error_line==nitrif_record, &
+         'SNM invalid nutrient reports original physical source line')
      end do
    end block
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
