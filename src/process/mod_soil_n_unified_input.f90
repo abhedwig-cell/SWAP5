@@ -133,6 +133,7 @@ contains
    else
     if(nparam==512.or.len_trim(line)>512)exit
     nparam=nparam+1;parameters(nparam)=line
+    parameter_source_line(nparam)=record
    end if
   end do
   close(unit,iostat=closed)
