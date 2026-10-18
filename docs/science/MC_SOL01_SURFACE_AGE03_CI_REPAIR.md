@@ -1,6 +1,6 @@
 # MC-SOL01-SURFACE-AGE03-CI: restore three current CI entry points
 
-Status: candidate, not yet tested or admitted. Baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7.
+Status: qualification in progress. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
 Recovery: `integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json`.
 
 The three automatic merge failures observed by SURFACE-AGE02 are the scope:
@@ -54,3 +54,18 @@ markers and1126compiler records are retained, but this interrupted prefix is NOT
 a complete F-GC PASS. Final qualification executes all three routes fresh on the
 merged source. Only exact recovered compiler artifacts may be reused with source,
 flags, provider/module and toolchain hashes; every native assertion executes again.
+
+The subsequent full attempt reached the shared-library link after participant and
+application O0/O2 PASS, then found a missing local packaged shared Fortran runtime.
+The dangling runtime target was restored to the installed ABI5 library. Compiler
+source, numerical flags, all physical assertions and the MODFLOW asset pin stayed
+fixed. The failed raw streams are retained. Confirmed object/module artifacts are
+reused only under exact source, flags and complete provider-context checks; links
+and all native bodies execute again. Canonical PR1318 adds only a bounded gross/net
+nitrogen diagnostic and metadata; all selected protected inputs remain exact.
+
+The now-successful shared link exposed `nm | grep -q` under `pipefail`: early
+consumer exit makes the producer fail with SIGPIPE although its symbol exists.
+Both ABI entry scripts now consume the entire symbol listing and retain exactly
+the original required symbol expressions. This repairs orchestration, not ABI
+requirements. The failed route is retained without a scientific PASS.

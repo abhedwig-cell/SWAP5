@@ -109,8 +109,8 @@ for source in "${MODULE_SRC[@]}"; do
   objects+=("$obj")
 done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc44_swap.so" || fail "link F-GC44 shared library"
-nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc44_swap_initialize_c' || fail "missing SWAP C ABI"
-nm -D "$BUILD/bridge/libfgc44_swap.so" | grep -q 'fgc34_publish_c' || fail "missing F-GC34 publisher C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep 'fgc44_swap_initialize_c' > /dev/null || fail "missing SWAP C ABI"
+nm -D "$BUILD/bridge/libfgc44_swap.so" | grep 'fgc34_publish_c' > /dev/null || fail "missing F-GC34 publisher C ABI"
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC44_SWAP_LIB="$BUILD/bridge/libfgc44_swap.so" python3 tests/fgc/test_fgc44_real_swap_modflow_end_to_end.py | tee "$BUILD/e2e.txt"
 
