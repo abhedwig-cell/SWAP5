@@ -59,8 +59,10 @@ contains
   status=AGE_DISK_REJECT
   call snapshot_surface_age_owner(state,existing_time,existing_depth,existing_stock,old_revision,ready)
   if(ready.or.expected_identity<=0_int64)return
-  inquire(file=path,exist=exists,size=nbytes,iostat=io)
+  inquire(file=path,exist=exists,iostat=io)
   if(io/=0.or..not.exists)return
+  inquire(file=path,size=nbytes,iostat=io)
+  if(io/=0)return
   if(nbytes/=RECORD_BYTES)return
   open(newunit=unit,file=path,access='stream',form='unformatted',status='old',action='read',iostat=io)
   if(io/=0)return
