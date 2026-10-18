@@ -118,3 +118,6 @@ Full-preservation pre-science dispatcher repair: canonical HIST metadata intenti
 
 
 FCI93 qualification reconciliation: its old fixed-K byte pins predate four unchanged canonical providers (default MvG, temporal indicator, HeadCalc and legacy Reference binding). This unit changes none of them. A finite table records both original immutable and reconciled canonical blob IDs. Only that exact successor set may enter the unchanged original FCI93 immutable-oracle numerical replays. The full source-age delta validator checks the complete source boundary; arbitrary dependency drift still rejects. This is current requalification, not an inherited PASS and not a hydraulic implementation change.
+
+
+The next full-preservation attempt completed the original FCI93 numerical O0/O2 replays, then rejected an unchanged admitted drainage binding because the moving runner selected obsolete SWRD3 donor `3b661766...` as dependency authority. This work unit now explicitly registers reconciled canonical `8bf52bf2...`, conditional on its full exact-delta and executed age proof. This distinguishes new age changes from unrelated previously admitted drainage/crop changes; it does not grant wildcard source inheritance or remove any subsequent numerical gate.

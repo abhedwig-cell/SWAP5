@@ -518,6 +518,19 @@ if [[ -f integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json ]]; then
   python3 -B tests/nut-thermal/verify_thermal_successor.py || fail 'unqualified accepted thermal N owner'
   nut_thermal_exact_successor=1
 fi
+# This exact additive work unit is based on reconciled live canonical, not
+# an obsolete intermediate crop donor. Its full delta guard prevents a metadata
+# checkpoint from hiding any science change. All numerical gates below remain.
+if [[ -f integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json ]]; then
+  dependency_authority="$(python3 -B - <<'PY_AGE_BASE'
+import sys
+sys.path.insert(0,'tests/nut-sol')
+import verify_surface_age_successor as age
+age.verify_qualification()
+print(age.record()['baseline'])
+PY_AGE_BASE
+)" || fail 'unqualified surface-age canonical dependency boundary'
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
