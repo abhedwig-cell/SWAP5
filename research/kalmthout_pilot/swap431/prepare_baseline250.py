@@ -20,6 +20,7 @@ from rasterio.transform import from_origin
 from rasterio.warp import reproject, Resampling
 from pyproj import Transformer
 from rosetta import rosetta
+from scipy.spatial import cKDTree
 
 from collect_european_baseline import DEPTHS, PROPERTIES, sha
 from run_local_soil_scenarios import update
@@ -92,6 +93,15 @@ def main():
                   dst_transform=from_origin(bbox['xmin'], bbox['ymax'], 10., 10.),
                   dst_crs=domain['crs'], resampling=Resampling.nearest, dst_nodata=0)
     assert np.all(np.isin(fine, [10, 20, 30, 40, 50, 60, 80, 90])), 'Unmapped landcover or coverage gap'
+    nearest = {}
+    for depth in DEPTHS:
+        valid = [i for i in range(len(grid)) if all(
+            observations[p, depth][i] is not None and math.isfinite(observations[p, depth][i]) and observations[p, depth][i] >= 0
+            for p in PROPERTIES) and sum(observations[p, depth][i] for p in ('sand','silt','clay')) > 0]
+        assert valid
+        tree = cKDTree([xy[i] for i in valid])
+        distances, indices = tree.query(xy)
+        nearest[depth] = [(valid[int(k)],float(d)) for k,d in zip(indices,distances)]
     fractions, decisions, raw, features = [], [], [], []
     for i, cell in enumerate(grid):
         r, c = ny-1-(cell['row']-1), cell['col']-1
@@ -123,9 +133,17 @@ def main():
             # No-data replacement is an explicit v0.1 fallback, not inferred source data.
             fallback = (any(v is None or not math.isfinite(v) or v < 0 for v in obs.values())
                         or sum(obs[p] or 0 for p in ('sand', 'silt', 'clay')) <= 0)
+            imputation = None
             if fallback:
-                obs = dict(sand=850., silt=100., clay=50., bdod=140., soc=100.)
-                flags.append('SOILGAP_GENERIC_SAND_FALLBACK')
+                donor,distance = nearest[depth][i]
+                if distance <= 5000:
+                    obs = {p: observations[p,depth][donor] for p in PROPERTIES}
+                    imputation = dict(donor_cell_id=grid[donor]['cell_id'],distance_m=distance,
+                                      method='Nearest valid target-centre sample of the same SoilGrids depth; maximum5km, explicit imputation')
+                    flags.append('SOILGAP_NEAREST_GRID_IMPUTATION')
+                else:
+                    obs = dict(sand=850., silt=100., clay=50., bdod=140., soc=100.)
+                    flags.append('SOILGAP_GENERIC_SAND_FALLBACK')
             texture = [obs[p]/10 for p in ('sand', 'silt', 'clay')]
             total = sum(texture)
             assert total > 0
@@ -139,11 +157,31 @@ def main():
             raw.append(dict(cell_id=cell['cell_id'], depth=depth, source_raw=original_obs, used_inputs_raw_units=obs,
                             raw_texture_sum_percent=total, normalization_factor=100/total,
                             source_bulk_density_g_cm3=bd, ptf_bulk_density_g_cm3=ptf_bd,
-                            source_soc_percent=obs['soc']/100, explicit_fallback=fallback))
+                            used_soc_percent=obs['soc']/100, explicit_fallback=fallback, imputation=imputation))
             features.append(normalized + [ptf_bd])
         decisions.append(decision)
     print('PEDOTRANSFER', len(features), flush=True)
-    mean, spread, models = rosetta(3, features, estimate_type='geo')
+    feature_hash = hashlib.sha256(json.dumps(features).encode()).hexdigest()
+    cache = args.output / 'rosetta_predictions.npz'
+    cache_id = args.output / 'rosetta_predictions.sha256'
+    if cache.exists() and cache_id.exists() and cache_id.read_text() == feature_hash:
+        with np.load(cache) as saved:
+            mean, spread, models = saved['mean'], saved['spread'], saved['models']
+    elif cache.exists() and 'features' in np.load(cache).files:
+        with np.load(cache) as saved:
+            lookup = {tuple(f):k for k,f in enumerate(saved['features'])}
+            missing = [f for f in features if tuple(f) not in lookup]
+            if not missing:
+                select = [lookup[tuple(f)] for f in features]
+                mean, spread, models = saved['mean'][select],saved['spread'][select],saved['models'][select]
+            else:
+                mean, spread, models = rosetta(3, features, estimate_type='geo')
+        np.savez_compressed(cache,mean=mean,spread=spread,models=models,features=np.array(features))
+        cache_id.write_text(feature_hash)
+    else:
+        mean, spread, models = rosetta(3, features, estimate_type='geo')
+        np.savez_compressed(cache, mean=mean, spread=spread, models=models,features=np.array(features))
+        cache_id.write_text(feature_hash)
     assert len(mean) == 4096*6
     shared = args.output / 'forcing'; shared.mkdir(exist_ok=True)
     previous = args.previous_root / 'results/wet_heath_scenarios'
@@ -154,6 +192,30 @@ def main():
     fact_rows = [line.split() for line in lai_file.read_text().splitlines() if line.split()]
     lai = {index: [float(r[3]) for r in fact_rows if r[0] == str(index)] for index in (1, 5, 11, 14)}
     assert all(len(v) == 366 for v in lai.values())
+    curves, lai_contract = {}, {}
+    for index, source_values in lai.items():
+        values = source_values
+        method = 'Native table compression within0.05m2/m2'
+        try:
+            for year in (2024, 2025, 2026):
+                crop(values, year, 50., .05)
+        except AssertionError:
+            anchors = np.linspace(0, 365, 13).astype(int)
+            values = np.interp(np.arange(366), anchors, np.array(source_values)[anchors]).tolist()
+            method = '13 evenly spaced source-day anchors, linearly interpolated; explicit phenology smoothing'
+        curves[index] = values
+        lai_contract[index] = dict(method=method, max_smoothing_difference_m2_m2=max(abs(a-b) for a,b in zip(values,source_values)),
+                                   native_table_compression_bound_m2_m2=.05)
+    crop_templates = {}
+    for code, veg in VEGETATION.items():
+        if veg['nhi_index'] is None:
+            continue
+        for year in (2024, 2025, 2026):
+            crp = crop(curves[veg['nhi_index']], year, veg['root_cm'], .05)
+            crp = crp.replace('* Historical wet-heath scenario; documented local observations and NHI priors.',
+                              '* Initial regional land-cover analogue; explicit project priors, no WOFOST.')
+            crp = crp.replace('4.000000000000e+01', f'{veg["height_cm"]:.12e}')
+            crop_templates[code, year] = update(update(crp, 'RSC', f'{veg["rsc"]:.12e}'), 'ALBEDO', f'{veg["albedo"]:.12e}')
     cases = args.output / 'cells'; cases.mkdir(exist_ok=True)
     geo = []
     for i, (cell, decision) in enumerate(zip(grid, decisions)):
@@ -190,11 +252,7 @@ def main():
         for year in (2024, 2025, 2026):
             if code == 60:
                 continue
-            crp = crop(lai[veg['nhi_index']], year, veg['root_cm'], .05)
-            crp = crp.replace('* Historical wet-heath scenario; documented local observations and NHI priors.',
-                              '* Initial regional land-cover analogue; explicit project priors, no WOFOST.')
-            crp = crp.replace('4.000000000000e+01', f'{veg["height_cm"]:.12e}')
-            crp = update(update(crp, 'RSC', f'{veg["rsc"]:.12e}'), 'ALBEDO', f'{veg["albedo"]:.12e}')
+            crp = crop_templates[code, year]
             (path / f'heath{year}.crp').write_text(crp)
         (path / 'swap.swp').write_text(text)
         for name in ('hourly.met', 'kalmthout.rain'):
@@ -206,6 +264,7 @@ def main():
                         native_model='SWAP_SIMPLE_CROP_NO_WOFOST',
                         source_manifest_sha256=sha(soils/'soilgrids_manifest.json'),
                         worldcover_region_sha256=sha(worldcover), lai_template_sha256=sha(lai_file),
+                        lai_approximation=lai_contract.get(veg['nhi_index']),
                         ptf_contract='Rosetta3 model3 texture+bulk density; geometric estimates; Mualem lambda0.5 assumed; Ksat used in both SWAP conductivity fields.',
                         source_sampling='SoilGrids native pixel at target centre; WorldCover fractions from nearest 10m UTM raster. Not new independent measurements.',
                         local_improvements='Existing DOV/BWK, historical retention, groundwater, terrain and MODIS retained separately; not yet assimilated.')
