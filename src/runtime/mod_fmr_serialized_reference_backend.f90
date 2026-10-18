@@ -3608,7 +3608,7 @@ contains
             forcing%rutter%process%interception_evaporation_capacity_cm_per_day < 0.0_real64 .or. &
             forcing%rutter%process%potential_transpiration_dry_cm_per_day < 0.0_real64 .or. &
             forcing%rutter%process%potential_transpiration_wet_cm_per_day < 0.0_real64 .or. &
-            forcing%rutter%snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%rutter%runon_rate_cm_per_day /= 0.0_real64 .or. &
+            forcing%rutter%snowmelt_rate_cm_per_day /= 0.0_real64 .or. forcing%rutter%runon_rate_cm_per_day < 0.0_real64 .or. &
             forcing%rutter%potential_bare_soil_evaporation_cm_per_day < 0.0_real64 .or. &
             forcing%rutter%potential_pond_evaporation_cm_per_day < 0.0_real64 .or. &
             forcing%rutter%ponding_max_cm < 0.0_real64 .or. forcing%rutter%runoff_resistance_day < 0.0_real64 .or. &
