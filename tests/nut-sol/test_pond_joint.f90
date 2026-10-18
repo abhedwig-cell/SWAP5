@@ -151,6 +151,7 @@ program test_pond_joint
 contains
   subroutine verify_gross_dynamic()
     type(fmr_b110_physical_forcing_t)::gross
+    type(fmr_b110_physical_parameters_t),target::gross_parameters
     type(canonical_numerical_config_t)::nc
     type(fmr_template_t)::plain
     type(kernel_committed_state_t)::w
@@ -165,6 +166,13 @@ contains
     plain%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     nc=cfg%numerical
     nc%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    nc%transaction%temporal_tolerance=1d-6
+    gross_parameters=cfg%tiles(1)%parameters
+    ! Use the qualified dynamic pond low-conductivity domain, not the
+    ! fixed-flux high-conductivity fixture's unrelated wetting-front stress.
+    gross_parameters%cofgen(3,:)=gross_parameters%cofgen(3,:)*1d-3
+    gross_parameters%cofgen(10,:)=gross_parameters%cofgen(10,:)*1d-3
+    gross_parameters%cofgen(12,:)=gross_parameters%cofgen(12,:)*1d-3
     gross=cfg%tiles(1)%base_forcing
     gross%top_flux=0d0
     allocate(gross%pond_input)
@@ -192,7 +200,7 @@ contains
         m%mass_mg_cm2,c%sorbed_matrix_mass,chem,code,surface_mass=0.25d0)
       call require(code==MATRIX_OK,'gross pond surface mass')
     end block
-    call run_pond_joint_interval(backend,column,plain,cfg%tiles(1)%parameters,w,gross,nc,chem, &
+    call run_pond_joint_interval(backend,column,plain,gross_parameters,w,gross,nc,chem, &
       chem_supply,T0,T1,outcome)
     if(outcome%status/=JOINT_OK)print *,'GROSS_JOINT_STATUS',outcome%status, &
       outcome%water%status,outcome%chemical%status
