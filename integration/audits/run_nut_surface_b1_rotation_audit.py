@@ -132,7 +132,7 @@ if BOUNDARY=='fixed-head':
  old='  cfg%tiles(1)%initial_state%ponding_depth=0d0';assert source.count(old)==1
  source=source.replace(old,old+'\n  cfg%tiles(1)%parameters%bottom_mode=5\n  cfg%tiles(1)%base_forcing%bottom_head=-75d0')
 generated=OUT/'water_audit.f90';generated.write_text(source)
-events=[];results={};artifacts={}
+events=[];results={};artifacts={};generated_artifacts={}
 def run(c,b,category):
  c=list(map(str,c));t=time.perf_counter();i=len(events)
  if category=='native':
@@ -153,6 +153,7 @@ for opt in ['O0','O2']:
  objects=[Path(e['command'][-1])for e in ce[:-1]]
  for p in objects:artifacts[str(p)]=sha(p)
  obj=b/'audit.o';exe=b/'audit';run(['gfortran',*flags,'-c',generated,'-o',obj],b,'driver_compile');run(['gfortran',*flags,*objects,obj,'-o',exe],b,'link')
+ generated_artifacts[str(obj)]=sha(obj);generated_artifacts[str(exe)]=sha(exe)
  stdout=run([exe,'write',b/'restart',b/'endpoint',PROFILE,'0',str(DAYS)],b,'native')
  # Full original-driver endpoint comparison occurs in the companion baseline phase.
  assert 'SURFACE_N_B1_PHYSICAL_DAYS' in stdout
@@ -163,8 +164,8 @@ for opt in ['O0','O2']:
  assert set(rows)=={'AUDIT_WATER_CM','AUDIT_N_KG_M2','AUDIT_STATE_RANGE','AUDIT_NUMERICAL','AUDIT_BOUNDARY_N_KG_M2','AUDIT_SURFACE_WATER_CM','AUDIT_SURFACE_N_KG_M2','AUDIT_CHEMICAL_KG_M2'}
  results[opt]=dict(endpoint=sha(b/'endpoint'),stdout=stdout,metrics=rows)
 assert results['O0']==results['O2']
-for p,h in artifacts.items():assert sha(Path(p))==h,p
+for p,h in {**artifacts,**generated_artifacts}.items():assert sha(Path(p))==h,p
 for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
 assert sha(Path(__file__))==SELF_SHA
-r=dict(status='SURFACE_N_B1_ROTATION_WATER_N_AUDIT_PASS_NOT_ADMITTED',days=DAYS,boundary=BOUNDARY,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
+r=dict(status='SURFACE_N_B1_ROTATION_WATER_N_AUDIT_PASS_NOT_ADMITTED',days=DAYS,boundary=BOUNDARY,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,generated_artifacts=generated_artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r['results']['O0']['metrics'],indent=2))
