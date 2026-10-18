@@ -551,7 +551,7 @@
       },
       "tests/nut-crop/verify_hist_native_successor.py": {
         "status": "M",
-        "sha256": "8afded62a9bc867911621a43048a88e58c57a2c3db25fdcdf198c5feb497e88e"
+        "sha256": "ab32f163a5272d213bdd5222c73bc065ecc94b65eeee741bfa65476da8f5ecf3"
       },
       "tests/nut-input/run_humus_clock_witness.py": {
         "status": "A",
@@ -584,6 +584,10 @@
       "tests/nut-sol/verify_surface_age_successor.py": {
         "status": "M",
         "sha256": "98208718ee15c98dd3e5523c87534ca6bc16312598202a10b232f737d2b16dc6"
+      },
+      "src/process/mod_soil_n_unified_input.f90": {
+        "status": "M",
+        "sha256": "cd1bcf90bdb7162e4bc104987f6feb595a98b44e102cc32517e2895b6ed16c3c"
       }
     },
     "scope": "Bounded original TTUTIL/SNM humus experiment, original endpoint-clock chemistry, conservative residue representation; source124 plus three730-day production profiles and complete current retained/thermal/TCS6 preservation; full HIST capability remains false",
@@ -1023,12 +1027,22 @@
     "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441"
   },
   "material_label_successor": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "status": "DIRECT_QUALIFIED_FULL_COMPOSITION_RUNNING",
     "baseline": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
     "branch": "work/nut-native-material-labels-20261018",
     "contract": "docs/science/MC_NUT01_NATIVE_MATERIAL_LABELS_20261018.md",
     "changed_source": "src/process/mod_soil_n_unified_input.f90",
     "scope": "Native definition labels validated1..20 then normalized to row positions; iMat unchanged; modern export unchanged",
-    "mastercoverage_promotion": false
+    "mastercoverage_promotion": false,
+    "direct_result": {
+      "old_native_cases": 38,
+      "new_label_cases": 9,
+      "original_label_cases": 4,
+      "modern_export": "UNCHANGED_O0_O2_PASS",
+      "optimization": "EXACT_STDOUT"
+    },
+    "failed_physical_attempt": "First O0 native default process exited SIGSEGV without output under default8192KB stack; original compiled executable retried with unlimited process stack, unchanged physics. Never PASS.",
+    "focused_execution_commit": "674fd5543ea06598a6384782fcfbc30cd3553713",
+    "stack_diagnosis": "Same original compiled default executable passes with unlimited process stack. New full original runner uses unlimited stack and OMP_NUM_THREADS=1; first SIGSEGV remains failed evidence."
   }
 }

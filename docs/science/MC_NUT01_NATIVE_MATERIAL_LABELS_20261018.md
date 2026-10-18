@@ -29,3 +29,22 @@ parser/original/production executions and original endpoint bytes before an
 owning guard can inherit retained evidence whose compile inventory included the
 old parser. Missing receipt, unregistered drift, failed runs or old fixture
 changes reject admission. No general source projection is permitted.
+
+## Physical boundary remains separate
+
+The admitted surface solute owner uses its matrix companion pond_mass. The
+aggregate Soil-N owner used by WOFOST has NH4/NO3 and organic inventories but
+no qualified dissolved surface-N inventory. Surface age stores carry cm day,
+not nitrogen; they cannot be reused as a nitrogen store. Existing persistent
+solute/surface contracts explicitly exclude simultaneous N companions. Thus
+source-faithful labels do not resolve the gross/net counterexample. The
+[executed carrier witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md) remains
+an independent scientific completion limit, not a parser regression.
+
+The reviewed alternatives for a next physical contract are literal historical
+gross loading of aggregate Soil-N, including the original ponding ambiguity,
+or a corrected B1 surface-N control volume inside existing ownership. The
+corrected route would retain separate surface NH4/NO3, move only infiltrated
+N to soil, export runoff N, retain solute on evaporation and serialize the
+remaining inventory. No such new physical semantics are admitted by this label
+patch. Full historical migration and its mastercoverage are still false.
