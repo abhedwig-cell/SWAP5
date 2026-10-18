@@ -48,7 +48,7 @@ contains
         q%evaporation_depth_cm)>1.0e6_real64) return
     if (q%pond_age_stock_cm_day>1.0e12_real64.or. &
         max(q%rain_age_day,q%irrigation_age_day,q%runon_age_day)>1.0e6_real64) return
-    if (q%pond_start_cm==0.0_real64.and.q%pond_age_stock_cm_day/=0.0_real64) return
+    if (q%pond_start_cm<=0.0_real64.and.q%pond_age_stock_cm_day>0.0_real64) return
     gross=q%rain_depth_cm+q%irrigation_depth_cm+q%runon_depth_cm
     loss=q%infiltration_depth_cm+q%runoff_depth_cm+q%evaporation_depth_cm
     scale=max(1.0_real64,q%pond_start_cm,q%pond_end_cm,gross,loss)
