@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
+  "checkpoint_commit": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -10,7 +10,11 @@
     "124-day physically coupled Richards\u2013WOFOST81\u2013Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria",
     "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation",
-    "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line"
+    "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line",
+    "Source-typed native SNM tables and continuation/repetition arrays with original TTUTIL independent interpretation oracle, explicit day epoch conversion and24 O0/O2 parser cases including20 materials/1000 events",
+    "730-day actual Reference Richards/WOFOST81/Soil-N synthetic seasonal rotation: two growing crops, harvests, retained/pending residues, chemical fallow, same-date and fallow material events and year boundaries",
+    "Opt-in accepted-trace signed clean atmospheric water through existing mineral/reactive/crop owners; default top-flux rejection remains; no new physical state or restart schema",
+    "Six fresh-process transition restarts per optimization, byte-exact rejected-trial rollback on two days and whole-N cumulative inventory closure"
   ],
   "persisted": true,
   "tested": false,
@@ -21,12 +25,20 @@
     "tests/nut-crop/audit_legacy_snm_source.py",
     "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90",
     "src/process/mod_soil_n_amendment_input.f90",
-    "src/process/mod_soil_n_unified_input.f90"
+    "src/process/mod_soil_n_unified_input.f90",
+    "tests/nut-crop/run_hist_complete.py",
+    "tests/nut-input/run_native_snm.py",
+    "tests/nut-input/run_ttutil_native_oracle.py",
+    "src/process/mod_b111_soil_n_mineral_owner.f90",
+    "src/process/mod_b111_soil_n_reactive_owner.f90",
+    "src/crop/mod_crop_soil_n_day.f90"
   ],
   "authority_paths": [
     "AGENTS.md",
     "docs/development/workstream-execution-protocol.md",
-    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
+    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
+    "integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64",
+    "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md"
   ],
   "dependency_surface": [
     "Richards daily transaction and forcing",
@@ -35,14 +47,16 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Run clean final O0/O2 124-day preservation and 730-day synthetic physical rotation with six fresh-process native restarts and byte-exact rollback, then owning admission. HIST full remains bounded by explicit unsupported source features.",
-  "recovery_point": "work/nut-snm-source-diagnostics-20261018@3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
+  "next_action": "Complete selected focused native and actual integrated preservation gates for bounded successor, reconcile heads/overlap and admit only that qualified scope. Full HIST remains open for explicit unsupported source semantics and source-reference correction.",
+  "recovery_point": "work/nut-hist-native-rotation-20261018@bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
   "blockers": [
-    "Full TTUTIL grammar and multiyear crop rotation still not qualified"
+    "Full historical claim requires corrected B1 cNO3N_seep reference decision and executable input-to-process comparison; B0 line197 overwrites lateral NO3 while B2 keeps seep/lateral distinct",
+    "Nonzero top dissolved-N carrier and its immutable parameter/restart binding remain unsupported; native input atomically rejects instead of dropping N",
+    "General TTUTIL and experimental humus/extended-output semantics remain explicitly unsupported; full original-model multiyear comparison is absent"
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
-  "last_reconciled_upstream": "9bfb06b672260e2462d78f37daefca98da594735",
+  "last_reconciled_head": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
+  "last_reconciled_upstream": "4a274c4650ec7f52324b8604838a8d27dd39edb3",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -179,7 +193,7 @@
     "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
   },
   "test_selection": {
-    "candidate": "41e170a845d026c1270898c679ca8135adbb809d",
+    "candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
     "groups": {
       "nut_actual": {
         "changed_dependency": "SNM lexical input and atomic calendar/material fallow routing",
@@ -187,14 +201,15 @@
         "owner": "MC-NUT01",
         "authority": "AGENTS.md#Independent local testability",
         "expected_seconds": 1000,
-        "existing_evidence": "PR1311 terminal success covers old postimage only; new source and coupling require new execution",
-        "prior_execution": "FAILED",
-        "diagnosis": "First physical run exposed a roundoff-sized false drought mortality (3.6e-15 kg/ha) and test crop_end+1 convention. Crop forcing view now snaps equality within eight rounding units while raw water carrier/receipt and pending thresholds stay unchanged. Recompile exact final postimage; earlier modified-mid-build results are diagnostic only."
+        "existing_evidence": "Raw fresh O0/O2 complete production closure, original default+124-day preservation,730-day rotation with six fresh processes per optimization; no inherited production native PASS",
+        "prior_execution": "PASS_EXACT_CANDIDATE_LOCAL",
+        "diagnosis": "First physical run exposed a roundoff-sized false drought mortality (3.6e-15 kg/ha) and test crop_end+1 convention. Crop forcing view now snaps equality within eight rounding units while raw water carrier/receipt and pending thresholds stay unchanged. Recompile exact final postimage; earlier modified-mid-build results are diagnostic only. Final capacity correction compiled in a new complete O0/O2 closure at the exact persisted candidate, with all native/restarter commands reexecuted.",
+        "measured_seconds": 485.4074764580091
       }
     }
   },
   "surface_extension_contract": {
-    "status": "IMPLEMENTED_DIRECT_TESTED_NOT_ADMITTED",
+    "status": "LOCALLY_QUALIFIED_INTEGRATED_ADMISSION_PENDING",
     "owner": "existing mineral/reactive/crop owners; Richards state remains sole water authority",
     "scope": "Optional signed clean surface-water carrier, m/day. Positive infiltration adds zero dissolved N. Negative evaporation removes water without advective N. No runoff/exfiltration solute, nonzero c_top, surface pond or macropore inference. Default absent carrier remains zero. Legacy carrier default remains fail-closed.",
     "invariants": [
@@ -211,7 +226,7 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": false,
-      "scope": "Unmodified TTUTIL O0/O2: case-insensitive identifiers, distinct real/integer and scalar/array, positive repeats, complete tables, continuation; native 21-case suite"
+      "scope": "Unmodified TTUTIL O0/O2: case-insensitive identifiers, distinct real/integer and scalar/array, positive repeats, complete tables, continuation; native 24-case suite; locally qualified within this bounded scope, integrated admission pending"
     },
     {
       "part": "Material identity names fractions dose",
@@ -219,7 +234,7 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": false,
-      "scope": "Positional contiguous IDs; source ranges restricted to physical core age<=100, vol<=1; original broad AppAge<=5000 and VolatFraction<=500000 not silently accepted"
+      "scope": "Positional contiguous IDs; source ranges restricted to physical core age<=100, vol<=1; original broad AppAge<=5000 and VolatFraction<=500000 not silently accepted; locally qualified within this bounded scope, integrated admission pending"
     },
     {
       "part": "Dates same-day year boundaries",
@@ -227,7 +242,7 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": false,
-      "scope": "Daily ISO/month-name dates; explicit TTUTIL day-1 to internal day-0 epoch mapping; fractional date/time UNSUPPORTED"
+      "scope": "Daily ISO/month-name dates; explicit TTUTIL day-1 to internal day-0 epoch mapping; fractional date/time UNSUPPORTED; locally qualified within this bounded scope, integrated admission pending"
     },
     {
       "part": "Initial FOM biomass humus NH4 NO3 and rates",
@@ -235,7 +250,7 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": false,
-      "scope": "Original named scalar ranges, supported physical activation subset; optional LaiCritNupt default0, arable residue defaults; clean top concentrations0"
+      "scope": "Original named scalar ranges, supported physical activation subset; optional LaiCritNupt default0, arable residue defaults; clean top concentrations0; locally qualified within this bounded scope, integrated admission pending"
     },
     {
       "part": "Nonzero atmospheric N concentrations",
@@ -261,5 +276,51 @@
       "QUALIFIED": false,
       "scope": "UNSUPPORTED missing-value placeholders, string concatenation, rerun sets, arbitrary scalar tables and subdaily timestamps; quote escapes not claimed"
     }
-  ]
+  ],
+  "bounded_successor": {
+    "status": "LOCAL_QUALIFIED_INTEGRATED_GATES_PENDING",
+    "execution_commit": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
+    "whole_work_unit_complete": false,
+    "duration_days": 730,
+    "optimization_equivalence": "EXACT_STDOUT_AND_ENDPOINT_BYTES",
+    "fresh_process_restart_days": [
+      1,
+      120,
+      121,
+      365,
+      366,
+      500
+    ],
+    "serialized_rollback_days": [
+      120,
+      366
+    ],
+    "water_max_abs_step_residual_cm": 4.986462631695332e-15,
+    "nitrogen_max_abs_daily_residual_kg_m2": 1.153348860101662e-15,
+    "nitrogen_cumulative_residual_kg_m2": 9.957312752106873e-16,
+    "nitrogen_budget_kg_m2": {
+      "initial": 0.6656915305925469,
+      "external_and_seed_and_fixation_input": 0.09708924930446881,
+      "external_and_harvest_output": 0.012370661578694379,
+      "final": 0.7504101183183204,
+      "internal_uptake": 0.007091920030277561
+    },
+    "endpoint_sha256": {
+      "source-profile": "b2363d3636065a41c277d239d57fd1deb7219d54c2811de0a8ade290a2ada661",
+      "rotation-profile": "5d0089e5fb4a85005c49846938691cb2f93d12914eefe2df13ad4bb0fb4cc6c9"
+    },
+    "cost_seconds": {
+      "compile": 329.40326111501236,
+      "link": 0.43996422399868607,
+      "native": 110.01507312599642,
+      "restart_native": 45.54917799300165
+    },
+    "compiler": "GNU Fortran (Ubuntu 13.2.0-23ubuntu4) 13.2.0",
+    "contract": "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md",
+    "evidence": "integration/audits/evidence/MC_NUT01_HIST_NATIVE_ROTATION_20261018.tar.xz.b64",
+    "evidence_text_sha256": "bc3ae569be488b759d7a2cccdf49ebdad18f94f816fd2bf9630dd4fb21da92fd",
+    "historical_comparison": "Original unmodified TTUTIL O0/O2 reads four identical positive fixtures and rejects scalar array defect; existing literal process references retained. No full original multiyear model equivalence claim.",
+    "forcing": "Controlled seasonal synthetic atmosphere/groundwater exchange; lateral drainage0; clean top N0; not calibrated field forcing or independent ET qualification",
+    "source_reference_gap": "B0 management_soil line197 assigns cNO3N_seep into cNO3N_lat. Existing distinct SWAP5 inputs preserved; corrected B1 input-to-process qualification remains open."
+  }
 }
