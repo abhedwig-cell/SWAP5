@@ -1,6 +1,8 @@
 program kalmthout_swap5_daily_pilot
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use MOD_grid, only: numnod, z, dz, disnod
+  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_transaction_reference, only: transaction_state_t
   use mod_fmr_runtime_core, only: FMR_BACKEND_SERIALIZED_REFERENCE, FMR_NUMERICAL_CONTINUATION_NONE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER
   use mod_interception_source_window_runtime, only: interception_source_window_t, initialize_interception_window, INTWIN_OK
   use mod_rutter_interception_process, only: rutter_interval_input_t
@@ -22,6 +24,9 @@ program kalmthout_swap5_daily_pilot
   type(fmr_production_application_bootstrap_t) :: app
   type(fmr_b110_physical_forcing_t), allocatable :: forcing(:)
   type(fmr_serialized_column_result_t), allocatable :: results(:)
+  type(kernel_committed_state_t) :: accepted_snapshot
+  class(transaction_state_t), allocatable :: accepted_physical
+  logical :: snapshot_ok
   type(interception_source_window_t) :: window
   type(rutter_interval_input_t) :: rp
   type(daily_atmospheric_demand_parameters_t) :: demand_parameters
@@ -153,6 +158,20 @@ program kalmthout_swap5_daily_pilot
       call app%run_standalone_with_forcing(t0,t1,forcing,results,status)
       if(status/=FMR_APP_BOOT_OK .or. .not.allocated(results) .or. size(results)/=1) then
         failures=failures+1
+        call app%copy_committed_for_crop(1,accepted_snapshot,status)
+        if(status==FMR_APP_BOOT_OK) then
+          call accepted_snapshot%snapshot(accepted_physical,snapshot_ok)
+          if(snapshot_ok) then
+            select type(accepted=>accepted_physical)
+            class is(fmr_b110_physical_state_t)
+              if(accepted%active_nodes>0.and.allocated(accepted%pressure_head).and.allocated(accepted%water_content)) then
+                write(*,'(A,1X,A,5(1X,ES24.16))') 'KALMTHOUT_ACCEPTED_DRY_STATE', trim(ds), &
+                     accepted%pressure_head(1),accepted%water_content(1),accepted%ponding_depth, &
+                     accepted%groundwater_level,atmospheric_demand%potential_soil_evaporation_cm_per_day
+              end if
+            end select
+          end if
+        end if
         write(*,'(A,1X,A,1X,I0,1X,I0,6(1X,F12.6))') 'KALMTHOUT_SUBHOUR_FAIL',trim(ds),isub,status, &
              precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0
         if(allocated(results)) then
