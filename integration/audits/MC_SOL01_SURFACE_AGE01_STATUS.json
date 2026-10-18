@@ -2,12 +2,12 @@
   "work_unit": "MC-SOL01-SURFACE-AGE01",
   "workstream": "MC-SOL01",
   "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
-  "stage": "QUALIFIED_PRESERVED_CANONICAL_ADMISSION_PENDING",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "execution_commit": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
   "postimages": {
     ".github/workflows/mc-sol01-surface-age01.yml": {
@@ -168,7 +168,7 @@
     "docs/architecture/invariants.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Mark PR1309 ready, merge exact qualified source onto unchanged canonical01a, then persist actual canonical admission receipt.",
+  "next_action": "Work unit complete. Unsupported age sources and complete evaporative dry-down remain a separate explicit future scope; no repeat of unchanged qualified numerical components.",
   "blockers": [],
   "test_selection": {
     "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
@@ -331,5 +331,13 @@
       "full_moving_rerun_on_merged_tree": false,
       "claim": "Exact independent-owner coexistence with unchanged age inputs and retained terminal numerical preservation; no simultaneous chemical companions."
     }
-  }
+  },
+  "admission": {
+    "pr": 1309,
+    "merge_commit": "d4912b3c37461ad918f37c53b236fa1d62478de6",
+    "qualified_head": "c6936513a77c11d6e592f07291cea09924adf891",
+    "authority": "User-authorized autonomous MC-SOL01 integration; exact scientific postimages, terminal full preservation plus separately validated unchanged-age/current-atmospheric-N coexistence.",
+    "mastercoverage_promotion": false
+  },
+  "recovery_point": "Canonical merge d4912b3c37461ad918f37c53b236fa1d62478de6; this status and scientific/preservation/coexistence capsules."
 }

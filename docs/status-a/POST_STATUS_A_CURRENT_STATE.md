@@ -745,3 +745,12 @@ classic source/codec, thermal and TCS6 endpoint bytes are preservation boundarie
 This profile does not admit complete historical NUT selector/parameter activation
 or promote a whole mastercoverage capability. The frozen Status-A denominator
 is unchanged.
+
+
+## MC-SOL01-SURFACE-AGE01: bounded Reference surface-water age
+
+PR #1309 is canonically admitted at `d4912b3c37461ad918f37c53b236fa1d62478de6`. The Reference opt-in owns persistent surface age amount (cm day), derives transfer from actual accepted hydraulic substeps, transports infiltrated age through the native soil-age top face exactly once, and commits water/soil/surface candidates together. A single atomic POSIX snapshot envelope persists all three owners without changing the historical S5AJ0001 payload layout.
+
+Actual positive pond age, rain, irrigation, aged runon, infiltration, runoff and evaporation pass O0/O2 joint balance, rejected-trial rollback, smaller retry, interval sensitivity and fresh-process exact continuation. Before/after-rename process-kill recovery passes. Full moving numerical preservation passes on the qualified predecessor; concurrent atmospheric-N canonical is retained with exact unchanged age input identity and fresh combined owner qualification. This does not claim a full numerical rerun on the merged atmospheric-N tree, simultaneous chemical companions, arbitrary seasonal accuracy or full mastercoverage promotion. Unsupported exfiltration/snowmelt age sources and complete evaporative emptying with residual age remain fail-closed. RossFast scope remains frozen.
+
+Authority and manifest-protected evidence: [surface-age admission record](../../integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json) and [scientific/execution record](../science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md).
