@@ -103,5 +103,57 @@
     "This exact final F-CI73P status head must pass the F-CI73P workflow.",
     "The F-CI73P governance merge must preserve the admitted F-GC25 production and reference trees.",
     "The moving-preservation workflow must pass on the resulting canonical postimage."
-  ]
+  ],
+  "current_successor_20261018": {
+    "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
+    "phase": "ORIGINAL_NATIVE_QUALIFIED_GUARD_TEST_PENDING",
+    "implemented": true,
+    "persisted": false,
+    "tested": true,
+    "qualified": false,
+    "canonically_admitted": false,
+    "historical_admission": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
+    "execution_commit": "101ff877d850311d7552fd852014b0ec65fde508",
+    "validator_sha256": "a09910e8871cfa80b53c4c1ff37a914506bbc55b613b2513bfaa233138a7cd5c",
+    "workflow_sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1",
+    "successor_blobs": {
+      "src/runtime/mod_groundwater_multiswap_topology.f90": {
+        "historical": "2ce4e9f7083c46e7040493d3029abfc233f59f16",
+        "current": "38c228f31baee99b2ef1f3d6e15488a8bcb40c49"
+      },
+      "src/runtime/mod_groundwater_multiswap_publication.f90": {
+        "historical": "02bc938fac28231c2c1234dd4ac3c3f8ba617983",
+        "current": "ef2c293f9f826317dc0f072345abeb1c9c914c4a"
+      }
+    },
+    "owner_runner": {
+      "historical": "fa520fb448c13f0fc82d52e4429fc0e0874ce5bf",
+      "current": "7e3ef80fa1f9f39c72dc719abce08a9d12f409dc",
+      "change": "Already admitted --all prerequisite expansion; original six scientific drivers and numerical flags unchanged"
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/FCI73_CURRENT_NATIVE_20261018.tar.xz.b64",
+      "decoded_sha256": "6d6e609b50e969c3022103cdeaa536e8775977a4fb85e6d5fa9207f22332eb21",
+      "decoded_bytes": 14324,
+      "members": 35
+    },
+    "scope": "Restore exact moving eligibility for already qualified allocation-free ledger total and precommit beginning-mass timing; no production/reference/test driver changes",
+    "affected_invariants": [
+      7,
+      13,
+      22,
+      23,
+      25,
+      26
+    ],
+    "test_selection": {
+      "native_owner": "Original six owner cases O0/O2 plus unchanged F-VQ87 oracle O0/O2, PASS,148.098s combined compile/link,0.0834s independent native; owner native time not separately instrumented",
+      "source_guards": "Fresh source-only and qualification closure plus old age/NUT and current controls required",
+      "full_moving": "NOT_SELECTED_IMPACT: unchanged production/reference/native closure; workflow eligibility only. Complete781.268s local moving on9de retained through exact prior reconciliation; do not call it a new full run.",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "FROZEN_UNCHANGED",
+      "hosted": "Only automatic integrated workflows, no manual runs"
+    },
+    "next_action": "Persist candidate, qualify bounded workflow and source guards with negative controls, integrate and actively follow automatic CI to terminal"
+  }
 }
