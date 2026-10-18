@@ -17,7 +17,7 @@ jobs:
       - name: Install compiler
         run: sudo apt-get update && sudo apt-get install -y gfortran
       - name: Run Kalmthout current-canonical pilot
-        run: chmod +x research/kalmthout_pilot/run_kalmthout_official.sh && KALMTHOUT_DRY_DIAG_ONLY=1 research/kalmthout_pilot/run_kalmthout_official.sh "$RUNNER_TEMP/kalmthout-output"
+        run: chmod +x research/kalmthout_pilot/run_kalmthout_official.sh && KALMTHOUT_NEWTON_TRACE=1 KALMTHOUT_DRY_DIAG_ONLY=1 research/kalmthout_pilot/run_kalmthout_official.sh "$RUNNER_TEMP/kalmthout-output"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
