@@ -121,6 +121,10 @@
     "tests/nut-sol/verify_surface_age_successor.py": {
       "status": "A",
       "sha256": "73bf84c63f0b918a39f1af2c4dab2fefa26721f1c1bb848c9b0345c40596f000"
+    },
+    "tests/modularity/verify_joint_preservation.py": {
+      "status": "M",
+      "sha256": "453a0a36720b6db35a575da7c3849055419d0af6637a5b6f9d3882617e75bba9"
     }
   },
   "relevant_paths": [
@@ -151,7 +155,8 @@
     "tests/nut-sol/test_surface_age_route_trial.f90",
     "tests/nut-sol/test_surface_age_soil_handoff.f90",
     "tests/nut-sol/test_surface_age_trace_bridge.f90",
-    "tests/nut-sol/verify_surface_age_successor.py"
+    "tests/nut-sol/verify_surface_age_successor.py",
+    "tests/modularity/verify_joint_preservation.py"
   ],
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
@@ -174,7 +179,7 @@
         "existing_evidence": "Final targeted O0/O2 real Reference and isolated age evidence; previous admitted age and HIST immutable capsules",
         "expected_seconds": 1800,
         "prior_execution": "FAILED",
-        "diagnosis": "Selection preflight only: adding the new scientific evidence capsule after candidate 2aaf caused explicit dependency drift. No numerical group ran. Candidate now pins evidence-bearing e552 commit; no science or threshold changed."
+        "diagnosis": "First full attempt stopped before numerical execution: current HIST successor metadata lacks the old source_tree field and was misrouted to a pre-successor highest capsule. Added an explicit HIST owner dispatch that validates current HIST plus exact age evidence; existing numerical groups remain intact. This is NOT a fabricated historical source_tree or a numerical PASS."
       }
     }
   },
@@ -190,7 +195,8 @@
   "prior_failures": [
     "01: two optional declarations generated in CRC helpers, compiler rejected, corrected",
     "02: development driver refined while O2 compiled; final source-immutability assertion rejected run; not qualification",
-    "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency."
+    "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency.",
+    "Full preservation 02: pre-science KeyError source_tree in retired joint owner dispatcher. Correct current HIST owner routing added; no tests removed."
   ],
   "evidence": {
     "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_20261018.tar.xz.b64",
