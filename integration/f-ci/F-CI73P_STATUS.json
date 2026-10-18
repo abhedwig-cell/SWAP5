@@ -106,15 +106,15 @@
   ],
   "current_successor_20261018": {
     "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
-    "phase": "ORIGINAL_NATIVE_QUALIFIED_GUARD_TEST_PENDING",
+    "phase": "CURRENT_GUARDS_RECHECKING_COMPLETE_COMPILED_INPUT_BINDING",
     "implemented": true,
-    "persisted": false,
+    "persisted": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "canonically_admitted": false,
     "historical_admission": "c53b4e4e966a6b0531e1e6224b2f8f1d7e02ece1",
     "execution_commit": "101ff877d850311d7552fd852014b0ec65fde508",
-    "validator_sha256": "a09910e8871cfa80b53c4c1ff37a914506bbc55b613b2513bfaa233138a7cd5c",
+    "validator_sha256": "0839867ca18baf12145b443cc1b9c539c6310fa1afc7368293d96e57d034fbc3",
     "workflow_sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1",
     "successor_blobs": {
       "src/runtime/mod_groundwater_multiswap_topology.f90": {
@@ -133,8 +133,8 @@
     },
     "evidence": {
       "path": "integration/audits/evidence/FCI73_CURRENT_NATIVE_20261018.tar.xz.b64",
-      "decoded_sha256": "61425658054afc08e713a1e0265d58edf0340c1cbee94b3cdc0ed6a0281868e0",
-      "decoded_bytes": 14340,
+      "decoded_sha256": "9a0b114e0dfe5971cb4e173cd6a4c9d5e63fd5edc92411a053ab36025fda754b",
+      "decoded_bytes": 14352,
       "members": 35
     },
     "scope": "Restore exact moving eligibility for already qualified allocation-free ledger total and precommit beginning-mass timing; no production/reference/test driver changes",

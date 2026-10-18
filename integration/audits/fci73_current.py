@@ -37,6 +37,17 @@ def validate(f):
  log=f['owner.stdout'].decode();check(log.rstrip().endswith('F-GC25 MULTISWAP GROUNDWATER COMPOSITION GATE PASS'),'F-CI73 original owner gate absent')
  ee=json.loads(f['compiler-events.json']);check(len(ee)==14 and all(e['returncode']==0 for e in ee),'F-CI73 compiler execution')
  for e in ee:check(e['args'][:len(FLAGS)]==FLAGS,'F-CI73 changed numerical/warning flags')
+ compiled=set()
+ for e in ee:
+  for arg in e['args']:
+   if not arg.endswith('.f90'):continue
+   if Path(arg).name=='fgc21_fixture.f90':continue
+   if Path(arg).is_absolute():
+    check(arg.startswith(r['execution_root']+'/'),'F-CI73 foreign compiled source')
+    arg=arg[len(r['execution_root'])+1:]
+   compiled.add(arg)
+ required=compiled|{'tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh','tests/modularity/run_multiswap_independent.py','tests/support/augment_bartholomeus_backend_sources.py'}
+ check(set(r['input_sha256'])==required,'F-CI73 incomplete compiled input binding')
  for opt in [0,2]:
   for name in PROGRAMS:
    driver='tests/fgc/test_fgc25_'+name+'.f90';marker='FGC25_test_fgc25_'+name+f'_O{opt}=PASS'
@@ -76,6 +87,7 @@ def main():
   reject('missing independent optimization',lambda d:edit(d,'independent/CONTROL.json',lambda c:c['records'].pop()))
   reject('fixture drift',lambda d:d.__setitem__('independent/fgc21_fixture.f90',b'!'))
   reject('unbound input',lambda d:edit(d,'result.json',lambda r:r['input_sha256'].__setitem__('src/runtime/mod_groundwater_multiswap_topology.f90','0'*64)))
+  reject('missing compiled input',lambda d:edit(d,'result.json',lambda r:r['input_sha256'].pop('src/runtime/mod_groundwater_multiswap_topology.f90')))
   reject('unfinished science',lambda d:edit(d,'result.json',lambda r:r.__setitem__('status','RUNNING')))
   reject('unbound execution',lambda d:edit(d,'result.json',lambda r:r.__setitem__('execution_commit','0'*40)))
   print(json.dumps(dict(negative_controls=passed,count=len(passed))))
