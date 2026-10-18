@@ -12,6 +12,8 @@ program test_reactive_owner
  type(reactive_receipt_t)::r
  type(mineral_receipt_t)::mr
  type(soil_n_pool_state_t)::pools,got,want,other
+ real(real64),allocatable::base_vector(:),experiment_vector(:)
+ real(real64)::hum_rates(6)
  real(real64)::w,temp(4),moisture(4),time,theta,nit,denit,carbon
  integer(int64)::revision
  integer::i,j,code
@@ -93,6 +95,46 @@ program test_reactive_owner
  call advance_reactive_day(restored,1d0,2d0,.34d0,0d0,0d0,0d0,0d0,r,surface_water=-.003d0)
  call require(r%status==0,'reactive top restart accepted')
  call restored%snapshot(time,theta,other,revision);call compare(got,other,'top reactive opaque continuation')
+ call parameters(p);base_vector=reactive_parameter_vector(p)
+ hum_rates=[-1d0,0d0,.5d-6,1d-6,1.0001d-6,.02d0/365.2425d0]
+ do i=1,size(hum_rates)
+  call parameters(p);p%hum_exp_daily=hum_rates(i)
+  if(i>1)p%hum_exp_start_day=2d0
+  experiment_vector=reactive_parameter_vector(p)
+  if(i==1)then
+   call require(all(experiment_vector==base_vector),'absent humus experiment old parameter identity')
+  else
+   call require(size(experiment_vector)==size(base_vector)+3,'humus experiment explicit identity length')
+   call require(all(experiment_vector(:size(base_vector))==base_vector),'humus experiment old prefix')
+   call require(experiment_vector(size(base_vector)+1)==-81005d0,'humus experiment identity marker')
+  end if
+  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
+  call require(code==0,'humus experiment initial pools')
+  call initialize_reactive(p,9001_int64,0d0,.34d0,pools,state,code)
+  call require(code==0,'humus experiment owner')
+  do j=0,2
+   call literal_day(p,pools,.34d0,.34d0,0d0,0d0,0d0,0d0,want,nit,denit,carbon,soil_clock=real(j,real64))
+   call advance_reactive_day(state,real(j,real64),real(j+1,real64),.34d0,0d0,0d0,0d0,0d0,r)
+   call require(r%status==0.and.abs(r%residual)<=1d-12,'humus switch accepted with hard balance')
+   call state%snapshot(time,theta,got,revision);call compare(got,want,'humus original switch full state')
+   if(j==0)then
+    call export_reactive_restart(state,payload,code);call require(code==0,'humus before switch opaque export')
+    call restore_reactive_restart(payload,9001_int64,restored,code);call require(code==0,'humus before switch opaque restore')
+   else
+    call advance_reactive_day(restored,real(j,real64),real(j+1,real64),.34d0,0d0,0d0,0d0,0d0,r)
+    call require(r%status==0,'humus switched opaque accepted')
+    call restored%snapshot(time,theta,other,revision);call compare(got,other,'humus opaque switch continuation')
+   end if
+   pools=got
+  end do
+ end do
+ bad=p;bad%hum_exp_daily=-.1d0
+ call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'negative humus experiment rejected')
+ bad=p;bad%hum_exp_start_day=1.5d0
+ call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'fractional humus switch rejected')
+ bad=p;bad%hum_exp_daily=ieee_value(0d0,ieee_quiet_nan)
+ call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'NaN humus experiment rejected')
+ print '(A)','REACTIVE_ORIGINAL_HUMUS_SWITCH_THRESHOLD_18_DAYS_OPAQUE=PASS'
  print '(A)','REACTIVE_ATMOSPHERIC_ORIGINAL_CHEMISTRY_EVAPORATION_RESTART=PASS'
  print '(A)','REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS'
 contains

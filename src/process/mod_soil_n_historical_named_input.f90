@@ -2,11 +2,12 @@
 module mod_soil_n_historical_named_input
  use iso_fortran_env,only:real64,iostat_end,iostat_eor
  use ieee_arithmetic,only:ieee_is_finite
+ use mod_soil_n_amendment_input,only:parse_soil_n_date
  use mod_soil_n_historical_activation,only:soil_n_historical_initial_t,soil_n_historical_rates_t
  implicit none
  private
  integer,parameter,public::N_NAMED_OK=0,N_NAMED_INVALID=1,N_NAMED_IO=2
- integer,parameter::COUNT=32
+ integer,parameter::COUNT=34
  character(32),parameter::names(COUNT)=[character(32):: &
  'FOM1_t', &
  'FOM2_t', &
@@ -38,7 +39,7 @@ module mod_soil_n_historical_named_input
  'AppAgeLv', &
  'AppAgeSt', &
  'AppAgeSo', &
- 'cNH4N_top','cNO3N_top']
+ 'cNH4N_top','cNO3N_top','RateconHum_exp','tstartHumexp']
  type,public::soil_n_residue_age_t
    real(real64)::root=1.27d0,leaf=.99d0,stem=1.27d0,storage=1.27d0
  end type
@@ -138,16 +139,22 @@ contains
      if(seen(field_index))return
      if(scan(trim(token),' /,;*!')/=0)return
      if(len_trim(token)>32.or.len_trim(token)==0)return
-     if(native.and.scan(trim(token),'.eEdD')==0)return
-     read(token,*,iostat=ios)x
-     if(ios/=0)return
-     if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return
+     if(native.and.field_index==34)then
+      call parse_soil_n_date(trim(token),x,ios)
+      if(ios/=0)return
+     else
+      if(native.and.scan(trim(token),'.eEdD')==0)return
+      read(token,*,iostat=ios)x
+      if(ios/=0)return
+      if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return
+     end if
      if(native)then
       ! management_soil.f90 rdsdor source ranges. Physical activation has
       ! additional admissibility constraints; those are not historical defaults.
-      if(field_index<=20.or.field_index>=22.and.field_index<=26.or.field_index>=31)then
+      if(field_index<=20.or.field_index>=22.and.field_index<=26.or.field_index>=31.and.field_index<=32)then
        if(x>1000d0)return
       end if
+      if(field_index==33.and.x>100d0)return
       if(field_index==21.and.x>10d0)return
       if(field_index>=27.and.field_index<=30.and.x>100d0)return
       ! The two top concentrations have an explicit immutable owner binding.
@@ -160,6 +167,9 @@ contains
    if(any(.not.seen(:20)).or.any(.not.seen(22:26)))return
    if(native)then
     if(any(.not.seen(31:32)))return
+    if(seen(33).neqv.seen(34))then
+     error_line=max(source_line(33),source_line(34));return
+    end if
    end if
    if(any(seen(27:30).and.v(27:30)>100d0))return
    initial%fom_kg_m3(1)=v(1)
@@ -189,6 +199,9 @@ contains
    rates%nh4_seep=v(25)
    rates%no3_seep=v(26)
    rates%nh4_top=v(31);rates%no3_top=v(32)
+   if(seen(33))then
+    rates%hum_exp_per_year=v(33);rates%hum_exp_start_day=v(34)
+   end if
    if(present(ages))then
      if(seen(27))ages%root=v(27)
      if(seen(28))ages%leaf=v(28)

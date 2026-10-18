@@ -6,7 +6,7 @@ and byte-bound to the fresh qualified closure; every native command runs anew.
 from pathlib import Path
 import hashlib,json,os,shutil,subprocess,time
 PROFILE=os.environ.get('N_HIST_AUDIT_PROFILE','rotation-profile')
-assert PROFILE in ['rotation-profile','atmospheric-profile']
+assert PROFILE in ['rotation-profile','atmospheric-profile','humus-profile']
 ROOT=Path(__file__).resolve().parents[2];BASE=Path(os.environ['N_HIST_PROVIDERS']).resolve();OUT=Path(os.environ['N_HIST_WATER_AUDIT']).resolve();OUT.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 prior=json.loads((BASE/'result.json').read_text());original=json.loads((BASE/'events.json').read_text())

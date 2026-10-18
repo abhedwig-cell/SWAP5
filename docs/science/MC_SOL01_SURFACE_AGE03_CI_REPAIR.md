@@ -36,3 +36,13 @@ RossFast stress run is selected. Failed and censored attempts must remain visibl
 Owning authority: the existing fixed-interface closeout contract and accepted age
 admission/preservation contract, not a newly weakened gate. Invariants7,13,22,23,
 25,26 remain unchanged and gain reproducible build/eligibility coverage.
+
+
+Concurrent canonical admission PR1316 added the independently qualified historical
+humus clock and residue roundoff successor at1e8bf36e. Its source and full
+scientific validator are retained, including all18negative controls. The only
+shared edits are additive dispatch composition. Original physical calculations
+continue frozen on1d2d5082; new admission must identify separate execution points
+and prove complete unchanged actual scientific dependencies before inheriting any
+F-GC result. Source inventory alone does not imply all inventoried files executed.
+Fresh current F-CI51/58 dispatch and combined negative controls remain required.

@@ -19,6 +19,7 @@ module mod_b111_soil_n_reactive_owner
    type(b111_soil_n_rate_environment_t)::environment
    real(real64),allocatable::cfrac_fom(:)
    real(real64)::cfrac_biomass=0d0,cfrac_humus=0d0,wfpscrit=.6d0
+   real(real64)::hum_exp_daily=-1d0,hum_exp_start_day=0d0
    logical::enabled=.true.
  end type
  type,public::reactive_state_t
@@ -48,6 +49,7 @@ contains
    type(reactive_parameters_t),intent(in)::p
    real(real64),allocatable::v(:),b(:)
    allocate(v(0))
+   if(.not.all(ieee_is_finite([p%hum_exp_daily,p%hum_exp_start_day])))return
    if(.not.mineral_parameters_valid(p%mineral))return
    b=mineral_parameter_vector(p%mineral)
    if(.not.allocated(b).or..not.allocated(p%cfrac_fom))return
@@ -59,6 +61,7 @@ contains
        e%wfrac_sat,e%wfpscrit2,e%cdissi_half_kg_m2,e%nitrification_ref_per_day,e%denitrification_ref_per_day, &
        merge(1d0,0d0,p%enabled)]
    end associate
+   if(p%hum_exp_daily>=0d0)v=[v,-81005d0,p%hum_exp_daily,p%hum_exp_start_day]
  end function
  logical function reactive_parameters_valid(p)result(ok)
    type(reactive_parameters_t),intent(in)::p
@@ -69,6 +72,11 @@ contains
    v=reactive_parameter_vector(p)
    if(size(v)==0)return
    if(.not.all(ieee_is_finite(v)))return
+   if(p%hum_exp_daily<0d0.and.abs(p%hum_exp_daily+1d0)>0d0)return
+   if(p%hum_exp_daily>100d0/365.2425d0)return
+   if(p%hum_exp_start_day<0d0.or.p%hum_exp_start_day>3d6)return
+   if(abs(p%hum_exp_start_day-anint(p%hum_exp_start_day))>0d0)return
+   if(p%hum_exp_daily<0d0.and.abs(p%hum_exp_start_day)>0d0)return
    n=size(p%mineral%inventory%nfrac_fom)
    if(n>8)return
    associate(o=>p%organic_reference,e=>p%environment)
@@ -176,6 +184,10 @@ contains
        water,water_end,state%p%environment%wfrac_sat,state%p%wfpscrit,factor,code)
    if(code/=0)return
    actual=state%p%organic_reference
+   ! Original wofost_soil_rateconstants task1: strict daily threshold,
+   ! then inclusive end-of-day date switch, before environmental correction.
+   if(state%p%hum_exp_daily>1d-6.and.t1>=state%p%hum_exp_start_day) &
+     actual%ratecon_hum=state%p%hum_exp_daily
    actual%ratecon_fom=actual%ratecon_fom*factor
    actual%ratecon_bio=actual%ratecon_bio*factor;actual%ratecon_hum=actual%ratecon_hum*factor
    f%dt_day=1d0;f%wfrac_t0=water;f%wfrac_t=water_end;f%wflux_out=outflow;f%wflux_inbot=in_bottom

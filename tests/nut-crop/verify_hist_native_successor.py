@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,base64,hashlib,io,json,subprocess,tarfile
 ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
-BASE='4a274c4650ec7f52324b8604838a8d27dd39edb3'
+BASE='d4912b3c37461ad918f37c53b236fa1d62478de6'
 def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(raw):return hashlib.sha256(raw).hexdigest()
@@ -16,7 +16,7 @@ def archive(d):
  for p,h in m.items():require(sha(f[p])==(h['sha256']if isinstance(h,dict)else h),'HIST raw drift '+p)
  return f
 
-def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False):
+def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False,humus=False):
  import verify_b112_retained_successor as retained
  result=lambda f,n:json.loads(f[n+'/result.json'])
  def inputs(r):
@@ -34,7 +34,8 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False):
   elif e['category']=='link':
    oo=[x for x in c if x.endswith('.o')];require(oo and len(set(oo))==len(oo)and all(x in objects for x in oo),'HIST uncompiled link');links[out]=c
   else:raise ValueError('unknown HIST event')
- profiles=['source-profile','rotation-profile']+(['atmospheric-profile']if atmospheric else[])
+ require(not humus or atmospheric,'humus atmospheric dependency')
+ profiles=['source-profile','rotation-profile']+(['atmospheric-profile']if atmospheric else[])+(['humus-profile']if humus else[])
  for opt in ['O0','O2']:
   for q in r['input_sha256']:
    if q.startswith('src/')and q.endswith('.f90'):require(sum('-'+opt in c and c[c.index('-c')+1].endswith('/'+q)for c in objects.values())==1,'missing HIST provider '+q)
@@ -51,12 +52,20 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False):
    for d in [120,366]:
     before=h[prefix+profile+'.restart.reject-before-'+str(d)]
     require(before==h[prefix+profile+'.restart.reject-after-'+str(d)],'HIST rejected state')
-    if profile=='atmospheric-profile':require(before==h[prefix+profile+'.restart.clean-reject-'+str(d)],'atmospheric clean-only publication')
+    if profile in ['atmospheric-profile','humus-profile']:require(before==h[prefix+profile+'.restart.clean-reject-'+str(d)],'atmospheric clean-only publication')
   require(h[prefix+'default.endpoint']==h[prefix+'default.fresh']==h[prefix+'default.endpoint.opaque'],'HIST default restart');require(h[prefix+'source-profile.endpoint']==h[prefix+'source-profile.fresh'],'HIST source restart')
- n=result(h,'nut-native-capacity-final');inputs(n);require(n['status']=='PASS'and len(n['fixtures'])==(25 if atmospheric else 24) and n['outputs']['O0']==n['outputs']['O2'],'HIST parser matrix')
- ne=json.loads(h['nut-native-capacity-final/events.json']);require(sum(e['category']=='native'for e in ne)==(50 if atmospheric else 48) and all(e['returncode']==0 for e in ne),'HIST parser native')
+ n=result(h,'nut-native-capacity-final');inputs(n);require(n['status']=='PASS'and len(n['fixtures'])==(38 if humus else 25 if atmospheric else 24) and n['outputs']['O0']==n['outputs']['O2'],'HIST parser matrix')
+ ne=json.loads(h['nut-native-capacity-final/events.json']);require(sum(e['category']=='native'for e in ne)==(76 if humus else 50 if atmospheric else 48) and all(e['returncode']==0 for e in ne),'HIST parser native')
  o=result(h,'nut-ttutil-final3');require(o['status']=='ORIGINAL_TTUTIL_O0_O2_PASS'and o['results']['O0']==o['results']['O2'],'HIST TTUTIL');require(o['runner_sha256']==sha(reader('tests/nut-input/run_ttutil_native_oracle.py')),'HIST oracle drift');require(o['authority_zip_sha256']==sha(base64.b64decode(reader('integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64'))),'HIST TTUTIL authority')
  for q,d in o['fixture_sha256'].items():require(n['fixtures'][q]==d,'HIST source fixture')
+ oe=json.loads(h['nut-ttutil-final3/events.json']);require(sum(e['category']=='native'for e in oe)==(20 if humus else 8),'TTUTIL actual native inventory')
+ require(sum(e['category']=='negative_native'for e in oe)==2,'TTUTIL source scalar negative inventory')
+ for i,e in enumerate(oe):
+  stdout=h['nut-ttutil-final3/'+str(i).zfill(4)+'.stdout'].decode()
+  if e['category']=='negative_native':require(e['returncode']!=0 and 'variable is scalar'in stdout,'TTUTIL source scalar rejection')
+  else:require(e['returncode']==0,'TTUTIL checked execution')
+  if e['category']=='native':require('ORIGINAL_TTUTIL_TYPED_ARRAY_TABLE_DATE_INTERPRETATION=PASS'in stdout,'TTUTIL raw interpretation')
+  if e['category']=='native'and Path(e['command'][1]).stem.startswith('hum_'):require('ORIGINAL_TTUTIL_OPTIONAL_HUMUS_RATE_DATE=PASS'in stdout,'TTUTIL raw humus interpretation')
  small=result(h,'nut-focused-a5');joint=result(p,'joint');phases=result(p,'phases');tcs=result(p,'tcs6')
  for x in [small,joint,phases,tcs]:inputs(x)
  sf={k.replace('nut-focused-a5/','small/',1):v for k,v in h.items()if k.startswith('nut-focused-a5/')};retained.verify_execution_inventory('small',sf,small)
@@ -117,33 +126,80 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False):
     for name in ['default.endpoint','source-profile.endpoint','rotation-profile.endpoint']:
      q='nut-hist-capacity-qualified/'+opt+'/'+name
      require(h[q]==t.extractfile(q).read(),'zero-top admitted physical endpoint drift')
+ if humus:
+  material=result(h,'nut-material-a5');inputs(material)
+  require(material['status']=='PASS'and material['runs']['O0']==material['runs']['O2'],'conservative residue material matrix')
+  me=json.loads(h['nut-material-a5/events.json']);require(sum(e['category']=='native'for e in me)==2 and all(e['returncode']==0 for e in me),'residue material native inventory')
+  for e in [e for e in me if e['category']=='native']:
+   raw=h['nut-material-a5/'+e.get('stdout',e.get('stdout_file'))].decode()
+   require('RESIDUE_ONE_TO_EIGHT_SPACING_N_COMPENSATION_ORIGINAL_EDGE_ROLLBACK=PASS'in raw,'conservative residue original-edge and unavailable-N rollback')
+  c=result(h,'humus-clock');require(c['status']=='ORIGINAL_HUMUS_CALLER_ENDPOINT_CLOCK_O0_O2_PASS'and c['results']['O0']==c['results']['O2'],'humus original caller witness')
+  require(c['runner_sha256']==sha(reader('tests/nut-input/run_humus_clock_witness.py')),'humus clock runner drift')
+  require(c['clock_authority_sha256']==sha(base64.b64decode(reader('integration/audits/evidence/SWAP431_HUMUS_CLOCK_AUTHORITY.tar.xz.b64'))),'humus clock authority')
+  ee=json.loads(h['humus-clock/events.json']);require(sum(e['category']=='native'for e in ee)==2 and all(e['returncode']==0 for e in ee),'humus clock execution')
+  for e in [e for e in ee if e['category']=='native']:require('ORIGINAL_HUMUS_ENDPOINT_CLOCK_SWITCH=PASS'in h['humus-clock/'+e['stdout']].decode(),'humus raw clock witness')
+  ee=json.loads(h['atmospheric-reactive/events.json'])
+  for e in [e for e in ee if e['category']=='direct_native']:require('REACTIVE_ORIGINAL_HUMUS_SWITCH_THRESHOLD_18_DAYS_OPAQUE=PASS'in h['atmospheric-reactive/'+e.get('stdout',e.get('stdout_file'))].decode(),'humus original chemistry threshold proof')
+  a=result(p,'humus-audit');inputs(a)
+  require(a['profile']=='humus-profile'and a['status']=='HIST_OBSERVATIONAL_WATER_N_AUDIT_PASS'and a['provider_result_sha256']==sha(h['nut-hist-capacity-qualified/result.json']),'humus water audit binding')
+  require(a['results']['O0']==a['results']['O2'],'humus audit optimization')
+  for opt in ['O0','O2']:
+   require(p['humus-audit/'+opt+'/endpoint']==h['nut-hist-capacity-qualified/'+opt+'/humus-profile.endpoint'],'humus audit changed physics')
+   m=a['results'][opt]['metrics'];require(abs(m['AUDIT_WATER_CM'][-1])<=1e-10,'humus cumulative water')
+   require(abs(sum(m['AUDIT_BOUNDARY_N_KG_M2'])-m['AUDIT_N_KG_M2'][2])<=1e-12,'humus boundary nitrogen')
+  ee=json.loads(p['humus-audit/events.json']);require(sum(e['category']=='native'for e in ee)==2 and all(e['returncode']==0 for e in ee),'humus audit fresh execution')
+  with tarfile.open(fileobj=io.BytesIO(base64.b64decode(reader('integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_N_20261018.tar.xz.b64'))))as t:
+   for opt in ['O0','O2']:
+    q='nut-hist-capacity-qualified/'+opt+'/atmospheric-profile.endpoint';require(h[q]==t.extractfile(q).read(),'old atmospheric native byte drift')
  inherited=json.loads(p['inherited.json'])
  for q,d in inherited['source_sha256'].items():require(sha(reader(q))==d,'classic inherited drift '+q)
  require(inherited['annual_source_pass']and inherited['annual_codec_bytes_pass'],'classic preservation')
- return dict(local_physical_days=730,parser_cases=25 if atmospheric else 24,transition_fresh_processes=24 if atmospheric else 12,atmospheric_n=atmospheric,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
+ return dict(local_physical_days=730,parser_cases=38 if humus else 25 if atmospheric else 24,transition_fresh_processes=36 if humus else 24 if atmospheric else 12,atmospheric_n=atmospheric,humus_experiment=humus,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
 
+def ci_authority():
+ if not (ROOT/'integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json').exists():return None
+ import runpy
+ return runpy.run_path(str(ROOT/'integration/audits/surface_age_ci/authority.py'),run_name='ci_hist_source_authority')
 def load():
- age_surface=(ROOT/'integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json').exists()
- if age_surface:
+ g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline')
+ science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']),atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
+ expected=dict(g['postimages']);ci=ci_authority()
+ if ci is not None:
+  ci['verify_source']()
+  for q,v in ci['record']()['postimages'].items():
+   if q.split('/')[0]in ['src','tests','tools','reference','.github']:expected[q]={**v,'status':expected.get(q,v)['status']}
+ for q,v in expected.items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
+ surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science')
+ rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()}
+ require(rows=={q:v['status']for q,v in expected.items()},'foreign HIST delta')
+ require(not git('diff',BASE,'--','reference'),'HIST reference mutation')
+ coexist=g.get('surface_age_coexistence')
+ if coexist:
+  require(coexist['admitted_canonical']==BASE,'unregistered age coexistence baseline')
+  age_status=ROOT/coexist['status_path'];require(sha(age_status.read_bytes())==coexist['status_sha256'],'age admission record drift')
   import sys
-  sys.path.insert(0,str(ROOT/'tests/nut-sol'))
-  import verify_surface_age_successor as age
-  age.verify_qualification()
- g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline');science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']),atmospheric=g.get('atmospheric_n',False))
- for q,v in g['postimages'].items():
-  if age_surface and q in ('tests/nut-crop/verify_hist_native_successor.py','tests/fci/run_fci_canonical_p2e05_moving_preservation.sh'):continue
-  require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
- surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science');rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()};require(age_surface or rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta');require(not git('diff',BASE,'--','reference'),'HIST reference mutation');return science
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_age_successor as age
+  shared=set(coexist['shared_dispatch_paths'])
+  require(shared=={'tests/nut-crop/verify_hist_native_successor.py','tests/nut-sol/verify_surface_age_successor.py'},'age coexistence dispatch surface')
+  for q,v in age.record()['postimages'].items():
+   if q in shared:require(q in g['postimages'],'unbound shared owner dispatch')
+   else:require(sha((ROOT/q).read_bytes())==v['sha256'],'age owner postimage drift '+q)
+  age.validate(age.evidence())
+  science['surface_age_preserved']=True
+ return science
 
 def verify_source(git_reader=None):
  require(git_reader is None,'unregistered HIST projection');return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'full_capability':False,'qualified':False,'current_source_tree':git('rev-parse','HEAD:src')}
-def verify_qualification():return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'qualified':True,'full_capability':False,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','mastercoverage_promotion':False}
+def verify_qualification():
+ ci=ci_authority()
+ if ci is not None:ci['verify_qualification']()
+ return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'qualified':True,'full_capability':False,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','mastercoverage_promotion':False}
 def main():
  a=argparse.ArgumentParser();a.add_argument('--self-test',action='store_true');args=a.parse_args()
  if not args.self_test:print(json.dumps(verify_qualification(),indent=2));return
- g=json.loads((ROOT/STATUS).read_text())['historical_guard'];h=archive(g['physical_evidence']);p=archive(g['retained_evidence']);atmospheric=g.get('atmospheric_n',False);validate(h,p,atmospheric=atmospheric);controls=[]
+ g=json.loads((ROOT/STATUS).read_text())['historical_guard'];h=archive(g['physical_evidence']);p=archive(g['retained_evidence']);atmospheric=g.get('atmospheric_n',False);humus=g.get('humus_experiment',False);validate(h,p,atmospheric=atmospheric,humus=humus);controls=[]
  def reject(label,hh,pp,reader=lambda q:(ROOT/q).read_bytes()):
-  try:validate(hh,pp,reader,atmospheric=atmospheric)
+  try:validate(hh,pp,reader,atmospheric=atmospheric,humus=humus)
   except(ValueError,KeyError,IndexError):controls.append(label);return
   raise AssertionError('accepted '+label)
  hh=dict(h);hh['nut-hist-capacity-qualified/O2/'+('atmospheric-profile-fresh-365'if atmospheric else'rotation-fresh-365')]+=b'x';reject('transition payload',hh,p)
@@ -159,5 +215,13 @@ def main():
   hh=dict(h);e=json.loads(hh['nut-hist-capacity-qualified/events.json']);hh['nut-hist-capacity-qualified/events.json']=json.dumps([x for x in e if 'atmospheric-profile'not in x['command']]).encode();reject('missing atmospheric execution',hh,p)
   pp=dict(p);a=json.loads(pp['atmospheric-audit/result.json']);a['results']['O0']['metrics']['AUDIT_BOUNDARY_N_KG_M2'][0]=0;pp['atmospheric-audit/result.json']=json.dumps(a).encode();reject('missing atmospheric input',h,pp)
   hh=dict(h);w=json.loads(hh['boundary-witness/result.json']);w['status']='PASS';hh['boundary-witness/result.json']=json.dumps(w).encode();reject('unqualified source correction',hh,p)
+ if humus:
+  hh=dict(h);hh['nut-hist-capacity-qualified/O2/humus-profile-fresh-366']+=b'x';reject('humus transition drift',hh,p)
+  hh=dict(h);e=json.loads(hh['humus-clock/events.json']);hh['humus-clock/events.json']=json.dumps([x for x in e if x['category']!='native']).encode();reject('missing original clock execution',hh,p)
+  hh=dict(h);e=json.loads(hh['nut-ttutil-final3/events.json']);hh['nut-ttutil-final3/events.json']=json.dumps([x for x in e if not(x['category']=='native'and Path(x['command'][1]).stem.startswith('hum_'))]).encode();reject('missing original humus input execution',hh,p)
+  pp=dict(p);pp['humus-audit/O0/endpoint']+=b'x';reject('humus observational state drift',h,pp)
+ if humus:
+  hh=dict(h);e=json.loads(hh['nut-material-a5/events.json']);hh['nut-material-a5/events.json']=json.dumps([x for x in e if x['category']!='native']).encode();reject('missing residue correction execution',hh,p)
+  hh=dict(h);e=json.loads(hh['nut-material-a5/events.json']);row=next(x for x in e if x['category']=='native');q='nut-material-a5/'+row.get('stdout',row.get('stdout_file'));hh[q]=b'PASS';reject('missing conservative residue proof',hh,p)
  print(json.dumps({'HIST_GUARD_NEGATIVE_CONTROLS':controls,'count':len(controls)}))
 if __name__=='__main__':main()

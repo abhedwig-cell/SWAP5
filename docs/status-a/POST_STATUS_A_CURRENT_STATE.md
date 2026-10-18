@@ -765,3 +765,17 @@ step refinement shows decreasing endpoint changes. Complete evaporative drying
 remains scientifically blocked under the stipulated no-age-export evaporation
 convention. This adds bounded evidence, not default activation or full-capability
 promotion. The status record is `integration/audits/MC_SOL01_SURFACE_AGE02_STATUS.json`.
+
+
+## MC-NUT01 historical humus experiment (2026-10-18)
+
+PR1316 is admitted at829bfabade71a3e3156914275d2b3fdc65c29112. The existing
+Soil-N owner uses source-verified optional humus parameters, original endpoint
+clock and strict activation threshold. A conservative residue representation
+correction preserves declared N and existing positivity/mass gates.
+[Qualification and limits](../science/MC_NUT01_HIST_HUMUS_QUALIFICATION_20261018.md)
+include three730-day seasonal actual Richards/WOFOST81/Soil-N profiles, O0/O2
+and36 fresh-process exact endpoints, required retained/thermal/TCS6 preservation,
+original TTUTIL/chemistry/caller witnesses and terminal integrated owner runs.
+Parallel surface-age qualification is preserved. This is bounded admission;
+complete historical input/atmospheric semantics and full mastercoverage remain open.

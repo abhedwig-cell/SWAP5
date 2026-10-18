@@ -23,7 +23,7 @@ def prepare(root,build,management):
 '''
  (build/'literal_crop_exchange.f90').write_text(declarations+body+'\n supply=Nsupply\nend subroutine\n')
  s=(root/'tests/nut-reactive/reactive_oracle.inc').read_text()
- s=s.replace('subroutine literal_day(', 'subroutine literal_crop_day(').replace('after,nit,denit,carbon,surface_water)', 'after,nit,denit,carbon,demand,dvs,lai,rd,tcsf_in,crit,supply,surface_water)')
+ s=s.replace('subroutine literal_day(', 'subroutine literal_crop_day(').replace('after,nit,denit,carbon', 'after,nit,denit,carbon,demand,dvs,lai,rd,tcsf_in,crit,supply',1)
  s=s.replace('   real(real64)::nh4c', '   real(real64),intent(in)::demand,dvs,lai,rd,tcsf_in,crit\n   real(real64),intent(out)::supply\n   real(real64)::nh4c')
  a=s.index('   call Wofost_SoilWaterN(');b=s.index('   after%fom_kg_m3',a)
  s=s[:a]+'''   cnh4_t0=nh4c;cno3_t0=no3c;SorpCoef=p%mineral%sorption
