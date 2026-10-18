@@ -60,8 +60,16 @@ contains
     if(supply%t0/=t0.or.supply%t1/=t1)return
     if(.not.ieee_is_finite(forcing%top_flux))return
     if(allocated(forcing%black_evaporation).or.allocated(forcing%boesten_evaporation).or. &
-      allocated(forcing%snow).or.allocated(forcing%rutter).or.allocated(forcing%rfm_surface).or. &
+      allocated(forcing%snow).or.allocated(forcing%rfm_surface).or. &
       allocated(forcing%macropore_top_input))return
+    ! The existing Reference Rutter dynamic top provider supplies accepted
+    ! gross water provenance. Never infer chemical runon from net qtop.
+    if(allocated(forcing%rutter))then
+      if(.not.ieee_is_finite(forcing%rutter%runon_rate_cm_per_day))return
+      if(forcing%rutter%runon_rate_cm_per_day/=supply%runon_rate)return
+    else
+      if(supply%runon_rate/=0d0)return
+    end if
     if(allocated(forcing%pond_input))then
       if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
       if(.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
