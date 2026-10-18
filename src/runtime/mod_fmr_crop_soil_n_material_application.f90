@@ -21,7 +21,7 @@ module mod_fmr_crop_soil_n_material_application
  public::run_crop_soil_n_material_interval
 contains
  subroutine run_crop_soil_n_material_interval(backend,column,template,parameters,water,forcing,config, &
-     chemical,weather,t0,t1,items,split,result,environment)
+     chemical,weather,t0,t1,items,split,result,environment,fallow)
   type(fmr_serialized_reference_backend_t),intent(inout)::backend
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -36,6 +36,7 @@ contains
   type(b111_soil_n_split_parameters_t),intent(in)::split
   type(material_joint_result_t),intent(out)::result
   type(soil_n_day_environment_t),optional,intent(in)::environment
+  logical,optional,intent(in)::fallow
   type(crop_soil_state_t)::trial
   type(kernel_committed_state_t)::water_trial
   result=material_joint_result_t()
@@ -43,7 +44,7 @@ contains
   if(result%materials%status/=MATERIAL_OK)return
   water_trial=water
   call run_crop_soil_n_joint_interval(backend,column,template,parameters,water_trial,forcing,config, &
-    trial,weather,t0,t1,result%joint,environment)
+    trial,weather,t0,t1,result%joint,environment,fallow)
   result%status=result%joint%status
   if(result%status/=JOINT_OK)return
   call check_crop_soil_material_day(trial,result%joint%chemical,result%materials)

@@ -7,7 +7,7 @@
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
     "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
-    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
+    "124-day physically coupled Richards\u2013WOFOST81\u2013Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria",
     "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation",
     "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line"
@@ -35,7 +35,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Admit qualified PR1311 diagnostics; implement source-verified missing native SNM semantics and multi-year physical crop succession in existing owners.",
+  "next_action": "Qualify source-native table/continuation reader and physical seasonal 730-day rotation. Sealed surface fixture is bounded, not atmospheric field qualification.",
   "recovery_point": "work/nut-snm-source-diagnostics-20261018@3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
   "blockers": [
     "Full TTUTIL grammar and multiyear crop rotation still not qualified"
@@ -81,7 +81,7 @@
       "solver_rejections": 0,
       "mass_rejections": 0,
       "max_abs_step_mass_residual": 1.40831085942289e-15,
-      "min_accepted_step_days": 0.00001772884719949963,
+      "min_accepted_step_days": 1.772884719949963e-05,
       "completed": false
     },
     "indicator_run": 39122643056,
@@ -174,6 +174,22 @@
       39133611798
     ],
     "conclusion": "success",
-    "scope": "Native SNM physical nutrient error line; 124-day zero-bottom-flux composition and focused O0/O2 only; full work unit remains unqualified"
+    "scope": "Native SNM physical nutrient error line; 124-day zero-bottom-flux composition and focused O0/O2 only; full work unit remains unqualified",
+    "merged": true,
+    "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
+  },
+  "test_selection": {
+    "candidate": "4a274c4650ec7f52324b8604838a8d27dd39edb3",
+    "groups": {
+      "nut_actual": {
+        "changed_dependency": "SNM lexical input and atomic calendar/material fallow routing",
+        "scientific_claim": "Existing 124-day production preservation plus 730-day real Richards crop harvest fallow successor closure",
+        "owner": "MC-NUT01",
+        "authority": "AGENTS.md#Independent local testability",
+        "expected_seconds": 1000,
+        "existing_evidence": "PR1311 terminal success covers old postimage only; new source and coupling require new execution",
+        "prior_execution": "NONE"
+      }
+    }
   }
 }

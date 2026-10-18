@@ -6,7 +6,7 @@ module mod_soil_n_historical_named_input
  implicit none
  private
  integer,parameter,public::N_NAMED_OK=0,N_NAMED_INVALID=1,N_NAMED_IO=2
- integer,parameter::COUNT=30
+ integer,parameter::COUNT=32
  character(32),parameter::names(COUNT)=[character(32):: &
  'FOM1_t', &
  'FOM2_t', &
@@ -37,7 +37,8 @@ module mod_soil_n_historical_named_input
  'AppAgeRt', &
  'AppAgeLv', &
  'AppAgeSt', &
- 'AppAgeSo']
+ 'AppAgeSo', &
+ 'cNH4N_top','cNO3N_top']
  type,public::soil_n_residue_age_t
    real(real64)::root=1.27d0,leaf=.99d0,stem=1.27d0,storage=1.27d0
  end type
@@ -81,31 +82,57 @@ contains
      call parse_historical_soil_n_named_lines(lines(:n),initial,rates,status,error_line,ages)
    end block
  end subroutine
- subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line,ages)
+ subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line,ages,native_snm)
    character(*),intent(in)::lines(:)
    type(soil_n_residue_age_t),intent(out),optional::ages
    type(soil_n_historical_initial_t),intent(out)::initial
    type(soil_n_historical_rates_t),intent(out)::rates
    integer,intent(out)::status,error_line
    character(512)::line,field,token
+   logical,intent(in),optional::native_snm
+   logical::native
    logical::seen(COUNT)
    real(real64)::v(COUNT),x
-   integer::i,n,pos,field_index,ios
+   integer::i,n,pos,field_index,ios,comment,j,c
+   character(32)::name_lower
+   integer::source_line(COUNT)
    initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
    status=N_NAMED_INVALID;error_line=0;seen=.false.;v=0d0
    if(present(ages))ages=soil_n_residue_age_t()
+   native=.false.;if(present(native_snm))native=native_snm
+   source_line=0
    if(size(lines)>512)return
    do n=1,size(lines)
      error_line=n
      if(len(lines(n))>512)return
-     line=lines(n)
+     line=adjustl(lines(n))
      if(len_trim(line)==0.or.line(1:1)=='!')cycle
+     if(native)then
+      if(line(1:1)=='*')cycle
+      comment=index(line,'!');if(comment>0)line=line(:comment-1)
+     end if
      pos=index(line,'=')
      if(pos<=1.or.pos>=len_trim(line))return
      field=adjustl(line(:pos-1));token=adjustl(line(pos+1:))
      field_index=0
      do i=1,COUNT
-       if(trim(field)==trim(names(i)))field_index=i
+       if(native)then
+        name_lower=names(i)
+        do j=1,len_trim(name_lower)
+         c=iachar(name_lower(j:j));if(c>=65.and.c<=90)name_lower(j:j)=achar(c+32)
+        end do
+        token=adjustl(line(pos+1:))
+        block
+         character(512)::field_lower
+         field_lower=field
+         do j=1,len_trim(field_lower)
+          c=iachar(field_lower(j:j));if(c>=65.and.c<=90)field_lower(j:j)=achar(c+32)
+         end do
+         if(trim(field_lower)==trim(name_lower))field_index=i
+        end block
+       else
+        if(trim(field)==trim(names(i)))field_index=i
+       end if
      end do
      if(field_index==0)return
      if(seen(field_index))return
@@ -114,6 +141,21 @@ contains
      read(token,*,iostat=ios)x
      if(ios/=0)return
      if(.not.ieee_is_finite(x).or.x<0d0.or.x>1d6)return
+     if(native)then
+      ! management_soil.f90 rdsdor source ranges. Physical activation has
+      ! additional admissibility constraints; those are not historical defaults.
+      if(field_index<=20.or.field_index>=22.and.field_index<=26.or.field_index>=31)then
+       if(x>1000d0)return
+      end if
+      if(field_index==21.and.x>10d0)return
+      if(field_index>=27.and.field_index<=30.and.x>100d0)return
+      ! Nonzero top concentrations require the not-yet-bound incoming top
+      ! solute carrier. Never accept a parameter and silently discard its N.
+      if(field_index>=31.and.x/=0d0)return
+     else
+      if(field_index>=31)return
+     end if
+     source_line(field_index)=n
      seen(field_index)=.true.;v(field_index)=x
    end do
    if(any(.not.seen(:20)).or.any(.not.seen(22:26)))return
