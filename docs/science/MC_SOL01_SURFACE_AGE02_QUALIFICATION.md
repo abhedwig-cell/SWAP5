@@ -1,6 +1,7 @@
 # MC-SOL01-SURFACE-AGE02: multi-cycle Reference qualification and dry limit
 
-Status: locally qualified supplemental evidence over unchanged canonical production
+Status: canonically admitted supplemental evidence through PR1315 at
+`916e0725508a4807a65b81174b9e28b603ccb7f7`, over unchanged production
 `65db94901eba8222b070920827621fdffddb2180`; admission is recorded separately in
 `integration/audits/MC_SOL01_SURFACE_AGE02_STATUS.json`. PR [1315](https://github.com/abhedwig-cell/SWAP5/pull/1315).
 Executed postimage: `87da11c38515b1d78d62de8e6608fb42303395a0`.
