@@ -70,7 +70,28 @@ grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_rainfall_run.log"
 grep -Fq 'KALMTHOUT_EVAP_SCALE=    0.0000' "$OUTDIR/full_rainfall_run.log"
 echo "KALMTHOUT_FULL_RAINFALL_HYDRAULICS_2024_TO_2026=PASS"
 
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/full_atmospheric_2024_2026.csv" 0 1.0 | tee "$OUTDIR/full_atmospheric_run.log"
-grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_atmospheric_run.log"
-grep -Fq 'KALMTHOUT_EVAP_SCALE=    1.0000' "$OUTDIR/full_atmospheric_run.log"
-echo "KALMTHOUT_FULL_ATMOSPHERIC_2024_TO_2026=PASS"
+# Preserve every diagnostic even when a specific atmosphere case fails.
+# These runs use the same meteorology, soil, initial state and numerical
+# policy; only the evaporation-demand multiplier changes.
+cat > "$OUTDIR/atmospheric_matrix.csv" <<'CSV'
+evap_scale,exit_code,completed_hours,first_failed_hour
+CSV
+for scale in 0.25 0.50 0.75 1.00; do
+  tag="${scale//./_}"
+  set +e
+  "$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/atmospheric_${tag}.csv" 0 "$scale" > "$OUTDIR/atmospheric_${tag}.log" 2>&1
+  code=$?
+  set -e
+  completed=$(($(wc -l < "$OUTDIR/atmospheric_${tag}.csv")-1))
+  first_failed=$(grep -m1 '^KALMTHOUT_SUBHOUR_FAIL' "$OUTDIR/atmospheric_${tag}.log" | awk '{print $2}' || true)
+  printf '%s,%s,%s,%s\n' "$scale" "$code" "$completed" "$first_failed" >> "$OUTDIR/atmospheric_matrix.csv"
+  echo "KALMTHOUT_ATMOSPHERIC_CASE scale=$scale exit=$code completed_hours=$completed failed_at=${first_failed:-none}"
+done
+python3 - "$OUTDIR/atmospheric_matrix.csv" <<'PY'
+import csv,sys
+rows=list(csv.DictReader(open(sys.argv[1])))
+assert len(rows)==4 and [r["evap_scale"] for r in rows]==["0.25","0.50","0.75","1.00"]
+print("KALMTHOUT_ATMOSPHERIC_MATRIX_RECORDED=PASS")
+assert rows[-1]["exit_code"]=="0" and int(rows[-1]["completed_hours"])==24120, "full atmospheric case remains unqualified: see matrix"
+print("KALMTHOUT_FULL_ATMOSPHERIC_2024_TO_2026=PASS")
+PY
