@@ -216,8 +216,11 @@ contains
     p2 = 1.0_real64/(p1+1.0_real64)
     if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) &
          base_pond_dh_dhead = p1*p2
-    h0max = p2 * (request%previous_ponding_depth_cm + q0*request%step_duration_day - &
-         k1_max*request%step_duration_day + p1*request%pressure_head_top_cm)
+    ! Algebraically h0max = (p1/(1+p1))*h0. Using the already computed
+    ! h0 avoids subtracting nearly equal storage/flux terms a second time
+    ! at the zero-ponding flux/head transition (particularly for tiny dt).
+    ! This preserves the physical equation and does not introduce a pond cap.
+    h0max = (p1*p2)*h0
 
     if (request%macropore_pond_donor_active .and. request%macropore_surface_area_fraction > 0.0_real64) then
       ! Candidate macropore area is required for the pond donor, but direct
