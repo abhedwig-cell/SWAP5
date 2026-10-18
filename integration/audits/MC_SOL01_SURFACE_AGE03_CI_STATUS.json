@@ -1,0 +1,276 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
+  "workstream": "MC-SOL01 / F-CI / F-GC",
+  "baseline": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+  "stage": "LOCALLY_QUALIFIED_AND_PRESERVED_READY_FOR_CANONICAL",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_AGE03_CI_REPAIR.md",
+    "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+    "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md"
+  ],
+  "scope_limits": [
+    "No production/reference/physical test assertion changes",
+    "No RossFast or complete evaporative dry-down extension"
+  ],
+  "next_action": "Review exact live canonical delta, merge existing PR1317, actively follow the three automatic postmerge workflow runs to terminal",
+  "blockers": [],
+  "postimages": {
+    "integration/audits/surface_age_ci/authority.py": {
+      "status": "A",
+      "sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75"
+    },
+    "integration/audits/surface_age_ci/run.py": {
+      "status": "A",
+      "sha256": "51e4cfab65941800a39167033ea3533e91c4038cde79a4df0f70c34a3dbca6c1"
+    },
+    "integration/audits/surface_age_longrun/verify.py": {
+      "status": "M",
+      "sha256": "e467646caa42877a01da4c92fb9554a1fd65a51e205dd6ab4a9dd1c61f497eb0"
+    },
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh": {
+      "status": "M",
+      "sha256": "2fb865c0978089d1ba02bbc368cc8fc73c8cf8801d07116329e897b04b202cf0"
+    },
+    "tests/fci/run_fci51p_wof43a_successor_preservation.sh": {
+      "status": "M",
+      "sha256": "c312c7fa549921aebd6005be467a699f7007938313b3bf1def929d2e7c93c980"
+    },
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh": {
+      "status": "M",
+      "sha256": "7508daa03850705cf34dbcdae574cda12131bd2dd65cbf57a01be801d1de28eb"
+    },
+    "tests/fgc/run_fgc44_real_fmr_participant.sh": {
+      "status": "M",
+      "sha256": "42744a875fa629f8305edd3a490f114e7ef1feeba56d50865b1227f26d0d6341"
+    },
+    "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh": {
+      "status": "M",
+      "sha256": "74359ac70f660f763e08baa69d4f4125e7818a8743e7d55271140ddaaaed6a3c"
+    },
+    "tests/fgc/run_fgc49d_live_production_application_context.sh": {
+      "status": "M",
+      "sha256": "05d3ca6b5324a9ecc381b95f8c335a44fe6b6fb098bf8914ed0392004bc64644"
+    },
+    "tests/fgc/run_fgc_fixed_interface_closeout.sh": {
+      "status": "M",
+      "sha256": "7f8049779ddfb4e73b008555c4f44eed8079dc7127cb34ab3209889e2bc2d0a9"
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "status": "M",
+      "sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090"
+    },
+    "tests/nut-sol/verify_surface_age_successor.py": {
+      "status": "M",
+      "sha256": "d6e4237053f7d2fa35dd5801322c554d5fbbccdf13de3d5bde5dd8d5a8e39647"
+    }
+  },
+  "relevant_paths": [
+    "integration/audits/surface_age_ci/authority.py",
+    "integration/audits/surface_age_ci/run.py",
+    "integration/audits/surface_age_longrun/verify.py",
+    "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh",
+    "tests/fci/run_fci51p_wof43a_successor_preservation.sh",
+    "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh",
+    "tests/fgc/run_fgc44_real_fmr_participant.sh",
+    "tests/fgc/run_fgc44_real_swap_modflow_end_to_end.sh",
+    "tests/fgc/run_fgc49d_live_production_application_context.sh",
+    "tests/fgc/run_fgc_fixed_interface_closeout.sh",
+    "tests/nut-crop/verify_hist_native_successor.py",
+    "tests/nut-sol/verify_surface_age_successor.py"
+  ],
+  "test_selection": {
+    "candidate": "9de996d43bb7fcc7cbd898755fcf510e4707fd28",
+    "groups": {
+      "fgc_closeout": {
+        "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
+        "scientific_claim": "Original whole fixed-interface real Reference/MODFLOW composition remains valid on unchanged production",
+        "owner": "F-GC fixed-interface",
+        "authority": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
+        "expected_seconds": 900,
+        "existing_evidence": "Prior historical admitted original gate; current3source build failure cannot qualify current closure",
+        "prior_execution": "PASS",
+        "diagnosis": "All original science and restart assertions complete; segmented recovery and earlier infra failures retained"
+      },
+      "full_fci": {
+        "changed_dependency": "CI eligibility/source authority composition and owner runner closure",
+        "scientific_claim": "Stable guard successor retains complete existing moving preservation",
+        "owner": "MC-SOL01 / F-CI canonical",
+        "authority": "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+        "expected_seconds": 600,
+        "existing_evidence": "Inherited unchanged numerical sources; previous complete moving proof459s does not cover modified guard/build postimage",
+        "prior_execution": "PASS",
+        "diagnosis": "Complete original current-canonical moving gate, original assertions, actual execution and unchanged conservative inputs; no identical rerun selected; later upstream parser and two guards reconciled through independent current native owner evidence and46 fresh controls, unchanged numerical provider closures"
+      }
+    }
+  },
+  "prior_executions": [
+    {
+      "path": "age03-local-01",
+      "execution": "e42eb9b6eddf3631b36d510035cad8fb31c7373f",
+      "status": "FAILED_NOT_PASS",
+      "reason": "After rate pin reconciliation original FCI51 next rejects already admitted read-only configuration_values provider extension7e007ea0. Diff to qualified donor only adds immutable configuration export. Current CO2 resolver/binding match historical qualified donor. Add exact bounded provider eligibility under unchanged whole-production authority; keep historical pins and original tests."
+    },
+    {
+      "path": "age03-local-02",
+      "execution": "1d2d508258eeb28debb7b0cdf01ba35ceb14cf45",
+      "status": "ENVIRONMENT_INTERRUPTED_NO_FGC_FULL_PASS",
+      "reason": "exec-server transport disconnected and executor key changed; original process gone. FCI51 full workflow22.610s and FCI5830.545s passed; FGC participant and application O0/O2 prefix passed, checksum-pinned MODFLOW downloaded, ABI build incomplete.1126 compiler records retained; no full FGC or ABI PASS inferred. Final all cases selected fresh on merged source."
+    }
+  ],
+  "initial_baseline": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
+  "last_reconciled_upstream": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+  "coexistence": {
+    "upstream_pr": 1316,
+    "kind": "Independent qualified humus/residue owner; production held at new canonical",
+    "retained_execution": "1d2d508258eeb28debb7b0cdf01ba35ceb14cf45",
+    "rule": "Original environment-interrupted prefix is retained without full F-GC PASS. All three existing routes will execute fresh on merged source; any exact recovered compiler artifacts require immutable source/flags/provider hashes and fresh native assertions. No NUT/source mutation enters this work unit."
+  },
+  "local_runtime_link_failure": {
+    "execution_commit": "db37cd91a9543317099ad8ede1d2eeb78e6bc771",
+    "returncode": 1,
+    "fgc_seconds": 620.5917610130018,
+    "diagnosis": "Missing installed shared runtime target caused fallback to non-PIC libgfortran.a; restored runtime symlink, no compiler/source/flag changes"
+  },
+  "pipefail_abi_failure": {
+    "execution_commit": "db37cd91a9543317099ad8ede1d2eeb78e6bc771",
+    "returncode": 1,
+    "fgc_seconds": 240.5562262900021,
+    "diagnosis": "Required ABI symbol exists. Identical-library100-repeat reproduces old nm|grep-q SIGPIPE141 in21cases; full consuming original symbol check100/100PASS",
+    "production_changed": false
+  },
+  "preserved_upstream": {
+    "canonical": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
+    "pull_request": 1318,
+    "protected_input_changed": false
+  },
+  "execution_commit": "9721f08752454d26a8c366ecffad11e4b5a7a7b4",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_SCIENCE_20261018.tar.xz.b64",
+    "decoded_sha256": "1ea0801a5cc1caf3b42113f393a09d40df40d5a2a27af6ac47406e8ad2922624",
+    "decoded_bytes": 352756,
+    "members": 112
+  },
+  "targeted_cost_seconds": {
+    "compile": 160.10925982207482,
+    "link": 15.030954981008108,
+    "cases": {
+      "fci51": 22.984594296998694,
+      "fci58": 39.154514276000555,
+      "fgc": 327.78908724899884
+    }
+  },
+  "case_events": [
+    {
+      "case": "fci51",
+      "command": [
+        "bash",
+        "/workspace/scratch/7ca2da0b0ead/age03-symbol-final/fci51-workflow.sh"
+      ],
+      "returncode": 0,
+      "seconds": 22.984594296998694,
+      "stdout": "fci51.stdout",
+      "stderr": "fci51.stderr"
+    },
+    {
+      "case": "fci58",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh"
+      ],
+      "returncode": 0,
+      "seconds": 39.154514276000555,
+      "stdout": "fci58.stdout",
+      "stderr": "fci58.stderr"
+    },
+    {
+      "case": "fgc",
+      "command": [
+        "original full F-GC script through e2e replay",
+        "exact original restart suffix after fetching absent immutable Git fixture"
+      ],
+      "returncode": 0,
+      "seconds": 327.78908724899884,
+      "stdout": "fgc.stdout",
+      "stderr": "fgc.stderr"
+    }
+  ],
+  "controls": {
+    "ci_negative": 9,
+    "historical_negative": 18,
+    "longrun_negative": 8,
+    "all_pass": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_CONTROLS_20261018.tar.xz.b64",
+      "decoded_sha256": "9cec3072093d89affcefcc79b9f2e1754901d3f9931850e76500506f4ebab355",
+      "decoded_bytes": 2684,
+      "members": 9
+    }
+  },
+  "fgc_execution_mode": "Complete original assertions in two same-source immutable segments: original full body through exact two fresh physical endpoints, restart suffix after fetching missing historical Git object; no monolithic shell PASS claimed",
+  "upstream_native_labels": {
+    "canonical": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+    "production_delta": "src/process/mod_soil_n_unified_input.f90 only, independent original/native O0/O2 parser and complete physical endpoint proof retained",
+    "shared_dispatch": "Both native-label registered reader and additive CI authority retained",
+    "rule": "Conservative inventory is not evidence of actual execution; unchanged compiled numerical closure inherited; fresh combined source and all negative controls required"
+  },
+  "inherited_inventory_delta": {
+    "src/process/mod_soil_n_unified_input.f90": {
+      "before_sha256": "97653bd317dcecd33398ae6a1297d5ce224ef9c3f46e888bd47f9025cd9a0e78",
+      "after_sha256": "cd1bcf90bdb7162e4bc104987f6feb595a98b44e102cc32517e2895b6ed16c3c",
+      "reason": "Registered independent parser original/native proof"
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "before_sha256": "2ed52ca07ee657dfbe31414dc703ebd0d09acefded0278cc768e646b7749b228",
+      "after_sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090",
+      "reason": "Exact composed qualification authority; fresh negative controls required"
+    },
+    "integration/audits/surface_age_ci/authority.py": {
+      "before_sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4",
+      "after_sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75",
+      "reason": "Exact composed qualification authority; fresh negative controls required"
+    }
+  },
+  "reconciled_controls": {
+    "ci_negative": 11,
+    "native_label_negative": 9,
+    "historical_negative": 18,
+    "longrun_negative": 8,
+    "all_pass": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_RECONCILED_CONTROLS_20261018.tar.xz.b64",
+      "decoded_sha256": "c5cb65004c057847494e3fd946cce32e90d1c819866024e147dcafedb5816ab3",
+      "decoded_bytes": 3120,
+      "members": 10
+    }
+  },
+  "preserved": true,
+  "full_moving": {
+    "status": "PASS",
+    "execution_commit": "9de996d43bb7fcc7cbd898755fcf510e4707fd28",
+    "seconds": 781.2684518620008,
+    "resume": "OFF",
+    "inputs_unchanged": true,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_FULL_MOVING_20261018.tar.xz.b64",
+      "decoded_sha256": "81a6f98acd455383d8f9a22c2b6d7f96db776546d6aff980877ef85580c7f977",
+      "decoded_bytes": 166440,
+      "members": 9
+    },
+    "inheritance_after_execution": {
+      "canonical": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+      "current_source_receipt": "90523044f9d03a0eb45c40986e1670b8debbe9a1",
+      "scope": "Actual complete moving PASS on frozen9de source; exact registered parser original/native equivalence and730-day unchanged physical endpoints verified, both current guard compositions and46 negative controls fresh. No new solver or physical closure changes, no second unrelated full rerun selected under change-impact policy.",
+      "current_monolithic_full_rerun": false
+    }
+  },
+  "documentation_checks": {
+    "source": "PASS",
+    "mkdocs_strict": "PASS",
+    "strict_log_sha256": "b7e51288b3411345ea9742e958d5a8cb5cbeabea3683e32d06e3b0f0775b42ab"
+  }
+}

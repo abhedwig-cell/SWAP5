@@ -113,7 +113,7 @@ MODULE_SRC=(
   tests/fgc/support/mod_fgc49d_application_context_fixture.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")
 
 objects=()
 for source in "${MODULE_SRC[@]}"; do
@@ -125,7 +125,7 @@ done
 gfortran -shared -fopenmp -O2 "${objects[@]}" -o "$BUILD/bridge/libfgc49d_application.so" || fail "link shared library"
 
 for symbol in   fgc49d_fixture_initialize_c   fgc49d_context_counts_c   fgc49d_trial_cell_heads_c   fgc49d_reanchor_terms_c   fgc49d_commit_swaps_c   fgc49d_commit_ledgers_c   fgc34_publish_c; do
-  nm -D "$BUILD/bridge/libfgc49d_application.so" | grep -q "$symbol" || fail "missing symbol $symbol"
+  nm -D "$BUILD/bridge/libfgc49d_application.so" | grep "$symbol" > /dev/null || fail "missing symbol $symbol"
 done
 
 LIBMF6="$BUILD/modflow-bin/libmf6.so" FGC49D_APPLICATION_LIB="$BUILD/bridge/libfgc49d_application.so" python3 tests/fgc/test_fgc49d_live_production_application_context.py | tee "$BUILD/e2e.txt"

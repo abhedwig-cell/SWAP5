@@ -9,8 +9,15 @@ def check(ok,label):
 def sha(b):return hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())
+def ci_successor():
+    if not (ROOT/'integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json').exists():return None
+    # run_path does not create a bytecode cache inside a source guard.
+    import runpy
+    return runpy.run_path(str(ROOT/'integration/audits/surface_age_ci/authority.py'),run_name='ci_source_authority')
 def verify_source():
     s=record();base=s['baseline']
+    ci=ci_successor()
+    if ci is not None:ci['verify_source']()
     # A registered, freshly qualified NUT successor may change its own
     # source surface while preserving every age physical input and postimage.
     nut_path=ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
@@ -27,8 +34,14 @@ def verify_source():
     git('merge-base','--is-ancestor',base,'HEAD')
     check(not git('status','--porcelain','--',*SURFACE),'dirty surface-age dependency surface')
     rows={r.split('\t')[1]:r.split('\t')[0] for r in git('diff','--name-status',base,'HEAD','--',*SURFACE).splitlines()}
-    check(rows=={p:v['status'] for p,v in s['postimages'].items()},'foreign surface-age delta')
-    for p,v in s['postimages'].items():
+    expected=dict(s['postimages']);ci=ci_successor()
+    if ci is not None:
+        ci['verify_source']()
+        for p,v in ci['record']()['postimages'].items():
+            if p.split('/')[0]in SURFACE:
+                expected[p]={**v,'status':expected.get(p,v)['status']}
+    check(rows=={p:v['status'] for p,v in expected.items()},'foreign surface-age delta')
+    for p,v in expected.items():
         check(sha((ROOT/p).read_bytes())==v['sha256'],'unqualified surface-age postimage '+p)
     check(not git('diff',base,'HEAD','--','reference'),'historical reference mutation')
     return dict(surface_age_successor=True,full_capability=False,qualified=False,current_source_tree=git('rev-parse','HEAD:src'))
@@ -74,5 +87,7 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
     check(b'MC_SOL01_SURFACE_AGE_BUDGET_O2=PASS' in files['isolated.stdout'],'isolated O2 absent')
     return dict(physical_triplet=True,fresh_process=True,incumbent_age_preserved=True)
 def verify_qualification():
+    ci=ci_successor()
+    if ci is not None:ci['verify_qualification']()
     return {**verify_source(),**validate(evidence()),'qualified':True,'full_capability':False,'full_fci':'NOT_SELECTED_IMPACT','rossfast':'FROZEN_UNCHANGED'}
 if __name__=='__main__':print(json.dumps(verify_qualification(),indent=2))

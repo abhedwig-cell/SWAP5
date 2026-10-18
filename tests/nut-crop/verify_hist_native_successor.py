@@ -156,6 +156,11 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False,humus=F
  require(inherited['annual_source_pass']and inherited['annual_codec_bytes_pass'],'classic preservation')
  return dict(local_physical_days=730,parser_cases=38 if humus else 25 if atmospheric else 24,transition_fresh_processes=36 if humus else 24 if atmospheric else 12,atmospheric_n=atmospheric,humus_experiment=humus,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
 
+def ci_authority():
+ if not (ROOT/'integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json').exists():return None
+ import runpy
+ return runpy.run_path(str(ROOT/'integration/audits/surface_age_ci/authority.py'),run_name='ci_hist_source_authority')
+
 def registered_label_reader(g,h):
  record=g.get('native_material_labels')
  if not record:return lambda q:(ROOT/q).read_bytes()
@@ -170,10 +175,15 @@ def load():
  h=archive(g['physical_evidence']);p=archive(g['retained_evidence'])
  reader=registered_label_reader(g,h)
  science=validate(h,p,reader=reader,atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
- for q,v in g['postimages'].items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
+ expected=dict(g['postimages']);ci=ci_authority()
+ if ci is not None:
+  ci['verify_source']()
+  for q,v in ci['record']()['postimages'].items():
+   if q.split('/')[0]in ['src','tests','tools','reference','.github']:expected[q]={**v,'status':expected.get(q,v)['status']}
+ for q,v in expected.items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
  surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()}
- require(rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta')
+ require(rows=={q:v['status']for q,v in expected.items()},'foreign HIST delta')
  require(not git('diff',BASE,'--','reference'),'HIST reference mutation')
  coexist=g.get('surface_age_coexistence')
  if coexist:
@@ -192,7 +202,10 @@ def load():
 
 def verify_source(git_reader=None):
  require(git_reader is None,'unregistered HIST projection');return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'full_capability':False,'qualified':False,'current_source_tree':git('rev-parse','HEAD:src')}
-def verify_qualification():return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'qualified':True,'full_capability':False,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','mastercoverage_promotion':False}
+def verify_qualification():
+ ci=ci_authority()
+ if ci is not None:ci['verify_qualification']()
+ return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'qualified':True,'full_capability':False,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','mastercoverage_promotion':False}
 def main():
  a=argparse.ArgumentParser();a.add_argument('--self-test',action='store_true');args=a.parse_args()
  if not args.self_test:print(json.dumps(verify_qualification(),indent=2));return

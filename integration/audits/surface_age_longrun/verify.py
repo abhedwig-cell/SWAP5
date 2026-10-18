@@ -55,7 +55,10 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
  return dict(two_day_reference=True,optimization_exact=True,fresh_processes=12,refinement='observed decreasing endpoint changes, not a formal order proof',full_evaporative_drying=False,production_changed=False)
 def verify():
  s=record();delta=subprocess.check_output(['git','diff','--name-only',s['baseline'],'HEAD','--','src','tests','tools','reference','.github'],cwd=ROOT,text=True)
- check(not delta.strip(),'production or existing test/guard changed')
+ if delta.strip():
+  import runpy
+  ci=runpy.run_path(str(ROOT/'integration/audits/surface_age_ci/authority.py'),run_name='ci_qualification_authority')
+  ci['verify_qualification']()
  return validate(load())
 def main():
  p=argparse.ArgumentParser();p.add_argument('--self-test',action='store_true');a=p.parse_args();print(json.dumps(verify(),indent=2))

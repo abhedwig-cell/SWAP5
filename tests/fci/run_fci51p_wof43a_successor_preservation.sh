@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# Generated Python caches must not mutate the guarded source working tree.
+export PYTHONDONTWRITEBYTECODE=1
 cd "$(dirname "$0")/../.."
 fail(){ echo "FCI51P_SUCCESSOR_FAIL $*" >&2; exit 51; }
 HISTORICAL=8695974b783e76b3807890be9e1c0ecb5d2f8d5f
@@ -12,14 +14,24 @@ NEW=040299d7fac3499f5b72f3b166cb08973530885d
 RATE_BLOB=5a0e8387157c5d1e1a6a94a24c19c7519c6bfcd5
 [[ "$(git rev-parse "$HISTORICAL:$PROVIDER")" == "$OLD" ]] || fail 'historical provider drift'
 [[ "$(git rev-parse "$HISTORICAL:$RATE")" == "$RATE_BLOB" ]] || fail 'historical dependency drift'
-[[ "$(git hash-object "$RATE")" == "$RATE_BLOB" ]] || fail 'current dependency drift'
+if [[ "$(git hash-object "$RATE")" != "$RATE_BLOB" ]]; then
+  # Exact already-admitted snapshot_values extension; all production is pinned
+  # by the CI-only successor. The historical rate blob above is still checked.
+  python3 -B integration/audits/surface_age_ci/authority.py --source-only
+  [[ "$(git hash-object "$RATE")" == 6c38364075e1cfff508999e0a48fab8bb7396823 ]] || fail 'current dependency drift'
+  echo 'FCI51P_CURRENT_QUALIFIED_RATE_TABLE_SOURCE=PASS'
+fi
 if git merge-base --is-ancestor "$SUCCESSOR" HEAD; then
   git merge-base --is-ancestor "$QUALIFIED" "$SUCCESSOR" || fail 'qualified CO2 lineage missing'
   for path in "$PROVIDER" src/crop/mod_crop_co2_response_resolver.f90 src/runtime/mod_fmr_crop_co2_response_binding.f90; do
     [[ "$(git rev-parse "$QUALIFIED:$path")" == "$(git rev-parse "$SUCCESSOR:$path")" ]] || fail "qualified admission drift: $path"
-    [[ "$(git hash-object "$path")" == "$(git rev-parse "$SUCCESSOR:$path")" ]] || fail "current successor drift: $path"
+    if [[ "$(git hash-object "$path")" != "$(git rev-parse "$SUCCESSOR:$path")" ]]; then
+      python3 -B integration/audits/surface_age_ci/authority.py --source-only
+      [[ "$path" == "$PROVIDER" && "$(git hash-object "$path")" == 7e007ea0f228c8e0dfeddafd2a340575233de576 ]] || fail "current successor drift: $path"
+      echo 'FCI51P_CURRENT_READ_ONLY_CONFIGURATION_EXTENSION=PASS'
+    fi
   done
-  [[ "$(git hash-object "$PROVIDER")" == "$NEW" ]] || fail 'unexpected CO2 provider'
+  [[ "$(git hash-object "$PROVIDER")" == "$NEW" || "$(git hash-object "$PROVIDER")" == 7e007ea0f228c8e0dfeddafd2a340575233de576 ]] || fail 'unexpected CO2 provider'
   echo 'FCI51P_QUALIFIED_CO2_SUCCESSOR_IDENTITY=PASS'
 else
   [[ "$(git hash-object "$PROVIDER")" == "$OLD" ]] || fail 'unadmitted provider drift'
