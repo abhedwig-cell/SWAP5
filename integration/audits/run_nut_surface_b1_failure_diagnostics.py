@@ -34,7 +34,7 @@ text=text.replace(' use mod_soil_n_day_environment',' use mod_soil_n_surface_exc
 text=text.replace('only:aggregate_mineral_trace,mineral_daily_carrier_t','only:aggregate_mineral_trace,mineral_daily_carrier_t,bind_soil_n_surface_trace',1)
 a=text.index(' subroutine rotation_continuation(');z=text.index(' subroutine report_water_state(',a);body=text[a:z]
 needle='   integer::d,first,code,last';assert body.count(needle)==1
-body=body.replace(needle,'   type(fmr_serialized_physical_observation_t)::failure_observation\n   type(soil_n_surface_day_t)::failure_day\n   type(soil_n_surface_receipt_t)::failure_surface\n   type(mineral_daily_carrier_t)::failure_carrier\n   type(mineral_state_t)::failure_mineral\n'+needle)
+body=body.replace(needle,'   integer::failure_unit,failure_index\n   type(fmr_serialized_physical_observation_t)::failure_observation\n   type(soil_n_surface_day_t)::failure_day\n   type(soil_n_surface_receipt_t)::failure_surface\n   type(mineral_daily_carrier_t)::failure_carrier\n   type(mineral_state_t)::failure_mineral\n'+needle)
 needle='\n    n_before=crop_soil_whole_n(state)\n';assert body.count(needle)==1
 body=body.replace(needle,'\n    before_state=state;before_water=water'+needle)
 needle="    if(r%status/=0)print *,'ROTATION_FAILURE'";assert body.count(needle)==1
@@ -62,6 +62,17 @@ body=body.replace(needle,"""    if(r%status/=0)then
       call bind_soil_n_surface_trace(failure_observation%accepted_water_flux_substeps,forcing%pond_input,failure_day,code)
       print *,'REJECTION_SURFACE_BIND',code
       if(code==0)then
+       open(newunit=failure_unit,file=trim(path)//'.surface-steps',status='replace')
+       write(failure_unit,'(2ES26.17E3)')ps%surface_n_kg_m2
+       write(failure_unit,'(2ES26.17E3)')sp%mineral%c_top
+       write(failure_unit,'(I0)')size(failure_day%steps)
+       do failure_index=1,size(failure_day%steps)
+        associate(step=>failure_day%steps(failure_index))
+         write(failure_unit,'(10ES26.17E3)')step%t0,step%t1,step%depth_begin,step%depth_end, &
+          step%qtop,step%rain_rate,step%irrigation_rate,step%pond_evaporation_rate,step%runon_rate,step%runoff_depth
+        end associate
+       enddo
+       close(failure_unit)
        call evaluate_soil_n_surface_day(ps%surface_n_kg_m2,sp%mineral%c_top,e%t0,e%t1,failure_day,failure_surface)
        print *,'REJECTION_SURFACE_EVALUATE',failure_surface%status,failure_surface%infiltration_m
        print *,'REJECTION_SURFACE_MASS',failure_surface%before,failure_surface%after, &
