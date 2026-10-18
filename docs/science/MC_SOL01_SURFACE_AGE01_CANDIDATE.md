@@ -28,3 +28,9 @@ The age production approximation presently uses midpoint pond depth times dt and
 ## Native combined owner qualification result
 
 GitHub Actions run `39125283736`, job `117669000591`, completed **SUCCESS** for isolated O0/O2 owner plus age-budget tests. The upstream branch does not lag canonical at the time of this check. This is process/owner qualification only, **not** physical joint hydraulic, accepted infiltration transfer or V2 fresh-process restart qualification. The existing `mod_b111_age_tracer_substep` explicitly rejects nonzero top flux and the existing age joint application requires zero ponding. Removing those gates without a new jointly owned source/restart contract would be unsafe. No default activation or RossFast scope extension is authorized.
+
+## Accepted Reference trace bridge candidate (2026-10-18)
+
+New private module `src/runtime/mod_b111_surface_age_trace_bridge.f90` constructs a trial surface-age budget from the actual `fmr_water_flux_substep_trace_t` accepted hydraulic fields. It requires available final-converged gross source provenance and explicit pond begin/end. It verifies owner time, forbids unsupported positive qtop exfiltration and snowmelt, computes rain/irrigation/runon source depth, infiltration, runoff, and evaporation from those accepted typed fields, then creates a candidate owner without committing anything. Soil-age injection and acceptance remain unimplemented; never advance the surface-age owner independently of the water-and-soil-age transaction.
+
+The bridge is **not yet compiled or physically qualified**, and no production runtime invokes it. There is intentionally no mastercoverage promotion or merge authorization for this new source. The preexisting isolated owner O0/O2 qualification PASS (run 39125283736) is not evidence for the bridge.
