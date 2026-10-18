@@ -25,6 +25,13 @@ for opt in 0 2; do
   "$build/handoff-o$opt" > "$build/handoff-out-o$opt"
   grep -Fq 'MC_SOL01_SURFACE_AGE_SOIL_HANDOFF=PASS' "$build/handoff-out-o$opt"
   echo "MC_SOL01_SURFACE_AGE_SOIL_HANDOFF_O${opt}=PASS"
+  # Compile admitted age kernel with new opt-in surface flux (zero-default unchanged).
+  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all \
+    -O"$opt" -J "$build" -I "$build" -c src/process/mod_solute_compartment_state.f90 \
+    -o "$build/solute-compartment-o$opt.o"
+  gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all \
+    -O"$opt" -J "$build" -I "$build" -c src/process/mod_b111_age_tracer_substep.f90 \
+    -o "$build/age-process-o$opt.o"
 done
 cmp "$build/out-o0" "$build/out-o2"
 cmp "$build/owner-out-o0" "$build/owner-out-o2"
