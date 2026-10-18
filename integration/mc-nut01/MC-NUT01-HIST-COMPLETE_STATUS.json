@@ -32,7 +32,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Resolve whether model-certificate temporal indicator or test forcing produces day-67 4096-step exhaustion, with physics-backed diagnostic and unchanged strict budget. Do not widen limit or claim qualified 124 days. Reconcile shared Reference/headcalc upstream before future admission.",
+  "next_action": "Diagnose why 67th physical day requires >4096 accepted Richards substeps. Collect per-day accepted counts and physical water state/forcing before day 67, plus raw head_inf_bound vs budget and temporal indicator. Distinguish excessive forcing/test scenario from genuine physics-dependent temporal resolution. Reconcile latest canonical Reference/headcalc before admission; no tolerance or cap modification without scientific evidence.",
   "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "blockers": [
     "Confirmed day-67 model temporal indicator and 4096 accepted-step ceiling: run 39122643056",
@@ -91,7 +91,9 @@
       "accepted_substeps": 4096,
       "temporal_rejections": 47193,
       "solver_rejections": 0,
-      "mass_rejections": 0
+      "mass_rejections": 0,
+      "interpretation": "max_temporal_indicator is ALREADY NORMALIZED head_inf_bound/budget (Reference backend); 0.999730 < acceptance threshold 1, not 9997x over budget. The maximum includes the accepted bound; 47193 rejected attempts and 4096 accepted-step exhaustion remain proven.",
+      "acceptance_threshold_normalized": 1
     }
   }
 }
