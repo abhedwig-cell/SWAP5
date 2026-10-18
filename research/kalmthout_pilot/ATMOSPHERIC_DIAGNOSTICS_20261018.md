@@ -47,3 +47,39 @@ any full-atmosphere case fails. The failure must not hide the independent succes
 rainfall-only baseline. Earlier experimental `pure-flux preflight` was removed because
 it changed the failure to hour 23 for all evaporation factors, including zero.
 That modification has no positive scientific evidence and must not be promoted.
+
+## 2026-10-18 accepted-state and regime-transition findings
+
+Focused run: https://github.com/abhedwig-cell/SWAP5/actions/runs/39118301423 .
+The last accepted state at 2024-03-09T13:00 (before the failed hour) had
+top pressure head +1.000847627 cm, top water content 0.423 m3/m3
+(equal to configured saturation), pond depth 0.000847627 cm,
+and potential soil evaporation 0.166700951 cm/d.
+The earlier interpretation as cumulative *drying* is **falsified** for
+this failure: the top node was saturated and marginally ponded.
+
+Focused dynamic-top evaluation:
+https://github.com/abhedwig-cell/SWAP5/actions/runs/39118742658 .
+Accepted trial-start preflight repeatedly changes between
+`ponded-head` (regime 2, analytic head derivative present) and
+`surface-flux` (regime 1, derivative not applicable), with ponding
+on the order of 1e-15 cm under repeated solver step refinement.
+The Rutter physical boundary returns `AVAILABLE` on both sides
+and conserves mass on accepted predecessors, but the Newton / retry
+trajectory does not complete this interval (507 solver rejections;
+zero temporal or mass rejections).
+
+The failure mechanism is therefore localized to a **regime transition
+near zero surface storage at a saturated top node**. This is still
+a diagnostic localization, not proof that the switching threshold itself
+is erroneous. A scientifically admissible repair requires a branch-
+consistent nonlinear / complementarity treatment against the SWAP 4.3.1
+reference, plus Rutter wet/dry head/flux transition gates with unchanged
+transactional rollback and hard mass criteria.
+
+Do not promote the earlier unconditional pure-flux preflight: it failed
+rainfall-only at hour 23. RossFast is not involved.
+
+The temporary `KALMTHOUT_TOP_REGIME` instrumentation in the work branch
+is bounded to the diagnostic time window, and must be removed before
+production admission.
