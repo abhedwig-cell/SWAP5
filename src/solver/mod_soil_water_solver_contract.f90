@@ -83,13 +83,6 @@ module mod_soil_water_solver_contract
      real(real64) :: ponded_water_evaporation = 0.0_real64
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
-     ! Gross forcing provenance in cm/day from the evaluated dynamic provider.
-     ! Values are diagnostic until the water transaction accepts its substep.
-     logical :: gross_surface_sources_available = .false.
-     real(real64) :: precipitation_rate_cm_day = 0.0_real64
-     real(real64) :: irrigation_rate_cm_day = 0.0_real64
-     real(real64) :: snowmelt_rate_cm_day = 0.0_real64
-     real(real64) :: runon_rate_cm_day = 0.0_real64
      real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
      logical :: surface_head_derivative_available = .false.
      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
@@ -196,8 +189,6 @@ module mod_soil_water_solver_contract
      integer :: status = SW_SOLVE_NOT_RUN
      logical :: retry_advised = .false.
      type(soil_water_physical_state_t) :: candidate_state
-     ! Optional final-converged top-boundary diagnostic; absent on unsupported routes.
-     type(soil_water_top_boundary_result_t) :: converged_surface_result
      real(real64) :: top_flux = 0.0_real64
      real(real64) :: bottom_flux = 0.0_real64
      ! Compatibility-only legacy diagnostic. Historical producers assigned
