@@ -134,6 +134,12 @@ program test_age_joint
     call require(code==AGE_OWNER_OK,'surface age zero pond initialize')
     call write_surface_age_disk(trim(restart_path)//'.surface',8801_int64,original_surface,code)
     call require(code==AGE_DISK_OK,'surface age sidecar written')
+    call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.missing',column, &
+         cfg%tiles(1)%template,670001_int64,9001_int64,8801_int64,p, &
+         restored_water,restored_soil,restored_surface,code)
+    call require(code/=TRIPLET_DISK_OK,'missing surface sidecar rejected')
+    call require(.not.restored_water%ready().and..not.restored_soil%ready(), &
+         'missing sidecar leaves hydraulic and soil targets empty')
     call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.surface',column, &
          cfg%tiles(1)%template,670001_int64,9001_int64,8802_int64,p, &
          restored_water,restored_soil,restored_surface,code)
