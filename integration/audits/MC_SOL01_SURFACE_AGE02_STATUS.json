@@ -2,11 +2,11 @@
   "workstream": "MC-SOL01",
   "work_unit": "MC-SOL01-SURFACE-AGE02",
   "baseline": "65db94901eba8222b070920827621fdffddb2180",
-  "stage": "COST_DIAGNOSED_REVISED_PILOT",
+  "stage": "QUALIFIED_BOUNDED_DRY_LIMIT_BLOCKED",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonically_admitted": false,
   "owned_surface": "Additive research qualification drivers and evidence under integration/audits/surface_age_longrun; all production/test/guard semantics held fixed",
   "affected_invariants": [
@@ -37,8 +37,14 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Execute final cap-dominated16/32/64 refinement; require declining changes as well as0.1%relative ceiling, all positive real fluxes/balances/restart/optimization; retain failed criteria",
-  "blockers": [],
+  "next_action": "Validate archive against exact current unchanged production and old admission; integrate supplemental evidence; full evaporation stays scientifically blocked",
+  "blockers": [
+    {
+      "scope": "Full evaporative dry-down and literal physical mean-water-age interpretation",
+      "kind": "SCIENTIFIC_CONTRACT",
+      "reason": "No age export by evaporation retains positive moment as h approaches0; M/h diverges. It cannot reach a valid zero-water owner without changing the stipulated balance/meaning. No clipping/deletion/dry deposit invented."
+    }
+  ],
   "checkpoint_commit": "87f5149b8664d25b614c1acc40fe4651776a0837",
   "prior_executions": [
     {
@@ -68,5 +74,256 @@
       "result": "PHYSICAL_RESTART_OPTIMIZATION_PASS_REFINEMENT_CRITERION_FAILED_NOT_QUALIFIED",
       "description": "6real two-day runs and12fresh-process endpoints passed exactly. Actual maximum step halves1.25e-4/6.25e-5/3.125e-5d, but differences in pond age amount1.61518e-5 then5.26578e-5cm day and soil3.30447e-6 then6.44984e-6 still grow. Their small size is not formal convergence. Move further into cap-dominated region using outer limits .0000625/.00003125/.000015625d, keep all numerical gates and existing1e-3relative final-difference accuracy ceiling."
     }
+  ],
+  "execution_commit": "87da11c38515b1d78d62de8e6608fb42303395a0",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE02_20261018.tar.xz.b64",
+    "decoded_sha256": "f1cdd6cf53a886130bcf75d05d4de5a7de05407a86cb0188cf0c7b58f9d61e74",
+    "decoded_bytes": 739036,
+    "members": 360
+  },
+  "cost_seconds": {
+    "restart_native": 24.56011305200809,
+    "incumbent_native": 0.8591677509975852,
+    "leaf_compile": 8.593783962001908,
+    "dry_limit_native": 0.005524075000721496,
+    "leaf_link": 1.2958073519985192,
+    "long_native": 55.20497140799489
+  },
+  "native_results": {
+    "O0": {
+      "16": {
+        "summary": [
+          2.0,
+          0.382875709612799,
+          0.5069121404092101,
+          1.466409806099428,
+          5.308136334535199,
+          1.35003119794419e-13,
+          78754.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989220361185392,
+          0.0,
+          1.192496160672225,
+          6.900161037974196,
+          6.774546140634627,
+          -4.529709940470639e-14
+        ],
+        "endpoint_sha256": "601e013d90f6510d4a0fd988392a69a0caaedfc15bde042dc90fd75bb59e641e",
+        "restarts": [
+          {
+            "cut": 24800,
+            "fresh_sha256": "601e013d90f6510d4a0fd988392a69a0caaedfc15bde042dc90fd75bb59e641e"
+          }
+        ]
+      },
+      "32": {
+        "summary": [
+          2.0,
+          0.3828753438360487,
+          0.5069121405403733,
+          1.466376493813572,
+          5.30813398017699,
+          7.654987754790454e-14,
+          137610.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989217603148864,
+          0.0,
+          1.192497029943092,
+          6.900193077310914,
+          6.774510473990562,
+          3.552713678800501e-15
+        ],
+        "endpoint_sha256": "df0441b36b9dfccb7cca551d095ba4609e0cb78e6fb83e5c9e7807327b44772c",
+        "restarts": [
+          {
+            "cut": 49600,
+            "fresh_sha256": "df0441b36b9dfccb7cca551d095ba4609e0cb78e6fb83e5c9e7807327b44772c"
+          }
+        ]
+      },
+      "64": {
+        "summary": [
+          2.0,
+          0.382871435040402,
+          0.5069121406201378,
+          1.466356108868691,
+          5.308133291645444,
+          4.309885781594858e-13,
+          259424.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989213334539239,
+          0.0,
+          1.192497467011325,
+          6.900209445109877,
+          6.774489400514135,
+          3.987921104453562e-13
+        ],
+        "endpoint_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16",
+        "restarts": [
+          {
+            "cut": 99200,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 102400,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 118400,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 96000,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          }
+        ]
+      },
+      "actual_max_dt_day": [
+        3.125000000014921e-05,
+        1.562500000007461e-05,
+        7.812500000037303e-06
+      ],
+      "refinement_differences": [
+        [
+          3.331228585601309e-05,
+          2.3543582088336734e-06
+        ],
+        [
+          2.0384944880991185e-05,
+          6.885315464444375e-07
+        ]
+      ]
+    },
+    "O2": {
+      "16": {
+        "summary": [
+          2.0,
+          0.382875709612799,
+          0.5069121404092101,
+          1.466409806099428,
+          5.308136334535199,
+          1.35003119794419e-13,
+          78754.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989220361185392,
+          0.0,
+          1.192496160672225,
+          6.900161037974196,
+          6.774546140634627,
+          -4.529709940470639e-14
+        ],
+        "endpoint_sha256": "601e013d90f6510d4a0fd988392a69a0caaedfc15bde042dc90fd75bb59e641e",
+        "restarts": [
+          {
+            "cut": 24800,
+            "fresh_sha256": "601e013d90f6510d4a0fd988392a69a0caaedfc15bde042dc90fd75bb59e641e"
+          }
+        ]
+      },
+      "32": {
+        "summary": [
+          2.0,
+          0.3828753438360487,
+          0.5069121405403733,
+          1.466376493813572,
+          5.30813398017699,
+          7.654987754790454e-14,
+          137610.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989217603148864,
+          0.0,
+          1.192497029943092,
+          6.900193077310914,
+          6.774510473990562,
+          3.552713678800501e-15
+        ],
+        "endpoint_sha256": "df0441b36b9dfccb7cca551d095ba4609e0cb78e6fb83e5c9e7807327b44772c",
+        "restarts": [
+          {
+            "cut": 49600,
+            "fresh_sha256": "df0441b36b9dfccb7cca551d095ba4609e0cb78e6fb83e5c9e7807327b44772c"
+          }
+        ]
+      },
+      "64": {
+        "summary": [
+          2.0,
+          0.382871435040402,
+          0.5069121406201378,
+          1.466356108868691,
+          5.308133291645444,
+          4.309885781594858e-13,
+          259424.0
+        ],
+        "age_budget": [
+          5.477982978095698,
+          6.400000000000002,
+          2.989213334539239,
+          0.0,
+          1.192497467011325,
+          6.900209445109877,
+          6.774489400514135,
+          3.987921104453562e-13
+        ],
+        "endpoint_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16",
+        "restarts": [
+          {
+            "cut": 99200,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 102400,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 118400,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          },
+          {
+            "cut": 96000,
+            "fresh_sha256": "3a3212a51b239b1d501d90676af3fe5fb5c7187e1f74170c4d1c3884b6356d16"
+          }
+        ]
+      },
+      "actual_max_dt_day": [
+        3.125000000014921e-05,
+        1.562500000007461e-05,
+        7.812500000037303e-06
+      ],
+      "refinement_differences": [
+        [
+          3.331228585601309e-05,
+          2.3543582088336734e-06
+        ],
+        [
+          2.0384944880991185e-05,
+          6.885315464444375e-07
+        ]
+      ]
+    }
+  },
+  "source_tree": "a0f3261b108f10610ca70161fc6437df54df1bee",
+  "scope_limits": [
+    "Qualified existing no-evaporative-age-export convention with strictly positive pond",
+    "Four controlled pulses in a four-node3cm production Richards test column, not a calibrated field or seasonal run",
+    "Observed refinement stabilization, no formal whole-model order proof",
+    "Same-platform POSIX restart",
+    "No new default, RossFast, snow/exfiltration or simultaneous reactive companion admission"
   ]
 }
