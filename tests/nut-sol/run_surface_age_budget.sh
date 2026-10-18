@@ -32,8 +32,15 @@ for opt in 0 2; do
   gfortran -std=f2008 -ffree-line-length-none -Wall -Wextra -Werror -fcheck=all \
     -O"$opt" -J "$build" -I "$build" -c src/process/mod_b111_age_tracer_substep.f90 \
     -o "$build/age-process-o$opt.o"
+  gfortran -std=f2008 -ffree-line-length-none -fcheck=all -O"$opt" -J "$build" -I "$build" \
+    "$build/solute-compartment-o$opt.o" "$build/age-process-o$opt.o" \
+    tests/nut-sol/test_surface_age_native_top.f90 -o "$build/native-top-o$opt"
+  "$build/native-top-o$opt" > "$build/native-top-out-o$opt"
+  grep -Fq 'MC_SOL01_NATIVE_AGE_TOP_BOUNDARY=PASS' "$build/native-top-out-o$opt"
+  echo "MC_SOL01_NATIVE_AGE_TOP_BOUNDARY_O${opt}=PASS"
 done
 cmp "$build/out-o0" "$build/out-o2"
 cmp "$build/owner-out-o0" "$build/owner-out-o2"
 cmp "$build/handoff-out-o0" "$build/handoff-out-o2"
+cmp "$build/native-top-out-o0" "$build/native-top-out-o2"
 echo 'MC_SOL01_SURFACE_AGE_BUDGET_O0_O2=PASS'
