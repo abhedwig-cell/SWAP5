@@ -2,7 +2,12 @@
 from pathlib import Path
 import argparse,base64,hashlib,io,json,os,shlex,subprocess,tarfile,time
 ROOT=Path(__file__).resolve().parents[2];a=argparse.ArgumentParser();a.add_argument('--providers',type=Path,required=True);a.add_argument('--output',type=Path,required=True);args=a.parse_args();BASE=args.providers.resolve();OUT=args.output.resolve();OUT.mkdir(exist_ok=False)
-sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();prior=json.loads((BASE/'result.json').read_text());assert prior['status']=='B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();prior=json.loads((BASE/'result.json').read_text());assert prior['status'] in ['B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED','SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED']
+SURFACE_PROVIDERS=prior['status']=='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED'
+if SURFACE_PROVIDERS:
+ assert prior['days']==2 and prior['providers']==326
+ assert all(e['returncode']==0 for e in json.loads((BASE/'events.json').read_text()))
+ assert sha(BASE/'generated_driver.f90')==prior['generated_driver_sha256']
 for path,h in prior['input_sha256'].items():assert sha(ROOT/path)==h,path
 archive=ROOT/'integration/audits/evidence/MC_IRR01_TCS6_SCIENCE_20261016.tar.xz.b64'
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive.read_bytes())))as t:old={m.name:t.extractfile(m).read()for m in t if m.isfile()and m.name.startswith('physical/')}
@@ -28,7 +33,9 @@ def run(command,b,category):
  if r.returncode:raise RuntimeError(str(i)+r.stdout.decode()+r.stderr.decode())
  return r.stdout
 for opt in [0,2]:
- b=OUT/f'o{opt}';b.mkdir();base=BASE/f'O{opt}';fc=shlex.split(os.environ['FC']);flags=inp['flags']+[f'-O{opt}','-J'+str(b),'-I'+str(b),'-I'+str(base)];objects=[]
+ b=OUT/f'o{opt}';b.mkdir();base=BASE/f'O{opt}'
+ for module in base.glob('*.mod'):result['artifacts'][str(module)]=sha(module)
+ fc=shlex.split(os.environ['FC']);flags=inp['flags']+[f'-O{opt}','-J'+str(b),'-I'+str(b),'-I'+str(base)];objects=[]
  for path in inp['providers']:
   if path=='tests/fsi/fsi04_real_headcalc_stubs.f90':continue
   q=base/mapping[path];assert q.exists();objects.append(q);result['artifacts'][str(q)]=sha(q)

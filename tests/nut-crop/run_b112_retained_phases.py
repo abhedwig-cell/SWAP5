@@ -6,7 +6,12 @@ a=argparse.ArgumentParser();a.add_argument('--providers',type=Path,required=True
 BASE=args.providers.resolve();OUT=args.output.resolve();OUT.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 prior=json.loads((BASE/'result.json').read_text());events=json.loads((BASE/'events.json').read_text())
-assert prior['status']=='B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED'
+assert prior['status'] in ['B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED','SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED']
+SURFACE_PROVIDERS=prior['status']=='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED'
+if SURFACE_PROVIDERS:
+ assert prior['days']==2 and prior['providers']==326
+ assert all(e['returncode']==0 for e in events)
+ assert sha(BASE/'generated_driver.f90')==prior['generated_driver_sha256']
 inputs={}
 for path,digest in prior['input_sha256'].items():
  p=ROOT/path
@@ -39,6 +44,7 @@ try:
   objects=[]
   for obj in sorted(base.glob('*.o')):
    if obj.name.startswith('test_'):continue
+   if SURFACE_PROVIDERS and any(Path(e['command'][-1])==obj and Path(e['command'][e['command'].index('-c')+1]).name=='test_surface_n_rotation.f90'for e in ce):continue
    artifacts[str(obj)]=sha(obj);objects.append(obj)
   for e in ce:
    p=Path(e['command'][e['command'].index('-c')+1])
