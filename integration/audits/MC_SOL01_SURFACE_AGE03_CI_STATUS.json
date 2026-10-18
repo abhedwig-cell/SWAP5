@@ -2,12 +2,12 @@
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
   "baseline": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
-  "stage": "LOCALLY_QUALIFIED_AND_PRESERVED_READY_FOR_CANONICAL",
+  "stage": "CANONICALLY_ADMITTED_THREE_REPAIRED_HOSTED_ROUTES_PASS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_AGE03_CI_REPAIR.md",
     "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
@@ -17,7 +17,7 @@
     "No production/reference/physical test assertion changes",
     "No RossFast or complete evaporative dry-down extension"
   ],
-  "next_action": "Review exact live canonical delta, merge existing PR1317, actively follow the three automatic postmerge workflow runs to terminal",
+  "next_action": "Scoped surface-age CI repair complete. Separate pre-existing F-CI73 topology/publication pin reconciliation remains a distinct owner task; complete evaporative age dry-down remains scientifically blocked.",
   "blockers": [],
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
@@ -272,5 +272,52 @@
     "source": "PASS",
     "mkdocs_strict": "PASS",
     "strict_log_sha256": "b7e51288b3411345ea9742e958d5a8cb5cbeabea3683e32d06e3b0f0775b42ab"
+  },
+  "canonical_merge": "f9731ff618759bd5d421a7603f8c7bd9f86ea5aa",
+  "pull_request": 1317,
+  "three_repaired_ci_green": true,
+  "global_ci_green": false,
+  "hosted": {
+    "head": "f9731ff618759bd5d421a7603f8c7bd9f86ea5aa",
+    "runs": [
+      {
+        "id": 39165607553,
+        "name": "F-CI73 F-GC25 moving preservation",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39165607553"
+      },
+      {
+        "id": 39165607589,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39165607589"
+      },
+      {
+        "id": 39165607563,
+        "name": "F-CI canonical qualification",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39165607563"
+      },
+      {
+        "id": 39165607593,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39165607593"
+      },
+      {
+        "id": 39165607607,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39165607607"
+      }
+    ],
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE03_CI_HOSTED_20261018.tar.xz.b64",
+      "decoded_sha256": "97ec08ce4edc2e73bb6e1049ab0d1513b11bd1e2b7b07cb83717e1313cc9c744",
+      "decoded_bytes": 182408,
+      "members": 47
+    },
+    "scope": "Three repaired original automatic routes PASS. Canonical workflow selection/feedback PASS with broad jobs intentionally skipped; actual full moving local proof781.268s retained. Separate FCI73 stale premerge source pins remain failure.",
+    "postmerge_source_authority": "PASS on actual f9731ff6 checkout, source/reference tree identical to premerge canonical b27a6469"
   }
 }

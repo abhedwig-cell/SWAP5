@@ -1,6 +1,6 @@
 # MC-SOL01-SURFACE-AGE03-CI: restore three current CI entry points
 
-Status: locally qualified and preserved; canonical admission and hosted confirmation pending. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; current production baseline1e8bf36ec52544e50f5b2720031228f9a6369525.
+Status: canonically admitted; all three repaired hosted routes PASS. Initial baseline3c393a55999fa671f8a730bddd058c9e7a3f41f7; initial production baseline1e8bf36ec52544e50f5b2720031228f9a6369525; reconciled canonical baselineb27a646928c73d334fd11f54b74b7f12cc0064a4.
 Recovery: `integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json`.
 
 The three automatic merge failures observed by SURFACE-AGE02 are the scope:
@@ -112,3 +112,17 @@ negative controls. Thus the complete numerical preservation is inherited after
 this bounded reconciliation; no second unrelated full moving or solver stress
 execution is selected under the repository change-impact policy. This does not
 claim a second monolithic moving run on the later source tree.
+
+Actual canonical admission: PR1317, mergef9731ff618759bd5d421a7603f8c7bd9f86ea5aa.
+Automatic F-CI51P39165607589, F-CI58P39165607593 and complete monolithic
+F-GC39165607607 all finished SUCCESS on that exact merge. No manual hosted run
+was added. Postmerge source/qualification authority also passes.
+
+The canonical Actions workflow selection/feedback passes; its intentionally
+skipped broad jobs are not called full scientific PASS. Full moving preservation
+is the separately versioned781.268s local execution. F-CI73 run39165607553
+remains red because its old topology/publication blob pins already differed at
+premergeb27a6469; neither production path nor workflow changed in PR1317.
+Global CI is therefore explicitly not green. This scoped repair does not
+requalify the separate historical F-GC25 owner boundary. The existing wet-pond
+qualification and complete evaporative age dry-down limit remain unchanged.
