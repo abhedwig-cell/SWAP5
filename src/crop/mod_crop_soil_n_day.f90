@@ -212,6 +212,14 @@ contains
   if(code/=0)return
   a%actual_root_uptake=100d0*root_water;a%potential_transpiration=potential_cm
   r%actual_root_cm=a%actual_root_uptake;r%potential_root_cm=potential_cm
+  ! cm -> m -> integrated cm can round a fully satisfied demand just below
+  ! one. In the crop rate view only, restore equality within eight rounding
+  ! units. Keep the raw accepted water amount in the receipt and Soil-N carrier.
+  ! This does not raise water acceptance or mass tolerances and does not erase
+  ! the physical water inventory; larger deficits keep their stress response.
+  if(abs(a%actual_root_uptake-potential_cm)<=8d0*epsilon(1d0)* &
+     max(tiny(1d0),abs(a%actual_root_uptake),abs(potential_cm))) &
+    a%actual_root_uptake=potential_cm
   r%status=CROP_SOIL_PREPARE
   call prepare_wofost81_one_day_candidate(state%crop,weather,t0,t1,common,p81,state%p%update,a, &
     state%p%stem_area,state%p%storage_area,.true.,r%prepared,code)

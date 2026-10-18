@@ -300,7 +300,7 @@ contains
    real(real64)::source_water,base_day
    call parse_soil_n_date('1900-12-30',base_day,code)
    if(trim(selected)=='rotation-profile')then
-    cp%harvest%crop_end=base_day+120d0
+    cp%harvest%crop_end=base_day+119d0
     cp%scalars%vegetative_temperature_sum_required=1500d0
     cp%scalars%generative_temperature_sum_required=1500d0
    end if
@@ -546,7 +546,7 @@ contains
    if(trim(mode)=='resume')then
     read(arg,*)first
     if(first>=365)then
-     cp%harvest%crop_identity=2;cp%harvest%crop_end=base_day+500d0
+     cp%harvest%crop_identity=2;cp%harvest%crop_end=base_day+499d0
     end if
     water=kernel_committed_state_t();state=crop_soil_state_t()
     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
@@ -581,19 +581,34 @@ contains
     weather%photoperiodic_daylength_hours=weather%daylength_hours
     if(d==120.or.d==366)then
      before_state=state;before_water=water;stale=e;stale%t0=stale%t0-1d0
+     write(arg,'(I0)')d
+     call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-before-'//trim(arg), &
+      column,cfg%tiles(1)%template,670001_int64,water,state,code)
+     call require(code==0,'rotation rollback baseline serialized')
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
       plan,split,policy,rejected,stale,fallow=inactive,clean_surface_water=.true.)
      call require(rejected%status/=0,'rotation stale environment rejected')
      call require(water%current_revision()==before_water%current_revision(),'rotation rejected water unchanged')
      call require(crop_soil_whole_n(state)==crop_soil_whole_n(before_state),'rotation rejected nitrogen unchanged')
+     call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-after-'//trim(arg), &
+      column,cfg%tiles(1)%template,670001_int64,water,state,code)
+     call require(code==0,'rotation rollback endpoint serialized')
     end if
     n_before=crop_soil_whole_n(state)
     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
      cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
      plan,split,policy,r,e,fallow=inactive,clean_surface_water=.true.)
     if(r%status/=0)print *,'ROTATION_FAILURE',d,r%status,r%joint%joint%water%status, &
-      r%joint%joint%chemical%status,r%joint%joint%chemical%soil%status
+      r%joint%joint%chemical%status,r%joint%joint%chemical%soil%status, &
+      'material',r%joint%materials%status,r%joint%materials%residual, &
+      'senescence',r%senescence%status,r%senescence%whole_n_residual
+    if(r%status/=0)then
+     print *,'DEATH_DM',r%joint%joint%chemical%prepared%drrt,r%joint%joint%chemical%prepared%drlv, &
+      r%joint%joint%chemical%prepared%drst,r%joint%joint%chemical%prepared%leaf_diagnostics%applied_leaf_death
+     print *,'DEATH_N',r%joint%joint%chemical%crop%rndeathrt,r%joint%joint%chemical%crop%rndeathlv, &
+      r%joint%joint%chemical%crop%rndeathst
+    end if
     call require(r%status==0,'rotation actual daily Richards crop Soil-N')
     max_w=max(max_w,r%joint%joint%diagnostics%max_abs_step_mass_residual)
     max_n=max(max_n,abs(r%joint%materials%residual))
@@ -608,6 +623,7 @@ contains
     call require(abs(r%joint%materials%residual)<=1d-12,'rotation whole N daily balance')
     if(d+1==120.or.d+1==500)then
      call harvest_crop_soil_boundary(state,hr)
+     if(hr%status/=0)print *,'HARVEST_FAILURE',d+1,hr%status,hr%rejection_stage
      call require(hr%status==0,'rotation accepted harvest boundary')
      call state%snapshot(ss,cc);call cc%harvest_snapshot(harvest_record,has_record)
      call require(has_record,'rotation harvest exported inventory')
@@ -621,7 +637,7 @@ contains
     end if
     if(d+1==365)then
      successor_cp=cp;successor_cp%harvest%crop_identity=2
-     successor_cp%harvest%crop_end=base_day+500d0
+     successor_cp%harvest%crop_end=base_day+499d0
      n_before=crop_soil_whole_n(state)
      call initialize_crop_soil_successor(state,crop,successor_cp,9102_int64,hr)
      call require(hr%status==0,'rotation successor in same Soil-N owner')
@@ -640,6 +656,10 @@ contains
     670001_int64,water,state,code)
    call require(code==0,'rotation endpoint')
    n_residual=n_start+n_input-crop_soil_whole_n(state)-n_output
+   call report_water_state('rotation-final',730)
+   call state%snapshot(ss,cc);call ss%snapshot(clock,moisture,ps,rev)
+   print *,'ROTATION_POOLS',ps%fom_kg_m3,ps%biomass_kg_m3,ps%humus_kg_m3, &
+    ps%ammonium_n_kg_m2,ps%nitrate_n_kg_m2
    print *,'ROTATION_BUDGET',n_start,n_input,n_output,crop_soil_whole_n(state),n_residual
    call require(abs(n_residual)<=1d-10,'rotation cumulative whole nitrogen balance')
    print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w

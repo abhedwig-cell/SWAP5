@@ -35,7 +35,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Qualify source-native table/continuation reader and physical seasonal 730-day rotation. Sealed surface fixture is bounded, not atmospheric field qualification.",
+  "next_action": "Run clean final O0/O2 124-day preservation and 730-day synthetic physical rotation with six fresh-process native restarts and byte-exact rollback, then owning admission. HIST full remains bounded by explicit unsupported source features.",
   "recovery_point": "work/nut-snm-source-diagnostics-20261018@3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
   "blockers": [
     "Full TTUTIL grammar and multiyear crop rotation still not qualified"
@@ -179,7 +179,7 @@
     "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
   },
   "test_selection": {
-    "candidate": "4a274c4650ec7f52324b8604838a8d27dd39edb3",
+    "candidate": "41e170a845d026c1270898c679ca8135adbb809d",
     "groups": {
       "nut_actual": {
         "changed_dependency": "SNM lexical input and atomic calendar/material fallow routing",
@@ -188,12 +188,13 @@
         "authority": "AGENTS.md#Independent local testability",
         "expected_seconds": 1000,
         "existing_evidence": "PR1311 terminal success covers old postimage only; new source and coupling require new execution",
-        "prior_execution": "NONE"
+        "prior_execution": "FAILED",
+        "diagnosis": "First physical run exposed a roundoff-sized false drought mortality (3.6e-15 kg/ha) and test crop_end+1 convention. Crop forcing view now snaps equality within eight rounding units while raw water carrier/receipt and pending thresholds stay unchanged. Recompile exact final postimage; earlier modified-mid-build results are diagnostic only."
       }
     }
   },
   "surface_extension_contract": {
-    "status": "PROPOSED_IMPLEMENTATION_NOT_QUALIFIED",
+    "status": "IMPLEMENTED_DIRECT_TESTED_NOT_ADMITTED",
     "owner": "existing mineral/reactive/crop owners; Richards state remains sole water authority",
     "scope": "Optional signed clean surface-water carrier, m/day. Positive infiltration adds zero dissolved N. Negative evaporation removes water without advective N. No runoff/exfiltration solute, nonzero c_top, surface pond or macropore inference. Default absent carrier remains zero. Legacy carrier default remains fail-closed.",
     "invariants": [
@@ -202,5 +203,63 @@
       "Daily whole-water and whole-N closure unchanged; rejection before commit",
       "Explicit opt-in to accepted-trace aggregation in crop composition only"
     ]
-  }
+  },
+  "native_semantics": [
+    {
+      "part": "TTUTIL names types arrays",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": true,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "Unmodified TTUTIL O0/O2: case-insensitive identifiers, distinct real/integer and scalar/array, positive repeats, complete tables, continuation; native 21-case suite"
+    },
+    {
+      "part": "Material identity names fractions dose",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": true,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "Positional contiguous IDs; source ranges restricted to physical core age<=100, vol<=1; original broad AppAge<=5000 and VolatFraction<=500000 not silently accepted"
+    },
+    {
+      "part": "Dates same-day year boundaries",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": true,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "Daily ISO/month-name dates; explicit TTUTIL day-1 to internal day-0 epoch mapping; fractional date/time UNSUPPORTED"
+    },
+    {
+      "part": "Initial FOM biomass humus NH4 NO3 and rates",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": true,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "Original named scalar ranges, supported physical activation subset; optional LaiCritNupt default0, arable residue defaults; clean top concentrations0"
+    },
+    {
+      "part": "Nonzero atmospheric N concentrations",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": false,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "UNSUPPORTED: native startup atomically rejects; clean atmospheric water is separate from dissolved N"
+    },
+    {
+      "part": "Experimental humus and extended crop output",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": false,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "UNSUPPORTED RateconHum_exp/tstartHumexp; flCropExt diagnostics not migrated"
+    },
+    {
+      "part": "General TTUTIL constructs",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": false,
+      "TESTED": false,
+      "QUALIFIED": false,
+      "scope": "UNSUPPORTED missing-value placeholders, string concatenation, rerun sets, arbitrary scalar tables and subdaily timestamps; quote escapes not claimed"
+    }
+  ]
 }

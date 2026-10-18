@@ -71,6 +71,8 @@ for opt in ['O0','O2']:
   if profile=='source-profile':
    fresh=b/(profile+'.fresh');run([exe,'resume',restart,fresh,profile],b,'native');assert endpoint.read_bytes()==fresh.read_bytes()
   else:
+   for day in [120,366]:
+    assert Path(str(restart)+'.reject-before-'+str(day)).read_bytes()==Path(str(restart)+'.reject-after-'+str(day)).read_bytes(),'rejected rotation day leaked state'
    for day in [1,120,121,365,366,500]:
     fresh=b/('rotation-fresh-'+str(day));run([exe,'resume',str(restart)+'.'+str(day),fresh,profile,str(day)],b,'restart_native')
     assert endpoint.read_bytes()==fresh.read_bytes(),('fresh rotation drift',day)

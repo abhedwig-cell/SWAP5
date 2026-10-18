@@ -33,7 +33,7 @@ contains
  ! The source-grounded bounded .snm keyword-array route is distinct from
  ! the bracketed modern export contract. No hidden grammar autodetection.
  if(len_trim(path)>=4)then
-  if(path(len_trim(path)-3:len_trim(path))=='.snm')then
+  if(snm_lower(path(len_trim(path)-3:len_trim(path)))=='.snm')then
    call read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages)
    return
   end if
