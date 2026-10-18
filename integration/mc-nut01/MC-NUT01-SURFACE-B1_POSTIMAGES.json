@@ -1,0 +1,96 @@
+{
+  "workstream": "MC-NUT01",
+  "canonical_base": "e122ff8f682584620717e97ab24ce07933dd0923",
+  "production_checkpoint": "4c2b3c7c9c8e8e5485532a923a3d43373d9f0256",
+  "production_tree": "67c1a84fd3dead8346222806cbe07f19c49120ff",
+  "canonical_admitted": false,
+  "qualified_full_work_unit": false,
+  "source_postimages": {
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+      "status": "M",
+      "before_sha256": "4815c9a5be69329a6867f9d301e1bc10f824a7607a921669cc658265f1a6f742",
+      "after_sha256": "87023473621e0a6ef4f2517fc5f02acbee7b199d144f7d4bb453a16a968e541a"
+    },
+    "src/adapter/mod_mineral_joint_restart_file.f90": {
+      "status": "M",
+      "before_sha256": "1364feaec7de5d3b9f6ec3aad6d234c3be56e9f07917e85a668a23ff118f0b78",
+      "after_sha256": "1d00f9816a665c22cc8c969f78f591c2ce80180b89b2495a0f417784103edc71"
+    },
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": {
+      "status": "M",
+      "before_sha256": "ebe6a205031b42a8730f78925299d302842b09ecaae39afeed347267a00cde16",
+      "after_sha256": "a612a9ed928d0f53601e47abd7c6e06783d3841cfc58b26c3dd113a418f12fdf"
+    },
+    "src/crop/mod_crop_soil_n_day.f90": {
+      "status": "M",
+      "before_sha256": "5d897295be4a4881d101f0ee23e4258dbb5c4f93e9260dfb4a3533ddec662fd9",
+      "after_sha256": "83c4e580f915f6126556bb4d0a9ede1638b610a5833b6bc65358c64f27f3608b"
+    },
+    "src/process/mod_b111_pond_solute_exchange.f90": {
+      "status": "M",
+      "before_sha256": "7c4c12b2f643d0562bc1c07244ce428271298e1b7635d736fc8a270de16b11af",
+      "after_sha256": "d05d64debb98b4931f0198f7ea607981bfd2d634111ef7670fe06e68b4c0a5ba"
+    },
+    "src/process/mod_b111_soil_n_mineral_owner.f90": {
+      "status": "M",
+      "before_sha256": "18f2add7cba4099d6b4ef502dd5cef5ce900d97a181c955412c1c8e384316a47",
+      "after_sha256": "3437f99ff6cbf2ec73a38d888257d0400bfb6ac7e8f4740b2994c8a1eb7424e6"
+    },
+    "src/process/mod_b111_soil_n_reactive_owner.f90": {
+      "status": "M",
+      "before_sha256": "88f46b41ee95c979b84ed2cab69aba07a597fc97db68c573c5177e65229aa5b2",
+      "after_sha256": "39829584d4042e29c64532bc53b4e06c60c5d6d654dcf4a4162ec38d603c8d7f"
+    },
+    "src/process/mod_soil_n_pool_state.f90": {
+      "status": "M",
+      "before_sha256": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+      "after_sha256": "a54c84b0cee96476351c848c02ba613bbc7b3ae09cfb91280f821f6875d46cd9"
+    },
+    "src/process/mod_soil_n_surface_exchange.f90": {
+      "status": "A",
+      "before_sha256": null,
+      "after_sha256": "c05cf8e1bec1023a32647b30aeaa79f7ae4e08b8ed728836f33a26f7484b178f"
+    },
+    "src/runtime/mod_fmr_b111_mineral_route.f90": {
+      "status": "M",
+      "before_sha256": "4bd25e2f93d9d099baf444fd3413c433c866485cef02d86fe42ac18f3408b6fe",
+      "after_sha256": "3e9c4dc07137bef6e00abded05819881463bec8895a7f62793330847731240e3"
+    },
+    "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90": {
+      "status": "M",
+      "before_sha256": "d68fce2154b8fae5df06986d5537b056cbbf434b3f5c6cdf980a2f677a567ce1",
+      "after_sha256": "b95f8a8c20e176ef1f0a391f1067d0ec2e715a1962d9862e1617d20b3bbfbe60"
+    },
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+      "status": "M",
+      "before_sha256": "7226055669c0bf03be57d2765a276c6d46513ee3ae9b5d93894a8630903e28a9",
+      "after_sha256": "4f1928b4ca45691e9cf0b6c631c68251cebbd46becaf365b2c427de4df48264b"
+    }
+  },
+  "parallel_preservation": {
+    "fci73_native_input_overlap": [],
+    "surface_age_ci_compiled_overlap": [],
+    "surface_age_ci_inventory_overlap": [
+      "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+      "src/adapter/mod_mineral_joint_restart_file.f90",
+      "src/adapter/mod_reactive_n_joint_restart_file.f90",
+      "src/crop/mod_crop_soil_n_day.f90",
+      "src/process/mod_b111_pond_solute_exchange.f90",
+      "src/process/mod_b111_soil_n_mineral_owner.f90",
+      "src/process/mod_b111_soil_n_reactive_owner.f90",
+      "src/process/mod_soil_n_pool_state.f90",
+      "src/runtime/mod_fmr_b111_mineral_route.f90",
+      "src/runtime/mod_fmr_b111_reactive_n_joint_application.f90",
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+    ],
+    "source_guards": "Still reject this unregistered successor. No source waiver or new F-CI PASS. Exact qualified B1 registration and all prior scientific checks are required before inheritance."
+  },
+  "pending": [
+    "full current O0/O2 prescribed-head physical proof",
+    "independent8-day cumulative water/N audit",
+    "continuous730-day actual physical rotation",
+    "fresh-process complete native transition windows",
+    "current owner preservation and exact source-guard composition",
+    "required integrated qualification and canonical integration"
+  ]
+}

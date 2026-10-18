@@ -283,7 +283,15 @@
         "expected_seconds": 1500,
         "selection": "SELECTED_OWNING_COMPOSITION_AND_PRESERVATION",
         "prior_execution": "O2 eight-day ABI-identical one-owner feedback PASS; direct full literal chemical matrix O0/O2 PASS; default standalone mineral/direct owner PASS",
-        "long_baseline_selection": "Conditional on eight-day full audit; cost will be recorded from measured native rate. No730-day PASS inferred."
+        "long_baseline_selection": "Conditional on eight-day full audit; cost will be recorded from measured native rate. No730-day PASS inferred.",
+        "preservation_cases": [
+          "five original physical profiles at O0/O2",
+          "wet native15 CRC-valid/structural corruption cases per optimization",
+          "dry native successor with explicitly selected canonical10000 resource cap; old4096 failure remains FAILED",
+          "original retained thermal byte endpoints",
+          "original TCS6_54 native byte endpoints"
+        ],
+        "resource_selection": "Local cgroup exposes8 CPU capacity; independent owning jobs may overlap. No solver/temporal/mass tolerance change, no moving full F-CI."
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -375,10 +383,10 @@
     {
       "part": "Material definition labels versus event positions",
       "SOURCE_VERIFIED": true,
-      "IMPLEMENTED": false,
+      "IMPLEMENTED": true,
       "TESTED": true,
-      "QUALIFIED": false,
-      "scope": "Original management read slices and full original amendments execute4 label variants O0/O2: contiguous/noncontiguous/reversed/duplicate definitions all select properties by iMat position after MatNum overwrite. New source witness only; current native contiguous-label restriction remains unsupported for other cases. Raw results and first path failure archived in source-followup, not a SWAP5 parser PASS."
+      "QUALIFIED": true,
+      "scope": "Canonically admitted through PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b. Original TTUTIL and amendments select material by iMat position for contiguous/noncontiguous/reversed/duplicate definition labels; native normalization and current source-bound preservation PASS. Earlier source-witness-only scope was superseded by the already recorded material-identity migration."
     }
   ],
   "bounded_successor": {
@@ -1341,7 +1349,7 @@
     "native_wet_current": "PASS_O0_O2_15_MUTANTS_EACH_ATOMIC_REJECTION_AND_FRESH_PROCESS_BYTES",
     "reactive_current": "DIRECT_PASS_O0_O2_ANALYTIC_TRANSFER_AND_ORIGINAL_CHEMISTRY",
     "incumbent_current": "PASS_FIVE_ORIGINAL_PROFILES_EXACT_NATIVE_ENDPOINTS_O0_O2",
-    "fixed_head_eight_day": "FAILED_DAY6_CROP_SOIL_REACTION_AFTER_ACCEPTED_WATER; diagnostic running",
+    "fixed_head_eight_day": "PREDECESSOR_FAILED_DAY6_GROSS_COMMIT_ELIGIBILITY; failure diagnosed, native rollback exact; successor O2 eight-day ABI-identical-one-owner feedback PASS.",
     "raw_local": "surface-current-field-qualified;surface-current-native-wet;surface-reactive-leaf-current",
     "scope": "QUALIFIED_BOUNDED_PREDECESSOR_BEFORE_GROSS_COMMIT_ELIGIBILITY_EXTENSION; full current owner closure requalification pending"
   },
