@@ -72,7 +72,7 @@ def main():
             shutil.copyfile(hourly, case / 'hourly.met')
             text = template
             for key, value in [('PROJECT', "'"+name+"'"), ('SWCROP', '0'), ('SWBOTB', str(bottom)),
-                               ('SWCSV', '1'), ('SWMONTH', '0'), ('SWEND', '1'), ('RDS', str(depth)),
+                               ('SWCSV', '1'), ('SWMONTH', '0'), ('SWEND', '1'), ('RDS', str(float(depth))),
                                ('SWSOLU', '0'), ('SWHEA', '0'), ('SWMETDETAIL', '1'),
                                ('METFIL', "'hourly.met'"), ('ALTW', '10.0'), ('ALTH', '2.0'),
                                ('SWETR', '0'), ('SWDIVIDE', '1'), ('SWRAIN', '0'),
@@ -87,7 +87,7 @@ def main():
                           lambda m: m[1]+'\n'.join(grids)+'\n'+m[2], text, flags=re.S)
             text = re.sub(r'( ORES\s+OSAT[^\n]*\n).*?(\* End of table)',
                           lambda m: m[1]+'\n'.join(hydraulics)+'\n'+m[2], text, flags=re.S)
-            text, count = re.subn(r'(?m)^ -200\.0 -75\.0$', f' {-depth} -75.0', text)
+            text, count = re.subn(r'(?m)^ -200\.0 -75\.0$', f' {-float(depth):.8f} -75.0', text)
             assert count == 1
             (case / 'swap.swp').write_text(text)
             contract = {'case': name, 'profile': profile, 'layers': layers,
@@ -123,16 +123,25 @@ def main():
                           'output_sha256': {p.name: sha(p) for p in case.iterdir()
                                             if p.name in ['result_output.csv', 'swap.log', 'stdout.log', 'stderr.log']}}
             if record['native_success']:
+                record['physical_validation_status'] = 'PENDING'
+                receipt.write_text(json.dumps(record, indent=2)+'\n')
                 record['water_balance'] = summarize_water(case)
                 lower = sum((h['bottom_cm']-h['top_cm'])*h['swap_mvg'][0] for h in layers)
                 upper = sum((h['bottom_cm']-h['top_cm'])*h['swap_mvg'][1] for h in layers)
                 with (case/'result_output.csv').open() as handle:
                     rows = list(csv.DictReader(l for l in handle if not l.startswith('*')))
+                assert re.search(r'(?m)^\s*SWCROP\s*=\s*0\b', text)
+                required = {'DATE', 'WTOT', 'PD_VOL', 'RAIN', 'EACT', 'EPD', 'DSTOR', 'BALDEV'}
+                if bottom == 7:
+                    required.add('BOT')
+                assert required <= rows[0].keys(), 'Missing active native output'
                 for row in rows:
                     assert lower-1e-4 <= float(row['WTOT']) <= upper+1e-4
                     assert float(row['PD_VOL']) >= 0
-                    assert float(row['TACT']) == 0 and float(row['EIC']) == 0
+                    # These inactive crop terms are omitted by the native writer.
+                    assert float(row.get('TACT', 0)) == 0 and float(row.get('EIC', 0)) == 0
                 record['physical_daily_states_checked'] = len(rows)-1
+                record['physical_validation_status'] = 'PASS'
                 receipt.write_text(json.dumps(record, indent=2)+'\n')
             results.append(record)
             assignments += [{'cell': cell, 'case': name, 'sampling': 'CENTRE_POINT_RESPONSE_ONLY'}

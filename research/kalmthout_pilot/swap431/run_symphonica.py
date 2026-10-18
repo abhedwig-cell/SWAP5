@@ -24,9 +24,13 @@ def main():
                         help='Use archived study identities and repository factual tables without reacquiring undistributed PDFs')
     parser.add_argument('--dutch-sources', action='store_true',
                         help='Collect complementary Dutch modal soil profiles and dated land-cover polygons; does not qualify additional cell runs')
+    parser.add_argument('--dutch-soil-responses', action='store_true',
+                        help='Run hourly bare-soil modal-profile responses; requires --dutch-sources and --wet-heath')
     parser.add_argument('--wet-heath', action='store_true',
                         help='Also collect current LAI/terrain and run explicitly provisional historical wet-heath scenarios')
     args = parser.parse_args()
+    if args.dutch_soil_responses and not (args.dutch_sources and args.wet_heath):
+        parser.error('--dutch-soil-responses requires --dutch-sources and --wet-heath')
     root, exe = args.root.resolve(), args.executable.resolve()
     results, export = root / 'results', root / 'export'
     results.mkdir(parents=True, exist_ok=True)
@@ -92,6 +96,8 @@ def main():
         run(scripts / 'run_wet_heath_scenarios.py', root, results / 'wet_heath_scenarios', exe)
     if args.dutch_sources:
         run(scripts / 'collect_dutch_sources.py', root, results / 'dutch_sources')
+    if args.dutch_soil_responses:
+        run(scripts / 'run_dutch_soil_responses.py', root, results / 'dutch_soil_responses', exe)
     batch = json.loads((results / 'swap431_grid_soil_scenarios/batch_results.json').read_text())
     status = {'model': 'SWAP4.3.1', 'executable_sha256': sha(exe),
               'study_document_mode': 'RECORDED_IDENTITIES_ONLY' if args.recorded_studies else 'PDF_BYTES_VERIFIED',
@@ -110,6 +116,12 @@ def main():
         status.update({'dutch_modal_soil_centres': dutch['soil_profile_count'],
                        'dutch_landcover_cells_95pct': dutch['landcover_cells_95pct'],
                        'dutch_data_status': 'SOURCE_CONTEXT_ONLY_NO_ADDITIONAL_CELL_QUALIFICATION'})
+    if args.dutch_soil_responses:
+        modal = json.loads((results / 'dutch_soil_responses/batch_results.json').read_text())
+        assert all(r['native_success'] for r in modal['runs'])
+        status.update({'dutch_modal_profile_runs': len(modal['runs']),
+                       'dutch_modal_point_response_cells': modal['soil_point_cells'],
+                       'dutch_whole_cell_predictions': False})
     (results / 'symphonica_pipeline_status.json').write_text(json.dumps(status, indent=2) + '\n')
     print(json.dumps(status))
 
