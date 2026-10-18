@@ -32,7 +32,7 @@ contains
    integer,intent(out)::status
    logical,intent(in),optional::clean_surface_water,atmospheric_n_surface
    logical::allow_surface,admit_atmospheric_n
-   real(real64)::surface
+   real(real64)::surface,root_compensation,root_increment,root_next
    type(mineral_parameters_t)::p
    type(soil_n_pool_state_t)::s
    real(real64),allocatable::water(:),faces(:)
@@ -43,7 +43,7 @@ contains
    allow_surface=.false.;if(present(clean_surface_water))allow_surface=clean_surface_water
    admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
    allow_surface=allow_surface.or.admit_atmospheric_n
-   surface=0d0
+   surface=0d0;root_compensation=0d0
    if(.not.state%ready().or.size(steps)<1)return
    call state%configuration(p,id);call state%snapshot(time,theta,s,revision)
    if(any(abs(p%c_top)>0d0).and..not.admit_atmospheric_n)return
@@ -94,7 +94,17 @@ contains
        outflow=outflow+dt*(max(0d0,-t%bottom_flux)+sum(max(0d0,t%drainage_sink_by_level)))*.01d0
        inbot=inbot+dt*max(0d0,t%bottom_flux)*.01d0
        inlat=inlat+dt*sum(max(0d0,-t%drainage_sink_by_level))*.01d0
+       if(p%surface_n_enabled)then
+         ! Thousands of accepted pond substeps must not invent water stress
+         ! through naive accumulation. Preserve the actual accepted integral;
+         ! no crop, water or mass tolerance changes. Default bytes stay exact.
+         root_increment=dt*sum(t%root_sink)*.01d0-root_compensation
+         root_next=root+root_increment
+         root_compensation=(root_next-root)-root_increment
+         root=root_next
+       else
        root=root+dt*sum(t%root_sink)*.01d0
+       end if
        water=t%water_end;clock=t%t1
      end associate
    end do

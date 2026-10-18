@@ -83,3 +83,19 @@ contract is relaxed. Compare scientific results and O0/O2/fresh restart under
 this explicit existing policy; do not claim byte equivalence between different
 proposal schedules. Existing source policy is unchanged and its admitted scope
 is inherited; new physical composition still requires actual qualification.
+
+## Stable accepted root-water reduction
+
+Long pond traces exposed an accumulation defect: naive addition of thousands of
+accepted root-water substeps can place a mathematically satisfied demand beyond
+the existing eight-rounding-unit crop view envelope. It then invents tiny water
+stress leaf death or rejects a ratio just above one. Material owners correctly
+reject positive residue fragments below their existing1e-8kg/ha lower bound.
+Do not relax that bound or the crop equality/mass contracts. In the explicit
+new surface-N mode, reduce accepted root-water amounts with compensated summation
+before passing the same physical integral to crop and Soil-N. Every term remains
+the actual accepted trace term; no clipping, inventory loss or invented uptake.
+Disabled mode retains its exact original addition order. Independent constant
+flux traces of1000/2048/4096 accepted substeps test the existing crop envelope,
+original disabled bytes and unchanged full water closure. Actual physical and
+transition qualification remains mandatory after this changed provider.
