@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "829bfabade71a3e3156914275d2b3fdc65c29112",
+  "checkpoint_commit": "3a172c1a8ffa8db2c17bb9b8876ef548c6e0f50e",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -56,7 +56,7 @@
     "legacy TTUTIL/SNM grammar"
   ],
   "next_action": "Persist native material-position/disabled-flag candidate; bind test selection to implementation checkpoint; execute fresh54-fixture and original32-native source witness, full actual source124/three730-day O0/O2 and changed owning preservation; old humus endpoint must remain exact before new admission.",
-  "recovery_point": "work/nut-native-material-semantics-20261018 from admitted canonical1e8bf36ec52544e50f5b2720031228f9a6369525; new parser/fixture postimage in this checkpoint, not qualified.",
+  "recovery_point": "work/nut-native-material-semantics-20261018; production checkpoint3a172c1a8ffa8db2c17bb9b8876ef548c6e0f50e, this status-only successor binds expensive-test selection to that exact persisted postimage. No new full qualification or PR started; canonical1e8bf36e remains admitted humus baseline.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
@@ -200,7 +200,7 @@
     "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
   },
   "test_selection": {
-    "candidate": "PENDING_NATIVE_MATERIAL_IMPLEMENTATION_CHECKPOINT",
+    "candidate": "3a172c1a8ffa8db2c17bb9b8876ef548c6e0f50e",
     "groups": {
       "nut_actual": {
         "changed_dependency": "Native material definition labels versus iMat positions and explicit disabled logical option; same actual source profile with noncontiguous labels",
@@ -983,13 +983,14 @@
     "mastercoverage_promotion": false,
     "scope": "Native definition labels1..20 normalize to positional property rows, event iMat stays actual defined position; native explicit flCropExt=false only; modern export remains separate. No pool, physics, vector or restart schema change.",
     "development_feedback": {
-      "native": "54 fixtures O0/O2 PASS before persistence; final helper additionally runs actual modern-export/historical activation driver, needs rerun after checkpoint",
+      "native": "54 fixtures plus actual modern-export/historical-activation O0/O2 development feedback PASS with exact checkpoint source hashes; fresh persisted qualification and full owning admission remain required.",
       "original": "Fresh153 original TTUTIL providers per optimization plus literal reader/default flag and full original amendment routine:16 positive cases and2 source range negatives per opt PASS",
       "modern_export": "Real historical activation/modern-export disabled flag rejection O0/O2 PASS before persistence",
       "first_source_wrapper_failure": "Original source snippet opened IF without wrapper END IF; exact compiler log retained under /tmp/nut-material-original-feedback; fixed independent reader witness in feedback2, no production compile failure",
       "full_capability": false
     },
     "next_action": "Persist native material-position/disabled-flag candidate; bind test selection to implementation checkpoint; execute fresh54-fixture and original32-native source witness, full actual source124/three730-day O0/O2 and changed owning preservation; old humus endpoint must remain exact before new admission.",
-    "preservation_policy": "Only immutable current small mineral/reactive/material/source-clock/export compiled inputs may inherit after exact source/oracle/flags/environment checks. Changed startup parser and actual owner driver require fresh full main and owning retained/preservation. No RossFast or whole F-CI selected."
+    "preservation_policy": "Only immutable current small mineral/reactive/material/source-clock/export compiled inputs may inherit after exact source/oracle/flags/environment checks. Changed startup parser and actual owner driver require fresh full main and owning retained/preservation. No RossFast or whole F-CI selected.",
+    "implementation_checkpoint": "3a172c1a8ffa8db2c17bb9b8876ef548c6e0f50e"
   }
 }
