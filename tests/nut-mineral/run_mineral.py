@@ -30,7 +30,7 @@ subroutine swap_error(a,b)
 end subroutine
 ''')
  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
- providers=[ROOT/'src/process'/f'{x}.f90' for x in ['mod_soil_n_pool_state','mod_b111_soil_n_storage_conversion','mod_b111_soil_n_transport','mod_b111_soil_n_mineral_owner']]
+ providers=[ROOT/'src/process'/f'{x}.f90' for x in ['mod_soil_n_pool_state','mod_b111_soil_n_storage_conversion','mod_b111_soil_n_transport','mod_b111_pond_solute_exchange','mod_b111_persistent_pond','mod_soil_n_surface_exchange','mod_b111_soil_n_mineral_owner']]
  objects=[]
  for i,p in enumerate([fixture,oracle]+providers):
   obj=build/f'direct{i}.o';objects.append(obj)
@@ -41,7 +41,7 @@ end subroutine
  obj=build/'owner.o';exe=build/'owner'
  cmd(FC+flags+['-c',driver,'-o',obj],build,'direct_compile');cmd(FC+flags+objects+[obj,'-o',exe],build,'direct_link')
  stdout=cmd([exe],build,'direct_native');assert 'MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS' in stdout
- results['runs'][opt]={'direct_stdout':stdout,'direct_production_provider_count':4}
+ results['runs'][opt]={'direct_stdout':stdout,'direct_production_provider_count':len(providers)}
  print(opt,stdout,flush=True)
  if '--direct' in sys.argv:continue
  driver=ROOT/'tests/nut-mineral/test_mineral_joint.f90'

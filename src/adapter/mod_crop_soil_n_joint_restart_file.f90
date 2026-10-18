@@ -184,6 +184,7 @@ contains
           if(io/=0)exit writing
         end if
         write(u,iostat=io)id,revision,time,size(v),v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
+        if(io==0.and.p%mineral%surface_n_enabled)write(u,iostat=io)s%surface_n_kg_m2
         if(io/=0)exit writing
         write(u,iostat=io)crop_id,size(cv),cv,size(ov),ov
         if(io/=0)exit writing
@@ -303,6 +304,9 @@ contains
         io=1
         if(id/=chemical_parameter_id.or.count/=size(expected))exit decoding
         allocate(v(count));read(u,iostat=io)v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
+        if(io==0.and.p%mineral%surface_n_enabled)then
+          allocate(s%surface_n_kg_m2(2));read(u,iostat=io)s%surface_n_kg_m2
+        end if
         if(io/=0)exit decoding
         read(u,iostat=io)crop_id,count
         if(io/=0)exit decoding

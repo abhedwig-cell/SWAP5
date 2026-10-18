@@ -20,6 +20,7 @@ module mod_soil_n_pool_state
     real(real64)::humus_kg_m3=0d0
     real(real64)::ammonium_n_kg_m2=0d0
     real(real64)::nitrate_n_kg_m2=0d0
+    real(real64),allocatable::surface_n_kg_m2(:)
   contains
     procedure::valid=>soil_n_state_valid
     procedure::nitrogen_total=>soil_n_nitrogen_total
@@ -31,6 +32,7 @@ module mod_soil_n_pool_state
     real(real64)::humus_delta_kg_m3=0d0
     real(real64)::ammonium_n_delta_kg_m2=0d0
     real(real64)::nitrate_n_delta_kg_m2=0d0
+    real(real64)::surface_n_delta_kg_m2(2)=0d0
     real(real64)::external_n_input_kg_m2=0d0
     real(real64)::external_n_output_kg_m2=0d0
   end type
@@ -69,6 +71,11 @@ contains
     if(any(self%fom_kg_m3<0d0))return
     if(.not.all(ieee_is_finite([self%biomass_kg_m3,self%humus_kg_m3, &
          self%ammonium_n_kg_m2,self%nitrate_n_kg_m2])))return
+    if(allocated(self%surface_n_kg_m2))then
+      if(size(self%surface_n_kg_m2)/=2)return
+      if(.not.all(ieee_is_finite(self%surface_n_kg_m2)))return
+      if(any(self%surface_n_kg_m2<0d0))return
+    end if
     ok=min(self%biomass_kg_m3,self%humus_kg_m3,self%ammonium_n_kg_m2,self%nitrate_n_kg_m2)>=0d0
   end function
 
@@ -81,6 +88,7 @@ contains
     total=self%ammonium_n_kg_m2+self%nitrate_n_kg_m2+params%depth_m*( &
          sum(self%fom_kg_m3*params%nfrac_fom)+self%biomass_kg_m3*params%nfrac_biomass+ &
          self%humus_kg_m3*params%nfrac_humus)
+    if(allocated(self%surface_n_kg_m2))total=total+sum(self%surface_n_kg_m2)
   end function
 
   subroutine initialize_soil_n_pool_state(params,fom,biomass,humus,ammonium_n,nitrate_n,state,status)
@@ -114,12 +122,16 @@ contains
        .not.all(ieee_is_finite([transfer%biomass_delta_kg_m3,transfer%humus_delta_kg_m3, &
         transfer%ammonium_n_delta_kg_m2,transfer%nitrate_n_delta_kg_m2, &
         transfer%external_n_input_kg_m2,transfer%external_n_output_kg_m2])))return
+    if(.not.all(ieee_is_finite(transfer%surface_n_delta_kg_m2)))return
+    if(any(abs(transfer%surface_n_delta_kg_m2)>0d0).and..not.allocated(committed%surface_n_kg_m2))return
     if(transfer%external_n_input_kg_m2<0d0.or.transfer%external_n_output_kg_m2<0d0)return
     candidate%fom_kg_m3=committed%fom_kg_m3+transfer%fom_delta_kg_m3
     candidate%biomass_kg_m3=committed%biomass_kg_m3+transfer%biomass_delta_kg_m3
     candidate%humus_kg_m3=committed%humus_kg_m3+transfer%humus_delta_kg_m3
     candidate%ammonium_n_kg_m2=committed%ammonium_n_kg_m2+transfer%ammonium_n_delta_kg_m2
     candidate%nitrate_n_kg_m2=committed%nitrate_n_kg_m2+transfer%nitrate_n_delta_kg_m2
+    if(allocated(committed%surface_n_kg_m2)) &
+      candidate%surface_n_kg_m2=committed%surface_n_kg_m2+transfer%surface_n_delta_kg_m2
     if(.not.candidate%valid())then;candidate=committed;receipt%status=SOIL_N_NEGATIVE;return;end if
     receipt%nitrogen_before_kg_m2=committed%nitrogen_total(params)
     receipt%nitrogen_after_kg_m2=candidate%nitrogen_total(params)

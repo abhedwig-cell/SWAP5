@@ -2,6 +2,7 @@ module mod_b111_soil_n_reactive_owner
  use iso_fortran_env,only:real64,int64
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_soil_n_mineral_owner
+ use mod_soil_n_surface_exchange
  use mod_soil_n_pool_state
  use mod_b111_soil_n_daily_candidate
  use mod_b111_soil_n_daily_exchange,only:b111_soil_n_exchange_forcing_t
@@ -132,13 +133,15 @@ contains
    type(mineral_parameters_t)::base
    p=self%p;call self%inventory%configuration(base,id)
  end subroutine
- subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment,surface_water)
+ subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment,surface_water,surface_n)
    type(reactive_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    type(reactive_receipt_t),intent(out)::receipt
    type(reactive_crop_demand_t),intent(in),optional::crop
    type(soil_n_day_environment_t),intent(in),optional::environment
    real(real64),intent(in),optional::surface_water
+   type(soil_n_surface_day_t),intent(in),optional::surface_n
+   type(soil_n_surface_receipt_t)::sr
    real(real64)::surface
    type(b111_soil_n_rate_environment_t)::effective_environment
    type(mineral_state_t)::trial
@@ -171,7 +174,7 @@ contains
    end if
    trial=state%inventory
    if(.not.state%p%enabled)then
-     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget,surface_water=surface)
+     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget,surface_water=surface,surface_n=surface_n)
      receipt%mineral_receipt_t=budget
      if(budget%status==MINERAL_OK)state%inventory=trial
      return
@@ -193,6 +196,16 @@ contains
    f%dt_day=1d0;f%wfrac_t0=water;f%wfrac_t=water_end;f%wflux_out=outflow;f%wflux_inbot=in_bottom
    f%wflux_intop=max(0d0,surface)
    f%cnh4_top=state%p%mineral%c_top(1);f%cno3_top=state%p%mineral%c_top(2)
+   if(state%p%mineral%surface_n_enabled.neqv.present(surface_n))return
+   if(present(surface_n))then
+    call evaluate_soil_n_surface_day(before%surface_n_kg_m2,state%p%mineral%c_top,t0,t1,surface_n,sr)
+    if(sr%status/=0)return
+    if(abs(surface-sr%infiltration_m)>1d-12)return
+    f%wflux_intop=sr%infiltration_m;f%cnh4_top=0d0;f%cno3_top=0d0
+    if(sr%infiltration_m>0d0)then
+     f%cnh4_top=sr%infiltrated(1)/sr%infiltration_m;f%cno3_top=sr%infiltrated(2)/sr%infiltration_m
+    end if
+   end if
    f%wflux_inlat=in_lateral;f%wflux_transp=root_water;f%drybd=state%p%mineral%drybd;f%sorpcoef=state%p%mineral%sorption
    f%cnh4_seep=state%p%mineral%c_bottom(1);f%cno3_seep=state%p%mineral%c_bottom(2)
    f%cnh4_lat=state%p%mineral%c_lateral(1);f%cno3_lat=state%p%mineral%c_lateral(2)
@@ -211,8 +224,14 @@ contains
    x%ammonium_n_delta_kg_m2=after%ammonium_n_kg_m2-before%ammonium_n_kg_m2
    x%nitrate_n_delta_kg_m2=after%nitrate_n_kg_m2-before%nitrate_n_kg_m2
    x%external_n_input_kg_m2=r%exchange%external_input_kg_m2;x%external_n_output_kg_m2=r%exchange%external_output_kg_m2
+   if(present(surface_n))then
+    x%surface_n_delta_kg_m2=sr%after-before%surface_n_kg_m2
+    x%external_n_input_kg_m2=sum(in_bottom*state%p%mineral%c_bottom+in_lateral*state%p%mineral%c_lateral)+sum(sr%input)
+    x%external_n_output_kg_m2=x%external_n_output_kg_m2+sum(sr%runoff)
+   end if
    call apply_mineral_day_transfer(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,budget,surface_water=surface)
    receipt%mineral_receipt_t=budget
+   if(present(surface_n))receipt%surface=sr
    if(budget%status==MINERAL_OK)then
      state%inventory=trial
      receipt%environment_forcing_used=present(environment)

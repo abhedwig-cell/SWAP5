@@ -3,6 +3,7 @@ module mod_crop_soil_n_day
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_soil_n_reactive_owner
  use mod_b111_soil_n_mineral_owner,only:MINERAL_OK
+ use mod_soil_n_surface_exchange,only:soil_n_surface_day_t
  use mod_soil_n_pool_state,only:soil_n_pool_state_t,soil_n_transfer_t,soil_n_receipt_t,apply_soil_n_transfer,SOIL_N_OK
  use mod_crop_soil_n_configuration
  use mod_b111_reproductive_n_process,only:b111_reproductive_prepared_t
@@ -172,13 +173,14 @@ contains
   end associate
   if(crop%nitrogen%b112_residue_profile)total=total+sum(crop%nitrogen%retained_dead_n)*1d-4
  end function
- subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment,surface_water)
+ subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment,surface_water,surface_n)
   type(crop_soil_state_t),intent(inout)::state
   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm
   type(wofost_one_day_forcing_t),intent(in)::weather
   type(crop_soil_receipt_t),intent(out)::r
   type(soil_n_day_environment_t),intent(in),optional::environment
   real(real64),intent(in),optional::surface_water
+  type(soil_n_surface_day_t),intent(in),optional::surface_n
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
   type(wofost_accepted_window_aggregates_t)::a
@@ -241,7 +243,7 @@ contains
   d%lai_crit_nupt=state%p%lai_crit_nupt
   soil_trial=state%soil
   r%status=CROP_SOIL_REACTION
-  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d,environment,surface_water)
+  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d,environment,surface_water,surface_n)
   if(r%soil%status/=MINERAL_OK)return
   supply=r%soil%process%exchange%nsupply_total_kg_m2_day
   r%status=CROP_SOIL_APPLY
@@ -444,12 +446,13 @@ contains
   if(abs(r%residual)>1d-12*max(1d0,r%initial_n,r%final_n))return
   state=trial;r%status=0
  end subroutine
- subroutine advance_crop_soil_fallow_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,r,environment,surface_water)
+ subroutine advance_crop_soil_fallow_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,r,environment,surface_water,surface_n)
   type(crop_soil_state_t),intent(inout)::state
   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm
   type(crop_soil_receipt_t),intent(out)::r
   type(soil_n_day_environment_t),optional,intent(in)::environment
   real(real64),intent(in),optional::surface_water
+  type(soil_n_surface_day_t),intent(in),optional::surface_n
   type(crop_soil_state_t)::trial
   integer::code
   r=crop_soil_receipt_t()
@@ -458,7 +461,7 @@ contains
   if(.not.all(ieee_is_finite([root_water,potential_cm])))return
   if(root_water/=0d0.or.potential_cm/=0d0)return
   trial=state;r%status=CROP_SOIL_REACTION
-  call advance_reactive_day(trial%soil,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,environment=environment,surface_water=surface_water)
+  call advance_reactive_day(trial%soil,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,environment=environment,surface_water=surface_water,surface_n=surface_n)
   if(r%soil%status/=MINERAL_OK)return
   ! Real accepted chemistry executes with no crop demand, uptake or fixation.
   if(r%soil%process%exchange%nsupply_total_kg_m2_day/=0d0)return

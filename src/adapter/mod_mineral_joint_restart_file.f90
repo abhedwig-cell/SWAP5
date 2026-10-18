@@ -72,6 +72,7 @@ contains
         if(has_history)write(u,iostat=io)derivative
         if(io/=0)exit writing
         write(u,iostat=io)id,revision,time,size(v),v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
+        if(io==0.and.p%surface_n_enabled)write(u,iostat=io)s%surface_n_kg_m2
       end associate
     end block writing
     close(u)
@@ -155,7 +156,11 @@ contains
         if(io/=0)exit decoding
         io=1
         if(id/=chemical_parameter_id.or.count/=size(expected))exit decoding
-        allocate(v(count));read(u,iostat=io)v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2,checksum
+        allocate(v(count));read(u,iostat=io)v,theta,s%fom_kg_m3,s%biomass_kg_m3,s%humus_kg_m3,s%ammonium_n_kg_m2,s%nitrate_n_kg_m2
+        if(io==0.and.p%surface_n_enabled)then
+          allocate(s%surface_n_kg_m2(2));read(u,iostat=io)s%surface_n_kg_m2
+        end if
+        if(io==0)read(u,iostat=io)checksum
         if(io/=0)exit decoding
         io=1
         if(.not.all(ieee_is_finite(v)))exit decoding

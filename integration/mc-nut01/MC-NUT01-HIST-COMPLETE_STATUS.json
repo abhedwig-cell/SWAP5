@@ -54,7 +54,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Scientific reference choice for gross atmospheric N: literal original aggregate loading with ponding ambiguity, or corrected B1 surface-N inventory/transport within existing owners. General TTUTIL constructs, fractional timestamps and extended diagnostics remain open.",
+  "next_action": "Implement corrected B1 surface N within existing Soil-N inventory and accepted water provenance, direct O0/O2 then actual production/native qualification.",
   "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
@@ -249,6 +249,22 @@
         "candidate": "6f151ccf7ecd40010de0b14c896a72371cf5ce83",
         "prior_execution": "SUCCESS",
         "measured_physical_seconds": 737.2606643490399
+      },
+      "surface_n_b1": {
+        "owner": "MC-NUT01",
+        "changed_dependency": "Optional surface inventories in existing Soil-N pool, mineral/reactive/crop daily owners, accepted trace binder and existing native codecs",
+        "scientific_claim": "Corrected B1 surface retention, infiltration-only soil delivery, runoff export, evaporation retains N; same production owners and chemistry",
+        "selection": "SELECTED_OWNING_ADMISSION",
+        "expected_seconds": 1800,
+        "gates": [
+          "Direct real owner O0/O2 and incumbent mineral/reactive chemistry",
+          "First actual positive-pond coupled crop days and fresh native restart, accepted provenance and rollback",
+          "730-day corrected rotation plus all existing profiles if measured cost permits; no relaxed physical thresholds",
+          "Changed retained/thermal/TCS6/age/CI owning guards and original zero-surface endpoint preservation"
+        ],
+        "prior_execution": "NEW_INITIAL_PROBE",
+        "full_fci": "NOT_SELECTED_IMPACT",
+        "RossFast": "NOT_SELECTED_POLICY"
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1089,5 +1105,17 @@
     "canonical_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
     "reviewed_head": "e5bc5e46c01088bbadf0db67ab9c47c72964ce88",
     "post_merge_guard": "Current complete HIST/age/retained owning chain PASS; reviewed and merged trees identical; full capability false"
+  },
+  "surface_n_b1_successor": {
+    "status": "IMPLEMENTED_DIRECT_DEVELOPMENT_PASS_NOT_QUALIFIED",
+    "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
+    "branch": "work/nut-surface-b1-20261018",
+    "contract": "docs/science/MC_NUT01_SURFACE_N_B1_CONTRACT_20261018.md",
+    "reference_choice": "Corrected B1 surface N inventory; user continued after recommendation, B0 remains immutable",
+    "qualified": false,
+    "canonical_admitted": false,
+    "mastercoverage_promotion": false,
+    "direct_feedback": "O0/O2 real mineral owner: gross rain/evaporation dry retention, rewetting, infiltration/runoff, whole-N, opaque reconstruction, rejection/NaN/net-only guards PASS",
+    "next_action": "Persist complete candidate, execute current direct preservation and first actual positive-pond crop/native probe. Then select measured full rotation/retained preservation."
   }
 }

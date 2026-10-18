@@ -117,7 +117,11 @@ contains
     if(p%active_nodes/=n.or.size(p%water_content)/=n.or.size(p%pressure_head)/=n)return
     if(.not.all(ieee_is_finite(p%water_content)).or..not.all(ieee_is_finite(p%pressure_head)))return
     if(.not.all(ieee_is_finite([p%ponding_depth,p%groundwater_level])))return
-    if(abs(p%ponding_depth)>0d0)return
+    if(parameters%mineral%surface_n_enabled)then
+      if(p%ponding_depth<0d0.or.p%ponding_depth>1d6)return
+    else
+      if(abs(p%ponding_depth)>0d0)return
+    end if
     if(any(p%water_content<1d-4).or.any(p%water_content>1d0).or.any(abs(p%pressure_head)>1d12))return
     scale=max(1.0_real64,abs(theta))
     ok=abs(sum(parameters%mineral%dz_cm*p%water_content)/sum(parameters%mineral%dz_cm)-theta)<=1024d0*epsilon(1d0)*scale

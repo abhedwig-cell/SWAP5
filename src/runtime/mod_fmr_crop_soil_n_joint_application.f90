@@ -19,7 +19,8 @@ module mod_fmr_crop_soil_n_joint_application
   use mod_crop_soil_n_configuration
   use mod_wofost81_crop_owner_state,only:wofost81_crop_owner_state_t
   use mod_wofost_one_day_structural_evolution,only:wofost_one_day_forcing_t
-  use mod_fmr_b111_mineral_route,only:aggregate_mineral_trace,mineral_daily_carrier_t
+  use mod_soil_n_surface_exchange,only:soil_n_surface_day_t
+  use mod_fmr_b111_mineral_route,only:aggregate_mineral_trace,mineral_daily_carrier_t,bind_soil_n_surface_trace
   use mod_b111_soil_n_mineral_owner,only:mineral_state_t
   use mod_fmr_b111_reactive_n_joint_application,only:reactive_n_joint_states_match
   use mod_soil_n_day_environment,only:soil_n_day_environment_t
@@ -110,6 +111,7 @@ contains
     type(wofost81_crop_owner_state_t)::crop
     type(mineral_state_t)::base
     type(mineral_daily_carrier_t)::carrier
+    type(soil_n_surface_day_t),allocatable::surface_day
     result=crop_soil_n_joint_result_t()
     inactive=.false.;if(present(fallow))inactive=fallow
     if(.not.bounded_template(template))return
@@ -122,6 +124,9 @@ contains
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)
     admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
+    if(np%mineral%surface_n_enabled)then
+      if(.not.allocated(forcing%pond_input).or..not.admit_atmospheric_n)return
+    end if
     if(any(abs(np%mineral%c_top)>0d0).and..not.admit_atmospheric_n)return
     if(.not.allocated(np%mineral%dz_cm))return
     if(.not.allocated(parameters%dz))return
@@ -145,18 +150,27 @@ contains
     end if
     chemical_trial=chemical
     call soil%mineral_snapshot(base)
-    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status,clean_surface_water,atmospheric_n_surface)
+    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status,clean_surface_water,admit_atmospheric_n)
     if(status/=MINERAL_OK)then
       result%status=JOINT_CHEMICAL_REJECTED
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end if
+    if(np%mineral%surface_n_enabled)then
+      allocate(surface_day)
+      call bind_soil_n_surface_trace(obs%accepted_water_flux_substeps,forcing%pond_input,surface_day,status)
+      if(status/=MINERAL_OK)then
+        result%status=JOINT_CHEMICAL_REJECTED
+        call backend%discard_trial_candidate(candidate,result%diagnostics)
+        return
+      end if
+    end if
     if(inactive)then
       call advance_crop_soil_fallow_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water)
+        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water,surface_n=surface_day)
     else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,surface_n=surface_day)
     end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then

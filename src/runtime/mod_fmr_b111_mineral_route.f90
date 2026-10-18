@@ -2,8 +2,9 @@ module mod_fmr_b111_mineral_route
  use iso_fortran_env,only:real64,int64
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_soil_n_mineral_owner
+ use mod_soil_n_surface_exchange,only:soil_n_surface_day_t
  use mod_soil_n_pool_state,only:soil_n_pool_state_t
- use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t
+ use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t,fmr_pond_input_forcing_t
  use mod_solute_water_face_flux_reconstruction,only:reconstruct_interval_water_face_flux,WATER_FACE_FLUX_OK
  implicit none
  private
@@ -11,7 +12,7 @@ module mod_fmr_b111_mineral_route
    real(real64)::t0=0d0,t1=0d0,water_start=0d0,water_end=0d0
    real(real64)::outflow=0d0,in_bottom=0d0,in_lateral=0d0,root_water=0d0,surface_water=0d0
  end type
- public::consume_mineral_trace,aggregate_mineral_trace
+ public::consume_mineral_trace,aggregate_mineral_trace,bind_soil_n_surface_trace
 contains
  subroutine consume_mineral_trace(state,steps,receipt)
    type(mineral_state_t),intent(inout)::state
@@ -100,6 +101,50 @@ contains
    water_end=sum(p%dz_cm*water)/sum(p%dz_cm)
    ! Whole route requires exactly a day; daily integrals become rates numerically.
    carrier=mineral_daily_carrier_t(time,clock,theta,water_end,outflow,inbot,inlat,root,surface)
+   status=MINERAL_OK
+ end subroutine
+ subroutine bind_soil_n_surface_trace(steps,supply,day,status)
+   type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
+   type(fmr_pond_input_forcing_t),intent(in)::supply
+   type(soil_n_surface_day_t),intent(out)::day
+   integer,intent(out)::status
+   integer::k
+   real(real64)::closure,dt
+   day=soil_n_surface_day_t();status=MINERAL_INVALID
+   if(size(steps)<1.or.size(steps)>100000)return
+   if(.not.all(ieee_is_finite([supply%rain_rate_cm_day,supply%irrigation_rate_cm_day,supply%runon_rate_cm_day, &
+      supply%potential_pond_evaporation_cm_day])))return
+   if(min(supply%rain_rate_cm_day,supply%irrigation_rate_cm_day,supply%runon_rate_cm_day, &
+      supply%potential_pond_evaporation_cm_day)<0d0)return
+   allocate(day%steps(size(steps)))
+   do k=1,size(steps)
+     associate(t=>steps(k),p=>day%steps(k))
+       if(.not.t%pond_storage_available.or..not.t%converged_surface_available.or..not.t%converged_gross_sources_available)return
+       if(.not.all(ieee_is_finite([t%t0,t%t1,t%top_flux,t%pond_start_cm,t%pond_end_cm, &
+         t%converged_rain_rate_cm_day,t%converged_irrigation_rate_cm_day,t%converged_runon_rate_cm_day, &
+         t%converged_snowmelt_rate_cm_day,t%converged_pond_evaporation_cm_day,t%converged_runoff_depth_cm])))return
+       if(t%converged_rain_rate_cm_day/=supply%rain_rate_cm_day.or. &
+          t%converged_irrigation_rate_cm_day/=supply%irrigation_rate_cm_day.or. &
+          t%converged_runon_rate_cm_day/=supply%runon_rate_cm_day)return
+       if(t%converged_snowmelt_rate_cm_day/=0d0.or.t%top_flux>0d0)return
+       if(t%converged_pond_evaporation_cm_day<0d0.or. &
+          t%converged_pond_evaporation_cm_day>supply%potential_pond_evaporation_cm_day)return
+       if(t%converged_runoff_depth_cm<0d0)return
+       dt=t%t1-t%t0
+       if(dt<=0d0.or.dt>1d0)return
+       closure=t%pond_end_cm-t%pond_start_cm-(t%converged_rain_rate_cm_day+ &
+         t%converged_irrigation_rate_cm_day+t%converged_runon_rate_cm_day- &
+         t%converged_pond_evaporation_cm_day+t%top_flux)*dt+t%converged_runoff_depth_cm
+       if(abs(closure)>1d-10)return
+       if(k>1)then
+         if(t%t0/=steps(k-1)%t1.or.t%pond_start_cm/=steps(k-1)%pond_end_cm)return
+       end if
+       p%t0=t%t0;p%t1=t%t1;p%qtop=t%top_flux;p%depth_begin=t%pond_start_cm;p%depth_end=t%pond_end_cm
+       p%rain_rate=t%converged_rain_rate_cm_day;p%irrigation_rate=t%converged_irrigation_rate_cm_day
+       p%runon_rate=t%converged_runon_rate_cm_day;p%pond_evaporation_rate=t%converged_pond_evaporation_cm_day
+       p%runoff_depth=t%converged_runoff_depth_cm
+     end associate
+   end do
    status=MINERAL_OK
  end subroutine
 end module
