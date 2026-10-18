@@ -125,6 +125,10 @@
     "tests/modularity/verify_joint_preservation.py": {
       "status": "M",
       "sha256": "453a0a36720b6db35a575da7c3849055419d0af6637a5b6f9d3882617e75bba9"
+    },
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
+      "status": "M",
+      "sha256": "d9acb4ed59612bc6ce4def70187d83ae255d4798995e791cea0a12fa20e4778d"
     }
   },
   "relevant_paths": [
@@ -156,7 +160,8 @@
     "tests/nut-sol/test_surface_age_soil_handoff.f90",
     "tests/nut-sol/test_surface_age_trace_bridge.f90",
     "tests/nut-sol/verify_surface_age_successor.py",
-    "tests/modularity/verify_joint_preservation.py"
+    "tests/modularity/verify_joint_preservation.py",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh"
   ],
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
@@ -179,7 +184,7 @@
         "existing_evidence": "Final targeted O0/O2 real Reference and isolated age evidence; previous admitted age and HIST immutable capsules",
         "expected_seconds": 1800,
         "prior_execution": "FAILED",
-        "diagnosis": "First full attempt stopped before numerical execution: current HIST successor metadata lacks the old source_tree field and was misrouted to a pre-successor highest capsule. Added an explicit HIST owner dispatch that validates current HIST plus exact age evidence; existing numerical groups remain intact. This is NOT a fabricated historical source_tree or a numerical PASS."
+        "diagnosis": "Full preservation03: FCI93 old dependency pin differs in four preexisting canonical providers; no new hydraulic code changes. Explicit exact-source current dependency table selected and all original FCI93 numerical/oracle assertions retained for fresh replay."
       }
     }
   },
@@ -196,7 +201,8 @@
     "01: two optional declarations generated in CRC helpers, compiler rejected, corrected",
     "02: development driver refined while O2 compiled; final source-immutability assertion rejected run; not qualification",
     "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency.",
-    "Full preservation 02: pre-science KeyError source_tree in retired joint owner dispatcher. Correct current HIST owner routing added; no tests removed."
+    "Full preservation 02: pre-science KeyError source_tree in retired joint owner dispatcher. Correct current HIST owner routing added; no tests removed.",
+    "Full preservation03: FCI93 old dependency pin differs in four preexisting canonical providers; no new hydraulic code changes. Explicit exact-source current dependency table selected and all original FCI93 numerical/oracle assertions retained for fresh replay."
   ],
   "evidence": {
     "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_20261018.tar.xz.b64",
@@ -230,5 +236,23 @@
     "run_id": 39153649970,
     "head": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
     "all_three_jobs": "SUCCESS"
+  },
+  "fci93_current_dependency_requalification": {
+    "src/solver/mod_b110_default_mvg_provider.f90": {
+      "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+      "canonical_blob": "226dec2740dd3cf2eb677928f54f433086354c3f"
+    },
+    "src/solver/mod_reference_richards_temporal_indicator.f90": {
+      "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+      "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+    },
+    "src/legacy/b1_10_port/headcalc.f90": {
+      "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+      "canonical_blob": "16e568c85d0f9e238d92b84659c4c0cb006f0430"
+    },
+    "src/adapter/mod_reference_richards_legacy_binding.f90": {
+      "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+      "canonical_blob": "65ece4c8a1515fda94d1f9bae10b5a6aae729fd2"
+    }
   }
 }

@@ -115,3 +115,6 @@ The bounded successor guard checks the entire src/tests/tools/reference/.github 
 
 
 Full-preservation pre-science dispatcher repair: canonical HIST metadata intentionally returns `historical_native_successor` and `current_source_tree`, not a source identity for the old global highest capsule. `verify_joint_preservation` previously fell through to that capsule and raised `KeyError: source_tree`. The new exact HIST branch invokes the actual current HIST qualification (including surface-age evidence) as the owning prerequisite. It does not synthesize an old source_tree, expand RossFast, inherit an unexecuted numerical PASS, or remove the subsequent moving numerical groups. The binding highest-low-air selection decision remains in force.
+
+
+FCI93 qualification reconciliation: its old fixed-K byte pins predate four unchanged canonical providers (default MvG, temporal indicator, HeadCalc and legacy Reference binding). This unit changes none of them. A finite table records both original immutable and reconciled canonical blob IDs. Only that exact successor set may enter the unchanged original FCI93 immutable-oracle numerical replays. The full source-age delta validator checks the complete source boundary; arbitrary dependency drift still rejects. This is current requalification, not an inherited PASS and not a hydraulic implementation change.
