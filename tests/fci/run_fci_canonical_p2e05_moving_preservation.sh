@@ -530,6 +530,9 @@ age.verify_qualification()
 print(age.record()['baseline'])
 PY_AGE_BASE
 )" || fail 'unqualified surface-age canonical dependency boundary'
+  # The backend is unchanged from this registered canonical authority.
+  # Older thermal owner pins predate independent admitted optional extensions.
+  NUT_THERMAL_BACKEND="$(git rev-parse "$dependency_authority:$BACKEND")"
 fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
