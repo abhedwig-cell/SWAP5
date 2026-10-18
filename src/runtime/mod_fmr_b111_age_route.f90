@@ -186,6 +186,7 @@ contains
     trial%amount=amount;trial%water=t%water_end;trial%time=t%t1
     receipt%production=receipt%production+r%production_amount_cm_day
     receipt%external_in=receipt%external_in+r%drain_input_cm_day+r%bottom_input_cm_day
+    if(present(surface_owner))receipt%external_in=receipt%external_in+r%pond_to_soil_cm_day
     receipt%external_out=receipt%external_out+r%root_export_cm_day+r%drain_export_cm_day+r%bottom_export_cm_day
     receipt%completed_substeps=k
    end associate
