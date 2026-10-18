@@ -10,10 +10,10 @@ PAT=re.compile(r"^\s*F_WOF_EXT01_1999_SOURCE_SEQUENCE\s+(\d{8})\s+"+r"\s+".join(
 
 def extract(log):
     rows=PAT.findall(log)
-    if len(rows)!=14:
-        raise ValueError("seven weather records in each of two independent physical repetitions required")
+    if len(rows)<14 or len(rows)%7!=0:
+        raise ValueError("complete independently repeated seven-day physical sequences required")
     expected=[(dt.date(1999,1,20)+dt.timedelta(days=d)).strftime("%Y%m%d") for d in range(7)]
-    for j in range(2):
+    for j in range(len(rows)//7):
         for d in range(7):
             record=rows[7*j+d]
             if record[0]!=expected[d] or record!=rows[d]:
@@ -29,7 +29,7 @@ def extract(log):
                            etref_native=vals[3],radiation_j_m2_day=vals[4]))
     return dict(schema="F-WOF-EXT01/SWAP-1999-WEATHER-SEQUENCE/1",
                 source="real accepted-hydrology production Fortran test",
-                independent_repetitions=2,records=result,
+                independent_repetitions=len(rows)//7,records=result,
                 unit_conversion_to_pcse_qualified=False,
                 crop_initial_state_matched=False,
                 physical_crop_coupling_admitted=False)
