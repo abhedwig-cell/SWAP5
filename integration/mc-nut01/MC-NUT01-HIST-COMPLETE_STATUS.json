@@ -35,10 +35,9 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Run exact-head focused O0/O2 and actual source-project qualification; admit only native SNM line diagnostic if successful. Historical TTUTIL completeness and multi-year rotations remain open.",
+  "next_action": "Admit qualified PR1311 diagnostics; implement source-verified missing native SNM semantics and multi-year physical crop succession in existing owners.",
   "recovery_point": "work/nut-snm-source-diagnostics-20261018@3f302bf61d06bed60ad942caa5f948dcb7b3cb45",
   "blockers": [
-    "Extended source parser negatives not yet executed",
     "Full TTUTIL grammar and multiyear crop rotation still not qualified"
   ],
   "mastercoverage_promotion": false,
@@ -167,5 +166,14 @@
         39129172375
       ]
     }
+  },
+  "pr_1311": {
+    "candidate": "0bae1d65949a057cc12f5d5e452cd2bb6e2d79b8",
+    "runs": [
+      39133611728,
+      39133611798
+    ],
+    "conclusion": "success",
+    "scope": "Native SNM physical nutrient error line; 124-day zero-bottom-flux composition and focused O0/O2 only; full work unit remains unqualified"
   }
 }
