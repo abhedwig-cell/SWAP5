@@ -1,8 +1,13 @@
-"""Real dry-surface Richards/crop native restarts and CRC-valid corruptions."""
+"""Real enabled Richards/crop native restarts and CRC-valid corruptions.
+
+Wet qualification is default; the separately recorded dry gross/E trial remains
+an explicit research selection and must not be reported as qualified.
+"""
 from pathlib import Path
 import hashlib,json,os,struct,subprocess,time,zlib
 ROOT=Path(__file__).resolve().parents[2];BASE=Path(os.environ['N_SURFACE_PROVIDERS']).resolve()
 OUT=Path(os.environ['N_SURFACE_NATIVE_DIR']).resolve();OUT.mkdir(exist_ok=False)
+KIND=os.environ.get('N_SURFACE_NATIVE_KIND','wet');assert KIND in ['wet','dry']
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();self_sha=sha(Path(__file__))
 prior=json.loads((BASE/'result.json').read_text());assert prior['status']=='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED'
 for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
@@ -10,7 +15,8 @@ assert sha(BASE/'generated_driver.f90')==prior['generated_driver_sha256']
 origin=json.loads((BASE/'events.json').read_text());assert all(e['returncode']==0 for e in origin)
 text=(BASE/'generated_driver.f90').read_text()
 changes={'initial_state%ponding_depth=.2d0':'initial_state%ponding_depth=0d0','rain_rate_cm_day=.05d0*(1d0+.4d0*season)':'rain_rate_cm_day=.4d0','irrigation_rate_cm_day=.005d0':'irrigation_rate_cm_day=0d0','runon_rate_cm_day=.01d0':'runon_rate_cm_day=0d0','potential_pond_evaporation_cm_day=.01d0*(1d0+.4d0*season)':'potential_pond_evaporation_cm_day=.4d0'}
-for a,b in changes.items():assert text.count(a)==1,a;text=text.replace(a,b)
+if KIND=='dry':
+ for a,b in changes.items():assert text.count(a)==1,a;text=text.replace(a,b)
 a=text.index(' subroutine rotation_continuation(');b=text.index(' subroutine report_water_state(',a);body=text[a:b]
 needle="   if(trim(mode)=='resume')then\n    read(arg,*)first";assert body.count(needle)==1
 body=body.replace(needle,"""   if(trim(mode)=='check'.or.trim(mode)=='reject')then
@@ -63,5 +69,5 @@ assert runs['O0']==runs['O2']
 for p,h in artifacts.items():assert sha(Path(p))==h,p
 for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
 assert sha(Path(__file__))==self_sha
-r=dict(status='SURFACE_N_B1_DRY_PHYSICAL_NATIVE_AND_CORRUPTIONS_PASS_NOT_ADMITTED',execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):self_sha},provider_result_sha256=sha(BASE/'result.json'),generated_driver_sha256=sha(driver),artifacts=artifacts,runs=runs,cost_seconds={k:sum(e['seconds']for e in events if e['category']==k)for k in ['driver_compile','link','native','fresh_native','positive_decode','negative_decode']})
+r=dict(status='SURFACE_N_B1_'+KIND.upper()+'_PHYSICAL_NATIVE_AND_CORRUPTIONS_PASS_NOT_ADMITTED',execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256={**prior['input_sha256'],str(Path(__file__).relative_to(ROOT)):self_sha},provider_result_sha256=sha(BASE/'result.json'),generated_driver_sha256=sha(driver),artifacts=artifacts,runs=runs,cost_seconds={k:sum(e['seconds']for e in events if e['category']==k)for k in ['driver_compile','link','native','fresh_native','positive_decode','negative_decode']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(r['status'])
