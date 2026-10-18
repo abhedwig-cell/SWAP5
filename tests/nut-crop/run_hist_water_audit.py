@@ -5,6 +5,8 @@ and byte-bound to the fresh qualified closure; every native command runs anew.
 """
 from pathlib import Path
 import hashlib,json,os,shutil,subprocess,time
+PROFILE=os.environ.get('N_HIST_AUDIT_PROFILE','rotation-profile')
+assert PROFILE in ['rotation-profile','atmospheric-profile']
 ROOT=Path(__file__).resolve().parents[2];BASE=Path(os.environ['N_HIST_PROVIDERS']).resolve();OUT=Path(os.environ['N_HIST_WATER_AUDIT']).resolve();OUT.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 prior=json.loads((BASE/'result.json').read_text());original=json.loads((BASE/'events.json').read_text())
@@ -31,7 +33,7 @@ replace('   do d=first,729','''   water_flux=0d0;n_flow=0d0;water_initial=0d0;wa
 replace("    max_w=max(max_w,r%joint%joint%diagnostics%max_abs_step_mass_residual)",'''    call before_state%snapshot(ss,cc);call ss%mineral_snapshot(audit_mineral)
     audit_observation=backend%observation()
     call aggregate_mineral_trace(audit_mineral,audit_observation%accepted_water_flux_substeps, &
-      audit_carrier,code,clean_surface_water=.true.)
+      audit_carrier,code,clean_surface_water=.not.atmospheric,atmospheric_n_surface=atmospheric)
     call require(code==0,'audit accepted carrier')
     if(d==first)water_initial=audit_carrier%water_start*sp%mineral%inventory%depth_m*100d0
     water_final=audit_carrier%water_end*sp%mineral%inventory%depth_m*100d0
@@ -85,8 +87,8 @@ for opt in ['O0','O2']:
  objects=[Path(e['command'][-1])for e in ce[:-1]]
  for p in objects:artifacts[str(p)]=sha(p)
  obj=b/'audit.o';exe=b/'audit';run(['gfortran',*flags,'-c',generated,'-o',obj],b,'driver_compile');run(['gfortran',*flags,*objects,obj,'-o',exe],b,'link')
- stdout=run([exe,'write',b/'restart',b/'endpoint','rotation-profile'],b,'native')
- assert(b/'endpoint').read_bytes()==(base/'rotation-profile.endpoint').read_bytes(),'audit altered physical endpoint'
+ stdout=run([exe,'write',b/'restart',b/'endpoint',PROFILE],b,'native')
+ assert(b/'endpoint').read_bytes()==(base/(PROFILE+'.endpoint')).read_bytes(),'audit altered physical endpoint'
  rows={}
  for line in stdout.splitlines():
   if line.strip().startswith('AUDIT_'):
@@ -95,5 +97,5 @@ for opt in ['O0','O2']:
  results[opt]=dict(endpoint=sha(b/'endpoint'),stdout=stdout,metrics=rows)
 assert results['O0']==results['O2']
 for p,h in artifacts.items():assert sha(Path(p))==h,p
-r=dict(status='HIST_OBSERVATIONAL_WATER_N_AUDIT_PASS',provider_result_sha256=sha(BASE/'result.json'),input_sha256={str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
+r=dict(status='HIST_OBSERVATIONAL_WATER_N_AUDIT_PASS',profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r['results']['O0']['metrics'],indent=2))

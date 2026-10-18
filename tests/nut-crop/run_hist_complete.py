@@ -11,6 +11,8 @@ OUT=Path(os.environ['N_HIST_RESULT_DIR']).resolve();OUT.mkdir(exist_ok=False)
 LITERAL=Path(os.environ['REPRODUCTIVE_LITERAL_FILE']).resolve()
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 events=[];inputs={};results={}
+for helper in ['tests/nut-crop/prepare_oracle.py','tests/nut-reactive/reactive_oracle.inc','tests/nut-crop/crop_oracle.inc','tests/nut-crop/senescence_oracle.inc']:
+ if (ROOT/helper).exists():inputs[helper]=sha(ROOT/helper)
 def run(args,b,category):
  args=list(map(str,args));t=time.perf_counter();p=subprocess.run(args,cwd=b,capture_output=True);i=len(events)
  for stream in ['stdout','stderr']:(OUT/f'{i:04d}.{stream}').write_bytes(getattr(p,stream))
