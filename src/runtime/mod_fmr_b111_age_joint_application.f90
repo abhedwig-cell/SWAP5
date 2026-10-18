@@ -16,6 +16,9 @@ module mod_fmr_b111_age_joint_application
        age_receipt_t,consume_accepted_age_trace,export_age_restart, &
        restore_age_restart,AGE_OK
   use mod_solute_compartment_state,only:solute_compartment_state_t
+  use mod_b111_surface_age_owner,only:surface_age_owner_t,surface_age_restart_t, &
+       snapshot_surface_age_owner,export_surface_age_restart,restore_surface_age_restart,AGE_OWNER_OK
+  use mod_b111_surface_age_trace_bridge,only:surface_age_source_ages_t
   implicit none
   private
   integer,parameter,public::JOINT_OK=0,JOINT_INVALID=1,JOINT_WATER_REJECTED=2, &
@@ -31,18 +34,20 @@ module mod_fmr_b111_age_joint_application
     integer::schema=1
     type(fmr_committed_restart_bundle_t)::water
     type(age_restart_t)::chemical
+    type(surface_age_restart_t)::surface
   end type
   public::run_age_joint_interval,age_joint_states_match
   public::export_age_joint_restart,restore_age_joint_restart
 contains
-  logical function age_joint_states_match(water,chemical) result(ok)
+  logical function age_joint_states_match(water,chemical,surface_owner) result(ok)
     type(kernel_committed_state_t),intent(in)::water
     type(age_state_t),intent(in)::chemical
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     class(transaction_state_t),allocatable::physical
     type(solute_compartment_state_t)::s
     real(real64),allocatable::theta(:)
-    real(real64)::t,wt
-    integer(int64)::revision
+    real(real64)::t,wt,pond_time,pond_depth,pond_stock
+    integer(int64)::revision,pond_revision
     logical::available
     ok=.false.
     if(.not.water%ready())return
@@ -51,19 +56,32 @@ contains
     if(.not.available)return
     call chemical%snapshot(t,theta,s,revision)
     if(abs(t-wt)>0.0_real64)return
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,pond_time,pond_depth,pond_stock,pond_revision,available)
+      if(.not.available.or.abs(pond_time-wt)>0.0_real64)return
+    end if
     call water%snapshot(physical,available)
     if(.not.available)return
     select type(p=>physical)
     type is(fmr_b110_physical_state_t)
-      ok=bounded_physical(p,theta)
+      if(present(surface_owner))then
+        ok=bounded_physical(p,theta,pond_depth)
+      else
+        ok=bounded_physical(p,theta)
+      end if
     type is(fmr_b110_temporal_indicator_state_t)
-      ok=bounded_physical(p,theta)
+      if(present(surface_owner))then
+        ok=bounded_physical(p,theta,pond_depth)
+      else
+        ok=bounded_physical(p,theta)
+      end if
     end select
   end function
 
-  logical function bounded_physical(p,theta) result(ok)
+  logical function bounded_physical(p,theta,expected_pond) result(ok)
     class(fmr_b110_physical_state_t),intent(in)::p
     real(real64),intent(in)::theta(:)
+    real(real64),intent(in),optional::expected_pond
     real(real64)::scale
     ok=.false.
     if(allocated(p%salt).or.allocated(p%macropore).or.allocated(p%snow).or. &
@@ -71,7 +89,14 @@ contains
     if(.not.allocated(p%water_content).or..not.allocated(p%pressure_head))return
     if(p%active_nodes/=size(theta).or.size(p%water_content)/=size(theta).or.size(p%pressure_head)/=size(theta))return
     if(.not.all(ieee_is_finite(p%water_content)).or..not.all(ieee_is_finite(p%pressure_head)))return
-    if(.not.all(ieee_is_finite([p%ponding_depth,p%groundwater_level])).or.abs(p%ponding_depth)>0.0_real64)return
+    if(.not.all(ieee_is_finite([p%ponding_depth,p%groundwater_level])))return
+    if(present(expected_pond))then
+      if(.not.ieee_is_finite(expected_pond).or.expected_pond<0.0_real64)return
+      if(abs(p%ponding_depth-expected_pond)> &
+           1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,expected_pond))return
+    else
+      if(abs(p%ponding_depth)>0.0_real64)return
+    end if
     scale=max(1.0_real64,maxval(abs(theta)))
     ok=all(abs(p%water_content-theta)<=1024.0_real64*epsilon(1.0_real64)*scale)
   end function
@@ -84,7 +109,8 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_age_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,t0,t1,result)
+  subroutine run_age_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,t0,t1,result, &
+       surface_owner,source_ages)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -95,16 +121,32 @@ contains
     type(age_state_t),intent(inout)::chemical
     real(real64),intent(in)::t0,t1
     type(age_joint_result_t),intent(out)::result
+    type(surface_age_owner_t),intent(inout),optional::surface_owner
+    type(surface_age_source_ages_t),intent(in),optional::source_ages
+    type(surface_age_owner_t)::surface_trial
     type(kernel_checkpoint_t)::checkpoint
+    type(kernel_committed_state_t)::water_trial
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
     type(age_state_t)::chemical_trial
     logical::ok,did_commit
     integer::status
-    real(real64)::clock
+    integer(int64)::surface_revision
+    real(real64)::clock,surface_time,surface_depth,surface_stock
+    logical::surface_available
     result=age_joint_result_t()
     if(.not.bounded_template(template))return
-    if(.not.age_joint_states_match(water,chemical))return
+    if(present(surface_owner).neqv.present(source_ages))return
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water,chemical,surface_owner))return
+    else
+      if(.not.age_joint_states_match(water,chemical))return
+    end if
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,surface_time,surface_depth,surface_stock, &
+           surface_revision,surface_available)
+      if(.not.surface_available.or.abs(surface_time-t0)>0.0_real64)return
+    end if
     call water%current_time(clock,ok)
     if(.not.ok.or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1))return
     if(abs(t0-clock)>0.0_real64.or.t1<=t0)return
@@ -121,20 +163,38 @@ contains
       return
     end if
     chemical_trial=chemical
-    call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps,result%chemical)
+    if(present(surface_owner))then
+      surface_trial=surface_owner
+      call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps, &
+           result%chemical,surface_trial,source_ages)
+    else
+      call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps,result%chemical)
+    end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=AGE_OK)then
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end if
     result%status=JOINT_COMMIT_REJECTED
-    call backend%commit_trial_candidate(water,candidate,result%diagnostics,did_commit,status)
-    if(.not.did_commit)return
+    ! Commit privately first. No rejected commit can publish a partial triplet.
+    water_trial=water
+    call backend%commit_trial_candidate(water_trial,candidate,result%diagnostics,did_commit,status)
+    if(.not.did_commit)then
+      call backend%discard_trial_candidate(candidate,result%diagnostics)
+      return
+    end if
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water_trial,chemical_trial,surface_trial))return
+    else
+      if(.not.age_joint_states_match(water_trial,chemical_trial))return
+    end if
+    water=water_trial
     chemical=chemical_trial
+    if(present(surface_owner))surface_owner=surface_trial
     result%status=JOINT_OK
   end subroutine
 
-  subroutine export_age_joint_restart(column,template,parameter_set_id,water,chemical,payload,status)
+  subroutine export_age_joint_restart(column,template,parameter_set_id,water,chemical,payload,status,surface_owner)
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
     integer(int64),intent(in)::parameter_set_id
@@ -142,12 +202,20 @@ contains
     type(age_state_t),intent(in)::chemical
     type(age_joint_restart_t),intent(out)::payload
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     type(age_joint_restart_t)::trial
     logical::ok
     integer::code
     payload=age_joint_restart_t();status=JOINT_INVALID
     if(column%state_handle/=1.or..not.bounded_template(template))return
-    if(.not.age_joint_states_match(water,chemical))return
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water,chemical,surface_owner))return
+      trial%schema=2
+      call export_surface_age_restart(surface_owner,trial%surface,code)
+      if(code/=AGE_OWNER_OK)return
+    else
+      if(.not.age_joint_states_match(water,chemical))return
+    end if
     call fmr_export_committed_restart([column],[template],[water],parameter_set_id,trial%water,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK)return
     call export_age_restart(chemical,trial%chemical,code)
@@ -156,7 +224,7 @@ contains
   end subroutine
 
   subroutine restore_age_joint_restart(payload,column,template,water_parameter_id,chemical_parameter_id, &
-       water,chemical,status)
+       water,chemical,status,surface_owner,surface_identity)
     type(age_joint_restart_t),intent(in)::payload
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -164,20 +232,43 @@ contains
     type(kernel_committed_state_t),intent(inout)::water
     type(age_state_t),intent(inout)::chemical
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(inout),optional::surface_owner
+    integer(int64),intent(in),optional::surface_identity
+    type(surface_age_owner_t)::surface_trial
     type(kernel_committed_state_t)::water_trial(1)
     type(age_state_t)::chemical_trial
-    logical::ok
+    logical::ok,surface_available
+    integer(int64)::surface_revision
+    real(real64)::surface_time,surface_depth,surface_stock
     integer::code
     status=JOINT_INVALID
-    if(payload%schema/=1)return
+    if(present(surface_owner).neqv.present(surface_identity))return
+    if(present(surface_owner))then
+      if(payload%schema/=2)return
+      call restore_surface_age_restart(payload%surface,surface_identity,surface_trial,code)
+      if(code/=AGE_OWNER_OK)return
+    else
+      if(payload%schema/=1)return
+    end if
     if(water%ready())return
     if(chemical%ready())return
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,surface_time,surface_depth,surface_stock, &
+           surface_revision,surface_available)
+      if(surface_available)return
+    end if
     if(column%state_handle/=1.or..not.bounded_template(template))return
     call fmr_restore_committed_restart(payload%water,water_parameter_id,[column],[template],water_trial,ok,code)
     if(.not.ok.or.code/=FMR_RESTART_OK)return
     call restore_age_restart(payload%chemical,chemical_parameter_id,chemical_trial,code)
     if(code/=AGE_OK)return
-    if(.not.age_joint_states_match(water_trial(1),chemical_trial))return
-    water=water_trial(1);chemical=chemical_trial;status=JOINT_OK
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water_trial(1),chemical_trial,surface_trial))return
+    else
+      if(.not.age_joint_states_match(water_trial(1),chemical_trial))return
+    end if
+    water=water_trial(1);chemical=chemical_trial
+    if(present(surface_owner))surface_owner=surface_trial
+    status=JOINT_OK
   end subroutine
 end module

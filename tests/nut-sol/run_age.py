@@ -97,6 +97,8 @@ for opt in ('O0','O2'):
             if q!=p:visit(q)
         active.remove(p);seen.add(p);ordered.append(p)
     driver=ROOT/'tests/nut-sol/test_age_joint.f90';visit(driver);ordered.remove(driver)
+    surface_driver=ROOT/'tests/nut-sol/test_surface_age_joint.f90'
+    visit(surface_driver);ordered.remove(surface_driver)
     ordered.append(ROOT/'src/legacy/b1_10_port/headcalc.f90')
     objects=[]
     for i,p in enumerate(ordered+[driver]):
@@ -119,12 +121,32 @@ for opt in ('O0','O2'):
     for label,data in negatives.items():
         path=build/(label+'.bin');path.write_bytes(data)
         out=run([exe,'reject',path,fresh],build,'physical_native');assert b'AGE_INVALID_DISK=PASS' in out
+    surface_obj=build/'surface.o';bind(surface_driver)
+    run(FC+flags+['-c',surface_driver,'-o',surface_obj],build,'surface_compile')
+    surface_exe=build/'surface'
+    run(FC+flags+objects[:-1]+[surface_obj,'-o',surface_exe],build,'surface_link')
+    snapshot=build/'triplet.bin';surface_expected=build/'surface_expected.bin';surface_fresh=build/'surface_fresh.bin'
+    surface_stdout=run([surface_exe,'write',snapshot,surface_expected],build,'surface_native')
+    run([surface_exe,'resume',snapshot,surface_fresh],build,'surface_native')
+    assert surface_expected.read_bytes()==surface_fresh.read_bytes()
+    original=snapshot.read_bytes()
+    # Outer envelope CRC binds the pair. Also exercise valid outer CRC with invalid inner payload.
+    negatives={'truncated':original[:-1], 'overlong':original+b'x'}
+    data=bytearray(original);data[32]^=1;negatives['outer_crc']=bytes(data)
+    data=bytearray(original[:-4]);data[-10]^=1
+    negatives['inner_crc']=bytes(data)+struct.pack('I',zlib.crc32(data)&0xffffffff)
+    for label,data in negatives.items():
+        path=build/('snapshot_'+label+'.bin');path.write_bytes(data)
+        run([surface_exe,'reject',path,surface_fresh],build,'surface_native')
+    results['runs'][opt]['surface']=dict(stdout=surface_stdout.decode(),endpoint_sha256=digest(surface_expected),
+        fresh_sha256=digest(surface_fresh),snapshot_negatives=list(negatives))
     results['runs'][opt].update(physical_stdout=stdout.decode(),physical_provider_count=len(ordered),
         endpoint_sha256=digest(expected),fresh_sha256=digest(fresh),restart_negatives=list(negatives))
 assert results['runs']['O0']['process_stdout']==results['runs']['O2']['process_stdout']
 if '--process-only' not in sys.argv:
     assert (OUT/'O0/expected.bin').read_bytes()==(OUT/'O2/expected.bin').read_bytes()
     assert results['runs']['O0']['physical_stdout']==results['runs']['O2']['physical_stdout']
+    assert (OUT/'O0/surface_expected.bin').read_bytes()==(OUT/'O2/surface_expected.bin').read_bytes()
 results.update(input_sha256=inputs,cost_seconds={k:sum(e['seconds'] for e in events if e['category']==k) for k in sorted({e['category'] for e in events})},
     status='PROCESS_PASS' if '--process-only' in sys.argv else 'PHYSICAL_PASS_NOT_ADMITTED')
 assert all(digest(ROOT/p)==h for p,h in inputs.items())

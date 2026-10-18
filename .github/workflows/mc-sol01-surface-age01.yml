@@ -1,0 +1,60 @@
+name: MC-SOL01 SURFACE-AGE01 isolated native process
+on:
+  pull_request:
+    paths:
+      - 'src/process/mod_b111_surface_age_budget.f90'
+      - 'tests/nut-sol/test_surface_age_budget.f90'
+      - 'src/process/mod_b111_surface_age_owner.f90'
+      - 'src/adapter/mod_b111_surface_age_disk.f90'
+      - 'src/adapter/mod_b111_age_triplet_disk.f90'
+      - 'src/adapter/mod_b111_age_snapshot_disk.f90'
+      - 'src/adapter/mod_age_joint_restart_file.f90'
+      - 'tests/nut-sol/test_surface_age_joint.f90'
+      - 'tests/nut-sol/run_age.py'
+      - 'tests/nut-sol/test_surface_age_disk.f90'
+      - 'tests/nut-sol/test_surface_age_disk_process.f90'
+      - 'tests/nut-sol/test_age_joint.f90'
+      - 'tests/nut-sol/test_surface_age_owner.f90'
+      - 'src/process/mod_b111_surface_age_soil_handoff.f90'
+      - 'src/process/mod_b111_age_tracer_substep.f90'
+      - 'tests/nut-sol/test_surface_age_native_top.f90'
+      - 'src/runtime/mod_fmr_b111_age_route.f90'
+      - 'src/runtime/mod_fmr_b111_age_joint_application.f90'
+      - 'tests/nut-sol/test_surface_age_soil_handoff.f90'
+      - 'tests/nut-sol/run_surface_age_budget.sh'
+      - 'src/runtime/mod_b111_surface_age_trace_bridge.f90'
+      - 'tests/nut-sol/test_surface_age_trace_bridge.f90'
+      - 'tests/nut-sol/test_surface_age_route_trial.f90'
+      - 'tests/nut-sol/run_surface_age_trace_bridge.sh'
+      - '.github/workflows/mc-sol01-surface-age01.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and execute isolated O0/O2 age budget
+        run: bash tests/nut-sol/run_surface_age_budget.sh
+
+  reference-bridge-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile real Reference closure and run age bridge
+        run: bash tests/nut-sol/run_surface_age_trace_bridge.sh
+
+  physical-pond-age-triplet:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compile and execute real Richards and age owners at O0 and O2
+        run: |
+          AGE_RESULT_DIR="$RUNNER_TEMP/mc-sol01-triplet-${GITHUB_RUN_ID}" \
+            python3 tests/nut-sol/run_age.py

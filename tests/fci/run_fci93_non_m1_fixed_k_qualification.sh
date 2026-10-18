@@ -8,7 +8,21 @@ git merge-base --is-ancestor "$BASE" HEAD || fail "canonical base absent"
 test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = ed678be6e27621ac076a883c947abba8032ac7e6 || fail "postimage drift src/adapter/mod_b110_production_soil_water_task2.f90"
 test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" = abe2d699017300e890eeb69a56448bb071660d2d || fail "postimage drift src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90"
 test "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" = 5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae || fail "postimage drift src/solver/mod_b110_dynamic_top_boundary_provider.f90"
-test "$(git rev-parse HEAD:src/legacy/b1_10_port/headcalc.f90)" = 7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac || fail "postimage drift src/legacy/b1_10_port/headcalc.f90"
+# HeadCalc and three providers have separately admitted canonical successors.
+# Their exact table is owned by the selected age work unit; no arbitrary drift.
+python3 - <<'PY_CURRENT'
+import sys,json,subprocess
+from pathlib import Path
+actual=subprocess.check_output(['git','rev-parse','HEAD:src/legacy/b1_10_port/headcalc.f90'],text=True).strip()
+old='7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac'
+if actual!=old:
+    sys.path.insert(0,'tests/nut-sol')
+    import verify_surface_age_successor as age
+    age.verify_source()
+    row=age.record()['fci93_current_dependency_requalification']['src/legacy/b1_10_port/headcalc.f90']
+    assert row['historical_blob']==old and row['canonical_blob']==actual,'unregistered HeadCalc successor'
+print('FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS')
+PY_CURRENT
 test "$(git rev-parse HEAD:src/legacy/b1_10_port/soilwater.f90)" = 2ab6ea917525cd6f2560860bd55aec1da16be014 || fail "postimage drift src/legacy/b1_10_port/soilwater.f90"
 test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = 33a0880325be36116dcbb781006b6283da5dac69 || fail "postimage drift src/transaction/mod_transaction_reference.f90"
 test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 7b16c3fcf58179f1491104a1dce3279010b4178a || fail "postimage drift src/solver/mod_soil_water_solver_contract.f90"
@@ -18,9 +32,19 @@ python3 - <<'PY_CLOSURE'
 import json,subprocess
 from pathlib import Path
 p=Path('integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json')
+successors={}
+record=Path('integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json')
+if record.exists():
+    import sys
+    sys.path.insert(0,'tests/nut-sol')
+    import verify_surface_age_successor as age
+    age.verify_source()
+    successors=age.record()['fci93_current_dependency_requalification']
 for dep in json.loads(p.read_text())['dependencies']:
     actual=subprocess.check_output(['git','rev-parse','HEAD:'+dep['path']],text=True).strip()
-    assert actual==dep['blob'],dep['path']
+    if actual!=dep['blob']:
+        row=successors.get(dep['path'],{})
+        assert row.get('historical_blob')==dep['blob'] and row.get('canonical_blob')==actual,dep['path']
 print('FCI93_EXACT_TRANSITIVE_COMPILE_DEPENDENCIES=PASS')
 PY_CLOSURE
 echo "FCI93_FIXED_K_EXACT_BOUNDED_POSTIMAGE=PASS"
