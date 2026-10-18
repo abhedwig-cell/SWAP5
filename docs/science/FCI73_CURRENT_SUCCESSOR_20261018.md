@@ -34,8 +34,8 @@ selected: no numerical source or physical contract changed. Prior781.268s full
 moving evidence remains separately bound, not a newly claimed current-head run.
 Automatic postmerge CI is followed to terminal; no manual hosted run is selected.
 
-The exact complete updated workflow passes locally onfbbcf439. All58 controls
-pass:10 current workflow science controls,11 incumbent CI,9 native-label,18
+The exact complete updated workflow passes locally onc14565c8. All59 controls
+pass:11 current workflow science controls,11 incumbent CI,9 native-label,18
 historical-N and8 age longrun controls, plus actual untracked-source rejection
 and an intentionally corrupted F-CI73 capsule rejected by the incumbent CI
 authority. The corrupted capsule was restored exactly before final qualification.

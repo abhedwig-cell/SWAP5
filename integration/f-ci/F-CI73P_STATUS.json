@@ -106,7 +106,7 @@
   ],
   "current_successor_20261018": {
     "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
-    "phase": "CURRENT_GUARDS_RECHECKING_COMPLETE_COMPILED_INPUT_BINDING",
+    "phase": "LOCALLY_QUALIFIED_READY_FOR_CANONICAL",
     "implemented": true,
     "persisted": true,
     "tested": true,
@@ -154,6 +154,27 @@
       "rossfast": "FROZEN_UNCHANGED",
       "hosted": "Only automatic integrated workflows, no manual runs"
     },
-    "next_action": "Persist candidate, qualify bounded workflow and source guards with negative controls, integrate and actively follow automatic CI to terminal"
+    "next_action": "Integrate existing successor PR; actively follow automatic workflows through terminal; no new physical numerical qualification selected",
+    "controls": {
+      "total": 59,
+      "current_fci73": 11,
+      "incumbent_ci": 11,
+      "native_labels": 9,
+      "historical_n": 18,
+      "longrun_age": 8,
+      "extra": 2,
+      "evidence": {
+        "path": "integration/audits/evidence/FCI73_CURRENT_CONTROLS_20261018.tar.xz.b64",
+        "decoded_sha256": "6be8479d43ebce56408472e88af84515952e86faa00ca6ae427c0e252e7f65a3",
+        "decoded_bytes": 6092,
+        "members": 21
+      }
+    },
+    "pull_request": 1321,
+    "documentation_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS",
+      "strict_log_sha256": "85231c0a5ffc60091b65d05285997f1d90941364007dfbef1fda5310c66513d2"
+    }
   }
 }
