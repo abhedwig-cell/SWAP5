@@ -2,11 +2,11 @@
   "work_unit": "MC-SOL01-SURFACE-AGE01",
   "workstream": "MC-SOL01",
   "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
-  "stage": "FULL_PRESERVATION_PASS_FRESH_COEXISTENCE_PENDING",
+  "stage": "QUALIFIED_PRESERVED_CANONICAL_ADMISSION_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "execution_commit": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
   "postimages": {
@@ -168,7 +168,7 @@
     "docs/architecture/invariants.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Run fresh current atmospheric HIST/age owner controls on persisted conflict resolution; if PASS and canonical unchanged, admit PR1309.",
+  "next_action": "Mark PR1309 ready, merge exact qualified source onto unchanged canonical01a, then persist actual canonical admission receipt.",
   "blockers": [],
   "test_selection": {
     "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
@@ -306,6 +306,30 @@
       "all_age_inputs_still_equal": true,
       "conflict": "Only HIST evidence dispatcher. Kept all current atmospheric-N validation and its 12 negatives, then added exact surface-age registration.",
       "scope": "Inherited full numerical preservation plus fresh combined owner qualification, not a claim that the full numerical runner was rerun after independently qualified atmospheric-N admission; no simultaneous companions admitted."
+    }
+  },
+  "preserved": true,
+  "qualified_source_commit": "9c91ea08d05f92621b049d514b3235d776057e55",
+  "coexistence_qualification": {
+    "status": "PASS",
+    "capsule": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_COEXISTENCE_20261018.tar.xz.b64",
+      "decoded_sha256": "c8c59b4763d85e68202ef600cc60b7b550bb1daf242446569aaada2ba4f9daa0",
+      "members": 9
+    },
+    "result": {
+      "commit": "9c91ea08d05f92621b049d514b3235d776057e55",
+      "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
+      "source_tree": "a0f3261b108f10610ca70161fc6437df54df1bee",
+      "age_inputs_unchanged": true,
+      "hist_atmospheric_controls": 12,
+      "surface_age_controls": 9,
+      "current_irrigation_owner": "PASS",
+      "docs_source": "PASS",
+      "merge_conflict_resolved": true,
+      "full_moving_execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+      "full_moving_rerun_on_merged_tree": false,
+      "claim": "Exact independent-owner coexistence with unchanged age inputs and retained terminal numerical preservation; no simultaneous chemical companions."
     }
   }
 }
