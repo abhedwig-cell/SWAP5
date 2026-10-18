@@ -30,9 +30,11 @@ text=text.replace(old,old+'\n  cfg%numerical%retain_accepted_step_proposal=.true
 needle="    call require(r%status==0,'rotation actual daily Richards crop Soil-N')"
 assert text.count(needle)==1
 text=text.replace(needle,"\n    print *,'SURFACE_DAY_NUMERICS',d+1,r%joint%joint%diagnostics%accepted_substeps, &\n      r%joint%joint%diagnostics%attempts,r%joint%joint%diagnostics%temporal_rejections, &\n      r%joint%joint%diagnostics%solver_rejections,r%joint%joint%diagnostics%max_abs_step_mass_residual, &\n      r%joint%joint%water%completed_t\n"+needle)
+text=text.replace(' use mod_soil_n_day_environment',' use mod_soil_n_surface_exchange\n use mod_soil_n_day_environment',1)
+text=text.replace('only:aggregate_mineral_trace,mineral_daily_carrier_t','only:aggregate_mineral_trace,mineral_daily_carrier_t,bind_soil_n_surface_trace',1)
 a=text.index(' subroutine rotation_continuation(');z=text.index(' subroutine report_water_state(',a);body=text[a:z]
 needle='   integer::d,first,code,last';assert body.count(needle)==1
-body=body.replace(needle,'   type(fmr_serialized_physical_observation_t)::failure_observation\n'+needle)
+body=body.replace(needle,'   type(fmr_serialized_physical_observation_t)::failure_observation\n   type(soil_n_surface_day_t)::failure_day\n   type(soil_n_surface_receipt_t)::failure_surface\n   type(mineral_daily_carrier_t)::failure_carrier\n   type(mineral_state_t)::failure_mineral\n'+needle)
 needle='\n    n_before=crop_soil_whole_n(state)\n';assert body.count(needle)==1
 body=body.replace(needle,'\n    before_state=state;before_water=water'+needle)
 needle="    if(r%status/=0)print *,'ROTATION_FAILURE'";assert body.count(needle)==1
@@ -51,6 +53,21 @@ body=body.replace(needle,"""    if(r%status/=0)then
      print *,'REJECTION_CROP_PREPARED',r%joint%joint%chemical%prepared%ready, &
        r%joint%joint%chemical%prepared%nitrogen_request%status,r%joint%joint%chemical%prepared%candidate%validate()
      failure_observation=backend%observation()
+     if(allocated(failure_observation%accepted_water_flux_substeps))then
+      call before_state%snapshot(ss,cc);call ss%mineral_snapshot(failure_mineral)
+      call ss%snapshot(clock,moisture,ps,rev)
+      call aggregate_mineral_trace(failure_mineral,failure_observation%accepted_water_flux_substeps, &
+        failure_carrier,code,clean_surface_water=.false.,atmospheric_n_surface=.true.)
+      print *,'REJECTION_CARRIER',code,failure_carrier%surface_water,failure_carrier%root_water
+      call bind_soil_n_surface_trace(failure_observation%accepted_water_flux_substeps,forcing%pond_input,failure_day,code)
+      print *,'REJECTION_SURFACE_BIND',code
+      if(code==0)then
+       call evaluate_soil_n_surface_day(ps%surface_n_kg_m2,sp%mineral%c_top,e%t0,e%t1,failure_day,failure_surface)
+       print *,'REJECTION_SURFACE_EVALUATE',failure_surface%status,failure_surface%infiltration_m
+       print *,'REJECTION_SURFACE_MASS',failure_surface%before,failure_surface%after, &
+         failure_surface%input,failure_surface%infiltrated,failure_surface%runoff,failure_surface%residual
+      endif
+     endif
      print *,'REJECTION_LAST_SOLVER',failure_observation%solver_diagnostics%route, &
        failure_observation%solver_equation_residual,failure_observation%solver_equation_residual_available
     endif
