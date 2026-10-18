@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "17191fcd848aa0b520ae1ed7a5283a736faa77de",
+  "checkpoint_commit": "26817cb6613714d9881ed49dafae03eae7c19a9d",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -32,16 +32,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Investigate temporal indicator and timestep selection for 4096 accepted-step exhaustion on physical day 67; source-based resolution required, not tolerance/cap increase. Compare canonical headcalc/backend delta since 826224bc before qualifying candidate.",
-  "recovery_point": "work/nut-coupled-124day-20261018@17191fcd848aa0b520ae1ed7a5283a736faa77de",
+  "next_action": "Read exact-head temporal indicator diagnosis from selected existing B112 actual run and establish scientifically defended temporal admissibility response; changes to budget or max accepted steps are not authorized simply to turn PASS. Reconcile canonical shared Reference/headcalc changes before merger.",
+  "recovery_point": "work/nut-coupled-124day-20261018@26817cb6613714d9881ed49dafae03eae7c19a9d",
   "blockers": [
-    "TEMPORAL ADMISSION BLOCKER: Richards exhausts 4096 accepted substeps on day 67 after 47193 temporal rejects; run 39117466655",
-    "Moving canonical modifies Reference backend and headcalc; reconcile shared water numerical ownership",
-    "Full TTUTIL grammar, annual and rotation qualification open"
+    "Day 67: 4096 accepted substep ceiling and 47193 temporal rejections, not solver or mass (run 39117466655)",
+    "Canonical changed shared Reference backend/headcalc since test base; current integration blocked"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
-  "last_reconciled_upstream": "826224bc2d0a7b41f5c70f0bbed6cc95a587fbd9",
+  "last_reconciled_upstream": "ce0291246e9bb732388214098a7a9fe0f44f4a5e",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
