@@ -28,3 +28,13 @@ Source audit: archived SWAP4.3.1 solute.f90 (SHA256 2fc8592001cdcd2de95a252d8b90
 Qualification evidence already executed on prior source head: Actions 39109105991, SUCCESS, O0/O2 Reference production, gross positive runoff/runon physical joint, mass closure, rejection, native V2 independent-process continuation and preservation; see PR #1303. This evidence covers its actual postimage and is not automatically a qualification of this decision-only commit.
 
 **Admission remains conditional** on source-impact reconciliation, applicable mandatory preservation controls and repository owner admission/rules. Do not promote mastercoverage or merge merely because this decision exists. Aquifer remains excluded.
+
+## Integration finding, 2026-10-18: frozen shared contract
+
+The clean canonical PR #1304 passed its own actual O0/O2 Reference qualification (Actions 39110944590) but the RossFast owner preservation deliberately failed in Actions 39110944702: `src/solver/mod_soil_water_solver_contract.f90` has a new shared result/diagnostic layout. The immutable FROSS22 qualified preservation runner explicitly pins the canonical solver contract to the previously admitted source blob (plus named, admitted successors); its moving-canonical mode does not authorize the PR itself to mutate the contract. The optional/frozen RossFast policy is **not** permission to bypass this test.
+
+This is a structural source-ownership conflict, not a positive-runoff solute mass-balance failure. A safe admission must either (A) preserve the original shared solver-contract blob exactly and move final-converged gross-source publication to a new private Reference-owned diagnostic interface (with transactional provenance, complete module compilation, native restart and relevant prior-owner preservation), or (B) independently qualify an explicit shared-contract successor including existing RossFast preservation and its owner admission, before amending the exact-source authority. Merely editing the expected SHA, excluding the contract file from a test, or turning off the preservation workflow is forbidden.
+
+F-ROSS12's separate compile error `mod_drainage_dramet3_response.mod` indicates an incomplete legacy compilation closure. It does not demonstrate a numerical RossFast regression, nor can it be called PASS. Fix that closure only when justified by the admitted RossFast preservation owner.
+
+Current PR #1304 remains deliberately draft until the structural contract problem is resolved with owner-backed proof. This documented diagnosis changes no physical source and never constitutes acceptance.
