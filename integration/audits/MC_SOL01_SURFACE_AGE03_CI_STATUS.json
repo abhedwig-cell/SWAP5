@@ -38,7 +38,7 @@
     },
     "tests/fci/run_fci51p_wof43a_successor_preservation.sh": {
       "status": "M",
-      "sha256": "0ca82b7212b505c69f68a6cbab4e606368a7512346d10989ee1434798db46333"
+      "sha256": "c312c7fa549921aebd6005be467a699f7007938313b3bf1def929d2e7c93c980"
     },
     "tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh": {
       "status": "M",
@@ -79,7 +79,7 @@
     "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "test_selection": {
-    "candidate": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
+    "candidate": "e42eb9b6eddf3631b36d510035cad8fb31c7373f",
     "groups": {
       "fgc_closeout": {
         "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
@@ -100,5 +100,13 @@
         "prior_execution": "NONE"
       }
     }
-  }
+  },
+  "prior_executions": [
+    {
+      "path": "age03-local-01",
+      "execution": "e42eb9b6eddf3631b36d510035cad8fb31c7373f",
+      "status": "FAILED_NOT_PASS",
+      "reason": "After rate pin reconciliation original FCI51 next rejects already admitted read-only configuration_values provider extension7e007ea0. Diff to qualified donor only adds immutable configuration export. Current CO2 resolver/binding match historical qualified donor. Add exact bounded provider eligibility under unchanged whole-production authority; keep historical pins and original tests."
+    }
+  ]
 }

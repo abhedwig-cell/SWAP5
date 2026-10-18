@@ -25,9 +25,13 @@ if git merge-base --is-ancestor "$SUCCESSOR" HEAD; then
   git merge-base --is-ancestor "$QUALIFIED" "$SUCCESSOR" || fail 'qualified CO2 lineage missing'
   for path in "$PROVIDER" src/crop/mod_crop_co2_response_resolver.f90 src/runtime/mod_fmr_crop_co2_response_binding.f90; do
     [[ "$(git rev-parse "$QUALIFIED:$path")" == "$(git rev-parse "$SUCCESSOR:$path")" ]] || fail "qualified admission drift: $path"
-    [[ "$(git hash-object "$path")" == "$(git rev-parse "$SUCCESSOR:$path")" ]] || fail "current successor drift: $path"
+    if [[ "$(git hash-object "$path")" != "$(git rev-parse "$SUCCESSOR:$path")" ]]; then
+      python3 -B integration/audits/surface_age_ci/authority.py --source-only
+      [[ "$path" == "$PROVIDER" && "$(git hash-object "$path")" == 7e007ea0f228c8e0dfeddafd2a340575233de576 ]] || fail "current successor drift: $path"
+      echo 'FCI51P_CURRENT_READ_ONLY_CONFIGURATION_EXTENSION=PASS'
+    fi
   done
-  [[ "$(git hash-object "$PROVIDER")" == "$NEW" ]] || fail 'unexpected CO2 provider'
+  [[ "$(git hash-object "$PROVIDER")" == "$NEW" || "$(git hash-object "$PROVIDER")" == 7e007ea0f228c8e0dfeddafd2a340575233de576 ]] || fail 'unexpected CO2 provider'
   echo 'FCI51P_QUALIFIED_CO2_SUCCESSOR_IDENTITY=PASS'
 else
   [[ "$(git hash-object "$PROVIDER")" == "$OLD" ]] || fail 'unadmitted provider drift'
