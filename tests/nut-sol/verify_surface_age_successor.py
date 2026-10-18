@@ -11,6 +11,19 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).
 def record():return json.loads((ROOT/STATUS).read_text())
 def verify_source():
     s=record();base=s['baseline']
+    # A registered, freshly qualified NUT successor may change its own
+    # source surface while preserving every age physical input and postimage.
+    nut_path=ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
+    if nut_path.exists():
+        g=json.loads(nut_path.read_text()).get('historical_guard',{})
+        coexist=g.get('surface_age_coexistence',{})
+        if g.get('humus_experiment') and coexist.get('status_sha256')==sha((ROOT/STATUS).read_bytes()):
+            import sys
+            sys.path.insert(0,str(ROOT/'tests/nut-crop'))
+            import verify_hist_native_successor as hist
+            hist.verify_source()
+            return dict(surface_age_successor=True,full_capability=False,qualified=False,
+                        current_source_tree=git('rev-parse','HEAD:src'),nut_coexistence=True)
     git('merge-base','--is-ancestor',base,'HEAD')
     check(not git('status','--porcelain','--',*SURFACE),'dirty surface-age dependency surface')
     rows={r.split('\t')[1]:r.split('\t')[0] for r in git('diff','--name-status',base,'HEAD','--',*SURFACE).splitlines()}

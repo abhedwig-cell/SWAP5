@@ -110,8 +110,31 @@ contains
   type(soil_n_transfer_t),intent(out)::transfer
   integer,intent(out)::status
   type(b111_soil_n_material_t)::residue
+  real(real64)::correction,am_om
+  logical::projected
   residue=material
   residue%volatilization_fraction=0d0
   call build_b111_soil_n_addition_transfer(depth_m,residue,p,transfer,status,B111_NADD_RESIDUE_MIN_OM)
+  if(status==B111_NADD_OK)return
+  projected=.false.
+  ! Death-N / death-DM can round one spacing below an exact source class
+  ! boundary. Keep organic transfers nonnegative and compensate with existing
+  ! mineral N, instead of inventing N or admitting negative organic material.
+  if(all(ieee_is_finite([material%organic_n_fraction,p%nfrac_fom_min])))then
+   if(material%organic_n_fraction>=0d0.and.material%organic_n_fraction<p%nfrac_fom_min)then
+    if(p%nfrac_fom_min-material%organic_n_fraction<=8d0*spacing(p%nfrac_fom_min))then
+     residue%organic_n_fraction=p%nfrac_fom_min;projected=.true.
+    end if
+   end if
+  end if
+  if(.not.projected)return
+  call build_b111_soil_n_addition_transfer(depth_m,residue,p,transfer,status,B111_NADD_RESIDUE_MIN_OM)
+  if(status/=B111_NADD_OK)return
+  am_om=material%application_kg_m2*material%organic_matter_fraction
+  correction=(material%organic_n_fraction-residue%organic_n_fraction)*am_om
+  transfer%ammonium_n_delta_kg_m2=transfer%ammonium_n_delta_kg_m2+correction
+  ! Preserve the declared input, independently of the projected partition.
+  transfer%external_n_input_kg_m2=material%ammonium_n_fraction*material%application_kg_m2+ &
+    material%nitrate_n_fraction*material%application_kg_m2+material%organic_n_fraction*am_om
  end subroutine
 end module

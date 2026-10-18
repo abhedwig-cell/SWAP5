@@ -23,6 +23,19 @@ program test_native_snm
   if(any(initial%fom_kg_m3/=1d0).or.initial%bio_kg_m3/=5d0.or.initial%hum_kg_m3/=40d0)error stop 2
   if(rates%ratecon_nitrif_ref/=.02d0.or.rates%depth_m/=.3d0.or.rates%lai_crit_nupt/=0d0)error stop 3
   if(ages%root/=1.27d0.or.ages%leaf/=.99d0)error stop 4
+  if(expected>=2)then
+   if(rates%hum_exp_start_day/=365d0)error stop 12
+   if(expected==2.and.rates%hum_exp_per_year/=.1d0)error stop 13
+   if(expected==3.and.rates%hum_exp_per_year/=0d0)error stop 14
+   if(expected==4.and.rates%hum_exp_per_year/=.0001d0)error stop 15
+   if(expected==5.or.expected==6)then
+    if(rates%hum_exp_per_year/365.2425d0>1d-6)error stop 17
+   end if
+   if(expected==7.and.rates%hum_exp_per_year/365.2425d0<=1d-6)error stop 18
+   if(expected>=5)print '(A,L1)','NATIVE_HUMUS_THRESHOLD_ACTIVE=',rates%hum_exp_per_year/365.2425d0>1d-6
+  else
+   if(rates%hum_exp_per_year/=-1d0.or.rates%hum_exp_start_day/=0d0)error stop 16
+  end if
   if(expected==1)then
    if(rates%nh4_top/=.0005d0.or.rates%no3_top/=.0015d0)error stop 10
   else
