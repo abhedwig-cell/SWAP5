@@ -1,0 +1,81 @@
+{
+  "work_unit": "SYMPHONICA_LOCAL_CONTEXT_20261018",
+  "baseline_remote": "d75fb5e28dc05bdb0fd2c8fe6b3fe2aa3133d338",
+  "tested_runner_remote": "7109906ea030c2848e3831d9824a713c3246ce67",
+  "model": "SWAP4.3.1",
+  "grid_cells": 1024,
+  "context_xml_exports": 536,
+  "context_statuses": {
+    "OK": 536
+  },
+  "context_locations": 157,
+  "context_period_counts": {
+    "OUTSIDE_MODEL_PERIOD": 521,
+    "UNKNOWN_DATE": 1,
+    "WITHIN_MODEL_PERIOD": 14
+  },
+  "context_year_counts": {
+    "Beworteling diepte": {
+      "1951": 46,
+      "1954": 53,
+      "1955": 13,
+      "1965": 7
+    },
+    "Bodemgebruik": {
+      "1995": 4,
+      "2017": 4,
+      "2018": 20,
+      "2019": 3,
+      "2020": 1,
+      "2024": 7
+    },
+    "Bodemgebruik Aardewerk": {
+      "1951": 46,
+      "1954": 53,
+      "1955": 13,
+      "1965": 7
+    },
+    "Diepte (grond)watertafel t.o.v. maaiveld": {
+      "1951": 45,
+      "1954": 35,
+      "1955": 7,
+      "1965": 2,
+      "2015": 1
+    },
+    "Vegetatie": {
+      "1951": 106,
+      "1954": 23,
+      "1955": 3,
+      "1965": 18,
+      "2018": 5,
+      "2019": 3,
+      "2020": 1,
+      "2024": 7
+    },
+    "vegetatie": {
+      "2015": 2,
+      "unkn": 1
+    }
+  },
+  "field_context_links": 18432,
+  "historical_retention_fits": 23,
+  "historical_retention_rows_excluded": 12,
+  "groundwater_filters_in_period": 77,
+  "groundwater_period_records": 17144,
+  "groundwater_daily_complete_filters": 0,
+  "groundwater_cell_links": 3072,
+  "qualified_local_heath_simulation": false,
+  "canonical_admitted": false,
+  "next_action": "Qualify historical profile mapping and source-based conductivity and seasonal vegetation priors; acquire official terrain download alternative.",
+  "open_dependencies": [
+    "No complete source-based heath hydraulic conductivity contract",
+    "No qualified current heath LAI/resistance/interception/root-distribution contract",
+    "No complete daily observed lower boundary; no extrapolation applied",
+    "DTM-WCS GetCoverage returned HTTP403; no terrain raster received"
+  ],
+  "reused_verified_native_cases": 42,
+  "new_native_cases": 0,
+  "archive_sha256": "00ae585a99032af3197c0dde263113444de57b1986ea8d27565244bbe9f8f430",
+  "archive_bytes": 404716,
+  "evidence_files": 591
+}
