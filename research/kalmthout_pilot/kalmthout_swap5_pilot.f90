@@ -34,7 +34,7 @@ program kalmthout_swap5_daily_pilot
   type(traditional_pm_weather_t) :: pm_weather
   type(reference_et_demand_canopy_view_t) :: demand_canopy
   type(reference_et_demand_result_t) :: atmospheric_demand
-  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub,demand_status,day_of_year
+  integer :: ios,status,day_index,failures,wstatus,max_hours,expected_hours,isub,demand_status,day_of_year,k
   real(real64) :: precip_mm,temp_c,dew_c,shortwave_mj_m2,wind10,et0,t0,t1,max_residual,dt_day,evap_scale
   real(real64) :: tmin_day,tmax_day,radiation_kj_day,vapour_pressure_kpa,wind2
   real(real64) :: hour_t0,hour_t1,segment_dt,hour_residual,hour_in,hour_out
@@ -166,6 +166,27 @@ program kalmthout_swap5_daily_pilot
             select type(accepted=>accepted_physical)
             class is(fmr_b110_physical_state_t)
               if(accepted%active_nodes>0.and.allocated(accepted%pressure_head).and.allocated(accepted%water_content)) then
+                ! Read-only accepted-state dump for independent SWAP4.3.1 replay.
+                ! Every line belongs to the *committed* snapshot, never to a Newton candidate.
+                write(*,'(A,1X,A,1X,I0,3(1X,ES24.16))') 'KALMTHOUT_STATE_HEADER', trim(ds), &
+                     accepted%active_nodes,accepted%ponding_depth,accepted%groundwater_level, &
+                     atmospheric_demand%potential_soil_evaporation_cm_per_day
+                if(allocated(config%tiles(1)%parameters%z).and.allocated(config%tiles(1)%parameters%dz)) then
+                  if(size(config%tiles(1)%parameters%z)>=accepted%active_nodes.and. &
+                     size(config%tiles(1)%parameters%dz)>=accepted%active_nodes.and. &
+                     size(accepted%pressure_head)>=accepted%active_nodes.and. &
+                     size(accepted%water_content)>=accepted%active_nodes) then
+                    do k=1,accepted%active_nodes
+                      write(*,'(A,1X,A,1X,I0,4(1X,ES24.16))') 'KALMTHOUT_STATE_NODE',trim(ds),k, &
+                           config%tiles(1)%parameters%z(k),config%tiles(1)%parameters%dz(k), &
+                           accepted%pressure_head(k),accepted%water_content(k)
+                    end do
+                  else
+                    write(*,'(A)') 'KALMTHOUT_STATE_EXPORT_INCOMPLETE'
+                  end if
+                else
+                  write(*,'(A)') 'KALMTHOUT_STATE_EXPORT_GRID_MISSING'
+                end if
                 write(*,'(A,1X,A,5(1X,ES24.16))') 'KALMTHOUT_ACCEPTED_DRY_STATE', trim(ds), &
                      accepted%pressure_head(1),accepted%water_content(1),accepted%ponding_depth, &
                      accepted%groundwater_level,atmospheric_demand%potential_soil_evaporation_cm_per_day
