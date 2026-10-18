@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "26817cb6613714d9881ed49dafae03eae7c19a9d",
+  "checkpoint_commit": "71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -32,11 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Read exact-head temporal indicator diagnosis from selected existing B112 actual run and establish scientifically defended temporal admissibility response; changes to budget or max accepted steps are not authorized simply to turn PASS. Reconcile canonical shared Reference/headcalc changes before merger.",
-  "recovery_point": "work/nut-coupled-124day-20261018@26817cb6613714d9881ed49dafae03eae7c19a9d",
+  "next_action": "Resolve whether model-certificate temporal indicator or test forcing produces day-67 4096-step exhaustion, with physics-backed diagnostic and unchanged strict budget. Do not widen limit or claim qualified 124 days. Reconcile shared Reference/headcalc upstream before future admission.",
+  "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "blockers": [
-    "Day 67: 4096 accepted substep ceiling and 47193 temporal rejections, not solver or mass (run 39117466655)",
-    "Canonical changed shared Reference backend/headcalc since test base; current integration blocked"
+    "Confirmed day-67 model temporal indicator and 4096 accepted-step ceiling: run 39122643056",
+    "Shared Reference/headcalc canonical delta since base; scientific temporal diagnosis unresolved",
+    "Historical TTUTIL full grammar, annual/multiyear crop rotation unresolved"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -81,6 +82,16 @@
       "max_abs_step_mass_residual": 1.40831085942289e-15,
       "min_accepted_step_days": 0.00001772884719949963,
       "completed": false
+    },
+    "indicator_run": 39122643056,
+    "indicator_diagnosis": {
+      "model_certificate_source": 2,
+      "max_temporal_indicator": 0.9997303823431782,
+      "configured_budget": 0.0001,
+      "accepted_substeps": 4096,
+      "temporal_rejections": 47193,
+      "solver_rejections": 0,
+      "mass_rejections": 0
     }
   }
 }
