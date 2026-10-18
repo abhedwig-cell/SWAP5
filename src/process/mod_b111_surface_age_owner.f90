@@ -20,6 +20,7 @@ module mod_b111_surface_age_owner
   end type
   public :: initialize_surface_age_owner, snapshot_surface_age_owner
   public :: advance_surface_age_owner, export_surface_age_restart, restore_surface_age_restart
+  public :: reconstruct_surface_age_owner
 contains
   pure subroutine initialize_surface_age_owner(identity,time_day,depth_cm,age_day,state,status)
     integer(int64),intent(in)::identity
@@ -105,6 +106,26 @@ contains
     if(payload%saved%depth_cm<=0.0_real64.and.payload%saved%stock_cm_day>0.0_real64)return
     if(payload%saved%revision<0_int64)return
     state=payload%saved
+    status=AGE_OWNER_OK
+  end subroutine
+  pure subroutine reconstruct_surface_age_owner(identity,revision,time_day,depth_cm,stock_cm_day,state,status)
+    integer(int64),intent(in)::identity,revision
+    real(real64),intent(in)::time_day,depth_cm,stock_cm_day
+    type(surface_age_owner_t),intent(out)::state
+    integer,intent(out)::status
+    state=surface_age_owner_t()
+    status=AGE_OWNER_REJECTED
+    if(identity<=0_int64.or.revision<0_int64)return
+    if(.not.all(ieee_is_finite([time_day,depth_cm,stock_cm_day])))return
+    if(abs(time_day)>1.0e8_real64.or.depth_cm<0.0_real64.or.depth_cm>1.0e6_real64)return
+    if(stock_cm_day<0.0_real64.or.stock_cm_day>1.0e12_real64)return
+    if(depth_cm<=0.0_real64.and.stock_cm_day>0.0_real64)return
+    state%identity=identity
+    state%revision=revision
+    state%time_day=time_day
+    state%depth_cm=depth_cm
+    state%stock_cm_day=stock_cm_day
+    state%initialized=.true.
     status=AGE_OWNER_OK
   end subroutine
 end module mod_b111_surface_age_owner
