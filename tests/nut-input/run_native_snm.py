@@ -1,6 +1,6 @@
 """Actual native reader: source-field fixtures, grammar and atomic negatives."""
 from pathlib import Path
-import hashlib,json,os,re,subprocess,time
+import datetime,hashlib,json,os,re,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ['N_NATIVE_RESULT_DIR']).resolve();OUT.mkdir(exist_ok=False)
 array="""MatNum = 1*1
@@ -70,6 +70,8 @@ for key,field,value in [('negative_nitrif','RateConNitrif_ref','-.02'),('lai_ran
  else:text=text.replace(field+' = .02',field+' = '+value)
  line=next(i+1 for i,s in enumerate(text.splitlines())if s.startswith(field+' ='))
  fixtures[key]=(text,-line)
+fixtures['capacity20x1000']=(table.splitlines()[0]+'\n'+"1 'Mineral ! fertiliser' 0. 0. 0. .21 .10\n"+''.join(f"{i} 'M{i}' 0. 0. 0. .21 .10\n"for i in range(2,21))+table[table.index('smedate'):table.index(';')]+''.join(f"{datetime.date(1901,1,2)+datetime.timedelta(days=i)} 1 0. 0.\n"for i in range(997))+';\n'+params,0)
+fixtures['too_many_records']=('\n'*4096+array+params,-1)
 for name,(text,_)in fixtures.items():(OUT/(name+'.snm')).write_text(text)
 providers={}
 for p in (ROOT/'src').rglob('*.f90'):

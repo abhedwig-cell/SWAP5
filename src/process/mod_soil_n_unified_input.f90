@@ -110,7 +110,7 @@ contains
   rates=soil_n_historical_rates_t();candidate_ages=soil_n_residue_age_t()
   if(present(ages))ages=soil_n_residue_age_t()
   status=N_UNIFIED_IO;error_line=0
-  allocate(values(11,1000),rows(1002));values='';rows='';parameters=''
+  allocate(values(11,1000),rows(1022));values='';rows='';parameters=''
   nvalues=-1;nparam=0;record=0;active_key=0;nh=0;value_line=0;array_declared=.false.
   open(newunit=unit,file=path,status='old',action='read',iostat=ios)
   if(ios/=0)return
@@ -119,6 +119,7 @@ contains
    read(unit,'(A)',advance='no',size=nbytes,iostat=ios)line
    if(ios==iostat_end)exit
    record=record+1;error_line=record
+   if(record>4096)exit
    if(ios/=iostat_eor)exit
    word=adjustl(line)
    if(len_trim(word)==0.or.word(1:1)=='!'.or.word(1:1)=='*')cycle
