@@ -37,14 +37,15 @@ module mod_fmr_b111_age_joint_application
   public::run_age_joint_interval,age_joint_states_match
   public::export_age_joint_restart,restore_age_joint_restart
 contains
-  logical function age_joint_states_match(water,chemical) result(ok)
+  logical function age_joint_states_match(water,chemical,surface_owner) result(ok)
     type(kernel_committed_state_t),intent(in)::water
     type(age_state_t),intent(in)::chemical
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     class(transaction_state_t),allocatable::physical
     type(solute_compartment_state_t)::s
     real(real64),allocatable::theta(:)
-    real(real64)::t,wt
-    integer(int64)::revision
+    real(real64)::t,wt,pond_time,pond_depth,pond_stock
+    integer(int64)::revision,pond_revision
     logical::available
     ok=.false.
     if(.not.water%ready())return
@@ -53,19 +54,32 @@ contains
     if(.not.available)return
     call chemical%snapshot(t,theta,s,revision)
     if(abs(t-wt)>0.0_real64)return
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,pond_time,pond_depth,pond_stock,pond_revision,available)
+      if(.not.available.or.abs(pond_time-wt)>0.0_real64)return
+    end if
     call water%snapshot(physical,available)
     if(.not.available)return
     select type(p=>physical)
     type is(fmr_b110_physical_state_t)
-      ok=bounded_physical(p,theta)
+      if(present(surface_owner))then
+        ok=bounded_physical(p,theta,pond_depth)
+      else
+        ok=bounded_physical(p,theta)
+      end if
     type is(fmr_b110_temporal_indicator_state_t)
-      ok=bounded_physical(p,theta)
+      if(present(surface_owner))then
+        ok=bounded_physical(p,theta,pond_depth)
+      else
+        ok=bounded_physical(p,theta)
+      end if
     end select
   end function
 
-  logical function bounded_physical(p,theta) result(ok)
+  logical function bounded_physical(p,theta,expected_pond) result(ok)
     class(fmr_b110_physical_state_t),intent(in)::p
     real(real64),intent(in)::theta(:)
+    real(real64),intent(in),optional::expected_pond
     real(real64)::scale
     ok=.false.
     if(allocated(p%salt).or.allocated(p%macropore).or.allocated(p%snow).or. &
@@ -73,7 +87,14 @@ contains
     if(.not.allocated(p%water_content).or..not.allocated(p%pressure_head))return
     if(p%active_nodes/=size(theta).or.size(p%water_content)/=size(theta).or.size(p%pressure_head)/=size(theta))return
     if(.not.all(ieee_is_finite(p%water_content)).or..not.all(ieee_is_finite(p%pressure_head)))return
-    if(.not.all(ieee_is_finite([p%ponding_depth,p%groundwater_level])).or.abs(p%ponding_depth)>0.0_real64)return
+    if(.not.all(ieee_is_finite([p%ponding_depth,p%groundwater_level])))return
+    if(present(expected_pond))then
+      if(.not.ieee_is_finite(expected_pond).or.expected_pond<0.0_real64)return
+      if(abs(p%ponding_depth-expected_pond)> &
+           1024.0_real64*epsilon(1.0_real64)*max(1.0_real64,expected_pond))return
+    else
+      if(abs(p%ponding_depth)>0.0_real64)return
+    end if
     scale=max(1.0_real64,maxval(abs(theta)))
     ok=all(abs(p%water_content-theta)<=1024.0_real64*epsilon(1.0_real64)*scale)
   end function
@@ -113,14 +134,15 @@ contains
     result=age_joint_result_t()
     if(.not.bounded_template(template))return
     if(present(surface_owner).neqv.present(source_ages))return
-    if(.not.age_joint_states_match(water,chemical))return
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water,chemical,surface_owner))return
+    else
+      if(.not.age_joint_states_match(water,chemical))return
+    end if
     if(present(surface_owner))then
       call snapshot_surface_age_owner(surface_owner,surface_time,surface_depth,surface_stock, &
            surface_revision,surface_available)
       if(.not.surface_available.or.abs(surface_time-t0)>0.0_real64)return
-      ! The existing age joint state validator admits only zero ponding.
-      ! Nonzero surface ponding requires a separate qualified joint-state contract.
-      if(surface_depth>0.0_real64)return
     end if
     call water%current_time(clock,ok)
     if(.not.ok.or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1))return
