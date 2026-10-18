@@ -2,6 +2,7 @@ program test_pond_joint
   use iso_fortran_env,only:real64,int64
   use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
   use mod_fmr_runtime_core
+  use mod_canonical_contracts,only:canonical_numerical_config_t
   use mod_fmr_serialized_reference_backend
   use mod_fmr_production_application_bootstrap
   use mod_kernel_transactions
@@ -158,7 +159,8 @@ contains
     type(pond_step_t)::chem_supply
     type(fmr_serialized_physical_observation_t)::observation
     logical::created
-    integer::code
+    integer::code,kstep
+    logical::seen_runon,seen_runoff
     plain=cfg%tiles(1)%template
     plain%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     nc=cfg%numerical
@@ -197,10 +199,15 @@ contains
     call require(outcome%status==JOINT_OK,'positive runon Reference joint')
     observation=backend%observation()
     call require(observation%accepted_water_flux_trace_available,'gross accepted trace')
-    call require(any(observation%accepted_water_flux_substeps%converged_runon_rate_cm_day>0d0), &
-      'positive gross runon carried from Reference')
-    call require(any(observation%accepted_water_flux_substeps%converged_runoff_depth_cm>0d0), &
-      'positive runoff carried from Reference')
+    seen_runon=.false.;seen_runoff=.false.
+    do kstep=1,size(observation%accepted_water_flux_substeps)
+      seen_runon=seen_runon.or. &
+        observation%accepted_water_flux_substeps(kstep)%converged_runon_rate_cm_day>0d0
+      seen_runoff=seen_runoff.or. &
+        observation%accepted_water_flux_substeps(kstep)%converged_runoff_depth_cm>0d0
+    end do
+    call require(seen_runon,'positive gross runon carried from Reference')
+    call require(seen_runoff,'positive runoff carried from Reference')
     call require(abs(outcome%chemical%residual)<1d-11,'gross joint chemical closure')
     call require(abs(outcome%water%mass%residual)<HARD_MASS_GATE,'gross joint water closure')
     print '(A)','MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT=PASS'
