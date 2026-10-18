@@ -14,6 +14,17 @@ for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
 assert sha(BASE/'generated_driver.f90')==prior['generated_driver_sha256']
 origin=json.loads((BASE/'events.json').read_text());assert all(e['returncode']==0 for e in origin)
 text=(BASE/'generated_driver.f90').read_text()
+# Retain the discriminating positive-surface-stock wet fixture even when the
+# byte-verified current production providers were built with the field driver.
+# This changes only generated test input; no provider is replaced or inherited.
+if prior.get('hydrology','clay')=='field-loam':
+ old='  cfg%tiles(1)%initial_state%ponding_depth=0d0';assert text.count(old)==1
+ added='  cfg%tiles(1)%initial_state%ponding_depth=.2d0\n'
+ for i in [3,10,12]:added+=f'  cfg%tiles(1)%parameters%cofgen({i},:)=cfg%tiles(1)%parameters%cofgen({i},:)*1d-3\n'
+ text=text.replace(old,added.rstrip())
+ old='     forcing%pond_input%rain_rate_cm_day=merge(.5d0,.05d0,mod(d,7)==6)*(1d0+.4d0*season)';assert text.count(old)==1
+ text=text.replace(old,'     forcing%pond_input%rain_rate_cm_day=.05d0*(1d0+.4d0*season)')
+
 changes={'initial_state%ponding_depth=.2d0':'initial_state%ponding_depth=0d0','rain_rate_cm_day=.05d0*(1d0+.4d0*season)':'rain_rate_cm_day=.4d0','irrigation_rate_cm_day=.005d0':'irrigation_rate_cm_day=0d0','runon_rate_cm_day=.01d0':'runon_rate_cm_day=0d0','potential_pond_evaporation_cm_day=.01d0*(1d0+.4d0*season)':'potential_pond_evaporation_cm_day=.4d0'}
 if KIND=='dry':
  for a,b in changes.items():assert text.count(a)==1,a;text=text.replace(a,b)

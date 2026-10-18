@@ -1299,6 +1299,16 @@
     "successor_resource_cap": 10000,
     "successor_qualified": false,
     "source_contract": "docs/science/MC_NUT01_SURFACE_N_B1_CONTRACT_20261018.md",
-    "physical_tolerances_changed": false
+    "physical_tolerances_changed": false,
+    "eight_day_native_observation": {
+      "days_completed": 8,
+      "accepted_steps_day7": 5363,
+      "accepted_steps_day8": 3277,
+      "max_abs_step_water_residual_cm": 5.282761532908464e-15,
+      "whole_n_residual_kg_m2": -7.556889142223966e-17,
+      "optimization": "O2_ONLY",
+      "qualification": "NOT_QUALIFIED_HARNESS_SOURCE_BINDING_REJECTED",
+      "reason": "The physical wrapper was advanced for the new full build during this exploratory native execution; final immutable-input guard correctly rejected changed wrapper hash. Actual generated driver and logs retained, no formal PASS. Fresh current full closure selected independently."
+    }
   }
 }
