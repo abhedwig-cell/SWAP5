@@ -11,6 +11,9 @@ program test_age_joint
   use mod_b111_age_tracer_substep,only:b111_age_tracer_substep_forcing_t
   use mod_fmr_b111_age_route
   use mod_fmr_b111_age_joint_application
+  use mod_b111_surface_age_owner
+  use mod_b111_surface_age_disk
+  use mod_b111_age_triplet_disk
   use mod_age_joint_restart_file
   use historical_age_oracle
   use mod_solute_water_face_flux_reconstruction
@@ -120,6 +123,33 @@ program test_age_joint
   call compare_water(water,other_water);call compare_chemical(solute,other_solute)
   call write_age_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,water,solute,status)
   call require(status==JOINT_OK,'production joint disk writer')
+  ! Candidate composite-reader fixture on actual accepted Reference water and
+  ! actual age state. Dry surface is a bounded test, NOT positive-pond admission.
+  block
+    type(surface_age_owner_t)::original_surface,restored_surface
+    type(kernel_committed_state_t)::restored_water
+    type(age_state_t)::restored_soil
+    integer::code
+    call initialize_surface_age_owner(8801_int64,T1,0.0_real64,0.0_real64,original_surface,code)
+    call require(code==AGE_OWNER_OK,'surface age zero pond initialize')
+    call write_surface_age_disk(trim(restart_path)//'.surface',8801_int64,original_surface,code)
+    call require(code==AGE_DISK_OK,'surface age sidecar written')
+    call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.surface',column, &
+         cfg%tiles(1)%template,670001_int64,9001_int64,8802_int64,p, &
+         restored_water,restored_soil,restored_surface,code)
+    call require(code/=TRIPLET_DISK_OK,'wrong surface identity rejects all')
+    call require(.not.restored_water%ready().and..not.restored_soil%ready(), &
+         'failed composite read leaves both old owners empty')
+    call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.surface',column, &
+         cfg%tiles(1)%template,670001_int64,9001_int64,8801_int64,p, &
+         restored_water,restored_soil,restored_surface,code)
+    call require(code==TRIPLET_DISK_OK,'composite disk restore succeeds')
+    call require(age_joint_states_match(restored_water,restored_soil,restored_surface), &
+         'composite restored owners synchronized')
+    call compare_water(water,restored_water)
+    call compare_chemical(solute,restored_soil)
+    print '(A)','MC_SOL01_REAL_REFERENCE_ZERO_POND_TRIPLET_RESTORE=PASS'
+  end block
   block
     type(kernel_committed_state_t)::empty_water
     type(age_state_t)::empty_solute
