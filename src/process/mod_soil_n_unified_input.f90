@@ -169,11 +169,19 @@ contains
   logical,intent(out)::ok
   integer::i,j,k,l
   character::quote
+  logical::need_value,has_value
   n=0;ok=.false.;words='';l=len_trim(line);i=1
+  need_value=.false.;has_value=.false.
   do while(i<=l)
-   if(line(i:i)=='!')exit
-   if(line(i:i)==' '.or.line(i:i)==achar(9).or.line(i:i)==',')then
+   if(line(i:i)==' '.or.line(i:i)==achar(9))then
     i=i+1;cycle
+   end if
+   if(line(i:i)=='!')exit
+   if(line(i:i)==',')then
+    ! Empty elements and consecutive/trailing separators must not silently
+    ! change the historic material or event array cardinality.
+    if(.not.has_value.or.need_value)return
+    need_value=.true.;has_value=.false.;i=i+1;cycle
    end if
    if(n==size(words))return
    n=n+1;j=i
@@ -195,10 +203,14 @@ contains
    if(k<1.or.k>256)return
    words(n)=line(j:i-1)
    if(i<=l)then
-    if(line(i:i)=='!')exit
+    if(line(i:i)=='!')then
+     has_value=.true.;need_value=.false.;exit
+    end if
     if(line(i:i)/=' '.and.line(i:i)/=achar(9).and.line(i:i)/=',')return
    end if
+   has_value=.true.;need_value=.false.
   end do
+  if(need_value)return
   ok=.true.
  end subroutine
 end module
