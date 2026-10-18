@@ -32,12 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Investigate physical head/water storage and water flux trajectory by day 60-67 against forcing and current Reference/headcalc canonical delta. Keep actual B112 candidate unmerged, and diagnose temporal head-bound source before any numerical-policy adjustment.",
+  "next_action": "Investigate fixed forcing physical net extraction and head boundary modes against source units. Build a scientifically justified finite-rainfall/recharge scenario or source-realistic forcing with negative control; qualify long Richards–WOFOST81–Soil-N without loosening temporal threshold or cap. Reconcile canonical Reference/backend/headcalc delta first.",
   "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "blockers": [
-    "124-day actual physics run 39124928525 failed due to gradually rising accepted-step demand ending at day67 cap",
-    "Shared Reference/backend/headcalc updated in canonical since base; requalification required",
-    "True historical TTUTIL/SNM and annual multiyear rotations remain open"
+    "Proven progressive dehydration of the test water column, growing substep demand and day67 rejection; do not present as yet-proven kernel defect",
+    "Current canonical moves Reference/backend/headcalc: requalification/reconciliation needed",
+    "Full legacy TTUTIL grammar and multiyear crop rotations remain open"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -116,6 +116,33 @@
       "66": 41346,
       "67": 47193
     },
-    "daily_trace_conclusion": "Physical time-step demand grows over days 60-67; day67 4096 cap reached after only partial day; this does not establish temporal indicator defect nor justify raising cap. Normalized indicator <1 on accepted steps."
+    "daily_trace_conclusion": "Physical time-step demand grows over days 60-67; day67 4096 cap reached after only partial day; this does not establish temporal indicator defect nor justify raising cap. Normalized indicator <1 on accepted steps.",
+    "water_state_run": 39126347755,
+    "water_state_diagnosis": {
+      "day61": {
+        "mean_theta": 0.1487629594831632,
+        "min_theta": 0.0784859693861985,
+        "min_pressure_head": -7979.6701092893145
+      },
+      "day63": {
+        "mean_theta": 0.1427029106155248,
+        "min_theta": 0.06994718149621612,
+        "min_pressure_head": -12469.863963356485
+      },
+      "day65": {
+        "mean_theta": 0.13663266114853795,
+        "min_theta": 0.06192141818119144,
+        "min_pressure_head": -21026.194366614807
+      },
+      "day66": {
+        "mean_theta": 0.13359038934285145,
+        "min_theta": 0.05814883003966265,
+        "min_pressure_head": -28276.52381076077
+      },
+      "day67": {
+        "rejected": true,
+        "committed_state_unchanged": true
+      }
+    }
   }
 }
