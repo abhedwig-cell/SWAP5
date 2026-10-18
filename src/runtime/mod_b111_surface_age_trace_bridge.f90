@@ -35,7 +35,7 @@ contains
       trace%converged_snowmelt_rate_cm_day,trace%converged_runoff_depth_cm, &
       trace%converged_pond_evaporation_cm_day,ages%rain_age_day, &
       ages%irrigation_age_day,ages%runon_age_day])))return
-  if(trace%t1<=trace%t0.or.trace%converged_snowmelt_rate_cm_day/=0.0_real64)return
+  if(trace%t1<=trace%t0.or.abs(trace%converged_snowmelt_rate_cm_day)>0.0_real64)return
   if(min(ages%rain_age_day,ages%irrigation_age_day,ages%runon_age_day)<0.0_real64)return
   ! Outward qtop is not an admissible infiltration age sink here.
   ! Exfiltration needs an explicit soil-to-surface age source receipt.
