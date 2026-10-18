@@ -7,6 +7,9 @@ on:
       - 'src/process/mod_b111_surface_age_owner.f90'
       - 'tests/nut-sol/test_surface_age_owner.f90'
       - 'tests/nut-sol/run_surface_age_budget.sh'
+      - 'src/runtime/mod_b111_surface_age_trace_bridge.f90'
+      - 'tests/nut-sol/test_surface_age_trace_bridge.f90'
+      - 'tests/nut-sol/run_surface_age_trace_bridge.sh'
       - '.github/workflows/mc-sol01-surface-age01.yml'
   workflow_dispatch:
 permissions:
@@ -19,3 +22,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile and execute isolated O0/O2 age budget
         run: bash tests/nut-sol/run_surface_age_budget.sh
+
+  reference-bridge-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile real Reference closure and run age bridge
+        run: bash tests/nut-sol/run_surface_age_trace_bridge.sh
