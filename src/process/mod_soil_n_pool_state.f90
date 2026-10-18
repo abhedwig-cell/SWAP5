@@ -74,7 +74,7 @@ contains
     if(allocated(self%surface_n_kg_m2))then
       if(size(self%surface_n_kg_m2)/=2)return
       if(.not.all(ieee_is_finite(self%surface_n_kg_m2)))return
-      if(any(self%surface_n_kg_m2<0d0))return
+      if(any(self%surface_n_kg_m2<0d0).or.any(self%surface_n_kg_m2>100d0))return
     end if
     ok=min(self%biomass_kg_m3,self%humus_kg_m3,self%ammonium_n_kg_m2,self%nitrate_n_kg_m2)>=0d0
   end function
@@ -123,6 +123,7 @@ contains
         transfer%ammonium_n_delta_kg_m2,transfer%nitrate_n_delta_kg_m2, &
         transfer%external_n_input_kg_m2,transfer%external_n_output_kg_m2])))return
     if(.not.all(ieee_is_finite(transfer%surface_n_delta_kg_m2)))return
+    if(any(abs(transfer%surface_n_delta_kg_m2)>100d0))return
     if(any(abs(transfer%surface_n_delta_kg_m2)>0d0).and..not.allocated(committed%surface_n_kg_m2))return
     if(transfer%external_n_input_kg_m2<0d0.or.transfer%external_n_output_kg_m2<0d0)return
     candidate%fom_kg_m3=committed%fom_kg_m3+transfer%fom_delta_kg_m3

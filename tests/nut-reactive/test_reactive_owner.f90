@@ -3,6 +3,7 @@ program test_reactive_owner
  use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
  use mod_b111_soil_n_mineral_owner
  use mod_b111_soil_n_reactive_owner
+ use mod_soil_n_surface_exchange
  use mod_soil_n_pool_state
  implicit none
  type(reactive_parameters_t)::p,bad
@@ -134,6 +135,31 @@ program test_reactive_owner
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'fractional humus switch rejected')
  bad=p;bad%hum_exp_daily=ieee_value(0d0,ieee_quiet_nan)
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'NaN humus experiment rejected')
+ block
+  type(soil_n_surface_day_t)::surface
+  type(reactive_parameters_t)::literal_parameters
+  call parameters(p);p%mineral%surface_n_enabled=.true.;p%mineral%c_top=[.005d0,.015d0]
+  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
+  allocate(pools%surface_n_kg_m2(2));pools%surface_n_kg_m2=[.00002d0,.00006d0]
+  call initialize_reactive(p,9001_int64,0d0,.34d0,pools,state,code)
+  call require(code==0,'corrected surface reactive initialize')
+  allocate(surface%steps(1));surface%steps(1)%t0=0d0;surface%steps(1)%t1=1d0
+  surface%steps(1)%rain_rate=.4d0;surface%steps(1)%qtop=-.2d0
+  surface%steps(1)%depth_end=.1d0;surface%steps(1)%runoff_depth=.1d0
+  literal_parameters=p;literal_parameters%mineral%c_top=2d0*p%mineral%c_top
+  w=.34d0+.002d0/.3d0
+  call literal_day(literal_parameters,pools,.34d0,w,0d0,0d0,0d0,0d0,want,nit,denit,carbon,surface_water=.002d0)
+  call advance_reactive_day(state,0d0,1d0,w,0d0,0d0,0d0,0d0,r,surface_water=.002d0,surface_n=surface)
+  call require(r%status==0,'corrected surface full chemistry accepted')
+  call state%snapshot(time,theta,got,revision)
+  call compare(got,want,'corrected surface soil stocks equal original full chemistry with analytic delivered N')
+  call near(got%surface_n_kg_m2(1),.00001d0,'retained surface ammonium')
+  call near(got%surface_n_kg_m2(2),.00003d0,'retained surface nitrate')
+  call near(r%external_in,.00008d0,'gross source counted once')
+  call near(r%external_out,denit+.00004d0,'runoff and denitrification external')
+  call near(got%nitrogen_total(p%mineral%inventory),pools%nitrogen_total(p%mineral%inventory)+r%external_in-r%external_out,'whole corrected reactive budget')
+  print '(A)','REACTIVE_SURFACE_B1_ANALYTIC_TRANSFER_ORIGINAL_CHEMISTRY_WHOLE_N=PASS'
+ end block
  print '(A)','REACTIVE_ORIGINAL_HUMUS_SWITCH_THRESHOLD_18_DAYS_OPAQUE=PASS'
  print '(A)','REACTIVE_ATMOSPHERIC_ORIGINAL_CHEMISTRY_EVAPORATION_RESTART=PASS'
  print '(A)','REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS'

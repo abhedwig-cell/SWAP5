@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ['N_SURFACE_PHYSICAL_DIR']).resolve()
 DAYS=int(os.environ.get('N_SURFACE_DAYS','2'));assert 1<=DAYS<=730
 INCUMBENT=os.environ.get('N_SURFACE_INCUMBENT','0')=='1'
+WRAPPER_SHA=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 original=ROOT/'tests/nut-crop/test_b112_retained_joint.f90';text=original.read_text()
 def replace(a,b,count=1):
  global text
@@ -42,6 +43,7 @@ replace('   first=0','''   last=730
     call get_command_argument(6,arg);if(len_trim(arg)>0)read(arg,*)last
     call require(last>=1.and.last<=730,'bounded surface scenario length')
    end if
+   call get_command_argument(5,arg)
    first=0''')
 replace('   do d=first,729','   do d=first,last-1')
 needle='    forcing%bottom_flux=sum(forcing%root_extraction_sink)+.002d0*season'
@@ -107,10 +109,11 @@ sys.path.insert(0,str(ROOT/'tests/nut-crop'))
 namespace={'__file__':str(runner),'__name__':'surface_physical','INCUMBENT':INCUMBENT,'DAYS':DAYS}
 exec(compile(executed,str(generation/'executed_runner.py'),'exec'),namespace)
 assert namespace['results']['O0']==namespace['results']['O2'],'physical optimization drift'
+assert hashlib.sha256(Path(__file__).read_bytes()).hexdigest()==WRAPPER_SHA,'wrapper changed during execution'
 for name,data in [('generated_driver.f90',text),('executed_runner.py',executed)]: (OUT/name).write_text(data)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 inputs=namespace['inputs'];inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [Path(__file__),original,runner]})
-r=dict(status='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED',days=DAYS,incumbent=INCUMBENT,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256=inputs,results=namespace['results'],generated_driver_sha256=sha(OUT/'generated_driver.f90'),executed_runner_sha256=sha(OUT/'executed_runner.py'),providers=len(namespace['ordered'])-1,cost_seconds={k:sum(e['seconds']for e in namespace['events']if e['category']==k)for k in ['compile','link','native','restart_native']})
+r=dict(status='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED',days=DAYS,incumbent=INCUMBENT,execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256=inputs,results=namespace['results'],generated_driver_sha256=sha(OUT/'generated_driver.f90'),executed_runner_sha256=sha(OUT/'executed_runner.py'),providers=len(namespace['ordered'])-1,literal_sha256=sha(namespace['LITERAL']),authority_sha256={n:hashlib.sha256(v).hexdigest()for n,v in namespace['raws'].items()},authority_archive_sha256=sha(ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'),cost_seconds={k:sum(e['seconds']for e in namespace['events']if e['category']==k)for k in ['compile','link','native','restart_native']})
 if INCUMBENT:
  s=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())
  with tarfile.open(fileobj=io.BytesIO(base64.b64decode((ROOT/s['historical_guard']['physical_evidence']['path']).read_bytes())))as t:

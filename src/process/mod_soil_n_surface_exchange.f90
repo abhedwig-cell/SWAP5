@@ -38,6 +38,7 @@ contains
   r%before=before
   do k=1,size(forcing%steps)
    step=forcing%steps(k)
+   if(.not.all(ieee_is_finite([step%rain_c,step%irrigation_c,step%runon_c,step%dry_deposition_rate])))return
    ! Source concentrations come only from immutable historical parameters.
    if(step%rain_c/=0d0.or.step%irrigation_c/=0d0.or.step%runon_c/=0d0.or.step%dry_deposition_rate/=0d0)return
    dt=step%t1-step%t0

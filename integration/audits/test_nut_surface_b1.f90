@@ -12,7 +12,8 @@ program surface_n_b1
  type(mineral_receipt_t)::r
  type(soil_n_surface_day_t)::f,bad
  type(soil_n_surface_receipt_t)::mix
- real(real64)::time,water,initial_n,expected,theta,old_surface(2)
+ real(real64)::time,water,initial_n,expected,theta,old_surface(2),errors(4)
+ integer::n,j,k
  integer(int64)::revision
  integer::code,i
  p%dz_cm=[30d0];p%inventory%depth_m=.3d0;p%inventory%nfrac_fom=[.01d0]
@@ -67,6 +68,27 @@ program surface_n_b1
  call check(r%status/=0,'NaN forcing rejected')
  call advance_mineral_day(before,1d0,2d0,theta,0d0,0d0,0d0,0d0,r,surface_water=.002d0)
  call check(r%status/=0,'enabled owner cannot silently use net-only route')
+ ! Independent continuously stirred reservoir: implicit substeps must
+ ! converge toward M=C*H*(1-exp(-Q*t/H)) for constant unit pond/outflow.
+ do k=1,4
+  n=2**(k+2)
+  if(allocated(f%steps))deallocate(f%steps)
+  allocate(f%steps(n))
+  do j=1,n
+   f%steps(j)%t0=real(j-1,real64)/n;f%steps(j)%t1=real(j,real64)/n
+   f%steps(j)%depth_begin=1d0;f%steps(j)%depth_end=1d0
+   f%steps(j)%rain_rate=1d0;f%steps(j)%qtop=-.5d0;f%steps(j)%runoff_depth=.5d0/n
+  end do
+  call evaluate_soil_n_surface_day([0d0,0d0],p%c_top,0d0,1d0,f,mix)
+  call check(mix%status==0,'reservoir refinement accepted')
+  errors(k)=maxval(abs(mix%after-p%c_top*.01d0*(1d0-exp(-1d0))))
+  call near(sum(mix%after+mix%infiltrated+mix%runoff),sum(p%c_top)*.01d0,'independent reservoir whole N')
+  if(k>1)then
+   call check(errors(k)<errors(k-1),'reservoir error decreases')
+   call check(errors(k-1)/errors(k)>1.8d0.and.errors(k-1)/errors(k)<2.2d0,'reservoir first order witness')
+  end if
+ end do
+ print '(A,4ES15.6)','SURFACE_N_RESERVOIR_ERRORS=',errors
  print '(A)','SURFACE_N_B1_REAL_OWNER_DRY_REWET_RUNOFF_BALANCE_OPAQUE_ROLLBACK=PASS'
 contains
  subroutine check(ok,label)

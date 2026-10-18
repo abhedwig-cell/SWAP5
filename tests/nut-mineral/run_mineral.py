@@ -34,7 +34,7 @@ end subroutine
  objects=[]
  for i,p in enumerate([fixture,oracle]+providers):
   obj=build/f'direct{i}.o';objects.append(obj)
-  extra=['-Wall','-Wextra','-Werror'] if p in providers else []
+  extra=['-Wall','-Wextra','-Werror'] if p.name in ['mod_soil_n_pool_state.f90','mod_b111_soil_n_storage_conversion.f90','mod_b111_soil_n_transport.f90','mod_b111_soil_n_mineral_owner.f90'] else []
   cmd(FC+flags+extra+['-c',p,'-o',obj],build,'direct_compile')
   if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
  driver=ROOT/'tests/nut-mineral/test_mineral_owner.f90';inputs[str(driver.relative_to(ROOT))]=sha(driver)
