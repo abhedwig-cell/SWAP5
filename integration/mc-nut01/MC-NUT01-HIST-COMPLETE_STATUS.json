@@ -45,7 +45,8 @@
     "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md",
     "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
     "docs/science/MC_NUT01_RESIDUE_N_FRACTION_ROUNDOFF_CONTRACT_20261018.md",
-    "docs/science/MC_NUT01_HIST_HUMUS_QUALIFICATION_20261018.md"
+    "docs/science/MC_NUT01_HIST_HUMUS_QUALIFICATION_20261018.md",
+    "docs/science/MC_NUT01_NATIVE_MATERIAL_SEMANTICS_CONTRACT_20261018.md"
   ],
   "dependency_surface": [
     "Richards daily transaction and forcing",
@@ -54,8 +55,8 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Continue coherent native historical semantics: source-verified material definition labels are overwritten by iMat positional lookup; remove only the native contiguous-label restriction with original-source/native tests, preserve modern export. Then resolve remaining historical gross atmospheric carrier and unsupported semantics; do not promote whole HIST or mastercoverage.",
-  "recovery_point": "Canonical PR1316 merge829bfabade71a3e3156914275d2b3fdc65c29112; exact reviewed/merged tree d1e38a06 and postmerge current owning guard PASS. All scoped humus/raw/retained/CI evidence versioned; full HIST remains false.",
+  "next_action": "Persist native material-position/disabled-flag candidate; bind test selection to implementation checkpoint; execute fresh54-fixture and original32-native source witness, full actual source124/three730-day O0/O2 and changed owning preservation; old humus endpoint must remain exact before new admission.",
+  "recovery_point": "work/nut-native-material-semantics-20261018 from admitted canonical1e8bf36ec52544e50f5b2720031228f9a6369525; new parser/fixture postimage in this checkpoint, not qualified.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
@@ -199,28 +200,28 @@
     "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
   },
   "test_selection": {
-    "candidate": "05917ba8a8a1b109ecf6ca9c2b698807349859c0",
+    "candidate": "PENDING_NATIVE_MATERIAL_IMPLEMENTATION_CHECKPOINT",
     "groups": {
       "nut_actual": {
-        "changed_dependency": "Existing reactive humus clock and immutable identity; existing native parser and conservative residue transfer wrapper",
-        "scientific_claim": "Fresh source124 plus three730-day Richards/WOFOST81/Soil-N rotations with source endpoint-clock humus switch, six fresh-process restarts each, all old endpoints exact",
+        "changed_dependency": "Native material definition labels versus iMat positions and explicit disabled logical option; same actual source profile with noncontiguous labels",
+        "scientific_claim": "Exact previous humus/other730-day endpoints after source-faithful native interpretation; all36 transition restarts/rollback; actual Richards/WOFOST81/Soil-N source124 retained",
         "owner": "MC-NUT01",
         "authority": "AGENTS.md#Independent local testability",
-        "expected_seconds": 1300,
-        "existing_evidence": "Original clock/rate/TTUTIL and material focused O0/O2 PASS; f9 full FAIL and cancelled retained attempt preserved; no inherited PASS for changed production bodies",
-        "prior_execution": "FAILED",
-        "diagnosis": "Original f9 day397 root N/DM quotient is one spacing below FOM minimum. Existing builder rejects negative source organic transfer. Corrected residue wrapper preserves declared N with bounded projection and NH4 debit; full source05917 is freshly compiled O0/O2. Earlier contract already selected this gate before implementation; this record replaces stale prior-phase selection metadata.",
+        "expected_seconds": 1100,
+        "existing_evidence": "Canonical PR1316 whole physical gate terminal PASS onad87; new parser/driver inputs differ, so RUN affected main. Independent unchanged material/reactive/mineral/source-clock bodies remain exact and can inherit only after input checks.",
+        "prior_execution": "NONE",
+        "diagnosis": "New input domain interpretation leaves all material properties/crop/N equations unchanged. Small54-fixture and original32-native source witnesses discriminate binding. Full physical main specifically uses noncontiguous definition labels/false flag and must preserve exact old endpoint; previous current main compiled changed parser and cannot be inherited as current source.",
         "measured_seconds": 485.4074764580091
       },
       "retained_admission": {
         "owner": "MC-NUT01",
         "authority": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md#Frozen qualification conditions",
-        "changed_dependency": "Existing humus reactive owner and residue transfer builder; all retained physical pools and native identities affected",
-        "scientific_claim": "Full current default/retained/thermal/empty/TCS6 execution against exact immutable predecessor outputs; provider identity reused only within live selected run",
+        "changed_dependency": "Existing retained source-startup composition uses the changed parser and changed actual joint driver",
+        "scientific_claim": "Current parser/owner composition and byte identity against existing default/source/retained/thermal/TCS6 references through declared owner gates",
         "expected_seconds": 1500,
-        "existing_evidence": "Fresh05917 joint qualification active. Phases/TCS6 require terminal fresh joint proof then their own native executions. Original annual-source and codec only inherited after unchanged compiled inputs check.",
+        "existing_evidence": "Original PR1316 retained/thermal/TCS6 terminal PASS and archived old bytes; changed current startup provider/test inputs require fresh owner execution under existing strict admission gate.",
         "selection": "SELECTED_OWNING_ADMISSION",
-        "diagnosis": "Prior f9 attempt cancelled after concrete day397 fix; selected fresh05917 joint build. Changed common addition body requires owning retained admission, not a whole F-CI or RossFast rerun.",
+        "diagnosis": "No kinetic/pool/solver change. The actual current retained source-startup caller is affected and its owner admission includes thermal/native-disk/TCS6 byte preservation. Direct small physical processes retain unchanged source-bound evidence; no broad moving F-CI or RossFast rerun selected.",
         "measured_seconds": 1421.7815913070062
       },
       "hist_water_n_audits": {
@@ -233,7 +234,7 @@
         "prior_execution": "NONE"
       }
     },
-    "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
+    "previous_candidate": "05917ba8a8a1b109ecf6ca9c2b698807349859c0"
   },
   "surface_extension_contract": {
     "status": "QUALIFIED_BOUNDED_ADMISSION_BY_PR_1313",
@@ -968,5 +969,27 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "mastercoverage_promotion": false
     }
+  },
+  "native_material_successor": {
+    "status": "IMPLEMENTED_DEVELOPMENT_FEEDBACK_NOT_QUALIFIED",
+    "branch": "work/nut-native-material-semantics-20261018",
+    "base_canonical": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+    "contract": "docs/science/MC_NUT01_NATIVE_MATERIAL_SEMANTICS_CONTRACT_20261018.md",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false,
+    "mastercoverage_promotion": false,
+    "scope": "Native definition labels1..20 normalize to positional property rows, event iMat stays actual defined position; native explicit flCropExt=false only; modern export remains separate. No pool, physics, vector or restart schema change.",
+    "development_feedback": {
+      "native": "54 fixtures O0/O2 PASS before persistence; final helper additionally runs actual modern-export/historical activation driver, needs rerun after checkpoint",
+      "original": "Fresh153 original TTUTIL providers per optimization plus literal reader/default flag and full original amendment routine:16 positive cases and2 source range negatives per opt PASS",
+      "modern_export": "Real historical activation/modern-export disabled flag rejection O0/O2 PASS before persistence",
+      "first_source_wrapper_failure": "Original source snippet opened IF without wrapper END IF; exact compiler log retained under /tmp/nut-material-original-feedback; fixed independent reader witness in feedback2, no production compile failure",
+      "full_capability": false
+    },
+    "next_action": "Persist native material-position/disabled-flag candidate; bind test selection to implementation checkpoint; execute fresh54-fixture and original32-native source witness, full actual source124/three730-day O0/O2 and changed owning preservation; old humus endpoint must remain exact before new admission.",
+    "preservation_policy": "Only immutable current small mineral/reactive/material/source-clock/export compiled inputs may inherit after exact source/oracle/flags/environment checks. Changed startup parser and actual owner driver require fresh full main and owning retained/preservation. No RossFast or whole F-CI selected."
   }
 }

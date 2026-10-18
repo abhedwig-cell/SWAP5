@@ -7,7 +7,7 @@ module mod_soil_n_historical_named_input
  implicit none
  private
  integer,parameter,public::N_NAMED_OK=0,N_NAMED_INVALID=1,N_NAMED_IO=2
- integer,parameter::COUNT=34
+ integer,parameter::COUNT=35
  character(32),parameter::names(COUNT)=[character(32):: &
  'FOM1_t', &
  'FOM2_t', &
@@ -39,7 +39,7 @@ module mod_soil_n_historical_named_input
  'AppAgeLv', &
  'AppAgeSt', &
  'AppAgeSo', &
- 'cNH4N_top','cNO3N_top','RateconHum_exp','tstartHumexp']
+ 'cNH4N_top','cNO3N_top','RateconHum_exp','tstartHumexp','flCropExt']
  type,public::soil_n_residue_age_t
    real(real64)::root=1.27d0,leaf=.99d0,stem=1.27d0,storage=1.27d0
  end type
@@ -95,7 +95,7 @@ contains
    logical::seen(COUNT)
    real(real64)::v(COUNT),x
    integer::i,n,pos,field_index,ios,comment,j,c
-   character(32)::name_lower
+   character(32)::name_lower,logical_token
    integer::source_line(COUNT)
    initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
    status=N_NAMED_INVALID;error_line=0;seen=.false.;v=0d0
@@ -139,7 +139,16 @@ contains
      if(seen(field_index))return
      if(scan(trim(token),' /,;*!')/=0)return
      if(len_trim(token)>32.or.len_trim(token)==0)return
-     if(native.and.field_index==34)then
+     if(native.and.field_index==35)then
+      logical_token=token
+      do j=1,len_trim(logical_token)
+       c=iachar(logical_token(j:j));if(c>=65.and.c<=90)logical_token(j:j)=achar(c+32)
+      end do
+      ! Original default is disabled. True extended output is unsupported,
+      ! rather than silently ignored; false changes no physical identity.
+      if(trim(logical_token)/='.false.')return
+      x=0d0
+     else if(native.and.field_index==34)then
       call parse_soil_n_date(trim(token),x,ios)
       if(ios/=0)return
      else

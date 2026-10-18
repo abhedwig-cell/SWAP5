@@ -312,8 +312,13 @@ contains
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
    if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
     write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
-    write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
-    write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
+    if(trim(selected)=='humus-profile')then
+     write(unit,'(A)')"20 'Mineral' 0. 0. 0. .21 .10"
+     write(unit,'(A)')"1 'Compost' 1.96 .19 .041 .0008 .0003"
+    else
+     write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
+     write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
+    end if
     write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
     write(unit,'(A)')'1900-12-30 1 100. .1','1901-01-01 1 50. .1', &
       '1901-01-01 2 1000. .1','1901-06-30 2 1000. .1', &
@@ -348,7 +353,7 @@ contains
       'cNH4N_top = 0.','cNO3N_top = 0.'
    end if
    if(trim(selected)=='humus-profile')write(unit,'(A)') &
-     'RateconHum_exp = 0.04','tstartHumexp = 1901-12-31'
+     'RateconHum_exp = 0.04','tstartHumexp = 1901-12-31','flCropExt = .FALSE.'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal

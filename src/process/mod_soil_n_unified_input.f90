@@ -100,7 +100,7 @@ contains
   integer::value_line(11,1000),active_key,header(11),newheader(11),nh,col,idx
   logical::is_header,array_declared(11),has_repeat
   integer::nvalues(11),nparam,nmat,nevt,unit,ios,nbytes,code,closed,record,j,k,eq,nt
-  integer::parameter_source_line(512),parameter_error_line,table_error_column
+  integer::parameter_source_line(512),parameter_error_line,table_error_column,definition_label
   logical::ok
   type(soil_n_amendment_calendar_t)::candidate_plan
   type(soil_n_historical_initial_t)::candidate_initial
@@ -206,6 +206,17 @@ contains
   nmat=nvalues(1);nevt=nvalues(8)
   if(nmat<1.or.nmat>20.or.nevt>1000)return
   if(any(nvalues(2:7)/=nmat).or.any(nvalues(9:11)/=nevt))return
+  do k=1,nmat
+   error_line=value_line(1,k)
+   if(len_trim(values(1,k))>9)return
+   read(values(1,k),*,iostat=code)definition_label
+   if(code/=0)return
+   if(definition_label<1.or.definition_label>20)return
+   ! Original management_soil overwrites definition MatNum with event iMat.
+   ! Properties are positional: labels are neither keys nor unique identities.
+   ! Normalize only native rows; the modern export keeps its own contract.
+   write(values(1,k),'(I0)')k
+  end do
   rows(1)='MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
   do k=1,nmat
    rows(k+1)=trim(values(1,k))//' '//trim(values(2,k))//' '//trim(values(3,k))// &

@@ -32,6 +32,22 @@ program test_historical_activation
  if(code/=N_NAMED_OK)error stop '26 named fields'
  if(rates%no3_seep/=.2d0.or.rates%no3_lat/=.4d0)error stop 'distinct no3 routes'
  if(rates%lai_crit_nupt/=0d0)error stop 'original optional LaiCritNupt default'
+ block
+  character(128)::modern_lines(32)
+  integer::j,nmodern,ios
+  open(newunit=unit,file='historical-fields.txt',status='old')
+  do j=1,31
+   read(unit,'(A)',iostat=ios)modern_lines(j)
+   if(ios/=0)exit
+  end do
+  close(unit)
+  if(ios>=0)error stop 'modern fixture not bounded'
+  nmodern=j
+  modern_lines(nmodern)='flCropExt = .false.'
+  call parse_historical_soil_n_named_lines(modern_lines(:nmodern),legacy,rates,code,line_number)
+  if(code/=N_NAMED_INVALID.or.line_number/=nmodern)error stop 'native logical admitted by modern export'
+  if(any(legacy%fom_kg_m3/=0d0).or.legacy%hum_kg_m3/=0d0)error stop 'modern flag rejection published inventory'
+ end block
  open(newunit=unit,file='historical-fields.txt',position='append')
  write(unit,'(A)')'SorpCoef = 0.1'
  close(unit)

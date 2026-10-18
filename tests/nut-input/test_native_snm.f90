@@ -23,6 +23,20 @@ program test_native_snm
   if(any(initial%fom_kg_m3/=1d0).or.initial%bio_kg_m3/=5d0.or.initial%hum_kg_m3/=40d0)error stop 2
   if(rates%ratecon_nitrif_ref/=.02d0.or.rates%depth_m/=.3d0.or.rates%lai_crit_nupt/=0d0)error stop 3
   if(ages%root/=1.27d0.or.ages%leaf/=.99d0)error stop 4
+  if(expected==8)then
+   if(rates%hum_exp_per_year/=-1d0.or.rates%hum_exp_start_day/=0d0)error stop 19
+   call select_soil_n_amendments(plan,365d0,366d0,items,indices,status)
+   if(status/=0.or.size(items)/=1)error stop 20
+   if(indices(1)/=1.or.items(1)%ammonium_n_fraction/=.4d0.or. &
+      items(1)%nitrate_n_fraction/=.05d0.or.items(1)%application_kg_m2/=.01d0)error stop 21
+   call select_soil_n_amendments(plan,366d0,367d0,items,indices,status)
+   if(status/=0.or.size(items)/=1)error stop 22
+   if(indices(1)/=2.or.items(1)%ammonium_n_fraction/=.1d0.or. &
+      items(1)%nitrate_n_fraction/=.2d0.or.items(1)%application_kg_m2/=.02d0)error stop 23
+   print '(A)','NATIVE_SNM_DEFINITION_LABELS_EVENT_POSITIONS=PASS'
+   print '(A)','NATIVE_SNM_INTERPRETATION=PASS'
+   stop
+  end if
   if(expected>=2)then
    if(rates%hum_exp_start_day/=365d0)error stop 12
    if(expected==2.and.rates%hum_exp_per_year/=.1d0)error stop 13

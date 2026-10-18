@@ -89,6 +89,42 @@ for name,extra in {
  elif name in ['hum_impossible_date','hum_fractional_date','hum_duplicate_start']:line=len(text.splitlines())
  else:line=next(i+1 for i,l in enumerate(text.splitlines())if l.startswith('RateconHum_exp'))
  fixtures[name]=(text,-line)
+pos_table="""MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac
+ID1 'First' 0. 0. 0. .10 .20
+ID2 'Second' 0. 0. 0. .40 .05
+smedate iMat Dosagekgha VolatFraction
+1901-01-01 2 100. 0.
+1901-01-02 1 200. 0.
+;
+"""
+pos_array="""MatNum = ID1 ID2
+MatName = 'First' 'Second'
+AppAge = 2*0.
+OrgMatFrac = 2*0.
+OrgNFrac = 2*0.
+NH4NFrac = .10 .40
+NO3NFrac = .20 .05
+smedate = 1901-01-01 1901-01-02
+iMat = 2 1
+Dosagekgha = 100. 200.
+VolatFraction = 2*0.
+"""
+for name,ids in [('contiguous',(1,2)),('noncontiguous',(20,1)),('reversed',(2,1)),('duplicate',(1,1))]:
+ for grammar,text in [('table',pos_table),('arrays',pos_array)]:
+  fixtures['pos_'+name+'_'+grammar]=(text.replace('ID1',str(ids[0])).replace('ID2',str(ids[1]))+params,8)
+for name,label in [('zero','0'),('too_large','21')]:
+ fixtures['definition_label_'+name]=(pos_table.replace('ID1',label).replace('ID2','1')+params,-2)
+for name,extra,expected in [
+ ('crop_ext_disabled_lower','flCropExt = .false.\n',0),
+ ('crop_ext_disabled_upper','FLCROPEXT = .FALSE.\n',0),
+ ('crop_ext_true_unsupported','flCropExt = .true.\n',-1),
+ ('crop_ext_integer','flCropExt = 0\n',-1),
+ ('crop_ext_malformed','flCropExt = nonsense\n',-1),
+ ('crop_ext_duplicate','flCropExt = .false.\nflCropExt = .false.\n',-1),
+]:
+ text=array+params+extra
+ if expected<0:expected=-len(text.splitlines())
+ fixtures[name]=(text,expected)
 for name,(text,_)in fixtures.items():(OUT/(name+'.snm')).write_text(text)
 providers={}
 for p in (ROOT/'src').rglob('*.f90'):
@@ -101,7 +137,7 @@ def visit(p):
   if m.lower() in providers:visit(providers[m.lower()])
  ordered.append(p)
 driver=ROOT/'tests/nut-input/test_native_snm.f90';visit(driver)
-events=[];outputs={}
+events=[];outputs={};activation_outputs={}
 def run(args,b,category):
  t=time.perf_counter();p=subprocess.run(list(map(str,args)),cwd=b,capture_output=True);i=len(events)
  for stream in ['stdout','stderr']:(OUT/f'{i}.{stream}').write_bytes(getattr(p,stream))
@@ -115,7 +151,13 @@ for opt in ['O0','O2']:
   o=b/f'{i}.o';run(['gfortran',*flags,'-c',p,'-o',o],b,'compile');objs.append(o)
  exe=b/'test';run(['gfortran',*flags,*objs,'-o',exe],b,'link')
  outputs[opt]={name:run([exe,OUT/(name+'.snm'),str(expected)],b,'native')for name,(_,expected)in fixtures.items()}
+ activation_driver=ROOT/'tests/nut-reactive/test_historical_activation.f90'
+ activation_object=b/'historical_activation.o';activation_exe=b/'historical_activation'
+ run(['gfortran',*flags,'-I'+str(ROOT/'tests/nut-reactive'),'-c',activation_driver,'-o',activation_object],b,'activation_compile')
+ run(['gfortran',*flags,*objs[:-1],activation_object,'-o',activation_exe],b,'activation_link')
+ activation_outputs[opt]=run([activation_exe],b,'activation_native')
 assert outputs['O0']==outputs['O2']
+assert activation_outputs['O0']==activation_outputs['O2']and 'NUT_HISTORICAL_ACTIVATION_O0_O2=PASS'in activation_outputs['O0']
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
-r=dict(status='PASS',execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=run(['gfortran','--version'],OUT,'compiler').splitlines()[0],input_sha256={str(p.relative_to(ROOT)):sha(p)for p in ordered+[Path(__file__)]},fixtures={n:sha(OUT/(n+'.snm'))for n in fixtures},outputs=outputs,production_providers=len(ordered)-1,cost_seconds={k:sum(e['seconds']for e in events if e['category']==k)for k in ['compile','link','native']})
+r=dict(status='PASS',execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=run(['gfortran','--version'],OUT,'compiler').splitlines()[0],input_sha256={str(p.relative_to(ROOT)):sha(p)for p in ordered+[Path(__file__),activation_driver]},fixtures={n:sha(OUT/(n+'.snm'))for n in fixtures},outputs=outputs,activation_outputs=activation_outputs,production_providers=len(ordered)-1,cost_seconds={k:sum(e['seconds']for e in events if e['category']==k)for k in ['compile','link','native','activation_compile','activation_link','activation_native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print('NATIVE_SNM_O0_O2_PASS',len(fixtures),'fixtures',len(ordered)-1,'providers')
