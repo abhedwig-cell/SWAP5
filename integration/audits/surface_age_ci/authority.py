@@ -27,7 +27,23 @@ def evidence():
 def validate(f):
  r=json.loads(f['result.json']);check(r['status']=='THREE_EXISTING_CI_ROUTES_LOCAL_PASS','unfinished CI science')
  check(r['execution_commit']==record()['execution_commit'],'unbound CI execution')
- for p,h in r['input_sha256'].items():check(sha((ROOT/p).read_bytes())==h,'stale CI science input '+p)
+ # The conservative inventory also includes source never compiled by these routes.
+ # Only an exact independently qualified upstream parser and two guard changes
+ # may differ; compiled physical providers remain byte-identical.
+ delta={p:(h,sha((ROOT/p).read_bytes())) for p,h in r['input_sha256'].items() if sha((ROOT/p).read_bytes())!=h}
+ allowed=record().get('inherited_inventory_delta',{})
+ check(set(delta)==set(allowed),'unregistered CI inventory successor')
+ for p,(before,after) in delta.items():
+  v=allowed[p];check(before==v['before_sha256'] and after==v['after_sha256'],'unbound CI inventory successor '+p)
+  check(sha(subprocess.check_output(['git','show',r['execution_commit']+':'+p],cwd=ROOT))==before,'CI predecessor inventory '+p)
+ if delta:
+  import runpy
+  hist=runpy.run_path(str(ROOT/'tests/nut-crop/verify_hist_native_successor.py'),run_name='ci_registered_parser_science')
+  g=json.loads((ROOT/hist['STATUS']).read_text())['historical_guard']
+  hist['registered_label_reader'](g,hist['archive'](g['physical_evidence']))
+  ee=json.loads(f['compiler-events.json'])
+  for p in delta:
+   check(not any('-c'in e['args']and e['args'][e['args'].index('-c')+1].endswith(p)for e in ee),'changed compiled CI provider '+p)
  required={'fci51':'FCI51P_SUCCESSOR_O0_O2_PRESERVATION=PASS','fci58':'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS','fgc':'F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS'}
  check({e['case']for e in r['events']}==set(required),'missing CI route')
  for e in r['events']:

@@ -1,8 +1,8 @@
 {
   "work_unit": "MC-SOL01-SURFACE-AGE03-CI",
   "workstream": "MC-SOL01 / F-CI / F-GC",
-  "baseline": "1e8bf36ec52544e50f5b2720031228f9a6369525",
-  "stage": "FULL_MOVING_SELECTED_OWNER_SCIENCE_QUALIFIED",
+  "baseline": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+  "stage": "RECONCILING_QUALIFIED_NATIVE_LABEL_SUCCESSOR",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -22,7 +22,7 @@
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
       "status": "A",
-      "sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4"
+      "sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75"
     },
     "integration/audits/surface_age_ci/run.py": {
       "status": "A",
@@ -62,7 +62,7 @@
     },
     "tests/nut-crop/verify_hist_native_successor.py": {
       "status": "M",
-      "sha256": "2ed52ca07ee657dfbe31414dc703ebd0d09acefded0278cc768e646b7749b228"
+      "sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090"
     },
     "tests/nut-sol/verify_surface_age_successor.py": {
       "status": "M",
@@ -84,7 +84,7 @@
     "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "test_selection": {
-    "candidate": "f29cc65938ea26b4dd02a52266de0f26d9c5b1b0",
+    "candidate": "9de996d43bb7fcc7cbd898755fcf510e4707fd28",
     "groups": {
       "fgc_closeout": {
         "changed_dependency": "Four explicit runtime compile closures now use complete provider resolution",
@@ -93,8 +93,7 @@
         "authority": "docs/integration/SWAP5_MODFLOW6_FIXED_INTERFACE_CLOSEOUT.md",
         "expected_seconds": 900,
         "existing_evidence": "Prior historical admitted original gate; current3source build failure cannot qualify current closure",
-        "prior_execution": "PASS",
-        "diagnosis": "All original science and restart assertions complete; segmented recovery and earlier infra failures retained"
+        "prior_execution": "NONE"
       },
       "full_fci": {
         "changed_dependency": "CI eligibility/source authority composition and owner runner closure",
@@ -210,5 +209,28 @@
       "members": 9
     }
   },
-  "fgc_execution_mode": "Complete original assertions in two same-source immutable segments: original full body through exact two fresh physical endpoints, restart suffix after fetching missing historical Git object; no monolithic shell PASS claimed"
+  "fgc_execution_mode": "Complete original assertions in two same-source immutable segments: original full body through exact two fresh physical endpoints, restart suffix after fetching missing historical Git object; no monolithic shell PASS claimed",
+  "upstream_native_labels": {
+    "canonical": "b27a646928c73d334fd11f54b74b7f12cc0064a4",
+    "production_delta": "src/process/mod_soil_n_unified_input.f90 only, independent original/native O0/O2 parser and complete physical endpoint proof retained",
+    "shared_dispatch": "Both native-label registered reader and additive CI authority retained",
+    "rule": "Conservative inventory is not evidence of actual execution; unchanged compiled numerical closure inherited; fresh combined source and all negative controls required"
+  },
+  "inherited_inventory_delta": {
+    "src/process/mod_soil_n_unified_input.f90": {
+      "before_sha256": "97653bd317dcecd33398ae6a1297d5ce224ef9c3f46e888bd47f9025cd9a0e78",
+      "after_sha256": "cd1bcf90bdb7162e4bc104987f6feb595a98b44e102cc32517e2895b6ed16c3c",
+      "reason": "Registered independent parser original/native proof"
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "before_sha256": "2ed52ca07ee657dfbe31414dc703ebd0d09acefded0278cc768e646b7749b228",
+      "after_sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090",
+      "reason": "Exact composed qualification authority; fresh negative controls required"
+    },
+    "integration/audits/surface_age_ci/authority.py": {
+      "before_sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4",
+      "after_sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75",
+      "reason": "Exact composed qualification authority; fresh negative controls required"
+    }
+  }
 }
