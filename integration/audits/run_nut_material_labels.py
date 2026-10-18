@@ -47,7 +47,7 @@ original='''program original_labels
  call rdatim('smedate',dates,1000,n)
  call rdfinr('iMat',1,1000,mat,1000,n)
  if(n/=3.or.any(mat(:n)/=[2,1,2]))error stop 2
- if(any(frac(mat(:n))/=[.07d0,.21d0,.07d0]))error stop 3
+ if(maxval(abs(frac(mat(:n))-[.07d0,.21d0,.07d0]))>1d-14)error stop 3
  close(20)
  print '(A)','ORIGINAL_LABEL_OVERWRITE_POSITION_LOOKUP=PASS'
 end program

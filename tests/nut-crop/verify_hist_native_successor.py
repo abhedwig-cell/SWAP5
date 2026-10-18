@@ -156,9 +156,20 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False,humus=F
  require(inherited['annual_source_pass']and inherited['annual_codec_bytes_pass'],'classic preservation')
  return dict(local_physical_days=730,parser_cases=38 if humus else 25 if atmospheric else 24,transition_fresh_processes=36 if humus else 24 if atmospheric else 12,atmospheric_n=atmospheric,humus_experiment=humus,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
 
+def registered_label_reader(g,h):
+ record=g.get('native_material_labels')
+ if not record:return lambda q:(ROOT/q).read_bytes()
+ import importlib.util
+ path=ROOT/'integration/audits/verify_nut_material_labels.py'
+ require(sha(path.read_bytes())==record['validator_sha256'],'label registered validator')
+ spec=importlib.util.spec_from_file_location('nut_native_labels',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+ return module.verify(ROOT,record,archive(record['evidence']),h,require)
+
 def load():
  g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline')
- science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']),atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
+ h=archive(g['physical_evidence']);p=archive(g['retained_evidence'])
+ reader=registered_label_reader(g,h)
+ science=validate(h,p,reader=reader,atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
  for q,v in g['postimages'].items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
  surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science')
  rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()}
@@ -185,8 +196,9 @@ def verify_qualification():return {**load(),'historical_native_successor':True,'
 def main():
  a=argparse.ArgumentParser();a.add_argument('--self-test',action='store_true');args=a.parse_args()
  if not args.self_test:print(json.dumps(verify_qualification(),indent=2));return
- g=json.loads((ROOT/STATUS).read_text())['historical_guard'];h=archive(g['physical_evidence']);p=archive(g['retained_evidence']);atmospheric=g.get('atmospheric_n',False);humus=g.get('humus_experiment',False);validate(h,p,atmospheric=atmospheric,humus=humus);controls=[]
- def reject(label,hh,pp,reader=lambda q:(ROOT/q).read_bytes()):
+ g=json.loads((ROOT/STATUS).read_text())['historical_guard'];h=archive(g['physical_evidence']);p=archive(g['retained_evidence']);atmospheric=g.get('atmospheric_n',False);humus=g.get('humus_experiment',False);baseline_reader=registered_label_reader(g,h);validate(h,p,reader=baseline_reader,atmospheric=atmospheric,humus=humus);controls=[]
+ def reject(label,hh,pp,reader=None):
+  if reader is None:reader=baseline_reader
   try:validate(hh,pp,reader,atmospheric=atmospheric,humus=humus)
   except(ValueError,KeyError,IndexError):controls.append(label);return
   raise AssertionError('accepted '+label)
@@ -197,7 +209,7 @@ def main():
  pp=dict(p);e=json.loads(pp['joint/events.json']);pp['joint/events.json']=json.dumps([x for x in e if x['category']!='native']).encode();reject('missing retained native',h,pp)
  pp=dict(p);r=json.loads(pp['phases/result.json']);r['events']=[e for e in r['events']if e['category']!='native'];pp['phases/result.json']=json.dumps(r).encode();reject('missing thermal native',h,pp)
  pp=dict(p);r=json.loads(pp['tcs6/result.json']);r['runs']=r['runs'][:-1];pp['tcs6/result.json']=json.dumps(r).encode();reject('missing TCS6',h,pp)
- q='src/process/mod_b111_soil_n_mineral_owner.f90';reject('body drift',h,p,lambda x:(ROOT/x).read_bytes()+(b'!'if x==q else b''))
+ q='src/process/mod_b111_soil_n_mineral_owner.f90';reject('body drift',h,p,lambda x:baseline_reader(x)+(b'!'if x==q else b''))
  if atmospheric:
   hh=dict(h);hh['nut-hist-capacity-qualified/O0/atmospheric-profile.restart.clean-reject-120']+=b'x';reject('clean-only state leak',hh,p)
   hh=dict(h);e=json.loads(hh['nut-hist-capacity-qualified/events.json']);hh['nut-hist-capacity-qualified/events.json']=json.dumps([x for x in e if 'atmospheric-profile'not in x['command']]).encode();reject('missing atmospheric execution',hh,p)
