@@ -60,6 +60,7 @@ contains
     type(surface_age_receipt_t),intent(out)::receipt
     integer,intent(out)::status
     real(real64)::scale
+    type(surface_age_request_t)::trial_request
     candidate=state
     receipt=surface_age_receipt_t()
     status=AGE_OWNER_REJECTED
@@ -68,7 +69,10 @@ contains
     if(abs(state%depth_cm-q%pond_start_cm)>1.0e-12_real64*scale)return
     if(.not.ieee_is_finite(q%dt_day))return
     if(q%dt_day>1.0e8_real64-abs(state%time_day))return
-    call advance_surface_age_budget(q,receipt)
+    ! The persistent owner, not a potentially stale caller, supplies age stock.
+    trial_request=q
+    trial_request%pond_age_stock_cm_day=state%stock_cm_day
+    call advance_surface_age_budget(trial_request,receipt)
     if(receipt%status/=SURFACE_AGE_OK)return
     candidate%time_day=state%time_day+q%dt_day
     candidate%depth_cm=q%pond_end_cm
