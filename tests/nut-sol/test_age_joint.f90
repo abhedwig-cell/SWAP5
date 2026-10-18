@@ -144,6 +144,19 @@ program test_age_joint
          cfg%tiles(1)%template,670001_int64,9001_int64,8802_int64,p, &
          restored_water,restored_soil,restored_surface,code)
     call require(code/=TRIPLET_DISK_OK,'wrong surface identity rejects all')
+    block
+      type(surface_age_owner_t)::inconsistent_surface
+      call initialize_surface_age_owner(8801_int64,T1,0.2_real64,3.0_real64,inconsistent_surface,code)
+      call require(code==AGE_OWNER_OK,'inconsistent surface fixture')
+      call write_surface_age_disk(trim(restart_path)//'.inconsistent',8801_int64,inconsistent_surface,code)
+      call require(code==AGE_DISK_OK,'write inconsistent sidecar fixture')
+      call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.inconsistent',column, &
+           cfg%tiles(1)%template,670001_int64,9001_int64,8801_int64,p, &
+           restored_water,restored_soil,restored_surface,code)
+      call require(code/=TRIPLET_DISK_OK,'pond depth mismatch rejects all')
+      call require(.not.restored_water%ready().and..not.restored_soil%ready(), &
+           'inconsistent sidecar preserves empty targets')
+    end block
     call require(.not.restored_water%ready().and..not.restored_soil%ready(), &
          'failed composite read leaves both old owners empty')
     call restore_age_triplet_disk(trim(restart_path),trim(restart_path)//'.surface',column, &
