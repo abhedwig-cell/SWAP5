@@ -28,6 +28,11 @@ program test_native_snm
    if(expected==2.and.rates%hum_exp_per_year/=.1d0)error stop 13
    if(expected==3.and.rates%hum_exp_per_year/=0d0)error stop 14
    if(expected==4.and.rates%hum_exp_per_year/=.0001d0)error stop 15
+   if(expected==5.or.expected==6)then
+    if(rates%hum_exp_per_year/365.2425d0>1d-6)error stop 17
+   end if
+   if(expected==7.and.rates%hum_exp_per_year/365.2425d0<=1d-6)error stop 18
+   if(expected>=5)print '(A,L1)','NATIVE_HUMUS_THRESHOLD_ACTIVE=',rates%hum_exp_per_year/365.2425d0>1d-6
   else
    if(rates%hum_exp_per_year/=-1d0.or.rates%hum_exp_start_day/=0d0)error stop 16
   end if

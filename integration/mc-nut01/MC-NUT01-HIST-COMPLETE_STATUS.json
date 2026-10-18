@@ -57,7 +57,7 @@
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "eb535816b1ae484b0587de18de6099bab8a53566",
-  "last_reconciled_upstream": "01a053f93f9c6548278df503a4cfea5424c84fce",
+  "last_reconciled_upstream": "d4912b3c37461ad918f37c53b236fa1d62478de6",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -762,6 +762,34 @@
       "first_t0_checkpoint": "ba3eb412df2020efc6c63bb46de013764fd5958f",
       "first_t0_feedback": "DIAGNOSTIC_ONLY_NOT_QUALIFIED",
       "corrected_development_witness": "Original caller snippets and full original rateconstants O0/O2 PASS"
+    },
+    "residue_boundary_correction": {
+      "contract": "docs/science/MC_NUT01_RESIDUE_N_FRACTION_ROUNDOFF_CONTRACT_20261018.md",
+      "status": "IMPLEMENTED_DEVELOPMENT_PASS_NOT_QUALIFIED",
+      "failed_source_checkpoint": "f9afce3ba316c70a928bf670ee44a8abc5ca2b53",
+      "failure_day": 397,
+      "failure_layer": "SENESCENCE_DAY_RETURN; root material below FOM N minimum by exactly one spacing",
+      "diagnostic_pending_valid": true,
+      "diagnostic_material_status": [
+        1,
+        0,
+        0
+      ],
+      "original_failed_trial_full_native_bytes_preserved": true,
+      "rollback_payload_bytes": 3136,
+      "local_feedback": "Original negative-organic edge, one..eight spacing conservative NH4 debit, beyond-bound/amendment rejection and unavailable-N rollback PASS O0/O2; targeted ABI-identical single-provider retry reaches730 days; not qualified",
+      "full_gate_attempt": "First main f9 fails day397; first retained f9 cancelled after concrete production fix became necessary; never counted PASS",
+      "gates_relaxed": false
+    },
+    "upstream_reconciliation": {
+      "canonical": "d4912b3c37461ad918f37c53b236fa1d62478de6",
+      "admitted_parallel_pr": 1309,
+      "nut_compiled_provider_overlap": [],
+      "age_physical_input_overlap": [],
+      "shared_guard_overlap": [
+        "tests/nut-crop/verify_hist_native_successor.py"
+      ],
+      "next": "Merge qualified canonical dependency surface and reconcile strict NUT/age source/evidence dispatch before fresh qualification"
     }
   }
 }

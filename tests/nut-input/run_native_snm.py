@@ -73,7 +73,7 @@ for key,field,value in [('negative_nitrif','RateConNitrif_ref','-.02'),('lai_ran
 fixtures['capacity20x1000']=(table.splitlines()[0]+'\n'+"1 'Mineral ! fertiliser' 0. 0. 0. .21 .10\n"+''.join(f"{i} 'M{i}' 0. 0. 0. .21 .10\n"for i in range(2,21))+table[table.index('smedate'):table.index(';')]+''.join(f"{datetime.date(1901,1,2)+datetime.timedelta(days=i)} 1 0. 0.\n"for i in range(997))+';\n'+params,0)
 fixtures['too_many_records']=('\n'*4096+array+params,-1)
 fixtures['nonzero_top']=(array+params.replace('cNH4N_top = 0.','cNH4N_top = .0005').replace('cNO3N_top = 0.','cNO3N_top = .0015'),1)
-for name,rate,expected in [('hum_experiment','.1',2),('hum_zero','0.',3),('hum_small','.0001',4)]:
+for name,rate,expected in [('hum_experiment','.1',2),('hum_zero','0.',3),('hum_small','.0001',4),('hum_threshold','.0003652425',5),('hum_threshold_below','.00036524249999999',6),('hum_threshold_above','.00036524250000001',7)]:
  fixtures[name]=(array+params+'RateconHum_exp = '+rate+'\ntstartHumexp = 01-JAN-1901\n',expected)
 for name,extra in {
  'hum_start_without_rate':'tstartHumexp = 01-JAN-1901\n',
