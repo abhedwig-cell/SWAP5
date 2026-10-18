@@ -90,6 +90,9 @@ for opt in ('O0','O2'):
     exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')
     restart=build/'restart.bin';expected=build/'expected.bin';fresh=build/'fresh.bin'
     stdout=run([exe,'write',restart,expected],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in stdout
+    gross_resume=run([exe,'gross-resume',restart,expected],build,'physical_native')
+    assert b'MC_SOL01_GROSS_FRESH_PROCESS_V2=PASS' in gross_resume
+    assert (build/'restart.bin.gross-next').read_bytes()==(build/'restart.bin.gross-fresh').read_bytes()
     resumed=run([exe,'resume',restart,fresh],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in resumed
     assert expected.read_bytes()==fresh.read_bytes()
     dry_restart=build/'dry-restart.bin';dry_expected=build/'dry-expected.bin';dry_fresh=build/'dry-fresh.bin'
