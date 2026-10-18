@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "61b41f83ccd98b9bbb540f3e0d4a49da515094ee",
+  "checkpoint_commit": "05917ba8a8a1b109ecf6ca9c2b698807349859c0",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -49,15 +49,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Persist coherent implementation then fresh main O0/O2 closure with source124 and three730-day profiles, original TTUTIL seven-fixture oracle, exact transition restarts/identity rollback, affected retained/thermal/TCS6 and owning guard; integrate only scoped qualified capability.",
-  "recovery_point": "work/nut-hist-humus-20261018 (implementation checkpoint follows canonical01a053f93f9c6548278df503a4cfea5424c84fce)",
+  "next_action": "Run bound observational water/N audits and finish current full retained then fresh thermal/TCS6; package all raw results and failed day397/rollback evidence, qualify exact owning guards and required integrated workflows before scoped canonical integration.",
+  "recovery_point": "work/nut-hist-humus-20261018; persisted production05917ba8, exact O0/O2 qualification active; canonical65db9490 differs from admitted d491 only in age admission metadata/docs",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps and experimental humus/extended-output semantics remain unsupported; no full original-model multiyear comparison is available."
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "eb535816b1ae484b0587de18de6099bab8a53566",
-  "last_reconciled_upstream": "d4912b3c37461ad918f37c53b236fa1d62478de6",
+  "last_reconciled_upstream": "65db94901eba8222b070920827621fdffddb2180",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -194,31 +194,41 @@
     "merge_commit": "4a274c4650ec7f52324b8604838a8d27dd39edb3"
   },
   "test_selection": {
-    "candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
+    "candidate": "05917ba8a8a1b109ecf6ca9c2b698807349859c0",
     "groups": {
       "nut_actual": {
-        "changed_dependency": "SNM lexical input and atomic calendar/material fallow routing",
-        "scientific_claim": "Existing 124-day production preservation plus 730-day real Richards crop harvest fallow successor closure",
+        "changed_dependency": "Existing reactive humus clock and immutable identity; existing native parser and conservative residue transfer wrapper",
+        "scientific_claim": "Fresh source124 plus three730-day Richards/WOFOST81/Soil-N rotations with source endpoint-clock humus switch, six fresh-process restarts each, all old endpoints exact",
         "owner": "MC-NUT01",
         "authority": "AGENTS.md#Independent local testability",
-        "expected_seconds": 1000,
-        "existing_evidence": "Raw fresh O0/O2 complete production closure, original default+124-day preservation,730-day rotation with six fresh processes per optimization; no inherited production native PASS",
-        "prior_execution": "PASS_EXACT_CANDIDATE_LOCAL",
-        "diagnosis": "First physical run exposed a roundoff-sized false drought mortality (3.6e-15 kg/ha) and test crop_end+1 convention. Crop forcing view now snaps equality within eight rounding units while raw water carrier/receipt and pending thresholds stay unchanged. Recompile exact final postimage; earlier modified-mid-build results are diagnostic only. Final capacity correction compiled in a new complete O0/O2 closure at the exact persisted candidate, with all native/restarter commands reexecuted.",
+        "expected_seconds": 1300,
+        "existing_evidence": "Original clock/rate/TTUTIL and material focused O0/O2 PASS; f9 full FAIL and cancelled retained attempt preserved; no inherited PASS for changed production bodies",
+        "prior_execution": "FAILED",
+        "diagnosis": "Original f9 day397 root N/DM quotient is one spacing below FOM minimum. Existing builder rejects negative source organic transfer. Corrected residue wrapper preserves declared N with bounded projection and NH4 debit; full source05917 is freshly compiled O0/O2. Earlier contract already selected this gate before implementation; this record replaces stale prior-phase selection metadata.",
         "measured_seconds": 485.4074764580091
       },
       "retained_admission": {
         "owner": "MC-NUT01",
         "authority": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md#Frozen qualification conditions",
-        "changed_dependency": "Shared mineral/reactive/crop body and accepted-water carrier; frozen retained guard detects genuine input drift",
-        "scientific_claim": "Reexecute default and retained owner, named decoder negatives, thermal/empty phases and current TCS6 boundary; preserve immutable old bytes",
-        "expected_seconds": 1100,
-        "existing_evidence": "Local730-day exact source proof and pending integrated actual run; these do not replace the full named retained/preservation matrix",
+        "changed_dependency": "Existing humus reactive owner and residue transfer builder; all retained physical pools and native identities affected",
+        "scientific_claim": "Full current default/retained/thermal/empty/TCS6 execution against exact immutable predecessor outputs; provider identity reused only within live selected run",
+        "expected_seconds": 1500,
+        "existing_evidence": "Fresh05917 joint qualification active. Phases/TCS6 require terminal fresh joint proof then their own native executions. Original annual-source and codec only inherited after unchanged compiled inputs check.",
         "selection": "SELECTED_OWNING_ADMISSION",
-        "diagnosis": "Current full joint863s, thermal and TCS6 separately measured; expected budget exceeded because existing large optimized drivers and actual annual/thermal continuations are exercised. Required owner gates selected by contract, not generic repeated full FCI.",
+        "diagnosis": "Prior f9 attempt cancelled after concrete day397 fix; selected fresh05917 joint build. Changed common addition body requires owning retained admission, not a whole F-CI or RossFast rerun.",
         "measured_seconds": 1421.7815913070062
+      },
+      "hist_water_n_audits": {
+        "owner": "MC-NUT01",
+        "authority": "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md#Selected qualification",
+        "changed_dependency": "Humus pool turnover and source N compensation in full rotation",
+        "scientific_claim": "Independent observational whole-water and N receipts for all three730-day profiles; exact production endpoint remains unchanged",
+        "expected_seconds": 350,
+        "existing_evidence": "Only reuse byte-bound current main providers after terminal PASS; execute three new O0/O2 diagnostic drivers",
+        "prior_execution": "NONE"
       }
-    }
+    },
+    "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
   },
   "surface_extension_contract": {
     "status": "QUALIFIED_BOUNDED_ADMISSION_BY_PR_1313",
@@ -594,7 +604,7 @@
     "surface_age_coexistence": {
       "admitted_canonical": "d4912b3c37461ad918f37c53b236fa1d62478de6",
       "status_path": "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json",
-      "status_sha256": "e40afc044d2a5fadb22e3d956451046b472ad6d7a757e11ecc82102230e63433",
+      "status_sha256": "59ff88ee13ac8b7d4f955c3fa1f5bbca64cfb2fd3faf95158d1b50f4fd91e53c",
       "shared_dispatch_paths": [
         "tests/nut-crop/verify_hist_native_successor.py",
         "tests/nut-sol/verify_surface_age_successor.py"
@@ -751,7 +761,7 @@
     }
   },
   "humus_experiment_successor": {
-    "status": "IMPLEMENTED_RECONCILED_NOT_QUALIFIED",
+    "status": "LOCAL_PRODUCTION_PASS_PRESERVATION_PENDING",
     "branch": "work/nut-hist-humus-20261018",
     "base_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
     "contract": "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
@@ -760,10 +770,10 @@
     "mastercoverage_promotion": false,
     "direct_development_feedback": {
       "reactive": "Corrected endpoint-clock O0/O2 original full chemistry: 18 days PASS",
-      "native_input": "35 fixtures O0/O2 PASS",
-      "ttutil": "Seven original TTUTIL native fixtures O0/O2 PASS"
+      "native_input": "38 fixtures O0/O2 PASS on05917ba8",
+      "ttutil": "Ten original TTUTIL fixtures O0/O2 PASS on05917ba8"
     },
-    "next_action": "Persist coherent implementation then fresh main O0/O2 closure with source124 and three730-day profiles, original TTUTIL seven-fixture oracle, exact transition restarts/identity rollback, affected retained/thermal/TCS6 and owning guard; integrate only scoped qualified capability.",
+    "next_action": "Run bound observational water/N audits and finish current full retained then fresh thermal/TCS6; package all raw results and failed day397/rollback evidence, qualify exact owning guards and required integrated workflows before scoped canonical integration.",
     "caller_clock_reconciliation": {
       "SOURCE_VERIFIED": true,
       "authority": "integration/audits/evidence/SWAP431_HUMUS_CLOCK_AUTHORITY.tar.xz.b64",
@@ -800,8 +810,30 @@
       "shared_guard_overlap": [
         "tests/nut-crop/verify_hist_native_successor.py"
       ],
-      "next": "Merge qualified canonical dependency surface and reconcile strict NUT/age source/evidence dispatch before fresh qualification",
-      "guard_policy": "Strict registered canonical baseline and original age evidence/input preservation, no broad age-exists bypass"
+      "next": "Metadata-only65db9490 reconciled; physical age inputs and postimages unchanged; pin current original admission record",
+      "guard_policy": "Strict registered canonical baseline and original age evidence/input preservation, no broad age-exists bypass",
+      "receipt_head": "65db94901eba8222b070920827621fdffddb2180"
+    },
+    "production_result": {
+      "status": "HIST_BOUNDED_PHYSICAL_PASS_NOT_FULL_MIGRATION",
+      "execution_commit": "05917ba8a8a1b109ecf6ca9c2b698807349859c0",
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "cost_seconds": {
+        "compile": 372.264648104996,
+        "link": 0.7154117060017597,
+        "native": 218.60934557399378,
+        "restart_native": 169.78255640698262
+      },
+      "result_sha256": "08f47893a2f69906c25f4589971565e5a14892e1fd33825a71c3b50335e80bb2",
+      "providers": 323,
+      "transition_fresh_processes": 36,
+      "endpoints": {
+        "source-profile": "b2363d3636065a41c277d239d57fd1deb7219d54c2811de0a8ade290a2ada661",
+        "rotation-profile": "5d0089e5fb4a85005c49846938691cb2f93d12914eefe2df13ad4bb0fb4cc6c9",
+        "atmospheric-profile": "d3f6ab63c1c6e20dccc22821b8cf86a464063b2638fa8fca619142970244fddd",
+        "humus-profile": "a73ddf64385899434d0959be5bdc9430f3dcfd46fa1fdc8d231b7b7f77889d50"
+      },
+      "previous_endpoints_byte_identical": true
     }
   }
 }
