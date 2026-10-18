@@ -32,12 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Diagnose why 67th physical day requires >4096 accepted Richards substeps. Collect per-day accepted counts and physical water state/forcing before day 67, plus raw head_inf_bound vs budget and temporal indicator. Distinguish excessive forcing/test scenario from genuine physics-dependent temporal resolution. Reconcile latest canonical Reference/headcalc before admission; no tolerance or cap modification without scientific evidence.",
+  "next_action": "Investigate physical head/water storage and water flux trajectory by day 60-67 against forcing and current Reference/headcalc canonical delta. Keep actual B112 candidate unmerged, and diagnose temporal head-bound source before any numerical-policy adjustment.",
   "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
   "blockers": [
-    "Confirmed day-67 model temporal indicator and 4096 accepted-step ceiling: run 39122643056",
-    "Shared Reference/headcalc canonical delta since base; scientific temporal diagnosis unresolved",
-    "Historical TTUTIL full grammar, annual/multiyear crop rotation unresolved"
+    "124-day actual physics run 39124928525 failed due to gradually rising accepted-step demand ending at day67 cap",
+    "Shared Reference/backend/headcalc updated in canonical since base; requalification required",
+    "True historical TTUTIL/SNM and annual multiyear rotations remain open"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -94,6 +94,28 @@
       "mass_rejections": 0,
       "interpretation": "max_temporal_indicator is ALREADY NORMALIZED head_inf_bound/budget (Reference backend); 0.999730 < acceptance threshold 1, not 9997x over budget. The maximum includes the accepted bound; 47193 rejected attempts and 4096 accepted-step exhaustion remain proven.",
       "acceptance_threshold_normalized": 1
-    }
+    },
+    "daily_trace_run": 39124928525,
+    "daily_accepted_substeps": {
+      "60": 1290,
+      "61": 1526,
+      "62": 1840,
+      "63": 2200,
+      "64": 2637,
+      "65": 3185,
+      "66": 3813,
+      "67": 4096
+    },
+    "daily_temporal_rejections": {
+      "60": 11706,
+      "61": 14219,
+      "62": 17701,
+      "63": 21736,
+      "64": 26817,
+      "65": 33382,
+      "66": 41346,
+      "67": 47193
+    },
+    "daily_trace_conclusion": "Physical time-step demand grows over days 60-67; day67 4096 cap reached after only partial day; this does not establish temporal indicator defect nor justify raising cap. Normalized indicator <1 on accepted steps."
   }
 }
