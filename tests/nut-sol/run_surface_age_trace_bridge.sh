@@ -19,7 +19,10 @@ roots += [
  'src/process/mod_b111_surface_age_owner.f90',
  'src/runtime/mod_b111_surface_age_trace_bridge.f90',
  'src/runtime/mod_fmr_b111_age_route.f90',
- 'src/runtime/mod_fmr_b111_age_joint_application.f90']
+ 'src/runtime/mod_fmr_b111_age_joint_application.f90',
+ 'src/adapter/mod_age_joint_restart_file.f90',
+ 'src/adapter/mod_b111_surface_age_disk.f90',
+ 'src/adapter/mod_b111_age_triplet_disk.f90']
 pathlib.Path(sys.argv[1]).write_text('\n'.join(roots)+'\n')
 PY
 mapfile -t roots < "$build/roots"
