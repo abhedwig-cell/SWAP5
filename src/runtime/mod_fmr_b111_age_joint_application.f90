@@ -16,6 +16,8 @@ module mod_fmr_b111_age_joint_application
        age_receipt_t,consume_accepted_age_trace,export_age_restart, &
        restore_age_restart,AGE_OK
   use mod_solute_compartment_state,only:solute_compartment_state_t
+  use mod_b111_surface_age_owner,only:surface_age_owner_t,snapshot_surface_age_owner
+  use mod_b111_surface_age_trace_bridge,only:surface_age_source_ages_t
   implicit none
   private
   integer,parameter,public::JOINT_OK=0,JOINT_INVALID=1,JOINT_WATER_REJECTED=2, &
@@ -84,7 +86,8 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_age_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,t0,t1,result)
+  subroutine run_age_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,t0,t1,result, &
+       surface_owner,source_ages)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -95,16 +98,30 @@ contains
     type(age_state_t),intent(inout)::chemical
     real(real64),intent(in)::t0,t1
     type(age_joint_result_t),intent(out)::result
+    type(surface_age_owner_t),intent(inout),optional::surface_owner
+    type(surface_age_source_ages_t),intent(in),optional::source_ages
+    type(surface_age_owner_t)::surface_trial
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
     type(age_state_t)::chemical_trial
     logical::ok,did_commit
     integer::status
-    real(real64)::clock
+    integer(int64)::surface_revision
+    real(real64)::clock,surface_time,surface_depth,surface_stock
+    logical::surface_available
     result=age_joint_result_t()
     if(.not.bounded_template(template))return
+    if(present(surface_owner).neqv.present(source_ages))return
     if(.not.age_joint_states_match(water,chemical))return
+    if(present(surface_owner))then
+      call snapshot_surface_age_owner(surface_owner,surface_time,surface_depth,surface_stock, &
+           surface_revision,surface_available)
+      if(.not.surface_available.or.abs(surface_time-t0)>0.0_real64)return
+      ! The existing age joint state validator admits only zero ponding.
+      ! Nonzero surface ponding requires a separate qualified joint-state contract.
+      if(surface_depth>0.0_real64)return
+    end if
     call water%current_time(clock,ok)
     if(.not.ok.or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1))return
     if(abs(t0-clock)>0.0_real64.or.t1<=t0)return
@@ -121,7 +138,13 @@ contains
       return
     end if
     chemical_trial=chemical
-    call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps,result%chemical)
+    if(present(surface_owner))then
+      surface_trial=surface_owner
+      call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps, &
+           result%chemical,surface_trial,source_ages)
+    else
+      call consume_accepted_age_trace(chemical_trial,obs%accepted_water_flux_substeps,result%chemical)
+    end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=AGE_OK)then
       call backend%discard_trial_candidate(candidate,result%diagnostics)
@@ -131,6 +154,7 @@ contains
     call backend%commit_trial_candidate(water,candidate,result%diagnostics,did_commit,status)
     if(.not.did_commit)return
     chemical=chemical_trial
+    if(present(surface_owner))surface_owner=surface_trial
     result%status=JOINT_OK
   end subroutine
 
