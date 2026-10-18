@@ -1,0 +1,253 @@
+{
+  "source_sha256": "bfca10d3c536173d2009cccea5c7c4e66d137aa15a5a203d941e95834a4af66d",
+  "aligned_sha256": "860148c608613a3315bc42a8cc3a72fe366ebe5250fc95f5a83254ecf2002aff",
+  "endpoint_sha256": "fe23570e1e71f91fe526011f07fc23cb269d7eec4e7ca68de7790356f3da728f",
+  "old_rain_mm": 2216.6,
+  "aligned_rain_mm": 2216.6,
+  "records": 24120,
+  "convention": "P and Rs preceding-hour to interval-start; instantaneous temperature/dew/wind unchanged"
+}
+{
+  "candidate_cells": [
+    {
+      "group": "open_water",
+      "cell_id": "KAL_0847",
+      "mapped_group_fraction": 0.8421991467797468,
+      "soil_coverage_fraction": 1.0,
+      "route": "surface_water_separate_contract",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "open_water",
+      "cell_id": "KAL_0066",
+      "mapped_group_fraction": 0.6518079209402489,
+      "soil_coverage_fraction": 1.0,
+      "route": "surface_water_separate_contract",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "forest",
+      "cell_id": "KAL_0462",
+      "mapped_group_fraction": 0.995203163943191,
+      "soil_coverage_fraction": 0.9999999999999999,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "forest",
+      "cell_id": "KAL_0912",
+      "mapped_group_fraction": 0.9788496285636678,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "agricultural_grass",
+      "cell_id": "KAL_0889",
+      "mapped_group_fraction": 0.8277399833589179,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "agricultural_grass",
+      "cell_id": "KAL_0956",
+      "mapped_group_fraction": 0.8225589556812505,
+      "soil_coverage_fraction": 0.9950533193038825,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "arable",
+      "cell_id": "KAL_0196",
+      "mapped_group_fraction": 0.9338103571109071,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "arable",
+      "cell_id": "KAL_0134",
+      "mapped_group_fraction": 0.9195837533631,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "houses_gardens",
+      "cell_id": "KAL_0532",
+      "mapped_group_fraction": 0.8056525286164031,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "houses_gardens",
+      "cell_id": "KAL_0404",
+      "mapped_group_fraction": 0.7933175949810978,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "wet_heath_4010",
+      "cell_id": "KAL_0876",
+      "mapped_group_fraction": 0.7089266293026919,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "wet_heath_4010",
+      "cell_id": "KAL_0910",
+      "mapped_group_fraction": 0.7012787429982076,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "dry_heath_4030",
+      "cell_id": "KAL_0416",
+      "mapped_group_fraction": 0.5153596852062454,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "dry_heath_4030",
+      "cell_id": "KAL_0480",
+      "mapped_group_fraction": 0.4699933920775492,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    }
+  ],
+  "representative_cell_fractions": {
+    "soil": {
+      "Zcgb": 0.9536183507089446,
+      "OB": 0.021513104650621707,
+      "w-Zegb": 0.024868544640433768
+    },
+    "bwk": {
+      "ppmb + gml + rhod": 0.003949127120871155,
+      "un + kbq + kbf + ppmb + ppmh": 0.9958622850045282,
+      "weg + kbqr": 0.0001474121343533256,
+      "weg + kbq + kbf": 4.120085197957382e-05
+    },
+    "landuse2025": {
+      "9": 0.09727441619792888,
+      "1": 0.7549412369764043,
+      "5": 0.08655914059192377,
+      "2": 0.02842747755603031,
+      "8": 0.028698152998171803,
+      "12": 0.004099575643219991
+    },
+    "landuse2022": {
+      "9": 0.13940722308648196,
+      "1": 0.7158960554065537,
+      "5": 0.08615940276997128,
+      "8": 0.03324651511286204,
+      "2": 0.012791598454017635,
+      "4": 0.008399629489304249,
+      "12": 0.004099575643219991
+    }
+  },
+  "matching_habitat_rows_with_unknown_percentage": 9,
+  "selection": "Two highest mapped fractions per group, distinct cells, >=95% land-use coverage.",
+  "limitations": [
+    "Habitat codes must match exactly; composite codes are not split by assumption.",
+    "This is a source-driven shortlist, not a representative sampling proof or validated model input.",
+    "Houses and gardens is not an impervious fraction.",
+    "Open water requires a separate process contract, not a bare-soil SWAP column."
+  ]
+}
+{"selected": 193, "statuses": ["OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK", "OK"], "measurements": 101568}
+{"filters_with_period_observations": 77, "daily_complete_filters": 0, "period_observations": 17144, "invalid_records": 0, "grid_cells": 1024, "nearby_links": 3072}
+{"parameter_counts": {"vegetatie": 3, "Diepte (grond)watertafel t.o.v. maaiveld": 90, "Beworteling diepte": 119, "Bodemgebruik Aardewerk": 119, "Vegetatie": 166, "Bodemgebruik": 39}, "status_counts": {"OK": 536}, "period_counts": {"OUTSIDE_MODEL_PERIOD": 521, "UNKNOWN_DATE": 1, "WITHIN_MODEL_PERIOD": 14}}
+{"recorded_source_identities_verified": 3, "pdf_bytes_verified_this_run": false, "mode": "ARCHIVED_FACTS_NO_DOCUMENT_REACQUISITION"}
+{"rows": 35, "fitted": 23, "excluded": 12, "max_rmse_theta": 0.011655974559421313}
+KAL_0956 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0956 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0196 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0196 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0134 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0134 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0042 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0042 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0072 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0072 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0104 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0104 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0136 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0136 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0165 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0165 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0168 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0168 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0201 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0201 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0259 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0259 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0321 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0321 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0322 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0322 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0323 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0323 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0326 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0326 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0333 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0333 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0356 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0356 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0418 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0418 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0419 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0419 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0450 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0450 7 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0461 6 REUSED_VERIFIED_NATIVE_SUCCESS
+KAL_0461 7 REUSED_VERIFIED_NATIVE_SUCCESS
+RUNS 42 UNASSIGNED 954 PROFILES 40
+{"selected_source_files_verified": 9, "source_package_downloaded": false}
+LAI cached 10 errors 0 of 109
+LAI cached 20 errors 0 of 109
+LAI cached 30 errors 0 of 109
+LAI cached 40 errors 0 of 109
+LAI cached 50 errors 0 of 109
+LAI cached 60 errors 0 of 109
+LAI cached 70 errors 0 of 109
+LAI cached 80 errors 0 of 109
+LAI cached 90 errors 0 of 109
+LAI cached 100 errors 0 of 109
+{"items_found": 109, "items_collected": 109, "cell_count": 1024, "counts": {"numeric": 94721, "main_algorithm": 67963, "strict": 26740}, "error_count": 0}
+Terrain points 100 of 1217
+Terrain points 200 of 1217
+Terrain points 300 of 1217
+Terrain points 400 of 1217
+Terrain points 500 of 1217
+Terrain points 600 of 1217
+Terrain points 700 of 1217
+Terrain points 800 of 1217
+Terrain points 900 of 1217
+Terrain points 1000 of 1217
+Terrain points 1100 of 1217
+Terrain points 1200 of 1217
+{"OK": 1217, "NO_DATA": 0, "ERROR": 0}
+wetheath_a1_r35_ic05_bot6 True
+wetheath_a1_r35_ic05_bot7 True
+wetheath_a1_r35_ic10_bot6 True
+wetheath_a1_r35_ic10_bot7 True
+wetheath_a1_r50_ic05_bot6 True
+wetheath_a1_r50_ic05_bot7 True
+wetheath_a1_r50_ic10_bot6 True
+wetheath_a1_r50_ic10_bot7 True
+wetheath_a2_r35_ic05_bot6 True
+wetheath_a2_r35_ic05_bot7 True
+wetheath_a2_r35_ic10_bot6 True
+wetheath_a2_r35_ic10_bot7 True
+wetheath_a2_r50_ic05_bot6 True
+wetheath_a2_r50_ic05_bot7 True
+wetheath_a2_r50_ic10_bot6 True
+wetheath_a2_r50_ic10_bot7 True
+{"model": "SWAP4.3.1", "executable_sha256": "2e46b6c9cc53e548c401670bd3e0e8df7799e8f95dfed4c77b7454edcf79bc07", "study_document_mode": "RECORDED_IDENTITIES_ONLY", "source_grid_cells": 1024, "assigned_soil_response_cells": 70, "unique_native_runs": 42, "native_successes": 42, "unassigned_cells": 954, "status": "EXPLORATORY_SOIL_RESPONSE_RESULTS; LOCAL_VEGETATION_AND_BOUNDARY_PARAMETERIZATION_OPEN", "provisional_wet_heath_ecotope_runs": 16, "wet_heath_daily_states_checked": 16080, "wet_heath_current_cell_assignment": false}
