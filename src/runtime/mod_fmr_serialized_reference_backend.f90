@@ -4724,7 +4724,6 @@ contains
              self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent, fixed_top_conductivity)
       end if
       request%evaluation%dynamic_top_boundary => rutter_top_provider
-      end if
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
     end if
