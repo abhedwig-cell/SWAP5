@@ -11,7 +11,7 @@
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria"
   ],
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "relevant_paths": [
     "tests/nut-crop/test_b112_retained_joint.f90",
@@ -33,11 +33,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Evaluate exact-head 124-day zero-bottom-flux physical variant at O0/O2 including native fresh-process restart and original incumbent bytes; interpret as distinct forcing qualification, NOT a fix to original day67 case. Reconcile moving canonical Reference/headcalc before any admission.",
+  "next_action": "Reconcile/reference-test source-profile zero-bottom forcing against current canonical fa09e298, including Reference backend and headcalc overlap, then decide narrow PR admission. Preserve original failed bottom-drain stress separately. Full TTUTIL and annual multiyear crop lifecycle still open.",
   "recovery_point": "work/nut-coupled-124day-20261018@9e79620f55532e0463969ae292a8cff438a87a00",
   "blockers": [
-    "Zero-bottom-flux 124-day experiment pending qualification; original fixed -0.1 bottom stress failed day67",
-    "Canonical Reference/headcalc overlap not reconciled"
+    "124-day alternative forcing qualified on old exact-head but no current-canonical Reference/headcalc dependency requalification",
+    "Original fixed -0.1 bottom-flux stress fails on day67, not repaired",
+    "Full historical parser and full rotation unresolved"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -152,6 +153,13 @@
       "end_day66_min_head": -28276.52381076077,
       "day67_committed_rollback_identical": true,
       "interpretation": "severe continuous drying under imposed fixed forcing, strongest at bottom, causes shrinking accepted timestep demand; numerical error beyond tested forcing not established"
+    },
+    "zero_bottom_flux": {
+      "candidate": "9e79620f55532e0463969ae292a8cff438a87a00",
+      "run": 39127503214,
+      "conclusion": "success",
+      "test": "Original B1.11 O0/O2 plus B112 actual Richards crop Soil-N 124-day source-profile zero bottom flux with fresh restart and byte gates",
+      "scope": "Alternative physical forcing; original -0.1 bottom-flux stress remains FAIL, not fixed"
     }
   }
 }
