@@ -23,7 +23,7 @@ module mod_soil_n_historical_activation
    real(real64)::temp_ref=0d0,sorpcoef=0d0,ratecon_nitrif_ref=0d0,ratecon_denitr_ref=0d0
    real(real64)::wfpscrit=0d0,wfpscrit2=0d0,cdissi_half=0d0
    real(real64)::tcsf_n=0d0,lai_crit_nupt=0d0,depth_m=0d0
-   real(real64)::nh4_lat=0d0,no3_lat=0d0,nh4_seep=0d0,no3_seep=0d0
+   real(real64)::nh4_lat=0d0,no3_lat=0d0,nh4_seep=0d0,no3_seep=0d0,nh4_top=0d0,no3_top=0d0
  end type
  public::activate_soil_n_historical,build_historical_soil_n_inventory,bind_historical_soil_n_rates
  public::initialize_historical_soil_n_complete,bind_historical_organic_source_profile
@@ -96,26 +96,27 @@ contains
    type(reactive_parameters_t),intent(out)::parameter
    real(real64),intent(out)::root_tcsf,lai_crit
    integer,intent(out)::status
-   real(real64)::v(14)
+   real(real64)::v(16)
    parameter=reactive_parameters_t();root_tcsf=0d0;lai_crit=0d0;status=N_ACTIVATION_INVALID
    v=[source%temp_ref,source%sorpcoef,source%ratecon_nitrif_ref,source%ratecon_denitr_ref, &
      source%wfpscrit,source%wfpscrit2,source%cdissi_half,source%tcsf_n,source%lai_crit_nupt, &
-     source%depth_m,source%nh4_lat,source%no3_lat,source%nh4_seep,source%no3_seep]
+     source%depth_m,source%nh4_lat,source%no3_lat,source%nh4_seep,source%no3_seep,source%nh4_top,source%no3_top]
    if(.not.all(ieee_is_finite(v)).or.any(v<0d0))return
    if(source%temp_ref>60d0.or.source%sorpcoef>1d0)return
    if(source%ratecon_nitrif_ref>1d0.or.source%ratecon_denitr_ref>1d0)return
    if(source%wfpscrit<.05d0.or.source%wfpscrit>.95d0.or.source%wfpscrit2>.95d0)return
    if(source%cdissi_half>1000d0.or.source%tcsf_n>1d0.or.source%lai_crit_nupt>10d0)return
    if(source%depth_m<1d-3.or.source%depth_m>100d0)return
-   if(any(v(11:14)>1d6))return
-   ! The historical top boundary concentrations need an explicit flux owner;
-   ! reject, rather than invent, that boundary's physical input.
+   if(any(v(11:16)>1d6))return
+   ! Top concentrations bind to the same immutable mineral owner. Only an
+   ! explicitly admitted accepted-water surface route may deliver their flux.
    if(.not.reactive_parameters_valid(template))return
    if(abs(template%mineral%inventory%depth_m-source%depth_m)>1d-12)return
    parameter=template
    parameter%mineral%sorption=source%sorpcoef
    parameter%mineral%c_lateral=[source%nh4_lat,source%no3_lat]
    parameter%mineral%c_bottom=[source%nh4_seep,source%no3_seep]
+   parameter%mineral%c_top=[source%nh4_top,source%no3_top]
    parameter%environment%temperature_reference_c=source%temp_ref
    parameter%environment%nitrification_ref_per_day=source%ratecon_nitrif_ref
    parameter%environment%denitrification_ref_per_day=source%ratecon_denitr_ref

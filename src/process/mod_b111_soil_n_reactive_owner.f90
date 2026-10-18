@@ -180,6 +180,7 @@ contains
    actual%ratecon_bio=actual%ratecon_bio*factor;actual%ratecon_hum=actual%ratecon_hum*factor
    f%dt_day=1d0;f%wfrac_t0=water;f%wfrac_t=water_end;f%wflux_out=outflow;f%wflux_inbot=in_bottom
    f%wflux_intop=max(0d0,surface)
+   f%cnh4_top=state%p%mineral%c_top(1);f%cno3_top=state%p%mineral%c_top(2)
    f%wflux_inlat=in_lateral;f%wflux_transp=root_water;f%drybd=state%p%mineral%drybd;f%sorpcoef=state%p%mineral%sorption
    f%cnh4_seep=state%p%mineral%c_bottom(1);f%cno3_seep=state%p%mineral%c_bottom(2)
    f%cnh4_lat=state%p%mineral%c_lateral(1);f%cno3_lat=state%p%mineral%c_lateral(2)

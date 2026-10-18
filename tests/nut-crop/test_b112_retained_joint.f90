@@ -120,7 +120,7 @@ program test_b112_retained_joint
  call initialize_soil_n_pool_state(sp%mineral%inventory,spread(1d0,1,8),5d0,40d0,.02d0,.03d0,pools,status)
  call require(status==0,'soil inventory initialize')
  call backend%initialize(top);call second%initialize(top)
- if(trim(selected)=='source-profile'.or.trim(selected)=='rotation-profile')then
+ if(trim(selected)=='source-profile'.or.(trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
   call source_continuation()
   stop
  end if
@@ -299,7 +299,7 @@ contains
    character(16)::key
    real(real64)::source_water,base_day
    call parse_soil_n_date('1900-12-30',base_day,code)
-   if(trim(selected)=='rotation-profile')then
+   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
     cp%harvest%crop_end=base_day+119d0
     cp%scalars%vegetative_temperature_sum_required=1500d0
     cp%scalars%generative_temperature_sum_required=1500d0
@@ -310,7 +310,7 @@ contains
    selection%source_parameters_complete=.true.
    ! Source keyword-array subset, preserving original named TTUTIL fields.
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
-   if(trim(selected)=='rotation-profile')then
+   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
     write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
     write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
     write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
@@ -339,9 +339,14 @@ contains
      'Temp_ref = 20.','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
      'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
      'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1.', &
-     'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
-     'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
-     'cNH4N_top = 0.','cNO3N_top = 0.'
+     'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4'
+   if(trim(selected)=='atmospheric-profile')then
+    write(unit,'(A)')'cNH4N_seep = 0.001','cNO3N_seep = 0.002', &
+      'cNH4N_top = 0.0005','cNO3N_top = 0.0015'
+   else
+    write(unit,'(A)')'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
+      'cNH4N_top = 0.','cNO3N_top = 0.'
+   end if
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal
@@ -361,7 +366,7 @@ contains
      type(crop_senescence_policy_t)::rejected_policy
      integer::input_unit,output_unit,ios,case_number,source_record,nitrif_record
      character(512)::source_line
-     do case_number=1,merge(0,9,trim(selected)=='rotation-profile')
+     do case_number=1,merge(0,9,(trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
        source_record=0;nitrif_record=0
@@ -407,7 +412,7 @@ contains
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
-   if(trim(selected)=='rotation-profile')then
+   if((trim(selected)=='rotation-profile'.or.trim(selected)=='atmospheric-profile'))then
     policy=startup_policy
     call state%configuration(cp,sid)
     call state%snapshot(source_soil,source_crop)
@@ -540,8 +545,9 @@ contains
    integer(int64)::rev,cid
    integer::d,first,code
    character(32)::arg
-   logical::inactive
+   logical::inactive,atmospheric
    initial_cp=cp
+   atmospheric=trim(selected)=='atmospheric-profile'
    call get_command_argument(5,arg)
    first=0
    if(trim(mode)=='resume')then
@@ -553,6 +559,18 @@ contains
     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),sp,cp,water,state,code)
     call require(code==0,'rotation fresh process native restart')
+    if(atmospheric)then
+     bad_sp=sp;bad_sp%mineral%c_top=0d0
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
+     call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
+      'atmospheric restart missing top concentrations rejected atomically')
+     bad_sp=sp;bad_sp%mineral%c_top(1)=2d0*sp%mineral%c_top(1)
+     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+      670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),bad_sp,cp,other_water,other_state,code)
+     call require(code/=0.and..not.other_water%ready().and..not.other_state%ready(), &
+      'atmospheric restart wrong top concentrations rejected atomically')
+    end if
    end if
    uptake=0d0;max_n=0d0;max_w=0d0
    n_start=crop_soil_whole_n(state);n_input=0d0;n_output=0d0
@@ -586,9 +604,19 @@ contains
      call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-before-'//trim(arg), &
       column,cfg%tiles(1)%template,670001_int64,water,state,code)
      call require(code==0,'rotation rollback baseline serialized')
+     if(atmospheric)then
+      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
+       plan,split,policy,rejected,e,fallow=inactive,clean_surface_water=.true.)
+      call require(rejected%status/=0,'clean-only route rejects configured atmospheric N')
+      call write_crop_soil_n_joint_restart_file(trim(path)//'.clean-reject-'//trim(arg), &
+       column,cfg%tiles(1)%template,670001_int64,water,state,code)
+      call require(code==0,'clean-only rejection serialized')
+     end if
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
-      plan,split,policy,rejected,stale,fallow=inactive,clean_surface_water=.true.)
+      plan,split,policy,rejected,stale,fallow=inactive,clean_surface_water=.not.atmospheric, &
+      atmospheric_n_surface=atmospheric)
      call require(rejected%status/=0,'rotation stale environment rejected')
      call require(water%current_revision()==before_water%current_revision(),'rotation rejected water unchanged')
      call require(crop_soil_whole_n(state)==crop_soil_whole_n(before_state),'rotation rejected nitrogen unchanged')
@@ -599,7 +627,8 @@ contains
     n_before=crop_soil_whole_n(state)
     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
      cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
-     plan,split,policy,r,e,fallow=inactive,clean_surface_water=.true.)
+     plan,split,policy,r,e,fallow=inactive,clean_surface_water=.not.atmospheric, &
+      atmospheric_n_surface=atmospheric)
     if(r%status/=0)print *,'ROTATION_FAILURE',d,r%status,r%joint%joint%water%status, &
       r%joint%joint%chemical%status,r%joint%joint%chemical%soil%status, &
       'material',r%joint%materials%status,r%joint%materials%residual, &

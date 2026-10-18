@@ -23,13 +23,13 @@ def prepare(root,build,management):
 '''
  (build/'literal_crop_exchange.f90').write_text(declarations+body+'\n supply=Nsupply\nend subroutine\n')
  s=(root/'tests/nut-reactive/reactive_oracle.inc').read_text()
- s=s.replace('subroutine literal_day(', 'subroutine literal_crop_day(').replace('after,nit,denit,carbon)', 'after,nit,denit,carbon,demand,dvs,lai,rd,tcsf_in,crit,supply)')
+ s=s.replace('subroutine literal_day(', 'subroutine literal_crop_day(').replace('after,nit,denit,carbon,surface_water)', 'after,nit,denit,carbon,demand,dvs,lai,rd,tcsf_in,crit,supply,surface_water)')
  s=s.replace('   real(real64)::nh4c', '   real(real64),intent(in)::demand,dvs,lai,rd,tcsf_in,crit\n   real(real64),intent(out)::supply\n   real(real64)::nh4c')
  a=s.index('   call Wofost_SoilWaterN(');b=s.index('   after%fom_kg_m3',a)
  s=s[:a]+'''   cnh4_t0=nh4c;cno3_t0=no3c;SorpCoef=p%mineral%sorption
    cnh4N_seep=p%mineral%c_bottom(1);cno3N_seep=p%mineral%c_bottom(2)
-   cnh4N_top=0d0;cno3N_top=0d0;cnh4N_lat=p%mineral%c_lateral(1);cno3N_lat=p%mineral%c_lateral(2)
-   Wflux_out=qout;Wflux_inBot=qbot;Wflux_inLat=qlat;Wflux_inTop=0d0;Wflux_transp=root
+   cnh4N_top=p%mineral%c_top(1);cno3N_top=p%mineral%c_top(2);cnh4N_lat=p%mineral%c_lateral(1);cno3N_lat=p%mineral%c_lateral(2)
+   Wflux_out=qout;Wflux_inBot=qbot;Wflux_inLat=qlat;Wflux_inTop=top_water;Wflux_transp=root
    call literal_crop_exchange(demand*1d-4,dvs,lai,rd,tcsf_in,crit,supply)
    nh4end=cNH4_t;no3end=cNO3_t;nh4avg=cNH4_av;no3avg=cNO3_av
    prod=.5d0*(w0+w1)*RateConNitrif*nh4avg

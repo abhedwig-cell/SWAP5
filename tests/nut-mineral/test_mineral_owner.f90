@@ -13,6 +13,7 @@ program test_mineral_owner
  type(mineral_receipt_t)::r
  type(b111_soil_n_transport_result_t)::tr
  real(real64)::time,water,ce,ca,pa,theta1,qout,qin,root,initialc(2),sorp(2),nan
+ real(real64),allocatable::old_vector(:),top_vector(:)
  integer(int64)::rev
  integer::status,j,i,expected(5)
  p%dz_cm=[30d0,30d0];p%inventory%depth_m=.6d0;p%inventory%nfrac_fom=[.01d0,.02d0]
@@ -91,6 +92,47 @@ program test_mineral_owner
  call advance_mineral_day(initial,2d0,3d0,.3d0,0d0,0d0,0d0,0d0,r,surface_water=nan)
  call check(r%status/=0,'NaN surface flux rejected')
  call compare(state,initial)
+ ! Source atmospheric concentrations use the literal original top-input term.
+ old_vector=mineral_parameter_vector(p);p%c_top=[.005d0,.015d0]
+ top_vector=mineral_parameter_vector(p)
+ call check(size(top_vector)==size(old_vector)+3,'explicit top parameter block')
+ call check(all(top_vector(:size(old_vector))==old_vector),'old parameter prefix unchanged')
+ call check(top_vector(size(old_vector)+1)==-81004d0,'top parameter marker')
+ do j=1,2
+  call initialize_mineral(p,9_int64,0d0,.3d0,pools,initial,status)
+  call check(status==0,'atmospheric owner init')
+  theta1=.31d0;qout=0d0
+  if(j==2)then
+   theta1=.3d0;qout=.006d0
+  end if
+  call advance_mineral_day(initial,0d0,1d0,theta1,qout,0d0,0d0,0d0,r,surface_water=.006d0)
+  call check(r%status==0,'atmospheric input/outflow accepted')
+  call near(r%external_in,.006d0*sum(p%c_top),'top N entered once')
+  call near(r%residual,0d0,'atmospheric whole N')
+  do i=1,2
+   call Wofost_SoilWaterN(.6d0,1d0,theta1,.3d0,qout,0d0,0d0,.006d0,0d0,0d0,0d0,0d0,pa, &
+    sorp(i),p%c_bottom(i),p%c_top(i),p%c_lateral(i),initialc(i),ce,ca)
+   call near(r%concentration_end(i),ce,'top input literal end')
+   call near(r%concentration_average(i),ca,'top input literal mean')
+  end do
+ end do
+ call initial%snapshot(time,water,saved,rev)
+ call export_mineral_restart(initial,restart,status);call check(status==0,'top opaque export')
+ call restore_mineral_restart(restart,9_int64,restored,status);call check(status==0,'top opaque restore')
+ call advance_mineral_day(initial,1d0,2d0,.29d0,0d0,0d0,0d0,0d0,r,surface_water=-.006d0)
+ call check(r%status==0.and.r%external_in==0d0.and.r%external_out==0d0,'evaporation retains top N')
+ call initial%snapshot(time,water,pools,rev)
+ call near(pools%ammonium_n_kg_m2,saved%ammonium_n_kg_m2,'evaporation retains supplied ammonium')
+ call near(pools%nitrate_n_kg_m2,saved%nitrate_n_kg_m2,'evaporation retains supplied nitrate')
+ call advance_mineral_day(restored,1d0,2d0,.29d0,0d0,0d0,0d0,0d0,r,surface_water=-.006d0)
+ call check(r%status==0,'top restored evaporation');call compare(initial,restored)
+ bad=p;bad%c_top(1)=nan
+ call initialize_mineral(bad,9_int64,0d0,.3d0,pools,state,status);call check(status/=0,'NaN top rejected')
+ bad=p;bad%c_top(2)=-1d0
+ call initialize_mineral(bad,9_int64,0d0,.3d0,pools,state,status);call check(status/=0,'negative top rejected')
+ p%c_top=0d0;top_vector=mineral_parameter_vector(p)
+ call check(size(top_vector)==size(old_vector).and.all(top_vector==old_vector),'zero top identity unchanged')
+ print '(A)','MINERAL_ATMOSPHERIC_LITERAL_SORPTION_EVAPORATION_PARAMETER_IDENTITY=PASS'
  print '(A)','MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS'
 contains
  subroutine compare(a,b)

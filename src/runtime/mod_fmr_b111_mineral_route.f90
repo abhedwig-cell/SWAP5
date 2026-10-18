@@ -24,13 +24,13 @@ contains
    if(status/=MINERAL_OK)return
    call advance_mineral_day(state,c%t0,c%t1,c%water_end,c%outflow,c%in_bottom,c%in_lateral,c%root_water,receipt)
  end subroutine
- subroutine aggregate_mineral_trace(state,steps,carrier,status,clean_surface_water)
+ subroutine aggregate_mineral_trace(state,steps,carrier,status,clean_surface_water,atmospheric_n_surface)
    type(mineral_state_t),intent(in)::state
    type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
    type(mineral_daily_carrier_t),intent(out)::carrier
    integer,intent(out)::status
-   logical,intent(in),optional::clean_surface_water
-   logical::allow_surface
+   logical,intent(in),optional::clean_surface_water,atmospheric_n_surface
+   logical::allow_surface,admit_atmospheric_n
    real(real64)::surface
    type(mineral_parameters_t)::p
    type(soil_n_pool_state_t)::s
@@ -40,9 +40,12 @@ contains
    integer::k,n,code
    carrier=mineral_daily_carrier_t();status=MINERAL_INVALID
    allow_surface=.false.;if(present(clean_surface_water))allow_surface=clean_surface_water
+   admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
+   allow_surface=allow_surface.or.admit_atmospheric_n
    surface=0d0
    if(.not.state%ready().or.size(steps)<1)return
    call state%configuration(p,id);call state%snapshot(time,theta,s,revision)
+   if(any(abs(p%c_top)>0d0).and..not.admit_atmospheric_n)return
    n=size(p%dz_cm);clock=time;outflow=0d0;inbot=0d0;inlat=0d0;root=0d0
    if(.not.ieee_is_finite(steps(size(steps))%t1))return
    if(abs(steps(size(steps))%t1-time-1d0)>0d0)return

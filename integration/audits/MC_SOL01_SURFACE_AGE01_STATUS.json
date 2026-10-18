@@ -1,8 +1,8 @@
 {
   "work_unit": "MC-SOL01-SURFACE-AGE01",
   "workstream": "MC-SOL01",
-  "baseline": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
-  "stage": "TARGETED_QUALIFIED_FULL_PRESERVATION_PENDING",
+  "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
+  "stage": "FULL_PRESERVATION_PASS_FRESH_COEXISTENCE_PENDING",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -58,13 +58,21 @@
       "status": "M",
       "sha256": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4"
     },
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
+      "status": "M",
+      "sha256": "d9acb4ed59612bc6ce4def70187d83ae255d4798995e791cea0a12fa20e4778d"
+    },
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
       "status": "M",
       "sha256": "160980c9d50fc3bd9dc49c74abdfbc76c8ad877857e32e1b5b544d4472f73083"
     },
+    "tests/modularity/verify_joint_preservation.py": {
+      "status": "M",
+      "sha256": "453a0a36720b6db35a575da7c3849055419d0af6637a5b6f9d3882617e75bba9"
+    },
     "tests/nut-crop/verify_hist_native_successor.py": {
       "status": "M",
-      "sha256": "1d18c5ca9ef2795024952a5e55acbf9dec02587a00e06315d493d9c5daad1b75"
+      "sha256": "a9163a31e98478c00b8c7401a508251334ed21ecf5a7c437dde7c9e00b5f09ea"
     },
     "tests/nut-sol/run_age.py": {
       "status": "M",
@@ -121,14 +129,6 @@
     "tests/nut-sol/verify_surface_age_successor.py": {
       "status": "A",
       "sha256": "73bf84c63f0b918a39f1af2c4dab2fefa26721f1c1bb848c9b0345c40596f000"
-    },
-    "tests/modularity/verify_joint_preservation.py": {
-      "status": "M",
-      "sha256": "453a0a36720b6db35a575da7c3849055419d0af6637a5b6f9d3882617e75bba9"
-    },
-    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
-      "status": "M",
-      "sha256": "d9acb4ed59612bc6ce4def70187d83ae255d4798995e791cea0a12fa20e4778d"
     }
   },
   "relevant_paths": [
@@ -144,7 +144,9 @@
     "src/runtime/mod_b111_surface_age_trace_bridge.f90",
     "src/runtime/mod_fmr_b111_age_joint_application.f90",
     "src/runtime/mod_fmr_b111_age_route.f90",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
     "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/modularity/verify_joint_preservation.py",
     "tests/nut-crop/verify_hist_native_successor.py",
     "tests/nut-sol/run_age.py",
     "tests/nut-sol/run_surface_age_budget.sh",
@@ -159,16 +161,14 @@
     "tests/nut-sol/test_surface_age_route_trial.f90",
     "tests/nut-sol/test_surface_age_soil_handoff.f90",
     "tests/nut-sol/test_surface_age_trace_bridge.f90",
-    "tests/nut-sol/verify_surface_age_successor.py",
-    "tests/modularity/verify_joint_preservation.py",
-    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh"
+    "tests/nut-sol/verify_surface_age_successor.py"
   ],
   "authority_paths": [
     "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
     "docs/architecture/invariants.md",
     "docs/development/workstream-execution-protocol.md"
   ],
-  "next_action": "Validate exact source and scientific archive controls, then run selected full moving F-CI locally; reconcile live canonical and admit only after terminal required PASS.",
+  "next_action": "Run fresh current atmospheric HIST/age owner controls on persisted conflict resolution; if PASS and canonical unchanged, admit PR1309.",
   "blockers": [],
   "test_selection": {
     "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
@@ -256,6 +256,56 @@
     "src/adapter/mod_reference_richards_legacy_binding.f90": {
       "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
       "canonical_blob": "65ece4c8a1515fda94d1f9bae10b5a6aae729fd2"
+    }
+  },
+  "last_reconciled_upstream": "01a053f93f9c6548278df503a4cfea5424c84fce",
+  "preservation": {
+    "execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+    "status": "PASS",
+    "wall_seconds": 459.1519458293915,
+    "tracked_inputs": 6912,
+    "input_mutations": 0,
+    "resume_mode": "OFF",
+    "capsule": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_PRESERVATION_20261018.tar.xz.b64",
+      "decoded_sha256": "566f72f5edef00f168729c99ae97712351cf3656ea7ce046d1ad2a764d1bcd55",
+      "members": 35
+    },
+    "coexistence": {
+      "full_moving_execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+      "old_canonical": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+      "reconciled_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
+      "upstream_changed_paths": [
+        "docs/science/MC_NUT01_HIST_ATMOSPHERIC_N_QUALIFICATION_20261018.md",
+        "docs/science/MC_NUT01_HIST_TOP_N_CONTRACT_20261018.md",
+        "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_N_20261018.tar.xz.b64",
+        "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_RETAINED_20261018.tar.xz.b64",
+        "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+        "src/process/mod_b111_soil_n_mineral_owner.f90",
+        "src/process/mod_b111_soil_n_reactive_owner.f90",
+        "src/process/mod_soil_n_historical_activation.f90",
+        "src/process/mod_soil_n_historical_named_input.f90",
+        "src/runtime/mod_fmr_b111_mineral_route.f90",
+        "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_material_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_senescence_application.f90",
+        "tests/nut-crop/prepare_oracle.py",
+        "tests/nut-crop/run_hist_complete.py",
+        "tests/nut-crop/run_hist_water_audit.py",
+        "tests/nut-crop/test_b112_retained_joint.f90",
+        "tests/nut-crop/verify_hist_native_successor.py",
+        "tests/nut-input/run_boundary_source_witness.py",
+        "tests/nut-input/run_native_snm.py",
+        "tests/nut-input/test_native_snm.f90",
+        "tests/nut-mineral/test_mineral_owner.f90",
+        "tests/nut-reactive/reactive_oracle.inc",
+        "tests/nut-reactive/test_reactive_owner.f90"
+      ],
+      "age_execution_inputs_intersection": [],
+      "all_age_inputs_still_equal": true,
+      "conflict": "Only HIST evidence dispatcher. Kept all current atmospheric-N validation and its 12 negatives, then added exact surface-age registration.",
+      "scope": "Inherited full numerical preservation plus fresh combined owner qualification, not a claim that the full numerical runner was rerun after independently qualified atmospheric-N admission; no simultaneous companions admitted."
     }
   }
 }

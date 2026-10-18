@@ -121,3 +121,10 @@ FCI93 qualification reconciliation: its old fixed-K byte pins predate four uncha
 
 
 The next full-preservation attempt completed the original FCI93 numerical O0/O2 replays, then rejected an unchanged admitted drainage binding because the moving runner selected obsolete SWRD3 donor `3b661766...` as dependency authority. This work unit now explicitly registers reconciled canonical `8bf52bf2...`, conditional on its full exact-delta and executed age proof. This distinguishes new age changes from unrelated previously admitted drainage/crop changes; it does not grant wildcard source inheritance or remove any subsequent numerical gate.
+
+
+## Terminal preservation and concurrent canonical reconciliation
+
+The required complete local moving gate finished with exit 0 and `FCI_CANONICAL_LINEAGE_AWARE_GATE PASS` on 27d0cfa2e8684f29885305489a088891e84cfd9c, FCI_RESUME_MODE=OFF. All 6912 tracked files remained byte-identical during the bound execution. The preservation capsule retains unsuccessful earlier attempts without calling them PASS.
+
+During execution, canonical advanced independently to 01a053f93f9c6548278df503a4cfea5424c84fce (qualified atmospheric nitrogen). None of its changed paths intersects any compiled source, input or driver in the complete age O0/O2 manifest. Thus age science is inherited by exact input identity. The single HIST-guard conflict retains canonical's complete atmospheric qualification and adds only the exact age-source registration. Fresh current combined owner validation and all negative controls are required before admission. This is composed independent-owner preservation; no full numerical rerun on the merged tree or simultaneous age/reactive companion is claimed.

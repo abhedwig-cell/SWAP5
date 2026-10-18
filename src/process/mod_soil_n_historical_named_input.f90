@@ -150,9 +150,7 @@ contains
       end if
       if(field_index==21.and.x>10d0)return
       if(field_index>=27.and.field_index<=30.and.x>100d0)return
-      ! Nonzero top concentrations require the not-yet-bound incoming top
-      ! solute carrier. Never accept a parameter and silently discard its N.
-      if(field_index>=31.and.x/=0d0)return
+      ! The two top concentrations have an explicit immutable owner binding.
      else
       if(field_index>=31)return
      end if
@@ -190,6 +188,7 @@ contains
    rates%no3_lat=v(24)
    rates%nh4_seep=v(25)
    rates%no3_seep=v(26)
+   rates%nh4_top=v(31);rates%no3_top=v(32)
    if(present(ages))then
      if(seen(27))ages%root=v(27)
      if(seen(28))ages%leaf=v(28)

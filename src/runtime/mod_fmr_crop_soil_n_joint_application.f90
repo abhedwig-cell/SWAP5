@@ -81,7 +81,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -94,14 +94,14 @@ contains
     real(real64),intent(in)::t0,t1
     type(crop_soil_n_joint_result_t),intent(out)::result
     type(soil_n_day_environment_t),intent(in),optional::environment
-    logical,intent(in),optional::fallow,clean_surface_water
+    logical,intent(in),optional::fallow,clean_surface_water,atmospheric_n_surface
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
     type(crop_soil_state_t)::chemical_trial
     type(crop_n_configuration_t)::cp
     integer(int64)::id
-    logical::ok,did_commit,inactive
+    logical::ok,did_commit,inactive,admit_atmospheric_n
     integer::status
     real(real64)::clock
     type(reactive_parameters_t)::np
@@ -121,6 +121,8 @@ contains
     end if
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)
+    admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
+    if(any(abs(np%mineral%c_top)>0d0).and..not.admit_atmospheric_n)return
     if(.not.allocated(np%mineral%dz_cm))return
     if(.not.allocated(parameters%dz))return
     if(size(np%mineral%dz_cm)/=size(parameters%dz))return
@@ -143,7 +145,7 @@ contains
     end if
     chemical_trial=chemical
     call soil%mineral_snapshot(base)
-    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status,clean_surface_water)
+    call aggregate_mineral_trace(base,obs%accepted_water_flux_substeps,carrier,status,clean_surface_water,atmospheric_n_surface)
     if(status/=MINERAL_OK)then
       result%status=JOINT_CHEMICAL_REJECTED
       call backend%discard_trial_candidate(candidate,result%diagnostics)

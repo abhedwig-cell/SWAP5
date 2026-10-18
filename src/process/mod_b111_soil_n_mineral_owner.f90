@@ -11,7 +11,7 @@ module mod_b111_soil_n_mineral_owner
  type,public::mineral_parameters_t
    type(soil_n_inventory_parameters_t)::inventory
    real(real64),allocatable::dz_cm(:)
-   real(real64)::drybd=0d0,sorption=0d0,c_bottom(2)=0d0,c_lateral(2)=0d0
+   real(real64)::drybd=0d0,sorption=0d0,c_bottom(2)=0d0,c_lateral(2)=0d0,c_top(2)=0d0
  end type
  type,public::mineral_state_t
    private
@@ -45,6 +45,7 @@ contains
    if(.not.p%inventory%valid())return
    if(.not.allocated(p%dz_cm))return
    if(size(p%dz_cm)<1.or.size(p%dz_cm)>4096.or.size(p%inventory%nfrac_fom)>64)return
+   if(.not.all(ieee_is_finite(p%c_top)))return
    allocate(v(0))
    v=mineral_parameter_vector(p)
    if(.not.all(ieee_is_finite(v)))return
@@ -54,14 +55,19 @@ contains
    if(any(p%inventory%nfrac_fom>1d0).or.p%inventory%nfrac_biomass>1d0.or.p%inventory%nfrac_humus>1d0)return
    if(p%drybd<0d0.or.p%drybd>4000d0.or.p%sorption<0d0.or.p%sorption>1d0)return
    if(any(p%c_bottom<0d0).or.any(p%c_lateral<0d0).or.any(p%c_bottom>1d6).or.any(p%c_lateral>1d6))return
+   if(any(p%c_top<0d0).or.any(p%c_top>1d6))return
    ok=.true.
  end function
  function mineral_parameter_vector(p) result(v)
    type(mineral_parameters_t),intent(in)::p
    real(real64),allocatable::v(:)
    if(.not.allocated(p%dz_cm).or..not.allocated(p%inventory%nfrac_fom))return
+   if(.not.all(ieee_is_finite(p%c_top)))return
    v=[p%inventory%depth_m,p%inventory%nfrac_fom,p%inventory%nfrac_biomass,p%inventory%nfrac_humus, &
       p%dz_cm,p%drybd,p%sorption,p%c_bottom,p%c_lateral]
+   ! Keep every old zero-top identity byte exact. Nonzero immutable input
+   ! has an explicit extension marker and is checked by existing codecs.
+   if(any(abs(p%c_top)>0d0))v=[v,-81004d0,p%c_top]
  end function
  logical function bounded_pools(s) result(ok)
    type(soil_n_pool_state_t),intent(in)::s
@@ -135,8 +141,8 @@ contains
    initial=[c%cnh4_kg_m3,c%cno3_kg_m3];sorption=[state%p%sorption,0d0]
    if(any(initial>1d6))return
    do i=1,2
-     call evaluate_b111_soil_n_transport(dz,dt,water_end,state%water,outflow,root_water,in_bottom,0d0, &
-       in_lateral,0d0,0d0,0d0,state%p%drybd,sorption(i),state%p%c_bottom(i),0d0, &
+     call evaluate_b111_soil_n_transport(dz,dt,water_end,state%water,outflow,root_water,in_bottom,max(0d0,surface), &
+       in_lateral,0d0,0d0,0d0,state%p%drybd,sorption(i),state%p%c_bottom(i),state%p%c_top(i), &
        state%p%c_lateral(i),initial(i),r(i))
      if(r(i)%status/=B111_NTRANS_OK)return
      receipt%concentration_end(i)=r(i)%concentration_end
@@ -149,7 +155,7 @@ contains
    x%fom_delta_kg_m3=spread(0d0,1,size(state%pools%fom_kg_m3))
    x%ammonium_n_delta_kg_m2=mass(1)-state%pools%ammonium_n_kg_m2
    x%nitrate_n_delta_kg_m2=mass(2)-state%pools%nitrate_n_kg_m2
-   x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral)
+   x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral+max(0d0,surface)*state%p%c_top)
    x%external_n_output_kg_m2=dt*outflow*sum(receipt%concentration_average)
    call apply_soil_n_transfer(state%p%inventory,state%pools,x,trial,budget)
    receipt%status=MINERAL_BALANCE
