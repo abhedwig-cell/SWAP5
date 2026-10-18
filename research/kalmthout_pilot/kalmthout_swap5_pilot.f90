@@ -20,9 +20,9 @@ program kalmthout_swap5_daily_pilot
   real(real64), parameter :: H0_CM=-75.0_real64
   integer, parameter :: UNIT_MET=10, UNIT_OUT=20, NSUB=1
   character(len=256) :: policy_arg
-  integer :: backtracking_limit=4, iteration_limit=8, numnod=4
+  integer :: backtracking_limit=32, iteration_limit=40, numnod=4
   real(real64),allocatable :: z(:),dz(:),disnod(:)
-  real(real64) :: initial_storage,final_storage,current_soil,current_pond,accepted_time
+  real(real64) :: initial_storage,final_storage,current_soil,current_pond,current_head,current_theta,canopy_store,accepted_time
   logical :: time_available
   character(len=256) :: restart_path
   real(real64) :: restart_time=0.0_real64, restart_pond=0.0_real64
@@ -132,7 +132,7 @@ program kalmthout_swap5_daily_pilot
   open(UNIT_MET,file=trim(met_path),status='old',action='read',iostat=ios); call require(ios==0,'open weather')
   open(UNIT_OUT,file=trim(out_path),status='replace',action='write',iostat=ios); call require(ios==0,'open output')
   read(UNIT_MET,'(A)',iostat=ios) line; call require(ios==0,'read weather header')
-  write(UNIT_OUT,'(A)') 'time,precip_mm_hour,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm'
+  write(UNIT_OUT,'(A)') 'time,precip_mm_hour,et0_mm_day,accepted_substeps,solver_rejections,temporal_rejections,mass_residual_cm,total_in_cm,total_out_cm,soil_storage_cm,pond_storage_cm,head_top_cm,theta_top,canopy_storage_cm'
   dt_day=1.0_real64/24.0_real64
 
   day_index=0; failures=0; max_residual=0.0_real64
@@ -265,14 +265,28 @@ program kalmthout_swap5_daily_pilot
     end do
     if(failures>0) exit
 
+    call app%copy_committed_for_crop(1,accepted_snapshot,snapshot_status)
+    call require(snapshot_status==FMR_APP_BOOT_OK,'hourly committed observation')
+    call accepted_snapshot%snapshot(accepted_physical,snapshot_ok)
+    call require(snapshot_ok,'hourly physical snapshot')
+    select type(accepted=>accepted_physical)
+    class is(fmr_b110_physical_state_t)
+      current_soil=sum(accepted%water_content*dz);current_pond=accepted%ponding_depth
+      current_head=accepted%pressure_head(1);current_theta=accepted%water_content(1)
+      canopy_store=0.0_real64
+      if(allocated(accepted%rutter))canopy_store=accepted%rutter%canopy_storage()
+      call require(canopy_store==0.0_real64,'bare-soil canopy remains empty')
+    class default
+      error stop 'unexpected hourly state'
+    end select
     max_residual=max(max_residual,hour_residual)
     total_precip=total_precip+precip_mm
     total_et0=total_et0+et0*dt_day
     total_in=total_in+hour_in
     total_out=total_out+hour_out
-    write(UNIT_OUT,'(A,",",F12.6,",",F12.6,",",I0,",",I0,",",I0,",",ES18.10,",",ES18.10,",",ES18.10)') &
+    write(UNIT_OUT,'(A,",",F12.6,",",F12.6,",",I0,",",I0,",",I0,",",ES18.10,",",ES18.10,",",ES18.10,5(",",ES24.16))') &
          trim(ds),precip_mm,et0,hour_accepted,hour_solver_rejections,hour_temporal_rejections, &
-         hour_residual,hour_in,hour_out
+         hour_residual,hour_in,hour_out,current_soil,current_pond,current_head,current_theta,canopy_store
     if(max_hours>0 .and. day_index>=max_hours) exit
   end do
   call app%copy_committed_for_crop(1,accepted_snapshot,snapshot_status)

@@ -42,3 +42,35 @@ expected 300s, needed to establish candidate full-period reproducibility;
 prior full candidate PASS cannot establish repeat identity by itself.
 Candidate K curve and bootstrap owner O0/O2 PASS. No hydraulic-owner or canonical
 admission inferred. No hard mass, temporal or head tolerance was relaxed.
+
+## Corrected interval convention and final paired run
+
+Official Open-Meteo historical API documentation states precipitation is the
+preceding-hour sum and shortwave radiation is the preceding-hour mean. The
+original artifact applied both from their timestamp onward. Preserve the old
+CSV as the historical diagnostic input; do not label it calendar-aligned.
+`align_existing_forcing.py` shifts only these aggregates, leaves instantaneous
+T/dew/wind and their daily PM aggregates unchanged, and checks daily radiation.
+The only missing endpoint was 2026-10-02T00:00. A minimal one-day endpoint query
+was made because this record does not exist in the recovered artifact. It returned
+P=0 mm, Rs=0 W/m2. No existing forcing values were redownloaded/replaced.
+Source: https://open-meteo.com/en/docs/historical-weather-api
+
+Aligned SWAP431 1005d reference completed normally, process100 and positive
+completion marker. Aligned SWAP5 continuous-K 24120h completed; max hour ledger
+residual4.7493259325e-14 cm; initial storage69.18231266253387 cm; final71.87339165672246 cm;
+cumulative ledger/storage closure8.526512829121202e-14 cm.
+
+The final same-input repeat is selected to add read-only hourly soil/pond/head/
+canopy observations and verify identical pre-existing CSV columns. Expected300s,
+needed for explicit wet/dry transition evidence and corrected-input reproducibility.
+No extra numerics or tolerances are changed by observation. The 48h observational
+smoke passed. Full unaligned continuous-K run/repeat were byte-identical.
+
+## Terminal state
+
+Calendar-correct full200 run and observational repeat PASS; pre-existing output
+columns identical at all24120 hours.38 wet/dry transitions explicitly observed.
+Complete result, claim boundaries and commands: RESULTS_20261018.md.
+Scientific hydraulic-owner admission and canonical integration NOT DONE; the
+original production hydraulic provider remains unchanged. No background work.

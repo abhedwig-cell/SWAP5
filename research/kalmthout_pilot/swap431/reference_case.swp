@@ -129,1117 +129,652 @@
                              ! 1 = Output at the end of the simulation
                              ! 2 = Output at the end of each day
                              
-* S…12381 tokens truncated…        fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) 
-         end do
-         state%qbot = fsi_ws%vertical_flux(numnod+1)
-         state%h(1) = state%gwlinp + grid_disnod(1)*(fsi_ws%vertical_flux(1)/state%kmean(1) + 1.0d0)
-         do i = 2, numnod
-            state%h(i) = state%h(i-1) + grid_disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)    ! gaat dit goed: immers state%kmean(i) nog behorend bij oude tijd???, maar state%k(1) werd wel eerst opnieuw berekend
-         end do
-
-!        special case: SwKimpl = 1
-         if (SwKimpl == 1) then
-            do i = 1, numnod
-               state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
-               if (i > 1) then
-                  state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
-               end if
-            end do
-            state%kmean(numnod+1) = state%k(numnod)                  
-         end if
-         !call calcgwl () replaced to call soilwater(3)
-!        ready
-         if (legacy_state_binding) call publish_legacy_state(state)
-         return
-      else
-         NN = 0
-         do while (grid_z(NN+1) > state%gwlinp .AND. NN < numnod)
-            NN = NN + 1
-         end do
-         if (grid_z(NN+1) < (state%gwlinp+nihil)) then
-!           groundwater within soil profile
-            if ((grid_z(NN)-state%gwlinp) < 1.0d-4 .AND. (NN > 0)) then
-!              difference state%gwlinp with node to small to calculate gradient properly
-               state%gwlinp = grid_z(NN)
-               NN     = NN-1
-            end if
-         else
-!           groundwater below soil profile
-            state%fllowgwl = .TRUE.
-            state%hbot     = state%gwlinp - grid_z(numnod) + 0.5d0*grid_dz(numnod)
-         end if
-      end if
-
-   else
-!     for all other swbotb cases
-      NN = numnod
-      if (swbotb == 9) NN = numnod - 1
-   end if
-
-!  reset conductivities (state%k, state%kmean) to time level t
-   if (provider_constitutive_active) then
-      ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-      ctx%diagnostics%constitutive_initial_full_evaluations = &
-           ctx%diagnostics%constitutive_initial_full_evaluations + 1
-      call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-           fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-      provider_tuple_valid = .true.
-      provider_tuple_from_candidate = .false.
-      state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
-   else
-      do i = 1, numnod
-         state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-      end do
-   end if
-   do i = 1, numnod
-      if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
-      if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
-   end do
-   state%kmean(numnod+1) = state%k(numnod)
-
-!  lower and upper diagnal elements
-   if (SwKimpl == 0) then
-      do i = 2, numnod
-         fsi_ws%dfdh_upper(i)   = - state%kmean(i)  /grid_disnod(i)
-         fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
-      end do
-   end if
-
-!  gradient in state%h
-   do i = 2, NN
-      fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
-   end do
-
-!  calculate vector fsi_ws%residual (first time)
-   call vector_F(1)
-   if (typed_bottom_invalid) then
-      state%fldecdt=.true.
-      ctx%control%request_dt_reduction=.true.
-      return
-   end if
-
-!  initial estimate of fsi_ws%residual inner product
-   sumold = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
-
-!  start iteration loop, MaxIt specified in the input
-   MaxIt1 = MaxIt
-   if (fldtmin) MaxIt1 = 2*MaxIt
-   if (legacy_state_binding) then
-      if (fldecmprat) MaxIt1 = 2*MaxIt
-   else if (swmacro == 1) then
-      if (fldecmprat) MaxIt1 = 2*MaxIt
-   end if
-   sump = 0.d0
-   do solver_numbit = 1, MaxIt1
-      state%numbit = solver_numbit
-      ctx%diagnostics%nonlinear_iterations = ctx%diagnostics%nonlinear_iterations + 1
-
-!     store fsi_ws%old_head and get moiscap
-      do i = 1, NN
-         fsi_ws%old_head(i) = state%h(i)
-      end do
-      if (provider_constitutive_active) then
-         if (.not. provider_tuple_valid) then
-            if (provider_tuple_from_candidate .and. SwKimpl == 0) then
-               ctx%diagnostics%constitutive_capacity_only_evaluations = &
-                    ctx%diagnostics%constitutive_capacity_only_evaluations + 1
-               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), CONSTITUTIVE_DEMAND_CAPACITY, &
-                    fsi_ws%provider_theta, fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-               provider_tuple_valid = .true.
-            else
-               ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-               provider_tuple_valid = .true.
-               provider_tuple_from_candidate = .false.
-            end if
-         else if (provider_tuple_from_candidate) then
-            ctx%diagnostics%constitutive_candidate_capacity_reuses = &
-                 ctx%diagnostics%constitutive_candidate_capacity_reuses + 1
-         end if
-         state%dimoca(1:NN) = fsi_ws%provider_capacity(1:NN)
-      else
-         do i = 1, NN
-            state%dimoca(i) = moiscap(i, state%h(i))
-         end do
-      end if
-
-!     special case: SwKimpl = 1
-      if (SwKimpl == 1) then
-         do i = 1, NN
-            fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
-            if (matrix_area_scaling_active()) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
-         end do
-         do i = 2, NN
-            fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
-            fsi_ws%dfdh_lower(i-1) = fsi_ws%dfdh_upper(i)
-         end do
-      end if
-
-!     incorporate Jacobian information in coefficient matrix elements
-      ctx%diagnostics%jacobian_builds = ctx%diagnostics%jacobian_builds + 1
-      call jacobian_F()
-      call kalmthout_check_production_jacobian()
-
-!     solve the tridiagonal matrix
-      ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
-      call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
-           fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror, &
-           capture_in_gamma_requested=fsi_ws%tridag_factorization_capture_active)
-
-!     in the rare case that TRIDAG fails, use alternative solution
-      if (ierror /= 0) then
-         call dtdpst ('year-month-day', t1900+1.001d0, datetime)
-         write(cval,'(I10)') i_instance
-         message = cval//' Tri-band matrix in HeadCalc appeared to be singular at '//adjustl(trim(datetime))//' Alternative SOLVER chosen'
-         if (.NOT.canonical_trial) call swap_warning ('headcalc', message)
-         ctx%diagnostics%alternative_solver_calls = ctx%diagnostics%alternative_solver_calls + 1
-         call alternative_solver()
-      end if
-
-!     back tracking cycle
-      factor = 1.0d0
-      do itry = 1, MaxBackTr
-         iBackTr = iBackTr + 1
-         ctx%diagnostics%backtracking_attempts = ctx%diagnostics%backtracking_attempts + 1
-!        factor reduces the change of state%h (fsi_ws%delta_head) calculated as a full Newton Raphson step
-
-!        update state%h
-         if (fldtmin .AND. state%numbit > MaxIt) then              
-            factmax = 0.0d0
-            do i = 1, NN
-               if (dabs(fsi_ws%old_head(i) ) < 1.0d0 ) then
-                  factmax = max(factmax, dabs(fsi_ws%delta_head(i))) 
-               else
-                  factmax = max(factmax, dabs(fsi_ws%delta_head(i) / fsi_ws%old_head(i)))
-               end if
-            end do
-            factmax1 = min(1.0d0, 1.0d0 / factmax)
-            do i = 1, NN
-               state%h(i) = fsi_ws%old_head(i) - fsi_ws%delta_head(i) * factmax1
-            end do
-         else
-            do i = 1, NN
-               state%h(i) = fsi_ws%old_head(i) - factor * fsi_ws%delta_head(i)
-            end do
-         end if
-
-!        update state%theta
-         if (provider_constitutive_active) then
-            provider_tuple_valid = .false.
-            ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            if (SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
-               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
-                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
-               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
-                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
-                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            else if (SwKimpl == 0 .and. (swbotb == 7 .or. swbotb == -2) .and. &
-                     provider_point_conductivity_supported) then
-               ctx%diagnostics%constitutive_candidate_demand_evaluations = &
-                    ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
-               call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
-                    CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
-                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-               call evaluation_context%constitutive%evaluate_point_conductivity(NN, state%h(NN), &
-                    fsi_ws%provider_theta(NN), fsi_ws%provider_k(NN), provider_point_conductivity_available)
-               if (.not. provider_point_conductivity_available) then
-                  ctx%diagnostics%constitutive_candidate_full_evaluations = &
-                       ctx%diagnostics%constitutive_candidate_full_evaluations + 1
-                  call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, &
-                       fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-                  provider_tuple_valid = .true.
-               end if
-            else
-               ctx%diagnostics%constitutive_candidate_full_evaluations = &
-                    ctx%diagnostics%constitutive_candidate_full_evaluations + 1
-               call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, fsi_ws%provider_k, &
-                    fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-               provider_tuple_valid = .true.
-            end if
-            provider_tuple_from_candidate = .true.
-            state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
-         else
-            do i = 1, NN
-               state%theta(i) = watcon(i,state%h(i))
-            end do
-         end if
-
-!        update gradient in state%h
-         do i = 2, NN
-            fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
-         end do
-
-!        special case: update state%k and state%kmean if SwKimpl = 1
-         if (SwKimpl == 1) then
-            call Rootextraction(2)
-            do i = 1, NN
-               state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
-               if (i > 1) then
-                  state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
-               end if
-            end do
-            state%kmean(NN+1) = state%k(NN)
-         end if
-
-!        re-calculate fsi_ws%residual-function
-         call vector_F(2)
-         if (typed_bottom_invalid) then
-            state%fldecdt=.true.
-            ctx%control%request_dt_reduction=.true.
-            return
-         end if
-
-!        calculate maximum deviation per compartment and new inner product
-         sump = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
-         sum1 = sum(fsi_ws%residual(1:NN))
-         Fmax = maxval(dabs(fsi_ws%residual(1:NN)))
-
-!        test for iteration progress, if Newton-step is too large: reduce dh by multiplication factor
-         block
-            character(len=1) :: trace_flag
-            integer :: trace_status
-            call get_environment_variable('KALMTHOUT_NEWTON_TRACE',trace_flag,status=trace_status)
-            if (trace_status==0 .and. trace_flag=='1' .and. provider_dynamic_top_active) then
-               if (state%pondm1 > 0.0d0 .and. state%pondm1 < 1.0d-3 .and. &
-                   fsi_ws%old_head(1) > 0.99d0 .and. fsi_ws%old_head(1) < 1.01d0) then
-                  write(*,'(A,3(1X,I0),6(1X,ES24.16),1X,L1,1X,A)') 'KALMTHOUT_BACKTRACK_DECISION', &
-                       state%numbit,iBackTr,merge(1,0,state%ftoph),dt,factor,sump,sumold,Fmax,CritDevBalCp, &
-                       (sump < sumold .OR. Fmax < CritDevBalCp),trim(provider_dynamic_top_result%route)
-               end if
-            end if
-         end block
-         if (sump < sumold .OR. Fmax < CritDevBalCp) goto 1
-         factor = factor / 3.0d0
-
-      end do
- 1    continue
-
-!     check on convergence of solution
-
-!     initialize flags
-!     main flag for testing the convergence
-      ! Pilot-only read-only Newton diagnostics. The environment guard keeps
-      ! normal production paths and admission decisions unchanged.
-      block
-         character(len=1) :: kalm_trace
-         integer :: kalm_trace_status
-         call get_environment_variable('KALMTHOUT_NEWTON_TRACE',kalm_trace,status=kalm_trace_status)
-         if (kalm_trace_status==0 .and. kalm_trace=='1' .and. provider_dynamic_top_active) then
-            if (state%pondm1 > 0.0d0 .and. state%pondm1 < 1.0d-3 .and. &
-                fsi_ws%old_head(1) > 0.99d0 .and. fsi_ws%old_head(1) < 1.01d0) then
-               write(*,'(A,3(1X,I0),9(1X,ES18.10),1X,L1,1X,A)') 'KALMTHOUT_NEWTON', &
-                    state%numbit,iBackTr,merge(1,0,state%ftoph),dt,state%pondm1, &
-                    fsi_ws%old_head(1),state%h(1),state%pond,state%qtop, &
-                    sump,sumold,Fmax,state%ftoph,trim(provider_dynamic_top_result%route)
-            end if
-         end if
-      end block
-
-      flnonconv = .FALSE.
-
-!     flags introduced for debugging/macropore iteration policy
-      if (macropore_iteration_policy_active()) then
-         fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
-         fsi_ws%nonconverged_head(1:numnod) = .FALSE.
-      end if
-      flnonconv3 = .FALSE.
-
-!     apply performance criteria per compartment
-      do i = 1, NN
-
-!        test for water balance deviation of soil compartments
-         if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
-            flnonconv     = .TRUE.
-         end if
-
-!        test for change of pressure head
-         if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
-            if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
-               flnonconv     = .TRUE.
-            end if
-         else
-            if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
-               flnonconv     = .TRUE.
-            end if
-         end if
-    
-      end do
-
-!     test for waterbalance of ponding layer
-      if (provider_dynamic_top_active) then
-         if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
-            deviat = state%pond - state%pondm1 - provider_dynamic_top_result%net_potential_surface_flux*dt + &
-                     state%runots - state%qtop * dt
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-      else if (state%ftoph) then
-         state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
-         if (.NOT.flnonconv .AND. pond_balance_option_allows()) then
-            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-      end if
-
-!     in case of macropores
-      if (swmacro == 1) then
-         if (IcTopMp == 1) then
-            deviat = state%pond - state%pondm1 + epd*dt + reva*dt - (nraidt+nird+Melt)*dt - runon*dt + state%runots - state%qtop * dt + macropore_surface_fraction() * (nraidt+nird+Melt)*dt + QMpLatSs
-            if (abs(deviat) > CritDevPondDt) then
-               flnonconv3 = .TRUE.
-               flnonconv  = .TRUE.
-            end if
-         end if
-         if (fldecMPmbf) flnonconv = .TRUE.
-      end if
-      
-
-!     implemented to improve iteration performance in case of macropores
-      if (dt < 0.01d0 .AND. macropore_iteration_policy_active() .AND. .NOT.flnonconv3) then
-         flok = .TRUE.
-         if (dt > 10.d0*dtmin) then
-            do i = 1, nodgwl
-               if (state%h(i) > 0.0d0 .AND. fsi_ws%nonconverged_balance(i) .AND. fsi_ws%nonconverged_head(i)) flok = .FALSE.
-            end do
-         else
-            continue
-         end if
-         if (flok) then
-            if (.NOT.fsi_ws%unsaturated_flags(1)) then
-               fsi_ws%unsaturated_flags(1) = .TRUE.
-            else if (.NOT. fsi_ws%unsaturated_flags(2)) then
-               fsi_ws%unsaturated_flags(2) = .TRUE.
-            else
-               fsi_ws%unsaturated_flags(3) = .TRUE.                 
-            end if
-         else
-            fsi_ws%unsaturated_flags(1:3) = .FALSE.
-         end if
-      end if
-
-      if (dabs(sum1) > CritDevBalTot) flnonconv = .TRUE.
-
-!     save sump voor next iteration
-      sumold = sump
-
-      if (.NOT.flnonconv) then      ! convergence has been reached
-         if (provider_constitutive_active .and. provider_tuple_from_candidate) then
-            ctx%diagnostics%constitutive_candidate_terminal_evaluations = &
-                 ctx%diagnostics%constitutive_candidate_terminal_evaluations + 1
-         end if
-     
-!        special case for macropores
-         if (swmacro == 1) then
-            FlDecMpRat = .FALSE.
-            if (IDecMpRat > 0) then
-               if (hist%nstep < 10) then
-                  hist%nstep = hist%nstep + 1
-               end if
-               if (dt > state%dtold .OR. hist%nstep >= 10) then
-                  state%dtold = dt
-                  hist%nstep = 0
-                  IDecMpRat = IDecMpRat - 1
-               end if
-            end if
-         end if
-
-!        special case swbotb = 1
-         if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-!           derive vertical flux profile in order to find state%qbot as a lower boundary condition for the saturated part of the soil system
-            fsi_ws%vertical_flux(1) = state%qtop
-            do i = NN+1, numnod
-               state%theta(i) = cofgen(2,i)
-            end do
-            do i = 1, numnod
-              fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
-            end do
-            state%qbot = fsi_ws%vertical_flux(numnod+1)
-!           state%h in saturated zone
-            do i = NN+1, numnod
-               state%h(i) = state%h(i-1) + grid_disnod(i)*(fsi_ws%vertical_flux(i)/state%kmean(i) + 1.0d0)
-            end do
-         end if
-   
-!        calculate new groundwater level
-         !call calcgwl () replaced to call soilwater(3)
-
-!        recording of number of iteration steps needed
-         state%itnumb(min(100,state%numbit),1) = state%itnumb(min(100,state%numbit),1) + 1 
-         state%itnumb(min(100,state%numbit),2) = state%itnumb(min(100,state%numbit),2) + iBackTr 
-
-         ctx%control%last_numbit = state%numbit
-         if (legacy_state_binding) call publish_legacy_state(state)
-         return
-      end if
-   ! end do solver_numbit = 1, MaxIt1
-   end do
-   ! Preserve the legacy DO-variable value after normal loop exhaustion.
-   state%numbit = solver_numbit
-
-!  Convergence could not been reached
-   if (.NOT.fldtmin) then
-
-!     reset soil state variables
-      do j = 1, numnod
-         state%h(j)     = state%hm1(j)
-         state%theta(j) = state%thetm1(j)
-      end do
-      state%kmean(numnod+1) = state%k(numnod)
-      state%gwl             = state%gwlm1
-      state%pond            = state%pondm1
-
-!     reset and continue iteration with smaller timestep!
-      state%fldecdt = .TRUE.
-      ctx%control%request_dt_reduction = .TRUE.
-      ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
-
-      if (legacy_state_binding) call publish_legacy_state(state)
-
-      return
-   else if (macropore_exchange_retry_available()) then
-!     in case of macropores, retry with reduction of exchange fluxes with matrix
-      IDecMpRat  = IDecMpRat + 1
-      ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
-      FlDecMpRat = .TRUE.
-      state%dtold      = dt
-      fldtmin    = .FALSE.
-
-      if (legacy_state_binding) call publish_legacy_state(state)
-
-      return
-   else
-!     write warning to screen and log file
-      if (hist%flwarn) then
-         hist%iwarn = hist%iwarn + 1
-         call dtdpst('year-month-day,hour:minute:seconds',t1900,datetime)
-         write(cval,'(I10)') i_instance
-         message = cval//' No convergence was reached of Richards equation at '//datetime//' no more than 4 warnings per date - SWAP did continue!'
-         if (.NOT.canonical_trial) call swap_warning ('headcalc', message)
-         if (hist%iwarn > 3) hist%flwarn = .FALSE.  
-      end if
-
-!     continue without convergence !!!
-      if (legacy_state_binding) call publish_legacy_state(state)
-      return
-   end if
-
-contains
-
-logical function pond_balance_option_allows()
-   if (swmacro == 0) then
-      pond_balance_option_allows = .true.
-   else
-      pond_balance_option_allows = IcTopMp > 1
-   end if
-end function pond_balance_option_allows
-
-logical function macropore_exchange_retry_available()
-   if (swmacro /= 1) then
-      macropore_exchange_retry_available = .false.
-   else
-      macropore_exchange_retry_available = IDecMpRat < 3
-   end if
-end function macropore_exchange_retry_available
-
-logical function macropore_iteration_policy_active()
-   if (swmacro == 1) then
-      macropore_iteration_policy_active = .true.
-   else
-      macropore_iteration_policy_active = provider_macropore_active .and. present(physical_config) .and. &
-           allocated(physical_config%matrix_area_fraction)
-      if(provider_macropore_active) macropore_iteration_policy_active = &
-           macropore_iteration_policy_active .and. evaluation_context%macropore%permits_source_freezing()
-   end if
-end function macropore_iteration_policy_active
-
-logical function matrix_area_scaling_active()
-   if (legacy_state_binding) then
-      matrix_area_scaling_active = swmacro == 1
-   else
-      matrix_area_scaling_active = present(physical_config) .and. allocated(physical_config%matrix_area_fraction)
-   end if
-end function matrix_area_scaling_active
-
-real(8) function matrix_fraction(node)
-   integer, intent(in) :: node
-   if (legacy_state_binding .or. swmacro == 1) then
-      matrix_fraction = legacy_frarmtrx(node)
-   else if (present(physical_config) .and. allocated(physical_config%matrix_area_fraction)) then
-      matrix_fraction = physical_config%matrix_area_fraction(node)
-   else
-      matrix_fraction = 1.0d0
-   end if
-end function matrix_fraction
-
-real(8) function macropore_surface_fraction()
-   if (legacy_state_binding .or. swmacro == 1) then
-      macropore_surface_fraction = legacy_armpss
-   else
-      macropore_surface_fraction = 0.0d0
-   end if
-end function macropore_surface_fraction
-
-real(8) function grid_z(node)
-   integer, intent(in) :: node
-   if (explicit_geometry) then
-      grid_z = parameter_set%z(node)
-   else
-      grid_z = legacy_z(node)
-   end if
-end function grid_z
-
-real(8) function grid_dz(node)
-   integer, intent(in) :: node
-   if (explicit_geometry) then
-      grid_dz = parameter_set%dz(node)
-   else
-      grid_dz = legacy_dz(node)
-   end if
-end function grid_dz
-
-real(8) function grid_disnod(node)
-   integer, intent(in) :: node
-   if (explicit_geometry) then
-      if (node == numnod+1) then
-         ! Exact B1.10 swap_base geometry: lower face is half the last compartment thickness.
-         grid_disnod = 0.5d0*parameter_set%dz(numnod)
-      else
-         grid_disnod = parameter_set%node_distance(node)
-      end if
-   else
-      grid_disnod = legacy_disnod(node)
-   end if
-end function grid_disnod
-
-
-real(8) function root_sink_term(node)
-   integer, intent(in) :: node
-   if (provider_source_sink_active) then
-      if (provider_root_sink_active) then
-         root_sink_term = fsi_ws%provider_root_sink(node)
-      else
-         root_sink_term = 0.0d0
-      end if
-   else
-      root_sink_term = qrot(node)
-   end if
-end function root_sink_term
-
-subroutine capture_legacy_state(s)
-   type(reference_richards_state_binding_t), intent(inout) :: s
-   s%active_nodes = numnod
-   s%h = h(1:numnod)
-   s%theta = theta(1:numnod)
-   s%hm1 = hm1(1:numnod)
-   s%thetm1 = thetm1(1:numnod)
-   s%k = k(1:numnod)
-   s%kmean = kmean(1:numnod+1)
-   s%dimoca = dimoca(1:numnod)
-   s%pond = pond
-   s%pondm1 = pondm1
-   s%gwl = gwl
-   s%gwlm1 = gwlm1
-   s%gwlinp = gwlinp
-   s%dtold = dtold
-   s%qtop = qtop
-   s%qbot = qbot
-   s%hbot = hbot
-   s%itnumb = itnumb
-   s%numbit = numbit
-   s%fllowgwl = fllowgwl
-   s%fldecdt = fldecdt
-   s%q0 = q0
-   s%hsurf = hsurf
-   s%runots = runots
-   s%flrunoff = flrunoff
-   s%ftoph = ftoph
-end subroutine capture_legacy_state
-
-subroutine publish_legacy_state(s)
-   type(reference_richards_state_binding_t), intent(in) :: s
-   h(1:numnod) = s%h
-   theta(1:numnod) = s%theta
-   hm1(1:numnod) = s%hm1
-   thetm1(1:numnod) = s%thetm1
-   k(1:numnod) = s%k
-   kmean(1:numnod+1) = s%kmean
-   dimoca(1:numnod) = s%dimoca
-   pond = s%pond
-   pondm1 = s%pondm1
-   gwl = s%gwl
-   gwlm1 = s%gwlm1
-   gwlinp = s%gwlinp
-   dtold = s%dtold
-   qtop = s%qtop
-   qbot = s%qbot
-   hbot = s%hbot
-   itnumb = s%itnumb
-   numbit = s%numbit
-   fllowgwl = s%fllowgwl
-   fldecdt = s%fldecdt
-   q0 = s%q0
-   hsurf = s%hsurf
-   runots = s%runots
-   flrunoff = s%flrunoff
-   ftoph = s%ftoph
-end subroutine publish_legacy_state
-
-subroutine boundtop_state_bridge(task)
-   integer, intent(in) :: task
-   type(reference_richards_state_binding_t) :: saved
-   real(8) :: provider_runoff_flux
-   provider_runoff_resolved = .false.
-   if (provider_dynamic_top_active) then
-      if (evaluated_boundary_conditions%matrix_source_area_partition .or. &
-          associated(evaluation_context%macropore)) then
-         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
-              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
-         if (.not.ieee_is_finite(provider_macropore_surface_area_fraction) .or. &
-             provider_macropore_surface_area_fraction<0.0d0 .or. provider_macropore_surface_area_fraction>1.0d0) &
-              error stop 'HeadCalc: candidate macropore surface-area fraction unavailable'
-         evaluated_boundary_conditions%macropore_surface_area_fraction=provider_macropore_surface_area_fraction
-         provider_macropore_partition_evaluated=.true.
-      end if
-      call evaluation_context%dynamic_top_boundary%evaluate(state%h(1), state%theta(1), state%pond, &
-           evaluated_boundary_conditions, provider_dynamic_top_result)
-      if (provider_dynamic_top_result%status /= SW_TOP_BOUNDARY_AVAILABLE) &
-           error stop 'HeadCalc: dynamic top-boundary provider unavailable'
-      if (associated(evaluation_context%macropore)) then
-         call evaluation_context%macropore%set_candidate_pond_lateral( &
-              provider_dynamic_top_result%macropore_pond_requested_lateral_cm)
-         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
-              provider_macropore_exchange,provider_macropore_rate_active,provider_macropore_surface_area_fraction)
-      end if
-      if (.not. provider_dynamic_top_result%carries_surface_mass_terms) &
-           error stop 'HeadCalc: dynamic top-boundary provider omitted surface mass terms'
-      if (.not. provider_dynamic_top_result%runoff_resolved) &
-           error stop 'HeadCalc: dynamic top-boundary provider left runoff unresolved'
-      state%qtop = provider_dynamic_top_result%actual_top_flux
-      state%hsurf = provider_dynamic_top_result%surface_head
-      state%pond = provider_dynamic_top_result%candidate_ponding_depth
-      state%runots = provider_dynamic_top_result%runoff_depth
-      state%flrunoff = provider_dynamic_top_result%runoff_potential .or. &
-                       abs(provider_dynamic_top_result%runoff_depth) > 0.0d0
-      select case (provider_dynamic_top_result%regime)
-      case (SW_TOP_BOUNDARY_REGIME_FLUX)
-         state%ftoph = .false.
-      case (SW_TOP_BOUNDARY_REGIME_HEAD)
-         if (provider_dynamic_top_result%surface_face_conductivity <= 0.0d0) &
-              error stop 'HeadCalc: dynamic head regime requires positive surface-face conductivity'
-         state%ftoph = .true.
-         state%kmean(1) = provider_dynamic_top_result%surface_face_conductivity
-      case default
-         error stop 'HeadCalc: dynamic top-boundary provider returned invalid regime'
-      end select
-      provider_runoff_resolved = .true.
-      return
-   end if
-   if (provider_top_active) then
-      call evaluation_context%top_boundary%evaluate(state%h(1), state%theta(1), boundary_conditions, &
-           state%qtop, state%hsurf, provider_runoff_flux)
-      state%ftoph = .false.
-      state%runots = provider_runoff_flux * dt
-      state%flrunoff = abs(provider_runoff_flux) > 0.0d0
-      provider_runoff_resolved = .true.
-      return
-   end if
-   if (legacy_state_binding) then
-      call publish_legacy_state(state)
-      call boundtop(task)
-      call capture_legacy_state(state)
-   else
-      call capture_legacy_state(saved)
-      call publish_legacy_state(state)
-      call boundtop(task)
-      call capture_legacy_state(state)
-      call publish_legacy_state(saved)
-   end if
-end subroutine boundtop_state_bridge
-
-subroutine pondrunoff_state_bridge()
-   type(reference_richards_state_binding_t) :: saved
-   if (legacy_state_binding) then
-      call publish_legacy_state(state)
-      call pondrunoff()
-      call capture_legacy_state(state)
-   else
-      call capture_legacy_state(saved)
-      call publish_legacy_state(state)
-      call pondrunoff()
-      call capture_legacy_state(state)
-      call publish_legacy_state(saved)
-   end if
-end subroutine pondrunoff_state_bridge
-
-!----------------------------------------------------------------------------------
-! Alternative solution procedure in the rare case that TRIDAG failed.
-!
-! From Numerical Recipes, section 2.4:
-! There is no pivoting in TRIDAG. It is for this reason that TRIDAG can fail
-! (pause) even when the underlying matrix is nonsingular. In that case, 
-! you can instead use the more general method for band diagonal systems,
-! by using routines bandec and banbks, as is implemented here.
-!----------------------------------------------------------------------------------
-   subroutine alternative_solver()
-   ! local
-   integer                    :: i
-
-   do i = 1, NN
-      fsi_ws%band_matrix(i,1) = fsi_ws%dfdh_upper(i)
-      fsi_ws%band_matrix(i,2) = fsi_ws%dfdh_main(i)
-      fsi_ws%band_matrix(i,3) = fsi_ws%dfdh_lower(i)
-   end do
-   fsi_ws%band_rhs(1:NN) = fsi_ws%residual(1:NN)
-   call reference_band_solve(fsi_ws%band_matrix, fsi_ws%band_aux, fsi_ws%band_pivots(1:NN), &
-        fsi_ws%band_rhs(1:NN))
-   fsi_ws%delta_head(1:NN) = fsi_ws%band_rhs(1:NN)
-   return
-   end subroutine alternative_solver
-
-!----------------------------------------------------------------------------------
-! Function fsi_ws%residual: calculate right-hand-side vector fsi_ws%residual
-!----------------------------------------------------------------------------------
-subroutine vector_F(iTask)
-!  global
-   integer, intent(in)        :: iTask
-
-!  local
-!  functions
-   real(8)                    :: afgen
-
-   ! The constitutive provider owns the storage increment for every explicit
-   ! geometry. Its stable difference avoids cancellation at short trial steps;
-   ! providers without an override retain the exact theta-difference fallback.
-   if (provider_constitutive_active) then
-      call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
-           state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
-   else
-      fsi_ws%provider_water_content_increment(1:numnod) = state%theta(1:numnod)-state%thetm1(1:numnod)
-   end if
-
-!  top layer
-   fsi_ws%residual(1) = fsi_ws%provider_water_content_increment(1) * matrix_fraction(1) * grid_dz(1) / dt + &
-        fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
-
-!  depending on iTask
-   if (iTask == 2 .AND. swmacro == 1) QMpLatSsSav = QMpLatSs
-
-!  take care of top BC
-   provider_macropore_partition_evaluated = .false.
-   call boundtop_state_bridge(2)
-
-!  depending on iTask
-   if (swmacro == 1) then
-      if (iTask == 1 .OR. .NOT. fsi_ws%unsaturated_flags(3)) then 
-         call MACROPORE(2)
-      else
-         QMpLatSs = QMpLatSsSav
-      end if
-   end if
-   if (provider_macropore_active) then
-      if (.not. provider_macropore_partition_evaluated .and. .not. fsi_ws%unsaturated_flags(3)) then
-         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &
-              provider_macropore_exchange,provider_macropore_rate_active)
-      end if
-   else
-      provider_macropore_rate_active=.false.
-      provider_macropore_exchange=0.0d0
-   end if
-
-!  take care of top BC: ponding, runoff
-   if (.NOT. provider_runoff_resolved) then
-      if (state%flrunoff .OR. macropore_surface_fraction() > 0.0d0) call pondrunoff_state_bridge()
-   end if
-
-!  first layer, continued
-   if (state%ftoph) then
-      fsi_ws%head_gradient(1) = (state%hsurf-state%h(1))/grid_disnod(1) + 1.d0
-      fsi_ws%residual(1)     = fsi_ws%residual(1) - state%kmean(1) * fsi_ws%head_gradient(1)
-   else
-      fsi_ws%residual(1) = fsi_ws%residual(1) + state%qtop
-   end if
-
-!  layers 2 to (NN-1)
-   do i = 2, NN-1
-      fsi_ws%residual(i) = fsi_ws%provider_water_content_increment(i) * matrix_fraction(i) * grid_dz(i) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i) - state%kmean(i) * fsi_ws%head_gradient(i) + state%kmean(i+1) * fsi_ws%head_gradient(i+1)
-   end do
-
-!  for bottom BC
-   if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      fsi_ws%head_gradient(NN+1) = state%h(NN)/(grid_z(nn)-state%gwlinp) + 1.0d0
-   else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl)) then
-      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%hbot) / grid_disnod(NN+1) + 1.0d0
-   else if (swbotb == 9) then
-      fsi_ws%head_gradient(NN+1) = (state%h(NN) - state%h(NN+1)) / grid_disnod(NN+1) + 1.0d0
-   end if
-
-!  for swbotb = 8, depending on iTask
-   if (iTask == 1) then
-      if (swbotb == 8) then
-         if (state%h(NN) > Critdz - grid_disnod(NN+1) + lysimeter_plate_head) then
-            fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
-            flboth = .TRUE.
-         else
-            flboth = .FALSE.
-         end if
-      else
-         flboth = .FALSE.
-      end if
-   else
-      if (swbotb == 8 .AND. flboth) then
-         fsi_ws%head_gradient(NN+1) = (state%h(NN) - lysimeter_plate_head) / grid_disnod(NN+1) + 1.0d0
-      end if
-   end if
-
-   ! for bottom BC, continued
-   if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      state%theta(NN) = watcon(NN,state%h(NN))
-      state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
-      ! in case of static macropores FrArMtrx < 1
-      if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
-      state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
-      fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
-   else
-      fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 
-      if (swbotb == 3 .and. .not. legacy_state_binding) then
-         call evaluate_resistive_bottom_boundary(boundary_conditions,state%h(NN),grid_z(NN), &
-              grid_disnod(NN+1),state%kmean(NN+1),state%qbot,typed_bottom_conductance,typed_bottom_ok)
-         if (.not. typed_bottom_ok) then
-            typed_bottom_invalid=.true.
-            return
-         end if
-         fsi_ws%residual(NN)=fsi_ws%residual(NN)-state%qbot
-      else if (swbotb == 3 .AND. swbotb3Impl == 1) then
-         
-         ! Cauchy-relation, implemented as head boundary
-         if (SwBotb3ResVert == 0) then
-            state%qbot = - (state%h(NN)+grid_z(NN)-deepgw) / (grid_disnod(NN+1)/state%kmean(NN+1)+rimlay)
-         else if (SwBotb3ResVert == 1) then
-            state%qbot = - (state%h(NN)+grid_z(NN)-deepgw) / rimlay
-         end if
-         
-         ! extra groundwater flux might be added
-         if (sw4 == 1) state%qbot = state%qbot + afgen(qbotab,mabbc*2,t1900+dt)
-         fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot     
-      
-      else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl)) then
-         
-         ! pressure head at lower boundary specified
-         fsi_ws%residual(NN) = fsi_ws%residual(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
-
-      else if (swbotb == 9) then
-         
-         ! pressure head at lower boundary specified
-         fsi_ws%residual(NN) = fsi_ws%residual(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
-         !!!fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
-      
-      else if (swbotb == 7 .OR. swbotb == -2) then 
-         
-         ! free drainage option
-         if (provider_constitutive_active) then
-            state%kmean(numnod+1) = fsi_ws%provider_k(numnod)
-         else
-            state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
-         end if
-         if (matrix_area_scaling_active()) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
-         state%qbot = -1.0d0 * state%kmean(numnod+1)
-         fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
-      
-      else if (swbotb == 8) then
-
-         ! lysimeter option; flboth was selected once from solve-entry state
-         if (flboth) then
-            state%hbot = lysimeter_plate_head
-            state%qbot = -state%kmean(NN+1) * fsi_ws%head_gradient(NN+1)
-            fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
-         else
-            state%qbot = 0.0d0
-         end if
-
-      else
-         
-          ! flux bottom boundary
-         fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
-      
-      end if
-
-   end if
-
-   if (swmacro == 1) fsi_ws%residual(1:NN) = fsi_ws%residual(1:NN) - QExcMpMtx(1:NN)
-   if (provider_macropore_rate_active) &
-        fsi_ws%residual(1:NN)=fsi_ws%residual(1:NN)-provider_macropore_exchange(1:NN)
-
-end subroutine vector_F
-
-! Research-only one-sided FD of the actual vector_F, frozen conductivity SWKIMPL=0.
-! Save/restore both physical candidate and all workspace arrays.
-subroutine kalmthout_check_production_jacobian()
-   type(reference_richards_state_binding_t) :: saved_state
-   type(reference_richards_workspace_t) :: saved_ws
-   type(soil_water_top_boundary_result_t) :: saved_top
-   character(len=1) :: flag
-   integer :: env_status, col, row, regime0
-   real(8) :: eps, fd, analytic, err, scale
-   logical :: saved_resolved
-   call get_environment_variable('KALMTHOUT_JACOBIAN_FD',flag,status=env_status)
-   if(env_status/=0.or.flag/='1')return
-   if(.not.provider_dynamic_top_active.or.SwKimpl/=0.or.provider_macropore_active)return
-   if(state%pondm1<=0.d0.or.state%pondm1>=1.d-3)return
-   if(state%h(1)<0.99d0.or.state%h(1)>1.01d0)return
-   saved_state=state; saved_ws=fsi_ws; saved_top=provider_dynamic_top_result
-   saved_resolved=provider_runoff_resolved; regime0=saved_top%regime
-   do col=1,NN
-      state=saved_state; fsi_ws=saved_ws; provider_dynamic_top_result=saved_top
-      eps=1.d-5*max(1.d0,abs(state%h(col)))
-      state%h(col)=state%h(col)+eps
-      call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
-           CONSTITUTIVE_DEMAND_WATER_CONTENT,fsi_ws%provider_theta,fsi_ws%provider_k, &
-           fsi_ws%provider_capacity,fsi_ws%provider_dkdh)
-      state%theta(1:numnod)=fsi_ws%provider_theta(1:numnod)
-      do row=2,NN
-         fsi_ws%head_gradient(row)=(state%h(row-1)-state%h(row))/grid_disnod(row)+1.d0
-      end do
-      call vector_F(2)
-      if(provider_dynamic_top_result%regime==regime0)then
-         do row=1,NN
-            analytic=0.d0
-            if(row==col)analytic=saved_ws%dfdh_main(row)
-            if(col==row-1)analytic=saved_ws%dfdh_upper(row)
-            if(col==row+1)analytic=saved_ws%dfdh_lower(row)
-            fd=(fsi_ws%residual(row)-saved_ws%residual(row))/eps
-            scale=max(1.d0,abs(analytic),abs(fd)); err=abs(fd-analytic)/scale
-            write(*,'(A,3(1X,I0),4(1X,ES24.16))') 'KALMTHOUT_PRODUCT_FD',regime0,row,col,eps,analytic,fd,err
-         end do
-      else
-         write(*,'(A,2(1X,I0))') 'KALMTHOUT_FD_SWITCH_EXCLUDED',regime0,col
-      end if
-   end do
-   state=saved_state; fsi_ws=saved_ws; provider_dynamic_top_result=saved_top
-   provider_runoff_resolved=saved_resolved
-end subroutine kalmthout_check_production_jacobian
-
-subroutine jacobian_F()
-
-!  first layer
-   fsi_ws%dfdh_main(1) = state%dimoca(1)*matrix_fraction(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
+* Switch, type of output end-conditions (default: formatted output)
+  SWENDTYPE = 1              ! 1 = Formatted output
+                             ! 2 = Unformatted output
+
+* Switch, filter output end-conditions (default: no filter)
+  SWENDFILTER = 0            ! 0 = No filter; write end-conditions each day
+                             ! 1 = Write crop-status in case stress occured (tred > 0)
+
+**********************************************************************************
+
+*** METEOROLOGY SECTION ***
+
+**********************************************************************************
+
+* File name
+  METFIL = 'kalmthout.met' ! File name of meteorological data, in case of yearly files without extension .YYY, [A200]
+                             ! Extension is equal to last 3 digits of year, e.g. 022 denotes year 2022
+                             ! In case of meteorological in one file use extension .met
+
+* Details of meteo station:
+  LAT = 51.3592544265 ! Latitude of measurement site [-90..90 degrees, R, North = +]
+  LONG = 4.4467564872 ! Longitude of measurement site [-180..180 degrees, R]
+  LONG_TZ = 0.0 ! Longitude of centre local timezone [-180..180 degrees, R]
+
+* Type of weather data for potential evapotranspiration
+  SWETR = 0                  ! 0 = Use basic weather data and apply Penman-Monteith equation
+                             ! 1 = Use reference evapotranspiration data in combination with crop factors
+
+* In case of Penman-Monteith (SWETR=0), specify:
+  ALT = 25.0 ! Altitude of measurement site [-400..3000 m, R]
+  ALTW = 2.0 ! Height of wind speed measurement above soil surface (10 m is default) [0.1..99 m, R]
+  ALTH = 2.0 ! Height of humidity and temperature measurement (1.5 m is default) [0.1..99 m, R]
+  
+  ANGSTROMA = 0.25           ! Fraction of extraterrestrial radiation reaching the earth on overcast days (0.25 is default) [0..1 -, R]
+  ANGSTROMB = 0.5            ! Additional fraction of extraterrestrial radiation reaching the earth on clear days (0.50 is default) [0..1 -, R]
+
+* Switch for distribution of E and T:
+  SWDIVIDE = 1               ! 0 = Based on crop and soil factors
+                             ! 1 = Based on direct application of Penman-Monteith
+
+* In case of SWETR=0, specify time interval of evapotranspiration and rainfall weather data
+  SWMETDETAIL = 0            ! 0 = Time interval is equal to one day
+                             ! 1 = Time interval is less than one day
+
+* In case of detailed meteorological weather records (SWMETDETAIL=1), specify:
+  NMETDETAIL = 24            ! Number of weather data records each day [24..96 -, I]
+
+* In case of daily meteorological weather records (SWMETDETAIL=0):
+  FWIND = 1.0                ! Factor for converting 24h averaged windspeed to daytime average windspeed (7-19h; default 1.0) [0.5..5 -, R]
+
+* Switch for use of actual rainfall intensity (only if SWMETDETAIL=0):
+  SWRAIN = 3 ! 0 = Use daily rainfall amounts
+                             ! 1 = Use daily rainfall amounts + mean intensity
+                             ! 2 = Use daily rainfall amounts + duration
+                             ! 3 = Use detailed rainfall records (dt < 1 day), as supplied in separate file
+
+* If SWRAIN=1, then specify mean rainfall intensity RAINFLUX [0.d0..1000.d0 mm/d, R] as function of time [0..366 d, R]
+  RAINTB =
+   1.0 20.0
+ 360.0 40.0
+* End of table
+
+* If SWRAIN=3, then specify file name of file with detailed rainfall data
+  RAINFIL = 'kalmthout.rain' ! File name of detailed rainfall data without extension .YYY, [A200]
+                             ! Extension is equal to last 3 digits of year, e.g. 003 denotes year 2003
+                             ! In case of rainfall in one file use extension .rain
+
+**********************************************************************************
+
+*** CROP SECTION ***
+
+**********************************************************************************
+* Part 1: Crop rotation scheme
+
+* Switch for bare soil or cultivated soil:  
+  SWCROP = 0 ! 0 = Bare soil
+                             ! 1 = Cultivated soil
+
+* Specify for each crop [maximum MACROP]:
+* CROPSTART = date of crop emergence [YYYY-MM-DD]
+* CROPEND = date of crop harvest [YYYY-MM-DD]
+* CROPFIL = name of file with crop input parameters without extension .CRP, [A40]
+* CROPTYPE = growth module: 1 = simple; 2 = detailed, WOFOST general
+
+  CROPSTART    CROPEND  CROPFIL CROPTYPE
+ 2002-05-01 2002-10-15  'maize'        1
+ 2003-05-10 2003-09-29 'potato'        2
+ 2004-01-01 2004-12-31  'grass'        2
+* End of table
+
+  RDS = 200.0                ! Maximum rooting depth allowed by the soil profile, [1..5000 cm, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Fixed irrigation applications
+
+* Switch for fixed irrigation applications:
+  SWIRFIX = 0 ! 0 = No irrigation applications are prescribed
+                             ! 1 = Irrigation applications are prescribed
+
+* If SWIRFIX=1, specify:
+* Switch for separate file with fixed irrigation applications
+  SWIRGFIL = 0               ! 0 = Data are specified in the .swp file
+                             ! 1 = Data are specified in a separate file
+
+* If SWIRGFIL=0 specify information for each fixed irrigation event (max. MAIRG):
+* IRDATE = Date of irrigation [YYYY-MM-DD]
+* IRDEPTH = Amount of water [0..1000 mm, R]
+* IRCONC = Concentration of irrigation water [0..1000 mg/cm3, R]
+* IRTYPE = Type of irrigation: sprinkling = 0; surface = 1; 2 = subsurface irrigation [0..2, I]
+* IRRATE = Irrigation supply rate (optional) [0..100 mm/h, R]
+
+     IRDATE IRDEPTH IRCONC IRTYPE IRRATE
+ 2002-01-05    24.0   20.0      1   12.0
+* End of table
+
+* If subsurface irrigation (IRTYPE=2), specify:
+* IR_Z = -20.0               ! Depth of subsurface irigation system; either supply a single depth or a depth range [-100..0 cm, R]
+
+* If SWIRGFIL = 1, specify name of file with irrigation data:
+  IRGFIL = 'swap.irg'        ! File name with irrigation input data without extension .IRG [A32]
+
+**********************************************************************************
+
+*** SOIL WATER SECTION ***
+
+**********************************************************************************
+* Part 1: Initial soil moisture condition
+
+* Switch, type of initial soil moisture condition:
+  SWINCO = 1 ! 1 = Pressure head as function of soil depth
+                             ! 2 = Pressure head of each compartment is in hydrostatic equilibrium with initial groundwater level
+                             ! 3 = Read final pressure heads from output file of previous Swap simulation
+
+* If SWINCO=1, specify:
+* ZI soil depth [-1.d5..0 cm, R]
+* H initial soil water pressure head [-1.d10..1.d4 cm, R]
+
+  HTB =
+    0.0 -75.0
+ -200.0 -75.0
+* End of table
+
+* If SWINCO=2, specify initial groundwater level:
+  GWLI = -75.0               ! Initial groundwater level, [-10000..100 cm, R]
+
+* If SWINCO=3, specify output file with initial values for current run:
+  INIFIL = 'result.end'      ! Name of output file *.END which contains initial values [A200]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Ponding, runoff and runon
+
+* Ponding
+* Switch for variation ponding threshold for runoff
+  SWPONDMX = 0               ! 0 = Ponding threshold for runoff is constant
+                             ! 1 = Ponding threshold for runoff varies in time
+
+* If SWPONDMX=0, specify
+  PONDMX = 1.0 ! In case of ponding, minimum thickness for runoff [0..1000 cm, R]
+
+* If SWPONDMX=1, specify minimum thickness for runoff PONDMXTB [0..1000 cm, R] as function of time
+
+    DATEPMX PONDMXTB
+ 2002-01-01      0.2
+ 2004-12-31      0.2
+* End of table
+
+* Runoff
+  RSRO = .1 ! Drainage resistance for surface runoff [0.001..1.0 d, R]
+  RSROEXP = 1.0              ! Exponent in drainage equation of surface runoff [0.01..10.0 -, R]
+
+* Runon: specify whether runon data are provided in extra input file
+  SWRUNON = 0                ! 0 = No input of runon data
+                             ! 1 = Runon data are provided in extra input file
+* If SWRUNON=1, specify name of file with runon input data
+* This file may be an output file *.INC (with only 1 header line) of a previous Swap-simulation
+  RUFIL = 'swap.inc'         ! File name with extension [A80]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3: Soil evaporation
+
+  CFEVAPPOND = 1.0 ! When ETref is used, evaporation coefficient in case of ponding  [0..3 -, R]
+
+* Switch for use of soil factor CFBS to calculate Epot from ETref:
+  SWCFBS = 0                 ! 0 = Soil factor is not used
+                             ! 1 = Soil factor is used
+
+* If SWCFBS=1, specify coefficient CFBS:
+  CFBS = 0.5                 ! Coefficient for potential soil evaporation, [0.5..1.5 -, R]
+
+* If SWDIVIDE=1 (partitioning according to PMdirect), specify minimum soil resistance
+  RSOIL = 0.0 ! Soil resistance of wet soil [0..1000.0 s/m, R]
+
+* Switch, method for reduction of potential soil evaporation:
+  SWREDU = 0 ! 0 = Reduction to maximum Darcy flux
+                             ! 1 = Reduction to maximum Darcy flux and to maximum Black (1969)
+                             ! 2 = Reduction to maximum Darcy flux and to maximum Boesten/Stroosnijder (1986)
+
+* If SWREDU=1, specify:
+ COFREDBL = 0.35             ! Soil evaporation coefficient of Black [0..1 cm/d1/2, R]
+ RSIGNI = 0.5                ! Minimum rainfall to reset method of Black [0..1 cm/d, R]
+
+* If SWREDU=2, specify:
+ COFREDBO = 0.54             ! Soil evaporation coefficient of Boesten/Stroosnijder [0..1 cm1/2, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 4: Vertical discretization of soil profile
+
+* Specify the following data (maximum MACP lines):
+* ISUBLAY = Number of sub layer, start with 1 at soil surface [1..MACP, I]
+* ISOILLAY = Number of soil physical layer, start with 1 at soil surface [1..MAHO, I]
+* HSUBLAY = Height of sub layer [0..1.d4 cm, R]
+* NCOMP = Number of compartments in the sub layer [1..MACP, I]
+
+ ISUBLAY ISOILLAY HSUBLAY NCOMP
+       1        1    10.0    10
+       2        1    20.0     4
+       3        2    30.0     6
+       4        2   140.0    14
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 5: Soil hydraulic functions
+
+* Switch for analytical functions or tabular input:
+  SWSOPHY = 0                ! 0 = Analytical functions with input of Mualem - van Genuchten parameters
+                             ! 1 = Soil physical tables
+
+* If SWSOPHY=0, specify MvG parameters for each soil physical layer:
+* ORES = Residual water content [0..1 cm3/cm3, R]
+* OSAT = Saturated water content [0..1 cm3/cm3, R]
+* ALFA = Parameter alfa of main drying curve [0.0001..100 /cm, R]
+* ALFAW = Alfa parameter of main wetting curve in case of hysteresis [0.0001..100 /cm, R]
+* NPAR = Parameter n [1.001..9 -, R]
+* LEXP = Exponent in hydraulic conductivity function [-25..25 -, R]
+* H_ENPR = Air entry pressure head [-40.0..0.0 cm, R]
+* KSATFIT = Fitting parameter Ksat of hydraulic conductivity function [1.d-5..1d5 cm/d, R]
+* KSATEXM = Measured hydraulic conductivity at saturated conditions [1.d-5..1d5 cm/d, R]
+* BDENS = Dry soil bulk density, only if SWSOLU=1 and SWSP=1 or SWHEA=1 and SWCALT=2 [100..1d4 mg/cm3, R]
+
+ ORES     OSAT     ALFA    ALFAW     NPAR     LEXP  KSATFIT  KSATEXM H_ENPR  BDENS
+ .032 .423 .0135 .0135 1.455 .365 4.75 4.75 0.0 1315.0
+ .032 .423 .0135 .0135 1.455 .365 4.75 4.75 0.0 1315.0
+* End of table
+
+* If SWSOPHY = 1, specify names of input files [A80] with soil hydraulic tables for each soil layer:
+  FILENAMESOPHY = 'topsoil_sand_b2.csv' 'subsoil_sand_o2.csv'
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 6: Hysteresis of soil water retention function
+
+* Switch for hysteresis:
+  SWHYST = 0                 ! 0 = No hysteresis
+                             ! 1 = Hysteresis, initial condition wetting
+                             ! 2 = Hysteresis, initial condition drying
+
+* If SWHYST=1 or SWHYST = 2, specify:                                      
+  TAU = 0.01                 ! Minimum relative pressure head difference to change scanning curve, [0.000001..0.1 -, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 7: Preferential flow due to macropores
+
+* Switch for macropore flow [0..1, I]:
+  SWMACRO = 0                ! 0 = No macropore flow
+                             ! 1 = Macropore flow
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 8: Snow and frost
+
+* Switch, calculate snow accumulation and melt:
+  SWSNOW = 0                 ! 0 = No simulation of snow
+                             ! 1 = Simulation of snow accumulation and melt
+
+* If SWSNOW=1, specify:
+  SNOWINCO = 22.0            ! Initial snow water equivalent [0..1000 cm, R] 
+  TEPRRAIN = 2.0             ! Temperature above which all precipitation is rain[ 0..10 degree C, R]
+  TEPRSNOW = -2.0            ! Temperature below which all precipitation is snow[-10..0 degree C, R]
+  SNOWCOEF = 0.3             ! Snowmelt calibration factor [0...10 -, R]
+
+* Switch, in case of frost reduce soil water flow:
+  SWFROST = 0                ! 0 = No simulation of frost
+                             ! 1 = Simulation of reduction soil water flow due to frost
+
+* If SWFROST=1, then specify soil temperature range in which soil water flow is reduced
+  TFROSTSTA = 0.0            ! Soil temperature where reduction of water fluxes starts [-10.0,5.0, degree C, R]
+  TFROSTEND = -1.0           ! Soil temperature where reduction of water fluxes ends [-10.0,5.0, degree C, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 9: Numerical solution of Richards' equation for soil water flow
+
+  DTMIN = 0.000001           ! Minimum timestep [1.d-7..0.1 d, R]
+  DTMAX = 0.04               ! Maximum timestep [dtmin..1 d, R]
+  GWLCONV = 100.0            ! Maximum difference of groundwater level between time steps [1.d-5..1000 cm, R]
+  CRITDEVH1CP = 0.01         ! Maximum relative difference in pressure heads per compartment [1.0d-10..1.d3 -, R]
+  CRITDEVH2CP = 0.1          ! Maximum absolute difference in pressure heads per compartment [1.0d-10..1.d3 cm, R]
+  CRITDEVPONDDT = 0.0001     ! Maximum water balance error of ponding layer [1.0d-6..0.1 cm, R]
+  
+  MAXIT = 30                 ! Maximum number of iteration cycles [5..100 -, I]
+  MAXBACKTR = 5              ! Maximum number of back track cycles within an iteration cycle [1..10 -,I]
+
+* Switch for averaging method of hydraulic conductivity [1..4 -, I]:
+  SWKMEAN = 1 ! 1 = Unweighted arithmic mean
+                             ! 2 = Weighted arithmic mean
+                             ! 3 = Unweighted geometric mean
+                             ! 4 = Weighted geometric mean
+                             ! 5 = Unweighted harmonic mean
+                             ! 6 = Weighted harmonic mean
+                             ! 7 = Logaritmic mean
+                             ! 8 = Logaritmic harmonic mean
+
+* Switch for updating hydraulic conductivity during iteration [0..1 -, I]:
+  SWKIMPL = 0                ! 0 = No update
+                             ! 1 = Update
+
+* optional:  
+  CRITDEVBALCP = 0.000001    ! Convergence criterion for deviation in water balance for the solution of the Richards equation per individual layer (default 1.0d-6) [1.0d-8..1.0d-3 -, R]
+  CRITDEVBALTOT = 0.00001    ! Convergence criterion for solution of Richards equation for all layers together (default 1.0d-5) [1.0d-7..1.0d-2 -, R]
+  NUMBIT_CRIT = 3            ! Number of iteration below which time step increase is performed (default 3) [3..100 -, I]
+  FACT_DT_INCREASE = 2.0     ! Multiplication factor for dt increase (default 2.0) [1.1..10 -, R]
+  FACT_DT_DECREASE = 0.5     ! Multiplication factor for dt decrease (default 0.5) [0.001..0.99 -, R]
+  FACT_DT_FLDECT = 3.0       ! Factor for dt in case this is requested to be decreased by headcalc or surfacewater (default 3.0)[2..10 -, R]
+
+**********************************************************************************
+
+*** LATERAL DRAINAGE SECTION ***
+
+**********************************************************************************
+
+* Switch, simulation of lateral drainage:
+  SWDRA = 0 ! 0 = No simulation of drainage
+                             ! 1 = Simulation with basic drainage routine
+
+* If SWDRA=1 specify name of file with drainage input data:
+  DRFIL = 'swap'             ! File name with drainage input data without extension .DRA [A16]
+
+**********************************************************************************
+
+*** BOTTOM BOUNDARY SECTION ***
+
+**********************************************************************************
+
+* Switch for file with bottom boundary data:
+  SWBBCFILE = 0              ! 0 = Data are specified in current file
+                             ! 1 = Data are specified in a separate file
+
+* If SWBBCFILE=0, select one of the following options:
+  SWBOTB = 6                 ! 1  Prescribe groundwater level
+                             ! 2  Prescribe bottom flux
+                             ! 3  Calculate bottom flux from hydraulic head of deep aquifer
+                             ! 4  Calculate bottom flux as function of groundwater level
+                             ! 5  Prescribe soil water pressure head of bottom compartment
+                             ! 6  Bottom flux equals zero
+                             ! 7  Free drainage of soil profile
+                             ! 8  Free outflow at soil-air interface
+
+* Options 1-5 require additional bottom boundary data below
+
+**********************************************************************************
+
+**********************************************************************************
+* In case of SWBOTB=1, prescribe groundwater level
+
+* Specify DATE1 [YYYY-MM-DD] and GWLEVEL [cm, -10000..1000, R]:
+
+      DATE1 GWLEVEL
+ 2002-01-01   -95.0
+ 2004-12-31   -95.0
+* End of table
+
+**********************************************************************************
+* In case of SWBOTB=2, prescribe bottom flux
+
+* Specify whether a sinus function or a table are used for the bottom flux:
+  SW2 = 2                    ! 1 = Sinus function
+                             ! 2 = Table
+
+* In case of sinus function (SW2=1), specify:
+  SINAVE = 0.1               ! Average value of bottom flux [-10..10 cm/d, R, + = upwards]
+  SINAMP = 0.05              ! Amplitude of bottom flux sine function [-10..10 cm/d, R]
+  SINMAX = 91.0              ! Time of the year with maximum bottom flux [0..366 d, R]  
+
+* In case of table (SW2=2), specify date DATE2 [YYYY-MM-DD] and bottom flux QBOT2 [-100..100 cm/d, R, positive = upwards]:
+
+      DATE2 QBOT2
+ 2002-01-01  0.10
+ 2002-06-30  0.20
+ 2002-12-23  0.15
+* End of table
+
+**********************************************************************************
+* In case of SWBOTB=3, calculate bottom flux from hydraulic head in deep aquifer
+
+* Switch for vertical hydraulic resistance between bottom boundary and groundwater level
+  SWBOTB3RESVERT = 0         ! 0 = Include vertical hydraulic resistance
+                             ! 1 = Suppress vertical hydraulic resistance
+
+* Switch for numerical solution of bottom flux:
+  SWBOTB3IMPL = 0            ! 0 = Explicit solution (choose always when SHAPE < 1.0)
+                             ! 1 = Implicit solution
+
+* Specify:
+  SHAPE_3 = 0.79             ! Shape factor to derive average groundwater level [0..1 -, R]
+  HDRAIN = -110.0            ! Mean drain base to correct for average groundwater level [-10000..0 cm, R]
+  RIMLAY = 500.0             ! Vertical resistance of aquitard [0..100000 d, R]
+
+* Specify whether a sinus function or a table are used for the hydraulic head in the deep aquifer:
+  SW3 = 1                    ! 1 = Sinus function  
+                             ! 2 = Table 
+
+* In case of sinus function (SW3=1), specify:
+  AQAVE = -140.0             ! Average hydraulic head in underlaying aquifer [-10000..1000 cm, R] 
+  AQAMP = 20.0               ! Amplitude hydraulic head sinus wave [0..1000 cm, R]
+  AQTMAX = 120.0             ! First time of the year with maximum hydraulic head [0..366 d, R]
+  AQPER = 365.0              ! Period hydraulic head sinus wave [0..366 d, I]
+
+* In case of table (SW3=2), specify date DATE3 [YYYY-MM-DD] and average pressure head in underlaying aquifer HAQUIF [-10000..1000 cm, R]:
+
+      DATE3 HAQUIF
+ 2002-01-01  -95.0
+ 2002-06-30 -110.0
+ 2002-12-23  -70.0
+* End of table
+
+* An extra groundwater flux can be specified which is added to above specified flux
+  SW4 = 1                    ! 0 = No extra flux 
+                             ! 1 = Include extra flux
+
+* If SW4=1, specify date DATE4 [YYYY-MM-DD] and bottom flux QBOT4 [-100..100 cm/d, R]
+* QTAB is positive when flux is upward:
+
+      DATE4 QBOT4
+ 2002-01-01  1.00
+ 2002-06-30 -0.15
+ 2002-12-23  1.20
+* End of table
+
+**********************************************************************************
+* In case of SWBOTB=4, calculate bottom flux as function of groundwater level
+
+* Specify whether an exponential relation or a table is used [1..2 -,I]:
+  SWQHBOT = 2                ! 1 = Bottom flux is calculated with an exponential relation
+                             ! 2 = Bottom flux is derived from a table
+
+* In case of an exponential relation (SWQHBOT=1), specify coefficients of relation qbot = A exp (B*abs(groundwater level))
+  COFQHA = 0.1               ! Coefficient A [-100..100 cm/d, R]
+  COFQHB = 0.5               ! Coefficient B [-1..1 /cm, R]
+
+* If SWQHBOT=1, an extra flux can be added to the exponential relation
+  COFQHC = 0.05              ! Water flux (positive upward) in addition to flux from exponential relation [-10..10 cm/d, R]
+
+* In case of a table (SWQHBOT=2), specify groundwaterlevel HTAB [-10000..1000, cm, R] and bottom flux QTAB [-100..100 cm/d, R]
+* HTAB is negative below the soil surface, QTAB is positive when flux is upward:
+
+   HTAB  QTAB
+   -0.1 -0.35
+  -70.0 -0.05
+ -125.0 -0.01
+* End of table
+
+**********************************************************************************
+* In case of SWBOTB=5, prescribe soil water pressure head of bottom compartment
+
+* Specify date DATE5 [YYYY-MM-DD] and bottom compartment pressure head HBOT5 [-1.d10..1000 cm, R]:
+
+      DATE5  HBOT5
+ 2002-01-01  -95.0
+ 2002-06-30 -110.0
+ 2002-12-23  -70.0
+* End of table
+
+**********************************************************************************
+* If SWBBCFILE=1 specify name of file with bottom boundary data:
+  BBCFIL = ' '               ! File name without extension .BBC [A32]
+
+**********************************************************************************
+
+*** HEAT FLOW SECTION ***
+
+**********************************************************************************
+* Switch for simulation of heat transport:
+  SWHEA = 0 ! 0 = No simulation of heat transport
+                             ! 1 = Simulation of heat transport
+
+* Switch for calculation method:
+  SWCALT = 2                 ! 1 = Analytical method
+                             ! 2 = Numerical method
+
+* In case of the analytical method (SWCALT=1) specify:
+* If SWCALT=1 specify the following heat parameters:
+  TAMPLI = 10.0              ! Amplitude of annual temperature wave at soil surface [0..50 degree C, R]
+  TMEAN = 15.0               ! Mean annual temperature at soil surface [-10..30 degree C, R]
+  TIMREF = 90.0              ! Time at which the sinus temperature wave reaches its top [0..366.0 d, R]
+  DDAMP = 50.0               ! Damping depth of soil temperature wave [1..500 cm, R]
+
+* In case of the numerical method (SWCALT=2) specify:
+* Specify for each physical soil layer the soil texture (g/g mineral parts) and the organic matter content (g/g dry soil):
+
+ PSAND PSILT PCLAY ORGMAT
+   0.8  0.15  0.05    0.1
+   0.8  0.15  0.05    0.1
+* End of table
+
+* If SWINCO=1 or SWINCO=2, specify initial temperature [-50..50 degree C, R] as function of soil depth [-100000..0 cm, R]:
+
+  TSOILTB =
+ -10.0 15.0
+ -40.0 12.0
+ -70.0 10.0
+ -95.0  9.0
+* End of table
+
+* Define top boundary condition: 
+  SWTOPBHEA = 1              ! 1 = Use air temperature of meteo input file as top boundary
+                             ! 2 = Use measured top soil temperature as top boundary
+
+* If SWTOPBHEA=2, specify name of input file with soil surface temperatures
+  TSOILFILE = 'swap'         ! File name without extension .TSS [A16]
+
+* Define bottom boundary condition:
+  SWBOTBHEA = 1              ! 1 = No heat flux
+                             ! 2 = Prescribe bottom temperature
+
+* If SWBOTBHEA=2, specify bottom boundary temperature TBOT [-50..50 degree C, R] as function of date DATET [YYYY-MM-DD]:
+
+      DATET  TBOT
+ 2002-01-01 -15.0
+ 2002-06-30 -20.0
+ 2002-12-23 -10.0
+* End of table
+
+**********************************************************************************
+
+*** SOLUTE SECTION ***
+
+**********************************************************************************
+
+* Switch for simulation of solute transport
+  SWSOLU = 1                 ! 0 = No simulation of solute transport
+                             ! 1 = Simulation of solute transport
+
+**********************************************************************************
+* Part 1: Boundary and initial conditions
+
+  CPRE = 0.0                 ! Solute concentration in precipitation, [0..100 mg/cm3 R]
+  CDRAIN = 0.1               ! Solute concentration in surface water [0..100 mg/cm3 R]
+
+* Switch for groundwater concentration in case of upward flow (seepage):
+  SWBOTBC = 0                ! 0 = Equal to surface water concentration CDRAIN
+                             ! 1 = Constant concentration CSEEP
+                             ! 2 = Concentration as function of time
+
+* In case of constant concentration (SWBOTBC=1), specify:
+  CSEEP = 0.1                ! Solute concentration in upward seepage water at bottom of profile [0..100 mg/cm3, R]
+
+* In case of SWBOTBC=2, specify groundwater concentration CSEEPARR [0..100 mg/cm3, R] as function of date DATEC [YYYY-MM-DD]:
+
+      DATEC CSEEPARR
+ 2002-01-01     25.0
+ 2002-06-30     40.0
+ 2002-12-23     25.0
+* End of table
+
+* If SWINCO=1 or SWINCO=2, specify initial solute concentration [0..1000 mg/cm3, R] as function of soil depth [-100000..0 cm, R]:
+
+  CMLTB =
+ -10.0 0.0
+ -95.0 0.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Diffusion, dispersion and solute uptake by roots
+
+  DDIF = 0.0                 ! Molecular diffusion coefficient [0..10 cm2/d, R]
+  LDIS = 5.0 5.0             ! Dispersion length for each soil layer [0..100 cm, R]
+  TSCF = 0.0                 ! Relative uptake of solutes by roots [0..10 -, R]
+
+**********************************************************************************
  
-!  if the head boundary condition applies, include the dependence of the
-!  dynamic surface head on the top-node pressure head. Legacy head boundaries
-!  retain their historical constant-surface-head derivative.
-   if (state%ftoph) then
-      if (provider_dynamic_top_active) then
-         if (.not. provider_dynamic_top_result%surface_head_derivative_available) &
-              error stop 'HeadCalc: dynamic head regime omitted surface-head derivative'
-         fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1) * &
-              (1.0d0-provider_dynamic_top_result%surface_head_dpressure_head_top)
-      else
-         fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)
-      end if
-   end if
+**********************************************************************************
+* Part 3: Adsorption 
 
-!  layers 2 to (NN-1)
-   do i = 2, NN-1
-      fsi_ws%dfdh_main(i) = state%dimoca(i)*matrix_fraction(i)*grid_dz(i)/dt - fsi_ws%dfdh_upper(i) - fsi_ws%dfdh_lower(i) 
-   end do
+* Switch, consider solute adsorption
+  SWSP = 0                   ! 0 = No solute adsorption
+                             ! 1 = Simulation of solute adsorption
 
-!  last layer: handle bottom BC
-   fsi_ws%dfdh_main(NN) = state%dimoca(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
-   if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
-   else if (swbotb == 3 .and. .not. legacy_state_binding) then
-      fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+typed_bottom_conductance
-   else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy
-      if (SwBotb3ResVert == 0) then
-         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / (grid_disnod(NN+1)/state%kmean(NN+1) + rimlay)   
-      else if (SwBotb3ResVert == 1) then
-         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 1.0d0 / rimlay
-      end if
-   else if (swbotb == 5 .OR. (swbotb == 1 .AND. state%fllowgwl) .OR. swbotb == 9) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)         
-   else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: state%kmean(NN+1)
-      if (SwKimpl == 1) fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
-   else if (swbotb == 8 .AND. flboth) then
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)
-   end if
+* In case of adsorption (SWSP=1), specify:
+  FREXP = 0.9                ! Freundlich exponent [0..10 -, R]
+  CREF = 1.0                 ! Reference solute concentration for adsorption [0..1000 mg/cm3, R]
+  KF = 0.0001389 0.0001378   ! Freundlich adsorption coefficient for each soil layer [0..1d4 cm3/mg, R]
 
-!  special case when SwKimpl = 1
-   if (SwKimpl == 1) then
-      if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')
-!     first layer
-      fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(1),state%k(2),grid_dz(1),grid_dz(2))
-      if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) - fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(1) * 0.5d0
-      fsi_ws%dfdh_lower(1) = fsi_ws%dfdh_lower(1) + fsi_ws%dconductivity_dhead(2) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(2),state%k(1),grid_dz(2),grid_dz(1)) 
-!     layers 2 to (NN-1)
-      do i = 2, NN-1
-         fsi_ws%dfdh_upper(i) = fsi_ws%dfdh_upper(i) - fsi_ws%dconductivity_dhead(i-1) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i)) 
-         fsi_ws%dfdh_main(i) = fsi_ws%dfdh_main(i) - fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i) * dkmean(swkmean,state%k(i),state%k(i-1),grid_dz(i),grid_dz(i-1)) + fsi_ws%dconductivity_dhead(i) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i),state%k(i+1),grid_dz(i),grid_dz(i+1))
-         fsi_ws%dfdh_lower(i) = fsi_ws%dfdh_lower(i) + fsi_ws%dconductivity_dhead(i+1) * fsi_ws%head_gradient(i+1) * dkmean(swkmean,state%k(i+1),state%k(i),grid_dz(i+1),grid_dz(i)) 
-      end do
-!     last layer
-      fsi_ws%dfdh_upper(NN) = fsi_ws%dfdh_upper(NN) - fsi_ws%dconductivity_dhead(NN-1) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN-1),state%k(NN),grid_dz(NN-1),grid_dz(NN)) 
-      fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) - fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN),state%k(NN-1),grid_dz(NN),grid_dz(NN-1))
+**********************************************************************************
 
-      if (swbotb == 1 .OR. swbotb == 5 .OR. swbotb == 8 .AND. flboth) then
-         fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 0.5d0 * fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN+1)
-      end if
-   end if
+**********************************************************************************
+* Part 4: Decomposition
 
-!  special case macropore
-   if (swmacro == 1 .AND. .NOT.fsi_ws%unsaturated_flags(3)) then
-      call MACROPORE(3)
-      fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
-   end if
-   if (provider_macropore_active .and. .not. fsi_ws%unsaturated_flags(3)) then
-      call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
-           state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
-           provider_macropore_rate_active)
-      if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
-           error stop 'HeadCalc: active macropore derivative unavailable'
-      if (provider_macropore_rate_active) &
-           fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
-   end if
+* Switch, consider solute decomposition
+  SWDC = 0                   ! 0 = No solute decomposition
+                             ! 1 = Simulation of solute decomposition
 
-end subroutine jacobian_F
+* In case of solute decomposition (SWDC=1), specify:
+  GAMPAR = 0.0               ! Factor reduction decomposition due to temperature [0..0.5 /degree C, R]
+  RTHETA = 0.3               ! Minimum water content for potential decomposition [0..0.4 cm3/cm3, R]
+  BEXP = 0.7                 ! Exponent in reduction decomposition due to dryness [0..2 -, R]
+  
+* Specify for each soil layer:
+* DECPOT = Potential decomposition rate [0..10 /d, R]
+* FDEPTH = Reduction factor for decomposition [0..1 -, R]
 
+ DECPOT FDEPTH
+    0.0   1.00
+    0.0   0.65
+* End of Table
 
-      function dkmean(swkmean,kmain,ksub,dzmain,dzsub)
-!     d(hcomean)/d(kmain); note kmain = kup in hcomean and ksub = klow in hcomean; dzmain = dzup in hcomena, and dzub = dzlow in hcomean
-      implicit none
-      ! global
-      integer, intent(in)  :: swkmean
-      real(8), intent(in)  :: kmain, ksub, dzmain, dzsub
-      real(8)              :: dkmean
-      ! local
-      real(8)              :: a
+**********************************************************************************
 
-      if (swkmean == 1) then
-         dkmean = 0.5d0
-      else if (swkmean == 2) then
-         dkmean = dzmain/(dzmain+dzsub)
-      else if (swkmean == 3) then
-         dkmean = 0.5d0 * dsqrt(ksub / kmain)
-      else if (swkmean == 4) then
-         a = dzmain/(dzmain+dzsub)
-         dkmean = a * (ksub / kmain) ** (1.0d0 - a)
-      else if (swkmean == 5) then
-         dkmean = 0.5d0/(((0.5d0/kmain)+(0.5d0/ksub))**2 * kmain**2)
-      else if (swkmean == 6) then
-         a = dzmain/(dzmain+dzsub)
-         dkmean = a/(((a/kmain)+((1.0d0-a)/ksub))**2 * kmain**2)
-      end if
-      return
-      end function dkmean
+**********************************************************************************
+* Part 5: Solute residence time in the saturated zone
 
-end subroutine headcalc
+  SWBR = 0                   ! Switch, consider mixed reservoir of saturated zone [Y=1, N=0]
+
+* In case of mixed reservoir (SWBR=1), specify:
+  DAQUIF = 110.0             ! Thickness saturated part of aquifer [0..10000 cm, R]
+  POROS = 0.4                ! Porosity of aquifer [0..0.6 -, R]
+  KFSAT = 0.2                ! Linear adsorption coefficient in aquifer [0..100 cm3/mg, R]
+  DECSAT = 1.0               ! Decomposition rate in aquifer [0..10 /d, R]
+  CDRAINI = 0.2              ! Initial solute concentration in groundwater [0..100 mg/cm3, R]
+
+**********************************************************************************
+
+* End of the main input file .swp
