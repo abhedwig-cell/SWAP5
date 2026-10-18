@@ -67,7 +67,8 @@ contains
     if(allocated(forcing%rutter))then
       if(.not.forcing%rutter%prepared)return
       if(.not.ieee_is_finite(forcing%rutter%runon_rate_cm_per_day))return
-      if(forcing%rutter%runon_rate_cm_per_day/=0d0.or.supply%runon_rate/=0d0)return
+      if(forcing%rutter%runon_rate_cm_per_day<0d0.or. &
+          forcing%rutter%runon_rate_cm_per_day/=supply%runon_rate)return
       if(forcing%rutter%result%net_rain_cm_per_day/=supply%rain_rate.or. &
           forcing%rutter%result%net_surface_irrigation_cm_per_day/=supply%irrigation_rate)return
     else
