@@ -1,7 +1,7 @@
 ! Reference-only bridge: accepted hydraulic trace to surface-age trial.
 ! It never mutates the admitted water or legacy soil-age solver.
 module mod_b111_surface_age_trace_bridge
- use, intrinsic :: iso_fortran_env, only: real64
+ use, intrinsic :: iso_fortran_env, only: real64, int64
  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
  use mod_fmr_serialized_reference_backend, only: fmr_water_flux_substep_trace_t
  use mod_b111_surface_age_budget
@@ -25,7 +25,7 @@ contains
   integer,intent(out)::status
   type(surface_age_request_t)::q
   integer::code
-  integer(kind=8)::revision
+  integer(int64)::revision
   logical::available
   real(real64)::dt,owner_time,owner_depth,owner_stock
   candidate=committed;receipt=surface_age_receipt_t();status=AGE_BRIDGE_REJECT
