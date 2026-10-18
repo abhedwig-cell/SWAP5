@@ -209,3 +209,36 @@ cases with the literal original chemistry, establish whole-N accounting and
 default-mode atomic rejection. First retain the pre-correction rejection witness,
 then rebuild only the exact ABI-identical owner for physical feedback before
 freshly qualifying the affected complete production closure.
+
+## Explicit physical rollback negative control
+
+The existing public typed-configuration domain allows top concentrations up to
+1e6 kg/m3; historical native SNM concentrations have the tighter original
+1e3 limit. A first high-N SNM test correctly failed at startup and establishes
+no after-water rollback proof. The corrected negative control reads the normal
+historical input, then publicly snapshots/reinitializes the same existing owner
+with typed top concentrations 250000 kg/m3. Its initial configuration and stocks
+are valid, while the trial exceeds the unchanged mineral inventory bounds.
+The actual ordinary fixed-head Richards day and the original chemical candidate
+complete successfully, then the bounded transfer rejects. Whole water/crop/Soil-N
+native before/after bytes must match exactly. This is deliberately an infeasible
+N trial for transaction testing, not a valid historical SNM case or a physical
+production forcing recommendation. No historical parser bound is changed.
+
+## Balanced initial hydrology cost experiment
+
+The independent old-head8-day audit measures384.93 native seconds at O0.
+Before selecting a many-hour730-day baseline, an input-only discriminating
+experiment uses a60cm prescribed water table and a consistent hydrostatic
+initial profile: total head -60cm, pressure head -60-z at existing node centres,
+and -30cm pressure head at the30cm lower face. Initial water contents are
+evaluated by the existing production MVG provider, not a copied retention law.
+This represents shallow managed groundwater rather than an initially uniform
+pressure head with a transient gravity gradient. The original105cm water-table
+trial and its results remain intact. Rainfall, weekly5mm pulses, evaporation,
+irrigation, runon, crops, material calendar and every physical/numerical tolerance
+remain identical. No solver or temporal-estimator change is selected.
+This eight-day O2 driver-only exploratory experiment uses exact source- and
+byte-verified current326 production providers. Expected native cost up to400
+seconds. It establishes neither full qualification nor a long-run speed claim;
+a selected long-run fixture requires its own independent O0/O2 budget audit.

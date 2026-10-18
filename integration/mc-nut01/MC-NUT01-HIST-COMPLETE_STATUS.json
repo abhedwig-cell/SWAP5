@@ -54,7 +54,7 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Fresh whole326-provider O0/O2 fixed-head two-day qualification, then observational8-day water/N audit and preserved native transitions.",
+  "next_action": "Finish current independent8-day water/N audit and owning preservation/native/input gates. Select continuous730-day baseline only after terminal short audit; no source waiver or mastercoverage promotion.",
   "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
@@ -292,6 +292,15 @@
           "original TCS6_54 native byte endpoints"
         ],
         "resource_selection": "Local cgroup exposes8 CPU capacity; independent owning jobs may overlap. No solver/temporal/mass tolerance change, no moving full F-CI."
+      },
+      "surface_b1_balanced_initial_head": {
+        "owner": "MC-NUT01",
+        "authority": "docs/science/MC_NUT01_SURFACE_N_B1_CONTRACT_20261018.md#Balanced initial hydrology cost experiment",
+        "changed_dependency": "Test forcing and initial state only; unchanged real MVG constitutive provider and Reference Richards",
+        "scientific_claim": "Physically consistent hydrostatic initial profile with shallow60cm prescribed water table, same5mm rain pulse and exact unchanged hard gates; no production or numerical change",
+        "expected_seconds": 400,
+        "selection": "SELECTED_DISCRIMINATING_INPUT_FEEDBACK_BEFORE_LONG_BASELINE",
+        "existing_evidence": "105cm uniform-initial-head O2 feedback8days241.06s; independent current O0 audit8days384.93s. Current O0/O2 whole closure, default five profiles, wet native and retained thermal/TCS6 all PASS. Long-run cost must be assessed before selection."
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1329,30 +1338,6 @@
       "reason": "The physical wrapper was advanced for the new full build during this exploratory native execution; final immutable-input guard correctly rejected changed wrapper hash. Actual generated driver and logs retained, no formal PASS. Fresh current full closure selected independently."
     }
   },
-  "surface_b1_current_closure": {
-    "source_checkpoint": "8832c57720fcc245c69e9acf07a607f0a925a47b",
-    "source_unchanged_after_checkpoint": false,
-    "canonical_admitted": false,
-    "days": 2,
-    "hydrology": "field-loam",
-    "max_committed_substeps": 10000,
-    "status": "SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED",
-    "providers": 326,
-    "O0_O2_endpoint": "BYTE_IDENTICAL",
-    "fresh_process_day1_endpoint": "BYTE_IDENTICAL",
-    "cost_seconds": {
-      "compile": 384.0604269730102,
-      "link": 0.6183502019994194,
-      "native": 85.92995722500564,
-      "restart_native": 17.254019706997497
-    },
-    "native_wet_current": "PASS_O0_O2_15_MUTANTS_EACH_ATOMIC_REJECTION_AND_FRESH_PROCESS_BYTES",
-    "reactive_current": "DIRECT_PASS_O0_O2_ANALYTIC_TRANSFER_AND_ORIGINAL_CHEMISTRY",
-    "incumbent_current": "PASS_FIVE_ORIGINAL_PROFILES_EXACT_NATIVE_ENDPOINTS_O0_O2",
-    "fixed_head_eight_day": "PREDECESSOR_FAILED_DAY6_GROSS_COMMIT_ELIGIBILITY; failure diagnosed, native rollback exact; successor O2 eight-day ABI-identical-one-owner feedback PASS.",
-    "raw_local": "surface-current-field-qualified;surface-current-native-wet;surface-reactive-leaf-current",
-    "scope": "QUALIFIED_BOUNDED_PREDECESSOR_BEFORE_GROSS_COMMIT_ELIGIBILITY_EXTENSION; full current owner closure requalification pending"
-  },
   "surface_b1_gross_boundary_commit": {
     "implemented": true,
     "canonical_admitted": false,
@@ -1378,5 +1363,54 @@
       "validator_sha256": "6109d9c2bf380ba8eff618e379ed8e967fb4814f4d99a1ab2898ad7aaee09bfb",
       "scope": "Current direct literal/core/owner O0/O2 only; older two-day/native/five-profile physical proof is PREDECESSOR; eight-day O2 exact-one-owner feedback is NOT_FULL_QUALIFICATION"
     }
+  },
+  "surface_b1_predecessor_closure_before_gross_commit": {
+    "source_checkpoint": "8832c57720fcc245c69e9acf07a607f0a925a47b",
+    "source_unchanged_after_checkpoint": false,
+    "canonical_admitted": false,
+    "days": 2,
+    "hydrology": "field-loam",
+    "max_committed_substeps": 10000,
+    "status": "SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED",
+    "providers": 326,
+    "O0_O2_endpoint": "BYTE_IDENTICAL",
+    "fresh_process_day1_endpoint": "BYTE_IDENTICAL",
+    "cost_seconds": {
+      "compile": 384.0604269730102,
+      "link": 0.6183502019994194,
+      "native": 85.92995722500564,
+      "restart_native": 17.254019706997497
+    },
+    "native_wet_current": "PASS_O0_O2_15_MUTANTS_EACH_ATOMIC_REJECTION_AND_FRESH_PROCESS_BYTES",
+    "reactive_current": "DIRECT_PASS_O0_O2_ANALYTIC_TRANSFER_AND_ORIGINAL_CHEMISTRY",
+    "incumbent_current": "PASS_FIVE_ORIGINAL_PROFILES_EXACT_NATIVE_ENDPOINTS_O0_O2",
+    "fixed_head_eight_day": "PREDECESSOR_FAILED_DAY6_GROSS_COMMIT_ELIGIBILITY; failure diagnosed, native rollback exact; successor O2 eight-day ABI-identical-one-owner feedback PASS.",
+    "raw_local": "surface-current-field-qualified;surface-current-native-wet;surface-reactive-leaf-current",
+    "scope": "QUALIFIED_BOUNDED_PREDECESSOR_BEFORE_GROSS_COMMIT_ELIGIBILITY_EXTENSION; full current owner closure requalification pending"
+  },
+  "surface_b1_current_closure": {
+    "execution_commit": "bf188bf7455897f1904aeacbdfc5f7a32465c029",
+    "production_checkpoint": "4c2b3c7c9c8e8e5485532a923a3d43373d9f0256",
+    "status": "SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED",
+    "days": 2,
+    "hydrology": "field-loam-fixed-head",
+    "max_committed_substeps": 10000,
+    "providers": 326,
+    "input_sha256_bound": true,
+    "O0_O2_native_endpoints": "BYTE_IDENTICAL",
+    "day1_fresh_process_endpoint": "BYTE_IDENTICAL",
+    "cost_seconds": {
+      "compile": 343.61744857895974,
+      "link": 0.6881817179964855,
+      "native": 39.56337135699869,
+      "restart_native": 8.199649029000284
+    },
+    "canonical_admitted": false,
+    "independent8day_audit": "RUNNING",
+    "five_original_profiles": "RUNNING",
+    "wet_and_dry_native_corruptions": "RUNNING",
+    "retained_thermal_and_TCS6": "RUNNING",
+    "current_native_and_original_TTUTIL_input_supplement": "RUNNING",
+    "local_evidence": "surface-gross-head-qualified"
   }
 }

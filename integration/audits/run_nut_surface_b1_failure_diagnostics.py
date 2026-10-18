@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 BASE=Path(os.environ['N_SURFACE_PROVIDERS']).resolve()
 OUT=Path(os.environ['N_SURFACE_PROBE_DIR']).resolve();OUT.mkdir(exist_ok=False)
 OPT=os.environ.get('N_SURFACE_PROBE_OPT','O2');assert OPT in ['O0','O2']
-VARIANT=os.environ.get('N_SURFACE_PROBE_VARIANT','clay');assert VARIANT in ['clay','field-loam','field-loam-fixed-head']
+VARIANT=os.environ.get('N_SURFACE_PROBE_VARIANT','clay');assert VARIANT in ['clay','field-loam','field-loam-fixed-head','field-loam-high-n']
 DAYS=int(os.environ.get('N_SURFACE_PROBE_DAYS','730'));assert 1<=DAYS<=730
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();self_sha=sha(Path(__file__))
 prior=json.loads((BASE/'result.json').read_text());assert prior['status']=='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED'
@@ -30,6 +30,25 @@ if VARIANT=='field-loam-fixed-head':
  text=text.replace(old,old+'\n  cfg%tiles(1)%parameters%bottom_mode=5\n  cfg%tiles(1)%base_forcing%bottom_head=-75d0')
  old='     forcing%bottom_flux=sum(forcing%root_extraction_sink)-.003d0';assert text.count(old)==1
  text=text.replace(old,'     forcing%bottom_head=-75d0')
+if VARIANT=='field-loam-high-n':
+ assert prior.get('hydrology')=='field-loam-fixed-head'
+ # Typed-configuration negative control: historical SNM limits remain intact.
+ # Reconstruct the SAME existing owner from its public initial snapshot, with
+ # valid typed concentration inputs whose trial exceeds the inventory bounds.
+ old='    call source_soil%configuration(sp,sid)';assert text.count(old)==1
+ text=text.replace(old,old+"""
+    block
+     type(soil_n_pool_state_t)::negative_pools
+     real(real64)::negative_time,negative_water
+     integer(int64)::negative_revision
+     call source_soil%snapshot(negative_time,negative_water,negative_pools,negative_revision)
+     sp%mineral%c_top=250000d0
+     call initialize_reactive(sp,9001_int64,negative_time,negative_water,negative_pools,source_soil,status)
+     call require(status==0.and.source_soil%ready(),'typed high-N negative initial state is valid')
+     call initialize_crop_soil(source_soil,source_crop,cp,9101_int64,state,status)
+     call require(status==0.and.state%ready(),'typed high-N negative joint initial state is valid')
+    end block
+""",1)
 old='  cfg%numerical%transaction%temporal_tolerance=1d-6';assert text.count(old)==1
 if '  cfg%numerical%retain_accepted_step_proposal=.true.' not in text:
  text=text.replace(old,old+'\n  cfg%numerical%retain_accepted_step_proposal=.true.')
@@ -92,6 +111,9 @@ body=body.replace(needle,"""    if(r%status/=0)then
        failure_observation%solver_equation_residual,failure_observation%solver_equation_residual_available
     endif
 """+needle)
+if VARIANT=='field-loam-high-n':
+ old="     call report_water_state('rejected-day-state',d)";assert body.count(old)==1
+ body=body.replace(old,"     call require(r%joint%joint%water%status==0.and.r%joint%joint%water%completed,'high N rejected after actual accepted water')\n"+old)
 text=text[:a]+body+text[z:]
 driver=OUT/'test_surface_n_hydrology.f90';driver.write_text(text)
 b=BASE/OPT;ce=[e for e in events if e['category']=='compile'and '-'+OPT in e['command']]
