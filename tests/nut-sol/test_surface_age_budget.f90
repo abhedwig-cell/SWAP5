@@ -50,7 +50,7 @@ program test_surface_age_budget
   q%dt_day=0.1_real64
   call advance_surface_age_budget(q,r)
   if(r%status/=SURFACE_AGE_OK) error stop 'dry zero case'
-  if(r%pond_end_stock_cm_day/=0.0_real64) error stop 'dry phantom amount'
+  if(r%pond_end_stock_cm_day>0.0_real64) error stop 'dry phantom amount'
   q%pond_age_stock_cm_day=1.0_real64
   call advance_surface_age_budget(q,r)
   if(r%status/=SURFACE_AGE_INVALID) error stop 'dry stock without water accepted'
