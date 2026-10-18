@@ -89,7 +89,14 @@ jobs:
                [[ "$(git rev-parse HEAD:$MODEL)" == "$FROSS13_MODEL" ]] && \
                [[ "$(git rev-parse HEAD:$PROVIDER)" == "$FROSS13_PROVIDER" ]]; then
             if [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$SOLVER)" == "$FROSS22_TIERED_SOLVER" ]]; then
-              bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              # For PR merge refs, preserve the canonical target's exact contract
+              # via the existing moving-preservation mode. All other FROSS22
+              # immutable provider/kernel/solver and science checks still run.
+              if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+                PPA_WU05B_MOVING_CANONICAL_PRESERVATION=1 bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              else
+                bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              fi
             elif [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
               bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh
             else
