@@ -16,6 +16,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install GNU Fortran
         run: sudo apt-get update -qq && sudo apt-get install -y gfortran
+      - name: Validate state-export parser
+        run: python3 research/kalmthout_pilot/test_validate_state_dump.py
       - name: Focused 1700-hour failure state export
         run: bash research/kalmthout_pilot/run_state_export_diagnostic.sh "$RUNNER_TEMP/kalmthout-state"
       - name: Save evidence (including failures)
