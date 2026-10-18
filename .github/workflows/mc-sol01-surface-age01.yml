@@ -4,6 +4,8 @@ on:
     paths:
       - 'src/process/mod_b111_surface_age_budget.f90'
       - 'tests/nut-sol/test_surface_age_budget.f90'
+      - 'src/process/mod_b111_surface_age_owner.f90'
+      - 'tests/nut-sol/test_surface_age_owner.f90'
       - 'tests/nut-sol/run_surface_age_budget.sh'
       - '.github/workflows/mc-sol01-surface-age01.yml'
   workflow_dispatch:
