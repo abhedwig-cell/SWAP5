@@ -84,3 +84,7 @@ This is a **reader candidate**, not an atomic paired disk writer. A crash betwee
 ## Bounded actual Richards triplet disk regression
 
 The existing physical `test_age_joint.f90` on this research branch now also exercises `restore_age_triplet_disk` using an actually accepted Reference Richards and B1.11 age interval. It writes the admitted S5AJ0001 hydraulic+soil-age restart and a separately initialized **dry-pond, zero-stock** S5PA0001 surface-age sidecar, then checks that a missing sidecar and a wrong surface identity fail with no hydraulic or soil-age state restored; a matching pair must restore the same accepted water and soil age. This is deliberately a **dry-pond** regression and is not evidence for positive pond or runon age physics. The new physical job in the focused workflow uses the existing real `run_age.py` O0/O2 suite and its independent-process continuation checks. Await actual GitHub completion; do not claim a numerical PASS for this change before it is reported.
+
+## Disk corruption oracle correction
+
+The previous byte-corruption test attempted to restore into an already-initialized surface owner. That erroneously tested the no-overwrite guard instead of the checksum. Commit `cb3c1ebd459ec70d332b84ab5aae77a9129d42fd` changes the target to a fresh uninitialized owner and asserts that it remains uninitialized on corrupted input. This correction is required for trustworthy corruption evidence. Hosted test run `39131990244` was still queued at the time of this check; it is not yet qualified.
