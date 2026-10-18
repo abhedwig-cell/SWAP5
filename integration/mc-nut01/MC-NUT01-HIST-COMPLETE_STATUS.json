@@ -62,7 +62,7 @@
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "fb6611c9816ac8f3339db42c201944dd21cd8f2b",
-  "last_reconciled_upstream": "65db94901eba8222b070920827621fdffddb2180",
+  "last_reconciled_upstream": "916e0725508a4807a65b81174b9e28b603ccb7f7",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -804,7 +804,9 @@
       ],
       "next": "Metadata-only65db9490 reconciled; physical age inputs and postimages unchanged; pin current original admission record",
       "guard_policy": "Strict registered canonical baseline and original age evidence/input preservation, no broad age-exists bypass",
-      "receipt_head": "65db94901eba8222b070920827621fdffddb2180"
+      "receipt_head": "65db94901eba8222b070920827621fdffddb2180",
+      "age02_canonical": "916e0725508a4807a65b81174b9e28b603ccb7f7",
+      "age02_scope": "PR1315 additive docs/audit drivers/evidence only; no production/existing tests/workflow/guard overlap. Resolve identical documentation-link correction plus appended age02 section. Current original age02 compiled/provider/oracle/caller input hashes remain exact; validate(load()) also calls strict current age01+HIST qualification. Original verify() no-production-delta assertion stays frozen to65db and is not claimed PASS on changed NUT science."
     },
     "production_result": {
       "status": "HIST_BOUNDED_PHYSICAL_PASS_NOT_FULL_MIGRATION",
@@ -890,6 +892,7 @@
       "text_bytes": 318641,
       "blob_sha": "8c87e37a5f0ba25bec732b30d9d204e98e23b7f1"
     },
-    "guard_negative_controls": 18
+    "guard_negative_controls": 18,
+    "pr": 1316
   }
 }
