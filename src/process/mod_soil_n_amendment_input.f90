@@ -171,10 +171,11 @@ contains
   end do
   read(s,*,iostat=ios)v;ok=ios==0
  end function
- recursive subroutine parse_soil_n_amendment_tables(lines,origin_text,plan,status,error_line)
+ recursive subroutine parse_soil_n_amendment_tables(lines,origin_text,plan,status,error_line,error_column)
   character(*),intent(in)::lines(:),origin_text
   type(soil_n_amendment_calendar_t),intent(out)::plan
   integer,intent(out)::status,error_line
+  integer,intent(out),optional::error_column
   type(b111_soil_n_material_t)::defs(20),selected(1000)
   real(real64)::dates(1000),doses(1000),origin,v(5),vol
   character(256)::w(8)
@@ -183,6 +184,7 @@ contains
   integer::line,n,section,nmat,nevent,id,j,code
   logical::q(8),ok
   plan=soil_n_amendment_calendar_t();status=N_INPUT_INVALID;error_line=0
+  if(present(error_column))error_column=1
   if(size(lines)>MAX_LINES)return
   call parse_soil_n_date(trim(origin_text),origin,code);if(code/=0)return
   section=0;nmat=0;nevent=0
@@ -203,23 +205,37 @@ contains
    if(section==1)then
     if(n/=7.or.nmat==20)return
     if(.not.q(2).or.any(q(3:7)).or.q(1))return
+    if(present(error_column))error_column=2
     if(len_trim(w(2))<1.or.len_trim(w(2))>25)return
+    if(present(error_column))error_column=1
     if(.not.position(w(1),id))return
     if(id/=nmat+1)return
     do j=1,5
+     if(present(error_column))error_column=j+2
      if(.not.number(w(j+2),v(j)))return
+     if(j==1)then
+      if(v(j)<0d0.or.v(j)>100d0)return
+     else
+      if(v(j)<0d0.or.v(j)>1d0)return
+     end if
     end do
     if(v(1)<0d0.or.v(1)>100d0.or.any(v(2:5)<0d0).or.any(v(2:5)>1d0))return
     nmat=nmat+1
     defs(nmat)=b111_soil_n_material_t(0d0,v(1),v(2),v(3),v(4),v(5),0d0)
    else
     if(n/=4.or.any(q).or.nevent==1000)return
+    if(present(error_column))error_column=2
     if(.not.position(w(2),id))return
     if(id<1.or.id>nmat)return
     nevent=nevent+1
+    if(present(error_column))error_column=1
     call parse_soil_n_date(trim(w(1)),dates(nevent),code);if(code/=0)return
+    if(present(error_column))error_column=3
     if(.not.number(w(3),doses(nevent)))return
+    if(doses(nevent)<0d0.or.doses(nevent)>5d5)return
+    if(present(error_column))error_column=4
     if(.not.number(w(4),vol))return
+    if(vol<0d0.or.vol>1d0)return
     selected(nevent)=defs(id);selected(nevent)%volatilization_fraction=vol
    end if
   end do

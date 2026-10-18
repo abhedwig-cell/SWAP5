@@ -45,6 +45,7 @@ contains
    if(.not.p%inventory%valid())return
    if(.not.allocated(p%dz_cm))return
    if(size(p%dz_cm)<1.or.size(p%dz_cm)>4096.or.size(p%inventory%nfrac_fom)>64)return
+   allocate(v(0))
    v=mineral_parameter_vector(p)
    if(.not.all(ieee_is_finite(v)))return
    if(any(p%dz_cm<1d-4).or.any(p%dz_cm>1d4))return
@@ -102,9 +103,11 @@ contains
    integer(int64),intent(out)::id
    p=self%p;id=self%id
  end subroutine
- subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt)
+ subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,surface_water)
    type(mineral_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
+   real(real64),intent(in),optional::surface_water
+   real(real64)::surface
    type(mineral_receipt_t),intent(out)::receipt
    type(b111_soil_n_concentration_state_t)::c
    type(b111_soil_n_transport_result_t)::r(2)
@@ -114,6 +117,9 @@ contains
    real(real64)::initial(2),sorption(2),mass(2),dz,dt,closure
    integer::i,code
    receipt=mineral_receipt_t()
+   surface=0d0;if(present(surface_water))surface=surface_water
+   if(.not.ieee_is_finite(surface))return
+   if(abs(surface)>100d0)return
    if(.not.state%ready())return
    if(.not.all(ieee_is_finite([t0,t1,water_end,outflow,in_bottom,in_lateral,root_water])))return
    if(abs(t0-state%time)>0d0.or.abs(t1-t0-1d0)>0d0.or.abs(t1)>1d8)return
@@ -121,7 +127,7 @@ contains
    if(min(outflow,in_bottom,in_lateral,root_water)<0d0.or.max(outflow,in_bottom,in_lateral,root_water)>100d0)return
    if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0))return
    dz=state%p%inventory%depth_m;dt=t1-t0
-   closure=(water_end-state%water)*dz-dt*(in_bottom+in_lateral-outflow-root_water)
+   closure=(water_end-state%water)*dz-dt*(surface+in_bottom+in_lateral-outflow-root_water)
    if(abs(closure)>1d-12)return ! metres; identical 1e-10 cm hard water budget
    call b111_soil_n_concentrations_from_mass(dz,state%water,state%p%drybd,state%p%sorption, &
       state%pools%ammonium_n_kg_m2,state%pools%nitrate_n_kg_m2,c)
@@ -156,22 +162,27 @@ contains
    receipt%status=MINERAL_OK
  end subroutine
  ! Budget-checked publication seam: all N stores still have this single owner.
- subroutine apply_mineral_day_transfer(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,receipt)
+ subroutine apply_mineral_day_transfer(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,receipt,surface_water)
    type(mineral_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    type(soil_n_transfer_t),intent(in)::x
+   real(real64),intent(in),optional::surface_water
+   real(real64)::surface
    type(mineral_receipt_t),intent(out)::receipt
    type(soil_n_pool_state_t)::trial
    type(soil_n_receipt_t)::budget
    real(real64)::closure
    receipt=mineral_receipt_t()
+   surface=0d0;if(present(surface_water))surface=surface_water
+   if(.not.ieee_is_finite(surface))return
+   if(abs(surface)>100d0)return
    if(.not.state%ready())return
    if(.not.all(ieee_is_finite([t0,t1,water_end,outflow,in_bottom,in_lateral,root_water])))return
    if(abs(t0-state%time)>0d0.or.abs(t1-t0-1d0)>0d0.or.abs(t1)>1d8)return
    if(water_end<1d-4.or.water_end>1d0)return
    if(min(outflow,in_bottom,in_lateral,root_water)<0d0.or.max(outflow,in_bottom,in_lateral,root_water)>100d0)return
    if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0))return
-   closure=(water_end-state%water)*state%p%inventory%depth_m-(in_bottom+in_lateral-outflow-root_water)
+   closure=(water_end-state%water)*state%p%inventory%depth_m-(surface+in_bottom+in_lateral-outflow-root_water)
    if(abs(closure)>1d-12)return
    ! This public seam accepts only bounded transfers, before any donor arithmetic.
    if(.not.allocated(x%fom_delta_kg_m3))return

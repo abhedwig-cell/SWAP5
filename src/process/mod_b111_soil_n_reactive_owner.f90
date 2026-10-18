@@ -124,12 +124,14 @@ contains
    type(mineral_parameters_t)::base
    p=self%p;call self%inventory%configuration(base,id)
  end subroutine
- subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment)
+ subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment,surface_water)
    type(reactive_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    type(reactive_receipt_t),intent(out)::receipt
    type(reactive_crop_demand_t),intent(in),optional::crop
    type(soil_n_day_environment_t),intent(in),optional::environment
+   real(real64),intent(in),optional::surface_water
+   real(real64)::surface
    type(b111_soil_n_rate_environment_t)::effective_environment
    type(mineral_state_t)::trial
    type(soil_n_pool_state_t)::before,after
@@ -142,6 +144,9 @@ contains
    integer(int64)::revision
    integer::code
    receipt=reactive_receipt_t()
+   surface=0d0;if(present(surface_water))surface=surface_water
+   if(.not.ieee_is_finite(surface))return
+   if(abs(surface)>100d0)return
    if(.not.state%ready())return
    if(present(crop))then
      if(.not.state%p%enabled)return
@@ -158,7 +163,7 @@ contains
    end if
    trial=state%inventory
    if(.not.state%p%enabled)then
-     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget)
+     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget,surface_water=surface)
      receipt%mineral_receipt_t=budget
      if(budget%status==MINERAL_OK)state%inventory=trial
      return
@@ -174,6 +179,7 @@ contains
    actual%ratecon_fom=actual%ratecon_fom*factor
    actual%ratecon_bio=actual%ratecon_bio*factor;actual%ratecon_hum=actual%ratecon_hum*factor
    f%dt_day=1d0;f%wfrac_t0=water;f%wfrac_t=water_end;f%wflux_out=outflow;f%wflux_inbot=in_bottom
+   f%wflux_intop=max(0d0,surface)
    f%wflux_inlat=in_lateral;f%wflux_transp=root_water;f%drybd=state%p%mineral%drybd;f%sorpcoef=state%p%mineral%sorption
    f%cnh4_seep=state%p%mineral%c_bottom(1);f%cno3_seep=state%p%mineral%c_bottom(2)
    f%cnh4_lat=state%p%mineral%c_lateral(1);f%cno3_lat=state%p%mineral%c_lateral(2)
@@ -192,7 +198,7 @@ contains
    x%ammonium_n_delta_kg_m2=after%ammonium_n_kg_m2-before%ammonium_n_kg_m2
    x%nitrate_n_delta_kg_m2=after%nitrate_n_kg_m2-before%nitrate_n_kg_m2
    x%external_n_input_kg_m2=r%exchange%external_input_kg_m2;x%external_n_output_kg_m2=r%exchange%external_output_kg_m2
-   call apply_mineral_day_transfer(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,budget)
+   call apply_mineral_day_transfer(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,x,budget,surface_water=surface)
    receipt%mineral_receipt_t=budget
    if(budget%status==MINERAL_OK)then
      state%inventory=trial

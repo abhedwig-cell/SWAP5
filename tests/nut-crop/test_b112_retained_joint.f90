@@ -120,7 +120,7 @@ program test_b112_retained_joint
  call initialize_soil_n_pool_state(sp%mineral%inventory,spread(1d0,1,8),5d0,40d0,.02d0,.03d0,pools,status)
  call require(status==0,'soil inventory initialize')
  call backend%initialize(top);call second%initialize(top)
- if(trim(selected)=='source-profile')then
+ if(trim(selected)=='source-profile'.or.trim(selected)=='rotation-profile')then
   call source_continuation()
   stop
  end if
@@ -299,33 +299,49 @@ contains
    character(16)::key
    real(real64)::source_water,base_day
    call parse_soil_n_date('1900-12-30',base_day,code)
+   if(trim(selected)=='rotation-profile')then
+    cp%harvest%crop_end=base_day+119d0
+    cp%scalars%vegetative_temperature_sum_required=1500d0
+    cp%scalars%generative_temperature_sum_required=1500d0
+   end if
    call require(code==N_INPUT_OK,'year-boundary calendar origin')
    day1_env=soil_n_day_environment_t(base_day,base_day+1d0,5d0)
    selection%swcropsnm=1;selection%sw_wofost=1
    selection%source_parameters_complete=.true.
    ! Source keyword-array subset, preserving original named TTUTIL fields.
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
-   write(unit,'(A)')'MatNum = 1'
-   write(unit,'(A)')"MatName = 'Mineral'"
-   write(unit,'(A)')'AppAge = 0'
-   write(unit,'(A)')'OrgMatFrac = 0'
-   write(unit,'(A)')'OrgNFrac = 0'
-   write(unit,'(A)')'NH4NFrac = 0.21'
-   write(unit,'(A)')'NO3NFrac = 0.10'
+   if(trim(selected)=='rotation-profile')then
+    write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
+    write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
+    write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
+    write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
+    write(unit,'(A)')'1900-12-30 1 100. .1','1901-01-01 1 50. .1', &
+      '1901-01-01 2 1000. .1','1901-06-30 2 1000. .1', &
+      '1901-12-31 1 75. .1','1902-01-01 2 1000. .1'
+   else
+   write(unit,'(A)')'MatNum = 1*1'
+   write(unit,'(A)')"MatName = 1*'Mineral'"
+   write(unit,'(A)')'AppAge = 1*0.'
+   write(unit,'(A)')'OrgMatFrac = 1*0.'
+   write(unit,'(A)')'OrgNFrac = 1*0.'
+   write(unit,'(A)')'NH4NFrac = 1*0.21'
+   write(unit,'(A)')'NO3NFrac = 1*0.10'
    write(unit,'(A)')'smedate = 1900-12-30, 1901-01-01, 1901-01-01, 1901-12-31, 1902-01-01'
    write(unit,'(A)')'iMat = 1 1 1 1 1'
-   write(unit,'(A)')'Dosagekgha = 100 50 25 75 25'
+   write(unit,'(A)')'Dosagekgha = 100. 50. 25. 75. 25.'
    write(unit,'(A)')'VolatFraction = 0.1 0.1 0.1 0.1 0.1'
+   end if
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
      write(unit,'(A)')trim(key)//' = 1.0'
    end do
-   write(unit,'(A)')'Bio_t = 5','Hum_t = 40','cNH4_t = 0.02','cNO3_t = 0.03', &
-     'Temp_ref = 20','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
+   write(unit,'(A)')'Bio_t = 5.','Hum_t = 40.','cNH4_t = 0.02','cNO3_t = 0.03', &
+     'Temp_ref = 20.','SorpCoef = 0.0002','RateConNitrif_ref = 0.02', &
      'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
-     'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1', &
+     'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1.', &
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
-     'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
+     'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
+     'cNH4N_top = 0.','cNO3N_top = 0.'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal
@@ -345,7 +361,7 @@ contains
      type(crop_senescence_policy_t)::rejected_policy
      integer::input_unit,output_unit,ios,case_number,source_record,nitrif_record
      character(512)::source_line
-     do case_number=1,9
+     do case_number=1,merge(0,9,trim(selected)=='rotation-profile')
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
        source_record=0;nitrif_record=0
@@ -391,6 +407,14 @@ contains
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
+   if(trim(selected)=='rotation-profile')then
+    policy=startup_policy
+    call state%configuration(cp,sid)
+    call state%snapshot(source_soil,source_crop)
+    call source_soil%configuration(sp,sid)
+    call rotation_continuation(startup_plan,base_day)
+    return
+   end if
    ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
    ! Exact source-event selection across a complete crop-free calendar year.
    ! The actual Richards driver below spans 124 days; the complete
@@ -494,6 +518,152 @@ contains
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
    print '(A)','NUT_SOURCE_124_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
+ end subroutine
+ subroutine rotation_continuation(plan,base_day)
+   type(soil_n_amendment_calendar_t),intent(in)::plan
+   real(real64),intent(in)::base_day
+   type(crop_soil_harvest_receipt_t)::hr
+   type(crop_soil_harvest_observation_t)::ho
+   type(senescence_joint_result_t)::r,rejected
+   type(soil_n_day_environment_t)::e,stale
+   type(fmr_b110_physical_forcing_t)::forcing
+   type(crop_n_configuration_t)::successor_cp,initial_cp
+   type(crop_soil_state_t)::before_state
+   type(kernel_committed_state_t)::before_water
+   type(reactive_state_t)::ss
+   type(wofost81_crop_owner_state_t)::cc
+   type(soil_n_pool_state_t)::ps
+   real(real64)::clock,moisture,season,uptake,max_n,max_w,n_before,flux_root
+   real(real64)::n_start,n_input,n_output,n_residual,harvest_export
+   type(wofost81_harvest_record_t)::harvest_record
+   logical::has_record
+   integer(int64)::rev,cid
+   integer::d,first,code
+   character(32)::arg
+   logical::inactive
+   initial_cp=cp
+   call get_command_argument(5,arg)
+   first=0
+   if(trim(mode)=='resume')then
+    read(arg,*)first
+    if(first>=365)then
+     cp%harvest%crop_identity=2;cp%harvest%crop_end=base_day+499d0
+    end if
+    water=kernel_committed_state_t();state=crop_soil_state_t()
+    call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
+     670001_int64,9001_int64,merge(9102_int64,9101_int64,first>=365),sp,cp,water,state,code)
+    call require(code==0,'rotation fresh process native restart')
+   end if
+   uptake=0d0;max_n=0d0;max_w=0d0
+   n_start=crop_soil_whole_n(state);n_input=0d0;n_output=0d0
+   do d=first,729
+    inactive=d>=120.and.d<365.or.d>=500
+    season=sin(6.283185307179586d0*real(d,real64)/365.2425d0)
+    forcing=cfg%tiles(1)%base_forcing
+    forcing%drainage_flux_by_level=0d0
+    forcing%root_extraction_sink=0d0;forcing%root_potential_transpiration=0d0
+    if(.not.inactive)then
+     flux_root=.08d0*(1d0+.5d0*season)
+     forcing%root_extraction_sink=flux_root/real(numnod,real64)
+     forcing%root_potential_transpiration=flux_root
+    end if
+    ! Controlled synthetic atmosphere and groundwater exchange. Positive
+    ! clean surface water is rainfall/infiltration; negative is evaporation.
+    ! This is a contract qualification, not a calibrated field prediction.
+    forcing%top_flux=-.01d0*season
+    forcing%bottom_flux=sum(forcing%root_extraction_sink)+.002d0*season
+    e=soil_n_day_environment_t(base_day+real(d,real64),base_day+real(d+1,real64), &
+     10d0+8d0*season)
+    weather%average_temperature=10d0+5d0*season
+    weather%minimum_temperature=weather%average_temperature-5d0
+    weather%daytime_average_temperature=weather%average_temperature+4d0
+    weather%global_radiation=1d7*(1d0+.4d0*season)
+    weather%daylength_hours=12d0+3d0*season
+    weather%photoperiodic_daylength_hours=weather%daylength_hours
+    if(d==120.or.d==366)then
+     before_state=state;before_water=water;stale=e;stale%t0=stale%t0-1d0
+     write(arg,'(I0)')d
+     call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-before-'//trim(arg), &
+      column,cfg%tiles(1)%template,670001_int64,water,state,code)
+     call require(code==0,'rotation rollback baseline serialized')
+     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+      cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
+      plan,split,policy,rejected,stale,fallow=inactive,clean_surface_water=.true.)
+     call require(rejected%status/=0,'rotation stale environment rejected')
+     call require(water%current_revision()==before_water%current_revision(),'rotation rejected water unchanged')
+     call require(crop_soil_whole_n(state)==crop_soil_whole_n(before_state),'rotation rejected nitrogen unchanged')
+     call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-after-'//trim(arg), &
+      column,cfg%tiles(1)%template,670001_int64,water,state,code)
+     call require(code==0,'rotation rollback endpoint serialized')
+    end if
+    n_before=crop_soil_whole_n(state)
+    call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+     cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
+     plan,split,policy,r,e,fallow=inactive,clean_surface_water=.true.)
+    if(r%status/=0)print *,'ROTATION_FAILURE',d,r%status,r%joint%joint%water%status, &
+      r%joint%joint%chemical%status,r%joint%joint%chemical%soil%status, &
+      'material',r%joint%materials%status,r%joint%materials%residual, &
+      'senescence',r%senescence%status,r%senescence%whole_n_residual
+    if(r%status/=0)then
+     print *,'DEATH_DM',r%joint%joint%chemical%prepared%drrt,r%joint%joint%chemical%prepared%drlv, &
+      r%joint%joint%chemical%prepared%drst,r%joint%joint%chemical%prepared%leaf_diagnostics%applied_leaf_death
+     print *,'DEATH_N',r%joint%joint%chemical%crop%rndeathrt,r%joint%joint%chemical%crop%rndeathlv, &
+      r%joint%joint%chemical%crop%rndeathst
+    end if
+    call require(r%status==0,'rotation actual daily Richards crop Soil-N')
+    max_w=max(max_w,r%joint%joint%diagnostics%max_abs_step_mass_residual)
+    max_n=max(max_n,abs(r%joint%materials%residual))
+    uptake=uptake+r%joint%joint%chemical%internal_supply_kg_m2
+    n_input=n_input+r%joint%materials%gross_n+r%joint%joint%chemical%soil%external_in+ &
+      r%joint%joint%chemical%fixation_kg_m2
+    ! Internal uptake is included in the soil outflow receipt; remove it
+    ! from the whole-system output. Daily death remains retained/pending.
+    n_output=n_output+r%joint%materials%volatilized_n+ &
+      r%joint%joint%chemical%soil%external_out-r%joint%joint%chemical%internal_supply_kg_m2
+    if(inactive)call require(r%joint%joint%chemical%internal_supply_kg_m2==0d0,'fallow zero uptake')
+    call require(abs(r%joint%materials%residual)<=1d-12,'rotation whole N daily balance')
+    if(d+1==120.or.d+1==500)then
+     call harvest_crop_soil_boundary(state,hr)
+     if(hr%status/=0)print *,'HARVEST_FAILURE',d+1,hr%status,hr%rejection_stage
+     call require(hr%status==0,'rotation accepted harvest boundary')
+     call state%snapshot(ss,cc);call cc%harvest_snapshot(harvest_record,has_record)
+     call require(has_record,'rotation harvest exported inventory')
+     n_output=n_output+sum(harvest_record%exported_n)*1d-4
+     call consume_crop_soil_harvest_pending(state,hr)
+     call require(hr%status==0,'rotation harvest residue incorporation')
+     call observe_crop_soil_harvest(state,ho,code)
+     call require(code==0,'rotation observe harvest')
+     call acknowledge_crop_soil_harvest(state,ho,hr)
+     call require(hr%status==0,'rotation retire crop')
+    end if
+    if(d+1==365)then
+     successor_cp=cp;successor_cp%harvest%crop_identity=2
+     successor_cp%harvest%crop_end=base_day+499d0
+     n_before=crop_soil_whole_n(state)
+     call initialize_crop_soil_successor(state,crop,successor_cp,9102_int64,hr)
+     call require(hr%status==0,'rotation successor in same Soil-N owner')
+     cp=successor_cp
+     n_input=n_input+crop_soil_whole_n(state)-n_before
+    end if
+    if(d+1==1.or.d+1==120.or.d+1==121.or.d+1==365.or.d+1==366.or.d+1==500)then
+     write(arg,'(I0)')d+1
+     call write_crop_soil_n_joint_restart_file(trim(path)//'.'//trim(arg),column, &
+      cfg%tiles(1)%template,670001_int64,water,state,code)
+     call require(code==0,'rotation transition restart write')
+    end if
+    if(mod(d+1,60)==0)print *,'ROTATION_PROGRESS',d+1,'maxN',max_n,'maxW',max_w
+   end do
+   call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
+    670001_int64,water,state,code)
+   call require(code==0,'rotation endpoint')
+   n_residual=n_start+n_input-crop_soil_whole_n(state)-n_output
+   call report_water_state('rotation-final',730)
+   call state%snapshot(ss,cc);call ss%snapshot(clock,moisture,ps,rev)
+   print *,'ROTATION_POOLS',ps%fom_kg_m3,ps%biomass_kg_m3,ps%humus_kg_m3, &
+    ps%ammonium_n_kg_m2,ps%nitrate_n_kg_m2
+   print *,'ROTATION_BUDGET',n_start,n_input,n_output,crop_soil_whole_n(state),n_residual
+   call require(abs(n_residual)<=1d-10,'rotation cumulative whole nitrogen balance')
+   print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w
  end subroutine
  subroutine report_water_state(stage,day)
    character(*),intent(in)::stage
