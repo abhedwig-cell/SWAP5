@@ -127,3 +127,18 @@ persistent owner O0/O2. Actual field composition follows using one exact ABI-
 compatible provider replacement for local feedback; all other checked provider
 inputs/artifacts stay bound. Fresh full-closure compilation and all owning
 scientific/preservation gates remain required before admission.
+
+## Explicit resource-boundary successor experiment
+
+The field-loam six-day prefix passed, but the first weekly 5 mm rain pulse
+exhausted the fixture's 4096 committed-substep budget at day 7, t=369.71308113883816,
+with 14 temporal rejections and zero solver rejections. Its largest accepted
+water residual was 5.1633095585548738e-15 cm. This trial remains FAILED.
+The next exploratory trial uses the existing canonical default resource budget
+of 10000 (`mod_canonical_contracts`), rather than the fixture-specific 4096.
+This explicitly supersedes the 4096-only experiment above; it changes no solver,
+acceptance tolerance, retry budget, temporal estimator or mass gate. The interval
+loop merely has room for additional fully accepted steps. This is not evidence
+that the original negative-bottom-flux stress test was repaired, nor does an
+eight-day exploratory result qualify the multiyear model. Estimated native cost
+is several minutes for eight days; full rotation is conditional on this feedback.

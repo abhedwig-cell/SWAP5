@@ -11,6 +11,7 @@ OUT=Path(os.environ['N_SURFACE_PROBE_DIR']).resolve();OUT.mkdir(exist_ok=False)
 OPT=os.environ.get('N_SURFACE_PROBE_OPT','O2');assert OPT in ['O0','O2']
 VARIANT='field-loam'
 DAYS=int(os.environ.get('N_SURFACE_PROBE_DAYS','8'));assert 1<=DAYS<=730
+SUBSTEP_CAP=int(os.environ.get('N_SURFACE_SUBSTEP_CAP','4096'));assert SUBSTEP_CAP in [4096,10000]
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();self_sha=sha(Path(__file__))
 prior=json.loads((BASE/'result.json').read_text());assert prior['status']=='SURFACE_N_B1_ACTUAL_PHYSICAL_PASS_NOT_ADMITTED'
 LEAF='src/process/mod_b111_pond_solute_exchange.f90'
@@ -31,6 +32,8 @@ if VARIANT=='field-loam':
  text=text.replace(old,'     forcing%pond_input%rain_rate_cm_day=merge(.5d0,.05d0,mod(d,7)==6)*(1d0+.4d0*season)')
 old='  cfg%numerical%transaction%temporal_tolerance=1d-6';assert text.count(old)==1
 text=text.replace(old,old+'\n  cfg%numerical%retain_accepted_step_proposal=.true.')
+cap='cfg%numerical%max_committed_substeps=4096';assert text.count(cap)==1
+text=text.replace(cap,f'cfg%numerical%max_committed_substeps={SUBSTEP_CAP}')
 needle="    call require(r%status==0,'rotation actual daily Richards crop Soil-N')"
 assert text.count(needle)==1
 text=text.replace(needle,"\n    print *,'SURFACE_DAY_NUMERICS',d+1,r%joint%joint%diagnostics%accepted_substeps, &\n      r%joint%joint%diagnostics%attempts,r%joint%joint%diagnostics%temporal_rejections, &\n      r%joint%joint%diagnostics%solver_rejections,r%joint%joint%diagnostics%max_abs_step_mass_residual, &\n      r%joint%joint%water%completed_t\n"+needle)
@@ -63,5 +66,5 @@ for p,h in prior['input_sha256'].items():
  if p!=LEAF:assert sha(ROOT/p)==h,p
 assert sha(ROOT/LEAF)==NEW_LEAF_SHA
 assert sha(Path(__file__))==self_sha
-r=dict(status='EXPLORATORY_SURFACE_HYDROLOGY_PASS_NOT_QUALIFIED',variant=VARIANT,opt=OPT,days=DAYS,events=records,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256={**prior['input_sha256'],LEAF:NEW_LEAF_SHA},provider_artifacts=artifacts,provider_result_sha256=sha(BASE/'result.json'),recompiled_leaf_sha256=sha(OUT/'leaf.o'),original_leaf_sha256=prior['input_sha256'][LEAF],driver_sha256=sha(driver),runner_sha256=self_sha)
+r=dict(status='EXPLORATORY_SURFACE_HYDROLOGY_PASS_NOT_QUALIFIED',variant=VARIANT,opt=OPT,days=DAYS,max_committed_substeps=SUBSTEP_CAP,events=records,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256={**prior['input_sha256'],LEAF:NEW_LEAF_SHA},provider_artifacts=artifacts,provider_result_sha256=sha(BASE/'result.json'),recompiled_leaf_sha256=sha(OUT/'leaf.o'),original_leaf_sha256=prior['input_sha256'][LEAF],driver_sha256=sha(driver),runner_sha256=self_sha)
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(r['status'])
