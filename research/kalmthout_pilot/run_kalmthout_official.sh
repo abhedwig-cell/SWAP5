@@ -66,7 +66,7 @@ if [[ "${KALMTHOUT_DRY_DIAG_ONLY:-0}" == "1" ]]; then
   "$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/dry_diagnostic.csv" 1700 1.0 > "$OUTDIR/dry_diagnostic.log" 2>&1
   code=$?
   set -e
-  grep -E '^KALMTHOUT_(ACCEPTED_DRY_STATE|TOP_REGIME|SUBHOUR_FAIL|RESULT_DEBUG)' "$OUTDIR/dry_diagnostic.log" || true
+  grep -E '^KALMTHOUT_(ACCEPTED_DRY_STATE|TOP_REGIME|NEWTON|SUBHOUR_FAIL|RESULT_DEBUG)' "$OUTDIR/dry_diagnostic.log" || true
   echo "KALMTHOUT_DRY_DIAGNOSTIC_EXIT=$code"
   test "$code" -eq 0
   exit
