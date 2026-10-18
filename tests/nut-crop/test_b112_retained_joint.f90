@@ -327,6 +327,12 @@ contains
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
      'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
    close(unit)
+   ! Source owner is reconstructed from the same input in each fresh process.
+   ! The restart decoder verifies its parameter identity against these values.
+   call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
+      cfg%tiles(1)%initial_state,base_day,ok,spread(0d0,1,numnod))
+   call require(ok,'source water state')
+   source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    ! A malformed source array must not be silently shortened or reordered.
    block
      type(crop_soil_state_t)::rejected_state
@@ -357,12 +363,6 @@ contains
          'malformed source comma rejected atomically')
      end do
    end block
-   ! Source owner is reconstructed from the same input in each fresh process.
-   ! The restart decoder verifies its parameter identity against these values.
-   call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
-      cfg%tiles(1)%initial_state,base_day,ok,spread(0d0,1,numnod))
-   call require(ok,'source water state')
-   source_water=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
       base_day,source_water,'source-crop-startup.snm','1900-12-30',startup_plan, &
       state,startup_policy,status,error_line)
