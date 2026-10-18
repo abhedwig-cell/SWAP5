@@ -17,4 +17,5 @@ set -e
 echo "KALMTHOUT_DIAGNOSTIC_PROCESS_EXIT=$model_status"
 test -f "$OUT/dry_diagnostic.log" || { echo "Missing diagnostic model output" >&2; exit 3; }
 python3 research/kalmthout_pilot/validate_state_dump.py "$OUT/dry_diagnostic.log"
+python3 research/kalmthout_pilot/validate_backtrack_trace.py "$OUT/dry_diagnostic.log"
 echo "STATE_EXPORT_VERIFIED=PASS (diagnostic simulation may intentionally fail)"
