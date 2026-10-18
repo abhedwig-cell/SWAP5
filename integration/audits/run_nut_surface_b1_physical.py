@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(os.environ['N_SURFACE_PHYSICAL_DIR']).resolve()
 DAYS=int(os.environ.get('N_SURFACE_DAYS','2'));assert 1<=DAYS<=730
 INCUMBENT=os.environ.get('N_SURFACE_INCUMBENT','0')=='1'
-HYDROLOGY=os.environ.get('N_SURFACE_HYDROLOGY','clay');assert HYDROLOGY in ['clay','field-loam']
+HYDROLOGY=os.environ.get('N_SURFACE_HYDROLOGY','clay');assert HYDROLOGY in ['clay','field-loam','field-loam-fixed-head']
 SUBSTEP_CAP=int(os.environ.get('N_SURFACE_SUBSTEP_CAP','4096'));assert SUBSTEP_CAP in [4096,10000]
 WRAPPER_SHA=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 original=ROOT/'tests/nut-crop/test_b112_retained_joint.f90';text=original.read_text()
@@ -80,13 +80,18 @@ replace(needle,"""    if(trim(selected)=='surface-profile')then
     end if
 """+needle)
 # Explicit fixture selection; original profile branches remain unchanged.
-if HYDROLOGY=='field-loam':
+if HYDROLOGY.startswith('field-loam'):
  for i in [3,10,12]:
   line=f'  cfg%tiles(1)%parameters%cofgen({i},:)=cfg%tiles(1)%parameters%cofgen({i},:)*1d-3\n'
   replace(line,'')
  replace('  cfg%tiles(1)%initial_state%ponding_depth=.2d0','  cfg%tiles(1)%initial_state%ponding_depth=0d0')
  replace('     forcing%pond_input%rain_rate_cm_day=.05d0*(1d0+.4d0*season)',
          '     forcing%pond_input%rain_rate_cm_day=merge(.5d0,.05d0,mod(d,7)==6)*(1d0+.4d0*season)')
+if HYDROLOGY=='field-loam-fixed-head':
+ replace('  cfg%tiles(1)%initial_state%ponding_depth=0d0',
+         '  cfg%tiles(1)%initial_state%ponding_depth=0d0\n  cfg%tiles(1)%parameters%bottom_mode=5\n  cfg%tiles(1)%base_forcing%bottom_head=-75d0')
+ replace('     forcing%bottom_flux=sum(forcing%root_extraction_sink)-.003d0',
+         '     forcing%bottom_head=-75d0 ! independent prescribed-head lower boundary')
 # Select only inside the new profile: old incumbent resource settings stay exact.
 replace('  cfg%numerical%retain_accepted_step_proposal=.true.',
         f'  cfg%numerical%retain_accepted_step_proposal=.true.\n  cfg%numerical%max_committed_substeps={SUBSTEP_CAP}')

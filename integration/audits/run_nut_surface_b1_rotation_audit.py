@@ -120,15 +120,16 @@ replace("   print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w",'''   wat
    print *,'AUDIT_NUMERICAL',accepted_total,rejected_total,solver_total,retry_total,min_dt,max_indicator
    print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w''')
 if BOUNDARY=='fixed-head':
- assert prior.get('hydrology')=='field-loam' and prior.get('max_committed_substeps')==10000
+ assert prior.get('hydrology')in ['field-loam','field-loam-fixed-head'] and prior.get('max_committed_substeps')==10000
  # Every day has a complete native checkpoint. Fresh transition windows can
  # compare whole native states rather than re-executing years after each restart.
  replace('    if(d+1==1.or.d+1==120.or.d+1==121.or.d+1==365.or.d+1==366.or.d+1==500)then',
          '    if(.true.)then')
- replace('     forcing%bottom_flux=sum(forcing%root_extraction_sink)-.003d0',
-         '     forcing%bottom_head=-75d0 ! independently responding prescribed-head mode 5')
+ if prior.get('hydrology')=='field-loam':
+  replace('     forcing%bottom_flux=sum(forcing%root_extraction_sink)-.003d0',
+          '     forcing%bottom_head=-75d0 ! independently responding prescribed-head mode 5')
 source=source[:start]+body+source[end:]
-if BOUNDARY=='fixed-head':
+if BOUNDARY=='fixed-head'and prior.get('hydrology')=='field-loam':
  old='  cfg%tiles(1)%initial_state%ponding_depth=0d0';assert source.count(old)==1
  source=source.replace(old,old+'\n  cfg%tiles(1)%parameters%bottom_mode=5\n  cfg%tiles(1)%base_forcing%bottom_head=-75d0')
 generated=OUT/'water_audit.f90';generated.write_text(source)
@@ -155,6 +156,8 @@ for opt in ['O0','O2']:
  obj=b/'audit.o';exe=b/'audit';run(['gfortran',*flags,'-c',generated,'-o',obj],b,'driver_compile');run(['gfortran',*flags,*objects,obj,'-o',exe],b,'link')
  generated_artifacts[str(obj)]=sha(obj);generated_artifacts[str(exe)]=sha(exe)
  stdout=run([exe,'write',b/'restart',b/'endpoint',PROFILE,'0',str(DAYS)],b,'native')
+ if BOUNDARY=='fixed-head'and prior.get('hydrology')=='field-loam-fixed-head'and DAYS>=2:
+  assert(b/'restart.2').read_bytes()==(BASE/opt/'surface-profile.endpoint').read_bytes(),'observational driver changes original first-two-day native state'
  # Full original-driver endpoint comparison occurs in the companion baseline phase.
  assert 'SURFACE_N_B1_PHYSICAL_DAYS' in stdout
  rows={}
