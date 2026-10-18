@@ -25,7 +25,9 @@ contains
   integer,intent(out)::status
   type(surface_age_request_t)::q
   integer::code
-  real(real64)::dt
+  integer(kind=8)::revision
+  logical::available
+  real(real64)::dt,owner_time,owner_depth,owner_stock
   candidate=committed;receipt=surface_age_receipt_t();status=AGE_BRIDGE_REJECT
   if(.not.trace%pond_storage_available.or..not.trace%converged_surface_available.or. &
      .not.trace%converged_gross_sources_available)return
@@ -40,6 +42,8 @@ contains
   ! Outward qtop is not an admissible infiltration age sink here.
   ! Exfiltration needs an explicit soil-to-surface age source receipt.
   if(trace%top_flux>0.0_real64)return
+  call snapshot_surface_age_owner(committed,owner_time,owner_depth,owner_stock,revision,available)
+  if(.not.available.or.abs(owner_time-trace%t0)>0.0_real64)return
   dt=trace%t1-trace%t0
   q%dt_day=dt
   q%pond_start_cm=trace%pond_start_cm;q%pond_end_cm=trace%pond_end_cm
