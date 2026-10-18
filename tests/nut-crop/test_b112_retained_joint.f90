@@ -425,10 +425,12 @@ contains
    ! preserving the one-day native restart split. This month-scale run is
    ! separate from the accepted annual constant-water chemistry qualification.
    do day=1,123
+     if(day>=60.and.day<=67)call report_water_state('before',day)
      day2_env=soil_n_day_environment_t(base_day+real(day,real64),base_day+real(day+1,real64),30d0)
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
        state,weather,base_day+real(day,real64),base_day+real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
+     if(day>=60.and.day<=67)call report_water_state('after',day)
      if(day>=60.and.day<=67)then
        print *,'source Richards day trace',day,'status',day_receipt%status, &
          'accepted',day_receipt%joint%joint%diagnostics%accepted_substeps, &
@@ -469,6 +471,26 @@ contains
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
    print '(A)','NUT_SOURCE_124_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
+ end subroutine
+ subroutine report_water_state(stage,day)
+   character(*),intent(in)::stage
+   integer,intent(in)::day
+   class(transaction_state_t),allocatable::snapshot
+   logical::available
+   call water%snapshot(snapshot,available)
+   call require(available.and.allocated(snapshot),'water state snapshot available')
+   select type(physical=>snapshot)
+   type is(fmr_b110_temporal_indicator_state_t)
+     call require(allocated(physical%pressure_head).and.allocated(physical%water_content), &
+       'water state physical arrays')
+     print *,'source water state',trim(stage),day, &
+       'mean theta',sum(physical%water_content)/real(size(physical%water_content),real64), &
+       'theta minmax',minval(physical%water_content),maxval(physical%water_content), &
+       'head minmax',minval(physical%pressure_head),maxval(physical%pressure_head), &
+       'head surface bottom',physical%pressure_head(1),physical%pressure_head(size(physical%pressure_head))
+   class default
+     call require(.false.,'expected temporal Richards continuation state')
+   end select
  end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
