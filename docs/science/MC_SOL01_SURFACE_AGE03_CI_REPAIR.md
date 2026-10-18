@@ -85,3 +85,17 @@ time160.109s and link15.031s include exact artifact validation/reuse; these are
 not cold-build timings or exclusive native execution costs. The independent final
 head is-0.71499997000580917m, SWAP/GW flux mismatch6.0920812080313045e-23m/s.
 All scoped sources are unchanged by the canonical PR1318 diagnostic.
+
+Canonical PR1319/1320 admitted positional native material labels atb27a6469.
+That parser-only source change is retained together with both shared validators.
+The exact registered original/native parser proof and its730-day physical and
+fresh restart endpoints are verified again. The CI compilation records prove the
+parser is outside all three actual compiled numerical closures.
+
+Only three inventory rows differ from the conservative execution inventory: that
+independently qualified parser, the composed historical validator, and the CI
+authority itself. Each row binds the exact old committed hash and exact current
+postimage. Any changed compiled provider is rejected. This is bounded dependency
+reconciliation, not a blanket source exemption or claim that inventoried files ran.
+Fresh combined controls pass:11 CI,9 native-label,18 historical-N and8 longrun.
+All new upstream production and original scientific evidence are preserved.
