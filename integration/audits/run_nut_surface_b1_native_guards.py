@@ -20,6 +20,7 @@ if KIND=='dry':
 a=text.index(' subroutine rotation_continuation(');b=text.index(' subroutine report_water_state(',a);body=text[a:b]
 needle="   if(trim(mode)=='resume')then\n    read(arg,*)first";assert body.count(needle)==1
 body=body.replace(needle,"""   if(trim(mode)=='check'.or.trim(mode)=='reject')then
+    water=kernel_committed_state_t();state=crop_soil_state_t()
     call read_crop_soil_n_joint_restart_file(trim(path),column,cfg%tiles(1)%template, &
       670001_int64,9001_int64,9101_int64,sp,cp,water,state,code)
     if(trim(mode)=='check')then
