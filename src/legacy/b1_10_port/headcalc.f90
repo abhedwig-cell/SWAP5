@@ -586,6 +586,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !     initialize flags
 !     main flag for testing the convergence
+      ! Pilot-only read-only Newton diagnostics. The environment guard keeps
+      ! normal production paths and admission decisions unchanged.
+      block
+         character(len=1) :: kalm_trace
+         integer :: kalm_trace_status
+         call get_environment_variable('KALMTHOUT_NEWTON_TRACE',kalm_trace,status=kalm_trace_status)
+         if (kalm_trace_status==0 .and. kalm_trace=='1' .and. provider_dynamic_top_active) then
+            if (state%pondm1 > 0.0d0 .and. state%pondm1 < 1.0d-3 .and. &
+                fsi_ws%old_head(1) > 0.99d0 .and. fsi_ws%old_head(1) < 1.01d0) then
+               write(*,'(A,3(1X,I0),8(1X,ES18.10),1X,L1,1X,A)') 'KALMTHOUT_NEWTON', &
+                    state%numbit,iBackTr,merge(1,0,state%ftoph),dt,state%pondm1, &
+                    fsi_ws%old_head(1),state%h(1),state%pond,state%qtop, &
+                    sump,sumold,Fmax,state%ftoph,trim(provider_dynamic_top_result%route)
+            end if
+         end if
+      end block
+
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
