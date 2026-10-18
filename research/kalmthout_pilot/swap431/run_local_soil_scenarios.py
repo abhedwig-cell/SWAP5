@@ -124,6 +124,9 @@ def main():
             assert 1e-5 <= ksat <= 1e5
             horizons[p['Bodemlocatie']].append({
                 'top_cm': top, 'bottom_cm': bottom, 'observation': p['Bodemobservatiefiche'],
+                'observation_phenomenon_time': source.findtext('.//observatie/fenomeentijd'),
+                'observation_result_time': source.findtext('.//observatie/resultaattijd'),
+                'entry_time_not_observation_date': p.get('eerste_invoer'),
                 'xml_sha256': sha(file), 'sand_silt_clay_percent_raw': fractions,
                 'texture_sum_raw': total, 'rounding_normalization_factor': 100 / total,
                 'organic_carbon_percent': organic_carbon,
