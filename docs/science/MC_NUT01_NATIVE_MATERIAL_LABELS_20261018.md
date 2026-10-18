@@ -1,6 +1,7 @@
 # Native SNM definition labels and event positions
 
-Status: implementation candidate; no full HIST or mastercoverage promotion.
+Status: canonically admitted bounded native-label semantics through PR1319;
+no full HIST or mastercoverage promotion.
 Baseline: `88df92436b84e693dfd4c0801bfb2fc19ac0de08`.
 
 The pinned original management_soil lines120 and130 read material definition
@@ -84,3 +85,12 @@ additional hosted numerical execution and full moving F-CI are
 NOT_SELECTED_IMPACT for this parser-only change. No mastercoverage promotion.
 The evidence capsule and hashes are in the existing work-unit status record.
 Admission takes effect only through merge of the reviewed exact candidate.
+
+## Actual canonical admission
+
+PR1319 merged at03daf601446ba1bdc56c6d436fb09fbc904ea66b. Its tree equals
+the reviewed e5bc5e46c01088bbadf0db67ab9c47c72964ce88 tree. The complete
+current HIST/age/retained owning validation passes again on that merge, with
+the registered supplemental label source/current execution evidence. This
+admits only the scoped positional native-label semantics; full HIST and
+mastercoverage remain false. This receipt changes metadata only.

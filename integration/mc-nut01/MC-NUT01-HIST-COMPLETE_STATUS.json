@@ -55,14 +55,14 @@
     "legacy TTUTIL/SNM grammar"
   ],
   "next_action": "Scientific reference choice for gross atmospheric N: literal original aggregate loading with ponding ambiguity, or corrected B1 surface-N inventory/transport within existing owners. General TTUTIL constructs, fractional timestamps and extended diagnostics remain open.",
-  "recovery_point": "Native label source/qualification checkpoint6f151ccf on work/nut-native-material-labels-20261018; current full scoped qualification and exact original endpoints PASS. Whole HIST remains false.",
+  "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
-  "last_reconciled_upstream": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
+  "last_reconciled_head": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
+  "last_reconciled_upstream": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -279,7 +279,7 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": true,
-      "scope": "Original definition labels1..20 may be sparse, duplicate or reversed; native normalization preserves positional iMat, with original TTUTIL row selection and current production O0/O2 evidence. Modern export contiguous IDs preserved. AppAge<=100 and VolatFraction<=1 remain bounded physical restrictions. Admission effective only on merge of the registered label candidate."
+      "scope": "Original definition labels1..20 may be sparse, duplicate or reversed; native normalization preserves positional iMat, with original TTUTIL row selection and current production O0/O2 evidence. Modern export contiguous IDs preserved. AppAge<=100 and VolatFraction<=1 remain bounded physical restrictions. Canonically admitted through PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; postmerge owning guard PASS."
     },
     {
       "part": "Dates same-day year boundaries",
@@ -1040,7 +1040,7 @@
     "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441"
   },
   "material_label_successor": {
-    "status": "QUALIFIED_SCOPED_CANDIDATE_ADMISSION_EFFECTIVE_ON_PR_MERGE",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_PR1319",
     "baseline": "88df92436b84e693dfd4c0801bfb2fc19ac0de08",
     "branch": "work/nut-native-material-labels-20261018",
     "contract": "docs/science/MC_NUT01_NATIVE_MATERIAL_LABELS_20261018.md",
@@ -1081,9 +1081,13 @@
     ],
     "ci_selection": "Local original/current-input and full actual production qualification selected; hosted numerical workflows NOT_SELECTED_IMPACT for parser-only source normalization; no changed chemistry/solver/restart bodies.",
     "qualified": true,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "guard_negative_controls": 9,
     "original_guard_negative_controls": 18,
-    "next_action": "Merge qualified exact native-label candidate after canonical overlap and current owning checks. Resolve gross atmospheric B0/B1 reference for full migration; do not promote mastercoverage."
+    "next_action": "Scientific reference choice for gross atmospheric N: literal original aggregate loading with ponding ambiguity, or corrected B1 surface-N inventory/transport within existing owners. General TTUTIL constructs, fractional timestamps and extended diagnostics remain open.",
+    "pr": 1319,
+    "canonical_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
+    "reviewed_head": "e5bc5e46c01088bbadf0db67ab9c47c72964ce88",
+    "post_merge_guard": "Current complete HIST/age/retained owning chain PASS; reviewed and merged trees identical; full capability false"
   }
 }
