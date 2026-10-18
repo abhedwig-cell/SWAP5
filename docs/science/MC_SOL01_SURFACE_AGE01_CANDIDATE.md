@@ -16,3 +16,11 @@ The current isolated operator is a **research candidate**, not a production API 
 ## Additional execution record (2026-10-18)
 
 Native gfortran is available in the local environment, but this chat container cannot resolve github.com for a repository checkout. The PR includes a narrowly scoped O0/O2 Actions workflow (`.github/workflows/mc-sol01-surface-age01.yml`) to execute the actual source exact script if triggered. As of the check on head `f4acd6f509704f104468f34e4afa14f71d0fb9f4`, no workflow run carrying its name was listed. Therefore compiled qualification is **NOT YET ESTABLISHED**. The updated negative oracle refuses the complete-evaporation age-stock singularity. No code from this candidate is called by the admitted runtime.
+
+## 2026-10-18 execution continuation
+
+The source-exact isolated budget was compiled and executed **locally under GNU Fortran O0/O2 with -Wall -Wextra -Werror -fcheck=all and floating-point traps**. Initial real equality warnings were corrected; the native candidate test passed at both optimization levels. A later 200-case positive gross-input and closure sweep also passed locally O0/O2, and GitHub Actions run 39125154821 (prior to persistent-owner addition) concluded SUCCESS on the expanded budget source and test.
+
+A separate *still isolated* persistent age owner, `mod_b111_surface_age_owner`, now supports explicit initialization, typed snapshots, candidate-only substeps, revision, identity-checked restart and rejection without mutation. The owner supplies stored age stock itself instead of trusting caller-supplied values. This is not yet integrated into the admitted Richards joint water/age restart and does not claim any production physical qualification. The combined native O0/O2 owner+budget script is being assessed by GitHub Actions run 39125283736; record its actual terminal result before promoting this phase.
+
+The age production approximation presently uses midpoint pond depth times dt and excludes complete evaporative emptying with retained age stock. An independently justified dry residual-age sink or restartable residual pool is required before that case can be admitted. No solver, RossFast or canonical production source changed.
