@@ -54,7 +54,13 @@ def validate(f):
  ee=json.loads(f['compiler-events.json']);check(ee and all(e['returncode']==0 for e in ee),'failed/unrecorded compiler')
  for opt in ['-O0','-O2']:check(any(opt in e['args']and'-c'in e['args']for e in ee),'missing optimization build')
  return dict(qualified=True,three_routes=True,production_changed=False)
-def verify_qualification():return {**verify_source(),**validate(evidence())}
+def verify_qualification():
+ result={**verify_source(),**validate(evidence())}
+ s=json.loads((ROOT/'integration/f-ci/F-CI73P_STATUS.json').read_text())
+ if s.get('current_successor_20261018'):
+  import runpy
+  runpy.run_path(str(ROOT/'integration/audits/fci73_current.py'),run_name='fci73_current_science')['verify_science']()
+ return result
 if __name__=='__main__':
  import sys
  print(json.dumps(verify_source()if '--source-only'in sys.argv else verify_qualification(),indent=2))

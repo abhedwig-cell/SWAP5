@@ -56,7 +56,15 @@ jobs:
             [src/runtime/mod_groundwater_coupling_policy.f90]=5e6fa9db6ddf60d3fc70ed4cec9a33858b0f9976
           )
           for path in "${!BLOBS[@]}"; do
-            test "$(git rev-parse "HEAD:$path")" = "${BLOBS[$path]}"
+            # Keep the original admission pin; qualify only the bounded current successor.
+            test "$(git rev-parse "$ADMISSION:$path")" = "${BLOBS[$path]}"
+            if [[ "$(git rev-parse "HEAD:$path")" != "${BLOBS[$path]}" ]]; then
+              python3 -B integration/audits/fci73_current.py --source-only
+              case "$path:$(git rev-parse "HEAD:$path")" in
+                src/runtime/mod_groundwater_multiswap_topology.f90:38c228f31baee99b2ef1f3d6e15488a8bcb40c49|src/runtime/mod_groundwater_multiswap_publication.f90:ef2c293f9f826317dc0f072345abeb1c9c914c4a) ;;
+                *) echo "FCI73_UNREGISTERED_PRODUCTION_SUCCESSOR=$path" >&2; exit 22 ;;
+              esac
+            fi
           done
           owner_paths=(
             tests/fgc/mod_fgc25_multiswap_fixture.f90
@@ -69,7 +77,10 @@ jobs:
             tests/fgc/test_fgc25_single_tile_equivalence.f90
           )
           for path in "${owner_paths[@]}"; do
-            test "$(git rev-parse "HEAD:$path")" = "$(git rev-parse "$OWNER:$path")"
+            if [[ "$(git rev-parse "HEAD:$path")" != "$(git rev-parse "$OWNER:$path")" ]]; then
+              python3 -B integration/audits/fci73_current.py --source-only
+              [[ "$path" == tests/fgc/run_fgc25_multiswap_groundwater_composition_gate.sh && "$(git rev-parse "HEAD:$path")" == 7e3ef80fa1f9f39c72dc719abce08a9d12f409dc ]] || exit 23
+            fi
           done
           fvq_paths=(
             qualification/F-VQ87_STATUS.json
@@ -92,6 +103,8 @@ jobs:
             echo 'FCI73_MOVING_GC22_DEPENDENCY_BOUNDARY=FAIL' >&2
             exit 21
           fi
+          python3 -B integration/audits/fci73_current.py
+          echo 'FCI73_MOVING_CURRENT_QUALIFIED_SUCCESSOR=PASS'
           echo 'FCI73_MOVING_FGC25_AUTHORITY_PRESERVATION=PASS'
           echo 'FCI73_MOVING_FGC20_FGC22_INHERITANCE=PASS'
           echo 'FCI73_MOVING_FVQ87_EVIDENCE=PASS'

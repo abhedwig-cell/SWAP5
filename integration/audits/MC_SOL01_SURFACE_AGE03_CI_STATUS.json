@@ -22,7 +22,7 @@
   "postimages": {
     "integration/audits/surface_age_ci/authority.py": {
       "status": "A",
-      "sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75"
+      "sha256": "8eae3f2a2eadb942cae12a30c4263f912726ad61c1f218037d1ef2520eedb869"
     },
     "integration/audits/surface_age_ci/run.py": {
       "status": "A",
@@ -67,9 +67,14 @@
     "tests/nut-sol/verify_surface_age_successor.py": {
       "status": "M",
       "sha256": "d6e4237053f7d2fa35dd5801322c554d5fbbccdf13de3d5bde5dd8d5a8e39647"
+    },
+    ".github/workflows/fci73-fgc25-moving-preservation.yml": {
+      "status": "M",
+      "sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1"
     }
   },
   "relevant_paths": [
+    ".github/workflows/fci73-fgc25-moving-preservation.yml",
     "integration/audits/surface_age_ci/authority.py",
     "integration/audits/surface_age_ci/run.py",
     "integration/audits/surface_age_longrun/verify.py",
@@ -231,8 +236,13 @@
     },
     "integration/audits/surface_age_ci/authority.py": {
       "before_sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4",
-      "after_sha256": "cc57f1f00293772d2be31f8f9bcc632d14ab44f8f0dcb42a9630ef74c76b6d75",
+      "after_sha256": "8eae3f2a2eadb942cae12a30c4263f912726ad61c1f218037d1ef2520eedb869",
       "reason": "Exact composed qualification authority; fresh negative controls required"
+    },
+    ".github/workflows/fci73-fgc25-moving-preservation.yml": {
+      "before_sha256": "99975a58a0e32266ca4bbd0f1ad0cf98db8b1508357df926e2c27f2f7fb59ea9",
+      "after_sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1",
+      "reason": "Exact F-CI73 original-native independently qualified moving workflow; required through dedicated current F-CI73 science validator"
     }
   },
   "reconciled_controls": {
@@ -319,5 +329,14 @@
     },
     "scope": "Three repaired original automatic routes PASS. Canonical workflow selection/feedback PASS with broad jobs intentionally skipped; actual full moving local proof781.268s retained. Separate FCI73 stale premerge source pins remain failure.",
     "postmerge_source_authority": "PASS on actual f9731ff6 checkout, source/reference tree identical to premerge canonical b27a6469"
+  },
+  "fci73_reconciliation": {
+    "status_path": "integration/f-ci/F-CI73P_STATUS.json",
+    "validator": "integration/audits/fci73_current.py",
+    "baseline": "101ff877d850311d7552fd852014b0ec65fde508",
+    "science_guard": "F-CI73 current original-native proof additionally required by CI qualification; no blanket inventory waiver",
+    "phase": "LOCALLY_QUALIFIED_59_CONTROLS_READY_FOR_INTEGRATION",
+    "pull_request": 1321,
+    "controls": 59
   }
 }
