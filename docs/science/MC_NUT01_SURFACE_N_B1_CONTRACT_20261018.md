@@ -70,3 +70,16 @@ Expected full owning qualification is tens of minutes; select dependency-first
 local builds, retain failed attempts and reuse only byte-verified providers.
 No full moving F-CI is selected merely by advancing a branch. Existing physical
 and numerical tolerances stay hard.
+
+## Existing proposal execution policy
+
+The measured first strict pond day accepted1096 substeps after10693 attempts
+and9597 temporal rejections. The already admitted default-off
+`canonical_numerical_config_t%retain_accepted_step_proposal` may be selected in
+the fixture. It retains every full/half and hard mass criterion, remains
+restricted to external full/half mode, and proposes rather than accepts steps.
+No solver/estimator body,4096 substep cap,1e-6 temporal tolerance or1e-10cm water
+contract is relaxed. Compare scientific results and O0/O2/fresh restart under
+this explicit existing policy; do not claim byte equivalence between different
+proposal schedules. Existing source policy is unchanged and its admitted scope
+is inherited; new physical composition still requires actual qualification.
