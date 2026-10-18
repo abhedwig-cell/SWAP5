@@ -1191,6 +1191,36 @@
           "restart_native": 73.30034440600139
         },
         "scope": "local raw logs and inputs retained, capsule pending"
+      },
+      "surface-incumbent": {
+        "result_sha256": "42b29efcf540a0ef78b213c05cfe50a0596e0856da1abd69f89df3e86b28a592",
+        "status": "SURFACE_N_B1_REUSED_PROVIDER_INCUMBENT_PASS_NOT_ADMITTED",
+        "cost_seconds": null,
+        "wall_seconds": 132.2344548809997,
+        "scope": "Versioned focused evidence capsule"
+      },
+      "surface-thermal": {
+        "result_sha256": "047d4ceb155563dbf6a3089f848e995fadcdb3706f5a951beaca013cab730aef",
+        "status": "B112_THERMAL_PHASES_AND_ORIGINAL_BYTES_PASS",
+        "cost_seconds": {
+          "native": 209.80951849698977,
+          "driver_compile": 63.472574611998425,
+          "link": 2.059909893996519
+        },
+        "wall_seconds": null,
+        "scope": "Versioned focused evidence capsule"
+      },
+      "surface-tcs6": {
+        "result_sha256": "936149557f16452430a58d701e989fd4d926701c191ecd023e3fd735bbd546b8",
+        "status": "B112_CURRENT_TCS6_54_NATIVE_AND_ENDPOINT_BYTES_PASS",
+        "cost_seconds": {
+          "link": 2.7485643249965506,
+          "fixture_compile": 0.9897369839891326,
+          "driver_compile": 256.3193459449976,
+          "native": 67.73577470599776
+        },
+        "wall_seconds": null,
+        "scope": "Versioned focused evidence capsule"
       }
     },
     "two_day_physics": {
@@ -1202,6 +1232,16 @@
       "max_water_step_residual_cm": 5.5156346070311946e-15,
       "qualification": "NOT_ADMITTED_NOT_FULL_ROTATION",
       "runtime_risk": "202.093s total native for two model days at each optimization, not acceptable to silently select many-hour stress; measure original loam alternative with fixed numerical gates"
-    }
+    },
+    "focused_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_SURFACE_B1_FOCUSED_20261018.tar.xz.b64",
+      "decoded_sha256": "345b25c17196bda67e5cf456d2d31d20192e84d14422978a68221134db0eaf4b",
+      "decoded_bytes": 310316,
+      "members": 3945,
+      "scope": "Exact current direct/input/mineral/reactive/retained, real2-day O0/O2/native, original five730-day profile endpoints, thermal/native and54 TCS6 proof; no new730-day B1 PASS"
+    },
+    "incumbent_preservation": "Five original current physical profiles O0/O2 endpoints EXACT_ADMITTED_BYTES; original thermal phases/native bytes PASS; TCS6 all54 fresh native cases and exact historical endpoint bytes PASS. Default disabled remains preserved; no full new B1 admission claim.",
+    "recovery_commit": "3ac6b16d4eadc19f3106c2a66ae93e7d39a60086",
+    "canonical_reconciled_into_candidate": "206a93ff9304ba5c21b84674a3062f6489296f3f"
   }
 }
