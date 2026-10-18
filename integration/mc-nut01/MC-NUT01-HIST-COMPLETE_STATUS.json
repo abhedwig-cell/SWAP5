@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "ba3eb412df2020efc6c63bb46de013764fd5958f",
+  "checkpoint_commit": "61b41f83ccd98b9bbb540f3e0d4a49da515094ee",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -455,7 +455,7 @@
     }
   },
   "historical_guard": {
-    "baseline": "4a274c4650ec7f52324b8604838a8d27dd39edb3",
+    "baseline": "d4912b3c37461ad918f37c53b236fa1d62478de6",
     "physical_evidence": {
       "path": "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_N_20261018.tar.xz.b64",
       "decoded_sha256": "75465b9278c352042c6985ebb22ca79456149e35bedbf15adea1c0aa7c0bc5e2",
@@ -589,7 +589,18 @@
     "qualification_execution": "Run source-only, full owning chain and8 mutation controls after persisting exact verifier postimage; results recorded in PR1313 and final canonical receipt",
     "atmospheric_n": true,
     "previous_bounded_physical_evidence": "integration/audits/evidence/MC_NUT01_HIST_NATIVE_ROTATION_20261018.tar.xz.b64",
-    "previous_bounded_retained_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64"
+    "previous_bounded_retained_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64",
+    "humus_experiment": true,
+    "surface_age_coexistence": {
+      "admitted_canonical": "d4912b3c37461ad918f37c53b236fa1d62478de6",
+      "status_path": "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json",
+      "status_sha256": "e40afc044d2a5fadb22e3d956451046b472ad6d7a757e11ecc82102230e63433",
+      "shared_dispatch_paths": [
+        "tests/nut-crop/verify_hist_native_successor.py",
+        "tests/nut-sol/verify_surface_age_successor.py"
+      ],
+      "policy": "Fresh NUT physical/retained qualification and exact registered delta; original age inputs and owned postimages unchanged; only shared dispatch files bound by fresh NUT postimages; no broad exemption."
+    }
   },
   "ci_diagnosis_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64:logs/nut-1313-ci-diagnosis.json",
   "atmospheric_n_successor": {
@@ -740,7 +751,7 @@
     }
   },
   "humus_experiment_successor": {
-    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "status": "IMPLEMENTED_RECONCILED_NOT_QUALIFIED",
     "branch": "work/nut-hist-humus-20261018",
     "base_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
     "contract": "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
@@ -789,7 +800,8 @@
       "shared_guard_overlap": [
         "tests/nut-crop/verify_hist_native_successor.py"
       ],
-      "next": "Merge qualified canonical dependency surface and reconcile strict NUT/age source/evidence dispatch before fresh qualification"
+      "next": "Merge qualified canonical dependency surface and reconcile strict NUT/age source/evidence dispatch before fresh qualification",
+      "guard_policy": "Strict registered canonical baseline and original age evidence/input preservation, no broad age-exists bypass"
     }
   }
 }

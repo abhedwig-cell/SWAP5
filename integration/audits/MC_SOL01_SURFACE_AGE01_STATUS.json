@@ -1,0 +1,335 @@
+{
+  "work_unit": "MC-SOL01-SURFACE-AGE01",
+  "workstream": "MC-SOL01",
+  "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
+  "stage": "QUALIFIED_PRESERVED_CANONICAL_ADMISSION_PENDING",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "execution_commit": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
+  "postimages": {
+    ".github/workflows/mc-sol01-surface-age01.yml": {
+      "status": "A",
+      "sha256": "e6805ab50bb73e7695439078d0125936feb1256c684c2c7228370d970a7a7584"
+    },
+    "src/adapter/mod_age_joint_restart_file.f90": {
+      "status": "M",
+      "sha256": "ff03a0f733e3d681c3b71cd4bb1ac3b2224cf933014ff6510cb14ef4da48e364"
+    },
+    "src/adapter/mod_b111_age_snapshot_disk.f90": {
+      "status": "A",
+      "sha256": "57f8131c4db88a49958489bb5e78863e8c3bcc2e1e349bd733165903e6733295"
+    },
+    "src/adapter/mod_b111_age_triplet_disk.f90": {
+      "status": "A",
+      "sha256": "56222d1954ea91fedc55c7c6cca1b3fafafa2321b8ad1a19e3600b43ce2a4584"
+    },
+    "src/adapter/mod_b111_surface_age_disk.f90": {
+      "status": "A",
+      "sha256": "1974b7febd6cd561abbc05ce9484a3f64a4e20c7c2381e445e417d3aa5c0ff32"
+    },
+    "src/process/mod_b111_age_tracer_substep.f90": {
+      "status": "M",
+      "sha256": "be5c5d7b8f4b2db63ed80786ca48ff5208e9ab5227777d8f4e62809b2335b5db"
+    },
+    "src/process/mod_b111_surface_age_budget.f90": {
+      "status": "A",
+      "sha256": "79d0b6dc8101d58a61d166345fa8dcc2d89f0ca3fea674ce51a39ca1f8bb89fe"
+    },
+    "src/process/mod_b111_surface_age_owner.f90": {
+      "status": "A",
+      "sha256": "ee4058b331134ffed68f2c528b56518b9502365fa0117bef0e237fc8d023e855"
+    },
+    "src/process/mod_b111_surface_age_soil_handoff.f90": {
+      "status": "A",
+      "sha256": "110da6d1fdf6e479e1657ec1a0c226f66b17440cdc74c4aaac04c512ca163570"
+    },
+    "src/runtime/mod_b111_surface_age_trace_bridge.f90": {
+      "status": "A",
+      "sha256": "a3754179c3ff63c3d310cf77e2cd79bb4374dbafa10165e8039d99bee7e99c36"
+    },
+    "src/runtime/mod_fmr_b111_age_joint_application.f90": {
+      "status": "M",
+      "sha256": "c73f6f03df022f394f5db0edad4ad83c1bf454fdd55fd6c51ef77a83cc69e366"
+    },
+    "src/runtime/mod_fmr_b111_age_route.f90": {
+      "status": "M",
+      "sha256": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4"
+    },
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
+      "status": "M",
+      "sha256": "d9acb4ed59612bc6ce4def70187d83ae255d4798995e791cea0a12fa20e4778d"
+    },
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh": {
+      "status": "M",
+      "sha256": "160980c9d50fc3bd9dc49c74abdfbc76c8ad877857e32e1b5b544d4472f73083"
+    },
+    "tests/modularity/verify_joint_preservation.py": {
+      "status": "M",
+      "sha256": "453a0a36720b6db35a575da7c3849055419d0af6637a5b6f9d3882617e75bba9"
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "status": "M",
+      "sha256": "a9163a31e98478c00b8c7401a508251334ed21ecf5a7c437dde7c9e00b5f09ea"
+    },
+    "tests/nut-sol/run_age.py": {
+      "status": "M",
+      "sha256": "9ecead15f5fb13b3823f3ff0514b55a47faf2376a7c1c8a71e0718a86b925530"
+    },
+    "tests/nut-sol/run_surface_age_budget.sh": {
+      "status": "A",
+      "sha256": "fed2c15e23cf586e5c0b136587c00454cbfd28827548da336762423a454fd9bb"
+    },
+    "tests/nut-sol/run_surface_age_trace_bridge.sh": {
+      "status": "A",
+      "sha256": "e9e69c1a5ef7dcda71d7a3910c852db5de02a6df294cc4e45ed6a1555c2c847d"
+    },
+    "tests/nut-sol/test_age_joint.f90": {
+      "status": "M",
+      "sha256": "31478cd3c7e8397bea708be8768c63be5f7b4364332cca03194192faa689dbf3"
+    },
+    "tests/nut-sol/test_surface_age_budget.f90": {
+      "status": "A",
+      "sha256": "9ca651196367671b3faa807c20f79d5cb36314343a99c67c827a2ae14c639849"
+    },
+    "tests/nut-sol/test_surface_age_disk.f90": {
+      "status": "A",
+      "sha256": "3a6a4e25fd5881aa04c848868008cd2105430dca3790609f8d4d5bf5136a7307"
+    },
+    "tests/nut-sol/test_surface_age_disk_process.f90": {
+      "status": "A",
+      "sha256": "cfceb82d491ab656e0a5939eaf70679d41ab13a68e521a1d239e3fab80c302b2"
+    },
+    "tests/nut-sol/test_surface_age_joint.f90": {
+      "status": "A",
+      "sha256": "07a73aebdf3d36f2d96e8b59c0a8ff40494f4450e03d0892996c4ab1ed7ae7f4"
+    },
+    "tests/nut-sol/test_surface_age_native_top.f90": {
+      "status": "A",
+      "sha256": "f16f4dc49a8cb8c0c80bb2a7bbcbd9f04967a4c4401575b683261eca2829458c"
+    },
+    "tests/nut-sol/test_surface_age_owner.f90": {
+      "status": "A",
+      "sha256": "a4883ad292fc34892235264cc91d28f3e098231704bec436e1374d60b7ac2509"
+    },
+    "tests/nut-sol/test_surface_age_route_trial.f90": {
+      "status": "A",
+      "sha256": "e705be6aa5d4b6846e1e00c4284c95a0a549b0da2f96ea885c9114d32cd1093c"
+    },
+    "tests/nut-sol/test_surface_age_soil_handoff.f90": {
+      "status": "A",
+      "sha256": "68bc67a1535521924f3092c6085a7554b5832de54d1ab2f5efcbf1554452ae9c"
+    },
+    "tests/nut-sol/test_surface_age_trace_bridge.f90": {
+      "status": "A",
+      "sha256": "651ac368be8c963bdcad3f824d68e99ac0a0579f0e8be3db04390fc1cea3949a"
+    },
+    "tests/nut-sol/verify_surface_age_successor.py": {
+      "status": "A",
+      "sha256": "73bf84c63f0b918a39f1af2c4dab2fefa26721f1c1bb848c9b0345c40596f000"
+    }
+  },
+  "relevant_paths": [
+    ".github/workflows/mc-sol01-surface-age01.yml",
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_b111_age_snapshot_disk.f90",
+    "src/adapter/mod_b111_age_triplet_disk.f90",
+    "src/adapter/mod_b111_surface_age_disk.f90",
+    "src/process/mod_b111_age_tracer_substep.f90",
+    "src/process/mod_b111_surface_age_budget.f90",
+    "src/process/mod_b111_surface_age_owner.f90",
+    "src/process/mod_b111_surface_age_soil_handoff.f90",
+    "src/runtime/mod_b111_surface_age_trace_bridge.f90",
+    "src/runtime/mod_fmr_b111_age_joint_application.f90",
+    "src/runtime/mod_fmr_b111_age_route.f90",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+    "tests/fci/run_fci_canonical_p2e05_moving_preservation.sh",
+    "tests/modularity/verify_joint_preservation.py",
+    "tests/nut-crop/verify_hist_native_successor.py",
+    "tests/nut-sol/run_age.py",
+    "tests/nut-sol/run_surface_age_budget.sh",
+    "tests/nut-sol/run_surface_age_trace_bridge.sh",
+    "tests/nut-sol/test_age_joint.f90",
+    "tests/nut-sol/test_surface_age_budget.f90",
+    "tests/nut-sol/test_surface_age_disk.f90",
+    "tests/nut-sol/test_surface_age_disk_process.f90",
+    "tests/nut-sol/test_surface_age_joint.f90",
+    "tests/nut-sol/test_surface_age_native_top.f90",
+    "tests/nut-sol/test_surface_age_owner.f90",
+    "tests/nut-sol/test_surface_age_route_trial.f90",
+    "tests/nut-sol/test_surface_age_soil_handoff.f90",
+    "tests/nut-sol/test_surface_age_trace_bridge.f90",
+    "tests/nut-sol/verify_surface_age_successor.py"
+  ],
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
+    "docs/architecture/invariants.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "next_action": "Mark PR1309 ready, merge exact qualified source onto unchanged canonical01a, then persist actual canonical admission receipt.",
+  "blockers": [],
+  "test_selection": {
+    "level1_2": "Isolated surface age budget, persistent owner, disk integrity, analytic first-order reservoir, legacy top injection O0/O2",
+    "level3": "Existing literal 150-step age and actual Reference zero-pond joint with immutable endpoint equality; new actual positive pond ages, rain/irrigation/runon/infiltration/runoff/evaporation; joint/individual closure, failed numerical attempt, private commit, partition sensitivity, paired fresh-process snapshot and corruption checks O0/O2",
+    "level4": "SELECTED local full moving F-CI once for stable source guard change, per existing accepted age contract. Highest low-air remains NOT_SELECTED_POLICY. Prior development notes of impact-only selection are superseded by this owner selection.",
+    "candidate": "3ee744808e1e8186432537390a179fdb8961a3a6",
+    "groups": {
+      "full_fci": {
+        "changed_dependency": "Exact scientific successor eligibility at HIST and moving F-CI guard plus accepted age companion owner and disk snapshot",
+        "scientific_claim": "Stable bounded age source admission including incumbent preservation; full F-CI required by accepted age admission contract when stable source guard changes",
+        "owner": "MC-SOL01 / F-CI canonical admission",
+        "authority": "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+        "existing_evidence": "Final targeted O0/O2 real Reference and isolated age evidence; previous admitted age and HIST immutable capsules",
+        "expected_seconds": 1800,
+        "prior_execution": "FAILED",
+        "diagnosis": "Full preservation06: all moving numerical groups reached FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS. Only final irrigation source pin failed because it predates unchanged canonical managed-weather irrigation. Current exact age delta plus current TCS6/HIST owner science now explicitly control that final owner prerequisite. No irrigation implementation or original numerical group changed."
+      }
+    }
+  },
+  "scope_limits": [
+    "Reference only",
+    "No exfiltration or snowmelt age source",
+    "Complete evaporative dry-down with retained age stock rejected",
+    "Serialized logical transaction, no concurrent owner mutation",
+    "Same-platform POSIX snapshot",
+    "No simultaneous reactive-solute and age companion admission",
+    "No mastercoverage full-capability promotion"
+  ],
+  "prior_failures": [
+    "01: two optional declarations generated in CRC helpers, compiler rejected, corrected",
+    "02: development driver refined while O2 compiled; final source-immutability assertion rejected run; not qualification",
+    "Adaptive interval partitioning is not fixed-mesh refinement; measured ~1e-8 cm day differences cannot imply monotonic error convergence. Analytic constant-volume reservoir separately checks first-order consistency.",
+    "Full preservation 02: pre-science KeyError source_tree in retired joint owner dispatcher. Correct current HIST owner routing added; no tests removed.",
+    "Full preservation03: FCI93 old dependency pin differs in four preexisting canonical providers; no new hydraulic code changes. Explicit exact-source current dependency table selected and all original FCI93 numerical/oracle assertions retained for fresh replay.",
+    "Full preservation04: original fixed-K native O0/O2 replays PASS; later dependency gate compared unchanged admitted drainage binding against obsolete SWRD3 donor3b661. New exact unit now registers reconciled canonical8bf as its dependency authority, protected by full postimage/source guard, with unchanged numerical gates.",
+    "Full preservation05: passed updated canonical dependency baseline and drainage owner controls; stopped at thermal backend pin predating independently admitted optional Reference surface extensions. This unit does not modify the backend. Thermal backend identity now binds to the same exact validated canonical source boundary, with all owner and numerical gates retained.",
+    "Full preservation06: all moving numerical groups reached FCI_CANONICAL_MOVING_PRESERVATION_NO_HISTORICAL_DELTA_ASSUMPTION=PASS. Only final irrigation source pin failed because it predates unchanged canonical managed-weather irrigation. Current exact age delta plus current TCS6/HIST owner science now explicitly control that final owner prerequisite. No irrigation implementation or original numerical group changed."
+  ],
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_20261018.tar.xz.b64",
+    "decoded_sha256": "c656f1953c7b12db775711b57472938c9c82c3b82b830cffc54857a826574c41",
+    "members": 3004,
+    "decoded_bytes": 58536
+  },
+  "cost_seconds": {
+    "physical_compile": 264.23940163702173,
+    "physical_link": 0.3860758019982313,
+    "physical_native": 9.712340793004842,
+    "process_compile": 2.6461989840026945,
+    "process_link": 0.1291687289995025,
+    "process_native": 0.007153743999879225,
+    "surface_compile": 7.439388327000415,
+    "surface_link": 0.32732095800020033,
+    "surface_native": 6.656194587003483
+  },
+  "native_result": {
+    "stdout": "REJECTED_NUMERICAL_TRIAL        1       0       0\nACTUAL_REFINEMENT_POND_CM_DAY    1.502072656275369E+00   1.502072652665710E+00   1.502072644175111E+00\nACTUAL_REFINEMENT_SOIL_CM_DAY    3.980731007077760E+00   3.980731006378781E+00   3.980731004897032E+00\nACCEPTED_WATER_DEPTHS_CM    2.500000000000000E-04   2.500000000000000E-04   5.000000000000000E-04   7.372026734119991E-04   7.148137332359105E-05   5.000000000000000E-05\nAGE_RESIDUALS_CM_DAY   -2.193991516241667E-15  -3.256048859354155E-15  -1.338583107204916E-16\nSURFACE_AGE_REAL_REFERENCE_TRIPLET=PASS\n",
+    "endpoint_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+    "fresh_sha256": "7afefa2a28a99e5b7ca05bf92e5402005329ce419b41ce8e07548aedc0955831",
+    "snapshot_negatives": [
+      "truncated",
+      "overlong",
+      "outer_crc",
+      "inner_crc"
+    ]
+  },
+  "hosted_targeted": {
+    "run_id": 39153649970,
+    "head": "2aaf0a1258c1b70c5746bbdd136320a1021462fe",
+    "all_three_jobs": "SUCCESS"
+  },
+  "fci93_current_dependency_requalification": {
+    "src/solver/mod_b110_default_mvg_provider.f90": {
+      "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+      "canonical_blob": "226dec2740dd3cf2eb677928f54f433086354c3f"
+    },
+    "src/solver/mod_reference_richards_temporal_indicator.f90": {
+      "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+      "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+    },
+    "src/legacy/b1_10_port/headcalc.f90": {
+      "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+      "canonical_blob": "16e568c85d0f9e238d92b84659c4c0cb006f0430"
+    },
+    "src/adapter/mod_reference_richards_legacy_binding.f90": {
+      "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+      "canonical_blob": "65ece4c8a1515fda94d1f9bae10b5a6aae729fd2"
+    }
+  },
+  "last_reconciled_upstream": "01a053f93f9c6548278df503a4cfea5424c84fce",
+  "preservation": {
+    "execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+    "status": "PASS",
+    "wall_seconds": 459.1519458293915,
+    "tracked_inputs": 6912,
+    "input_mutations": 0,
+    "resume_mode": "OFF",
+    "capsule": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_PRESERVATION_20261018.tar.xz.b64",
+      "decoded_sha256": "566f72f5edef00f168729c99ae97712351cf3656ea7ce046d1ad2a764d1bcd55",
+      "members": 35
+    },
+    "coexistence": {
+      "full_moving_execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+      "old_canonical": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+      "reconciled_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
+      "upstream_changed_paths": [
+        "docs/science/MC_NUT01_HIST_ATMOSPHERIC_N_QUALIFICATION_20261018.md",
+        "docs/science/MC_NUT01_HIST_TOP_N_CONTRACT_20261018.md",
+        "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_N_20261018.tar.xz.b64",
+        "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_RETAINED_20261018.tar.xz.b64",
+        "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+        "src/process/mod_b111_soil_n_mineral_owner.f90",
+        "src/process/mod_b111_soil_n_reactive_owner.f90",
+        "src/process/mod_soil_n_historical_activation.f90",
+        "src/process/mod_soil_n_historical_named_input.f90",
+        "src/runtime/mod_fmr_b111_mineral_route.f90",
+        "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_material_application.f90",
+        "src/runtime/mod_fmr_crop_soil_n_senescence_application.f90",
+        "tests/nut-crop/prepare_oracle.py",
+        "tests/nut-crop/run_hist_complete.py",
+        "tests/nut-crop/run_hist_water_audit.py",
+        "tests/nut-crop/test_b112_retained_joint.f90",
+        "tests/nut-crop/verify_hist_native_successor.py",
+        "tests/nut-input/run_boundary_source_witness.py",
+        "tests/nut-input/run_native_snm.py",
+        "tests/nut-input/test_native_snm.f90",
+        "tests/nut-mineral/test_mineral_owner.f90",
+        "tests/nut-reactive/reactive_oracle.inc",
+        "tests/nut-reactive/test_reactive_owner.f90"
+      ],
+      "age_execution_inputs_intersection": [],
+      "all_age_inputs_still_equal": true,
+      "conflict": "Only HIST evidence dispatcher. Kept all current atmospheric-N validation and its 12 negatives, then added exact surface-age registration.",
+      "scope": "Inherited full numerical preservation plus fresh combined owner qualification, not a claim that the full numerical runner was rerun after independently qualified atmospheric-N admission; no simultaneous companions admitted."
+    }
+  },
+  "preserved": true,
+  "qualified_source_commit": "9c91ea08d05f92621b049d514b3235d776057e55",
+  "coexistence_qualification": {
+    "status": "PASS",
+    "capsule": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE01_COEXISTENCE_20261018.tar.xz.b64",
+      "decoded_sha256": "c8c59b4763d85e68202ef600cc60b7b550bb1daf242446569aaada2ba4f9daa0",
+      "members": 9
+    },
+    "result": {
+      "commit": "9c91ea08d05f92621b049d514b3235d776057e55",
+      "baseline": "01a053f93f9c6548278df503a4cfea5424c84fce",
+      "source_tree": "a0f3261b108f10610ca70161fc6437df54df1bee",
+      "age_inputs_unchanged": true,
+      "hist_atmospheric_controls": 12,
+      "surface_age_controls": 9,
+      "current_irrigation_owner": "PASS",
+      "docs_source": "PASS",
+      "merge_conflict_resolved": true,
+      "full_moving_execution": "27d0cfa2e8684f29885305489a088891e84cfd9c",
+      "full_moving_rerun_on_merged_tree": false,
+      "claim": "Exact independent-owner coexistence with unchanged age inputs and retained terminal numerical preservation; no simultaneous chemical companions."
+    }
+  }
+}

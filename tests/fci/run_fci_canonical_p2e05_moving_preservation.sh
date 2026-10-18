@@ -518,6 +518,22 @@ if [[ -f integration/audits/MC_NUT01_ACCEPTED_THERMAL_STATUS.json ]]; then
   python3 -B tests/nut-thermal/verify_thermal_successor.py || fail 'unqualified accepted thermal N owner'
   nut_thermal_exact_successor=1
 fi
+# This exact additive work unit is based on reconciled live canonical, not
+# an obsolete intermediate crop donor. Its full delta guard prevents a metadata
+# checkpoint from hiding any science change. All numerical gates below remain.
+if [[ -f integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json ]]; then
+  dependency_authority="$(python3 -B - <<'PY_AGE_BASE'
+import sys
+sys.path.insert(0,'tests/nut-sol')
+import verify_surface_age_successor as age
+age.verify_qualification()
+print(age.record()['baseline'])
+PY_AGE_BASE
+)" || fail 'unqualified surface-age canonical dependency boundary'
+  # The backend is unchanged from this registered canonical authority.
+  # Older thermal owner pins predate independent admitted optional extensions.
+  NUT_THERMAL_BACKEND="$(git rev-parse "$dependency_authority:$BACKEND")"
+fi
 echo "FCI_CANONICAL_CURRENT_TARGET_DEPENDENCY_BASELINE=$dependency_authority"
 crop_file_weather_exact_successor=0
 for weather_path in src/adapter/mod_swap_daily_weather_file_adapter.f90 src/runtime/mod_fmr_production_application_bootstrap.f90 src/runtime/mod_fmr_serialized_multiswap_runtime.f90; do
@@ -678,6 +694,16 @@ echo 'FCI_CANONICAL_CURRENT_SOLVER_ADAPTER_POSTIMAGES=PASS'
 irrigation_owner_verified=0
 verify_mc_irr01_owner_successor() {
   if (( irrigation_owner_verified )); then return; fi
+  if [[ -f integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json ]]; then
+    # This unit changes no irrigation code. The complete exact-delta age
+    # validator and the current irrigation/HIST owner retain its native proof;
+    # do not compare current management against an obsolete intermediate donor.
+    python3 -B tests/nut-sol/verify_surface_age_successor.py || fail 'surface-age exact boundary for irrigation owner'
+    python3 -B tests/mc-irr01/verify_tcs6_successor.py || fail 'current irrigation owner science under surface-age successor'
+    irrigation_owner_verified=1
+    echo 'FCI_CANONICAL_MC_IRR01_CURRENT_OWNER_SOURCE_AND_EVIDENCE=PASS'
+    return
+  fi
   local candidate_path
   declare -A irrigation_owner_blobs=(
     [src/process/mod_irrigation_availability_policy.f90]=aed1ca5ae88a02da2493978bceca77805fe51eb4
@@ -914,6 +940,9 @@ check_b19_micro_root_recomposition() {
         else
           python3 tests/nut-mineral/verify_mineral_successor.py || fail "unqualified mineral successor: $candidate_path"
         fi
+        ;;
+      src/process/mod_b111_surface_age_budget.f90|src/process/mod_b111_surface_age_owner.f90|src/process/mod_b111_surface_age_soil_handoff.f90|src/runtime/mod_b111_surface_age_trace_bridge.f90|src/adapter/mod_b111_surface_age_disk.f90|src/adapter/mod_b111_age_triplet_disk.f90|src/adapter/mod_b111_age_snapshot_disk.f90 )
+        python3 -B tests/nut-sol/verify_surface_age_successor.py || fail "unqualified surface-age successor: $candidate_path"
         ;;
       src/process/mod_b111_age_tracer_substep.f90|src/runtime/mod_fmr_b111_age_route.f90|src/runtime/mod_fmr_b111_age_joint_application.f90|src/adapter/mod_age_joint_restart_file.f90 )
         python3 tests/nut-sol/verify_age_successor.py || fail "unqualified accepted age successor: $candidate_path"

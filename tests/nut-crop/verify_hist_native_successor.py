@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse,base64,hashlib,io,json,subprocess,tarfile
 ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
-BASE='4a274c4650ec7f52324b8604838a8d27dd39edb3'
+BASE='d4912b3c37461ad918f37c53b236fa1d62478de6'
 def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(raw):return hashlib.sha256(raw).hexdigest()
@@ -157,9 +157,27 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False,humus=F
  return dict(local_physical_days=730,parser_cases=38 if humus else 25 if atmospheric else 24,transition_fresh_processes=36 if humus else 24 if atmospheric else 12,atmospheric_n=atmospheric,humus_experiment=humus,rollback_days=[120,366],full_retained_matrix=True,thermal=True,tcs6_native=54)
 
 def load():
- g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline');science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']),atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
+ g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline')
+ science=validate(archive(g['physical_evidence']),archive(g['retained_evidence']),atmospheric=g.get('atmospheric_n',False),humus=g.get('humus_experiment',False))
  for q,v in g['postimages'].items():require(sha((ROOT/q).read_bytes())==v['sha256'],'HIST postimage '+q)
- surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science');rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()};require(rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta');require(not git('diff',BASE,'--','reference'),'HIST reference mutation');return science
+ surface=['src','tests','tools','reference','.github'];require(not git('status','--porcelain','--',*surface),'dirty HIST science')
+ rows={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*surface).splitlines()}
+ require(rows=={q:v['status']for q,v in g['postimages'].items()},'foreign HIST delta')
+ require(not git('diff',BASE,'--','reference'),'HIST reference mutation')
+ coexist=g.get('surface_age_coexistence')
+ if coexist:
+  require(coexist['admitted_canonical']==BASE,'unregistered age coexistence baseline')
+  age_status=ROOT/coexist['status_path'];require(sha(age_status.read_bytes())==coexist['status_sha256'],'age admission record drift')
+  import sys
+  sys.path.insert(0,str(ROOT/'tests/nut-sol'));import verify_surface_age_successor as age
+  shared=set(coexist['shared_dispatch_paths'])
+  require(shared=={'tests/nut-crop/verify_hist_native_successor.py','tests/nut-sol/verify_surface_age_successor.py'},'age coexistence dispatch surface')
+  for q,v in age.record()['postimages'].items():
+   if q in shared:require(q in g['postimages'],'unbound shared owner dispatch')
+   else:require(sha((ROOT/q).read_bytes())==v['sha256'],'age owner postimage drift '+q)
+  age.validate(age.evidence())
+  science['surface_age_preserved']=True
+ return science
 
 def verify_source(git_reader=None):
  require(git_reader is None,'unregistered HIST projection');return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'full_capability':False,'qualified':False,'current_source_tree':git('rev-parse','HEAD:src')}

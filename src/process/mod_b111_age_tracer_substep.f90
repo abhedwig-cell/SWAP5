@@ -26,6 +26,9 @@ module mod_b111_age_tracer_substep
     real(real64)::pond_previous_cm=0.0_real64
     real(real64)::pond_end_cm=0.0_real64
     real(real64)::macropore_area_fraction=0.0_real64
+    ! Candidate-only explicit accepted surface-age flux in cm day.
+    logical::accepted_surface_age_available=.false.
+    real(real64)::accepted_surface_age_input_cm_day=0.0_real64
     real(real64),allocatable::face_left_weight(:)
     real(real64),allocatable::face_right_weight(:)
     real(real64),allocatable::face_distance_cm(:)
@@ -78,12 +81,17 @@ contains
          f%pond_previous_cm*committed%age_pond_previous_concentration
     agepond=0.0_real64
     agefluxt=0.0_real64
-    if(f%q_face_up_cm_day(1)<-1.0e-6_real64)then
+    if(.not.f%accepted_surface_age_available.and.f%q_face_up_cm_day(1)<-1.0e-6_real64)then
       if(f%pond_end_cm-f%q_face_up_cm_day(1)*f%dt_day<=0.0_real64)return
       agepond=agesurf/(f%pond_end_cm-f%q_face_up_cm_day(1)*f%dt_day)
       agefluxt=f%q_face_up_cm_day(1)*(1.0_real64-f%macropore_area_fraction)*agepond*f%dt_day
       agesurf=agesurf+agefluxt
       receipt%pond_to_soil_cm_day=-agefluxt
+    end if
+
+    if(f%accepted_surface_age_available)then
+      agefluxt=-f%accepted_surface_age_input_cm_day
+      receipt%pond_to_soil_cm_day=f%accepted_surface_age_input_cm_day
     end if
 
     do i=1,n
@@ -190,8 +198,15 @@ contains
     if(any(abs(f%q_face_up_cm_day)>1.0e6_real64).or.any(f%root_sink_cm_day>1.0e6_real64).or. &
        any(abs(f%qdra_cm_day)>1.0e6_real64).or.f%drain_age_day>1.0e6_real64)return
     ! Surface age semantics are deliberately excluded from this production profile.
-    if(any(abs([f%rain_rate_cm_day,f%irrigation_rate_cm_day,f%pond_previous_cm, &
-       f%pond_end_cm,f%macropore_area_fraction,f%q_face_up_cm_day(1)])>0.0_real64))return
+    if(f%accepted_surface_age_available)then
+      if(.not.ieee_is_finite(f%accepted_surface_age_input_cm_day))return
+      if(f%accepted_surface_age_input_cm_day<0.0_real64.or.f%q_face_up_cm_day(1)>0.0_real64)return
+      if(any(abs([f%rain_rate_cm_day,f%irrigation_rate_cm_day,f%pond_previous_cm, &
+         f%pond_end_cm,f%macropore_area_fraction])>0.0_real64))return
+    else
+      if(any(abs([f%rain_rate_cm_day,f%irrigation_rate_cm_day,f%pond_previous_cm, &
+         f%pond_end_cm,f%macropore_area_fraction,f%q_face_up_cm_day(1)])>0.0_real64))return
+    end if
     if(any(f%theta<1.0e-8_real64).or.any(f%theta_previous<1.0e-8_real64))return
     if(n>1)then
       if(any(f%face_distance_cm<1.0e-4_real64).or.any(f%theta_sat_left<1.0e-8_real64).or. &

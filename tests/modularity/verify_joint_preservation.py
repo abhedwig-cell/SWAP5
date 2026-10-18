@@ -183,7 +183,15 @@ def read_evidence(record, raw=None):
 
 def verify_qualification():
     source = verify_source()
+    if source.get('historical_native_successor'):
+        # The current exact HIST successor owns the source/evidence chain.
+        # Do not misroute its metadata to the retired all-source highest capsule.
+        import sys
+        sys.path.insert(0, str(ROOT / 'tests/nut-crop'))
+        from verify_hist_native_successor import verify_qualification as verify_hist
+        return verify_hist()
     if source.get('co2_successor'):
+
         import sys
         sys.path.insert(0, str(ROOT / 'tests/crop-co2'))
         from verify_co2_successor import verify_qualification as verify_co2
@@ -205,7 +213,16 @@ def main():
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
     source = verify_source()
+    if source.get('historical_native_successor'):
+        result = verify_qualification()
+        if args.negative_controls:
+            subprocess.run(['python3', '-B', str(ROOT/'tests/nut-crop/verify_hist_native_successor.py'), '--self-test'], check=True)
+        if args.output:
+            args.output.write_text(json.dumps(result, indent=2)+'\n')
+        print('CURRENT_HIST_EXACT_OWNER_PREREQUISITE_NOT_FCI_ADMISSION=PASS')
+        return
     if source.get('co2_successor'):
+
         result = verify_qualification()
         if args.negative_controls:
             subprocess.run(['python3', '-B', str(ROOT / 'tests/crop-co2/test_co2_successor_controls.py')], check=True)

@@ -1,0 +1,107 @@
+program test_surface_age_budget
+  use iso_fortran_env, only: real64
+  use mod_b111_surface_age_budget
+  implicit none
+  type(surface_age_request_t)::q
+  type(surface_age_receipt_t)::r
+  real(real64)::tol, x
+  integer::k
+  tol=1.0e-11_real64
+  q%dt_day=0.25_real64
+  q%pond_start_cm=1.0_real64
+  q%pond_end_cm=1.5_real64
+  q%pond_age_stock_cm_day=2.0_real64
+  q%rain_depth_cm=0.6_real64
+  q%irrigation_depth_cm=0.3_real64
+  q%runon_depth_cm=0.4_real64
+  q%rain_age_day=0.0_real64
+  q%irrigation_age_day=0.2_real64
+  q%runon_age_day=2.0_real64
+  q%infiltration_depth_cm=0.4_real64
+  q%runoff_depth_cm=0.2_real64
+  q%evaporation_depth_cm=0.2_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status/=SURFACE_AGE_OK) error stop 'positive gross case rejected'
+  if(abs(r%residual_cm_day)>tol) error stop 'age mass balance'
+  if(abs(r%pond_end_stock_cm_day-1.5_real64*r%mixed_age_day)>tol) error stop 'pond owner'
+  if(abs(r%infiltration_age_export_cm_day-0.4_real64*r%mixed_age_day)>tol) error stop 'soil transfer'
+  if(abs(r%runoff_age_export_cm_day-0.2_real64*r%mixed_age_day)>tol) error stop 'runoff export'
+  if(abs(r%age_production_cm_day-0.3125_real64)>tol) error stop 'age source'
+  ! Evaporation removes water, never age directly.
+  if(abs(r%pond_end_stock_cm_day+r%infiltration_age_export_cm_day+ &
+      r%runoff_age_export_cm_day-(q%pond_age_stock_cm_day+ &
+      r%external_age_input_cm_day+r%age_production_cm_day))>tol) error stop 'evaporated age'
+  q%runon_depth_cm=-0.1_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status/=SURFACE_AGE_INVALID) error stop 'negative runon accepted'
+  q%runon_depth_cm=0.4_real64
+  q%pond_end_cm=1.4_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status/=SURFACE_AGE_BALANCE) error stop 'water budget drift accepted'
+  ! An all-evaporation dry-down with old age stock cannot silently
+  ! destroy the remaining age amount: it is currently unsupported.
+  q=surface_age_request_t()
+  q%dt_day=0.1_real64
+  q%pond_start_cm=1.0_real64
+  q%pond_age_stock_cm_day=3.0_real64
+  q%evaporation_depth_cm=1.0_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status==SURFACE_AGE_OK) error stop 'full evaporation destroyed age stock'
+  q=surface_age_request_t()
+  q%dt_day=0.1_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status/=SURFACE_AGE_OK) error stop 'dry zero case'
+  if(r%pond_end_stock_cm_day>0.0_real64) error stop 'dry phantom amount'
+  q%pond_age_stock_cm_day=1.0_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status/=SURFACE_AGE_INVALID) error stop 'dry stock without water accepted'
+  ! Deterministic positive-gross sequence, including dry-to-wet input.
+  do k=1,200
+    q=surface_age_request_t()
+    q%dt_day=0.01_real64*real(mod(k,17)+1,real64)
+    q%pond_start_cm=real(mod(k,11),real64)*0.1_real64
+    q%rain_depth_cm=0.04_real64+real(mod(k,5),real64)*0.02_real64
+    q%runon_depth_cm=real(mod(k,7),real64)*0.01_real64
+    q%irrigation_depth_cm=0.01_real64
+    q%infiltration_depth_cm=0.03_real64
+    q%runoff_depth_cm=0.01_real64
+    q%evaporation_depth_cm=0.005_real64
+    q%pond_end_cm=q%pond_start_cm+q%rain_depth_cm+q%runon_depth_cm+ &
+         q%irrigation_depth_cm-q%infiltration_depth_cm-q%runoff_depth_cm-q%evaporation_depth_cm
+    q%pond_age_stock_cm_day=2.0_real64*q%pond_start_cm
+    q%runon_age_day=1.0_real64
+    q%irrigation_age_day=0.3_real64
+    call advance_surface_age_budget(q,r)
+    if(r%status/=SURFACE_AGE_OK) error stop 'positive gross sweep rejected'
+    x=r%pond_end_stock_cm_day+r%infiltration_age_export_cm_day+ &
+      r%runoff_age_export_cm_day-q%pond_age_stock_cm_day-r%external_age_input_cm_day-r%age_production_cm_day
+    if(abs(x)>tol) error stop 'positive gross sweep age closure'
+  end do
+  ! Independent continuous stirred reservoir: V=1, inflow=outflow=1,
+  ! incoming age=2, initial age amount=1. Exact M(t)=3-2 exp(-t).
+  block
+    real(real64)::dt,stock,exact,err,previous_error
+    integer::level,step,n
+    exact=3.0_real64-2.0_real64*exp(-1.0_real64)
+    previous_error=huge(1.0_real64)
+    do level=1,7
+      n=2**level;dt=1.0_real64/n;stock=1.0_real64
+      do step=1,n
+        q=surface_age_request_t()
+        q%dt_day=dt;q%pond_start_cm=1.0_real64;q%pond_end_cm=1.0_real64
+        q%pond_age_stock_cm_day=stock
+        q%runon_depth_cm=dt;q%runon_age_day=2.0_real64;q%infiltration_depth_cm=dt
+        call advance_surface_age_budget(q,r)
+        if(r%status/=SURFACE_AGE_OK)error stop 'analytic reservoir rejected'
+        stock=r%pond_end_stock_cm_day
+      end do
+      err=abs(stock-exact)
+      if(err>=previous_error)error stop 'analytic reservoir does not converge'
+      if(level>1.and.err/previous_error>0.6_real64)error stop 'first order age consistency'
+      previous_error=err
+    end do
+    if(err>0.003_real64)error stop 'analytic reservoir accuracy'
+  end block
+  print *, 'MC_SOL01_SURFACE_AGE_ANALYTIC_FIRST_ORDER=PASS'
+  print *, 'MC_SOL01_SURFACE_AGE_BUDGET=PASS' 
+end program

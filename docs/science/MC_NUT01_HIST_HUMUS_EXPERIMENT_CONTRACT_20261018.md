@@ -54,3 +54,22 @@ executable witness must bind the original caller/timecontrol source and prove
 the end-of-day selection. Initial t0-based development evidence is diagnostic
 only and cannot qualify this contract. The730-day fixture uses input1901-12-31,
 so the original endpoint predicate switches on the interval starting at day365.
+
+## Qualified surface-age coexistence
+
+Canonical advanced to d4912b3c37461ad918f37c53b236fa1d62478de6 via PR1309.
+Its thirty surface-age postimages and physical evidence remain authoritative.
+Neither its compiled physical inputs nor the compiled NUT closure overlap the
+other workstream's changed physics. The shared HIST dispatch and its new age
+back-reference are explicitly reconciled; no surface-age process is changed.
+
+The new NUT guard uses that admitted canonical as its source-delta baseline,
+requires an exact registered postimage set, and validates fresh NUT evidence.
+It pins the unchanged age status record and every original age postimage, with
+only the two registered dispatch files owned by this new qualified postimage.
+It revalidates original age physical evidence against every current compiled
+input. The age guard may delegate source-delta checking to that exact registered
+NUT guard; NUT calls only age evidence validation, so no recursion or broad
+foreign-delta exemption is introduced. The old age physics qualification is
+inherited solely because all of its actual execution dependencies are unchanged.
+Full F-CI is not selected merely for the advanced branch head.
