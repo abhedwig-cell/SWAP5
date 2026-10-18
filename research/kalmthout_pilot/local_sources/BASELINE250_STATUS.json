@@ -1,0 +1,14 @@
+{
+  "work_unit": "BASELINE250-v01",
+  "source_checkpoint": "a40ddbb736ed57839de94d13bf25e10617261583",
+  "status": "RUNNING_FULL_GRID",
+  "model": "SWAP4.3.1",
+  "grid_cells": 4096,
+  "selected_command": "python3 research/kalmthout_pilot/swap431/run_baseline250.py RUNROOT/model SWAP431_EXE --workers 8",
+  "justification": "User Go of2026-10-18T23:02 Europe/Amsterdam continues authorized complete initial regional model.4096 prepared columns and69 complete native cells already persisted with verified fresh restoration.",
+  "expected_cost": "Approximately30-60min based on selected69-cell execution and8 available CPU cores; not a measured full-grid time.",
+  "runtime_limits": "120s time censor per native cell; failures retained; eight workers; no native source or acceptance changes.",
+  "implementation_scope": "Independent column model; common European source maps plus explicit defaults. No SWAP5/canonical or Actions selection.",
+  "recovery": "Restore the two repository archive parts using the manifest, then rerun the same command; exact native results are reused and per-cell receipts survive partial completion.",
+  "local_improvement_register": "local_sources/baseline250_heath_refinement_register.csv;159 majority-heath candidates,62 wet-heath review cells, no v01 inputs edited."
+}
