@@ -39,7 +39,6 @@ module mod_fmr_serialized_reference_backend
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
        soil_water_solve_result_t, soil_water_solver_diagnostics_t, soil_water_top_boundary_result_t, top_boundary_provider_t, SW_SOLVE_CONVERGED, &
-       SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_REGIME_FLUX, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_TEMPORAL_INDICATOR_NOT_RUN
   use mod_soil_water_accepted_step_direction_contract, only: soil_water_accepted_step_direction_request_t, &
@@ -3970,7 +3969,7 @@ contains
     type(fmr_macropore_top_input_forcing_t) :: macro_top_input_trial
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
     type(rfm_live_trial_prepare_result_t) :: rfm_live
-    type(soil_water_top_boundary_result_t) :: rfm_preflight, rutter_preflight
+    type(soil_water_top_boundary_result_t) :: rfm_preflight
     real(real64), allocatable, target :: rfm_source_rate(:)
     real(real64), allocatable :: rfm_node_depth_cm(:)
     type(b110_dynamic_top_boundary_solver_provider_t), target :: black_top_provider, boesten_top_provider, rfm_top_provider, &
@@ -4724,24 +4723,7 @@ contains
              self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
              self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent, fixed_top_conductivity)
       end if
-      ! When the accepted trial-start state is unponded and the atmospheric
-      ! boundary resolves to a pure flux, freeze that flux for this Richards
-      ! substep. The full dynamic provider remains active for ponding/head and
-      ! runoff regimes. This is the same preflight principle used by the
-      ! admitted file-weather/PMdirect application and avoids Newton branch
-      ! switching during dry-surface evaporation.
-      rutter_preflight = soil_water_top_boundary_result_t()
-      call rutter_top_provider%evaluate(request%base_state%pressure_head(1), request%base_state%water_content(1), &
-           request%base_state%ponding_depth, request%boundary, rutter_preflight)
-      if (rutter_preflight%status == SW_TOP_BOUNDARY_AVAILABLE .and. &
-          rutter_preflight%regime == SW_TOP_BOUNDARY_REGIME_FLUX .and. &
-          rutter_preflight%candidate_ponding_depth == 0.0_real64 .and. rutter_preflight%runoff_depth == 0.0_real64) then
-        request%boundary%top_mode = FSI_TOP_MODE_EXPLICIT_FLUX
-        request%boundary%top_flux = rutter_preflight%actual_top_flux
-        nullify(request%evaluation%dynamic_top_boundary)
-        request%evaluation%top_boundary => self%top_boundary
-      else
-        request%evaluation%dynamic_top_boundary => rutter_top_provider
+      request%evaluation%dynamic_top_boundary => rutter_top_provider
       end if
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
