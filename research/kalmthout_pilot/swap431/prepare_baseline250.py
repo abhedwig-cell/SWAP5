@@ -86,6 +86,8 @@ def main():
                 values = list(src.sample(points, masked=True))
                 observations[prop, depth] = [None if np.ma.is_masked(v[0]) else float(v[0]) for v in values]
     worldcover = args.sources / 'worldcover/worldcover2021_region.tif'
+    wc_manifest = json.loads((worldcover.parent/'worldcover_manifest.json').read_text())
+    assert wc_manifest['domain_sha256']==sha(args.domain) and wc_manifest['regional_sha256']==sha(worldcover)
     print('LANDCOVER', flush=True)
     fine = np.zeros((ny*25, nx*25), dtype=np.uint8)
     with rasterio.open(worldcover) as src:

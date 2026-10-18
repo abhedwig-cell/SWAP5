@@ -1,0 +1,47 @@
+{
+  "archive": "SYMPHONICA_BASELINE250_V01_20261018.tar.xz",
+  "bytes": 14243388,
+  "sha256": "3b53f4ebd68aef4163d4e3ea549bf1295cdb36c67795d73196882217d82a57a3",
+  "entries": 29719,
+  "execution_summary": {
+    "total_grid_cells": 4096,
+    "status_counts": {
+      "COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG": 4,
+      "NOT_RUN": 4027,
+      "SUCCESS": 65
+    },
+    "executable_sha256": "34850f3148c8a312308e2b86d04fa76df9085699548a59164c03bf01aee4e37c",
+    "full_grid_complete": false
+  },
+  "input_audit": {
+    "grid_cells": 4096,
+    "parent_cells": 1024,
+    "children_per_parent": 4,
+    "layer_profiles_checked": 4096,
+    "layers_checked": 24576,
+    "landcover_fraction_sums_checked": 4096,
+    "max_soil_imputation_distance_m": 1118.033988749895,
+    "status": "ACTUAL_GRID_GEOMETRY_LAYER_UNITS_AND_FRACTION_CHECKS_PASS"
+  },
+  "restore": "Extract into a fresh RUNROOT. Included scripts can prepare from sources and previous_root; native executable and original source closure are included. Relative per-cell forcing links are preserved.",
+  "omitted_originals": "Full WorldCover tile and NHI toolkit omitted; actual source identities and regional bytes retained.",
+  "repository_parts": [
+    {
+      "name": "SYMPHONICA_BASELINE250_V01_20261018.tar.xz.part01",
+      "bytes": 7200000,
+      "sha256": "8a91257bc1933f02472348f90a0c53d4b660598c5fa143732ca3d0b658301444"
+    },
+    {
+      "name": "SYMPHONICA_BASELINE250_V01_20261018.tar.xz.part02",
+      "bytes": 7043388,
+      "sha256": "6510bd31d9569f44b425216a772b95a9892bdce4cf8c280abdac05d7865a7d00"
+    }
+  ],
+  "fresh_restore_validation": {
+    "status": "PASS",
+    "restored_cases_reused": 69,
+    "new_native_runs": 0,
+    "restored_soil_columns": 4096,
+    "full_grid_complete": false
+  }
+}

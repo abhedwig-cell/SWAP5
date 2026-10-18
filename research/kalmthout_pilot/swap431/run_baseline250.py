@@ -124,6 +124,23 @@ def main():
                 scope='INITIAL_V01_CELL_RUNS_NOT_LOCALLY_VALIDATED',runs=results)
     name='smoke_results.json' if args.smoke else f'sample{args.sample}_results.json' if args.sample else 'batch_results.json'
     (root/name).write_text(json.dumps(status,indent=2)+'\n')
+    execution=[]
+    for cell in cells:
+        path=root/'cells'/cell['cell_id'];receipt=path/'run_receipt.json'
+        record=dict(cell_id=cell['cell_id'],landcover_class=cell['dominant_land_class'],
+                    boundary=cell['boundary'],execution_status='NOT_RUN',returncode='',native_wall_seconds='')
+        if receipt.exists():
+            r=json.loads(receipt.read_text());m=json.loads((path/'cell_manifest.json').read_text())
+            valid=r.get('input_sha256')==m['input_sha256'] and r.get('executable_sha256')==exe_hash
+            record.update(execution_status=r['status'] if valid else 'STALE_RECEIPT_INPUT_CHANGED',
+                          returncode=r['returncode'],native_wall_seconds=r['native_wall_seconds'])
+        if cell['status']=='OPEN_WATER_NO_SOIL_COLUMN':record['execution_status']='OPEN_WATER_NO_SOIL_COLUMN'
+        execution.append(record)
+    with (root/'execution_register.csv').open('w',newline='') as handle:
+        writer=csv.DictWriter(handle,fieldnames=list(execution[0]));writer.writeheader();writer.writerows(execution)
+    totals={s:sum(r['execution_status']==s for r in execution) for s in sorted({r['execution_status'] for r in execution})}
+    (root/'execution_summary.json').write_text(json.dumps(dict(total_grid_cells=len(cells),status_counts=totals,
+        executable_sha256=exe_hash,full_grid_complete=all(r['execution_status'] in ('SUCCESS','COMPLETED_WITH_YEAR_BOUNDARY_ACCOUNTING_FLAG','OPEN_WATER_NO_SOIL_COLUMN') for r in execution)),indent=2)+'\n')
     print(json.dumps({k:v for k,v in status.items() if k!='runs'}),flush=True)
     if status['successes']+status['completed_with_accounting_flag']!=len(results):raise SystemExit(1)
 
