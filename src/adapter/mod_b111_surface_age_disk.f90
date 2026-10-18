@@ -26,12 +26,12 @@ contains
   type(surface_age_owner_t),intent(in)::state
   integer,intent(out)::status
   real(real64)::time_day,depth_cm,stock_cm_day
-  integer(int64)::revision,check
+  integer(int64)::revision,check,actual_identity
   integer::unit,io
   logical::ready
   status=AGE_DISK_REJECT
-  call snapshot_surface_age_owner(state,time_day,depth_cm,stock_cm_day,revision,ready)
-  if(.not.ready.or.identity<=0_int64.or.revision<0_int64)return
+  call snapshot_surface_age_owner(state,time_day,depth_cm,stock_cm_day,revision,ready,actual_identity)
+  if(.not.ready.or.identity<=0_int64.or.identity/=actual_identity.or.revision<0_int64)return
   block
     type(surface_age_owner_t)::verified
     integer::code
