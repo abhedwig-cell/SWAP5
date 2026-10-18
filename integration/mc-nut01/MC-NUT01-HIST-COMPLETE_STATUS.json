@@ -2,14 +2,16 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "80fcc8114a32df46ad1d416a8b78a4118b9b6392",
+  "checkpoint_commit": "9e79620f55532e0463969ae292a8cff438a87a00",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
-    "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests"
+    "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
+    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
+    "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria"
   ],
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "relevant_paths": [
     "tests/nut-crop/test_b112_retained_joint.f90",
@@ -31,15 +33,16 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Run existing B112 actual workflow O0/O2 and compare native restarted endpoint on 62-day candidate, investigate any physical failure before admission. True original TTUTIL parser and full multiyear qualification remain open.",
-  "recovery_point": "work/nut-coupled-62day-20261018@80fcc8114a32df46ad1d416a8b78a4118b9b6392",
+  "next_action": "Reconcile/reference-test source-profile zero-bottom forcing against current canonical fa09e298, including Reference backend and headcalc overlap, then decide narrow PR admission. Preserve original failed bottom-drain stress separately. Full TTUTIL and annual multiyear crop lifecycle still open.",
+  "recovery_point": "work/nut-coupled-124day-20261018@9e79620f55532e0463969ae292a8cff438a87a00",
   "blockers": [
-    "62-day physical integration candidate is persisted, not yet tested",
-    "Original TTUTIL/SNM complete grammar and multiyear Richards/crop rotations not qualified"
+    "124-day alternative forcing qualified on old exact-head but no current-canonical Reference/headcalc dependency requalification",
+    "Original fixed -0.1 bottom-flux stress fails on day67, not repaired",
+    "Full historical parser and full rotation unresolved"
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "80fcc8114a32df46ad1d416a8b78a4118b9b6392",
-  "last_reconciled_upstream": "f7992b675d9beb99e7839f0d92b6a1fe2d1f815f",
+  "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
+  "last_reconciled_upstream": "ce0291246e9bb732388214098a7a9fe0f44f4a5e",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -56,5 +59,107 @@
       39111080977
     ],
     "conclusion": "success"
+  },
+  "qualification_124day": {
+    "head": "2f9b319fbf271f766ef1a7b4b15cbab64453d0b6",
+    "focused_run": 39114243790,
+    "focused": "success",
+    "actual_run": 39114243770,
+    "actual": "failure",
+    "failure_day": 67,
+    "reported_status": 2,
+    "canonical_admitted": false,
+    "diagnostic_run": 39117466655,
+    "diagnostic_head": "54b5008e876d6b2691cdb2005b939c40f73a7751",
+    "failure_layer": "JOINT_WATER_REJECTED; kernel result water.status=4, water trial not completed; senescence.status=0 and material.status=0; chemical.status=1 and soil.status=1 are unexecuted defaults, not chemical failures",
+    "water_trial_diagnosis": {
+      "day": 67,
+      "accepted_substeps": 4096,
+      "attempts": 51289,
+      "retries": 47193,
+      "temporal_rejections": 47193,
+      "solver_rejections": 0,
+      "mass_rejections": 0,
+      "max_abs_step_mass_residual": 1.40831085942289e-15,
+      "min_accepted_step_days": 0.00001772884719949963,
+      "completed": false
+    },
+    "indicator_run": 39122643056,
+    "indicator_diagnosis": {
+      "model_certificate_source": 2,
+      "max_temporal_indicator": 0.9997303823431782,
+      "configured_budget": 0.0001,
+      "accepted_substeps": 4096,
+      "temporal_rejections": 47193,
+      "solver_rejections": 0,
+      "mass_rejections": 0,
+      "interpretation": "max_temporal_indicator is ALREADY NORMALIZED head_inf_bound/budget (Reference backend); 0.999730 < acceptance threshold 1, not 9997x over budget. The maximum includes the accepted bound; 47193 rejected attempts and 4096 accepted-step exhaustion remain proven.",
+      "acceptance_threshold_normalized": 1
+    },
+    "daily_trace_run": 39124928525,
+    "daily_accepted_substeps": {
+      "60": 1290,
+      "61": 1526,
+      "62": 1840,
+      "63": 2200,
+      "64": 2637,
+      "65": 3185,
+      "66": 3813,
+      "67": 4096
+    },
+    "daily_temporal_rejections": {
+      "60": 11706,
+      "61": 14219,
+      "62": 17701,
+      "63": 21736,
+      "64": 26817,
+      "65": 33382,
+      "66": 41346,
+      "67": 47193
+    },
+    "daily_trace_conclusion": "Physical time-step demand grows over days 60-67; day67 4096 cap reached after only partial day; this does not establish temporal indicator defect nor justify raising cap. Normalized indicator <1 on accepted steps.",
+    "water_state_run": 39126347755,
+    "water_state_diagnosis": {
+      "day61": {
+        "mean_theta": 0.1487629594831632,
+        "min_theta": 0.0784859693861985,
+        "min_pressure_head": -7979.6701092893145
+      },
+      "day63": {
+        "mean_theta": 0.1427029106155248,
+        "min_theta": 0.06994718149621612,
+        "min_pressure_head": -12469.863963356485
+      },
+      "day65": {
+        "mean_theta": 0.13663266114853795,
+        "min_theta": 0.06192141818119144,
+        "min_pressure_head": -21026.194366614807
+      },
+      "day66": {
+        "mean_theta": 0.13359038934285145,
+        "min_theta": 0.05814883003966265,
+        "min_pressure_head": -28276.52381076077
+      },
+      "day67": {
+        "rejected": true,
+        "committed_state_unchanged": true
+      }
+    },
+    "water_state_result": {
+      "outcome": "failure day67 expected (diagnostic run)",
+      "start_day60_mean_theta": 0.15482059975963416,
+      "end_day66_mean_theta": 0.13359038934285145,
+      "start_day60_min_head": -5420.491642178313,
+      "end_day66_min_head": -28276.52381076077,
+      "day67_committed_rollback_identical": true,
+      "interpretation": "severe continuous drying under imposed fixed forcing, strongest at bottom, causes shrinking accepted timestep demand; numerical error beyond tested forcing not established"
+    },
+    "zero_bottom_flux": {
+      "candidate": "9e79620f55532e0463969ae292a8cff438a87a00",
+      "run": 39127503214,
+      "conclusion": "success",
+      "test": "Original B1.11 O0/O2 plus B112 actual Richards crop Soil-N 124-day source-profile zero bottom flux with fresh restart and byte gates",
+      "scope": "Alternative physical forcing; original -0.1 bottom-flux stress remains FAIL, not fixed"
+    }
   }
 }

@@ -327,6 +327,11 @@ contains
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
      'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
    close(unit)
+   ! Long-horizon physical variant: remove the prescribed sustained bottom
+   ! extraction while retaining root uptake, drainage and strict temporal
+   ! certificate. The historic -0.1 bottom-flux stress result remains recorded
+   ! as a separate failed diagnostic, not rewritten as a passing experiment.
+   cfg%tiles(1)%base_forcing%bottom_flux=0d0
    ! Source owner is reconstructed from the same input in each fresh process.
    ! The restart decoder verifies its parameter identity against these values.
    call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
@@ -370,7 +375,7 @@ contains
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
    ! The calendar passes a real 1900/1901 year boundary without resetting Soil-N.
    ! Exact source-event selection across a complete crop-free calendar year.
-   ! The actual Richards driver below spans 62 days; the complete
+   ! The actual Richards driver below spans 124 days; the complete
    ! immutable source forcing plan is checked at every daily boundary.
    do day=0,368
      call select_soil_n_amendments(startup_plan,base_day+real(day,real64),base_day+real(day+1,real64), &
@@ -424,18 +429,73 @@ contains
    ! Full Richards hydrology and production Soil-N are integrated every day,
    ! preserving the one-day native restart split. This month-scale run is
    ! separate from the accepted annual constant-water chemistry qualification.
-   do day=1,61
+   do day=1,123
+     if(day>=60.and.day<=67)call report_water_state('before',day)
      day2_env=soil_n_day_environment_t(base_day+real(day,real64),base_day+real(day+1,real64),30d0)
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
        state,weather,base_day+real(day,real64),base_day+real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
-     if(day_receipt%status/=JOINT_OK)print *,'source day failure',day,day_receipt%status
+     if(day>=60.and.day<=67)call report_water_state('after',day)
+     if(day>=60.and.day<=67)then
+       print *,'source Richards day trace',day,'status',day_receipt%status, &
+         'accepted',day_receipt%joint%joint%diagnostics%accepted_substeps, &
+         'temporal_reject',day_receipt%joint%joint%diagnostics%temporal_rejections, &
+         'min_dt',day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
+         'max_indicator_normalized',day_receipt%joint%joint%diagnostics%max_temporal_indicator
+     end if
+     if(day_receipt%status/=JOINT_OK)then
+       print *,'source day failure',day,'joint',day_receipt%status, &
+         'senescence',day_receipt%senescence%status, &
+         'material',day_receipt%joint%materials%status, &
+         'inner_joint',day_receipt%joint%joint%status, &
+         'water',day_receipt%joint%joint%water%status, &
+         'chemical',day_receipt%joint%joint%chemical%status, &
+         'soil',day_receipt%joint%joint%chemical%soil%status
+       print *,'water diagnosis status',day_receipt%joint%joint%water%status, &
+         'completed',day_receipt%joint%joint%water%completed, &
+         'completed_t',day_receipt%joint%joint%water%completed_t
+       print *,'water trial diagnostic: accepted,attempts,retries,solver,temporal,mass', &
+         day_receipt%joint%joint%diagnostics%accepted_substeps, &
+         day_receipt%joint%joint%diagnostics%attempts, &
+         day_receipt%joint%joint%diagnostics%retries, &
+         day_receipt%joint%joint%diagnostics%solver_rejections, &
+         day_receipt%joint%joint%diagnostics%temporal_rejections, &
+         day_receipt%joint%joint%diagnostics%mass_rejections
+       print *,'water timestep min,max and residual', &
+         day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
+         day_receipt%joint%joint%diagnostics%max_accepted_substep_duration, &
+         day_receipt%joint%joint%diagnostics%max_abs_step_mass_residual
+       print *,'normalized max temporal indicator / raw head budget / source', &
+         day_receipt%joint%joint%diagnostics%max_temporal_indicator, &
+         cfg%numerical%model_temporal_indicator_budget, &
+         day_receipt%joint%joint%diagnostics%temporal_acceptance_source
+     end if
      call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
    end do
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
       670001_int64,water,state,code)
    call require(code==0,'source day-two native endpoint')
-   print '(A)','NUT_SOURCE_62_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
+   print '(A)','NUT_SOURCE_124_DAY_REAL_RICHARDS_FRESH_RESTART=PASS'
+ end subroutine
+ subroutine report_water_state(stage,day)
+   character(*),intent(in)::stage
+   integer,intent(in)::day
+   class(transaction_state_t),allocatable::snapshot
+   logical::available
+   call water%snapshot(snapshot,available)
+   call require(available.and.allocated(snapshot),'water state snapshot available')
+   select type(physical=>snapshot)
+   type is(fmr_b110_temporal_indicator_state_t)
+     call require(allocated(physical%pressure_head).and.allocated(physical%water_content), &
+       'water state physical arrays')
+     print *,'source water state',trim(stage),day, &
+       'mean theta',sum(physical%water_content)/real(size(physical%water_content),real64), &
+       'theta minmax',minval(physical%water_content),maxval(physical%water_content), &
+       'head minmax',minval(physical%pressure_head),maxval(physical%pressure_head), &
+       'head surface bottom',physical%pressure_head(1),physical%pressure_head(size(physical%pressure_head))
+   class default
+     call require(.false.,'expected temporal Richards continuation state')
+   end select
  end subroutine
  subroutine finish_harvest(w,n,prefix)
   type(kernel_committed_state_t),intent(inout)::w
