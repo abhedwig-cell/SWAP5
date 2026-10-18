@@ -176,3 +176,36 @@ The earlier admitted full-to-730 restart proofs remain untouched. The short
 eight-day independent water/N audit is selected before the expensive baseline;
 its expected cost is ten minutes. Long-run cost is measured and selected only
 after that audit passes, without claiming a completed rotation from a prefix.
+
+## B1 gross boundary exchange and the commit eligibility seam
+
+The fixed-head day-6 trial accepts water, prepares crop state, evaluates surface
+exchange and completes the original chemical process (all status 0), then rejects
+in the existing mineral transfer commit seam. Native before/after states are
+identical. The seam inherited a no-opposing-boundary-flow restriction from the
+initial mineral-only bounded contract, also retained in the initial reactive
+contract. A fixed head can reverse the lower-face flux within one day; drainage
+can coexist with upward lower/lateral water. An accepted physical carrier records
+these positive input and output integrals separately.
+
+Source distinction: original `management_soil.f90` lines 404-407 constructs a
+NET daily lower exchange and partitions it by sign; this is not a gross temporal
+exchange oracle. The verified original `wofost_soil_watern.f90` independently
+places outflow in Hv1 and bottom/lateral solute input in Hv2 (lines 52-61), and
+can evaluate their simultaneous positive daily values. B1 deliberately uses that
+existing analytical kernel with actual gross accepted inputs, within the already
+explicit daily constant-coefficient approximation. No claim of exact subdaily
+reactive timing or unchanged B0 management netting is made.
+
+The selected correction changes only `apply_mineral_day_transfer`: when the
+existing corrected surface-N mode is enabled, permit simultaneous bounded gross
+water input and output **after** the existing chemical candidate has completed.
+All hard water closure, finite/nonnegative limits, owner transfer positivity and
+whole-N budgets remain mandatory. The stand-alone mineral analytical advance
+retains its original restriction, and the default-false commit seam retains its
+original rejection and bytes. No new process implementation or persistent state
+is introduced. Direct O0/O2 tests must compare bottom-input and lateral-input
+cases with the literal original chemistry, establish whole-N accounting and
+default-mode atomic rejection. First retain the pre-correction rejection witness,
+then rebuild only the exact ABI-identical owner for physical feedback before
+freshly qualifying the affected complete production closure.

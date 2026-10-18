@@ -215,7 +215,10 @@ contains
    if(abs(t0-state%time)>0d0.or.abs(t1-t0-1d0)>0d0.or.abs(t1)>1d8)return
    if(water_end<1d-4.or.water_end>1d0)return
    if(min(outflow,in_bottom,in_lateral,root_water)<0d0.or.max(outflow,in_bottom,in_lateral,root_water)>100d0)return
-   if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0))return
+   ! Corrected B1 reactive candidates already book the gross boundary inputs
+   ! and outputs in the existing original analytical chemistry. Retain the old
+   ! bounded-mode eligibility restriction and every water/N acceptance gate.
+   if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0).and..not.state%p%surface_n_enabled)return
    closure=(water_end-state%water)*state%p%inventory%depth_m-(surface+in_bottom+in_lateral-outflow-root_water)
    if(abs(closure)>1d-12)return
    ! This public seam accepts only bounded transfers, before any donor arithmetic.

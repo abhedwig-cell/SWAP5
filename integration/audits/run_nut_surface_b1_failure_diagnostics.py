@@ -4,7 +4,7 @@ The existing accepted-step proposal is selected; every strict full/half and
 mass gate remains active. No production source changes. A result is exploratory and never an admission or full-rotation PASS.
 """
 from pathlib import Path
-import hashlib,json,os,subprocess,time
+import hashlib,json,os,shutil,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
 BASE=Path(os.environ['N_SURFACE_PROVIDERS']).resolve()
 OUT=Path(os.environ['N_SURFACE_PROBE_DIR']).resolve();OUT.mkdir(exist_ok=False)
@@ -66,7 +66,8 @@ body=body.replace(needle,"""    if(r%status/=0)then
       call ss%snapshot(clock,moisture,ps,rev)
       call aggregate_mineral_trace(failure_mineral,failure_observation%accepted_water_flux_substeps, &
         failure_carrier,code,clean_surface_water=.false.,atmospheric_n_surface=.true.)
-      print *,'REJECTION_CARRIER',code,failure_carrier%surface_water,failure_carrier%root_water
+      print *,'REJECTION_CARRIER',code,failure_carrier%surface_water,failure_carrier%root_water, &
+        failure_carrier%outflow,failure_carrier%in_bottom,failure_carrier%in_lateral,failure_carrier%water_end
       call bind_soil_n_surface_trace(failure_observation%accepted_water_flux_substeps,forcing%pond_input,failure_day,code)
       print *,'REJECTION_SURFACE_BIND',code
       if(code==0)then
@@ -108,10 +109,17 @@ def run(c,kind):
   r=subprocess.run(c,cwd=OUT,stdout=so,stderr=se,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'1','OMP_NUM_THREADS':'1'})
  records.append(dict(command=c,category=kind,seconds=time.perf_counter()-t,returncode=r.returncode))
  (OUT/'events.json').write_text(json.dumps(records,indent=2)+'\n');assert r.returncode==0 if kind!='native' else r.returncode==1,(kind,r.returncode)
-run(command,'driver_compile');run(link,'link');run([str(OUT/'hist'),'write',str(OUT/'state.restart'),str(OUT/'endpoint'),'surface-profile','0',str(DAYS)],'native')
+seed=os.environ.get('N_SURFACE_DIAG_RESTART');first=int(os.environ.get('N_SURFACE_DIAG_FIRST_DAY','0'))
+assert (seed is None and first==0)or(seed is not None and 0<first<DAYS)
+seed_sha=None
+if seed:
+ seed=Path(seed).resolve();seed_sha=sha(seed);shutil.copyfile(seed,OUT/'state.restart')
+run(command,'driver_compile');run(link,'link');run([str(OUT/'hist'),'resume'if seed else'write',str(OUT/'state.restart'),str(OUT/'endpoint'),'surface-profile',str(first),str(DAYS)],'native')
+if seed:assert sha(seed)==seed_sha
+
 assert (OUT/'state.restart.failure-before').read_bytes()==(OUT/'state.restart.failure-after').read_bytes(),'rejected physical/crop/N/native inventory changed'
 for p,h in artifacts.items():assert sha(Path(p))==h,p
 for p,h in prior['input_sha256'].items():assert sha(ROOT/p)==h,p
 assert sha(Path(__file__))==self_sha
-r=dict(status='EXPECTED_REJECTION_DIAGNOSTIC_WITH_NATIVE_ROLLBACK_NOT_PHYSICAL_PASS',variant=VARIANT,opt=OPT,days=DAYS,events=records,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256=prior['input_sha256'],provider_artifacts=artifacts,provider_result_sha256=sha(BASE/'result.json'),driver_sha256=sha(driver),runner_sha256=self_sha)
+r=dict(status='EXPECTED_REJECTION_DIAGNOSTIC_WITH_NATIVE_ROLLBACK_NOT_PHYSICAL_PASS',variant=VARIANT,opt=OPT,days=DAYS,first_day=first,seed_sha256=seed_sha,events=records,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256=prior['input_sha256'],provider_artifacts=artifacts,provider_result_sha256=sha(BASE/'result.json'),driver_sha256=sha(driver),runner_sha256=self_sha)
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(r['status'])

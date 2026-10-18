@@ -160,6 +160,42 @@ program test_reactive_owner
   call near(got%nitrogen_total(p%mineral%inventory),pools%nitrogen_total(p%mineral%inventory)+r%external_in-r%external_out,'whole corrected reactive budget')
   print '(A)','REACTIVE_SURFACE_B1_ANALYTIC_TRANSFER_ORIGINAL_CHEMISTRY_WHOLE_N=PASS'
  end block
+ block
+  type(soil_n_surface_day_t)::surface
+  real(real64)::qbot,qlat
+  do i=1,2
+   call parameters(p);p%mineral%surface_n_enabled=.true.
+   p%mineral%c_top=[.005d0,.015d0];p%mineral%c_bottom=[.002d0,.006d0];p%mineral%c_lateral=[.003d0,.009d0]
+   call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
+   allocate(pools%surface_n_kg_m2(2));pools%surface_n_kg_m2=0d0
+   call initialize_reactive(p,9001_int64,0d0,.34d0,pools,state,code)
+   call require(code==0,'gross opposing reactive initialize')
+   if(allocated(surface%steps))deallocate(surface%steps)
+   allocate(surface%steps(1));surface%steps(1)%t0=0d0;surface%steps(1)%t1=1d0
+   surface%steps(1)%rain_rate=.2d0;surface%steps(1)%qtop=-.2d0
+   qbot=merge(.0005d0,0d0,i==1);qlat=merge(.0005d0,0d0,i==2)
+   w=.34d0+(.002d0+qbot+qlat-.001d0-.0002d0)/.3d0
+   call literal_day(p,pools,.34d0,w,.001d0,qbot,qlat,.0002d0,want,nit,denit,carbon,surface_water=.002d0)
+   call advance_reactive_day(state,0d0,1d0,w,.001d0,qbot,qlat,.0002d0,r,surface_water=.002d0,surface_n=surface)
+   call require(r%reactions_executed.and.r%process%status==0,'literal-capable gross chemical candidate')
+   call require(r%status==0,'B1 gross input and output commit')
+   call state%snapshot(time,theta,got,revision);call compare(got,want,'gross flows literal original chemical stocks')
+   call near(r%external_in,.002d0*sum(p%mineral%c_top)+qbot*sum(p%mineral%c_bottom)+ &
+    qlat*sum(p%mineral%c_lateral),'gross boundary nitrogen inputs separately counted')
+   call near(got%nitrogen_total(p%mineral%inventory),pools%nitrogen_total(p%mineral%inventory)+ &
+    r%external_in-r%external_out,'gross input and output whole-N closure')
+   ! The old mode remains explicitly bounded and rejects before publication.
+   p%mineral%surface_n_enabled=.false.;p%mineral%c_top=0d0;deallocate(pools%surface_n_kg_m2)
+   call initialize_reactive(p,9001_int64,0d0,.34d0,pools,state,code)
+   w=.34d0+(qbot+qlat-.001d0-.0002d0)/.3d0
+   call advance_reactive_day(state,0d0,1d0,w,.001d0,qbot,qlat,.0002d0,r)
+   call require(r%status/=0,'default opposing-flow restriction retained')
+   call state%snapshot(time,theta,got,revision)
+   call require(time==0d0.and.theta==.34d0.and.revision==0_int64,'default opposing flow atomic clock')
+   call compare(got,pools,'default opposing flow atomic stocks')
+  enddo
+  print '(A)','REACTIVE_B1_GROSS_BOTTOM_LATERAL_OUTFLOW_LITERAL_AND_DEFAULT_ATOMIC=PASS'
+ end block
  print '(A)','REACTIVE_ORIGINAL_HUMUS_SWITCH_THRESHOLD_18_DAYS_OPAQUE=PASS'
  print '(A)','REACTIVE_ATMOSPHERIC_ORIGINAL_CHEMISTRY_EVAPORATION_RESTART=PASS'
  print '(A)','REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS'
