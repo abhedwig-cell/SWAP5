@@ -345,7 +345,7 @@ contains
      type(crop_senescence_policy_t)::rejected_policy
      integer::input_unit,output_unit,ios,case_number
      character(512)::source_line
-     do case_number=1,3
+     do case_number=1,9
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
        do
@@ -356,8 +356,20 @@ contains
            case(1);source_line='iMat = 1,,1,1,1,1'
            case(2);source_line='iMat = 1,1,1,1,1,'
            case(3);source_line='iMat = ,1,1,1,1,1'
+           case(4);source_line='iMat = 1 1 1 1'
+           case(5);source_line='iMat = 1 1 9 1 1'
            end select
          end if
+         if(index(source_line,'MatNum = ')==1)then
+           select case(case_number)
+           case(6);source_line='MatNum = 2'
+           case(7);source_line='MatNum = '
+           end select
+         end if
+         if(index(source_line,'smedate = ')==1.and.case_number==8) &
+           source_line='smedate = 1900-12-30 1901-02-29 1901-01-01 1901-12-31 1902-01-01'
+         if(index(source_line,'RateConNitrif_ref = ')==1.and.case_number==9) &
+           source_line='RateConNitrif_ref = -0.02'
          write(output_unit,'(A)')trim(source_line)
        end do
        close(input_unit);close(output_unit)
@@ -365,7 +377,7 @@ contains
          base_day,source_water,'source-crop-invalid.snm','1900-12-30', &
          rejected_plan,rejected_state,rejected_policy,code,error_line)
        call require(code/=0.and..not.rejected_plan%ready().and..not.rejected_state%ready(), &
-         'malformed source comma rejected atomically')
+         'malformed source SNM rejected atomically')
      end do
    end block
    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
