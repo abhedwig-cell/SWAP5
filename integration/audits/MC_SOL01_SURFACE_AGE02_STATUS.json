@@ -1,0 +1,42 @@
+{
+  "workstream": "MC-SOL01",
+  "work_unit": "MC-SOL01-SURFACE-AGE02",
+  "baseline": "65db94901eba8222b070920827621fdffddb2180",
+  "stage": "IMPLEMENTED_NOT_TESTED",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "owned_surface": "Additive research qualification drivers and evidence under integration/audits/surface_age_longrun; all production/test/guard semantics held fixed",
+  "affected_invariants": [
+    7,
+    9,
+    13,
+    25,
+    26
+  ],
+  "relevant_paths": [
+    "integration/audits/surface_age_longrun",
+    "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json"
+  ],
+  "authority_paths": [
+    "docs/science/MC_SOL01_SURFACE_AGE01_CANDIDATE.md",
+    "docs/science/MC_SOL01_ACCEPTED_AGE_CONTRACT.md",
+    "docs/development/workstream-execution-protocol.md"
+  ],
+  "test_selection": {
+    "focused": "Two-day real Reference four wet/drying cycles O0/O2, 1/2/4 interval refinements and fresh process snapshots at wet and dry transitions; exact separate dry-limit counterexample",
+    "expected_seconds": 600,
+    "reason": "Named uncovered multi-cycle state/flux and refinement failure modes. No unchanged solver or full F-CI repetition; verified local provider reuse",
+    "full_fci": "NOT_SELECTED_IMPACT: no production, scientific contract, source guard or old runner changed",
+    "hosted": "NOT_SELECTED_IMPACT: local real compiler/native qualification"
+  },
+  "scientific_limits": [
+    "Strict positive-pond qualification is not complete evaporative dry-down admission",
+    "No seasonal/site calibration claim",
+    "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
+  ],
+  "next_action": "Persist drivers then measured pilot and complete selected local qualification",
+  "blockers": []
+}
