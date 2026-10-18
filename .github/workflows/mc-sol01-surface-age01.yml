@@ -7,6 +7,7 @@ on:
       - 'src/process/mod_b111_surface_age_owner.f90'
       - 'tests/nut-sol/test_surface_age_owner.f90'
       - 'src/process/mod_b111_surface_age_soil_handoff.f90'
+      - 'src/process/mod_b111_age_tracer_substep.f90'
       - 'tests/nut-sol/test_surface_age_soil_handoff.f90'
       - 'tests/nut-sol/run_surface_age_budget.sh'
       - 'src/runtime/mod_b111_surface_age_trace_bridge.f90'
