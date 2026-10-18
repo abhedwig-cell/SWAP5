@@ -37,6 +37,15 @@ program test_surface_age_budget
   q%pond_end_cm=1.4_real64
   call advance_surface_age_budget(q,r)
   if(r%status/=SURFACE_AGE_BALANCE) error stop 'water budget drift accepted'
+  ! An all-evaporation dry-down with old age stock cannot silently
+  ! destroy the remaining age amount: it is currently unsupported.
+  q=surface_age_request_t()
+  q%dt_day=0.1_real64
+  q%pond_start_cm=1.0_real64
+  q%pond_age_stock_cm_day=3.0_real64
+  q%evaporation_depth_cm=1.0_real64
+  call advance_surface_age_budget(q,r)
+  if(r%status==SURFACE_AGE_OK) error stop 'full evaporation destroyed age stock'
   q=surface_age_request_t()
   q%dt_day=0.1_real64
   call advance_surface_age_budget(q,r)
