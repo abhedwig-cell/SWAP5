@@ -157,3 +157,13 @@ science. Hosted checkout87241e184 has exactly the same src/tests/tools/reference
 workflow trees as the reviewed candidate. Final receipt changes only docs, status
 and archive content. Exact final owning checks and reviewed/merged tree equality
 remain admission requirements.
+
+## Actual canonical admission
+
+PR1316 merged at829bfabade71a3e3156914275d2b3fdc65c29112. Reviewed head
+5ca83f2ad2f13cf2cd4f765ddfd32c879cdcbf36 and merge have identical tree
+d1e38a06c876869b09e722ab7ad5945a9b888a59. The complete current B111 owning
+chain passes again on the merge, including humus/atmospheric physical evidence,
+all selected retained/thermal/TCS6 gates and unchanged surface-age inputs.
+This admits the scoped humus and conservative residue correction. Full HIST
+completion, unrestricted native semantics and mastercoverage promotion remain false.
