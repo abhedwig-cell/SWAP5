@@ -185,8 +185,8 @@ contains
    if(code/=0)return
    actual=state%p%organic_reference
    ! Original wofost_soil_rateconstants task1: strict daily threshold,
-   ! then inclusive date switch, before temperature/moisture correction.
-   if(state%p%hum_exp_daily>1d-6.and.t0>=state%p%hum_exp_start_day) &
+   ! then inclusive end-of-day date switch, before environmental correction.
+   if(state%p%hum_exp_daily>1d-6.and.t1>=state%p%hum_exp_start_day) &
      actual%ratecon_hum=state%p%hum_exp_daily
    actual%ratecon_fom=actual%ratecon_fom*factor
    actual%ratecon_bio=actual%ratecon_bio*factor;actual%ratecon_hum=actual%ratecon_hum*factor

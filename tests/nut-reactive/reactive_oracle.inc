@@ -18,8 +18,8 @@
    WFPScrit=p%wfpscrit;WFPScrit2=p%environment%wfpscrit2;CdissiHalf=p%environment%cdissi_half_kg_m2
    RateconFOM_ref(1:nf)=p%organic_reference%ratecon_fom
    RateconBio_ref=p%organic_reference%ratecon_bio;RateconHum_ref=p%organic_reference%ratecon_hum
-   RateconHum_exp=p%hum_exp_daily;t1900Soil=1d0;tstartHumexp=p%hum_exp_start_day+1d0
-   if(present(soil_clock))t1900Soil=soil_clock+1d0
+   RateconHum_exp=p%hum_exp_daily;t1900Soil=2d0;tstartHumexp=p%hum_exp_start_day+1d0
+   if(present(soil_clock))t1900Soil=soil_clock+2d0
    RateConNitrif_ref=p%environment%nitrification_ref_per_day;RateConDenitr_ref=p%environment%denitrification_ref_per_day
    AsfaFOM_Bio(1:nf)=p%organic_reference%asfa_fom_bio;AsfaFOM_Hum(1:nf)=p%organic_reference%asfa_fom_hum
    AsfaBio=p%organic_reference%asfa_bio;AsfaHum=p%organic_reference%asfa_hum

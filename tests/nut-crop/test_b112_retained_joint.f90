@@ -348,7 +348,7 @@ contains
       'cNH4N_top = 0.','cNO3N_top = 0.'
    end if
    if(trim(selected)=='humus-profile')write(unit,'(A)') &
-     'RateconHum_exp = 0.04','tstartHumexp = 1901-12-30'
+     'RateconHum_exp = 0.04','tstartHumexp = 1901-12-31'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
    ! extraction while retaining root uptake, drainage and strict temporal
@@ -575,7 +575,7 @@ contains
     end if
    end if
    if(trim(selected)=='humus-profile')then
-    call require(sp%hum_exp_start_day==base_day+365d0,'source humus absolute day epoch')
+    call require(sp%hum_exp_start_day==base_day+366d0,'source humus absolute day epoch')
     call require(sp%hum_exp_daily==.04d0/365.2425d0,'source annual humus rate conversion')
     if(trim(mode)=='resume')then
      bad_sp=sp;bad_sp%hum_exp_daily=-1d0;bad_sp%hum_exp_start_day=0d0

@@ -99,7 +99,7 @@ program test_reactive_owner
  hum_rates=[-1d0,0d0,.5d-6,1d-6,1.0001d-6,.02d0/365.2425d0]
  do i=1,size(hum_rates)
   call parameters(p);p%hum_exp_daily=hum_rates(i)
-  if(i>1)p%hum_exp_start_day=1d0
+  if(i>1)p%hum_exp_start_day=2d0
   experiment_vector=reactive_parameter_vector(p)
   if(i==1)then
    call require(all(experiment_vector==base_vector),'absent humus experiment old parameter identity')

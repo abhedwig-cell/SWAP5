@@ -40,3 +40,17 @@ or full-HIST claim follows from this contract. RossFast stays outside scope.
 
 Affected invariants are1..4,7,9,11,13,21..23,25,26,28..30. The existing water/N
 mass gates, rollback, crop ownership and native schemas remain hard contracts.
+
+## Original caller-clock reconciliation
+
+The original swap caller executes TimeControl(3) before SoilManagement(2), then
+SoilManagement(4). TimeControl increments t1900 by dt; SoilManagement(2) assigns
+t1900Soil=t1900. The experiment therefore tests the interval endpoint, not its
+start. In SWAP5 daily coordinates the exact source predicate is t1>=start_day.
+Because TTUTIL dates identify calendar midnights, this can activate on the day
+preceding the nominal input date. This historical ordering is preserved explicitly,
+without silently applying a corrected calendar-start interpretation. A separate
+executable witness must bind the original caller/timecontrol source and prove
+the end-of-day selection. Initial t0-based development evidence is diagnostic
+only and cannot qualify this contract. The730-day fixture uses input1901-12-31,
+so the original endpoint predicate switches on the interval starting at day365.

@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "eb535816b1ae484b0587de18de6099bab8a53566",
+  "checkpoint_commit": "ba3eb412df2020efc6c63bb46de013764fd5958f",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -748,9 +748,20 @@
     "canonical_admitted": false,
     "mastercoverage_promotion": false,
     "direct_development_feedback": {
-      "reactive": "O0/O2 original rateconstant, organic and transport routines: 18 days covering strict threshold and inclusive date, opaque switch continuation PASS",
-      "native_input": "35 fixtures O0/O2 PASS"
+      "reactive": "Corrected endpoint-clock O0/O2 original full chemistry: 18 days PASS",
+      "native_input": "35 fixtures O0/O2 PASS",
+      "ttutil": "Seven original TTUTIL native fixtures O0/O2 PASS"
     },
-    "next_action": "Persist coherent implementation then fresh main O0/O2 closure with source124 and three730-day profiles, original TTUTIL seven-fixture oracle, exact transition restarts/identity rollback, affected retained/thermal/TCS6 and owning guard; integrate only scoped qualified capability."
+    "next_action": "Persist coherent implementation then fresh main O0/O2 closure with source124 and three730-day profiles, original TTUTIL seven-fixture oracle, exact transition restarts/identity rollback, affected retained/thermal/TCS6 and owning guard; integrate only scoped qualified capability.",
+    "caller_clock_reconciliation": {
+      "SOURCE_VERIFIED": true,
+      "authority": "integration/audits/evidence/SWAP431_HUMUS_CLOCK_AUTHORITY.tar.xz.b64",
+      "decoded_sha256": "eb2c33d8a93cd46ea175f964d768bc4bcbef04a5b9ff1f0f88cc5882632c3959",
+      "original_order": "TimeControl(3) increments t1900; SoilManagement(2) sets t1900Soil; SoilManagement(4) runs original rateconstants",
+      "production_predicate": "t1>=hum_exp_start_day, strict daily rate>1e-6",
+      "first_t0_checkpoint": "ba3eb412df2020efc6c63bb46de013764fd5958f",
+      "first_t0_feedback": "DIAGNOSTIC_ONLY_NOT_QUALIFIED",
+      "corrected_development_witness": "Original caller snippets and full original rateconstants O0/O2 PASS"
+    }
   }
 }
