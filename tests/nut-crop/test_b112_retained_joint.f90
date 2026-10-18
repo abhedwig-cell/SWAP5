@@ -451,6 +451,10 @@ contains
          day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
          day_receipt%joint%joint%diagnostics%max_accepted_substep_duration, &
          day_receipt%joint%joint%diagnostics%max_abs_step_mass_residual
+       print *,'temporal model max indicator / budget / source', &
+         day_receipt%joint%joint%diagnostics%max_temporal_indicator, &
+         cfg%numerical%model_temporal_indicator_budget, &
+         day_receipt%joint%joint%diagnostics%temporal_acceptance_source
      end if
      call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
    end do
