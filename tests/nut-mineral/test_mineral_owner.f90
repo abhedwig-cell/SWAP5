@@ -69,6 +69,28 @@ program test_mineral_owner
  call initialize_mineral(bad,9_int64,0d0,.3d0,pools,initial,status);call check(status/=0,'NaN params')
  call advance_mineral_day(state,2d0,nan,.3d0,0d0,0d0,0d0,0d0,r);call check(r%status/=0,'NaN time')
  call compare(state,restored)
+ ! Signed clean surface-water extension: an explicit opt-in amount, never
+ ! inferred from a failed water budget. Rain dilutes and evaporation concentrates.
+ call initialize_mineral(p,9_int64,0d0,.3d0,pools,initial,status)
+ call check(status==0,'clean surface initial owner')
+ restored=initial
+ call advance_mineral_day(initial,0d0,1d0,.31d0,0d0,0d0,0d0,0d0,r,surface_water=.006d0)
+ call check(r%status==0,'clean rain water carrier')
+ call initial%snapshot(time,water,saved,rev)
+ call near(saved%ammonium_n_kg_m2,pools%ammonium_n_kg_m2,'rain no dissolved NH4 input')
+ call near(saved%nitrate_n_kg_m2,pools%nitrate_n_kg_m2,'rain no dissolved NO3 input')
+ call advance_mineral_day(initial,1d0,2d0,.3d0,0d0,0d0,0d0,0d0,r,surface_water=-.006d0)
+ call check(r%status==0,'evaporation excludes advective N removal')
+ call initial%snapshot(time,water,saved,rev)
+ call near(saved%ammonium_n_kg_m2,pools%ammonium_n_kg_m2,'evaporation NH4 conservation')
+ call near(saved%nitrate_n_kg_m2,pools%nitrate_n_kg_m2,'evaporation NO3 conservation')
+ state=initial
+ call advance_mineral_day(initial,2d0,3d0,.31d0,0d0,0d0,0d0,0d0,r,surface_water=-.006d0)
+ call check(r%status/=0,'wrong signed surface flux rejected')
+ call compare(state,initial)
+ call advance_mineral_day(initial,2d0,3d0,.3d0,0d0,0d0,0d0,0d0,r,surface_water=nan)
+ call check(r%status/=0,'NaN surface flux rejected')
+ call compare(state,initial)
  print '(A)','MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS'
 contains
  subroutine compare(a,b)

@@ -34,6 +34,7 @@ module mod_fmr_b111_age_route
  type,public::age_receipt_t
   integer::status=AGE_INVALID,completed_substeps=0,process_status=0
   real(real64)::amount_before=0d0,amount_after=0d0,production=0d0,external_in=0d0,external_out=0d0
+  real(real64)::surface_input=0d0,surface_production=0d0,surface_runoff=0d0,infiltrated_age=0d0
   real(real64)::residual=0d0,max_water_residual=0d0
  end type
  public::initialize_age,consume_accepted_age_trace,export_age_restart,restore_age_restart
@@ -181,6 +182,10 @@ contains
       scale=max(1d0,abs(r%pond_to_soil_cm_day),abs(surface_receipt%infiltration_age_export_cm_day))
       if(abs(r%pond_to_soil_cm_day-surface_receipt%infiltration_age_export_cm_day)> &
          8192d0*epsilon(1d0)*scale)return
+      receipt%surface_input=receipt%surface_input+surface_receipt%external_age_input_cm_day
+      receipt%surface_production=receipt%surface_production+surface_receipt%age_production_cm_day
+      receipt%surface_runoff=receipt%surface_runoff+surface_receipt%runoff_age_export_cm_day
+      receipt%infiltrated_age=receipt%infiltrated_age+r%pond_to_soil_cm_day
       surface_trial=surface_next
     end if
     trial%amount=amount;trial%water=t%water_end;trial%time=t%t1

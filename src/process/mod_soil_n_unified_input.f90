@@ -33,7 +33,7 @@ contains
  ! The source-grounded bounded .snm keyword-array route is distinct from
  ! the bracketed modern export contract. No hidden grammar autodetection.
  if(len_trim(path)>=4)then
-  if(path(len_trim(path)-3:len_trim(path))=='.snm')then
+  if(snm_lower(path(len_trim(path)-3:len_trim(path)))=='.snm')then
    call read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages)
    return
   end if
@@ -80,7 +80,8 @@ contains
 
  ! Bounded keyword-array subset of original management_soil.f90 rdainr/
  ! rdfcha/rdatim/rdfinr/rdfdor input calls, not a claim of full TTUTIL syntax.
- ! All 11 management arrays must be complete, single-line, and equal-sized.
+ ! All 11 management columns must be complete and equal-sized within each table.
+ ! Supports typed tables, assignment arrays, continuation and positive repeats.
  ! Source nutrient scalars retain existing strict named-export validation.
  subroutine read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages)
   character(*),intent(in)::path,origin
@@ -95,8 +96,11 @@ contains
   character(256),allocatable::values(:,:)
   character(2048),allocatable::rows(:)
   character(512)::parameters(512),line
-  character(256)::word,field
+  character(256)::word,field,chunk(1000)
+  integer::value_line(11,1000),active_key,header(11),newheader(11),nh,col,idx
+  logical::is_header,array_declared(11),has_repeat
   integer::nvalues(11),nparam,nmat,nevt,unit,ios,nbytes,code,closed,record,j,k,eq,nt
+  integer::parameter_source_line(512),parameter_error_line,table_error_column
   logical::ok
   type(soil_n_amendment_calendar_t)::candidate_plan
   type(soil_n_historical_initial_t)::candidate_initial
@@ -106,8 +110,8 @@ contains
   rates=soil_n_historical_rates_t();candidate_ages=soil_n_residue_age_t()
   if(present(ages))ages=soil_n_residue_age_t()
   status=N_UNIFIED_IO;error_line=0
-  allocate(values(11,1000),rows(1002));values='';rows='';parameters=''
-  nvalues=-1;nparam=0;record=0
+  allocate(values(11,1000),rows(1022));values='';rows='';parameters=''
+  nvalues=-1;nparam=0;record=0;active_key=0;nh=0;value_line=0;array_declared=.false.
   open(newunit=unit,file=path,status='old',action='read',iostat=ios)
   if(ios/=0)return
   status=N_UNIFIED_INVALID
@@ -115,28 +119,90 @@ contains
    read(unit,'(A)',advance='no',size=nbytes,iostat=ios)line
    if(ios==iostat_end)exit
    record=record+1;error_line=record
+   if(record>4096)exit
    if(ios/=iostat_eor)exit
    word=adjustl(line)
    if(len_trim(word)==0.or.word(1:1)=='!'.or.word(1:1)=='*')cycle
    eq=index(line,'=')
-   if(eq<=1.or.eq>256)exit
-   field=adjustl(line(:eq-1));j=0
-   do k=1,11
-    if(trim(field)==trim(keys(k)))j=k
-   end do
-   if(j>0)then
-    if(nvalues(j)/=-1)exit
-    call read_snm_array_line(line(eq+1:),values(j,:),nt,ok)
+   if(eq==0)then
+    if(trim(word)==';')then
+     active_key=0;nh=0;cycle
+    end if
+    call read_snm_array_line(trim(line),chunk,nt,ok,has_repeat)
     if(.not.ok.or.nt==0)exit
-    nvalues(j)=nt
+    is_header=.true.
+    do col=1,nt
+     if(col>11)then
+      is_header=.false.;exit
+     end if
+     newheader(col)=snm_key(chunk(col),keys)
+     if(newheader(col)==0)is_header=.false.
+    end do
+    if(is_header)then
+     header=newheader
+     ! TTUTIL table columns are named identifiers, independently of order.
+     if(nt/=7.and.nt/=4)exit
+     if(nt==7.and.any(newheader(:nt)>7))exit
+     if(nt==4.and.any(newheader(:nt)<8))exit
+     do col=1,nt
+      idx=header(col)
+      if(nvalues(idx)/=-1)exit
+      nvalues(idx)=0;array_declared(idx)=.true.
+     end do
+     if(col<=nt)exit
+     nh=nt;active_key=0;cycle
+    end if
+    if(nh>0)then
+     if(nt/=nh.or.has_repeat)exit
+     do col=1,nh
+      idx=header(col)
+      if(nvalues(idx)==1000)exit
+      nvalues(idx)=nvalues(idx)+1
+      values(idx,nvalues(idx))=chunk(col);value_line(idx,nvalues(idx))=record
+     end do
+     if(col<=nh)exit
+    else
+     if(active_key==0)exit
+     if(nvalues(active_key)+nt>1000)exit
+     j=nvalues(active_key)
+     values(active_key,j+1:j+nt)=chunk(:nt)
+     value_line(active_key,j+1:j+nt)=record
+     nvalues(active_key)=j+nt
+     array_declared(active_key)=array_declared(active_key).or.has_repeat.or.j+nt>1
+    end if
    else
-    if(nparam==512.or.len_trim(line)>512)exit
-    nparam=nparam+1;parameters(nparam)=line
+    if(eq<=1.or.eq>256)exit
+    nh=0
+    field=adjustl(line(:eq-1));j=snm_key(field,keys)
+    if(j>0)then
+     if(nvalues(j)/=-1)exit
+     call read_snm_array_line(line(eq+1:),values(j,:),nt,ok,has_repeat)
+     if(.not.ok)exit
+     nvalues(j)=nt;value_line(j,:nt)=record;active_key=j
+     array_declared(j)=has_repeat.or.nt>1
+    else
+     active_key=0
+     if(nparam==512.or.len_trim(line)>512)exit
+     nparam=nparam+1;parameters(nparam)=line
+     parameter_source_line(nparam)=record
+    end if
    end if
   end do
   close(unit,iostat=closed)
   if(ios/=iostat_end.or.closed/=0)return
   if(any(nvalues<0).or.nparam==0)return
+  if(any(.not.array_declared))return
+  ! TTUTIL types are lexical, not Fortran list-directed coercions.
+  do j=1,11
+   do k=1,nvalues(j)
+    error_line=value_line(j,k)
+    if(j==1.or.j==9)then
+     if(verify(trim(values(j,k)),'0123456789')/=0)return
+    else if(j/=2.and.j/=8)then
+     if(scan(trim(values(j,k)),'.eEdD')==0)return
+    end if
+   end do
+  end do
   nmat=nvalues(1);nevt=nvalues(8)
   if(nmat<1.or.nmat>20.or.nevt>1000)return
   if(any(nvalues(2:7)/=nmat).or.any(nvalues(9:11)/=nevt))return
@@ -151,26 +217,62 @@ contains
    rows(nmat+2+k)=trim(values(8,k))//' '//trim(values(9,k))//' '// &
       trim(values(10,k))//' '//trim(values(11,k))
   end do
-  call parse_soil_n_amendment_tables(rows(:nmat+2+nevt),origin,candidate_plan,code,error_line)
-  if(code/=N_INPUT_OK)return
+  call parse_soil_n_amendment_tables(rows(:nmat+2+nevt),origin,candidate_plan,code,error_line,table_error_column)
+  if(code/=N_INPUT_OK)then
+   ! A normalized row retains the physical table row / first array item line.
+   if(error_line>=2.and.error_line<=nmat+1)then
+    error_line=value_line(table_error_column,error_line-1)
+   else if(error_line>=nmat+3.and.error_line<=nmat+2+nevt)then
+    error_line=value_line(7+table_error_column,error_line-nmat-2)
+   end if
+   return
+  end if
   call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial, &
-    candidate_rates,code,error_line,candidate_ages)
-  if(code/=N_NAMED_OK)return
+    candidate_rates,code,parameter_error_line,candidate_ages,native_snm=.true.)
+  if(code/=N_NAMED_OK)then
+    ! The named parser counts only extracted nutrient fields. Report the
+    ! physical source file record instead, including interleaved TTUTIL arrays.
+    if(parameter_error_line>=1.and.parameter_error_line<=nparam) &
+      error_line=parameter_source_line(parameter_error_line)
+    return
+  end if
   plan=candidate_plan;initial=candidate_initial;rates=candidate_rates
   if(present(ages))ages=candidate_ages
   status=N_UNIFIED_OK;error_line=0
  end subroutine
 
- subroutine read_snm_array_line(line,words,n,ok)
-  ! Strict comma/whitespace tokens, with single or double quoted names.
+ pure function snm_lower(s)result(v)
+  character(*),intent(in)::s
+  character(len(s))::v
+  integer::i,c
+  v=s
+  do i=1,len(s)
+   c=iachar(s(i:i));if(c>=65.and.c<=90)v(i:i)=achar(c+32)
+  end do
+ end function
+ integer function snm_key(field,keys)result(j)
+  character(*),intent(in)::field,keys(:)
+  integer::k
+  j=0
+  do k=1,size(keys)
+   if(trim(snm_lower(field))==trim(snm_lower(keys(k))))j=k
+  end do
+ end function
+
+ subroutine read_snm_array_line(line,words,n,ok,repeated)
+  ! Bounded TTUTIL values; a positive repeat explicitly declares an array,
+  ! including 1*value. Tables forbid repeats at the caller boundary.
   character(*),intent(in)::line
   character(256),intent(out)::words(:)
   integer,intent(out)::n
   logical,intent(out)::ok
-  integer::i,j,k,l
+  logical,intent(out),optional::repeated
+  integer::i,j,k,l,r,start,ios,rep
   character::quote
+  character(256)::token
   logical::need_value,has_value
   n=0;ok=.false.;words='';l=len_trim(line);i=1
+  if(present(repeated))repeated=.false.
   need_value=.false.;has_value=.false.
   do while(i<=l)
    if(line(i:i)==' '.or.line(i:i)==achar(9))then
@@ -178,13 +280,29 @@ contains
    end if
    if(line(i:i)=='!')exit
    if(line(i:i)==',')then
-    ! Empty elements and consecutive/trailing separators must not silently
-    ! change the historic material or event array cardinality.
     if(.not.has_value.or.need_value)return
     need_value=.true.;has_value=.false.;i=i+1;cycle
    end if
-   if(n==size(words))return
-   n=n+1;j=i
+   rep=1;start=i
+   do while(i<=l)
+    if(index('0123456789',line(i:i))==0)exit
+    i=i+1
+   end do
+   if(i<=l)then
+    if(line(i:i)=='*'.and.i>start)then
+     if(i-start>4)return
+     read(line(start:i-1),*,iostat=ios)rep
+     if(ios/=0.or.rep<=0.or.rep>size(words))return
+     if(present(repeated))repeated=.true.
+     i=i+1
+    else
+     i=start
+    end if
+   else
+    i=start
+   end if
+   if(i>l.or.n+rep>size(words))return
+   j=i
    if(line(i:i)==achar(39).or.line(i:i)=='"')then
     quote=line(i:i);i=i+1
     do while(i<=l)
@@ -201,7 +319,8 @@ contains
    end if
    k=i-j
    if(k<1.or.k>256)return
-   words(n)=line(j:i-1)
+   token=line(j:i-1)
+   words(n+1:n+rep)=token;n=n+rep
    if(i<=l)then
     if(line(i:i)=='!')then
      has_value=.true.;need_value=.false.;exit

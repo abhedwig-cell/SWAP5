@@ -26,7 +26,7 @@ The general historical TABLE, MODEL12 RIA and RIA vapor capabilities remain
 source-blocked and fail closed. This admission does not close the complete
 MC-HYD01/MC-HYST01 historical source envelope or retrospectively change the
 frozen September Status-A denominator.
-[Owning admission and open scope](../../integration/audits/SWAP431_HYD_HYST_STATUS.json)
+[Owning admission and open scope](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/integration/audits/SWAP431_HYD_HYST_STATUS.json)
 remain the authority for capability disposition.
 
 ## NET01 complete source counts2..25, 17 October 2026

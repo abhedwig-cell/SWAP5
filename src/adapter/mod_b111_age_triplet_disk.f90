@@ -37,11 +37,11 @@ contains
   if(water%ready().or.soil_age%ready())return
   call snapshot_surface_age_owner(surface_age,clock,depth,stock,revision,available)
   if(available)return
-  call read_age_joint_restart_file(joint_path,column,template,water_id,soil_age_id,p, &
-       water_trial,soil_trial,code)
-  if(code/=JOINT_OK)return
   call read_surface_age_disk(surface_path,surface_id,surface_trial,code)
   if(code/=AGE_DISK_OK)return
+  call read_age_joint_restart_file(joint_path,column,template,water_id,soil_age_id,p, &
+       water_trial,soil_trial,code,surface_trial)
+  if(code/=JOINT_OK)return
   if(.not.age_joint_states_match(water_trial,soil_trial,surface_trial))return
   water=water_trial
   soil_age=soil_trial

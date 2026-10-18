@@ -125,6 +125,7 @@ contains
     type(surface_age_source_ages_t),intent(in),optional::source_ages
     type(surface_age_owner_t)::surface_trial
     type(kernel_checkpoint_t)::checkpoint
+    type(kernel_committed_state_t)::water_trial
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
     type(age_state_t)::chemical_trial
@@ -175,8 +176,16 @@ contains
       return
     end if
     result%status=JOINT_COMMIT_REJECTED
-    call backend%commit_trial_candidate(water,candidate,result%diagnostics,did_commit,status)
+    ! Commit privately first. No rejected commit can publish a partial triplet.
+    water_trial=water
+    call backend%commit_trial_candidate(water_trial,candidate,result%diagnostics,did_commit,status)
     if(.not.did_commit)return
+    if(present(surface_owner))then
+      if(.not.age_joint_states_match(water_trial,chemical_trial,surface_trial))return
+    else
+      if(.not.age_joint_states_match(water_trial,chemical_trial))return
+    end if
+    water=water_trial
     chemical=chemical_trial
     if(present(surface_owner))surface_owner=surface_trial
     result%status=JOINT_OK

@@ -215,12 +215,21 @@ def incumbent(source_only=False):
  if not source_only:require(r['qualified']and r['tcs6_successor']and r['multilevel_divdra_successor']and r['reference_leaf_successor']and r['classic_annual_successor'],'incumbent authorities')
  return r
 def verify_source(git_reader=None):
+ if (ROOT/'tests/nut-crop/verify_hist_native_successor.py').is_file():
+  import verify_hist_native_successor as historical
+  return historical.verify_source(git_reader)
  require(git_reader is None,'unregistered projected reader');p,files=load_verified();old=incumbent(True)
  return {**old,'b112_retained_successor':True,'full_capability':False,'admitted':p['production_admitted'],'qualified':False,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()}
 def verify_qualification():
+ if (ROOT/'tests/nut-crop/verify_hist_native_successor.py').is_file():
+  import verify_hist_native_successor as historical
+  return historical.verify_qualification()
  p,files=load_verified();old=incumbent(False)
  return {**old,'incumbent':old,'b112_retained_successor':True,'full_capability':False,'admitted':p['production_admitted'],'qualified':True,'current_source_tree':subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip(),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 def main():
+ if (ROOT/'tests/nut-crop/verify_hist_native_successor.py').is_file():
+  import verify_hist_native_successor as historical
+  return historical.main()
  ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args();p,files=load_verified()
  if a.self_test:
   controls=[]

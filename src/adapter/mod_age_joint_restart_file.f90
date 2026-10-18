@@ -14,13 +14,14 @@ module mod_age_joint_restart_file
        reconstruct_age_trusted,AGE_OK
   use mod_fmr_b111_age_joint_application,only:age_joint_states_match,JOINT_OK,JOINT_INVALID
   use mod_solute_compartment_state,only:solute_compartment_state_t
+  use mod_b111_surface_age_owner,only:surface_age_owner_t
   implicit none
   private
   character(8),parameter::MAGIC='S5AJ0001'
   integer,parameter::MAX_BYTES=10485760
-  public::write_age_joint_restart_file,read_age_joint_restart_file
+  public::write_age_joint_restart_file,read_age_joint_restart_file,crc32
 contains
-  subroutine write_age_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status)
+  subroutine write_age_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status,surface_owner)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -28,6 +29,7 @@ contains
     type(kernel_committed_state_t),intent(in)::water
     type(age_state_t),intent(in)::chemical
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     type(fmr_committed_restart_bundle_t)::b
     type(b111_age_tracer_substep_forcing_t)::p
     type(solute_compartment_state_t)::s
@@ -38,7 +40,7 @@ contains
     logical::ok,has_history
     status=JOINT_INVALID
     if(column%state_handle/=1)return
-    if(.not.age_joint_states_match(water,chemical))return
+    if(.not.age_joint_states_match(water,chemical,surface_owner))return
     call fmr_export_committed_restart([column],[template],[water],water_parameter_id,b,ok,io)
     if(.not.ok.or.io/=FMR_RESTART_OK)return
     call chemical%configuration(p,id);v=age_parameter_vector(p)
@@ -82,7 +84,7 @@ contains
   end subroutine
 
   subroutine read_age_joint_restart_file(path,column,template,water_parameter_id,chemical_parameter_id,p, &
-       water,chemical,status)
+       water,chemical,status,surface_owner)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -91,6 +93,7 @@ contains
     type(kernel_committed_state_t),intent(inout)::water
     type(age_state_t),intent(inout)::chemical
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     type(fmr_committed_restart_bundle_t)::b
     type(kernel_committed_state_t)::temporary,water_trial(1)
     type(fmr_b110_physical_state_t)::physical
@@ -170,7 +173,7 @@ contains
         call reconstruct_age_trusted(p,id,revision,time,theta,amount,chemical_trial,io)
         if(io/=AGE_OK)exit decoding
         io=1
-        if(.not.age_joint_states_match(water_trial(1),chemical_trial))exit decoding
+        if(.not.age_joint_states_match(water_trial(1),chemical_trial,surface_owner))exit decoding
         io=0
       end associate
     end block decoding
@@ -200,6 +203,7 @@ contains
   subroutine append_crc(path,status)
     character(*),intent(in)::path
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     integer(int8),allocatable::bytes(:)
     integer::u,n,io
     integer(int32)::crc
@@ -220,6 +224,7 @@ contains
   subroutine check_crc(path,status)
     character(*),intent(in)::path
     integer,intent(out)::status
+    type(surface_age_owner_t),intent(in),optional::surface_owner
     integer(int8),allocatable::bytes(:)
     integer::u,n,io
     integer(int32)::actual,expected

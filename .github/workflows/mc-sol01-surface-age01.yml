@@ -7,6 +7,10 @@ on:
       - 'src/process/mod_b111_surface_age_owner.f90'
       - 'src/adapter/mod_b111_surface_age_disk.f90'
       - 'src/adapter/mod_b111_age_triplet_disk.f90'
+      - 'src/adapter/mod_b111_age_snapshot_disk.f90'
+      - 'src/adapter/mod_age_joint_restart_file.f90'
+      - 'tests/nut-sol/test_surface_age_joint.f90'
+      - 'tests/nut-sol/run_age.py'
       - 'tests/nut-sol/test_surface_age_disk.f90'
       - 'tests/nut-sol/test_surface_age_disk_process.f90'
       - 'tests/nut-sol/test_age_joint.f90'
@@ -43,7 +47,7 @@ jobs:
       - name: Compile real Reference closure and run age bridge
         run: bash tests/nut-sol/run_surface_age_trace_bridge.sh
 
-  physical-dry-pond-triplet:
+  physical-pond-age-triplet:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
