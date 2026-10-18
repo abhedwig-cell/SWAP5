@@ -72,7 +72,7 @@ contains
       if(forcing%rutter%result%net_rain_cm_per_day/=supply%rain_rate.or. &
           forcing%rutter%result%net_surface_irrigation_cm_per_day/=supply%irrigation_rate)return
     else
-      if(supply%runon_rate/=0d0)return
+      if(supply%runon_rate/=0d0.and..not.allocated(forcing%pond_input))return
     end if
     if(allocated(forcing%pond_input))then
       if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
