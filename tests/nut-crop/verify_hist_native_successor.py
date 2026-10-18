@@ -65,7 +65,7 @@ def validate(h,p,reader=lambda q:(ROOT/q).read_bytes(),atmospheric=False,humus=F
   if e['category']=='negative_native':require(e['returncode']!=0 and 'variable is scalar'in stdout,'TTUTIL source scalar rejection')
   else:require(e['returncode']==0,'TTUTIL checked execution')
   if e['category']=='native':require('ORIGINAL_TTUTIL_TYPED_ARRAY_TABLE_DATE_INTERPRETATION=PASS'in stdout,'TTUTIL raw interpretation')
-  if e['category']=='native'and Path(e['command'][-1]).stem.startswith('hum_'):require('ORIGINAL_TTUTIL_OPTIONAL_HUMUS_RATE_DATE=PASS'in stdout,'TTUTIL raw humus interpretation')
+  if e['category']=='native'and Path(e['command'][1]).stem.startswith('hum_'):require('ORIGINAL_TTUTIL_OPTIONAL_HUMUS_RATE_DATE=PASS'in stdout,'TTUTIL raw humus interpretation')
  small=result(h,'nut-focused-a5');joint=result(p,'joint');phases=result(p,'phases');tcs=result(p,'tcs6')
  for x in [small,joint,phases,tcs]:inputs(x)
  sf={k.replace('nut-focused-a5/','small/',1):v for k,v in h.items()if k.startswith('nut-focused-a5/')};retained.verify_execution_inventory('small',sf,small)
@@ -206,7 +206,7 @@ def main():
  if humus:
   hh=dict(h);hh['nut-hist-capacity-qualified/O2/humus-profile-fresh-366']+=b'x';reject('humus transition drift',hh,p)
   hh=dict(h);e=json.loads(hh['humus-clock/events.json']);hh['humus-clock/events.json']=json.dumps([x for x in e if x['category']!='native']).encode();reject('missing original clock execution',hh,p)
-  hh=dict(h);e=json.loads(hh['nut-ttutil-final3/events.json']);hh['nut-ttutil-final3/events.json']=json.dumps([x for x in e if not(x['category']=='native'and Path(x['command'][-1]).stem.startswith('hum_'))]).encode();reject('missing original humus input execution',hh,p)
+  hh=dict(h);e=json.loads(hh['nut-ttutil-final3/events.json']);hh['nut-ttutil-final3/events.json']=json.dumps([x for x in e if not(x['category']=='native'and Path(x['command'][1]).stem.startswith('hum_'))]).encode();reject('missing original humus input execution',hh,p)
   pp=dict(p);pp['humus-audit/O0/endpoint']+=b'x';reject('humus observational state drift',h,pp)
  if humus:
   hh=dict(h);e=json.loads(hh['nut-material-a5/events.json']);hh['nut-material-a5/events.json']=json.dumps([x for x in e if x['category']!='native']).encode();reject('missing residue correction execution',hh,p)

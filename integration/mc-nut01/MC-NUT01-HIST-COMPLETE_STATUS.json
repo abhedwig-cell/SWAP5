@@ -16,7 +16,9 @@
     "Opt-in accepted-trace signed clean atmospheric water through existing mineral/reactive/crop owners; default top-flux rejection remains; no new physical state or restart schema",
     "Six fresh-process transition restarts per optimization, byte-exact rejected-trial rollback on two days and whole-N cumulative inventory closure",
     "Native historical top NH4/NO3 concentrations bind through existing immutable parameters and accepted-water route; nonzero parameter identity extends existing vector while old zero-top bytes remain exact",
-    "Independent original TTUTIL boundary-reader witness executes B0 defect and explicit B1 one-target correction at O0/O2"
+    "Independent original TTUTIL boundary-reader witness executes B0 defect and explicit B1 one-target correction at O0/O2",
+    "Original optional humus annual rate/start date, strict daily threshold and original endpoint caller-clock binding through existing reactive owner; no new state/schema",
+    "Conservative rejected-residue representation correction within eight spacings, compensated through existing NH4 transfer with original declared external N and hard positivity gates"
   ],
   "persisted": true,
   "tested": false,
@@ -40,7 +42,10 @@
     "docs/development/workstream-execution-protocol.md",
     "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64",
     "integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64",
-    "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md"
+    "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md",
+    "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
+    "docs/science/MC_NUT01_RESIDUE_N_FRACTION_ROUNDOFF_CONTRACT_20261018.md",
+    "docs/science/MC_NUT01_HIST_HUMUS_QUALIFICATION_20261018.md"
   ],
   "dependency_surface": [
     "Richards daily transaction and forcing",
@@ -49,14 +54,14 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Run bound observational water/N audits and finish current full retained then fresh thermal/TCS6; package all raw results and failed day397/rollback evidence, qualify exact owning guards and required integrated workflows before scoped canonical integration.",
-  "recovery_point": "work/nut-hist-humus-20261018; persisted production05917ba8, exact O0/O2 qualification active; canonical65db9490 differs from admitted d491 only in age admission metadata/docs",
+  "next_action": "Persist exact evidence and current strict guards, execute complete owning chain on exact committed candidate, then open PR and actively monitor necessary focused/historical/actual/docs Actions through terminal; qualified scoped merge only after current canonical reconciliation.",
+  "recovery_point": "work/nut-hist-humus-20261018; production05917 O0/O2 and all selected retained/thermal/TCS6 local gates pass. Evidence capsules and exact strict guard postimages in this pending checkpoint; full HIST remains unqualified.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
-    "General TTUTIL constructs, fractional timestamps and experimental humus/extended-output semantics remain unsupported; no full original-model multiyear comparison is available."
+    "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Humus local proof passes but its admission gates are pending."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "eb535816b1ae484b0587de18de6099bab8a53566",
+  "last_reconciled_head": "fb6611c9816ac8f3339db42c201944dd21cd8f2b",
   "last_reconciled_upstream": "65db94901eba8222b070920827621fdffddb2180",
   "pr_1301": {
     "merged": true,
@@ -280,15 +285,15 @@
       "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": true,
-      "scope": "Qualified bounded PR1314 candidate: native top NH4/NO3 through existing transport, daily fixed-flux infiltration/evaporation, original transport/chemistry comparisons, all six fresh-process transition identities and atomic rejection. General gross atmospheric/ponding semantics remain unsupported; canonical admission pending merge."
+      "scope": "Qualified bounded PR1314 candidate: native top NH4/NO3 through existing transport, daily fixed-flux infiltration/evaporation, original transport/chemistry comparisons, all six fresh-process transition identities and atomic rejection. General gross atmospheric/ponding semantics remain unsupported; canonically admitted through PR1314."
     },
     {
-      "part": "Experimental humus and extended crop output",
+      "part": "Experimental humus turnover",
       "SOURCE_VERIFIED": true,
-      "IMPLEMENTED": false,
+      "IMPLEMENTED": true,
       "TESTED": true,
       "QUALIFIED": false,
-      "scope": "UNSUPPORTED RateconHum_exp/tstartHumexp; flCropExt diagnostics not migrated"
+      "scope": "Native paired RateconHum_exp/tstartHumexp; original TTUTIL/rateconstants/caller-clock O0/O2 proof and730-day exact restart pass on05917. Required owning/integrated admission pending; no full-HIST claim."
     },
     {
       "part": "General TTUTIL constructs",
@@ -305,6 +310,14 @@
       "TESTED": true,
       "QUALIFIED": true,
       "scope": "Original TTUTIL executes exact B0 six-read slice and explicit one-destination B1 correction at O0/O2. Distinct cNO3N_seep/cNO3N_lat input supported; no B0 full-model equivalence claim."
+    },
+    {
+      "part": "Extended crop diagnostic output",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": false,
+      "TESTED": false,
+      "QUALIFIED": false,
+      "scope": "UNSUPPORTED flCropExt extended diagnostic output; no false/true token or output-equivalence claim."
     }
   ],
   "bounded_successor": {
@@ -467,124 +480,92 @@
   "historical_guard": {
     "baseline": "d4912b3c37461ad918f37c53b236fa1d62478de6",
     "physical_evidence": {
-      "path": "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_N_20261018.tar.xz.b64",
-      "decoded_sha256": "75465b9278c352042c6985ebb22ca79456149e35bedbf15adea1c0aa7c0bc5e2",
-      "text_sha256": "ed24da45c2ff4b84aae34b293e9bbb4c78a693a64a82463d4dc3edf1601be66a",
-      "members": 4312,
-      "compressed_bytes": 239816
+      "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_20261018.tar.xz.b64",
+      "decoded_sha256": "f22ab0364c14fbe924caaee5759a02f444cc4029d1d452a3f25402a50dd69596",
+      "text_sha256": "29273063e6e703fded6d0f1278ec5a67881cd7fdc73616afd6dce86b5fd883fc",
+      "members": 7238,
+      "compressed_bytes": 312488
     },
     "retained_evidence": {
-      "path": "integration/audits/evidence/MC_NUT01_HIST_ATMOSPHERIC_RETAINED_20261018.tar.xz.b64",
-      "decoded_sha256": "4fd9710417e888128c41816f007b7f70359d89cfed279fad42c658cb718dc83a",
-      "members": 2457,
-      "compressed_bytes": 286816,
-      "text_bytes": 382425
+      "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_RETAINED_20261018.tar.xz.b64",
+      "decoded_sha256": "4f7af53ae0c54160373b6993b31a20e77441815d9be326fe2cb11032f6533d42",
+      "members": 2504,
+      "compressed_bytes": 238980,
+      "text_bytes": 318641
     },
     "postimages": {
-      "src/crop/mod_crop_soil_n_day.f90": {
+      "src/process/mod_b111_soil_n_addition.f90": {
         "status": "M",
-        "sha256": "5d897295be4a4881d101f0ee23e4258dbb5c4f93e9260dfb4a3533ddec662fd9"
-      },
-      "src/process/mod_b111_soil_n_mineral_owner.f90": {
-        "status": "M",
-        "sha256": "18f2add7cba4099d6b4ef502dd5cef5ce900d97a181c955412c1c8e384316a47"
+        "sha256": "95379aca31474bd96bc091fa9b407cc450ac678e4c6ac824c13f9f7bf7440092"
       },
       "src/process/mod_b111_soil_n_reactive_owner.f90": {
         "status": "M",
-        "sha256": "6c5472b7534ffacda3e23dcd19619443b00086ac38cb290b5f69d4415a667eee"
-      },
-      "src/process/mod_soil_n_amendment_input.f90": {
-        "status": "M",
-        "sha256": "c69fef68b42914e3b2d3a7044ab58df0c067324aef19fe96dcef86ed894f3005"
+        "sha256": "88f46b41ee95c979b84ed2cab69aba07a597fc97db68c573c5177e65229aa5b2"
       },
       "src/process/mod_soil_n_historical_activation.f90": {
         "status": "M",
-        "sha256": "00177d9dbc85cd2958fedd67e622006c5d69b97ee3e72502363da18fd1c2b83a"
+        "sha256": "10052ef5ca222a0cb828c55ace1f6c06a15f89e52731f9257cb118df7bcd4168"
       },
       "src/process/mod_soil_n_historical_named_input.f90": {
         "status": "M",
-        "sha256": "04fb966431d6c115c308588514da456f16c28e08f927724ed3aa93a9a87119a1"
-      },
-      "src/process/mod_soil_n_unified_input.f90": {
-        "status": "M",
-        "sha256": "97653bd317dcecd33398ae6a1297d5ce224ef9c3f46e888bd47f9025cd9a0e78"
-      },
-      "src/runtime/mod_fmr_b111_mineral_route.f90": {
-        "status": "M",
-        "sha256": "4bd25e2f93d9d099baf444fd3413c433c866485cef02d86fe42ac18f3408b6fe"
-      },
-      "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": {
-        "status": "M",
-        "sha256": "8c3b9137956062ae1ee891eb7fd2b69e21a10573169a10e6b85f96ca1d76b1b1"
-      },
-      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
-        "status": "M",
-        "sha256": "7226055669c0bf03be57d2765a276c6d46513ee3ae9b5d93894a8630903e28a9"
-      },
-      "src/runtime/mod_fmr_crop_soil_n_material_application.f90": {
-        "status": "M",
-        "sha256": "ac33dd4bdc153aed077dfe0c1089cd395c19cdbe47f7a1493c3aa1563edd2f84"
-      },
-      "src/runtime/mod_fmr_crop_soil_n_senescence_application.f90": {
-        "status": "M",
-        "sha256": "473c55cdcb8c06c514b1c2ca80c6d031f2e11674a7b59c0d7fcdc8bda55defed"
+        "sha256": "a4ee4d70fcdabb606d208214f762b0458dfaf3d07a6037e7cc37a162458f908e"
       },
       "tests/nut-crop/prepare_oracle.py": {
         "status": "M",
-        "sha256": "b84b5928b82bf6d2035ff246b45dd898b40b1ae757294b807d2bbbc5800abcbb"
+        "sha256": "9b8367f3189bbe556ca821754afc60822e8fd19f3ad03e178a4fedd4f81a60f0"
       },
       "tests/nut-crop/run_hist_complete.py": {
-        "status": "A",
-        "sha256": "7bb11069e0f481bd55e35b0148c0f885dbfe74b0972717046ffe6050a601e8b4"
+        "status": "M",
+        "sha256": "38e97debf129d8c8452e76e888930487b83ca1af291f9b238c9499294b21bbf3"
       },
       "tests/nut-crop/run_hist_water_audit.py": {
-        "status": "A",
-        "sha256": "f77a5825396de95201d49416640c04709f95a24a510818beaba040bc9a92ecf8"
+        "status": "M",
+        "sha256": "21c4e73f4ef256848780e88b4e5a550267c99abd37a18ddd85558682d71914c2"
       },
       "tests/nut-crop/test_b112_retained_joint.f90": {
         "status": "M",
-        "sha256": "d33ad8e9c840308b7ac3e0124acb1a5101a8d29e2c2c63135b3b74874eed7e2d"
-      },
-      "tests/nut-crop/verify_b112_retained_successor.py": {
-        "status": "M",
-        "sha256": "2e9057f234f6018638f917564dee4236888a7d950ed8223e4126e3c621f9b6c0"
+        "sha256": "c785cf8beb44aa07089713cd8e2108e52e0d5aaf1b25930c4ac15f6eb401c080"
       },
       "tests/nut-crop/verify_hist_native_successor.py": {
-        "status": "A",
-        "sha256": "1cb588b7ba1a17350a1d2805d57670be4a3265c0b80557b02de2603785152671"
+        "status": "M",
+        "sha256": "8afded62a9bc867911621a43048a88e58c57a2c3db25fdcdf198c5feb497e88e"
       },
-      "tests/nut-input/run_boundary_source_witness.py": {
+      "tests/nut-input/run_humus_clock_witness.py": {
         "status": "A",
-        "sha256": "b8ae45f8fa62e345c6c23b2eb6fe6d973f1dec68f2f0c8dc98b6b557f0c3e924"
+        "sha256": "217b9cd0a12f5957fdd2fa13e625cc89b2916f9a80712762de58764932187dec"
       },
       "tests/nut-input/run_native_snm.py": {
-        "status": "A",
-        "sha256": "8b98de84019ceca6c33f47840936554d9505b5cdfc12bb579464b4698305eb8f"
+        "status": "M",
+        "sha256": "5554014e5f420ae10927b5c187cde035faaee3f96294cf09a27735693dbc955d"
       },
       "tests/nut-input/run_ttutil_native_oracle.py": {
-        "status": "A",
-        "sha256": "65042cbd2f21bf6bad073e2288f80aa49f009b17db313fa833f1264b5f1246e7"
+        "status": "M",
+        "sha256": "954f54f09dd95d428aa650d93cd55cc828f4e16f9b8b83880c14bb3d122f6816"
       },
       "tests/nut-input/test_native_snm.f90": {
-        "status": "A",
-        "sha256": "56529cbba0dce29691c6c3b568a7acfc1f40aeec256ecf724c9ef63bcf50abe5"
-      },
-      "tests/nut-mineral/test_mineral_owner.f90": {
         "status": "M",
-        "sha256": "bb3713f6cdf73040c11e9d7f9c9bcc525960c6a02f712401d51626d7def4c18f"
+        "sha256": "234a54c3315ec87589899f0c3d87834c4ac21d62a08841c9aecc54bf3b6a1a59"
+      },
+      "tests/nut-material/test_material_addition.f90": {
+        "status": "M",
+        "sha256": "4fda56f0c0ff2786f63f864c0b264f3d62077a3c066fba473c754aaad3d825dd"
       },
       "tests/nut-reactive/reactive_oracle.inc": {
         "status": "M",
-        "sha256": "cffeb027e59c036118550b6c898d57787cd22a39c127062e05f1d02d414f9a64"
+        "sha256": "dec109651ea545b5adcf0a69487de82aa81eee7fd7c88529bbda7e6dc7d7dfa6"
       },
       "tests/nut-reactive/test_reactive_owner.f90": {
         "status": "M",
-        "sha256": "5b854c1a212840a753f0f51e281fc6f1aa08d957ae252a7379c9c0a1c6ed30f0"
+        "sha256": "1eacf1dafe9394bbc93f1062796bf6266976563eee95497f1f1054cfb090bed1"
+      },
+      "tests/nut-sol/verify_surface_age_successor.py": {
+        "status": "M",
+        "sha256": "98208718ee15c98dd3e5523c87534ca6bc16312598202a10b232f737d2b16dc6"
       }
     },
-    "scope": "Bounded native grammar, clean surface carrier,730-day synthetic rotation and complete current retained/thermal/TCS6 preservation; full historical capability remains false",
+    "scope": "Bounded original TTUTIL/SNM humus experiment, original endpoint-clock chemistry, conservative residue representation; source124 plus three730-day production profiles and complete current retained/thermal/TCS6 preservation; full HIST capability remains false",
     "mastercoverage_promotion": false,
-    "control_count": 8,
+    "control_count": 18,
     "negative_controls": [
       "transition payload",
       "rejected state",
@@ -593,10 +574,20 @@
       "missing retained native",
       "missing thermal native",
       "missing TCS6",
-      "body drift"
+      "body drift",
+      "clean-only state leak",
+      "missing atmospheric execution",
+      "missing atmospheric input",
+      "unqualified source correction",
+      "humus transition drift",
+      "missing original clock execution",
+      "missing original humus input execution",
+      "humus observational state drift",
+      "missing residue correction execution",
+      "missing conservative residue proof"
     ],
     "original_frozen_controls": 23,
-    "qualification_execution": "Run source-only, full owning chain and8 mutation controls after persisting exact verifier postimage; results recorded in PR1313 and final canonical receipt",
+    "qualification_execution": "Require exact current owning chain and18 actual mutation controls after persisting evidence; integrated focused/historical/actual workflows remain required; old failed/cancelled runs retained as non-PASS.",
     "atmospheric_n": true,
     "previous_bounded_physical_evidence": "integration/audits/evidence/MC_NUT01_HIST_NATIVE_ROTATION_20261018.tar.xz.b64",
     "previous_bounded_retained_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64",
@@ -761,7 +752,7 @@
     }
   },
   "humus_experiment_successor": {
-    "status": "LOCAL_PRODUCTION_PASS_PRESERVATION_PENDING",
+    "status": "LOCAL_PHYSICAL_AND_PRESERVATION_PASS_OWNING_INTEGRATED_PENDING",
     "branch": "work/nut-hist-humus-20261018",
     "base_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
     "contract": "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
@@ -773,7 +764,7 @@
       "native_input": "38 fixtures O0/O2 PASS on05917ba8",
       "ttutil": "Ten original TTUTIL fixtures O0/O2 PASS on05917ba8"
     },
-    "next_action": "Run bound observational water/N audits and finish current full retained then fresh thermal/TCS6; package all raw results and failed day397/rollback evidence, qualify exact owning guards and required integrated workflows before scoped canonical integration.",
+    "next_action": "Persist exact evidence and current strict guards, execute complete owning chain on exact committed candidate, then open PR and actively monitor necessary focused/historical/actual/docs Actions through terminal; qualified scoped merge only after current canonical reconciliation.",
     "caller_clock_reconciliation": {
       "SOURCE_VERIFIED": true,
       "authority": "integration/audits/evidence/SWAP431_HUMUS_CLOCK_AUTHORITY.tar.xz.b64",
@@ -798,9 +789,10 @@
       ],
       "original_failed_trial_full_native_bytes_preserved": true,
       "rollback_payload_bytes": 3136,
-      "local_feedback": "Original negative-organic edge, one..eight spacing conservative NH4 debit, beyond-bound/amendment rejection and unavailable-N rollback PASS O0/O2; targeted ABI-identical single-provider retry reaches730 days; not qualified",
+      "local_feedback": "Fresh two-provider O0/O2 original negative-organic edge, one..eight spacing conservative NH4 debit, N/OM own-precision closure, beyond-bound/amendment rejection and unavailable-N rollback PASS. Fresh full05917 O0/O2 main730 reaches PASS; required retained preservation pending.",
       "full_gate_attempt": "First main f9 fails day397; first retained f9 cancelled after concrete production fix became necessary; never counted PASS",
-      "gates_relaxed": false
+      "gates_relaxed": false,
+      "rollback_payload_sha256": "87d9521b090bd52b5d9577bc383a20d775a89d1311c516ccb11e5d7f0bf492c5"
     },
     "upstream_reconciliation": {
       "canonical": "d4912b3c37461ad918f37c53b236fa1d62478de6",
@@ -834,6 +826,70 @@
         "humus-profile": "a73ddf64385899434d0959be5bdc9430f3dcfd46fa1fdc8d231b7b7f77889d50"
       },
       "previous_endpoints_byte_identical": true
-    }
+    },
+    "physical_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_20261018.tar.xz.b64",
+      "decoded_sha256": "f22ab0364c14fbe924caaee5759a02f444cc4029d1d452a3f25402a50dd69596",
+      "text_sha256": "29273063e6e703fded6d0f1278ec5a67881cd7fdc73616afd6dce86b5fd883fc",
+      "members": 7238,
+      "compressed_bytes": 312488,
+      "blob_sha": "cd5352b591c1857b4de58e01550bd49fe7fedc8f"
+    },
+    "water_n_audit": {
+      "AUDIT_WATER_CM": [
+        10.377346899380083,
+        6.194825028434364e-05,
+        28.164960854763596,
+        0.0,
+        0.4650182252684006,
+        27.699930239845116,
+        10.377421237280426,
+        1.7763568394002505e-14
+      ],
+      "AUDIT_N_KG_M2": [
+        0.009642000000000001,
+        0.0004965,
+        0.0008914527214670207,
+        0.002325934383678155,
+        0.00274461230264632,
+        0.00499674146054797,
+        0.00039999999999995595,
+        0.006862910133890103
+      ],
+      "AUDIT_BOUNDARY_N_KG_M2": [
+        4.650389582411417e-05,
+        0.0008449488256429077,
+        0.0
+      ],
+      "AUDIT_STATE_RANGE": [
+        0.3313437794793025,
+        0.4039759894671573,
+        -91.01662183697339,
+        -22.17468522605584
+      ],
+      "AUDIT_NUMERICAL": [
+        14025.0,
+        60584.0,
+        0.0,
+        60584.0,
+        3.814697265625e-06,
+        0.9999596991660622
+      ]
+    },
+    "retained": {
+      "joint": "B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED",
+      "thermal": "B112_THERMAL_PHASES_AND_ORIGINAL_BYTES_PASS",
+      "tcs6": "B112_CURRENT_TCS6_54_NATIVE_AND_ENDPOINT_BYTES_PASS",
+      "tcs6_actual_native": 54
+    },
+    "retained_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_RETAINED_20261018.tar.xz.b64",
+      "decoded_sha256": "4f7af53ae0c54160373b6993b31a20e77441815d9be326fe2cb11032f6533d42",
+      "members": 2504,
+      "compressed_bytes": 238980,
+      "text_bytes": 318641,
+      "blob_sha": "8c87e37a5f0ba25bec732b30d9d204e98e23b7f1"
+    },
+    "guard_negative_controls": 18
   }
 }
