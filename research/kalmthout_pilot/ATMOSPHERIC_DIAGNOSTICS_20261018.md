@@ -83,3 +83,20 @@ rainfall-only at hour 23. RossFast is not involved.
 The temporary `KALMTHOUT_TOP_REGIME` instrumentation in the work branch
 is bounded to the diagnostic time window, and must be removed before
 production admission.
+
+## SWAP 4.3.1 source-side comparison, 2026-10-18
+
+Source read at pilot HEAD `d44053ea594a77e93209022bb6f3d85ae5fca631`:
+`reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90`,
+`reference/swap-4.3.1/b1_11_frost_source/SWAP/headcalc.f90`,
+`src/solver/mod_b110_dynamic_top_boundary_provider.f90` and
+`src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90`.
+
+The source-derived correspondence is explicit:
+- Both old and new compute `q1 = -q0 - pondm1/dt`, test atmospheric limiting flux `q1 >= 0 and q1 > Emax`, and use `h0 = h(1)-disnod(1)*(q1/k1max+1)` for flux versus ponded head.
+- Both use `h0 <= 1e-6 cm` for the flux branch and the analytical `p1, p2, h0max` ponding formula for the other branch.
+- The experimental rewriting `h0max=(p1*p2)*h0` is algebraically equivalent in the no-macropore/no-runoff entry and is **not** a scientific change to legacy regime selection.
+- Legacy `headcalc.f90` also explicitly checks individual compartment flux residuals and head iterations, followed by the ponded-surface mass balance when `ftoph`. Corresponding SWAP5 solver iteration order, Jacobian and route switching have **not** yet been proven equivalent.
+- Existing postimage run 39122723811 failed at the exact previous interval, with 547 solver rejects, zero temporal rejects and zero mass rejects. Thus cancellation alone is ruled out as a sufficient remedy.
+
+The next discriminating test is a **real-production-interface** solver trial from the persisted last accepted state at the 2024-03-09 13:00 interval, recording per-Newton-iteration candidate top head, branch, residual, Jacobian/derivative and backtracking decision at O0/O2. Contrast the legacy `boundtop/headcalc` iterate-level decision with the new provider and solver. Preserve exact evap demand, accepted state, mass threshold and rollback. Do not substitute threshold tuning, arbitrary demand scaling or RossFast. The source comparison itself is analysis, not test/qualification evidence.
