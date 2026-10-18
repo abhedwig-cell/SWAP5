@@ -43,11 +43,13 @@ contains
     state%initialized=.true.
     status=AGE_OWNER_OK
   end subroutine
-  pure subroutine snapshot_surface_age_owner(state,time_day,depth_cm,stock_cm_day,revision,valid)
+  pure subroutine snapshot_surface_age_owner(state,time_day,depth_cm,stock_cm_day,revision,valid,identity)
     type(surface_age_owner_t),intent(in)::state
     real(real64),intent(out)::time_day,depth_cm,stock_cm_day
     integer(int64),intent(out)::revision
     logical,intent(out)::valid
+    integer(int64),intent(out),optional::identity
+    if(present(identity))identity=state%identity
     time_day=state%time_day
     depth_cm=state%depth_cm
     stock_cm_day=state%stock_cm_day
