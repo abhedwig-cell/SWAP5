@@ -99,3 +99,31 @@ Disabled mode retains its exact original addition order. Independent constant
 flux traces of1000/2048/4096 accepted substeps test the existing crop envelope,
 original disabled bytes and unchanged full water closure. Actual physical and
 transition qualification remains mandatory after this changed provider.
+
+## Confirmed implicit-mixing cancellation successor
+
+The exact accepted field-loam trace (initially dry surface, original hydraulic
+material) rejects the reactive day inside the existing shared pond-solute leaf,
+not crop preparation. A two-provider replay reproduces the fifth trace entry at
+both O0/O2: computed remaining mass -4.1359030627651384e-25mg/cm2 although end
+water storage is exactly zero. The checked first-five-entry fixture and full
+trace provenance are versioned. This is a cancellation defect in the existing
+SWAP5 mixing arithmetic; the original SWAP4.3.1 evidence remains immutable.
+
+For zero macropore area, the same implicit equation is
+A=C*(V-q*dt+R), hence remaining storage is V*C. Only when the previous subtraction
+rounds negative, use that algebraically identical storage expression. Existing
+successful outputs retain their exact operations and bytes. Nonzero macropore
+area remains unchanged, including rejection semantics; no parallel physics,
+N owner, clipping tolerance or balance relaxation is introduced. The cutoff and
+implicit mixing convention stay fixed. This narrow numerical correction does
+not qualify complete evaporative age dry-down or other MC-SOL extensions.
+
+The selected direct matrix compares20000 cases against the exact canonical
+predecessor module compiled as a test reference, checks all previous successful
+and macropore outputs bitwise and independently checks corrected storage/budget.
+The complete accepted4874-entry day trace is also replayed through the real
+persistent owner O0/O2. Actual field composition follows using one exact ABI-
+compatible provider replacement for local feedback; all other checked provider
+inputs/artifacts stay bound. Fresh full-closure compilation and all owning
+scientific/preservation gates remain required before admission.

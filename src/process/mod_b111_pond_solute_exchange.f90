@@ -60,6 +60,14 @@ contains
     end if
     result%mass_after=available-result%runoff_output
   end if
+  ! In zero-macropore mixing, A=C*(V-q*dt+runoff), so the remaining
+  ! storage is exactly V*C. Near complete emptying, subtracting the two
+  ! delivered amounts can round below zero. Use the same storage identity
+  ! only for that rejected cancellation case; all previous valid bytes and
+  ! macropore semantics remain unchanged. No mass tolerance is increased.
+  if(result%mass_after<0d0.and.macropore_area==0d0)then
+    if(qtop< -1d-6.or.ro>0d0)result%mass_after=pond_end*result%pond_concentration
+  end if
   if(result%mass_after<0d0.or..not.all(ieee_is_finite([ &
     result%pond_concentration,result%soil_transfer,result%runoff_output,result%mass_after])))return
   result%balance_residual=result%mass_after+result%soil_transfer+result%runoff_output-available
