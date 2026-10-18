@@ -48,3 +48,39 @@ corrected route would retain separate surface NH4/NO3, move only infiltrated
 N to soil, export runoff N, retain solute on evaporation and serialize the
 remaining inventory. No such new physical semantics are admitted by this label
 patch. Full historical migration and its mastercoverage are still false.
+
+## Scoped qualification receipt
+
+Persisted checkpoint6f151ccf7ecd40010de0b14c896a72371cf5ce83 passes
+38 incumbent native cases and9 new label cases,55 modern-export fixtures and
+3075 Gregorian-date cases at O0/O2. Independent original TTUTIL runs its10
+incumbent fixtures and4 new overwrite/row-selection witnesses per optimization.
+The first witness attempts exposed missing caller date-count initialization and
+an inappropriate exact comparison with the original decimal scanner; those
+failed attempts are retained. The final original-real comparison uses the same
+1e-14 bound as the incumbent TTUTIL witness; production input checks are unchanged.
+
+Fresh full production execution recompiles the existing323-provider closure at
+both optimizations and runs default,124-day source and three730-day profiles.
+All five endpoints, observables, native transition restarts and serialized
+rollback bytes equal their immutable admitted predecessors. There are36
+fresh-process transition continuations. Compile393.446s, link0.806s, main
+native185.891s and restart native157.118s. The existing18 corruption controls
+and9 new supplemental controls pass. This is scoped parser admission, not
+a redefinition of the original full HIST capability.
+
+An initial local default executable failed SIGSEGV with an8192KB process stack.
+The same executable with OMP_NUM_THREADS=1 still fails at8MB and passes with
+unlimited stack. The fresh full gate uses unlimited stack and one thread.
+This changes process capacity, not physical or numerical acceptance. Failed
+compiler/oracle/native attempts remain in the versioned diagnostic capsule.
+
+Existing chemistry, retained inventory, thermal, TCS6 and solver bodies and
+all their existing scientific test inputs are unchanged. The strict registered
+successor verifies the sole parser seam, original source pins and new current
+compiled executions before reading old source-bound receipts. It cannot accept
+an arbitrary file projection. Local full production qualification is selected;
+additional hosted numerical execution and full moving F-CI are
+NOT_SELECTED_IMPACT for this parser-only change. No mastercoverage promotion.
+The evidence capsule and hashes are in the existing work-unit status record.
+Admission takes effect only through merge of the reviewed exact candidate.
