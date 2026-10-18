@@ -20,7 +20,7 @@ De bestaande GNU13.3.0/O2-executables zijn opnieuw uitgevoerd met dezelfde kalen
 
 SWAP5/SWAP4 is hier circa127.6 voor de 200cm-proef. Het verschil omvat verschillende tijdintegratoren, acceptatiecriteria, transactionele uitvoering en I/O, niet alleen de lineaire/Newton-solver. De continue K-variant is bovendien niet hydraulisch identiek aan de historische referentie. Geen algemene snelheidsclaim uit deze verhouding afleiden. De 3cm-kolom heeft geen fysische betekenis als gebiedsprofiel.
 
-Voor de 200cm-proef blijven210.982 geaccepteerde deelstappen en771.432 temporele afwijzingen nodig. Dit is de eerste concrete performancevraag vóór brede productie-uitrol. Bij identieke rekentarieven kost1024 maal deze proef circa41.4 uur serieel. Dat is een eenvoudige vermenigvuldiging, geen uitgevoerde multi-celbenchmark, parallelle schaaltest of prognose voor andere lokale profielen. Volledige O0-rekentijden zijn niet gemeten; compilatiekosten zijn UNKNOWN.
+Voor de SWAP5-200cm-proef blijven210.982 geaccepteerde deelstappen en771.432 temporele afwijzingen nodig. Die performancevraag is buiten SYMPHONICA geparkeerd; dit project rekent verder met SWAP4.3.1. Bij identieke rekentarieven kost1024 maal de SWAP5-proef circa41.4 uur serieel. Dat is een historische schaalindicatie, geen uitgevoerde multi-celbenchmark, parallelle schaaltest of prognose voor andere lokale profielen. Volledige O0-rekentijden zijn niet gemeten; compilatiekosten zijn UNKNOWN.
 
 ## Eerdere inventarisatie en actuele geometrie
 

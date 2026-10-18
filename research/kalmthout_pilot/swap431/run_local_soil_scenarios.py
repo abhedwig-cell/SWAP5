@@ -84,6 +84,11 @@ def main():
             carbon[p['Parentfiche'].rsplit('/', 1)[-1]].append(p['Waarde'])
     locations = {f['properties']['Bodemlocatiefiche'].rsplit('/', 1)[-1]: f
                  for f in json.loads((data / 'dov_profiles_domain.geojson').read_text())['features']}
+    classifications = defaultdict(set)
+    for feature in json.loads((data / 'dov_soil_classifications.geojson').read_text())['features']:
+        p = feature['properties']
+        if p['Classificatietype'] == 'Algemene Belgische classificatie':
+            classifications[p['Bodemlocatiefiche'].rsplit('/', 1)[-1]].add(p['Bodemtype'])
     soils = json.loads((data / 'dov_soil_domain.geojson').read_text())['features']
     geometries = [shape(f['geometry']) for f in soils]
     tree = STRtree(geometries)
@@ -128,7 +133,7 @@ def main():
             })
         except (AssertionError, ValueError, TypeError, FileNotFoundError, ET.ParseError) as error:
             excluded.append({'observation': p['Bodemobservatiefiche'], 'reason': str(error)})
-    profiles = []
+    profiles, classification_conflicts = [], []
     for identity, layers in horizons.items():
         layers.sort(key=lambda h: h['top_cm'])
         if identity not in locations or layers[0]['top_cm'] != 0:
@@ -146,10 +151,16 @@ def main():
         mapped_type = mapped_types.pop()
         if mapped_type.startswith('O'):
             continue  # Artificial-ground codes do not define a transferable soil profile.
+        if classifications[identity] and classifications[identity] != {mapped_type}:
+            classification_conflicts.append({'profile': identity, 'mapped_point_type': mapped_type,
+                                              'profile_classifications': sorted(classifications[identity])})
+            continue
         profiles.append({'id': identity, 'location_url': locations[identity]['properties']['Bodemlocatiefiche'],
                          'mapped_soil_type': mapped_type, 'coordinates': list(point.coords)[0][:2],
+                         'direct_classifications': sorted(classifications[identity]),
                          'depth_cm': depth, 'layers': selected})
-    (args.output / 'profile_catalog.json').write_text(json.dumps({'profiles': profiles, 'excluded_observations': excluded}, indent=2) + '\n')
+    (args.output / 'profile_catalog.json').write_text(json.dumps({'profiles': profiles,
+                 'classification_conflicts': classification_conflicts, 'excluded_observations': excluded}, indent=2) + '\n')
     candidates = json.loads((data / 'cell_sources_final/candidate_cells.json').read_text())['candidate_cells']
     grid = {r['cell_id']: r for r in csv.DictReader((args.data_root / 'export/grid_500m.csv').open())}
     by_cell = defaultdict(lambda: defaultdict(float))
@@ -166,8 +177,8 @@ def main():
             if cell in present:
                 continue
             dominant = max(landuse[cell], key=landuse[cell].get) if landuse[cell] else None
-            candidates.append({'cell_id': cell, 'group': 'landuse2025_' + str(dominant)
-                               if dominant in natural_codes else 'separate_surface_contract'})
+            candidates.append({'cell_id': cell, 'group': 'no_source_coverage' if dominant is None else
+                               'landuse2025_' + str(dominant) if dominant in natural_codes else 'separate_surface_contract'})
     base = args.output / 'forcing'
     subprocess.run(['python3', str(Path(__file__).with_name('prepare_reference_forcing.py')),
                     str(data / 'weather_aligned.csv'), str(base)], check=True, stdout=subprocess.DEVNULL)
@@ -177,7 +188,10 @@ def main():
     previous_runs = {r['case']: r for r in json.loads(previous_file.read_text())['runs']} if previous_file.exists() else {}
     for candidate in candidates:
         cell = candidate['cell_id']
-        if candidate['group'] in ['open_water', 'houses_gardens', 'separate_surface_contract'] or not by_cell[cell]:
+        if candidate['group'] == 'no_source_coverage' or not by_cell[cell]:
+            unassigned.append({'cell': cell, 'reason': 'no soil or land-use source coverage'})
+            continue
+        if candidate['group'] in ['open_water', 'houses_gardens', 'separate_surface_contract']:
             unassigned.append({'cell': cell, 'reason': 'separate surface/vegetation contract required'})
             continue
         soil_type, soil_fraction = max(by_cell[cell].items(), key=lambda r: r[1])
@@ -189,13 +203,13 @@ def main():
             continue
         profile = eligible[0]
         for bottom_mode in [6, 7]:
-            key = (profile['id'], bottom_mode)
+            case_key = (profile['id'], bottom_mode)
             assignment = {'cell': cell, 'bottom_mode': bottom_mode, 'soil_type': soil_type,
                           'dominant_soil_fraction': soil_fraction, 'profile_id': profile['id'],
                           'donor_distance_m': math.dist(profile['coordinates'], [x, y]),
                           'status': 'EXPLORATORY_DOMINANT_SOIL_RESPONSE_ONLY'}
-            if key in reused:
-                assignments.append(dict(assignment, case=reused[key], reused_identical_input=True))
+            if case_key in reused:
+                assignments.append(dict(assignment, case=reused[case_key], reused_identical_input=True))
                 continue
             case = args.output / f'{cell}_soil_response_bot{bottom_mode}'
             case.mkdir(exist_ok=True)
@@ -207,6 +221,8 @@ def main():
                                ('SWEND', '1'), ('RDS', str(profile['depth_cm'])),
                                ('INLIST_CSV', "'WATBAL,ETTERMS,GWL'")]:
                 text = update(text, key, value)
+            if profile['depth_cm'] <= 100:
+                text = update(text, 'TZ_Z1_Z2', '0.0 0.0')
             grid_rows, hydraulic_rows = [], []
             for i, horizon in enumerate(profile['layers'], 1):
                 thickness = horizon['bottom_cm'] - horizon['top_cm']
@@ -231,16 +247,19 @@ def main():
                                         'standard Mualem lambda0.5; predicted Ksat for both conductivity fields',
                                         'BDENS1500 is unused with heat and solute disabled; not a measured density',
                                         'only dominant mapped soil represented; no complete cell aggregation']}
-            (case / 'case_manifest.json').write_text(json.dumps(contract, indent=2) + '\n')
+            contract_path = case / 'case_manifest.json'
+            previous_contract = json.loads(contract_path.read_text()) if contract_path.exists() else {}
+            contract_path.write_text(json.dumps(contract, indent=2) + '\n')
             previous = previous_runs.get(case.name)
-            if previous and previous['native_success'] and all(
+            if previous and previous['native_success'] and previous_contract.get('executable_sha256') == sha(executable) and all(
                 previous['files'].get(name) == sha(case / name)
-                for name in ['swap.swp', 'kalmthout.met', 'kalmthout.rain', 'case_manifest.json', 'result_output.csv', 'swap.log']
+                for name in ['swap.swp', 'kalmthout.met', 'kalmthout.rain', 'result_output.csv', 'swap.log']
             ):
                 previous['water_balance'] = summarize_water(case)
+                previous['files']['case_manifest.json'] = sha(contract_path)
                 previous['reused_verified_native_output'] = True
                 runs.append(previous)
-                reused[key] = case.name
+                reused[case_key] = case.name
                 assignments.append(dict(assignment, case=case.name, reused_identical_input=False))
                 print(cell, bottom_mode, 'REUSED_VERIFIED_NATIVE_SUCCESS', flush=True)
                 continue
@@ -259,7 +278,7 @@ def main():
             if passed:
                 record['water_balance'] = summarize_water(case)
             runs.append(record)
-            reused[key] = case.name
+            reused[case_key] = case.name
             assignments.append(dict(assignment, case=case.name, reused_identical_input=False))
             (args.output / 'batch_results.json').write_text(json.dumps({'runs': runs, 'unassigned': unassigned}, indent=2) + '\n')
             print(cell, bottom_mode, 'NATIVE_SUCCESS' if passed else 'FAILED', flush=True)

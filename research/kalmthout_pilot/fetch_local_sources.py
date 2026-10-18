@@ -37,6 +37,10 @@ def main():
               'srsName': 'EPSG:32631', 'outputFormat': 'application/json', 'count': 10000}
     for name, layer in [('soil', 'bodemkaart:bodemtypes'), ('profiles', 'bodem:bodemlocaties'),
                         ('ksat', 'bodem:infiltratiemetingen'),
+                        ('classifications', 'bodem:bodemclassificaties'),
+                        ('horizons', 'bodem:bodemdiepteintervallen'),
+                        ('samples', 'bodem:bodemmonsters'),
+                        ('historical_profiles', 'dov-pub-aardewerk:vw_profiel'),
                         ('groundwater', 'gw_meetnetten:grondwaterlocaties_met_metingen')]:
         data = json.loads(fetch(DOV, {**common, 'typeNames': layer, 'bbox': BBOX}, 'dov_' + name + '.geojson'))
         assert int(data['totalFeatures']) == len(data['features']) < 10000
