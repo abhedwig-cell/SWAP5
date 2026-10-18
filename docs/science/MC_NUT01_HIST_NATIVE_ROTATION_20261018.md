@@ -125,3 +125,69 @@ Use fresh `N_NATIVE_RESULT_DIR` for `tests/nut-input/run_native_snm.py`, then
 `tests/nut-input/run_ttutil_native_oracle.py`. Evidence archives omit reproducible
 object/module/executable files, retain native restart payloads and all run logs,
 and bind dependency reuse by input hashes rather than by branch names.
+
+## Retained-state admission reconciliation
+
+The frozen retained verifier predates later canonical crop-owner changes. Its
+input-drift rejection also occurs on the starting canonical4a274c46, at
+`mod_wofost81_crop_owner_state`; it is not a valid current qualification capsule.
+This successor does not replace its old hashes with current ones. The complete
+current retained joint matrix is freshly compiled and executed, including the
+original default/reproductive bytes and all configuration/decoder negatives.
+The current thermal/empty phases and all54 TCS6 native trajectories execute
+against source-bound providers. The original retained inventory validator checks
+their complete command/build/native inventories; the additional source-profile
+commands remain a separately checked category. The original23 evidence-corruption
+controls execute on the immutable originally admittedc60185db snapshot.
+
+The historical successor verifier additionally checks the730-day and24-case
+parser evidence, exact transition/rollback payloads, immutable original default,
+thermal and TCS6 bytes, and current hashes for the unchanged classic annual source
+and codec closure. Classic annual evidence is inherited only for those unchanged
+compiled inputs, not for changed retained providers. Its own mutation controls
+reject missing native executions, unchecked compilation, changed source and
+corrupted continuation/rollback payloads. This is scoped owner admission;
+it does not manufacture a full moving F-CI or complete historical capability PASS.
+
+## Observed cumulative budgets
+
+A generated diagnostic driver reuses the exact source-bound production objects
+and reruns both optimizations. Extra snapshot/carrier observations must leave
+its endpoint exactly equal to the independently qualified730-day endpoint.
+The two diagnostic outputs are themselves byte equal at O0/O2.
+
+| Water quantity | cm over730 days |
+| --- | ---: |
+| Initial thickness-weighted column storage | 10.377346899380083 |
+| Net signed surface input | 0.00006194825028434 |
+| Bottom inflow | 28.164960854763596 |
+| Lateral inflow | 0 |
+| External outflow | 0.465018225268401 |
+| Root extraction | 27.699930239845116 |
+| Final thickness-weighted storage | 10.377421237280426 |
+| Cumulative closure residual | 1.776356839400251e-14 |
+
+The arithmetic mean theta printed by the main driver differs from the
+thickness-weighted inventory average on its nonuniform mesh. Full-run theta
+ranges0.3313437794793025..0.4039759894671573 and pressure head
+-91.01662183697339..-22.17468522605584cm remain finite and admissible.
+There are14025 accepted substeps,60584 temporal rejections/retries and zero
+solver rejections. Minimum accepted step is3.814697265625e-6day and maximum
+accepted normalized temporal indicator0.9999596991660622. These are unchanged
+Reference solver decisions, not relaxed acceptance criteria.
+
+| Nitrogen transfer | kg N/m2 over730 days |
+| --- | ---: |
+| Amendment gross input | 0.009642 |
+| Amendment volatilization | 0.0004965 |
+| Soil external input | 0.08449488256429076 |
+| Soil external output excluding internal crop uptake | 0.006859227342590535 |
+| Crop fixation | 0.002552366740178110 |
+| Harvest export | 0.005014934236103834 |
+| Successor seed input | 0.0004 |
+| Internal crop uptake | 0.007091920030277561 |
+
+The source fixture has high groundwater N concentrations and this budget is a
+controlled nutrient-loaded contract case. It is not a representative measured
+field water-quality prediction. The complete HIST capability cannot be inferred
+from closed balances and deterministic restarts in this restricted scenario.
