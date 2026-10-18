@@ -1,0 +1,154 @@
+{
+  "candidate_cells": [
+    {
+      "group": "open_water",
+      "cell_id": "KAL_0847",
+      "mapped_group_fraction": 0.8421991467797468,
+      "soil_coverage_fraction": 1.0,
+      "route": "surface_water_separate_contract",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "open_water",
+      "cell_id": "KAL_0066",
+      "mapped_group_fraction": 0.6518079209402489,
+      "soil_coverage_fraction": 1.0,
+      "route": "surface_water_separate_contract",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "forest",
+      "cell_id": "KAL_0462",
+      "mapped_group_fraction": 0.995203163943191,
+      "soil_coverage_fraction": 0.9999999999999999,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "forest",
+      "cell_id": "KAL_0912",
+      "mapped_group_fraction": 0.9788496285636678,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "agricultural_grass",
+      "cell_id": "KAL_0889",
+      "mapped_group_fraction": 0.8277399833589179,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "agricultural_grass",
+      "cell_id": "KAL_0956",
+      "mapped_group_fraction": 0.8225589556812505,
+      "soil_coverage_fraction": 0.9950533193038825,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "arable",
+      "cell_id": "KAL_0196",
+      "mapped_group_fraction": 0.9338103571109071,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "arable",
+      "cell_id": "KAL_0134",
+      "mapped_group_fraction": 0.9195837533631,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "houses_gardens",
+      "cell_id": "KAL_0532",
+      "mapped_group_fraction": 0.8056525286164031,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "houses_gardens",
+      "cell_id": "KAL_0404",
+      "mapped_group_fraction": 0.7933175949810978,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "wet_heath_4010",
+      "cell_id": "KAL_0876",
+      "mapped_group_fraction": 0.7089266293026919,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "wet_heath_4010",
+      "cell_id": "KAL_0910",
+      "mapped_group_fraction": 0.7012787429982076,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "dry_heath_4030",
+      "cell_id": "KAL_0416",
+      "mapped_group_fraction": 0.5153596852062454,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    },
+    {
+      "group": "dry_heath_4030",
+      "cell_id": "KAL_0480",
+      "mapped_group_fraction": 0.4699933920775492,
+      "soil_coverage_fraction": 1.0,
+      "route": "parameterization_required",
+      "ready_for_simulation": false
+    }
+  ],
+  "representative_cell_fractions": {
+    "soil": {
+      "Zcgb": 0.9536183507089446,
+      "OB": 0.021513104650621707,
+      "w-Zegb": 0.024868544640433768
+    },
+    "bwk": {
+      "ppmb + gml + rhod": 0.003949127120871155,
+      "un + kbq + kbf + ppmb + ppmh": 0.9958622850045282,
+      "weg + kbqr": 0.0001474121343533256,
+      "weg + kbq + kbf": 4.120085197957382e-05
+    },
+    "landuse2025": {
+      "9": 0.09727441619792888,
+      "1": 0.7549412369764043,
+      "5": 0.08655914059192377,
+      "2": 0.02842747755603031,
+      "8": 0.028698152998171803,
+      "12": 0.004099575643219991
+    },
+    "landuse2022": {
+      "9": 0.13940722308648196,
+      "1": 0.7158960554065537,
+      "5": 0.08615940276997128,
+      "8": 0.03324651511286204,
+      "2": 0.012791598454017635,
+      "4": 0.008399629489304249,
+      "12": 0.004099575643219991
+    }
+  },
+  "matching_habitat_rows_with_unknown_percentage": 9,
+  "selection": "Two highest mapped fractions per group, distinct cells, >=95% land-use coverage.",
+  "limitations": [
+    "Habitat codes must match exactly; composite codes are not split by assumption.",
+    "This is a source-driven shortlist, not a representative sampling proof or validated model input.",
+    "Houses and gardens is not an impervious fraction.",
+    "Open water requires a separate process contract, not a bare-soil SWAP column."
+  ]
+}

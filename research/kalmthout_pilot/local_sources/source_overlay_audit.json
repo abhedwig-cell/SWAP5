@@ -1,0 +1,84 @@
+{
+  "crs": "EPSG:32631",
+  "cells": 1024,
+  "cell_area_m2": 250000,
+  "shapely_version": "2.2.0",
+  "soil_features": 2965,
+  "bwk_features": 11811,
+  "repaired_geometries": {
+    "soil": 13,
+    "bwk": 24
+  },
+  "input_sha256": {
+    "results/dov_soil_domain.geojson": "19c4efba29f1c7bbfe7071f3523d00e94fa6430caed04b0a7e183c6ed1c41575",
+    "results/bwk_domain_sorted1.geojson": "096b9d001cfcefda82cabba8b203e348d5ca9ad886c796a5b5a1765f795e79a6",
+    "results/bwk_domain_keyset_verified.geojson": "ebfb8675cc54d1f3dc6fe0c584803f35de0f58c468c74aeea147909373cf5402",
+    "results/landuse2025_domain.tif": "4731db6f9bd5f75035cdcd2589275f1b420f6b18214245acd4083d3731e5d90e",
+    "results/landuse2022_verified.tif": "c40bc01eea3ed8415b3be703bf297b09db784cd965fdfb8e56f777f833d76062",
+    "export/grid_500m.csv": "3137591ce403bd4c0c3bf8fa3e6876c6e4d7ed994e6daa2b594e8de7eff9eb94"
+  },
+  "bwk_tuple_fields": [
+    "BWKLABEL",
+    "HAB1",
+    "PHAB1",
+    "HAB2",
+    "PHAB2",
+    "HAB3",
+    "PHAB3",
+    "HAB4",
+    "PHAB4",
+    "HAB5",
+    "PHAB5"
+  ],
+  "coverage": {
+    "soil": {
+      "equivalent_full_cells": 851.6202944028889,
+      "fully_covered_cells": 803,
+      "zero_coverage_cells": 145,
+      "max_overlap_fraction": 1.438849854748696e-07
+    },
+    "bwk": {
+      "equivalent_full_cells": 852.0216522207644,
+      "fully_covered_cells": 184,
+      "zero_coverage_cells": 145,
+      "max_overlap_fraction": 2.9676477217115463e-05
+    },
+    "landuse2025": {
+      "equivalent_full_cells": 852.0247416312682,
+      "fully_covered_cells": 821,
+      "zero_coverage_cells": 145,
+      "max_overlap_fraction": 3.0577710922807455e-07
+    },
+    "landuse2022": {
+      "equivalent_full_cells": 852.0247416272869,
+      "fully_covered_cells": 821,
+      "zero_coverage_cells": 145,
+      "max_overlap_fraction": 3.0573377234395594e-07
+    }
+  },
+  "representative_cell": {
+    "cell_id": "KAL_0496",
+    "soil_coverage_fraction": 1.0,
+    "soil_overlap_fraction": 1.164153218269348e-16,
+    "soil_feature_count": 4,
+    "bwk_coverage_fraction": 1.0,
+    "bwk_overlap_fraction": 2.5111732305958866e-08,
+    "bwk_feature_count": 4,
+    "landuse2025_coverage_fraction": 0.9999999998181979,
+    "landuse2025_overlap_fraction": 1.4548108447343111e-10,
+    "landuse2025_feature_count": 54,
+    "landuse2022_coverage_fraction": 0.9999999998170888,
+    "landuse2022_overlap_fraction": 1.4532206114381552e-10,
+    "landuse2022_feature_count": 60,
+    "joint_fraction_sum": 1.0000000251117325,
+    "ready_for_simulation": false
+  },
+  "joint_rows": 35407,
+  "status": "SOURCE_INVENTORY_ONLY; no hydraulic, root, canopy or lower-boundary parameters assigned",
+  "limitations": [
+    "Habitat proportions are retained within each source polygon; geometry is not split by habitat percentage.",
+    "Joint units retain mapped heterogeneity, not subpolygon geography.",
+    "Missing area is explicit; do not renormalize it into covered classes.",
+    "Overlaps require reconciliation before area-weighted simulation."
+  ]
+}
