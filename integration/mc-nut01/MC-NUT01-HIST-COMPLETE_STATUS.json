@@ -2,11 +2,12 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "80fcc8114a32df46ad1d416a8b78a4118b9b6392",
+  "checkpoint_commit": "342e77d438f205b18a7a8321198c0fa03b481541",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
-    "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests"
+    "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
+    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity"
   ],
   "persisted": true,
   "tested": false,
@@ -31,15 +32,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Run existing B112 actual workflow O0/O2 and compare native restarted endpoint on 62-day candidate, investigate any physical failure before admission. True original TTUTIL parser and full multiyear qualification remain open.",
-  "recovery_point": "work/nut-coupled-62day-20261018@80fcc8114a32df46ad1d416a8b78a4118b9b6392",
+  "next_action": "Qualify exact persisted 124-day driver and O0/O2 fresh restart with existing actual B112 workflow; full TTUTIL grammar and year-long physical rotation remain open",
+  "recovery_point": "work/nut-coupled-124day-20261018@342e77d438f205b18a7a8321198c0fa03b481541",
   "blockers": [
-    "62-day physical integration candidate is persisted, not yet tested",
-    "Original TTUTIL/SNM complete grammar and multiyear Richards/crop rotations not qualified"
+    "124-day physical candidate not yet qualified",
+    "Original TTUTIL/SNM full grammar and multiyear crop rotations not qualified"
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "80fcc8114a32df46ad1d416a8b78a4118b9b6392",
-  "last_reconciled_upstream": "f7992b675d9beb99e7839f0d92b6a1fe2d1f815f",
+  "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
+  "last_reconciled_upstream": "826224bc2d0a7b41f5c70f0bbed6cc95a587fbd9",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
