@@ -57,7 +57,6 @@ contains
    else if(section==2)then
      if(nparam==512.or.len_trim(line)>512)exit
      nparam=nparam+1;parameters(nparam)=line
-    parameter_source_line(nparam)=record
    else
      exit
    end if
