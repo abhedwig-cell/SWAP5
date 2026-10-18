@@ -2,12 +2,13 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "71f6a10814ddf92c9439fa9f4784b174f6b542d2",
+  "checkpoint_commit": "9e79620f55532e0463969ae292a8cff438a87a00",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
     "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
-    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity"
+    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
+    "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria"
   ],
   "persisted": true,
   "tested": false,
@@ -32,12 +33,11 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Evaluate source test imposed bottom flux -0.1, drainage 1e-4, zero top flux and root sink 1e-4 for physical domain and units, compare with sensible documented boundary/forcing. Design discriminating 124-day production driver variant with defensible boundary condition, same numerical budget and O0/O2 restart parity. Keep original failing stress case as negative regression/research evidence. Reconcile headcalc/backend current canonical before merge.",
-  "recovery_point": "work/nut-coupled-124day-20261018@71f6a10814ddf92c9439fa9f4784b174f6b542d2",
+  "next_action": "Evaluate exact-head 124-day zero-bottom-flux physical variant at O0/O2 including native fresh-process restart and original incumbent bytes; interpret as distinct forcing qualification, NOT a fix to original day67 case. Reconcile moving canonical Reference/headcalc before any admission.",
+  "recovery_point": "work/nut-coupled-124day-20261018@9e79620f55532e0463969ae292a8cff438a87a00",
   "blockers": [
-    "Fixed-forcing dryness drives 4096-step exhaustion day67, source case beyond 62 days not qualified",
-    "Shared Reference/headcalc canonical overlap demands reconciliation",
-    "Complete TTUTIL grammar, annual/multiyear crop rotation incomplete"
+    "Zero-bottom-flux 124-day experiment pending qualification; original fixed -0.1 bottom stress failed day67",
+    "Canonical Reference/headcalc overlap not reconciled"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
