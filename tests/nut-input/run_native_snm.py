@@ -51,7 +51,7 @@ for key,text in {
  'duplicate':array+params+'Hum_t = 40.\n',
  'missing_required_top':array+params.replace('cNH4N_top = 0.\n',''),
  'range':array+params.replace('Hum_t = 40.','Hum_t = 1001.'),
- 'nonzero_top':array+params.replace('cNH4N_top = 0.','cNH4N_top = .1'),
+ 'negative_top':array+params.replace('cNH4N_top = 0.','cNH4N_top = -.1'),
  'unsupported_hum_exp':array+params+'RateconHum_exp = .1\n',
  'zero_repeat':array.replace('1 1 1','0*1')+params,
  'scalar_material':array.replace('MatNum = 1*1','MatNum = 1')+params,
@@ -72,6 +72,7 @@ for key,field,value in [('negative_nitrif','RateConNitrif_ref','-.02'),('lai_ran
  fixtures[key]=(text,-line)
 fixtures['capacity20x1000']=(table.splitlines()[0]+'\n'+"1 'Mineral ! fertiliser' 0. 0. 0. .21 .10\n"+''.join(f"{i} 'M{i}' 0. 0. 0. .21 .10\n"for i in range(2,21))+table[table.index('smedate'):table.index(';')]+''.join(f"{datetime.date(1901,1,2)+datetime.timedelta(days=i)} 1 0. 0.\n"for i in range(997))+';\n'+params,0)
 fixtures['too_many_records']=('\n'*4096+array+params,-1)
+fixtures['nonzero_top']=(array+params.replace('cNH4N_top = 0.','cNH4N_top = .0005').replace('cNO3N_top = 0.','cNO3N_top = .0015'),1)
 for name,(text,_)in fixtures.items():(OUT/(name+'.snm')).write_text(text)
 providers={}
 for p in (ROOT/'src').rglob('*.f90'):

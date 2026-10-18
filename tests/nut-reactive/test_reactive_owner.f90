@@ -72,6 +72,28 @@ program test_reactive_owner
  call require(time==0d0.and.revision==0,'no consumed day on failed immobilisation')
  bad=p;bad%environment%temperature_c=ieee_value(0d0,ieee_quiet_nan)
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,state,code);call require(code/=0,'invalid temperature')
+ call parameters(p);p%mineral%c_top=[.005d0,.015d0]
+ call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
+ call require(code==0,'top reactive pools')
+ call initialize_reactive(p,9001_int64,0d0,.34d0,pools,state,code);call require(code==0,'top reactive owner')
+ call literal_day(p,pools,.34d0,.35d0,0d0,0d0,0d0,0d0,want,nit,denit,carbon,surface_water=.003d0)
+ call advance_reactive_day(state,0d0,1d0,.35d0,0d0,0d0,0d0,0d0,r,surface_water=.003d0)
+ call require(r%status==0,'top reactive accepted')
+ call state%snapshot(time,theta,got,revision);call compare(got,want,'top reactive original full state')
+ call near(r%external_in,.003d0*sum(p%mineral%c_top),'reactive top input once')
+ call near(r%process%exchange%nh4_nitrified_kg_m2,nit,'top reactive nitrification')
+ call near(r%process%exchange%no3_denitrified_kg_m2,denit,'top reactive denitrification')
+ call export_reactive_restart(state,payload,code);call require(code==0,'top reactive opaque export')
+ call restore_reactive_restart(payload,9001_int64,restored,code);call require(code==0,'top reactive opaque restore')
+ pools=got
+ call literal_day(p,pools,.35d0,.34d0,0d0,0d0,0d0,0d0,want,nit,denit,carbon,surface_water=-.003d0)
+ call advance_reactive_day(state,1d0,2d0,.34d0,0d0,0d0,0d0,0d0,r,surface_water=-.003d0)
+ call require(r%status==0.and.r%external_in==0d0,'reactive evaporation no top input')
+ call state%snapshot(time,theta,got,revision);call compare(got,want,'evaporative reactive literal state')
+ call advance_reactive_day(restored,1d0,2d0,.34d0,0d0,0d0,0d0,0d0,r,surface_water=-.003d0)
+ call require(r%status==0,'reactive top restart accepted')
+ call restored%snapshot(time,theta,other,revision);call compare(got,other,'top reactive opaque continuation')
+ print '(A)','REACTIVE_ATMOSPHERIC_ORIGINAL_CHEMISTRY_EVAPORATION_RESTART=PASS'
  print '(A)','REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS'
 contains
  subroutine near(x,y,label)

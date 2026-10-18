@@ -5,6 +5,8 @@ and byte-bound to the fresh qualified closure; every native command runs anew.
 """
 from pathlib import Path
 import hashlib,json,os,shutil,subprocess,time
+PROFILE=os.environ.get('N_HIST_AUDIT_PROFILE','rotation-profile')
+assert PROFILE in ['rotation-profile','atmospheric-profile']
 ROOT=Path(__file__).resolve().parents[2];BASE=Path(os.environ['N_HIST_PROVIDERS']).resolve();OUT=Path(os.environ['N_HIST_WATER_AUDIT']).resolve();OUT.mkdir(exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 prior=json.loads((BASE/'result.json').read_text());original=json.loads((BASE/'events.json').read_text())
@@ -19,11 +21,12 @@ replace('   integer::d,first,code','''   type(mineral_state_t)::audit_mineral
    type(fmr_serialized_physical_observation_t)::audit_observation
    class(transaction_state_t),allocatable::audit_snapshot
    logical::audit_available
-   real(real64)::water_flux(5),water_initial,water_final,water_residual,n_flow(8)
+   real(real64)::water_flux(5),water_initial,water_final,water_residual,n_flow(8),boundary_n(3),positive_surface
    real(real64)::theta_min,theta_max,head_min,head_max,min_dt,max_indicator
    integer::accepted_total,rejected_total,solver_total,retry_total
    integer::d,first,code''')
-replace('   do d=first,729','''   water_flux=0d0;n_flow=0d0;water_initial=0d0;water_final=0d0
+replace('   do d=first,729','''   boundary_n=0d0
+   water_flux=0d0;n_flow=0d0;water_initial=0d0;water_final=0d0
    theta_min=1d0;theta_max=0d0;head_min=huge(1d0);head_max=-huge(1d0)
    accepted_total=0;rejected_total=0;solver_total=0;retry_total=0;min_dt=1d0;max_indicator=0d0
    do d=first,729
@@ -31,8 +34,12 @@ replace('   do d=first,729','''   water_flux=0d0;n_flow=0d0;water_initial=0d0;wa
 replace("    max_w=max(max_w,r%joint%joint%diagnostics%max_abs_step_mass_residual)",'''    call before_state%snapshot(ss,cc);call ss%mineral_snapshot(audit_mineral)
     audit_observation=backend%observation()
     call aggregate_mineral_trace(audit_mineral,audit_observation%accepted_water_flux_substeps, &
-      audit_carrier,code,clean_surface_water=.true.)
+      audit_carrier,code,clean_surface_water=.not.atmospheric,atmospheric_n_surface=atmospheric)
     call require(code==0,'audit accepted carrier')
+    positive_surface=sum(max(0d0,-audit_observation%accepted_water_flux_substeps%top_flux)* &
+      (audit_observation%accepted_water_flux_substeps%t1-audit_observation%accepted_water_flux_substeps%t0))*.01d0
+    boundary_n=boundary_n+[positive_surface*sum(sp%mineral%c_top), &
+      audit_carrier%in_bottom*sum(sp%mineral%c_bottom),audit_carrier%in_lateral*sum(sp%mineral%c_lateral)]
     if(d==first)water_initial=audit_carrier%water_start*sp%mineral%inventory%depth_m*100d0
     water_final=audit_carrier%water_end*sp%mineral%inventory%depth_m*100d0
     water_flux=water_flux+100d0*[audit_carrier%surface_water,audit_carrier%in_bottom, &
@@ -65,6 +72,9 @@ replace("   print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w",'''   wat
    call require(abs(water_residual)<=1d-10,'audit cumulative water hard budget')
    print *,'AUDIT_WATER_CM',water_initial,water_flux,water_final,water_residual
    print *,'AUDIT_N_KG_M2',n_flow
+   call require(abs(sum(boundary_n)-n_flow(3))<=1d-12,'audit separately integrated boundary nitrogen')
+   if(atmospheric)call require(boundary_n(1)>0d0,'audit positive atmospheric nitrogen')
+   print *,'AUDIT_BOUNDARY_N_KG_M2',boundary_n
    print *,'AUDIT_STATE_RANGE',theta_min,theta_max,head_min,head_max
    print *,'AUDIT_NUMERICAL',accepted_total,rejected_total,solver_total,retry_total,min_dt,max_indicator
    print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w''')
@@ -85,15 +95,15 @@ for opt in ['O0','O2']:
  objects=[Path(e['command'][-1])for e in ce[:-1]]
  for p in objects:artifacts[str(p)]=sha(p)
  obj=b/'audit.o';exe=b/'audit';run(['gfortran',*flags,'-c',generated,'-o',obj],b,'driver_compile');run(['gfortran',*flags,*objects,obj,'-o',exe],b,'link')
- stdout=run([exe,'write',b/'restart',b/'endpoint','rotation-profile'],b,'native')
- assert(b/'endpoint').read_bytes()==(base/'rotation-profile.endpoint').read_bytes(),'audit altered physical endpoint'
+ stdout=run([exe,'write',b/'restart',b/'endpoint',PROFILE],b,'native')
+ assert(b/'endpoint').read_bytes()==(base/(PROFILE+'.endpoint')).read_bytes(),'audit altered physical endpoint'
  rows={}
  for line in stdout.splitlines():
   if line.strip().startswith('AUDIT_'):
    fields=line.split();rows[fields[0]]=[float(x.replace('D','E'))for x in fields[1:]]
- assert set(rows)=={'AUDIT_WATER_CM','AUDIT_N_KG_M2','AUDIT_STATE_RANGE','AUDIT_NUMERICAL'}
+ assert set(rows)=={'AUDIT_WATER_CM','AUDIT_N_KG_M2','AUDIT_STATE_RANGE','AUDIT_NUMERICAL','AUDIT_BOUNDARY_N_KG_M2'}
  results[opt]=dict(endpoint=sha(b/'endpoint'),stdout=stdout,metrics=rows)
 assert results['O0']==results['O2']
 for p,h in artifacts.items():assert sha(Path(p))==h,p
-r=dict(status='HIST_OBSERVATIONAL_WATER_N_AUDIT_PASS',provider_result_sha256=sha(BASE/'result.json'),input_sha256={str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
+r=dict(status='HIST_OBSERVATIONAL_WATER_N_AUDIT_PASS',profile=PROFILE,provider_result_sha256=sha(BASE/'result.json'),input_sha256={str(Path(__file__).relative_to(ROOT)):sha(Path(__file__))},generated_driver_sha256=sha(generated),artifacts=artifacts,results=results,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in ['driver_compile','link','native']})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps(r['results']['O0']['metrics'],indent=2))

@@ -20,7 +20,7 @@ module mod_fmr_crop_soil_n_calendar_application
  public::run_crop_soil_n_calendar_interval
 contains
  subroutine run_crop_soil_n_calendar_interval(backend,column,template,parameters,water,forcing,config, &
-   chemical,weather,t0,t1,plan,split,policy,result,environment,fallow,clean_surface_water)
+   chemical,weather,t0,t1,plan,split,policy,result,environment,fallow,clean_surface_water,atmospheric_n_surface)
   type(fmr_serialized_reference_backend_t),intent(inout)::backend
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -36,7 +36,7 @@ contains
   type(crop_senescence_policy_t),intent(in)::policy
   type(senescence_joint_result_t),intent(out)::result
   type(soil_n_day_environment_t),intent(in),optional::environment
-  logical,intent(in),optional::fallow,clean_surface_water
+  logical,intent(in),optional::fallow,clean_surface_water,atmospheric_n_surface
   logical::inactive
   type(soil_n_material_input_t),allocatable::items(:)
   integer::code
@@ -46,11 +46,11 @@ contains
   inactive=.false.;if(present(fallow))inactive=fallow
   if(inactive)then
    call run_crop_soil_n_material_interval(backend,column,template,parameters,water,forcing,config, &
-    chemical,weather,t0,t1,items,split,result%joint,environment,fallow=.true.,clean_surface_water=clean_surface_water)
+    chemical,weather,t0,t1,items,split,result%joint,environment,fallow=.true.,clean_surface_water=clean_surface_water,atmospheric_n_surface=atmospheric_n_surface)
    result%status=result%joint%status
    return
   end if
   call run_crop_soil_n_senescence_interval(backend,column,template,parameters,water,forcing,config, &
-   chemical,weather,t0,t1,items,split,policy,result,environment,clean_surface_water)
+   chemical,weather,t0,t1,items,split,policy,result,environment,clean_surface_water,atmospheric_n_surface)
  end subroutine
 end module
