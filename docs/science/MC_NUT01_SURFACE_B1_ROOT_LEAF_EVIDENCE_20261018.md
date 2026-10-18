@@ -2,6 +2,12 @@
 
 Status: bounded direct evidence, **not canonical admission or full HIST qualification**.
 
+The later gross-boundary owner extension supersedes this capsule's owner
+postimage. Its shared-leaf proofs remain unchanged. The combined current
+validator uses freshly compiled owner evidence from
+`MC_NUT01_SURFACE_B1_GROSS_BOUNDARY_EVIDENCE_20261018.md`; it does not reinterpret
+the older owner build as current.
+
 The versioned capsule
 `integration/audits/evidence/MC_NUT01_SURFACE_B1_ROOT_LEAF_DIAGNOSTICS_20261018.tar.xz.b64`
 has decoded SHA-256

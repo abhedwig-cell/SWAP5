@@ -1362,6 +1362,13 @@
     "mass_tolerances": "UNCHANGED",
     "next": "Fresh whole326-provider O0/O2 fixed-head two-day qualification, then observational8-day water/N audit and preserved native transitions.",
     "physical_feedback": "EIGHT_DAYS_O2_PASS_EXACT_ONE_OWNER_REBUILD_ABI_UNCHANGED_NOT_FULL_QUALIFICATION",
-    "source_checkpoint": "4c2b3c7c9c8e8e5485532a923a3d43373d9f0256"
+    "source_checkpoint": "4c2b3c7c9c8e8e5485532a923a3d43373d9f0256",
+    "direct_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_SURFACE_B1_GROSS_BOUNDARY_20261018.tar.xz.b64",
+      "decoded_sha256": "d0df8d58305370867c53d956b8324577a9e05f18511b343408203b27e38a1db2",
+      "validator": "integration/audits/verify_nut_surface_b1_leaf.py",
+      "validator_sha256": "6109d9c2bf380ba8eff618e379ed8e967fb4814f4d99a1ab2898ad7aaee09bfb",
+      "scope": "Current direct literal/core/owner O0/O2 only; older two-day/native/five-profile physical proof is PREDECESSOR; eight-day O2 exact-one-owner feedback is NOT_FULL_QUALIFICATION"
+    }
   }
 }
