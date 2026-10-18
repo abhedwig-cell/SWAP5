@@ -100,3 +100,40 @@ The source-derived correspondence is explicit:
 - Existing postimage run 39122723811 failed at the exact previous interval, with 547 solver rejects, zero temporal rejects and zero mass rejects. Thus cancellation alone is ruled out as a sufficient remedy.
 
 The next discriminating test is a **real-production-interface** solver trial from the persisted last accepted state at the 2024-03-09 13:00 interval, recording per-Newton-iteration candidate top head, branch, residual, Jacobian/derivative and backtracking decision at O0/O2. Contrast the legacy `boundtop/headcalc` iterate-level decision with the new provider and solver. Preserve exact evap demand, accepted state, mass threshold and rollback. Do not substitute threshold tuning, arbitrary demand scaling or RossFast. The source comparison itself is analysis, not test/qualification evidence.
+
+## Exact Newton trace result, 2026-10-18
+
+Focused production execution at SHA `937b95a018803875a51b640f856979ac9f0ca2b8`:
+https://github.com/abhedwig-cell/SWAP5/actions/runs/39125001908 .
+Terminal **FAILURE** with the same first failed weather interval `2024-03-09T13:00`;
+22 accepted substeps, 547 solver rejections, zero temporal and zero mass rejections.
+`KALMTHOUT_NEWTON_TRACE=1` logs the real `src/legacy/b1_10_port/headcalc.f90`
+and does not alter solver decisions.
+
+The trace reveals a severe nonlinear step instability at the saturated top:
+old top-node head is about `+1.0 cm`, while candidate Newton top-node
+heads reach approximately `-2.06e4 cm` during `surface-flux` iterations.
+As dt shrinks into ~`2.8e-14 d`, reported `Fmax` exceeds `1.2e13`
+and residual square norm reaches `1.9e26`; dt refinement does not cure
+the instability. These are unaccepted trial candidates, not committed
+physical states or measured groundwater depletion.
+
+Verified source comparison:
+`src/legacy/b1_10_port/headcalc.f90` builds the Newton Jacobian from
+the current state and evaluates the dynamic top provider again in
+`vector_F(2)` after candidate update. In the flux branch the
+top boundary contributes prescribed qtop; in the head branch it contributes
+`-kmean(1)*gradient`, including a derivative of the candidate surface head.
+The legacy `boundtop.f90` / `headcalc.f90` likewise reselect the
+top regime while iterating, but *equivalence of iterate trajectory and
+Jacobian construction has not been established*.
+
+The evidence is consistent with a poor Newton step / nonsmooth regime
+transition. It **does not yet establish** whether the root cause is a
+Jacobian defect, backtracking acceptance, initial constitutive state,
+or interacting process contract. The next minimal qualifying experiment
+must capture pre-step `F(1)`, Jacobian diagonal/off-diagonal, Newton
+increment, trial damping, and regime on both sides of the transition,
+then check directional consistency by finite differences on the
+actual production interface. Do not change hard mass gates or atmospheric
+demand, and do not call this test a successful historical simulation.
