@@ -32,12 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Read Richards day-67 kernel counters from qualification on 17191fcd, identify water status 4 against owning source; reconcile moving canonical (ce029124) before any merge; no chemistry or tolerance changes",
+  "next_action": "Investigate temporal indicator and timestep selection for 4096 accepted-step exhaustion on physical day 67; source-based resolution required, not tolerance/cap increase. Compare canonical headcalc/backend delta since 826224bc before qualifying candidate.",
   "recovery_point": "work/nut-coupled-124day-20261018@17191fcd848aa0b520ae1ed7a5283a736faa77de",
   "blockers": [
-    "Physical water-trial failure at day 67; fresh diagnostics pending",
-    "Canonical moved from 826224bc to ce029124: dependency overlap must be checked",
-    "Full TTUTIL and multiyear rotations unresolved"
+    "TEMPORAL ADMISSION BLOCKER: Richards exhausts 4096 accepted substeps on day 67 after 47193 temporal rejects; run 39117466655",
+    "Moving canonical modifies Reference backend and headcalc; reconcile shared water numerical ownership",
+    "Full TTUTIL grammar, annual and rotation qualification open"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -68,8 +68,20 @@
     "failure_day": 67,
     "reported_status": 2,
     "canonical_admitted": false,
-    "diagnostic_run": 39116009031,
-    "diagnostic_head": "ef067e80addf04db34cb63d253da83d98242875b",
-    "failure_layer": "JOINT_WATER_REJECTED; kernel result water.status=4, water trial not completed; senescence.status=0 and material.status=0; chemical.status=1 and soil.status=1 are unexecuted defaults, not chemical failures"
+    "diagnostic_run": 39117466655,
+    "diagnostic_head": "54b5008e876d6b2691cdb2005b939c40f73a7751",
+    "failure_layer": "JOINT_WATER_REJECTED; kernel result water.status=4, water trial not completed; senescence.status=0 and material.status=0; chemical.status=1 and soil.status=1 are unexecuted defaults, not chemical failures",
+    "water_trial_diagnosis": {
+      "day": 67,
+      "accepted_substeps": 4096,
+      "attempts": 51289,
+      "retries": 47193,
+      "temporal_rejections": 47193,
+      "solver_rejections": 0,
+      "mass_rejections": 0,
+      "max_abs_step_mass_residual": 1.40831085942289e-15,
+      "min_accepted_step_days": 0.00001772884719949963,
+      "completed": false
+    }
   }
 }
