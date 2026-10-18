@@ -24,6 +24,81 @@ program test_persistent_pond
   call state%snapshot(clock,depth,mass,revision)
   call require(clock==0d0.and.depth==0.5d0.and.mass==0.25d0.and.revision==0,'input nonmutation')
  end do
+ ! Final accepted pond evaporation removes water, not chemical mass.
+ ! This pins incumbent SWAP5 / historical B1.11 denominator: 1 mg/cm2
+ ! infiltrates from an initial 2 mg/cm2 for this evaporation fixture.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ call require(status==POND_OK,'evap initialization')
+ s=pond_step_t(0d0,1d0,1d0,0.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%pond_evaporation_rate=0.5d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'accepted evap water budget')
+ call require(abs(r%soil_transfer-1d0)<1d-14.and.abs(r%mass_after-1d0)<1d-14, &
+   'evap preserved historical mixing')
+ call require(abs(r%mass_residual)<1d-14.and.abs(r%water_residual)<1d-14, &
+   'evap coupled water and chemical balance')
+ saved=next
+ bad=s;bad%pond_evaporation_rate=0.25d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'unbalanced evaporation rejected')
+ call same(state,next,'evap rejection does not mutate committed pond')
+ call saved%snapshot(clock,depth,mass,revision)
+ call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+ call require(status==POND_OK,'evap restart')
+ call same(saved,restored,'evap restart identity')
+ ! Explicit chemically loaded runon has its own provenance and mass budget.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ call require(status==POND_OK,'runon initialization')
+ s=pond_step_t(0d0,1d0,1d0,1.25d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%runon_rate=0.5d0;s%runon_c=4d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'accepted chemically loaded runon')
+ call require(abs(r%runon_input-2d0)<1d-14,'runon source mass')
+ call require(abs(r%soil_transfer-(4d0/1.5d0)*0.25d0)<1d-13,'runon source-aligned mixing')
+ call require(abs(r%mass_after+r%soil_transfer-4d0)<1d-13,'runon conservation')
+ call require(abs(r%water_residual)<1d-14.and.abs(r%mass_residual)<1d-13,'runon budgets')
+ bad=s;bad%runon_c=-1d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status/=POND_OK,'negative runon concentration rejected')
+ call same(state,next,'invalid runon preserves committed state')
+ bad=s;bad%runon_rate=0.25d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'runon water mismatch rejected')
+ call same(state,next,'runon water rejection nonmutation')
+ ! Runoff after accepted infiltration exports its own mass while retaining
+ ! the incumbent denominator for the zero-runoff regression above.
+ call initialize_persistent_pond(0d0,1d0,2d0,state,status)
+ s=pond_step_t(0d0,1d0,1d0,0.5d0,-0.25d0,0d0,0d0,0d0,0d0,0d0)
+ s%runoff_depth=0.25d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'runoff accepted pond budget')
+ call require(abs(r%soil_transfer-(2d0/1d0)*0.25d0)<1d-13,'runoff infiltration transfer')
+ call require(abs(r%runoff_output-(2d0/1d0)*0.25d0)<1d-13,'runoff solute export')
+ call require(abs(r%mass_after-1d0)<1d-13,'runoff retained pond solute')
+ call require(abs(r%mass_residual)<1d-13.and.abs(r%water_residual)<1d-13,'runoff closure')
+ bad=s;bad%runoff_depth=0.5d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status==POND_WATER,'runoff mismatch rejected')
+ call same(state,next,'runoff rejection nonmutation')
+ ! Runoff-only withdrawal is bounded by available water, not counted as
+ ! infiltration or evaporation; the pond remains the sole mass owner.
+ call initialize_persistent_pond(0d0,1d0,3d0,state,status)
+ s=pond_step_t(0d0,1d0,1d0,0.6d0,0d0,0d0,0d0,0d0,0d0,0d0)
+ s%runoff_depth=0.4d0
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK,'runoff without infiltration')
+ call require(abs(r%runoff_output-1.2d0)<1d-13,'runoff-only export')
+ call require(abs(r%mass_after-1.8d0)<1d-13,'runoff-only retained mass')
+ call require(abs(r%mass_residual)<1d-13.and.abs(r%water_residual)<1d-13,'runoff-only balance')
+ saved=next
+ call saved%snapshot(clock,depth,mass,revision)
+ call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+ call require(status==POND_OK,'runoff pond restart accepted')
+ call same(saved,restored,'runoff pond restart identity')
+ bad=s;bad%runoff_depth=-0.1d0
+ call advance_persistent_pond(state,bad,next,r)
+ call require(r%status/=POND_OK,'negative runoff rejected')
+ call same(state,next,'negative runoff nonmutation')
  ! Dry deposition persists across a dry hiatus and restart, then remobilizes.
  call initialize_persistent_pond(0d0,0d0,0d0,state,status)
  s=pond_step_t(0d0,1d0,0d0,0d0,0d0,0d0,0d0,0d0,0d0,0.25d0)
