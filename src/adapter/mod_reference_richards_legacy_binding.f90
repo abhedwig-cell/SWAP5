@@ -2,10 +2,11 @@ module mod_reference_richards_legacy_binding
   use, intrinsic :: ieee_arithmetic, only: ieee_quiet_nan, ieee_value, ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
-       soil_water_solve_request_t, soil_water_solve_result_t, &
+       soil_water_solve_request_t, soil_water_solve_result_t, soil_water_top_boundary_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
-       SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, &
+       SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, SW_TOP_BOUNDARY_AVAILABLE, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
+  use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
@@ -30,6 +31,12 @@ module mod_reference_richards_legacy_binding
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
      type(reference_richards_state_binding_t) :: state_binding
+     type(soil_water_top_boundary_result_t) :: converged_surface_result
+     logical :: gross_surface_sources_available = .false.
+     real(real64) :: precipitation_rate_cm_day = 0.0_real64
+     real(real64) :: irrigation_rate_cm_day = 0.0_real64
+     real(real64) :: snowmelt_rate_cm_day = 0.0_real64
+     real(real64) :: runon_rate_cm_day = 0.0_real64
    end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
@@ -43,12 +50,13 @@ module mod_reference_richards_legacy_binding
 
   interface
      subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                         numerical_config, physical_config, explicit_step_duration, parameter_set)
+                         numerical_config, physical_config, explicit_step_duration, parameter_set, accepted_top_result)
        use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t
        use mod_reference_richards_workspace, only: reference_richards_workspace_t
        use mod_reference_richards_state_binding, only: reference_richards_state_binding_t
        use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
-            soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t
+            soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
+            soil_water_top_boundary_result_t
        type(a23bu_worker_context_t), intent(inout), optional :: worker
        type(reference_richards_workspace_t), target, intent(inout), optional :: fsi_workspace
        type(a23bu_solver_history_t), target, intent(inout), optional :: history
@@ -59,6 +67,7 @@ module mod_reference_richards_legacy_binding
        type(soil_water_physical_config_t), intent(in), optional :: physical_config
        real(8), intent(in), optional :: explicit_step_duration
        type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
+       type(soil_water_top_boundary_result_t), intent(out), optional :: accepted_top_result
      end subroutine headcalc
   end interface
 
@@ -114,6 +123,7 @@ contains
 
     logical :: ok, sensitivity_capture
     type(a23bu_solver_history_t) :: call_history
+    type(soil_water_top_boundary_result_t) :: final_top
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
     integer(int64) :: reset_bytes_before
 
@@ -130,6 +140,12 @@ contains
 
     select type (ws => workspace)
     type is (reference_richards_legacy_workspace_t)
+       ws%converged_surface_result = soil_water_top_boundary_result_t()
+       ws%gross_surface_sources_available = .false.
+       ws%precipitation_rate_cm_day = 0.0_real64
+       ws%irrigation_rate_cm_day = 0.0_real64
+       ws%snowmelt_rate_cm_day = 0.0_real64
+       ws%runon_rate_cm_day = 0.0_real64
        if (ws%legacy_worker%active_nodes /= n) then
           call a23bu_initialize_worker(ws%legacy_worker, n)
        end if
@@ -152,7 +168,7 @@ contains
 
        call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
             request%evaluation, request%boundary, request%numerical, request%physical, &
-            request%step_duration, request%parameters)
+            request%step_duration, request%parameters, final_top)
 
        ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
@@ -267,6 +283,17 @@ contains
           result%diagnostics%route = 'legacy-reference-retry'
        else
           result%status = SW_SOLVE_CONVERGED
+          ws%converged_surface_result = final_top
+          if (final_top%status == SW_TOP_BOUNDARY_AVAILABLE .and. associated(request%evaluation%dynamic_top_boundary)) then
+             select type (top => request%evaluation%dynamic_top_boundary)
+             type is (b110_dynamic_top_boundary_solver_provider_t)
+                ws%gross_surface_sources_available = .true.
+                ws%precipitation_rate_cm_day = top%precipitation_rate
+                ws%irrigation_rate_cm_day = top%irrigation_rate
+                ws%snowmelt_rate_cm_day = top%snowmelt_rate
+                ws%runon_rate_cm_day = top%runon_rate
+             end select
+          end if
           result%diagnostics%route = 'legacy-reference-bound'
        end if
 

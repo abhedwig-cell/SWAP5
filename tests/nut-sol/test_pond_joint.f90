@@ -2,13 +2,14 @@ program test_pond_joint
   use iso_fortran_env,only:real64,int64
   use ieee_arithmetic,only:ieee_value,ieee_quiet_nan
   use mod_fmr_runtime_core
+  use mod_canonical_contracts,only:canonical_numerical_config_t
   use mod_fmr_serialized_reference_backend
   use mod_fmr_production_application_bootstrap
   use mod_kernel_transactions
   use mod_fixed_flux_top_boundary_provider
   use mod_b110_default_mvg_provider
   use MOD_grid,only:numnod,z,dz,disnod
-  use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference,only:transaction_state_t,TX_TEMPORAL_MODEL_CERTIFICATE,TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t,B111_REACTIVE_NEGATIVE
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application
@@ -69,6 +70,12 @@ program test_pond_joint
   if(trim(variant)=='dry')then
     supply%qtop=0d0;supply%rain_rate=0d0;supply%irrigation_rate=0d0
   end if
+  if(trim(mode)=='gross-resume')then
+    call verify_gross_dynamic()
+    print '(A)','MC_SOL01_GROSS_FRESH_PROCESS_V2=PASS'
+    stop
+  end if
+  if(trim(mode)=='write'.and.trim(variant)/='dry')call verify_gross_dynamic()
   if(trim(mode)=='reject')then
     call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
          water,solute,status,allow_surface_mass=.true.)
@@ -86,6 +93,17 @@ program test_pond_joint
     initial_water=water;initial_solute=solute
     pbad=p;pbad%decpot=1d6
     call initialize_owners(bad_water,bad_solute,pbad)
+    ! A chemical runon cannot be injected into a fixed-flux hydraulic trial.
+    ! Both owners must remain unchanged until a dynamic gross receipt exists.
+    block
+      type(pond_step_t)::unmatched
+      unmatched=supply;unmatched%runon_rate=0.25d0;unmatched%runon_c=3d0
+      call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+        cfg%tiles(1)%base_forcing,cfg%numerical,solute,unmatched,T0,T1,result)
+      call require(result%status==JOINT_INVALID,'no unverified chemical runon')
+      call compare_water(water,initial_water)
+      call compare_chemical(solute,initial_solute)
+    end block
     small_supply=supply;small_supply%t1=1d-9
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
       cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,supply,T0,T1,result)
@@ -136,6 +154,108 @@ program test_pond_joint
   call write_endpoint(trim(endpoint_path),water,solute)
   print '(A)','POND_JOINT_ACTUAL_BALANCE_RESTART=PASS'
 contains
+  subroutine verify_gross_dynamic()
+    type(fmr_b110_physical_forcing_t)::gross
+    type(fmr_b110_physical_parameters_t),target::gross_parameters
+    type(canonical_numerical_config_t)::nc
+    type(fmr_template_t)::plain
+    type(kernel_committed_state_t)::w
+    type(matrix_solute_state_t)::chem,chem_restart
+    type(kernel_committed_state_t)::w_restart
+    type(matrix_joint_result_t)::outcome,outcome_restart
+    type(pond_step_t)::chem_supply
+    type(fmr_serialized_physical_observation_t)::observation
+    logical::created
+    integer::code,kstep
+    logical::seen_runon,seen_runoff
+    plain=cfg%tiles(1)%template
+    plain%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    nc=cfg%numerical
+    nc%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+    nc%transaction%temporal_tolerance=1d-6
+    gross_parameters=cfg%tiles(1)%parameters
+    ! Use the qualified dynamic pond low-conductivity domain, not the
+    ! fixed-flux high-conductivity fixture's unrelated wetting-front stress.
+    gross_parameters%cofgen(3,:)=gross_parameters%cofgen(3,:)*1d-3
+    gross_parameters%cofgen(10,:)=gross_parameters%cofgen(10,:)*1d-3
+    gross_parameters%cofgen(12,:)=gross_parameters%cofgen(12,:)*1d-3
+    gross=cfg%tiles(1)%base_forcing
+    gross%top_flux=0d0
+    allocate(gross%pond_input)
+    gross%pond_input%rain_rate_cm_day=0.25d0
+    gross%pond_input%irrigation_rate_cm_day=0.25d0
+    gross%pond_input%runon_rate_cm_day=0.5d0
+    gross%pond_input%ponding_max_cm=0.50001d0
+    gross%pond_input%runoff_resistance_day=0.001d0
+    chem_supply=supply
+    chem_supply%runon_rate=0.5d0
+    chem_supply%runon_c=3d0
+    if(trim(mode)=='gross-resume')then
+      call read_matrix_joint_restart_file(trim(restart_path)//'.gross',column,plain, &
+        670001_int64,9001_int64,p,w,chem,code,allow_surface_mass=.true.)
+      call require(code==JOINT_OK,'gross independent native V2 reader')
+    else
+      call fmr_new_b110_committed_state(w,column%column_id,cfg%tiles(1)%initial_state,T0,created)
+      call require(created,'gross hydraulic owner initialization')
+      call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
+        [(0.1_real64+0.1_real64*code,code=1,numnod)],chem,code)
+      call require(code==MATRIX_OK,'gross chemical initialization')
+      block
+        type(mobile_salt_state_t)::m
+        type(solute_compartment_state_t)::c
+        real(real64),allocatable::theta(:)
+        real(real64)::tc
+        integer(int64)::rv
+        call chem%snapshot(tc,theta,m,c,rv)
+        call reconstruct_matrix_solute_trusted(p,9001_int64,rv,tc,theta,m%concentration_mg_cm3, &
+          m%mass_mg_cm2,c%sorbed_matrix_mass,chem,code,surface_mass=0.25d0)
+        call require(code==MATRIX_OK,'gross pond surface mass')
+      end block
+      call run_pond_joint_interval(backend,column,plain,gross_parameters,w,gross,nc,chem, &
+        chem_supply,T0,T1,outcome)
+      if(outcome%status/=JOINT_OK)print *,'GROSS_JOINT_STATUS',outcome%status, &
+        outcome%water%status,outcome%chemical%status
+      call require(outcome%status==JOINT_OK,'positive runon Reference joint')
+      observation=backend%observation()
+      call require(observation%accepted_water_flux_trace_available,'gross accepted trace')
+      seen_runon=.false.;seen_runoff=.false.
+      do kstep=1,size(observation%accepted_water_flux_substeps)
+        seen_runon=seen_runon.or. &
+          observation%accepted_water_flux_substeps(kstep)%converged_runon_rate_cm_day>0d0
+        seen_runoff=seen_runoff.or. &
+          observation%accepted_water_flux_substeps(kstep)%converged_runoff_depth_cm>0d0
+      end do
+      call require(seen_runon,'positive gross runon carried from Reference')
+      call require(seen_runoff,'positive runoff carried from Reference')
+      call require(abs(outcome%chemical%residual)<1d-11,'gross joint chemical closure')
+      call require(abs(outcome%water%mass%residual)<HARD_MASS_GATE,'gross joint water closure')
+      call write_matrix_joint_restart_file(trim(restart_path)//'.gross',column,plain, &
+        670001_int64,w,chem,code,allow_surface_mass=.true.)
+      call require(code==JOINT_OK,'gross native V2 restart writer')
+      call read_matrix_joint_restart_file(trim(restart_path)//'.gross',column,plain, &
+        670001_int64,9001_int64,p,w_restart,chem_restart,code,allow_surface_mass=.true.)
+      call require(code==JOINT_OK,'gross native V2 restart reader')
+      call compare_water(w,w_restart);call compare_chemical(chem,chem_restart)
+    end if
+    chem_supply%t0=T1;chem_supply%t1=2*T1
+    call run_pond_joint_interval(backend,column,plain,gross_parameters,w,gross,nc,chem, &
+      chem_supply,T1,2*T1,outcome)
+    call require(outcome%status==JOINT_OK,'gross next accepted window')
+    if(trim(mode)=='gross-resume')then
+      call write_matrix_joint_restart_file(trim(restart_path)//'.gross-fresh',column,plain, &
+        670001_int64,w,chem,code,allow_surface_mass=.true.)
+      call require(code==JOINT_OK,'gross independent resumed native writer')
+    else
+      call run_pond_joint_interval(second,column,plain,gross_parameters,w_restart,gross,nc,chem_restart, &
+        chem_supply,T1,2*T1,outcome_restart)
+      call require(outcome_restart%status==JOINT_OK,'gross restarted accepted window')
+      call compare_water(w,w_restart);call compare_chemical(chem,chem_restart)
+      call write_matrix_joint_restart_file(trim(restart_path)//'.gross-next',column,plain, &
+        670001_int64,w,chem,code,allow_surface_mass=.true.)
+      call require(code==JOINT_OK,'gross native continued V2 writer')
+    end if
+    print '(A)','MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS'
+  end subroutine
   subroutine initialize_owners(w,s,p)
     type(kernel_committed_state_t),intent(out)::w
     type(matrix_solute_state_t),intent(out)::s
@@ -198,6 +318,15 @@ contains
     call require(abs(t1-t2)<=0.0_real64.and.a%current_revision()==b%current_revision(),'water provenance identity')
     call a%snapshot(x,ok);call b%snapshot(y,ok)
     select type(x)
+    type is(fmr_b110_physical_state_t)
+      select type(y)
+      type is(fmr_b110_physical_state_t)
+        call require(x%ponding_depth==y%ponding_depth,'gross pond restart identity')
+        call require(all(x%pressure_head==y%pressure_head),'gross head restart identity')
+        call require(all(x%water_content==y%water_content),'gross water restart identity')
+      class default
+        error stop 'gross water family2'
+      end select
     type is(fmr_b110_temporal_indicator_state_t)
       select type(y)
       type is(fmr_b110_temporal_indicator_state_t)

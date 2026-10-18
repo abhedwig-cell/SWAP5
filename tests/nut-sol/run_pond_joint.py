@@ -31,6 +31,16 @@ assert hashlib.sha256(raw).hexdigest() == '2fc8592001cdcd2de95a252d8b9099416c94e
 lines = raw.decode('latin1').splitlines()
 assert 'csurf = (nird*cirr' in lines[345]
 assert 'cmsy(i) = cmsy(i) + (cfluxb-cfluxt)' in lines[418]
+# Expose bounded, SHA-pinned historical chemistry around the source pond law.
+# This is source inspection, not an assertion that runoff is identical.
+print('MC_SOL01_HISTORICAL_SURFACE_SOURCE_BEGIN')
+for line_no in range(330, 365):
+    print(f'SWAP431_SOLUTE_{line_no+1:04d}: {lines[line_no]}')
+print('MC_SOL01_HISTORICAL_RUNOFF_REFERENCES_BEGIN')
+for line_no,line in enumerate(lines,1):
+    if any(token in line.lower() for token in ('runoff','runots','runon','qrun')):
+        print(f'SWAP431_SOLUTE_{line_no:04d}: {line[:180]}')
+print('MC_SOL01_HISTORICAL_RUNOFF_REFERENCES_END')
 surface = 'module historical_surface_oracle\n use iso_fortran_env,only:real64\n implicit none\ncontains\n subroutine literal_surface(initial,rain,rc,irr,ic,qtop,pond,dtsolu,cpond,transfer,remaining)\n real(real64),intent(in)::initial,rain,rc,irr,ic,qtop,pond,dtsolu\n real(real64),intent(out)::cpond,transfer,remaining\n real(real64)::csurf,nird,cirr,nraidt,cpre,cfluxt,ArMpSs,isqtop\n csurf=initial;nird=irr;cirr=ic;nraidt=rain;cpre=rc;ArMpSs=0\n' + '\n'.join(lines[345:355])+'''
  transfer=-cfluxt;remaining=csurf
  end subroutine
@@ -90,6 +100,9 @@ for opt in ('O0','O2'):
     exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')
     restart=build/'restart.bin';expected=build/'expected.bin';fresh=build/'fresh.bin'
     stdout=run([exe,'write',restart,expected],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in stdout
+    gross_resume=run([exe,'gross-resume',restart,expected],build,'physical_native')
+    assert b'MC_SOL01_GROSS_FRESH_PROCESS_V2=PASS' in gross_resume
+    assert (build/'restart.bin.gross-next').read_bytes()==(build/'restart.bin.gross-fresh').read_bytes()
     resumed=run([exe,'resume',restart,fresh],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in resumed
     assert expected.read_bytes()==fresh.read_bytes()
     dry_restart=build/'dry-restart.bin';dry_expected=build/'dry-expected.bin';dry_fresh=build/'dry-fresh.bin'

@@ -89,7 +89,14 @@ jobs:
                [[ "$(git rev-parse HEAD:$MODEL)" == "$FROSS13_MODEL" ]] && \
                [[ "$(git rev-parse HEAD:$PROVIDER)" == "$FROSS13_PROVIDER" ]]; then
             if [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS22_TIERED_KERNEL" ]] && [[ "$(git rev-parse HEAD:$SOLVER)" == "$FROSS22_TIERED_SOLVER" ]]; then
-              bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              # Moving descendants must retain their first-parent solver contract
+              # byte-for-byte (PR merge previews and actual canonical merge commits).
+              # Immutable FROSS22 owner and numerical-preservation gates still run.
+              if [[ "$(git rev-parse HEAD^1:src/solver/mod_soil_water_solver_contract.f90)" == "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" ]]; then
+                PPA_WU05B_MOVING_CANONICAL_PRESERVATION=1 bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              else
+                bash tests/fci/run_fci_fross22_tiered_successor_preservation.sh
+              fi
             elif [[ "$(git rev-parse HEAD:$KERNEL)" == "$FROSS17_CACHE_KERNEL" ]]; then
               bash tests/fci/run_fci107_fross17_cache_successor_preservation.sh
             else

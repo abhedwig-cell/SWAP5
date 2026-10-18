@@ -34,8 +34,10 @@ module mod_b111_reactive_solute_substep
     real(real64)::rain_c_mg_cm3=0.0_real64
     real(real64)::irrigation_rate_cm_day=0.0_real64
     real(real64)::irrigation_c_mg_cm3=0.0_real64
+    real(real64)::runon_rate_cm_day=0.0_real64,runon_c_mg_cm3=0.0_real64
     real(real64)::macropore_area_fraction=0.0_real64
     real(real64)::pond_end_cm=0.0_real64
+    real(real64)::runoff_depth_cm=0.0_real64
     real(real64),allocatable::face_left_weight(:)
     real(real64),allocatable::face_right_weight(:)
     real(real64),allocatable::face_distance_cm(:)
@@ -66,6 +68,7 @@ module mod_b111_reactive_solute_substep
     real(real64)::bottom_output_mg_cm2=0.0_real64
     real(real64)::bottom_input_mg_cm2=0.0_real64
     real(real64)::pond_to_soil_mg_cm2=0.0_real64
+    real(real64)::runoff_output_mg_cm2=0.0_real64
     real(real64)::mass_before_mg_cm2=0.0_real64
     real(real64)::mass_after_mg_cm2=0.0_real64
     real(real64)::balance_residual_mg_cm2=0.0_real64
@@ -126,11 +129,12 @@ contains
     receipt%mass_before_mg_cm2=sum(committed_mobile%mass_mg_cm2)+committed_companion%solute_total()
     call evaluate_b111_pond_solute_exchange(committed_companion%pond_mass,f%rain_rate_cm_day,f%rain_c_mg_cm3, &
          f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3,f%q_face_up_cm_day(1),f%macropore_area_fraction, &
-         f%pond_end_cm,f%dt_day,pond)
+         f%pond_end_cm,f%dt_day,pond,f%runon_rate_cm_day,f%runon_c_mg_cm3,f%runoff_depth_cm)
     if(pond%status/=B111_POND_SOL_OK)return
     candidate_companion%pond_mass=pond%mass_after
     receipt%pond_to_soil_mg_cm2=pond%soil_transfer
-    receipt%external_input_mg_cm2=pond%rain_input+pond%irrigation_input
+    receipt%runoff_output_mg_cm2=pond%runoff_output
+    receipt%external_input_mg_cm2=pond%rain_input+pond%irrigation_input+pond%runon_input
     cfluxt=-pond%soil_transfer
 
     do i=1,n
@@ -215,7 +219,7 @@ contains
 
     receipt%external_input_mg_cm2=receipt%external_input_mg_cm2+receipt%bottom_input_mg_cm2+receipt%drain_input_mg_cm2
     receipt%external_output_mg_cm2=receipt%decay_output_mg_cm2+receipt%root_output_mg_cm2+ &
-         receipt%drain_output_mg_cm2+receipt%bottom_output_mg_cm2
+         receipt%drain_output_mg_cm2+receipt%bottom_output_mg_cm2+receipt%runoff_output_mg_cm2
     receipt%mass_after_mg_cm2=sum(candidate_mobile%mass_mg_cm2)+candidate_companion%solute_total()
     receipt%balance_residual_mg_cm2=receipt%mass_after_mg_cm2-receipt%mass_before_mg_cm2- &
          receipt%external_input_mg_cm2+receipt%external_output_mg_cm2
@@ -273,12 +277,14 @@ contains
        .not.all(ieee_is_finite(f%bulk_density)).or..not.all(ieee_is_finite(f%kf)))return
     if(.not.all(ieee_is_finite([f%dt_day,f%cdrain_mg_cm3,f%cseep_mg_cm3,f%tscf, &
        f%rain_rate_cm_day,f%rain_c_mg_cm3,f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3, &
-       f%macropore_area_fraction,f%pond_end_cm,f%molecular_diffusion_cm2_day,f%cref_mg_cm3,f%frexp])))return
+       f%macropore_area_fraction,f%pond_end_cm,f%runoff_depth_cm,f%runon_rate_cm_day,f%runon_c_mg_cm3, &
+       f%molecular_diffusion_cm2_day,f%cref_mg_cm3,f%frexp])))return
     if(f%dt_day<=0.0_real64.or.any(f%theta<=0.0_real64).or.any(f%dz_cm<=0.0_real64).or. &
        any(f%root_sink_cm_day<0.0_real64).or.any(f%rtheta<=0.0_real64).or.any(f%bexp<0.0_real64).or. &
        any(f%decpot<0.0_real64).or.any(f%fdepth<0.0_real64).or.any(f%bulk_density<0.0_real64).or. &
        any(f%kf<0.0_real64).or.min(f%cdrain_mg_cm3,f%cseep_mg_cm3,f%tscf,f%rain_rate_cm_day, &
-       f%rain_c_mg_cm3,f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3,f%pond_end_cm, &
+       f%rain_c_mg_cm3,f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3, &
+       f%runon_rate_cm_day,f%runon_c_mg_cm3,f%pond_end_cm,f%runoff_depth_cm, &
        f%molecular_diffusion_cm2_day,f%cref_mg_cm3,f%frexp)<0.0_real64)return
     if(f%tscf>10.0_real64.or.f%macropore_area_fraction<0.0_real64.or.f%macropore_area_fraction>1.0_real64)return
     if(n>1)then

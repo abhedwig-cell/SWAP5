@@ -71,6 +71,21 @@ contains
     if(size(t%drainage_sink_by_level,1)>4096)return
     if(any(abs(t%drainage_sink_by_level)>1d6).or.any(abs(t%net_node_source)>1d10))return
     if(abs(t%bottom_flux)>1d6.or.abs(t%top_flux)>1d6)return
+    ! The zero-storage admitted chemistry has no runon or snowmelt source.
+    ! Verify source provenance when the dynamic hydraulic carrier supplies it.
+    if(t%converged_gross_sources_available)then
+      if(.not.all(ieee_is_finite([t%converged_rain_rate_cm_day, &
+        t%converged_irrigation_rate_cm_day,t%converged_snowmelt_rate_cm_day, &
+        t%converged_runon_rate_cm_day])))return
+      if(t%converged_rain_rate_cm_day/=supply%rain_rate.or. &
+         t%converged_irrigation_rate_cm_day/=supply%irrigation_rate)return
+      if(t%converged_snowmelt_rate_cm_day/=0d0.or.t%converged_runon_rate_cm_day/=0d0)return
+    end if
+    if(t%converged_surface_available)then
+      if(.not.all(ieee_is_finite([t%converged_pond_evaporation_cm_day, &
+        t%converged_runoff_depth_cm])))return
+      if(t%converged_pond_evaporation_cm_day/=0d0.or.t%converged_runoff_depth_cm/=0d0)return
+    end if
     dt=t%t1-t%t0
     if(dt<1d-100.or.dt>1d3)return
     scale=max(1d0,maxval(abs(t%net_node_source)))
