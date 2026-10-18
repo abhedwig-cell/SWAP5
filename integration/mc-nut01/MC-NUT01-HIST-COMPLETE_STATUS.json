@@ -32,11 +32,11 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Qualify exact persisted 124-day driver and O0/O2 fresh restart with existing actual B112 workflow; full TTUTIL grammar and year-long physical rotation remain open",
+  "next_action": "Diagnose exact day 67 actual Richards/crop/Soil-N JOINT status 2 with production receipt stage and water/chemical status on candidate. Preserve 62-day canonical baseline; do not suppress rejected day or loosen balances. Fix only evidenced physical/coupling cause, then rerun exact-head O0/O2.",
   "recovery_point": "work/nut-coupled-124day-20261018@342e77d438f205b18a7a8321198c0fa03b481541",
   "blockers": [
-    "124-day physical candidate not yet qualified",
-    "Original TTUTIL/SNM full grammar and multiyear crop rotations not qualified"
+    "124-day coupled native qualification FAILED run 39114243770: source day 67 JOINT status 2; focused native run 39114243790 SUCCESS",
+    "Full TTUTIL grammar and multi-year crop rotation still open"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
@@ -57,5 +57,15 @@
       39111080977
     ],
     "conclusion": "success"
+  },
+  "qualification_124day": {
+    "head": "2f9b319fbf271f766ef1a7b4b15cbab64453d0b6",
+    "focused_run": 39114243790,
+    "focused": "success",
+    "actual_run": 39114243770,
+    "actual": "failure",
+    "failure_day": 67,
+    "reported_status": 2,
+    "canonical_admitted": false
   }
 }
