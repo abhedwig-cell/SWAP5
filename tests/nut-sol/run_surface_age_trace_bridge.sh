@@ -17,7 +17,8 @@ for line in part.splitlines():
 roots += [
  'src/process/mod_b111_surface_age_budget.f90',
  'src/process/mod_b111_surface_age_owner.f90',
- 'src/runtime/mod_b111_surface_age_trace_bridge.f90']
+ 'src/runtime/mod_b111_surface_age_trace_bridge.f90',
+ 'src/runtime/mod_fmr_b111_age_route.f90']
 pathlib.Path(sys.argv[1]).write_text('\n'.join(roots)+'\n')
 PY
 mapfile -t roots < "$build/roots"
