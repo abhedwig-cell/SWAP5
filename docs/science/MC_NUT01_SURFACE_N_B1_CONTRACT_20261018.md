@@ -142,3 +142,18 @@ loop merely has room for additional fully accepted steps. This is not evidence
 that the original negative-bottom-flux stress test was repaired, nor does an
 eight-day exploratory result qualify the multiyear model. Estimated native cost
 is several minutes for eight days; full rotation is conditional on this feedback.
+
+## Lower-boundary physical alternative (exploratory)
+
+The root-correlated prescribed flux in the inherited synthetic fixture cannot
+represent an independently responding water table. A discriminating alternative
+uses the already implemented Reference Richards prescribed-head mode 5, with
+-75 cm pressure head at the lower face of the 30 cm profile: water table 1.05 m
+below the surface. Daily rain, weekly 5 mm pulses, irrigation, runon, evaporation,
+roots, material events and every numerical gate remain the same. No groundwater
+solver or new lower-boundary physics is introduced. The existing admitted mode
+is source-verified in `mod_reference_richards_temporal_indicator`, lines describing
+the Dirichlet face stiffness, and `mod_fmr_groundwater_head_forcing_adapter`.
+This input experiment is not itself a new admission. Eight days are selected
+to discriminate the first rain pulse, expected native cost up to ten minutes;
+a full rotation requires actual water and nitrogen budgets and transition restarts.
