@@ -470,6 +470,10 @@ module mod_fmr_serialized_reference_backend
   type, public :: fmr_pond_input_forcing_t
     real(real64) :: rain_rate_cm_day = 0.0_real64
     real(real64) :: irrigation_rate_cm_day = 0.0_real64
+    real(real64) :: runon_rate_cm_day = 0.0_real64
+    real(real64) :: potential_pond_evaporation_cm_day = 0.0_real64
+    real(real64) :: ponding_max_cm = 1.e6_real64
+    real(real64) :: runoff_resistance_day = 0.0_real64
   end type fmr_pond_input_forcing_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
@@ -3930,9 +3934,14 @@ contains
       end if
       if (allocated(forcing%pond_input)) then
         if (.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
-            forcing%pond_input%irrigation_rate_cm_day,forcing%top_flux]))) return
+            forcing%pond_input%irrigation_rate_cm_day,forcing%pond_input%runon_rate_cm_day, &
+            forcing%pond_input%potential_pond_evaporation_cm_day,forcing%pond_input%ponding_max_cm, &
+            forcing%pond_input%runoff_resistance_day,forcing%top_flux]))) return
         if (min(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)<0.0_real64.or. &
-            max(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)>5.e5_real64) return
+            max(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day, &
+            forcing%pond_input%runon_rate_cm_day)>5.e5_real64.or. &
+            min(forcing%pond_input%runon_rate_cm_day,forcing%pond_input%potential_pond_evaporation_cm_day, &
+            forcing%pond_input%ponding_max_cm,forcing%pond_input%runoff_resistance_day)<0.0_real64) return
         if (forcing%top_flux/=0.0_real64.or.self%snow_active.or.self%black_evaporation_active.or. &
             self%boesten_evaporation_active.or.self%rutter_active.or.self%macropore_active.or. &
             self%rfm_configuration%enabled.or.self%fixed_weir_surface_water_active) return
@@ -4976,7 +4985,9 @@ contains
       call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters, &
            self%hydraulic_parameters,self%swkmean,request%base_state%ponding_depth,step_duration, &
            self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
-           0.0_real64,0.0_real64,0.0_real64,0.0_real64,1.e6_real64,0.0_real64,1.0_real64,fixed_top_conductivity)
+           0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &
+           self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &
+           self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity)
       request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
       nullify(request%evaluation%top_boundary)
       request%evaluation%dynamic_top_boundary=>rfm_top_provider
