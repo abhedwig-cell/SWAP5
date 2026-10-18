@@ -298,6 +298,15 @@ contains
     call require(abs(t1-t2)<=0.0_real64.and.a%current_revision()==b%current_revision(),'water provenance identity')
     call a%snapshot(x,ok);call b%snapshot(y,ok)
     select type(x)
+    type is(fmr_b110_physical_state_t)
+      select type(y)
+      type is(fmr_b110_physical_state_t)
+        call require(x%ponding_depth==y%ponding_depth,'gross pond restart identity')
+        call require(all(x%pressure_head==y%pressure_head),'gross head restart identity')
+        call require(all(x%water_content==y%water_content),'gross water restart identity')
+      class default
+        error stop 'gross water family2'
+      end select
     type is(fmr_b110_temporal_indicator_state_t)
       select type(y)
       type is(fmr_b110_temporal_indicator_state_t)
