@@ -327,6 +327,36 @@ contains
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4', &
      'cNH4N_seep = 0.1','cNO3N_seep = 0.2'
    close(unit)
+   ! A malformed source array must not be silently shortened or reordered.
+   block
+     type(crop_soil_state_t)::rejected_state
+     type(soil_n_amendment_calendar_t)::rejected_plan
+     type(crop_senescence_policy_t)::rejected_policy
+     integer::input_unit,output_unit,ios,case_number
+     character(512)::source_line
+     do case_number=1,3
+       open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
+       open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
+       do
+         read(input_unit,'(A)',iostat=ios)source_line
+         if(ios/=0)exit
+         if(index(source_line,'iMat = ')==1)then
+           select case(case_number)
+           case(1);source_line='iMat = 1,,1,1,1,1'
+           case(2);source_line='iMat = 1,1,1,1,1,'
+           case(3);source_line='iMat = ,1,1,1,1,1'
+           end select
+         end if
+         write(output_unit,'(A)')trim(source_line)
+       end do
+       close(input_unit);close(output_unit)
+       call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
+         base_day,source_water,'source-crop-invalid.snm','1900-12-30', &
+         rejected_plan,rejected_state,rejected_policy,code,error_line)
+       call require(code/=0.and..not.rejected_plan%ready().and..not.rejected_state%ready(), &
+         'malformed source comma rejected atomically')
+     end do
+   end block
    ! Source owner is reconstructed from the same input in each fresh process.
    ! The restart decoder verifies its parameter identity against these values.
    call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
