@@ -2,7 +2,7 @@
   "workstream": "MC-SOL01",
   "work_unit": "MC-SOL01-SURFACE-AGE02",
   "baseline": "65db94901eba8222b070920827621fdffddb2180",
-  "stage": "QUALIFIED_BOUNDED_DRY_LIMIT_BLOCKED",
+  "stage": "BOUNDED_SUPPLEMENT_READY_FOR_CANONICAL_DRY_LIMIT_BLOCKED",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -37,7 +37,7 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Validate archive against exact current unchanged production and old admission; integrate supplemental evidence; full evaporation stays scientifically blocked",
+  "next_action": "Merge PR1315 as bounded supplementary evidence and record actual merge; complete evaporative drying remains scientifically blocked",
   "blockers": [
     {
       "scope": "Full evaporative dry-down and literal physical mean-water-age interpretation",
@@ -73,6 +73,11 @@
       "execution_commit": "7a495023938cf23a01f67b26fab90f15875f11af",
       "result": "PHYSICAL_RESTART_OPTIMIZATION_PASS_REFINEMENT_CRITERION_FAILED_NOT_QUALIFIED",
       "description": "6real two-day runs and12fresh-process endpoints passed exactly. Actual maximum step halves1.25e-4/6.25e-5/3.125e-5d, but differences in pond age amount1.61518e-5 then5.26578e-5cm day and soil3.30447e-6 then6.44984e-6 still grow. Their small size is not formal convergence. Move further into cap-dominated region using outer limits .0000625/.00003125/.000015625d, keep all numerical gates and existing1e-3relative final-difference accuracy ceiling."
+    },
+    {
+      "directory": "age02-admission-checks",
+      "result": "FIRST_STRICT_DOCS_FAILED_THEN_REPAIRED_PASS",
+      "reason": "Existing SURFACE-AGE01 relative link points outside docs tree. Replaced with65db9490 canonical permalink. Both raw logs retained; final strict build PASS27.52s."
     }
   ],
   "execution_commit": "87da11c38515b1d78d62de8e6608fb42303395a0",
@@ -325,5 +330,22 @@
     "Observed refinement stabilization, no formal whole-model order proof",
     "Same-platform POSIX restart",
     "No new default, RossFast, snow/exfiltration or simultaneous reactive companion admission"
-  ]
+  ],
+  "preserved": true,
+  "verification_evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE02_ADMISSION_CHECKS_20261018.tar.xz.b64",
+    "decoded_sha256": "13df8a621502dc1ca329469c941cd2fe44547700dfc17ddb973343a69d4cf6df",
+    "members": 14
+  },
+  "verification": {
+    "execution_commit": "18879a658748251caf1d7fcd30d6f612337be48c",
+    "age02_negative_controls": 8,
+    "hist_negative_controls": 12,
+    "old_age_qualification": "PASS_UNCHANGED",
+    "docs_source": "PASS",
+    "mkdocs": "PASS_STRICT",
+    "source_test_guard_delta": [],
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "hosted_runs": []
+  }
 }
