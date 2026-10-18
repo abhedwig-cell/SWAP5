@@ -73,6 +73,8 @@ def main():
     if not cached:
         run(scripts / 'collect_soil_observations.py', soil_data)
     run(scripts / 'collect_groundwater.py', root, results / 'swap431_groundwater', '--all-shallow')
+    run(scripts / 'audit_groundwater.py', root, results / 'swap431_groundwater_audit')
+    run(scripts / 'fit_historical_retention.py', results / 'local_studies/historical_retention_fits.json')
     run(scripts / 'run_local_soil_scenarios.py', root, results / 'swap431_grid_soil_scenarios', exe, '--all-cells')
     batch = json.loads((results / 'swap431_grid_soil_scenarios/batch_results.json').read_text())
     status = {'model': 'SWAP4.3.1', 'executable_sha256': sha(exe),

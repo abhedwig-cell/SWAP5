@@ -1,0 +1,1120 @@
+{
+  "input_sha256": "0c210e2ded1e522a4e813c54ff2bd81cd10205573e801bda5ce0c6ccbc898029",
+  "method": "van Genuchten m=1-1/n; theta_s fixed to reported total porosity; equal-weight least squares",
+  "fitting_bounds": {
+    "theta_r": "0 to smallest measured theta",
+    "alpha_per_cm": [
+      1e-05,
+      10
+    ],
+    "n": [
+      1.001,
+      10
+    ]
+  },
+  "pressure_heads_abs_cm": [
+    50.11872336272722,
+    100.0,
+    346.73685045253166,
+    1023.2929922807537,
+    15488.166189124828
+  ],
+  "rows": 35,
+  "fits": [
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "B21h",
+      "row_variant": "1",
+      "theta_r": 0.10068404109587716,
+      "theta_s": 0.504,
+      "alpha_per_cm": 0.035150001509360124,
+      "n": 1.428732785950502,
+      "m": 0.30007905618633657,
+      "measured_theta": [
+        0.38299999999999995,
+        0.32799999999999996,
+        0.233,
+        0.191,
+        0.127
+      ],
+      "fitted_theta": [
+        0.3839604598489758,
+        0.3253712234985574,
+        0.23760304043114672,
+        0.18733864845446682,
+        0.12776402724091948
+      ],
+      "residual_theta": [
+        0.0009604598489758587,
+        -0.0026287765014425535,
+        0.004603040431146704,
+        -0.0036613515455331813,
+        0.0007640272409194793
+      ],
+      "rmse_theta": 0.0029329221943872894,
+      "max_abs_residual_theta": 0.004603040431146704,
+      "jacobian_condition": 19.353502364775323,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "B22h",
+      "row_variant": "1",
+      "theta_r": 0.0539999999,
+      "theta_s": 0.42200000000000004,
+      "alpha_per_cm": 0.04515164533689096,
+      "n": 1.9187567925250162,
+      "m": 0.4788292065488742,
+      "measured_theta": [
+        0.215,
+        0.139,
+        0.085,
+        0.07,
+        0.054000000000000006
+      ],
+      "fitted_theta": [
+        0.21270005387962776,
+        0.1437720026537221,
+        0.08332075447018505,
+        0.06487138045904685,
+        0.05489595020159335
+      ],
+      "residual_theta": [
+        -0.002299946120372237,
+        0.004772002653722074,
+        -0.0016792455298149517,
+        -0.005128619540953158,
+        0.0008959502015933457
+      ],
+      "rmse_theta": 0.0034054982658263404,
+      "max_abs_residual_theta": 0.005128619540953158,
+      "jacobian_condition": 44.819758221899484,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "B31",
+      "row_variant": "1",
+      "theta_r": 0.04699999989999999,
+      "theta_s": 0.409,
+      "alpha_per_cm": 0.034527988933544876,
+      "n": 2.085483775166671,
+      "m": 0.5204949509040988,
+      "measured_theta": [
+        0.223,
+        0.131,
+        0.076,
+        0.061,
+        0.047
+      ],
+      "fitted_theta": [
+        0.21984337345738486,
+        0.1378008819527674,
+        0.07138367631096118,
+        0.054551970490392884,
+        0.04739566017107388
+      ],
+      "residual_theta": [
+        -0.003156626542615143,
+        0.006800881952767401,
+        -0.004616323689038818,
+        -0.006448029509607114,
+        0.0003956601710738833
+      ],
+      "rmse_theta": 0.004883858359836802,
+      "max_abs_residual_theta": 0.006800881952767401,
+      "jacobian_condition": 45.617237379906186,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "B32",
+      "row_variant": "1",
+      "theta_r": 0.027999999899999992,
+      "theta_s": 0.386,
+      "alpha_per_cm": 0.02993887572921315,
+      "n": 2.6237426072517573,
+      "m": 0.618865052830982,
+      "measured_theta": [
+        0.182,
+        0.087,
+        0.034,
+        0.031,
+        0.027999999999999997
+      ],
+      "fitted_theta": [
+        0.18220358125446603,
+        0.08632825345263244,
+        0.03600201392803333,
+        0.029382245665494515,
+        0.028016772594526042
+      ],
+      "residual_theta": [
+        0.0002035812544660398,
+        -0.0006717465473675549,
+        0.0020020139280333277,
+        -0.0016177543345054848,
+        1.6772594526044682e-05
+      ],
+      "rmse_theta": 0.001193160418874851,
+      "max_abs_residual_theta": 0.0020020139280333277,
+      "jacobian_condition": 71.95255770163344,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "Cg",
+      "row_variant": "1",
+      "theta_r": 0.04499999989999999,
+      "theta_s": 0.369,
+      "alpha_per_cm": 0.026073679139949162,
+      "n": 1.9340196460113717,
+      "m": 0.48294217069492984,
+      "measured_theta": [
+        0.247,
+        0.168,
+        0.083,
+        0.066,
+        0.045
+      ],
+      "fitted_theta": [
+        0.24635095912071803,
+        0.16838794319665915,
+        0.0861610767899614,
+        0.060068791770740954,
+        0.04619206214731924
+      ],
+      "residual_theta": [
+        -0.0006490408792819702,
+        0.0003879431966591351,
+        0.0031610767899614006,
+        -0.0059312082292590496,
+        0.0011920621473192408
+      ],
+      "rmse_theta": 0.0030712995191204493,
+      "max_abs_residual_theta": 0.0059312082292590496,
+      "jacobian_condition": 33.50942786604138,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "A1",
+      "row_variant": "1",
+      "theta_r": 0.040160171120762936,
+      "theta_s": 0.433,
+      "alpha_per_cm": 0.018067569607692353,
+      "n": 1.8357389416505647,
+      "m": 0.4552602348235465,
+      "measured_theta": [
+        0.34299999999999997,
+        0.242,
+        0.136,
+        0.063,
+        0.047
+      ],
+      "fitted_theta": [
+        0.33825857689051425,
+        0.250055828931406,
+        0.12362818303318447,
+        0.07439642729817399,
+        0.04370209926727629
+      ],
+      "residual_theta": [
+        -0.004741423109485721,
+        0.008055828931405995,
+        -0.012371816966815538,
+        0.011396427298173986,
+        -0.0032979007327237075
+      ],
+      "rmse_theta": 0.008731483634996892,
+      "max_abs_residual_theta": 0.012371816966815538,
+      "jacobian_condition": 19.995782636370013,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "A1",
+      "row_variant": "2",
+      "theta_r": 0.23496002395765486,
+      "theta_s": 0.632,
+      "alpha_per_cm": 0.007483815318214125,
+      "n": 1.5674534139162637,
+      "m": 0.36202250662014135,
+      "measured_theta": [
+        0.627,
+        0.5539999999999999,
+        0.449,
+        0.36200000000000004,
+        0.26
+      ],
+      "fitted_theta": [
+        0.6049708956791475,
+        0.5672729577510933,
+        0.449751901500422,
+        0.35821319924259815,
+        0.26171774682810844
+      ],
+      "residual_theta": [
+        -0.022029104320852477,
+        0.013272957751093384,
+        0.0007519015004219809,
+        -0.003786800757401898,
+        0.0017177468281084352
+      ],
+      "rmse_theta": 0.011655974559421313,
+      "max_abs_residual_theta": 0.022029104320852477,
+      "jacobian_condition": 14.073457745955825,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "A2",
+      "row_variant": "1",
+      "theta_r": 0.05637263513854154,
+      "theta_s": 0.429,
+      "alpha_per_cm": 0.028601386571461013,
+      "n": 1.7470288645902128,
+      "m": 0.42759961196487595,
+      "measured_theta": [
+        0.293,
+        0.218,
+        0.11699999999999999,
+        0.09300000000000001,
+        0.057999999999999996
+      ],
+      "fitted_theta": [
+        0.2935659242822486,
+        0.2159102508097488,
+        0.12299214350536603,
+        0.08624933533339359,
+        0.06030218481095147
+      ],
+      "residual_theta": [
+        0.0005659242822486088,
+        -0.0020897491902512055,
+        0.005992143505366032,
+        -0.006750664666606426,
+        0.0023021848109514714
+      ],
+      "rmse_theta": 0.004277023126078198,
+      "max_abs_residual_theta": 0.006750664666606426,
+      "jacobian_condition": 24.202654910915804,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "B21h",
+      "row_variant": "1",
+      "theta_r": 0.052388694116492045,
+      "theta_s": 0.434,
+      "alpha_per_cm": 0.02682180074988652,
+      "n": 1.3406830568186399,
+      "m": 0.2541115553642188,
+      "measured_theta": [
+        0.359,
+        0.3,
+        0.242,
+        0.166,
+        0.10300000000000001
+      ],
+      "fitted_theta": [
+        0.3551378531098124,
+        0.3091787738462591,
+        0.22869095108847082,
+        0.17548909007328053,
+        0.1013116518355003
+      ],
+      "residual_theta": [
+        -0.003862146890187601,
+        0.009178773846259092,
+        -0.013309048911529175,
+        0.009489090073280526,
+        -0.0016883481644997117
+      ],
+      "rmse_theta": 0.008592906386026,
+      "max_abs_residual_theta": 0.013309048911529175,
+      "jacobian_condition": 19.252274605654176,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "B22h",
+      "row_variant": "1",
+      "theta_r": 0.03799999989999999,
+      "theta_s": 0.384,
+      "alpha_per_cm": 0.022672748173841024,
+      "n": 2.2622430604483177,
+      "m": 0.5579608497939978,
+      "measured_theta": [
+        0.258,
+        0.14400000000000002,
+        0.068,
+        0.055999999999999994,
+        0.038
+      ],
+      "fitted_theta": [
+        0.2535559772948944,
+        0.151505323639539,
+        0.06349527439011966,
+        0.044535527479949925,
+        0.03821185099330756
+      ],
+      "residual_theta": [
+        -0.0044440227051056325,
+        0.0075053236395389855,
+        -0.004504725609880342,
+        -0.011464472520050069,
+        0.00021185099330756074
+      ],
+      "rmse_theta": 0.006750567154904505,
+      "max_abs_residual_theta": 0.011464472520050069,
+      "jacobian_condition": 41.159831267647355,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "B31",
+      "row_variant": "1",
+      "theta_r": 0.029999999899999994,
+      "theta_s": 0.381,
+      "alpha_per_cm": 0.04678736751735568,
+      "n": 2.2246650551649996,
+      "m": 0.5504941304857096,
+      "measured_theta": [
+        0.147,
+        0.075,
+        0.048,
+        0.043,
+        0.03
+      ],
+      "fitted_theta": [
+        0.14443900262334688,
+        0.08212237388489375,
+        0.041556322195069856,
+        0.03307375024036733,
+        0.030110308011770295
+      ],
+      "residual_theta": [
+        -0.002560997376653107,
+        0.007122373884893757,
+        -0.006443677804930145,
+        -0.009926249759632667,
+        0.00011030801177029648
+      ],
+      "rmse_theta": 0.006282523428070259,
+      "max_abs_residual_theta": 0.009926249759632667,
+      "jacobian_condition": 78.73950989162729,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "B32",
+      "row_variant": "1",
+      "theta_r": 0.03299999989999999,
+      "theta_s": 0.397,
+      "alpha_per_cm": 0.025582651813731712,
+      "n": 2.4790879046368026,
+      "m": 0.5966258404433205,
+      "measured_theta": [
+        0.23199999999999998,
+        0.109,
+        0.062,
+        0.045,
+        0.033
+      ],
+      "fitted_theta": [
+        0.22778735697414515,
+        0.11882731708755753,
+        0.04738307832199832,
+        0.035909083156423396,
+        0.033052301073702904
+      ],
+      "residual_theta": [
+        -0.004212643025854834,
+        0.009827317087557533,
+        -0.01461692167800168,
+        -0.009090916843576602,
+        5.2301073702902545e-05
+      ],
+      "rmse_theta": 0.009062278148486222,
+      "max_abs_residual_theta": 0.01461692167800168,
+      "jacobian_condition": 52.009665673325586,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "B33m",
+      "row_variant": "1",
+      "theta_r": 0.05753068745053982,
+      "theta_s": 0.368,
+      "alpha_per_cm": 0.018386574030406305,
+      "n": 1.5987282985740146,
+      "m": 0.37450284648620413,
+      "measured_theta": [
+        0.29600000000000004,
+        0.257,
+        0.154,
+        0.111,
+        0.069
+      ],
+      "fitted_theta": [
+        0.3027543249374715,
+        0.24875449688231938,
+        0.15802387148027747,
+        0.11091997821161603,
+        0.06806048965263725
+      ],
+      "residual_theta": [
+        0.0067543249374714676,
+        -0.00824550311768063,
+        0.004023871480277469,
+        -8.002178838396878e-05,
+        -0.0009395103473627542
+      ],
+      "rmse_theta": 0.005112530721547562,
+      "max_abs_residual_theta": 0.00824550311768063,
+      "jacobian_condition": 19.73199345891568,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "C1",
+      "row_variant": "1",
+      "theta_r": 0.03199999989999999,
+      "theta_s": 0.392,
+      "alpha_per_cm": 0.039140274443245235,
+      "n": 3.0223549989889578,
+      "m": 0.6691321832364096,
+      "measured_theta": [
+        0.11699999999999999,
+        0.054000000000000006,
+        0.036000000000000004,
+        0.033,
+        0.032
+      ],
+      "fitted_theta": [
+        0.11689262102569752,
+        0.05454983792390862,
+        0.03384342420346734,
+        0.03220664444636602,
+        0.03200084878569085
+      ],
+      "residual_theta": [
+        -0.00010737897430247723,
+        0.0005498379239086137,
+        -0.002156575796532667,
+        -0.0007933555536339815,
+        8.487856908503955e-07
+      ],
+      "rmse_theta": 0.0010577414530782013,
+      "max_abs_residual_theta": 0.002156575796532667,
+      "jacobian_condition": 172.91314063163992,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "C2",
+      "row_variant": "1",
+      "theta_r": 0.0109999999,
+      "theta_s": 0.381,
+      "alpha_per_cm": 0.055951953344928806,
+      "n": 2.71616785461949,
+      "m": 0.6318342409143596,
+      "measured_theta": [
+        0.07200000000000001,
+        0.028999999999999998,
+        0.016,
+        0.013999999999999999,
+        0.011000000000000001
+      ],
+      "fitted_theta": [
+        0.07174189277260078,
+        0.030155045280121584,
+        0.013280380873346674,
+        0.011356033578345972,
+        0.011003360506179116
+      ],
+      "residual_theta": [
+        -0.00025810722739923186,
+        0.001155045280121586,
+        -0.0027196191266533262,
+        -0.002643966421654027,
+        3.360506179115111e-06
+      ],
+      "rmse_theta": 0.0017769438294927193,
+      "max_abs_residual_theta": 0.0027196191266533262,
+      "jacobian_condition": 208.0836087276436,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "C3",
+      "row_variant": "1",
+      "theta_r": 0.007999999899999999,
+      "theta_s": 0.418,
+      "alpha_per_cm": 0.07613588209136869,
+      "n": 2.4131246038690257,
+      "m": 0.585599517572912,
+      "measured_theta": [
+        0.069,
+        0.028999999999999998,
+        0.015,
+        0.013000000000000001,
+        0.008
+      ],
+      "fitted_theta": [
+        0.06840517806571121,
+        0.031179205090138492,
+        0.012016118712687797,
+        0.008870413019048897,
+        0.00801871729113527
+      ],
+      "residual_theta": [
+        -0.0005948219342887945,
+        0.002179205090138494,
+        -0.0029838812873122025,
+        -0.004129586980951104,
+        1.8717291135270098e-05
+      ],
+      "rmse_theta": 0.0024923938077838666,
+      "max_abs_residual_theta": 0.004129586980951104,
+      "jacobian_condition": 179.40635534888793,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "A1b",
+      "row_variant": "1",
+      "theta_r": 0.025999999899999997,
+      "theta_s": 0.4,
+      "alpha_per_cm": 0.02613065218359504,
+      "n": 2.5633250474521443,
+      "m": 0.6098817038463518,
+      "measured_theta": [
+        0.22,
+        0.099,
+        0.048,
+        0.037000000000000005,
+        0.026000000000000002
+      ],
+      "fitted_theta": [
+        0.2175063470688858,
+        0.1052611792724989,
+        0.03790156312929965,
+        0.028196411338531388,
+        0.026031408476971534
+      ],
+      "residual_theta": [
+        -0.0024936529311141986,
+        0.00626117927249889,
+        -0.010098436870700354,
+        -0.008803588661468617,
+        3.1408476971531846e-05
+      ],
+      "rmse_theta": 0.006706761630884297,
+      "max_abs_residual_theta": 0.010098436870700354,
+      "jacobian_condition": 55.475639993009686,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "A2b",
+      "row_variant": "1",
+      "theta_r": 0.06860152539641345,
+      "theta_s": 0.48100000000000004,
+      "alpha_per_cm": 0.02648808661685865,
+      "n": 1.8026516173045335,
+      "m": 0.4452616410178697,
+      "measured_theta": [
+        0.337,
+        0.242,
+        0.136,
+        0.10300000000000001,
+        0.069
+      ],
+      "fitted_theta": [
+        0.33507761944538383,
+        0.2443705362078466,
+        0.1375943800536195,
+        0.0977470950669381,
+        0.07189719755330887
+      ],
+      "residual_theta": [
+        -0.0019223805546161876,
+        0.0023705362078466075,
+        0.001594380053619504,
+        -0.005252904933061908,
+        0.002897197553308861
+      ],
+      "rmse_theta": 0.003093341253840026,
+      "max_abs_residual_theta": 0.005252904933061908,
+      "jacobian_condition": 22.524121362958546,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "B21hb",
+      "row_variant": "1",
+      "theta_r": 0.08621993436897045,
+      "theta_s": 0.488,
+      "alpha_per_cm": 0.01670065594841366,
+      "n": 1.6428769702834707,
+      "m": 0.39131169400502663,
+      "measured_theta": [
+        0.396,
+        0.353,
+        0.205,
+        0.152,
+        0.099
+      ],
+      "fitted_theta": [
+        0.409232798602373,
+        0.3373749021076999,
+        0.21339759122245505,
+        0.15076995344379296,
+        0.09751474865212668
+      ],
+      "residual_theta": [
+        0.013232798602372975,
+        -0.0156250978923001,
+        0.008397591222455064,
+        -0.0012300465562070373,
+        -0.0014852513478733204
+      ],
+      "rmse_theta": 0.00993467832827189,
+      "max_abs_residual_theta": 0.0156250978923001,
+      "jacobian_condition": 15.477046686416518,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "B22hb",
+      "row_variant": "1",
+      "theta_r": 0.13297343310597784,
+      "theta_s": 0.456,
+      "alpha_per_cm": 0.015248658675070886,
+      "n": 1.3798284324066796,
+      "m": 0.2752722175351813,
+      "measured_theta": [
+        0.402,
+        0.381,
+        0.312,
+        0.233,
+        0.177
+      ],
+      "fitted_theta": [
+        0.41255203121123984,
+        0.37651896389508943,
+        0.3001164631379033,
+        0.24604323430548222,
+        0.17350131307566843
+      ],
+      "residual_theta": [
+        0.01055203121123982,
+        -0.004481036104910574,
+        -0.0118835368620967,
+        0.01304323430548221,
+        -0.0034986869243315566
+      ],
+      "rmse_theta": 0.009539499640458079,
+      "max_abs_residual_theta": 0.01304323430548221,
+      "jacobian_condition": 18.20230226391976,
+      "active_bounds": [
+        0,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "17",
+      "pdf_page": "79",
+      "profile": "4a",
+      "horizon": "A1",
+      "row_variant": "1",
+      "theta_r": 0.0269999999,
+      "theta_s": 0.40399999999999997,
+      "alpha_per_cm": 0.02789892887144845,
+      "n": 3.2388936539693263,
+      "m": 0.6912525983140938,
+      "measured_theta": [
+        0.17300000000000001,
+        0.062,
+        0.039,
+        0.032,
+        0.027000000000000003
+      ],
+      "fitted_theta": [
+        0.17256380380001404,
+        0.06399040485181788,
+        0.029341654855696904,
+        0.027207696732877328,
+        0.027000473641198956
+      ],
+      "residual_theta": [
+        -0.00043619619998597203,
+        0.0019904048518178813,
+        -0.009658345144303096,
+        -0.004792303267122672,
+        4.7364119895240697e-07
+      ],
+      "rmse_theta": 0.004907173939324266,
+      "max_abs_residual_theta": 0.009658345144303096,
+      "jacobian_condition": 107.01156459295045,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "17",
+      "pdf_page": "79",
+      "profile": "4a",
+      "horizon": "C1g",
+      "row_variant": "1",
+      "theta_r": 0.021999999899999997,
+      "theta_s": 0.392,
+      "alpha_per_cm": 0.031534841931693654,
+      "n": 2.7064419831224904,
+      "m": 0.6305112002266995,
+      "measured_theta": [
+        0.168,
+        0.067,
+        0.040999999999999995,
+        0.032,
+        0.022000000000000002
+      ],
+      "fitted_theta": [
+        0.1663136861291834,
+        0.07270804660232771,
+        0.0282394072641041,
+        0.022985179490710828,
+        0.02200954842844807
+      ],
+      "residual_theta": [
+        -0.001686313870816608,
+        0.00570804660232771,
+        -0.012760592735895894,
+        -0.009014820509289173,
+        9.548428448066804e-06
+      ],
+      "rmse_theta": 0.007476968067924846,
+      "max_abs_residual_theta": 0.012760592735895894,
+      "jacobian_condition": 81.1650231286322,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    },
+    {
+      "table": "17",
+      "pdf_page": "79",
+      "profile": "4a",
+      "horizon": "C2g",
+      "row_variant": "1",
+      "theta_r": 0.022999999899999995,
+      "theta_s": 0.385,
+      "alpha_per_cm": 0.03699738879691804,
+      "n": 2.102382139110771,
+      "m": 0.5243490793624404,
+      "measured_theta": [
+        0.19,
+        0.09300000000000001,
+        0.055999999999999994,
+        0.038,
+        0.023
+      ],
+      "fitted_theta": [
+        0.18447692660941434,
+        0.10584416784498796,
+        0.0446779109235251,
+        0.029589484918520734,
+        0.023329723232542947
+      ],
+      "residual_theta": [
+        -0.005523073390585664,
+        0.012844167844987944,
+        -0.011322089076474896,
+        -0.008410515081479265,
+        0.0003297232325429472
+      ],
+      "rmse_theta": 0.0088827042020943,
+      "max_abs_residual_theta": 0.012844167844987944,
+      "jacobian_condition": 49.7911147142766,
+      "active_bounds": [
+        1,
+        0,
+        0
+      ],
+      "conductivity_cm_day": null,
+      "status": "RETENTION_FIT_ONLY_NOT_A_COMPLETE_SWAP_SOIL"
+    }
+  ],
+  "excluded": [
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "A1",
+      "row_variant": "1",
+      "reason": "missing measured density for mass-to-volume conversion"
+    },
+    {
+      "table": "13",
+      "pdf_page": "75",
+      "profile": "1",
+      "horizon": "A2",
+      "row_variant": "1",
+      "reason": "missing measured density for mass-to-volume conversion"
+    },
+    {
+      "table": "14",
+      "pdf_page": "76",
+      "profile": "2",
+      "horizon": "Cg",
+      "row_variant": "1",
+      "reason": "missing measured density for mass-to-volume conversion"
+    },
+    {
+      "table": "15",
+      "pdf_page": "77",
+      "profile": "3a",
+      "horizon": "A1+A2",
+      "row_variant": "1",
+      "reason": "missing measured density for mass-to-volume conversion"
+    },
+    {
+      "table": "16",
+      "pdf_page": "78",
+      "profile": "3b",
+      "horizon": "A1",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "16",
+      "pdf_page": "78",
+      "profile": "3b",
+      "horizon": "A2",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "16",
+      "pdf_page": "78",
+      "profile": "3b",
+      "horizon": "B22h",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "16",
+      "pdf_page": "78",
+      "profile": "3b",
+      "horizon": "B3ir",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "16",
+      "pdf_page": "78",
+      "profile": "3b",
+      "horizon": "Cg",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "18",
+      "pdf_page": "80",
+      "profile": "4b",
+      "horizon": "A1+A2",
+      "row_variant": "1",
+      "reason": "missing measured density for mass-to-volume conversion"
+    },
+    {
+      "table": "18",
+      "pdf_page": "80",
+      "profile": "4b",
+      "horizon": "C1g",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    },
+    {
+      "table": "18",
+      "pdf_page": "80",
+      "profile": "4b",
+      "horizon": "C2g",
+      "row_variant": "1",
+      "reason": "unresolved source horizon identity"
+    }
+  ],
+  "limitations": [
+    "Porosity equals theta_s only by an explicit model assumption.",
+    "No measured saturation point, conductivity, hysteresis or fitted uncertainty.",
+    "Fit error and Jacobian conditioning are not parameter uncertainty.",
+    "Profiles 3b/4b excluded, not silently relabelled.",
+    "Two profile-2 A1 rows are retained separately, not assigned fictitious subdepths.",
+    "No automatic mapping to present-day cells or vegetation."
+  ]
+}
