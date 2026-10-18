@@ -24,7 +24,7 @@ module mod_fmr_crop_soil_n_senescence_application
  public::run_crop_soil_n_senescence_interval
 contains
  subroutine run_crop_soil_n_senescence_interval(backend,column,template,parameters,water,forcing,config, &
-     chemical,weather,t0,t1,items,split,policy,result,environment,clean_surface_water)
+     chemical,weather,t0,t1,items,split,policy,result,environment,clean_surface_water,atmospheric_n_surface)
   type(fmr_serialized_reference_backend_t),intent(inout)::backend
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -40,7 +40,7 @@ contains
   type(crop_senescence_policy_t),intent(in)::policy
   type(senescence_joint_result_t),intent(out)::result
   type(soil_n_day_environment_t),optional,intent(in)::environment
-  logical,optional,intent(in)::clean_surface_water
+  logical,optional,intent(in)::clean_surface_water,atmospheric_n_surface
   type(crop_soil_state_t)::trial,completed
   type(kernel_committed_state_t)::water_trial
   result=senescence_joint_result_t()
@@ -48,7 +48,7 @@ contains
   if(result%senescence%status/=0)return
   water_trial=water
   call run_crop_soil_n_material_interval(backend,column,template,parameters,water_trial,forcing,config, &
-    trial,weather,t0,t1,items,split,result%joint,environment,clean_surface_water=clean_surface_water)
+    trial,weather,t0,t1,items,split,result%joint,environment,clean_surface_water=clean_surface_water,atmospheric_n_surface=atmospheric_n_surface)
   result%status=result%joint%status;if(result%status/=JOINT_OK)return
   result%senescence%materials=result%joint%materials
   call finish_senescence_day(trial,t1,policy,result%senescence,completed)

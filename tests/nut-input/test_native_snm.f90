@@ -23,6 +23,11 @@ program test_native_snm
   if(any(initial%fom_kg_m3/=1d0).or.initial%bio_kg_m3/=5d0.or.initial%hum_kg_m3/=40d0)error stop 2
   if(rates%ratecon_nitrif_ref/=.02d0.or.rates%depth_m/=.3d0.or.rates%lai_crit_nupt/=0d0)error stop 3
   if(ages%root/=1.27d0.or.ages%leaf/=.99d0)error stop 4
+  if(expected==1)then
+   if(rates%nh4_top/=.0005d0.or.rates%no3_top/=.0015d0)error stop 10
+  else
+   if(rates%nh4_top/=0d0.or.rates%no3_top/=0d0)error stop 11
+  end if
   call select_soil_n_amendments(plan,365d0,366d0,items,indices,status)
   if(status/=0.or.size(items)/=2)error stop 5
   if(any(indices/=[2,3]).or.abs(items(1)%application_kg_m2-.005d0)>1d-14)error stop 6

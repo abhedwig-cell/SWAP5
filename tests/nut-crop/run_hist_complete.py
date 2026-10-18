@@ -71,18 +71,19 @@ for opt in ['O0','O2']:
  assert default_endpoint.read_bytes()==default_fresh.read_bytes()==Path(str(default_endpoint)+'.opaque').read_bytes()
  # Original composition and its fresh-process endpoint stay selected.
  outputs={}
- for profile in ['source-profile','rotation-profile']:
+ for profile in ['source-profile','rotation-profile','atmospheric-profile']:
   restart=b/(profile+'.restart');endpoint=b/(profile+'.endpoint')
   outputs[profile]=run([exe,'write',restart,endpoint,profile],b,'native')
   if profile=='source-profile':
    fresh=b/(profile+'.fresh');run([exe,'resume',restart,fresh,profile],b,'native');assert endpoint.read_bytes()==fresh.read_bytes()
   else:
    for day in [120,366]:
+    if profile=='atmospheric-profile':assert Path(str(restart)+'.clean-reject-'+str(day)).read_bytes()==Path(str(restart)+'.reject-before-'+str(day)).read_bytes(),'clean-only route leaked state'
     assert Path(str(restart)+'.reject-before-'+str(day)).read_bytes()==Path(str(restart)+'.reject-after-'+str(day)).read_bytes(),'rejected rotation day leaked state'
    for day in [1,120,121,365,366,500]:
-    fresh=b/('rotation-fresh-'+str(day));run([exe,'resume',str(restart)+'.'+str(day),fresh,profile,str(day)],b,'restart_native')
+    fresh=b/(profile+'-fresh-'+str(day));run([exe,'resume',str(restart)+'.'+str(day),fresh,profile,str(day)],b,'restart_native')
     assert endpoint.read_bytes()==fresh.read_bytes(),('fresh rotation drift',day)
- results[opt]=dict(default_endpoint=sha(default_endpoint),default_stdout=default_out,endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile']},stdout=outputs,providers=len(ordered)-1)
+ results[opt]=dict(default_endpoint=sha(default_endpoint),default_stdout=default_out,endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile','atmospheric-profile']},stdout=outputs,providers=len(ordered)-1)
  assert all(sha(ROOT/p)==v for p,v in inputs.items()),'source changed during execution'
 assert results['O0']==results['O2'],'O0/O2 endpoint or observable mismatch'
 inputs[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__))

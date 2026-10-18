@@ -56,7 +56,7 @@
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7",
-  "last_reconciled_upstream": "4a274c4650ec7f52324b8604838a8d27dd39edb3",
+  "last_reconciled_upstream": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -419,6 +419,30 @@
           "fixture_compile": 0.8093642959993304
         }
       }
+    },
+    "canonically_admitted": true,
+    "canonical_merge": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+    "reviewed_head": "25c3ffb172980c49bfdf38716f50072f2281b806",
+    "merge_tree_equals_reviewed_tree": true,
+    "post_merge_guard": {
+      "local_physical_days": 730,
+      "parser_cases": 24,
+      "transition_fresh_processes": 12,
+      "rollback_days": [
+        120,
+        366
+      ],
+      "full_retained_matrix": true,
+      "thermal": true,
+      "tcs6_native": 54,
+      "historical_native_successor": true,
+      "b112_retained_successor": true,
+      "qualified": true,
+      "full_capability": false,
+      "current_source_tree": "118c6b2a16426a98006f6528b80db9c066e00a2b",
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "mastercoverage_promotion": false
     }
   },
   "historical_guard": {
@@ -532,5 +556,18 @@
     "original_frozen_controls": 23,
     "qualification_execution": "Run source-only, full owning chain and8 mutation controls after persisting exact verifier postimage; results recorded in PR1313 and final canonical receipt"
   },
-  "ci_diagnosis_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64:logs/nut-1313-ci-diagnosis.json"
+  "ci_diagnosis_evidence": "integration/audits/evidence/MC_NUT01_HIST_RETAINED_RECONCILIATION_20261018.tar.xz.b64:logs/nut-1313-ci-diagnosis.json",
+  "atmospheric_n_successor": {
+    "status": "IMPLEMENTED_NOT_QUALIFIED",
+    "base_canonical": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+    "branch": "work/nut-hist-top-n-20261018",
+    "contract": "docs/science/MC_NUT01_HIST_TOP_N_CONTRACT_20261018.md",
+    "direct_development_feedback": {
+      "mineral": "O0/O2 original analytical top input, sorption, evaporation, opaque restart PASS",
+      "reactive": "O0/O2 original coupled chemistry top input, evaporation, opaque restart PASS",
+      "native_input": "25 cases O0/O2 PASS"
+    },
+    "next_action": "Fresh local production closure O0/O2 with old profiles and new atmospheric 730-day profile, all transition restarts and atomic rejections; retained, thermal, TCS6 preservation; original input defect witness; integrate only after qualification",
+    "mastercoverage_promotion": false
+  }
 }
