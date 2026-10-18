@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "ef067e80addf04db34cb63d253da83d98242875b",
+  "checkpoint_commit": "17191fcd848aa0b520ae1ed7a5283a736faa77de",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -32,11 +32,12 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Investigate kernel_result_t status=4, trial diagnostics and day-67 Richards numerical/physical driver cause at immutable forcing; do not change Soil-N chemistry or falsely label chemistry rejection. Preserve 62-day accepted canonical and avoid simply extending runtime.",
-  "recovery_point": "work/nut-coupled-124day-20261018@ef067e80addf04db34cb63d253da83d98242875b",
+  "next_action": "Read Richards day-67 kernel counters from qualification on 17191fcd, identify water status 4 against owning source; reconcile moving canonical (ce029124) before any merge; no chemistry or tolerance changes",
+  "recovery_point": "work/nut-coupled-124day-20261018@17191fcd848aa0b520ae1ed7a5283a736faa77de",
   "blockers": [
-    "124-day actual coupled source day 67 rejects at water trial (run 39116009031), detailed water status 4; reason within water kernel to diagnose",
-    "Full TTUTIL and multiple crop rotation not qualified"
+    "Physical water-trial failure at day 67; fresh diagnostics pending",
+    "Canonical moved from 826224bc to ce029124: dependency overlap must be checked",
+    "Full TTUTIL and multiyear rotations unresolved"
   ],
   "mastercoverage_promotion": false,
   "last_reconciled_head": "342e77d438f205b18a7a8321198c0fa03b481541",
