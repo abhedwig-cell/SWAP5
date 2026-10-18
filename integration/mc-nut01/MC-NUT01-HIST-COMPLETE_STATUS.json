@@ -54,15 +54,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Continue coherent native historical semantics: source-verified material definition labels are overwritten by iMat positional lookup; remove only the native contiguous-label restriction with original-source/native tests, preserve modern export. Then resolve remaining historical gross atmospheric carrier and unsupported semantics; do not promote whole HIST or mastercoverage.",
-  "recovery_point": "Canonical PR1316 merge829bfabade71a3e3156914275d2b3fdc65c29112; exact reviewed/merged tree d1e38a06 and postmerge current owning guard PASS. All scoped humus/raw/retained/CI evidence versioned; full HIST remains false.",
+  "next_action": "Resolve B0/B1 reference for gross atmospheric N versus corrected surface-solute balance before claiming complete migration; native label and other parser gaps remain independently open.",
+  "recovery_point": "Bounded canonical PR1316 retained; gross/net diagnostic execution8432fff5, evidence receipt36496735, branch work/nut-hist-carrier-witness-20261018. Full HIST remains unqualified.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "829bfabade71a3e3156914275d2b3fdc65c29112",
-  "last_reconciled_upstream": "829bfabade71a3e3156914275d2b3fdc65c29112",
+  "last_reconciled_head": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+  "last_reconciled_upstream": "1e8bf36ec52544e50f5b2720031228f9a6369525",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -968,5 +968,43 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "mastercoverage_promotion": false
     }
+  },
+  "gross_net_completion_blocker": {
+    "status": "O0_O2_DIAGNOSTIC_PASS_FULL_CAPABILITY_BLOCKED",
+    "base_canonical": "1e8bf36ec52544e50f5b2720031228f9a6369525",
+    "contract": "docs/science/MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md",
+    "runner": "integration/audits/run_nut_hist_carrier_gap.py",
+    "driver": "integration/audits/test_nut_hist_carrier_gap.f90",
+    "scope": "Original transport versus real mineral owner: equal net flux, distinct gross N input. Not a new production contract.",
+    "next_action": "Resolve B0/B1 reference for gross atmospheric N versus corrected surface-solute balance before claiming complete migration; native label and other parser gaps remain independently open.",
+    "mastercoverage_promotion": false,
+    "execution_commit": "8432fff5b593b67a1380f89bd32304e0965d64b1",
+    "source_tree": "ad87d0fdf6e8c7cb3e33efb6ee073cdd2ea8ac91",
+    "cost_seconds": {
+      "compile": 2.033679587995721,
+      "link": 0.10493342300105724,
+      "native": 0.004958282996085472
+    },
+    "original_transport_sha256": "b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
+    "management_sha256": "0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b",
+    "optimization_equivalence": "EXACT_STDOUT",
+    "production_changed": false,
+    "preservation": "Current full historical owning validator PASS; original source tree and all existing qualification inputs unchanged",
+    "counterexample": {
+      "rain_mm": 4,
+      "evaporation_mm": 4,
+      "net_mm": 0,
+      "legacy_input_kg_N_ha": 0.8,
+      "current_net_carrier_input_kg_N_ha": 0
+    },
+    "rejected_alternative": "Substitute gross rainfall for net: water closure rejection, clock/water/mineral state unchanged",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_HIST_GROSS_NET_WITNESS_20261018.tar.xz.b64",
+      "decoded_sha256": "30f16c7936db26c55d0caa13ae2572ea6d0f012350b8684e1886dc0c67a7cc15",
+      "members": 50
+    },
+    "guard_negative_controls": 18,
+    "docs_checks": "check_docs and mkdocs --strict PASS",
+    "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441"
   }
 }
