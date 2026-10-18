@@ -74,3 +74,9 @@ The sidecar is not itself a safe atomic three-owner restart: a future composite 
 ## S5PA0001 fresh-process test extension
 
 The sidecar now also has an independent-process `write` / `read` and age-continuation oracle (`test_surface_age_disk_process.f90`). It validates exact retained cm day age stock and the next accepted ageing increment after fresh loading under O0 and O2, in addition to corruption, identity and overwrite negatives. Latest focused Actions run `39130721448` was queued at the point of this documentation update. No passing qualification is claimed until its actual terminal result is observed. This is **surface-age-only** fresh-process persistence, not the still-absent atomic water+soil+surface triplet disk snapshot.
+
+## Composite disk restoration candidate
+
+`src/adapter/mod_b111_age_triplet_disk.f90` now stages the existing `S5AJ0001` water-and-soil-age payload and the new `S5PA0001` surface-age sidecar into **temporary owners**. Only after `age_joint_states_match` verifies clock, soil moisture and pond depth does it assign all three reconstructed owners. If either disk input is corrupt, missing, mismatched or otherwise rejected, the caller's owners remain unchanged. Overwriting any initialized target is also rejected. The source was added to the full Reference module-closure compile root; final O0/O2 status of run `39130906284` still needs verification.
+
+This is a **reader candidate**, not an atomic paired disk writer. A crash between two independently written files can leave a mixed generation; the reader must reject such a pair if clocks/physical state differ, but equal-time accidental pairing still needs stronger shared generation binding. There is no qualified fresh-process real Richards three-owner continuation test yet. Therefore `MC-SOL01-SURFACE-AGE01` remains unadmitted and draft.
