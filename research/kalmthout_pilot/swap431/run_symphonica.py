@@ -20,6 +20,8 @@ def main():
     parser.add_argument('weather', type=Path)
     parser.add_argument('endpoint', type=Path)
     parser.add_argument('grid', type=Path)
+    parser.add_argument('--recorded-studies', action='store_true',
+                        help='Use archived study identities and repository factual tables without reacquiring undistributed PDFs')
     parser.add_argument('--wet-heath', action='store_true',
                         help='Also collect current LAI/terrain and run explicitly provisional historical wet-heath scenarios')
     args = parser.parse_args()
@@ -77,7 +79,8 @@ def main():
     run(scripts / 'collect_groundwater.py', root, results / 'swap431_groundwater', '--all-shallow')
     run(scripts / 'audit_groundwater.py', root, results / 'swap431_groundwater_audit')
     run(scripts / 'collect_site_context.py', root, results / 'swap431_site_context')
-    run(scripts / 'collect_local_studies.py', results / 'local_studies')
+    run(scripts / 'collect_local_studies.py', results / 'local_studies',
+        *(['--recorded-only'] if args.recorded_studies else []))
     run(scripts / 'fit_historical_retention.py', results / 'local_studies/historical_retention_fits.json')
     run(scripts / 'run_local_soil_scenarios.py', root, results / 'swap431_grid_soil_scenarios', exe, '--all-cells')
     if args.wet_heath:
@@ -87,6 +90,7 @@ def main():
         run(scripts / 'run_wet_heath_scenarios.py', root, results / 'wet_heath_scenarios', exe)
     batch = json.loads((results / 'swap431_grid_soil_scenarios/batch_results.json').read_text())
     status = {'model': 'SWAP4.3.1', 'executable_sha256': sha(exe),
+              'study_document_mode': 'RECORDED_IDENTITIES_ONLY' if args.recorded_studies else 'PDF_BYTES_VERIFIED',
               'source_grid_cells': batch['candidate_cells'], 'assigned_soil_response_cells': batch['assigned_cells'],
               'unique_native_runs': len(batch['runs']), 'native_successes': sum(r['native_success'] for r in batch['runs']),
               'unassigned_cells': len(batch['unassigned']),

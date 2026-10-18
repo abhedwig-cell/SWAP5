@@ -27,8 +27,21 @@ SOURCES = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--recorded-only', action='store_true',
+                        help='Verify archived source identities without reacquiring undistributed PDFs; does not verify PDF bytes')
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
+    if args.recorded_only:
+        manifest = json.loads((args.output / 'study_manifest.json').read_text())
+        records = manifest['sources']
+        assert len(records) == len(SOURCES)
+        for source, record in zip(SOURCES, records):
+            assert all(record.get(key) == value for key, value in source.items()), source['id']
+            assert record['pages'] == source['expected_pages'] and record['bytes'] > 0
+        print(json.dumps({'recorded_source_identities_verified': len(records),
+                          'pdf_bytes_verified_this_run': False,
+                          'mode': 'ARCHIVED_FACTS_NO_DOCUMENT_REACQUISITION'}))
+        return
     records = []
     with requests.Session() as client:
         for source in SOURCES:
