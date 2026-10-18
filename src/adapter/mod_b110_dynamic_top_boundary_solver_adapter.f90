@@ -141,13 +141,6 @@ contains
     result%ponded_water_evaporation = b110_result%ponded_water_evaporation_cm_per_day
     result%runoff_depth = b110_result%runoff_depth_cm
     result%net_potential_surface_flux = b110_result%net_potential_surface_flux_cm_per_day
-    ! Preserve gross provenance supplied to this exact boundary evaluation;
-    ! never reconstruct sources from net qtop or candidate pond storage.
-    result%gross_surface_sources_available = .true.
-    result%precipitation_rate_cm_day = b110_request%precipitation_rate_cm_per_day
-    result%irrigation_rate_cm_day = b110_request%irrigation_rate_cm_per_day
-    result%snowmelt_rate_cm_day = b110_request%snowmelt_rate_cm_per_day
-    result%runon_rate_cm_day = b110_request%runon_rate_cm_per_day
     result%macropore_pond_requested_lateral_cm = b110_result%macropore_pond_requested_lateral_cm
     result%surface_head_derivative_available = b110_result%surface_head_derivative_available
     result%surface_head_dpressure_head_top = b110_result%surface_head_dpressure_head_top
