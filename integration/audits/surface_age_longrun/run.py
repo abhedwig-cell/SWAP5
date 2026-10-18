@@ -33,7 +33,7 @@ for path,h in r['input_sha256'].items():assert sha(ROOT/path)==h,path;inputs[pat
 # Retain the complete existing cold compile/link provenance and original source identity.
 (OUT/'provider_result.json').write_text(json.dumps(r,indent=2)+'\n')
 (OUT/'provider_events.json').write_text(json.dumps(ee,indent=2)+'\n')
-artifacts={};results={};levels=[4] if a.pilot else [4,8,16]
+artifacts={};results={};levels=[16] if a.pilot else [16,32,64]
 for opt in (['O0'] if a.pilot else ['O0','O2']):
  build=OUT/opt;build.mkdir();provider=old/opt
  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]

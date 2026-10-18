@@ -58,7 +58,7 @@ program surface_age_longrun
   call get_command_argument(3,restart_path)
   call get_command_argument(4,endpoint_path)
   call get_command_argument(5,arg);read(arg,*)cut
-  call require(any(level==[1,2,4,8,16]),'defined temporal partitions')
+  call require(any(level==[1,2,4,8,16,32,64]),'defined temporal partitions')
   nsteps=2000*level;dt=2d0/nsteps
   call initialize_application_config(cfg,-75d0,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE

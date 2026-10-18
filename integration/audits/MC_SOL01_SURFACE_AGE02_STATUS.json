@@ -26,7 +26,7 @@
     "docs/development/workstream-execution-protocol.md"
   ],
   "test_selection": {
-    "focused": "Two-day actual Reference profile unchanged: 4 half-day cycles, .1d wet/.4d drying. Outer window limits .00025/.000125/.0000625d with measured actual max trace step halving, actual full-half tolerance1e-6, hard mass1e-10. Fresh-process snapshots in final-cycle wet, wet->dry, drying, dry->wet; standalone exact dry limit. Explicit existing retained-step proposals; no production changes.",
+    "focused": "Two-day actual Reference profile unchanged: 4 half-day cycles, .1d wet/.4d drying. Outer window limits .0000625/.00003125/.000015625d with measured actual max trace step halving, actual full-half tolerance1e-6, hard mass1e-10. Fresh-process snapshots in final-cycle wet, wet->dry, drying, dry->wet; standalone exact dry limit. Explicit existing retained-step proposals; no production changes.",
     "expected_seconds": 600,
     "reason": "Named uncovered multi-cycle state/flux and refinement failure modes. No unchanged solver or full F-CI repetition; verified local provider reuse",
     "full_fci": "NOT_SELECTED_IMPACT: no production, scientific contract, source guard or old runner changed",
@@ -37,7 +37,7 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Persist actual-mesh refinement, execute and assess convergence; do not mislabel outer-only sensitivity as convergence",
+  "next_action": "Execute final cap-dominated16/32/64 refinement; require declining changes as well as0.1%relative ceiling, all positive real fluxes/balances/restart/optimization; retain failed criteria",
   "blockers": [],
   "checkpoint_commit": "87f5149b8664d25b614c1acc40fe4651776a0837",
   "prior_executions": [
@@ -61,6 +61,12 @@
       "execution_commit": "cc54b6aa9b18e4910277e62a417ace0a1b6a70af",
       "result": "PHYSICAL_AND_RESTART_PASS_FINAL_REFINEMENT_CRITERION_FAILED_NOT_QUALIFIED",
       "description": "All 6 two-day real runs and 12 fresh-process endpoints passed O0/O2 exact identity, balance and positive storage. Soil successive outer-partition endpoint changes3.2385e-7 and3.6453e-7cm day were not monotonic. Actual accepted maximum trace duration remained ~1.25e-4d on all3outer meshes: adaptivity dominated. Do not infer convergence from refining an inactive outer cap. Select actual accepted maximum refinement at outer .00025/.000125/.0000625d; require actual measured max dt halves. No balance or temporal tolerance changes."
+    },
+    {
+      "directory": "age02-refined",
+      "execution_commit": "7a495023938cf23a01f67b26fab90f15875f11af",
+      "result": "PHYSICAL_RESTART_OPTIMIZATION_PASS_REFINEMENT_CRITERION_FAILED_NOT_QUALIFIED",
+      "description": "6real two-day runs and12fresh-process endpoints passed exactly. Actual maximum step halves1.25e-4/6.25e-5/3.125e-5d, but differences in pond age amount1.61518e-5 then5.26578e-5cm day and soil3.30447e-6 then6.44984e-6 still grow. Their small size is not formal convergence. Move further into cap-dominated region using outer limits .0000625/.00003125/.000015625d, keep all numerical gates and existing1e-3relative final-difference accuracy ceiling."
     }
   ]
 }
