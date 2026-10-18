@@ -6,6 +6,10 @@ module mod_fmr_b111_age_route
  use mod_solute_water_face_flux_reconstruction,only:reconstruct_interval_water_face_flux,WATER_FACE_FLUX_OK
  use mod_solute_compartment_state,only:solute_compartment_state_t,initialize_solute_compartment_state,SOLCOMP_OK
  use mod_b111_age_tracer_substep
+ use mod_b111_surface_age_owner, only: surface_age_owner_t
+ use mod_b111_surface_age_budget, only: surface_age_receipt_t
+ use mod_b111_surface_age_trace_bridge, only: surface_age_source_ages_t, &
+      trial_surface_age_from_accepted_trace, AGE_BRIDGE_OK
  implicit none
  private
  integer,parameter,public::AGE_OK=0,AGE_INVALID=1,AGE_CARRIER=2,AGE_PROCESS=3
@@ -97,10 +101,14 @@ contains
   integer(int64),intent(out)::id
   p=self%p;id=self%id
  end subroutine
- subroutine consume_accepted_age_trace(committed,steps,receipt)
+ subroutine consume_accepted_age_trace(committed,steps,receipt,surface_owner,source_ages)
   type(age_state_t),intent(inout)::committed
   type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
   type(age_receipt_t),intent(out)::receipt
+  type(surface_age_owner_t),intent(inout),optional::surface_owner
+  type(surface_age_source_ages_t),intent(in),optional::source_ages
+  type(surface_age_owner_t)::surface_trial,surface_next
+  type(surface_age_receipt_t)::surface_receipt
   type(age_state_t)::trial
   type(b111_age_tracer_substep_forcing_t)::f
   type(b111_age_tracer_substep_receipt_t)::r
@@ -110,6 +118,8 @@ contains
   integer::n,k,code
   receipt=age_receipt_t()
   if(.not.committed%ready().or.size(steps)<1)return
+  if(present(surface_owner).neqv.present(source_ages))return
+  if(present(surface_owner))surface_trial=surface_owner
   trial=committed;n=size(trial%water)
   receipt%amount_before=sum(trial%amount%age_amount)
   do k=1,size(steps)
@@ -149,16 +159,30 @@ contains
      if(.not.all(ieee_is_finite(t%subsurface_source)))return
      if(any(abs(t%subsurface_source)>0d0))return
     end if
-    if(abs(t%top_flux)>0d0)return
+    if(.not.present(surface_owner))then
+      if(abs(t%top_flux)>0d0)return
+    end if
     call reconstruct_interval_water_face_flux(trial%p%dz_cm,t%water_start,t%water_end, &
        t%net_node_source,-t%top_flux,-t%bottom_flux,dt,1d-10/dt,faces,closure,code)
     receipt%max_water_residual=max(receipt%max_water_residual,abs(closure)*dt)
     if(code/=WATER_FACE_FLUX_OK)return
     f=trial%p;f%dt_day=dt;f%theta_previous=t%water_start;f%theta=t%water_end
     f%q_face_up_cm_day=-faces;f%root_sink_cm_day=t%root_sink;f%qdra_cm_day=t%drainage_sink_by_level
+    if(present(surface_owner))then
+      call trial_surface_age_from_accepted_trace(surface_trial,t,source_ages,surface_next,surface_receipt,code)
+      if(code/=AGE_BRIDGE_OK)return
+      f%accepted_surface_age_available=.true.
+      f%accepted_surface_age_input_cm_day=surface_receipt%infiltration_age_export_cm_day
+    end if
     call advance_b111_age_tracer_substep(trial%amount,f,amount,r)
     receipt%status=AGE_PROCESS;receipt%process_status=r%status
     if(r%status/=B111_AGE_SUBSTEP_OK)return
+    if(present(surface_owner))then
+      scale=max(1d0,abs(r%pond_to_soil_cm_day),abs(surface_receipt%infiltration_age_export_cm_day))
+      if(abs(r%pond_to_soil_cm_day-surface_receipt%infiltration_age_export_cm_day)> &
+         8192d0*epsilon(1d0)*scale)return
+      surface_trial=surface_next
+    end if
     trial%amount=amount;trial%water=t%water_end;trial%time=t%t1
     receipt%production=receipt%production+r%production_amount_cm_day
     receipt%external_in=receipt%external_in+r%drain_input_cm_day+r%bottom_input_cm_day
@@ -171,7 +195,9 @@ contains
   scale=max(1d0,receipt%amount_before,receipt%amount_after,receipt%production,receipt%external_in,receipt%external_out)
   if(abs(receipt%residual)>8192d0*epsilon(1d0)*scale)return
   if(trial%revision>=100000000_int64)return
-  trial%revision=trial%revision+1;committed=trial;receipt%status=AGE_OK
+  trial%revision=trial%revision+1;committed=trial
+  if(present(surface_owner))surface_owner=surface_trial
+  receipt%status=AGE_OK
  end subroutine
  subroutine export_age_restart(state,payload,status)
   type(age_state_t),intent(in)::state
