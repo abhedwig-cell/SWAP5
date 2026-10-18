@@ -40,9 +40,20 @@ for opt in 0 2; do
     "$dir/mod_b111_surface_age_budget.o" "$dir/mod_b111_surface_age_owner.o" \
     "$dir/mod_b111_surface_age_trace_bridge.o" \
     tests/nut-sol/test_surface_age_trace_bridge.f90 -o "$dir/test"
+  gfortran -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -O"$opt" \
+    -J "$dir" -I "$dir" \
+    "$dir/mod_b111_surface_age_budget.o" "$dir/mod_b111_surface_age_owner.o" \
+    "$dir/mod_b111_surface_age_trace_bridge.o" "$dir/mod_fmr_b111_age_route.o" \
+    "$dir/mod_b111_age_tracer_substep.o" "$dir/mod_solute_compartment_state.o" \
+    "$dir/mod_solute_water_face_flux_reconstruction.o" \
+    tests/nut-sol/test_surface_age_route_trial.f90 -o "$dir/route-test"
+  "$dir/route-test" > "$build/route-output-$opt"
+  grep -Fq 'MC_SOL01_SURFACE_SOIL_ACCEPTED_TRACE=PASS' "$build/route-output-$opt"
+  echo "MC_SOL01_SURFACE_SOIL_ACCEPTED_TRACE_O${opt}=PASS"
   "$dir/test" > "$build/output-$opt"
   grep -Fq 'MC_SOL01_REFERENCE_SURFACE_AGE_BRIDGE=PASS' "$build/output-$opt"
   echo "MC_SOL01_REFERENCE_SURFACE_AGE_BRIDGE_O${opt}=PASS"
 done
 cmp "$build/output-0" "$build/output-2"
+cmp "$build/route-output-0" "$build/route-output-2"
 echo 'MC_SOL01_REFERENCE_SURFACE_AGE_BRIDGE_O0_O2=PASS'
