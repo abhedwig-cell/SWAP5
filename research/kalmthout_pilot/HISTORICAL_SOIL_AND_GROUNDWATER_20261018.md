@@ -1,5 +1,7 @@
 # Lokale heidebronnen, retentie en peilreeksen
 
+Latere uitbreiding: `HOURLY_WET_HEATH_20261018.md` bevat16 complete begroeide heideprofielscenario's met expliciete priors,109 verzamelde satellietcomposieten en een werkende officiële DTM-puntroute. De melding hieronder over een geweigerde WCS-rasteraanvraag blijft waar; er zijn inmiddels wel1217 puntwaarden verkregen.
+
 Onderzoekswerk, 18 oktober 2026. SWAP4.3.1-project, geen wijziging van SWAP5 of canonical.
 Basis: remote `d75fb5e28dc05bdb0fd2c8fe6b3fe2aa3133d338`; alle 14 gewijzigde bestanden van die oplevering zijn opnieuw tegen hun Git-blobidentiteit gecontroleerd.
 

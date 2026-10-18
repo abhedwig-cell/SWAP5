@@ -51,4 +51,53 @@ Voor de twee droge heidekandidaten zijn31 en30 strenge waarnemingen beschikbaar.
 
 De alternatieve officiële dienst https://geo.api.vlaanderen.be/dhmv/wcs biedt wel de oorspronkelijke1m-DTM-metadata, maar ook de concrete GetCoverage-aanvraag is met HTTP403 afgewezen. Er is nog geen terreinraster ontvangen. De eerdere INSPIRE-route en deze nieuwe route blijven beide aantoonbaar, zonder fictieve hoogteafleiding.
 
-Volgende actie: voltooi en controleer de16 native scenario's, bewaar de volledige waterbalansen en bronpostimages, en beoordeel daarna de ruimtelijke overdracht en de nog onvoldoende onderbouwde oerbank- en vegetatie-eigenschappen. Deze bestanden kwalificeren geen actuele heidecel en geen canonical-code.
+## Voltooide uitvoering en herhaling
+
+Alle 16 scenario's voltooien werkelijk de 1005 dagen. Gezamenlijke native wandtijd 35.66s, afzonderlijk 1.38 tot 4.50s. Dit is een waarneming op deze host voor deze invoer, geen zuivere solververgelijking. De maximale native dagbalansafwijking is 0.000050907mm. De grootste volledige-periodesluitfout uit afgeronde uitvoer is 0.0021mm. Alle 16080 dagtoestanden zijn gecontroleerd op matrixberging binnen de laaggewijze theta_r/theta_s-grenzen, niet-negatieve plas/canopy, canopy onder de capaciteit, voorgeschreven worteldiepte en actuele opname niet groter dan de potentiële vraag.
+
+Voorbeeld van één fysiek invoerprofiel, A1-variant1, worteldiepte50cm, capaciteit0.5mm/LAI. Onderstaande waarden zijn over de volledige periode in mm; onderrandflux is positief naar de kolom.
+
+| Term | Nulflux | Vrije drainage |
+| --- | ---: | ---: |
+| Neerslag | 2216.600 | 2216.600 |
+| Bodemverdamping | 836.990 | 794.040 |
+| Transpiratie | 553.718 | 447.887 |
+| Native interceptieterm, inclusief capaciteitsverlies | 343.027 | 343.027 |
+| Plasverdamping | 182.654 | 0 |
+| Runoff | 307.627 | 0 |
+| Onderrandflux | 0 | -745.267 |
+| Verandering bodem+plas+canopyberging | -7.416 | -113.620 |
+
+Dit is een gevoeligheid voor de onderrand, geen vastgestelde lokale grondwateraanvulling. De sterk verschillende componenten maken juist zichtbaar waarom vrije drainage niet zonder lokale onderbouwing een locatievoorspelling wordt.
+
+De uitgebreide projectrunner op remote `b402f7f3d2cc0d655d503d2422eeb7f6e76ae26a` is vervolgens werkelijk als geheel herhaald. Zowel de eerdere 42 kale-bodempostimages als de 16 nieuwe begroeide postimages zijn via invoer/uitvoer/executable-identiteit gecontroleerd hergebruikt. Nul nieuwe native berekeningen waren voor deze herhaling nodig. Negen noodzakelijke NHI-invoer-/kalibratiebestanden worden bij hervatten afzonderlijk geverifieerd; het volledige338.9MB pakket is dan niet nodig. De LAI-cache vereist bij complete bronpostimages geen nieuw toegangstoken.
+
+## Werkende maaiveldroute
+
+De WCS-rasterroute blijft op HTTP403 steken. Een andere, officiële en daadwerkelijk werkende route is nu uitgevoerd: WMS1.3 GetFeatureInfo op dezelfde DTM-laag. De ruwe `PixelValue` is gebruikt, nooit de kleurkaart of `StretchedValue`. Alle 1024 celcentra en193 filterlocaties leveren een eindige waarde,1217 van1217 aanvragen, nul fouten. De waarden bij de celcentra liggen tussen1.74 en46.00mTAW. Dit levert puntinformatie, geen terreinraster, celgemiddelde of vlakdekkende hoogtespreiding.
+
+| Heidekandidaat | Hoogte celcentrum, mTAW |
+| --- | ---: |
+| KAL_0416 | 25.960 |
+| KAL_0480 | 25.730 |
+| KAL_0876 | 21.388 |
+| KAL_0910 | 16.735 |
+
+Voor77 filters met periodewaarnemingen is de co-locatievergelijking DTM minus gemeten stijghoogte vastgelegd. Die loopt van-0.300 tot2.700m. Bij18 filters ligt minstens één stijghoogte boven het historische DTM. Dat kan onder meer bij inundatie optreden en is niet automatisch als meetfout afgekeurd. De metadatareferentiehoogte kan afwijken van het DTM; de grootste absolute afwijking in deze selectie is circa3.76m. Er is geen referentiepunt als celmaaiveld geïnterpreteerd en geen peilrandvoorschrift gegenereerd.
+
+Het product vermeldt als nominale opnameperiode2013-2015. Individuele vliegdatums en de herkomst van eventuele grensoverschrijdende dekking zijn niet afzonderlijk gecontroleerd. Deze bron is dus geen terreinmeting uit2024-2026. De nieuwe WMS-route vervangt de oude melding "nog geen hoogtegegevens" voor puntwaarden; zij maakt de eerder geweigerde WCS-rasteraanvraag niet alsnog geslaagd.
+
+## Eén projectcommando en scope
+
+```sh
+python3 research/kalmthout_pilot/swap431/run_symphonica.py \
+  RUNROOT /absolute/path/swap_gnu \
+  /absolute/path/weather.csv /absolute/path/era5_endpoint_20261002.json \
+  /absolute/path/grid_500m.csv --wet-heath
+```
+
+Dit verzamelt/hervat de regionale bronnen, bodem- en veldcontext, grondwater, NHI-priors, satelliet-LAI en DTM-puntwaarden en voert/verifieert de 42 bestaande plus16 nieuwe scenario's. De LAI-kwaliteitsdecoder heeft twee gerichte tests; samen met de bestaande twee peilreekstests zijn vier tests werkelijk geslaagd. De satellietcomposieten bewaren ook hun overlappende periodegrenzen; zij worden niet als dagelijkse heide-invoer toegepast.
+
+De aanvullende evidence staat in `evidence/SYMPHONICA_HOURLY_HEATH_20261018.tar.xz`, met individuele hashes in `local_sources/hourly_heath_evidence_manifest.json`. Het bevat de regionale MODIS-waarden/QA en celindex,1217 ruwe DTM-puntantwoorden, noodzakelijke oorspronkelijke NHI-parameterbestanden, gedeelde uurlijkse forcing,16 volledige native invoer-/daguitvoerreeksen, bronidentiteiten en uitvoeringslogs. De oorspronkelijke NHI-toolkit en volledige derde-partijrapporten worden niet heruitgegeven. Pak dit archief na de drie eerdere bron-/projectarchieven uit in dezelfde RUNROOT.
+
+Er zijn nu echte begroeide heideprofielresultaten met een controleerbare balans. Open blijven de ruimtelijke overdracht naar huidige heide-eenheden, lokale oerbankgeleidbaarheid, huidige beworteling/zuurstofrespons en locatieonderranden. De huidige automatische scenariotoekenning aan heidecellen blijft daarom nul. Geen SWAP5-werk, geen Actions, geen canonical-wijziging.

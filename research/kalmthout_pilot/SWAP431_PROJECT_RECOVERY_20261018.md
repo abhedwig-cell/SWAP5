@@ -1,5 +1,7 @@
 # SYMPHONICA Kalmthout: SWAP4.3.1, automatische bronnen en eerste lokale bodemresponsen
 
+Latere uitbreiding van dezelfde dag: zie `HOURLY_WET_HEATH_20261018.md` voor16 echt uitgevoerde begroeide profielscenario's, actuele satelliet-LAI en1217 officiële DTM-puntwaarden. De eerdere42 scenario's hieronder blijven afzonderlijke kale-bodemresultaten; de nieuwe ecotoopscenario's zijn niet automatisch actuele celvoorspellingen.
+
 Datum18oktober2026. Leidende gebruikerskeuze: dit project levert SWAP-resultaten op met SWAP4.3.1. SWAP5 en het performanceonderzoek zijn buiten het project geparkeerd. Er zijn voor deze voortzetting geen SWAP5-builds, solvertests of Actions gestart.
 
 Onderzoeksbranch `research/kalmthout-local-sources-20261018`. Regionale broninventaris: remote `bb6ef25c17b3fbf92d1d3b7da6cf423b503160ce`. Eerste SWAP4-pipelinecheckpoint: `d8c31312edaff41f72f6d1bddd22004d2b70ec75`. De huidige definitieve commit bevat deze recovery, de bijgewerkte scripts en de uitvoeringsevidence. Geen wijziging van canonical door dit spoor.

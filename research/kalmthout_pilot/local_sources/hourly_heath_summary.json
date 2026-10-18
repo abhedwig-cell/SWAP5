@@ -1,0 +1,34 @@
+{
+  "model": "SWAP4.3.1",
+  "new_complete_ecotope_scenarios": 16,
+  "revalidated_existing_soil_scenarios": 42,
+  "run_period": [
+    "2024-01-01",
+    "2026-10-01"
+  ],
+  "hourly_records": 24120,
+  "precipitation_mm": 2216.6,
+  "native_wall_seconds_total": 35.662628939997376,
+  "native_wall_seconds_range": [
+    1.3811932299977343,
+    4.498044920997927
+  ],
+  "max_native_daily_balance_mm": 5.0907000000000006e-05,
+  "max_absolute_period_printed_closure_mm": 0.0020999999997783902,
+  "physical_daily_states_checked": 16080,
+  "lai_items": 109,
+  "lai_cell_records": 111616,
+  "lai_quality_counts": {
+    "numeric": 94721,
+    "main_algorithm": 67963,
+    "strict": 26740
+  },
+  "terrain_points": 1217,
+  "terrain_cells": 1024,
+  "filter_terrain_head_comparisons": 77,
+  "current_heath_cells_qualified": 0,
+  "canonical_admitted": false,
+  "status": "EXECUTED_PROVISIONAL_ECOTOPE_SCENARIOS_WITH_EXPLICIT_PRIORS; NOT_VALIDATED_CELL_PREDICTIONS",
+  "archive_bytes": 1728548,
+  "archive_sha256": "a1e3c8f985d717489965094cb4e76ccb6ca5daf5d69d4a7a25845f8c3e44ff9c"
+}
