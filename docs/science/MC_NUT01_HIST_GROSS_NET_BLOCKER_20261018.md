@@ -82,7 +82,7 @@ optimizations with exact stdout. Compilation2.034s, linking0.105s and native
 execution0.005s. Current historical owning validation and all18 original
 corruption controls pass with unchanged production tree
 `ad87d0fdf6e8c7cb3e33efb6ee073cdd2ea8ac91`. Documentation source checks and
-strict MkDocs build pass. The [raw evidence](../../integration/audits/evidence/MC_NUT01_HIST_GROSS_NET_WITNESS_20261018.tar.xz.b64)
+strict MkDocs build pass. The [raw evidence](https://github.com/abhedwig-cell/SWAP5/blob/36496735b79978be8cc1ba4fc92edeb978e57441/integration/audits/evidence/MC_NUT01_HIST_GROSS_NET_WITNESS_20261018.tar.xz.b64)
 contains every compiler/link/native log, generated original source, pinned
 management excerpt, measured result, preservation output and corruption results.
 A failed initial preservation invocation caused solely by generated untracked
