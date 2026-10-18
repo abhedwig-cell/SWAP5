@@ -15,9 +15,11 @@ SOURCES = [
      'expected_pages': 98, 'year': 1981, 'use': 'historical measured soil physics; not current vegetation'},
     {'id': 'ugent_ecology_1981', 'url': 'https://biblio.ugent.be/publication/8505122/file/8527108.pdf',
      'landing': 'https://biblio.ugent.be/publication/8505122', 'expected_pages': 81,
+     'sha256': '906ecd5810501fb2227c20f815d7b283c2ba5018588c3d9bb8a85e1dbafae9bc',
      'year': 1981, 'use': 'historical ecology; no automatic contemporary canopy parameters'},
     {'id': 'inbo_pas_2018',
      'url': 'https://purews.inbo.be/ws/portalfiles/portal/14518810/DeBlust_2018_PASgebiedsanalyseBE2100015KalmthoutseHeide.pdf',
+     'sha256': '73b2d4f869203a3bbad375eefe5513c4ca82c585d63393c19d363f245491f10b', 'expected_pages': 77,
      'year': 2018, 'use': 'site hydrology and habitat context; assess perched water and soil horizons'},
 ]
 
