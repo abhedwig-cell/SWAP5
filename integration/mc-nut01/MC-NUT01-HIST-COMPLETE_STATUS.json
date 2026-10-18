@@ -301,6 +301,15 @@
         "expected_seconds": 400,
         "selection": "SELECTED_DISCRIMINATING_INPUT_FEEDBACK_BEFORE_LONG_BASELINE",
         "existing_evidence": "105cm uniform-initial-head O2 feedback8days241.06s; independent current O0 audit8days384.93s. Current O0/O2 whole closure, default five profiles, wet native and retained thermal/TCS6 all PASS. Long-run cost must be assessed before selection."
+      },
+      "surface_b1_dry_native_normal_loam": {
+        "owner": "MC-NUT01",
+        "authority": "docs/science/MC_NUT01_SURFACE_N_B1_CONTRACT_20261018.md#Dry surface restart versus clay hydraulic stress",
+        "changed_dependency": "Test forcing only with unchanged current normal-loam/fixed-head providers; no hydraulic or numerical source changes",
+        "scientific_claim": "Dry surface retains actual rainfall N through complete evaporation; O0/O2 whole native/fresh bytes and15 atomic decode negatives per optimization",
+        "expected_seconds": 180,
+        "selection": "SELECTED_OWNING_NATIVE_DRY_CONTROL",
+        "prior_execution": "Earlier low-conductivity clay4096 trial FAILED; clay10000 extra trial remains running and is not reclassified. No PASS is inherited."
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1407,10 +1416,30 @@
     },
     "canonical_admitted": false,
     "independent8day_audit": "RUNNING",
-    "five_original_profiles": "RUNNING",
-    "wet_and_dry_native_corruptions": "RUNNING",
-    "retained_thermal_and_TCS6": "RUNNING",
-    "current_native_and_original_TTUTIL_input_supplement": "RUNNING",
-    "local_evidence": "surface-gross-head-qualified"
+    "five_original_profiles": "PASS_O0_O2_EXACT_IMMUTABLE_NATIVE_ENDPOINTS",
+    "retained_thermal_and_TCS6": "PASS_THERMAL_ORIGINAL_BYTES_AND_TCS6_54_ORIGINAL_NATIVE_BYTES",
+    "current_native_and_original_TTUTIL_input_supplement": {
+      "status": "NATIVE_POSITION_LABEL_SUPPLEMENT_PASS",
+      "native_fixtures": 38,
+      "label_fixtures": 9,
+      "export_fixtures": 53,
+      "date_cases": 3075,
+      "original_ttutil": "O0_O2_PASS"
+    },
+    "local_evidence": "surface-gross-head-qualified",
+    "wet_native_corruptions": "PASS_O0_O2_FRESH_NATIVE_AND15_MUTANTS_EACH",
+    "dry_native_corruptions": "NORMAL_LOAM_CONTROL_RUNNING; SEPARATE_CLAY10000_TRIAL_RUNNING",
+    "physical_chemical_rejection_rollback": {
+      "O0": "PASS",
+      "O2": "PASS",
+      "water_accepted": true,
+      "chemical_process_status": 0,
+      "mineral_transfer_rejected": true,
+      "typed_top_concentration_kg_m3": 250000,
+      "historical_snm_domain_claim": false,
+      "whole_native_before_after": "BYTE_IDENTICAL",
+      "source_input_negative_control": "Initial high-N SNM attempt correctly rejected at startup; retained as failed harness experiment. Corrected typed configuration uses public snapshot/reinitialization and unchanged historical input bounds."
+    },
+    "wet_enabled_predecessor_endpoints": "EXACT_O0_O2_COMPARED_WITH_BOTH_PRE_GROSS_AND_PRE_LEAF_WET_NATIVE_PROOFS"
   }
 }

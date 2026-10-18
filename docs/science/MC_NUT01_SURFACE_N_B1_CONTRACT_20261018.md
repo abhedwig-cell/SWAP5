@@ -242,3 +242,16 @@ This eight-day O2 driver-only exploratory experiment uses exact source- and
 byte-verified current326 production providers. Expected native cost up to400
 seconds. It establishes neither full qualification nor a long-run speed claim;
 a selected long-run fixture requires its own independent O0/O2 budget audit.
+
+## Dry surface restart versus clay hydraulic stress
+
+Dry-surface native qualification requires actual gross rain and evaporation,
+retained dry NH4/NO3 and fresh-process byte equality. It does not require the
+separate low-conductivity clay/root-correlated-flux stress fixture. A direct
+current-profile dry native control therefore uses the already compiled normal
+loam and existing105cm prescribed-head boundary, initial pond0,4mm rain/day and
+4mm potential pond evaporation/day, irrigation/runon0. Every hydraulic acceptance
+gate and10000 resource cap stays unchanged. Its two-day physical execution,
+fresh-process restart and15 malformed native payloads per optimization execute
+independently. Expected cost below180seconds. This is a distinct dry surface
+case, not a repair or waiver of any recorded clay resource-exhaustion trial.
