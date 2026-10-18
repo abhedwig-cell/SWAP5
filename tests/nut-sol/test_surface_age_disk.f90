@@ -4,7 +4,7 @@ program test_surface_age_disk
  use mod_b111_surface_age_owner
  use mod_b111_surface_age_disk
  implicit none
- type(surface_age_owner_t)::state,restored,unchanged
+ type(surface_age_owner_t)::state,restored,unchanged,fresh
  type(surface_age_request_t)::q
  type(surface_age_receipt_t)::receipt
  real(real64)::t,d,stock
@@ -43,10 +43,12 @@ program test_surface_age_disk
  byte=ieor(byte,1_int8)
  write(u,pos=56,iostat=io)byte
  close(u)
- call read_surface_age_disk(file,987_int64,unchanged,code)
+ call read_surface_age_disk(file,987_int64,fresh,code)
  if(code==AGE_DISK_OK)error stop 'corrupted disk accepted'
+ call snapshot_surface_age_owner(fresh,t,d,stock,rev,valid)
+ if(valid)error stop 'corruption initialized fresh target'
  call snapshot_surface_age_owner(unchanged,t,d,stock,rev,valid)
- if(.not.valid.or.abs(stock-3.0_real64)>1.0e-12_real64)error stop 'corruption changed target'
+ if(.not.valid.or.abs(stock-3.0_real64)>1.0e-12_real64)error stop 'corruption changed committed owner'
  open(newunit=u,file=file,status='old',iostat=io)
  if(io==0)close(u,status='delete')
  print *, 'MC_SOL01_SURFACE_AGE_DISK=PASS'
