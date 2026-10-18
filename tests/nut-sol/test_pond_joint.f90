@@ -86,6 +86,17 @@ program test_pond_joint
     initial_water=water;initial_solute=solute
     pbad=p;pbad%decpot=1d6
     call initialize_owners(bad_water,bad_solute,pbad)
+    ! A chemical runon cannot be injected into a fixed-flux hydraulic trial.
+    ! Both owners must remain unchanged until a dynamic gross receipt exists.
+    block
+      type(pond_step_t)::unmatched
+      unmatched=supply;unmatched%runon_rate=0.25d0;unmatched%runon_c=3d0
+      call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+        cfg%tiles(1)%base_forcing,cfg%numerical,solute,unmatched,T0,T1,result)
+      call require(result%status==JOINT_INVALID,'no unverified chemical runon')
+      call compare_water(water,initial_water)
+      call compare_chemical(solute,initial_solute)
+    end block
     small_supply=supply;small_supply%t1=1d-9
     call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,bad_water, &
       cfg%tiles(1)%base_forcing,cfg%numerical,bad_solute,supply,T0,T1,result)
