@@ -88,3 +88,7 @@ The existing physical `test_age_joint.f90` on this research branch now also exer
 ## Disk corruption oracle correction
 
 The previous byte-corruption test attempted to restore into an already-initialized surface owner. That erroneously tested the no-overwrite guard instead of the checksum. Commit `cb3c1ebd459ec70d332b84ab5aae77a9129d42fd` changes the target to a fresh uninitialized owner and asserts that it remains uninitialized on corrupted input. This correction is required for trustworthy corruption evidence. Hosted test run `39131990244` was still queued at the time of this check; it is not yet qualified.
+
+## Late validation update: bounds checks and current CI
+
+GitHub Actions run `39130906284` completed with SUCCESS for both Reference full-closure O0/O2 and isolated O0/O2 jobs, establishing source-scoped compilation of the composite disk reader on that earlier commit. Later run `39131159907` includes an actual dry-pond physical Richards/soil-age triplet test but was still queued at the last check. Run `39131990244` tests the corrected real checksum oracle, also still queued. The latest sidecar tests now additionally verify that an eight-byte truncated sidecar and a 57-byte overlong sidecar are rejected without initializing a destination owner (commit `134ba8ae6f10e1502f48061c7f55430e1c951116`); run `39132251040` was still queued. These are isolated hardening tests, not authorization for positive-pond physical or crash-consistent snapshot admission.
