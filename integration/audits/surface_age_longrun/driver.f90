@@ -58,7 +58,7 @@ program surface_age_longrun
   call get_command_argument(3,restart_path)
   call get_command_argument(4,endpoint_path)
   call get_command_argument(5,arg);read(arg,*)cut
-  call require(any(level==[1,2,4,8]),'defined temporal partitions')
+  call require(any(level==[1,2,4,8,16]),'defined temporal partitions')
   nsteps=2000*level;dt=2d0/nsteps
   call initialize_application_config(cfg,-75d0,k)
   cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
@@ -178,7 +178,7 @@ program surface_age_longrun
    max_combined=max(max_combined,abs(combined));max_water=max(max_water,abs(water_residual), &
        abs(result%water%mass%residual));accwater=accwater+water_residual
    waterdepths=waterdepths+intervaldepths;min_depth=min(min_depth,depth);max_depth=max(max_depth,depth)
-   print '(A,I6,9ES24.15)','WINDOW ',i,t,depth,stock,final_soil,combined,water_residual, &
+   if(i==first.or.mod(i,50*level)==0)print '(A,I6,9ES24.15)','WINDOW ',i,t,depth,stock,final_soil,combined,water_residual, &
        result%water%mass%residual,result%chemical%infiltrated_age,result%chemical%surface_runoff
    flush(6)
    if(trim(mode)=='write'.and.(i==cut.or.(cut==-1.and.any(i==level*[1550,1600,1850,1500]))))then
@@ -195,6 +195,7 @@ program surface_age_longrun
   water_residual=depth-initial_depth-sum(waterdepths(1:3))+sum(waterdepths(4:6))
   call require(abs(water_residual)<=1d-10*max(1d0,sum(waterdepths)), 'cumulative pond water closure')
   if(trim(mode)/='resume')call require(minval(waterdepths)>0d0,'all six water exchanges realized')
+  print '(A,I9)','EXECUTED_WINDOWS ',nsteps-first+1
   print '(A,6ES24.15)','TOTAL_WATER_CM ',waterdepths
   print '(A,8ES24.15)','TOTAL_AGE_CM_DAY ',begin_pond+begin_soil,total_input,total_production, &
       total_other,total_output,total_surface_output,stock+final_soil,combined

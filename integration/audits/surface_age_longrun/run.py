@@ -33,7 +33,7 @@ for path,h in r['input_sha256'].items():assert sha(ROOT/path)==h,path;inputs[pat
 # Retain the complete existing cold compile/link provenance and original source identity.
 (OUT/'provider_result.json').write_text(json.dumps(r,indent=2)+'\n')
 (OUT/'provider_events.json').write_text(json.dumps(ee,indent=2)+'\n')
-artifacts={};results={};levels=[1] if a.pilot else [1,2,4]
+artifacts={};results={};levels=[4] if a.pilot else [4,8,16]
 for opt in (['O0'] if a.pilot else ['O0','O2']):
  build=OUT/opt;build.mkdir();provider=old/opt
  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build)]
@@ -59,18 +59,18 @@ for opt in (['O0'] if a.pilot else ['O0','O2']):
  for level in levels:
   snapshot=build/f'level{level}.snapshot';endpoint=build/f'level{level}.endpoint'
   # Save in wet phase; also take independent checkpoints at transitions and drying.
-  cut=-1 if level==4 and not a.pilot else 1550*level
+  cut=-1 if level==levels[-1] and not a.pilot else 1550*level
   stdout=run([build/'driver','write',level,snapshot,endpoint,cut],build,'long_native')
   assert 'SURFACE_AGE_TWO_DAY_REFERENCE=PASS' in stdout
   summaries=[list(map(float,l.split()[1:]))for l in stdout.splitlines()if l.startswith('SUMMARY ')]
   totals=[list(map(float,l.split()[1:]))for l in stdout.splitlines()if l.startswith('TOTAL_AGE_CM_DAY ')]
   assert len(summaries)==len(totals)==1 and summaries[0][0]==2.
-  assert len([l for l in stdout.splitlines()if l.startswith('WINDOW ')])==2000*level
+  assert [int(l.split()[1])for l in stdout.splitlines()if l.startswith('EXECUTED_WINDOWS ')]==[2000*level]
   results[opt][str(level)]=dict(summary=summaries[0],age_budget=totals[0],endpoint_sha256=sha(endpoint),restarts=[])
   if a.pilot:continue
   # At finest mesh check wet, wet->dry, dry, dry->wet; all in fresh OS processes.
-  for cut in ([1550*level,1600*level,1850*level,1500*level] if level==4 else [1550*level]):
-   if level==4:snapshot=build/f'level{level}.snapshot.cut{cut}'
+  for cut in ([1550*level,1600*level,1850*level,1500*level] if level==levels[-1] else [1550*level]):
+   if level==levels[-1]:snapshot=build/f'level{level}.snapshot.cut{cut}'
    fresh=build/f'level{level}-fresh{cut}.endpoint'
    resumed=run([build/'driver','resume',level,snapshot,fresh,cut],build,'restart_native')
    assert fresh.read_bytes()==endpoint.read_bytes()
@@ -82,6 +82,13 @@ if not a.pilot:
  # Adaptive hydraulic meshes differ: test measured stabilization, no claimed formal order.
  for opt in results:
   v=[results[opt][str(l)]['summary'][3:5]for l in levels]
+  steps=[]
+  for level in levels:
+   e=next(e for e in events if e['category']=='long_native'and '/'+opt+'/'in e['command'][0]and e['command'][2]==str(level))
+   text=(OUT/e['stdout']).read_text()
+   steps.append(next(float(l.split()[2])for l in text.splitlines()if l.startswith('ACTUAL_STEPS ')))
+  assert steps[1]<=.501*steps[0]and steps[2]<=.501*steps[1],('actual accepted mesh did not refine',steps)
+  results[opt]['actual_max_dt_day']=steps
   differences=[[abs(v[j+1][k]-v[j][k]) for k in range(2)]for j in range(2)]
   for k in range(2):
    assert differences[1][k]<differences[0][k],(opt,k,differences)

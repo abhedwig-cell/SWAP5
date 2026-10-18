@@ -26,7 +26,7 @@
     "docs/development/workstream-execution-protocol.md"
   ],
   "test_selection": {
-    "focused": "Two-day actual Reference profile unchanged: 4 half-day cycles, .1d wet/.4d drying. Outer window limits .001/.0005/.00025d, actual full-half tolerance1e-6, hard mass1e-10. Fresh-process snapshots in final-cycle wet, wet->dry, drying, dry->wet; standalone exact dry limit. Explicit existing retained-step proposals; no production changes.",
+    "focused": "Two-day actual Reference profile unchanged: 4 half-day cycles, .1d wet/.4d drying. Outer window limits .00025/.000125/.0000625d with measured actual max trace step halving, actual full-half tolerance1e-6, hard mass1e-10. Fresh-process snapshots in final-cycle wet, wet->dry, drying, dry->wet; standalone exact dry limit. Explicit existing retained-step proposals; no production changes.",
     "expected_seconds": 600,
     "reason": "Named uncovered multi-cycle state/flux and refinement failure modes. No unchanged solver or full F-CI repetition; verified local provider reuse",
     "full_fci": "NOT_SELECTED_IMPACT: no production, scientific contract, source guard or old runner changed",
@@ -37,7 +37,7 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Persist bounded trace-window selection then complete selected O0/O2 qualification; retain all censored and failed attempts",
+  "next_action": "Persist actual-mesh refinement, execute and assess convergence; do not mislabel outer-only sensitivity as convergence",
   "blockers": [],
   "checkpoint_commit": "87f5149b8664d25b614c1acc40fe4651776a0837",
   "prior_executions": [
@@ -55,6 +55,12 @@
       "minimum_cpu_seconds": 174.79,
       "first_window_completed": false,
       "diagnosis": "Existing accepted trace deep copies growing prefix during append and checkpoint/restore. Probes: .001d103transactions .082s, .01d952transactions11.448s; extra40Newton iterations did not change .001d results. Use smaller outer windows to bound receipt collection cost. Do not change runtime here."
+    },
+    {
+      "directory": "age02-bounded",
+      "execution_commit": "cc54b6aa9b18e4910277e62a417ace0a1b6a70af",
+      "result": "PHYSICAL_AND_RESTART_PASS_FINAL_REFINEMENT_CRITERION_FAILED_NOT_QUALIFIED",
+      "description": "All 6 two-day real runs and 12 fresh-process endpoints passed O0/O2 exact identity, balance and positive storage. Soil successive outer-partition endpoint changes3.2385e-7 and3.6453e-7cm day were not monotonic. Actual accepted maximum trace duration remained ~1.25e-4d on all3outer meshes: adaptivity dominated. Do not infer convergence from refining an inactive outer cap. Select actual accepted maximum refinement at outer .00025/.000125/.0000625d; require actual measured max dt halves. No balance or temporal tolerance changes."
     }
   ]
 }
