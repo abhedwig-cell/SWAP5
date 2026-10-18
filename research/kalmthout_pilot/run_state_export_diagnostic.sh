@@ -9,6 +9,11 @@ test "$(git branch --show-current)" = "research/kalmthout-sw5-state-export-20261
 }
 OUT="${1:-$ROOT/kalmthout-export-result}"
 mkdir -p "$OUT"
-KALMTHOUT_NEWTON_TRACE=1 KALMTHOUT_DRY_DIAG_ONLY=1   bash research/kalmthout_pilot/run_kalmthout_official.sh "$OUT" > "$OUT/run.log" 2>&1
+set +e
+KALMTHOUT_NEWTON_TRACE=1 KALMTHOUT_DRY_DIAG_ONLY=1 bash research/kalmthout_pilot/run_kalmthout_official.sh "$OUT" > "$OUT/run.log" 2>&1
+model_status=$?
+set -e
+echo "KALMTHOUT_DIAGNOSTIC_PROCESS_EXIT=$model_status"
+test -f "$OUT/dry_diagnostic.log" || { echo "Missing diagnostic model output" >&2; exit 3; }
 python3 research/kalmthout_pilot/validate_state_dump.py "$OUT/dry_diagnostic.log"
 echo "STATE_EXPORT_VERIFIED=PASS (diagnostic simulation may intentionally fail)"
