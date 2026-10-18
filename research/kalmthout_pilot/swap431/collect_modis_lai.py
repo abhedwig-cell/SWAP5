@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import threading
+import time
 
 import numpy as np
 from pyproj import Transformer
@@ -53,6 +54,23 @@ def main():
     grid = list(csv.DictReader(args.grid.open()))
     x, y = np.array([float(r['easting']) for r in grid]), np.array([float(r['northing']) for r in grid])
     state = threading.local()
+    # The official container token serves all assets. Signing every individual
+    # band needlessly exhausts the public signing API's request allowance.
+    token = None
+    for attempt in range(4):
+        response = requests.get('https://planetarycomputer.microsoft.com/api/sas/v1/token/modiseuwest/modis-061-cogs', timeout=60)
+        if response.status_code == 429:
+            delay = int(response.headers.get('Retry-After', '60')) + 1
+            print('Source signing allowance, waiting seconds', delay, flush=True)
+            while delay > 0:
+                wait = min(delay, 60)
+                time.sleep(wait)
+                delay -= wait
+            continue
+        response.raise_for_status()
+        token = response.json()['token']
+        break
+    assert token is not None, 'Source signing allowance unavailable after bounded retries'
 
     def collect(item):
         identity = item['id']
@@ -66,10 +84,7 @@ def main():
         records, arrays, spatial = [], {}, None
         for band in BANDS:
             href = item['assets'][band]['href']
-            signed = state.client.get('https://planetarycomputer.microsoft.com/api/sas/v1/sign',
-                                      params={'href': href}, timeout=60)
-            signed.raise_for_status()
-            response = state.client.get(signed.json()['href'], timeout=60)
+            response = state.client.get(href + '?' + token, timeout=60)
             response.raise_for_status()
             raw = response.content
             with MemoryFile(raw) as memory, memory.open() as ds:
@@ -140,7 +155,8 @@ def main():
                            'No interpolation, no gap filling, no LAI applied automatically to SWAP.',
                            'Composite start/end retained, including intervals overlapping the simulation edges.']}
     (out / 'lai_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    print(json.dumps({k: manifest[k] for k in ['items_found', 'items_collected', 'errors', 'cell_count', 'counts']}))
+    print(json.dumps({k: manifest[k] for k in ['items_found', 'items_collected', 'cell_count', 'counts']},
+                     )[:-1] + ', "error_count": ' + str(len(errors)) + '}')
     if errors:
         raise SystemExit('Some source retrievals failed; rerun to resume verified caches.')
 
