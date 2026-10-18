@@ -7,7 +7,7 @@
 
 ! ----------------------------------------------------------------------
 subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
-                    numerical_config, physical_config, explicit_step_duration, parameter_set)
+                    numerical_config, physical_config, explicit_step_duration, parameter_set, accepted_top_result)
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
@@ -67,6 +67,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
+   ! Optional diagnostic of the final converged HeadCalc evaluation only.
+   ! This is not yet an admitted transaction receipt.
+   type(soil_water_top_boundary_result_t), intent(out), optional :: accepted_top_result
    type(soil_water_boundary_conditions_t), intent(in), optional :: boundary_conditions
    type(soil_water_boundary_conditions_t) :: evaluated_boundary_conditions
    type(soil_water_numerical_config_t), intent(in), optional :: numerical_config
@@ -219,6 +222,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    if (present(boundary_conditions)) evaluated_boundary_conditions = boundary_conditions
    provider_macropore_partition_evaluated = .false.
    provider_dynamic_top_result = soil_water_top_boundary_result_t()
+   if (present(accepted_top_result)) accepted_top_result = soil_water_top_boundary_result_t()
    provider_constitutive_active = .false.
    provider_tuple_valid = .false.
    provider_tuple_from_candidate = .false.
@@ -728,6 +732,24 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          state%itnumb(min(100,state%numbit),2) = state%itnumb(min(100,state%numbit),2) + iBackTr 
 
          ctx%control%last_numbit = state%numbit
+         ! Publish a diagnostic only on a genuinely converged HeadCalc path.
+         ! Reject an intermediate or inconsistent dynamic boundary evaluation.
+         if (present(accepted_top_result) .and. provider_dynamic_top_active) then
+            if (provider_dynamic_top_result%status == SW_TOP_BOUNDARY_AVAILABLE .and. &
+                provider_dynamic_top_result%runoff_resolved .and. &
+                ieee_is_finite(provider_dynamic_top_result%runoff_depth) .and. &
+                ieee_is_finite(provider_dynamic_top_result%ponded_water_evaporation) .and. &
+                ieee_is_finite(provider_dynamic_top_result%bare_soil_evaporation)) then
+               if (abs(provider_dynamic_top_result%candidate_ponding_depth-state%pond) <= &
+                   128d0*epsilon(1d0)*max(1d0,abs(state%pond)) .and. &
+                   abs(provider_dynamic_top_result%runoff_depth-state%runots) <= &
+                   128d0*epsilon(1d0)*max(1d0,abs(state%runots)) .and. &
+                   abs(provider_dynamic_top_result%actual_top_flux-state%qtop) <= &
+                   128d0*epsilon(1d0)*max(1d0,abs(state%qtop))) then
+                  accepted_top_result = provider_dynamic_top_result
+               end if
+            end if
+         end if
          if (legacy_state_binding) call publish_legacy_state(state)
          return
       end if

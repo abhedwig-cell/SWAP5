@@ -18,11 +18,14 @@ module mod_b111_persistent_pond
  type,public::pond_step_t
   real(real64)::t0=0d0,t1=0d0,depth_begin=0d0,depth_end=0d0,qtop=0d0
   real(real64)::rain_rate=0d0,rain_c=0d0,irrigation_rate=0d0,irrigation_c=0d0,dry_deposition_rate=0d0
+  ! Accepted gross pond evaporation removes water, never dissolved solute.
+  real(real64)::pond_evaporation_rate=0d0
+  real(real64)::runon_rate=0d0,runon_c=0d0,runoff_depth=0d0
  end type
  type,public::persistent_pond_receipt_t
   integer::status=POND_INVALID
   real(real64)::mass_before=0d0,mass_after=0d0,rain_input=0d0,irrigation_input=0d0,dry_input=0d0
-  real(real64)::soil_transfer=0d0,water_residual=0d0,mass_residual=0d0
+  real(real64)::runon_input=0d0,runoff_output=0d0,soil_transfer=0d0,water_residual=0d0,mass_residual=0d0
  end type
  public::initialize_persistent_pond,advance_persistent_pond,restore_persistent_pond
 contains
@@ -78,30 +81,33 @@ contains
   if(.not.committed%ready())return
   if(committed%revision>=100000000_int64)return
   if(.not.all(ieee_is_finite([s%t0,s%t1,s%depth_begin,s%depth_end,s%qtop, &
-    s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c,s%dry_deposition_rate])))return
+    s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c,s%dry_deposition_rate, &
+    s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth])))return
   if(abs(s%t0)>1d8.or.abs(s%t1)>1d8.or.s%t1<=s%t0)return
   if(s%t0/=committed%clock.or.s%depth_begin/=committed%depth)return
   dt=s%t1-s%t0
   if(dt<1d-100.or.dt>1d3)return
   if(min(s%depth_begin,s%depth_end,s%rain_rate,s%rain_c,s%irrigation_rate, &
-    s%irrigation_c,s%dry_deposition_rate)<0d0)return
-  if(max(s%depth_begin,s%depth_end,s%rain_c,s%irrigation_c,s%dry_deposition_rate)>1d6)return
-  if(max(s%rain_rate,s%irrigation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
+    s%irrigation_c,s%dry_deposition_rate,s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth)<0d0)return
+  if(max(s%depth_begin,s%depth_end,s%rain_c,s%irrigation_c,s%runon_c,s%dry_deposition_rate)>1d6)return
+  if(max(s%rain_rate,s%irrigation_rate,s%runon_rate,s%pond_evaporation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
   r%status=POND_WATER
-  r%water_residual=s%depth_end-s%depth_begin-(s%rain_rate+s%irrigation_rate+s%qtop)*dt
+  r%water_residual=s%depth_end-s%depth_begin- &
+    (s%rain_rate+s%irrigation_rate+s%runon_rate-s%pond_evaporation_rate+s%qtop)*dt+s%runoff_depth
   if(abs(r%water_residual)>1d-10)return
   r%status=POND_MASS
   r%mass_before=committed%mass;r%dry_input=s%dry_deposition_rate*dt
   available=committed%mass+r%dry_input
   call evaluate_b111_pond_solute_exchange(available,s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c, &
-    s%qtop,0d0,s%depth_end,dt,mix)
+    s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth)
   if(mix%status/=B111_POND_SOL_OK)return
   if(mix%mass_after>1d12.or.mix%soil_transfer>1d12)return
   if(.not.bounded_values(s%t1,s%depth_end,mix%mass_after,committed%revision+1))return
-  r%rain_input=mix%rain_input;r%irrigation_input=mix%irrigation_input
-  r%soil_transfer=mix%soil_transfer;r%mass_after=mix%mass_after
-  r%mass_residual=r%mass_after+r%soil_transfer-r%mass_before-r%dry_input-r%rain_input-r%irrigation_input
-  scale=max(1d0,r%mass_before,r%mass_after,r%dry_input,r%rain_input,r%irrigation_input)
+  r%rain_input=mix%rain_input;r%irrigation_input=mix%irrigation_input;r%runon_input=mix%runon_input
+  r%soil_transfer=mix%soil_transfer;r%runoff_output=mix%runoff_output;r%mass_after=mix%mass_after
+  r%mass_residual=r%mass_after+r%soil_transfer+r%runoff_output-r%mass_before-r%dry_input- &
+    r%rain_input-r%irrigation_input-r%runon_input
+  scale=max(1d0,r%mass_before,r%mass_after,r%dry_input,r%rain_input,r%irrigation_input,r%runon_input,r%runoff_output)
   if(abs(r%mass_residual)>8192d0*epsilon(1d0)*scale)return
   candidate=committed;candidate%clock=s%t1;candidate%depth=s%depth_end;candidate%mass=mix%mass_after
   candidate%revision=committed%revision+1;r%status=POND_OK
