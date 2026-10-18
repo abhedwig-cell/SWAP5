@@ -437,6 +437,20 @@ contains
          'water',day_receipt%joint%joint%water%status, &
          'chemical',day_receipt%joint%joint%chemical%status, &
          'soil',day_receipt%joint%joint%chemical%soil%status
+       print *,'water diagnosis status',day_receipt%joint%joint%water%status, &
+         'completed',day_receipt%joint%joint%water%completed, &
+         'completed_t',day_receipt%joint%joint%water%completed_t
+       print *,'water trial diagnostic: accepted,attempts,retries,solver,temporal,mass', &
+         day_receipt%joint%joint%diagnostics%accepted_substeps, &
+         day_receipt%joint%joint%diagnostics%attempts, &
+         day_receipt%joint%joint%diagnostics%retries, &
+         day_receipt%joint%joint%diagnostics%solver_rejections, &
+         day_receipt%joint%joint%diagnostics%temporal_rejections, &
+         day_receipt%joint%joint%diagnostics%mass_rejections
+       print *,'water timestep min,max and residual', &
+         day_receipt%joint%joint%diagnostics%min_accepted_substep_duration, &
+         day_receipt%joint%joint%diagnostics%max_accepted_substep_duration, &
+         day_receipt%joint%joint%diagnostics%max_abs_step_mass_residual
      end if
      call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
    end do
