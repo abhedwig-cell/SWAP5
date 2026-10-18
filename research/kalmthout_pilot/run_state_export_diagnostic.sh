@@ -4,7 +4,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-test "$(git branch --show-current)" = "research/kalmthout-sw5-state-export-20261018" || {
+ACTIVE_REF="${GITHUB_REF_NAME:-$(git branch --show-current)}"
+test "$ACTIVE_REF" = "research/kalmthout-sw5-state-export-20261018" || {
   echo "wrong research branch" >&2; exit 2;
 }
 OUT="${1:-$ROOT/kalmthout-export-result}"
