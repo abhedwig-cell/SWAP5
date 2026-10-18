@@ -9,6 +9,7 @@ on:
       - 'src/adapter/mod_b111_age_triplet_disk.f90'
       - 'tests/nut-sol/test_surface_age_disk.f90'
       - 'tests/nut-sol/test_surface_age_disk_process.f90'
+      - 'tests/nut-sol/test_age_joint.f90'
       - 'tests/nut-sol/test_surface_age_owner.f90'
       - 'src/process/mod_b111_surface_age_soil_handoff.f90'
       - 'src/process/mod_b111_age_tracer_substep.f90'
@@ -40,3 +41,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Compile real Reference closure and run age bridge
         run: bash tests/nut-sol/run_surface_age_trace_bridge.sh
+
+  physical-dry-pond-triplet:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compile and execute real Richards and age owners at O0 and O2
+        run: |
+          AGE_RESULT_DIR="$RUNNER_TEMP/mc-sol01-triplet-${GITHUB_RUN_ID}" \
+            python3 tests/nut-sol/run_age.py
