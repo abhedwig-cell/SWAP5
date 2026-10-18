@@ -429,7 +429,15 @@ contains
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,cfg%tiles(1)%base_forcing,cfg%numerical, &
        state,weather,base_day+real(day,real64),base_day+real(day+1,real64),startup_plan,split,policy,day_receipt,day2_env)
-     if(day_receipt%status/=JOINT_OK)print *,'source day failure',day,day_receipt%status
+     if(day_receipt%status/=JOINT_OK)then
+       print *,'source day failure',day,'joint',day_receipt%status, &
+         'senescence',day_receipt%senescence%status, &
+         'material',day_receipt%joint%materials%status, &
+         'inner_joint',day_receipt%joint%joint%status, &
+         'water',day_receipt%joint%joint%water%status, &
+         'chemical',day_receipt%joint%joint%chemical%status, &
+         'soil',day_receipt%joint%joint%chemical%soil%status
+     end if
      call require(day_receipt%status==JOINT_OK,'source actual Richards continuation')
    end do
    call write_crop_soil_n_joint_restart_file(trim(endpoint),column,cfg%tiles(1)%template, &
