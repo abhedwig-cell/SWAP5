@@ -2,8 +2,8 @@
 
 Status: local physical qualification passes on production commit
 `05917ba8a8a1b109ecf6ca9c2b698807349859c0`; full retained/thermal/TCS6 preservation
-and18 corruption controls pass. Exact persisted owning-chain and integrated
-admission remain pending. The work-unit status record supplies their actual
+and18 corruption controls pass. Exact persisted owning-chain and required integrated
+qualification pass; canonical admission is recorded separately. The work-unit status record supplies their actual
 terminal outcomes. Full historical migration and mastercoverage remain false.
 
 ## Original source and clock
@@ -136,3 +136,24 @@ ponding/runoff solute carriers, unrestricted TTUTIL syntax, fractional timestamp
 extended crop diagnostics and noncontiguous material-label semantics remain
 unqualified. The original-0.1 bottom-flux stress still fails on day67. RossFast
 and mastercoverage are unchanged; full HIST completion is not claimed.
+
+## Terminal integrated qualification
+
+PR1316 qualification head52a07a34 has focused native39159565340, historical
+activation39159565393, actual B11239159565482, documentation39159565750 and
+automatic F-CI contract feedback39159565465 all SUCCESS. All31 automatic
+workflows are terminal; this is not a global green-CI claim. Thirty-two failed
+job logs diagnose unchanged DRAMET3 build-list omissions, unchanged TIMEINT16
+markers and publication source-freeze restrictions. All37 relevant successful
+and failed raw job logs and complete run conclusions are archived in the retained
+humus capsule. No failing run is counted PASS. Full moving numerical F-CI is
+NOT_SELECTED_IMPACT; the successful F-CI run is selection and modular-contract
+feedback, not a full numerical qualification.
+
+Canonical age02 evidence/metadata through3c393a55 is retained without production
+overlap. Its original current-input validator and strict age01/HIST owning chain
+pass; its historical no-production-delta wrapper is not claimed PASS on new NUT
+science. Hosted checkout87241e184 has exactly the same src/tests/tools/reference/
+workflow trees as the reviewed candidate. Final receipt changes only docs, status
+and archive content. Exact final owning checks and reviewed/merged tree equality
+remain admission requirements.

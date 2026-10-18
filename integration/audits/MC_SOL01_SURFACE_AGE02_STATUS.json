@@ -2,12 +2,12 @@
   "workstream": "MC-SOL01",
   "work_unit": "MC-SOL01-SURFACE-AGE02",
   "baseline": "65db94901eba8222b070920827621fdffddb2180",
-  "stage": "BOUNDED_SUPPLEMENT_READY_FOR_CANONICAL_DRY_LIMIT_BLOCKED",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_SUPPLEMENT_DRY_LIMIT_BLOCKED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "owned_surface": "Additive research qualification drivers and evidence under integration/audits/surface_age_longrun; all production/test/guard semantics held fixed",
   "affected_invariants": [
     7,
@@ -37,7 +37,7 @@
     "No seasonal/site calibration claim",
     "No RossFast, snow/exfiltration or simultaneous chemical companion extension"
   ],
-  "next_action": "Merge PR1315 as bounded supplementary evidence and record actual merge; complete evaporative drying remains scientifically blocked",
+  "next_action": "Bounded supplemental unit complete. Resolve scientific meaning of evaporative age before proposing complete drying; keep production safety limits and all existing admissions.",
   "blockers": [
     {
       "scope": "Full evaporative dry-down and literal physical mean-water-age interpretation",
@@ -346,6 +346,49 @@
     "mkdocs": "PASS_STRICT",
     "source_test_guard_delta": [],
     "full_fci": "NOT_SELECTED_IMPACT",
-    "hosted_runs": []
+    "hosted_runs": [
+      39159315769,
+      39159315880,
+      39159315778
+    ]
+  },
+  "complete_evaporative_drying_qualified": false,
+  "admission": {
+    "pr": 1315,
+    "qualified_head": "d75e76323f6ab325043140871404d02fbe214197",
+    "merge_commit": "916e0725508a4807a65b81174b9e28b603ccb7f7",
+    "authority": "User-authorized autonomous continuation and integration; unchanged production/test/guard surface; source-bound native and evidence qualification. Supplemental evidence only, no full-capability or default promotion."
+  },
+  "recovery_point": "Canonical PR1315 merge916e0725508a4807a65b81174b9e28b603ccb7f7 plus this status and the scientific/admission-control capsules",
+  "hosted_observations": {
+    "merge_commit": "916e0725508a4807a65b81174b9e28b603ccb7f7",
+    "manually_dispatched": false,
+    "global_ci_green": false,
+    "runs": [
+      {
+        "id": 39159315769,
+        "owner": "F-CI51P WOF43A",
+        "status": "COMPLETED_FAILURE",
+        "reason": "Obsolete rate-table dependency pin5a0e838; baseline/current exact6c383640."
+      },
+      {
+        "id": 39159315880,
+        "owner": "F-CI58P F-SI35",
+        "status": "COMPLETED_FAILURE",
+        "reason": "Python import generates untracked __pycache__ then guard checks dirty source. Baseline65 reproduced; -B passes."
+      },
+      {
+        "id": 39159315778,
+        "owner": "F-GC fixed interface",
+        "status": "COMPLETED_FAILURE",
+        "reason": "Explicit compile closure cannot find mod_drainage_dramet3_response.mod; no native PASS."
+      }
+    ],
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SURFACE_AGE02_HOSTED_OBSERVATIONS_20261018.tar.xz.b64",
+      "decoded_sha256": "a67309dfab8a3d31ae7c5b764252603e240301dafaf2e1b0137df220e61d0d73",
+      "members": 10
+    },
+    "disposition": "Existing source/test/workflow surface exact to baseline65db. Failures retained and routed by named owner; no assertions/eligibility pins/compile manifests changed and no hosted PASS claimed. Does not invalidate source-bound local bounded surface-age qualification. Separate owner CI repair remains open."
   }
 }

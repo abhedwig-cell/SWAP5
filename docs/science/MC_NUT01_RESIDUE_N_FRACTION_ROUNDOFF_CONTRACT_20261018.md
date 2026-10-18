@@ -1,6 +1,6 @@
 # Conservative residue N-fraction representation
 
-Status: proposed correction, not qualified. During the historical humus candidate
+Status: qualified bounded PR1316 correction; actual canonical admission is recorded in the work-unit status. During the historical humus candidate
 f9afce3, the actual coupled profile rejects day397 while staging root residue.
 The diagnostic real owner accepts water and chemistry and constructs pending
 material, but rejects its organic N fraction0.0019999999999999996 against source

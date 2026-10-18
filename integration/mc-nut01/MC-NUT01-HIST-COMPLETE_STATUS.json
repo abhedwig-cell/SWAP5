@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "05917ba8a8a1b109ecf6ca9c2b698807349859c0",
+  "checkpoint_commit": "52a07a34fa74924ae9d538c30287b4d32f2d0d4a",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -54,15 +54,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Persist exact evidence and current strict guards, execute complete owning chain on exact committed candidate, then open PR and actively monitor necessary focused/historical/actual/docs Actions through terminal; qualified scoped merge only after current canonical reconciliation.",
-  "recovery_point": "work/nut-hist-humus-20261018; production05917 O0/O2 and all selected retained/thermal/TCS6 local gates pass. Evidence capsules and exact strict guard postimages in this pending checkpoint; full HIST remains unqualified.",
+  "next_action": "Final exact reviewed-tree owning/negative/coexistence checks, then merge PR1316 at expected head onto reconciled canonical; verify merge tree and postmerge owning chain. Continue remaining native material-position/TTUTIL and gross-atmospheric capabilities; full HIST and mastercoverage remain false.",
+  "recovery_point": "PR1316 work/nut-hist-humus-20261018; required terminal qualification52a07, production05917/ad87 source; final evidence/metadata successor to52a07, exact owning/merge checks required. Complete work unit remains unqualified.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
-    "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Humus local proof passes but its admission gates are pending."
+    "General TTUTIL constructs, fractional timestamps, noncontiguous material-label semantics and extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "fb6611c9816ac8f3339db42c201944dd21cd8f2b",
-  "last_reconciled_upstream": "916e0725508a4807a65b81174b9e28b603ccb7f7",
+  "last_reconciled_head": "52a07a34fa74924ae9d538c30287b4d32f2d0d4a",
+  "last_reconciled_upstream": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -292,8 +292,8 @@
       "SOURCE_VERIFIED": true,
       "IMPLEMENTED": true,
       "TESTED": true,
-      "QUALIFIED": false,
-      "scope": "Native paired RateconHum_exp/tstartHumexp; original TTUTIL/rateconstants/caller-clock O0/O2 proof and730-day exact restart pass on05917. Required owning/integrated admission pending; no full-HIST claim."
+      "QUALIFIED": true,
+      "scope": "Qualified bounded PR1316 candidate: native paired RateconHum_exp/tstartHumexp, original TTUTIL/rateconstants/caller-clock O0/O2 proof,730-day transition/restart/state/mass evidence and all required local/integrated owner gates. Actual canonical admission recorded separately."
     },
     {
       "part": "General TTUTIL constructs",
@@ -318,6 +318,14 @@
       "TESTED": false,
       "QUALIFIED": false,
       "scope": "UNSUPPORTED flCropExt extended diagnostic output; no false/true token or output-equivalence claim."
+    },
+    {
+      "part": "Material definition labels versus event positions",
+      "SOURCE_VERIFIED": true,
+      "IMPLEMENTED": false,
+      "TESTED": true,
+      "QUALIFIED": false,
+      "scope": "Original management read slices and full original amendments execute4 label variants O0/O2: contiguous/noncontiguous/reversed/duplicate definitions all select properties by iMat position after MatNum overwrite. New source witness only; current native contiguous-label restriction remains unsupported for other cases. Raw results and first path failure archived in source-followup, not a SWAP5 parser PASS."
     }
   ],
   "bounded_successor": {
@@ -488,10 +496,10 @@
     },
     "retained_evidence": {
       "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_RETAINED_20261018.tar.xz.b64",
-      "decoded_sha256": "4f7af53ae0c54160373b6993b31a20e77441815d9be326fe2cb11032f6533d42",
-      "members": 2504,
-      "compressed_bytes": 238980,
-      "text_bytes": 318641
+      "decoded_sha256": "c145e721a64124f3b2a2635e7d34e4381482000c0a76ceb30e4bc7b820b59b38",
+      "members": 2644,
+      "compressed_bytes": 532976,
+      "text_bytes": 710637
     },
     "postimages": {
       "src/process/mod_b111_soil_n_addition.f90": {
@@ -752,11 +760,11 @@
     }
   },
   "humus_experiment_successor": {
-    "status": "LOCAL_PHYSICAL_AND_PRESERVATION_PASS_OWNING_INTEGRATED_PENDING",
+    "status": "QUALIFIED_BOUNDED_PR1316_CANDIDATE",
     "branch": "work/nut-hist-humus-20261018",
     "base_canonical": "01a053f93f9c6548278df503a4cfea5424c84fce",
     "contract": "docs/science/MC_NUT01_HIST_HUMUS_EXPERIMENT_CONTRACT_20261018.md",
-    "qualified": false,
+    "qualified": true,
     "canonical_admitted": false,
     "mastercoverage_promotion": false,
     "direct_development_feedback": {
@@ -764,7 +772,7 @@
       "native_input": "38 fixtures O0/O2 PASS on05917ba8",
       "ttutil": "Ten original TTUTIL fixtures O0/O2 PASS on05917ba8"
     },
-    "next_action": "Persist exact evidence and current strict guards, execute complete owning chain on exact committed candidate, then open PR and actively monitor necessary focused/historical/actual/docs Actions through terminal; qualified scoped merge only after current canonical reconciliation.",
+    "next_action": "Final exact reviewed-tree owning/negative/coexistence checks, then merge PR1316 at expected head onto reconciled canonical; verify merge tree and postmerge owning chain. Continue remaining native material-position/TTUTIL and gross-atmospheric capabilities; full HIST and mastercoverage remain false.",
     "caller_clock_reconciliation": {
       "SOURCE_VERIFIED": true,
       "authority": "integration/audits/evidence/SWAP431_HUMUS_CLOCK_AUTHORITY.tar.xz.b64",
@@ -777,7 +785,7 @@
     },
     "residue_boundary_correction": {
       "contract": "docs/science/MC_NUT01_RESIDUE_N_FRACTION_ROUNDOFF_CONTRACT_20261018.md",
-      "status": "IMPLEMENTED_DEVELOPMENT_PASS_NOT_QUALIFIED",
+      "status": "QUALIFIED_BOUNDED_ORIGINAL_EDGE_CORRECTION",
       "failed_source_checkpoint": "f9afce3ba316c70a928bf670ee44a8abc5ca2b53",
       "failure_day": 397,
       "failure_layer": "SENESCENCE_DAY_RETURN; root material below FOM N minimum by exactly one spacing",
@@ -789,7 +797,7 @@
       ],
       "original_failed_trial_full_native_bytes_preserved": true,
       "rollback_payload_bytes": 3136,
-      "local_feedback": "Fresh two-provider O0/O2 original negative-organic edge, one..eight spacing conservative NH4 debit, N/OM own-precision closure, beyond-bound/amendment rejection and unavailable-N rollback PASS. Fresh full05917 O0/O2 main730 reaches PASS; required retained preservation pending.",
+      "local_feedback": "Fresh real two-provider material matrix and fresh full O0/O2 physical/retained/thermal/TCS6 execution pass. Existing accepted-input/default/source/thermal/TCS6 bytes preserved; no gate relaxed.",
       "full_gate_attempt": "First main f9 fails day397; first retained f9 cancelled after concrete production fix became necessary; never counted PASS",
       "gates_relaxed": false,
       "rollback_payload_sha256": "87d9521b090bd52b5d9577bc383a20d775a89d1311c516ccb11e5d7f0bf492c5"
@@ -806,7 +814,19 @@
       "guard_policy": "Strict registered canonical baseline and original age evidence/input preservation, no broad age-exists bypass",
       "receipt_head": "65db94901eba8222b070920827621fdffddb2180",
       "age02_canonical": "916e0725508a4807a65b81174b9e28b603ccb7f7",
-      "age02_scope": "PR1315 additive docs/audit drivers/evidence only; no production/existing tests/workflow/guard overlap. Resolve identical documentation-link correction plus appended age02 section. Current original age02 compiled/provider/oracle/caller input hashes remain exact; validate(load()) also calls strict current age01+HIST qualification. Original verify() no-production-delta assertion stays frozen to65db and is not claimed PASS on changed NUT science."
+      "age02_scope": "PR1315 additive docs/audit drivers/evidence only; no production/existing tests/workflow/guard overlap. Resolve identical documentation-link correction plus appended age02 section. Current original age02 compiled/provider/oracle/caller input hashes remain exact; validate(load()) also calls strict current age01+HIST qualification. Original verify() no-production-delta assertion stays frozen to65db and is not claimed PASS on changed NUT science.",
+      "final_canonical": "3c393a55999fa671f8a730bddd058c9e7a3f41f7",
+      "final_delta": "Only age02 admission/hosted diagnosis metadata, docs and archived logs since916e; no src/tests/tools/reference/workflow delta. CI merge87241e184 has exact same source/tests/tools/reference/workflow trees as the reviewed candidate.",
+      "age02_evidence_validation": {
+        "two_day_reference": true,
+        "optimization_exact": true,
+        "fresh_processes": 12,
+        "refinement": "observed decreasing endpoint changes, not a formal order proof",
+        "full_evaporative_drying": false,
+        "production_changed": false,
+        "method": "Original source/evidence validator validate(load()) with exact current physical inputs plus strict current age01/HIST owner qualification; frozen no-delta verify() not claimed PASS.",
+        "status_sha256": "783f0e36da69abdc4366dfdaec64525c09e2c2c5f155eb2d3a721fd886b17139"
+      }
     },
     "production_result": {
       "status": "HIST_BOUNDED_PHYSICAL_PASS_NOT_FULL_MIGRATION",
@@ -886,13 +906,40 @@
     },
     "retained_evidence": {
       "path": "integration/audits/evidence/MC_NUT01_HIST_HUMUS_RETAINED_20261018.tar.xz.b64",
-      "decoded_sha256": "4f7af53ae0c54160373b6993b31a20e77441815d9be326fe2cb11032f6533d42",
-      "members": 2504,
-      "compressed_bytes": 238980,
-      "text_bytes": 318641,
-      "blob_sha": "8c87e37a5f0ba25bec732b30d9d204e98e23b7f1"
+      "decoded_sha256": "c145e721a64124f3b2a2635e7d34e4381482000c0a76ceb30e4bc7b820b59b38",
+      "members": 2644,
+      "compressed_bytes": 532976,
+      "text_bytes": 710637
     },
     "guard_negative_controls": 18,
-    "pr": 1316
+    "pr": 1316,
+    "qualification_head": "52a07a34fa74924ae9d538c30287b4d32f2d0d4a",
+    "production_source_tree": "ad87d0fdf6e8c7cb3e33efb6ee073cdd2ea8ac91",
+    "qualification_runs": {
+      "focused_native": {
+        "id": 39159565340,
+        "conclusion": "success"
+      },
+      "historical_activation": {
+        "id": 39159565393,
+        "conclusion": "success"
+      },
+      "actual_b112": {
+        "id": 39159565482,
+        "conclusion": "success"
+      },
+      "documentation": {
+        "id": 39159565750,
+        "conclusion": "success"
+      },
+      "fci_contract_feedback": {
+        "id": 39159565465,
+        "conclusion": "success"
+      }
+    },
+    "automatic_workflows_terminal": 31,
+    "failed_automatic_jobs_diagnosed": 32,
+    "automatic_failure_disposition": "All31 automatic runs terminal. Full raw37 successful/failed job logs and conclusions archived. Publication source-freeze restrictions, unchanged incomplete DRAMET3 build lists and unchanged TIMEINT16 marker failures remain non-PASS, outside this physical delta. Current F-CI selection/contracts feedback SUCCESS; full moving numerical F-CI not selected.",
+    "owning_guard": "Exact persisted candidate52a07: full B111 successor owning chain and separate age01 qualification pass;18 corruption controls pass. Require final exact candidate/postmerge guard again; no source drift or weak source-only waiver."
   }
 }

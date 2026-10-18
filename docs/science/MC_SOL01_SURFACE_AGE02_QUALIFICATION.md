@@ -1,6 +1,7 @@
 # MC-SOL01-SURFACE-AGE02: multi-cycle Reference qualification and dry limit
 
-Status: locally qualified supplemental evidence over unchanged canonical production
+Status: canonically admitted supplemental evidence through PR1315 at
+`916e0725508a4807a65b81174b9e28b603ccb7f7`, over unchanged production
 `65db94901eba8222b070920827621fdffddb2180`; admission is recorded separately in
 `integration/audits/MC_SOL01_SURFACE_AGE02_STATUS.json`. PR [1315](https://github.com/abhedwig-cell/SWAP5/pull/1315).
 Executed postimage: `87da11c38515b1d78d62de8e6608fb42303395a0`.
@@ -153,3 +154,22 @@ also pass. Full moving F-CI and new hosted numerical runs are NOT_SELECTED_IMPAC
 no production, existing test selector or scientific admission guard changed.
 Previously qualified source and preservation remain exact. Affected invariants
 7, 9, 13, 25 and 26 are strengthened by evidence, not changed.
+
+
+## Post-merge automatic CI observations
+
+The merge automatically triggered three older push workflows despite no new
+source/test/workflow delta. All three reached terminal FAILURE, not PASS:
+F-CI51P run39159315769 fails its obsolete WOFOST rate-table blob requirement;
+F-CI58P run39159315880 imports Python bytecode into the guarded source surface
+and then rejects that dirty surface; F-GC run39159315778 omits the current
+`mod_drainage_dramet3_response` compile provider and stops before native science.
+The baseline65db reproduces the F-CI58P import/dirty failure; `python -B` makes the
+same source check pass. The rate-table source blob is identically6c383640 on
+baseline and current, while its old guard requires5a0e838. F-GC sources and
+explicit compiler manifest are likewise unchanged. Full raw hosted logs and the
+baseline diagnosis are retained in the status-linked observation capsule.
+
+These are open owner-specific CI defects. They have not been repaired or
+relabelled green in this supplemental work unit. The source-bound local
+qualification remains valid, but a global green CI claim is explicitly excluded.

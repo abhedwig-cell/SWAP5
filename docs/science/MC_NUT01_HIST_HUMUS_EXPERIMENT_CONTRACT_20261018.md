@@ -1,6 +1,6 @@
 # Historical optional humus-rate experiment
 
-Status: implementation contract, not qualified. Baseline canonical is
+Status: qualified bounded PR1316 candidate. Canonical admission is recorded in the work-unit status; full HIST completion remains false. Baseline canonical is
 `01a053f93f9c6548278df503a4cfea5424c84fce` (PR1314). Work unit remains
 MC-NUT01-HIST-COMPLETE. This extension uses the existing reactive owner and
 organic turnover kernel; it adds no pool, second reaction implementation or solver.
