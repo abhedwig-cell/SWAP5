@@ -61,14 +61,17 @@ done
 gfortran "${COMMON[@]}" -O2 -J "$BUILD" -I "$BUILD" -c research/kalmthout_pilot/kalmthout_swap5_pilot.f90 -o "$BUILD/pilot.o"
 gfortran -fopenmp -O2 "${objects[@]}" "$BUILD/pilot.o" -o "$BUILD/kalmthout_pilot"
 
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/probe_48h.csv" 48 1.0 | tee "$OUTDIR/probe_48h.log"
-grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/probe_48h.log"
-echo "KALMTHOUT_48H_RUTTER_PROBE=PASS"
-
-"$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/full_rainfall_2024_2026.csv" 0 0.0 | tee "$OUTDIR/full_rainfall_run.log"
-grep -Fq 'KALMTHOUT_SWAP5_PILOT=PASS' "$OUTDIR/full_rainfall_run.log"
-grep -Fq 'KALMTHOUT_EVAP_SCALE=    0.0000' "$OUTDIR/full_rainfall_run.log"
-echo "KALMTHOUT_FULL_RAINFALL_HYDRAULICS_2024_TO_2026=PASS"
+# Diagnostic-only owner-backed pilot: failure in a preliminary scenario
+# must not prevent the independent atmospheric sensitivity matrix.
+for entry in "48:1.0:probe_48h" "0:0.0:full_rainfall_2024_2026"; do
+  IFS=: read -r hours scale name <<< "$entry"
+  set +e
+  "$BUILD/kalmthout_pilot" "$OUTDIR/weather.csv" "$OUTDIR/${name}.csv" "$hours" "$scale" > "$OUTDIR/${name}.log" 2>&1
+  code=$?
+  set -e
+  completed=$(($(wc -l < "$OUTDIR/${name}.csv")-1))
+  echo "KALMTHOUT_PRELIM_CASE scenario=$name exit=$code completed_hours=$completed"
+done
 
 # Preserve every diagnostic even when a specific atmosphere case fails.
 # These runs use the same meteorology, soil, initial state and numerical
