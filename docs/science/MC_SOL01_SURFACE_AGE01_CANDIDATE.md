@@ -60,3 +60,7 @@ This final source has **not yet been compiled or qualified**. A source-exact O0/
 ## Remaining persistent disk restart limitation
 
 The optional schema 2 in `mod_fmr_b111_age_joint_application` is currently **an in-memory typed restart bundle only**. Existing production disk adapter `mod_age_joint_restart_file` has the unchanged magic `S5AJ0001` and serializes just hydraulic state and soil age, not the new surface-age stock. It must not be described as a completed persistent V2 disk restart. A separate bounded disk writer/reader revision with CRC, identity/size guards, negative forgeries, and independent process continuation is required. The production call site also requires native joint state/pond evidence before scientific qualification; the current module-compilation CI alone is not sufficient.
+
+## 2026-10-18 qualification and restore-target guard
+
+The exact previous joint-source qualification `39129526846` has both `isolated-o0-o2` and `reference-bridge-o0-o2` SUCCESS. This is native source compilation and bounded numerical tests, not a full positive-pond triplet physical replay or independent disk restart. The subsequent change `5bd4b0f0205df580b6ae075d9ee5bf5c2d61e729` prohibits restoring schema-2 triplet state into a previously initialized surface-age target, matching the water and soil-age no-overwrite rule. The fresh postimage Actions run is `39130356375`; final verdict must be checked explicitly. S5AJ0001 disk layout remains unchanged and has no serialized surface-age mass.
