@@ -31,6 +31,16 @@ assert hashlib.sha256(raw).hexdigest() == '2fc8592001cdcd2de95a252d8b9099416c94e
 lines = raw.decode('latin1').splitlines()
 assert 'csurf = (nird*cirr' in lines[345]
 assert 'cmsy(i) = cmsy(i) + (cfluxb-cfluxt)' in lines[418]
+# Expose bounded, SHA-pinned historical chemistry around the source pond law.
+# This is source inspection, not an assertion that runoff is identical.
+print('MC_SOL01_HISTORICAL_SURFACE_SOURCE_BEGIN')
+for line_no in range(330, 365):
+    print(f'SWAP431_SOLUTE_{line_no+1:04d}: {lines[line_no]}')
+print('MC_SOL01_HISTORICAL_RUNOFF_REFERENCES_BEGIN')
+for line_no,line in enumerate(lines,1):
+    if any(token in line.lower() for token in ('runoff','runots','runon','qrun')):
+        print(f'SWAP431_SOLUTE_{line_no:04d}: {line[:180]}')
+print('MC_SOL01_HISTORICAL_RUNOFF_REFERENCES_END')
 surface = 'module historical_surface_oracle\n use iso_fortran_env,only:real64\n implicit none\ncontains\n subroutine literal_surface(initial,rain,rc,irr,ic,qtop,pond,dtsolu,cpond,transfer,remaining)\n real(real64),intent(in)::initial,rain,rc,irr,ic,qtop,pond,dtsolu\n real(real64),intent(out)::cpond,transfer,remaining\n real(real64)::csurf,nird,cirr,nraidt,cpre,cfluxt,ArMpSs,isqtop\n csurf=initial;nird=irr;cirr=ic;nraidt=rain;cpre=rc;ArMpSs=0\n' + '\n'.join(lines[345:355])+'''
  transfer=-cfluxt;remaining=csurf
  end subroutine
