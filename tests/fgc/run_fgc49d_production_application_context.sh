@@ -163,7 +163,7 @@ for opt in 0 2; do
   gfortran -shared -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/libfgc49d_application.so" || fail "link O$opt"
 
   for symbol in     fgc49d_fixture_initialize_c     fgc49d_context_counts_c     fgc49d_plan_view_c     fgc49d_tile_view_c     fgc49d_capture_origins_c     fgc49d_evaluate_groundwater_fluxes_c     fgc49d_trial_cell_heads_c     fgc49d_reanchor_terms_c     fgc49d_commit_swaps_c     fgc49d_commit_ledgers_c; do
-    nm -D "$OUT/libfgc49d_application.so" | grep -q "$symbol" || fail "missing symbol $symbol O$opt"
+    nm -D "$OUT/libfgc49d_application.so" | grep "$symbol" > /dev/null || fail "missing symbol $symbol O$opt"
   done
 
   FGC49D_APPLICATION_LIB="$OUT/libfgc49d_application.so"     python3 tests/fgc/test_fgc49d_production_application_context.py > "$OUT/output.txt" 2>&1 || {
