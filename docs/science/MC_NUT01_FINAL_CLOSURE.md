@@ -179,3 +179,7 @@ For fresh numerical qualification use the admitted GNU Fortran13 toolchain; gene
 A full source-history checkout, all named immutable capsules, adequate storage and the recorded compiler/flags are prerequisites. Source hashes alone do not replace native output, and a fixture PASS cannot authorize full model equivalence.
 
 The definitive reviewed science commit is `e122ff8f682584620717e97ab24ce07933dd0923`. Any later documentation merge is an administrative review receipt, not a new scientific admission or full MC-NUT01 closure.
+
+## Canonical review admission receipt
+
+Review PR1322 merged at `4719ed47b0ed8a35830a206b0bf00014aae84f7c`. The merged diff contains only this document, current-status/traceability navigation, the existing work-unit record and the additive final-review evidence capsule. Exact-ref postmerge retrieval confirms the blocked whole-HIST flags and the source-bound evidence receipt. Final document source checks and strict MkDocs build passed again in20.74 seconds. No hosted workflows were created for this documentation review merge; no new integrated numerical PASS is inferred. The original reviewed scientific commit remains `e122ff8f682584620717e97ab24ce07933dd0923`. Full MC-NUT01 remains scientifically blocked as stated above.

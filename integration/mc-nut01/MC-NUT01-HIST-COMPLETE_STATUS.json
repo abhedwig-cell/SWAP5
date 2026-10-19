@@ -1160,7 +1160,11 @@
     "docs_checks": {
       "source": "PASS",
       "mkdocs_strict": "PASS",
-      "mkdocs_seconds": 18.68
-    }
+      "mkdocs_seconds": 18.68,
+      "exact_final_document_mkdocs_seconds": 20.74
+    },
+    "canonical_review_merge": "4719ed47b0ed8a35830a206b0bf00014aae84f7c",
+    "pull_request": 1322,
+    "postmerge": "Remote exact-ref status and evidence receipt verified; merge changes docs/status/evidence only. No new native execution or full historical admission. No hosted workflows were created for the review merge."
   }
 }
