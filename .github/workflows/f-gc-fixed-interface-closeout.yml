@@ -30,6 +30,8 @@ permissions: {contents: read}
 jobs:
   closeout:
     runs-on: ubuntu-24.04
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:

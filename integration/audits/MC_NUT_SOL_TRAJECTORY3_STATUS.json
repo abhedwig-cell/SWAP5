@@ -1050,5 +1050,32 @@
       "production_test_guard_changes": false,
       "new_manual_actions_runs": 0
     }
+  },
+  "closure_native_ci_followup_20261019": {
+    "baseline": "6bac7b1508e4b7c33bf887f61be4499268bac4da",
+    "execution_commit": "f90a35cae4bb1788e5f38fce699b96196807b973",
+    "status": "EIGHT_ORIGINAL_NATIVE_ROUTES_PASS",
+    "authority": "integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_CLOSURE_CI_REPAIR_20261019.tar.xz.b64",
+      "decoded_sha256": "c35f50c0e5ff10213ece864654b5c69509cf29d0b059c6d930570523377dfda5",
+      "decoded_bytes": 194800,
+      "members": 30
+    },
+    "production_changed": false,
+    "full_historical_envelopes_promoted": false,
+    "additional_preservation": {
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_CLOSURE_PRESERVATION_20261019.tar.xz.b64",
+        "decoded_sha256": "a2443cdf25bf0f40d3dd9552c66a927b8fa0d85b1b0a9702d036b96cca38a4a8",
+        "decoded_bytes": 389604,
+        "members": 37
+      },
+      "compile": "ORIGINAL_O0_O2_PASS",
+      "paired": "BOTH_ORIGINAL_MODES_5000_CALLS_TEN_PAIRS_PASS_SHARED_BUILD",
+      "energy": "QUALIFICATION_ONLY/BLOCKED exact outflow-fixture contract mismatch, no MC-SOL01 domain promotion",
+      "hosted_authority": "PR1327 terminal outcomes and Git merge ancestry",
+      "production_changed": false
+    }
   }
 }

@@ -20,9 +20,17 @@
   "next_action": "Surface-age scoped CI repair and F-CI73 follow-up canonically closed. Complete evaporative age dry-down remains the separate scientific convention blocker.",
   "blockers": [],
   "postimages": {
+    ".github/workflows/f-gc-fixed-interface-closeout.yml": {
+      "status": "M",
+      "sha256": "f92ccf6fa344558383a043a18232dd3d51c0fe25500a152356e873f7ba7d5d6a"
+    },
+    ".github/workflows/fci73-fgc25-moving-preservation.yml": {
+      "status": "M",
+      "sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1"
+    },
     "integration/audits/surface_age_ci/authority.py": {
       "status": "A",
-      "sha256": "8eae3f2a2eadb942cae12a30c4263f912726ad61c1f218037d1ef2520eedb869"
+      "sha256": "0a162ea4dbeb61aed24921fd966c8a5fe2200eb26ed13c9b1be0e6c08373765e"
     },
     "integration/audits/surface_age_ci/run.py": {
       "status": "A",
@@ -31,6 +39,18 @@
     "integration/audits/surface_age_longrun/verify.py": {
       "status": "M",
       "sha256": "e467646caa42877a01da4c92fb9554a1fd65a51e205dd6ab4a9dd1c61f497eb0"
+    },
+    "tests/fahl/run_fahl49_application_scale.sh": {
+      "status": "M",
+      "sha256": "46b65d2fb850c662f8083c497a07157f534979ec59fb393c47a067c8ec009974"
+    },
+    "tests/fahl/run_fahl49_failclosed.sh": {
+      "status": "M",
+      "sha256": "307b399e74759ae3f5fde7499db47f249241751dc0906dbf06324fb08a0bc482"
+    },
+    "tests/fahl/run_fahl49_production_matrix.sh": {
+      "status": "M",
+      "sha256": "184984e08482d0f4fda2fd30056473977187d9ed79e287b57a8856726b9f19ce"
     },
     "tests/fapp/run_ppa_wu01_production_application_bootstrap.sh": {
       "status": "M",
@@ -56,9 +76,33 @@
       "status": "M",
       "sha256": "05d3ca6b5324a9ecc381b95f8c335a44fe6b6fb098bf8914ed0392004bc64644"
     },
+    "tests/fgc/run_fgc49d_production_application_context.sh": {
+      "status": "M",
+      "sha256": "76524904e41ba1653a80216160a1a364784a7d3e92a46ab46df5051013c9ba61"
+    },
     "tests/fgc/run_fgc_fixed_interface_closeout.sh": {
       "status": "M",
       "sha256": "7f8049779ddfb4e73b008555c4f44eed8079dc7127cb34ab3209889e2bc2d0a9"
+    },
+    "tests/fkt/run_fkt22_fmr_compile_gate.sh": {
+      "status": "M",
+      "sha256": "00faa00af3129dcab660780c9f458c1ecfbf1f385f979dba494b72245826e982"
+    },
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh": {
+      "status": "M",
+      "sha256": "1e1d41dc7b7920b8676bf29e6d9c92bde647b7944ca833598bfe68d4781a5449"
+    },
+    "tests/fpe/materialize_fpe_timeint16_origin_capture.py": {
+      "status": "M",
+      "sha256": "e0dff1baaffdf3fa1b31ab5e94290b06ba2c3916c246d9710035c7a4f8638a53"
+    },
+    "tests/fpe/run_fpe_zero_waste01_paired_runtime.sh": {
+      "status": "M",
+      "sha256": "59649927377d189ab432db23067a9acb727ca37a6789d6bf8952a6a9b696ece9"
+    },
+    "tests/fpe/run_fpe_zero_waste01_poison_workspace.sh": {
+      "status": "M",
+      "sha256": "f95352546a7f4acfda25a1f3a21e462fc6d459c8b94bcf824f10c1b41367bc68"
     },
     "tests/nut-crop/verify_hist_native_successor.py": {
       "status": "M",
@@ -67,10 +111,6 @@
     "tests/nut-sol/verify_surface_age_successor.py": {
       "status": "M",
       "sha256": "d6e4237053f7d2fa35dd5801322c554d5fbbccdf13de3d5bde5dd8d5a8e39647"
-    },
-    ".github/workflows/fci73-fgc25-moving-preservation.yml": {
-      "status": "M",
-      "sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1"
     }
   },
   "relevant_paths": [
@@ -224,25 +264,79 @@
     "rule": "Conservative inventory is not evidence of actual execution; unchanged compiled numerical closure inherited; fresh combined source and all negative controls required"
   },
   "inherited_inventory_delta": {
-    "src/process/mod_soil_n_unified_input.f90": {
-      "before_sha256": "97653bd317dcecd33398ae6a1297d5ce224ef9c3f46e888bd47f9025cd9a0e78",
-      "after_sha256": "cd1bcf90bdb7162e4bc104987f6feb595a98b44e102cc32517e2895b6ed16c3c",
-      "reason": "Registered independent parser original/native proof"
-    },
-    "tests/nut-crop/verify_hist_native_successor.py": {
-      "before_sha256": "2ed52ca07ee657dfbe31414dc703ebd0d09acefded0278cc768e646b7749b228",
-      "after_sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090",
-      "reason": "Exact composed qualification authority; fresh negative controls required"
-    },
-    "integration/audits/surface_age_ci/authority.py": {
-      "before_sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4",
-      "after_sha256": "8eae3f2a2eadb942cae12a30c4263f912726ad61c1f218037d1ef2520eedb869",
-      "reason": "Exact composed qualification authority; fresh negative controls required"
+    ".github/workflows/f-gc-fixed-interface-closeout.yml": {
+      "before_sha256": "1fe5497205accc2894801facfd40dd9b9e7cb555a88796678f8eb81b81b6659a",
+      "after_sha256": "f92ccf6fa344558383a043a18232dd3d51c0fe25500a152356e873f7ba7d5d6a",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
     },
     ".github/workflows/fci73-fgc25-moving-preservation.yml": {
       "before_sha256": "99975a58a0e32266ca4bbd0f1ad0cf98db8b1508357df926e2c27f2f7fb59ea9",
       "after_sha256": "7275005a4b9530f42ff256f5c7dab8e42ab300ac187b70a0e90a3ef91f8b9ab1",
-      "reason": "Exact F-CI73 original-native independently qualified moving workflow; required through dedicated current F-CI73 science validator"
+      "reason": "Exact F-CI73 original-native independently qualified moving workflow; required through dedicated current F-CI73 science validator",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "integration/audits/surface_age_ci/authority.py": {
+      "before_sha256": "0596333495312aa87427d688216c40573f8463eeffa1f6f162aa86c116afcca4",
+      "after_sha256": "0a162ea4dbeb61aed24921fd966c8a5fe2200eb26ed13c9b1be0e6c08373765e",
+      "reason": "Exact composed qualification authority; fresh negative controls required",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "src/process/mod_soil_n_unified_input.f90": {
+      "before_sha256": "97653bd317dcecd33398ae6a1297d5ce224ef9c3f46e888bd47f9025cd9a0e78",
+      "after_sha256": "cd1bcf90bdb7162e4bc104987f6feb595a98b44e102cc32517e2895b6ed16c3c",
+      "reason": "Registered independent parser original/native proof",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fahl/run_fahl49_application_scale.sh": {
+      "before_sha256": "581071516b885b8c90c709f3b818cbd5091b076750c4c2f117c90e5a7c3a7b5a",
+      "after_sha256": "46b65d2fb850c662f8083c497a07157f534979ec59fb393c47a067c8ec009974",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fahl/run_fahl49_failclosed.sh": {
+      "before_sha256": "27773d148a85d239445e014f0f276dca63c0ccaf6abeda17ef4544d0e538f053",
+      "after_sha256": "307b399e74759ae3f5fde7499db47f249241751dc0906dbf06324fb08a0bc482",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fahl/run_fahl49_production_matrix.sh": {
+      "before_sha256": "146626d897874b012563f8734cf0a09ddefe3bbe6446b85a60540a9d0efb2e10",
+      "after_sha256": "184984e08482d0f4fda2fd30056473977187d9ed79e287b57a8856726b9f19ce",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fgc/run_fgc49d_production_application_context.sh": {
+      "before_sha256": "0ae5e1b4aeed9d0d80bf9bf2e4e55bc70cc06759b508e489e522de143eba68ee",
+      "after_sha256": "76524904e41ba1653a80216160a1a364784a7d3e92a46ab46df5051013c9ba61",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fkt/run_fkt22_fmr_compile_gate.sh": {
+      "before_sha256": "c15af474487b55c1ff0d9ea7bffcf5ee8b5c60136f28112fb4933b818e64d893",
+      "after_sha256": "00faa00af3129dcab660780c9f458c1ecfbf1f385f979dba494b72245826e982",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fkt/run_fkt22_fmr_runtime_gate.sh": {
+      "before_sha256": "40c7508ea2dd5e8d95ca2813dbac43dc35839f6c919e29c5b54dac762e841d8a",
+      "after_sha256": "1e1d41dc7b7920b8676bf29e6d9c92bde647b7944ca833598bfe68d4781a5449",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fpe/materialize_fpe_timeint16_origin_capture.py": {
+      "before_sha256": "eb7b86a60c8124e8c80fe9fa386c52acb4321fc2473b3b99ea4c6d2a8f4c57b9",
+      "after_sha256": "e0dff1baaffdf3fa1b31ab5e94290b06ba2c3916c246d9710035c7a4f8638a53",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fpe/run_fpe_zero_waste01_paired_runtime.sh": {
+      "before_sha256": "2254b0ff5d22c8695fb37db77493a3e5c75565bc7c60d3597065535c5bd3e1f9",
+      "after_sha256": "59649927377d189ab432db23067a9acb727ca37a6789d6bf8952a6a9b696ece9",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/fpe/run_fpe_zero_waste01_poison_workspace.sh": {
+      "before_sha256": "82a97fa772b2885aba99365a9041816fef784e1383d8ccc042c7762650ea61f2",
+      "after_sha256": "f95352546a7f4acfda25a1f3a21e462fc6d459c8b94bcf824f10c1b41367bc68",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
+    },
+    "tests/nut-crop/verify_hist_native_successor.py": {
+      "before_sha256": "2ed52ca07ee657dfbe31414dc703ebd0d09acefded0278cc768e646b7749b228",
+      "after_sha256": "ff65dbff15b1685c1fca023d1a35217f0ef35daba61301912baede7c8e6b5090",
+      "reason": "Exact composed qualification authority; fresh negative controls required",
+      "authority": "Existing predecessor plus closure_ci_followup_20261019 exact native/compile recipe and workflow environment proofs; no changed compiled provider."
     }
   },
   "reconciled_controls": {
@@ -385,5 +479,122 @@
       "source_authorities": "Both current F-CI73 and incumbent age/NUT CI qualifications PASS on actual merge, clean checkout"
     }
   },
-  "global_ci_scope": "All five automatic workflows on6153b540 after qualified F-CI73 successor repair; historical failures onf9731ff6 are retained as historical facts"
+  "global_ci_scope": "All five automatic workflows on6153b540 after qualified F-CI73 successor repair; historical failures onf9731ff6 are retained as historical facts",
+  "closure_ci_followup_20261019": {
+    "baseline": "6bac7b1508e4b7c33bf887f61be4499268bac4da",
+    "stage": "QUALIFIED_POSTIMAGES_ADMISSION_BY_CANONICAL_CONTAINMENT",
+    "scope": "Repair six existing compile closures and research-only TIMEINT16 materialization; production/reference/assertions/flags unchanged. AHL opt-in inherits the repaired FGC49D template.",
+    "selected_tests": [
+      "tests/fpe/run_fpe_zero_waste01_poison_workspace.sh",
+      "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+      "tests/fahl/run_fahl49_production_matrix.sh",
+      "tests/fahl/run_fahl49_application_optin.sh",
+      "tests/fahl/run_fahl49_application_scale.sh",
+      "tests/fahl/run_fahl49_failclosed.sh",
+      "tests/fpe/run_fpe_timeint16.sh",
+      "tests/fpe/run_fpe_timeint16b.sh"
+    ],
+    "cost_justification": "Native original oracles are necessary to distinguish dependency repair from numerical regressions. Sequential fresh builds; UNKNOWN compile/native split until measured. These are bounded replacements for eight pre-native failed hosted jobs, not new research or broad solute requalification.",
+    "production_changed": false,
+    "qualification": "EIGHT_ORIGINAL_NATIVE_ROUTES_PASS",
+    "next_action": "Native repair complete. Check exact canonical containment and terminal hosted preservation; retain the four parked historical envelopes.",
+    "execution_commit": "f90a35cae4bb1788e5f38fce699b96196807b973",
+    "invariants": "Production/reference tree, physical drivers, original tolerances, runtime checks and script numerical flags unchanged; only dependency ordering and research instrumentation are repaired.",
+    "full_fci": "NOT_SELECTED_IMPACT: no production/physical admission change; execute eight failed original routes plus source/evidence guard positive and negative controls. Existing relevant physical and integrated preservation remains source-bound.",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "expected_seconds_per_selected_script": 300,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_CLOSURE_CI_REPAIR_20261019.tar.xz.b64",
+      "decoded_sha256": "c35f50c0e5ff10213ece864654b5c69509cf29d0b059c6d930570523377dfda5",
+      "decoded_bytes": 194800,
+      "members": 30
+    },
+    "cost_seconds": {
+      "all_attempts_compile": 723.1742899449382,
+      "all_attempts_link": 1.8032677590090316,
+      "native_validation_split": "UNKNOWN; original compound scripts retained",
+      "successful_cases": {
+        "poison": 141.6240940889984,
+        "fkt22": 123.275564440999,
+        "ahl_matrix": 19.089430472005915,
+        "ahl_optin": 146.2667696799981,
+        "ahl_scale": 145.22154258500086,
+        "ahl_failclosed": 137.44798186099797,
+        "timeint16": 21.559586604998913,
+        "timeint16b": 20.450084935000632
+      },
+      "initial_failed_cases": {
+        "ahl_matrix": 0.047964083998522256,
+        "ahl_optin": 40.318718426002306
+      }
+    },
+    "guard_negative_controls": 9,
+    "materializer_negative_controls": 4,
+    "scientific_research_outcome": {
+      "TIMEINT16": "CLOSED_TG_SECOND_ORDER_NOT_REPRODUCED",
+      "TIMEINT16B": "TG_ORDER_REDUCTION_PERSISTS_AFTER_STARTUP",
+      "production_activation": false
+    },
+    "admission_rule": "This repair is canonically admitted exactly when these qualified postimages are contained in integration/f-ci-canonical. Git merge ancestry is the admission receipt; no new physical capability is admitted.",
+    "remaining_compile_routes": {
+      "stage": "QUALIFIED_POSTIMAGES_WITH_SEPARATE_ENERGY_DIAGNOSTIC",
+      "baseline": "b8ce7d51258bbbe634c46dd24e5e829c0872c360",
+      "selected_tests": [
+        "tests/fkt/run_fkt22_fmr_compile_gate.sh",
+        "tests/fpe/run_fpe_zero_waste01_paired_runtime.sh"
+      ],
+      "expected_seconds_per_route": 300,
+      "reason": "Identical missing DRAMET3 dependency in two additional original integrated preservation recipes; preserve original O0/O2 flags and assertions. No production change. Historical paired benchmark separately requires baseline compatibility attribution, not new optimization.",
+      "paired_baseline_probe_selection": {
+        "scope": "Scratch-only complete dependency ordering for original six-file baseline82d9938976fd92ff3230e7739539e467c3243225 mixed with current providers; compile baseline only, no timing loops or performance claim. Production script remains unchanged unless compatible and natively qualified.",
+        "expected_seconds": 120,
+        "reason": "Determine whether the remaining paired benchmark is a missing dependency only or an incompatible historical/live source composition; not new optimization."
+      },
+      "modflow_download_recovery": {
+        "change": "Expose the existing read-only github.token as GITHUB_TOKEN to the unchanged pinned MODFLOW download route.",
+        "reason": "39322825439 failed with HTTP403 rate limit before MODFLOW execution. No MODFLOW version or scientific assertion changes.",
+        "qualification_authority": "PR1327 terminal repaired F-GC fixed-interface result required before admission; exact workflow edit enforced by source guard."
+      },
+      "paired_selection": {
+        "expected_seconds": 480,
+        "reason": "Baseline compile-only probe succeeds, so retain the original 5000 calls and ten pairs in both modes to qualify the repaired build recipe. Share one immutable baseline/candidate build; execute every original native timing/checksum/count assertion, claim no new speed guarantee. No physical functionality or optimization change.",
+        "baseline_commit": "82d9938976fd92ff3230e7739539e467c3243225"
+      },
+      "eb_i25_diagnostic": {
+        "status": "BLOCKED_OWNER_CONTRACT_RECONCILIATION",
+        "execution_commit": "92ece71b17f35da6e06d6445d9f22bc609344d38",
+        "result": "O0 original native failure after dependency closure: EB_I25_TEST_FAIL external full-half outflow fixture rejected before commit. Fixture expects rejection but live route accepts. No assertion/tolerance/production changes. Do not credit as PASS.",
+        "disposition": "Separate energy owner issue; final EB-I25 recipe unchanged from b8ce7d51. Not a new MC-SOL01 admission requirement."
+      },
+      "execution_commit": "b384b7779a95f7dc7ffe9bc88775b835c688e066",
+      "inherited_old_inventory_delta": {
+        "tests/fkt/run_fkt22_fmr_compile_gate.sh": {
+          "before_sha256": "c15af474487b55c1ff0d9ea7bffcf5ee8b5c60136f28112fb4933b818e64d893",
+          "after_sha256": "00faa00af3129dcab660780c9f458c1ecfbf1f385f979dba494b72245826e982"
+        },
+        "tests/fpe/run_fpe_zero_waste01_paired_runtime.sh": {
+          "before_sha256": "2254b0ff5d22c8695fb37db77493a3e5c75565bc7c60d3597065535c5bd3e1f9",
+          "after_sha256": "59649927377d189ab432db23067a9acb727ca37a6789d6bf8952a6a9b696ece9"
+        }
+      },
+      "cost_seconds": {
+        "qualified_compile": 196.74117833302444,
+        "qualified_link": 0.41408641000452917,
+        "native_validation_split": "UNKNOWN: original compound scripts retained",
+        "fkt_compile_total": 126.58558804800123,
+        "paired_both_total": 114.81834079099644,
+        "energy_failed_total": 49.09058293799899
+      },
+      "paired_original_gate": "BOTH_MODES_5000_CALLS_TEN_PAIRS_PASS_WITH_ONE_SHARED_BUILD",
+      "energy_scope": "QUALIFICATION_ONLY/BLOCKED owner adjudication, not admitted by this change; unchanged production/reference and final energy test recipe.",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_CLOSURE_PRESERVATION_20261019.tar.xz.b64",
+        "decoded_sha256": "a2443cdf25bf0f40d3dd9552c66a927b8fa0d85b1b0a9702d036b96cca38a4a8",
+        "decoded_bytes": 389604,
+        "members": 37
+      },
+      "guard_negative_controls": 8,
+      "admission_rule": "Qualified compile/paired postimages admitted by canonical containment only after terminal repaired F-GC hosted PASS recorded on PR1327. EB-I25 diagnostic is explicitly not admitted."
+    }
+  }
 }
