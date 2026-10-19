@@ -15,6 +15,11 @@ program test_n_direct_gross_binding
  call direct_gross_n_rate_from_reference(t,gross,status)
  if(status/=N_DIRECT_OK)error stop 'accepted gross rain with net zero'
  if(abs(gross-.004d0)>1d-14)error stop 'gross rain conversion'
+ ! A plausible but water-inconsistent trace must never convey gross N.
+ t%top_flux=-.1d0
+ call direct_gross_n_rate_from_reference(t,gross,status)
+ if(status==N_DIRECT_OK)error stop 'gross chemical source from inconsistent net water'
+ t%top_flux=0d0
  t%converged_runon_rate_cm_day=.1d0
  call direct_gross_n_rate_from_reference(t,gross,status)
  if(status==N_DIRECT_OK)error stop 'unsupported mixed source concentrations'
