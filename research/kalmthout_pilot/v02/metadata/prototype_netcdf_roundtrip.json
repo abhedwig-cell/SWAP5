@@ -1,0 +1,56 @@
+[
+  {
+    "year": 2024,
+    "days": 366,
+    "cells": 5,
+    "compression": {
+      "zlib": true,
+      "szip": false,
+      "zstd": false,
+      "bzip2": false,
+      "blosc": false,
+      "shuffle": true,
+      "complevel": 4,
+      "fletcher32": true
+    },
+    "scalar_roundtrip": "exact",
+    "WC_T_roundtrip": "exact after declared float32 conversion",
+    "GASST_missing_for_prescribed": true
+  },
+  {
+    "year": 2025,
+    "days": 365,
+    "cells": 5,
+    "compression": {
+      "zlib": true,
+      "szip": false,
+      "zstd": false,
+      "bzip2": false,
+      "blosc": false,
+      "shuffle": true,
+      "complevel": 4,
+      "fletcher32": true
+    },
+    "scalar_roundtrip": "exact",
+    "WC_T_roundtrip": "exact after declared float32 conversion",
+    "GASST_missing_for_prescribed": true
+  },
+  {
+    "year": 2026,
+    "days": 274,
+    "cells": 5,
+    "compression": {
+      "zlib": true,
+      "szip": false,
+      "zstd": false,
+      "bzip2": false,
+      "blosc": false,
+      "shuffle": true,
+      "complevel": 4,
+      "fletcher32": true
+    },
+    "scalar_roundtrip": "exact",
+    "WC_T_roundtrip": "exact after declared float32 conversion",
+    "GASST_missing_for_prescribed": true
+  }
+]

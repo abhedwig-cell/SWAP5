@@ -1,0 +1,14 @@
+{
+  "executable_sha256": "f4a13596f4725f72d73856f7b4a07d9f35c06a0435736af37503f6d68dd31386",
+  "original_source_zip_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "changed_source_file": "swap_csv_output.f90",
+  "changes": [
+    "58 vector metadata entries assigned explicitly at output initialization, retaining exactly the original names, units and flags",
+    "Local allocatable ASCII and binary output buffers have SAVE lifetime across task calls"
+  ],
+  "physics_change": "No water, heat, WOFOST, stress or integration source was changed. Model changes are explicit input changes.",
+  "compiler": "GNU Fortran13.3.0; O2;linux DEC directives translated to preprocessor conditionals",
+  "link": "gcc objects -l:libgfortran.so.5 -lm -lquadmath",
+  "baseline_archive_sha256": "46f985153d9b2213c1003d77373b55ca261c500ce37c28d8f4da513c7b7ab746",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+}

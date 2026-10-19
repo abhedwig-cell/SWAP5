@@ -1,0 +1,224 @@
+--- original/swap_csv_output.f90
++++ output_fixed/swap_csv_output.f90
+@@ -288,74 +288,6 @@
+          /
+ 
+    ! vector output
+-   data (vars_v%name(i), vars_v%unit(i), vars_v%conv(i), vars_v%subr(i), vars_v%itzq(i), i = 1, M_v) / &
+-         ! water states
+-         'H',           '(cm)',        5,0,0,&
+-         'WC',          '(cm3/cm3)',   1,0,0,&
+-         'K',           '(cm/d)',      5,0,0,&
+-         'C',           '(1/cm)',      5,0,0,&
+-         ! soil temperature
+-         'T',           '(deg C)',     1,0,0,&
+-         'HEACAP',      '(J/m3/K)',    1,0,0,&
+-         'HEACON',      '(W/m/K)',     1,0,0,&
+-         ! fluxes
+-         'Q',           '(cm)',        3,0,1,&
+-         'QSSDI',       '(cm)',        2,0,0,&
+-         'RWU',         '(cm)',        2,0,0,&
+-         'PRWU',        '(cm)',        2,0,0,&
+-         'RRWU',        '(cm)',        2,0,0,&
+-         'QDRN',        '(cm)',        2,0,0,&
+-         'QDRN_1',      '(cm)',        2,0,0,&
+-         'QDRN_2',      '(cm)',        2,0,0,&
+-         'QDRN_3',      '(cm)',        2,0,0,&
+-         'QDRN_4',      '(cm)',        2,0,0,&
+-         'QDRN_5',      '(cm)',        2,0,0,&
+-         ! crop
+-         'O2TOP',       '(kg/m3)',     3,0,1,&
+-         'RDENS',       '(-)',         1,0,0,&
+-         'LRV',         '(cm/cm3)',    1,0,0,&
+-         'HROOT',       '(cm)',        1,0,0,&
+-         'MROOT',       '(cm2/d)',     1,0,0,&
+-         'MFLUX',       '(cm2/d)',     1,0,0,&
+-         'WROOT',       'kg/ha',       2,0,0,&
+-         ! solute
+-         'S_CONC',      '(mg/cm3 w)',  1,0,0,&
+-         'S_CONCADS',   '(mg/cm3)',    1,0,0,&
+-         'S_QSOL',      '(mg/cm2)',    3,0,1,& 
+-         ! macropore
+-         'MPC_Q_1',     '(cm)',        3,0,1,&
+-         'MPC_QEXC_1',  '(cm)',        2,0,0,&
+-         'MPC_QDRN_1',  '(cm)',        2,0,0,&
+-         'MPC_WVOL_1',  '(cm)',        2,0,0,&
+-         'MPC_TVOL_1',  '(cm)',        2,0,0,&
+-         'MPC_WET_1',   '(-)',         1,0,0,&
+-         'MPC_Q_2',     '(cm)',        3,0,1,&
+-         'MPC_QEXC_2',  '(cm)',        2,0,0,&
+-         'MPC_WVOL_2',  '(cm)',        2,0,0,&
+-         'MPC_TVOL_2',  '(cm)',        2,0,0,&
+-         'MPC_WET_2',   '(-)',         1,0,0,&
+-         'MPC_VOLDYN',  '(cm)',        2,0,0,&
+-         'MPC_SUBSID',  '(cm)',        2,0,0,&
+-         'MPC_VOLSTA_1','(cm)',        2,0,0,&
+-         'MPC_VOLSTA_2','(cm)',        2,0,0,&
+-         'MPC_DIPO',    '(cm)',        1,0,0,&
+-         'MPC_FRARMTRX','(cm)',        1,0,0,&
+-         ! subregions
+-         'SR_WTOT',     '(cm)',        2,1,0,&
+-         'SR_DSTOR',    '(cm)',        2,1,0,&
+-         'SR_RWU',      '(cm)',        2,1,0,&
+-         'SR_TOP',      '(cm)',        3,1,0,&
+-         'SR_BOT',      '(cm)',        4,1,0,&
+-         'SR_DRN',      '(cm)',        2,1,0,&
+-         'SR_SSDI',     '(cm)',        2,1,0,&
+-         'SR_TOP_IN',   '(cm)',        3,1,0,&
+-         'SR_TOP_OUT',  '(cm)',        3,1,0,&
+-         'SR_BOT_IN',   '(cm)',        4,1,0,&
+-         'SR_BOT_OUT',  '(cm)',        4,1,0,&
+-         'SR_DRN_IN',   '(cm)',        2,1,0,&
+-         'SR_DRN_OUT',  '(cm)',        2,1,0 &
+-      /
+-      
+    ! aliases
+    data shorts%n(1:14)       /21,9,11,16,13,9,28,8,7,10,54,7,53,57/
+    data shorts%alias(1:14)   /"WATBAL", "SOLBAL", "ETTERMS", "MACROPORE", "MACROPORECP", "CROP", "WOFOST", "GRASS", "SUBREG_MIN",    & 
+@@ -402,6 +334,127 @@
+                               "MPC_VOLSTA_1", "MPC_VOLSTA_2", "MPC_DIPO", "MPC_FRARMTRX"/
+    
+    contains
++
++   subroutine init_vector_metadata()
++      vars_v%name(1)='H'; vars_v%unit(1)='(cm)'
++      vars_v%conv(1)=5; vars_v%subr(1)=0; vars_v%itzq(1)=0
++      vars_v%name(2)='WC'; vars_v%unit(2)='(cm3/cm3)'
++      vars_v%conv(2)=1; vars_v%subr(2)=0; vars_v%itzq(2)=0
++      vars_v%name(3)='K'; vars_v%unit(3)='(cm/d)'
++      vars_v%conv(3)=5; vars_v%subr(3)=0; vars_v%itzq(3)=0
++      vars_v%name(4)='C'; vars_v%unit(4)='(1/cm)'
++      vars_v%conv(4)=5; vars_v%subr(4)=0; vars_v%itzq(4)=0
++      vars_v%name(5)='T'; vars_v%unit(5)='(deg C)'
++      vars_v%conv(5)=1; vars_v%subr(5)=0; vars_v%itzq(5)=0
++      vars_v%name(6)='HEACAP'; vars_v%unit(6)='(J/m3/K)'
++      vars_v%conv(6)=1; vars_v%subr(6)=0; vars_v%itzq(6)=0
++      vars_v%name(7)='HEACON'; vars_v%unit(7)='(W/m/K)'
++      vars_v%conv(7)=1; vars_v%subr(7)=0; vars_v%itzq(7)=0
++      vars_v%name(8)='Q'; vars_v%unit(8)='(cm)'
++      vars_v%conv(8)=3; vars_v%subr(8)=0; vars_v%itzq(8)=1
++      vars_v%name(9)='QSSDI'; vars_v%unit(9)='(cm)'
++      vars_v%conv(9)=2; vars_v%subr(9)=0; vars_v%itzq(9)=0
++      vars_v%name(10)='RWU'; vars_v%unit(10)='(cm)'
++      vars_v%conv(10)=2; vars_v%subr(10)=0; vars_v%itzq(10)=0
++      vars_v%name(11)='PRWU'; vars_v%unit(11)='(cm)'
++      vars_v%conv(11)=2; vars_v%subr(11)=0; vars_v%itzq(11)=0
++      vars_v%name(12)='RRWU'; vars_v%unit(12)='(cm)'
++      vars_v%conv(12)=2; vars_v%subr(12)=0; vars_v%itzq(12)=0
++      vars_v%name(13)='QDRN'; vars_v%unit(13)='(cm)'
++      vars_v%conv(13)=2; vars_v%subr(13)=0; vars_v%itzq(13)=0
++      vars_v%name(14)='QDRN_1'; vars_v%unit(14)='(cm)'
++      vars_v%conv(14)=2; vars_v%subr(14)=0; vars_v%itzq(14)=0
++      vars_v%name(15)='QDRN_2'; vars_v%unit(15)='(cm)'
++      vars_v%conv(15)=2; vars_v%subr(15)=0; vars_v%itzq(15)=0
++      vars_v%name(16)='QDRN_3'; vars_v%unit(16)='(cm)'
++      vars_v%conv(16)=2; vars_v%subr(16)=0; vars_v%itzq(16)=0
++      vars_v%name(17)='QDRN_4'; vars_v%unit(17)='(cm)'
++      vars_v%conv(17)=2; vars_v%subr(17)=0; vars_v%itzq(17)=0
++      vars_v%name(18)='QDRN_5'; vars_v%unit(18)='(cm)'
++      vars_v%conv(18)=2; vars_v%subr(18)=0; vars_v%itzq(18)=0
++      vars_v%name(19)='O2TOP'; vars_v%unit(19)='(kg/m3)'
++      vars_v%conv(19)=3; vars_v%subr(19)=0; vars_v%itzq(19)=1
++      vars_v%name(20)='RDENS'; vars_v%unit(20)='(-)'
++      vars_v%conv(20)=1; vars_v%subr(20)=0; vars_v%itzq(20)=0
++      vars_v%name(21)='LRV'; vars_v%unit(21)='(cm/cm3)'
++      vars_v%conv(21)=1; vars_v%subr(21)=0; vars_v%itzq(21)=0
++      vars_v%name(22)='HROOT'; vars_v%unit(22)='(cm)'
++      vars_v%conv(22)=1; vars_v%subr(22)=0; vars_v%itzq(22)=0
++      vars_v%name(23)='MROOT'; vars_v%unit(23)='(cm2/d)'
++      vars_v%conv(23)=1; vars_v%subr(23)=0; vars_v%itzq(23)=0
++      vars_v%name(24)='MFLUX'; vars_v%unit(24)='(cm2/d)'
++      vars_v%conv(24)=1; vars_v%subr(24)=0; vars_v%itzq(24)=0
++      vars_v%name(25)='WROOT'; vars_v%unit(25)='kg/ha'
++      vars_v%conv(25)=2; vars_v%subr(25)=0; vars_v%itzq(25)=0
++      vars_v%name(26)='S_CONC'; vars_v%unit(26)='(mg/cm3 w)'
++      vars_v%conv(26)=1; vars_v%subr(26)=0; vars_v%itzq(26)=0
++      vars_v%name(27)='S_CONCADS'; vars_v%unit(27)='(mg/cm3)'
++      vars_v%conv(27)=1; vars_v%subr(27)=0; vars_v%itzq(27)=0
++      vars_v%name(28)='S_QSOL'; vars_v%unit(28)='(mg/cm2)'
++      vars_v%conv(28)=3; vars_v%subr(28)=0; vars_v%itzq(28)=1
++      vars_v%name(29)='MPC_Q_1'; vars_v%unit(29)='(cm)'
++      vars_v%conv(29)=3; vars_v%subr(29)=0; vars_v%itzq(29)=1
++      vars_v%name(30)='MPC_QEXC_1'; vars_v%unit(30)='(cm)'
++      vars_v%conv(30)=2; vars_v%subr(30)=0; vars_v%itzq(30)=0
++      vars_v%name(31)='MPC_QDRN_1'; vars_v%unit(31)='(cm)'
++      vars_v%conv(31)=2; vars_v%subr(31)=0; vars_v%itzq(31)=0
++      vars_v%name(32)='MPC_WVOL_1'; vars_v%unit(32)='(cm)'
++      vars_v%conv(32)=2; vars_v%subr(32)=0; vars_v%itzq(32)=0
++      vars_v%name(33)='MPC_TVOL_1'; vars_v%unit(33)='(cm)'
++      vars_v%conv(33)=2; vars_v%subr(33)=0; vars_v%itzq(33)=0
++      vars_v%name(34)='MPC_WET_1'; vars_v%unit(34)='(-)'
++      vars_v%conv(34)=1; vars_v%subr(34)=0; vars_v%itzq(34)=0
++      vars_v%name(35)='MPC_Q_2'; vars_v%unit(35)='(cm)'
++      vars_v%conv(35)=3; vars_v%subr(35)=0; vars_v%itzq(35)=1
++      vars_v%name(36)='MPC_QEXC_2'; vars_v%unit(36)='(cm)'
++      vars_v%conv(36)=2; vars_v%subr(36)=0; vars_v%itzq(36)=0
++      vars_v%name(37)='MPC_WVOL_2'; vars_v%unit(37)='(cm)'
++      vars_v%conv(37)=2; vars_v%subr(37)=0; vars_v%itzq(37)=0
++      vars_v%name(38)='MPC_TVOL_2'; vars_v%unit(38)='(cm)'
++      vars_v%conv(38)=2; vars_v%subr(38)=0; vars_v%itzq(38)=0
++      vars_v%name(39)='MPC_WET_2'; vars_v%unit(39)='(-)'
++      vars_v%conv(39)=1; vars_v%subr(39)=0; vars_v%itzq(39)=0
++      vars_v%name(40)='MPC_VOLDYN'; vars_v%unit(40)='(cm)'
++      vars_v%conv(40)=2; vars_v%subr(40)=0; vars_v%itzq(40)=0
++      vars_v%name(41)='MPC_SUBSID'; vars_v%unit(41)='(cm)'
++      vars_v%conv(41)=2; vars_v%subr(41)=0; vars_v%itzq(41)=0
++      vars_v%name(42)='MPC_VOLSTA_1'; vars_v%unit(42)='(cm)'
++      vars_v%conv(42)=2; vars_v%subr(42)=0; vars_v%itzq(42)=0
++      vars_v%name(43)='MPC_VOLSTA_2'; vars_v%unit(43)='(cm)'
++      vars_v%conv(43)=2; vars_v%subr(43)=0; vars_v%itzq(43)=0
++      vars_v%name(44)='MPC_DIPO'; vars_v%unit(44)='(cm)'
++      vars_v%conv(44)=1; vars_v%subr(44)=0; vars_v%itzq(44)=0
++      vars_v%name(45)='MPC_FRARMTRX'; vars_v%unit(45)='(cm)'
++      vars_v%conv(45)=1; vars_v%subr(45)=0; vars_v%itzq(45)=0
++      vars_v%name(46)='SR_WTOT'; vars_v%unit(46)='(cm)'
++      vars_v%conv(46)=2; vars_v%subr(46)=1; vars_v%itzq(46)=0
++      vars_v%name(47)='SR_DSTOR'; vars_v%unit(47)='(cm)'
++      vars_v%conv(47)=2; vars_v%subr(47)=1; vars_v%itzq(47)=0
++      vars_v%name(48)='SR_RWU'; vars_v%unit(48)='(cm)'
++      vars_v%conv(48)=2; vars_v%subr(48)=1; vars_v%itzq(48)=0
++      vars_v%name(49)='SR_TOP'; vars_v%unit(49)='(cm)'
++      vars_v%conv(49)=3; vars_v%subr(49)=1; vars_v%itzq(49)=0
++      vars_v%name(50)='SR_BOT'; vars_v%unit(50)='(cm)'
++      vars_v%conv(50)=4; vars_v%subr(50)=1; vars_v%itzq(50)=0
++      vars_v%name(51)='SR_DRN'; vars_v%unit(51)='(cm)'
++      vars_v%conv(51)=2; vars_v%subr(51)=1; vars_v%itzq(51)=0
++      vars_v%name(52)='SR_SSDI'; vars_v%unit(52)='(cm)'
++      vars_v%conv(52)=2; vars_v%subr(52)=1; vars_v%itzq(52)=0
++      vars_v%name(53)='SR_TOP_IN'; vars_v%unit(53)='(cm)'
++      vars_v%conv(53)=3; vars_v%subr(53)=1; vars_v%itzq(53)=0
++      vars_v%name(54)='SR_TOP_OUT'; vars_v%unit(54)='(cm)'
++      vars_v%conv(54)=3; vars_v%subr(54)=1; vars_v%itzq(54)=0
++      vars_v%name(55)='SR_BOT_IN'; vars_v%unit(55)='(cm)'
++      vars_v%conv(55)=4; vars_v%subr(55)=1; vars_v%itzq(55)=0
++      vars_v%name(56)='SR_BOT_OUT'; vars_v%unit(56)='(cm)'
++      vars_v%conv(56)=4; vars_v%subr(56)=1; vars_v%itzq(56)=0
++      vars_v%name(57)='SR_DRN_IN'; vars_v%unit(57)='(cm)'
++      vars_v%conv(57)=2; vars_v%subr(57)=1; vars_v%itzq(57)=0
++      vars_v%name(58)='SR_DRN_OUT'; vars_v%unit(58)='(cm)'
++      vars_v%conv(58)=2; vars_v%subr(58)=1; vars_v%itzq(58)=0
++   end subroutine init_vector_metadata
++
++
+ 
+ ! ----------------------------------------------------------------------  
+    subroutine set_values_scalar()
+@@ -929,14 +982,16 @@
+    character(len=19)    :: datexti
+    character(len=20)    :: form
+    character(len=30)    :: myval
+-   character(:), allocatable               :: line      ! ascii output
+-   real(4),      allocatable               :: buffer(:) ! binary output
++   character(:), allocatable, save         :: line      ! ascii output
++   real(4),      allocatable, save         :: buffer(:) ! binary output
+    ! functions
+    integer              :: getun
+ 
+    select case (iTask)
+    case (1)
+             
++      call init_vector_metadata()
++
+       ! initialize vertical discretization for output
+       call init_discr()
+       

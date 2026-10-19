@@ -1,0 +1,19 @@
+{
+  "workstream": "SYMPHONICA independent SWAP4.3.1 regional application",
+  "work_unit": "KALMTHOUT_V02_WOFOST_HEAT_20261019",
+  "baseline": "a06fbf0977be001dee69457ba590685e40bf86bc",
+  "branch": "research/kalmthout-v02-wofost-heat-20261019",
+  "checkpoint_commit": "The commit containing this record; exact HEAD is held by Git rather than embedded recursively",
+  "implemented": true,
+  "persisted": "Full inputs, native outputs, annual NetCDF and source closure included as verified Git parts in this commit",
+  "tested": "Completed native runs, output patch reference check, full arrays and selected exact round trips, details in metadata",
+  "qualified": "Bounded execution and output evidence only; not calibrated or independently field validated; no SWAP5 admission",
+  "interfaces_changed": "Research output schema only; no canonical SWAP5 interfaces",
+  "invariants_affected": "No canonical invariant changed; known canopy accounting events remain explicit rather than weakening conservation",
+  "next_action": "Complete the detailed English note and its visual review; then address hydrological surroundings and project data alignment",
+  "recovery_point": "scripts/assemble_artifacts.py and metadata/artifact_manifest.json",
+  "relevant_paths": ["research/kalmthout_pilot/v02"],
+  "dependency_surface": ["original SWAP431 and TTUTIL archives", "GNU output portability correction", "V01 local model inputs", "V02 crop and heat inputs", "runner and NetCDF exporter"],
+  "blockers": [],
+  "known_limitations": ["not locally calibrated", "independent columns without groundwater coupling", "shared meteorology", "maize proxy", "no spin-up", "1701 canopy accounting flags", "project standard data alignment pending"]
+}

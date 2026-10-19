@@ -1,0 +1,29 @@
+{
+  "cells": 4096,
+  "crop_counts": {
+    "prescribed": 2791,
+    "grass": 802,
+    "maize": 503
+  },
+  "requested_output": "RAIN,RUNOFF,IRRIG,DRN,BOT,EPOT,EACT,TPOT,TACT,EPD,EIC,DSTOR,BALDEV,GASST,GWL,WC[-10.0;-20.0;-40.0;-80.0;-160.0],T[-10.0;-20.0;-40.0;-80.0;-160.0]",
+  "crop_sources": "Original SWAP4.3.1 distribution data/crops/dynamic; archive SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "crop_overrides": {
+    "SWCO2": 0,
+    "SWSALINITY": 0
+  },
+  "override_reasons": {
+    "SWCO2": "No SSP5-8.5 projection substituted for historical CO2; source base response retained.",
+    "SWSALINITY": "No solute simulation or observed salinity in this regional setup."
+  },
+  "annual_crop_prior": "Maize annually 1May-15Oct; source germination and harvest switches retained; not observed crop rotation",
+  "grass_prior": "Source WOFOST grass with annual calendar and biomass-dependent mowing; applies to mapped grass class, which may include unmanaged grass",
+  "prescribed_vegetation": "Forest, heath, urban soil surrogate and wetland retain LAI route; GASST unavailable",
+  "heat_initialization": {
+    "surface_C": 7.5125,
+    "200cm_C": 11.879371584699452,
+    "basis": "First day and annual2024 mean of the same ERA5 air-temperature series; linear initial profile; no spin-up"
+  },
+  "status": "PREPARED_NOT_YET_EXECUTED",
+  "current_execution_summary": "execution_summary_v02.json",
+  "current_execution_status": "COMPLETE_WITH_EXPLICIT_CANOPY_FLAGS"
+}

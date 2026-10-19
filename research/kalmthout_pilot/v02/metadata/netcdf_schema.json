@@ -1,0 +1,3278 @@
+{
+  "scope": "Observed file schema and receipts, not independent scientific validation",
+  "files": [
+    {
+      "name": "Kalmthout_SW431_V02_daily_2024.nc",
+      "bytes": 96744536,
+      "sha256": "1b30cd007e572c9b364794223c13df536a06fd1dd7b592ff00fe76c967add84d",
+      "dimensions": {
+        "time": 366,
+        "cell": 4096,
+        "depth": 5,
+        "bounds": 2
+      },
+      "attributes": {
+        "Conventions": "CF-1.10",
+        "title": "Kalmthout SWAP4.3.1 V02; numerical soil heat, WOFOST grass and maize proxy",
+        "model_scope": "Locally refined 250m grid, independent1D soil columns; not calibrated; same groundwater priors as V01",
+        "source": "SWAP4.3.1 original hydrological, thermal and WOFOST sources; explicit GNU output portability patch",
+        "time_convention": "Native DATE labels the simulation day. time is the end of that UTC day; time_bounds is the complete preceding daily interval. State variables are at time; fluxes integrate over time_bounds.",
+        "output_depth_convention": "Native selection returns compartment-centre values, without interpolation to requested depths. depth is the true signed depth; requested_depth records user selections.",
+        "assimilation_contract": "GASST is native gross CH2O assimilation, not carbon GPP. Not simulated for prescribed vegetation. Zero assigned only for native unavailable GASST when no active dynamic crop; GASST_flag records this conversion.",
+        "balance_contract": "BALDEV and DSTOR retain native definitions. independent_balance_residual compares fluxes with consecutive printed soil+pond+canopy stores; known crop-calendar canopy resets remain explicitly flagged.",
+        "executable_sha256": "f4a13596f4725f72d73856f7b4a07d9f35c06a0435736af37503f6d68dd31386",
+        "full_grid_complete": 1,
+        "crop_assumptions": "{\"cells\": 4096, \"crop_counts\": {\"prescribed\": 2791, \"grass\": 802, \"maize\": 503}, \"requested_output\": \"RAIN,RUNOFF,IRRIG,DRN,BOT,EPOT,EACT,TPOT,TACT,EPD,EIC,DSTOR,BALDEV,GASST,GWL,WC[-10.0;-20.0;-40.0;-80.0;-160.0],T[-10.0;-20.0;-40.0;-80.0;-160.0]\", \"crop_sources\": \"Original SWAP4.3.1 distribution data/crops/dynamic; archive SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360\", \"crop_overrides\": {\"SWCO2\": 0, \"SWSALINITY\": 0}, \"override_reasons\": {\"SWCO2\": \"No SSP5-8.5 projection substituted for historical CO2; source base response retained.\", \"SWSALINITY\": \"No solute simulation or observed salinity in this regional setup.\"}, \"annual_crop_prior\": \"Maize annually 1May-15Oct; source germination and harvest switches retained; not observed crop rotation\", \"grass_prior\": \"Source WOFOST grass with annual calendar and biomass-dependent mowing; applies to mapped grass class, which may include unmanaged grass\", \"prescribed_vegetation\": \"Forest, heath, urban soil surrogate and wetland retain LAI route; GASST unavailable\", \"heat_initialization\": {\"surface_C\": 7.5125, \"200cm_C\": 11.879371584699452, \"basis\": \"First day and annual2024 mean of the same ERA5 air-temperature series; linear initial profile; no spin-up\"}, \"status\": \"PREPARED_NOT_YET_EXECUTED\"}",
+        "export_complete": 1,
+        "spatial_limitations": "Dominant terrestrial column only; water_fraction and landcover_input_flags retain mixed-water, urban-surrogate, soil-imputation and boundary-prior limitations. Not a complete lake or urban water balance."
+      },
+      "variables": {
+        "time": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            366
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "days since 2024-01-01 00:00:00",
+            "calendar": "proleptic_gregorian",
+            "standard_name": "time",
+            "bounds": "time_bounds"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "time_bounds": {
+          "dimensions": [
+            "time",
+            "bounds"
+          ],
+          "shape": [
+            366,
+            2
+          ],
+          "dtype": "float64",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "simulation_date": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            366
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "cell": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up",
+            "long_name": "actual native compartment centre below soil surface"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "requested_depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "easting": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_x_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "northing": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_y_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crs": {
+          "dimensions": [],
+          "shape": [],
+          "dtype": "int32",
+          "attributes": {
+            "grid_mapping_name": "transverse_mercator",
+            "longitude_of_central_meridian": 3.0,
+            "latitude_of_projection_origin": 0.0,
+            "scale_factor_at_central_meridian": 0.9996,
+            "false_easting": 500000.0,
+            "false_northing": 0.0,
+            "semi_major_axis": 6378137.0,
+            "inverse_flattening": 298.257223563,
+            "epsg_code": "EPSG:32631"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "vegetation_class": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crop_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "RAIN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "RUNOFF": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "IRRIG": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DRN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "into the soil column"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPD": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EIC": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DSTOR": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BALDEV": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GASST": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "kg ha-1",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "substance": "CH2O equivalents"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GWL": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "up relative to the soil surface",
+            "missing_native_value": 999.0
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "WC": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            366,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "m3 m-3",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "T": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            366,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "degree_Celsius",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "independent_balance_residual": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "canopy_reset_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1
+            ],
+            "flag_meanings": "no_flag crop_calendar_canopy_accounting_discontinuity"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "GASST_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            366,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1,
+              2
+            ],
+            "flag_meanings": "native_value no_active_dynamic_crop_zero_assigned assimilation_not_simulated"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "water_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "dominant_land_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "row": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "col": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "landcover_input_flags": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "parent_cell_500m": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "native_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Kalmthout_SW431_V02_daily_2025.nc",
+      "bytes": 99175314,
+      "sha256": "e49a220af4ccaf290846649b0f555422e218e5c56fc653bb76e36479a15f23c7",
+      "dimensions": {
+        "time": 365,
+        "cell": 4096,
+        "depth": 5,
+        "bounds": 2
+      },
+      "attributes": {
+        "Conventions": "CF-1.10",
+        "title": "Kalmthout SWAP4.3.1 V02; numerical soil heat, WOFOST grass and maize proxy",
+        "model_scope": "Locally refined 250m grid, independent1D soil columns; not calibrated; same groundwater priors as V01",
+        "source": "SWAP4.3.1 original hydrological, thermal and WOFOST sources; explicit GNU output portability patch",
+        "time_convention": "Native DATE labels the simulation day. time is the end of that UTC day; time_bounds is the complete preceding daily interval. State variables are at time; fluxes integrate over time_bounds.",
+        "output_depth_convention": "Native selection returns compartment-centre values, without interpolation to requested depths. depth is the true signed depth; requested_depth records user selections.",
+        "assimilation_contract": "GASST is native gross CH2O assimilation, not carbon GPP. Not simulated for prescribed vegetation. Zero assigned only for native unavailable GASST when no active dynamic crop; GASST_flag records this conversion.",
+        "balance_contract": "BALDEV and DSTOR retain native definitions. independent_balance_residual compares fluxes with consecutive printed soil+pond+canopy stores; known crop-calendar canopy resets remain explicitly flagged.",
+        "executable_sha256": "f4a13596f4725f72d73856f7b4a07d9f35c06a0435736af37503f6d68dd31386",
+        "full_grid_complete": 1,
+        "crop_assumptions": "{\"cells\": 4096, \"crop_counts\": {\"prescribed\": 2791, \"grass\": 802, \"maize\": 503}, \"requested_output\": \"RAIN,RUNOFF,IRRIG,DRN,BOT,EPOT,EACT,TPOT,TACT,EPD,EIC,DSTOR,BALDEV,GASST,GWL,WC[-10.0;-20.0;-40.0;-80.0;-160.0],T[-10.0;-20.0;-40.0;-80.0;-160.0]\", \"crop_sources\": \"Original SWAP4.3.1 distribution data/crops/dynamic; archive SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360\", \"crop_overrides\": {\"SWCO2\": 0, \"SWSALINITY\": 0}, \"override_reasons\": {\"SWCO2\": \"No SSP5-8.5 projection substituted for historical CO2; source base response retained.\", \"SWSALINITY\": \"No solute simulation or observed salinity in this regional setup.\"}, \"annual_crop_prior\": \"Maize annually 1May-15Oct; source germination and harvest switches retained; not observed crop rotation\", \"grass_prior\": \"Source WOFOST grass with annual calendar and biomass-dependent mowing; applies to mapped grass class, which may include unmanaged grass\", \"prescribed_vegetation\": \"Forest, heath, urban soil surrogate and wetland retain LAI route; GASST unavailable\", \"heat_initialization\": {\"surface_C\": 7.5125, \"200cm_C\": 11.879371584699452, \"basis\": \"First day and annual2024 mean of the same ERA5 air-temperature series; linear initial profile; no spin-up\"}, \"status\": \"PREPARED_NOT_YET_EXECUTED\"}",
+        "export_complete": 1,
+        "spatial_limitations": "Dominant terrestrial column only; water_fraction and landcover_input_flags retain mixed-water, urban-surrogate, soil-imputation and boundary-prior limitations. Not a complete lake or urban water balance."
+      },
+      "variables": {
+        "time": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            365
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "days since 2025-01-01 00:00:00",
+            "calendar": "proleptic_gregorian",
+            "standard_name": "time",
+            "bounds": "time_bounds"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "time_bounds": {
+          "dimensions": [
+            "time",
+            "bounds"
+          ],
+          "shape": [
+            365,
+            2
+          ],
+          "dtype": "float64",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "simulation_date": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            365
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "cell": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up",
+            "long_name": "actual native compartment centre below soil surface"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "requested_depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "easting": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_x_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "northing": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_y_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crs": {
+          "dimensions": [],
+          "shape": [],
+          "dtype": "int32",
+          "attributes": {
+            "grid_mapping_name": "transverse_mercator",
+            "longitude_of_central_meridian": 3.0,
+            "latitude_of_projection_origin": 0.0,
+            "scale_factor_at_central_meridian": 0.9996,
+            "false_easting": 500000.0,
+            "false_northing": 0.0,
+            "semi_major_axis": 6378137.0,
+            "inverse_flattening": 298.257223563,
+            "epsg_code": "EPSG:32631"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "vegetation_class": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crop_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "RAIN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "RUNOFF": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "IRRIG": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DRN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "into the soil column"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPD": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EIC": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DSTOR": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BALDEV": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GASST": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "kg ha-1",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "substance": "CH2O equivalents"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GWL": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "up relative to the soil surface",
+            "missing_native_value": 999.0
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "WC": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            365,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "m3 m-3",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "T": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            365,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "degree_Celsius",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "independent_balance_residual": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "canopy_reset_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1
+            ],
+            "flag_meanings": "no_flag crop_calendar_canopy_accounting_discontinuity"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "GASST_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            365,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1,
+              2
+            ],
+            "flag_meanings": "native_value no_active_dynamic_crop_zero_assigned assimilation_not_simulated"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "water_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "dominant_land_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "row": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "col": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "landcover_input_flags": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "parent_cell_500m": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "native_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        }
+      }
+    },
+    {
+      "name": "Kalmthout_SW431_V02_daily_2026.nc",
+      "bytes": 74222364,
+      "sha256": "97a23bfc7227650ef1c529737bf7590a65b3f776bdec484249a5cd29e6a65e00",
+      "dimensions": {
+        "time": 274,
+        "cell": 4096,
+        "depth": 5,
+        "bounds": 2
+      },
+      "attributes": {
+        "Conventions": "CF-1.10",
+        "title": "Kalmthout SWAP4.3.1 V02; numerical soil heat, WOFOST grass and maize proxy",
+        "model_scope": "Locally refined 250m grid, independent1D soil columns; not calibrated; same groundwater priors as V01",
+        "source": "SWAP4.3.1 original hydrological, thermal and WOFOST sources; explicit GNU output portability patch",
+        "time_convention": "Native DATE labels the simulation day. time is the end of that UTC day; time_bounds is the complete preceding daily interval. State variables are at time; fluxes integrate over time_bounds.",
+        "output_depth_convention": "Native selection returns compartment-centre values, without interpolation to requested depths. depth is the true signed depth; requested_depth records user selections.",
+        "assimilation_contract": "GASST is native gross CH2O assimilation, not carbon GPP. Not simulated for prescribed vegetation. Zero assigned only for native unavailable GASST when no active dynamic crop; GASST_flag records this conversion.",
+        "balance_contract": "BALDEV and DSTOR retain native definitions. independent_balance_residual compares fluxes with consecutive printed soil+pond+canopy stores; known crop-calendar canopy resets remain explicitly flagged.",
+        "executable_sha256": "f4a13596f4725f72d73856f7b4a07d9f35c06a0435736af37503f6d68dd31386",
+        "full_grid_complete": 1,
+        "crop_assumptions": "{\"cells\": 4096, \"crop_counts\": {\"prescribed\": 2791, \"grass\": 802, \"maize\": 503}, \"requested_output\": \"RAIN,RUNOFF,IRRIG,DRN,BOT,EPOT,EACT,TPOT,TACT,EPD,EIC,DSTOR,BALDEV,GASST,GWL,WC[-10.0;-20.0;-40.0;-80.0;-160.0],T[-10.0;-20.0;-40.0;-80.0;-160.0]\", \"crop_sources\": \"Original SWAP4.3.1 distribution data/crops/dynamic; archive SHA256 2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360\", \"crop_overrides\": {\"SWCO2\": 0, \"SWSALINITY\": 0}, \"override_reasons\": {\"SWCO2\": \"No SSP5-8.5 projection substituted for historical CO2; source base response retained.\", \"SWSALINITY\": \"No solute simulation or observed salinity in this regional setup.\"}, \"annual_crop_prior\": \"Maize annually 1May-15Oct; source germination and harvest switches retained; not observed crop rotation\", \"grass_prior\": \"Source WOFOST grass with annual calendar and biomass-dependent mowing; applies to mapped grass class, which may include unmanaged grass\", \"prescribed_vegetation\": \"Forest, heath, urban soil surrogate and wetland retain LAI route; GASST unavailable\", \"heat_initialization\": {\"surface_C\": 7.5125, \"200cm_C\": 11.879371584699452, \"basis\": \"First day and annual2024 mean of the same ERA5 air-temperature series; linear initial profile; no spin-up\"}, \"status\": \"PREPARED_NOT_YET_EXECUTED\"}",
+        "export_complete": 1,
+        "spatial_limitations": "Dominant terrestrial column only; water_fraction and landcover_input_flags retain mixed-water, urban-surrogate, soil-imputation and boundary-prior limitations. Not a complete lake or urban water balance."
+      },
+      "variables": {
+        "time": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            274
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "days since 2026-01-01 00:00:00",
+            "calendar": "proleptic_gregorian",
+            "standard_name": "time",
+            "bounds": "time_bounds"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "time_bounds": {
+          "dimensions": [
+            "time",
+            "bounds"
+          ],
+          "shape": [
+            274,
+            2
+          ],
+          "dtype": "float64",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "simulation_date": {
+          "dimensions": [
+            "time"
+          ],
+          "shape": [
+            274
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "cell": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up",
+            "long_name": "actual native compartment centre below soil surface"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "requested_depth": {
+          "dimensions": [
+            "depth"
+          ],
+          "shape": [
+            5
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "cm",
+            "positive": "up"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "easting": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_x_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "northing": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "units": "m",
+            "standard_name": "projection_y_coordinate"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crs": {
+          "dimensions": [],
+          "shape": [],
+          "dtype": "int32",
+          "attributes": {
+            "grid_mapping_name": "transverse_mercator",
+            "longitude_of_central_meridian": 3.0,
+            "latitude_of_projection_origin": 0.0,
+            "scale_factor_at_central_meridian": 0.9996,
+            "false_easting": 500000.0,
+            "false_northing": 0.0,
+            "semi_major_axis": 6378137.0,
+            "inverse_flattening": 298.257223563,
+            "epsg_code": "EPSG:32631"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "vegetation_class": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "crop_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "RAIN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "RUNOFF": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "IRRIG": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DRN": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "into the soil column"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TPOT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "TACT": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EPD": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "EIC": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "DSTOR": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "BALDEV": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GASST": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "kg ha-1",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "substance": "CH2O equivalents"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "GWL": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing",
+            "positive": "up relative to the soil surface",
+            "missing_native_value": 999.0
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "WC": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            274,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "m3 m-3",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "T": {
+          "dimensions": [
+            "time",
+            "cell",
+            "depth"
+          ],
+          "shape": [
+            274,
+            4096,
+            5
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "degree_Celsius",
+            "cell_methods": "time: point",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64,
+            5
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "independent_balance_residual": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "float64",
+          "attributes": {
+            "_FillValue": "NaN",
+            "units": "cm",
+            "cell_methods": "time: sum",
+            "grid_mapping": "crs",
+            "coordinates": "easting northing"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": true
+          }
+        },
+        "canopy_reset_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1
+            ],
+            "flag_meanings": "no_flag crop_calendar_canopy_accounting_discontinuity"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "GASST_flag": {
+          "dimensions": [
+            "time",
+            "cell"
+          ],
+          "shape": [
+            274,
+            4096
+          ],
+          "dtype": "uint8",
+          "attributes": {
+            "flag_values": [
+              0,
+              1,
+              2
+            ],
+            "flag_meanings": "native_value no_active_dynamic_crop_zero_assigned assimilation_not_simulated"
+          },
+          "chunks": [
+            32,
+            64
+          ],
+          "filters": {
+            "zlib": true,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": true,
+            "complevel": 4,
+            "fletcher32": false
+          }
+        },
+        "water_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "dominant_land_fraction": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "float32",
+          "attributes": {
+            "units": "1"
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "row": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "col": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "int16",
+          "attributes": {
+            "index_base": 1
+          },
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "landcover_input_flags": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "parent_cell_500m": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        },
+        "native_model": {
+          "dimensions": [
+            "cell"
+          ],
+          "shape": [
+            4096
+          ],
+          "dtype": "<class 'str'>",
+          "attributes": {},
+          "chunks": "contiguous",
+          "filters": {
+            "zlib": false,
+            "szip": false,
+            "zstd": false,
+            "bzip2": false,
+            "blosc": false,
+            "shuffle": false,
+            "complevel": 0,
+            "fletcher32": false
+          }
+        }
+      }
+    }
+  ]
+}

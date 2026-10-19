@@ -1,0 +1,51 @@
+Kalmthoutse Heide, SWAP 4.3.1 versie V02, 19 oktober 2026
+
+Deze versie bouwt voort op de lokaal verbeterde gebiedsversie van 18 oktober. Het raster telt 4.096 cellen van 250 bij 250 meter binnen het bestaande pilotdomein van 16 bij 16 km. Dit is de omgeving van de Kalmthoutse Heide, niet uitsluitend het natuurgebied. De periode is 1 januari 2024 tot en met 1 oktober 2026: 1.005 dagen.
+
+GEWASGROEI
+Op 802 als gras ingedeelde cellen wordt de meegeleverde WOFOST-grasmodule gebruikt, met de broninstellingen voor jaarlijkse herstart, groeiaanvang en maaien op basis van een biomassa-drempel. Op 503 akkerbouwcellen wordt jaarlijks maïs gebruikt, met een aangenomen gewasperiode van 1 mei tot 15 oktober en de kiemingsinstellingen uit het bronbestand. Dit is een gewasproxy, geen waargenomen rotatie. De brede grasklasse kan ook onbeheerde vegetatie bevatten; maaibeheer is daar een aanvullende aanname.
+
+De overige 2.791 cellen behouden voorgeschreven vegetatie. Dit betreft bos, heide, stedelijke bodemsurrogaten en moeras.
+
+De bestanden komen uit data/crops/dynamic/grass.crp en maize.crp van de originele SWAP 4.3.1-distributie. De originele bestanden en de gebruikte afgeleiden zijn bewaard. Broninstellingen voor ontwikkeling, assimilatie, beworteling, droogte, zuurstof en beheer zijn behouden. Twee schakelaars zijn aangepast: zoutstress is uitgezet omdat zouttransport en lokale zoutwaarnemingen ontbreken; de CO2-correctie is uitgezet omdat de meegeleverde atmosferische reeks na 2015 een SSP5-8.5-projectie gebruikt. Er is dus nog geen correctie met waargenomen historische CO2 toegevoegd. De generieke managementfactor uit de bronbestanden is behouden. Dit is geen lokaal gekalibreerde gewasproductie.
+
+BODEMTEMPERATUUR
+SWHEA=1 en SWCALT=2 zijn voor alle cellen ingesteld. De zes bodemlagen gebruiken bestaande SoilGrids-textuur en bulkdichtheid. Organische stof is geschat als 1,724 maal organische koolstof: een expliciete conversie-aanname. De bovenrand gebruikt ERA5-luchttemperatuur, de onderrand heeft geen warmtestroom. De initiële temperatuur loopt lineair van 7,5125 graden C aan het oppervlak tot 11,8794 graden C op 200 cm. Deze waarden komen uit de eerste dag en het jaargemiddelde van de bestaande 2024-luchttemperatuurreeks. Dit is geen gemeten bodemtemperatuurprofiel en er is nog geen spin-up.
+
+Vorsthydrologie is niet aangezet. Een negatieve bodemtemperatuur betekent dus niet dat bevriezing van bodemwater is doorgerekend.
+
+DAGUITVOER
+De NetCDF-bestanden bevatten RAIN, RUNOFF, IRRIG, DRN, BOT, EPOT, EACT, TPOT, TACT, EPD, EIC, DSTOR, BALDEV, GASST en GWL, plus WC en T op vijf diepten. Watertermen, diepten en grondwaterstand staan in de native eenheid cm. GASST staat in kg CH2O-equivalenten per hectare per uitvoerinterval. Dit is geen direct omgerekende koolstof-GPP. WC is een volumefractie en T is graden Celsius. BOT is positief de bodemkolom in. EIC behoudt de native definitie, inclusief eventuele verliezen door verandering van canopycapaciteit.
+
+De selectie op -10, -20, -40, -80 en -160 cm geeft in deze discretisatie compartimentscentra op -10,5, -22,5, -42,5, -82,5 en -162,5 cm. Er is niet geïnterpoleerd. Zowel aangevraagde als werkelijke diepten staan in het bestand.
+
+Fluxen zijn dagtotalen. WC, T en GWL zijn toestanden aan het einde van de dag. time geeft het feitelijke UTC-dageinde; simulation_date geeft de dag zoals die in SWAP staat. time_bounds begrenst het daginterval.
+
+GASST wordt voor voorgeschreven vegetatie niet berekend en daarom als ontbrekend opgeslagen. Bij dynamische gewassen wordt de native ontbrekende waarde buiten actieve gewasgroei omgezet naar nul. GASST_flag onderscheidt dit van een berekende waarde en van niet-gesimuleerde assimilatie. De native GWL-code 999 voor een ontbrekende grondwaterstand wordt eveneens als ontbrekend opgeslagen.
+
+KWALITEITSCONTROLE
+Een beperkte aanpassing van alleen swap_csv_output.f90 initialiseert de 58 bestaande vector-metadataregels expliciet en bewaart lokale uitvoerbuffers tussen aanroepen. Er zijn geen bronwijzigingen in watertransport, warmte, WOFOST, stress of tijdintegratie. De patch, gecorrigeerde bron, oorspronkelijke bronarchieven en executable-identiteit zijn opgenomen. Een ongewijzigde volledige referentiekolom levert dezelfde 1.006 rijen met alle 29 velden als de oude uitvoer. ASCII, binaire uitvoer en de vijfvoudige diepteselectie zijn gericht beproefd. De productie gebruikt ASCII als gecontroleerd tussenformaat.
+
+Iedere kolom wordt gecontroleerd op invoeridentiteit, native voltooiing, 1.005 dagstappen, tijdas, gevraagde velden en sluiting van het native dagelijkse grootboek. Een aparte controle vergelijkt fluxen met verschillen van opeenvolgende geprinte bodem-, plas- en canopybergingen. Bekende sprongen bij jaarwisseling of oogst worden alleen herkend wanneer zij sluiten over twee dagen of precies overeenkomen met de voorafgaande geprinte canopyberging. Die dagen krijgen een kwaliteitsvlag. Het zijn geen schone dagelijkse fysieke balans-PASSen. Native DSTOR en BALDEV blijven ongewijzigd; independent_balance_residual maakt het verschil zichtbaar.
+
+OPSLAG EN HERSTART
+Drie gecomprimeerde NetCDF4-bestanden bevatten 2024, 2025 en 2026. Eén schrijfproces verzamelt afgeronde cellen in blokken van 64. Compressieblokken zijn 32 dagen maal 64 cellen en voor WC en T tevens vijf diepten. Watertermen blijven 64-bits; WC en T worden 32-bits opgeslagen zonder verdere kwantisering. Bestanden krijgen pas hun definitieve naam na volledige uitvoer. Controleer export_complete en full_grid_complete voordat je ze als volledige levering gebruikt.
+
+Vanuit de uitgepakte modelmap:
+  python3 scripts/run_v02.py . native/swap_gnu_output_fixed --workers 8
+  python3 scripts/export_v02_netcdf.py . daily_netcdf
+
+Voor uitlezen, bijvoorbeeld met xarray:
+  import xarray as xr
+  ds = xr.open_dataset('daily_netcdf/Kalmthout_SW431_V02_daily_2025.nc')
+  temperatuur = ds['T'].sel(cell='K250_00008')
+
+De runner controleert invoer-, executable- en uitvoerhashes voordat resultaten worden hergebruikt. Native endcode 100 is de succesvolle voltooiingscode van deze executable.
+
+Het herstelpakket bewaart de originele SWAP-distributie, toegepaste gewasbestanden, kolominvoer, ruwe dagelijkse uitvoer en uitvoeringscontroles. De oorspronkelijke regionale bronrasters staan in het eerder geleverde V01-pakket met SHA-256:
+46f985153d9b2213c1003d77373b55ca261c500ce37c28d8f4da513c7b7ab746
+De V02-manifesten bewaren gebruikte bodemwaarden en donorinformatie.
+
+De wateronderranden zijn in dit blok niet verbeterd. Het blijven de bestaande vrije-drainage- en ondiepe-grondwateraannamen. Lokale grondwater- en oppervlaktewatergegevens, echte gewasrotaties, spin-up en onafhankelijke validatie blijven vervolgstappen.
+
+De meegeleverde executable is bedoeld voor Linux x86_64 en gebruikt de systeemruntime libgfortran.so.5. De oorspronkelijke compilerpakketten en hun hashes staan in native/compiler_packages.json. scripts/rebuild_v02.py bouwt opnieuw vanuit de bewaarde bronarchieven, met een beschikbare GNU Fortran-compiler en gcc. De bewaarde oorspronkelijke bronarchieven blijven de byte-identieke bronreferentie; de build selecteert de Linux-preprocessorvariant en gebruikt de afzonderlijk gedocumenteerde uitvoercorrectie.

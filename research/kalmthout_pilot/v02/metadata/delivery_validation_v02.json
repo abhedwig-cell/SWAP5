@@ -1,0 +1,70 @@
+{
+  "status": "COMPLETE_WITH_EXPLICIT_PHYSICAL_LIMITATIONS",
+  "grid_cells": 4096,
+  "days": 1005,
+  "crop_counts": {
+    "prescribed": 2791,
+    "grass": 802,
+    "maize": 503
+  },
+  "native_status_counts": {
+    "COMPLETED_WITH_CANOPY_RESET_FLAG": 1701,
+    "SUCCESS": 2395
+  },
+  "native_run_wall_seconds": 1872.83332295,
+  "canopy_reset_events": 1701,
+  "max_flagged_reset_mm": 0.035681899999989095,
+  "canopy_reset_transitions": {
+    "annual": 1198,
+    "harvest": 503
+  },
+  "NetCDF": [
+    {
+      "year": 2024,
+      "days": 366,
+      "cells": 4096,
+      "all_requested_arrays_complete": true,
+      "roundtrip_selected_cells": 9,
+      "scalar_roundtrip": "exact including documented missing-value interpretation",
+      "WC_T_roundtrip": "exact after declared float32 conversion",
+      "temperature_min_C": -1.98778235912323,
+      "temperature_max_C": 25.00812530517578,
+      "flagged_cell_days": 0,
+      "max_independent_residual_mm": 3.000000831088201e-07,
+      "file_bytes": 96744536,
+      "sha256": "1b30cd007e572c9b364794223c13df536a06fd1dd7b592ff00fe76c967add84d"
+    },
+    {
+      "year": 2025,
+      "days": 365,
+      "cells": 4096,
+      "all_requested_arrays_complete": true,
+      "roundtrip_selected_cells": 9,
+      "scalar_roundtrip": "exact including documented missing-value interpretation",
+      "WC_T_roundtrip": "exact after declared float32 conversion",
+      "temperature_min_C": -0.7210597991943359,
+      "temperature_max_C": 27.025344848632812,
+      "flagged_cell_days": 503,
+      "max_independent_residual_mm": 0.03568199999996094,
+      "file_bytes": 99175314,
+      "sha256": "e49a220af4ccaf290846649b0f555422e218e5c56fc653bb76e36479a15f23c7"
+    },
+    {
+      "year": 2026,
+      "days": 274,
+      "cells": 4096,
+      "all_requested_arrays_complete": true,
+      "roundtrip_selected_cells": 9,
+      "scalar_roundtrip": "exact including documented missing-value interpretation",
+      "WC_T_roundtrip": "exact after declared float32 conversion",
+      "temperature_min_C": -0.8770580887794495,
+      "temperature_max_C": 27.50897789001465,
+      "flagged_cell_days": 1198,
+      "max_independent_residual_mm": 0.010613300000034132,
+      "file_bytes": 74222364,
+      "sha256": "97a23bfc7227650ef1c529737bf7590a65b3f776bdec484249a5cd29e6a65e00"
+    }
+  ],
+  "native_csv_bytes": 1027758549,
+  "netcdf_total_bytes": 270142214
+}
