@@ -150,6 +150,8 @@ Fresh checks completed in this review:
 * All18 incumbent historical evidence-corruption controls.
 * All9 registered material-label corruption controls, including current source/driver inputs, original native outputs, checked compile inventory, missing restarts and rollback-byte corruption.
 
+Documentation source checks and strict MkDocs build pass (18.68 seconds). Raw control outputs, the failed full-wrapper traceback, archive identity checks and documentation logs are retained in `integration/audits/evidence/MC_NUT01_FINAL_REVIEW_20261019.tar.xz.b64`, decoded SHA256 `a6e9b0f0276538f0545b48dcd7f21c88b56466a0841b3401bf3f9b01a9b2c7c1`.
+
 These checks revalidate archived executed evidence; they do not rerun Fortran. The full current source/admission wrapper could not run locally because its required ancestor `b27a646928c73d334fd11f54b74b7f12cc0064a4` is absent from the shallow local history. That attempt is FAILED/INCOMPLETE, never PASS. The direct git network route also failed authentication. GNU Fortran is unavailable on PATH and the workspace filesystem is full; no new O0/O2 compilation or model execution is claimed. The archived admitted O0/O2 calculations above remain historical results with checked inputs, not new local runs.
 
 ## Remaining blockers and next admissible action
