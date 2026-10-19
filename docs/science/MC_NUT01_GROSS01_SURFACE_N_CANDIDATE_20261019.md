@@ -70,3 +70,7 @@ Canonical had advanced by seven commits relative to this candidate branch at the
 ## Auxiliary carrier rejection extension
 
 The staged mineral trial now explicitly rejects negative external auxiliary fluxes before calling the mineral owner. A native oracle checks that a rejected negative root carrier does not change the committed mineral revision or stock. This guards the rain-only accepted Reference candidate domain; it is not an extension of historical soil-N admission. New source-exact hosted test run `39311282815` was queued at the last status check. Earlier joint-scope runs also remained queued. Canonical was nine commits ahead of this draft branch at the latest comparison; no integration is authorized without reconciliation and physical joint qualification.
+
+## 19 October: verified gates and committed clock consistency
+
+Hosted runs `39307333483`, `39307796665`, and `39311282815` each completed SUCCESS across the isolated, original-mineral-owner and Reference gross bridge O0/O2 jobs. A new fail-closed guard verifies the accepted Reference trace begins exactly at the committed mineral owner clock, and a new native negative test rejects a stale trace without changing the original owner. The post-change run `39319743593` was queued at last read, so these earlier passes do not qualify the latest source. No hydraulic+mineral N common-commit application or native fresh-process whole-N restart has yet passed. This PR remains draft and outside canonical.
