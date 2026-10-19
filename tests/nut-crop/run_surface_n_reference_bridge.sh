@@ -14,7 +14,8 @@ for line in part.splitlines():
 roots += ['src/process/mod_b111_surface_n_gross_budget.f90',
           'src/runtime/mod_b111_surface_n_reference_bridge.f90',
           'src/runtime/mod_b111_n_gross_direct_binding.f90',
-          'src/runtime/mod_b111_n_reference_mineral_trial.f90']
+          'src/runtime/mod_b111_n_reference_mineral_trial.f90',
+          'src/runtime/mod_b111_n_reference_joint_application.f90']
 pathlib.Path(sys.argv[1]).write_text('\n'.join(roots)+'\n')
 PY
 mapfile -t roots < "$build/roots"
