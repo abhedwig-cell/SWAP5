@@ -1063,6 +1063,19 @@
       "members": 30
     },
     "production_changed": false,
-    "full_historical_envelopes_promoted": false
+    "full_historical_envelopes_promoted": false,
+    "additional_preservation": {
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_CLOSURE_PRESERVATION_20261019.tar.xz.b64",
+        "decoded_sha256": "a2443cdf25bf0f40d3dd9552c66a927b8fa0d85b1b0a9702d036b96cca38a4a8",
+        "decoded_bytes": 389604,
+        "members": 37
+      },
+      "compile": "ORIGINAL_O0_O2_PASS",
+      "paired": "BOTH_ORIGINAL_MODES_5000_CALLS_TEN_PAIRS_PASS_SHARED_BUILD",
+      "energy": "QUALIFICATION_ONLY/BLOCKED exact outflow-fixture contract mismatch, no MC-SOL01 domain promotion",
+      "hosted_authority": "PR1327 terminal outcomes and Git merge ancestry",
+      "production_changed": false
+    }
   }
 }
