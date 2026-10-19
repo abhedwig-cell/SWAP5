@@ -86,3 +86,11 @@ The immutable current-session capsule is `integration/audits/evidence/MC_SOL01_F
 4. **AGE remainder:** changing evaporation-age export or allowing complete drying requires a scientific decision about whether the state represents physical water age or a nonvolatile tracer moment, followed by an independently derived balance and dry-limit/restart qualification. Default/output/multicolumn or simultaneous companions need separately selected application evidence. Strictly positive pond and existing zero-pond routes are already closed.
 
 These remainders are parked separately in the existing master/workunit records. None authorizes a new research line in this closure, and none is converted to ADMITTED by documentation. Aquifer stays rejected; RossFast stays optional only on its previously admitted domain.
+
+## Actual canonical closure receipt
+
+PR #1324 is merged at `860ff5fbe2b69d33caef7c471e8034e504d14d34`, qualified head `fa7375dee719c7d568f1bb47d0e3ee23fc818547`. Postmerge verification passes the actual current successor qualification, documentation source checks, complete capsule manifest and all 549 recorded age/matrix scientific input bindings. Production source tree remains `282e4504c8d1d31e9cdfa37041b6b06a48a90588`. No postmerge duplicate physical run is claimed.
+
+PR #1288 is closed **unmerged** and supplies no production admission; the accepted private Reference surface formulation is PR #1304. PR #1308 is its merged documentation closeout. PR #1309 and the later #1315/#1317/#1321 admissions remain merged and source-bound. PR #1324 closes this bounded review; it does not admit the four parked historical envelopes. Master PR #1072 stays draft because the overall denominator and unrelated NUT receipt registrations are incomplete; its scoped SOL updates are `abb0045e` and `9215033e`.
+
+Automatic Actions on the final PR #1324 head were still **queued**, without a PASS, at the closure observation. Relevant run IDs include documentation `39303672373`; the ten other queued automatic workflows cover unchanged interception/root/performance/groundwater routes. These were not manually dispatched and are not substitutes for the completed local scientific qualification. No global current-head hosted-green result is claimed.
