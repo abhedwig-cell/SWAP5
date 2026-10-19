@@ -21,6 +21,7 @@ With the original V02 run root available:
 python3 scripts/analyse_results.py /path/to/v02/daily_netcdf /path/to/results
 python3 scripts/validate_conversion.py /path/to/v02/daily_netcdf /path/to/results
 python3 scripts/plot_results.py
+python3 scripts/build_representation_table.py
 python3 scripts/write_results_note.py
 python3 scripts/build_results_docx.py
 ```
@@ -30,3 +31,7 @@ The first command also reads the original hourly forcing in the sibling `forcing
 In Git the derived NetCDF bytes are stored in parts under `products/parts`; use `scripts/assemble_products.py OUTPUT_DIRECTORY` to reconstruct and verify the three original files. The source native files remain in the earlier V02 preservation set. `products/manifest.json` records every part and whole-file SHA256. The downloadable analysis package contains ordinary assembled NetCDF files.
 
 The water model is provisional, uncalibrated and not independently validated. Strong internal GPP/transpiration correlations are expected from model coupling and cannot serve as validation. All original availability and canopy-accounting flags remain explicit.
+
+## Preparing a comparable note for the next version
+
+Follow the [results-note workflow](workflow/RESULTS_NOTE_WORKFLOW.md) and complete the [next-version record](workflow/NEXT_VERSION_RECORD.template.json). The procedure specifies source and metadata preservation, conversion review, analysis/figure/table coverage, version-specific assumptions, verification and delivery. The current scripts and literal report findings are tied to V02; review and adapt them in a separate version directory.

@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "baseline_commit": "50975c8f2cc9351de56b4f0d9e1f6df5db45c87e",
+  "scope": "Future results-note documentation, recovery template and reproduction of one preserved analysis table; no model physics, native source files, converted NetCDF or delivered Word report changed.",
+  "checks": {
+    "relative_markdown_links": "PASS",
+    "template_json_and_not_ready_default": "PASS",
+    "new_script_syntax": "PASS",
+    "representation_table_all_five_populations": "PASS: build_representation_table.py --verify, atol=1e-11 rtol=1e-13",
+    "documentation_source_check": "PASS: python tools/docs/check_docs.py",
+    "strict_mkdocs_build": "PASS: python -m mkdocs build --strict, exit 0; existing missing-anchor message is INFO",
+    "existing_word_report_sha256_unchanged": "688f0ef6f7fcb7edf63e2ffae78930ce06dbf168b089aae0150e876d911bcdbe"
+  },
+  "not_selected": {
+    "native_model_reruns": "No physics, native input or numerical implementation changed.",
+    "complete_array_conversion_rerun": "Converter and candidate NetCDF unchanged; previous exact-file receipts remain at baseline.",
+    "new_word_render": "Existing delivered Word document unchanged."
+  },
+  "recovery_entry": "workflow/RESULTS_NOTE_WORKFLOW.md"
+}
