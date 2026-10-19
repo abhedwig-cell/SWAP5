@@ -21138,6 +21138,14 @@
     ],
     "scope": "Bounded Reference SOL and surface-age closure; four full historical envelopes explicitly parked, no whole-master/full-capability promotion. Historical source and other239 rows unchanged.",
     "authority": "MC_SOL01_FINAL_CLOSURE.md",
-    "derived_count": "Prior summary78 was already stale against70 actual flags after NUT review; scoped SOL corrections remove3 further complete-absence assertions, actual67. Dispositions112/92/14/2/20/3 unchanged."
+    "derived_count": "Prior summary78 was already stale against70 actual flags after NUT review; scoped SOL corrections remove3 further complete-absence assertions, actual67. Dispositions112/92/14/2/20/3 unchanged.",
+    "scoped_integrity": "PASS original bounded reachability/ancestor/locator checks for four SOL rows; all other239 rows and243 dispositions exact",
+    "global_master_integrity": "FAIL before and after: same nine NUT active routes lack original checker bounded_receipt registration; no whole-master PASS",
+    "canonical_closure_pr": 1324,
+    "qualified_candidate": "fa7375dee719c7d568f1bb47d0e3ee23fc818547",
+    "evidence": {
+      "canonical_path": "integration/audits/evidence/MC_SOL01_FINAL_CLOSURE_20261019.tar.xz.b64",
+      "decoded_sha256": "ad79932b35f53be60b9040f3a4157200ea0d3c30b691a48cca43b60aaf7f815b"
+    }
   }
 }
