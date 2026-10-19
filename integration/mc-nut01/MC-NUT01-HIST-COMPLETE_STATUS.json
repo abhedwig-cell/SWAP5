@@ -7,7 +7,7 @@
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
     "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
-    "124-day physically coupled Richards\u2013WOFOST81\u2013Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
+    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria",
     "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation",
     "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line",
@@ -54,15 +54,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Scientific reference choice for gross atmospheric N: literal original aggregate loading with ponding ambiguity, or corrected B1 surface-N inventory/transport within existing owners. General TTUTIL constructs, fractional timestamps and extended diagnostics remain open.",
+  "next_action": "Resolve explicitly registered gross atmospheric N carrier and ponding reference contract before full HIST admission. Preserve bounded admitted processes. Review unsupported native syntax/fractional timestamps and diagnostics against required historical inputs. See docs/science/MC_NUT01_FINAL_CLOSURE.md.",
   "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
     "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-  "last_reconciled_upstream": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
+  "last_reconciled_head": "e122ff8f682584620717e97ab24ce07933dd0923",
+  "last_reconciled_upstream": "e122ff8f682584620717e97ab24ce07933dd0923",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -101,7 +101,7 @@
       "solver_rejections": 0,
       "mass_rejections": 0,
       "max_abs_step_mass_residual": 1.40831085942289e-15,
-      "min_accepted_step_days": 1.772884719949963e-05,
+      "min_accepted_step_days": 0.00001772884719949963,
       "completed": false
     },
     "indicator_run": 39122643056,
@@ -416,9 +416,9 @@
     "observational_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        6.194825028434364e-05,
+        0.00006194825028434364,
         28.164960854763596,
-        0.0,
+        0,
         0.4650182252684006,
         27.699930239845116,
         10.377421237280426,
@@ -441,11 +441,11 @@
         -22.17468522605584
       ],
       "AUDIT_NUMERICAL": [
-        14025.0,
-        60584.0,
-        0.0,
-        60584.0,
-        3.814697265625e-06,
+        14025,
+        60584,
+        0,
+        60584,
+        0.000003814697265625,
         0.9999596991660622
       ]
     },
@@ -688,9 +688,9 @@
     "water_n_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        6.194825028434364e-05,
+        0.00006194825028434364,
         28.164960854763596,
-        0.0,
+        0,
         0.4650182252684006,
         27.699930239845116,
         10.377421237280426,
@@ -707,9 +707,9 @@
         0.006862902053561642
       ],
       "AUDIT_BOUNDARY_N_KG_M2": [
-        4.650389582411417e-05,
+        0.00004650389582411417,
         0.0008449488256429077,
-        0.0
+        0
       ],
       "AUDIT_STATE_RANGE": [
         0.3313437794793025,
@@ -718,11 +718,11 @@
         -22.17468522605584
       ],
       "AUDIT_NUMERICAL": [
-        14025.0,
-        60584.0,
-        0.0,
-        60584.0,
-        3.814697265625e-06,
+        14025,
+        60584,
+        0,
+        60584,
+        0.000003814697265625,
         0.9999596991660622
       ]
     },
@@ -892,9 +892,9 @@
     "water_n_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        6.194825028434364e-05,
+        0.00006194825028434364,
         28.164960854763596,
-        0.0,
+        0,
         0.4650182252684006,
         27.699930239845116,
         10.377421237280426,
@@ -911,9 +911,9 @@
         0.006862910133890103
       ],
       "AUDIT_BOUNDARY_N_KG_M2": [
-        4.650389582411417e-05,
+        0.00004650389582411417,
         0.0008449488256429077,
-        0.0
+        0
       ],
       "AUDIT_STATE_RANGE": [
         0.3313437794793025,
@@ -922,11 +922,11 @@
         -22.17468522605584
       ],
       "AUDIT_NUMERICAL": [
-        14025.0,
-        60584.0,
-        0.0,
-        60584.0,
-        3.814697265625e-06,
+        14025,
+        60584,
+        0,
+        60584,
+        0.000003814697265625,
         0.9999596991660622
       ]
     },
@@ -1089,5 +1089,78 @@
     "canonical_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
     "reviewed_head": "e5bc5e46c01088bbadf0db67ab9c47c72964ce88",
     "post_merge_guard": "Current complete HIST/age/retained owning chain PASS; reviewed and merged trees identical; full capability false"
+  },
+  "closure_review_20261019": {
+    "outcome": "FULL_HISTORICAL_CLOSURE_BLOCKED_BOUNDED_ADMISSIONS_PRESERVED",
+    "reviewed_canonical": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "document": "docs/science/MC_NUT01_FINAL_CLOSURE.md",
+    "master_pr": 1072,
+    "master_reviewed_head": "d77939e08b841fc0456d76a883450f4f15a9c099",
+    "master_dispositions_changed": false,
+    "whole_work_unit_complete": false,
+    "scope": "Read-only reconciliation and documentation; production, numerical criteria, inputs, original archives and restart schemas unchanged",
+    "completed_checks": [
+      "Decoded capsule SHA256: humus physical/retained, labels, gross-net witness",
+      "Original management_soil and watern identity and gross/net assignments",
+      "18 incumbent HIST corruption controls PASS",
+      "9 supplemental native-label corruption controls PASS with current physical input hashes"
+    ],
+    "incomplete_checks": [
+      {
+        "name": "Full current source/admission wrapper",
+        "outcome": "INCOMPLETE",
+        "reason": "Required ancestor b27a646928c73d334fd11f54b74b7f12cc0064a4 absent from shallow local history; direct git route failed authentication"
+      },
+      {
+        "name": "New Fortran O0/O2/native model execution",
+        "outcome": "NOT_RUN",
+        "reason": "No gfortran on PATH; workspace filesystem full. Existing immutable model evidence checked, no new numerical PASS claimed"
+      }
+    ],
+    "blocker_records": [
+      {
+        "id": "gross_net_completion_blocker",
+        "status": "SCIENTIFIC_BLOCKER",
+        "authority": "docs/science/MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md",
+        "affected_master_rows": [
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-CROP"
+        ],
+        "counterexample": "4mm rain +4mm evaporation: original atmospheric input0.8kg N/ha; net-carrier input0",
+        "required_resolution": "Explicit gross atmospheric/source ordering or corrected surface-N control-volume contract, then actual water/N mass, rollback and persistent restart qualification"
+      },
+      {
+        "id": "historical_input_envelope",
+        "status": "ACTIVE_MIGRATION",
+        "authority": "docs/science/MC_NUT01_HIST_NATIVE_ROTATION_20261018.md",
+        "remaining": [
+          "General TTUTIL constructs",
+          "Fractional timestamps",
+          "Required extended diagnostics",
+          "No complete original-model multiyear oracle"
+        ]
+      }
+    ],
+    "not_missing": [
+      "Eight FOM/Bio/Hum and NH4/NO3 production owners",
+      "Mineralisation/immobilisation/nitrification/denitrification",
+      "Amendment/calendar/source-full",
+      "Retained/pending crop transitions",
+      "Bounded top-N and dated humus experiment",
+      "Historical positional material labels"
+    ],
+    "numerical_selection": "NOT_SELECTED_IMPACT: review changes only docs and status, no new native run or RossFast extension",
+    "master_receipt": "962cd60ad7b170432d363d821e6c4f223b6dfd08",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_FINAL_REVIEW_20261019.tar.xz.b64",
+      "decoded_sha256": "a6e9b0f0276538f0545b48dcd7f21c88b56466a0841b3401bf3f9b01a9b2c7c1",
+      "compressed_bytes": 10248
+    },
+    "docs_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS",
+      "mkdocs_seconds": 18.68
+    }
   }
 }
