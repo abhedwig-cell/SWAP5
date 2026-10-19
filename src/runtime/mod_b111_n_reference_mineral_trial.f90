@@ -10,7 +10,7 @@ module mod_b111_n_reference_mineral_trial
  implicit none
  private
  integer,parameter,public::N_TRIAL_OK=0,N_TRIAL_REJECT=1
- public::trial_mineral_from_reference_gross
+ public::trial_mineral_from_reference_gross,trial_mineral_gross_days
 contains
  subroutine trial_mineral_from_reference_gross(committed,t,water_end,outflow,in_bottom, &
       in_lateral,root_water,candidate,receipt,status)
@@ -38,6 +38,33 @@ contains
     candidate=committed
     return
   end if
+  status=N_TRIAL_OK
+ end subroutine
+ subroutine trial_mineral_gross_days(committed,steps,water_end,outflow,in_bottom, &
+      in_lateral,root_water,candidate,receipts,status)
+  type(mineral_state_t),intent(in)::committed
+  type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
+  real(real64),intent(in)::water_end(:),outflow(:),in_bottom(:),in_lateral(:),root_water(:)
+  type(mineral_state_t),intent(out)::candidate
+  type(mineral_receipt_t),allocatable,intent(out)::receipts(:)
+  integer,intent(out)::status
+  type(mineral_state_t)::trial,next
+  integer::i,code,n
+  candidate=committed
+  status=N_TRIAL_REJECT
+  n=size(steps)
+  if(n<1.or.n>3660)return
+  if(any([size(water_end),size(outflow),size(in_bottom), &
+      size(in_lateral),size(root_water)]/=n))return
+  allocate(receipts(n))
+  trial=committed
+  do i=1,n
+    call trial_mineral_from_reference_gross(trial,steps(i),water_end(i),outflow(i), &
+         in_bottom(i),in_lateral(i),root_water(i),next,receipts(i),code)
+    if(code/=N_TRIAL_OK)return
+    trial=next
+  end do
+  candidate=trial
   status=N_TRIAL_OK
  end subroutine
 end module
