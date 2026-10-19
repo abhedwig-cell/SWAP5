@@ -54,8 +54,64 @@ def validate(f):
  ee=json.loads(f['compiler-events.json']);check(ee and all(e['returncode']==0 for e in ee),'failed/unrecorded compiler')
  for opt in ['-O0','-O2']:check(any(opt in e['args']and'-c'in e['args']for e in ee),'missing optimization build')
  return dict(qualified=True,three_routes=True,production_changed=False)
+def validate_closure_followup(f):
+ # This optional repair is a successor of the same CI work unit, not a new
+ # physical admission. Keep every original driver, flag and assertion fixed.
+ follow=record().get('closure_ci_followup_20261019')
+ if not follow:return {}
+ r=json.loads(f['result.json']);check(r['status']=='PASS','unfinished closure CI science')
+ check(r['execution_commit']==follow['execution_commit'],'unbound closure CI execution')
+ for p,h in r['input_sha256'].items():check(sha((ROOT/p).read_bytes())==h,'closure CI input drift '+p)
+ required={
+  'poison':'FPE_ZERO_WASTE01_POISON_GATE=PASS',
+  'fkt22':'FKT22_FMR_PRODUCTION_RUNTIME_GATE=PASS',
+  'ahl_matrix':'FAHL49_PRODUCTION_MATRIX=PASS',
+  'ahl_optin':'FAHL49_APPLICATION_GATE=PASS',
+  'ahl_scale':'FAHL49_APPLICATION_SCALE=PASS',
+  'ahl_failclosed':'FAHL49_FAILCLOSED=PASS',
+  'timeint16':'F_PE_TIMEINT16=PASS',
+  'timeint16b':'F_PE_TIMEINT16B=PASS'}
+ check(len(r['events'])==len(required) and {e['case'] for e in r['events']}==set(required),'closure CI inventory')
+ for e in r['events']:
+  check(e['returncode']==0 and required[e['case']]in f[e['log']].decode(),'closure CI native failure '+e['case'])
+ ee=[json.loads(line)for line in f['compiler.jsonl'].decode().splitlines()]
+ selected={e['case']:e.get('attempt',1)for e in r['events']}
+ ee=[e for e in ee if e.get('attempt',1)==selected[e['case']]]
+ check(ee and all(e['returncode']==0 for e in ee),'closure CI compiler failure')
+ for case,opts in {'poison':['-O0','-O2'],'fkt22':['-O0','-O2'],'ahl_matrix':['-O3'],'ahl_optin':['-O0','-O2'],'ahl_scale':['-O2'],'ahl_failclosed':['-O2'],'timeint16':['-O2'],'timeint16b':['-O2']}.items():
+  for opt in opts:check(any(e['case']==case and opt in e['args']and '-c'in e['args']for e in ee),'closure CI optimization '+case+opt)
+ # Prove the build recipes have only the selected dependency closure edit.
+ base=follow['baseline']
+ recipes=['tests/fpe/run_fpe_zero_waste01_poison_workspace.sh','tests/fkt/run_fkt22_fmr_runtime_gate.sh','tests/fahl/run_fahl49_failclosed.sh','tests/fahl/run_fahl49_application_scale.sh','tests/fgc/run_fgc49d_production_application_context.sh']
+ for p in recipes:
+  old=subprocess.check_output(['git','show',base+':'+p],cwd=ROOT).decode()
+  before='augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}"'
+  expected=old.replace(before,'augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}"')
+  if p=='tests/fgc/run_fgc49d_production_application_context.sh':
+   expected=expected.replace('nm -D "$OUT/libfgc49d_application.so" | grep -q "$symbol"','nm -D "$OUT/libfgc49d_application.so" | grep "$symbol" > /dev/null')
+  check(old.count(before)==1 and (ROOT/p).read_text()==expected,'non-closure recipe change '+p)
+ p='tests/fahl/run_fahl49_production_matrix.sh';old=subprocess.check_output(['git','show',base+':'+p],cwd=ROOT).decode()
+ marker='objects=()\nfor source in "${SRC[@]}"; do'
+ check(old.count(marker)==1 and (ROOT/p).read_text()==old.replace(marker,'mapfile -t SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${SRC[@]}")\n'+marker),'non-closure matrix recipe change')
+ controls=json.loads(f['materializer_controls.json'])
+ check(controls['status']=='PASS'and controls['production_roundtrip_exact']and controls['legacy_materialization_byte_identical']and len(controls['negative_controls'])==4,'origin materialization preservation')
+ symbols=[json.loads(f['symbol-control'+opt+'.json'])for opt in ['-O0','-O2']]
+ check(all(x['defined_symbol_found']for x in symbols)and any(x['legacy_pipeline_status'].startswith('141 0')for x in symbols),'unproven symbol-pipe repair')
+ check(not git('diff',base,'HEAD','--','src','reference'),'closure repair changed physics')
+ return dict(closure_ci_followup=True,eight_original_native_oracles=True,physical_admission_changed=False)
+
+def closure_followup_evidence():
+ follow=record().get('closure_ci_followup_20261019')
+ if not follow:return {}
+ e=follow['evidence'];raw=base64.b64decode((ROOT/e['path']).read_bytes());check(sha(raw)==e['decoded_sha256'],'closure CI capsule integrity')
+ with tarfile.open(fileobj=io.BytesIO(raw))as t:
+  ms=t.getmembers();check(len(ms)==len({m.name for m in ms})and all(m.isfile()and not Path(m.name).is_absolute()and '..'not in Path(m.name).parts for m in ms),'unsafe closure CI capsule');f={m.name:t.extractfile(m).read()for m in ms}
+ manifest=json.loads(f.pop('MANIFEST.json'));check(set(f)==set(manifest),'closure CI capsule inventory')
+ for p,h in manifest.items():check(sha(f[p])==h,'closure CI member '+p)
+ return f
+
 def verify_qualification():
- result={**verify_source(),**validate(evidence())}
+ result={**verify_source(),**validate(evidence()),**validate_closure_followup(closure_followup_evidence())}
  s=json.loads((ROOT/'integration/f-ci/F-CI73P_STATUS.json').read_text())
  if s.get('current_successor_20261018'):
   import runpy

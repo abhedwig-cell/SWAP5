@@ -102,3 +102,24 @@ The earlier queued observation is superseded by terminal results: all 14 observe
 The three failed PR-head workflows are poison workspace `39303672136`, TIMEINT16 `39303672358` and F-CI110 `39303672209`. Six jobs stop during compilation because the explicit build recipe does not compile `mod_drainage_dramet3_response` before its consumer; two research jobs reject an obsolete declaration marker before candidate execution. The TIMEINT16 inverse/provider jobs and five F-CI110 subjobs pass. All 10 specific relevant production/build/instrumentation files are byte-identical to preclosure `e122ff8f`. No native numerical SOL regression follows from those pre-native failures, and **global CI is not green**. Their owners must repair/qualify their build or research-instrumentation routes separately; this closure does not silently widen performance, solver or RossFast scope.
 
 Raw failed and successful job logs, all 14 terminal run identities and unchanged-input proof are sealed in `integration/audits/evidence/MC_SOL01_HOSTED_FOLLOWUP_20261019.tar.xz.b64`; the exact decoded hash and owner routing are in the existing trajectory3 final-closure record. No new manual Actions or repeated physical calculation was started for this follow-up.
+
+## Native CI repair after terminal follow-up
+
+The eight failed build/instrumentation routes above have now been executed locally. The repair starts at canonical `6bac7b1508e4b7c33bf887f61be4499268bac4da`; persisted source checkpoints are `1c5165783bc11177c05122b446f7f2439e4258d4` and `f90a35cae4bb1788e5f38fce699b96196807b973`. No production, reference, physical driver, tolerance or numerical script flag changes. Six build recipes use the existing complete dependency-order helper, preserving explicit providers. The old F-GC49D template also consumes the full symbol stream, matching the accepted live runner: the former `nm | grep -q` actually returned 141/0 for a defined symbol. Research instrumentation preserves every original residual term and rejects ambiguous insertion locations.
+
+| Original route | Native result | Total successful seconds |
+| --- | --- | ---: |
+| `tests/fpe/run_fpe_zero_waste01_poison_workspace.sh` | PASS | 141.624 |
+| `tests/fkt/run_fkt22_fmr_runtime_gate.sh` | PASS | 123.276 |
+| `tests/fahl/run_fahl49_production_matrix.sh` | PASS | 19.089 |
+| `tests/fahl/run_fahl49_application_optin.sh` | PASS | 146.267 |
+| `tests/fahl/run_fahl49_application_scale.sh` | PASS | 145.222 |
+| `tests/fahl/run_fahl49_failclosed.sh` | PASS | 137.448 |
+| `tests/fpe/run_fpe_timeint16.sh` | PASS | 21.560 |
+| `tests/fpe/run_fpe_timeint16b.sh` | PASS | 20.450 |
+
+Poison, FKT22 and application opt-in retain their original O0/O2 output identity checks; the matrix retains its original O3 12-case gate, scale/fail-closed and research routes their original O2 selection. Both TIMEINT16 experiments complete, but their scientific classifications remain **CLOSED_TG_SECOND_ORDER_NOT_REPRODUCED** and **TG_ORDER_REDUCTION_PERSISTS_AFTER_STARTUP**. Harness PASS does not admit Thomas-Gladwell or second-order accuracy.
+
+The exact source/evidence guard enforces the recipe transformations, eight original final assertions, selected successful compiler attempts, input hashes and materialization preservation. Four materializer negatives and nine new evidence negatives pass. Failed local sparse-checkout/linker attempts are retained; the final shared-library test uses a scratch runtime search prefix because the temporary compiler bundle lacks its shared Fortran runtime. The original repository flags remain unchanged. Native/validation time is not falsely separated from compound-runner overhead.
+
+All raw results, failed attempts, compiler arguments/costs, environment repair, symbol controls, test input hashes and a complete manifest are in `integration/audits/evidence/MC_SOL01_CLOSURE_CI_REPAIR_20261019.tar.xz.b64`. Exact digest/costs and bounded qualification are in the existing AGE03-CI status; trajectory3 references that authority. Relevant previous integrated preservation remains bound to unchanged production/physical inputs. Full moving and highest low-air were not selected by this infrastructure repair. The four parked historical envelopes and all physical limitations above remain unchanged.
