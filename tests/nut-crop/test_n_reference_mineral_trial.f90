@@ -60,6 +60,16 @@ program test_n_reference_mineral_trial
  if(revision/=2_int64.or.abs(check_pools%ammonium_n_kg_m2-.00204d0)>1d-12) &
    error stop 'two-day NH4 inventory'
  if(abs(check_pools%nitrate_n_kg_m2-.00312d0)>1d-12)error stop 'two-day NO3 inventory'
+ ! Reject a stale trace whose clock does not match committed mineral state.
+ steps(1)%t0=1d0
+ steps(1)%t1=2d0
+ call trial_mineral_from_reference_gross(old,steps(1),.3d0,0d0,0d0,0d0,0d0, &
+      new,receipt,status)
+ if(status==N_TRIAL_OK)error stop 'stale accepted trace admitted'
+ call old%snapshot(clock,w,check_pools,revision)
+ if(revision/=0_int64.or.clock/=0d0)error stop 'stale trace modified owner'
+ steps(1)=t
+ steps(1)%converged_runon_rate_cm_day=0d0
  ! A negative independently supplied water sink may not be silently clipped.
  call trial_mineral_from_reference_gross(old,steps(1),.3d0,0d0,0d0,0d0,-.001d0, &
       new,receipt,status)
