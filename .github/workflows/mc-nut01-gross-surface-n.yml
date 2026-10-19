@@ -38,4 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Verify separate gross N source with strict signed net hydraulic carrier
-        run: bash tests/nut-crop/run_mineral_gross_carrier.sh
+        run: |
+          bash tests/nut-crop/run_mineral_gross_carrier.sh
+          N_CARRIER_GAP_RESULT_DIR="$RUNNER_TEMP/mc-nut01-old-net-witness-${GITHUB_RUN_ID}" \
+            python3 integration/audits/run_nut_hist_carrier_gap.py
