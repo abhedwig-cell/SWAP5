@@ -29,6 +29,13 @@ contains
     abs(trace%converged_snowmelt_rate_cm_day)>0d0.or. &
     abs(trace%converged_runoff_depth_cm)>0d0.or.trace%top_flux>0d0)return
   if(trace%converged_rain_rate_cm_day<0d0.or.trace%converged_pond_evaporation_cm_day<0d0)return
+  ! With no storage/runoff/other source, actual signed qtop must equal
+  ! gross rain minus surface evaporation. Never infer chemistry from
+  ! a physically inconsistent accepted-looking trace.
+  if(abs(-trace%top_flux-trace%converged_rain_rate_cm_day+ &
+       trace%converged_pond_evaporation_cm_day)> &
+       1d-10*max(1d0,abs(trace%top_flux),trace%converged_rain_rate_cm_day, &
+       trace%converged_pond_evaporation_cm_day))return
   gross_m_day=0.01d0*trace%converged_rain_rate_cm_day
   status=N_DIRECT_OK
  end subroutine
