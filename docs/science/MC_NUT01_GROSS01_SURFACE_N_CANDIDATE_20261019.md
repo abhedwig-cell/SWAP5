@@ -34,3 +34,7 @@ This resolves the **gross-versus-net identifiability problem in the candidate pr
 6. Preserve existing qualified MC-NUT01 and MC-SOL01 contracts, and obtain new admission evidence before canonical merge.
 
 Native gate: `bash tests/nut-crop/run_surface_n_gross_budget.sh`; GitHub Actions run `39302906079` succeeded for O0/O2 at the initial candidate head. This is **isolated process evidence** only. The original gross/net witness remains the scientific problem authority: `docs/science/MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md`.
+
+## Actual accepted Reference gross trace candidate
+
+`src/runtime/mod_b111_surface_n_reference_bridge.f90` now forms the gross rain, irrigation and runon depth from `fmr_water_flux_substep_trace_t` with explicit final-converged gross-source provenance and accepted pond water depths. Infiltration comes from accepted negative qtop, runoff from the accepted runoff depth, and evaporation from the accepted pond evaporation rate; the bridge rejects unsupported snowmelt/exfiltration or invalid source concentrations. NH4 and NO3 precipitation/irrigation/runon concentrations are converted from kg/m3 to kg/m2 by `0.01 * depth_cm`. The bridge then uses exactly the independent N-volume budget without changing the hydraulic net water carrier. An actual typed Reference trace oracle and O0/O2 full module-closure compile were added to the targeted workflow in run `39303390381` (queued at the time of authoring). This is **not** a proof that a production Reference trial called the bridge or atomically committed a mineral-soil transfer.
