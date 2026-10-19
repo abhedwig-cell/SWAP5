@@ -1,7 +1,8 @@
 ! Candidate staging only: a validated accepted Reference receipt drives the
 ! mineral N owner, with net hydraulic water and gross chemical rain separate.
 module mod_b111_n_reference_mineral_trial
- use iso_fortran_env,only:real64
+ use iso_fortran_env,only:real64,int64
+ use mod_soil_n_pool_state,only:soil_n_pool_state_t
  use ieee_arithmetic,only:ieee_is_finite
  use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t
  use mod_b111_n_gross_direct_binding,only:direct_gross_n_rate_from_reference,N_DIRECT_OK
@@ -20,12 +21,17 @@ contains
   type(mineral_state_t),intent(out)::candidate
   type(mineral_receipt_t),intent(out)::receipt
   integer,intent(out)::status
-  real(real64)::gross,net
+  real(real64)::gross,net,owner_clock,owner_water
+  integer(int64)::owner_revision
+  type(soil_n_pool_state_t)::owner_pools
   integer::code
   candidate=committed
   receipt=mineral_receipt_t()
   status=N_TRIAL_REJECT
   if(.not.all(ieee_is_finite([water_end,outflow,in_bottom,in_lateral,root_water])))return
+  if(.not.committed%ready())return
+  call committed%snapshot(owner_clock,owner_water,owner_pools,owner_revision)
+  if(abs(owner_clock-t%t0)>0d0)return
   call direct_gross_n_rate_from_reference(t,gross,code)
   if(code/=N_DIRECT_OK)return
   ! Explicit reject: do not accept unowned in-bottom/lateral source
