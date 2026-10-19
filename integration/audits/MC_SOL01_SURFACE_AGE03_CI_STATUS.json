@@ -508,6 +508,16 @@
       "TIMEINT16B": "TG_ORDER_REDUCTION_PERSISTS_AFTER_STARTUP",
       "production_activation": false
     },
-    "admission_rule": "This repair is canonically admitted exactly when these qualified postimages are contained in integration/f-ci-canonical. Git merge ancestry is the admission receipt; no new physical capability is admitted."
+    "admission_rule": "This repair is canonically admitted exactly when these qualified postimages are contained in integration/f-ci-canonical. Git merge ancestry is the admission receipt; no new physical capability is admitted.",
+    "remaining_compile_routes": {
+      "stage": "IMPLEMENTED_NOT_YET_QUALIFIED",
+      "baseline": "b8ce7d51258bbbe634c46dd24e5e829c0872c360",
+      "selected_tests": [
+        "tests/fkt/run_fkt22_fmr_compile_gate.sh",
+        "tests/fkt/run_fkt22_eb_i25_preservation_gate.sh"
+      ],
+      "expected_seconds_per_route": 300,
+      "reason": "Identical missing DRAMET3 dependency in two additional original integrated preservation recipes; preserve original O0/O2 flags and assertions. No production change. Historical paired benchmark separately requires baseline compatibility attribution, not new optimization."
+    }
   }
 }
