@@ -1,0 +1,81 @@
+[
+  {
+    "source": "wofost.f90",
+    "sha256": "3f7daf222835c9b4b395feaa665614e8aef88a03125cdec9e0776ca793c6271b",
+    "excerpts": [
+      {
+        "start_line": 960,
+        "end_line": 980,
+        "text": "\n      ! check update crop development\n      fl_continue = .TRUE.\n      if (sw_wofost == 3) then\n         m%tdelay = max(0, m%tdelay - 1)\n         if (.NOT. fl_tsum .OR. m%tdelay > 0) fl_continue = .FALSE.\n      end if\n      \n      ! update crop development\n      if (fl_continue) then\n      \n         ! - daily dry matter production -\n      \n         r%gass = r%pgass * reltr\n\n         ! respiration and partitioning of carbohydrates between growth and maintenance respiration\n         rmres = (p%rmr*s%wrt + p%rml*s%wlv + p%rms*s%wst + p%rmo*s%wso) * afgen (p%rfsetb, macroptb, dvs)\n\n         teff = p%q10**((tav - 25.d0) / 10.d0)\n         r%mres = min(r%gass, rmres * teff)\n         asrc = r%gass - r%mres"
+      },
+      {
+        "start_line": 1254,
+        "end_line": 1287,
+        "text": "         wlvpot = s%wlv\n         wsopot = s%wso\n         \n         grrtpot = r%grrt ! rate; not for output\n         \n         ipgasspot= ipgasspot+ r%pgass\n         igasspot = igasspot + r%gass\n         imrespot = imrespot + r%mres\n\n      ! actual crop status\n      else\n\n         lai = s%lai\n         \n         grrt = r%grrt ! rate; not for output\n         \n         drrt = r%drrt ! rate; not for output\n         drst = r%drst ! rate; not for output\n         drlv = r%drlv ! rate; not for output\n         \n         dwrt = s%dwrt\n         dwst = s%dwst\n         dwlv = s%dwlv\n         \n         wrt = s%wrt\n         wst = s%wst\n         wlv = s%wlv\n         wso = s%wso\n                  \n         ipgass= ipgass+ r%pgass\n         igass = igass + r%gass\n         imres = imres + r%mres\n\n      end if"
+      },
+      {
+        "start_line": 1382,
+        "end_line": 1405,
+        "text": "      ! daily gross assimilation\n      effc = fco2eff * p%eff\n      amax = fco2amax * afgen (p%amaxtb, macroptb, dvs) * afgen (p%tmpftb, macroptb, tavd)\n\n      ! potential assimilation\n      call totass (dayl, amax, effc, s_pot%lai, difpp, dsinbe, sinld, cosld, dtgapot)\n\n      ! correction for low minimum temperature\n      dtgapot = dtgapot * afgen (p%tmnftb, macroptb, tmnr)\n\n      ! potential assimilation in kg ch2o per ha, corrected for carbon fraction\n      r_pot%pgass = dtgapot * 30.d0 * (0.4d0 / p%cfrdm) / 44.d0\n      if (p%sw_potrelmf == 2) r_pot%pgass = r_pot%pgass * p%relmf\n\n      ! actual assimilation\n      call totass (dayl, amax, effc, s_act%lai, difpp, dsinbe, sinld, cosld, dtga)\n\n      ! correction for low minimum temperature\n      dtga = dtga * afgen (p%tmnftb, macroptb, tmnr)\n      \n      ! actual assimilation in kg ch2o per ha, corrected for carbon fraction\n      r_act%pgass = dtga * 30.d0 * (0.4d0 / p%cfrdm)/ 44.d0\n      r_act%pgass = r_act%pgass * p%relmf\n"
+      }
+    ]
+  },
+  {
+    "source": "swap_csv_output.f90",
+    "sha256": "b5a91f0b7d279a927cb985972bdf3423ede718aec48f94ab6c67063073445572",
+    "excerpts": [
+      {
+        "start_line": 650,
+        "end_line": 660,
+        "text": "         if (name == 'PWDM')         value = wsopot + wstpot + dwstpot + wlvpot + dwlvpot\n         if (name == 'WDM')          value = wso + wst + dwst + wlv + dwlv\n\n\n         if (name == 'PGASSTPOT')    value = ipgasspot\n         if (name == 'PGASST')       value = ipgass\n         if (name == 'GASSTPOT')     value = igasspot\n         if (name == 'GASST')        value = igass\n         if (name == 'MRESTPOT')     value = imrespot\n         if (name == 'MREST')        value = imres\n      "
+      }
+    ]
+  },
+  {
+    "source": "integral.f90",
+    "sha256": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174",
+    "excerpts": [
+      {
+        "start_line": 227,
+        "end_line": 240,
+        "text": "         end if\n         if (swsnow == 1) then\n            igsnow = 0.0d0\n            isubl  = 0.0d0\n            isnrai = 0.0d0\n         end if\n         \n         ipgass= 0.d0; ipgasspot= 0.d0\n         igass = 0.d0; igasspot = 0.d0\n         imres = 0.d0; imrespot = 0.d0\n         \n         ivolbeg   = volact\n         ipondbeg  = pond\n         issnowbeg = ssnow"
+      }
+    ]
+  },
+  {
+    "source": "v02/crops/grass.crp",
+    "sha256": "159a5e304ce9646882eea56eb3a050c7c02aac633fa69868b9997bead16c2466",
+    "parameter_lines": [
+      [
+        105,
+        "  CFRDM = 0.45               ! Carbon fraction in dry matter (default = 0.4) [0..1 kg C/kg MD, R]"
+      ],
+      [
+        359,
+        "  SWPOTRELMF = 2             ! 1 = Theoretical potential yield"
+      ],
+      [
+        363,
+        "  RELMF = 0.7                ! Relative management factor to reduce theoretical potential yield to attainable yield [0..1 -, R]"
+      ]
+    ]
+  },
+  {
+    "source": "v02/crops/maize.crp",
+    "sha256": "393dc86712dce746b4927c8613f67ab1897cc407fba30096fe89f5bf0568bbb4",
+    "parameter_lines": [
+      [
+        132,
+        "  CFRDM = 0.4                ! Carbon fraction in dry matter (default = 0.4) [0..1 kg C/kg MD, R]"
+      ],
+      [
+        415,
+        "  SWPOTRELMF = 2             ! 1 = Theoretical potential yield"
+      ],
+      [
+        419,
+        "  RELMF = 1.0                ! Relative management factor to reduce theoretical potential yield to attainable yield [0..1 -, R]"
+      ]
+    ]
+  }
+]

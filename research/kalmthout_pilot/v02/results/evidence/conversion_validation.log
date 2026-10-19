@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "unit_examples": {
+    "WC_0_25_kg_m3": 250,
+    "ET_T_0_2_E_0_05_IC_0_03_cm_mm_d": 2.8,
+    "GASST_100_grass_umol_m2_s": 4.340277777777778,
+    "GASST_100_maize_umol_m2_s": 3.858024691358025
+  },
+  "checks": [
+    {
+      "year": 2024,
+      "all_cells": 4096,
+      "days": 366,
+      "depths": 5,
+      "ET_exact": true,
+      "GPP_carbon_inverse_all_arrays": true,
+      "GPP_flag_preservation": true,
+      "soil_temperature_exact": true,
+      "max_moisture_rounding_kg_m3": 1.52587890625e-05,
+      "product_sha256": "51cc70eff4a26cc37b9886d7ecb84f7847ffed91410d37749abcbfc1e4a8930f"
+    },
+    {
+      "year": 2025,
+      "all_cells": 4096,
+      "days": 365,
+      "depths": 5,
+      "ET_exact": true,
+      "GPP_carbon_inverse_all_arrays": true,
+      "GPP_flag_preservation": true,
+      "soil_temperature_exact": true,
+      "max_moisture_rounding_kg_m3": 1.52587890625e-05,
+      "product_sha256": "9ff38882055753433201dc362a1b2e86ea351e41d2ad14e93f97e5a8c384f131"
+    },
+    {
+      "year": 2026,
+      "all_cells": 4096,
+      "days": 274,
+      "depths": 5,
+      "ET_exact": true,
+      "GPP_carbon_inverse_all_arrays": true,
+      "GPP_flag_preservation": true,
+      "soil_temperature_exact": true,
+      "max_moisture_rounding_kg_m3": 1.52587890625e-05,
+      "product_sha256": "30111cab9490dda538f9161fc92893e5e2bf15c09adbb35ea390ee6e68f2df26"
+    }
+  ]
+}

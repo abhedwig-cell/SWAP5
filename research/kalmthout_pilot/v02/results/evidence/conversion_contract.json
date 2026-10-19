@@ -1,0 +1,11 @@
+{
+ "status":"PROVISIONAL_CANDIDATE_SYMPHONICA_MAPPING",
+ "ET":{"formula":"10*(TACT+EACT+EIC)","unit":"mm d-1","time_support":"86400-second interval mean, numerically equal to daily mm","limitation":"EPD excluded as requested; native EIC includes canopy reset accounting"},
+ "ET_including_pond":{"formula":"10*(TACT+EACT+EIC+EPD)","unit":"mm d-1"},
+ "soil_moisture":{"formula":"1000*WC","unit":"kg m-3","basis":"Water mass per bulk soil volume; constant water density 1000 kg m-3"},
+ "GPP":{"formula":"GASST*CFRDM*1000/12/10000*1000000/86400","unit":"umol CO2 m-2 s-1","time_support":"24 hour interval mean; positive uptake","CFRDM":{"grass":0.45,"maize":0.4},"factor_grass":0.043402777777777776,"factor_maize":0.038580246913580245,"source_logic":"wofost.f90 PGASS=DTGA*30*(0.4/CFRDM)/44, then management and stress reductions retained in GASS; CSV GASST=IGASS reset at output interval","missing":"NaN for prescribed vegetation; retain GASST_flag; no active dynamic crop values remain documented zero","limitations":"Model gross assimilation equivalent retains RELMF; not observed GPP or complete ecosystem GPP"},
+ "soil_temperature":{"formula":"T unchanged","unit":"degree_Celsius","time_support":"Day end state at actual compartment centre"},
+ "depth_requested_cm":[-10,-20,-40,-80,-160],"depth_actual_cm":[-10.5,-22.5,-42.5,-82.5,-162.5],
+ "temporal_comparison":"Full 2024 and 2025; 2026 partial. April 1 through September 30 provides 183 days in each year. No long-term climatological classification.",
+ "source_commit":"48c7897c6500309e5e83377986ca2ff3e20917e3"
+}

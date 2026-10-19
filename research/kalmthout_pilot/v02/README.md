@@ -23,3 +23,7 @@ We intend to align these exploratory inputs and outputs with the standard datase
 The implementation changes only the research files and the retained SWAP 4.3.1 output module. No canonical SWAP5 interface or architecture invariant is changed. No mass-conservation condition is relaxed. See `STATUS.json` for the recoverable work-unit boundary and `metadata/artifact_manifest.json` for exact archive identities.
 
 Historical failed and successful output probes and the selected-cell NetCDF prototype are separately preserved in `evidence/V02_output_diagnostics_20261019.tar.xz`, with its identity in `metadata/diagnostic_archive.json`. These are diagnostic evidence, not further regional production runs. All 109 parts of the five primary artifacts were assembled and their complete identities verified. The English Word note contains 18 visually reviewed pages.
+
+## Results and SYMPHONICA conversion
+
+The separate [results analysis](results/README.md) contains the 24-page English note, eighteen figures, complete numeric tables and reproducible candidate ET, soil-moisture, GPP and soil-temperature products. It compares matched April to September periods and documents depth, spatial and crop effects. Its source-verified GPP interpretation accounts for the actual crop carbon fraction; prescribed forest and heath retain missing assimilation. The original construction note and native simulation files remain unchanged.
