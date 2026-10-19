@@ -26,15 +26,15 @@
     },
     "open_capabilities": 92,
     "open_workunits": 18,
-    "confirmed_missing_production_entries": 78,
+    "confirmed_missing_production_entries": 67,
     "other_unresolved_source_admission_reviews": 3,
     "qualification_only_capabilities": 3,
     "total_unresolved_capabilities": 95,
     "active_gap_type_breakdown": {
-      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 25,
+      "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE": 21,
       "MISSING_PRODUCTION_BINDING_OR_SOURCE_PARAMETER_RESOLVER": 3,
       "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING": 55,
-      "INCOMPLETE_RUNTIME_QUALIFICATION": 8,
+      "INCOMPLETE_RUNTIME_QUALIFICATION": 12,
       "MISSING_NONLINEAR_TOP_BOUNDARY_PROVIDER": 1
     },
     "qualified_process_missing_runtime_binding": 0,
@@ -9665,19 +9665,26 @@
       },
       "meaning": "Freundlich nonlinear sorption/storage",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "src/runtime/mod_fmr_b111_matrix_joint_application.f90",
+        "src/process/mod_b111_solute_sorption.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json at d4912b3c37461ad918f37c53b236fa1d62478de6",
+        "docs/decisions/MC_SOL01_REFERENCE_SURFACE_CHEMISTRY_20261018.md at ce0291246e9bb732388214098a7a9fe0f44f4a5e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "PR1228 admits the linear route; PR1230 at d6e21f02 admits nonlinear0.5..2 with independent inverse, actual changing-water transport, balance and joint restart. Full reader domain0..10, dynamic thermal/surface and default application scope remain open."
+        "established": true,
+        "bounded": true,
+        "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "claim": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230). PARKED full remainder: exponent0..10 reader domain, nonlinear pond composition (pond route rejects frexp/=1), live accepted thermal composition and default/bootstrap activation. No absent-process claim.",
+        "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
@@ -9693,13 +9700,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_ADMITTED_FULL_REMAINDER_EXPLICITLY_PARKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "PARKED_SEPARATE_CONTRACT_OR_APPLICATION_QUALIFICATION",
       "bounded_nonlinear_admission": {
         "pr": 1230,
         "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
@@ -9746,6 +9753,16 @@
           "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
           "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
         ]
+      },
+      "final_closure_review_20261019": {
+        "canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+        "document": "MC_SOL01_FINAL_CLOSURE.md",
+        "disposition_changed": false,
+        "bounded_admitted": true,
+        "parked_followup": "MC-SOL01-SORPTION-ENVELOPE",
+        "concrete_gap": "The real matrix constructor rejects frexp<0.5 or>2; the pond route rejects frexp/=1. Existing tests/test_matrix_route prove0.49999 and2.00001 rejection. Wider domain/composition requires separate numerical and application qualification.",
+        "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
+        "full_capability": false
       }
     },
     {
@@ -9766,19 +9783,26 @@
       },
       "meaning": "Temperature/moisture/depth modified decomposition",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "src/process/mod_b111_reactive_solute_substep.f90",
+        "src/process/mod_b111_solute_decay.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md"
+        "integration/audits/SWAP431_SURFACE_AND_CROP_OWNER_REVIEW.md",
+        "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json at d4912b3c37461ad918f37c53b236fa1d62478de6",
+        "docs/decisions/MC_SOL01_REFERENCE_SURFACE_CHEMISTRY_20261018.md at ce0291246e9bb732388214098a7a9fe0f44f4a5e"
       ],
       "production_reachability": {
-        "established": false,
-        "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer."
+        "established": true,
+        "bounded": true,
+        "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+        "claim": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230); historical SWHEA=0 retains zero temperature factor. PARKED live accepted thermal identity/state/restart composition and full historical/default activation. No dependency on excluded aquifer.",
+        "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family",
@@ -9794,13 +9818,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_ADMITTED_FULL_REMAINDER_EXPLICITLY_PARKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "PARKED_SEPARATE_CONTRACT_OR_APPLICATION_QUALIFICATION",
       "bounded_nonlinear_admission": {
         "pr": 1230,
         "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
@@ -9847,6 +9871,16 @@
           "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
           "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
         ]
+      },
+      "final_closure_review_20261019": {
+        "canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+        "document": "MC_SOL01_FINAL_CLOSURE.md",
+        "disposition_changed": false,
+        "bounded_admitted": true,
+        "parked_followup": "MC-SOL01-DECAY-THERMAL-COMPOSITION",
+        "concrete_gap": "Reaction temperature is immutable configured forcing in current matrix route, not an accepted live temperature owner. A new adapter must bind accepted temperature to rollback/configuration identity/native continuation. Nonlinear inventory itself is already qualified.",
+        "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
+        "full_capability": false
       }
     },
     {
@@ -9928,16 +9962,9 @@
       },
       "meaning": "Ponded solute storage and rain/irrigation/dissolved runoff exchange",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "src/process/mod_b111_surface_supply.f90",
-        "src/runtime/mod_fmr_b111_surface_solute_route.f90",
-        "src/runtime/mod_fmr_b111_surface_joint_application.f90",
-        "src/adapter/mod_matrix_joint_restart_file.f90",
-        "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "src/process/mod_b111_persistent_pond.f90",
         "src/runtime/mod_fmr_b111_pond_solute_route.f90",
         "src/runtime/mod_fmr_b111_pond_joint_application.f90",
-        "src/process/mod_pond_water_temporal_difference.f90"
+        "src/process/mod_b111_persistent_pond.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -9948,13 +9975,17 @@
         "docs/science/MC_SOL01_SURFACE_INPUT_CONTRACT.md",
         "docs/science/MC_SOL01_SURFACE_MASS_RESTART_CONTRACT_20261016.md at 0de60dd5bd2fe0787f33a3038aba868579aa94a8",
         "docs/science/MC_SOL01_PERSISTENT_POND_CONTRACT.md at d52ed8934d8a6a0fe5e5976b6c05620f45658995",
-        "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md at 6353f109d00763fcb4f533f2f764c8eb50db99d5"
+        "docs/science/MC_SOL01_DYNAMIC_POND_CONTRACT.md at 6353f109d00763fcb4f533f2f764c8eb50db99d5",
+        "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json at d4912b3c37461ad918f37c53b236fa1d62478de6",
+        "docs/decisions/MC_SOL01_REFERENCE_SURFACE_CHEMISTRY_20261018.md at ce0291246e9bb732388214098a7a9fe0f44f4a5e"
       ],
       "production_reachability": {
-        "established": false,
-        "bounded_established": true,
-        "route": "src/runtime/mod_fmr_b111_pond_joint_application.f90",
-        "claim": "Actual filling/draining hydraulic pond in existing BASE/default MvG/SWKIMPL0 Reference joint application, gross rain/irrigation, retained surface solute, prescribed dry deposition and dry/rewet, sole1256 matrix pond_mass and codec; accepted water plus whole-solute balances and exact restart. Explicit external full/half comparison at caller-supplied cm tolerance."
+        "established": true,
+        "bounded": true,
+        "route": "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "claim": "ADMITTED Reference evolving pond, gross rain/irrigation/runon/runoff and non-exporting evaporation, sole matrix pond_mass, atomic rejection/retry and V2 restart (PR1234/1256/1257/1258/1304). PARKED nonlinear pond (frexp/=1 rejected), unsupported snow/exfiltration, default/bootstrap/multicolumn and simultaneous companions. Runon/runoff is no longer missing.",
+        "bounded_receipt": "MC_SOL01_SURFACE_CHEMISTRY_FINAL"
       },
       "restrictions": [
         "General evaporation/runoff/runon gross receipts and chemical balance, surface age, simultaneous N and full historical/default activation. Aquifer excluded. Requested core pond/infiltration/retained-solute/deposition/restart is bounded admitted; next user priority is separate reproductive/translocation/death N assessment preserving1253."
@@ -9969,13 +10000,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_ADMITTED_FULL_REMAINDER_EXPLICITLY_PARKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "PARKED_SEPARATE_CONTRACT_OR_APPLICATION_QUALIFICATION",
       "latest_canonical_bounded_owner": {
         "pr": 1258,
         "canonical_merge": "6353f109d00763fcb4f533f2f764c8eb50db99d5",
@@ -10110,6 +10141,16 @@
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "full_capability": false,
         "full_master_qualification_claimed": false
+      },
+      "final_closure_review_20261019": {
+        "canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+        "document": "MC_SOL01_FINAL_CLOSURE.md",
+        "disposition_changed": false,
+        "bounded_admitted": true,
+        "parked_followup": "MC-SOL01-POND-APPLICATION-ENVELOPE",
+        "concrete_gap": "Actual pond route requires frexp==1 and rejects snowmelt or incompatible source receipts. Existing physical admission is typed single-column Reference; general historical activation and new source compositions have no complete production admission.",
+        "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
+        "full_capability": false
       }
     },
     {
@@ -10138,23 +10179,27 @@
       },
       "meaning": "Water age tracer with ageing and advective/dispersive transport",
       "swap5_implementation_authority": [
-        "src/process/mod_b111_age_tracer_substep.f90",
-        "src/runtime/mod_fmr_b111_age_route.f90",
         "src/runtime/mod_fmr_b111_age_joint_application.f90",
-        "src/adapter/mod_age_joint_restart_file.f90"
+        "src/runtime/mod_fmr_b111_age_route.f90",
+        "src/process/mod_b111_surface_age_budget.f90",
+        "src/adapter/mod_b111_age_snapshot_disk.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "integration/audits/PPA_WU05E_STATUS.json",
         "integration/audits/SWAP431_PRIORITY_PREREGISTRATIONS.json",
         "integration/audits/evidence/SWAP431_IMPLEMENTATION_REACHABILITY_REVIEW.json",
-        "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json"
+        "integration/audits/MC_SOL01_ACCEPTED_AGE_STATUS.json",
+        "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+        "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json at d4912b3c37461ad918f37c53b236fa1d62478de6",
+        "docs/decisions/MC_SOL01_REFERENCE_SURFACE_CHEMISTRY_20261018.md at ce0291246e9bb732388214098a7a9fe0f44f4a5e"
       ],
       "production_reachability": {
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_age_joint_application.f90",
-        "claim": "PR1233 at e85bfe130b9ff1a09e88e00ffab94859e26b0d8e admits the complete bounded zero-top matrix age route over actual accepted water, age production/balance, atomic retry and fresh-process restart. Surface/pond/default/multicolumn/output envelope remains open."
+        "claim": "ADMITTED actual positive-pond/soil age, explicit aged external water and exactly-once infiltration handoff, combined balance, rollback/retry, S5AT0001 atomic snapshot with compatible S5AJ0001 payload (PR1233/1309/1315/1317/1321). PARKED complete evaporative drying under current no-age-export convention; unsupported snow/exfiltration/default/output/multicolumn/simultaneous companions.",
+        "bounded_receipt": "MC_SOL01_SURFACE_AGE_FINAL"
       },
       "restrictions": [
         "Selected dissolved matrix salt admission does not cover this distinct state/equation family"
@@ -10169,13 +10214,13 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": "MISSING_PRODUCTION_BINDING_OR_OWNED_PROCESS_STATE",
-      "workunit_stage": "BOUNDED_ROUTE_CANONICALLY_ADMITTED_FULL_ENVELOPE_OPEN",
+      "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
+      "workunit_stage": "BOUNDED_ADMITTED_FULL_REMAINDER_EXPLICITLY_PARKED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW431-SALT-TRANSPORT"
       ],
-      "resolution_stage": "BOUNDED_ROUTE_ADMITTED_FULL_ENVELOPE_OPEN",
+      "resolution_stage": "PARKED_SEPARATE_CONTRACT_OR_APPLICATION_QUALIFICATION",
       "bounded_age_successor": {
         "pr": 1233,
         "canonically_admitted": true,
@@ -10201,6 +10246,16 @@
           "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
           "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
         ]
+      },
+      "final_closure_review_20261019": {
+        "canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+        "document": "MC_SOL01_FINAL_CLOSURE.md",
+        "disposition_changed": false,
+        "bounded_admitted": true,
+        "parked_followup": "MC-SOL01-AGE-DRY-LIMIT-AND-APPLICATION",
+        "concrete_gap": "Exact dry-limit source witness rejects zero pond with retained positive age moment. Under no evaporative age export, M/h diverges as h->0; changing the age meaning/export requires a separate science decision. Existing positive pond is already qualified and must not be reopened.",
+        "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
+        "full_capability": false
       }
     },
     {
@@ -16699,7 +16754,7 @@
       "capability_id": "SW431-AGE-TRACER",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "PR1233 at e85bfe130b9ff1a09e88e00ffab94859e26b0d8e admits the complete bounded zero-top matrix age route over actual accepted water, age production/balance, atomic retry and fresh-process restart. Surface/pond/default/multicolumn/output envelope remains open.",
+      "why_open": "ADMITTED actual positive-pond/soil age, explicit aged external water and exactly-once infiltration handoff, combined balance, rollback/retry, S5AT0001 atomic snapshot with compatible S5AJ0001 payload (PR1233/1309/1315/1317/1321). PARKED complete evaporative drying under current no-age-export convention; unsupported snow/exfiltration/default/output/multicolumn/simultaneous companions.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -16707,13 +16762,14 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": false
+      "implementation_absence_proven": false,
+      "parked_followup": "MC-SOL01-AGE-DRY-LIMIT-AND-APPLICATION"
     },
     {
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Bounded linear-matrix temperature/moisture/depth decay is admitted by PR1228. Nonlinear sorbed inventory and dynamic accepted thermal coupling remain separate. Matrix decay has no dependency on the rejected SWBR aquifer.",
+      "why_open": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230); historical SWHEA=0 retains zero temperature factor. PARKED live accepted thermal identity/state/restart composition and full historical/default activation. No dependency on excluded aquifer.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -16721,13 +16777,14 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false,
+      "parked_followup": "MC-SOL01-DECAY-THERMAL-COMPOSITION"
     },
     {
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Actual filling/draining hydraulic pond in existing BASE/default MvG/SWKIMPL0 Reference joint application, gross rain/irrigation, retained surface solute, prescribed dry deposition and dry/rewet, sole1256 matrix pond_mass and codec; accepted water plus whole-solute balances and exact restart. Explicit external full/half comparison at caller-supplied cm tolerance.",
+      "why_open": "ADMITTED Reference evolving pond, gross rain/irrigation/runon/runoff and non-exporting evaporation, sole matrix pond_mass, atomic rejection/retry and V2 restart (PR1234/1256/1257/1258/1304). PARKED nonlinear pond (frexp/=1 rejected), unsupported snow/exfiltration, default/bootstrap/multicolumn and simultaneous companions. Runon/runoff is no longer missing.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -16735,13 +16792,14 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false,
+      "parked_followup": "MC-SOL01-POND-APPLICATION-ENVELOPE"
     },
     {
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "PR1228 admits the linear route; PR1230 at d6e21f02 admits nonlinear0.5..2 with independent inverse, actual changing-water transport, balance and joint restart. Full reader domain0..10, dynamic thermal/surface and default application scope remain open.",
+      "why_open": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230). PARKED full remainder: exponent0..10 reader domain, nonlinear pond composition (pond route rejects frexp/=1), live accepted thermal composition and default/bootstrap activation. No absent-process claim.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -16749,7 +16807,8 @@
         "physical_risk": 3,
         "regression_risk": 3
       },
-      "implementation_absence_proven": true
+      "implementation_absence_proven": false,
+      "parked_followup": "MC-SOL01-SORPTION-ENVELOPE"
     },
     {
       "capability_id": "SW431-CROP-FIXED",
@@ -18515,6 +18574,21 @@
       ],
       "evidence": "integration/audits/evidence/FROST_NET01_FULL_LEVELS_20261017.json.gz.b64 at 47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
       "master_source_branch_note": "Historical master science is unchanged; current production reachability follows exact later canonical source/admission."
+    },
+    "MC_SOL01_NONLINEAR_MATRIX_FINAL": {
+      "canonical_merge": "d6e21f02415b733db138cdf7006524fd7e32bafd",
+      "authority_at_canonical": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json",
+      "full_capability": false
+    },
+    "MC_SOL01_SURFACE_CHEMISTRY_FINAL": {
+      "canonical_merge": "ce0291246e9bb732388214098a7a9fe0f44f4a5e",
+      "authority_at_canonical": "docs/decisions/MC_SOL01_REFERENCE_SURFACE_CHEMISTRY_20261018.md",
+      "full_capability": false
+    },
+    "MC_SOL01_SURFACE_AGE_FINAL": {
+      "canonical_merge": "d4912b3c37461ad918f37c53b236fa1d62478de6",
+      "authority_at_canonical": "integration/audits/MC_SOL01_SURFACE_AGE01_STATUS.json",
+      "full_capability": false
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -18905,7 +18979,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "47421ae0ec4145a25cb805bf38b63a6f1d32ea3a",
+  "canonical_locator_head": "db85508c431b5c926bf25a4201d0d25c12c72d92",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -21046,5 +21120,24 @@
     "full_master_integrity": "NOT_CLAIMED; structural recount and non-NUT row equality only; no source inheritance rebasing",
     "scientific_blocker": "Original gross atmospheric N cannot be reconstructed from signed net water alone; original source ponding ambiguity requires explicit physical/reference contract",
     "qualification": "Immutable physical/retained/label evidence and source identities checked; 18 incumbent and9 supplemental corruption controls freshly PASS. No new Fortran/native execution."
+  },
+  "latest_mc_sol01_final_closure_20261019": {
+    "reviewed_canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+    "previous_master": "962cd60ad7b170432d363d821e6c4f223b6dfd08",
+    "capability_ids": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND",
+      "SW431-AGE-TRACER"
+    ],
+    "disposition_delta": 0,
+    "source_absence_flags_corrected": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND"
+    ],
+    "scope": "Bounded Reference SOL and surface-age closure; four full historical envelopes explicitly parked, no whole-master/full-capability promotion. Historical source and other239 rows unchanged.",
+    "authority": "MC_SOL01_FINAL_CLOSURE.md",
+    "derived_count": "Prior summary78 was already stale against70 actual flags after NUT review; scoped SOL corrections remove3 further complete-absence assertions, actual67. Dispositions112/92/14/2/20/3 unchanged."
   }
 }

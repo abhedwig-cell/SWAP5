@@ -1204,7 +1204,7 @@
     },
     {
       "id": "MC-SOL01",
-      "status": "ACTIVE_SOURCE_REVIEW_PREREGISTERED",
+      "status": "BOUNDED_CORE_CLOSED_FOUR_FULL_ENVELOPES_EXPLICITLY_PARKED",
       "capabilities": [
         "SW431-SALT-SORPTION",
         "SW431-SALT-DECAY",
@@ -1212,7 +1212,7 @@
         "SW431-SALT-POND",
         "SW431-AGE-TRACER"
       ],
-      "next_action": "General evaporation/runoff/runon gross receipts and chemical balance, surface age, simultaneous N and full historical/default activation. Aquifer excluded. Requested core pond/infiltration/retained-solute/deposition/restart is bounded admitted; next user priority is separate reproductive/translocation/death N assessment preserving1253.",
+      "next_action": "No remaining bounded-core implementation. Four explicit parked followups: MC-SOL01-SORPTION-ENVELOPE, MC-SOL01-DECAY-THERMAL-COMPOSITION, MC-SOL01-POND-APPLICATION-ENVELOPE, MC-SOL01-AGE-DRY-LIMIT-AND-APPLICATION. Aquifer stays rejected. Do not repeat admitted runon/runoff, positive pond age or restart work.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",
@@ -1302,6 +1302,25 @@
         "negative_admission_controls": 28,
         "cost_seconds_total": 328.6976498581498,
         "qualification_selection": "Actual O0/O2 and literal B1.11, both balances, rollback/retry/replay/fresh-process native; prior1257 wet/dry and V1 files/endpoints byte-identical.28 controls, both actual FCI owner entries, source/strict docs PASS. Full FCI/RossFast/highest low-air not selected by changed-contract impact; no hosted numerical PASS."
+      },
+      "final_closure_review_20261019": {
+        "reviewed_canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+        "previous_master": "962cd60ad7b170432d363d821e6c4f223b6dfd08",
+        "capability_ids": [
+          "SW431-SALT-SORPTION",
+          "SW431-SALT-DECAY",
+          "SW431-SALT-POND",
+          "SW431-AGE-TRACER"
+        ],
+        "disposition_delta": 0,
+        "source_absence_flags_corrected": [
+          "SW431-SALT-SORPTION",
+          "SW431-SALT-DECAY",
+          "SW431-SALT-POND"
+        ],
+        "scope": "Bounded Reference SOL and surface-age closure; four full historical envelopes explicitly parked, no whole-master/full-capability promotion. Historical source and other239 rows unchanged.",
+        "authority": "MC_SOL01_FINAL_CLOSURE.md",
+        "derived_count": "Prior summary78 was already stale against70 actual flags after NUT review; scoped SOL corrections remove3 further complete-absence assertions, actual67. Dispositions112/92/14/2/20/3 unchanged."
       }
     },
     {

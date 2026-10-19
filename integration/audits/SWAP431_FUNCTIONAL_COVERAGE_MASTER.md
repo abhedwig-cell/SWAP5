@@ -937,3 +937,7 @@ Existing SW431-IRR-TCS6 closes through PR1262 at `1ff5b7b8f4f5e3869fdb6d33defa2d
 ## Full depth-limit admission
 
 PR #1268 admits only SW431-IRR-LIMIT at `121ed3503638c2d3168fa30e40f6af24156348a7`. The source/native qualification and exact merged tree are recorded in `MC_IRR01_STATUS.json` at that commit. The master now has105 ADMITTED,99 ACTIVE_MIGRATION and3 QUALIFICATION_ONLY,102 unresolved. All other242 capability rows are unchanged.
+
+## MC-SOL01 bounded closure, 2026-10-19
+
+Reference runon/runoff and positive-pond/soil age, joint balances, retry/rollback and atomic S5AT0001 restart are already admitted. Four full historical rows retain ACTIVE_MIGRATION with exact separately parked envelopes; no capability promotion. The JSON row and queue claims supersede earlier generic missing-pond/age descriptions. Aquifer remains REJECTED; RossFast remains optional/frozen. See the canonical MC_SOL01_FINAL_CLOSURE.md and existing trajectory3/surface/age admission records. Confirmed-absence flags are corrected to67 actual rows (previous summary78 was stale against70 after NUT review); total243 and all dispositions remain unchanged.
