@@ -12,7 +12,8 @@ for line in part.splitlines():
     line=line.split('#',1)[0].strip()
     if line: roots.extend(shlex.split(line))
 roots += ['src/process/mod_b111_surface_n_gross_budget.f90',
-          'src/runtime/mod_b111_surface_n_reference_bridge.f90']
+          'src/runtime/mod_b111_surface_n_reference_bridge.f90',
+          'src/runtime/mod_b111_n_gross_direct_binding.f90']
 pathlib.Path(sys.argv[1]).write_text('\n'.join(roots)+'\n')
 PY
 mapfile -t roots < "$build/roots"
@@ -34,5 +35,13 @@ for opt in 0 2; do
   "$out/test" > "$out/output"
   grep -Fq 'MC_NUT01_REFERENCE_GROSS_N_BRIDGE=PASS' "$out/output"
   echo "MC_NUT01_REFERENCE_GROSS_N_BRIDGE_O$opt=PASS"
+  gfortran -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -O"$opt" \
+    -J "$out" -I "$out" \
+    "$out/mod_b111_n_gross_direct_binding.o" \
+    tests/nut-crop/test_n_direct_gross_binding.f90 -o "$out/direct-test"
+  "$out/direct-test" > "$out/direct-output"
+  grep -Fq 'MC_NUT01_GROSS_DIRECT_REFERENCE_BOUNDING=PASS' "$out/direct-output"
+  echo "MC_NUT01_GROSS_DIRECT_REFERENCE_O$opt=PASS"
 done
 cmp "$build/o0/output" "$build/o2/output"
+cmp "$build/o0/direct-output" "$build/o2/direct-output"
