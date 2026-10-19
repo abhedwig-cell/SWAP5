@@ -6,6 +6,9 @@ on:
       - 'tests/nut-crop/test_surface_n_gross_budget.f90'
       - 'tests/nut-crop/run_surface_n_gross_budget.sh'
       - 'src/runtime/mod_b111_surface_n_reference_bridge.f90'
+      - 'src/process/mod_b111_soil_n_mineral_owner.f90'
+      - 'tests/nut-crop/test_mineral_gross_carrier.f90'
+      - 'tests/nut-crop/run_mineral_gross_carrier.sh'
       - 'tests/nut-crop/test_surface_n_reference_bridge.f90'
       - 'tests/nut-crop/run_surface_n_reference_bridge.sh'
       - '.github/workflows/mc-nut01-gross-surface-n.yml'
@@ -28,3 +31,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Native accepted Reference gross N bridge O0/O2
         run: bash tests/nut-crop/run_surface_n_reference_bridge.sh
+
+  historical-mineral-owner-o0-o2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify separate gross N source with strict signed net hydraulic carrier
+        run: bash tests/nut-crop/run_mineral_gross_carrier.sh
