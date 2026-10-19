@@ -109,11 +109,12 @@ contains
    integer(int64),intent(out)::id
    p=self%p;id=self%id
  end subroutine
- subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,surface_water)
+ subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt, &
+      surface_water,gross_surface_n_carrier)
    type(mineral_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
-   real(real64),intent(in),optional::surface_water
-   real(real64)::surface
+   real(real64),intent(in),optional::surface_water,gross_surface_n_carrier
+   real(real64)::surface,n_carrier
    type(mineral_receipt_t),intent(out)::receipt
    type(b111_soil_n_concentration_state_t)::c
    type(b111_soil_n_transport_result_t)::r(2)
@@ -124,6 +125,9 @@ contains
    integer::i,code
    receipt=mineral_receipt_t()
    surface=0d0;if(present(surface_water))surface=surface_water
+   n_carrier=max(0d0,surface)
+   if(present(gross_surface_n_carrier))n_carrier=gross_surface_n_carrier
+   if(.not.ieee_is_finite(n_carrier).or.n_carrier<0d0.or.n_carrier>100d0)return
    if(.not.ieee_is_finite(surface))return
    if(abs(surface)>100d0)return
    if(.not.state%ready())return
@@ -141,7 +145,7 @@ contains
    initial=[c%cnh4_kg_m3,c%cno3_kg_m3];sorption=[state%p%sorption,0d0]
    if(any(initial>1d6))return
    do i=1,2
-     call evaluate_b111_soil_n_transport(dz,dt,water_end,state%water,outflow,root_water,in_bottom,max(0d0,surface), &
+     call evaluate_b111_soil_n_transport(dz,dt,water_end,state%water,outflow,root_water,in_bottom,n_carrier, &
        in_lateral,0d0,0d0,0d0,state%p%drybd,sorption(i),state%p%c_bottom(i),state%p%c_top(i), &
        state%p%c_lateral(i),initial(i),r(i))
      if(r(i)%status/=B111_NTRANS_OK)return
@@ -155,7 +159,7 @@ contains
    x%fom_delta_kg_m3=spread(0d0,1,size(state%pools%fom_kg_m3))
    x%ammonium_n_delta_kg_m2=mass(1)-state%pools%ammonium_n_kg_m2
    x%nitrate_n_delta_kg_m2=mass(2)-state%pools%nitrate_n_kg_m2
-   x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral+max(0d0,surface)*state%p%c_top)
+   x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral+n_carrier*state%p%c_top)
    x%external_n_output_kg_m2=dt*outflow*sum(receipt%concentration_average)
    call apply_soil_n_transfer(state%p%inventory,state%pools,x,trial,budget)
    receipt%status=MINERAL_BALANCE
