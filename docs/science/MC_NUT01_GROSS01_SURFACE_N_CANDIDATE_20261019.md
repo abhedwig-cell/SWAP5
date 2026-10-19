@@ -60,3 +60,9 @@ The native bridge test checks 4mm rain plus equal evaporation, correct 0.004m/da
 ## Transactional multi-day mineral stage (19 October 2026)
 
 The private `trial_mineral_gross_days` now consumes a sequence of **accepted typed daily hydraulic receipts**, derives each bounded rain-only gross N carrier and stages actual mineral-owner candidates over successive days without committing the original. A rejected later day discards the whole candidate; the committed mineral owner is not modified. The native oracle includes two successive gross days and a deliberately rejected day 2 with zero committed NH4/NO3 revision and time change. This is explicitly **not** the common hydraulic+chemical transaction executor; it is a prerequisite candidate stage. The O0/O2 gate for this source revision is `39307333483`, queued at the time recorded. No PASS can be claimed for this revision yet.
+
+## Signed qtop identity and source gate
+
+The bounded direct rain-source binder now additionally verifies that, for its zero-pond/no-runon/no-irrigation/no-runoff domain, the actual accepted upward-positive top flux obeys `-qtop = gross_rain - pond_evaporation` (cm/day), within a magnitude-scaled 1e-10 tolerance. An inconsistent trace is rejected before the independent gross-N transport coefficient can enter the mineral owner. The native negative oracle changes only qtop with identical gross rain/evaporation and asserts rejection; retained old callers without opt-in are not modified. This strengthens physical provenance, but does not replace real Richards+soil-N joint commit/restart tests. Dedicated post-change workflow run `39307796665` was queued at the last check; no PASS is claimed for this newest source revision.
+
+Canonical had advanced by seven commits relative to this candidate branch at the last check. Reconciliation is mandatory prior to any admission.
