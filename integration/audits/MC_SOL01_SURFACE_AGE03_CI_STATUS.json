@@ -514,10 +514,31 @@
       "baseline": "b8ce7d51258bbbe634c46dd24e5e829c0872c360",
       "selected_tests": [
         "tests/fkt/run_fkt22_fmr_compile_gate.sh",
-        "tests/fkt/run_fkt22_eb_i25_preservation_gate.sh"
+        "tests/fpe/run_fpe_zero_waste01_paired_runtime.sh"
       ],
       "expected_seconds_per_route": 300,
-      "reason": "Identical missing DRAMET3 dependency in two additional original integrated preservation recipes; preserve original O0/O2 flags and assertions. No production change. Historical paired benchmark separately requires baseline compatibility attribution, not new optimization."
+      "reason": "Identical missing DRAMET3 dependency in two additional original integrated preservation recipes; preserve original O0/O2 flags and assertions. No production change. Historical paired benchmark separately requires baseline compatibility attribution, not new optimization.",
+      "paired_baseline_probe_selection": {
+        "scope": "Scratch-only complete dependency ordering for original six-file baseline82d9938976fd92ff3230e7739539e467c3243225 mixed with current providers; compile baseline only, no timing loops or performance claim. Production script remains unchanged unless compatible and natively qualified.",
+        "expected_seconds": 120,
+        "reason": "Determine whether the remaining paired benchmark is a missing dependency only or an incompatible historical/live source composition; not new optimization."
+      },
+      "modflow_download_recovery": {
+        "change": "Expose the existing read-only github.token as GITHUB_TOKEN to the unchanged pinned MODFLOW download route.",
+        "reason": "39322825439 failed with HTTP403 rate limit before MODFLOW execution. No MODFLOW version or scientific assertion changes.",
+        "qualification_authority": "Terminal repaired F-GC fixed-interface run on PR1327 required before canonical merge."
+      },
+      "paired_selection": {
+        "expected_seconds": 480,
+        "reason": "Baseline compile-only probe succeeds, so retain the original 5000 calls and ten pairs in both modes to qualify the repaired build recipe. Share one immutable baseline/candidate build; execute every original native timing/checksum/count assertion, claim no new speed guarantee. No physical functionality or optimization change.",
+        "baseline_commit": "82d9938976fd92ff3230e7739539e467c3243225"
+      },
+      "eb_i25_diagnostic": {
+        "status": "BLOCKED_OWNER_CONTRACT_RECONCILIATION",
+        "execution_commit": "92ece71b17f35da6e06d6445d9f22bc609344d38",
+        "result": "O0 original native failure after dependency closure: EB_I25_TEST_FAIL external full-half outflow fixture rejected before commit. Fixture expects rejection but live route accepts. No assertion/tolerance/production changes. Do not credit as PASS.",
+        "disposition": "Separate energy owner issue; final EB-I25 recipe unchanged from b8ce7d51. Not a new MC-SOL01 admission requirement."
+      }
     }
   }
 }

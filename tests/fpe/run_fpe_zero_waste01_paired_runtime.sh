@@ -75,13 +75,14 @@ MODULE_SRC=(
   BACKEND_PLACEHOLDER
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
+# Resolve each historical/current provider set before ordering dependencies.
 
 compile_variant() {
   local name="$1"
   local out="$BUILD/$name"
   mkdir -p "$out"
   local objects=()
+  local resolved=()
   for source in "${MODULE_SRC[@]}"; do
     case "$source" in
       WORKSPACE_PLACEHOLDER)
@@ -97,6 +98,10 @@ compile_variant() {
       BACKEND_PLACEHOLDER)
         [[ "$name" == baseline ]] && source="$BUILD/src/mod_fmr_serialized_reference_backend.f90" || source="src/runtime/mod_fmr_serialized_reference_backend.f90" ;;
     esac
+    resolved+=("$source")
+  done
+  mapfile -t resolved < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${resolved[@]}")
+  for source in "${resolved[@]}"; do
     local obj="$out/$(basename "${source%.*}").o"
     gfortran -std=f2008 -ffree-line-length-none -O2 -J"$out" -I"$out" -c "$source" -o "$obj"
     objects+=("$obj")
