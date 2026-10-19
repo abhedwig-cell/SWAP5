@@ -802,7 +802,7 @@
         "merged": true,
         "merge_commit": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
         "qualified_head": "8c4e02dff8482600d0d432a0448b8b284684eb44",
-        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water–soil–crop restart",
+        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water\u2013soil\u2013crop restart",
         "url": "https://github.com/abhedwig-cell/SWAP5/pull/1235"
       },
       {
@@ -868,17 +868,50 @@
     "published_disposition": "6f503c0ea340efe097f2b163672b5de7629fe7dc"
   },
   "final_closure_review_20261019": {
-    "baseline": "e122ff8f682584620717e97ab24ce07933dd0923",
-    "phase": "CURRENT_HEAD_LOCAL_QUALIFICATION_RUNNING",
-    "closure_document": "MC_SOL01_FINAL_CLOSURE.md",
+    "phase": "QUALIFIED_BOUNDED_CLOSURE_PENDING_CANONICAL_METADATA_ADMISSION",
+    "reviewed_canonical": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "reconciled_canonical": "db85508c431b5c926bf25a4201d0d25c12c72d92",
+    "source_tree": "282e4504c8d1d31e9cdfa37041b6b06a48a90588",
     "production_changed": false,
+    "source_inputs_unchanged": {
+      "age": 276,
+      "matrix": 273
+    },
+    "age_cost_seconds": {
+      "physical_compile": 231.46326648418471,
+      "physical_link": 0.3330041709996294,
+      "physical_native": 11.565003368988982,
+      "process_compile": 2.6595778270057053,
+      "process_link": 0.0889363489986863,
+      "process_native": 0.004363409003417473,
+      "surface_compile": 6.9522336770096445,
+      "surface_link": 0.2929169169947272,
+      "surface_native": 6.084907874996134
+    },
+    "matrix_cost_seconds": {
+      "compile": 241.96785001193348,
+      "link": 1.0799371270040865,
+      "native": 86.16351455201948
+    },
+    "full_fci": "NOT_SELECTED_IMPACT_METADATA_ONLY_CURRENT_SOURCE_BOUND_AUTHORITY_PASS",
+    "rossfast": "FROZEN_UNCHANGED",
+    "master_reconciliation_commit": "abb0045e5a8c7e72ca99f813d6e1e0e175d33e6f",
+    "full_master_integrity": "FAIL_UNCHANGED_NINE_NUT_BOUNDED_RECEIPT_REGISTRATION_GAPS",
+    "closure_document": "MC_SOL01_FINAL_CLOSURE.md",
     "full_historical_capability_promotion": false,
-    "next_action": "Complete selected real current-head O0/O2 runs; reconcile exactly four full-envelope parked master rows, then metadata-only canonical integration.",
     "parked_capabilities": [
       "SW431-SALT-SORPTION",
       "SW431-SALT-DECAY",
       "SW431-SALT-POND",
       "SW431-AGE-TRACER"
-    ]
+    ],
+    "new_manual_actions_runs": 0,
+    "next_action": "Metadata-only canonical admission; revalidate exact source and final documentation, retain master PR1072 draft.",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_FINAL_CLOSURE_20261019.tar.xz.b64",
+      "decoded_sha256": "ad79932b35f53be60b9040f3a4157200ea0d3c30b691a48cca43b60aaf7f815b",
+      "decoded_bytes": 196536,
+      "members": 3445
+    }
   }
 }

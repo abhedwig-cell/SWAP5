@@ -55,7 +55,28 @@ No new RossFast development, aquifer implementation, highest low-air stress or u
 
 ## Current-session execution
 
-Pending completion of the selected local current-head runs. This section is replaced by terminal results before closure admission; no pending run counts as PASS.
+All selected current physical runs completed locally with GNU Fortran 13.3.0. Runtime bounds checks and invalid/zero/overflow traps remained enabled. The concurrent NUT closure at `db85508c431b5c926bf25a4201d0d25c12c72d92` changes only documentation/evidence/status; its source tree is exactly the reviewed `282e4504c8d1d31e9cdfa37041b6b06a48a90588`. Every one of the 276 age and 273 matrix recorded execution inputs still matches its SHA256 after reconciliation.
+
+| Current local gate | Terminal result |
+| --- | --- |
+| `tests/nut-sol/run_age.py` | O0/O2 PASS: 150-step literal process, real signed-flow soil age, positive pond/aged external water, numerical and chemical rejection, smaller retry, exact fresh-process endpoint and snapshot corruptions. Compile/link/native total 259.444210 s. |
+| `tests/publication/run_pub_p1e02_postsolver_rollback.sh` | O0/O2 PASS: actual Reference pond runon/runoff, evaporation/source mixing balance/restart/rejection, accepted-state identity and post-solver rollback. Optimization output SHA256 `ba5d3b995d855c271bc6b8d6f7b5b2f142870fcecc17961414be6cb5d3730626`. |
+| `MATRIX_NONLINEAR=1 tests/nut-sol/run_matrix_route.py` | O0/O2 PASS: 7218 independent inverse cases per optimization; actual accepted-water transport/decay and joint continuation for exponents 1, 0.5, 0.8, 1.0005, 1.5 and 2. Compile 241.967850 s, link 1.079937 s, native 86.163515 s. |
+| `tests/nut-sol/run_surface_age_budget.sh` | O0/O2 PASS: analytic first-order control, budget, persistent owner, disk/fresh process, exactly-once soil handoff and native soil-age top boundary. |
+| Existing archived rename interposer, current freshly compiled positive-pond executable | PASS: fresh SIGKILL immediately before/after rename, old-or-complete snapshot readable and exact fresh-process endpoint. Only scratch paths in the archived experiment controller are relocated. |
+| Current `verify_surface_age_successor.py` | Source, executed evidence, inherited CI science and incumbent age PASS after actual NUT metadata coexistence. Nine deliberate current-validator evidence corruptions reject at the relevant assertions. |
+| `surface_age_longrun/verify.py --self-test` | PASS: original source-bound two-day evidence plus all eight negative controls; no duplicate long physical run. |
+| Documentation | Source checks PASS and strict `python -m mkdocs` build PASS (22.45 s) after concurrent documentation was retained. |
+| Existing master ledger | Scoped four-row/queue/ancestry/locator proof PASS, all other 239 rows and all 243 dispositions exact. Master branch receipt `abb0045e5a8c7e72ca99f813d6e1e0e175d33e6f`; no whole-master admission. |
+
+Reproduction uses the existing commands above with `FC` pointing at GNU Fortran and result directories in writable scratch. The final matrix compiler command adds **only** `-Wno-error=compare-reals`: exact physical zero/identity comparisons in the later admitted restart adapter remain unchanged; the historical harness's `-Werror` otherwise stops compilation on that diagnostic. All runtime checks, FPE traps and assertions remain active. The initial compiler-policy failure and its raw commands are retained and never count as PASS.
+
+The initial direct `check_age_evidence_controls.py` invocation fails its positive historical capsule comparison at `tests/nut-sol/run_age.py`, which was intentionally superseded by admitted surface age. Its 28 nominal negatives are not credited as current evidence. The current successor positive validation, nine discriminating corruption controls and fresh native runs above are the current authority; the old failure remains in the capsule. No old assertion or eligibility pin was weakened.
+
+Full master integrity is not claimed: both baseline and final structural inspection identify the same nine unrelated NUT ACTIVE rows without the `bounded_receipt` shape required by the global checker; the final full checker stops with `active route lacks bounded authority`. The four SOL rows satisfy that original checker contract and have fresh scoped PASS. The master denominator remains incomplete. That global NUT bookkeeping issue neither proves missing SOL physics nor authorizes changing other capability rows.
+
+The immutable current-session capsule is `integration/audits/evidence/MC_SOL01_FINAL_CLOSURE_20261019.tar.xz.b64`. It includes raw successful and failed commands/results, exact source-input reconciliation, native restart endpoints, the crash controller/interposer, existing-validator corruption tests, documentation logs and the scoped master validation. The small local checkpoint Git bundle preserves the matrix run's local metadata-only baseline `69b6b8ea`; the source was already canonical and its remote closure checkpoint is `7148198c`. No new manually dispatched Actions or whole moving-FCI run was needed for metadata-only closure.
+
 
 ## Parked work and re-entry criteria
 
