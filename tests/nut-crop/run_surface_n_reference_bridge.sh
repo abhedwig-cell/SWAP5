@@ -13,7 +13,8 @@ for line in part.splitlines():
     if line: roots.extend(shlex.split(line))
 roots += ['src/process/mod_b111_surface_n_gross_budget.f90',
           'src/runtime/mod_b111_surface_n_reference_bridge.f90',
-          'src/runtime/mod_b111_n_gross_direct_binding.f90']
+          'src/runtime/mod_b111_n_gross_direct_binding.f90',
+          'src/runtime/mod_b111_n_reference_mineral_trial.f90']
 pathlib.Path(sys.argv[1]).write_text('\n'.join(roots)+'\n')
 PY
 mapfile -t roots < "$build/roots"
@@ -42,6 +43,19 @@ for opt in 0 2; do
   "$out/direct-test" > "$out/direct-output"
   grep -Fq 'MC_NUT01_GROSS_DIRECT_REFERENCE_BOUNDING=PASS' "$out/direct-output"
   echo "MC_NUT01_GROSS_DIRECT_REFERENCE_O$opt=PASS"
+  gfortran -std=f2008 -ffree-line-length-none -fopenmp -fcheck=all -O"$opt" \
+    -J "$out" -I "$out" \
+    "$out/mod_soil_n_pool_state.o" \
+    "$out/mod_b111_soil_n_storage_conversion.o" \
+    "$out/mod_b111_soil_n_transport.o" \
+    "$out/mod_b111_soil_n_mineral_owner.o" \
+    "$out/mod_b111_n_gross_direct_binding.o" \
+    "$out/mod_b111_n_reference_mineral_trial.o" \
+    tests/nut-crop/test_n_reference_mineral_trial.f90 -o "$out/mineral-trial"
+  "$out/mineral-trial" > "$out/mineral-trial-output"
+  grep -Fq 'MC_NUT01_REFERENCE_MINERAL_TRIAL=PASS' "$out/mineral-trial-output"
+  echo "MC_NUT01_REFERENCE_MINERAL_TRIAL_O$opt=PASS"
 done
 cmp "$build/o0/output" "$build/o2/output"
 cmp "$build/o0/direct-output" "$build/o2/direct-output"
+cmp "$build/o0/mineral-trial-output" "$build/o2/mineral-trial-output"
