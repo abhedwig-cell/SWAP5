@@ -249,6 +249,15 @@
         "candidate": "6f151ccf7ecd40010de0b14c896a72371cf5ce83",
         "prior_execution": "SUCCESS",
         "measured_physical_seconds": 737.2606643490399
+      },
+      "final_nut_physical": {
+        "changed_dependency": "No production change. Explicit final-closure request for fresh real coupled trajectories, distinguished from evidence revalidation.",
+        "scientific_claim": "Current unchanged 124-day and three 730-day Reference crop/Soil-N trajectories, accepted-state conservation, persistent restarts and rollback; not gross-atmospheric or full legacy equivalence.",
+        "owner": "MC-NUT01",
+        "authority": "AGENTS.md; user final closure request sections 6, 7 and 11",
+        "expected_seconds": 900,
+        "existing_evidence": "PR1319 unchanged bounded evidence validated; fresh execution selected to answer explicit model-execution request, not to reopen unrelated components.",
+        "prior_execution": "NONE"
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1089,5 +1098,16 @@
     "canonical_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
     "reviewed_head": "e5bc5e46c01088bbadf0db67ab9c47c72964ce88",
     "post_merge_guard": "Current complete HIST/age/retained owning chain PASS; reviewed and merged trees identical; full capability false"
+  },
+  "final_reconciliation_20261019": {
+    "baseline": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "status": "IN_PROGRESS_FULL_CAPABILITY_BLOCKED",
+    "master_head": "d77939e08b841fc0456d76a883450f4f15a9c099",
+    "existing_nutrient_rows": 9,
+    "full_row_dispositions": "ACTIVE_MIGRATION unchanged",
+    "fresh_counterexample": "O0/O2 PASS; 4mm rain/4mm evaporation loses 0.8kg N/ha through net-only carrier",
+    "owning_validation": "PASS existing complete current HIST/age/retained/F-CI73 chain; 18 historical corruption controls PASS",
+    "recovered_git_object": "1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f fetched explicitly for historical FGC21 fixture; initial validation without object failed and is not PASS",
+    "next_action": "Execute unchanged full bounded physical runner at O0/O2 and write final capability/evidence reconciliation; do not promote full historical scope."
   }
 }
