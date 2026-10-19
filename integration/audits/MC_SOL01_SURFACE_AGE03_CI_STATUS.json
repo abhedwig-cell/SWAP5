@@ -385,5 +385,24 @@
       "source_authorities": "Both current F-CI73 and incumbent age/NUT CI qualifications PASS on actual merge, clean checkout"
     }
   },
-  "global_ci_scope": "All five automatic workflows on6153b540 after qualified F-CI73 successor repair; historical failures onf9731ff6 are retained as historical facts"
+  "global_ci_scope": "All five automatic workflows on6153b540 after qualified F-CI73 successor repair; historical failures onf9731ff6 are retained as historical facts",
+  "closure_ci_followup_20261019": {
+    "baseline": "6bac7b1508e4b7c33bf887f61be4499268bac4da",
+    "stage": "IMPLEMENTED_NOT_YET_QUALIFIED",
+    "scope": "Repair six existing compile closures and research-only TIMEINT16 materialization; production/reference/assertions/flags unchanged. AHL opt-in inherits the repaired FGC49D template.",
+    "selected_tests": [
+      "tests/fpe/run_fpe_zero_waste01_poison_workspace.sh",
+      "tests/fkt/run_fkt22_fmr_runtime_gate.sh",
+      "tests/fahl/run_fahl49_production_matrix.sh",
+      "tests/fahl/run_fahl49_application_optin.sh",
+      "tests/fahl/run_fahl49_application_scale.sh",
+      "tests/fahl/run_fahl49_failclosed.sh",
+      "tests/fpe/run_fpe_timeint16.sh",
+      "tests/fpe/run_fpe_timeint16b.sh"
+    ],
+    "cost_justification": "Native original oracles are necessary to distinguish dependency repair from numerical regressions. Sequential fresh builds; UNKNOWN compile/native split until measured. These are bounded replacements for eight pre-native failed hosted jobs, not new research or broad solute requalification.",
+    "production_changed": false,
+    "qualification": "PENDING",
+    "next_action": "Execute unchanged original native oracles, retain failures; register exact successor only after actual relevant PASS."
+  }
 }

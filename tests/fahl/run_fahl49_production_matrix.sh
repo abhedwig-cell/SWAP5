@@ -79,6 +79,7 @@ SRC=(
   src/runtime/mod_rossfast_d3r_execution_policy.f90
   src/runtime/mod_rossfast_d3r_model_binding.f90
 )
+mapfile -t SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${SRC[@]}")
 objects=()
 for source in "${SRC[@]}"; do
   obj="$BUILD/$(basename "${source%.*}").o"

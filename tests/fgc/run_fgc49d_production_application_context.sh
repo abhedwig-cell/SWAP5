@@ -149,7 +149,7 @@ MODULE_SRC=(
   tests/fgc/support/mod_fgc49d_application_context_fixture.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")
 
 for opt in 0 2; do
   OUT="$BUILD/o$opt"

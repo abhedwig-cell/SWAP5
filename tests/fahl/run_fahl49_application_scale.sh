@@ -96,7 +96,7 @@ MODULE_SRC=(
   src/runtime/mod_fmr_production_application_bootstrap.f90
 )
 # Additive C3A backend prerequisites; existing gate semantics stay fixed.
-mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py "${MODULE_SRC[@]}")
+mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")
 objects=()
 for source in "${MODULE_SRC[@]}"; do
   obj="$BUILD/$(basename "${source%.*}").o"
