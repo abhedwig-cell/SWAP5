@@ -28,6 +28,10 @@ contains
   if(.not.all(ieee_is_finite([water_end,outflow,in_bottom,in_lateral,root_water])))return
   call direct_gross_n_rate_from_reference(t,gross,code)
   if(code/=N_DIRECT_OK)return
+  ! Explicit reject: do not accept unowned in-bottom/lateral source
+  ! quantities unless the corresponding hydraulic carrier is independently
+  ! qualified by its source owner. This private candidate stays rain-only.
+  if(any([outflow,in_bottom,in_lateral,root_water]<0d0))return
   ! Reference qtop uses upward-positive cm/day. N owner expects
   ! downward-positive signed m/day and alone owns its hard water closure.
   net=-0.01d0*t%top_flux
