@@ -1,0 +1,60 @@
+{
+  "cells": 4096,
+  "years": {
+    "2024": 366,
+    "2025": 365,
+    "2026": 274
+  },
+  "requested_scalars": [
+    "RAIN",
+    "RUNOFF",
+    "IRRIG",
+    "DRN",
+    "BOT",
+    "EPOT",
+    "EACT",
+    "TPOT",
+    "TACT",
+    "EPD",
+    "EIC",
+    "DSTOR",
+    "BALDEV",
+    "GASST",
+    "GWL"
+  ],
+  "actual_depth_cm": [
+    -10.5,
+    -22.5,
+    -42.5,
+    -82.5,
+    -162.5
+  ],
+  "requested_depth_cm": [
+    -10,
+    -20,
+    -40,
+    -80,
+    -160
+  ],
+  "files": [
+    {
+      "name": "Kalmthout_SW431_V02_daily_2024.nc",
+      "bytes": 96744536,
+      "sha256": "1b30cd007e572c9b364794223c13df536a06fd1dd7b592ff00fe76c967add84d"
+    },
+    {
+      "name": "Kalmthout_SW431_V02_daily_2025.nc",
+      "bytes": 99175314,
+      "sha256": "e49a220af4ccaf290846649b0f555422e218e5c56fc653bb76e36479a15f23c7"
+    },
+    {
+      "name": "Kalmthout_SW431_V02_daily_2026.nc",
+      "bytes": 74222364,
+      "sha256": "97a23bfc7227650ef1c529737bf7590a65b3f776bdec484249a5cd29e6a65e00"
+    }
+  ],
+  "wall_seconds": 1568.4058349499996,
+  "status": "COMPLETE",
+  "spatial_flags_included": true,
+  "wall_seconds_includes_wait_for_native_runs": true
+}

@@ -1,0 +1,187 @@
+{
+  "variables": [
+    {
+      "variable": "RAIN",
+      "definition": "Native gross precipitation entering the model accounting",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "RUNOFF",
+      "definition": "Surface runoff leaving the column surface system",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "IRRIG",
+      "definition": "Irrigation input, disabled in this configuration",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "DRN",
+      "definition": "Native net drainage term, drainage module disabled",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "BOT",
+      "definition": "Net bottom boundary exchange, positive into the soil column",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "EPOT",
+      "definition": "Potential soil evaporation",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "EACT",
+      "definition": "Actual soil evaporation",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "TPOT",
+      "definition": "Potential transpiration",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "TACT",
+      "definition": "Actual transpiration or integrated root water uptake",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "EPD",
+      "definition": "Evaporation from ponded surface water",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "EIC",
+      "definition": "Native canopy interception accounting term, including capacity-loss effects",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "DSTOR",
+      "definition": "Native change in total water storage used in its balance accounting",
+      "unit_and_temporal_support": "cm change over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "BALDEV",
+      "definition": "Native water balance deviation with the native sign",
+      "unit_and_temporal_support": "cm over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "GASST",
+      "definition": "Gross crop assimilation in CH2O equivalents; availability depends on crop route",
+      "unit_and_temporal_support": "kg ha\u207b\u00b9 over the daily interval",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "GWL",
+      "definition": "Native groundwater level relative to the soil surface, positive upward",
+      "unit_and_temporal_support": "cm, state at day end",
+      "dimensions": [
+        "time",
+        "cell"
+      ]
+    },
+    {
+      "variable": "WC",
+      "definition": "Volumetric water content at each actual compartment centre",
+      "unit_and_temporal_support": "m\u00b3 m\u207b\u00b3, state at day end",
+      "dimensions": [
+        "time",
+        "cell",
+        "depth"
+      ]
+    },
+    {
+      "variable": "T",
+      "definition": "Soil temperature at each actual compartment centre",
+      "unit_and_temporal_support": "degrees Celsius, state at day end",
+      "dimensions": [
+        "time",
+        "cell",
+        "depth"
+      ]
+    }
+  ],
+  "native_missing": {
+    "GASST": -999.999,
+    "GWL": 999
+  },
+  "delivered_missing": "NaN",
+  "GASST_flag": {
+    "0": "native value",
+    "1": "no active dynamic crop, zero assigned",
+    "2": "assimilation not simulated, NaN"
+  },
+  "canopy_reset_flag": {
+    "0": "no specific flag",
+    "1": "crop calendar canopy accounting discontinuity"
+  },
+  "depth_requested_cm": [
+    -10,
+    -20,
+    -40,
+    -80,
+    -160
+  ],
+  "depth_actual_cm": [
+    -10.5,
+    -22.5,
+    -42.5,
+    -82.5,
+    -162.5
+  ]
+}

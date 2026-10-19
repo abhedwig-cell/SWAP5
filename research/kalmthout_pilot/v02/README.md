@@ -4,7 +4,7 @@ First provisional regional technical exercise for SYMPHONICA. All 4,096 independ
 
 ## Read and recover
 
-The detailed English technical note is in `docs/Kalmthout_V02_technical_note.md` and its Word edition. The note explains sources, exact run construction, output definitions, quality flags and proposed improvements. Machine-readable schemas and identities are under `metadata`.
+The detailed English technical note is in [Markdown](docs/Kalmthout_V02_technical_note.md) and [Word](docs/Kalmthout_V02_technical_note.docx). The note explains sources, exact run construction, output definitions, quality flags and proposed improvements. Machine-readable schemas, a variable dictionary, parameter inventory and identities are under `metadata`.
 
 All original native inputs and outputs, source closure, complete V01 recovery and the three final annual NetCDF files are preserved as binary parts under `evidence`. Parts keep each Git object below the existing 7.2 MB research packaging size. Assemble and verify them locally:
 
@@ -21,3 +21,5 @@ The script reads the ordered manifest, checks every part and the complete SHA-25
 We intend to align these exploratory inputs and outputs with the standard datasets collected and made accessible within SYMPHONICA. That alignment and independent observational validation have not yet been completed.
 
 The implementation changes only the research files and the retained SWAP 4.3.1 output module. No canonical SWAP5 interface or architecture invariant is changed. No mass-conservation condition is relaxed. See `STATUS.json` for the recoverable work-unit boundary and `metadata/artifact_manifest.json` for exact archive identities.
+
+Historical failed and successful output probes and the selected-cell NetCDF prototype are separately preserved in `evidence/V02_output_diagnostics_20261019.tar.xz`, with its identity in `metadata/diagnostic_archive.json`. These are diagnostic evidence, not further regional production runs. All 109 parts of the five primary artifacts were assembled and their complete identities verified. The English Word note contains 18 visually reviewed pages.

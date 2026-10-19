@@ -1,5 +1,10 @@
 # Kalmthoutse Heide SWAP5 pilot
 
+## Current regional application
+
+The complete SWAP 4.3.1 V02 regional technical exercise is documented in [v02/README.md](v02/README.md). It includes numerical heat, WOFOST grass and maize, all 4,096 native input/output columns, annual daily NetCDF files, complete recovery archives and a detailed English technical note. It remains provisional and uncalibrated. The sections below preserve the older 500 m SWAP5 pilot context and do not describe V02 execution.
+
+
 This work directory is an operational research pilot and is not a canonical scientific admission record.
 
 ## Official domain

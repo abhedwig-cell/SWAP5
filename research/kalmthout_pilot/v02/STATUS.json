@@ -10,10 +10,30 @@
   "qualified": "Bounded execution and output evidence only; not calibrated or independently field validated; no SWAP5 admission",
   "interfaces_changed": "Research output schema only; no canonical SWAP5 interfaces",
   "invariants_affected": "No canonical invariant changed; known canopy accounting events remain explicit rather than weakening conservation",
-  "next_action": "Complete the detailed English note and its visual review; then address hydrological surroundings and project data alignment",
+  "next_action": "Review hydrological surroundings, connect standard SYMPHONICA data and design observational evaluation",
   "recovery_point": "scripts/assemble_artifacts.py and metadata/artifact_manifest.json",
-  "relevant_paths": ["research/kalmthout_pilot/v02"],
-  "dependency_surface": ["original SWAP431 and TTUTIL archives", "GNU output portability correction", "V01 local model inputs", "V02 crop and heat inputs", "runner and NetCDF exporter"],
+  "relevant_paths": [
+    "research/kalmthout_pilot/v02"
+  ],
+  "dependency_surface": [
+    "original SWAP431 and TTUTIL archives",
+    "GNU output portability correction",
+    "V01 local model inputs",
+    "V02 crop and heat inputs",
+    "runner and NetCDF exporter"
+  ],
   "blockers": [],
-  "known_limitations": ["not locally calibrated", "independent columns without groundwater coupling", "shared meteorology", "maize proxy", "no spin-up", "1701 canopy accounting flags", "project standard data alignment pending"]
+  "known_limitations": [
+    "not locally calibrated",
+    "independent columns without groundwater coupling",
+    "shared meteorology",
+    "maize proxy",
+    "no spin-up",
+    "1701 canopy accounting flags",
+    "project standard data alignment pending"
+  ],
+  "data_checkpoint_commit": "cf63257074de180e4ba407ac66b562bd1d2e9628",
+  "documentation_status": "Detailed English note completed; all 18 rendered pages visually reviewed",
+  "preservation_checks": "All 109 parts reassembled and five complete SHA256 identities verified; documentation source checks and strict MkDocs build passed",
+  "test_selection": "No numerical rerun selected for this preservation/documentation phase: active native input, executable and NetCDF identities unchanged"
 }

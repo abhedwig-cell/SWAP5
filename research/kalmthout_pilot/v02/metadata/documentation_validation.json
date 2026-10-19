@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scope": "Preservation and documentation only; delivered model input/executable/output hashes unchanged",
+  "data_checkpoint_commit": "cf63257074de180e4ba407ac66b562bd1d2e9628",
+  "primary_artifacts_reassembled": 5,
+  "binary_parts_verified": 109,
+  "assembly_log": "assembly_validation.log",
+  "documentation_source_checks": "PASS",
+  "mkdocs_strict_build": "PASS",
+  "docs_source_check_log": "docs_source_check.log",
+  "docs_build_log": "docs_build.log",
+  "word_document_pages_visually_reviewed": 18,
+  "document_sha256": "582814db290a89d54c3145285274416dded44cdfa651415bcf409e9d1ad23ffc",
+  "markdown_sha256": "e79d60dae0179bcbd91208ad6eb7889a895d85494703bab93e527af03689c38b",
+  "python_syntax_checked": [
+    "docs/build_note.py",
+    "docs/collect_metadata.py",
+    "scripts/assemble_artifacts.py",
+    "scripts/build_work.py",
+    "scripts/export_v02_netcdf.py",
+    "scripts/finalize_v02_metadata.py",
+    "scripts/prepare_v02.py",
+    "scripts/rebuild_v02.py",
+    "scripts/run_v02.py",
+    "scripts/validate_v02_delivery.py"
+  ],
+  "numerical_rerun_this_phase": "NOT_SELECTED_IMPACT: native physics inputs and executable unchanged; original execution/output qualification retained under exact hashes",
+  "limitations": "No field calibration or independent validation; canopy accounting flags retained; no comprehensive external CF checker run"
+}
