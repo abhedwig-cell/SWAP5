@@ -802,7 +802,7 @@
         "merged": true,
         "merge_commit": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
         "qualified_head": "8c4e02dff8482600d0d432a0448b8b284684eb44",
-        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water\u2013soil\u2013crop restart",
+        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water–soil–crop restart",
         "url": "https://github.com/abhedwig-cell/SWAP5/pull/1235"
       },
       {
@@ -866,5 +866,19 @@
       "url": "https://github.com/abhedwig-cell/SWAP5/pull/1117"
     },
     "published_disposition": "6f503c0ea340efe097f2b163672b5de7629fe7dc"
+  },
+  "final_closure_review_20261019": {
+    "baseline": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "phase": "CURRENT_HEAD_LOCAL_QUALIFICATION_RUNNING",
+    "closure_document": "MC_SOL01_FINAL_CLOSURE.md",
+    "production_changed": false,
+    "full_historical_capability_promotion": false,
+    "next_action": "Complete selected real current-head O0/O2 runs; reconcile exactly four full-envelope parked master rows, then metadata-only canonical integration.",
+    "parked_capabilities": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND",
+      "SW431-AGE-TRACER"
+    ]
   }
 }
