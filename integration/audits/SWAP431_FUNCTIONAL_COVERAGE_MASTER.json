@@ -10945,7 +10945,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Organic matter and organic nitrogen turnover/mineralisation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_b111_soil_n_reactive_owner.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -10953,12 +10955,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Eight FOM pools, biomass/humus, mineralisation and immobilisation. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -10971,24 +10975,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Eight FOM pools, biomass/humus, mineralisation and immobilisation; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -11007,7 +11010,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_b111_soil_n_mineral_owner.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -11015,12 +11020,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Owned NH4/NO3, sorption and finite supply. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11033,24 +11040,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Owned NH4/NO3, sorption and finite supply; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -11068,7 +11074,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Fertilizer/manure applications and volatilisation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_soil_n_calendar_day.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -11076,12 +11084,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Fertiliser/manure, volatilisation and dated repeated events. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -11097,8 +11107,8 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "source_input_names": [
         "MatNum",
         "iMat"
@@ -11107,18 +11117,17 @@
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Fertiliser/manure, volatilisation and dated repeated events; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -11139,7 +11148,8 @@
       "swap5_implementation_authority": [
         "src/crop/mod_crop_soil_n_day.f90",
         "src/crop/mod_wofost81_harvest_materials.f90",
-        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+        "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
+        "src/crop/mod_crop_soil_n_senescence_day.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -11149,13 +11159,15 @@
         "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json"
       ],
       "production_reachability": {
-        "established": false,
-        "bounded_established": true,
-        "route": "src/runtime/mod_fmr_crop_soil_n_joint_application.f90",
-        "claim": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset. Full historical source capability not established. Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open."
+        "established": true,
+        "bounded": true,
+        "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Returned, retained and pending residues; harvest export. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "Complete historical source/application envelope and automatic management/input activation remain open outside the explicit qualified B1.12 profile. Thermal/pending/harvest/native continuation for that profile is admitted by1277."
+        "Complete historical source/application envelope and automatic management/input activation remain open outside the explicit qualified B1.12 profile. Thermal/pending/harvest/native continuation for that profile is admitted by1277.",
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -11170,30 +11182,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "pr": 1247,
-        "canonical_merge": "31ff3158b956183c8af19f85bd3361847f60309b",
-        "owner_family": "MC-NUT01",
-        "scope": "Atomic bounded crop/soil-N harvested material return/export, once-only seven-organ incorporation, N/OM continuation budgets and external initial successor N without soil reset.",
-        "remaining": "Complete historical source/application envelope, automatic management/input activation and thermal-harvest composition remain open.",
-        "sources": [
-          "src/crop/mod_crop_soil_n_day.f90",
-          "src/crop/mod_wofost81_harvest_materials.f90",
-          "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
-        ],
-        "records": [
-          "integration/audits/F_KT_BOUNDARY_EVENT_STATUS_20261015.json"
-        ],
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
-        "full_capability": false,
-        "full_master_qualification_claimed": false
+        "owner_family": "MC-NUT01",
+        "scope": "Returned, retained and pending residues; harvest export; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -11225,7 +11230,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Demand/supply coupling and nitrogen-limited crop growth",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/crop/mod_crop_soil_n_day.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -11233,12 +11240,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/crop/mod_crop_soil_n_day.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Source-selected crop demand, uptake and daily ownership. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -11253,24 +11262,23 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Source-selected crop demand, uptake and daily ownership; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -13292,7 +13300,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_b111_soil_n_daily_exchange.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -13301,12 +13311,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified NH4 oxidation as an internal N transfer. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -13321,21 +13333,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "NH4 oxidation as an internal N transfer; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -13358,7 +13369,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Nitrate loss controlled by temperature, wetness and organic respiration activity",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_b111_soil_n_reactive_owner.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -13367,12 +13380,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Nitrate gaseous loss with moisture/temperature/respiration. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -13388,21 +13403,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Nitrate gaseous loss with moisture/temperature/respiration; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -13422,7 +13436,9 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake",
-      "swap5_implementation_authority": [],
+      "swap5_implementation_authority": [
+        "src/process/mod_b111_soil_n_transport.f90"
+      ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
         "docs/science/wofost-crop-coupling.md",
@@ -13431,12 +13447,14 @@
         "integration/f-wof/F-WOF-PP03_CHECKPOINT.json"
       ],
       "production_reachability": {
-        "established": false,
-        "route": null,
-        "claim": "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "established": true,
+        "bounded": true,
+        "route": "src/process/mod_b111_soil_n_transport.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Analytical concentration, uptake and signed boundary exchange. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
-        "No production Soil-N inventory/rate owner or accepted supply binding exists for this source capability. The admitted WOFOST81 transaction explicitly passes its complete nitrogen_request.soil_request as supply, preserving N-unlimited behavior; crop N algebra is present, but it does not execute this soil process or limited exchange."
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -13451,21 +13469,20 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "MISSING_PRODUCTION_IMPLEMENTATION_OR_BINDING",
-      "workunit_stage": "SOURCE_REVIEW_OR_CONTRACT_PREREGISTRATION",
-      "implementation_absence_proven": true,
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
+      "implementation_absence_proven": false,
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
-      "resolution_stage": "PRODUCTION_IMPLEMENTATION_OR_BINDING_REQUIRED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "7c774455bf1d5918b76d6147a23cc159ba427e8b",
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Admitted partial matrix/age or reactive mineral/organic crop-N and amendment cycle with atomic restart; full historical source/application envelope remains open",
+        "scope": "Analytical concentration, uptake and signed boundary exchange; historical gross atmospheric N and required unsupported native/application envelope remain open",
         "records": [
-          "integration/audits/MC_NUT_SOL_TRAJECTORY3_COVERAGE.json",
-          "integration/audits/MC_NUT01_REACTIVE_COVERAGE_RECONCILIATION_20261015.json",
-          "integration/audits/MC_NUT01_CROP_SUPPLY_COVERAGE_20261015.json",
-          "integration/audits/MC_NUT01_MANAGEMENT_CALENDAR_COVERAGE_20261015.json"
-        ]
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -13500,7 +13517,8 @@
         "src/crop/mod_crop_soil_n_day.f90 at b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
         "src/crop/mod_crop_soil_n_configuration.f90 at b899baaff7d0eba01f1b429f1408d96c1ecf17f8",
         "src/crop/mod_b111_reproductive_n_process.f90 at 7c85247afaeaba4f96b86324d58ef575851b5310",
-        "src/crop/mod_crop_b111_reproductive_binding.f90 at 7c85247afaeaba4f96b86324d58ef575851b5310"
+        "src/crop/mod_crop_b111_reproductive_binding.f90 at 7c85247afaeaba4f96b86324d58ef575851b5310",
+        "src/crop/mod_b111_nfixation_policy.f90"
       ],
       "current_disposition": "ACTIVE_MIGRATION",
       "evidence": [
@@ -13522,14 +13540,16 @@
       ],
       "production_reachability": {
         "established": true,
-        "route": "Explicit source policy -> existing crop/Soil-N prepare and actual supply -> guarded source N apply -> existing Richards/material/pending commit and native restart",
-        "claim": "PR1260 adds a bounded literal B1.11 translocation/residual-death profile with separate allocation/nonnegative guards, actual finite soil supply and full-return pending/native continuation. PR1253 vegetative option and WOFOST81 default remain preserved. Full automatic historical activation and trajectory envelope remain open.",
-        "bounded_receipt": "reproductive_process_20261016"
+        "bounded": true,
+        "route": "src/crop/mod_b111_nfixation_policy.f90",
+        "claim": "Canonical through PR1319 at03daf601 and reviewed e122ff8 contains qualified Biological fixation booked as crop input. Existing actual Richards/WOFOST81/Soil-N source124 and three730-day rotations, native transitions and rollback are admitted only within their bounded contracts; full historical envelope remains open.",
+        "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
       },
       "restrictions": [
         "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, full historical partial-return/harvest equivalence outside the explicit B1.12 profile remain outside this bounded option. Aquifer remains excluded.",
         "Active positive demand at the source cutoff and unfunded storage or negative preclipping donor N are refused atomically; no silent source correction.",
-        "Explicit source N policy with existing WOFOST81 growth/allocation/senescence ownership; not complete B1.11 crop-N equivalence."
+        "Explicit source N policy with existing WOFOST81 growth/allocation/senescence ownership; not complete B1.11 crop-N equivalence.",
+        "Full historical gross atmospheric N/evaporation/ponding contract is scientifically blocked; unrestricted input/diagnostic/full original-model trajectory envelope is not qualified. See current closure review; no whole-capability promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -13542,12 +13562,12 @@
       },
       "classification": "APPLICATION_PHYSICS",
       "coverage_gap_type": "INCOMPLETE_RUNTIME_QUALIFICATION",
-      "workunit_stage": "BOUNDED_REPRODUCTIVE_PROCESS_ADMITTED_FULL_ENVELOPE_OPEN",
+      "workunit_stage": "BOUNDED_CANONICAL_ADMISSION_FULL_HIST_ENVELOPE_BLOCKED",
       "implementation_absence_proven": false,
       "closed_foundation_authorities": [
         "SW5-CROP-WOF81"
       ],
-      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED",
+      "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "resolution_decision": "MIGRATE",
       "source_component_receipt": "latest_b111_nfix_component_reconciliation_20261016",
       "bounded_runtime_receipt": "reproductive_process_20261016",
@@ -13564,6 +13584,17 @@
         "full_capability": false,
         "whole_master_promotion": false,
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
+      },
+      "latest_canonical_bounded_owner": {
+        "head": "e122ff8f682584620717e97ab24ce07933dd0923",
+        "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
+        "owner_family": "MC-NUT01",
+        "scope": "Biological fixation booked as crop input; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+          "docs/science/MC_NUT01_FINAL_CLOSURE.md"
+        ],
+        "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b"
       }
     },
     {
@@ -20993,5 +21024,27 @@
       },
       "qualified_process_missing_runtime_binding_count_scope": "ACTIVE rows explicitly tagged QUALIFIED_COMPONENT_RUNTIME_BINDING_REQUIRED; not an exhaustive inventory of scientific process implementations. Recomputed from current rows instead of stale inherited2."
     }
+  },
+  "latest_mc_nut01_closure_review_20261019": {
+    "reviewed_canonical": "e122ff8f682584620717e97ab24ce07933dd0923",
+    "previous_master": "d77939e08b841fc0456d76a883450f4f15a9c099",
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "disposition_delta": 0,
+    "source_absence_flags_corrected": true,
+    "scope": "Nine bounded-reachability corrections only; no numerical implementation or full-capability admission",
+    "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#closure_review_20261019",
+    "full_master_integrity": "NOT_CLAIMED; structural recount and non-NUT row equality only; no source inheritance rebasing",
+    "scientific_blocker": "Original gross atmospheric N cannot be reconstructed from signed net water alone; original source ponding ambiguity requires explicit physical/reference contract",
+    "qualification": "Immutable physical/retained/label evidence and source identities checked; 18 incumbent and9 supplemental corruption controls freshly PASS. No new Fortran/native execution."
   }
 }
