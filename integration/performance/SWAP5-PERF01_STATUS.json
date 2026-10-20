@@ -4,12 +4,10 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "next_action": "Run combined exact-current-canonical source gate and corruption controls, then publish stable admission candidate",
+  "qualified": true,
+  "next_action": "Merge exact qualified source; verify canonical postimage and record admission receipt",
   "recovery_point": "work/swap5-perf01-runtime-investigation",
-  "blockers": [
-    "Await hosted exact-successor and owning integrated qualification before merge"
-  ],
+  "blockers": [],
   "dependency_surface": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/legacy/b1_10_port/headcalc.f90",
@@ -153,7 +151,7 @@
       }
     }
   },
-  "phase": "CURRENT_CANONICAL_NUT_REQUALIFICATION",
+  "phase": "EXACT_IMPLEMENTATION_QUALIFIED_READY_FOR_CANONICAL",
   "canonical_admitted": false,
   "known_failures": {
     "eb_i25_outflow": "Unchanged original outflow assertion fails on b0c2e94b and candidate after compile-selection correction; existing nonadmitted route, no PASS",
@@ -172,5 +170,6 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "rossfast": "FROZEN_UNCHANGED_NO_NEW_QUALIFICATION",
     "eb_i25": "DIAGNOSTIC_BASELINE_CONTROL_ONLY_EXISTING_NONADMITTED_OUTFLOW"
-  }
+  },
+  "regional_qualification": "NOT_ADMITTED: real LWKM HRU7866 package found, but general SWP/live-crop/heat/BBC orchestration missing in the benchmark application; no process substitution or Intel/GNU timing comparison"
 }

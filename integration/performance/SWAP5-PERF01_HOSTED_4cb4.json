@@ -1,0 +1,76 @@
+{
+  "head": "4cb4e216e17985c1bccb3b03df77524215deadef",
+  "runs": [
+    {
+      "id": 39496676209,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 5728,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676209/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676209/logs",
+      "workflow_id": 350231902
+    },
+    {
+      "id": 39496676022,
+      "name": "F-KT22 current-canonical qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 936,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676022/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676022/logs",
+      "workflow_id": 358906997
+    },
+    {
+      "id": 39496676035,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 10,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676035/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676035/logs",
+      "workflow_id": 390809132
+    },
+    {
+      "id": 39496676343,
+      "name": "MC-NUT01 focused native qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 270,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676343/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676343/logs",
+      "workflow_id": 387509858
+    },
+    {
+      "id": 39496675897,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 7992,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496675897/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496675897/logs",
+      "workflow_id": 351968455
+    },
+    {
+      "id": 39496676358,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676358/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676358/logs",
+      "workflow_id": 390988677
+    },
+    {
+      "id": 39496676305,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1125,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676305/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39496676305/logs",
+      "workflow_id": 357266701
+    }
+  ],
+  "disposition": "Owning exact-source/canonical/application/NUT/FSI35/docs passed. FKT22 compile/runtime/boundary passed; EB-I25 retains independently reproduced baseline nonadmitted outflow assertion failure. Other frozen-source research gates retain separate failure disposition; not full F-CI promotion."
+}
