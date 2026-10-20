@@ -1,5 +1,51 @@
 # MC-SOL01 final closure
 
+Current follow-up, 20 October 2026: the dry 138-cm input is qualified through
+the same 0.002-day final horizon using 100 equal reporting windows. The earlier
+short-window test ended at 0.00002 day, so it alone did not establish this claim.
+Only the reporting partition changes; all physical sources/initial conditions,
+strict tolerances and production owners remain fixed. Actual O0/O2 and fresh
+process restart after window 37 produce byte-identical endpoints, budgets and
+restart. The original coarse input still rejects without publication. This is
+a qualified input recipe in the existing admitted application, not a general
+Reference convergence repair or a new historical capability admission.
+
+The standalone audit is `integration/audits/column_grid/qualify_dry_profile.py`;
+its input is `integration/audits/column_grid/dry_profile_100_windows.nml`.
+There are 4366 accepted hydraulic substeps per full run. Independent complete
+water and solute residuals are 1.522618836569123e-13 cm and
+4.822878207910719e-14 mg/cm2; maximum native per-window residuals are
+6.103337236648687e-14 cm and 1.9783545461560248e-14 mg/cm2. Endpoint pond depth
+is 0.4915505828004884 cm, with positive accepted infiltration/runon/runoff and
+nonexporting evaporation. The common restart SHA256 is
+`4f774dc009c826baa7ecc60100dd3554cb4408f1da00fec895b86d6944817241`.
+
+All eight process observations complete as required, including the two expected
+coarse-input rejections. Process/launcher/validation time totals 20.604224 s;
+physics-only time is UNKNOWN. The existing 178-provider O0/O2 builds are reused
+after complete current-source/flag/binary identity checks before and after the
+experiment. Current baseline is `f6d5ffed068efcc8cc2b14d0b68bb508b7a25f52`;
+the concurrent NUT successor preserves every executed solute provider and passes
+the existing age/NUT/grid owner. No source/physical-contract change selects full
+F-CI or manual Actions. A scratch diagnostic with 40 instead of 8 iterations also
+rejects the coarse input; it is not proposed or admitted as a production repair.
+
+Reproduce with current GNU O0/O2 builds:
+
+```bash
+python integration/audits/column_grid/qualify_dry_profile.py --build-O0 /tmp/solute-O0 --build-O2 /tmp/solute-O2 --output /tmp/dry-profile-proof
+python tools/solute/run_column.py --exe /tmp/solute-O2/swap5_solute_column --input integration/audits/column_grid/dry_profile_100_windows.nml --output /tmp/dry-profile
+```
+
+Raw physical and failed/coarse diagnostics, exact current-provider build receipts,
+source/input fingerprints and restart outputs are in
+`integration/audits/evidence/MC_SOL01_DRY_PROFILE_SAME_HORIZON_20261020.tar.xz.b64`,
+decoded SHA256 `54210499e48529fcce2f2e6a61d2c42a276d0b19552efb0971947cb387ffa1f7`.
+The original trajectory3 admission snapshot and all NUT authority fields remain
+unchanged. Current SOL scope is governed by its existing final-closure and grid
+successor entries and this closure document, not by obsolete historical actions
+such as the original snapshot's now-superseded statement that pond/source is open.
+
 Status: bounded canonical implementation is admitted; the four full historical capability envelopes below remain explicitly parked. This is not a claim of complete SWAP 4.3.1/default equivalence.
 
 Review baseline: `integration/f-ci-canonical` at `e122ff8f682584620717e97ab24ce07933dd0923`; production source tree `282e4504c8d1d31e9cdfa37041b6b06a48a90588`. Review date: 2026-10-19. The final admission receipt is in the existing `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json` record. The existing master is on `work/swap431-master-coverage-20261006`, PR #1072. It is not a canonical full-coverage admission.
