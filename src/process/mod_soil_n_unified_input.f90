@@ -311,22 +311,47 @@ contains
    if(i>l.or.n+rep>size(words))return
    j=i
    if(line(i:i)==achar(39).or.line(i:i)=='"')then
-    quote=line(i:i);i=i+1
-    do while(i<=l)
-     if(line(i:i)==quote)exit
+    ! Native TTUTIL concatenates quoted CHARACTER pieces with //.
+    ! Normalize only this lexical seam; the existing table parser still
+    ! owns name length, printable characters and all material/event physics.
+    quote=line(i:i);token='';token(1:1)=quote;k=1
+    do
      i=i+1
+     do while(i<=l)
+      if(line(i:i)==quote)exit
+      if(k>=255)return
+      k=k+1;token(k:k)=line(i:i);i=i+1
+     end do
+     if(i>l)return
+     i=i+1;r=i
+     do while(r<=l)
+      if(line(r:r)/=' '.and.line(r:r)/=achar(9))exit
+      r=r+1
+     end do
+     if(r>=l)exit
+     if(line(r:r+1)/='//')exit
+     ! Original TTUTIL CHARACTER strings use apostrophes. Preserve the
+     ! incumbent standalone double-quote contract without broadening it.
+     if(quote/=achar(39))return
+     r=r+2
+     do while(r<=l)
+      if(line(r:r)/=' '.and.line(r:r)/=achar(9))exit
+      r=r+1
+     end do
+     if(r>l)return
+     if(line(r:r)/=quote)return
+     i=r
     end do
-    if(i>l)return
-    i=i+1
+    k=k+1;token(k:k)=quote
    else
     do while(i<=l)
      if(line(i:i)==' '.or.line(i:i)==achar(9).or.line(i:i)==','.or.line(i:i)=='!')exit
      i=i+1
     end do
+    k=i-j
+    if(k<1.or.k>256)return
+    token=line(j:i-1)
    end if
-   k=i-j
-   if(k<1.or.k>256)return
-   token=line(j:i-1)
    words(n+1:n+rep)=token;n=n+rep
    if(i<=l)then
     if(line(i:i)=='!')then
