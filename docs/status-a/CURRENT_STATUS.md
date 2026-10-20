@@ -124,7 +124,7 @@ general historical SWP activation, a live crop and dynamic thermal decay remain
 outside its bounded claim. The existing trajectory3 column-input entry owns the
 evidence and recovery state; no master row is promoted.
 
-The schema2 grid successor is locally qualified for explicit immutable geometry
+PR1332 admits the schema2 grid successor at `fc6f52e0` for explicit immutable geometry
 with 2 through 256 cells, including nonuniform and 138-cm profiles. All five new
 grid cases retain O0/O2 and separate-process endpoint identity, closed water and
 solute budgets and the original schema1 endpoint. The existing trajectory3

@@ -1,6 +1,11 @@
 # MC-SOL01 file-driven Reference column
 
-## Qualified schema2 grid successor, 20 October 2026
+## Canonical schema2 grid successor, 20 October 2026
+
+PR1332 admits this bounded successor at
+`fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1`, qualified head
+`2c7112f500791b756358f5b95b23734d45890231`. All16 qualified-head workflows
+succeed, including actual O0/O2 file-column/restart qualification39470971724.
 
 This work extends only the application geometry adapter. Schema1 retains its
 four cells and its existing numerical endpoint. Schema2 adds `nodes` and

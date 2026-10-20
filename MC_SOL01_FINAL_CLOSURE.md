@@ -195,22 +195,25 @@ proof, failed staging attempt and successful default/full predecessor checks are
 in `MC_SOL01_COLUMN_COEXISTENCE_20261020.tar.xz.b64`. This reconciliation inherits
 the existing actual application execution through its unchanged complete inputs;
 it does not claim a new broad model run on a documentation commit.
+
 ## Schema2 grid successor, 20 October 2026
 
-The existing file-driven application now has a locally qualified schema2
-candidate based on `e57a94e5f229415111563f8c52822ac3c7ba5491`. It allocates one
+PR1332 admits the schema2 application at
+`fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1`, from qualified head
+`2c7112f500791b756358f5b95b23734d45890231`, based on
+`e57a94e5f229415111563f8c52822ac3c7ba5491`. It allocates one
 immutable grid of 2 through 256 cells before creating the existing Reference
 owners. No `src` or historical reference changes are made. Canonical admission
 is recorded in the existing trajectory3 `column_input_20261020.variable_grid_successor`.
 
-| Real grid case | Domain | GNU O0/O2 and independent-process restart |
-| --- | --- | --- |
-| Original schema1 | 4 cells, 3 cm | Exact original restart SHA256 `42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f` |
-| Minimum | 2 cells, 1 cm | Exact endpoint bytes |
-| Nonuniform refinement | 8 cells, 3 cm | Exact endpoint bytes |
-| Deep, wet | 32 cells, 138 cm, head -10 cm | Exact endpoint bytes |
-| Deep, dry, short windows | 32 cells, 138 cm, head -75 cm | Exact endpoint bytes |
-| Maximum supported count | 256 cells, 256 cm | Exact endpoint bytes |
+| Real grid case | Domain | Accepted substeps per window | GNU O0/O2 and independent-process restart |
+| --- | --- | --- | --- |
+| Original schema1 | 4 cells, 3 cm | 270 / 264 | Exact original restart SHA256 `42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f` |
+| Minimum | 2 cells, 1 cm | 1046 / 980 | Exact endpoint bytes |
+| Nonuniform refinement | 8 cells, 3 cm | 1054 / 986 | Exact endpoint bytes |
+| Deep, wet | 32 cells, 138 cm, head -10 cm | 158 / 158 | Exact endpoint bytes |
+| Deep, dry, short windows | 32 cells, 138 cm, head -75 cm | 16 / 30 | Exact endpoint bytes |
+| Maximum supported count | 256 cells, 256 cm | 44 / 44 | Exact endpoint bytes |
 
 All five new grid cases use positive accepted infiltration, runon, runoff and
 nonexporting pond evaporation, prescribed roots/drain/bottom, actual multiple
@@ -236,3 +239,21 @@ SHA256 `6e14bb144fc5e1b45e3b60298ad36b7fef0a12d1ae9efcbd1c9291dd0fa6e61a`.
 The exact source validator preserves every original NUT guard statement and
 delegates only the changed application test to its fresh source-bound evidence.
 Original age, atomic triplet and concurrent NUT evidence remain qualified.
+
+All 16 qualified-head automatic workflows are terminal SUCCESS, including actual
+column O0/O2/restart run 39470971724, job 118794615747. The existing master branch
+receipt `23afb6abb7478de8b3870641c0a3140b899721ba` adds only the two bounded
+application grid receipts: 241 other rows, all 243 dispositions and concurrent
+NUT admission remain exact. No whole-master qualification is claimed.
+
+All 5 actual-merge workflows also succeed: canonical run 39471642992,
+WOF43A run 39471642886, F-SI35 run 39471643029, real column/restart run 39471643145
+(job 118796935918), and full F-GC run 39471643376 (job 118796935626, original final
+`F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS`). Actual merge source/age/NUT evidence
+and all 178 executed providers are verified again. Hosted logs, exact run
+identities, negative controls and scoped master proof are in
+`MC_SOL01_COLUMN_GRID_HOSTED_20261020.tar.xz.b64`, decoded SHA256
+`75de819443fa5a226957f58b01258965d7b0a20519fdc085357d1e689490ccf2`.
+The final receipt updates only evidence, admission metadata and descriptive
+docs/README. It retains these terminal numerical results by exact dependency
+identity and does not claim a repeated model run on the documentation commit.

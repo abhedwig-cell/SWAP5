@@ -4,12 +4,12 @@
       "work_unit": "MC-SOL01-COLUMN-GRID",
       "baseline": "e57a94e5f229415111563f8c52822ac3c7ba5491",
       "branch": "work/mc-sol01-column-grid-20261020",
-      "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_BOUNDED_GRID_CLOSED",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "scope": "Schema2 serialized immutable runtime grid,2..256 cells; uniform hydraulic/chemical parameters, per-cell concentrations/root/drain; schema1 exact endpoint preservation. No new transport/solver science.",
       "dependency_surface": [
         "app/solute_column/main.f90",
@@ -27,7 +27,7 @@
         29
       ],
       "test_selection": "RT/MC-SOL01 application interface/initialization changed. Local real178-provider O0/O2 build about90s, original26 observations plus nonuniform/deeper grid budgets and process restart, native UNKNOWN initially. Preserve every existing source science/rollback/restart assertion. Automatic owning column workflow selected once stable; full moving FCI NOT_SELECTED_IMPACT and highest NOT_SELECTED_POLICY. No src or reference mutation.",
-      "next_action": "Open stable PR and observe existing automatic owning workflow through terminal; reconcile canonical before admission.",
+      "next_action": "Closed bounded application grid successor. Preserve original schema1 and qualified schema2 regimes. Reopen the exact dry-deep Reference convergence limit only for a concrete scenario need; full historical/default, seasonal, nonlinear pond and dynamic thermal composition remain separately parked.",
       "preservation": "PASS exact grid source/native capsule, original surface-age physical triplet/fresh-process/incumbent proof, NUT source/coexistence plus all8 original negative controls. Three additional source/guard/capsule corruptions rejected. Current src tree remainsa60ac1d96c98f3ecc7c414fc412884271a54b227. Docs source and strict MkDocs14.14s PASS.",
       "blockers": [],
       "evidence": {
@@ -73,7 +73,54 @@
         "examples/solute_column/deep_grid.nml": "808b03fa253da32890c88f52e852568dfdf18d53ade4248b616b17de0ea0726f",
         "tests/nut-crop/verify_historical_gross.py": "df132475b05f389a570645fea80be97c7f022c7268bfc471b0d5d41af134da48",
         "integration/audits/column_grid/authority.py": "79efb68e6158284f813867a012e211b78cd294d50ae36189626a5daa9220a55f"
-      }
+      },
+      "recovery_point": "PR1332 mergedfc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1 from qualified2c7112f500791b756358f5b95b23734d45890231; same tree75e603b5447dba131302e46c4499e368f64340a5. All16 qualified-head and5 actual-merge workflows SUCCESS. Existing master23afb6abb7478de8b3870641c0a3140b899721ba preserves concurrent NUT and all243 dispositions.",
+      "canonical_admission": {
+        "pr": 1332,
+        "qualified_head": "2c7112f500791b756358f5b95b23734d45890231",
+        "merge_commit": "fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1",
+        "tree": "75e603b5447dba131302e46c4499e368f64340a5",
+        "same_tree": true,
+        "qualified_head_workflows": "All16 terminal SUCCESS",
+        "owning_run": 39470971724,
+        "owning_job": 118794615747,
+        "postmerge_owning_run": 39471643145,
+        "postmerge_owning_job": 118796935918,
+        "postmerge_workflows": {
+          "39471642886": {
+            "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+            "conclusion": "success"
+          },
+          "39471643029": {
+            "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+            "conclusion": "success"
+          },
+          "39471642992": {
+            "name": "F-CI canonical qualification",
+            "conclusion": "success"
+          },
+          "39471643145": {
+            "name": "MC-SOL01 file-driven Reference column",
+            "conclusion": "success"
+          },
+          "39471643376": {
+            "name": "F-GC fixed-interface groundwater closeout",
+            "conclusion": "success"
+          }
+        },
+        "postmerge_fgc_job": 118796935626,
+        "postmerge_source_evidence": "PASS actual merge current age/atomic-triplet/NUT source and unchanged178 executed providers",
+        "master_receipt": "23afb6abb7478de8b3870641c0a3140b899721ba",
+        "master_scoped_integrity": "PASS241 other rows,all243 dispositions and concurrent NUT exact; no whole-master qualification",
+        "full_historical_or_master_promotion": false
+      },
+      "hosted_evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_COLUMN_GRID_HOSTED_20261020.tar.xz.b64",
+        "decoded_sha256": "75de819443fa5a226957f58b01258965d7b0a20519fdc085357d1e689490ccf2",
+        "decoded_bytes": 131584,
+        "members": 13
+      },
+      "final_receipt_selection": "Admission metadata, retained raw hosted logs and descriptive docs/README only. All executed physical providers/test/launcher/source guards unchanged after actual qualified merge. Local exact source/evidence, source guards and docs selected; no repeated numerical run. Actual merge native and integrated FGC terminal SUCCESS inherited through exact unchanged dependency surface. Final receipt uses skip-ci; no required check is bypassed."
     },
     "work_unit": "MC-SOL01-COLUMN-INPUT",
     "baseline": "d443dced3313e2602fdea4cbd1a6cb566f53fb0e",
@@ -85,12 +132,12 @@
     "qualified": true,
     "canonically_admitted": true,
     "recovery_point": "PR1329 actually merged21cc80984a864b48d4344b9671d6ccd2ae5882ad from qualified19f973e4650387d59edcf394c6df0d11880947ac; same Git tree. Master scoped receipt371e92f22568b1fc0660eb1b8b49cf8aa4b82525.",
-    "next_action": "Bounded file application closed. Preserve its explicit four-node linear domain; general historical SWP/default/multicolumn, nonlinear pond, dynamic thermal decay and age/N application remain separately parked. No repeat runon/runoff or positive-pond age migration.",
+    "next_action": "Bounded file application and schema2 immutable grid successor are admitted through PR1329/1332. Preserve original schema1 endpoint and the qualified2..256-cell regimes, with the explicit dry-deep Reference convergence limit. General historical SWP/default/multicolumn, nonlinear pond, dynamic thermal decay and age/N application remain separately parked. No repeat runon/runoff or positive-pond age migration.",
     "relevant_paths": ["app/solute_column", "tools/solute", "examples/solute_column"],
     "authority_paths": ["docs/science/MC_SOL01_COLUMN_INPUT_CONTRACT.md", "MC_SOL01_FINAL_CLOSURE.md"],
     "dependency_surface": "New opt-in executable and file/persistence adapters; existing Reference pond/matrix production source unchanged.",
     "invariants": [1, 2, 3, 7, 9, 13, 21, 25, 26, 29],
-    "scope": "One four-node file-driven serialized Reference column, linear sorption, prescribed roots/drain/bottom and gross pond sources; no general historical SWP parser or dynamic thermal decay.",
+    "scope": "One file-driven serialized Reference column: original four-node schema1 plus admitted schema2 immutable2..256-cell geometry successor, linear sorption, prescribed roots/drain/bottom and gross pond sources; no general historical SWP parser or dynamic thermal decay.",
     "test_selection": "GNU O0/O2 new application closure, expected 240 s compile/link total, native UNKNOWN. File-driven wet-pond balance, source identity, restart continuation and bad-input controls. Existing physical solute qualification retained; no broad FCI solely for additive application.",
     "toolchain": "GNU13.3.0 packages extracted in task workspace, verified against apt SHA256; local compile/link exp(1) probe PASS with existing system GCC link prefix. No system package installation or manual Actions.",
     "execution_receipt": {

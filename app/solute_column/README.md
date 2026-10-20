@@ -56,7 +56,12 @@ rejects 0.001-day windows under the unchanged strict Reference numerical policy;
 windows. Failure publishes no generation. This is a reproducible numerical
 domain limit, not seasonal or arbitrary-grid convergence qualification.
 
-The measured GNU13.3 provider closure is 178 source files. Cold compilation/link
+The complete schema2 qualification has 86 process observations in 123.44 s of
+launcher/native/validation time on the qualification host. Cold GNU13.3
+compile/link took 19.89/0.077 s at O0 and 64.71/0.103 s at O2. These short
+scenarios do not measure seasonal throughput; physics-only time is UNKNOWN.
+
+The original schema1 GNU13.3 provider closure is 178 source files. Cold compilation/link
 took approximately 21 s at O0 and 67 s at O2 in the qualification session; the 26
 process checks took about 7.3 s including launcher/validation overhead. These
 measurements describe a small column on that host, not production throughput.
