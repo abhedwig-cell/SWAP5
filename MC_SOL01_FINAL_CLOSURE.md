@@ -46,6 +46,18 @@ unchanged. Current SOL scope is governed by its existing final-closure and grid
 successor entries and this closure document, not by obsolete historical actions
 such as the original snapshot's now-superseded statement that pond/source is open.
 
+Actual same-horizon qualification receipt: PR1336 is merged at
+`f53c968d0206401694249044b8759bb8786274a8`, from qualified head
+`77c5af5d48d46f5f5127337e8602b20ef38e135e`. The existing complete age/NUT/grid
+owner passes again on that actual merge; current source tree is
+`06d4d60b83432f4fbd54178437d29d47d4efb16d`, and all 178 executed solute providers
+remain exact. Master receipt `1c1a0a75d0302ea3690a29863aae30c8dcb4ee06` adds only the two
+bounded scenario receipts, preserving 241 other rows, all 243 dispositions and
+the concurrent NUT authority at `882aa482`. Strict documentation build and source
+checks pass. No new Actions run is claimed or required for this input-only
+qualification. This follow-up is closed; coarse-window convergence remains a
+separately bounded numerical limitation.
+
 Status: bounded canonical implementation is admitted; the four full historical capability envelopes below remain explicitly parked. This is not a claim of complete SWAP 4.3.1/default equivalence.
 
 Review baseline: `integration/f-ci-canonical` at `e122ff8f682584620717e97ab24ce07933dd0923`; production source tree `282e4504c8d1d31e9cdfa37041b6b06a48a90588`. Review date: 2026-10-19. The final admission receipt is in the existing `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json` record. The existing master is on `work/swap431-master-coverage-20261006`, PR #1072. It is not a canonical full-coverage admission.
