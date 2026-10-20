@@ -10,7 +10,10 @@ OUT=Path(os.environ['N_ORIGINAL_FULL_RESULT_DIR']).resolve();OUT.mkdir(exist_ok=
 FC=shlex.split(os.environ.get('FC','gfortran'));events=[];runs={}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def event(cmd,cwd,category,acceptable=(0,)):
- t=time.perf_counter();p=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True);i=len(events)
+ t=time.perf_counter()
+ try:p=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,stdin=subprocess.DEVNULL,env={**os.environ,'GFORTRAN_UNBUFFERED_ALL':'1'},timeout=120 if category=='original_native' else None)
+ except subprocess.TimeoutExpired as e:p=subprocess.CompletedProcess(list(map(str,cmd)),124,e.stdout or b'',(e.stderr or b'')+b'\nORIGINAL_NATIVE_BUDGET_TIMEOUT_120_SECONDS\n')
+ i=len(events)
  item=dict(command=list(map(str,cmd)),category=category,returncode=p.returncode,seconds=time.perf_counter()-t)
  for stream in ['stdout','stderr']:
   name=f'{i:04d}.{stream}';b=getattr(p,stream);(OUT/name).write_bytes(b);item[stream]=name;item[stream+'_sha256']=sha(b)
@@ -64,10 +67,11 @@ for opt in ['O0','O2']:
  manifest=json.loads((build/'INPUTS.json').read_text());flags=manifest['flags'];bs=build/'swobj';bt=build/'ttobj';main=build/'selected/swap_main.f90';obj=build/'swap_main.o';exe=build/'swap_original'
  event([*FC,*flags,'-cpp','-Dlinux','-ffree-line-length-none','-I',bt,'-I',bs,'-c',main,'-o',obj],bs,'main_compile')
  event([*FC,*flags,*sorted(bs.glob('*.o')),obj,bt/'libttutil.a','-o',exe],build,'main_link')
- for name in ['original-control','bare-low','bare-high','bare-no-denitr']:
+ for name in ['original-control-prefix','bare-low','bare-high','bare-no-denitr']:
   case=OUT/opt/name;case.mkdir(parents=True)
   for q in NAMES:(case/q).write_bytes(gzip.decompress((DATA/('b111-'+q+'.gz')).read_bytes()))
-  if name!='original-control':
+  control=case/'swap.swp';control.write_text(replace(control.read_text(encoding='cp1252'),'TEND','1998-01-10'),encoding='cp1252')
+  if name!='original-control-prefix':
    p=case/'swap.swp';s=p.read_text(encoding='cp1252')
    for k,v in {'TEND':'1998-01-10','SWCROP':'0','SWRAIN':'0','SWMACRO':'0','SWDRA':'0','GWLI':'-1.0','PONDMX':'0.1','RSRO':'1.0','SWEND':'1','INLIST_CSV':"'RAIN,RUNOFF,WTOT,DSTOR,BALDEV,TOP_IN,TOP_OUT,EACT,EPD'"}.items():s=replace(s,k,v)
    s+="\nSWCROPSNM = 1\nSNMFIL = 'nut-main'\nPATHSNM = ' '\n";p.write_text(s,encoding='cp1252');(case/'nut-main.snm').write_text(snm(.05 if name=='bare-high' else 0.,0 if name=='bare-no-denitr' else 50.))
