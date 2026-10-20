@@ -167,3 +167,13 @@ Gash modules. Its O0/O2 retained results and default/source endpoints agree
 exactly with the complete current physical run. All14 owning corruption
 controls pass. The earlier missing-provider compile failures are retained
 separately and do not count as numerical passes.
+
+## Canonical admission
+
+PR#1339: scientific canonical `24868384b276b838ee704cff5535aad3bdb4a9c9`; qualified
+`d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34`; exact full tree60c1808d and source2b2d253d.
+The actual-merge owner passes; all seven selected final-head Actions succeed.
+The existing master receipt `5d174905e82cdfb9cff4ec0c6ca29b92e9ef4ac3`
+preserves233 other capability rows and243 dispositions, with nine original
+scoped bounded-reachability checks PASS. See the existing status for complete
+run IDs, exact hashes, numerical/admission capsules and remaining exclusions.

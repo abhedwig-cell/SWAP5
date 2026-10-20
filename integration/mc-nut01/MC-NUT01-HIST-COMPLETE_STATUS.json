@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "6a2985776d2f242572725d8c18489260296c6732",
+  "checkpoint_commit": "24868384b276b838ee704cff5535aad3bdb4a9c9",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -19,7 +19,8 @@
     "Independent original TTUTIL boundary-reader witness executes B0 defect and explicit B1 one-target correction at O0/O2",
     "Original optional humus annual rate/start date, strict daily threshold and original endpoint caller-clock binding through existing reactive owner; no new state/schema",
     "Conservative rejected-residue representation correction within eight spacings, compensated through existing NH4 transfer with original declared external N and hard positivity gates",
-    "PR1333 automatic accepted dry-atmosphere source binding and compensated accepted root integral; source06d4d60b; no tolerance widening, inventory or restart-schema change"
+    "PR1333 automatic accepted dry-atmosphere source binding and compensated accepted root integral; source06d4d60b; no tolerance widening, inventory or restart-schema change",
+    "PR1339 original total-rpd Gash saturation branch and snow-free daily Gash accepted Reference/crop/N composition, cumulative native diagnostic continuation and incumbent B112 link closure; no production state/schema/interface change"
   ],
   "persisted": true,
   "tested": false,
@@ -55,14 +56,14 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Qualify and integrate original Gash correction with actual current-backend N composition; then retain separately recorded negative-source/depleted-stock reference conflict and unproven complete original caller trajectory. No full admission or whole-master promotion.",
-  "recovery_point": "PR1337 canonically admitted8422c2a8, production source426f14c3, qualified tree1b22027e. Actual merge NUT/grid PASS, all14 endpoints/observables exact,52 transition processes and11 controls. Master185f7638 repairs all9 NUT bounded locators/obsolete queue explanations and preserves234 other rows/all243 dispositions. Full MC-NUT01 remains false.",
+  "next_action": "Preserve admitted Gash/native/dry/gross/source-full/retained facets. Resolve the separately bounded original negative-source/depleted-stock reference conflict and full original caller trajectory, then remaining persistent surface/snow, general native grammar/fractional humus/output/full historical trajectory evidence. Do not claim full historical admission or reset existing stocks.",
+  "recovery_point": "PR1339 admitted24868384, qualifiedd7b747a2, exact60c1808d tree/source2b2d253d. Original Gash54cases/opt, current complete physical14 prior endpoints/56 transitions, full fresh incumbent852 events and14 controls PASS. All7 selected final-head workflows success; actual merge owner PASS; master5d174905 preserves233 other rows/all243 dispositions and9 original scoped bounded checks.",
   "blockers": [
     "Negative original source is produced by literal original pond/runoff + integral + management composition on a dry step after wet loading, with prescribed top-node state. O0/O2 depleted-stock conditional residual -2.2827957153033037e-5kg/m2. Complete original hydraulic/crop/N caller trajectory remains NOT_PROVEN; full historical admission and persistent ponded binding remain blocked. Dry positive automatic route stays admitted.",
     "Remaining native grammar beyond admitted daily arrays/tables, same-record apostrophe concatenation and explicit false diagnostic flag; fractional experimental-humus start clocks and true extended diagnostic output remain unsupported. No full original-model multiyear comparison is claimed."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "9a3a15197adbf37dba340f4f9acbbb44fe76a989",
+  "last_reconciled_head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
   "last_reconciled_upstream": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
   "pr_1301": {
     "merged": true,
@@ -1680,12 +1681,12 @@
     }
   },
   "gash_interception_successor": {
-    "status": "QUALIFIED_PENDING_CANONICAL",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_GASH_SOURCE_COMPOSITION",
     "base_canonical": "9a3a15197adbf37dba340f4f9acbbb44fe76a989",
     "implemented": true,
     "tested": true,
     "qualified": true,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "scope": "Original rpd Gash saturation branch and snow-free daily Gash throughfall coupled through existing accepted hydraulic/N carrier, real accepted crop LAI, canopy/wet-transpiration application and persistent diagnostic ledgers; no new state or backend interface.",
     "selection": {
       "direct": "RUN literal original Gash+AFGEN54cases with unmodified preimage counterexample and all existing INT12-D owner/independent/daily/window O0/O2 gates",
@@ -1855,7 +1856,7 @@
       "failure": "Missing imported mod_gash_interception_process in legacy application build closure; no failed numerical result inherited",
       "repair": "Explicit visits to both independent existing Gash process and daily providers; all legacy assertions unchanged",
       "next": "Fresh complete incumbent O0/O2 build and native default/source/restart/invalid gates; re-seal same affected work unit and guard; no repeat of unchanged completed physical Gash run",
-      "status": "LOCAL_FRESH_O0_O2_AND_REGISTERED_OWNER_PASS",
+      "status": "LOCAL_AND_FINAL_HEAD_HOSTED_O0_O2_PASS",
       "final_local_status": "B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED",
       "cost_seconds": {
         "compile": 195.62782524290378,
@@ -1865,6 +1866,149 @@
         "source_native": 0.491840727008821
       },
       "source_execution": "Full fresh legacy launcher, no cached native PASS or reused provider objects"
+    },
+    "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+    "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+    "qualified_tree": "60c1808d47b790f2006debd36a3c386155b80ebb",
+    "canonical_source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
+    "canonical_tree_exact": true,
+    "postmerge_owner": {
+      "status": "GASH_ORIGINAL_SOURCE_AND_ACTUAL_N_COMPOSITION_PASS",
+      "old_endpoints_exact": 14,
+      "fresh_transition_processes": 56,
+      "new_gash_process_cases_per_optimization": 54,
+      "original_mismatches_corrected_per_optimization": 6,
+      "full_capability": false,
+      "current_column_grid_providers": 178,
+      "prior_grid_process_observations": 86,
+      "current_grid_providers_unchanged": true,
+      "qualified": true,
+      "predecessor_qualified": true,
+      "accepted_atmosphere": true,
+      "historical_gross_top": true,
+      "full_migration_qualified": false,
+      "mastercoverage_promotion": false,
+      "source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
+      "current_source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
+      "independent_ci_compile_logs": 3,
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "column_grid_entry": {
+      "status": "GASH_ORIGINAL_SOURCE_AND_ACTUAL_N_COMPOSITION_PASS",
+      "old_endpoints_exact": 14,
+      "fresh_transition_processes": 56,
+      "new_gash_process_cases_per_optimization": 54,
+      "original_mismatches_corrected_per_optimization": 6,
+      "full_capability": false,
+      "current_column_grid_providers": 178,
+      "prior_grid_process_observations": 86,
+      "current_grid_providers_unchanged": true,
+      "qualified": true,
+      "predecessor_qualified": true,
+      "accepted_atmosphere": true,
+      "historical_gross_top": true,
+      "full_migration_qualified": false,
+      "mastercoverage_promotion": false,
+      "source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
+      "current_source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
+      "independent_ci_compile_logs": 3,
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "application_grid": true,
+      "process_observations": 86,
+      "production_changed": false,
+      "grid_preserved_on_exact_current_providers": true
+    },
+    "qualification_actions": {
+      "head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+      "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+      "selected": [
+        {
+          "id": 39501800042,
+          "name": "MC-NUT01 focused native qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 272,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800042/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800042/logs",
+          "workflow_id": 387509858
+        },
+        {
+          "id": 39501800066,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 7995,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800066/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800066/logs",
+          "workflow_id": 351968455
+        },
+        {
+          "id": 39501800625,
+          "name": "Documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 5730,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800625/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800625/logs",
+          "workflow_id": 350231902
+        },
+        {
+          "id": 39501800786,
+          "name": "F-MIG431-INT12-D Gash qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1428,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800786/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800786/logs",
+          "workflow_id": 374030810
+        },
+        {
+          "id": 39501800246,
+          "name": "F-MIG431-INT12-P0 qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1701,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800246/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800246/logs",
+          "workflow_id": 372453937
+        },
+        {
+          "id": 39501800076,
+          "name": "SWAP5-PERF01 exact implementation admission",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 5,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800076/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800076/logs",
+          "workflow_id": 390988677
+        },
+        {
+          "id": 39501800334,
+          "name": "MC-NUT01 historical actual B112 project startup",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 59,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800334/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39501800334/logs",
+          "workflow_id": 387771307
+        }
+      ],
+      "first_head": "48dcb1f15880a816533d1aa4e76b9571d26131f1",
+      "first_b112_failure": {
+        "run": 39500045231,
+        "job": 118894923928,
+        "reason": "Missing imported Gash modules in incumbent build closure; corrected and freshly qualified before merge."
+      }
+    },
+    "master_receipt": "5d174905e82cdfb9cff4ec0c6ca29b92e9ef4ac3",
+    "master_scope": "Nine NUT bounded receipts and already-admitted SW431-INT-GASH original branch correction;233 other rows and243 dispositions/counts preserved; original nine scoped validator checks PASS; no whole-master qualification.",
+    "admission_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_GASH_ADMISSION_20261020.tar.xz.b64",
+      "decoded_sha256": "fefea8c5b2eb4b320af043cb9cdd7de16b1ee9bca21c5910cd9946b73b11f8da",
+      "compressed_bytes": 146108,
+      "members": 19
     }
   }
 }
