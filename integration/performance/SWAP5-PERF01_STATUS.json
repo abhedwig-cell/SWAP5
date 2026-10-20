@@ -4,16 +4,16 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": true,
-  "next_action": "Publish exact source-bound candidate; inspect owning hosted gates, then integrate qualified scope only",
+  "qualified": false,
+  "next_action": "Run combined exact-current-canonical source gate and corruption controls, then publish stable admission candidate",
   "recovery_point": "work/swap5-perf01-runtime-investigation",
   "blockers": [
     "Await hosted exact-successor and owning integrated qualification before merge"
   ],
   "dependency_surface": [
-    "src/solver",
-    "src/adapter/mod_reference_richards_legacy_binding.f90",
-    "src/legacy/b1_10_port/headcalc.f90"
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "tools/solute/build_column.py"
   ],
   "invariants_affected": [
     3,
@@ -21,10 +21,10 @@
     7,
     23,
     25,
-    26
+    27
   ],
   "scope": "Exact implementation optimization. No tolerance, physics, RossFast, accepted-state or solver-policy changes.",
-  "last_reconciled_upstream": "f53c968d0206401694249044b8759bb8786274a8",
+  "last_reconciled_upstream": "5ce0f1115a5ea89be54aacaae02ed61ab2ca2696",
   "profile_finding": "Actual file application: append/capture/restore account for 74.36% of sampled model time; complete growing trace deep-copied quadratically",
   "rejected_experiments": [
     "per-call geometry copies",
@@ -40,9 +40,10 @@
   "qualification": {
     "column": "original 86 process observations O0/O2 PASS",
     "transaction_macro_restart": "four original drivers O0/O2 PASS",
-    "reactive": "original scoped runner O0/O2 PASS with unlimited stack; default-stack failure retained",
+    "reactive": "Current canonical PR1337 plus PERF01: original runner O0/O2 PASS, all incumbent/off/fresh endpoint hashes exact to previous qualification; unlimited stack",
     "age": "original scoped runner O0/O2 PHYSICAL_PASS_NOT_ADMITTED",
-    "trace_branches": "real private capture/restore and stale/invalid rejection PASS"
+    "trace_branches": "real private capture/restore and stale/invalid rejection PASS",
+    "fsi35": "Original immutable native oracle O0/O2 PASS; source registration only, no changed scientific assertions"
   },
   "paired_application_speedups": [
     13.6289434035,
@@ -50,9 +51,9 @@
     1.2633847335
   ],
   "exact_successor": {
-    "base_canonical": "f53c968d0206401694249044b8759bb8786274a8",
-    "evidence_index": "integration/performance/evidence/perf01-selected-20261020/INDEX.json",
-    "evidence_sha256": "ca158db03a844c7f702f14d73230b7c8053fe536c52d85bc7943370801e1e87f",
+    "base_canonical": "5ce0f1115a5ea89be54aacaae02ed61ab2ca2696",
+    "evidence_index": "integration/performance/evidence/perf01-current-20261020/INDEX.json",
+    "evidence_sha256": "221da8a4eaa38f56b6c04d939fd311243b4c638c575c30bc9158ccb95fc49e1a",
     "postimages": {
       ".github/workflows/swap5-perf01.yml": {
         "status": "A",
@@ -60,7 +61,7 @@
       },
       "integration/performance/authority.py": {
         "status": "A",
-        "sha256": "1db8c1ae0801e8050aa7ff716694de8515d9620254623d4b3f656c56b08bba82"
+        "sha256": "51ee5aa866bcdf4da193388c717d8ef78d25b7c8d4aeee1737db466bc2631d2e"
       },
       "src/legacy/b1_10_port/headcalc.f90": {
         "status": "M",
@@ -70,9 +71,21 @@
         "status": "M",
         "sha256": "0003163bcbdcb676aaade7c05740b51ed2a73f872b018db0acc701cd467b744e"
       },
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
+        "status": "M",
+        "sha256": "156c252eb6b70550caeefbf8ce30cf17c380b33d82821330b0626b0859d6bd96"
+      },
+      "tests/fkt/run_fkt22_eb_i25_preservation_gate.sh": {
+        "status": "M",
+        "sha256": "4a0d0e9f6ac0560e65cb526db15f842d87411f958a08ac5d08ad161cfb36c4b2"
+      },
       "tests/nut-crop/verify_accepted_atmosphere.py": {
         "status": "M",
-        "sha256": "32a5838b9dde05b985cd3ba90e3a2a1e38ae0b0f0cf22c4c096506f961377053"
+        "sha256": "20ad8b56f4b5b4e815a7de6272e01ff87b218bf0a523201d6d9ec8283d18d030"
+      },
+      "tests/nut-sol/verify_surface_age_successor.py": {
+        "status": "M",
+        "sha256": "a9bf537ed9ba98c2e57a72545decee3bf09900c9f3c4e7a30ac346de85a437a1"
       },
       "tests/performance/run_perf01_prepared_increment.sh": {
         "status": "A",
@@ -116,7 +129,7 @@
       },
       "tools/performance/package_perf01_evidence.py": {
         "status": "A",
-        "sha256": "476121bc04208acf9ce715d04d9077af61bc50419df3ab574885a3066a99ffe6"
+        "sha256": "8a9a1a3aeedcd5c295d0e1779edc47a84cd37083e26f73d17770645b0c043a1e"
       },
       "tools/performance/profile_perf01_column.py": {
         "status": "A",
@@ -140,6 +153,24 @@
       }
     }
   },
-  "phase": "EXACT_IMPLEMENTATION_LOCALLY_QUALIFIED_HOSTED_PENDING",
-  "canonical_admitted": false
+  "phase": "CURRENT_CANONICAL_NUT_REQUALIFICATION",
+  "canonical_admitted": false,
+  "known_failures": {
+    "eb_i25_outflow": "Unchanged original outflow assertion fails on b0c2e94b and candidate after compile-selection correction; existing nonadmitted route, no PASS",
+    "older_hosted_head": "See SWAP5-PERF01_HOSTED_4238.json for frozen source identities and missing build dependencies"
+  },
+  "test_selection": {
+    "scope": "Changed copy/rollback architecture and HeadCalc allocation only; full F-CI not selected",
+    "selected": [
+      "exact current-source successor and corruption controls",
+      "original application86 O0/O2 and dry same horizon",
+      "original macro/transaction/low3/restart",
+      "original age and reactive N O0/O2",
+      "FSI35 immutable typed-solver oracle O0/O2"
+    ],
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "FROZEN_UNCHANGED_NO_NEW_QUALIFICATION",
+    "eb_i25": "DIAGNOSTIC_BASELINE_CONTROL_ONLY_EXISTING_NONADMITTED_OUTFLOW"
+  }
 }

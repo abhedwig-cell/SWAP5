@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 import os
+import runpy
 from pathlib import Path
 import subprocess
 import sys
@@ -15,7 +16,7 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = 'f53c968d0206401694249044b8759bb8786274a8'
+BASE = '5ce0f1115a5ea89be54aacaae02ed61ab2ca2696'
 STATUS = 'integration/performance/SWAP5-PERF01_STATUS.json'
 SURFACE = ['src', 'tests', 'tools', 'reference', '.github', 'integration/performance/authority.py']
 PRODUCTION = {'src/legacy/b1_10_port/headcalc.f90',
@@ -23,6 +24,11 @@ PRODUCTION = {'src/legacy/b1_10_port/headcalc.f90',
 HOOK = """ perf=ROOT/'integration/performance/authority.py'
  if perf.exists():
   return runpy.run_path(str(perf),run_name='registered_perf01')['verify_qualification']()
+"""
+AGE_HOOK = """    perf=ROOT/'integration/performance/authority.py'
+    if perf.exists():
+        import runpy
+        return runpy.run_path(str(perf),run_name='registered_perf01_age')['verify_qualification']()
 """
 
 def require(ok, why):
@@ -65,6 +71,9 @@ def source():
     path = 'tests/nut-crop/verify_accepted_atmosphere.py'
     original = subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT, text=True)
     require((ROOT / path).read_text() == original.replace('def verify_qualification():\n', 'def verify_qualification():\n' + HOOK, 1), 'original atmosphere assertions changed')
+    path = 'tests/nut-sol/verify_surface_age_successor.py'
+    original = subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT, text=True)
+    require((ROOT / path).read_text() == original.replace('def verify_qualification():\n', 'def verify_qualification():\n' + AGE_HOOK, 1), 'original surface-age assertions changed')
 
 def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
     def load(p):
@@ -93,6 +102,25 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
         r = load(name + '/result.json')
         require(r['status'] == status and set(r['runs']) == {'O0', 'O2'}, 'missing original nutrient/age runner')
         inputs(r['input_sha256'])
+    # The original source-bound age receipt cannot be relabelled as current.
+    # Execute its authority unchanged in predecessor(), then require fresh
+    # current-provider endpoint/fresh-process bytes to equal its native files.
+    age_owner = runpy.run_path(str(ROOT / 'tests/nut-sol/verify_surface_age_successor.py'), run_name='perf01_original_age_functions')
+    original_age = age_owner['evidence']()
+    age = load('arena-age/result.json')
+    events = load('arena-age/events.json')
+    require(all(e['returncode'] == 0 for e in events), 'failed current age event')
+    for opt in ['O0', 'O2']:
+        row = age['runs'][opt]
+        for target in ['expected.bin', 'surface_expected.bin']:
+            current = files['arena-age/' + opt + '/' + target]
+            fresh = files['arena-age/' + opt + '/' + target.replace('expected', 'fresh')]
+            require(current == fresh == original_age['physical/' + opt + '/' + target], 'changed original age endpoint ' + target)
+        require(set(row['surface']['snapshot_negatives']) == {'truncated', 'overlong', 'outer_crc', 'inner_crc'}, 'current age decoder controls')
+        native = [e for e in events if e['category'] == 'surface_native' and '/' + opt + '/' in e['command'][0]]
+        require(len(native) == 6, 'current surface-age native count')
+        for e in native[2:]:
+            require(b'SURFACE_AGE_INVALID_SNAPSHOT=PASS' in files['arena-age/' + e['stdout']], 'current age negative not executed')
     r = load('arena-reactive-unlimited/result.json')
     require(r['o0_o2_endpoint_identity'] and all(v['incumbent_admitted_byte_identity'] for v in r['runs'].values()), 'mineral incumbent endpoint drift')
     dry = load('arena-dry/result.json')
@@ -135,8 +163,14 @@ def predecessor():
             require(p.returncode == 0, 'unchanged original predecessor authority: ' + p.stderr[-3000:])
             old = json.loads(p.stdout)
             require(old['qualified'] and old['predecessor_qualified'], 'unqualified predecessor')
-            p = subprocess.run([sys.executable, '-B', 'tests/nut-crop/verify_accepted_atmosphere.py', '--self-test'], cwd=base, capture_output=True, text=True)
-            require(p.returncode == 0 and json.loads(p.stdout)['count'] == 9, 'original atmosphere corruption controls')
+            # This canonical predecessor registers PR1337's source successor.
+            # Its unchanged authority already executes the original nine
+            # atmosphere controls in its own exact predecessor. Check the
+            # eleven native-character controls on this current predecessor.
+            p = subprocess.run([sys.executable, '-B', 'integration/audits/verify_nut_native_character.py', '--self-test'], cwd=base, capture_output=True, text=True)
+            require(p.returncode == 0 and json.loads(p.stdout)['count'] == 11, 'original current NUT corruption controls: ' + p.stderr[-1000:])
+            p = subprocess.run([sys.executable, '-B', 'tests/nut-sol/verify_surface_age_successor.py'], cwd=base, capture_output=True, text=True, env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
+            require(p.returncode == 0 and json.loads(p.stdout)['qualified'], 'original surface-age authority: ' + p.stderr[-2000:])
             return old
         finally:
             subprocess.run(['git', 'worktree', 'remove', '--force', str(base)], cwd=ROOT, check=True, capture_output=True)
@@ -146,8 +180,16 @@ def verify_qualification():
     result = validate(capsule())
     old = predecessor()
     return {**old, **result, 'qualified': True, 'current_grid_providers_unchanged': False,
+            'physical_triplet': True, 'fresh_process': True, 'incumbent_age_preserved': True,
             'predecessor_qualified': True, 'preservation': 'ORIGINAL_AUTHORITY_PLUS_CURRENT_EXACT_NATIVE_PERF01',
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
+
+def fsi35_successors():
+    """Exact HeadCalc registration only; original FSI35 native checks still run."""
+    source()
+    path = 'src/legacy/b1_10_port/headcalc.f90'
+    return {path: {'historical_blob': '7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac',
+                   'canonical_blob': git('rev-parse', 'HEAD:' + path)}}
 
 def self_test():
     f = capsule()
@@ -164,7 +206,8 @@ def self_test():
         raise AssertionError('accepted corruption ' + name)
     for p in ['arena-qualification/result.json', 'trace-branch/CONTROL.json', 'arena-preservation/CONTROL.json',
               'arena-age/result.json', 'arena-reactive-unlimited/result.json', 'canonical-benchmark/CONTROL.json',
-              'historical-O0-final/CONTROL.json', 'arena-dry/O2/full/restart.bin', 'arena-benchmark/4-0-after/state.csv']:
+              'historical-O0-final/CONTROL.json', 'arena-dry/O2/full/restart.bin', 'arena-benchmark/4-0-after/state.csv',
+              'arena-age/O0/surface_expected.bin', 'arena-age/O2/fresh.bin']:
         reject('missing ' + p, lambda ff, p=p: ff.pop(p))
     for p in PRODUCTION:
         reject('current source ' + p, lambda ff: None, lambda q, p=p: (ROOT / q).read_bytes() + (b'!' if q == p else b''))

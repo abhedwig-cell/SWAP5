@@ -32,7 +32,7 @@ def main():
    if p.name in {'INPUTS.json','build.log'}:members[str(p.relative_to(root))]=p
  for p in root.glob('*.log'):
   if p.stat().st_size<500_000:members[p.name]=p
- for pat in ['predecessor-*.json','predecessor-*.stdout','predecessor-*.stderr','arena-reactive/events.json']:
+ for pat in ['predecessor-*.json','predecessor-*.stdout','predecessor-*.stderr','arena-reactive/events.json','perf01-*.json','reactive-current-path-failure-events.json']:
   for p in root.glob(pat):members[str(p.relative_to(root))]=p
  archive=out/'evidence.tar.xz'
  manifest={str(k):hashlib.sha256(p.read_bytes()).hexdigest()for k,p in sorted(members.items())}

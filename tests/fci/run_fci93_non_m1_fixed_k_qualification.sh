@@ -19,7 +19,14 @@ if actual!=old:
     sys.path.insert(0,'tests/nut-sol')
     import verify_surface_age_successor as age
     age.verify_source()
-    row=age.record()['fci93_current_dependency_requalification']['src/legacy/b1_10_port/headcalc.f90']
+    successors=age.record()['fci93_current_dependency_requalification']
+    perf=Path('integration/performance/authority.py')
+    if perf.exists():
+        import runpy
+        proof=runpy.run_path(str(perf),run_name='fsi35_perf01')
+        proof['verify_qualification']()
+        successors={**successors,**proof['fsi35_successors']()}
+    row=successors['src/legacy/b1_10_port/headcalc.f90']
     assert row['historical_blob']==old and row['canonical_blob']==actual,'unregistered HeadCalc successor'
 print('FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS')
 PY_CURRENT
@@ -40,6 +47,11 @@ if record.exists():
     import verify_surface_age_successor as age
     age.verify_source()
     successors=age.record()['fci93_current_dependency_requalification']
+perf=Path('integration/performance/authority.py')
+if perf.exists():
+    import runpy
+    proof=runpy.run_path(str(perf),run_name='fsi35_perf01_closure')
+    successors={**successors,**proof['fsi35_successors']()}
 for dep in json.loads(p.read_text())['dependencies']:
     actual=subprocess.check_output(['git','rev-parse','HEAD:'+dep['path']],text=True).strip()
     if actual!=dep['blob']:

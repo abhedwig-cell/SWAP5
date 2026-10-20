@@ -112,6 +112,9 @@ def verify_qualification():
  perf=ROOT/'integration/performance/authority.py'
  if perf.exists():
   return runpy.run_path(str(perf),run_name='registered_perf01')['verify_qualification']()
+ current=json.loads((ROOT/STATUS).read_text()).get('native_character_successor',{})
+ if 'evidence'in current:
+  return runpy.run_path(str(ROOT/'integration/audits/verify_nut_native_character.py'),run_name='registered_native_character')['verify_qualification']()
  s=source();f=gross()['capsule'](s['evidence']);r=validate(f);prior=predecessor()
  require(prior['predecessor_qualified'],'missing prior original authority')
  # This is the same seven-module exclusion independently checked by the old
@@ -120,6 +123,9 @@ def verify_qualification():
  return {**r,**grid,'qualified':True,'full_capability':False,'mastercoverage_promotion':False,'accepted_atmosphere':True,'historical_gross_top':True,'transition_fresh_processes':52,'predecessor_qualified':True,'independent_ci_compile_logs':logs,'source_tree':git('rev-parse','HEAD:src'),'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','full_migration_qualified':False}
 
 def self_test():
+ current=json.loads((ROOT/STATUS).read_text()).get('native_character_successor',{})
+ if 'evidence'in current:
+  return runpy.run_path(str(ROOT/'integration/audits/verify_nut_native_character.py'),run_name='registered_native_character_controls')['self_test']()
  f=gross()['capsule'](record()['evidence']);validate(f);passed=[]
  def reject(name,fn,reader=lambda q:(ROOT/q).read_bytes()):
   ff=dict(f);fn(ff)

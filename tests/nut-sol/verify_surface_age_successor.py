@@ -87,6 +87,10 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
     check(b'MC_SOL01_SURFACE_AGE_BUDGET_O2=PASS' in files['isolated.stdout'],'isolated O2 absent')
     return dict(physical_triplet=True,fresh_process=True,incumbent_age_preserved=True)
 def verify_qualification():
+    perf=ROOT/'integration/performance/authority.py'
+    if perf.exists():
+        import runpy
+        return runpy.run_path(str(perf),run_name='registered_perf01_age')['verify_qualification']()
     ci=ci_successor()
     if ci is not None:ci['verify_qualification']()
     return {**verify_source(),**validate(evidence()),'qualified':True,'full_capability':False,'full_fci':'NOT_SELECTED_IMPACT','rossfast':'FROZEN_UNCHANGED'}
