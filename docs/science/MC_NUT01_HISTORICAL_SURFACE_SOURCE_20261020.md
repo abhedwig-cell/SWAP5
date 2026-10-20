@@ -128,3 +128,5 @@ and final archive-pinned execution, source scaffolding, original files, runner,
 commands, raw stdout/stderr, timings and a per-member SHA256 manifest. The first
 execution is historical feedback; only the final execution binds the final
 runner identity. Executables, objects and module files are excluded.
+
+Evidence integrated by [PR1334](https://github.com/abhedwig-cell/SWAP5/pull/1334), qualified head `609bb095ae30b696b3ddc1ce5cd6ee684c5355eb`, canonical merge `820bc86ef33ff09cb7b1a938d542163bacc7e61a`, identical tree `f3662dfe16fa5bd1bb411753d67120080e350c02`. The existing NUT/grid authority passes on the actual merge. This integrates the diagnostic evidence, without production admission of the negative-source envelope.
