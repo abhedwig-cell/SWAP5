@@ -195,3 +195,44 @@ proof, failed staging attempt and successful default/full predecessor checks are
 in `MC_SOL01_COLUMN_COEXISTENCE_20261020.tar.xz.b64`. This reconciliation inherits
 the existing actual application execution through its unchanged complete inputs;
 it does not claim a new broad model run on a documentation commit.
+## Schema2 grid successor, 20 October 2026
+
+The existing file-driven application now has a locally qualified schema2
+candidate based on `e57a94e5f229415111563f8c52822ac3c7ba5491`. It allocates one
+immutable grid of 2 through 256 cells before creating the existing Reference
+owners. No `src` or historical reference changes are made. Canonical admission
+is recorded in the existing trajectory3 `column_input_20261020.variable_grid_successor`.
+
+| Real grid case | Domain | GNU O0/O2 and independent-process restart |
+| --- | --- | --- |
+| Original schema1 | 4 cells, 3 cm | Exact original restart SHA256 `42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f` |
+| Minimum | 2 cells, 1 cm | Exact endpoint bytes |
+| Nonuniform refinement | 8 cells, 3 cm | Exact endpoint bytes |
+| Deep, wet | 32 cells, 138 cm, head -10 cm | Exact endpoint bytes |
+| Deep, dry, short windows | 32 cells, 138 cm, head -75 cm | Exact endpoint bytes |
+| Maximum supported count | 256 cells, 256 cm | Exact endpoint bytes |
+
+All five new grid cases use positive accepted infiltration, runon, runoff and
+nonexporting pond evaporation, prescribed roots/drain/bottom, actual multiple
+Reference substeps and independently recomputed whole water/solute budgets.
+Maximum native residuals are `8.972e-14 cm` water and `1.570e-14 mg/cm2` solute.
+The unchanged original 26 process controls plus new grid/invalid-input controls
+total 86 process observations. O0 compile/link took 19.89/0.077 s, O2
+64.71/0.103 s, process plus launcher/validation 123.44 s; physics-only time is
+UNKNOWN. The executable remains the real 178-provider production closure.
+
+The dry deep profile rejects 0.001-day reporting windows under the unchanged
+strict Reference policy, after solver/temporal retries, with no mass rejection
+or published generation. It completes with 0.00001-day windows. This specific
+Reference convergence limit remains separately recorded, with exact input and
+raw failed evidence; no solver tolerance or physical assertion is relaxed.
+No seasonal, spatial convergence, arbitrary stratigraphy, live-crop or dynamic
+thermal-decay claim is added. The four full historical capability envelopes and
+all previous explicit exclusions retain their dispositions.
+
+Raw local builds, all process outputs, failed cases and diagnostics are in
+`integration/audits/evidence/MC_SOL01_COLUMN_GRID_20261020.tar.xz.b64`, decoded
+SHA256 `6e14bb144fc5e1b45e3b60298ad36b7fef0a12d1ae9efcbd1c9291dd0fa6e61a`.
+The exact source validator preserves every original NUT guard statement and
+delegates only the changed application test to its fresh source-bound evidence.
+Original age, atomic triplet and concurrent NUT evidence remain qualified.

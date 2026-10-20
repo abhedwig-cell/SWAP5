@@ -48,6 +48,12 @@ def source():
  git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SURFACE),'dirty gross scientific surface')
  rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--',*SURFACE).splitlines()}
+ # Application-only grid successor owns its exact test and fresh native proof.
+ grid=json.loads((ROOT/'integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json').read_text())['column_input_20261020'].get('variable_grid_successor',{})
+ if 'evidence'in grid:
+  import runpy
+  runpy.run_path(str(ROOT/'integration/audits/column_grid/authority.py'),run_name='column_grid_authority')['verify_qualification']()
+  require(rows.pop('tests/nut-sol/test_column_input.py',None)=='M','missing grid-owned application test')
  require(rows=={q:v['status']for q,v in s['postimages'].items()},'foreign gross scientific delta')
  for q,v in s['postimages'].items():require(sha((ROOT/q).read_bytes())==v['sha256'],'unqualified gross postimage '+q)
  require(not git('diff',BASE,'HEAD','--','reference'),'gross reference mutation')

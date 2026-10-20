@@ -1,5 +1,80 @@
 {
   "column_input_20261020": {
+    "variable_grid_successor": {
+      "work_unit": "MC-SOL01-COLUMN-GRID",
+      "baseline": "e57a94e5f229415111563f8c52822ac3c7ba5491",
+      "branch": "work/mc-sol01-column-grid-20261020",
+      "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": true,
+      "canonically_admitted": false,
+      "scope": "Schema2 serialized immutable runtime grid,2..256 cells; uniform hydraulic/chemical parameters, per-cell concentrations/root/drain; schema1 exact endpoint preservation. No new transport/solver science.",
+      "dependency_surface": [
+        "app/solute_column/main.f90",
+        "app/solute_column/link_context.f90",
+        "tests/nut-sol/test_column_input.py",
+        "examples/solute_column"
+      ],
+      "invariants": [
+        3,
+        5,
+        7,
+        13,
+        21,
+        25,
+        29
+      ],
+      "test_selection": "RT/MC-SOL01 application interface/initialization changed. Local real178-provider O0/O2 build about90s, original26 observations plus nonuniform/deeper grid budgets and process restart, native UNKNOWN initially. Preserve every existing source science/rollback/restart assertion. Automatic owning column workflow selected once stable; full moving FCI NOT_SELECTED_IMPACT and highest NOT_SELECTED_POLICY. No src or reference mutation.",
+      "next_action": "Open stable PR and observe existing automatic owning workflow through terminal; reconcile canonical before admission.",
+      "preservation": "PASS exact grid source/native capsule, original surface-age physical triplet/fresh-process/incumbent proof, NUT source/coexistence plus all8 original negative controls. Three additional source/guard/capsule corruptions rejected. Current src tree remainsa60ac1d96c98f3ecc7c414fc412884271a54b227. Docs source and strict MkDocs14.14s PASS.",
+      "blockers": [],
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_COLUMN_GRID_20261020.tar.xz.b64",
+        "decoded_sha256": "6e14bb144fc5e1b45e3b60298ad36b7fef0a12d1ae9efcbd1c9291dd0fa6e61a",
+        "decoded_bytes": 106876,
+        "members": 1747
+      },
+      "native_receipt": {
+        "candidate": "13072c6b0c112da29529a67bb9b604157b1ef54c",
+        "local_candidate": "c11142d7",
+        "observations": 86,
+        "native_and_launcher_seconds": 123.44006473601621,
+        "O0_compile_seconds": 19.892959161981707,
+        "O0_link_seconds": 0.0765433140040841,
+        "O2_compile_seconds": 64.71448525701271,
+        "O2_link_seconds": 0.10293153199745575,
+        "max_water_residual_cm": 8.97157511042107e-14,
+        "max_solute_residual_mg_cm2": 1.5693169149160607e-14,
+        "O0_O2_and_fresh_process": "Exact bytes for original and all five grid profiles",
+        "original_restart_sha256": "42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f",
+        "example_deep_grid": "Real O2 file run PASS",
+        "physics_only_seconds": "UNKNOWN"
+      },
+      "known_numerical_limit": {
+        "profile": "32 cells138cm uniform initial head-75cm, original Reference tolerances",
+        "rejected_windows_day": [
+          0.001,
+          0.002
+        ],
+        "diagnostic": "60attempts57retries53solver5temporal rejections,0mass; no generation published",
+        "qualified_dry_windows_day": [
+          1e-05,
+          2e-05
+        ],
+        "qualified_wetter_initial_head_cm": -10,
+        "followup": "Separate Reference convergence diagnosis if this long dry regime is needed. No assertion/tolerance relaxation or general-grid convergence claim."
+      },
+      "postimages": {
+        "app/solute_column/main.f90": "aec541bc6c5b81ed310491111541248c9cf88ad253eb05cae07575f153a6d01e",
+        "app/solute_column/link_context.f90": "3b7a05d1e7caa1ada5e4903f893d31e46815b893e873d7344efa04f66d87ccd7",
+        "tests/nut-sol/test_column_input.py": "dba911567ca678da7a9e1af476fb29e3cbfd46d13289cb476558a69307f6321a",
+        "examples/solute_column/deep_grid.nml": "808b03fa253da32890c88f52e852568dfdf18d53ade4248b616b17de0ea0726f",
+        "tests/nut-crop/verify_historical_gross.py": "df132475b05f389a570645fea80be97c7f022c7268bfc471b0d5d41af134da48",
+        "integration/audits/column_grid/authority.py": "79efb68e6158284f813867a012e211b78cd294d50ae36189626a5daa9220a55f"
+      }
+    },
     "work_unit": "MC-SOL01-COLUMN-INPUT",
     "baseline": "d443dced3313e2602fdea4cbd1a6cb566f53fb0e",
     "branch": "work/mc-sol01-column-input-20261020",
