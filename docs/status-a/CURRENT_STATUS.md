@@ -133,6 +133,15 @@ column-input successor owns canonical admission and evidence. A dry deep
 limit; smaller windows and the wetter deep case are qualified without tolerance
 changes. This extends the application grid, not full historical/default scope.
 
+The dry 138-cm profile is now also qualified to the original 0.002-day final
+horizon with 100 reporting windows and unchanged physical input/tolerances.
+Actual O0/O2, 4366 accepted substeps, independent complete water/solute balances
+and a fresh process after window 37 give identical endpoints and restart bytes.
+The reproducible input and audit are under `integration/audits/column_grid`;
+the [closure](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/MC_SOL01_FINAL_CLOSURE.md)
+binds raw evidence and costs. Coarse-window rejection remains explicit; no general
+solver repair, seasonal or full historical admission is claimed.
+
 ## MC-NUT01 historical gross-positive admission,20 October2026
 
 PR1330 at `d118bcf1cacf7462cf62c27141cf306d7a4a52fb` admits explicit nonnegative historical gross atmospheric N independently of accepted net Richards water, through existing mineral/reactive/crop/calendar owners. Original analytical/full chemistry O0/O2, four730-day physical profiles,48 transition process restarts, actual water/N rollback and retained/thermal/54TCS6 preservation pass; all10 old endpoints remain exact. [The source-bound contract and canonical receipt](../science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supersede the unresolved reference-choice statement above. Negative aggregate retains an executed original-source depletion mass counterexample and remains rejected; automatic original atmosphere/ponded binding and remaining historical input/output envelopes are not promoted. The frozen Status-A denominator is unchanged.

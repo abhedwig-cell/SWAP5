@@ -21,6 +21,7 @@ def main():
     rec=dict(arm=arm,case=name,days=days,repeat=repeat,exit=p.returncode,wall=wall,series_sha256=sha(b/('legacy_trajectory.bin'if arm=='legacy'else'trajectory.bin')))
     if m:rec.update(core_cpu=float(m[1]),core_wall=float(m[2]))
     report['runs'].append(rec);(out/'CONTROL.json').write_text(json.dumps(report,indent=2))
+    if repeat>0:(b/('legacy_trajectory.bin'if arm=='legacy'else'trajectory.bin')).unlink()
     if p.returncode:raise RuntimeError(str(b))
   rr=[x for x in report['runs'] if x['case']==name];row=dict(case=name,days=days)
   for arm in bins:

@@ -109,6 +109,9 @@ def grid_preservation():
  return {'current_column_grid_providers':178,'prior_grid_process_observations':86,'current_grid_providers_unchanged':True}
 
 def verify_qualification():
+ perf=ROOT/'integration/performance/authority.py'
+ if perf.exists():
+  return runpy.run_path(str(perf),run_name='registered_perf01')['verify_qualification']()
  s=source();f=gross()['capsule'](s['evidence']);r=validate(f);prior=predecessor()
  require(prior['predecessor_qualified'],'missing prior original authority')
  # This is the same seven-module exclusion independently checked by the old

@@ -3,11 +3,13 @@
   "baseline": "b0c2e94b69d7d21519611af92866fb4dbf713ea2",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
-  "next_action": "Qualify immutable trace arena on original column, nutrient, macro and restart drivers, then paired native benchmarks; no arithmetic or temporal policy change",
+  "tested": true,
+  "qualified": true,
+  "next_action": "Publish exact source-bound candidate; inspect owning hosted gates, then integrate qualified scope only",
   "recovery_point": "work/swap5-perf01-runtime-investigation",
-  "blockers": [],
+  "blockers": [
+    "Await hosted exact-successor and owning integrated qualification before merge"
+  ],
   "dependency_surface": [
     "src/solver",
     "src/adapter/mod_reference_richards_legacy_binding.f90",
@@ -22,7 +24,7 @@
     26
   ],
   "scope": "Exact implementation optimization. No tolerance, physics, RossFast, accepted-state or solver-policy changes.",
-  "last_reconciled_upstream": "f6d5ffed",
+  "last_reconciled_upstream": "f53c968d0206401694249044b8759bb8786274a8",
   "profile_finding": "Actual file application: append/capture/restore account for 74.36% of sampled model time; complete growing trace deep-copied quadratically",
   "rejected_experiments": [
     "per-call geometry copies",
@@ -31,7 +33,113 @@
   "relevant_paths": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "src/legacy/b1_10_port/headcalc.f90",
-    "tools/solute/build_column.py"
+    "tools/solute/build_column.py",
+    "integration/performance/authority.py",
+    "docs/performance/SWAP5-PERF01_REPORT.md"
   ],
-  "pilot": "Arena O0 produces byte-identical complete eight-window 4-node budget/state/endpoint/restart versus old production O2; native run completed in about 0.25 seconds wall, timing not yet qualified"
+  "qualification": {
+    "column": "original 86 process observations O0/O2 PASS",
+    "transaction_macro_restart": "four original drivers O0/O2 PASS",
+    "reactive": "original scoped runner O0/O2 PASS with unlimited stack; default-stack failure retained",
+    "age": "original scoped runner O0/O2 PHYSICAL_PASS_NOT_ADMITTED",
+    "trace_branches": "real private capture/restore and stale/invalid rejection PASS"
+  },
+  "paired_application_speedups": [
+    13.6289434035,
+    3.4053862168,
+    1.2633847335
+  ],
+  "exact_successor": {
+    "base_canonical": "f53c968d0206401694249044b8759bb8786274a8",
+    "evidence_index": "integration/performance/evidence/perf01-selected-20261020/INDEX.json",
+    "evidence_sha256": "ca158db03a844c7f702f14d73230b7c8053fe536c52d85bc7943370801e1e87f",
+    "postimages": {
+      ".github/workflows/swap5-perf01.yml": {
+        "status": "A",
+        "sha256": "a09ec2118053b2c1f3bf7ea3ef3c1edf166a4092c9d3279c4f01ce2fa1b3f31f"
+      },
+      "integration/performance/authority.py": {
+        "status": "A",
+        "sha256": "1db8c1ae0801e8050aa7ff716694de8515d9620254623d4b3f656c56b08bba82"
+      },
+      "src/legacy/b1_10_port/headcalc.f90": {
+        "status": "M",
+        "sha256": "11a8c8c1ed408adfd687ceafcc706cdfe575a83339028f7b2391e19d89fb8705"
+      },
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+        "status": "M",
+        "sha256": "0003163bcbdcb676aaade7c05740b51ed2a73f872b018db0acc701cd467b744e"
+      },
+      "tests/nut-crop/verify_accepted_atmosphere.py": {
+        "status": "M",
+        "sha256": "32a5838b9dde05b985cd3ba90e3a2a1e38ae0b0f0cf22c4c096506f961377053"
+      },
+      "tests/performance/run_perf01_prepared_increment.sh": {
+        "status": "A",
+        "sha256": "48e7e5e346d05e5ba29cf81d99018f88266913d7fb6430b606f113966a865635"
+      },
+      "tests/performance/swap431_perf01_column.f90": {
+        "status": "A",
+        "sha256": "c3471939b3ff0d112c7796111839e509a733f4461d5f0440428e586a2bf1fe29"
+      },
+      "tests/performance/swap5_perf01_column.f90": {
+        "status": "A",
+        "sha256": "47146ce1aefb407b75098a12ab8632ce0652ae0498bbd0772a629d2a297962c7"
+      },
+      "tests/performance/test_perf01_prepared_increment.f90": {
+        "status": "A",
+        "sha256": "2ff187424fd230d45ff928e9e8924d62394e160d4e559bf01decc39518ce7528"
+      },
+      "tests/performance/test_perf01_trace_branch.f90": {
+        "status": "A",
+        "sha256": "74f206e336e95b8de834767792374e80e3e24132ff0c186ece1f59776bbedcca"
+      },
+      "tools/performance/benchmark_perf01_build_profiles.py": {
+        "status": "A",
+        "sha256": "cdcb26330aebea4324fc9f2f46b85636520a435f904a749045fc572421925bbc"
+      },
+      "tools/performance/build_swap431_perf01.py": {
+        "status": "A",
+        "sha256": "53b9b1b8f33ed92298b107477904ddcde07e1ac0f9596781b8eac508b46f0f48"
+      },
+      "tools/performance/compare_swap431_perf01.py": {
+        "status": "A",
+        "sha256": "a31b405defa70bd549dedfa2e794a88d3befe8e52f535a87d6db13e341497815"
+      },
+      "tools/performance/native_usage.c": {
+        "status": "A",
+        "sha256": "6ab43b3d15ca339e422adbeb8953b837f48918d7d6aa1951b84a96b5138d8a38"
+      },
+      "tools/performance/observe_perf01_column.py": {
+        "status": "A",
+        "sha256": "f5b173d0f53e5b019371b728ab7e431fe5afd624af846d43feb88784fd5baec3"
+      },
+      "tools/performance/package_perf01_evidence.py": {
+        "status": "A",
+        "sha256": "476121bc04208acf9ce715d04d9077af61bc50419df3ab574885a3066a99ffe6"
+      },
+      "tools/performance/profile_perf01_column.py": {
+        "status": "A",
+        "sha256": "4ee4f9ceac1f6b1a53c10b0dbacf9c7fc0330fb36d58e3a13321c7738c8b8fe9"
+      },
+      "tools/performance/run_perf01_preservation.py": {
+        "status": "A",
+        "sha256": "368f150f5ff9b531316d178bfade4d578e137a6111081c41e513bf146798e1fa"
+      },
+      "tools/performance/run_swap5_perf01.py": {
+        "status": "A",
+        "sha256": "1bd5e933b64062d58ad077ac2cff1c624db0861363ddedd7ce301156f60b7897"
+      },
+      "tools/performance/test_perf01_trace_branch.py": {
+        "status": "A",
+        "sha256": "4d80907e2392da2e26e84a293abd8d3950ce3e9b02447796c0c2039b612e0cc2"
+      },
+      "tools/solute/build_column.py": {
+        "status": "M",
+        "sha256": "a43fe37dc7edac6427f2f68baf4c354fbfb41daf0bfb35821c892bed0345978e"
+      }
+    }
+  },
+  "phase": "EXACT_IMPLEMENTATION_LOCALLY_QUALIFIED_HOSTED_PENDING",
+  "canonical_admitted": false
 }

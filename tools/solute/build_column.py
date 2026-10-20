@@ -18,13 +18,17 @@ def sha(path):
 
 
 def main():
+    global ROOT
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--source-tree', type=Path, default=ROOT,
+                        help='Explicit immutable comparator checkout; uses the same builder and compiler policy')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--optimization', choices=['O0', 'O2'], default='O2')
     parser.add_argument('--build-profile', choices=['checked', 'production'], default='checked',
                         help='Production omits compiler bounds/shape checks; physical and numerical guards remain active')
     parser.add_argument('--gprof', action='store_true', help='Diagnostic instrumentation; excluded from speed comparisons')
     args = parser.parse_args()
+    ROOT = args.source_tree.resolve()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     fc = shlex.split(os.environ.get('FC', 'gfortran'))

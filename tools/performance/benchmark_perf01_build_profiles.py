@@ -6,9 +6,11 @@ ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  ap=argparse.ArgumentParser(description=__doc__)
- for k in ['checked','production','output']:ap.add_argument('--'+k,type=Path,required=True)
+ ap.add_argument('--before','--checked',dest='before',type=Path,required=True)
+ ap.add_argument('--after','--production',dest='after',type=Path,required=True)
+ ap.add_argument('--output',type=Path,required=True)
  ap.add_argument('--repeat',type=int,default=7);ap.add_argument('--windows',type=int,default=8);a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
- bins={k:getattr(a,k).resolve()/'swap5_solute_column'for k in ['checked','production']};report=dict(builds={},runs=[],summary=[],scope='Real file application with synthetic scenarios; native CPU/wall includes model input and output, excludes build and Python preparation')
+ bins={k:getattr(a,k).resolve()/'swap5_solute_column'for k in ['before','after']};report=dict(builds={},runs=[],summary=[],scope='Real file application with synthetic scenarios; native CPU/wall includes model input and output, excludes build and Python preparation')
  for k,p in bins.items():
   build=json.loads((p.parent/'build-complete.json').read_text())
   if build['executable_sha256']!=sha(p):raise ValueError('executable identity')
@@ -22,7 +24,7 @@ def main():
    text=text.replace(field+'='+value+','+value,field+'='+str(a.windows)+'*'+value)
   source=out/f'input-{n}.nml';source.write_text(text)
   for repeat in range(a.repeat):
-   for arm in (['checked','production']if repeat%2==0 else['production','checked']):
+   for arm in (['before','after']if repeat%2==0 else['after','before']):
     b=out/f'{n}-{repeat}-{arm}';b.mkdir();before=resource.getrusage(resource.RUSAGE_CHILDREN);t=time.monotonic();p=subprocess.run([str(bins[arm]),str(source),'-',str(a.windows)],cwd=b,capture_output=True,preexec_fn=lambda:os.sched_setaffinity(0,{max(os.sched_getaffinity(0))}),timeout=90);wall=time.monotonic()-t;after=resource.getrusage(resource.RUSAGE_CHILDREN)
     (b/'stdout').write_bytes(p.stdout);(b/'stderr').write_bytes(p.stderr)
     rec=dict(nodes=n,arm=arm,repeat=repeat,exit=p.returncode,wall=wall,cpu=after.ru_utime+after.ru_stime-before.ru_utime-before.ru_stime)
@@ -33,5 +35,5 @@ def main():
   if not row['byte_exact']:raise RuntimeError('physical output mismatch')
   for arm in bins:
    r=[x for x in rr if x['arm']==arm];row[arm]={k:dict(median=statistics.median(x[k]for x in r),min=min(x[k]for x in r),max=max(x[k]for x in r))for k in ['cpu','wall']}
-  row['speedup']=row['checked']['cpu']['median']/row['production']['cpu']['median'];report['summary'].append(row);(out/'CONTROL.json').write_text(json.dumps(report,indent=2));print(json.dumps(row),flush=True)
+  row['speedup']=row['before']['cpu']['median']/row['after']['cpu']['median'];report['summary'].append(row);(out/'CONTROL.json').write_text(json.dumps(report,indent=2));print(json.dumps(row),flush=True)
 if __name__=='__main__':main()

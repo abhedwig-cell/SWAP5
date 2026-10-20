@@ -133,6 +133,12 @@ The trajectory3 `column_input_20261020.variable_grid_successor` additionally bin
 the real178-provider O0/O2 builds,86 process observations and exact five-profile
 fresh restarts. Its source validator preserves the original NUT guard semantics.
 The dry deep long-window rejection remains explicit.
+The additive `integration/audits/column_grid/qualify_dry_profile.py` now binds the
+dry profile at the same 0.002-day horizon using 100 reporting windows, exact
+current 178-provider builds, independent full balances and window-37 fresh
+restart. The immutable same-horizon capsule and reproduction input are linked
+from the existing final closure. Physical forcing, production owners and the
+original NUT/grid authority records remain unchanged.
 The trajectory3 `column_input_20261020` record binds the original26 GNU O0/O2 process
 observations and immutable capsule. Existing AGE03-CI postimages register only the
 three exact additive tool/test files. Production/reference source and all old
