@@ -8,7 +8,7 @@ Updated20 October2026 against actual scientific admission `8422c2a8ac3158b0d74f7
 
 The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, latest bounded receipt `185f7638a116adf38c99ac1e55d945e6b9e0e7d5`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. PR1337 also corrects the nine obsolete active-queue absence statements and bounded-receipt locator shapes; the original nine scoped reachability checks pass. The matrix below reports those existing nine rows and their later bounded receipts, not a second registry.
 
-The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate, snow/interception and persistent ponded application binding remain unqualified; a corrected surface-N store is not introduced.
+The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate, snow, other interception routes and persistent ponded application binding remain unqualified; a corrected surface-N store is not introduced.
 
 Additional incomplete historical envelope: cross-record/general constructs outside the explicit native parser, fractional experimental-humus clocks and true extended diagnostics; no complete original-model multiyear comparison. These are recorded separately from the gross-carrier blocker. Native daily arrays/tables, material positions, same-record apostrophe concatenation, explicit false diagnostics and bounded experimental humus are admitted. The original half-day amendment gate stalls rather than applying a subdaily event; no new subdaily process is inferred from permissive date parsing.
 
@@ -310,3 +310,47 @@ The [native CHARACTER contract](MC_NUT01_NATIVE_CHARACTER_20261020.md) qualifies
 The original-library calendar fixture now executes the literal daily amendment gate: a half-day event never fires at integer daily calls and blocks the next queued event, while the two integer-date positive controls fire. This is a fixture with an amendment-call counter, not a full original trajectory. Fractional parsing is therefore distinct from qualified subdaily application; fractional humus start clocks and near-integer tolerance cases remain unqualified. True extended diagnostics remain unsupported, including their historical derived P columns. Empty concatenation pieces, tabs around concatenation and doubled apostrophe escapes are rejected by original TTUTIL and remain rejected. Canonical integration and mastercoverage receipts are owned by the existing native_character_successor status field.
 
 Actual native CHARACTER admission: [PR1337](https://github.com/abhedwig-cell/SWAP5/pull/1337), merge `8422c2a8ac3158b0d74f77b1155936fdc435b792`, qualified head `78576d691067253435ffc4e074dd4bef14411b32`, source `426f14c39eb251095168c6c9b523cee5203bfbb6`. Both actual-merge owner entrypoints pass. Existing master PR1072 receipt `185f7638a116adf38c99ac1e55d945e6b9e0e7d5` corrects nine obsolete active-queue absence statements and bounded receipt shapes in the original schema. Its original nine scoped reachability checks pass;234 other rows,243 dispositions, non-NUT queues and latest SOL receipts are exact. The nine full-row dispositions remain ACTIVE_MIGRATION. Full MC-NUT01 is not closed.
+
+## Gash source composition qualification, 20October2026
+
+The [original Gash/N composition contract](MC_NUT01_GASH_COMPOSITION_20261020.md)
+records an additional bounded source-to-stock application. A source-faithful
+one-line saturation-branch correction is checked against 54 executions of the
+literal original routine per optimization; the preimage differs in six. The
+actual coupled model includes intercepted and bypass irrigation, committed
+crop LAI, wet transpiration, accepted Reference water and historical Soil-N.
+Current-canonical PERF01 is retained and the complete affected coupled closure
+is re-executed. This is separate from the original surface process fixture and
+does not establish a complete original-model historical trajectory.
+
+The two-stage reconciliation is explicit: the first backend execution completed
+its individual cases but the final runner correctly rejected it after canonical
+source changed. Its raw outputs and guard failure are retained as superseded
+evidence. Only the fresh execution on the reconciled source is eligible for
+admission. No assertion or tolerance is weakened.
+
+The existing registry statuses must be read at their stated scope:
+
+| Evidence or boundary | Classification | Disposition consequence |
+| --- | --- | --- |
+| Versioned mineral/organic/crop/source/calendar/retained/restart facets | ADMITTED bounded facets | Nine full NUT rows stay ACTIVE_MIGRATION |
+| Original surface/pond diagnostic with prescribed top-node water | QUALIFICATION_ONLY | No complete original caller or negative-carrier admission |
+| Old historical development branch with no commits ahead | SUPERSEDED development lineage | Use current canonical implementations and later owner receipts |
+| Aquifer and new phosphorus model; new RossFast qualification | NOT_APPLICABLE to this work unit | No added nutrient capability or blocking dependency |
+| Negative original carrier with depleted supply | Concrete scientific blocker | Hard element conservation and literal depleted original output disagree in the documented conditional fixture |
+| General input/output and complete original trajectory | ACTIVE_MIGRATION / NOT_PROVEN evidence boundary | No automatic promotion from a merged branch |
+
+These are interpretations of the existing master and owner records, not new
+capability identifiers or an independent admission register. A qualification-only
+surface witness cannot be substituted for a complete original hydraulics/crop/N
+trajectory. The strictly isolated negative-source decision preserves every
+already admitted nonnegative source and coupled process path.
+
+The current Gash whole-N residual is3.6971294081755701e-16 kg/m² absolute,
+5.500308916124313e-16 relative; maximum over the six explicit whole-N budgets
+is5.034167527284694e-15 kg/m² absolute and7.410057146751128e-15 relative.
+The unchanged absolute gate is1e-10 kg/m². The complete profile table, source
+loading, uptake, hydraulic residuals and measured compilation/execution costs
+are in the Gash contract. All14 previous endpoint bytes and56 transition
+continuations pass on the reconciled current backend. These results do not
+resolve the separately documented negative/depleted-stock original conflict.

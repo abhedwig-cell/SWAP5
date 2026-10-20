@@ -41,6 +41,12 @@ def source():
  phook=''.join('   '+l for l in hook.splitlines(True)).replace('ROOT/STATUS',"ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'")
  pcontrols=''.join('   '+l for l in controls.splitlines(True)).replace('ROOT/STATUS',"ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'")
  expected=old.replace('def verify_qualification():\n','def verify_qualification():\n'+phook,1).replace('def self_test():\n','def self_test():\n'+pcontrols,1)
+ expected=expected.replace("    source()\n    path = 'src/legacy/b1_10_port/headcalc.f90'", """    current=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('gash_interception_successor',{})
+    if 'evidence' in current:
+        runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_gash_fsi35')['source']()
+    else:
+        source()
+    path = 'src/legacy/b1_10_port/headcalc.f90'""")
  require((ROOT/path).read_text()==expected,'Gash exact PERF01 owning handoff')
  return s
 
