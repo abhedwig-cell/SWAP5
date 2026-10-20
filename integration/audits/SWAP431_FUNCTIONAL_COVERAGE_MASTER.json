@@ -306,25 +306,32 @@
           2058,
           2095,
           2096,
-          2097
+          2097,
+          2135,
+          2189,
+          2197
         ],
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Gash interception",
       "swap5_implementation_authority": [
-        "src/runtime/mod_fmr_serialized_reference_backend.f90"
+        "src/runtime/mod_fmr_serialized_reference_backend.f90",
+        "src/process/mod_gash_interception_process.f90",
+        "src/process/mod_gash_daily_application.f90"
       ],
       "current_disposition": "ADMITTED",
       "evidence": [
-        "integration/audits/F-MIG431-INT12-D_ADMISSION.json"
+        "integration/audits/F-MIG431-INT12-D_ADMISSION.json",
+        "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md"
       ],
       "production_reachability": {
         "established": true,
         "route": "src/runtime/mod_fmr_serialized_reference_backend.f90",
-        "claim": "Daily SWMETDETAIL0; B1.11 branch ordering retained; E adds detailed-record continuation"
+        "claim": "Daily SWMETDETAIL0; B1.11 branch ordering retained; E adds detailed-record continuation Original total-rpd saturation branch corrected; literal54 cases/optimization exact, four existing owners preserved and bounded actual N composition qualified. No general dispatcher expansion."
       },
       "restrictions": [
-        "Daily SWMETDETAIL0; B1.11 branch ordering retained; E adds detailed-record continuation"
+        "Daily SWMETDETAIL0; B1.11 branch ordering retained; E adds detailed-record continuation",
+        "Bounded correction preserves existing admitted scope; new N composition snow-free daily stateless Gash, with qualified threshold domain. Rutter/Braden/snow and persistent canopy inventory are not added."
       ],
       "remaining_dependency": [],
       "active_workunit": null,
@@ -336,7 +343,24 @@
         "regression_risk": 3
       },
       "classification": "APPLICATION_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "gash_original_rpd_correction_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "original_member_lines": [
+          2135,
+          2189,
+          2197
+        ]
+      }
     },
     {
       "capability_id": "SW431-INT-RUTTER",
@@ -11086,12 +11110,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Eight-FOM/biomass/humus turnover, mineralisation and immobilisation execute in admitted actual coupled profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Eight-FOM/biomass/humus turnover, mineralisation and immobilisation execute in admitted actual coupled profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11112,7 +11137,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Eight FOM pools, biomass/humus, mineralisation and immobilisation; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -11123,7 +11148,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11161,6 +11187,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -11195,12 +11233,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "NH4/NO3 finite inventories, sorption and source/supply routes execute in admitted coupled profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "NH4/NO3 finite inventories, sorption and source/supply routes execute in admitted coupled profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11221,7 +11260,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Owned NH4/NO3, sorption and finite supply; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -11232,7 +11271,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11273,6 +11313,18 @@
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
       }
     },
     {
@@ -11303,12 +11355,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Source-full fertiliser/manure, volatilisation, positional native materials, daily calendar/repeated events and concatenated names execute in admitted profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Source-full fertiliser/manure, volatilisation, positional native materials, daily calendar/repeated events and concatenated names execute in admitted profiles. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -11336,7 +11389,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Fertiliser/manure, volatilisation and dated repeated events; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -11347,7 +11400,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11385,6 +11439,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -11422,13 +11488,14 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Retained/pending/export stocks, seven-organ returns, thermal/harvest/fallow/successor and native continuation are admitted within the explicit B1.12 contract. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Retained/pending/export stocks, seven-organ returns, thermal/harvest/fallow/successor and native continuation are admitted within the explicit B1.12 contract. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
         "Complete historical source/application envelope and automatic management/input activation remain open outside the explicit qualified B1.12 profile. Thermal/pending/harvest/native continuation for that profile is admitted by1277.",
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -11451,7 +11518,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Returned, retained and pending residues; harvest export; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -11462,7 +11529,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -11518,6 +11586,18 @@
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
       }
     },
     {
@@ -11547,12 +11627,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Source-selected vegetative and bounded reproductive N demand/uptake are coupled to actual accepted crop/root and Reference water states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Source-selected vegetative and bounded reproductive N demand/uptake are coupled to actual accepted crop/root and Reference water states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -11575,7 +11656,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Source-selected crop demand, uptake and daily ownership; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -11586,7 +11667,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11624,6 +11706,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -13662,12 +13756,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Source nitrification and internal NH4-to-NO3 accounting execute with original chemistry and actual coupled states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Source nitrification and internal NH4-to-NO3 accounting execute with original chemistry and actual coupled states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -13687,7 +13782,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "NH4 oxidation as an internal N transfer; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -13698,7 +13793,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13736,6 +13832,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -13775,12 +13883,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Source denitrification rate/environment and external gaseous N losses execute with original chemistry and actual coupled states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Source denitrification rate/environment and external gaseous N losses execute with original chemistry and actual coupled states. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -13801,7 +13910,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Nitrate gaseous loss with moisture/temperature/respiration; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -13812,7 +13921,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13853,6 +13963,18 @@
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
       }
     },
     {
@@ -13886,12 +14008,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Original analytical transport, accepted water carriers, signed bottom/lateral exchange and positive gross/dry accepted-atmosphere N routes are admitted. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Original analytical transport, accepted water carriers, signed bottom/lateral exchange and positive gross/dry accepted-atmosphere N routes are admitted. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -13911,7 +14034,7 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Analytical concentration, uptake and signed boundary exchange; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -13922,7 +14045,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13960,6 +14084,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -14022,15 +14158,16 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Explicit bounded source fixation policy, actual crop demand/supply and whole-N continuation budgets are admitted; complete B1.11 crop-N equivalence outside that option is not established. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "claim": "Explicit bounded source fixation policy, actual crop demand/supply and whole-N continuation budgets are admitted; complete B1.11 crop-N equivalence outside that option is not established. Canonical through PR1337; Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Snow-free daily Gash source composition additionally admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_character_20261020"
+        "bounded_receipt": "mc_nut01_gash_composition_20261020"
       },
       "restrictions": [
         "Automatic historical source selector/parameter activation, full B1.11 crop growth/trajectory, full historical partial-return/harvest equivalence outside the explicit B1.12 profile remain outside this bounded option. Aquifer remains excluded.",
         "Active positive demand at the source cutoff and unfunded storage or negative preclipping donor N are refused atomically; no silent source correction.",
         "Explicit source N policy with existing WOFOST81 growth/allocation/senescence ownership; not complete B1.11 crop-N equivalence.",
-        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion."
+        "PR1330 positive gross, PR1333 dry automatic atmosphere and PR1337 bounded native CHARACTER/false flag are admitted. Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+        "Daily stateless Gash facet admitted through original-rpd correction and accepted Reference/crop/N; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -14067,7 +14204,7 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
         "scope": "Biological fixation booked as crop input; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
@@ -14078,7 +14215,8 @@
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
-        "native_character_receipt": "native_character_admission_20261020"
+        "native_character_receipt": "native_character_admission_20261020",
+        "gash_composition_receipt": "gash_composition_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14116,6 +14254,18 @@
         "contract_at_canonical": "docs/science/MC_NUT01_NATIVE_CHARACTER_20261020.md",
         "scope": "Original same-record apostrophe CHARACTER concatenation/repetition and explicit native flCropExt=.FALSE.; no new physical inventory or output implementation",
         "qualification": "Fresh GNU13.3 O0/O2 complete HIST actual source124/four730-day/surface12-day: all14 endpoints and all observables exact;52 transition processes and rollback; native38, modern53/date3075,new18 and original13 per optimization;11 new and original9 controls;178 current SOL providers exact; PR1336 preserved",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false
+      },
+      "gash_composition_admission_20261020": {
+        "pr": 1339,
+        "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+        "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+        "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
         "canonically_admitted": true,
         "full_capability": false,
         "disposition_changed": false
@@ -17395,7 +17545,7 @@
       "capability_id": "SW431-NUT-MINERAL",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "NH4/NO3 finite inventories, sorption and source/supply routes execute in admitted coupled profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "NH4/NO3 finite inventories, sorption and source/supply routes execute in admitted coupled profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17404,13 +17554,13 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Explicit bounded source fixation policy, actual crop demand/supply and whole-N continuation budgets are admitted; complete B1.11 crop-N equivalence outside that option is not established. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Explicit bounded source fixation policy, actual crop demand/supply and whole-N continuation budgets are admitted; complete B1.11 crop-N equivalence outside that option is not established. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17419,13 +17569,13 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Eight-FOM/biomass/humus turnover, mineralisation and immobilisation execute in admitted actual coupled profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Eight-FOM/biomass/humus turnover, mineralisation and immobilisation execute in admitted actual coupled profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17434,7 +17584,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-ROOT-ANAE-GROW",
@@ -17690,7 +17840,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Source-full fertiliser/manure, volatilisation, positional native materials, daily calendar/repeated events and concatenated names execute in admitted profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Source-full fertiliser/manure, volatilisation, positional native materials, daily calendar/repeated events and concatenated names execute in admitted profiles. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17699,7 +17849,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -17707,7 +17857,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Source-selected vegetative and bounded reproductive N demand/uptake are coupled to actual accepted crop/root and Reference water states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Source-selected vegetative and bounded reproductive N demand/uptake are coupled to actual accepted crop/root and Reference water states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17716,7 +17866,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-DENIT",
@@ -17725,7 +17875,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Source denitrification rate/environment and external gaseous N losses execute with original chemistry and actual coupled states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Source denitrification rate/environment and external gaseous N losses execute with original chemistry and actual coupled states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17734,7 +17884,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-NITRIF",
@@ -17742,7 +17892,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Source nitrification and internal NH4-to-NO3 accounting execute with original chemistry and actual coupled states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Source nitrification and internal NH4-to-NO3 accounting execute with original chemistry and actual coupled states. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17751,7 +17901,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -17759,7 +17909,7 @@
       "dependencies": [
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Retained/pending/export stocks, seven-organ returns, thermal/harvest/fallow/successor and native continuation are admitted within the explicit B1.12 contract. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Retained/pending/export stocks, seven-organ returns, thermal/harvest/fallow/successor and native continuation are admitted within the explicit B1.12 contract. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17768,7 +17918,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-NUT-TRANSPORT",
@@ -17776,7 +17926,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Original analytical transport, accepted water carriers, signed bottom/lateral exchange and positive gross/dry accepted-atmosphere N routes are admitted. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
+      "why_open": "Original analytical transport, accepted water carriers, signed bottom/lateral exchange and positive gross/dry accepted-atmosphere N routes are admitted. Remaining full envelope: Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion. Daily Gash/N composition now admitted; Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -17785,7 +17935,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#native_character_successor"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor"
     },
     {
       "capability_id": "SW431-TILL-REDIST",
@@ -19097,6 +19247,29 @@
       },
       "remaining": "Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
       "whole_master_integrity": "NOT_CLAIMED; only bounded NUT receipt and correction of obsolete complete-absence queue explanations. Preserve234 other rows/all243 dispositions/non-NUT queues and latest MC-SOL01 records."
+    },
+    "mc_nut01_gash_composition_20261020": {
+      "pr": 1339,
+      "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+      "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+      "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+      "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+      "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ]
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -19487,7 +19660,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+  "canonical_locator_head": "24868384b276b838ee704cff5535aad3bdb4a9c9",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -21738,5 +21911,31 @@
     },
     "remaining": "Negative aggregate/depleted-stock conservation conflict with full original caller trajectory NOT_PROVEN; snow/interception and persistent ponded N binding; remaining cross-record/general native grammar, fractional humus clocks and true diagnostic output; complete original-model trajectory remain unqualified. Existing process owners are present; no whole-row promotion.",
     "whole_master_integrity": "NOT_CLAIMED; only bounded NUT receipt and correction of obsolete complete-absence queue explanations. Preserve234 other rows/all243 dispositions/non-NUT queues and latest MC-SOL01 records."
+  },
+  "latest_mc_nut01_gash_composition_20261020": {
+    "pr": 1339,
+    "canonical_merge": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+    "qualified_head": "d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json gash_interception_successor",
+    "contract_at_canonical": "docs/science/MC_NUT01_GASH_COMPOSITION_20261020.md",
+    "scope": "Original total-rpd Gash branch correction and snow-free daily Gash accepted Reference/crop/N composition; current PERF01 preserved",
+    "qualification": "Original Gash54cases O0/O2 exact; preimage6 mismatches; all14 previous endpoints/observables exact;56 transition processes with cumulative Gash64-byte ledgers and rollback;14 controls; unchanged original PERF01 authority and13 controls; current178 providers preserved",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "related_preserved_capability": "SW431-INT-GASH",
+    "remaining": "Negative aggregate/depleted-stock reference conservation conflict with complete original caller trajectory NOT_PROVEN; snow/other interception and persistent ponded N binding; remaining general native grammar, fractional humus clocks, true diagnostics and complete original-model regression remain unqualified. Existing process owners are present; no whole-row promotion.",
+    "whole_master_qualified": false
   }
 }
