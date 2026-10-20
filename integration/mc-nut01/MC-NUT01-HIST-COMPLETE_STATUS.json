@@ -55,10 +55,10 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Resolve original negative-source depleted-stock conservation/reachability separately. Complete remaining snow/interception/persistent pond, native/fractional input, extended output and original-model regression envelopes without changing admitted positive/dry routes.",
-  "recovery_point": "PR1333 admitted at6a2985776d2f242572725d8c18489260296c6732; source06d4d60b83432f4fbd54178437d29d47d4efb16d; both actual-merge NUT/grid entrypoints PASS. Master882aa4824741c771ea5170477e1adf92ec9a5981 preserves234 other rows/all dispositions. Full HIST/master remain false.",
+  "next_action": "Resolve the bounded negative-source/persistent-pond historical reference conflict without weakening total N conservation; full original caller trajectory still NOT_PROVEN. Continue separately scoped snow/interception, actual native grammar/extended outputs and complete original-model regression. Preserve PR1333 dry positive admission.",
+  "recovery_point": "Canonical b0c2e94b scientific surface unchanged; original surface-source diagnostic O0/O2 PASS at121e675d, qualification-only evidence and bounded negative-stock blocker. PR1333 owner remains governing production admission; no master row promotion.",
   "blockers": [
-    "Positive historical gross top input admitted by PR1330. Negative top aggregate has an unmodified original O0/O2 depletion mass defect (-1.999000009e-5kg/m2 in the diagnostic); original complete caller reachability and automatic atmosphere/ponded binding remain unqualified.",
+    "Negative original source is produced by literal original pond/runoff + integral + management composition on a dry step after wet loading, with prescribed top-node state. O0/O2 depleted-stock conditional residual -2.2827957153033037e-5kg/m2. Complete original hydraulic/crop/N caller trajectory remains NOT_PROVEN; full historical admission and persistent ponded binding remain blocked. Dry positive automatic route stays admitted.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
@@ -1476,6 +1476,55 @@
       "source": "PASS",
       "mkdocs_strict": "PASS",
       "seconds": 12.81
+    }
+  },
+  "historical_surface_source_diagnostic": {
+    "status": "QUALIFICATION_ONLY",
+    "base_canonical": "b0c2e94b69d7d21519611af92866fb4dbf713ea2",
+    "execution_commit": "121e675d",
+    "production_source_tree": "06d4d60b83432f4fbd54178437d29d47d4efb16d",
+    "implemented": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_admitted": false,
+    "scope": "Prescribed top-node state; full original hydraulic/crop caller trajectory NOT_PROVEN; depleted nitrogen stocks are conditional, not obtained from the wet day",
+    "contract": "docs/science/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md",
+    "runner": "integration/audits/run_nut_historical_surface_source.py",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.tar.xz.b64",
+      "decoded_sha256": "40b8bf7d5e07cc2c4a6a7dc8d088a349f0a6d4b3c975145acf148cd51f30030b",
+      "compressed_bytes": 40992,
+      "members": 47
+    },
+    "source_sha256": {
+      "boundtop": "69d0d4703af64212d7200898f12568853d015cea29cb45f81915bece15b63c04",
+      "integral": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174",
+      "management_soil": "0edba713f71840fca320d17162fd3d3e59ff2acf702df3393188fe4a2fd6c43b",
+      "wofost_soil_watern": "b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
+      "swap": "39d1cbd93dbd0f99505e92ef94ac0d23bddb496529c280397d2d7c2b7eb9b58a",
+      "readswap": "e2ddee83afde65d5c10af561c8271c2cd6f23065d431160bf1467d5ebd18768c",
+      "timecontrol": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8"
+    },
+    "archive_sha256": "18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c",
+    "O0_O2": "byte-identical raw native output",
+    "cost_seconds": {
+      "compile_link": 0.3121313470037421,
+      "native": 0.0035181939965696074
+    },
+    "negative_gross_m_day": -0.004567591412606608,
+    "conditional_depleted_residual_kg_m2": -2.2827957153033037e-05,
+    "conditional_depleted_relative_absolute": 0.9991246521540272,
+    "max_surface_water_residual_cm": 0.0,
+    "full_original_caller_reachability": "NOT_PROVEN",
+    "full_work_unit_closed": false,
+    "mastercoverage_promotion": false,
+    "preservation_selection": "No production, tests, tools, reference or shared transport changes. Revalidate existing exact source/evidence owner; no new full F-CI, RossFast or coupled qualification selected.",
+    "validation": {
+      "capsule_manifest_raw_native_sources": "PASS",
+      "existing_nut_grid_admission": "PASS unchanged production",
+      "docs_source": "PASS",
+      "mkdocs_strict": "PASS",
+      "scope": "No new physical or full historical production admission"
     }
   }
 }
