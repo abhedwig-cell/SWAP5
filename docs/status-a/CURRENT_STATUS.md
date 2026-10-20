@@ -117,7 +117,9 @@ The later [file-driven solute column](../science/MC_SOL01_COLUMN_INPUT_CONTRACT.
 has local GNU13.3 O0/O2 qualification for a four-node serialized Reference
 application with positive pond/runon/runoff/infiltration/evaporation, prescribed
 roots/drain/bottom, exact separate-process restart and complete-generation
-publication. Canonical admission is pending. This is explicit namelist input;
+publication. PR1329 admits this bounded application at `21cc8098`; all15 final-head
+workflows and all five actual postmerge workflows pass, including application
+run39464479365 and coupled-restart F-GC39464478982. This is explicit namelist input;
 general historical SWP activation, a live crop and dynamic thermal decay remain
 outside its bounded claim. The existing trajectory3 column-input entry owns the
 evidence and recovery state; no master row is promoted.

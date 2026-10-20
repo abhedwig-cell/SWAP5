@@ -159,4 +159,39 @@ This supplies an explicit file-driven application for the bounded route. It does
 not close the complete historical SWP reader/default envelope, nonlinear pond,
 dynamic thermal decay, field/seasonal validation, multi-column composition or
 simultaneous age/nutrient companions. Existing full-envelope master dispositions
-remain unchanged. Canonical admission of this application is pending its PR.
+remain unchanged. PR1329 admits this bounded application at
+`21cc80984a864b48d4344b9671d6ccd2ae5882ad`, qualified head
+`19f973e4650387d59edcf394c6df0d11880947ac`; the two Git trees are equal. All15
+automatic final-head workflows are terminal SUCCESS, including the actual owning
+file-column run39463805790. Actual postmerge native run39464479365 also succeeds.
+The existing master receives bounded receipts at `371e92f2`, preserving the other
+241 rows and all243 dispositions. The trajectory3 admission entry is the owning
+recovery and evidence record.
+
+All five automatic workflows on the actual merge are terminal SUCCESS:
+canonical39464478500, F-CI58P39464478915, F-CI51P39464479230, file-column39464479365
+and full F-GC39464478982. The last log includes the original O0/O2 coupled
+process-split restart assertions and `F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS`.
+The full native/groundwater logs, terminal identities, local source preservation
+and strict-docs output are sealed in
+`integration/audits/evidence/MC_SOL01_COLUMN_HOSTED_20261020.tar.xz.b64`.
+
+The scoped master update passes its two-row/241-row/disposition proof. Its global
+checker stops at an unchanged historical dynamic-pond authority locator at
+`6353f109`; the same nine unrelated NUT receipt-shape gaps are also still present.
+Neither is changed or credited as PASS. This final documentation/evidence receipt
+inherits the exact unchanged scientific application/source inputs and actual
+merge tests; it selects local documentation/integrity checks rather than another
+automatic numerical run.
+
+Concurrent NUT PR1330 later advances canonical to `d118bcf1`, source tree
+`a60ac1d96c98f3ecc7c414fc412884271a54b227`. All178 providers actually compiled by
+the file-driven solute application remain byte-identical at both optimizations.
+Current age/NUT/source/evidence qualification also passes. A qualification-only
+checkout condition fixes the new NUT predecessor helper on ordinary full Git
+worktrees: expand sparse paths only when sparse checkout is active. Every prior
+scientific assertion and source/state check is retained. The exact dependency
+proof, failed staging attempt and successful default/full predecessor checks are
+in `MC_SOL01_COLUMN_COEXISTENCE_20261020.tar.xz.b64`. This reconciliation inherits
+the existing actual application execution through its unchanged complete inputs;
+it does not claim a new broad model run on a documentation commit.
