@@ -2,6 +2,7 @@ program swap5_solute_column
   use iso_fortran_env, only: real64,int64,iostat_end
   use ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod,z,dz,disnod
+  use solute_column_context, only: initialize_column_context
   use mod_transaction_reference, only: transaction_state_t,TX_TEMPORAL_EXTERNAL_FULL_HALF
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_fmr_runtime_core
@@ -18,15 +19,17 @@ program swap5_solute_column
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
   use mod_solute_compartment_state, only: solute_compartment_state_t
   implicit none
-  integer,parameter :: MAX_WINDOWS=128
+  integer,parameter :: MAX_WINDOWS=128,MAX_NODES=256
+  integer :: nodes=4
+  real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
   integer(int64) :: revision
   real(real64) :: initial_head=-75d0,initial_pond_cm=0d0,initial_pond_mass_mg_cm2=0d0
-  real(real64) :: concentration_mg_cm3(4)=0d0
+  real(real64) :: concentration_mg_cm3(MAX_NODES)=0d0
   real(real64) :: theta_r=0.032d0,theta_s=0.423d0,ksat_cm_day=0.00475d0
   real(real64) :: alpha_per_cm=0.0135d0,vg_n=1.455d0,pore_l=0.365d0
   real(real64) :: bulk_density=1.3d0,kf=0.2d0,dispersivity_cm=0.2d0,diffusion_cm2_day=0.05d0,tscf=0.5d0
-  real(real64) :: root_cm_day(4)=0d0,drain_cm_day(4)=0d0,bottom_up_cm_day=0d0
+  real(real64) :: root_cm_day(MAX_NODES)=0d0,drain_cm_day(MAX_NODES)=0d0,bottom_up_cm_day=0d0
   real(real64) :: cdrain_mg_cm3=0d0,cseep_mg_cm3=0d0
   real(real64) :: pond_max_cm=1d6,runoff_resistance_day=0d0,temporal_tolerance=1d-6
   real(real64) :: ends_day(MAX_WINDOWS)=0d0,rain_cm_day(MAX_WINDOWS)=0d0
@@ -55,7 +58,7 @@ program swap5_solute_column
   type(mobile_salt_state_t) :: mobile
   type(solute_compartment_state_t) :: companion
   class(transaction_state_t),allocatable :: physical
-  namelist /column/ schema,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
+  namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
@@ -85,7 +88,18 @@ program swap5_solute_column
     call require(len_trim(message)==0.or.message(1:1)=='!','unexpected trailing input')
   end do
   close(u)
-  call require(schema==1,'unsupported schema')
+  call require(schema==1.or.schema==2,'unsupported schema')
+  call require(nodes>=2.and.nodes<=MAX_NODES,'invalid node count')
+  call require(all(ieee_is_finite(cell_thickness_cm)),'nonfinite grid')
+  if(schema==1)then
+    call require(nodes==4.and.all(cell_thickness_cm==0d0),'schema1 grid override rejected')
+    cell_thickness_cm(1:4)=[0.5d0,0.5d0,1d0,1d0]
+  end if
+  call require(all(cell_thickness_cm(1:nodes)>=1d-4).and.all(cell_thickness_cm(1:nodes)<=1d4).and. &
+    sum(cell_thickness_cm(1:nodes))<=1d6,'invalid cell thickness')
+  call require(all(cell_thickness_cm(nodes+1:)==0d0).and.all(concentration_mg_cm3(nodes+1:)==0d0).and. &
+    all(root_cm_day(nodes+1:)==0d0).and.all(drain_cm_day(nodes+1:)==0d0),'nonzero inactive grid entry')
+  call initialize_column_context(cell_thickness_cm(1:nodes))
   call require(windows>=1.and.windows<=MAX_WINDOWS,'invalid window count')
   call require(stop_after>=1,'stop-after must be positive')
   stop_after=min(stop_after,windows)
@@ -129,7 +143,7 @@ program swap5_solute_column
   p%cofgen(10,:)=ksat_cm_day;p%cofgen(11,:)=0.999d0;p%cofgen(12,:)=0.99d0*ksat_cm_day
   p%cofgen(22,:)=-1d6;p%cofgen(23,:)=1d-12
   p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%max_iterations=8;p%max_backtracking=4
-  p%root_extraction_active=any(root_cm_day>0d0)
+  p%root_extraction_active=any(root_cm_day(1:numnod)>0d0)
   initial%active_nodes=numnod;initial%pressure_head=spread(initial_head,1,numnod)
   allocate(initial%water_content(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
   call initialize_b110_default_mvg_parameters(hp,p%cofgen)
@@ -138,8 +152,8 @@ program swap5_solute_column
   initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0
   forcing%top_flux=0d0;forcing%top_head=initial_head;forcing%bottom_flux=bottom_up_cm_day
   allocate(forcing%drainage_flux_by_level(1,numnod))
-  forcing%drainage_flux_by_level(1,:)=drain_cm_day
-  forcing%root_extraction_sink=root_cm_day;forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
+  forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
+  forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
   allocate(forcing%pond_input)
   forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
   chemistry%dz_cm=dz;chemistry%theta=initial%water_content
@@ -172,7 +186,7 @@ program swap5_solute_column
   else
     call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok)
     call require(ok,'water initialization failed')
-    call initialize_matrix_solute(chemistry,9001_int64,0d0,initial%water_content,concentration_mg_cm3,solute,code)
+    call initialize_matrix_solute(chemistry,9001_int64,0d0,initial%water_content,concentration_mg_cm3(1:numnod),solute,code)
     call require(code==MATRIX_OK,'chemical initialization failed')
     call solute%snapshot(clock,theta,mobile,companion,revision)
     call reconstruct_matrix_solute_trusted(chemistry,9001_int64,revision,clock,theta,mobile%concentration_mg_cm3, &

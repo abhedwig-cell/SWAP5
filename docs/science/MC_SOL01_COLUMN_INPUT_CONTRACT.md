@@ -1,5 +1,32 @@
 # MC-SOL01 file-driven Reference column
 
+## Proposed schema2 grid successor, 20 October 2026
+
+This work extends only the application geometry adapter. Schema1 retains its
+four cells and its existing numerical endpoint. Schema2 adds `nodes` and
+`cell_thickness_cm` to `column`: 2 through 256 cells, each finite and between
+0.0001 and 10000 cm, with total depth at most 1000000 cm. All active thicknesses
+must be supplied. Cell centres are negative depths; face distances are half the
+adjacent thickness sum. Initial concentration, prescribed root extraction and
+signed drainage arrays have one entry per cell; omitted entries remain zero,
+and nonzero entries beyond the active grid are rejected. Initial pressure and
+hydraulic/chemical parameters remain uniform. Schema1 rejects grid overrides.
+
+The standalone legacy symbol context is allocated once from this geometry,
+before constructing the production owners. It is not committed physical state,
+cannot change within a run, and is not a second hydraulic or chemical owner.
+The existing typed Reference solver, pond transport, transaction and restart
+implementations remain unchanged. Restart continues to require identical input
+and executable bytes, including the grid. No kernel file input is introduced.
+
+Admission requires local GNU O0/O2 real calculations on the original four-cell
+case, a nonuniform refinement and a deeper profile, independently recomputed
+water/solute inventories, accepted gross fluxes, multiple substeps, exact fresh
+process restart, invalid geometry rejection and original endpoint preservation.
+This is not spatial-convergence, seasonal, arbitrary-stratigraphy or live-crop
+qualification. Existing surface-age/NUT source-bound evidence must remain valid.
+Full moving F-CI, RossFast and highest low-air are not selected for this adapter.
+
 Status: canonically admitted bounded application through PR1329 at
 `21cc80984a864b48d4344b9671d6ccd2ae5882ad`, based on
 `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`.

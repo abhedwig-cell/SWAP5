@@ -1,5 +1,22 @@
 {
   "column_input_20261020": {
+    "variable_grid_successor": {
+      "work_unit": "MC-SOL01-COLUMN-GRID",
+      "baseline": "e57a94e5f229415111563f8c52822ac3c7ba5491",
+      "branch": "work/mc-sol01-column-grid-20261020",
+      "stage": "IMPLEMENTED_PENDING_LOCAL_QUALIFICATION",
+      "implemented": true,
+      "persisted": false,
+      "tested": false,
+      "qualified": false,
+      "canonically_admitted": false,
+      "scope": "Schema2 serialized immutable runtime grid,2..256 cells; uniform hydraulic/chemical parameters, per-cell concentrations/root/drain; schema1 exact endpoint preservation. No new transport/solver science.",
+      "dependency_surface": ["app/solute_column/main.f90", "app/solute_column/link_context.f90", "tests/nut-sol/test_column_input.py", "examples/solute_column"],
+      "invariants": [3, 5, 7, 13, 21, 25, 29],
+      "test_selection": "RT/MC-SOL01 application interface/initialization changed. Local real178-provider O0/O2 build about90s, original26 observations plus nonuniform/deeper grid budgets and process restart, native UNKNOWN initially. Preserve every existing source science/rollback/restart assertion. Automatic owning column workflow selected once stable; full moving FCI NOT_SELECTED_IMPACT and highest NOT_SELECTED_POLICY. No src or reference mutation.",
+      "next_action": "Persist coherent candidate then compile O0, run original endpoint and new grids; O2 and source-bound coexistence qualification before admission.",
+      "blockers": []
+    },
     "work_unit": "MC-SOL01-COLUMN-INPUT",
     "baseline": "d443dced3313e2602fdea4cbd1a6cb566f53fb0e",
     "branch": "work/mc-sol01-column-input-20261020",

@@ -1,4 +1,4 @@
-! Link-only legacy context for the opt-in four-node Reference application.
+! Link-only legacy context for the opt-in serialized Reference application.
 ! Only the source arithmetic face mean executes here; other entries abort.
 module MOD_swap_base
   implicit none
@@ -19,10 +19,8 @@ end module MOD_params
 
 module MOD_grid
   implicit none
-  integer, parameter :: numnod = 4
-  real(8), parameter :: z(numnod) = [-0.25d0, -0.75d0, -1.50d0, -2.50d0]
-  real(8), parameter :: dz(numnod) = [0.50d0, 0.50d0, 1.00d0, 1.00d0]
-  real(8), parameter :: disnod(numnod+1) = [0.25d0, 0.50d0, 0.75d0, 1.0d0, 0.50d0]
+  integer :: numnod = 0
+  real(8), allocatable :: z(:), dz(:), disnod(:)
 end module MOD_grid
 
 module variables
@@ -32,7 +30,7 @@ module variables
   integer :: swbotb = 7
   real(8) :: runon = 0.0d0, epd = 0.0d0, reva = 0.0d0, pondm1 = 0.0d0
   real(8) :: dt = 0.25d0, runots = 0.0d0, t1900 = 1000.0d0
-  real(8) :: thetm1(numnod) = 0.30d0, qrot(numnod) = 0.0d0
+  real(8), allocatable :: thetm1(:), qrot(:)
   integer :: swkimpl = 0, swkmean = 1
   real(8) :: hplate = 0.0d0
   integer :: swbotb3impl = 0, swbotb3resvert = 0
@@ -43,17 +41,18 @@ module variables
   integer :: maxit = 8, maxbacktr = 4
   real(8) :: critdevh2cp = 1.0d-12, critdevh1cp = 1.0d-12, critdevponddt = 1.0d-12
   real(8) :: dtmin = 1.0d-6
-  integer :: nodgwl = numnod
-  real(8) :: gwlm1 = -2.0d0, hm1(numnod) = -100.0d0
+  integer :: nodgwl = 0
+  real(8) :: gwlm1 = -2.0d0
+  real(8), allocatable :: hm1(:)
   real(8) :: CritDevBalCp = 1.0d-12, CritDevBalTot = 1.0d-12
 
-  real(8) :: h(numnod) = -100.0d0, theta(numnod) = 0.30d0
-  real(8) :: kmean(numnod+1) = 1.0d0, gwlinp = -5.0d0, pond = 0.0d0
+  real(8), allocatable :: h(:), theta(:), kmean(:)
+  real(8) :: gwlinp = -5.0d0, pond = 0.0d0
   real(8) :: dtold = 0.25d0, qtop = -1.0d0, qbot = -1.0d0, hbot = -100.0d0
   integer :: itnumb(100,2) = 0
 
   logical :: fllowgwl = .false.
-  real(8) :: k(numnod) = 1.0d0, dimoca(numnod) = 0.0d0
+  real(8), allocatable :: k(:), dimoca(:)
   integer :: numbit = 0
   logical :: fldecdt = .false.
   real(8) :: gwl = -2.0d0
@@ -140,20 +139,20 @@ end module MOD_snow
 module MOD_frost
   use MOD_grid, only: numnod
   implicit none
-  real(8) :: rfcp(numnod) = 1.0d0
+  real(8), allocatable :: rfcp(:)
 end module MOD_frost
 
 module MOD_drain
   use MOD_grid, only: numnod
   implicit none
   integer, parameter :: nrlevs = 1
-  real(8) :: qdra(nrlevs,numnod) = 0.0d0
+  real(8), allocatable :: qdra(:,:)
 end module MOD_drain
 
 module MOD_irrigation
   use MOD_grid, only: numnod
   implicit none
-  real(8) :: qssdi(numnod) = 0.0d0
+  real(8), allocatable :: qssdi(:)
   real(8) :: nird = 0.0d0
 end module MOD_irrigation
 
@@ -161,14 +160,44 @@ module MOD_swap_mp
   use MOD_grid, only: numnod
   implicit none
   real(8) :: armpss = 0.0d0
-  real(8) :: frarmtrx(numnod) = 1.0d0
-  real(8) :: qexcmpmtx(numnod) = 0.0d0
-  real(8) :: dfdhmp(numnod) = 0.0d0
+  real(8), allocatable :: frarmtrx(:), qexcmpmtx(:), dfdhmp(:)
   integer :: ictopmp = 2
   real(8) :: qmplatss = 0.0d0
   integer :: idecmprat = 0
   logical :: fldecmprat = .false., fldecMPmbf = .false.
 end module MOD_swap_mp
+
+module solute_column_context
+  implicit none
+contains
+  subroutine initialize_column_context(thickness)
+    use MOD_grid
+    use variables, only: thetm1,qrot,nodgwl,hm1,h,theta,kmean,k,dimoca
+    use MOD_frost, only: rfcp
+    use MOD_drain, only: qdra,nrlevs
+    use MOD_irrigation, only: qssdi
+    use MOD_swap_mp, only: frarmtrx,qexcmpmtx,dfdhmp
+    real(8), intent(in) :: thickness(:)
+    integer :: j
+    if(numnod/=0)error stop 'standalone: immutable grid already initialized'
+    numnod=size(thickness)
+    dz=thickness
+    allocate(z(numnod),disnod(numnod+1))
+    z(1)=-0.5d0*dz(1)
+    do j=2,numnod
+      z(j)=z(j-1)-0.5d0*(dz(j-1)+dz(j))
+    end do
+    disnod(1)=0.5d0*dz(1)
+    disnod(2:numnod)=0.5d0*(dz(1:numnod-1)+dz(2:numnod))
+    disnod(numnod+1)=0.5d0*dz(numnod)
+    allocate(thetm1(numnod),qrot(numnod),hm1(numnod),h(numnod),theta(numnod), &
+      kmean(numnod+1),k(numnod),dimoca(numnod),rfcp(numnod),qdra(nrlevs,numnod), &
+      qssdi(numnod),frarmtrx(numnod),qexcmpmtx(numnod),dfdhmp(numnod))
+    thetm1=0.30d0;qrot=0d0;nodgwl=numnod;hm1=-100d0;h=-100d0;theta=0.30d0
+    kmean=1d0;k=1d0;dimoca=0d0;rfcp=1d0;qdra=0d0;qssdi=0d0
+    frarmtrx=1d0;qexcmpmtx=0d0;dfdhmp=0d0
+  end subroutine
+end module solute_column_context
 
 real(8) function hcomean(method, kup, klow, dzup, dzlow, node, hup, hlow)
   implicit none
