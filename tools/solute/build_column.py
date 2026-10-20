@@ -92,7 +92,7 @@ def main():
     if any(sha(ROOT / p) != h for p, h in report['input_sha256'].items()):
         raise RuntimeError('build input changed during compilation')
     report.update(status='BUILT', executable_sha256=sha(exe), provider_count=len(ordered))
-    (output / 'build.json').write_text(json.dumps(report, indent=2) + '\n')
+    (output / 'build-complete.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: report[k] for k in ['status', 'provider_count', 'executable_sha256']}))
 
 

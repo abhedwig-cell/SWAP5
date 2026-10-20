@@ -27,7 +27,7 @@ def main():
         raise FileExistsError(f'output exists: {output}')
     if args.stop_after < 1:
         raise ValueError('stop-after must be positive')
-    build_path = exe.parent / 'build.json'
+    build_path = exe.parent / 'build-complete.json'
     build = json.loads(build_path.read_text())
     if build.get('status') != 'BUILT' or build.get('executable_sha256') != sha(exe):
         raise ValueError('executable does not match its completed build')
