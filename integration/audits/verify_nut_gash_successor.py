@@ -9,7 +9,7 @@ SCIENCE=['src','tests','tools','reference','.github','app','examples']
 GASH='src/process/mod_gash_interception_process.f90'
 ADDED={GASH,'src/process/mod_gash_daily_application.f90'}
 OWNED={GASH,'tests/fpm/test_f_mig431_int12_d_gash.f90','tests/nut-crop/test_b112_retained_joint.f90',
- 'tests/nut-crop/run_hist_complete.py','integration/audits/run_nut_gash_authority.py',
+ 'tests/nut-crop/run_hist_complete.py','tests/nut-crop/run_b112_retained_joint.py','integration/audits/run_nut_gash_authority.py',
  'integration/audits/verify_nut_gash_successor.py','integration/audits/verify_nut_native_character.py','integration/performance/authority.py'}
 def require(ok,why):
  if not ok:raise ValueError(why)
@@ -48,11 +48,25 @@ def source():
         source()
     path = 'src/legacy/b1_10_port/headcalc.f90'""")
  require((ROOT/path).read_text()==expected,'Gash exact PERF01 owning handoff')
+ path='tests/nut-crop/run_b112_retained_joint.py'
+ old=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT,text=True)
+ original="ns['visit'](ROOT/'src/runtime/mod_fmr_crop_soil_n_calendar_application.f90')"
+ require((ROOT/path).read_text()==old.replace(original,original+"\nns['visit'](ROOT/'src/process/mod_gash_interception_process.f90')\nns['visit'](ROOT/'src/process/mod_gash_daily_application.f90')",1),'Gash existing B112 exact build-closure extension')
  return s
 
 def validate(f,reader=lambda q:(ROOT/q).read_bytes()):
- g=helpers();p=json.loads(f['physical/result.json']);a=json.loads(f['authority/result.json'])
- for r in [p,a]:g['inputs'](r,reader)
+ g=helpers();p=json.loads(f['physical/result.json']);a=json.loads(f['authority/result.json']);inc=json.loads(f['incumbent/result.json'])
+ for r in [p,a,inc]:g['inputs'](r,reader)
+ require(inc['status']=='B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED' and inc['b112_retained']['O0']==inc['b112_retained']['O2'],'Gash incumbent B112 O0/O2 preservation')
+ ie=json.loads(f['incumbent/events.json']);require(all(e['returncode']==0 for e in ie),'Gash incumbent execution failure')
+ require(sum(e['category']=='source_native' for e in ie)==4,'Gash incumbent source fresh process count')
+ for e in ie:
+  for stream in ['stdout','stderr']:require(sha(f['incumbent/'+e[stream+'_file']])==e[stream+'_sha256'],'Gash incumbent raw '+stream)
+  if '-c'in e['command']:require('-fcheck=all'in e['command'] and '-ffpe-trap=invalid,zero,overflow'in e['command'],'unchecked Gash incumbent compiler')
+ for opt in ['O0','O2']:
+  prefix='incumbent/'+opt+'/'
+  require(f[prefix+'b112-expected.bin']==f[prefix+'b112-fresh.bin']==f['physical/'+opt+'/default.endpoint'],'Gash incumbent default endpoint drift')
+  require(f[prefix+'source-startup-expected.bin']==f[prefix+'source-startup-fresh.bin']==f['physical/'+opt+'/source-profile.endpoint'],'Gash incumbent source endpoint drift')
  g['executions'](f,'physical',json.loads(f['physical/events.json']))
  require(a['status']=='ORIGINAL_GASH_54_CASES_AND_OWNERS_O0_O2_PASS' and a['results']['O0']==a['results']['O2'],'Gash original/owner optimization')
  require(a['archive_sha256']=='18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c','Gash original archive')
@@ -168,7 +182,7 @@ def self_test():
   except(ValueError,KeyError,IndexError):passed.append(name);return
   raise AssertionError('accepted Gash corruption '+name)
  reject('Gash process drift',lambda x:None,lambda q:(ROOT/q).read_bytes()+(b'!'if q==GASH else b''))
- for q in ['physical/O0/gash-profile-fresh-6','physical/O2/gash-profile-fresh-1.ledger','physical/O0/gash-profile.restart.water-reject-6','physical/O0/gash-profile.restart.reject-after-6','physical/O0/gash-profile.restart.clean-reject-6','physical/O2/surface-profile.endpoint','authority/literal.f90','authority/preimage.f90']:
+ for q in ['incumbent/O0/b112-fresh.bin','incumbent/O2/source-startup-fresh.bin','physical/O0/gash-profile-fresh-6','physical/O2/gash-profile-fresh-1.ledger','physical/O0/gash-profile.restart.water-reject-6','physical/O0/gash-profile.restart.reject-after-6','physical/O0/gash-profile.restart.clean-reject-6','physical/O2/surface-profile.endpoint','authority/literal.f90','authority/preimage.f90']:
   reject(q,lambda x,p=q:x.__setitem__(p,b'corrupt'))
  def edit(x,path,fn):
   d=json.loads(x[path]);fn(d);x[path]=json.dumps(d).encode()

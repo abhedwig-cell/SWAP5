@@ -1680,11 +1680,11 @@
     }
   },
   "gash_interception_successor": {
-    "status": "QUALIFIED_PENDING_CANONICAL",
+    "status": "CORE_NUMERICS_PASS_INCUMBENT_BUILD_QUALIFICATION_PENDING",
     "base_canonical": "9a3a15197adbf37dba340f4f9acbbb44fe76a989",
     "implemented": true,
     "tested": true,
-    "qualified": true,
+    "qualified": false,
     "canonical_admitted": false,
     "scope": "Original rpd Gash saturation branch and snow-free daily Gash throughfall coupled through existing accepted hydraulic/N carrier, real accepted crop LAI, canopy/wet-transpiration application and persistent diagnostic ledgers; no new state or backend interface.",
     "selection": {
@@ -1844,6 +1844,14 @@
         "tolerance_abs_kg_m2": 1e-10
       }
     ],
-    "full_fci_selection": "NOT_SELECTED_IMPACT: one Gash production provider absent from all three owning CI compile logs and178 application providers. Current full original PERF01 authority plus13 controls passes; four targeted Gash owners and affected complete N closure freshly executed."
+    "full_fci_selection": "NOT_SELECTED_IMPACT: one Gash production provider absent from all three owning CI compile logs and178 application providers. Current full original PERF01 authority plus13 controls passes; four targeted Gash owners and affected complete N closure freshly executed.",
+    "incumbent_build_reconciliation": {
+      "first_hosted_head": "48dcb1f15880a816533d1aa4e76b9571d26131f1",
+      "first_hosted_run": 39500045231,
+      "first_hosted_job": 118894923928,
+      "failure": "Missing imported mod_gash_interception_process in legacy application build closure; no failed numerical result inherited",
+      "repair": "Explicit visits to both independent existing Gash process and daily providers; all legacy assertions unchanged",
+      "next": "Fresh complete incumbent O0/O2 build and native default/source/restart/invalid gates; re-seal same affected work unit and guard; no repeat of unchanged completed physical Gash run"
+    }
   }
 }
