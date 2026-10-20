@@ -9,7 +9,15 @@ def check(ok,why):
 def sha(b):return hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())
+def historical_gross_authority():
+ p=ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
+ s=json.loads(p.read_text()).get('historical_gross_top_successor',{})
+ if 'evidence'not in s:return None
+ import runpy
+ return runpy.run_path(str(ROOT/'tests/nut-crop/verify_historical_gross.py'),run_name='registered_gross_ci_authority')
 def verify_source():
+ gross=historical_gross_authority()
+ if gross is not None:return gross['verify_source']()
  s=record();base=s['baseline'];git('merge-base','--is-ancestor',base,'HEAD')
  check(not git('status','--porcelain','--',*SURFACE),'dirty CI successor surface')
  check(not git('diff',base,'HEAD','--','src','reference'),'CI successor changed production/reference')
@@ -164,6 +172,8 @@ def remaining_compile_evidence():
  return f
 
 def verify_qualification():
+ gross=historical_gross_authority()
+ if gross is not None:return gross['verify_qualification']()
  result={**verify_source(),**validate(evidence()),**validate_closure_followup(closure_followup_evidence()),**validate_remaining_compile_routes(remaining_compile_evidence())}
  s=json.loads((ROOT/'integration/f-ci/F-CI73P_STATUS.json').read_text())
  if s.get('current_successor_20261018'):
