@@ -1,9 +1,9 @@
 # Historical nitrogen: accepted dry-surface atmosphere binding
 
-Status: fully qualified bounded candidate; canonical admission pending.
+Status: canonically admitted bounded successor, PR1333, actual merge `6a2985776d2f242572725d8c18489260296c6732`.
 
 Baseline: canonical `e57a94e5f229415111563f8c52822ac3c7ba5491`.
-Owner: existing MC-NUT01-HIST-COMPLETE. No MC-SOL01 module changes.
+Owner: existing MC-NUT01-HIST-COMPLETE. No MC-SOL01 physical module changes.
 
 Original SWAP 4.3.1 `management_soil` lines 400–402 defines the N
 carrier as `0.01*(igrai+isnrai+igsnow+igird-iintc+irunon-iruno)/outper`.
@@ -103,7 +103,10 @@ Reproduce with the original immutable reproductive literal and GNU Fortran:
 ```bash
 ulimit -s unlimited
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
-export REPRODUCTIVE_LITERAL_FILE=/absolute/path/to/literal.f90
+export FC=gfortran
+export REPRODUCTIVE_PROCESS_RESULT_DIR=/absolute/path/to/fresh-literal
+python tests/nut-crop/run_reproductive_process.py
+export REPRODUCTIVE_LITERAL_FILE=$REPRODUCTIVE_PROCESS_RESULT_DIR/literal.f90
 export N_HIST_RESULT_DIR=/absolute/path/to/fresh-results
 python tests/nut-crop/run_hist_complete.py
 ```
@@ -137,3 +140,29 @@ corruption controls pass on the reconciled candidate. The unchanged original
 predecessor authority and its eight controls also pass. Main immutable evidence
 has decoded SHA256`adf78708256bd1716ae616b6c67227138270413eb8c9f3c3c6b24b76d172d35e`,
 266252compressed bytes and5221regular members.
+
+## Actual canonical receipt
+
+Qualified head `9a345b00b311a6b4795fa993a20b3497b2646c91`, exact qualified tree `723f1e2a56cdc1b26addf8149a272ce160144cf5`,
+actual canonical merge `6a2985776d2f242572725d8c18489260296c6732`, production source tree `06d4d60b83432f4fbd54178437d29d47d4efb16d`.
+Both actual-merge NUT and grid admission entrypoints PASS. Master receipt
+`882aa4824741c771ea5170477e1adf92ec9a5981` preserves234 other rows and all243 dispositions.
+No new hosted Actions run was selected or created. Admission/control capsule
+`integration/audits/evidence/MC_NUT01_ACCEPTED_ATMOSPHERE_ADMISSION_20261020.tar.xz.b64`, decoded SHA256`040b5005de2b23478c1633ed3690269a6f3804ff3634bd0eefbecdc5d747c039`,
+retains actual-merge proof, nine controls, original controls, strict docs logs
+and exact admission/master context. Full historical MC-NUT01 remains open.
+
+For the separately preserved crop/residue owners, use a fresh output directory:
+
+```bash
+export REPRODUCTIVE_LITERAL_SHA256=b64c01e310927bad85f40a467ac356c300c4f72a062d60cc113927f68ac76c14
+export CROP_N_RESULT_DIR=/absolute/path/to/fresh-retained
+python tests/nut-crop/run_b112_retained_joint.py
+python tests/nut-crop/run_b112_retained_phases.py --providers "$CROP_N_RESULT_DIR" --output /absolute/path/to/fresh-phases
+python tests/nut-crop/preserve_b112_tcs6.py --providers "$CROP_N_RESULT_DIR" --output /absolute/path/to/fresh-tcs6
+python tests/nut-crop/verify_hist_native_successor.py
+python tests/nut-crop/verify_accepted_atmosphere.py --self-test
+```
+
+The default source/evidence gate also passes without supplied predecessor
+worktree paths: it stages and checks the exact original authorities itself.

@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
-  "checkpoint_commit": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+  "checkpoint_commit": "6a2985776d2f242572725d8c18489260296c6732",
   "implemented": [
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
@@ -18,7 +18,8 @@
     "Native historical top NH4/NO3 concentrations bind through existing immutable parameters and accepted-water route; nonzero parameter identity extends existing vector while old zero-top bytes remain exact",
     "Independent original TTUTIL boundary-reader witness executes B0 defect and explicit B1 one-target correction at O0/O2",
     "Original optional humus annual rate/start date, strict daily threshold and original endpoint caller-clock binding through existing reactive owner; no new state/schema",
-    "Conservative rejected-residue representation correction within eight spacings, compensated through existing NH4 transfer with original declared external N and hard positivity gates"
+    "Conservative rejected-residue representation correction within eight spacings, compensated through existing NH4 transfer with original declared external N and hard positivity gates",
+    "PR1333 automatic accepted dry-atmosphere source binding and compensated accepted root integral; source06d4d60b; no tolerance widening, inventory or restart-schema change"
   ],
   "persisted": true,
   "tested": false,
@@ -54,8 +55,8 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Positive historical gross route admitted. Investigate original negative-aggregate caller reachability and reference mass defect separately; preserve hard N conservation and current rejection. Automatic original atmosphere/ponded binding and native/output/full trajectory envelopes remain open.",
-  "recovery_point": "Accepted-atmosphere current source qualification complete, admission pending. See accepted_atmosphere_successor; full HIST/master remain false.",
+  "next_action": "Resolve original negative-source depleted-stock conservation/reachability separately. Complete remaining snow/interception/persistent pond, native/fractional input, extended output and original-model regression envelopes without changing admitted positive/dry routes.",
+  "recovery_point": "PR1333 admitted at6a2985776d2f242572725d8c18489260296c6732; source06d4d60b83432f4fbd54178437d29d47d4efb16d; both actual-merge NUT/grid entrypoints PASS. Master882aa4824741c771ea5170477e1adf92ec9a5981 preserves234 other rows/all dispositions. Full HIST/master remain false.",
   "blockers": [
     "Positive historical gross top input admitted by PR1330. Negative top aggregate has an unmodified original O0/O2 depletion mass defect (-1.999000009e-5kg/m2 in the diagnostic); original complete caller reachability and automatic atmosphere/ponded binding remain unqualified.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
@@ -1012,7 +1013,7 @@
     }
   },
   "gross_net_completion_blocker": {
-    "status": "REFERENCE_CHOICE_RESOLVED_POSITIVE_GROSS_ADMITTED_REMAINDER_OPEN",
+    "status": "REFERENCE_CHOICE_RESOLVED_POSITIVE_GROSS_AND_DRY_BINDING_ADMITTED_REMAINDER_OPEN",
     "base_canonical": "1e8bf36ec52544e50f5b2720031228f9a6369525",
     "contract": "docs/science/MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md",
     "runner": "integration/audits/run_nut_hist_carrier_gap.py",
@@ -1346,7 +1347,7 @@
     }
   },
   "accepted_atmosphere_successor": {
-    "status": "QUALIFIED_POSITIVE_DRY_ACCEPTED_ATMOSPHERE_PENDING_ADMISSION",
+    "status": "CANONICALLY_ADMITTED_DRY_ACCEPTED_ATMOSPHERE",
     "base_canonical": "1158562fccf62bff0c3b7bb4e2e3c8371fae74be",
     "contract": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
     "scope": "Automatic original aggregate from accepted dynamic pond_input trace; dry boundaries, no snow/interception; no shared solute changes",
@@ -1399,7 +1400,7 @@
     },
     "tested": true,
     "qualified": true,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "evidence": {
       "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_ATMOSPHERE_20261020.tar.xz.b64",
       "decoded_sha256": "adf78708256bd1716ae616b6c67227138270413eb8c9f3c3c6b24b76d172d35e",
@@ -1449,6 +1450,32 @@
     "mastercoverage_promotion": false,
     "operational_launcher_sha256": "2dd1a60bc62acc9728cf5c31e8cb8c4a01b46b67059f0306e153add091e063c0",
     "scientific_starting_canonical": "e57a94e5f229415111563f8c52822ac3c7ba5491",
-    "overlap_reconciliation": "Latest PR1332/1158562f application-grid source, guard, docs and evidence retained. All actual NUT compiled inputs exact; no new native numerical round required. Original full grid guard executed unchanged at1158562f; all178 current grid providers checked independently. Only exact opt-in admission handoff added to grid authority; no transport/application physics changed."
+    "overlap_reconciliation": "Latest PR1332/1158562f application-grid source, guard, docs and evidence retained. All actual NUT compiled inputs exact; no new native numerical round required. Original full grid guard executed unchanged at1158562f; all178 current grid providers checked independently. Only exact opt-in admission handoff added to grid authority; no transport/application physics changed.",
+    "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+    "pr": 1333,
+    "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+    "qualified_tree": "723f1e2a56cdc1b26addf8149a272ce160144cf5",
+    "master_receipt": "882aa4824741c771ea5170477e1adf92ec9a5981",
+    "postmerge_nut_owner": "PASS on actual canonical merge; exact qualified tree and source",
+    "postmerge_grid_owner": "PASS through actual current grid admission entrypoint; all178 executed providers unchanged",
+    "corruption_controls": 9,
+    "admission_control_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_ATMOSPHERE_ADMISSION_20261020.tar.xz.b64",
+      "decoded_sha256": "040b5005de2b23478c1633ed3690269a6f3804ff3634bd0eefbecdc5d747c039",
+      "compressed_bytes": 9964,
+      "members": 12
+    },
+    "hosted_workflow_runs": [],
+    "docs_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS",
+      "seconds": 13.5
+    },
+    "default_predecessor_staging": "PASS without supplied worktree paths, exact original source authorities unchanged",
+    "receipt_docs_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS",
+      "seconds": 12.81
+    }
   }
 }

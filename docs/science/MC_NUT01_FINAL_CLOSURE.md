@@ -1,14 +1,14 @@
 # MC-NUT01 final closure review
 
-Updated20 October2026 from canonical `e57a94e5f229415111563f8c52822ac3c7ba5491`. The19October review and its immutable evidence remain historical receipts.
+Updated20 October2026 against actual scientific admission `6a2985776d2f242572725d8c18489260296c6732`. The19October review and its immutable evidence remain historical receipts.
 
 ## Decision and claim boundary
 
-**Full historical MC-NUT01 closure remains open. The independent positive historical gross atmospheric N route is canonically admitted through PR1330.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
+**Full historical MC-NUT01 closure remains open. The independent positive historical gross atmospheric N route is canonically admitted through PR1330; automatic dry-atmosphere binding and accurate root integration through PR1333.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
 
-The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, reviewed at `d77939e08b841fc0456d76a883450f4f15a9c099`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. The matrix below is a report derived from those exact rows, not a second registry.
+The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, latest bounded receipt `882aa4824741c771ea5170477e1adf92ec9a5981`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. The matrix below is a report derived from those exact rows, not a second registry.
 
-The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate and automatic original atmospheric-producer/ponded application binding remain unqualified; a corrected surface-N store is not introduced.
+The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate, snow/interception and persistent ponded application binding remain unqualified; a corrected surface-N store is not introduced.
 
 Additional incomplete historical envelope: unrestricted TTUTIL constructs, fractional timestamps and extended diagnostics; no complete original-model multiyear comparison. These are recorded separately from the gross-carrier blocker. Material definition labels and bounded experimental humus are already admitted and must not remain listed as missing.
 
@@ -156,7 +156,7 @@ These checks revalidate archived executed evidence; they do not rerun Fortran. T
 
 ## Remaining blockers and next admissible action
 
-1. **Scientific gross atmospheric N carrier.** The original source uses gross precipitation/snow/irrigation/interception/runon/runoff with evaporation separate, and explicitly questions ponding. At4 mm rain plus4 mm evaporation, the original diagnostic inputs0.8 kg N/ha while a zero net carrier inputs zero. The owner selected the original gross route. The positive independent source carrier now passes original analytical/full chemistry and actual730-day Reference/WOFOST81/Soil-N O0/O2,48 fresh-process transition continuations and atomic hydraulic/chemical rollback. The remaining limit is negative aggregate and automatic original atmospheric-producer/ponded application binding; it is no longer an undecided B0/B1 reference choice. Passing gross rain as net water violates water closure. Invented drainage and treating age as N are rejected alternatives.
+1. **Scientific gross atmospheric N carrier.** The original source uses gross precipitation/snow/irrigation/interception/runon/runoff with evaporation separate, and explicitly questions ponding. At4 mm rain plus4 mm evaporation, the original diagnostic inputs0.8 kg N/ha while a zero net carrier inputs zero. The owner selected the original gross route. The positive independent source carrier now passes original analytical/full chemistry and actual730-day Reference/WOFOST81/Soil-N O0/O2,48 fresh-process transition continuations and atomic hydraulic/chemical rollback. The remaining limit is negative aggregate, snow/interception, persistent ponding and complete original caller binding; it is no longer an undecided B0/B1 reference choice. Passing gross rain as net water violates water closure. Invented drainage and treating age as N are rejected alternatives.
 2. **Historical input envelope.** Fractional timestamps and general TTUTIL constructs remain unsupported. Bounded native arrays/tables, material positions, daily dates and humus options are admitted. Required versus intentionally excluded grammar must be decided against actual historical inputs; no arbitrary universal parser is authorized here.
 3. **Extended diagnostics and complete original-model regression.** These are not evidence of missing N process formulas, but the complete historical claim remains unproven. Extended output must not be silently marked NOT_APPLICABLE. No fabricated complete SWAP4.3.1 multiyear comparison is supplied.
 
@@ -251,7 +251,7 @@ surface store is introduced; negative aggregate remains fail-closed.
 The diagnostic source, full original routine, compiler commands, native outputs
 and result are retained in the control capsule. It is not a new production PASS.
 
-## Accepted-atmosphere continuation after PR1331
+## Canonical accepted-atmosphere admission, PR1333
 
 The [new source-bound continuation](MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md)
 implements automatic original rain/irrigation/runon-minus-runoff N loading
@@ -287,3 +287,12 @@ The eight-rounding crop equality bound, physical water and N thresholds are
 unchanged. The failed candidate is retained separately from the successful
 current qualification. Current source identity and final admission are in
 `accepted_atmosphere_successor` of the existing work-unit record.
+
+Actual qualified head `9a345b00b311a6b4795fa993a20b3497b2646c91`; canonical scientific merge
+`6a2985776d2f242572725d8c18489260296c6732`; exact qualified tree `723f1e2a56cdc1b26addf8149a272ce160144cf5`;
+source tree `06d4d60b83432f4fbd54178437d29d47d4efb16d`. Both actual-merge admission entrypoints pass.
+Master `882aa4824741c771ea5170477e1adf92ec9a5981` updates nine NUT receipts, preserves234 other rows
+and all243 dispositions, and retains concurrent MC-SOL01 PR1332. No new
+hosted Actions run is claimed; local owning qualification and unchanged
+compiled CI footprints are recorded explicitly. The complete source/evidence
+receipt is in the linked contract and existing work-unit status.

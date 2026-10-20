@@ -179,3 +179,5 @@ the hard element balance. No unbooked clipping, manufactured N or corrected
 surface store is introduced; negative aggregate remains fail-closed.
 The diagnostic source, full original routine, compiler commands, native outputs
 and result are retained in the control capsule. It is not a new production PASS.
+
+Later canonical PR1333 admits the [automatic accepted dry-atmosphere route](MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md) on the same historical gross reference. It supersedes this receipt's blanket automatic-producer limitation only for rain/irrigation/runon/runoff with dry accepted surface boundaries. Negative aggregate, snow/interception, persistent ponding and complete original caller reachability remain outside that later bounded admission.
