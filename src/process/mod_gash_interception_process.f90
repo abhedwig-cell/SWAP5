@@ -55,7 +55,7 @@ contains
     else
       psatcan=avprec*scanopy/avevap
     end if
-    if(input%gross_rain_cm<psatcan)then
+    if(rpd<psatcan)then
       result%interception_cm=cgash*rpd
     else
       result%interception_cm=cgash*(psatcan+avevap*cgash/avprec*(rpd-psatcan))
