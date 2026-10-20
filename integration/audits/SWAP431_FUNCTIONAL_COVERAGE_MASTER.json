@@ -11083,16 +11083,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Eight FOM pools, biomass/humus, mineralisation and immobilisation; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Eight FOM pools, biomass/humus, mineralisation and immobilisation; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11107,6 +11108,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -11163,16 +11178,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Owned NH4/NO3, sorption and finite supply; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Owned NH4/NO3, sorption and finite supply; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11187,6 +11203,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -11249,16 +11279,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Fertiliser/manure, volatilisation and dated repeated events; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Fertiliser/manure, volatilisation and dated repeated events; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11273,6 +11304,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -11335,16 +11380,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Returned, retained and pending residues; harvest export; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Returned, retained and pending residues; harvest export; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -11374,6 +11420,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -11430,16 +11490,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Source-selected crop demand, uptake and daily ownership; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Source-selected crop demand, uptake and daily ownership; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11454,6 +11515,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -13513,16 +13588,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "NH4 oxidation as an internal N transfer; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "NH4 oxidation as an internal N transfer; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13537,6 +13613,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -13598,16 +13688,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Nitrate gaseous loss with moisture/temperature/respiration; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Nitrate gaseous loss with moisture/temperature/respiration; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13622,6 +13713,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -13679,16 +13784,17 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Analytical concentration, uptake and signed boundary exchange; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Analytical concentration, uptake and signed boundary exchange; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13703,6 +13809,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -13806,16 +13926,17 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "head": "6a2985776d2f242572725d8c18489260296c6732",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Biological fixation booked as crop input; historical gross atmospheric N and required unsupported native/application envelope remain open",
+        "scope": "Biological fixation booked as crop input; negative aggregate, snow/interception, persistent ponding and unsupported native/output envelope remain open",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
         "latest_scientific_merge": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
-        "historical_gross_top_receipt": "historical_gross_top_admission_20261020"
+        "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
+        "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13830,6 +13951,20 @@
         "full_capability": false,
         "disposition_changed": false,
         "remaining": "Negative source aggregate,automatic original atmospheric/ponded application binding,general native/fractional syntax,extended diagnostics and complete original-model trajectory remain open"
+      },
+      "accepted_atmosphere_admission_20261020": {
+        "pr": 1333,
+        "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+        "qualified_head": "9a345b00b311a6b4795fa993a20b3497b2646c91",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+        "contract_at_canonical": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+        "scope": "Automatic original rain/irrigation/runon-minus-runoff N input from completed Reference accepted substeps; dry surface boundaries, no snow/interception; compensated accepted root integration without changing thresholds or inventories",
+        "qualification": "Fresh GNU13.3 O0/O2; new12-day actual Reference/crop/Soil-N;52 transition fresh processes;all12 prior endpoints exact;water/chemical/source rollback;retained/thermal/54TCS6 PASS;21 invalid traces per optimization;9 current corruption controls and original predecessor/8 controls PASS;178 current MC-SOL01 grid providers exact",
+        "qualified": true,
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
       }
     },
     {
@@ -19856,7 +19991,7 @@
         "merged": true,
         "merge_commit": "dca8cbd87ceff62406d0d1a38447b7a7bc8fbd1c",
         "qualified_head": "8c4e02dff8482600d0d432a0448b8b284684eb44",
-        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water–soil–crop restart",
+        "title": "MC-NUT01: WOFOST81 actual soil supply with atomic water\u2013soil\u2013crop restart",
         "url": "https://github.com/abhedwig-cell/SWAP5/pull/1235"
       },
       {
@@ -21361,5 +21496,24 @@
     "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#historical_gross_top_successor",
     "full_master_integrity": "NOT_CLAIMED; bounded owner receipt only.234 non-NUT rows and all dispositions preserved.",
     "remaining": "Whole historical MC-NUT01 remains open; owner reference choice resolved and positive historical gross route admitted"
+  },
+  "latest_mc_nut01_accepted_atmosphere_admission_20261020": {
+    "canonical_merge": "6a2985776d2f242572725d8c18489260296c6732",
+    "pr": 1333,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "disposition_delta": 0,
+    "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json#accepted_atmosphere_successor",
+    "full_master_integrity": "NOT_CLAIMED; bounded admitted owner receipt only.234 other rows and all243 dispositions preserved; MC-SOL01 PR1332 receipt retained.",
+    "remaining": "Negative original aggregate/depleted-stock conservation conflict and full caller reachability;snow/interception/persistent ponding;general native/fractional input;extended output;complete original-model trajectory remain open"
   }
 }
