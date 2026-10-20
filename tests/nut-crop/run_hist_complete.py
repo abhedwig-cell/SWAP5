@@ -65,6 +65,14 @@ for opt in ['O0','O2']:
   o=b/f'{i}.o';run(['gfortran',*flags,'-c',p,'-o',o],b,'compile');objects.append(o)
   if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
  exe=b/'hist';run(['gfortran',*flags,*objects,'-o',exe],b,'link')
+ trace_driver=ROOT/'tests/nut-crop/test_historical_atmosphere_trace.f90'
+ trace_object=b/'atmosphere-trace.o';trace_exe=b/'atmosphere-trace'
+ run(['gfortran',*flags,'-c',trace_driver,'-o',trace_object],b,'compile')
+ inputs[str(trace_driver.relative_to(ROOT))]=sha(trace_driver)
+ run(['gfortran',*flags,*objects[:-1],trace_object,'-o',trace_exe],b,'link')
+ trace_stdout=run([trace_exe],b,'trace_native')
+ assert 'HISTORICAL_ATMOSPHERE_TRACE_21_INVALID_AND_GROSS_UNITS=PASS'in trace_stdout
+
  # Original two-day owner has independent historical chemistry/N assertions,
  # harvest, annual chemical fallow and successor preservation inside the driver.
  default_restart=b/'default.restart';default_endpoint=b/'default.endpoint';default_fresh=b/'default.fresh'
@@ -73,20 +81,20 @@ for opt in ['O0','O2']:
  assert default_endpoint.read_bytes()==default_fresh.read_bytes()==Path(str(default_endpoint)+'.opaque').read_bytes()
  # Original composition and its fresh-process endpoint stay selected.
  outputs={}
- for profile in ['source-profile','rotation-profile','atmospheric-profile','humus-profile','gross-profile']:
+ for profile in ['source-profile','rotation-profile','atmospheric-profile','humus-profile','gross-profile','surface-profile']:
   restart=b/(profile+'.restart');endpoint=b/(profile+'.endpoint')
   outputs[profile]=run([exe,'write',restart,endpoint,profile],b,'native')
   if profile=='source-profile':
    fresh=b/(profile+'.fresh');run([exe,'resume',restart,fresh,profile],b,'native');assert endpoint.read_bytes()==fresh.read_bytes()
   else:
-   for day in [120,366]:
-    if profile=='gross-profile':assert Path(str(restart)+'.water-reject-'+str(day)).read_bytes()==Path(str(restart)+'.reject-before-'+str(day)).read_bytes(),'gross water rejected state leaked'
-    if profile in ['atmospheric-profile','humus-profile','gross-profile']:assert Path(str(restart)+'.clean-reject-'+str(day)).read_bytes()==Path(str(restart)+'.reject-before-'+str(day)).read_bytes(),'clean-only route leaked state'
+   for day in ([6]if profile=='surface-profile'else[120,366]):
+    if profile in ['gross-profile','surface-profile']:assert Path(str(restart)+'.water-reject-'+str(day)).read_bytes()==Path(str(restart)+'.reject-before-'+str(day)).read_bytes(),'gross water rejected state leaked'
+    if profile in ['atmospheric-profile','humus-profile','gross-profile','surface-profile']:assert Path(str(restart)+'.clean-reject-'+str(day)).read_bytes()==Path(str(restart)+'.reject-before-'+str(day)).read_bytes(),'clean-only route leaked state'
     assert Path(str(restart)+'.reject-before-'+str(day)).read_bytes()==Path(str(restart)+'.reject-after-'+str(day)).read_bytes(),'rejected rotation day leaked state'
-   for day in [1,120,121,365,366,500]:
+   for day in ([1,6]if profile=='surface-profile'else[1,120,121,365,366,500]):
     fresh=b/(profile+'-fresh-'+str(day));run([exe,'resume',str(restart)+'.'+str(day),fresh,profile,str(day)],b,'restart_native')
     assert endpoint.read_bytes()==fresh.read_bytes(),('fresh rotation drift',day)
- results[opt]=dict(default_endpoint=sha(default_endpoint),default_stdout=default_out,endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile','atmospheric-profile','humus-profile','gross-profile']},stdout=outputs,providers=len(ordered)-1)
+ results[opt]=dict(default_endpoint=sha(default_endpoint),default_stdout=default_out,endpoint={p:sha(b/(p+'.endpoint'))for p in ['source-profile','rotation-profile','atmospheric-profile','humus-profile','gross-profile','surface-profile']},stdout=outputs,providers=len(ordered)-1)
  assert all(sha(ROOT/p)==v for p,v in inputs.items()),'source changed during execution'
 assert results['O0']==results['O2'],'O0/O2 endpoint or observable mismatch'
 inputs[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__))

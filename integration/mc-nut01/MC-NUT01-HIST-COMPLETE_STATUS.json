@@ -7,7 +7,7 @@
     "31-day continuous production Richards/crop/Soil-N source-driven O0/O2 integration test; original one-day fresh-process restart and immutable project-based source forcing retained",
     "SNM array lexer rejects empty comma-separated entries and trailing separators; three rejected historical startup input regression cases",
     "62-day actual Richards/WOFOST81/Soil-N continuation candidate retaining day-1 fresh process restart, O0/O2 parity and prior source calendar negative tests",
-    "124-day physically coupled Richards–WOFOST81–Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
+    "124-day physically coupled Richards\u2013WOFOST81\u2013Soil-N candidate, day-one native restart, O0/O2 endpoint parity",
     "124-day source-profile discriminating variant with zero prescribed bottom flux, while retaining original rejected extraction stress evidence and unchanged numerical criteria",
     "Historical SNM startup negative suite extended from 3 to 9 cases (missing/mismatched arrays, invalid material ID, impossible date, negative nitrification rate), all through actual crop/Soil-N owner with atomic failure expectation",
     "Native SNM nutrient parse error maps extracted parameter index back to original physical source line; negative production startup asserts actual nitrification error line",
@@ -55,7 +55,7 @@
     "legacy TTUTIL/SNM grammar"
   ],
   "next_action": "Positive historical gross route admitted. Investigate original negative-aggregate caller reachability and reference mass defect separately; preserve hard N conservation and current rejection. Automatic original atmosphere/ponded binding and native/output/full trajectory envelopes remain open.",
-  "recovery_point": "PR1330 canonical merged118bcf1cacf7462cf62c27141cf306d7a4a52fb; exact current owner PASS, source treea60ac1d9; positive historical gross forcing qualified/admitted. Whole HIST/master remains false. Remaining negative source depletion has a measured original literal mass counterexample.",
+  "recovery_point": "Accepted-atmosphere current source qualification complete, admission pending. See accepted_atmosphere_successor; full HIST/master remain false.",
   "blockers": [
     "Positive historical gross top input admitted by PR1330. Negative top aggregate has an unmodified original O0/O2 depletion mass defect (-1.999000009e-5kg/m2 in the diagnostic); original complete caller reachability and automatic atmosphere/ponded binding remain unqualified.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
@@ -101,7 +101,7 @@
       "solver_rejections": 0,
       "mass_rejections": 0,
       "max_abs_step_mass_residual": 1.40831085942289e-15,
-      "min_accepted_step_days": 0.00001772884719949963,
+      "min_accepted_step_days": 1.772884719949963e-05,
       "completed": false
     },
     "indicator_run": 39122643056,
@@ -426,7 +426,7 @@
     "observational_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        0.00006194825028434364,
+        6.194825028434364e-05,
         28.164960854763596,
         0,
         0.4650182252684006,
@@ -455,7 +455,7 @@
         60584,
         0,
         60584,
-        0.000003814697265625,
+        3.814697265625e-06,
         0.9999596991660622
       ]
     },
@@ -698,7 +698,7 @@
     "water_n_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        0.00006194825028434364,
+        6.194825028434364e-05,
         28.164960854763596,
         0,
         0.4650182252684006,
@@ -717,7 +717,7 @@
         0.006862902053561642
       ],
       "AUDIT_BOUNDARY_N_KG_M2": [
-        0.00004650389582411417,
+        4.650389582411417e-05,
         0.0008449488256429077,
         0
       ],
@@ -732,7 +732,7 @@
         60584,
         0,
         60584,
-        0.000003814697265625,
+        3.814697265625e-06,
         0.9999596991660622
       ]
     },
@@ -902,7 +902,7 @@
     "water_n_audit": {
       "AUDIT_WATER_CM": [
         10.377346899380083,
-        0.00006194825028434364,
+        6.194825028434364e-05,
         28.164960854763596,
         0,
         0.4650182252684006,
@@ -921,7 +921,7 @@
         0.006862910133890103
       ],
       "AUDIT_BOUNDARY_N_KG_M2": [
-        0.00004650389582411417,
+        4.650389582411417e-05,
         0.0008449488256429077,
         0
       ],
@@ -936,7 +936,7 @@
         60584,
         0,
         60584,
-        0.000003814697265625,
+        3.814697265625e-06,
         0.9999596991660622
       ]
     },
@@ -1337,12 +1337,118 @@
       "original_transport_sha256": "b343fa9e485e60d76e2bd49067a20cd5ec328264af5d99d7cf1e4ddf07278722",
       "aggregate_m_day": -0.004,
       "c_top_kg_m3": 0.005,
-      "initial_kg_m2": 1e-8,
-      "nominal_n_transfer_kg_m2": -0.00002,
+      "initial_kg_m2": 1e-08,
+      "nominal_n_transfer_kg_m2": -2e-05,
       "original_final_kg_m2": 9e-14,
-      "residual_kg_m2": -0.00001999000009,
+      "residual_kg_m2": -1.999000009e-05,
       "full_original_hydrological_reachability": "NOT_PROVEN",
       "interpretation": "Unmodified original analytic routine clips depleted concentration but its specified negative top N forcing remains unbounded. Literal depletion output and hard total N conservation cannot both hold. Current negative aggregate rejection is retained; correcting this is a distinct reference-policy/physical problem."
     }
+  },
+  "accepted_atmosphere_successor": {
+    "status": "QUALIFIED_POSITIVE_DRY_ACCEPTED_ATMOSPHERE_PENDING_ADMISSION",
+    "base_canonical": "1158562fccf62bff0c3b7bb4e2e3c8371fae74be",
+    "contract": "docs/science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md",
+    "scope": "Automatic original aggregate from accepted dynamic pond_input trace; dry boundaries, no snow/interception; no shared solute changes",
+    "selection": {
+      "physical": "RUN affected joint owner and new source binding; O0/O2 actual Richards/crop/Soil-N, old endpoints, native fresh restarts, atomic failure",
+      "expected_seconds": 650,
+      "retained": "RUN affected existing joint runtime compiled by retained owner; thermal/54TCS6 closure preserve",
+      "retained_expected_seconds": 360,
+      "full_fci": "NOT_SELECTED: no shared water/transport science changes; strict predecessor source and compiler footprint checks required",
+      "rossfast": "NOT_SELECTED existing exclusion",
+      "repeat_diagnosis": "First higher-rain physical failed after1291 accepted hydraulic steps: naive root summation induced a subroundoff drought/death; final senescence gate rejected. Opt-in accepted-root compensated summation added without changing eight-rounding clamp or any tolerance. Repeat current physical+retained required because joint provider changed.",
+      "physical_expected_seconds": 1000
+    },
+    "candidate": "4a86c3ea",
+    "prior_candidate": {
+      "physical": "FAILED day0 final crop/residue gate; raw events and native logs preserved",
+      "retained": "PASS on precompensation provider only; not current evidence",
+      "feedback": "Several early unbounded diagnostic attempts interrupted; no PASS inherited; low-rain12-day O0 feedback passed before current higher-rain qualification"
+    },
+    "operational_note": "Retained v2 stopped on POSIX execute bit loss after a successful O2 native write. No PASS/current capsule inherited. Fresh retained v3 executes every original compiler/native/assertion; task-specific launcher can restore owner execute on its own linked ELF after SHA-verified mode-only repair. Launcher and failed log are preserved in evidence.",
+    "postimages": {
+      "integration/audits/column_grid/authority.py": {
+        "status": "M",
+        "sha256": "89ed210aabdd72d3d2713245f0099340810aeabafa4f119584b1184867b4f780"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+        "status": "M",
+        "sha256": "d5c70c654023a88a10e944185e75dbb56281efb1efc0b3791b16bf3ca7bddf3b"
+      },
+      "tests/nut-crop/run_hist_complete.py": {
+        "status": "M",
+        "sha256": "9f7fc7b29e351fa8dd1467800eab815c6d75f7791e6acccde4361741f9cb77ec"
+      },
+      "tests/nut-crop/test_b112_retained_joint.f90": {
+        "status": "M",
+        "sha256": "1101d8151348280caf6ff8120cef6e4fdff9efb5897e5d65a022bea2876df401"
+      },
+      "tests/nut-crop/test_historical_atmosphere_trace.f90": {
+        "status": "A",
+        "sha256": "80bc8874f0853ef01f20febc35e89302285911e34a38a4f84635b1d3f07edf2d"
+      },
+      "tests/nut-crop/verify_accepted_atmosphere.py": {
+        "status": "A",
+        "sha256": "ee7b5795673568ecc0ebf0e69811b5724054240a1b27b14a99c7fbe11b5056e2"
+      },
+      "tests/nut-crop/verify_historical_gross.py": {
+        "status": "M",
+        "sha256": "dfc42dd0a930f956d36ad8107a1412c4442a0719583856fc2359666a8083e3ef"
+      }
+    },
+    "tested": true,
+    "qualified": true,
+    "canonical_admitted": false,
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_ACCEPTED_ATMOSPHERE_20261020.tar.xz.b64",
+      "decoded_sha256": "adf78708256bd1716ae616b6c67227138270413eb8c9f3c3c6b24b76d172d35e",
+      "compressed_bytes": 266252,
+      "members": 5221
+    },
+    "production_source_tree": "06d4d60b83432f4fbd54178437d29d47d4efb16d",
+    "physical_execution_commit": "9294584e86e2e03b0c01796f0312599838002e5a",
+    "native_evidence": "Fresh actual Reference/crop/Soil-N O0/O2; all12 preceding endpoint files exact; new12-day automatic-source profile and4 native process restarts exact; all48 prior transition restarts repeated; water/chemical/conflict/clean rollback;21 invalid trace cases per optimization",
+    "preservation": "Fresh retained-stock, thermal/empty phases and54 TCS6 native trajectories; unchanged original exact predecessor owner and8 original corruption controls plus9 current controls required",
+    "mass_balance": {
+      "unit": "kg N/m2",
+      "initial": 0.6659219013215554,
+      "external_input": 0.0062479886961157695,
+      "external_output": 0.0003246120898158168,
+      "final": 0.6718452779278554,
+      "signed_residual": -1.0446287931897835e-16,
+      "absolute_residual": 1.0446287931897835e-16,
+      "relative_absolute_over_initial_plus_input": 1.5541142331774496e-16,
+      "max_daily_residual": 1.152813958795471e-16,
+      "max_water_step_residual_cm": 5.186958718442214e-15,
+      "daily_tolerance": 1e-12,
+      "cumulative_tolerance": 1e-10,
+      "water_tolerance_cm": 1e-10
+    },
+    "physical_cost_seconds": {
+      "compile": 235.387910474019,
+      "link": 0.8691659819960478,
+      "native": 181.9924865710127,
+      "restart_native": 190.99584218997916
+    },
+    "retained_cost_seconds": {
+      "compile": 204.87379277397122,
+      "driver_compile": 52.36215995701059,
+      "link": 2.9217278999785776,
+      "native": 220.99184261299524,
+      "source_native": 6.853659224994772
+    },
+    "endpoint_sha256": "604ace30a0f0b1c06fe941c9c25e5d42c9b4492e5a2ab41efdca03e1207b2c55",
+    "remaining": [
+      "Negative original gross aggregate and depleted-stock reference conflict, complete original caller reachability",
+      "Snow/interception and persistent ponded application binding",
+      "General native/fractional syntax and extended diagnostics",
+      "Complete original-model multiyear regression"
+    ],
+    "full_work_unit_closed": false,
+    "mastercoverage_promotion": false,
+    "operational_launcher_sha256": "2dd1a60bc62acc9728cf5c31e8cb8c4a01b46b67059f0306e153add091e063c0",
+    "scientific_starting_canonical": "e57a94e5f229415111563f8c52822ac3c7ba5491",
+    "overlap_reconciliation": "Latest PR1332/1158562f application-grid source, guard, docs and evidence retained. All actual NUT compiled inputs exact; no new native numerical round required. Original full grid guard executed unchanged at1158562f; all178 current grid providers checked independently. Only exact opt-in admission handoff added to grid authority; no transport/application physics changed."
   }
 }

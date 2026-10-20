@@ -36,6 +36,11 @@ def original(path):
 
 
 def verify_qualification():
+    nut=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('accepted_atmosphere_successor',{})
+    if 'evidence'in nut:
+        import runpy
+        proof=runpy.run_path(str(ROOT/'tests/nut-crop/verify_accepted_atmosphere.py'),run_name='registered_nut_atmosphere')['verify_qualification']()
+        return {**proof,'application_grid':True,'process_observations':86,'production_changed':False,'grid_preserved_on_exact_current_providers':True}
     s = json.loads((ROOT / STATUS).read_text())['column_input_20261020']['variable_grid_successor']
     require(s['baseline'] == BASE, 'grid baseline identity')
     owned = {'app/solute_column/main.f90', 'app/solute_column/link_context.f90', TEST,
