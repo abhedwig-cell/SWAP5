@@ -1,6 +1,6 @@
 # MC-NUT01 final closure review
 
-Updated20 October2026 against canonical `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`. The19October review and its immutable evidence remain historical receipts.
+Updated20 October2026 from canonical `e57a94e5f229415111563f8c52822ac3c7ba5491`. The19October review and its immutable evidence remain historical receipts.
 
 ## Decision and claim boundary
 
@@ -250,3 +250,40 @@ the hard element balance. No unbooked clipping, manufactured N or corrected
 surface store is introduced; negative aggregate remains fail-closed.
 The diagnostic source, full original routine, compiler commands, native outputs
 and result are retained in the control capsule. It is not a new production PASS.
+
+## Accepted-atmosphere continuation after PR1331
+
+The [new source-bound continuation](MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md)
+implements automatic original rain/irrigation/runon-minus-runoff N loading
+from the actual dynamic boundary's accepted hydraulic trace. It is bounded
+to dry surface endpoints with no snow/interception. Persistent pond N,
+negative aggregate, and complete original atmospheric reachability remain
+separate limits. This adds no inventory, restart schema or shared solute
+contract. The single master register and all nine row dispositions remain.
+
+The fresh physical O0/O2 round passes a new12-day actual Reference/crop/Soil-N
+calculation and retains all12 preceding endpoint bytes. This calculation uses
+synthetic qualification inputs, distinct from the separate trace-only process
+fixture and from a complete original-model multiyear comparison. Four new
+native process restarts (days1/6, O0/O2) are byte-exact, in addition to the48
+existing transition continuations. Hydraulic rejection, chemical rejection,
+clean-only rejection and conflicting source selection are exercised.
+
+Total N: initial0.66592190132155538 +input0.0062479886961157695
+-output0.00032461208981581679 -final0.67184527792785542 gives
+signed residual-1.0446287931897835e-16kg/m2 and absolute relative residual
+1.5541142331774496e-16. Maximum daily residual is1.1528139587954709e-16kg/m2;
+maximum accepted water residual is5.1869587184422139e-15cm. Tolerances remain
+unchanged. The linked contract holds full units, stocks/flux interpretation,
+source equation, actual compiler/execution costs, endpoint identity and
+reproduction instructions.
+
+A higher-rain candidate initially failed the final residue gate after1291
+accepted hydraulic transactions. The cause was naive accumulation over2582
+accepted half-step root carriers, producing tiny spurious drought/death.
+Compensated root integration reduces relative error against a quad-precision
+actual-trace sum from2.4225142291472990e-15 to1.1858461261560205e-16.
+The eight-rounding crop equality bound, physical water and N thresholds are
+unchanged. The failed candidate is retained separately from the successful
+current qualification. Current source identity and final admission are in
+`accepted_atmosphere_successor` of the existing work-unit record.

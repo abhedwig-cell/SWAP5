@@ -171,10 +171,18 @@ def unchanged_ci_closure():
  require(logs==3,'gross missing independent CI compiler footprints')
  return logs
 def verify_qualification():
+ current=json.loads((ROOT/STATUS).read_text()).get('accepted_atmosphere_successor',{})
+ if 'evidence'in current:
+  import runpy
+  return runpy.run_path(str(ROOT/'tests/nut-crop/verify_accepted_atmosphere.py'),run_name='registered_accepted_atmosphere')['verify_qualification']()
  s=source();f=capsule(s['evidence']);r=validate(f);predecessor();logs=unchanged_ci_closure()
  return {**r,'predecessor_qualified':True,'independent_ci_compile_logs':logs,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 def verify_source():return {**verify_qualification(),'qualified':False}
 def self_test():
+ current=json.loads((ROOT/STATUS).read_text()).get('accepted_atmosphere_successor',{})
+ if 'evidence'in current:
+  import runpy
+  return runpy.run_path(str(ROOT/'tests/nut-crop/verify_accepted_atmosphere.py'),run_name='registered_atmosphere_controls')['self_test']()
  s=record();f=capsule(s['evidence']);validate(f);passed=[]
  def reject(name,mutate,reader=lambda q:(ROOT/q).read_bytes()):
   ff=dict(f);mutate(ff)

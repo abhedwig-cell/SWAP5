@@ -9,7 +9,7 @@ module mod_fmr_crop_soil_n_joint_application
        kernel_result_t,kernel_diagnostics_t
   use mod_fmr_serialized_reference_backend,only:fmr_serialized_reference_backend_t, &
        fmr_b110_physical_parameters_t,fmr_b110_physical_forcing_t,fmr_serialized_physical_observation_t, &
-       fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t
+       fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t,fmr_water_flux_substep_trace_t
   use mod_fmr_committed_restart,only:fmr_committed_restart_bundle_t,fmr_export_committed_restart, &
        fmr_restore_committed_restart,FMR_RESTART_OK
   use mod_b111_soil_n_reactive_owner
@@ -39,6 +39,7 @@ module mod_fmr_crop_soil_n_joint_application
     type(fmr_committed_restart_bundle_t)::water
     type(crop_soil_state_t)::chemical
   end type
+  public::historical_crop_soil_top_from_trace
   public::run_crop_soil_n_joint_interval,crop_soil_n_joint_states_match,run_crop_soil_n_harvest_boundary
   public::export_crop_soil_n_joint_restart,restore_crop_soil_n_joint_restart
 contains
@@ -81,6 +82,43 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
+  ! Original management_soil gross input, bounded to dry, snow-free pond_input.
+  ! This routine is called only on the backend candidate's accepted trace.
+  subroutine historical_crop_soil_top_from_trace(steps,t0,t1,top,status)
+    type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)
+    real(real64),intent(in)::t0,t1
+    real(real64),intent(out)::top
+    integer,intent(out)::status
+    integer::i
+    real(real64)::clock,amount,dt,values(7)
+    top=0d0;status=1
+    if(.not.all(ieee_is_finite([t0,t1])))return
+    if(max(abs(t0),abs(t1))>1d9)return
+    if(t1-t0/=1d0.or.size(steps)==0)return
+    clock=t0;amount=0d0
+    do i=1,size(steps)
+      associate(s=>steps(i))
+        if(.not.s%pond_storage_available.or..not.s%converged_surface_available.or. &
+           .not.s%converged_gross_sources_available)return
+        values=[s%t0,s%t1,s%converged_rain_rate_cm_day,s%converged_irrigation_rate_cm_day, &
+          s%converged_snowmelt_rate_cm_day,s%converged_runon_rate_cm_day,s%converged_runoff_depth_cm]
+        if(.not.all(ieee_is_finite(values)))return
+        if(s%t0/=clock.or.s%t1<=s%t0.or.s%t1>t1)return
+        if(.not.all(ieee_is_finite([s%pond_start_cm,s%pond_end_cm])))return
+        if(s%pond_start_cm/=0d0.or.s%pond_end_cm/=0d0)return
+        if(any(values(3:)<0d0).or.any(values(3:)>1d4))return
+        ! Melt is not the original gross snowfall/isnrai convention.
+        if(s%converged_snowmelt_rate_cm_day/=0d0)return
+        dt=s%t1-s%t0
+        amount=amount+dt*(s%converged_rain_rate_cm_day+s%converged_irrigation_rate_cm_day+ &
+          s%converged_runon_rate_cm_day)-s%converged_runoff_depth_cm
+        clock=s%t1
+      end associate
+    end do
+    if(clock/=t1.or.amount<0d0.or.amount>1d4)return
+    top=.01d0*amount;status=MINERAL_OK
+  end subroutine
+
   subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface,historical_top_water)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
@@ -104,7 +142,10 @@ contains
     integer(int64)::id
     logical::ok,did_commit,inactive,admit_atmospheric_n
     integer::status
-    real(real64)::clock
+    real(real64)::clock,gross_top,root_sum,root_error,root_term,root_next
+    integer::step
+    real(real64),allocatable::top_n_water
+    logical::bind_atmosphere
     type(reactive_parameters_t)::np
     integer(int64)::nid
     type(reactive_state_t)::soil
@@ -123,10 +164,18 @@ contains
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)
     admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
+    bind_atmosphere=admit_atmospheric_n.and.allocated(forcing%pond_input)
+    if(bind_atmosphere)then
+      if(present(historical_top_water))return
+      if(allocated(forcing%snow).or.allocated(forcing%rutter).or.allocated(forcing%black_evaporation).or. &
+         allocated(forcing%boesten_evaporation).or.allocated(forcing%rfm_surface).or. &
+         allocated(forcing%macropore_top_input))return
+    end if
     if(present(historical_top_water))then
       if(.not.admit_atmospheric_n)return
       if(.not.ieee_is_finite(historical_top_water))return
       if(historical_top_water<0d0.or.historical_top_water>100d0)return
+      allocate(top_n_water,source=historical_top_water)
     end if
     if(any(abs(np%mineral%c_top)>0d0).and..not.admit_atmospheric_n)return
     if(.not.allocated(np%mineral%dz_cm))return
@@ -157,12 +206,36 @@ contains
       call backend%discard_trial_candidate(candidate,result%diagnostics)
       return
     end if
+    if(bind_atmosphere)then
+      call historical_crop_soil_top_from_trace(obs%accepted_water_flux_substeps,t0,t1,gross_top,status)
+      if(status/=MINERAL_OK)then
+        result%status=JOINT_CHEMICAL_REJECTED
+        call backend%discard_trial_candidate(candidate,result%diagnostics)
+        return
+      end if
+      allocate(top_n_water,source=gross_top)
+      ! A dynamic boundary can accept thousands of water substeps per day.
+      ! Compensate their root integral before cm/m/cm conversion in the crop
+      ! view; naive accumulation can manufacture a tiny drought/death flux.
+      ! The accepted root fluxes and the existing eight-rounding bound are
+      ! unchanged. Never replace this integral with potential transpiration.
+      root_sum=0d0;root_error=0d0
+      do step=1,size(obs%accepted_water_flux_substeps)
+        associate(s=>obs%accepted_water_flux_substeps(step))
+          root_term=(s%t1-s%t0)*sum(s%root_sink)*.01d0-root_error
+          root_next=root_sum+root_term
+          root_error=(root_next-root_sum)-root_term
+          root_sum=root_next
+        end associate
+      end do
+      carrier%root_water=root_sum
+    end if
     if(inactive)then
       call advance_crop_soil_fallow_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=historical_top_water)
+        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=top_n_water)
     else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=historical_top_water)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=top_n_water)
     end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then
