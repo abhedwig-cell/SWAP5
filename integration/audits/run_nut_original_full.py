@@ -39,7 +39,7 @@ smedate iMat Dosagekgha VolatFraction
 """
  s+=''.join(f'FOM{i}_t = 0.\n'for i in range(1,9))
  values={'Bio_t':1e-8,'Hum_t':0,'cNH4_t':0,'cNO3_t':stock,'cNH4N_top':0,'cNO3N_top':.005,'cNH4N_lat':0,'cNO3N_lat':0,'cNH4N_seep':0,'cNO3N_seep':0,'Temp_ref':20,'SorpCoef':.0002,'RateConNitrif_ref':0,'RateConDenitr_ref':denitr,'WFPSCrit':.6,'WFPScrit2':.5,'CdissiHalf':1e-30,'TCSF_N':.5,'LaiCritNupt':1,'dz_WSN':.3}
- return s+''.join(f'{k} = {v:.17g}\n'for k,v in values.items())+'flCropExt = .FALSE.\n'
+ return s+''.join(f'{k} = {v:.17e}\n'for k,v in values.items())+'flCropExt = .FALSE.\n'
 
 def nutrient_rows(path):
  if not path.exists():return []
@@ -67,14 +67,15 @@ for opt in ['O0','O2']:
  manifest=json.loads((build/'INPUTS.json').read_text());flags=manifest['flags'];bs=build/'swobj';bt=build/'ttobj';main=build/'selected/swap_main.f90';obj=build/'swap_main.o';exe=build/'swap_original'
  event([*FC,*flags,'-cpp','-Dlinux','-ffree-line-length-none','-I',bt,'-I',bs,'-c',main,'-o',obj],bs,'main_compile')
  event([*FC,*flags,*sorted(bs.glob('*.o')),obj,bt/'libttutil.a','-o',exe],build,'main_link')
- for name in ['original-control-prefix','bare-low','bare-high','bare-no-denitr']:
+ for name in ['original-control-prefix','fallow-low','fallow-high','fallow-no-denitr','fallow-ample-no-denitr']:
   case=OUT/opt/name;case.mkdir(parents=True)
   for q in NAMES:(case/q).write_bytes(gzip.decompress((DATA/('b111-'+q+'.gz')).read_bytes()))
   control=case/'swap.swp';control.write_text(replace(control.read_text(encoding='cp1252'),'TEND','1998-01-10'),encoding='cp1252')
   if name!='original-control-prefix':
    p=case/'swap.swp';s=p.read_text(encoding='cp1252')
-   for k,v in {'TEND':'1998-01-10','SWCROP':'0','SWRAIN':'0','SWMACRO':'0','SWDRA':'0','GWLI':'-1.0','PONDMX':'0.1','RSRO':'1.0','SWEND':'1','INLIST_CSV':"'RAIN,RUNOFF,WTOT,DSTOR,BALDEV,TOP_IN,TOP_OUT,EACT,EPD'"}.items():s=replace(s,k,v)
-   s+="\nSWCROPSNM = 1\nSNMFIL = 'nut-main'\nPATHSNM = ' '\n";p.write_text(s,encoding='cp1252');(case/'nut-main.snm').write_text(snm(.05 if name=='bare-high' else 0.,0 if name=='bare-no-denitr' else 50.))
+   for k,v in {'TEND':'1998-01-10','SWCROP':'1','SWRAIN':'0','SWMACRO':'0','SWDRA':'0','GWLI':'-1.0','PONDMX':'0.1','RSRO':'1.0','SWEND':'1','INLIST_CSV':"'RAIN,RUNOFF,WTOT,DSTOR,BALDEV,TOP_IN,TOP_OUT,EACT,EPD'"}.items():s=replace(s,k,v)
+   s,n=re.subn(r'1998-01-01(\s+)1998-08-20',r'1998-01-15\g<1>1998-08-20',s);assert n==1,'future emergence row'
+   s+="\nSWCROPSNM = 1\nSNMFIL = 'nut-main'\nPATHSNM = ' '\n";p.write_text(s,encoding='cp1252');(case/'nut-main.snm').write_text(snm(.05 if name in ['fallow-high','fallow-ample-no-denitr'] else 0.,0 if 'no-denitr'in name else 50.))
    p=case/'andelst_meteo.998';lines=[]
    for l in p.read_text(encoding='cp1252').splitlines():
     if l.lstrip().startswith("'ANDE-M'"):
@@ -85,7 +86,8 @@ for opt in ['O0','O2']:
   p=event([exe,'./swap.swp'],case,'original_native',acceptable=tuple(range(256))+(-11,-8,-6))
   error=(case/'swap.err').read_text(errors='replace')if(case/'swap.err').exists()else''
   ok=p.returncode==100 and(case/'swap.ok').exists()and not error.strip()
-  runs[opt+'/'+name]=dict(returncode=p.returncode,success=ok,swap_ok=(case/'swap.ok').exists(),error=error,input_sha256=caseinputs,nutrient_rows=nutrient_rows(case/'result_nut.csv'))
+  rows=nutrient_rows(case/'result_nut.csv')
+  runs[opt+'/'+name]=dict(returncode=p.returncode,success=ok,soil_n_executed=bool(rows),swap_ok=(case/'swap.ok').exists(),error=error,input_sha256=caseinputs,nutrient_rows=rows)
   (OUT/'runs.json').write_text(json.dumps(runs,indent=2)+'\n')
 result=dict(status='ORIGINAL_FULL_MAIN_EXECUTED_QUALIFICATION_ONLY',execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),input_sha256=inputs,runs=runs,production_changed=False,full_capability=False)
 (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'])
