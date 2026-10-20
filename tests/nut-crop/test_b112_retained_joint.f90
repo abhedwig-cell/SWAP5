@@ -35,6 +35,8 @@ program test_b112_retained_joint
  use mod_fmr_crop_soil_n_senescence_application
  use mod_fmr_crop_soil_n_calendar_application,only:run_crop_soil_n_calendar_interval
  use mod_crop_soil_n_calendar_day,only:advance_crop_soil_fallow_calendar_day
+ use mod_gash_interception_process
+ use mod_gash_daily_application
  implicit none
  real(real64),parameter::T0=0d0,T1=1d0,HARD_MASS_GATE=1d-10
  type(fmr_production_application_config_t)::cfg
@@ -63,11 +65,13 @@ program test_b112_retained_joint
  real(real64)::k,time,theta
  integer(int64)::revision
  integer::status
- logical::ok
+ logical::ok,gash_composition
  character(512)::mode,path,endpoint
  character(32)::selected
  call get_command_argument(1,mode);call get_command_argument(2,path);call get_command_argument(3,endpoint)
  call get_command_argument(4,selected)
+ gash_composition=trim(selected)=='gash-profile'
+ if(gash_composition)selected='surface-profile'
  policy%application_age=[1.57d0,.99d0,1.57d0]
  env=soil_n_day_environment_t(0d0,1d0,5d0)
  call initialize_application_config(cfg,-75d0,k)
@@ -562,6 +566,15 @@ contains
    type(reactive_state_t)::ss
    type(wofost81_crop_owner_state_t)::cc
    type(soil_n_pool_state_t)::ps
+   type(gash_source_window_input_t)::gash_input
+   type(gash_source_window_result_t)::gash_result
+   type(gash_daily_application_input_t)::gash_day
+   type(gash_daily_application_result_t)::gash_applied
+   type(fmr_serialized_physical_observation_t)::gash_observation
+   type(mineral_state_t)::gash_base
+   type(mineral_daily_carrier_t)::gash_carrier
+   real(real64)::lai_gash,gash_intercept_total,gash_top_n_total,gash_top,gash_expected_n,gash_runoff
+   integer::gash_unit
    real(real64)::clock,moisture,season,uptake,max_n,max_w,n_before,flux_root
    real(real64)::n_start,n_input,n_output,n_residual,harvest_export
    real(real64),allocatable::historical_top
@@ -626,6 +639,12 @@ contains
    end if
    uptake=0d0;max_n=0d0;max_w=0d0
    n_start=crop_soil_whole_n(state);n_input=0d0;n_output=0d0
+   gash_intercept_total=0d0;gash_top_n_total=0d0
+   if(gash_composition.and.trim(mode)=='resume')then
+    open(newunit=gash_unit,file=trim(path)//'.ledger',status='old',form='unformatted',access='stream')
+    read(gash_unit)n_start,n_input,n_output,uptake,gash_intercept_total,gash_top_n_total,max_n,max_w
+    close(gash_unit)
+   end if
    last_day=730
    if(surface_profile)last_day=12
    do d=first,last_day-1
@@ -653,6 +672,44 @@ contains
      forcing%pond_input%ponding_max_cm=0d0
      forcing%pond_input%runoff_resistance_day=0d0
      forcing%top_flux=0d0
+     if(gash_composition)then
+      call state%snapshot(ss,cc)
+      call ss%mineral_snapshot(gash_base)
+      call cc%crop%derive_actual_leaf_area_index(cp%stem_area,cp%storage_area,lai_gash,code)
+      call require(code==0.and.lai_gash>=1d-3,'Gash reads active accepted crop LAI')
+      gash_input%source_time=base_day+real(d,real64)
+      gash_input%gross_rain_cm=.005d0;gash_input%surface_irrigation_cm=.045d0
+      gash_input%surface_irrigation_is_intercepted=mod(d,2)==0
+      call gash_table(gash_input%free_throughfall,.2d0)
+      call gash_table(gash_input%stemflow,.1d0)
+      call gash_table(gash_input%canopy_storage_cm,.014d0)
+      call gash_table(gash_input%average_precipitation,.3d0)
+      call gash_table(gash_input%average_evaporation,.02d0)
+      call evaluate_gash_source_window(gash_input,gash_result,code)
+      call require(code==GASH_OK,'accepted source-day Gash interception')
+      if(gash_input%surface_irrigation_is_intercepted)call require( &
+       gash_input%gross_rain_cm<gash_result%saturation_precipitation_cm.and. &
+       gash_input%gross_rain_cm+gash_input%surface_irrigation_cm>gash_result%saturation_precipitation_cm, &
+       'actual Gash irrigation crosses original saturation branch')
+      gash_day%gross_rain_cm=gash_input%gross_rain_cm
+      gash_day%surface_irrigation_cm=gash_input%surface_irrigation_cm
+      gash_day%interception_cm=gash_result%interception_cm
+      gash_day%surface_irrigation_is_intercepted=gash_input%surface_irrigation_is_intercepted
+      gash_day%wet_transpiration_capacity_mm_per_day=2d0
+      gash_day%dry_transpiration_cm_per_day=forcing%root_potential_transpiration
+      gash_day%wet_transpiration_cm_per_day=.5d0*forcing%root_potential_transpiration
+      call apply_gash_daily(gash_day,gash_applied,code)
+      call require(code==GASH_APP_OK,'Gash daily water and wet transpiration application')
+      call require(abs(gash_applied%net_rain_cm+gash_applied%net_irrigation_cm+ &
+       gash_result%interception_cm-gash_input%gross_rain_cm-gash_input%surface_irrigation_cm)<1d-14, &
+       'Gash source-to-throughfall water closure')
+      forcing%pond_input%rain_rate_cm_day=gash_applied%net_rain_cm
+      forcing%pond_input%irrigation_rate_cm_day=gash_applied%net_irrigation_cm
+      forcing%pond_input%potential_pond_evaporation_cm_day=gash_applied%net_rain_cm+ &
+       gash_applied%net_irrigation_cm+forcing%pond_input%runon_rate_cm_day+.0001d0*season
+      forcing%root_potential_transpiration=gash_applied%potential_transpiration_cm_per_day
+      forcing%root_extraction_sink=forcing%root_potential_transpiration/real(numnod,real64)
+     end if
     end if
     forcing%bottom_flux=sum(forcing%root_extraction_sink)+.002d0*season
     if(surface_profile)forcing%bottom_flux=sum(forcing%root_extraction_sink)
@@ -736,6 +793,21 @@ contains
       r%joint%joint%chemical%crop%rndeathst
     end if
     call require(r%status==0,'rotation actual daily Richards crop Soil-N')
+    if(gash_composition)then
+     gash_observation=backend%observation()
+     call aggregate_mineral_trace(gash_base,gash_observation%accepted_water_flux_substeps, &
+       gash_carrier,code,atmospheric_n_surface=.true.)
+     call require(code==MINERAL_OK,'Gash accepted hydraulic carrier')
+     gash_runoff=sum(gash_observation%accepted_water_flux_substeps%converged_runoff_depth_cm)
+     gash_top=.01d0*(gash_input%gross_rain_cm+gash_input%surface_irrigation_cm- &
+      gash_result%interception_cm+forcing%pond_input%runon_rate_cm_day-gash_runoff)
+     gash_expected_n=gash_top*sum(sp%mineral%c_top)+ &
+      gash_carrier%in_bottom*sum(sp%mineral%c_bottom)+gash_carrier%in_lateral*sum(sp%mineral%c_lateral)
+     call require(abs(r%joint%joint%chemical%soil%external_in-gash_expected_n)<1d-14, &
+      'original gross minus canopy source counted exactly once in whole N input')
+     gash_intercept_total=gash_intercept_total+gash_result%interception_cm
+     gash_top_n_total=gash_top_n_total+gash_top*sum(sp%mineral%c_top)
+    end if
     max_w=max(max_w,r%joint%joint%diagnostics%max_abs_step_mass_residual)
     max_n=max(max_n,abs(r%joint%materials%residual))
     uptake=uptake+r%joint%joint%chemical%internal_supply_kg_m2
@@ -776,6 +848,12 @@ contains
      call write_crop_soil_n_joint_restart_file(trim(path)//'.'//trim(arg),column, &
       cfg%tiles(1)%template,670001_int64,water,state,code)
      call require(code==0,'rotation transition restart write')
+     if(gash_composition)then
+      open(newunit=gash_unit,file=trim(path)//'.'//trim(arg)//'.ledger',status='replace', &
+       form='unformatted',access='stream')
+      write(gash_unit)n_start,n_input,n_output,uptake,gash_intercept_total,gash_top_n_total,max_n,max_w
+      close(gash_unit)
+     end if
     end if
     if(mod(d+1,60)==0)print *,'ROTATION_PROGRESS',d+1,'maxN',max_n,'maxW',max_w
    end do
@@ -789,9 +867,21 @@ contains
     ps%ammonium_n_kg_m2,ps%nitrate_n_kg_m2
    print *,'ROTATION_BUDGET',n_start,n_input,n_output,crop_soil_whole_n(state),n_residual
    call require(abs(n_residual)<=1d-10,'rotation cumulative whole nitrogen balance')
+   if(gash_composition)then
+    open(newunit=gash_unit,file=trim(endpoint)//'.ledger',status='replace',form='unformatted',access='stream')
+    write(gash_unit)n_start,n_input,n_output,uptake,gash_intercept_total,gash_top_n_total,max_n,max_w
+    close(gash_unit)
+    print *,'HISTORICAL_GASH_COUPLED_LEDGER',gash_intercept_total,gash_top_n_total,uptake,max_n,max_w
+    print *,'HISTORICAL_GASH_CROP_RICHARDS_N_12_DAYS_PASS'
+   end if
    if(surface_profile)print *,'HISTORICAL_ACCEPTED_ATMOSPHERE_12_DAYS_PASS',first,uptake,max_n,max_w
    if(gross_profile)print *,'HISTORICAL_GROSS_730_DAYS_SOURCE_NOT_NET_PASS',.004d0,first,uptake,max_n,max_w
    if(.not.surface_profile)print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w
+ end subroutine
+ subroutine gash_table(t,value)
+  type(gash_table_t),intent(out)::t
+  real(real64),intent(in)::value
+  allocate(t%time(1),t%value(1));t%time=0d0;t%value=value
  end subroutine
  subroutine report_water_state(stage,day)
    character(*),intent(in)::stage

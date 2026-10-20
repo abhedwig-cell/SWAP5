@@ -12,6 +12,8 @@ more_original=original['more']
 # Extend the measured production closure for source-driven amendment calendar execution.
 start=len(ns['ordered'])
 ns['visit'](ROOT/'src/runtime/mod_fmr_crop_soil_n_calendar_application.f90')
+ns['visit'](ROOT/'src/process/mod_gash_interception_process.f90')
+ns['visit'](ROOT/'src/process/mod_gash_daily_application.f90')
 calendar_providers=ns['ordered'][start:]
 for opt in ('O0','O2'):
  b=OUT/opt;flags=[x.replace(str(OUT/'O2'),str(b))for x in ns['flags']];flags[0]='-'+opt;flags+=['-I'+str(ROOT/'tests/nut-material')]

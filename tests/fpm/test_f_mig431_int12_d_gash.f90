@@ -16,6 +16,12 @@ program test_f_mig431_int12_d_gash
  call evaluate_gash_source_window(x,r,s);call req(s==GASH_OK,'large');call req(r%saturation_precipitation_cm>0d0.and.r%interception_cm>0d0,'large formula')
  x%gross_rain_cm=0.1d0;x%surface_irrigation_cm=0.2d0;x%surface_irrigation_is_intercepted=.true.
  call evaluate_gash_source_window(x,r,s);call req(abs(r%interception_cm-r%canopy_fraction*0.3d0)<1d-14,'irrigation rpd')
+ x%surface_irrigation_cm=0.4d0
+ call evaluate_gash_source_window(x,r,s)
+ call req(s==GASH_OK.and.x%gross_rain_cm<r%saturation_precipitation_cm.and. &
+  x%gross_rain_cm+x%surface_irrigation_cm>r%saturation_precipitation_cm,'irrigation crosses canopy saturation')
+ call req(abs(r%interception_cm-r%canopy_fraction*(r%saturation_precipitation_cm+ &
+  (.3d0/.6d0)*.6d0/3d0*(.5d0-r%saturation_precipitation_cm)))<1d-14,'original total intercepted rpd branch')
  x%surface_irrigation_is_intercepted=.false.
  call evaluate_gash_source_window(x,r,s);call req(abs(r%interception_cm-r%canopy_fraction*0.1d0)<1d-14,'irrigation excluded')
  print *,'F-MIG431-INT12-D GASH PROCESS PASS'
