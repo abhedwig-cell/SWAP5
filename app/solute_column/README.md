@@ -2,7 +2,8 @@
 
 This opt-in application runs the production Reference water/pond/matrix route
 from a text input, with unrounded accounting and independent-process restart.
-It currently has four cells (0.5, 0.5, 1 and 1 cm). It supports linear sorption,
+Schema1 retains four cells (0.5, 0.5, 1 and 1 cm). Schema2 supplies a grid of
+2 through 256 cells with `nodes` and `cell_thickness_cm`. It supports linear sorption,
 prescribed roots, one signed drainage level, a signed prescribed bottom flux,
 rain, irrigation, runon, pond mixing, runoff and nonexporting pond evaporation.
 Roots here are prescribed extraction, not a live crop model. This is not yet a
@@ -31,7 +32,7 @@ and solute inventories mg/cm2. Bulk density is g/cm3 and the linear sorption
 coefficient `kf` is cm3/g. Drain and bottom water fluxes use the production
 conventions: positive drain flux extracts water; positive bottom flux enters the
 column. Potential evaporation is a positive demand. `ends_day` is strictly
-increasing. The two required input groups are `column` (schema=1) and `surface`.
+increasing. The two required input groups are `column` (schema=1 or schema=2) and `surface`.
 Undeclared physics keywords are rejected. See the example and the
 [application contract](../../docs/science/MC_SOL01_COLUMN_INPUT_CONTRACT.md).
 
@@ -42,13 +43,26 @@ FC=gfortran-13 python tools/solute/build_column.py --optimization O0 --output /t
 python tests/nut-sol/test_column_input.py --build-O0 /tmp/swap5-solute-O0 --build-O2 /tmp/swap5-solute-build --output /tmp/swap5-solute-evidence
 ```
 
+For schema2, supply all cell thicknesses, for example
+`nodes=8, cell_thickness_cm=4*0.25,4*0.5`. Concentration, root and drainage arrays
+are indexed by cell. Omitted entries default to zero; nonzero entries beyond
+`nodes` are rejected. Material parameters and initial pressure remain uniform.
+See `examples/solute_column/deep_grid.nml` for a 32-cell, 138-cm input.
+
+Grid qualification exercises 2, 8, 32 and 256 cells with actual Reference fluxes,
+budgets and fresh-process restart. The dry 138-cm case at initial head -75 cm
+rejects 0.001-day windows under the unchanged strict Reference numerical policy;
+0.00001-day windows complete. The wetter -10-cm deep example uses 0.001-day
+windows. Failure publishes no generation. This is a reproducible numerical
+domain limit, not seasonal or arbitrary-grid convergence qualification.
+
 The measured GNU13.3 provider closure is 178 source files. Cold compilation/link
 took approximately 21 s at O0 and 67 s at O2 in the qualification session; the 26
 process checks took about 7.3 s including launcher/validation overhead. These
 measurements describe a small column on that host, not production throughput.
 
 The standalone link context is deliberately outside `src`: this build alone
-selects its four-node legacy symbol layout. Except the historical arithmetic
+allocates its immutable legacy symbol layout from the input grid. Except the historical arithmetic
 conductivity mean, old physics/numerical entries abort if called. All active
 hydraulic/transport calculations use existing production providers. Other
 application builds retain their own legacy module definitions.

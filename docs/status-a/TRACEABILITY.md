@@ -125,10 +125,15 @@ MC-SOL01 closure native CI follow-up: `integration/audits/MC_SOL01_SURFACE_AGE03
 
 MC-SOL01 final preservation: the existing AGE03-CI `remaining_compile_routes` record binds `MC_SOL01_CLOSURE_PRESERVATION_20261019.tar.xz.b64`, original paired provider/5000-call/ten-pair proofs, F-KT22 compilation, eight negative controls and failed energy/hosted diagnostics. PR1327 terminal observations and Git containment supply the final admission receipt; no energy or solver research admission is inferred.
 
-MC-SOL01 opt-in column input: the [application contract](../science/MC_SOL01_COLUMN_INPUT_CONTRACT.md),
+MC-SOL01 opt-in column input, including schema2 immutable geometry: the
+[application contract](../science/MC_SOL01_COLUMN_INPUT_CONTRACT.md),
 `app/solute_column`, `tools/solute`, and `tests/nut-sol/test_column_input.py` trace
 file input to existing production pond/matrix ownership and exact native restart.
-The trajectory3 `column_input_20261020` record binds the 26 actual GNU O0/O2 process
+The trajectory3 `column_input_20261020.variable_grid_successor` additionally binds
+the real178-provider O0/O2 builds,86 process observations and exact five-profile
+fresh restarts. Its source validator preserves the original NUT guard semantics.
+The dry deep long-window rejection remains explicit.
+The trajectory3 `column_input_20261020` record binds the original26 GNU O0/O2 process
 observations and immutable capsule. Existing AGE03-CI postimages register only the
 three exact additive tool/test files. Production/reference source and all old
 scientific assertions remain unchanged. Local qualification and canonical

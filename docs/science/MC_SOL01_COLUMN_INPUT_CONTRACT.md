@@ -1,6 +1,6 @@
 # MC-SOL01 file-driven Reference column
 
-## Proposed schema2 grid successor, 20 October 2026
+## Qualified schema2 grid successor, 20 October 2026
 
 This work extends only the application geometry adapter. Schema1 retains its
 four cells and its existing numerical endpoint. Schema2 adds `nodes` and
@@ -26,6 +26,13 @@ process restart, invalid geometry rejection and original endpoint preservation.
 This is not spatial-convergence, seasonal, arbitrary-stratigraphy or live-crop
 qualification. Existing surface-age/NUT source-bound evidence must remain valid.
 Full moving F-CI, RossFast and highest low-air are not selected for this adapter.
+
+The 32-cell 138-cm case at uniform initial head -75 cm rejects 0.001-day
+reporting windows after repeated solver retries with the existing strict
+Reference policy. There is no published generation or mass-balance acceptance.
+The same dry profile completes at 0.00001-day windows; the wetter -10-cm profile
+completes at 0.001-day windows. These are separate qualified regimes. No
+tolerance is relaxed and no universal solver convergence claim is made.
 
 Status: canonically admitted bounded application through PR1329 at
 `21cc80984a864b48d4344b9671d6ccd2ae5882ad`, based on
