@@ -1680,11 +1680,11 @@
     }
   },
   "gash_interception_successor": {
-    "status": "CORE_NUMERICS_PASS_INCUMBENT_BUILD_QUALIFICATION_PENDING",
+    "status": "QUALIFIED_PENDING_CANONICAL",
     "base_canonical": "9a3a15197adbf37dba340f4f9acbbb44fe76a989",
     "implemented": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "canonical_admitted": false,
     "scope": "Original rpd Gash saturation branch and snow-free daily Gash throughfall coupled through existing accepted hydraulic/N carrier, real accepted crop LAI, canopy/wet-transpiration application and persistent diagnostic ledgers; no new state or backend interface.",
     "selection": {
@@ -1700,19 +1700,20 @@
     "canonical_reconciliation": "PERF01 admitted exact HeadCalc/trace-arena retained; rerun actual coupled Gash closure on latest canonical. Full unchanged PERF01 authority and13 controls at exact predecessor; current178 providers identical.",
     "evidence": {
       "path": "integration/audits/evidence/MC_NUT01_GASH_SOURCE_COMPOSITION_20261020.tar.xz.b64",
-      "decoded_sha256": "86203f8053a31143a335e8b40d9cc40ae30d3b67f4899208baceff94fc8561c2",
-      "compressed_bytes": 134760,
-      "members": 4195
+      "decoded_sha256": "5c3ac2ad64adbf864589d13d3ed77abff538ef97926f166f47c0d1873f6ebe3b",
+      "compressed_bytes": 214048,
+      "members": 7866
     },
     "postimages": {
-      "tests/fpm/test_f_mig431_int12_d_gash.f90": "f7d604e842bf383a00fb9f0c3c84cfac4e6d9c250bcd44bf58e8c0e4ebf0cf51",
-      "tests/nut-crop/run_hist_complete.py": "fb49db1ffd42ebffb5624d40ea3180a399d36cdb6bceba63adcdff9aed904bd6",
       "integration/audits/verify_nut_native_character.py": "e3662c8d70b7d61c3ea6cfd259f9b6ce45b9955274775c022409737cb4b8e0f4",
-      "integration/audits/verify_nut_gash_successor.py": "a7e367b69bdaa7a5f53d4cfb6e876e556b1492d8274a8cb82398dd414fdf5ba5",
+      "tests/fpm/test_f_mig431_int12_d_gash.f90": "f7d604e842bf383a00fb9f0c3c84cfac4e6d9c250bcd44bf58e8c0e4ebf0cf51",
       "src/process/mod_gash_interception_process.f90": "60836fc16d45be2bab45f1aa1228cfce2d9f29fe73b9cdf89e15b62e3890231b",
-      "tests/nut-crop/test_b112_retained_joint.f90": "d8fc1d309623f205986067d6f3fd4a00d067e503109d2c59bd38ed417744774c",
       "integration/performance/authority.py": "1425fb7e7b556804154ba8af1cb877e7bfcb4f393422007b03b63b763e77c051",
-      "integration/audits/run_nut_gash_authority.py": "7a6614e23c7118dd7b50ca3478538baae405aeafed6c1c5f2a0c7bd85c13664d"
+      "integration/audits/verify_nut_gash_successor.py": "b17b9fc6d3051b6dc216af0cf4f1b7c06b5a106fb68ed3d1e7edb0700a87ebd6",
+      "integration/audits/run_nut_gash_authority.py": "7a6614e23c7118dd7b50ca3478538baae405aeafed6c1c5f2a0c7bd85c13664d",
+      "tests/nut-crop/run_b112_retained_joint.py": "6d08cb9b5680f8695ce1100ad58a698df534792d6a93890c096103ccd5acab41",
+      "tests/nut-crop/run_hist_complete.py": "fb49db1ffd42ebffb5624d40ea3180a399d36cdb6bceba63adcdff9aed904bd6",
+      "tests/nut-crop/test_b112_retained_joint.f90": "d8fc1d309623f205986067d6f3fd4a00d067e503109d2c59bd38ed417744774c"
     },
     "production_source_tree": "2b2d253d71eb89c96c025b885ce4b80e34283c8b",
     "physical_execution_commit": "6a6dd3b21f3c38663c133836315eeabacc16e1bd",
@@ -1756,6 +1757,8 @@
     "negative_controls": {
       "gash_negative_controls": [
         "Gash process drift",
+        "incumbent/O0/b112-fresh.bin",
+        "incumbent/O2/source-startup-fresh.bin",
         "physical/O0/gash-profile-fresh-6",
         "physical/O2/gash-profile-fresh-1.ledger",
         "physical/O0/gash-profile.restart.water-reject-6",
@@ -1768,7 +1771,7 @@
         "missing fresh process",
         "unchecked physical compiler"
       ],
-      "count": 12
+      "count": 14
     },
     "whole_n_budgets": [
       {
@@ -1851,7 +1854,17 @@
       "first_hosted_job": 118894923928,
       "failure": "Missing imported mod_gash_interception_process in legacy application build closure; no failed numerical result inherited",
       "repair": "Explicit visits to both independent existing Gash process and daily providers; all legacy assertions unchanged",
-      "next": "Fresh complete incumbent O0/O2 build and native default/source/restart/invalid gates; re-seal same affected work unit and guard; no repeat of unchanged completed physical Gash run"
+      "next": "Fresh complete incumbent O0/O2 build and native default/source/restart/invalid gates; re-seal same affected work unit and guard; no repeat of unchanged completed physical Gash run",
+      "status": "LOCAL_FRESH_O0_O2_AND_REGISTERED_OWNER_PASS",
+      "final_local_status": "B112_RETAINED_JOINT_PHYSICAL_PASS_NOT_ADMITTED",
+      "cost_seconds": {
+        "compile": 195.62782524290378,
+        "driver_compile": 51.52632468700176,
+        "link": 2.637838588991144,
+        "native": 8.706357594986912,
+        "source_native": 0.491840727008821
+      },
+      "source_execution": "Full fresh legacy launcher, no cached native PASS or reused provider objects"
     }
   }
 }

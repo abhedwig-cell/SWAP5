@@ -12,7 +12,8 @@ of already admitted SW431-INT-GASH, not a new capability register.
 
 The pinned SWAP4.3.1 archive, decoded SHA256
 `18396ecb9ec297e360d9ef720b8f5359522bca05070c6305c5d9608324247f4c`,
-contains `MOD_meteo.f90` Gash and `functions.f90` AFGEN. The authority runner
+contains `MOD_meteo.f90` Gash (lines2135..2197, total-rpd branch2189)
+and `functions.f90` AFGEN. The authority runner
 extracts both whole routines unchanged. Only module variables, forcing and
 clock are supplied by a test scaffold. The original branch compares total
 interceptable precipitation `rpd`, including intercepted irrigation, with
@@ -84,7 +85,7 @@ byte-for-byte with uninterrupted execution. Rejected hydraulic, nutrient and
 clean retry trials preserve their serialized committed state exactly.
 
 Numerical results and costs below come from the completed actual current-canonical
-execution. The registered owner and all12 corruption controls pass; canonical
+execution. The registered owner and all14 corruption controls pass; canonical
 admission receipts are recorded in the existing status. No full-workstream
 closure or master disposition promotion follows from the bounded result.
 
@@ -142,3 +143,27 @@ results, all14 prior endpoint files and the new two Gash endpoints are exact;
 cumulative diagnostic quantities are byte-identical. The original 54-case
 process comparison, preimage six-case counterexample and four incumbent
 Gash owner drivers pass separately from these actual coupled calculations.
+
+
+## Incumbent application build closure
+
+The same retained-joint driver remains consumed by the older actual B112
+launcher. Its unchanged calendar closure is extended by explicit `visit` calls to the
+existing Gash process and daily providers. These two modules are independent.
+No old assertion or numerical input changes. The complete older launcher is
+executed locally at O0/O2, including default/request/reproductive byte gates,
+malformed restart/profile controls and actual source124-day fresh continuation.
+Its raw result, compiler/native events and final state files are admitted in
+the same capsule. The owning guard compares its default and source endpoints
+with the complete current run and includes two additional corruption controls,
+for14 controls overall. The early PR head omitted this link-closure extension;
+it is superseded before integration, with hosted results recorded by head.
+
+The final incumbent launcher run passed852 measured compiler/native events.
+Its measured costs are195.627825 s provider compilation,51.526325 s driver
+compilation,2.637839 s linking,8.706358 s native cases and0.491841 s source
+continuations. The corrected launcher explicitly resolves both independent
+Gash modules. Its O0/O2 retained results and default/source endpoints agree
+exactly with the complete current physical run. All14 owning corruption
+controls pass. The earlier missing-provider compile failures are retained
+separately and do not count as numerical passes.
