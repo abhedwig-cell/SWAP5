@@ -779,3 +779,10 @@ and36 fresh-process exact endpoints, required retained/thermal/TCS6 preservation
 original TTUTIL/chemistry/caller witnesses and terminal integrated owner runs.
 Parallel surface-age qualification is preserved. This is bounded admission;
 complete historical input/atmospheric semantics and full mastercoverage remain open.
+
+
+## SWAP5-PERF01: exact flux-history runtime optimization (2026-10-20)
+
+PR #1335 is admitted at `5eec6ae73d3187630f244109380ef6adfadfe631`. The serialized Reference backend replaces quadratic accepted-flux history copies with an immutable worker-local arena and branch cursors, preserving the exact published trace and committed/restart state. Seven paired GNU13.3 production O2 application runs give13.63×,3.41× and1.26× speedups for4,32 and256cells, with byte-identical physical files and unchanged numerical work. Original O0/O2 application, macro/transaction/lower/restart, age/reactive and FSI35 evidence and the exact current-source successor qualify this bounded implementation.
+
+This does not change tolerances, step-doubling policy, RossFast admission or the frozen Status-A denominator. Excess temporal retries, the pre-existing EB-I25 nonadmitted outflow assertion and default-stack reactive limitation remain explicit. A real LWKM historical package was inspected, but the present column application cannot execute its full crop/heat/BBC orchestration equivalently; no unconditional HRU/regional throughput claim is admitted. See the [performance report](../performance/SWAP5-PERF01_REPORT.md) and `integration/performance/SWAP5-PERF01_STATUS.json` for measurements, source binding and remaining scope.
