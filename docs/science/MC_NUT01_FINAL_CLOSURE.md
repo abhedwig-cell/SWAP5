@@ -2,6 +2,12 @@
 
 Updated20 October2026 against actual scientific admission `24868384b276b838ee704cff5535aad3bdb4a9c9`. The19October review and its immutable evidence remain historical receipts.
 
+The latest [actual original full-caller evidence](MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md)
+now proves the negative-source/depleted-stock conflict in configured-crop fallow.
+This replaces the earlier conditional/prescribed-node reachability limit for
+that bounded path. Full historical closure remains scientifically blocked;
+all admitted positive/process facets remain preserved.
+
 ## Decision and claim boundary
 
 **Full historical MC-NUT01 closure remains open. The independent positive historical gross atmospheric N route is canonically admitted through PR1330; automatic dry-atmosphere binding and accurate root integration through PR1333; source-faithful same-record native CHARACTER concatenation and explicit disabled diagnostics through PR1337; source-faithful Gash saturation and actual snow-free daily interception/N composition through PR1339.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
@@ -31,6 +37,7 @@ The immutable archive is `integration/audits/evidence/SWAP431_B111_AUTHORITY.tar
 Authority is historical SWAP4.3.1 as pinned in these archives, with explicitly registered corrected-reference decisions. It is not unrestricted literal B0 equivalence. In particular:
 
 * MC-NUT01-R1 corrects the duplicated Bio term in the organic mineralisation coefficient. The defect witness and one-line transform remain immutable.
+* MC-NUT01-R2 corrects the original same-date amendment grouping defect; [the accepted calendar reconciliation](MC_NUT01_CALENDAR_RECONCILIATION_20261015.md) traces PR1242 and its exact corrected-reference authority.
 * Retained-stock follows its admitted corrected B1.12 contract, while growth ownership remains the admitted WOFOST81 path. This is not proof of the complete original crop trajectory.
 * The original seepage reader mistakenly assigns the nitrate-seepage field to the lateral field. The independent B0/B1 reader witness distinguishes the defect from the one-target correction; distinct current boundary parameters are preserved.
 * A rejected residue fraction up to eight spacings below its lower boundary is projected only with an exactly booked NH4 compensation. No external N is manufactured, and larger deviations remain rejected.
@@ -54,7 +61,7 @@ Every row below retains the master disposition. ADMITTED in the facet column ref
 | SW431-NUT-TRANSPORT | ACTIVE_MIGRATION | ADMITTED bounded facet; full envelope open | Analytical concentration, uptake and signed boundary exchange | `SWAP/wofost_soil_watern.f90` | `src/process/mod_b111_soil_n_transport.f90` | Accepted full-column daily water carrier, root uptake, bottom/lateral concentrations | Original watern plus actual Reference water; bounded top infiltration; gross/net counterexample limits full scope |
 | SW431-NUT-NFIX | ACTIVE_MIGRATION | ADMITTED bounded facet; full envelope open | Biological fixation booked as crop input | `SWAP/wofostnut.f90` | `src/crop/mod_b111_nfixation_policy.f90` | Explicit admitted source fixation policy; actual crop demand/supply | Vegetative/reproductive source witnesses, whole-system budgets and native continuation |
 
-Whole-envelope blockers attach principally to NUT-TRANSPORT, NUT-MINERAL and NUT-CROP through the atmospheric carrier, and to native input/application reachability where unsupported syntax is required. Organic, amendment, residue, nitrification, denitrification and fixation processes do exist and execute in admitted compositions. An old complete-absence statement cannot override those later admissions. The remaining envelope for each master row requires its own owner review before promotion.
+Whole-envelope blockers attach principally to NUT-TRANSPORT, NUT-MINERAL and NUT-CROP through the atmospheric carrier, and to native input/application reachability where unsupported syntax is required. Organic, amendment, residue, nitrification, denitrification and fixation processes do exist and execute in admitted compositions. An old complete-absence statement cannot override those later admissions. The actual original full-fallow caller now proves the negative/depleted-stock reference conflict; full active crop-N and multiyear equivalence remain unclaimed. The remaining envelope for each master row requires its own owner review before promotion.
 
 Aquifer functionality is outside this work unit. RossFast remains limited to previously approved use. Surface-water age is not a dissolved NH4/NO3 inventory and cannot close the N carrier gap. No phosphorus or other new biogeochemical model is inferred from the generic word nutrients.
 
@@ -371,3 +378,25 @@ preserves233 other rows and all243 dispositions/counts, and passes the original
 nine scoped bounded-reachability checks. It does not claim whole-master
 qualification. Full MC-NUT01 closure remains false at the explicitly documented
 scientific and remaining input/output/trajectory boundaries.
+
+## Actual original full-caller scientific blocker
+
+The [complete original caller qualification](MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md)
+supersedes the prescribed-top-node witness for configured-crop fallow reachability.
+Ten unchanged original main processes, all63 original providers at O0/O2,
+80 actual daily Soil-N steps and an exact frozen Andelst10-day control prefix
+prove that negative loading and natural stock exhaustion occur together.
+Worst whole-N daily residual is -3.594831001139163e-4kg/m² (3.594831kg/ha),
+relative0.9413431243; the conservative original output rounding bound is
+1.055500100e-7kg/m². The low-N/no-denitrification case also fails by
+8.116500012e-5kg/m². The ample/no-denitrification control is consistent with
+printed precision. Original water BALDEV8.50584e-7cm is far too small to
+explain the N discrepancy. All9 evidence corruption controls pass.
+
+This is a demonstrated scientific reference blocker, not missing current
+Soil-N implementation. Current production conserves N by continuing to reject
+negative historical carriers. Admitted nonnegative and Gash paths remain
+unchanged. A complete original active crop-N or multiyear equivalence claim
+is still not made; general native grammar, fractional humus clocks, true
+extended diagnostics and snow/persistent surface binding remain explicitly
+outside the bounded admissions. Full workstream closure is not asserted.
