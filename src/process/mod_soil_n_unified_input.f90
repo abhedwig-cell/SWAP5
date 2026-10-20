@@ -316,16 +316,17 @@ contains
     ! owns name length, printable characters and all material/event physics.
     quote=line(i:i);token='';token(1:1)=quote;k=1
     do
-     i=i+1
+     i=i+1;start=i
      do while(i<=l)
       if(line(i:i)==quote)exit
       if(k>=255)return
       k=k+1;token(k:k)=line(i:i);i=i+1
      end do
      if(i>l)return
+     if(i==start)return
      i=i+1;r=i
      do while(r<=l)
-      if(line(r:r)/=' '.and.line(r:r)/=achar(9))exit
+      if(line(r:r)/=' ')exit
       r=r+1
      end do
      if(r>=l)exit
@@ -335,7 +336,7 @@ contains
      if(quote/=achar(39))return
      r=r+2
      do while(r<=l)
-      if(line(r:r)/=' '.and.line(r:r)/=achar(9))exit
+      if(line(r:r)/=' ')exit
       r=r+1
      end do
      if(r>l)return
