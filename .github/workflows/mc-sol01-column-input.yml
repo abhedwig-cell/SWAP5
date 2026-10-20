@@ -1,0 +1,69 @@
+name: MC-SOL01 file-driven Reference column
+
+on:
+  pull_request:
+    paths:
+      - 'app/solute_column/**'
+      - 'tools/solute/**'
+      - 'examples/solute_column/**'
+      - 'tests/nut-sol/test_column_input.py'
+      - 'src/runtime/mod_fmr_b111_*.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/process/mod_b111_*.f90'
+      - 'src/adapter/mod_matrix_joint_restart_file.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_b110*.f90'
+      - '.github/workflows/mc-sol01-column-input.yml'
+  push:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'app/solute_column/**'
+      - 'tools/solute/**'
+      - 'examples/solute_column/**'
+      - 'tests/nut-sol/test_column_input.py'
+      - 'src/runtime/mod_fmr_b111_*.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'src/process/mod_b111_*.f90'
+      - 'src/adapter/mod_matrix_joint_restart_file.f90'
+      - 'src/legacy/b1_10_port/headcalc.f90'
+      - 'src/solver/mod_b110*.f90'
+      - '.github/workflows/mc-sol01-column-input.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: solute-column-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  column:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build both optimizations and run actual file/restart qualification
+        run: |
+          set -euo pipefail
+          python tools/solute/build_column.py --optimization O0 --output "$RUNNER_TEMP/solute-column/O0"
+          python tools/solute/build_column.py --optimization O2 --output "$RUNNER_TEMP/solute-column/O2"
+          python tests/nut-sol/test_column_input.py --build-O0 "$RUNNER_TEMP/solute-column/O0" --build-O2 "$RUNNER_TEMP/solute-column/O2" --output "$RUNNER_TEMP/solute-column/qualification"
+      - name: Preserve existing surface age and accepted source authority
+        run: python -B tests/nut-sol/verify_surface_age_successor.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mc-sol01-file-column-evidence
+          path: |
+            ${{ runner.temp }}/solute-column/O0/*.json
+            ${{ runner.temp }}/solute-column/O0/*.stdout
+            ${{ runner.temp }}/solute-column/O0/*.stderr
+            ${{ runner.temp }}/solute-column/O2/*.json
+            ${{ runner.temp }}/solute-column/O2/*.stdout
+            ${{ runner.temp }}/solute-column/O2/*.stderr
+            ${{ runner.temp }}/solute-column/qualification/**

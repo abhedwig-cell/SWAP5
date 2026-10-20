@@ -32,7 +32,7 @@
       "cost_seconds": {"O0_compile": 20.990979534079088, "O0_link": 0.07806001100107096, "O2_compile": 66.60667517894035, "O2_link": 0.07138151599792764, "process_and_launcher": 7.296521231015504, "physics_only": "UNKNOWN"},
       "docs_source": "PASS",
       "strict_mkdocs": "PASS 14.95s before final evidence documentation",
-      "preservation_source": "PENDING current source/evidence successor verification; production src tree unchanged 282e4504c8d1d31e9cdfa37041b6b06a48a90588"
+      "preservation_source": "PASS actual surface-age/CI/NUT coexistence source and immutable evidence; production src tree unchanged 282e4504c8d1d31e9cdfa37041b6b06a48a90588"
     },
     "evidence": {
       "path": "integration/audits/evidence/MC_SOL01_COLUMN_INPUT_20261020.tar.xz.b64",
@@ -43,6 +43,10 @@
     "owner_selection": "RT/MC-SOL01 explicit application qualification completed. Generic modular selection reports unmapped additive application paths; owning native suite, exact old production/source evidence and docs are the selected admission checks. Full moving FCI NOT_SELECTED_IMPACT, highest NOT_SELECTED_POLICY, RossFast unchanged.",
     "full_historical_capability": false,
     "master_disposition_changes": 0,
+    "pr": 1329,
+    "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1329",
+    "preservation_workflow": ".github/workflows/mc-sol01-column-input.yml",
+    "hosted_selection": "One automatic real O0/O2 application composition/restart qualification, expected120s native build/test plus existing evidence validator. Necessary to register future app/input changes that existing src-only workflows do not cover. Existing other automatic workflows are observed, not manually duplicated.",
     "blockers": []
   },
   "work_unit": "MC-SOL01-TRAJECTORY3-MATRIX",
