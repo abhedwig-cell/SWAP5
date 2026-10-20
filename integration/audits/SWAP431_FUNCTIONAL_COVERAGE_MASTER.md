@@ -966,3 +966,16 @@ the wetter profile qualify without relaxed tolerances. Only two existing
 bounded application receipts change. The other241 rows, all243 dispositions
 and concurrent NUT gross-positive receipts atccdcccb9 remain exact. No full
 historical/default, seasonal or whole-master admission is claimed.
+
+## Dry Reference profile at equal final time,20 October2026
+
+PR1336 at `f53c968d0206401694249044b8759bb8786274a8` qualifies the same
+dry138cm initial state and physical forcing through0.002day, using100 reporting
+windows. Actual unchanged178-provider O0/O2,4366 accepted hydraulic substeps,
+independent complete water/solute budgets and exact window37 fresh-process
+restart pass. The original coarse-window rejection remains explicit; no general
+solver repair is claimed. Two existing bounded application receipts receive
+additional scenario evidence. All241 other rows, all243 dispositions and the
+concurrent NUT receipt at882aa482 remain exact; no full historical or whole-master
+admission is implied. The existing canonical final closure binds reproducible
+input, raw results, source identity and diagnostic limits.

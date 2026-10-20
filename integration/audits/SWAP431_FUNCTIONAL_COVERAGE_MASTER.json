@@ -9652,6 +9652,20 @@
       "capability_id": "SW431-SALT-SORPTION",
       "file_driven_application_20261020": {
         "grid_successor_20261020": {
+          "same_horizon_qualification": {
+            "pr": 1336,
+            "canonical_merge": "f53c968d0206401694249044b8759bb8786274a8",
+            "qualified_head": "77c5af5d48d46f5f5127337e8602b20ef38e135e",
+            "qualification": "Same admitted32-cell138cm dry profile and physical forcing to original0.002day using100 reporting windows. Actual GNU O0/O2,4366 accepted substeps, exact fresh-process restart after37windows; eight process observations PASS.",
+            "water_residual_cm": 1.522618836569123e-13,
+            "solute_residual_mg_cm2": 4.822878207910719e-14,
+            "evidence": "integration/audits/evidence/MC_SOL01_DRY_PROFILE_SAME_HORIZON_20261020.tar.xz.b64 at f53c968d0206401694249044b8759bb8786274a8",
+            "evidence_decoded_sha256": "54210499e48529fcce2f2e6a61d2c42a276d0b19552efb0971947cb387ffa1f7",
+            "input": "integration/audits/column_grid/dry_profile_100_windows.nml at f53c968d0206401694249044b8759bb8786274a8",
+            "limit": "Coarse0.001day reporting window still rejects; no general Reference convergence repair or full historical promotion.",
+            "production_changed": false,
+            "disposition_changed": false
+          },
           "pr": 1332,
           "qualified_head": "2c7112f500791b756358f5b95b23734d45890231",
           "canonical_merge": "fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1",
@@ -9962,6 +9976,20 @@
       "capability_id": "SW431-SALT-POND",
       "file_driven_application_20261020": {
         "grid_successor_20261020": {
+          "same_horizon_qualification": {
+            "pr": 1336,
+            "canonical_merge": "f53c968d0206401694249044b8759bb8786274a8",
+            "qualified_head": "77c5af5d48d46f5f5127337e8602b20ef38e135e",
+            "qualification": "Same admitted32-cell138cm dry profile and physical forcing to original0.002day using100 reporting windows. Actual GNU O0/O2,4366 accepted substeps, exact fresh-process restart after37windows; eight process observations PASS.",
+            "water_residual_cm": 1.522618836569123e-13,
+            "solute_residual_mg_cm2": 4.822878207910719e-14,
+            "evidence": "integration/audits/evidence/MC_SOL01_DRY_PROFILE_SAME_HORIZON_20261020.tar.xz.b64 at f53c968d0206401694249044b8759bb8786274a8",
+            "evidence_decoded_sha256": "54210499e48529fcce2f2e6a61d2c42a276d0b19552efb0971947cb387ffa1f7",
+            "input": "integration/audits/column_grid/dry_profile_100_windows.nml at f53c968d0206401694249044b8759bb8786274a8",
+            "limit": "Coarse0.001day reporting window still rejects; no general Reference convergence repair or full historical promotion.",
+            "production_changed": false,
+            "disposition_changed": false
+          },
           "pr": 1332,
           "qualified_head": "2c7112f500791b756358f5b95b23734d45890231",
           "canonical_merge": "fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1",
