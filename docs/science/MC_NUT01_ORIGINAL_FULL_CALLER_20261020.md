@@ -159,3 +159,13 @@ outputs, success markers, end conditions, previous failures and interruption.
 No new current production compilation, F-CI campaign, RossFast or aquifer
 qualification is selected for this evidence-only unit; current production
 providers are unchanged from canonical790fb52f/source2b2d253d.
+
+## Canonical evidence integration
+
+PR#1340, canonical `e41f36658f23dcd6aa3f34835e4722eae23fba42`, qualified
+`171e45a48afe6a08d3e62a250c72ef6aba3fdd67`; actual full tree dc02644c equals the
+qualified tree and the actual-merge owner passes. Production source2b2d253d
+is unchanged. Evidence integration preserves QUALIFICATION_ONLY: no negative
+production path or full historical closure is admitted. Existing master receipt
+`34f5a9fc3a7f061d8fb05e8320b8f549f1465d1d` preserves234 other rows and243
+dispositions and passes all nine original scoped production-reachability checks.
