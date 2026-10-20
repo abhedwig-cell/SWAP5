@@ -34,6 +34,7 @@ def qualify_grids(execute, directory, exe):
         'minimum': [0.25, 0.75],
         'refined': [0.25] * 4 + [0.5] * 4,
         'deep': [0.5, 0.5, 1, 1, 2, 3] + [5] * 26,
+        'deep_dry_short': [0.5, 0.5, 1, 1, 2, 3] + [5] * 26,
         'maximum': [1] * 256,
     }
     results = {}
@@ -50,7 +51,12 @@ def qualify_grids(execute, directory, exe):
         text = text.replace('concentration_mg_cm3=0.2,0.3,0.4,0.5',
                             'concentration_mg_cm3=' + ','.join(map(str, concentrations)))
         text = text.replace('4*0.0001', str(n) + '*' + str(0.0004 / n))
-        if name == 'maximum':
+        # Small cells can infiltrate faster than surface supply. Start above
+        # the runoff threshold so every geometry actually exercises runoff.
+        text = text.replace('pond_max_cm=0.50001', 'pond_max_cm=0.49')
+        if name == 'deep':
+            text = text.replace('initial_head=-75', 'initial_head=-10')
+        if name in ['maximum', 'deep_dry_short']:
             text = text.replace('ends_day=0.001,0.002', 'ends_day=0.00001,0.00002')
         source.write_text(text)
         common = [sys.executable, RUNNER, '--exe', exe, '--input', source]
@@ -110,6 +116,13 @@ def qualify_grids(execute, directory, exe):
         target = directory / ('invalid-' + name)
         execute([sys.executable, RUNNER, '--exe', exe, '--input', source, '--output', target], name + ' invalid grid', None)
         require(not target.exists(), name + ' invalid grid does not publish')
+    # Retain the reproducible solver limit rather than loosening tolerances.
+    source = directory / 'deep_dry_rejected.nml'
+    text = (directory / 'deep_dry_short/input.nml').read_text()
+    source.write_text(text.replace('ends_day=0.00001,0.00002', 'ends_day=0.001,0.002'))
+    target = directory / 'deep_dry_rejected'
+    execute([sys.executable, RUNNER, '--exe', exe, '--input', source, '--output', target], 'dry deep long window rejected', None)
+    require(not target.exists(), 'rejected Reference interval does not publish')
     return results
 
 
