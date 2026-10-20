@@ -1,5 +1,18 @@
 # MC-SOL01 final closure
 
+Current follow-up selection,20 October2026: reproduce the dry138-cm input at
+the same0.002-day final horizon using100 equal reporting windows. The earlier
+short-window test ended at0.00002 day, so it alone did not establish this claim.
+Only the reporting partition changes; all physical sources/initial conditions,
+strict tolerances and production owners remain fixed. The additive audit in
+`integration/audits/column_grid/qualify_dry_profile.py` selects actual O0/O2,
+independent whole water/solute budgets and process restart after window37.
+The original coarse input must remain rejected without publication. Existing
+178-provider builds are reused only after complete current-source/flag/binary
+identity checks. Expected native cost40s; no source or physical-contract change
+selects full F-CI or manual Actions. Current baseline is
+`f6d5ffed068efcc8cc2b14d0b68bb508b7a25f52`. Qualification is pending.
+
 Status: bounded canonical implementation is admitted; the four full historical capability envelopes below remain explicitly parked. This is not a claim of complete SWAP 4.3.1/default equivalence.
 
 Review baseline: `integration/f-ci-canonical` at `e122ff8f682584620717e97ab24ce07933dd0923`; production source tree `282e4504c8d1d31e9cdfa37041b6b06a48a90588`. Review date: 2026-10-19. The final admission receipt is in the existing `integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json` record. The existing master is on `work/swap431-master-coverage-20261006`, PR #1072. It is not a canonical full-coverage admission.
