@@ -155,3 +155,7 @@ Actual MC-NUT01 accepted-atmosphere admission: PR1333 / `6a2985776d2f242572725d8
 ### MC-NUT01 original surface-source diagnostic (20October2026)
 
 The original wet-to-dry surface-source diagnostic now demonstrates a negative aggregate using literal pond/runoff and caller-source statements, with closed surface water and byte-identical O0/O2 output. Conditional depleted N transport still violates the mass contract. This remains QUALIFICATION_ONLY; complete historical caller reachability is NOT_PROVEN and no production or mastercoverage promotion follows. See the [source, results and limits](../science/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md).
+
+### MC-NUT01 native CHARACTER successor (20October2026)
+
+The [native CHARACTER successor](../science/MC_NUT01_NATIVE_CHARACTER_20261020.md) qualifies same-record apostrophe concatenation and explicit native flCropExt=.FALSE. Fresh actual O0/O2 preserves all14 endpoints/observables and52 transition processes; native38, modern53/date3075 and18 new cases per optimization pass. True diagnostic output and full historical closure remain unadmitted. The original daily gate fractional-queue fixture does not claim a full original-model trajectory.

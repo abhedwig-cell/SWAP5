@@ -319,15 +319,15 @@ contains
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
    if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.(trim(selected)=='gross-profile'.or.trim(selected)=='surface-profile')))))then
     write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
-    write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
-    write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
+    write(unit,'(A)')"1 'Mine' // 'ral' 0. 0. 0. .21 .10"
+    write(unit,'(A)')"2 'Com'//'post' 1.96 .19 .041 .0008 .0003"
     write(unit,'(A)')'smedate iMat Dosagekgha VolatFraction'
     write(unit,'(A)')'1900-12-30 1 100. .1','1901-01-01 1 50. .1', &
       '1901-01-01 2 1000. .1','1901-06-30 2 1000. .1', &
       '1901-12-31 1 75. .1','1902-01-01 2 1000. .1'
    else
    write(unit,'(A)')'MatNum = 1*1'
-   write(unit,'(A)')"MatName = 1*'Mineral'"
+   write(unit,'(A)')"MatName = 1*'Mine' // 'ral'"
    write(unit,'(A)')'AppAge = 1*0.'
    write(unit,'(A)')'OrgMatFrac = 1*0.'
    write(unit,'(A)')'OrgNFrac = 1*0.'
@@ -338,6 +338,7 @@ contains
    write(unit,'(A)')'Dosagekgha = 100. 50. 25. 75. 25.'
    write(unit,'(A)')'VolatFraction = 0.1 0.1 0.1 0.1 0.1'
    end if
+   write(unit,'(A)')'flCropExt = .FALSE.'
    do j=1,8
      write(key,'(A,I1,A)')'FOM',j,'_t'
      write(unit,'(A)')trim(key)//' = 1.0'
