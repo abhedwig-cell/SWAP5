@@ -1,0 +1,59 @@
+{
+  "source_commit": "5070e3e9",
+  "age_successor_pass": {
+    "status": "HISTORICAL_ACCEPTED_DRY_ATMOSPHERE_QUALIFICATION_PASS",
+    "old_endpoints_exact": 12,
+    "new_fresh_processes": 4,
+    "invalid_trace_cases_per_optimization": 21,
+    "current_column_grid_providers": 178,
+    "prior_grid_process_observations": 86,
+    "current_grid_providers_unchanged": false,
+    "qualified": true,
+    "full_capability": false,
+    "mastercoverage_promotion": false,
+    "accepted_atmosphere": true,
+    "historical_gross_top": true,
+    "transition_fresh_processes": 52,
+    "predecessor_qualified": true,
+    "independent_ci_compile_logs": 3,
+    "source_tree": "3e5b04d93a5d6e63580a6058cfc1327b9adf6d91",
+    "current_source_tree": "3e5b04d93a5d6e63580a6058cfc1327b9adf6d91",
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "full_migration_qualified": false,
+    "performance_exact_implementation": true,
+    "application_process_observations": 86,
+    "unchanged_application_work": true,
+    "dry_same_horizon": true,
+    "physical_triplet": true,
+    "fresh_process": true,
+    "incumbent_age_preserved": true,
+    "preservation": "ORIGINAL_AUTHORITY_PLUS_CURRENT_EXACT_NATIVE_PERF01"
+  },
+  "negative_controls": {
+    "count": 13,
+    "negative_controls": [
+      "missing arena-qualification/result.json",
+      "missing trace-branch/CONTROL.json",
+      "missing arena-preservation/CONTROL.json",
+      "missing arena-age/result.json",
+      "missing arena-reactive-unlimited/result.json",
+      "missing canonical-benchmark/CONTROL.json",
+      "missing historical-O0-final/CONTROL.json",
+      "missing arena-dry/O2/full/restart.bin",
+      "missing arena-benchmark/4-0-after/state.csv",
+      "missing arena-age/O0/surface_expected.bin",
+      "missing arena-age/O2/fresh.bin",
+      "current source src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "current source src/legacy/b1_10_port/headcalc.f90"
+    ]
+  },
+  "fsi35_original_gate_log_sha256": "24d98be4ee65947d39b596f2a6d61d7b8c239156a2cf78d168ab43e6fb6fa032",
+  "fsi35": "FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS",
+  "eb_i25": {
+    "candidate": "FAIL: external full-half outflow fixture rejected before commit",
+    "baseline_b0c2e94b": "SAME FAIL with unchanged assertion and compiler flags",
+    "admission": "EXISTING NONADMITTED OUTFLOW ROUTE; no waiver"
+  },
+  "reactive_current_first_attempt": "All 738 original compile/native events succeeded; final receipt failed because the caller path contained ..; exact original runner repeated with an absolute path."
+}

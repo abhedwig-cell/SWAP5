@@ -109,6 +109,9 @@ def grid_preservation():
  return {'current_column_grid_providers':178,'prior_grid_process_observations':86,'current_grid_providers_unchanged':True}
 
 def verify_qualification():
+ perf=ROOT/'integration/performance/authority.py'
+ if perf.exists():
+  return runpy.run_path(str(perf),run_name='registered_perf01')['verify_qualification']()
  current=json.loads((ROOT/STATUS).read_text()).get('native_character_successor',{})
  if 'evidence'in current:
   return runpy.run_path(str(ROOT/'integration/audits/verify_nut_native_character.py'),run_name='registered_native_character')['verify_qualification']()

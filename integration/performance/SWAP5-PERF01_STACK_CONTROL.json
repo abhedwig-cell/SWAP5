@@ -1,0 +1,39 @@
+{
+  "baseline": "b0c2e94b69d7d21519611af92866fb4dbf713ea2",
+  "candidate": "initial immutable arena before PR1337",
+  "stack_kib": 8192,
+  "baseline_event": {
+    "category": "physical_native",
+    "seconds": 5.008469458996842,
+    "returncode": -11,
+    "command": [
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/reactive-baseline-default-stack/O0/test_reactive_joint",
+      "write",
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/reactive-baseline-default-stack/O0/restart.bin",
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/reactive-baseline-default-stack/O0/expected.bin"
+    ],
+    "stdout_file": "0343.stdout",
+    "stderr_file": "0343.stderr",
+    "stdout_sha256": "21103c42e63614a19ba7144ad5ae3f0bdb6dcc676cb30a497b08817a225250ce",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "candidate_event": {
+    "category": "physical_native",
+    "seconds": 0.18402703700121492,
+    "returncode": -11,
+    "command": [
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/arena-reactive/O0/test_reactive_joint",
+      "write",
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/arena-reactive/O0/restart.bin",
+      "/workspace/scratch/d48d46fc3bf1/perf01-results/arena-reactive/O0/expected.bin"
+    ],
+    "stdout_file": "0343.stdout",
+    "stderr_file": "0343.stderr",
+    "stdout_sha256": "21103c42e63614a19ba7144ad5ae3f0bdb6dcc676cb30a497b08817a225250ce",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "same_failure_stage_and_signal": true,
+  "same_pre_failure_stdout": true,
+  "positive_qualification": "Original full runner O0/O2 passes with unlimited stack, including current canonical NUT providers; no default-stack portability claim.",
+  "evidence_decoded_sha256": "cbe1fb027bfc7f08128d4b3856f7a97d6207ff6a8e65b744a2c54c43b12a10d7"
+}
