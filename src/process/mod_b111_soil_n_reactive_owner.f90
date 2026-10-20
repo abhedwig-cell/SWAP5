@@ -132,14 +132,14 @@ contains
    type(mineral_parameters_t)::base
    p=self%p;call self%inventory%configuration(base,id)
  end subroutine
- subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment,surface_water)
+ subroutine advance_reactive_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,crop,environment,surface_water,historical_top_water)
    type(reactive_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    type(reactive_receipt_t),intent(out)::receipt
    type(reactive_crop_demand_t),intent(in),optional::crop
    type(soil_n_day_environment_t),intent(in),optional::environment
-   real(real64),intent(in),optional::surface_water
-   real(real64)::surface
+   real(real64),intent(in),optional::surface_water,historical_top_water
+   real(real64)::surface,top_n_water
    type(b111_soil_n_rate_environment_t)::effective_environment
    type(mineral_state_t)::trial
    type(soil_n_pool_state_t)::before,after
@@ -155,6 +155,12 @@ contains
    surface=0d0;if(present(surface_water))surface=surface_water
    if(.not.ieee_is_finite(surface))return
    if(abs(surface)>100d0)return
+   top_n_water=max(0d0,surface)
+   if(present(historical_top_water))then
+     if(.not.ieee_is_finite(historical_top_water))return
+     if(historical_top_water<0d0.or.historical_top_water>100d0)return
+     top_n_water=historical_top_water
+   end if
    if(.not.state%ready())return
    if(present(crop))then
      if(.not.state%p%enabled)return
@@ -171,7 +177,7 @@ contains
    end if
    trial=state%inventory
    if(.not.state%p%enabled)then
-     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget,surface_water=surface)
+     call advance_mineral_day(trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,budget,surface_water=surface,historical_top_water=historical_top_water)
      receipt%mineral_receipt_t=budget
      if(budget%status==MINERAL_OK)state%inventory=trial
      return
@@ -191,7 +197,7 @@ contains
    actual%ratecon_fom=actual%ratecon_fom*factor
    actual%ratecon_bio=actual%ratecon_bio*factor;actual%ratecon_hum=actual%ratecon_hum*factor
    f%dt_day=1d0;f%wfrac_t0=water;f%wfrac_t=water_end;f%wflux_out=outflow;f%wflux_inbot=in_bottom
-   f%wflux_intop=max(0d0,surface)
+   f%wflux_intop=top_n_water
    f%cnh4_top=state%p%mineral%c_top(1);f%cno3_top=state%p%mineral%c_top(2)
    f%wflux_inlat=in_lateral;f%wflux_transp=root_water;f%drybd=state%p%mineral%drybd;f%sorpcoef=state%p%mineral%sorption
    f%cnh4_seep=state%p%mineral%c_bottom(1);f%cno3_seep=state%p%mineral%c_bottom(2)

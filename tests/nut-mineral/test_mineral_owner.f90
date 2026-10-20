@@ -132,9 +132,63 @@ program test_mineral_owner
  call initialize_mineral(bad,9_int64,0d0,.3d0,pools,state,status);call check(status/=0,'negative top rejected')
  p%c_top=0d0;top_vector=mineral_parameter_vector(p)
  call check(size(top_vector)==size(old_vector).and.all(top_vector==old_vector),'zero top identity unchanged')
+ call historical_gross_checks()
  print '(A)','MINERAL_ATMOSPHERIC_LITERAL_SORPTION_EVAPORATION_PARAMETER_IDENTITY=PASS'
  print '(A)','MINERAL_FOUR_PROVIDER_LITERAL_ALL_CLASSES_OWNER_BALANCE_ROLLBACK_RESTART=PASS'
 contains
+ subroutine historical_gross_checks()
+ type(mineral_parameters_t)::hp
+ type(mineral_state_t)::a,b,baseline
+ type(mineral_restart_t)::disk
+ type(mineral_receipt_t)::rr,rb
+ type(soil_n_pool_state_t)::ps
+ real(real64)::gross,net,wend,initial_mass(2),c0,cs,ca,actual,tt,ww
+ integer(int64)::rv
+ integer::g,h,k,sp,code
+ hp=p
+ do h=0,1
+  hp%sorption=.0002d0*h
+  do g=0,2
+   gross=.004d0*g
+   do k=-1,1
+    wend=.3d0+.01d0*k
+    net=(wend-.3d0)*hp%inventory%depth_m+.001d0
+    call initialize_mineral(hp,99_int64,0d0,.3d0,pools,a,code)
+    call check(code==0,'gross initialize')
+    baseline=a
+    call advance_mineral_day(a,0d0,1d0,wend,.001d0,0d0,0d0,0d0,rr, &
+     surface_water=net,historical_top_water=gross)
+    call check(rr%status==0,'independent gross and accepted net')
+    call a%snapshot(tt,ww,ps,rv)
+    initial_mass=[pools%ammonium_n_kg_m2,pools%nitrate_n_kg_m2]
+    do sp=1,2
+     c0=initial_mass(sp)/(hp%inventory%depth_m*(.3d0+hp%drybd*merge(hp%sorption,0d0,sp==1)))
+     call Wofost_SoilWaterN(hp%inventory%depth_m,1d0,wend,.3d0,.001d0,0d0,0d0,gross,0d0, &
+      0d0,0d0,0d0,actual,merge(hp%sorption,0d0,sp==1),0d0,hp%c_top(sp),0d0,c0,cs,ca)
+     call near(rr%concentration_end(sp),cs,'historical gross original endpoint')
+     call near(rr%concentration_average(sp),ca,'historical gross original average')
+    end do
+    call near(rr%external_in,gross*sum(hp%c_top),'gross source booked exactly once')
+    call near(rr%mass_before+rr%external_in-rr%external_out,rr%mass_after,'gross total N')
+    call export_mineral_restart(a,disk,code);call check(code==0,'gross restart export')
+    call restore_mineral_restart(disk,99_int64,b,code);call check(code==0,'gross restart restore')
+    call advance_mineral_day(a,1d0,2d0,wend,0d0,0d0,0d0,0d0,rr,surface_water=0d0,historical_top_water=.004d0)
+    call advance_mineral_day(b,1d0,2d0,wend,0d0,0d0,0d0,0d0,rb,surface_water=0d0,historical_top_water=.004d0)
+    call check(rr%status==0.and.rb%status==0,'gross resumed day')
+    call compare(a,b)
+    call near(rr%external_in,.004d0*sum(hp%c_top),'rain equals evaporation still loads N')
+    a=baseline
+    call advance_mineral_day(a,0d0,1d0,.3d0,0d0,0d0,0d0,0d0,rr,historical_top_water=-1d0)
+    call check(rr%status/=0,'negative gross rejected');call compare(a,baseline)
+    call advance_mineral_day(a,0d0,1d0,.3d0,0d0,0d0,0d0,0d0,rr,historical_top_water=nan)
+    call check(rr%status/=0,'NaN gross rejected');call compare(a,baseline)
+    call advance_mineral_day(a,0d0,1d0,.3d0,0d0,0d0,0d0,0d0,rr,historical_top_water=101d0)
+    call check(rr%status/=0,'unbounded gross rejected');call compare(a,baseline)
+   end do
+  end do
+ end do
+ print '(A)','HISTORICAL_GROSS_LITERAL_18_CASES_BALANCE_ROLLBACK_RESTART=PASS'
+ end subroutine
  subroutine compare(a,b)
  type(mineral_state_t),intent(in)::a,b
  type(soil_n_pool_state_t)::x,y

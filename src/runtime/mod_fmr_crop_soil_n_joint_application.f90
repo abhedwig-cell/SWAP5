@@ -81,7 +81,7 @@ contains
           t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
   end function
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface,historical_top_water)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -95,6 +95,7 @@ contains
     type(crop_soil_n_joint_result_t),intent(out)::result
     type(soil_n_day_environment_t),intent(in),optional::environment
     logical,intent(in),optional::fallow,clean_surface_water,atmospheric_n_surface
+  real(real64),intent(in),optional::historical_top_water
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
     type(fmr_serialized_physical_observation_t)::obs
@@ -122,6 +123,11 @@ contains
     call chemical%snapshot(soil,crop)
     call soil%configuration(np,nid)
     admit_atmospheric_n=.false.;if(present(atmospheric_n_surface))admit_atmospheric_n=atmospheric_n_surface
+    if(present(historical_top_water))then
+      if(.not.admit_atmospheric_n)return
+      if(.not.ieee_is_finite(historical_top_water))return
+      if(historical_top_water<0d0.or.historical_top_water>100d0)return
+    end if
     if(any(abs(np%mineral%c_top)>0d0).and..not.admit_atmospheric_n)return
     if(.not.allocated(np%mineral%dz_cm))return
     if(.not.allocated(parameters%dz))return
@@ -153,10 +159,10 @@ contains
     end if
     if(inactive)then
       call advance_crop_soil_fallow_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water)
+        carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=historical_top_water)
     else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=historical_top_water)
     end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then

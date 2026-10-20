@@ -120,7 +120,7 @@ program test_b112_retained_joint
  call initialize_soil_n_pool_state(sp%mineral%inventory,spread(1d0,1,8),5d0,40d0,.02d0,.03d0,pools,status)
  call require(status==0,'soil inventory initialize')
  call backend%initialize(top);call second%initialize(top)
- if(trim(selected)=='source-profile'.or.(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
+ if(trim(selected)=='source-profile'.or.(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))))then
   call source_continuation()
   stop
  end if
@@ -299,7 +299,7 @@ contains
    character(16)::key
    real(real64)::source_water,base_day
    call parse_soil_n_date('1900-12-30',base_day,code)
-   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))))then
     cp%harvest%crop_end=base_day+119d0
     cp%scalars%vegetative_temperature_sum_required=1500d0
     cp%scalars%generative_temperature_sum_required=1500d0
@@ -310,7 +310,7 @@ contains
    selection%source_parameters_complete=.true.
    ! Source keyword-array subset, preserving original named TTUTIL fields.
    open(newunit=unit,file='source-crop-startup.snm',status='replace')
-   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))))then
     write(unit,'(A)')'MatNum MatName AppAge OrgMatFrac OrgNFrac NH4NFrac NO3NFrac'
     write(unit,'(A)')"1 'Mineral' 0. 0. 0. .21 .10"
     write(unit,'(A)')"2 'Compost' 1.96 .19 .041 .0008 .0003"
@@ -340,14 +340,14 @@ contains
      'RateConDenitr_ref = 0.03','WFPSCrit = 0.6','WFPScrit2 = 0.5', &
      'CdissiHalf = 0.1','TCSF_N = 0.5','LaiCritNupt = 1.', &
      'dz_WSN = 0.3','cNH4N_lat = 0.3','cNO3N_lat = 0.4'
-   if((trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile'))then
+   if((trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile')))then
     write(unit,'(A)')'cNH4N_seep = 0.001','cNO3N_seep = 0.002', &
       'cNH4N_top = 0.0005','cNO3N_top = 0.0015'
    else
     write(unit,'(A)')'cNH4N_seep = 0.1','cNO3N_seep = 0.2', &
       'cNH4N_top = 0.','cNO3N_top = 0.'
    end if
-   if(trim(selected)=='humus-profile')write(unit,'(A)') &
+   if((trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))write(unit,'(A)') &
      'RateconHum_exp = 0.04','tstartHumexp = 1901-12-31'
    close(unit)
    ! Long-horizon physical variant: remove the prescribed sustained bottom
@@ -368,7 +368,7 @@ contains
      type(crop_senescence_policy_t)::rejected_policy
      integer::input_unit,output_unit,ios,case_number,source_record,nitrif_record
      character(512)::source_line
-     do case_number=1,merge(0,9,(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))
+     do case_number=1,merge(0,9,(trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))))
        open(newunit=input_unit,file='source-crop-startup.snm',status='old',action='read')
        open(newunit=output_unit,file='source-crop-invalid.snm',status='replace')
        source_record=0;nitrif_record=0
@@ -414,7 +414,7 @@ contains
       state,startup_policy,status,error_line)
    call require(status==0.and.state%ready().and.startup_plan%ready(),'source owner initialized')
    call require(all(startup_policy%application_age==[1.27d0,.99d0,1.27d0]),'source crop ages')
-   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')))then
+   if((trim(selected)=='rotation-profile'.or.(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))))then
     policy=startup_policy
     call state%configuration(cp,sid)
     call state%snapshot(source_soil,source_crop)
@@ -542,14 +542,20 @@ contains
    type(soil_n_pool_state_t)::ps
    real(real64)::clock,moisture,season,uptake,max_n,max_w,n_before,flux_root
    real(real64)::n_start,n_input,n_output,n_residual,harvest_export
+   real(real64),allocatable::historical_top
+   logical::gross_profile
    type(wofost81_harvest_record_t)::harvest_record
    logical::has_record
    integer(int64)::rev,cid
    integer::d,first,code
    character(32)::arg
    logical::inactive,atmospheric
+   gross_profile=trim(selected)=='gross-profile'
+   if(gross_profile)then
+    allocate(historical_top);historical_top=.004d0
+   end if
    initial_cp=cp
-   atmospheric=(trim(selected)=='atmospheric-profile'.or.trim(selected)=='humus-profile')
+   atmospheric=(trim(selected)=='atmospheric-profile'.or.(trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))
    call get_command_argument(5,arg)
    first=0
    if(trim(mode)=='resume')then
@@ -574,7 +580,7 @@ contains
       'atmospheric restart wrong top concentrations rejected atomically')
     end if
    end if
-   if(trim(selected)=='humus-profile')then
+   if((trim(selected)=='humus-profile'.or.trim(selected)=='gross-profile'))then
     call require(sp%hum_exp_start_day==base_day+366d0,'source humus absolute day epoch')
     call require(sp%hum_exp_daily==.04d0/365.2425d0,'source annual humus rate conversion')
     if(trim(mode)=='resume')then
@@ -627,6 +633,23 @@ contains
      call write_crop_soil_n_joint_restart_file(trim(path)//'.reject-before-'//trim(arg), &
       column,cfg%tiles(1)%template,670001_int64,water,state,code)
      call require(code==0,'rotation rollback baseline serialized')
+     if(gross_profile)then
+      cfg%numerical%max_committed_substeps=1
+      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
+       plan,split,policy,rejected,e,fallow=inactive,atmospheric_n_surface=.true.,historical_top_water=historical_top)
+      cfg%numerical%max_committed_substeps=4096
+      call require(rejected%status==JOINT_WATER_REJECTED,'gross rejected actual water trial')
+      call write_crop_soil_n_joint_restart_file(trim(path)//'.water-reject-'//trim(arg), &
+       column,cfg%tiles(1)%template,670001_int64,water,state,code)
+      call require(code==0,'gross rejected water serialized')
+      historical_top=-.004d0
+      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
+       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
+       plan,split,policy,rejected,e,fallow=inactive,atmospheric_n_surface=.true.,historical_top_water=historical_top)
+      call require(rejected%status/=0,'gross invalid source rejected')
+      historical_top=.004d0
+     end if
      if(atmospheric)then
       call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
        cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
@@ -639,7 +662,7 @@ contains
      call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
       cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
       plan,split,policy,rejected,stale,fallow=inactive,clean_surface_water=.not.atmospheric, &
-      atmospheric_n_surface=atmospheric)
+      atmospheric_n_surface=atmospheric,historical_top_water=historical_top)
      call require(rejected%status/=0,'rotation stale environment rejected')
      call require(water%current_revision()==before_water%current_revision(),'rotation rejected water unchanged')
      call require(crop_soil_whole_n(state)==crop_soil_whole_n(before_state),'rotation rejected nitrogen unchanged')
@@ -651,7 +674,7 @@ contains
     call run_crop_soil_n_calendar_interval(backend,column,cfg%tiles(1)%template, &
      cfg%tiles(1)%parameters,water,forcing,cfg%numerical,state,weather,e%t0,e%t1, &
      plan,split,policy,r,e,fallow=inactive,clean_surface_water=.not.atmospheric, &
-      atmospheric_n_surface=atmospheric)
+      atmospheric_n_surface=atmospheric,historical_top_water=historical_top)
     if(r%status/=0)print *,'ROTATION_FAILURE',d,r%status,r%joint%joint%water%status, &
       r%joint%joint%chemical%status,r%joint%joint%chemical%soil%status, &
       'material',r%joint%materials%status,r%joint%materials%residual, &
@@ -715,6 +738,7 @@ contains
     ps%ammonium_n_kg_m2,ps%nitrate_n_kg_m2
    print *,'ROTATION_BUDGET',n_start,n_input,n_output,crop_soil_whole_n(state),n_residual
    call require(abs(n_residual)<=1d-10,'rotation cumulative whole nitrogen balance')
+   if(gross_profile)print *,'HISTORICAL_GROSS_730_DAYS_SOURCE_NOT_NET_PASS',.004d0,first,uptake,max_n,max_w
    print *,'ROTATION_730_DAYS_PASS',first,uptake,max_n,max_w
  end subroutine
  subroutine report_water_state(stage,day)

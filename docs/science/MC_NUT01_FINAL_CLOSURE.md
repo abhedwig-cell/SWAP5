@@ -1,14 +1,14 @@
 # MC-NUT01 final closure review
 
-Reviewed 19 October 2026. Canonical reviewed: `e122ff8f682584620717e97ab24ce07933dd0923`.
+Updated20 October2026 against canonical `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`. The19October review and its immutable evidence remain historical receipts.
 
 ## Decision and claim boundary
 
-**Full historical MC-NUT01 closure is BLOCKED. Previously admitted bounded functionality remains admitted.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
+**Full historical MC-NUT01 closure remains open. The independent positive historical gross atmospheric N route is now locally qualified, with canonical admission pending.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
 
 The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, reviewed at `d77939e08b841fc0456d76a883450f4f15a9c099`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. The matrix below is a report derived from those exact rows, not a second registry.
 
-The decisive scientific blocker is an information deficit in the atmospheric N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. A measured counterexample and the unresolved ponding meaning are documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md).
+The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate and automatic original atmospheric-producer/ponded application binding remain unqualified; a corrected surface-N store is not introduced.
 
 Additional incomplete historical envelope: unrestricted TTUTIL constructs, fractional timestamps and extended diagnostics; no complete original-model multiyear comparison. These are recorded separately from the gross-carrier blocker. Material definition labels and bounded experimental humus are already admitted and must not remain listed as missing.
 
@@ -156,7 +156,7 @@ These checks revalidate archived executed evidence; they do not rerun Fortran. T
 
 ## Remaining blockers and next admissible action
 
-1. **Scientific gross atmospheric N carrier.** The original source uses gross precipitation/snow/irrigation/interception/runon/runoff with evaporation separate, and explicitly questions ponding. At4 mm rain plus4 mm evaporation, the original diagnostic inputs0.8 kg N/ha while a zero net carrier inputs zero. A separate gross carrier or a corrected surface NH4/NO3 control volume needs an explicit source/physical contract, accepted water authority, within-day ordering, runoff/export, positivity, rollback and persistent restart qualification. Passing gross rain as net water violates water closure. Invented drainage and treating age as N are rejected alternatives.
+1. **Scientific gross atmospheric N carrier.** The original source uses gross precipitation/snow/irrigation/interception/runon/runoff with evaporation separate, and explicitly questions ponding. At4 mm rain plus4 mm evaporation, the original diagnostic inputs0.8 kg N/ha while a zero net carrier inputs zero. The owner selected the original gross route. The positive independent source carrier now passes original analytical/full chemistry and actual730-day Reference/WOFOST81/Soil-N O0/O2,48 fresh-process transition continuations and atomic hydraulic/chemical rollback. The remaining limit is negative aggregate and automatic original atmospheric-producer/ponded application binding; it is no longer an undecided B0/B1 reference choice. Passing gross rain as net water violates water closure. Invented drainage and treating age as N are rejected alternatives.
 2. **Historical input envelope.** Fractional timestamps and general TTUTIL constructs remain unsupported. Bounded native arrays/tables, material positions, daily dates and humus options are admitted. Required versus intentionally excluded grammar must be decided against actual historical inputs; no arbitrary universal parser is authorized here.
 3. **Extended diagnostics and complete original-model regression.** These are not evidence of missing N process formulas, but the complete historical claim remains unproven. Extended output must not be silently marked NOT_APPLICABLE. No fabricated complete SWAP4.3.1 multiyear comparison is supplied.
 
@@ -183,3 +183,31 @@ The definitive reviewed science commit is `e122ff8f682584620717e97ab24ce07933dd0
 ## Canonical review admission receipt
 
 Review PR1322 merged at `4719ed47b0ed8a35830a206b0bf00014aae84f7c`. The merged diff contains only this document, current-status/traceability navigation, the existing work-unit record and the additive final-review evidence capsule. Exact-ref postmerge retrieval confirms the blocked whole-HIST flags and the source-bound evidence receipt. Final document source checks and strict MkDocs build passed again in20.74 seconds. No hosted workflows were created for this documentation review merge; no new integrated numerical PASS is inferred. The original reviewed scientific commit remains `e122ff8f682584620717e97ab24ce07933dd0923`. Full MC-NUT01 remains scientifically blocked as stated above.
+
+## Historical gross top successor,20 October2026
+
+The programme owner selected option1, preservation of original gross atmospheric
+loading and original aggregate ponding convention. The new optional forcing in
+the existing seven NUT owner/runtime modules solves the demonstrated equal-rain/
+evaporation information deficit within the explicit nonnegative aggregate domain.
+Existing accepted soil-water traces remain sole water authority.
+
+Fresh GNU13.3 O0/O2 passes all18 direct mineral and9 original full-chemistry cases,
+the new730-day gross rotation and all old default/source124/three730-day cases.
+All10 old endpoints remain exact, all48 transition continuations match, rejected
+actual water and N trials preserve complete serialized state, and the retained/
+thermal/empty/54TCS6 native preservation suite passes.
+
+New whole N budget kg/m2: initial0.66569153059254693 +input0.019448273121288662
+-output0.0080723769466728382 -final0.67706742676716480 =
+-1.9931972738973514e-15; relative2.90918329820151e-15.
+Maximum daily N residual1.8432074324546384e-15kg/m2; water-step maximum
+4.986462631695332e-15cm. The new endpoint is
+`f43aff865026e2f26337c7c87c1c8f5446346492539de2dcaf709304ee2b33af`.
+Gross top input alone is58.4kg N/ha over730days, booked once.
+
+Exact source, toolchain, costs, inputs, raw native/restart/rollback payloads,
+remaining limits and reproduction are in
+[the successor contract and receipt](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md)
+and `historical_gross_top_successor` in the existing status record.
+No whole-master disposition or unrestricted historical claim follows.
