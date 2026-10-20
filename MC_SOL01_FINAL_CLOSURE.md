@@ -142,3 +142,21 @@ The remaining exceptions are concrete and outside the admitted MC-SOL01 domain:
 | EB-I25 within F-KT22 `39322825494` | The original recipe omits DRAMET3. Scratch dependency completion reaches a reproducible O0 native failure: `EB_I25_TEST_FAIL external full-half outflow fixture rejected before commit`. The fixture expects rejection while current execution accepts. This requires separate energy-owner contract adjudication, not relaxed assertions or an invented SOL blocker. Execution92ece71b and the full failed log/source bindings are retained. Final EB-I25 production/test recipe remains unchanged; no EB-I25 native PASS or promotion is claimed. |
 
 The supplemental capsule `integration/audits/evidence/MC_SOL01_CLOSURE_PRESERVATION_20261019.tar.xz.b64` contains all original compile/paired output, exact historical providers, compiler events/costs, the failed energy diagnostic, the shared-build script proof, eight negative controls and all prior hosted failures. Its exact digest is in the existing AGE03-CI and trajectory3 records. Actual canonical containment and repaired terminal hosted outcomes are the associated PR/Git admission receipt. These exceptions neither reopen nor extend the four explicitly parked historical SOL envelopes above.
+
+## Later bounded file-driven application, 20 October 2026
+
+The [opt-in Reference column](app/solute_column/README.md) now runs from ordinary
+text namelist input using the existing production pond/matrix transaction. Its
+initial four-node linear-sorption scope has actual GNU13.3 O0/O2 positive-pond,
+runon/runoff/infiltration/evaporation, prescribed-root/drain/bottom and unrounded
+budget qualification. All 26 process observations pass, including exact
+independent-process restart and before/after generation-publication termination.
+The [application contract](docs/science/MC_SOL01_COLUMN_INPUT_CONTRACT.md) and the
+existing trajectory3 column-input record identify exact input/source/evidence,
+costs and admission state. The production `src` tree remains unchanged.
+
+This supplies an explicit file-driven application for the bounded route. It does
+not close the complete historical SWP reader/default envelope, nonlinear pond,
+dynamic thermal decay, field/seasonal validation, multi-column composition or
+simultaneous age/nutrient companions. Existing full-envelope master dispositions
+remain unchanged. Canonical admission of this application is pending its PR.

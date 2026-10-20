@@ -1,6 +1,7 @@
 # MC-SOL01 file-driven Reference column
 
-Status: proposed application adapter, based on canonical `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`.
+Status: locally qualified application adapter, based on canonical `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`;
+canonical admission pending.
 
 The executable `swap5_solute_column` reads a versioned Fortran namelist, constructs
 the existing physical parameters and committed owners, and calls
@@ -31,8 +32,14 @@ manifest must bind the complete input bytes so changing hydraulic parameters or
 future forcing cannot silently reuse an old restart under the same IDs. Fresh
 process continuation starts only at an exact input window boundary. The caller
 can stop after a window and resume into a separate output directory. Existing
-outputs are never overwritten. This adapter does not claim crash-safe checkpoint
-publication until its manifest and binary are published as one generation.
+outputs are never overwritten. The Python file adapter stages, validates and
+fsyncs all files, then publishes the directory with one same-filesystem rename
+and fsyncs its parent directory. A generation binds the unchanged input bytes,
+executable bytes and all seven output files. Qualification kills the launcher
+immediately before and after publication: the old generation remains unchanged,
+and the new directory is either absent or contains the complete matching endpoint.
+This is serialized same-platform POSIX process-crash qualification, not a test of
+hardware power loss or concurrent writers.
 
 The standalone link context supplies the legacy symbol layout still imported by
 the typed Reference bridge. It retains the already qualified four-node geometry.
@@ -50,3 +57,24 @@ requires GNU O0/O2 real file-driven runs, independently recomputed output budget
 positive accepted fluxes, separate-process restart identity, invalid input and
 restart identity rejection. Full F-CI and unrelated solver research are selected
 only if owning change-impact evidence requires them.
+
+## Local qualification, 20 October 2026
+
+The actual file-driven GNU13.3 O0/O2 builds use 178 providers and no test source.
+Each uninterrupted run accepts 270 and 264 substeps in its two input windows.
+Positive runon/runoff/infiltration/evaporation are read from accepted Reference
+receipts. Independent gross water and whole-solute accounting, endpoint
+inventories and native residual checks pass. Maximum native water residual is
+1.17e-16 cm and maximum solute residual 8.58e-16 mg/cm2. O0/O2 budgets, state
+tables and restart bytes are identical. The separate-process restart endpoint
+has SHA256 `42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f`.
+
+The 26 process observations cover uninterrupted/split/fresh continuation,
+existing-output rejection, wrong schema, negative concentration, nonfinite
+forcing, backward time, unsupported physics keyword, changed hydraulic-input
+identity, corrupted restart generation and termination on both sides of the
+publication rename. Rejected trials within the joint production route retain
+their existing admitted rollback authority; no new state owner is introduced.
+Source checkpoint `7217e33287e09385f2f6abbcb321198ae452348e` is equivalent to the
+compiled application/runner postimages. The archive and exact local execution
+lineage are recorded in the existing trajectory3 `column_input_20261020` entry.

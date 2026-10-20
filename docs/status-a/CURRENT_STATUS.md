@@ -112,3 +112,12 @@ The [MC-SOL01 final closure](https://github.com/abhedwig-cell/SWAP5/blob/integra
 The later MC-SOL01 closure CI follow-up repairs and locally qualifies eight original build/instrumentation routes, retaining all physical assertions and production/reference code. The final closure and existing AGE03-CI status bind raw evidence, failed environment attempts and strict source/negative controls. Thomas-Gladwell remains unadmitted; no historical envelope is promoted.
 
 MC-SOL01 final preservation additionally qualifies original F-KT22 O0/O2 compilation and both complete paired-runtime modes with shared builds. PR1327 owns repaired terminal hosted admission. EB-I25 exposes a separate reproducible outflow-fixture contract mismatch and is not credited as PASS; frozen historical CI scope/pin failures and nonselected solver research remain explicit exceptions in the final closure.
+
+The later [file-driven solute column](../science/MC_SOL01_COLUMN_INPUT_CONTRACT.md)
+has local GNU13.3 O0/O2 qualification for a four-node serialized Reference
+application with positive pond/runon/runoff/infiltration/evaporation, prescribed
+roots/drain/bottom, exact separate-process restart and complete-generation
+publication. Canonical admission is pending. This is explicit namelist input;
+general historical SWP activation, a live crop and dynamic thermal decay remain
+outside its bounded claim. The existing trajectory3 column-input entry owns the
+evidence and recovery state; no master row is promoted.

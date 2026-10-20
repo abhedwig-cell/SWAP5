@@ -20,6 +20,18 @@
   "next_action": "Surface-age scoped CI repair and F-CI73 follow-up canonically closed. Complete evaporative age dry-down remains the separate scientific convention blocker.",
   "blockers": [],
   "postimages": {
+    "tools/solute/build_column.py": {
+      "status": "A",
+      "sha256": "82a47e952aa6e0bb938d84cad2bae0b99503ade75c657b1d3804960acd9faa1b"
+    },
+    "tools/solute/run_column.py": {
+      "status": "A",
+      "sha256": "132d4752797ed9be69c186af0af31ce38dc8cdd44c086c0522e65c47dcbb4bc0"
+    },
+    "tests/nut-sol/test_column_input.py": {
+      "status": "A",
+      "sha256": "95b57aa950b937dfcc944d260e847d4e33acf05390197a52643b8609ce09e758"
+    },
     ".github/workflows/f-gc-fixed-interface-closeout.yml": {
       "status": "M",
       "sha256": "f92ccf6fa344558383a043a18232dd3d51c0fe25500a152356e873f7ba7d5d6a"
