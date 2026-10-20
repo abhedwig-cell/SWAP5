@@ -162,3 +162,5 @@ The original surface-source evidence is owned by historical_surface_source_diagn
 ### MC-NUT01 native CHARACTER successor (20October2026)
 
 Use [native CHARACTER input and original daily calendar limits](../science/MC_NUT01_NATIVE_CHARACTER_20261020.md) and native_character_successor in the existing MC-NUT01 status for the exact two-parser seam, raw numerical capsule, actual full coupled rerun,11 corruption controls and exact original-owner inheritance. MC-SOL01 PR1336 evidence and all178 compiled application providers are preserved. No competing capability register or whole-row promotion is introduced.
+
+Actual MC-NUT01 native CHARACTER admission: PR1337 / `8422c2a8ac3158b0d74f77b1155936fdc435b792`, source426f14c3. Actual-merge NUT/grid PASS; master185f7638 corrects nine stale queue/locator records with original nine scoped checks PASS and unchanged234 other rows/all243 dispositions. Full historical closure remains false.

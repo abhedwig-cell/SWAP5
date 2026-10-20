@@ -159,3 +159,5 @@ The original wet-to-dry surface-source diagnostic now demonstrates a negative ag
 ### MC-NUT01 native CHARACTER successor (20October2026)
 
 The [native CHARACTER successor](../science/MC_NUT01_NATIVE_CHARACTER_20261020.md) qualifies same-record apostrophe concatenation and explicit native flCropExt=.FALSE. Fresh actual O0/O2 preserves all14 endpoints/observables and52 transition processes; native38, modern53/date3075 and18 new cases per optimization pass. True diagnostic output and full historical closure remain unadmitted. The original daily gate fractional-queue fixture does not claim a full original-model trajectory.
+
+Actual MC-NUT01 native CHARACTER admission: PR1337 / `8422c2a8ac3158b0d74f77b1155936fdc435b792`, source426f14c3. Actual-merge NUT/grid PASS; master185f7638 corrects nine stale queue/locator records with original nine scoped checks PASS and unchanged234 other rows/all243 dispositions. Full historical closure remains false.

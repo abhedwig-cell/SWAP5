@@ -182,3 +182,17 @@ The full original owner and9 controls execute unchanged at f6d5ffed. Concurrent
 MC-SOL01 PR1336 (`8d3689fc`) is reconciled without changing its dry-profile
 evidence or any of its178 current compiled providers. Canonical admission is
 recorded separately in the existing status; qualification alone is not admission.
+
+## Actual canonical admission
+
+[PR1337](https://github.com/abhedwig-cell/SWAP5/pull/1337) merged at
+`8422c2a8ac3158b0d74f77b1155936fdc435b792`; qualified head
+`78576d691067253435ffc4e074dd4bef14411b32` and actual merge have identical tree
+`1b22027e3b3e4620a7fcb9b7b16caedaded09bc9`. Production source tree is
+`426f14c39eb251095168c6c9b523cee5203bfbb6`. Both actual-merge NUT/grid admission
+entrypoints pass. Master receipt `185f7638a116adf38c99ac1e55d945e6b9e0e7d5`
+on existing PR1072 corrects nine obsolete queue absence explanations in JSON and
+Markdown, registers all nine bounded receipt locators in the original schema and
+passes the original nine bounded-reachability checks. Other234 capability rows,
+all243 dispositions, non-NUT queues and latest SOL receipts remain exact. This is
+not whole-master qualification or full MC-NUT01 closure.
