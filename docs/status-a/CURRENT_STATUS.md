@@ -133,6 +133,15 @@ column-input successor owns canonical admission and evidence. A dry deep
 limit; smaller windows and the wetter deep case are qualified without tolerance
 changes. This extends the application grid, not full historical/default scope.
 
+The dry 138-cm profile is now also qualified to the original 0.002-day final
+horizon with 100 reporting windows and unchanged physical input/tolerances.
+Actual O0/O2, 4366 accepted substeps, independent complete water/solute balances
+and a fresh process after window 37 give identical endpoints and restart bytes.
+The reproducible input and audit are under `integration/audits/column_grid`;
+the [closure](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/MC_SOL01_FINAL_CLOSURE.md)
+binds raw evidence and costs. Coarse-window rejection remains explicit; no general
+solver repair, seasonal or full historical admission is claimed.
+
 ## MC-NUT01 historical gross-positive admission,20 October2026
 
 PR1330 at `d118bcf1cacf7462cf62c27141cf306d7a4a52fb` admits explicit nonnegative historical gross atmospheric N independently of accepted net Richards water, through existing mineral/reactive/crop/calendar owners. Original analytical/full chemistry O0/O2, four730-day physical profiles,48 transition process restarts, actual water/N rollback and retained/thermal/54TCS6 preservation pass; all10 old endpoints remain exact. [The source-bound contract and canonical receipt](../science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supersede the unresolved reference-choice statement above. Negative aggregate retains an executed original-source depletion mass counterexample and remains rejected; automatic original atmosphere/ponded binding and remaining historical input/output envelopes are not promoted. The frozen Status-A denominator is unchanged.
@@ -146,3 +155,7 @@ Actual MC-NUT01 accepted-atmosphere admission: PR1333 / `6a2985776d2f242572725d8
 ### MC-NUT01 original surface-source diagnostic (20October2026)
 
 The original wet-to-dry surface-source diagnostic now demonstrates a negative aggregate using literal pond/runoff and caller-source statements, with closed surface water and byte-identical O0/O2 output. Conditional depleted N transport still violates the mass contract. This remains QUALIFICATION_ONLY; complete historical caller reachability is NOT_PROVEN and no production or mastercoverage promotion follows. See the [source, results and limits](../science/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md).
+
+### MC-NUT01 native CHARACTER successor (20October2026)
+
+The [native CHARACTER successor](../science/MC_NUT01_NATIVE_CHARACTER_20261020.md) qualifies same-record apostrophe concatenation and explicit native flCropExt=.FALSE. Fresh actual O0/O2 preserves all14 endpoints/observables and52 transition processes; native38, modern53/date3075 and18 new cases per optimization pass. True diagnostic output and full historical closure remain unadmitted. The original daily gate fractional-queue fixture does not claim a full original-model trajectory.

@@ -133,6 +133,12 @@ The trajectory3 `column_input_20261020.variable_grid_successor` additionally bin
 the real178-provider O0/O2 builds,86 process observations and exact five-profile
 fresh restarts. Its source validator preserves the original NUT guard semantics.
 The dry deep long-window rejection remains explicit.
+The additive `integration/audits/column_grid/qualify_dry_profile.py` now binds the
+dry profile at the same 0.002-day horizon using 100 reporting windows, exact
+current 178-provider builds, independent full balances and window-37 fresh
+restart. The immutable same-horizon capsule and reproduction input are linked
+from the existing final closure. Physical forcing, production owners and the
+original NUT/grid authority records remain unchanged.
 The trajectory3 `column_input_20261020` record binds the original26 GNU O0/O2 process
 observations and immutable capsule. Existing AGE03-CI postimages register only the
 three exact additive tool/test files. Production/reference source and all old
@@ -152,3 +158,7 @@ Actual PR1333 merge `6a2985776d2f242572725d8c18489260296c6732`, qualified head `
 ### MC-NUT01 original surface-source diagnostic (20October2026)
 
 The original surface-source evidence is owned by historical_surface_source_diagnostic in the existing MC-NUT01 status. The47-member immutable capsule binds original sources, literal extraction/scaffolding, commands, native O0/O2 results and member hashes. Existing PR1333 production admission is unchanged. See the [source, results and limits](../science/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md).
+
+### MC-NUT01 native CHARACTER successor (20October2026)
+
+Use [native CHARACTER input and original daily calendar limits](../science/MC_NUT01_NATIVE_CHARACTER_20261020.md) and native_character_successor in the existing MC-NUT01 status for the exact two-parser seam, raw numerical capsule, actual full coupled rerun,11 corruption controls and exact original-owner inheritance. MC-SOL01 PR1336 evidence and all178 compiled application providers are preserved. No competing capability register or whole-row promotion is introduced.
