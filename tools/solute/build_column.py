@@ -21,6 +21,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--optimization', choices=['O0', 'O2'], default='O2')
+    parser.add_argument('--build-profile', choices=['checked', 'production'], default='checked',
+                        help='Production omits compiler bounds/shape checks; physical and numerical guards remain active')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -61,9 +63,11 @@ def main():
     visit(headcalc)
     ordered.append(driver)
     flags = ['-' + args.optimization, '-std=f2008', '-ffree-line-length-none', '-fopenmp',
-             '-fcheck=all', '-fbacktrace', '-ffpe-trap=invalid,zero,overflow',
+             '-fbacktrace', '-ffpe-trap=invalid,zero,overflow',
              '-J' + str(output), '-I' + str(output)]
-    report = {'schema': 1, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
+    if args.build_profile == 'checked':
+        flags.append('-fcheck=all')
+    report = {'build_profile': args.build_profile, 'schema': 1, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'compiler': subprocess.check_output(fc + ['--version'], text=True).splitlines()[0],
               'compiler_command': fc, 'flags': flags, 'input_sha256': {str(p.relative_to(ROOT)): sha(p) for p in ordered},
               'events': [], 'status': 'BUILDING'}

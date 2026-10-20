@@ -31,12 +31,78 @@ module mod_b110_default_mvg_provider
      procedure :: evaluate_point_conductivity => b110_default_mvg_evaluate_point_conductivity
   end type b110_default_mvg_provider_t
 
+  ! Call-local prepared origin. Immutable during one solve; never shared state.
+  type, extends(b110_default_mvg_provider_t), public :: b110_prepared_increment_provider_t
+     real(real64), allocatable :: origin(:), origin_x(:), origin_se(:)
+     logical, allocatable :: origin_valid(:)
+   contains
+     procedure :: evaluate_water_content_increment => b110_prepared_water_content_increment
+  end type b110_prepared_increment_provider_t
+  public :: prepare_b110_increment_origin
+
   public :: initialize_b110_default_mvg_parameters
   public :: bind_b110_default_mvg_provider
   public :: b110_hconduc
   public :: evaluate_b110_default_mvg_conductivity
 
 contains
+
+  subroutine prepare_b110_increment_origin(prepared, original, previous_head)
+    type(b110_prepared_increment_provider_t), intent(inout) :: prepared
+    type(b110_default_mvg_provider_t), intent(in) :: original
+    real(real64), intent(in) :: previous_head(:)
+    integer :: i,n
+    prepared%parameters => original%parameters
+    prepared%step_duration = original%step_duration
+    n=size(previous_head)
+    if(.not.associated(original%parameters))error stop 'prepared MvG increment: missing parameters'
+    if(n/=original%parameters%active_nodes)error stop 'prepared MvG increment: origin shape mismatch'
+    if(allocated(prepared%origin))then
+      if(size(prepared%origin)/=n)deallocate(prepared%origin,prepared%origin_x,prepared%origin_se,prepared%origin_valid)
+    end if
+    if(.not.allocated(prepared%origin)) &
+      allocate(prepared%origin(n),prepared%origin_x(n),prepared%origin_se(n),prepared%origin_valid(n))
+    prepared%origin_valid=.false.
+    prepared%origin=previous_head
+    prepared%origin_x=0.0_real64;prepared%origin_se=0.0_real64
+    do i=1,n
+      ! Conservative preparation domain avoids speculative powers outside the
+      ! normal hydraulic range. All other inputs retain the original lazy path.
+      if(.not.ieee_is_finite(previous_head(i)))cycle
+      if(previous_head(i)>=0.0_real64.or.previous_head(i)<-1.0e6_real64)cycle
+      if(original%parameters%cofgen(4,i)<=0.0_real64.or.original%parameters%cofgen(4,i)>1.0_real64)cycle
+      if(original%parameters%cofgen(6,i)<=1.0_real64.or.original%parameters%cofgen(6,i)>10.0_real64)cycle
+      if(original%parameters%cofgen(7,i)<=0.0_real64.or.original%parameters%cofgen(7,i)>=1.0_real64)cycle
+      prepared%origin_valid(i)=.true.
+      prepared%origin_x(i)=abs(original%parameters%cofgen(4,i)*previous_head(i))**original%parameters%cofgen(6,i)
+      prepared%origin_se(i)=1.0_real64/((1.0_real64+prepared%origin_x(i))**original%parameters%cofgen(7,i))
+    end do
+  end subroutine prepare_b110_increment_origin
+
+  subroutine b110_prepared_water_content_increment(self, pressure_head, previous_pressure_head, &
+                                                   water_content, previous_water_content, increment)
+    class(b110_prepared_increment_provider_t), intent(in) :: self
+    real(real64), intent(in) :: pressure_head(:),previous_pressure_head(:),water_content(:),previous_water_content(:)
+    real(real64), intent(out) :: increment(:)
+    integer :: i,n
+    n=size(pressure_head)
+    if(.not.allocated(self%origin))error stop 'prepared MvG increment: missing origin'
+    if(size(self%origin)/=n.or.size(previous_pressure_head)/=n.or.size(water_content)/=n.or. &
+       size(previous_water_content)/=n.or.size(increment)/=n)error stop 'prepared MvG increment: shape mismatch'
+    do i=1,n
+      if(self%parameters%elastic_storage_active.and.pressure_head(i)>=0.0_real64.and. &
+         previous_pressure_head(i)>=0.0_real64)then
+        increment(i)=self%parameters%specific_elastic_storage(i)*(pressure_head(i)-previous_pressure_head(i))
+      else if(self%origin_valid(i).and.previous_pressure_head(i)==self%origin(i))then
+        increment(i)=b110_watcon_increment(self%parameters%cofgen(:,i),pressure_head(i),previous_pressure_head(i), &
+                     water_content(i),previous_water_content(i),self%origin_x(i),self%origin_se(i))
+      else
+        ! An unexpected origin change safely uses the unprepared formula.
+        increment(i)=b110_watcon_increment(self%parameters%cofgen(:,i),pressure_head(i),previous_pressure_head(i), &
+                     water_content(i),previous_water_content(i))
+      end if
+    end do
+  end subroutine b110_prepared_water_content_increment
 
   subroutine initialize_b110_default_mvg_parameters(parameters, cofgen_input, enable_ksatexm_extension, &
                                                       enable_elastic_storage, specific_elastic_storage_input, &
@@ -379,8 +445,9 @@ contains
     end if
   end function b110_watcon
 
-  pure real(real64) function b110_watcon_increment(c, head_new, head_old, theta_new, theta_old) result(delta_theta)
+  pure real(real64) function b110_watcon_increment(c, head_new, head_old, theta_new, theta_old, origin_x, origin_se) result(delta_theta)
     real(real64), intent(in) :: c(:), head_new, head_old, theta_new, theta_old
+    real(real64), intent(in), optional :: origin_x, origin_se
     real(real64) :: h105
 
     delta_theta = theta_new-theta_old
@@ -398,7 +465,7 @@ contains
       if (head_new > B110_H_CRIT .and. head_old > B110_H_CRIT) then
         delta_theta = c(27)*(head_new-head_old)
       else if (head_new <= B110_H_CRIT .and. head_old <= B110_H_CRIT) then
-        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,1.0_real64,delta_theta)
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,1.0_real64,delta_theta,origin_x,origin_se)
       end if
     else
       h105 = 1.05_real64*c(9)
@@ -406,13 +473,14 @@ contains
         delta_theta = c(42)*(head_new-head_old) / &
              ((1.0_real64+c(41)*head_new)*(1.0_real64+c(41)*head_old))
       else if (head_new < h105 .and. head_old < h105) then
-        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,c(28),delta_theta)
+        delta_theta = b110_vg_same_branch_increment(c,head_new,head_old,c(28),delta_theta,origin_x,origin_se)
       end if
     end if
   end function b110_watcon_increment
 
-  pure real(real64) function b110_vg_same_branch_increment(c,head_new,head_old,normalization,fallback) result(delta_theta)
+  pure real(real64) function b110_vg_same_branch_increment(c,head_new,head_old,normalization,fallback,origin_x,origin_se) result(delta_theta)
     real(real64), intent(in) :: c(:), head_new, head_old, normalization, fallback
+    real(real64), intent(in), optional :: origin_x, origin_se
     real(real64) :: abs_old, relative_abs_change, x_old, dx, dlog_se, se_old
 
     delta_theta = fallback
@@ -421,13 +489,21 @@ contains
     relative_abs_change = (abs(head_new)-abs_old)/abs_old
     if (relative_abs_change <= -1.0_real64) return
 
-    x_old = abs(c(4)*head_old)**c(6)
+    if(present(origin_x))then
+      x_old=origin_x
+    else
+      x_old = abs(c(4)*head_old)**c(6)
+    end if
     if (.not. ieee_is_finite(x_old)) return
     dx = x_old*b110_expm1(c(6)*b110_log1p(relative_abs_change))
     if (.not. ieee_is_finite(dx)) return
     dlog_se = -c(7)*b110_log1p(dx/(1.0_real64+x_old))
     if (.not. ieee_is_finite(dlog_se)) return
-    se_old = 1.0_real64/((1.0_real64+x_old)**c(7))
+    if(present(origin_se))then
+      se_old=origin_se
+    else
+      se_old = 1.0_real64/((1.0_real64+x_old)**c(7))
+    end if
     if (.not. ieee_is_finite(se_old)) return
     delta_theta = c(25)*se_old*b110_expm1(dlog_se)/normalization
     if (.not. ieee_is_finite(delta_theta)) delta_theta = fallback

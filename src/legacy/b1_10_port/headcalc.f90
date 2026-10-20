@@ -78,7 +78,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
-   logical :: scale_matrix_area, freeze_macropore_sources
+   logical :: scale_matrix_area
    logical :: typed_bottom_invalid, typed_bottom_ok
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
@@ -264,7 +264,6 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    ! These choices depend only on this call's immutable configuration/provider.
    ! They are not state caches and are resolved anew for every solve/rollback.
    scale_matrix_area = matrix_area_scaling_active()
-   freeze_macropore_sources = macropore_iteration_policy_active()
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
       fsi_ws => fsi_workspace
@@ -272,9 +271,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       fsi_ws => local_fsi_workspace
    end if
    call prepare_reference_workspace_for_solve(fsi_ws, numnod)
-   allocate(provider_macropore_exchange(numnod),provider_macropore_dqdh(numnod))
-   provider_macropore_exchange=0.0d0
-   provider_macropore_dqdh=0.0d0
+   ! Inactive optional physics must not allocate or initialize node arrays.
+   ! Active providers retain their original call-local zeroed workspace.
+   if (provider_macropore_active) then
+      allocate(provider_macropore_exchange(numnod),provider_macropore_dqdh(numnod))
+      provider_macropore_exchange=0.0d0
+      provider_macropore_dqdh=0.0d0
+   end if
    ctx%diagnostics%headcalc_calls = ctx%diagnostics%headcalc_calls + 1
 
 !  reset some variables at the start of a new day
@@ -598,7 +601,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
-      if (freeze_macropore_sources) then
+      if (macropore_iteration_policy_active()) then
          fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
          fsi_ws%nonconverged_head(1:numnod) = .FALSE.
       end if
@@ -609,19 +612,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (freeze_macropore_sources) fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (freeze_macropore_sources) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (freeze_macropore_sources) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -1130,7 +1133,6 @@ subroutine vector_F(iTask)
       end if
    else
       provider_macropore_rate_active=.false.
-      provider_macropore_exchange=0.0d0
    end if
 
 !  take care of top BC: ponding, runoff

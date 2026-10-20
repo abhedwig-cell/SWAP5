@@ -5,11 +5,13 @@ module mod_reference_richards_legacy_binding
        soil_water_solve_request_t, soil_water_solve_result_t, soil_water_top_boundary_result_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, SW_TOP_BOUNDARY_AVAILABLE, &
-       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
+       SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary, hydraulic_evaluation_context_t
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t, b110_prepared_increment_provider_t, &
+       prepare_b110_increment_origin
   use mod_reference_linear_solver, only: reference_tridag_backsolve
   use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, &
        initialize_reference_state_binding, FSI_TOP_MODE_LEGACY_CONTEXT, FSI_TOP_MODE_EXPLICIT_FLUX, &
@@ -28,6 +30,7 @@ module mod_reference_richards_legacy_binding
   integer, parameter, public :: FSI_LEGACY_TOP_CONTEXT = FSI_TOP_MODE_LEGACY_CONTEXT
 
   type, extends(soil_water_solver_workspace_base_t), public :: reference_richards_legacy_workspace_t
+     type(b110_prepared_increment_provider_t) :: prepared_constitutive
      type(reference_richards_workspace_t) :: richards
      type(a23bu_worker_context_t) :: legacy_worker
      type(reference_richards_state_binding_t) :: state_binding
@@ -121,7 +124,9 @@ contains
     class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
     type(soil_water_solve_result_t), intent(out) :: result
 
-    logical :: ok, sensitivity_capture
+    type(b110_prepared_increment_provider_t), target :: prepared_constitutive
+    type(hydraulic_evaluation_context_t) :: call_evaluation
+    logical :: ok, sensitivity_capture, prepare_origin
     type(a23bu_solver_history_t) :: call_history
     type(soil_water_top_boundary_result_t) :: final_top
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
@@ -140,6 +145,9 @@ contains
 
     select type (ws => workspace)
     type is (reference_richards_legacy_workspace_t)
+       ! Work hint only: a one-iteration solve cannot amortize preparation.
+       ! It never selects a formula, tolerance, state or acceptance policy.
+       prepare_origin = ws%legacy_worker%diagnostics%nonlinear_iterations >= 2
        ws%converged_surface_result = soil_water_top_boundary_result_t()
        ws%gross_surface_sources_available = .false.
        ws%precipitation_rate_cm_day = 0.0_real64
@@ -166,9 +174,27 @@ contains
        sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
        if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
 
+       call_evaluation=request%evaluation
+       select type(provider=>request%evaluation%constitutive)
+       type is(b110_default_mvg_provider_t)
+          if(n>=16.and.prepare_origin)then
+             call move_alloc(ws%prepared_constitutive%origin,prepared_constitutive%origin)
+             call move_alloc(ws%prepared_constitutive%origin_x,prepared_constitutive%origin_x)
+             call move_alloc(ws%prepared_constitutive%origin_se,prepared_constitutive%origin_se)
+             call move_alloc(ws%prepared_constitutive%origin_valid,prepared_constitutive%origin_valid)
+             call prepare_b110_increment_origin(prepared_constitutive,provider,request%base_state%pressure_head)
+             call_evaluation%constitutive=>prepared_constitutive
+          end if
+       end select
        call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
-            request%evaluation, request%boundary, request%numerical, request%physical, &
+            call_evaluation, request%boundary, request%numerical, request%physical, &
             request%step_duration, request%parameters, final_top)
+       if(allocated(prepared_constitutive%origin))then
+       call move_alloc(prepared_constitutive%origin,ws%prepared_constitutive%origin)
+       call move_alloc(prepared_constitutive%origin_x,ws%prepared_constitutive%origin_x)
+       call move_alloc(prepared_constitutive%origin_se,ws%prepared_constitutive%origin_se)
+       call move_alloc(prepared_constitutive%origin_valid,ws%prepared_constitutive%origin_valid)
+       end if
 
        ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
