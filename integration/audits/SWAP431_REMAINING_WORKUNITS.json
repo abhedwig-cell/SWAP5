@@ -1212,7 +1212,7 @@
         "SW431-SALT-POND",
         "SW431-AGE-TRACER"
       ],
-      "next_action": "No remaining bounded-core implementation. Four explicit parked followups: MC-SOL01-SORPTION-ENVELOPE, MC-SOL01-DECAY-THERMAL-COMPOSITION, MC-SOL01-POND-APPLICATION-ENVELOPE, MC-SOL01-AGE-DRY-LIMIT-AND-APPLICATION. Aquifer stays rejected. Do not repeat admitted runon/runoff, positive pond age or restart work.",
+      "next_action": "Bounded core and PR1329 explicit file-driven four-node linear pond/matrix application are admitted. Four parked full envelopes remain: wider sorption, dynamic thermal decay, general historical SWP/default/multicolumn or nonlinear pond, and age dry-limit/application composition. Preserve actual file-output balances and exact process restart; do not reopen already admitted runon/runoff or positive pond age. Aquifer stays rejected.",
       "production_edits_authorized_by_this_record": false,
       "dependencies": [],
       "exit": "Every listed ID has a source-bound final disposition with implementation, admission/replacement or formal rejection evidence.",

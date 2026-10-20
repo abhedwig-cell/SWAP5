@@ -9650,6 +9650,17 @@
     },
     {
       "capability_id": "SW431-SALT-SORPTION",
+      "file_driven_application_20261020": {
+        "pr": 1329,
+        "canonical_merge": "21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "qualified_head": "19f973e4650387d59edcf394c6df0d11880947ac",
+        "authority": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json at 21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "contract": "docs/science/MC_SOL01_COLUMN_INPUT_CONTRACT.md at 21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "scope": "Explicit namelist-driven four-node Reference pond/matrix application, linear sorption only; unrounded water/solute output and exact fresh-process restart. Existing nonlinear0.5..2 matrix admission unchanged; full SWP/default and wider pond domain remain parked.",
+        "qualification": "GNU13.3 O0/O2 local and hosted39463805790,26 process observations including independent gross water/solute accounting, identical endpoint/restart and complete-generation publication; all15 final-head automatic workflows SUCCESS.",
+        "full_capability": false,
+        "disposition_changed": false
+      },
       "subsystem": "solute",
       "legacy_selector": "SWSP=1",
       "legacy_source_authority": {
@@ -9938,6 +9949,18 @@
     },
     {
       "capability_id": "SW431-SALT-POND",
+      "file_driven_application_20261020": {
+        "pr": 1329,
+        "canonical_merge": "21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "qualified_head": "19f973e4650387d59edcf394c6df0d11880947ac",
+        "authority": "integration/audits/MC_NUT_SOL_TRAJECTORY3_STATUS.json at 21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "contract": "docs/science/MC_SOL01_COLUMN_INPUT_CONTRACT.md at 21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+        "scope": "Explicit file-driven four-node Reference application with actual positive pond, rain/irrigation/runon, runoff, infiltration and nonexporting evaporation, prescribed root/drain/bottom and unrounded inventories/budgets. Sole chemical owner and existing V2 payload, with all input/executable/output bytes bound in one published directory generation.",
+        "qualification": "GNU13.3 O0/O2 local and hosted39463805790,26 process observations;270/264 accepted hydraulic substeps; exact independent-process restart and O0/O2 outputs; invalid source/identity/corruption and before/after publication termination controls. All15 final-head automatic workflows SUCCESS.",
+        "remaining": "General historical SWP/default/bootstrap/multicolumn, nonlinear pond, snow/exfiltration and simultaneous age/N companions remain outside this bounded application.",
+        "full_capability": false,
+        "disposition_changed": false
+      },
       "subsystem": "solute",
       "legacy_selector": "CPOND;CSURF",
       "legacy_source_authority": {

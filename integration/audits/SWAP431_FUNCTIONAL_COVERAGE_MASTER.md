@@ -941,3 +941,15 @@ PR #1268 admits only SW431-IRR-LIMIT at `121ed3503638c2d3168fa30e40f6af24156348a
 ## MC-SOL01 bounded closure, 2026-10-19
 
 Reference runon/runoff and positive-pond/soil age, joint balances, retry/rollback and atomic S5AT0001 restart are already admitted. Four full historical rows retain ACTIVE_MIGRATION with exact separately parked envelopes; no capability promotion. The JSON row and queue claims supersede earlier generic missing-pond/age descriptions. Aquifer remains REJECTED; RossFast remains optional/frozen. See the canonical MC_SOL01_FINAL_CLOSURE.md and existing trajectory3/surface/age admission records. Confirmed-absence flags are corrected to67 actual rows (previous summary78 was stale against70 after NUT review); total243 and all dispositions remain unchanged.
+
+## Bounded file-driven solute application, 20 October 2026
+
+[PR1329](https://github.com/abhedwig-cell/SWAP5/pull/1329) admits the explicit
+four-node Reference namelist application at `21cc80984a864b48d4344b9671d6ccd2ae5882ad`.
+Real GNU13.3 O0/O2,26 process observations and hosted39463805790 qualify positive
+pond/runon/runoff/infiltration/evaporation, prescribed roots/drain/bottom,
+unrounded water/solute outputs, exact independent-process restart and one complete
+published generation. Sorption and pond rows receive bounded application receipts;
+the other241 rows and all243 dispositions are unchanged. General historical SWP,
+default/bootstrap/multicolumn, nonlinear pond, dynamic thermal decay and age/N
+composition are still separate. Full master integrity is not claimed.
