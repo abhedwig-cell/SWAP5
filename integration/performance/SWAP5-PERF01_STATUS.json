@@ -5,7 +5,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "next_action": "Merge exact qualified source; verify canonical postimage and record admission receipt",
+  "next_action": "Exact implementation complete; separate temporal-policy qualification and complete regional application envelope remain open",
   "recovery_point": "work/swap5-perf01-runtime-investigation",
   "blockers": [],
   "dependency_surface": [
@@ -151,8 +151,8 @@
       }
     }
   },
-  "phase": "EXACT_IMPLEMENTATION_QUALIFIED_READY_FOR_CANONICAL",
-  "canonical_admitted": false,
+  "phase": "CANONICALLY_ADMITTED_BOUNDED_IMPLEMENTATION",
+  "canonical_admitted": true,
   "known_failures": {
     "eb_i25_outflow": "Unchanged original outflow assertion fails on b0c2e94b and candidate after compile-selection correction; existing nonadmitted route, no PASS",
     "older_hosted_head": "See SWAP5-PERF01_HOSTED_4238.json for frozen source identities and missing build dependencies"
@@ -171,5 +171,14 @@
     "rossfast": "FROZEN_UNCHANGED_NO_NEW_QUALIFICATION",
     "eb_i25": "DIAGNOSTIC_BASELINE_CONTROL_ONLY_EXISTING_NONADMITTED_OUTFLOW"
   },
-  "regional_qualification": "NOT_ADMITTED: real LWKM HRU7866 package found, but general SWP/live-crop/heat/BBC orchestration missing in the benchmark application; no process substitution or Intel/GNU timing comparison"
+  "regional_qualification": "NOT_ADMITTED: real LWKM HRU7866 package found, but general SWP/live-crop/heat/BBC orchestration missing in the benchmark application; no process substitution or Intel/GNU timing comparison",
+  "admission_commit": "5eec6ae73d3187630f244109380ef6adfadfe631",
+  "admission_pr": 1335,
+  "qualified_source_head": "4cb4e216e17985c1bccb3b03df77524215deadef",
+  "remaining_scientific_boundaries": [
+    "Temporal proposal reuse changes trajectories; no production activation without independent accuracy/restart qualification",
+    "Full real HRU crop/heat/BBC orchestration is outside present file application; no unconditional regional speed admission",
+    "EB-I25 nonadmitted outflow fixture fails equally on original canonical and candidate",
+    "Default8MiB reactive O0 stack limit is pre-existing; unlimited stack used for full qualification"
+  ]
 }

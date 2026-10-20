@@ -1,6 +1,6 @@
 # SWAP5-PERF01 runtime investigation
 
-**Status:** exact implementation qualified locally and by hosted canonical, PERF01, application, NUT and FSI35 checks; ready for bounded canonical admission. Baseline `b0c2e94b69d7d21519611af92866fb4dbf713ea2`; reconciled canonical `5ce0f1115a5ea89be54aacaae02ed61ab2ca2696`. The later canonical PR1337 changes two NUT input providers, outside all 178 application and age/preservation build inputs. The actual reactive runner was requalified on their combination with PERF01. See `integration/performance/SWAP5-PERF01_STATUS.json` for the live admission disposition.
+**Status:** bounded exact implementation admitted through PR #1335 at `5eec6ae73d3187630f244109380ef6adfadfe631`. Hosted canonical, PERF01, application, NUT and FSI35 checks pass; the merge tree exactly matches the qualified source and final evidence receipt. Baseline `b0c2e94b69d7d21519611af92866fb4dbf713ea2`; reconciled canonical `5ce0f1115a5ea89be54aacaae02ed61ab2ca2696`. The later canonical PR1337 changes two NUT input providers, outside all 178 application and age/preservation build inputs. The actual reactive runner was requalified on their combination with PERF01. See `integration/performance/SWAP5-PERF01_STATUS.json` for the live admission disposition.
 
 ## Main finding
 
