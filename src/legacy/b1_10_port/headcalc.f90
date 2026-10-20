@@ -78,6 +78,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(soil_water_parameter_set_t), target, intent(in), optional :: parameter_set
    logical :: legacy_state_binding, state_ok, provider_top_active, provider_dynamic_top_active, provider_runoff_resolved
    logical :: explicit_geometry
+   logical :: scale_matrix_area, freeze_macropore_sources
    logical :: typed_bottom_invalid, typed_bottom_ok
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
@@ -260,6 +261,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
               error stop 'HeadCalc: matrix source partition requires dynamic top and macropore providers'
       end if
    end if
+   ! These choices depend only on this call's immutable configuration/provider.
+   ! They are not state caches and are resolved anew for every solve/rollback.
+   scale_matrix_area = matrix_area_scaling_active()
+   freeze_macropore_sources = macropore_iteration_policy_active()
    provider_runoff_resolved = .false.
    if (present(fsi_workspace)) then
       fsi_ws => fsi_workspace
@@ -308,7 +313,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          state%theta(1) = watcon(1,state%gwlinp)
          state%kmean(1) = hconduc(1,state%gwlinp,state%theta(1),rfcp(1))
 !        in case of static macropores FrArMtrx < 1
-         if (matrix_area_scaling_active()) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
+         if (scale_matrix_area) state%kmean(1) = matrix_fraction(1) * state%kmean(1)
 
          fsi_ws%vertical_flux(1) = q1
          do i = 1, numnod
@@ -324,7 +329,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (SwKimpl == 1) then
             do i = 1, numnod
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
+               if (scale_matrix_area) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -376,7 +381,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
    end if
    do i = 1, numnod
-      if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
+      if (scale_matrix_area) state%k(i) = matrix_fraction(i) * state%k(i)
       if (i > 1)         state%kmean(i) = hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), i, state%h(i-1), state%h(i))
    end do
    state%kmean(numnod+1) = state%k(numnod)
@@ -452,7 +457,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (SwKimpl == 1) then
          do i = 1, NN
             fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
-            if (matrix_area_scaling_active()) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
+            if (scale_matrix_area) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
             fsi_ws%dfdh_upper(i)   = - state%kmean(i) / grid_disnod(i)
@@ -558,7 +563,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             call Rootextraction(2)
             do i = 1, NN
                state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
-               if (matrix_area_scaling_active()) state%k(i) = matrix_fraction(i) * state%k(i)
+               if (scale_matrix_area) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
                end if
@@ -593,7 +598,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       flnonconv = .FALSE.
 
 !     flags introduced for debugging/macropore iteration policy
-      if (macropore_iteration_policy_active()) then
+      if (freeze_macropore_sources) then
          fsi_ws%nonconverged_balance(1:numnod) = .FALSE.
          fsi_ws%nonconverged_head(1:numnod) = .FALSE.
       end if
@@ -604,19 +609,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !        test for water balance deviation of soil compartments
          if (dabs(fsi_ws%residual(i)) >  CritDevBalCp) then
-            if (macropore_iteration_policy_active()) fsi_ws%nonconverged_balance(i) = .TRUE.
+            if (freeze_macropore_sources) fsi_ws%nonconverged_balance(i) = .TRUE.
             flnonconv     = .TRUE.
          end if
 
 !        test for change of pressure head
          if (dabs(fsi_ws%old_head(i)) < 1.0d0) then
             if (abs(state%h(i)-fsi_ws%old_head(i) ) > CritDevh2Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (freeze_macropore_sources) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          else
             if (abs(state%h(i)-fsi_ws%old_head(i) )/abs(fsi_ws%old_head(i)) > CritDevh1Cp) then
-               if (macropore_iteration_policy_active()) fsi_ws%nonconverged_head(i) = .TRUE.
+               if (freeze_macropore_sources) fsi_ws%nonconverged_head(i) = .TRUE.
                flnonconv     = .TRUE.
             end if
          end if
@@ -1178,7 +1183,7 @@ subroutine vector_F(iTask)
       state%theta(NN) = watcon(NN,state%h(NN))
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
       ! in case of static macropores FrArMtrx < 1
-      if (matrix_area_scaling_active()) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+      if (scale_matrix_area) state%k(NN) = matrix_fraction(NN) * state%k(NN)
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
       fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
@@ -1223,7 +1228,7 @@ subroutine vector_F(iTask)
          else
             state%kmean(numnod+1) = hconduc(numnod,state%h(numnod),state%theta(numnod),rfcp(numnod))
          end if
-         if (matrix_area_scaling_active()) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
+         if (scale_matrix_area) state%kmean(numnod+1) = matrix_fraction(numnod) * state%kmean(numnod+1)
          state%qbot = -1.0d0 * state%kmean(numnod+1)
          fsi_ws%residual(NN) = fsi_ws%residual(NN) - state%qbot
       
