@@ -121,7 +121,9 @@ def predecessor():
  else:
   temporary=tempfile.TemporaryDirectory(prefix='swap5-gross-predecessor-');base=Path(temporary.name)/'baseline'
   subprocess.run(['git','worktree','add','--detach',str(base),BASE],cwd=ROOT,check=True,capture_output=True)
-  subprocess.run(['git','sparse-checkout','add','research','integration/f-ross','integration/research','app','examples'],cwd=base,check=True,capture_output=True)
+  sparse=subprocess.run(['git','config','--bool','core.sparseCheckout'],cwd=base,capture_output=True,text=True)
+  if sparse.returncode==0 and sparse.stdout.strip()=='true':
+   subprocess.run(['git','sparse-checkout','add','research','integration/f-ross','integration/research','app','examples'],cwd=base,check=True,capture_output=True)
  try:
   require(subprocess.check_output(['git','rev-parse','HEAD'],cwd=base,text=True).strip()==BASE,'gross baseline worktree identity')
   require(subprocess.run(['git','diff','--quiet','HEAD'],cwd=base).returncode==0,'gross predecessor tracked state changed')

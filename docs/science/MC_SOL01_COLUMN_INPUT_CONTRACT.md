@@ -1,7 +1,8 @@
 # MC-SOL01 file-driven Reference column
 
-Status: locally qualified application adapter, based on canonical `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`;
-canonical admission pending.
+Status: canonically admitted bounded application through PR1329 at
+`21cc80984a864b48d4344b9671d6ccd2ae5882ad`, based on
+`d443dced3313e2602fdea4cbd1a6cb566f53fb0e`.
 
 The executable `swap5_solute_column` reads a versioned Fortran namelist, constructs
 the existing physical parameters and committed owners, and calls
@@ -78,3 +79,16 @@ their existing admitted rollback authority; no new state owner is introduced.
 Source checkpoint `7217e33287e09385f2f6abbcb321198ae452348e` is equivalent to the
 compiled application/runner postimages. The archive and exact local execution
 lineage are recorded in the existing trajectory3 `column_input_20261020` entry.
+
+All fifteen workflows on the final qualified head `19f973e4` are terminal SUCCESS,
+including actual hosted O0/O2 application run39463805790. The actual merge tree
+equals that qualified tree. Postmerge application run39464479365 also passes the
+real native suite and existing age/source/evidence qualification. Master receipt
+`371e92f2` adds only two bounded application receipts; all243 dispositions remain
+unchanged.
+
+After concurrent NUT PR1330 (`d118bcf1`), all178 actual application providers still
+match the executed O0/O2 SHA256 inventory. Current joint source/evidence
+qualification passes; its predecessor helper now handles ordinary full checkouts
+as well as the existing sparse route. Only that staging condition changes. No
+scientific assertion, application provider or physical equation changes.

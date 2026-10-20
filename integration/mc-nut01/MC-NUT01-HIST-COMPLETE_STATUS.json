@@ -1180,6 +1180,12 @@
     "postmerge": "Remote exact-ref status and evidence receipt verified; merge changes docs/status/evidence only. No new native execution or full historical admission. No hosted workflows were created for the review merge."
   },
   "historical_gross_top_successor": {
+    "predecessor_checkout_portability_20261020": {
+      "baseline": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+      "scope": "Qualification staging only: expand predecessor paths only for an actual sparse checkout; full checkouts already contain them. Original science/assertions, source ownership and executed NUT capsules unchanged.",
+      "test": "Default automatic full-checkout predecessor and complete actual age/NUT/source/evidence qualification PASS; supplied predecessor route also PASS. Literal code transform proves every old assertion and sparse expansion command retained.",
+      "evidence": "integration/audits/evidence/MC_SOL01_COLUMN_COEXISTENCE_20261020.tar.xz.b64"
+    },
     "status": "CANONICALLY_ADMITTED_POSITIVE_HISTORICAL_GROSS_TOP",
     "base_canonical": "21cc80984a864b48d4344b9671d6ccd2ae5882ad",
     "branch": "work/nut-historical-gross-top-qualified-20261020",
@@ -1250,7 +1256,7 @@
       },
       "tests/nut-crop/verify_historical_gross.py": {
         "status": "A",
-        "sha256": "e28a5175eb2e018312eff07cd1a008f5cec7491d39e5405c7292f4bfc32d28b6"
+        "sha256": "47dfd561d7b41320f88f298aea1d8628de27d4f747bc6c57067149422dfbb130"
       },
       "tests/nut-mineral/test_mineral_owner.f90": {
         "status": "M",

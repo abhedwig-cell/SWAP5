@@ -132,6 +132,8 @@ The trajectory3 `column_input_20261020` record binds the 26 actual GNU O0/O2 pro
 observations and immutable capsule. Existing AGE03-CI postimages register only the
 three exact additive tool/test files. Production/reference source and all old
 scientific assertions remain unchanged. Local qualification and canonical
-admission remain distinct.
+admission remain distinct. Actual bounded admission is PR1329 at `21cc8098`, with
+all15 final-head workflows and postmerge native39464479365 successful. Master
+receipt `371e92f2` adds two bounded application locators without disposition changes.
 
 MC-NUT01 historical gross-positive PR1330: [contract, actual730-day results and original negative-source counterexample](../science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md), owning `historical_gross_top_successor` in the existing status record, immutable4432-member numerical capsule and20-member control/diagnostic capsule. Actual canonical merge `d118bcf1cacf7462cf62c27141cf306d7a4a52fb`, source treea60ac1d9; all10 original endpoints exact and48 transition processes. The strict14-file successor guard reexecutes the unchanged original canonical authority at21cc8098 and proves the three independently compiled CI footprints exclude changed NUT providers. Whole HIST/master disposition remains open.
