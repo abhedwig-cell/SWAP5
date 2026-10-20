@@ -54,10 +54,10 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Resolve explicitly registered gross atmospheric N carrier and ponding reference contract before full HIST admission. Preserve bounded admitted processes. Review unsupported native syntax/fractional timestamps and diagnostics against required historical inputs. See docs/science/MC_NUT01_FINAL_CLOSURE.md.",
+  "next_action": "Finish exact final documentation/source checks and integrate this scoped historical gross-positive successor; record actual canonical merge, leave whole HIST false.",
   "recovery_point": "Canonical PR1319 merge03daf601446ba1bdc56c6d436fb09fbc904ea66b; full scoped qualification and postmerge exact-tree owner PASS. Source/current evidence checkpoint6f151ccf. Gross atmospheric scientific choice and other explicitly unsupported syntax remain open; whole HIST false.",
   "blockers": [
-    "Full historical hydrological equivalence needs a qualified gross-rain/evaporation/ponding carrier; original management_soil line402 explicitly questions ponding. Fixed daily infiltration is only a bounded qualified scenario.",
+    "Historical gross top reference choice resolved by owner option1; positive0..100m/day gross input candidate passes full actual730-day coupled O0/O2. Negative aggregate and automatic original atmosphere producer binding/ponded application remain unqualified.",
     "General TTUTIL constructs, fractional timestamps, extended diagnostic output remain unsupported; no full original-model multiyear comparison is available. Experimental humus is now qualified only within its explicit bounded contract."
   ],
   "mastercoverage_promotion": false,
@@ -249,6 +249,16 @@
         "candidate": "6f151ccf7ecd40010de0b14c896a72371cf5ce83",
         "prior_execution": "SUCCESS",
         "measured_physical_seconds": 737.2606643490399
+      },
+      "historical_gross_top": {
+        "changed_dependency": "Seven existing production mineral/reactive/crop/runtime owner interfaces with explicit independent gross N forcing",
+        "scientific_claim": "Original gross atmospheric analytical loading, preserved old default endpoints, real Reference coupled rotation mass and rollback/fresh-process restart",
+        "owner": "MC-NUT01",
+        "authority": "docs/science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md",
+        "expected_seconds": 900,
+        "existing_evidence": "Old immutable results cannot qualify newly supplied gross input; old endpoints retained as regression oracles",
+        "prior_execution": "NONE",
+        "measured_physical_seconds": 521.7698161369408
       }
     },
     "previous_candidate": "bbbc96b6ff2662551ddd834cd8e0dc3e4c01b0e7"
@@ -1037,7 +1047,9 @@
     },
     "guard_negative_controls": 18,
     "docs_checks": "check_docs and mkdocs --strict PASS",
-    "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441"
+    "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441",
+    "owner_reference_decision_20261020": "RESOLVED: user chose original historical gross loading/order/aggregate ponding convention",
+    "successor": "historical_gross_top_successor: source aggregate supplied independently of accepted net soil water; positive bounded domain physically executed; full historical producer/negative aggregate remains open"
   },
   "material_label_successor": {
     "status": "CANONICALLY_ADMITTED_BOUNDED_PR1319",
@@ -1166,5 +1178,135 @@
     "canonical_review_merge": "4719ed47b0ed8a35830a206b0bf00014aae84f7c",
     "pull_request": 1322,
     "postmerge": "Remote exact-ref status and evidence receipt verified; merge changes docs/status/evidence only. No new native execution or full historical admission. No hosted workflows were created for the review merge."
+  },
+  "historical_gross_top_successor": {
+    "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+    "base_canonical": "21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+    "branch": "work/nut-historical-gross-top-qualified-20261020",
+    "owner_decision": "User selected option1 on2026-10-20: preserve original gross atmospheric N loading/order/aggregate ponding convention; no corrected surface-N model",
+    "contract": "docs/science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_admitted": false,
+    "mastercoverage_promotion": false,
+    "next_action": "Finish exact final documentation/source checks and integrate this scoped historical gross-positive successor; record actual canonical merge, leave whole HIST false.",
+    "blockers": [
+      "Negative original atmospheric aggregate and automatic original atmosphere-producer binding not yet qualified",
+      "Whole historical native syntax/output/full original-model envelope remains open"
+    ],
+    "interfaces_changed": [
+      "optional historical_top_water in existing mineral/reactive/crop/calendar day owners"
+    ],
+    "invariants": "Existing water/N ownership, mass, rejected-trial and restart contracts retained; gross top affects only N analytical forcing and input ledger",
+    "remote_checkpoint": "efe173a94eff2c121f40d93be6d3832c3776585d",
+    "execution_local_commit": "6373946c83c551bb0ac2ad9689fb350b40ae38f3",
+    "checkpoint_tree": "d327f938a9cc03aacb22f022cfa4c30ae59fcc0a",
+    "postimages": {
+      "integration/audits/surface_age_ci/authority.py": {
+        "status": "M",
+        "sha256": "3ae35ea7be4c0610958f5a0c12452b383d45208fb70edd84a4ff639b0e365338"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "sha256": "c3d1899fc2ab98051af62c9b008fea16047c8e8a73c8f1eebcdbaeadbaf66ffb"
+      },
+      "src/process/mod_b111_soil_n_mineral_owner.f90": {
+        "status": "M",
+        "sha256": "bb47ee7abb0393550ac3f858950431632536de7effdf4acf513b93d7e9de3946"
+      },
+      "src/process/mod_b111_soil_n_reactive_owner.f90": {
+        "status": "M",
+        "sha256": "cf80ae69e15f9128894f3cfc7f922889f02dde44b96d453521297561b6e4a30f"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_calendar_application.f90": {
+        "status": "M",
+        "sha256": "318d18666de773281989ee4093f8fbe1be319183237e377919550ca2303de7bc"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+        "status": "M",
+        "sha256": "e966d6989800d63ba4f8aff816699c4ae4d079deaf25dece89e3e70995a097e7"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_material_application.f90": {
+        "status": "M",
+        "sha256": "61ae88f17fc335606cfa4b2c09ff5f1f67fe7f4a2c6c260d75e3d3ed343355e1"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_senescence_application.f90": {
+        "status": "M",
+        "sha256": "cc8829dbbb0b880e6e338419094699e39dad296e5f6b741076fc8c76f8224872"
+      },
+      "tests/nut-crop/run_hist_complete.py": {
+        "status": "M",
+        "sha256": "142195c6617b1d1b4d3a9a77bd48ef32210e076823c16e97dcd10fc452b1ccba"
+      },
+      "tests/nut-crop/test_b112_retained_joint.f90": {
+        "status": "M",
+        "sha256": "b155b2ffc17d9f795bc6267b83de8d9ac380b07ce442cbc38edd9f8d122511ff"
+      },
+      "tests/nut-crop/verify_hist_native_successor.py": {
+        "status": "M",
+        "sha256": "5a05a72fff5f085061af685a6b62792aa75153e0eed1439b19687c937ad36498"
+      },
+      "tests/nut-crop/verify_historical_gross.py": {
+        "status": "A",
+        "sha256": "e28a5175eb2e018312eff07cd1a008f5cec7491d39e5405c7292f4bfc32d28b6"
+      },
+      "tests/nut-mineral/test_mineral_owner.f90": {
+        "status": "M",
+        "sha256": "519cea306235ec972fd79fc8b8bb763df44e5e68c5557ab94f931d845952f1b7"
+      },
+      "tests/nut-reactive/test_reactive_owner.f90": {
+        "status": "M",
+        "sha256": "dacfbf222a78ad7f57c9077635d5a9fc87ff91c6b51bd360bdd604d6bcc40185"
+      }
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_HISTORICAL_GROSS_TOP_20261020.tar.xz.b64",
+      "decoded_sha256": "1ab68b9687bad73082762e6956f1f0e458732058d41ffc6717a5fc2d351069d3",
+      "compressed_bytes": 235300,
+      "members": 4432
+    },
+    "predecessor_physical_evidence": {
+      "path": "integration/audits/evidence/MC_NUT01_NATIVE_MATERIAL_LABELS_20261018.tar.xz.b64",
+      "decoded_sha256": "20e4f7faf4ecf43f0450f675b4b2659c9edbb578e7f257c29e2a81a8e86efdbc",
+      "members": 3964
+    },
+    "results": {
+      "compiler": "GNU Fortran 13.3.0-6ubuntu2~24.04.1",
+      "mineral_original_cases_per_optimization": 18,
+      "reactive_original_cases_per_optimization": 9,
+      "actual_days": 730,
+      "actual_profiles": "Default,source124,three incumbent730-day rotations,new gross730-day rotation",
+      "fresh_transition_processes": 48,
+      "predecessor_endpoints_exact": 10,
+      "original_tcs6_native": 54,
+      "retained": "PASS",
+      "thermal_empty": "PASS",
+      "nitrogen_budget_kg_m2": {
+        "initial": 0.6656915305925469,
+        "external_input": 0.01944827312128866,
+        "external_output": 0.008072376946672838,
+        "final": 0.6770674267671648,
+        "residual": -1.9931972738973514e-15,
+        "relative_residual": 2.90918329820151e-15,
+        "max_daily_residual": 1.8432074324546384e-15
+      },
+      "max_water_step_residual_cm": 4.986462631695332e-15,
+      "endpoint_sha256": "f43aff865026e2f26337c7c87c1c8f5446346492539de2dcaf709304ee2b33af",
+      "physical_cost_seconds": {
+        "compile": 227.9458504469294,
+        "link": 0.3562932929926319,
+        "native": 138.95966615698853,
+        "restart_native": 154.50800624003023
+      }
+    },
+    "guard_controls": {
+      "gross": 8,
+      "original_historical": 18,
+      "unchanged_ci_compiler_footprints": 3
+    },
+    "reconciled_upstream": "21cc80984a864b48d4344b9671d6ccd2ae5882ad",
+    "reconciliation": "PR1329 adds independent opt-in solute-column app/tools/evidence; all NUT production and all measured physical input hashes unchanged. Its complete admitted tree is preserved; original predecessor admission reexecuted at21cc8098."
   }
 }

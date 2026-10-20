@@ -170,7 +170,15 @@ def registered_label_reader(g,h):
  spec=importlib.util.spec_from_file_location('nut_native_labels',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
  return module.verify(ROOT,record,archive(record['evidence']),h,require)
 
+def historical_gross_authority():
+ s=json.loads((ROOT/STATUS).read_text()).get('historical_gross_top_successor',{})
+ if 'evidence'not in s:return None
+ import runpy
+ return runpy.run_path(str(ROOT/'tests/nut-crop/verify_historical_gross.py'),run_name='registered_historical_gross_authority')
+
 def load():
+ gross=historical_gross_authority()
+ if gross is not None:return gross['verify_qualification']()
  g=json.loads((ROOT/STATUS).read_text())['historical_guard'];require(g['baseline']==BASE,'HIST baseline')
  h=archive(g['physical_evidence']);p=archive(g['retained_evidence'])
  reader=registered_label_reader(g,h)
@@ -203,6 +211,8 @@ def load():
 def verify_source(git_reader=None):
  require(git_reader is None,'unregistered HIST projection');return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'full_capability':False,'qualified':False,'current_source_tree':git('rev-parse','HEAD:src')}
 def verify_qualification():
+ gross=historical_gross_authority()
+ if gross is not None:return gross['verify_qualification']()
  ci=ci_authority()
  if ci is not None:ci['verify_qualification']()
  return {**load(),'historical_native_successor':True,'b112_retained_successor':True,'qualified':True,'full_capability':False,'current_source_tree':git('rev-parse','HEAD:src'),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY','mastercoverage_promotion':False}

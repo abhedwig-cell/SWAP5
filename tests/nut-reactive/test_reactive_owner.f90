@@ -134,6 +134,38 @@ program test_reactive_owner
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'fractional humus switch rejected')
  bad=p;bad%hum_exp_daily=ieee_value(0d0,ieee_quiet_nan)
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'NaN humus experiment rejected')
+ call parameters(p);p%mineral%c_top=[.005d0,.015d0]
+ call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
+ do i=0,2
+  do j=1,3
+   w=moisture(j)
+   call initialize_reactive(p,9001_int64,0d0,w,pools,state,code)
+   call require(code==0,'gross reactive initialize')
+   call literal_day(p,pools,w,w,0d0,0d0,0d0,0d0,want,nit,denit,carbon,surface_water=.004d0*i)
+   call advance_reactive_day(state,0d0,1d0,w,0d0,0d0,0d0,0d0,r, &
+    surface_water=0d0,historical_top_water=.004d0*i)
+   call require(r%status==0,'gross reactive accepted')
+   call state%snapshot(time,theta,got,revision);call compare(got,want,'gross original full chemistry')
+   call near(r%external_in,.004d0*i*sum(p%mineral%c_top),'gross reactive source receipt')
+   call near(r%process%exchange%nh4_nitrified_kg_m2,nit,'gross original nitrification')
+   call near(r%process%exchange%no3_denitrified_kg_m2,denit,'gross original gas loss')
+   copy=state
+   call advance_reactive_day(state,1d0,2d0,w,0d0,0d0,0d0,0d0,r, &
+    historical_top_water=ieee_value(0d0,ieee_quiet_nan))
+   call require(r%status/=0,'gross reactive invalid source rejected')
+   call state%snapshot(time,theta,other,revision);call compare(got,other,'gross invalid source rollback')
+   call require(time==1d0.and.revision==1,'gross invalid source preserves clock/revision')
+   call export_reactive_restart(state,payload,code);call require(code==0,'gross reactive restart export')
+   call restore_reactive_restart(payload,9001_int64,restored,code);call require(code==0,'gross reactive restart restore')
+   call advance_reactive_day(state,1d0,2d0,w,0d0,0d0,0d0,0d0,r,historical_top_water=.004d0)
+   call require(r%status==0,'gross reactive retry')
+   call advance_reactive_day(restored,1d0,2d0,w,0d0,0d0,0d0,0d0,r,historical_top_water=.004d0)
+   call require(r%status==0,'gross reactive resumed retry')
+   call state%snapshot(time,theta,got,revision);call restored%snapshot(time,theta,other,revision)
+   call compare(got,other,'gross reactive restart continuation')
+  end do
+ end do
+ print '(A)','REACTIVE_GROSS_ORIGINAL_9_CHEMISTRY_DAYS_RESTART_ROLLBACK=PASS'
  print '(A)','REACTIVE_ORIGINAL_HUMUS_SWITCH_THRESHOLD_18_DAYS_OPAQUE=PASS'
  print '(A)','REACTIVE_ATMOSPHERIC_ORIGINAL_CHEMISTRY_EVAPORATION_RESTART=PASS'
  print '(A)','REACTIVE_LITERAL_16_ENVIRONMENTS_TRANSPORT_OFF_MASS_IMMOBILISATION_RESTART=PASS'
