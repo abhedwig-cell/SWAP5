@@ -148,3 +148,7 @@ MC-NUT01 historical gross-positive PR1330: [contract, actual730-day results and 
 [Source equation, units, complete N ledger, O0/O2, rollback/restart and root-rounding diagnosis](../science/MC_NUT01_ACCEPTED_ATMOSPHERE_BINDING_20261020.md) are owned by `accepted_atmosphere_successor` in the existing MC-NUT01-HIST-COMPLETE record. Its strict source-bound gate executes the original complete NUT/grid authority unchanged at canonical1158562f, verifies all178 current grid providers, and retains the original grid guard through an exact opt-in handoff. No shared transport contract or global capability denominator changes. Full historical limitations remain in the [closure review](../science/MC_NUT01_FINAL_CLOSURE.md).
 
 Actual PR1333 merge `6a2985776d2f242572725d8c18489260296c6732`, qualified head `9a345b00b311a6b4795fa993a20b3497b2646c91`, exact tree723f1e2a/source06d4d60b, source-bound postmerge NUT/grid PASS; master882aa4824741c771ea5170477e1adf92ec9a5981. The admission capsule records both proof results, nine corruption controls and the strict documentation build.
+
+### MC-NUT01 original surface-source diagnostic (20October2026)
+
+The original surface-source evidence is owned by historical_surface_source_diagnostic in the existing MC-NUT01 status. The47-member immutable capsule binds original sources, literal extraction/scaffolding, commands, native O0/O2 results and member hashes. Existing PR1333 production admission is unchanged. See the [source, results and limits](../science/MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md).

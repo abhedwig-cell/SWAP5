@@ -23,6 +23,7 @@ def main():
     parser.add_argument('--optimization', choices=['O0', 'O2'], default='O2')
     parser.add_argument('--build-profile', choices=['checked', 'production'], default='checked',
                         help='Production omits compiler bounds/shape checks; physical and numerical guards remain active')
+    parser.add_argument('--gprof', action='store_true', help='Diagnostic instrumentation; excluded from speed comparisons')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -65,6 +66,8 @@ def main():
     flags = ['-' + args.optimization, '-std=f2008', '-ffree-line-length-none', '-fopenmp',
              '-fbacktrace', '-ffpe-trap=invalid,zero,overflow',
              '-J' + str(output), '-I' + str(output)]
+    if args.gprof:
+        flags.append('-pg')
     if args.build_profile == 'checked':
         flags.append('-fcheck=all')
     report = {'build_profile': args.build_profile, 'schema': 1, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),

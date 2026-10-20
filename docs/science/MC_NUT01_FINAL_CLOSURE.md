@@ -296,3 +296,9 @@ and all243 dispositions, and retains concurrent MC-SOL01 PR1332. No new
 hosted Actions run is claimed; local owning qualification and unchanged
 compiled CI footprints are recorded explicitly. The complete source/evidence
 receipt is in the linked contract and existing work-unit status.
+
+## Original surface-source investigation,20 October2026
+
+The [literal original surface-source diagnostic](MC_NUT01_HISTORICAL_SURFACE_SOURCE_20261020.md) adds executable O0/O2 evidence to the negative-source blocker. A wet surface step produces pond storage; the following dry step produces runoff and an original aggregate of -0.004567591412606608m/day, with zero reported surface water residual. Conditional depleted-stock original N transport then has signed residual -2.2827957153033037e-5kg/m² (absolute relative0.9991246521540272). O0/O2 outputs are identical. This is QUALIFICATION_ONLY with prescribed hydraulic top state, not a complete original-model trajectory; the depleted N stock is imposed separately. Full original caller reachability remains NOT_PROVEN. Negative forcing stays rejected; production source, existing bounded admission, all nine master dispositions and MC-SOL01 are unchanged. The existing status owns the47-member source/raw evidence capsule and exact reproduction command.
+
+Latest diagnostic evidence canonical integration: PR1334 / `820bc86ef33ff09cb7b1a938d542163bacc7e61a`; production remains PR1333 source06d4d60b. The actual-merge admission/evidence guard passes. Complete MC-NUT01 closure remains false.

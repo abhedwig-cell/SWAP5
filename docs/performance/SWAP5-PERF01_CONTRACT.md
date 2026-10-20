@@ -1,6 +1,6 @@
 # SWAP5-PERF01 exact runtime optimization contract
 
-Status: proposed implementation, not canonical admission. Baseline b0c2e94b.
+Status: the prepared-origin experiment was REJECTED on measured cost; its patch and exactness test remain reproducible outside production. The retained candidate removes inactive macropore work and adds an explicit production build profile. Not canonical admission. Baseline b0c2e94b.
 
 The measured 50-node profile calls the stable MvG storage-increment path approximately once per residual evaluation. The two powers of the previous pressure head are invariant during a single explicit solve. The adapter may prepare exactly those expressions once and supply them to the original increment arithmetic. No algebraic substitution, temporal tolerance, residual criterion, or trial acceptance policy changes.
 
@@ -13,3 +13,15 @@ Affected invariants: 3 (trial isolation), 5 (worker scratch), 7 (conservative ac
 Qualification: exact prepared/unprepared increment comparison including changed origins, saturation, near-saturation, branch crossings, entry-pressure smoothing and elastic storage at O0/O2; complete binary state/flux/mass/work trajectories for eight synthetic 50-node regimes at O0/O2/O3; focused real transactional/restart and active-macropore production gates. Byte identity is required for this implementation optimization. Existing 1e-12 independent per-step mass assertion stays fixed. No new relaxed tolerance.
 
 These diagnostics use prescribed root/drain fluxes, not a live seasonal crop or a real HRU. Historical SWAP4 and actual HRU application comparisons must remain separately identified until executed. A default 0.005-day step bypasses outer adaptive transaction policy in the diagnostic solver matrix; it cannot prove full-model timestep equivalence.
+
+The prepared-origin experiment did not resolve a broad production gain: the nine-pair O2 run was near neutral and O0 was materially slower. It is removed from production. No temporal error criterion or default solver policy is changed. Production builds omit only compiler debug bounds/shape checks; floating-point traps and all explicit physical, mass, convergence, restart and transaction checks remain active. Checked compilation stays the default.
+
+## Profile-selected immutable trace arena
+
+The actual file-application gprof run (4 cells, 8 windows, unchanged Reference policy) samples 37.18% in append, 19.23% in context capture, 17.95% in context restore and 6.41% in context finalization. Shared-library time is not fully sampled; these are model-sample shares, not inclusive portable CPU fractions. The existing code deep-copies the entire growing flux prefix at every append/capture/restore. This is quadratic in substep count and was absent from the short PROFILE04 timing fixture.
+
+Selected implementation: store each trial substep as an immutable arena entry with a predecessor index. An attempt context stores only generation, tail and active length. Rollback restores the cursor, never edits prior entries; subsequent branches append new entries, so even a previously captured alternate branch remains recoverable. Growth doubles capacity and moves owned payloads rather than copying their node arrays. Publication materializes exactly the accepted predecessor chain, oldest first, then runs the unchanged complete-coverage validation. No rejected branch is published. The arena is worker/job-local numerical scratch, cleared at each outer backend trial; generation mismatch fails closed. It is absent from accepted state and restart files, and the public observation array retains its exact type, size and values.
+
+Memory grows linearly with all successful solver trials within one outer backend call, including rejected branches, and is freed after publication or on the next call following early rejection. This trades repeated prefix duplication for retained immutable trial entries. Peak bytes and trial counts must be measured on the selected stress cases; no claim is made for arbitrary maximum-retry workloads. All other attempt-context payloads retain original copy/restore semantics.
+
+Required discrimination: exact old/new budget/state/endpoint/restart and accepted-step order on the actual positive-pond, root/drain/bottom and 2/8/32/256-node application corpus; explicit branch restore/replay, temporal retry/rejection, failed publication and separate-process restart; direct hydraulic matrix remains exact. Existing nutrient/solute/macropore/thermal consumers must retain their owning preservation requirements. The arena does not change step selection or remove full/half solves.

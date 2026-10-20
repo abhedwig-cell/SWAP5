@@ -1,11 +1,11 @@
 {
   "work_unit": "SWAP5-PERF01",
   "baseline": "b0c2e94b69d7d21519611af92866fb4dbf713ea2",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
-  "next_action": "Build production Full Richards diagnostic, profile current head, then select measured exact optimization",
+  "next_action": "Qualify immutable trace arena on original column, nutrient, macro and restart drivers, then paired native benchmarks; no arithmetic or temporal policy change",
   "recovery_point": "work/swap5-perf01-runtime-investigation",
   "blockers": [],
   "dependency_surface": [
@@ -21,5 +21,17 @@
     25,
     26
   ],
-  "scope": "Exact implementation optimization. No tolerance, physics, RossFast, accepted-state or solver-policy changes."
+  "scope": "Exact implementation optimization. No tolerance, physics, RossFast, accepted-state or solver-policy changes.",
+  "last_reconciled_upstream": "f6d5ffed",
+  "profile_finding": "Actual file application: append/capture/restore account for 74.36% of sampled model time; complete growing trace deep-copied quadratically",
+  "rejected_experiments": [
+    "per-call geometry copies",
+    "prepared MvG origin cache: no robust broad speed gain"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "tools/solute/build_column.py"
+  ],
+  "pilot": "Arena O0 produces byte-identical complete eight-window 4-node budget/state/endpoint/restart versus old production O2; native run completed in about 0.25 seconds wall, timing not yet qualified"
 }
