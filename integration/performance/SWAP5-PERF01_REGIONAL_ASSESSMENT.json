@@ -1,0 +1,31 @@
+{
+  "reference_repository": "abhedwig-cell/LWKM",
+  "reference_commit": "a6787b9d9620f037332b2dd2babbdd9a778ecd1f",
+  "evidence_path": "docs/evidence/2026-10-19-work-c2/execution-evidence.zip",
+  "archive_sha256": "9f4b7852554d602c12d551248066f7d885b13edbb380e8be41860a6b5ce88e5a",
+  "archive_bytes": 3707771,
+  "indexed_paths": 1251,
+  "case": 7866,
+  "period": "1971-01-01 through 1971-12-20",
+  "legacy_engine": "Intel original e3b45c1fe66a614c1caead4b2fc0684a09165672a32d8d3bf4eac00498767862",
+  "case_swp_sha256": "b1638882c124dbae38f291572cf376014d1b9d3350380d999accf0837f020764",
+  "required_processes": {
+    "SWCROP": 1,
+    "SWETR": 0,
+    "SWRAIN": 2,
+    "SWDRA": 1,
+    "SWBOTB": 2,
+    "SWHEA": 1
+  },
+  "met_file_sha256": "c698f01cf339eeb83d4ebf6bf90be7f55eef917fca286d845b8b71942c8cd09d",
+  "met_bytes_in_capsule": false,
+  "swap5_executable_sha256": "fc0a34a2a7fab890fc761b30b3f6b80fbf69e59a0a766127e43b1521607a1947",
+  "probe_returncode": 1,
+  "probe_stdout": "End of file\ninvalid column namelist\n",
+  "probe_stderr_sha256": "d538ea9a3be2418f245a9d4fc5347157708d4b10775ea11239cc92a146418443",
+  "conclusion": "REGIONAL_PACKAGE_FOUND_NOT_COMPARABLY_EXECUTABLE: existing file application accepts only column/surface namelists, prescribed sinks, one drainage level and prescribed qbot; no general SWP/live crop/heat/BBC orchestration. Porting a complete new scientific application is outside a safe exact performance optimization. Do not replace active processes with prescribed fluxes to claim equivalence. Intel archived timings are not GNU matched timings.",
+  "source_boundaries": [
+    "app/solute_column/README.md",
+    "app/solute_column/main.f90"
+  ]
+}

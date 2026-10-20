@@ -1,0 +1,36 @@
+name: SWAP5-PERF01 exact implementation admission
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/performance/**'
+      - 'tests/nut-crop/verify_accepted_atmosphere.py'
+      - 'tools/performance/**'
+      - 'tools/solute/build_column.py'
+      - 'integration/performance/**'
+      - '.github/workflows/swap5-perf01.yml'
+  push:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/**'
+      - 'integration/performance/**'
+      - '.github/workflows/swap5-perf01.yml'
+jobs:
+  exact-successor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Recover exact historical evidence owners
+        run: |
+          git fetch origin 82d9938976fd92ff3230e7739539e467c3243225
+          git fetch origin 1da854e4dd2d45fe388ee2a1ef3bd67c76d3d73f
+      - name: Validate native evidence and unchanged original predecessor authority
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python -B integration/performance/authority.py
+          python -B integration/performance/authority.py --self-test

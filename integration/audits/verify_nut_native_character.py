@@ -148,11 +148,17 @@ def ci_preservation():
  return logs
 
 def verify_qualification():
+ current=json.loads((ROOT/STATUS).read_text()).get('gash_interception_successor',{})
+ if 'evidence'in current:
+  return runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_nut_gash')['verify_qualification']()
  s=source();r=validate(helpers()['capsule'](s['evidence']));predecessor()
  grid=runpy.run_path(str(ROOT/'tests/nut-crop/verify_accepted_atmosphere.py'),run_name='character_grid_helpers')['grid_preservation']()
  return {**r,**grid,'qualified':True,'predecessor_qualified':True,'accepted_atmosphere':True,'historical_gross_top':True,'full_migration_qualified':False,'mastercoverage_promotion':False,'source_tree':git('rev-parse','HEAD:src'),'current_source_tree':git('rev-parse','HEAD:src'),'independent_ci_compile_logs':ci_preservation(),'full_fci':'NOT_SELECTED_IMPACT','highest_low_air':'NOT_SELECTED_POLICY'}
 
 def self_test():
+ current=json.loads((ROOT/STATUS).read_text()).get('gash_interception_successor',{})
+ if 'evidence'in current:
+  return runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_nut_gash_controls')['self_test']()
  f=helpers()['capsule'](record()['evidence']);validate(f);passed=[]
  def reject(name,mutate,reader=lambda q:(ROOT/q).read_bytes()):
   ff=dict(f);mutate(ff)

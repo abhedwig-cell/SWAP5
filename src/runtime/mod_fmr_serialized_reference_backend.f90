@@ -690,6 +690,13 @@ module mod_fmr_serialized_reference_backend
 
   ! Worker-local transactional scratch for thermal transfer provenance. This is
   ! attempt context, never compact committed column state.
+  ! Immutable successful trial records. Branch contexts refer to predecessor
+  ! chains in this worker-local arena; publication alone creates a flat array.
+  type :: fmr_trace_arena_entry_t
+    type(fmr_water_flux_substep_trace_t), allocatable :: payload
+    integer :: predecessor = 0
+  end type fmr_trace_arena_entry_t
+
   type, extends(transaction_attempt_context_t) :: fmr_serialized_attempt_context_t
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(fmr_cauchy3_proposal_t) :: cauchy3_proposal
@@ -702,7 +709,8 @@ module mod_fmr_serialized_reference_backend
     logical :: drainage_response_window_exchange_available = .false.
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
     type(accepted_trajectory_direction_t) :: trajectory_direction
-    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
+    integer(int64) :: trace_generation = 0_int64
+    integer :: trace_tail = 0, trace_count = 0
     logical :: accepted_water_flux_trace_failed = .false.
   end type fmr_serialized_attempt_context_t
 
@@ -883,7 +891,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_serialized_physical_observation_t) :: last_observation
     logical :: accepted_water_flux_trace_enabled = .false.
     logical :: accepted_water_flux_trace_failed = .false.
-    type(fmr_water_flux_substep_trace_t), allocatable :: accepted_water_flux_substeps(:)
+    type(fmr_trace_arena_entry_t), allocatable :: trace_arena(:)
+    integer(int64) :: trace_generation = 0_int64
+    integer :: trace_used = 0, trace_tail = 0, trace_count = 0
   contains
     procedure :: matches_committed_parameter_identity => fmr_serialized_matches_committed_identity
     procedure :: configure_parameters => fmr_serialized_configure_parameters
@@ -2394,7 +2404,11 @@ contains
     self%model%accepted_water_flux_trace_enabled = .false.
     if (present(trace_accepted_water_flux_substeps)) &
          self%model%accepted_water_flux_trace_enabled = trace_accepted_water_flux_substeps
-    if (allocated(self%model%accepted_water_flux_substeps)) deallocate(self%model%accepted_water_flux_substeps)
+    if (allocated(self%model%trace_arena)) deallocate(self%model%trace_arena)
+    self%model%trace_generation = self%model%trace_generation + 1_int64
+    self%model%trace_used = 0
+    self%model%trace_tail = 0
+    self%model%trace_count = 0
     soil_n_heat_trace=.false.
     if(present(trace_accepted_soil_n_heat))soil_n_heat_trace=trace_accepted_soil_n_heat
     if(soil_n_heat_trace)then
@@ -2809,16 +2823,13 @@ contains
     nullify(self%model%trusted_parameter_source)
     self%model%trusted_prepared_default_mvg = .false.
     if (self%model%accepted_water_flux_trace_enabled .and. result%completed) then
-      if (self%model%accepted_water_flux_trace_failed .or. &
-          .not. allocated(self%model%accepted_water_flux_substeps)) then
-        call reject_backend_trial(result, candidate, diagnostics)
-      else if (.not. accepted_water_flux_trace_covers(self%model%accepted_water_flux_substeps,t0,t1)) then
-        call reject_backend_trial(result, candidate, diagnostics)
-      else
-        self%model%last_observation%accepted_water_flux_substeps = self%model%accepted_water_flux_substeps
-        self%model%last_observation%accepted_water_flux_trace_available = .true.
-      end if
+      call materialize_accepted_water_flux_trace(self%model,t0,t1,soil_salt_boundary_ok)
+      if (.not.soil_salt_boundary_ok) call reject_backend_trial(result,candidate,diagnostics)
     end if
+    ! Transaction contexts have left scope after fmr_trial_from_checkpoint.
+    ! The immutable public observation now owns the accepted flat trace.
+    if (allocated(self%model%trace_arena)) deallocate(self%model%trace_arena)
+    self%model%trace_used=0
     if (self%model%bottom_thermal_carrier_active .and. self%model%bottom_thermal_carrier_valid .and. &
         result%completed) then
       if (candidate%ready()) then
@@ -2920,8 +2931,9 @@ contains
       typed%drainage_response_window_signed_exchange_native = self%drainage_response_window_signed_exchange_native
       typed%trajectory_direction = self%trajectory_direction
       typed%accepted_water_flux_trace_failed = self%accepted_water_flux_trace_failed
-      if (allocated(self%accepted_water_flux_substeps)) &
-           typed%accepted_water_flux_substeps = self%accepted_water_flux_substeps
+      typed%trace_generation = self%trace_generation
+      typed%trace_tail = self%trace_tail
+      typed%trace_count = self%trace_count
     end select
   end subroutine fmr_serialized_capture_attempt_context
 
@@ -2943,11 +2955,12 @@ contains
       self%drainage_response_window_signed_exchange_native = typed%drainage_response_window_signed_exchange_native
       self%trajectory_direction = typed%trajectory_direction
       self%accepted_water_flux_trace_failed = typed%accepted_water_flux_trace_failed
-      if (allocated(typed%accepted_water_flux_substeps)) then
-        self%accepted_water_flux_substeps = typed%accepted_water_flux_substeps
-      else if (allocated(self%accepted_water_flux_substeps)) then
-        deallocate(self%accepted_water_flux_substeps)
-      end if
+      if (typed%trace_generation /= self%trace_generation .or. &
+          typed%trace_tail < 0 .or. typed%trace_tail > self%trace_used .or. &
+          typed%trace_count < 0 .or. typed%trace_count > self%trace_used) &
+           error stop 'Reference trace: stale or invalid attempt context'
+      self%trace_tail = typed%trace_tail
+      self%trace_count = typed%trace_count
     class default
       self%hbot5_proposal = fmr_hbot5_proposal_t()
       self%cauchy3_proposal = fmr_cauchy3_proposal_t()
@@ -2960,7 +2973,8 @@ contains
       self%drainage_response_window_exchange_available = .false.
       self%drainage_response_window_signed_exchange_native = 0.0_real64
       self%accepted_water_flux_trace_failed = .true.
-      if (allocated(self%accepted_water_flux_substeps)) deallocate(self%accepted_water_flux_substeps)
+      self%trace_tail=0
+      self%trace_count=0
       call configure_trajectory_direction(self%trajectory_direction, .false.)
     end select
   end subroutine fmr_serialized_restore_attempt_context
@@ -5611,9 +5625,9 @@ contains
     real(real64), intent(in), optional :: macropore_water_start(:,:),macropore_water_end(:,:)
     real(real64), intent(in), optional :: macropore_vertical_face_rate(:,:)
     type(mobile_macro_salt_receipt_t), intent(in), optional :: salt_receipt
-    type(fmr_water_flux_substep_trace_t), allocatable :: grown(:)
+    type(fmr_trace_arena_entry_t), allocatable :: grown(:)
     type(fmr_water_flux_substep_trace_t) :: step
-    integer :: n, prior
+    integer :: n, prior, capacity, index
 
     ok = .false.
     if (.not. associated(self%qssdi) .or. .not. associated(self%qdra) .or. .not. associated(self%qrot)) return
@@ -5751,13 +5765,52 @@ contains
       allocate(step%salt_receipt)
       step%salt_receipt = salt_receipt
     end if
-    if (allocated(self%accepted_water_flux_substeps)) prior = size(self%accepted_water_flux_substeps)
-    allocate(grown(prior+1))
-    if (prior > 0) grown(1:prior) = self%accepted_water_flux_substeps
-    grown(prior+1) = step
-    call move_alloc(grown,self%accepted_water_flux_substeps)
+    capacity=0
+    if(allocated(self%trace_arena))capacity=size(self%trace_arena)
+    if(self%trace_used==capacity)then
+      allocate(grown(max(16,2*capacity)))
+      do index=1,self%trace_used
+        grown(index)%predecessor=self%trace_arena(index)%predecessor
+        call move_alloc(self%trace_arena(index)%payload,grown(index)%payload)
+      end do
+      call move_alloc(grown,self%trace_arena)
+    end if
+    self%trace_used=self%trace_used+1
+    index=self%trace_used
+    allocate(self%trace_arena(index)%payload)
+    self%trace_arena(index)%payload=step
+    self%trace_arena(index)%predecessor=self%trace_tail
+    self%trace_tail=index
+    self%trace_count=self%trace_count+1
     ok = .true.
   end function append_accepted_water_flux_substep
+
+  subroutine materialize_accepted_water_flux_trace(self,t0,t1,ok)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    real(real64),intent(in)::t0,t1
+    logical,intent(out)::ok
+    type(fmr_water_flux_substep_trace_t),allocatable::steps(:)
+    integer::i,cursor,previous
+    ok=.false.
+    if(self%accepted_water_flux_trace_failed.or.self%trace_count<=0)return
+    if(.not.allocated(self%trace_arena))return
+    allocate(steps(self%trace_count))
+    cursor=self%trace_tail
+    do i=self%trace_count,1,-1
+      if(cursor<=0.or.cursor>self%trace_used)return
+      if(.not.allocated(self%trace_arena(cursor)%payload))return
+      steps(i)=self%trace_arena(cursor)%payload
+      previous=self%trace_arena(cursor)%predecessor
+      ! Strictly decreasing indices exclude cycles and foreign branch links.
+      if(previous<0.or.previous>=cursor)return
+      cursor=previous
+    end do
+    if(cursor/=0)return
+    if(.not.accepted_water_flux_trace_covers(steps,t0,t1))return
+    call move_alloc(steps,self%last_observation%accepted_water_flux_substeps)
+    self%last_observation%accepted_water_flux_trace_available=.true.
+    ok=.true.
+  end subroutine materialize_accepted_water_flux_trace
 
   logical function accepted_water_flux_trace_covers(steps,t0,t1) result(ok)
     type(fmr_water_flux_substep_trace_t), intent(in) :: steps(:)
