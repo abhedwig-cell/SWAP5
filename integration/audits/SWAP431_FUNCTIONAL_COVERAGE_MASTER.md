@@ -953,3 +953,16 @@ published generation. Sorption and pond rows receive bounded application receipt
 the other241 rows and all243 dispositions are unchanged. General historical SWP,
 default/bootstrap/multicolumn, nonlinear pond, dynamic thermal decay and age/N
 composition are still separate. Full master integrity is not claimed.
+
+## Schema2 solute grid successor,20 October2026
+
+PR1332 admits immutable2..256-cell file-driven Reference grids at
+`fc6f52e0e6d1f5ade79e01efbb0af4e665d13bb1`. Actual GNU13.3 O0/O2,86 process
+observations, independent water/solute budgets and five-grid fresh-process
+restart preserve the exact original schema1 endpoint. All16 qualified-head
+workflows succeed, including owning run39470971724. The dry138cm long-window
+Reference rejection remains a reproduced numerical limit; smaller windows and
+the wetter profile qualify without relaxed tolerances. Only two existing
+bounded application receipts change. The other241 rows, all243 dispositions
+and concurrent NUT gross-positive receipts atccdcccb9 remain exact. No full
+historical/default, seasonal or whole-master admission is claimed.
