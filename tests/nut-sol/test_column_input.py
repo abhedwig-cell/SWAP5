@@ -28,6 +28,91 @@ def require(condition, label):
         raise AssertionError(label)
 
 
+def qualify_grids(execute, directory, exe):
+    """Geometry adapter qualification using unchanged production physics."""
+    cases = {
+        'minimum': [0.25, 0.75],
+        'refined': [0.25] * 4 + [0.5] * 4,
+        'deep': [0.5, 0.5, 1, 1, 2, 3] + [5] * 26,
+        'maximum': [1] * 256,
+    }
+    results = {}
+    for name, thickness in cases.items():
+        n = len(thickness)
+        case = directory / name
+        case.mkdir()
+        source = case / 'input.nml'
+        # Concentration gradients exercise internal dispersion/advection;
+        # source arrays retain fixed column totals as the grid changes.
+        concentrations = [0.2 + 0.3 * i / (n - 1) for i in range(n)]
+        text = EXAMPLE.read_text().replace('schema=1', 'schema=2, nodes=' + str(n) +
+                                          ', cell_thickness_cm=' + ','.join(map(str, thickness)))
+        text = text.replace('concentration_mg_cm3=0.2,0.3,0.4,0.5',
+                            'concentration_mg_cm3=' + ','.join(map(str, concentrations)))
+        text = text.replace('4*0.0001', str(n) + '*' + str(0.0004 / n))
+        if name == 'maximum':
+            text = text.replace('ends_day=0.001,0.002', 'ends_day=0.00001,0.00002')
+        source.write_text(text)
+        common = [sys.executable, RUNNER, '--exe', exe, '--input', source]
+        full, split, resumed = [case / p for p in ['full', 'split', 'resumed']]
+        execute(common + ['--output', full], name + ' full')
+        execute(common + ['--output', split, '--stop-after', 1], name + ' split')
+        execute(common + ['--output', resumed, '--restart', split], name + ' independent restart')
+        for filename in ['state.csv', 'endpoint.csv', 'restart.bin']:
+            require((full / filename).read_bytes() == (resumed / filename).read_bytes(), name + ' exact restart ' + filename)
+        state, endpoint, budget = rows(full / 'state.csv'), rows(full / 'endpoint.csv')[0], rows(full / 'budget.csv')
+        require(len(state) == n, name + ' actual active node count')
+        depth = 0.0
+        for row, width in zip(state, thickness):
+            require(abs(row['dz_cm'] - width) < 1e-14, name + ' thickness')
+            require(abs(row['z_cm'] + depth + 0.5 * width) < 1e-12, name + ' cell centre')
+            require(abs(row['sorbed_mg_cm2'] - 1.3 * 0.2 * row['concentration_mg_cm3'] * width) < 1e-12,
+                    name + ' linear sorption inventory')
+            depth += width
+        require(rows(resumed / 'budget.csv') == budget[1:], name + ' restart budget')
+        require(abs(sum(r['theta'] * r['dz_cm'] for r in state) + endpoint['pond_cm'] - endpoint['total_water_cm']) < 1e-10,
+                name + ' endpoint water inventory')
+        require(abs(sum(r['dissolved_mg_cm2'] + r['sorbed_mg_cm2'] for r in state) + endpoint['pond_solute_mg_cm2'] -
+                    endpoint['total_solute_mg_cm2']) < 1e-10, name + ' endpoint solute inventory')
+        for b in budget:
+            dt = b['t1_day'] - b['t0_day']
+            require(abs(b['water_end_cm'] - b['water_start_cm'] - dt + dt * (0.0008 + 0.1) +
+                        b['runoff_cm'] + b['pond_evaporation_cm']) < 1e-10, name + ' independent gross water budget')
+            cin = dt * (0.25 * 0.125 + 0.25 * 0.375 + 0.5 * 3)
+            require(abs(b['solute_in_mg_cm2'] - cin) < 1e-14, name + ' chemical source budget')
+            require(abs(b['solute_end_mg_cm2'] - b['solute_start_mg_cm2'] - cin + b['solute_out_mg_cm2']) < 1e-10,
+                    name + ' independent chemical budget')
+            require(abs(b['water_residual_cm']) < 1e-10 and abs(b['solute_residual_mg_cm2']) < 1e-10, name + ' native balances')
+            require(min(b['infiltration_cm'], b['runon_cm'], b['pond_evaporation_cm']) > 0, name + ' positive gross fluxes')
+            require(b['accepted_substeps'] > 1, name + ' actual substeps')
+        require(sum(b['runoff_cm'] for b in budget) > 0 and endpoint['pond_cm'] > 0, name + ' wet pond and runoff')
+        results[name] = {'nodes': n, 'depth_cm': depth, 'budget': budget, 'endpoint': endpoint,
+                         'input_sha256': digest(source), 'restart_sha256': digest(full / 'restart.bin')}
+    bad = {
+        'too_few': 'schema=2, nodes=1, cell_thickness_cm=1',
+        'too_many': 'schema=2, nodes=257, cell_thickness_cm=256*1',
+        'zero_cell': 'schema=2, nodes=4, cell_thickness_cm=0.5,0,1,1',
+        'negative_cell': 'schema=2, nodes=4, cell_thickness_cm=0.5,-0.5,1,1',
+        'nonfinite_cell': 'schema=2, nodes=4, cell_thickness_cm=NaN,0.5,1,1',
+        'thin_cell': 'schema=2, nodes=4, cell_thickness_cm=0.00001,0.5,1,1',
+        'wide_cell': 'schema=2, nodes=4, cell_thickness_cm=10001,0.5,1,1',
+        'deep_column': 'schema=2, nodes=256, cell_thickness_cm=256*10000',
+        'missing_cell': 'schema=2, nodes=5, cell_thickness_cm=0.5,0.5,1,1',
+        'inactive_cell': 'schema=2, nodes=4, cell_thickness_cm=5*1',
+        'inactive_concentration': 'schema=2, nodes=4, cell_thickness_cm=4*1, concentration_mg_cm3(5)=1',
+        'inactive_root': 'schema=2, nodes=4, cell_thickness_cm=4*1, root_cm_day(5)=1',
+        'inactive_drain': 'schema=2, nodes=4, cell_thickness_cm=4*1, drain_cm_day(5)=1',
+        'schema1_grid': 'schema=1, cell_thickness_cm=4*1',
+    }
+    for name, replacement in bad.items():
+        source = directory / (name + '.nml')
+        source.write_text(EXAMPLE.read_text().replace('schema=1', replacement))
+        target = directory / ('invalid-' + name)
+        execute([sys.executable, RUNNER, '--exe', exe, '--input', source, '--output', target], name + ' invalid grid', None)
+        require(not target.exists(), name + ' invalid grid does not publish')
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--build-O0', type=Path, required=True)
@@ -46,6 +131,7 @@ def main():
         (output / (prefix + '.stderr')).write_bytes(process.stderr)
         events.append({'label': label, 'command': list(map(str, command)), 'returncode': process.returncode,
                        'seconds': time.perf_counter() - start, 'stdout': prefix + '.stdout', 'stderr': prefix + '.stderr'})
+        (output / 'events.json').write_text(json.dumps(events, indent=2) + '\n')
         require(process.returncode == expected if expected is not None else process.returncode != 0, label)
         return process
 
@@ -138,8 +224,12 @@ def main():
                                  'source_sha256': report['input_sha256'],
                                  'build_seconds': {category: sum(e['seconds'] for e in report['events'] if e['category'] == category)
                                                    for category in ['compile', 'link']}}
+        require(digest(full / 'restart.bin') == '42d92009baeb4e7a90ef2e2ebbd22c79df69cb05bc7cf0e01e7cea39bf192e4f',
+                'canonical schema1 endpoint preserved')
+        results[optimization]['grids'] = qualify_grids(execute, directory, exe)
     for name in ['budget.csv', 'state.csv', 'endpoint.csv', 'restart.bin']:
         require((output / 'O0/full' / name).read_bytes() == (output / 'O2/full' / name).read_bytes(), 'O0/O2 identity ' + name)
+    require(results['O0']['grids'] == results['O2']['grids'], 'all grid O0/O2 physical identities')
     result = {'status': 'PASS', 'results': results, 'events': events,
               'test_sha256': digest(Path(__file__)), 'runner_sha256': digest(RUNNER), 'input_sha256': digest(EXAMPLE)}
     (output / 'result.json').write_text(json.dumps(result, indent=2) + '\n')

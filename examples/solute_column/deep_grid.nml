@@ -1,0 +1,28 @@
+! Schema2: 32 cells, 138 cm, uniform material and initial pressure.
+&column
+ schema=2
+ nodes=32
+ cell_thickness_cm=0.5,0.5,1,1,2,3,26*5
+ initial_head=-75
+ initial_pond_cm=0.5
+ initial_pond_mass_mg_cm2=0.25
+ concentration_mg_cm3=32*0.2
+ root_cm_day=32*0.0000125
+ drain_cm_day=32*0.0000125
+ bottom_up_cm_day=-0.1
+ pond_max_cm=0.50001
+ runoff_resistance_day=0.001
+ cdrain_mg_cm3=0.4
+ cseep_mg_cm3=0.3
+/
+&surface
+ windows=2
+ ends_day=0.001,0.002
+ rain_cm_day=0.25,0.25
+ irrigation_cm_day=0.25,0.25
+ runon_cm_day=0.5,0.5
+ evaporation_cm_day=0.05,0.05
+ rain_c=0.125
+ irrigation_c=0.375
+ runon_c=3
+/
