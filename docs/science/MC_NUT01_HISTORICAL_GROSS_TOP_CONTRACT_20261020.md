@@ -1,6 +1,6 @@
 # Historical gross atmospheric N: owner decision and implementation contract
 
-Status: locally qualified source-bound successor; canonical admission pending. Baseline canonical
+Status: canonically admitted bounded historical gross-positive successor through PR1330. Baseline canonical
 `d443dced3313e2602fdea4cbd1a6cb566f53fb0e`.
 
 On20 October2026 the programme owner selected option1: preserve historical
@@ -132,7 +132,7 @@ python tests/nut-crop/verify_hist_native_successor.py
 The source checker requires the pinned predecessor commit and original capsules.
 It creates an isolated original predecessor worktree and runs its unchanged
 admission guard. A supplied SWAP5_GROSS_PREDECESSOR_WORKTREE may reuse an existing
-clean exact d443dced worktree, but its HEAD, tracked content and foreign executable
+clean exact21cc8098 worktree, but its HEAD, tracked content and foreign executable
 sources are checked each time. No numerical PASS is inherited from that worktree
 for the changed NUT branch.
 
@@ -140,3 +140,42 @@ General automatic source-atmosphere binding and negative aggregate/pond cases,
 fractional/general native syntax, extended diagnostics and a full original-model
 multiyear oracle remain distinct open envelopes. The owner reference choice is
 resolved. RossFast, aquifer and MC-SOL01 production are outside this successor.
+
+## Actual canonical admission and remaining negative-source boundary
+
+PR1330 merged at `d118bcf1cacf7462cf62c27141cf306d7a4a52fb`, qualified head
+`071c8214ca957d39505262f2321a45f165581080`, complete reviewed/merged tree
+`661da011d0c276ea878707149feff7e5cb0dabdd`, production tree
+`a60ac1d96c98f3ecc7c414fc412884271a54b227`.
+The current owning qualifier passes again on the actual merge. Concurrent
+PR1329's opt-in solute-column tree at21cc8098 is preserved in full. The strict
+predecessor pointer is therefore21cc8098, with unchanged nutrient science;
+original d443dced remains the initial implementation baseline.
+Master PR1072 receipt `ccdcccb9ab787d81a03864a7e5477e3be99f8298` adds this bounded
+admission to the nine existing NUT rows;234 other rows and all dispositions
+are preserved. No full-HIST promotion.
+
+Final source/evidence, corruption-control, postmerge and docs receipts are in
+`integration/audits/evidence/MC_NUT01_HISTORICAL_GROSS_TOP_CONTROLS_20261020.tar.xz.b64`,
+decoded SHA256
+`91c0c4ad03549aa4f612556304d3e69da3f21c1091a54511c31a890e4112009c`.
+
+The additional diagnostic compiles unmodified original watern at O0/O2 and
+reproduces the same outputs. It passes a negative top aggregate-0.004m/day
+and c_top0.005kg N/m3 at constant0.3water fraction in a0.3m column:
+
+| Initial N kg/m2 | Specified top N transfer kg/m2 | Original final N kg/m2 | N residual kg/m2 |
+| --- | --- | --- | --- |
+| 0.002 | -0.00002 | 0.00198 | 0 |
+| 0.00000001 | -0.00002 | 0.00000000000009 | -0.00001999000009 |
+
+The second original solution clips concentration to1e-12kg/m3 without making
+the specified external extraction consistent with the available inventory.
+The residual is approximately0.1999kg N/ha, rather than roundoff.
+This is a conditional source-routine counterexample, not proof that the full
+historical hydrology actually produces that forcing. Its full caller reachability
+remains unqualified. Literal reproduction of that depleted result conflicts with
+the hard element balance. No unbooked clipping, manufactured N or corrected
+surface store is introduced; negative aggregate remains fail-closed.
+The diagnostic source, full original routine, compiler commands, native outputs
+and result are retained in the control capsule. It is not a new production PASS.

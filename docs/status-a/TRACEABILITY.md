@@ -133,3 +133,5 @@ observations and immutable capsule. Existing AGE03-CI postimages register only t
 three exact additive tool/test files. Production/reference source and all old
 scientific assertions remain unchanged. Local qualification and canonical
 admission remain distinct.
+
+MC-NUT01 historical gross-positive PR1330: [contract, actual730-day results and original negative-source counterexample](../science/MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md), owning `historical_gross_top_successor` in the existing status record, immutable4432-member numerical capsule and20-member control/diagnostic capsule. Actual canonical merge `d118bcf1cacf7462cf62c27141cf306d7a4a52fb`, source treea60ac1d9; all10 original endpoints exact and48 transition processes. The strict14-file successor guard reexecutes the unchanged original canonical authority at21cc8098 and proves the three independently compiled CI footprints exclude changed NUT providers. Whole HIST/master disposition remains open.
