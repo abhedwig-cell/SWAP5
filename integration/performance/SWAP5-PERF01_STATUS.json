@@ -1,0 +1,25 @@
+{
+  "work_unit": "SWAP5-PERF01",
+  "baseline": "b0c2e94b69d7d21519611af92866fb4dbf713ea2",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "next_action": "Build production Full Richards diagnostic, profile current head, then select measured exact optimization",
+  "recovery_point": "work/swap5-perf01-runtime-investigation",
+  "blockers": [],
+  "dependency_surface": [
+    "src/solver",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/legacy/b1_10_port/headcalc.f90"
+  ],
+  "invariants_affected": [
+    3,
+    5,
+    7,
+    23,
+    25,
+    26
+  ],
+  "scope": "Exact implementation optimization. No tolerance, physics, RossFast, accepted-state or solver-policy changes."
+}
