@@ -1734,5 +1734,32 @@
       "all_dispositions_exact": 243,
       "whole_master_qualified": false
     }
+  },
+  "thermal_pond_successor": {
+    "work_unit": "MC-SOL01-THERMAL-POND01",
+    "baseline": "fda2a6de35ab60e8c836a6687482efa3774d95dc",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "stage": "IMPLEMENTED_QUALIFICATION_PENDING",
+    "scope": "dynamic numeric endpoint heat with nonlinear pond/matrix; opt-in file input and longer runs",
+    "invariants": [
+      2,
+      3,
+      7,
+      9,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "contract": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+    "next_action": "Compile real production O0/O2, qualify atomicity/restart/refinement and actual file input",
+    "recovery_point": "work/mc-sol01-thermal-pond-20261021",
+    "blockers": []
   }
 }

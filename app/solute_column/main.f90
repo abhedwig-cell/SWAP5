@@ -15,11 +15,15 @@ program swap5_solute_column
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK
   use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
+  use mod_fmr_b111_pond_thermal_application,only:run_pond_thermal_interval
+  use mod_pond_thermal_restart_file
+  use mod_soil_temperature_contract
+  use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
   use mod_matrix_joint_restart_file
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
   use mod_solute_compartment_state, only: solute_compartment_state_t
   implicit none
-  integer,parameter :: MAX_WINDOWS=128,MAX_NODES=256
+  integer,parameter :: MAX_WINDOWS=2048,MAX_NODES=256
   integer :: nodes=4
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
@@ -38,7 +42,10 @@ program swap5_solute_column
   real(real64) :: clock,t0,t1,water_amount,infiltration,runoff,runon_amount,evap_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message
-  logical :: ok,retain_accepted_step_proposal=.false.
+  logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
+  real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
+  real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
+  type(soil_temperature_field_view_t) :: heat_view
   type(fmr_b110_physical_parameters_t),target :: p
   type(fmr_b110_physical_state_t) :: initial
   type(fmr_b110_physical_forcing_t) :: forcing
@@ -61,9 +68,10 @@ program swap5_solute_column
   namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
-    retain_accepted_step_proposal
+    retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
+    decay_rate_day,gamma_temperature,initial_temperature_c
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
-    rain_c,irrigation_c,runon_c,dry_mg_cm2_day
+    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(3,arg)
@@ -135,6 +143,16 @@ program swap5_solute_column
       max(rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j),evaporation_cm_day(j))<=5d5,'invalid surface rate')
     t0=ends_day(j)
   end do
+  call require(all(ieee_is_finite([freundlich_exponent,reference_concentration,decay_rate_day,gamma_temperature, &
+    initial_temperature_c,surface_temperature_c])),'nonfinite reactive/heat input')
+  call require(freundlich_exponent>=0.5d0.and.freundlich_exponent<=2d0.and. &
+    reference_concentration>=1d-8.and.reference_concentration<=1d6,'invalid Freundlich parameters')
+  call require(decay_rate_day>=0d0.and.decay_rate_day<=1d3.and.gamma_temperature>=0d0.and. &
+    gamma_temperature<=1d0,'invalid decay parameters')
+  call require(all(initial_temperature_c>=-50d0).and.all(initial_temperature_c<=60d0).and. &
+    all(surface_temperature_c>=-50d0).and.all(surface_temperature_c<=60d0),'heat outside admitted domain')
+  call require(dynamic_temperature.or.decay_rate_day==0d0,'decay requires explicit dynamic heat activation')
+  call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')
   p%parameter_set_id=670001_int64;p%active_nodes=numnod
   p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)
   allocate(p%cofgen(24,numnod));p%cofgen=0d0
@@ -159,9 +177,10 @@ program swap5_solute_column
   forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
   chemistry%dz_cm=dz;chemistry%theta=initial%water_content
   chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)
-  chemistry%temperature_active=.false.;chemistry%temperature_c=spread(0d0,1,numnod)
-  chemistry%gampar=spread(0d0,1,numnod);chemistry%rtheta=spread(0.3d0,1,numnod)
-  chemistry%bexp=spread(1d0,1,numnod);chemistry%decpot=spread(0d0,1,numnod)
+  chemistry%frexp=freundlich_exponent;chemistry%cref_mg_cm3=reference_concentration
+  chemistry%temperature_active=dynamic_temperature;chemistry%temperature_c=spread(0d0,1,numnod)
+  chemistry%gampar=spread(merge(gamma_temperature,0d0,dynamic_temperature),1,numnod);chemistry%rtheta=spread(0.3d0,1,numnod)
+  chemistry%bexp=spread(1d0,1,numnod);chemistry%decpot=spread(decay_rate_day,1,numnod)
   chemistry%fdepth=spread(1d0,1,numnod);chemistry%face_distance_cm=disnod(2:numnod)
   chemistry%face_left_weight=0.5d0*dz(2:numnod)/chemistry%face_distance_cm
   chemistry%face_right_weight=0.5d0*dz(1:numnod-1)/chemistry%face_distance_cm
@@ -175,6 +194,16 @@ program swap5_solute_column
   template%template_id=column_id%template_id;template%physics_topology_id=660210_int64
   template%vertical_layout_id=660220_int64;template%state_layout_id=660230_int64
   template%solver_interface_id=660240_int64;template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  if(dynamic_temperature)then
+    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+    p%soil_temperature_active=.true.
+    allocate(p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
+    call initialize_soil_temperature_parameters(dz,disnod(1:numnod),p%cofgen(2,:), &
+      spread(.3d0,1,numnod),spread(.2d0,1,numnod),spread(.04d0,1,numnod),p%soil_temperature,code)
+    call require(code==0,'thermal parameter initialization')
+    call initialize_soil_temperature_state(initial_temperature_c(1:numnod),initial%soil_temperature,code)
+    call require(code==0,'thermal state initialization')
+  end if
   numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   numerical%transaction%temporal_tolerance=temporal_tolerance
   numerical%retain_accepted_step_proposal=retain_accepted_step_proposal
@@ -182,12 +211,22 @@ program swap5_solute_column
   numerical%transaction%retry_scale=0.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
   if(trim(restart_path)/='-')then
+    if(dynamic_temperature)then
+      call read_pond_thermal_restart(trim(restart_path),column_id,template,p%parameter_set_id,9001_int64, &
+        p,chemistry,water,solute,code)
+    else
     call read_matrix_joint_restart_file(trim(restart_path),column_id,template,p%parameter_set_id,9001_int64, &
       chemistry,water,solute,code,allow_surface_mass=.true.)
+    end if
     call require(code==JOINT_OK,'restart rejected')
   else
     call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok)
     call require(ok,'water initialization failed')
+    if(dynamic_temperature)then
+      call water%snapshot(physical,ok);call require(ok,'thermal detached snapshot')
+      call water%initialize(column_id%column_id,physical,ok,0d0,p)
+      call require(ok,'certified thermal initialization')
+    end if
     call initialize_matrix_solute(chemistry,9001_int64,0d0,initial%water_content,concentration_mg_cm3(1:numnod),solute,code)
     call require(code==MATRIX_OK,'chemical initialization failed')
     call solute%snapshot(clock,theta,mobile,companion,revision)
@@ -219,7 +258,12 @@ program swap5_solute_column
     supply=pond_step_t();supply%t0=t0;supply%t1=t1;supply%rain_rate=rain_cm_day(j)
     supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c
     supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day
+    if(dynamic_temperature)then
+      forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
+      call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+    else
     call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+    end if
     if(result%status/=JOINT_OK)write(*,*)'joint status/water/chemical: ',result%status,result%water%status,result%chemical%status
     call require(result%status==JOINT_OK,'joint interval rejected')
     call require(result%water%mass%complete,'incomplete water accounting')
@@ -243,7 +287,11 @@ program swap5_solute_column
     clock=t1
   end do
   close(u)
+  if(dynamic_temperature)then
+    call write_pond_thermal_restart('restart.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
+  else
   call write_matrix_joint_restart_file('restart.bin',column_id,template,p%parameter_set_id,water,solute,code,allow_surface_mass=.true.)
+  end if
   call require(code==JOINT_OK,'restart output failed')
   call water%snapshot(physical,ok);call require(ok,'water endpoint unavailable')
   call solute%snapshot(clock,theta,mobile,companion,revision)
@@ -264,6 +312,17 @@ program swap5_solute_column
     write(u,'(ES25.17E3,4(",",ES25.17E3))')clock,q%ponding_depth,companion%pond_mass,water_amount, &
       sum(mobile%mass_mg_cm2)+companion%solute_total()
     close(u)
+    if(dynamic_temperature)then
+      call build_soil_temperature_field_view(q%soil_temperature,heat_view,code)
+      call require(code==0,'heat output view')
+      open(newunit=u,file='temperature.csv',status='new',action='write',iostat=io)
+      call require(io==0,'temperature output')
+      write(u,'(A)')'node,temperature_c'
+      do j=1,numnod
+        write(u,'(I0,",",ES25.17E3)')j,heat_view%temperature_c(j)
+      end do
+      close(u)
+    end if
   class default
     error stop 'unexpected physical owner'
   end select
