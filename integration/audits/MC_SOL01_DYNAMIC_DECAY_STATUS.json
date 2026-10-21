@@ -2780,7 +2780,7 @@
     "strict_documentation": "PASS; final source checks and strict MkDocs on combined canonical metadata"
   },
   "swp_reader_successor": {
-    "status": "REQUALIFYING_AFTER_PERF01_TRACE_SCOPE_PR1351",
+    "status": "RECONCILED_LOCAL_O0_O2_QUALIFIED_CANONICAL_PENDING",
     "baseline": "c8b35ac3e9f2a2cf2400033d0225aea8198469ea",
     "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
     "invariants": [
@@ -2796,10 +2796,10 @@
       29
     ],
     "canonical_admitted": false,
-    "qualified": false,
+    "qualified": true,
     "full_swp_default_application": false,
     "recovery_branch": "work/mc-sol01-swp-reader-20261021",
-    "next_safe_step": "Fresh builds and native SWP/application qualification on reconciled trace runtime",
+    "next_safe_step": "Exact thermal, finite-donor and trace-scope predecessors, hosted qualification, actual canonical integration",
     "excluded": [
       "aquifer",
       "macropore",
@@ -2821,9 +2821,9 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "rossfast": "FROZEN_UNCHANGED",
       "aquifer": "EXCLUDED",
-      "compile_seconds": 102.92538440297722,
+      "compile_seconds": 97.76418565702261,
       "physics_only_seconds": "UNKNOWN: native driver time includes original input IO",
-      "unchanged_process_physics": "Exact src tree against c4ec414fe5ae55e992e557e394cb4003beaf3e39: inherit immutable six-exponent qualification; current O0/O2 application and annual native run remain selected. Exact original workflow body retained behind production-change fallback."
+      "unchanged_process_physics": "Exact src tree against canonical PR1351 c8b35ac3e9f2a2cf2400033d0225aea8198469ea: immutable fresh six-exponent matrix/pond/month/year trace-scope preservation is selected, plus fresh current O0/O2 SWP and application runs."
     },
     "concurrent_canonical_reconciliation": {
       "head": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
@@ -2849,7 +2849,7 @@
       },
       ".github/workflows/mc-sol01-thermal-pond.yml": {
         "status": "M",
-        "sha256": "50e03f939c61418c10be5cabc85bf76aa238e9a1041bbbe837118f9b2c520e96"
+        "sha256": "f5a0926f0089601a6e428a5b1b4886472d5007785caf64adf5f782f15649b678"
       },
       "app/solute_column/link_context.f90": {
         "status": "M",
@@ -2869,15 +2869,15 @@
       },
       "integration/audits/verify_nut_negative.py": {
         "status": "M",
-        "sha256": "c26c6b47a206eff69fe80266e460355fec10b9aa6239e844970a996ddebc7183"
+        "sha256": "9a9a012a7d597a6af0e2870ff07136d183bc04db5b5e15a70e1d5a71b5fce0a3"
       },
       "integration/audits/verify_pond_thermal.py": {
         "status": "M",
-        "sha256": "0860a71fb2318a0b98b4cc9fc9e9f8905118bc6acdf6426eef490ba74761093d"
+        "sha256": "82d25615fb0e6da9b77ee741734acc994c1ace7b6d1e8945b011bcfd336046d8"
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "A",
-        "sha256": "f75737f0853315cf75ab5eb2e4cfe3fcadea79ff582f5257b5ba0abbcccb6521"
+        "sha256": "8abb62189def9d74d55c16b8554da7fdc348346939dc6581ff735fc31a3536f7"
       },
       "tests/nut-sol/qualify_swp_reader.py": {
         "status": "A",
@@ -2900,7 +2900,7 @@
         "sha256": "2286cf852a36b317c3daafe4d0e1f196c5fec09abbe1f3425e790f32f515f147"
       }
     },
-    "source_tree": "1feeeb02c7fce3554ca1634016fa411304d80b0d",
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
     "qualification": {
       "native_observations": 172,
       "valid_configurations": 22,
@@ -2911,12 +2911,13 @@
       "full_swp_default_application": false,
       "general_seasonal_accuracy": false
     },
-    "recovery_point": "source-bound evidence committed; publish owning PR and monitor native qualification to terminal state",
+    "recovery_point": "Fresh reconciled O0/O2 evidence and all three fixed predecessor owners pass; publish stable qualification head and monitor owning hosted runs",
     "previous_input_qualification": {
       "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
       "decoded_sha256": "b8e4e308f05cde67e6bfe349ae3b754a32626cb340cb7ca59f734a357a3c77ca",
       "decoded_bytes": 553992,
-      "members": 3180
+      "members": 3180,
+      "git_ref": "67357a63ed8898166ca606661659a7069ef83e0b"
     },
     "previous_local_owner": {
       "qualified": true,
@@ -2925,6 +2926,29 @@
       "valid_configurations": 22,
       "old_application_artifacts_exact": 160,
       "annual_application_cases_exact": 18,
+      "predecessor_qualified": true,
+      "negative_controls": 9,
+      "full_swp_default_application": false,
+      "full_capability": false
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+      "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+      "decoded_bytes": 558108,
+      "members": 3182
+    },
+    "local_owner": {
+      "qualified": true,
+      "original_swp_chemistry": true,
+      "native_observations": 172,
+      "valid_configurations": 22,
+      "old_application_artifacts_exact": 160,
+      "annual_application_cases_exact": 18,
+      "fixed_predecessors": [
+        "fb00736e320498f2e610b0671af9c7dc5a381921",
+        "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+        "c8b35ac3e9f2a2cf2400033d0225aea8198469ea"
+      ],
       "predecessor_qualified": true,
       "negative_controls": 9,
       "full_swp_default_application": false,

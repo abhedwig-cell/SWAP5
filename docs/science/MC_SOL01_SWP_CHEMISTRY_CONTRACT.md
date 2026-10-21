@@ -24,3 +24,11 @@ Resume with the same executable, --input and --swp plus --restart PREVIOUS_RESUL
 The example imports two original soil layers with density 1300/1500 mg/cm3,
 KF 0.0002/0.0004 cm3/mg and exponent 0.5. The explicit water/heat inputs remain
 authoritative for hydrology and forcing.
+
+Canonical reconciliation includes PERF01 PR1351 trace lifetime management at
+c8b35ac3e9f2a2cf2400033d0225aea8198469ea. Both affected runtime providers are
+rebuilt for the current application. Original thermal-pond, finite-donor and
+trace-scope scientific owners are verified on their exact fixed commits.
+The thermal workflow retains its complete original physical test body; the
+input-only route inherits that proof only when the complete src tree matches
+the reconciled baseline, while current O0/O2 file and annual runs remain selected.
