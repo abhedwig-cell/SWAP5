@@ -2,7 +2,7 @@
   "nonlinear_successor": {
     "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
     "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
-    "stage": "LOCALLY_QUALIFIED_AWAITING_HOSTED_ADMISSION",
+    "stage": "QUALIFIED_READY_FOR_CANONICAL",
     "implemented": true,
     "persisted": true,
     "tested": true,
@@ -364,7 +364,8 @@
       "exact_fcfdd3ae_predecessor_and_current_source_evidence": "PASS",
       "negative_controls": 9,
       "strict_documentation": "PASS",
-      "fsi35_handoff": "unchanged dispatcher delegates to current bounded source authority"
+      "fsi35_handoff": "unchanged dispatcher delegates to current bounded source authority",
+      "reconciled_9c_predecessor_and_current178_diagnostic_providers": "PASS"
     },
     "initial_baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
     "admission_pr": 1344,
@@ -373,6 +374,23 @@
       "all_incoming_files_preserved": true,
       "native_repetition": "NOT_SELECTED_IMPACT: no executed input changed",
       "qualification": "Exact9c predecessor full thermal/diagnostic gate plus current178provider/raw evidence validation"
+    },
+    "hosted": {
+      "qualified_head": "f6ed3156ce40f28b2077196691a155ce6db21383",
+      "reconciled_head": "17a376751cdcbc271c6a2af61775a424fef8a160",
+      "total": 31,
+      "success": 21,
+      "failure": 10,
+      "all_terminal": true,
+      "failures_counted_as_pass": false,
+      "thermal_run": 39562176823,
+      "thermal_job": 119095794626,
+      "column_run": 39562176763,
+      "column_job": 119095794691,
+      "canonical_run": 39562176647,
+      "perf_run": 39562176931,
+      "full_receipt": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_HOSTED_20261021.json",
+      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_CI_TRIAGE_20261021.json"
     }
   },
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",

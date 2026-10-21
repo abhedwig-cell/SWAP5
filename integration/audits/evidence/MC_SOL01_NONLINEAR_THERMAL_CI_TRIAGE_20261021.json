@@ -1,0 +1,97 @@
+{
+  "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
+  "qualified_head": "f6ed3156ce40f28b2077196691a155ce6db21383",
+  "previous_triage": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_CI_TRIAGE_20261021.json",
+  "failure_count": 10,
+  "failures_counted_as_pass": false,
+  "conclusions": [
+    "Seven unchanged frozen publication preflights reject source/reference mutation; no model is compiled in those failing steps. P2E09/P2E10 now reach earlier mutation guards relative to moving canonical, so their exact text differs from the original83 baseline failure; no claim of identical failure location.",
+    "Three unchanged compile closures omit existing mod_drainage_dramet3_response.f90. Every57/51/47 literal Fortran input equals the original83 baseline; none compiles the thermal route.",
+    "These non-owning publication failures are retained; owning real thermal, column, canonical and preserved predecessor qualifications remain required."
+  ],
+  "failures": [
+    {
+      "name": "PUB-P2E02 Reference uncertainty",
+      "run": 39562176734,
+      "job": 119095793956,
+      "errors": [
+        "2026-10-21T07:28:24.7894969Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &",
+        "2026-10-21T07:28:24.7897254Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "run": 39562176565,
+      "job": 119095793110,
+      "errors": [
+        "2026-10-21T07:28:37.2394320Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "run": 39562176612,
+      "job": 119095793346,
+      "errors": [
+        "2026-10-21T07:28:37.0090512Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "run": 39562176781,
+      "job": 119095793913,
+      "errors": [
+        "2026-10-21T07:28:43.7763770Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &",
+        "2026-10-21T07:28:43.7765772Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "name": "PUB-ME D1 transition authority",
+      "run": 39562176661,
+      "job": 119095793619,
+      "errors": [
+        "2026-10-21T07:28:40.3087275Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "name": "PUB-P2E04 Reference failure census",
+      "run": 39562176699,
+      "job": 119095793782,
+      "errors": [
+        "2026-10-21T07:28:44.1099413Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &",
+        "2026-10-21T07:28:44.1101299Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "name": "PUB-ME D3 origin authority",
+      "run": 39562176761,
+      "job": 119095793869,
+      "errors": [
+        "2026-10-21T07:28:48.9749357Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "run": 39562176690,
+      "job": 119095793612,
+      "errors": [
+        "2026-10-21T07:28:47.7316802Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "run": 39562176776,
+      "job": 119095794035,
+      "errors": [
+        "2026-10-21T07:28:54.0906724Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    },
+    {
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "run": 39562176770,
+      "job": 119095793970,
+      "errors": [
+        "2026-10-21T07:29:20.3241182Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    }
+  ]
+}
