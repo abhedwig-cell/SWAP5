@@ -80,6 +80,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: explicit_geometry
    logical :: scale_matrix_area
    logical :: typed_bottom_invalid, typed_bottom_ok
+   logical :: consistent_provider_conductivity
+   real(8) :: bottom_dkdh
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
    logical :: provider_macropore_active, provider_macropore_rate_active, provider_macropore_derivative_available
@@ -118,6 +120,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
    legacy_state_binding = .not. present(state_binding)
    typed_bottom_invalid=.false.
+   consistent_provider_conductivity=.false.
    typed_bottom_conductance=0.0d0
    if (legacy_state_binding) then
       lysimeter_plate_head=hplate
@@ -213,6 +216,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       dtmin = numerical_config%min_step_duration
       CritDevBalCp = numerical_config%compartment_balance_tolerance
       CritDevBalTot = numerical_config%total_balance_tolerance
+      consistent_provider_conductivity=numerical_config%consistent_provider_conductivity
       critdevh2cp = numerical_config%head_abs_tolerance
       critdevh1cp = numerical_config%head_rel_tolerance
       critdevponddt = numerical_config%ponding_tolerance
@@ -457,9 +461,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end if
 
 !     special case: SwKimpl = 1
-      if (SwKimpl == 1) then
+      if (SwKimpl == 1.or.consistent_provider_conductivity) then
          do i = 1, NN
-            fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
+            if(consistent_provider_conductivity)then
+               fsi_ws%dconductivity_dhead(i)=fsi_ws%provider_dkdh(i)
+            else
+               fsi_ws%dconductivity_dhead(i)= dhconduc(i,state%h(i),state%theta(i),state%dimoca(i),rfcp(i))
+            end if
             if (scale_matrix_area) fsi_ws%dconductivity_dhead(i) = matrix_fraction(i) * fsi_ws%dconductivity_dhead(i)
          end do
          do i = 2, NN
@@ -471,6 +479,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !     incorporate Jacobian information in coefficient matrix elements
       ctx%diagnostics%jacobian_builds = ctx%diagnostics%jacobian_builds + 1
       call jacobian_F()
+      if(typed_bottom_invalid)then
+         state%fldecdt=.true.
+         ctx%control%request_dt_reduction=.true.
+         return
+      end if
 
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
@@ -496,7 +509,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !        factor reduces the change of state%h (fsi_ws%delta_head) calculated as a full Newton Raphson step
 
 !        update state%h
-         if (fldtmin .AND. state%numbit > MaxIt) then              
+         if (fldtmin .AND. state%numbit > MaxIt .and. .not.consistent_provider_conductivity) then
             factmax = 0.0d0
             do i = 1, NN
                if (dabs(fsi_ws%old_head(i) ) < 1.0d0 ) then
@@ -519,13 +532,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (provider_constitutive_active) then
             provider_tuple_valid = .false.
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            if (SwKimpl == 0 .and. swbotb /= 7 .and. swbotb /= -2) then
+            if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. swbotb /= 7 .and. swbotb /= -2) then
                ctx%diagnostics%constitutive_candidate_demand_evaluations = &
                     ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
                call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
                     CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
                     fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            else if (SwKimpl == 0 .and. (swbotb == 7 .or. swbotb == -2) .and. &
+            else if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. (swbotb == 7 .or. swbotb == -2) .and. &
                      provider_point_conductivity_supported) then
                ctx%diagnostics%constitutive_candidate_demand_evaluations = &
                     ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
@@ -562,10 +575,14 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          end do
 
 !        special case: update state%k and state%kmean if SwKimpl = 1
-         if (SwKimpl == 1) then
-            call Rootextraction(2)
+         if (SwKimpl == 1.or.consistent_provider_conductivity) then
+            if(SwKimpl==1)call Rootextraction(2)
             do i = 1, NN
-               state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
+               if(consistent_provider_conductivity)then
+                  state%k(i)=fsi_ws%provider_k(i)
+               else
+                  state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
+               end if
                if (scale_matrix_area) state%k(i) = matrix_fraction(i) * state%k(i)
                if (i > 1) then
                   state%kmean(i) = hcomean(swkmean, state%k(i-1), state%k(i), grid_dz(i-1), grid_dz(i), i, state%h(i-1), state%h(i))
@@ -1270,10 +1287,14 @@ subroutine jacobian_F()
 !  retain their historical constant-surface-head derivative.
    if (state%ftoph) then
       if (provider_dynamic_top_active) then
-         if (.not. provider_dynamic_top_result%surface_head_derivative_available) &
-              error stop 'HeadCalc: dynamic head regime omitted surface-head derivative'
-         fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1) * &
-              (1.0d0-provider_dynamic_top_result%surface_head_dpressure_head_top)
+         if(provider_dynamic_top_result%top_flux_derivative_available)then
+            fsi_ws%dfdh_main(1)=fsi_ws%dfdh_main(1)+provider_dynamic_top_result%top_flux_dpressure_head_top
+         else
+            if (.not. provider_dynamic_top_result%surface_head_derivative_available) &
+                 error stop 'HeadCalc: dynamic head regime omitted surface-head derivative'
+            fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1) * &
+                 (1.0d0-provider_dynamic_top_result%surface_head_dpressure_head_top)
+         end if
       else
          fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + state%kmean(1)/grid_disnod(1)
       end if
@@ -1300,16 +1321,28 @@ subroutine jacobian_F()
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)         
    else if (swbotb == 7 .OR. swbotb == -2) then ! implicitly: state%kmean(NN+1)
       if (SwKimpl == 1) fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + fsi_ws%dconductivity_dhead(NN) * 0.5d0
+      if(consistent_provider_conductivity.and.SwKimpl==0)then
+         ! qbot=-K(h_N) is already evaluated at the Newton candidate in
+         ! vector_F, even with frozen interior K. Its derivative belongs in J.
+         if(.not.provider_constitutive_active.or..not.provider_point_conductivity_supported)then
+            typed_bottom_invalid=.true.;return
+         end if
+         bottom_dkdh=fsi_ws%provider_dkdh(NN)
+         if(.not.ieee_is_finite(bottom_dkdh).or.bottom_dkdh<0d0)then
+            typed_bottom_invalid=.true.;return
+         end if
+         fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+bottom_dkdh
+      end if
    else if (swbotb == 8 .AND. flboth) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/grid_disnod(NN+1)
    end if
 
-!  special case when SwKimpl = 1
-   if (SwKimpl == 1) then
+!  Implicit interior K terms; the weather top-face derivative is supplied separately.
+   if (SwKimpl == 1.or.consistent_provider_conductivity) then
       if (swbotb == 9) call swap_error ('headcalc', 'swbotb = 9 AND swkimpl = 1 not yet implemented')
 !     first layer
       fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) + fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(1),state%k(2),grid_dz(1),grid_dz(2))
-      if (state%ftoph) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) - fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(1) * 0.5d0
+      if (state%ftoph.and.SwKimpl==1) fsi_ws%dfdh_main(1) = fsi_ws%dfdh_main(1) - fsi_ws%dconductivity_dhead(1) * fsi_ws%head_gradient(1) * 0.5d0
       fsi_ws%dfdh_lower(1) = fsi_ws%dfdh_lower(1) + fsi_ws%dconductivity_dhead(2) * fsi_ws%head_gradient(2) * dkmean(swkmean,state%k(2),state%k(1),grid_dz(2),grid_dz(1)) 
 !     layers 2 to (NN-1)
       do i = 2, NN-1

@@ -1,0 +1,87 @@
+{
+  "workstream": "PERF01",
+  "work_unit": "WET4_PRODUCTION_SURFACE_REPAIR",
+  "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+  "status": "IMPLEMENTED_BOUNDED_NATIVE_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+  "production_changed": true,
+  "canonically_admitted": false,
+  "contract": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md",
+  "result": "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_RESULT.md",
+  "summary": "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_SUMMARY.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_EVIDENCE.tar.xz",
+    "sha256": "2afa2898866ca4ff14f03b084b3990de220b3db961ac761f33362e2cd26d74a5",
+    "bytes": 1320304,
+    "members": 1854,
+    "members_sha256": "cdb5b07defcfa815a4b3e0b962e01c1a1bed5e2f16283bb40e1d73df4c8f911e"
+  },
+  "qualification": {
+    "complete_97day_budgets_cm": [
+      0.0001,
+      0.001,
+      0.01,
+      0.1,
+      1
+    ],
+    "actual_O0_O2_physical_stdout_byte_exact": true,
+    "wet_day35_reconstruction_stdout_byte_exact": true,
+    "rollback_after_one_private_substep_exact_state_bits": 21,
+    "original_weather_profiles_per_optimization": 6,
+    "unchanged_default_solver_contracts_per_optimization": 2,
+    "provider_contracts_per_optimization": 2,
+    "retry_contracts_per_optimization": 1,
+    "independent_80digit_top_derivative": true,
+    "capsule_negative_controls": 4,
+    "hard_transaction_mass_gate_cm": 1e-14,
+    "strict_1e6": "CENSORED_180_WALL_SECONDS_32_COMPLETED_DAYS_NOT_PASS",
+    "hosted_FCI": "NOT_SELECTED",
+    "frozen_source_owners": "NOT_INHERITED_FOR_CHANGED_PRODUCTION",
+    "canonical_admission": "PENDING"
+  },
+  "scope": "Nonirrigated file-weather, Reference/default MvG, mean1/free bottom7, prescribed live crop uptake and restricted heat; illustrative30cm four-cell wet4 column",
+  "invariants": [
+    "hard mass conservation unchanged",
+    "rejected private progress leaves committed physical/crop state unchanged",
+    "selected accepted surface receipts only",
+    "worker-owned parameter copy",
+    "existing unrelated numerical defaults remain off"
+  ],
+  "limits": [
+    "No completed 1e-6 reference",
+    "No field calibration or general tolerance recommendation",
+    "No uniform saturated-head smoothness guarantee",
+    "Endpoint Darcy displacement estimator, not integrated sibling-flux equality",
+    "No portable speed guarantee",
+    "No canonical production activation or broad FCI claim"
+  ],
+  "publication": {
+    "pull_request": 1361,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1361",
+    "branch": "research/perf01-wet4-cause-20261021",
+    "state": "DRAFT_CODE_REPAIR"
+  },
+  "next_safe_step": "Review proposed production/temporal contract and reconcile affected owning source/admission authority before canonical merge",
+  "postimages": {
+    "benchmarks/performance/assess_weather_surface_repair.py": "6db4990eab495fc1735c3d6fccec4202d14d9ae43d0d8831e4cd6b7e17353853",
+    "benchmarks/performance/build_perf01_weather_surface.py": "66fcebcddeaf107f94e8d19eb36fa34beb1aa85205ed095a39d976afda0bccac",
+    "benchmarks/performance/seal_weather_surface_repair.py": "1ebf92aea01f64b3704b06e073e0f688996d80804dc4cad823c255be00ee8b89",
+    "benchmarks/performance/verify_weather_surface_repair.py": "037aea14927ee165c6af0d7df9a30b131b6646470be4e9253e3096d9773009ee",
+    "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md": "96f33afb48a6f1e4cfd2a2df842eb33e564cbe5cf63a5f127fba1c281a468b4d",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "404eaec8088ce384a5dcec4686ac1b04163323304c9caebb9d09dc29580880ba",
+    "src/legacy/b1_10_port/headcalc.f90": "c3fbc447c69bba46412c2a06513fee77bec501977c7e41b33d57809350a38ed1",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "7ada905b00afb0bb47d50b1fef8f503f5267dfa56a0d37539ff673dbe5f468e5",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "83db4ce1b22f65ccb52db67e258fe8ad647e2862af40b387bad800867395edf5",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "e4a61909d499832d48edbda2afa1b50c5b7d841f7daab2dbdb969d84e4abdbea",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+    "src/solver/mod_b110_default_mvg_provider.f90": "33f10ef923a4cb33333a8fd7b4385d189c8abd5179f764772ba50fa47894d389",
+    "src/solver/mod_soil_water_solver_contract.f90": "0e01070788172875fadd905d80b201548a49b8a2185b096ba3b173f04f15ffd7",
+    "tests/fmig431/build_weather_surface_controls.py": "aa4087616eb9eb37889c06eee023a17da32f3c5964340720aaead44d99c151d4",
+    "tests/fmig431/preserve_weather_surface_default.py": "b9687bc696a7d1d44802ac3128fed445d2a02e31098dda66d7d6af26d95495a4",
+    "tests/fmig431/qualify_weather_surface_repair.py": "cb82adf59e836b215d8ac22cf83e1394f14085e23f4c104a0bd32fc282aa6cc8",
+    "tests/fsi/test_weather_surface_continuous_mvg.f90": "313d48d09c7fa909196f56ca652de2de2817d1997338b820f70320472a2c6f58",
+    "tests/fsi/test_weather_surface_top_derivative.f90": "0804bf63cdfb1b01d34c69410f98e84a1c9437d20079d55d9c8ebf37f1cf9387",
+    "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_RESULT.md": "63260ac4b2ff3b83cd49f04c7b6c66382e7b3a5aa7562583ce8e4bcfb27439c6",
+    "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_SUMMARY.json": "7f510d35ded9596716f904f84302a17b894d023fe7e20c44ed017c940f840aa6",
+    "tests/fsi/test_weather_surface_retry.f90": "3fae1cd4ed904f13f2515ab035ec3e176f72efc377a45f9eef2d1f20cd801af1"
+  }
+}
