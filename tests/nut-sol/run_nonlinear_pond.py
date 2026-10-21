@@ -156,7 +156,7 @@ for opt in ('O0','O2'):
         assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in iw and ie.read_bytes()==ifresh.read_bytes()
         results['runs'][opt][variant+'_incumbent_endpoint_sha256']=digest(ie)
     gross_restart=build/'gross.bin'
-    gw=run([incumbent_exe,'gross',gross_restart,build/'unused'],build,'gross_native')
+    gw=run([incumbent_exe,'write',gross_restart,build/'unused'],build,'gross_native')
     gr=run([incumbent_exe,'gross-resume',gross_restart,build/'unused'],build,'gross_native')
     assert b'MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS' in gw
     assert (build/'gross.bin.gross-next').read_bytes()==(build/'gross.bin.gross-fresh').read_bytes()

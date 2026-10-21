@@ -40,6 +40,8 @@ def record():
 
 
 def source():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['source']()
     if 'evidence' in record().get('nonlinear_successor', {}):
         return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['source']()
     s = record()
@@ -153,6 +155,8 @@ def predecessor():
 
 
 def verify_qualification():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['verify_qualification']()
     if 'evidence' in record().get('nonlinear_successor', {}):
         return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['verify_qualification']()
     source()
@@ -165,6 +169,8 @@ def verify_qualification():
 
 
 def self_test():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['self_test']()
     if 'evidence' in record().get('nonlinear_successor', {}):
         return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['self_test']()
     f = capsule()
