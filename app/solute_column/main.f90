@@ -38,7 +38,7 @@ program swap5_solute_column
   real(real64) :: clock,t0,t1,water_amount,infiltration,runoff,runon_amount,evap_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message
-  logical :: ok
+  logical :: ok,retain_accepted_step_proposal=.false.
   type(fmr_b110_physical_parameters_t),target :: p
   type(fmr_b110_physical_state_t) :: initial
   type(fmr_b110_physical_forcing_t) :: forcing
@@ -60,7 +60,8 @@ program swap5_solute_column
   class(transaction_state_t),allocatable :: physical
   namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
-    root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance
+    root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
+    retain_accepted_step_proposal
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day
   call get_command_argument(1,path)
@@ -176,6 +177,7 @@ program swap5_solute_column
   template%solver_interface_id=660240_int64;template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   numerical%transaction%temporal_tolerance=temporal_tolerance
+  numerical%retain_accepted_step_proposal=retain_accepted_step_proposal
   numerical%transaction%mass_tolerance=1d-10;numerical%transaction%max_retries=30
   numerical%transaction%retry_scale=0.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)

@@ -176,6 +176,9 @@ def predecessor():
             subprocess.run(['git', 'worktree', 'remove', '--force', str(base)], cwd=ROOT, check=True, capture_output=True)
 
 def verify_qualification():
+    proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
+    if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_perf01_proposal')['verify_qualification']()
     thermal=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
     if thermal.exists() and 'evidence' in json.loads(thermal.read_text()):
         return runpy.run_path(str(ROOT/'integration/audits/verify_matrix_thermal.py'),run_name='registered_sol_thermal')['verify_qualification']()
@@ -192,6 +195,12 @@ def verify_qualification():
 
 def fsi35_successors():
     """Exact HeadCalc registration only; original FSI35 native checks still run."""
+    proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
+    if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
+        runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_perf01_proposal_fsi35')['source']()
+        path='src/legacy/b1_10_port/headcalc.f90'
+        return {path: {'historical_blob': '7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac',
+                       'canonical_blob': git('rev-parse', 'HEAD:' + path)}}
     current=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('gash_interception_successor',{})
     thermal=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
     if thermal.exists() and 'evidence' in json.loads(thermal.read_text()):
@@ -205,6 +214,9 @@ def fsi35_successors():
                    'canonical_blob': git('rev-parse', 'HEAD:' + path)}}
 
 def self_test():
+    proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
+    if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_perf01_proposal_controls')['self_test']()
     current=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('gash_interception_successor',{})
     if 'evidence'in current:
      return runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_nut_gash_controls')['self_test']()

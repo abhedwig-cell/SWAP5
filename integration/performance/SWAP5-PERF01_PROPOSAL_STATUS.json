@@ -1,0 +1,24 @@
+{
+  "work_unit": "SWAP5-PERF01 optional production proposal",
+  "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+  "branch": "work/perf01-production-policy",
+  "status": "IMPLEMENTATION_AND_TEST_SELECTION_CHECKPOINT_NOT_QUALIFIED",
+  "contract": "docs/performance/SWAP5-PERF01_PROPOSAL_CONTRACT.md",
+  "production_changed": true,
+  "default_enabled": false,
+  "scope": "Optional Reference external-full/half policy; exact endpoint completion and interval-local solver fallback; optional file input",
+  "invariants": ["external failure atomicity", "hard mass acceptance", "exact accepted endpoints", "restart", "default-OFF preservation", "solver/execution-policy separation"],
+  "dependency_surface": ["src/runtime/mod_canonical_interval_runtime.f90", "app/solute_column/main.f90", "all canonical runtime callers, with default-OFF semantic/source preservation"],
+  "selection": {
+    "direct": "Existing analytic low_air_policy contract plus new exact-endpoint/solver-fallback/reset/mass/solver/substep atomicity tests O0/O2",
+    "physical": "Rebuilt 178-provider actual column O0 checked/O2 production; incumbent 86-observation input/budget/grid/restart runner; default-OFF executable byte comparisons; optional short trajectory equivalence to prior diagnostic candidate",
+    "longer": "Wet, dry and changing rainfall at fixed longer horizons, four decreasing tolerances, actual errors against finite finest reference and Pareto cost/error comparison; first pilot determines runtime, failures remain failures",
+    "thermal": "Actual current thermal O0/O2 physical/restart/rollback and refinement/crash runner selected because canonical runtime is in its executed closure",
+    "admission": "Explicit source successor from exact canonical, predecessor owner verification, fresh changed-runtime evidence and negative registration controls; no weakening existing oracles",
+    "full_fci": "OWNER_SELECTED_TARGETED_RUNTIME_PRESERVATION: direct optional/default controller, original 86 column assertions, fresh thermal composition/refinement and original runtime preservation drivers. No full moving unrelated chemistry/crop migration rerun solely for disabled optional branches.",
+    "highest_low_air": "NOT_SELECTED_POLICY; analytic low_air_policy test is short and selected, long physical stress not selected",
+    "expected_cost": "Direct contract under seconds; builds tens of seconds each. Longer physical horizon UNKNOWN until pilot; individual 120s native budget, censored observations never PASS. Thermal full closure and refinement previously bounded, may exceed five minutes; explicitly selected for changed shared-runtime evidence.",
+    "reuse": "Fresh column builds. Original incumbent builds only as exact default-OFF executable oracles after provider/executable identity checks. Physical thermal runner builds its own separate O0/O2 closure. No inherited numerical PASS for changed runtime."
+  },
+  "next_action": "Compile direct contracts and fresh column builds, run fixed-horizon pilot, then targeted qualification and owning source admission"
+}
