@@ -3,18 +3,18 @@
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "humus_timestamp_20261021": {
     "baseline_ref": "d7b89175",
-    "stage": "LOCAL_QUALIFIED_CANONICAL_PENDING",
+    "stage": "BOUNDED_CANONICALLY_ADMITTED",
     "contract": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "scope": "Original underscore hour/minute/second humus timestamps; endpoint predicate and equations unchanged; amendment dates remain daily",
     "selected_feedback": "Fresh original TTUTIL/native O0/O2 and original chemistry/reactive fractional switch, mass and opaque continuation; expected under60seconds per direct runner",
     "selected_composition": "Fresh current Reference/crop/Soil-N across fractional humus clock and persistent restart; provider build cost UNKNOWN pending measured closure",
     "interfaces": "Existing immutable humus start clock accepts fractions; private native timestamp decoder only; no state or restart schema",
-    "next_action": "Exact owner/source and corruption checks, current canonical reconciliation, bounded PR admission and existing master registration",
+    "next_action": "Bounded timestamp complete; preserve admission while resolving wider native/output, active-crop negative allocation and automatic surface contracts.",
     "baseline": "bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b",
     "local_result": {
       "source_timestamps_exact": 12,
@@ -87,7 +87,16 @@
         "status": "A",
         "sha256": "bb10f9eff224cc6f28d817d9bf537dedaa64b92dc2c191da56b55b2bca2ac331"
       }
-    }
+    },
+    "pr": 1354,
+    "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+    "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+    "canonical_source_tree": "ef338ba42e5456d3f2f67ca580ffcedb3c00d0c0",
+    "postmerge_owner_pass": true,
+    "postmerge_corruption_controls": 11,
+    "hosted_receipt": "integration/mc-nut01/MC_NUT01_HUMUS_TIMESTAMP_HOSTED_20261021.json",
+    "master_receipt": "48f92be43961d867ee33731d3fae1f20ae5004bf",
+    "postmerge_hosted_success": 7
   },
   "negative_reference_candidate_20261021": {
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
@@ -337,15 +346,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Bounded finite-donor fallow complete. Preserve this admitted facet; separately resolve active-crop/immobilisation donor allocation, automatic surface binding and wider source grammar/output contracts before full-row closure.",
-  "recovery_point": "PR1350 bounded finite-donor fallow ADMITTED30be5579, qualifiedc914a2ab, treee780618e; actual merge/source/owner and15 controls PASS. Raw original14 models/120Nsteps, current4 coupled runs/8 restarts, full HIST/retained preservation;33 hosted terminal21success/12 explained failures. Full historical migration remains open; nine master dispositions unchanged. Master e67d37f2:234 other rows and243 dispositions exact,integrity/20 inheritance controls/source/strict docs PASS.",
+  "next_action": "Bounded finite-donor fallow and fractional humus clock are canonically admitted. Resolve extended native diagnostics, active-crop/immobilisation negative allocation and automatic surface binding against original authority before full-row closure.",
+  "recovery_point": "PR1354 actual merge 0391d3cb70094c538df983086f6d3f8298912fcb; qualified tree84b7e8530412128bb692c22c7bf190693659fea8; original owner/11 controls and seven postmerge runs PASS. Master receipt 48f92be43961d867ee33731d3fae1f20ae5004bf. Later SOL/PERF successors preserve unchanged three NUT providers; current successor owner/26 controls PASS. Full migration remains unqualified.",
   "blockers": [
     "The literal original depleted-stock negative loading is nonconservative. SWAP-020 conservative fallow/nonnegative-production correction is ADMITTED through PR1350; original contradiction is historical evidence, not a blocker for this admitted subset. Active-crop competing sinks/immobilisation, automatic snow/persistent-surface binding and near-degenerate analytical domains remain unqualified. Full active crop-N/multiyear equivalence is not claimed.",
-    "Remaining native grammar beyond admitted daily arrays/tables, same-record apostrophe concatenation and explicit false diagnostic flag; fractional experimental-humus start clocks and true extended diagnostic output remain unsupported. No full original-model multiyear comparison is claimed."
+    "Bounded fractional humus timestamps are ADMITTED through PR1354. Wider historical native grammar and true extended diagnostic output remain unqualified. No full original-model multiyear comparison is claimed."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "30be55796107ea05d40aac0ea182f2218613af8b",
-  "last_reconciled_upstream": "fb00736e320498f2e610b0671af9c7dc5a381921",
+  "last_reconciled_head": "fcea7f0e016bb840749d5b5565574dadde9d4733",
+  "last_reconciled_upstream": "0391d3cb70094c538df983086f6d3f8298912fcb",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -2846,7 +2855,7 @@
   },
   "remaining_scope_20261021": {
     "scientific_blocker": "Finite-donor active-crop/immobilisation negative sink allocation has no qualified corrected-reference contract; the proven original stock deficit forbids simply enabling literal negative loading.",
-    "separate_implementation_or_qualification": "Automatic snow/persistent-surface gross binding; remaining native grammar, fractional humus clocks, extended output and complete active historical trajectories. These are not admitted and not relabelled NOT_APPLICABLE.",
+    "separate_implementation_or_qualification": "Automatic snow/persistent-surface gross binding; wider native grammar, enabled extended diagnostic output and complete active historical trajectories. Fractional humus timestamp subset is ADMITTED through PR1354. Remaining domains are not relabelled NOT_APPLICABLE.",
     "excluded": "Aquifer and new RossFast qualification; SOL positive-pond age is no dependency.",
     "master": "Nine existing full rows ACTIVE_MIGRATION; bounded facets admitted; no competing register."
   }

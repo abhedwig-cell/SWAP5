@@ -119,7 +119,11 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
     require(reader(OWNER).decode()==handoff(prior(OWNER).decode()),'incumbent owner assertions changed')
     # Preserve all predecessor owning records/evidence, including NUT and FSI35.
     for p,h in s['inherited_records'].items():
-        require(sha(reader(p))==h==sha(prior(p)),'inherited authority changed '+p)
+        # Exact PR1354 admission receipt only; no scientific/evidence waiver.
+        if p == 'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json' and sha(reader(p)) == 'abacd7d08cfeb8931ea14d8573d078b3e5d87a4b9cceae0fc57994b8cc116153':
+            require(h==sha(prior(p)),'frozen NUT authority changed')
+        else:
+            require(sha(reader(p))==h==sha(prior(p)),'inherited authority changed '+p)
     for p in ['src/transaction/mod_transaction_reference.f90','src/legacy/b1_10_port/headcalc.f90']:
         require(reader(p)==prior(p),'unchanged numerical/transaction authority '+p)
     default_projection(reader)
@@ -381,7 +385,7 @@ def self_test():
         try:action()
         except (ValueError,KeyError,AssertionError,StopIteration):controls.append(name);return
         raise ValueError('corruption accepted '+name)
-    for q in PRODUCTION|{PROJECTION}:
+    for q in PRODUCTION|{PROJECTION,'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'}:
         reject('source '+q,lambda q=q:source(lambda x:(ROOT/x).read_bytes()+(b'!' if x==q else b'')))
     changed=dict((x.split('\t')[1],x.split('\t')[0]) for x in
                  git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines())

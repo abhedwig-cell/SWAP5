@@ -2,14 +2,17 @@
 
 ## Fractional humus timestamp successor,21 October2026
 
-The [timestamp contract](MC_NUT01_HUMUS_TIMESTAMP_20261021.md) records a locally
-qualified, canonically pending input extension: original underscore time syntax,
+The [timestamp contract](MC_NUT01_HUMUS_TIMESTAMP_20261021.md) records an ADMITTED input extension through PR1354,
+canonical `0391d3cb70094c538df983086f6d3f8298912fcb`: original underscore time syntax,
 including normalized hours and original fractional-second precision. Twelve
 valid/nine invalid TTUTIL cases,38 incumbent native cases, original chemistry,
 the complete current HIST matrix and four new coupled calculations pass O0/O2.
 Eight fresh-process restarts preserve physical/cumulative state; maximum new
 whole-N residual1.0547118733938987e-15kg/m2, relative2.1201384179555724e-15.
-This resolves the bounded fractional humus clock gap once admitted. It does not
+This resolves the bounded fractional humus clock gap. Exact merge owner/11
+controls and all seven postmerge workflows PASS. Master receipt
+`48f92be43961d867ee33731d3fae1f20ae5004bf` preserves234 other rows and all243 dispositions.
+The hosted receipt is linked from the timestamp contract. It does not
 resolve wider native grammar, extended diagnostics, negative active-crop sink
 allocation, automatic snow/persistent-surface binding or complete original
 multiyear equivalence. The existing nine-row master mapping below remains valid.
@@ -278,7 +281,7 @@ These checks revalidate archived executed evidence; they do not rerun Fortran. T
 ## Remaining blockers and next admissible action
 
 1. **Scientific gross atmospheric N carrier.** The original source uses gross precipitation/snow/irrigation/interception/runon/runoff with evaporation separate, and explicitly questions ponding. At4 mm rain plus4 mm evaporation, the original diagnostic inputs0.8 kg N/ha while a zero net carrier inputs zero. The owner selected the original gross route. The positive independent source carrier now passes original analytical/full chemistry and actual730-day Reference/WOFOST81/Soil-N O0/O2,48 fresh-process transition continuations and atomic hydraulic/chemical rollback. The remaining limit is negative aggregate, snow/interception, persistent ponding and complete original caller binding; it is no longer an undecided B0/B1 reference choice. Passing gross rain as net water violates water closure. Invented drainage and treating age as N are rejected alternatives.
-2. **Historical input envelope.** Fractional timestamps and general TTUTIL constructs remain unsupported. Bounded native arrays/tables, material positions, daily dates and humus options are admitted. Required versus intentionally excluded grammar must be decided against actual historical inputs; no arbitrary universal parser is authorized here.
+2. **Historical input envelope.** Bounded humus timestamps are admitted through PR1354; wider timestamp grammar and general TTUTIL constructs remain unqualified. Bounded native arrays/tables, material positions, daily dates and humus options are admitted. Required versus intentionally excluded grammar must be decided against actual historical inputs; no arbitrary universal parser is authorized here.
 3. **Extended diagnostics and complete original-model regression.** These are not evidence of missing N process formulas, but the complete historical claim remains unproven. Extended output must not be silently marked NOT_APPLICABLE. No fabricated complete SWAP4.3.1 multiyear comparison is supplied.
 
 The existing master dispositions remain unchanged. The old total-absence text is stale and must point to the bounded admissions. This report records a concrete blocked full closure while preserving all independently admitted functionality; it does not transfer the atmospheric scientific choice to MC-SOL01 pond-age work.

@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 fractional humus clock,21 October2026: PR1354 admits the
+[bounded original timestamp contract](../science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md)
+at canonical `0391d3cb70094c538df983086f6d3f8298912fcb`. Original TTUTIL precision
+and normalized hours, native input, actual coupled balances, rollback and fresh
+restart pass O0/O2;16 incumbent endpoints remain exact. All seven postmerge
+workflows pass. Wider historical nutrient scope and nine full master rows stay open.
+
+
 Current bounded MC-SOL01 original SWP chemistry, 21 October2026: PR1352
 admits original TTUTIL/read_solute_CDE chemistry, matching grid, original
 concentration interpolation and preserved layer units. Complete generations

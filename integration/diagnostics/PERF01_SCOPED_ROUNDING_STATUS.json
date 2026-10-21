@@ -207,7 +207,7 @@
     },
     "integration/diagnostics/verify_perf01_empty_pond.py": {
       "status": "A",
-      "sha256": "1f6965d90ee97b0539e540a4f96f0c275cf434ffef4ae73826a68dfd8164068d"
+      "sha256": "1aabeca3211869cd38c819f4ecfcb900a583bc02799a17ae72e80a360ad875dc"
     },
     "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
       "status": "M",
@@ -379,5 +379,12 @@
   "first_surface_only_result": "Water window6 completed; joint chemical carrier rejects after5218 substeps; no external sixth-window publication",
   "historical_selected_probe": "Generated-only implicit empty-pond constraint, no bare demand or macro coupling; scalar conservation/continuity/split-step probe and six-window full model with original unchanged HeadCalc,90s/512MiB",
   "result": "docs/performance/SWAP5-PERF01_EMPTY_POND_RESULT.md",
-  "qualified_published_head": "e71fc10f09834486c291854c3af900d6874df80d"
+  "qualified_published_head": "e71fc10f09834486c291854c3af900d6874df80d",
+  "nut_admission_metadata_receipt": {
+    "pr": 1354,
+    "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+    "path": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+    "sha256": "abacd7d08cfeb8931ea14d8573d078b3e5d87a4b9cceae0fc57994b8cc116153",
+    "scope": "Exact descriptive NUT admission update only; all prior scientific postimages, inputs, evidence indexes, tests and selection preserved. This does not admit new pond/NUT coupling."
+  }
 }

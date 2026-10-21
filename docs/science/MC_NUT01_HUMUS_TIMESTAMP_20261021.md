@@ -1,6 +1,9 @@
 # Historical humus timestamps
 
-Candidate, MC-NUT01, science execution baseline d7b89175 (21 October2026),
+ADMITTED through PR1354 at canonical `0391d3cb70094c538df983086f6d3f8298912fcb`.
+Qualified head `fc9a1b8e93d527f19563e2ac7528a4c5b207de2c`; actual merge
+tree equals qualified tree `84b7e8530412128bb692c22c7bf190693659fea8`.
+MC-NUT01 science execution baseline d7b89175 (21 October2026),
 composed canonical bcf7a497. Concurrent PR1353 changes the F-SI35 evidence/registry
 only; all production sources and every executed NUT provider stay identical.
 The existing HIST-COMPLETE status remains the admission authority.
@@ -101,3 +104,16 @@ are not fresh numerical execution. Default/daily chemistry bodies are unchanged
 except removal of two integer-clock rejection predicates; the source owner
 checks that exact projection and the unchanged native reader outside the private
 decoder. Current SOL/PERF executed providers remain independently validated.
+
+## Canonical and coverage receipt
+
+Exact merge owner and11 corruption controls PASS. All33 final-head hosted runs
+are terminal:23 success and10 individually triaged unchanged publication failures;
+none of those failures counts as PASS. All seven actual postmerge workflows PASS.
+The hosted receipt `integration/mc-nut01/MC_NUT01_HUMUS_TIMESTAMP_HOSTED_20261021.json`
+contains run IDs and failure excerpts.
+
+Master receipt `48f92be43961d867ee33731d3fae1f20ae5004bf` updates exactly nine existing NUT facets,
+preserving234 other rows, all243 dispositions and summary counts. Source/census/
+pinned-authority checks,20 inheritance controls and strict documentation PASS.
+Full-row admission and full MC-NUT01 closure remain open.

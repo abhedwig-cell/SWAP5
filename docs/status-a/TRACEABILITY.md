@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 fractional humus clock: PR1354, canonical `0391d3cb70094c538df983086f6d3f8298912fcb`,
+[contract and qualification](../science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md),
+existing HIST-COMPLETE child `humus_timestamp_20261021`, raw evidence index
+and `verify_nut_humus_timestamp.py` own this bounded admission. Master receipt
+`48f92be43961d867ee33731d3fae1f20ae5004bf` preserves all full-row dispositions.
+Frozen Status-A and global B1 remain unchanged.
+
+
 MC-SOL01 original SWP chemistry: [contract](../science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md),
 PR1352 feature merge d7b891759a8c378ba0367e1a1a112c684712199f and PR1353
 FSI35 reconciliation bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b. Existing work-unit
