@@ -9842,6 +9842,24 @@
         "bundle": "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
       },
       "meaning": "Temperature/moisture/depth modified decomposition",
+      "bounded_dynamic_temperature_admission": {
+        "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
+        "pr": 1342,
+        "canonical_merge": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+        "qualified_native_head": "57c4e0be9600b46ecdfb5daf6d68a66e443c12d2",
+        "reconciled_head": "fa936e66ad5a3f8e5d2c7ab1eaf7b1b4d04f96eb",
+        "source_tree": "19319aa98383c69aebd0bb4e0605b3c515821060",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json",
+        "contract": "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
+        "scope": "Actual staged Reference numeric heat endpoint feeds linear matrix transport/decay; joint mass, rollback and same-generation S5MT0001 independent-process restart",
+        "qualification": "GNU13.3 O0/O2 actual277-provider closure, literal source-order oracle, seven fixed-horizon meshes, heat-off, chemical rejection/smaller retry, native SIGKILL and semantic disk negatives; owning hosted39555862875 and incumbent column39555862516 SUCCESS",
+        "evidence": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_20261021.tar.xz.b64",
+        "evidence_decoded_sha256": "3b8632917226aee433546a358f7346e4e72be7dbdade67363e82fcc1795150f6",
+        "full_capability": false,
+        "disposition_changed": false,
+        "parked_remainder": "Nonlinear thermal/pond composition, analytic heat, full historical/default activation and seasonal accuracy; no aquifer dependency",
+        "supersedes": "Only the numeric-heat/linear-matrix part of final_closure_review_20261019.concrete_gap"
+      },
       "swap5_implementation_authority": [
         "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
         "src/process/mod_b111_reactive_solute_substep.f90",
@@ -9861,7 +9879,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230); historical SWHEA=0 retains zero temperature factor. PARKED live accepted thermal identity/state/restart composition and full historical/default activation. No dependency on excluded aquifer.",
+        "claim": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230), plus dynamic accepted numeric-heat/linear-matrix endpoint composition with rollback and S5MT0001 fresh restart (PR1342). Historical SWHEA=0 retains zero temperature factor. PARKED nonlinear thermal/pond, analytic heat, complete historical/default activation and seasonal accuracy. No excluded-aquifer dependency.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -17595,7 +17613,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230); historical SWHEA=0 retains zero temperature factor. PARKED live accepted thermal identity/state/restart composition and full historical/default activation. No dependency on excluded aquifer.",
+      "why_open": "Bounded dynamic accepted numeric-heat/linear-matrix endpoint composition is admitted by PR1342, alongside previous source-order/nonlinear matrix decay. Only nonlinear thermal/pond composition, analytic heat, complete historical/default activation and seasonal accuracy remain parked. No aquifer dependency.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17604,7 +17622,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "parked_followup": "MC-SOL01-DECAY-THERMAL-COMPOSITION"
+      "parked_followup": "MC-SOL01-DECAY-THERMAL-REMAINDER"
     },
     {
       "capability_id": "SW431-SALT-POND",
@@ -18450,6 +18468,11 @@
     "bounded_integrity": "11 owned rows/queue reasons, salt dependency cleanup, existing workunit only; all other capability rows/queues/dispositions/summary retained byte-semantically."
   },
   "bounded_owner_receipts": {
+    "MC_SOL01_DYNAMIC_DECAY01": {
+      "canonical_merge": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+      "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json",
+      "full_capability": false
+    },
     "mc_crop01_task2_task3_20261011": {
       "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1206",
       "canonical_merge": "1e281332f64335092944ac8118a9ebc67e68fe4e",

@@ -1,3 +1,13 @@
+# MC-SOL01 bounded dynamic decay, 21 October 2026
+
+PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73` adds actual accepted
+numeric-heat endpoint temperature to linear matrix transport/decay, with joint
+balance, rollback, seven interval meshes, exact fresh-process restart and native
+atomic-generation crash qualification at GNU O0/O2. The existing SALT-DECAY row
+and queue now distinguish this admitted facet from nonlinear thermal/pond,
+analytic heat, complete historical/default and seasonal scope. All243 full
+dispositions and242 other rows are unchanged; no whole-master admission.
+
 # NET01 complete source count admission, 17 October 2026
 
 PR#1276 at `719c6c67107ebf7113020e425e725731b26f73a3`, canonical receipt
