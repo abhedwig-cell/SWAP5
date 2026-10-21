@@ -139,3 +139,23 @@ individual study CLI to reproduce smaller subsets; no extra solver is selected.
 The next scientific work is solver-aware proposal control with an exact endpoint
 contract and its owning accuracy/restart/admission qualification. Favorable wet
 timings alone do not authorize new production activation.
+
+## Integration with current canonical owners
+
+Canonical `83defb1a6a7a9f4d2fcd862faf73a21ad621072a` adds the admitted Gash/NUT
+successor after the measured scientific baseline. Its strict source guard checks
+all new files under `tools`; the three diagnostic additions would otherwise be
+rejected as a foreign scientific delta. The composed guard registers exactly
+these three paths and their fixed SHA256 values, cross-checks their PERF01
+registration and diagnostic-only evidence scope, and retains the original
+scientific diff assertions for every other path. An absent temporal record
+retains the prior behavior. Any additional tool or production-source mutation
+remains rejected. This is source/evidence composition, not new Gash or nutrient
+science, and the original raw native assertions are untouched.
+
+The current Gash owner records its updated guard hash. The focused control calls
+the real guard for a valid combined tree and for injected unregistered-tool and
+production diff rows, and rejects changed diagnostic bytes, status/registration
+drift and relabelled native failures. Current native Gash/NUT and original caller
+capsule validation and existing corruption controls remain selected for this
+bounded composition; no new numerical model qualification is inferred.

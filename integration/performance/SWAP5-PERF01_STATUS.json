@@ -199,6 +199,20 @@
     "report": "docs/performance/SWAP5-PERF01_TEMPORAL_STUDY.md",
     "evidence_index": "integration/performance/evidence/perf01-temporal-20261021/INDEX.json",
     "rejected_io_attempts_index": "integration/performance/evidence/perf01-temporal-rejected-io-20261021/INDEX.json",
+    "current_owner_composition": {
+      "canonical": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
+      "scope": "Three fixed diagnostic source identities only; original scientific source and native assertions remain unchanged",
+      "owner": "integration/audits/verify_nut_gash_successor.py",
+      "control": "integration/performance/test_temporal_registration.py",
+      "control_sha256": "c17ecdeb3e1307fd53ef580c728bfede67d9672c083b1ea7bebc28d4b9c70dde",
+      "status": "COMPOSED_CURRENT_OWNER_AND_ORIGINAL_CALLER_EVIDENCE_PASS",
+      "receipt": "integration/performance/SWAP5-PERF01_COMPOSITION_20261021.json",
+      "diagnostic_negative_controls": 9,
+      "gash_negative_controls": 14,
+      "original_full_negative_controls": 9,
+      "current_column_grid_providers_unchanged": 178,
+      "scientific_capability_promotion": false
+    },
     "qualification": "Bounded convergence, work and exact fresh-process restart diagnostics only; no policy or regional admission",
     "observed_O2_speedup": {"pond4": 7.221, "pond32": 6.286, "pond256": 3.598, "pulse4": 6.797, "dry32_corrected": 0.441},
     "blockers": [

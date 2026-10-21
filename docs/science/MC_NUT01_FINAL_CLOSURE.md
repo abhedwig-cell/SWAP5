@@ -1,14 +1,20 @@
 # MC-NUT01 final closure review
 
-Updated20 October2026 against actual scientific admission `8422c2a8ac3158b0d74f77b1155936fdc435b792`. The19October review and its immutable evidence remain historical receipts.
+Updated20 October2026 against actual scientific admission `24868384b276b838ee704cff5535aad3bdb4a9c9`. The19October review and its immutable evidence remain historical receipts.
+
+The latest [actual original full-caller evidence](MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md)
+now proves the negative-source/depleted-stock conflict in configured-crop fallow.
+This replaces the earlier conditional/prescribed-node reachability limit for
+that bounded path. Full historical closure remains scientifically blocked;
+all admitted positive/process facets remain preserved.
 
 ## Decision and claim boundary
 
-**Full historical MC-NUT01 closure remains open. The independent positive historical gross atmospheric N route is canonically admitted through PR1330; automatic dry-atmosphere binding and accurate root integration through PR1333; source-faithful same-record native CHARACTER concatenation and explicit disabled diagnostics through PR1337.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
+**Full historical MC-NUT01 closure remains scientifically BLOCKED at the negative-carrier/depleted-stock boundary. The independent positive historical gross atmospheric N route is canonically admitted through PR1330; automatic dry-atmosphere binding and accurate root integration through PR1333; source-faithful same-record native CHARACTER concatenation and explicit disabled diagnostics through PR1337; source-faithful Gash saturation and actual snow-free daily interception/N composition through PR1339.** This is the requested final closure review, not a declaration that the completion criteria all passed. No capability is promoted merely because its development branch has been merged.
 
-The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, latest bounded receipt `185f7638a116adf38c99ac1e55d945e6b9e0e7d5`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. PR1337 also corrects the nine obsolete active-queue absence statements and bounded-receipt locator shapes; the original nine scoped reachability checks pass. The matrix below reports those existing nine rows and their later bounded receipts, not a second registry.
+The existing work-unit authority is `integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json`. The master remains the single capability register on PR1072, branch `work/swap431-master-coverage-20261006`, latest receipt `34f5a9fc3a7f061d8fb05e8320b8f549f1465d1d`. It is not a file on current canonical. Review receipt `962cd60ad7b170432d363d821e6c4f223b6dfd08` corrects the nine bounded production-reachability records on that same master branch, leaves all234 other rows equal and preserves every disposition/count. It claims no new whole-master qualification. Its nine MC-NUT01 rows are all ACTIVE_MIGRATION. PR1337 also corrects the nine obsolete active-queue absence statements and bounded-receipt locator shapes; the original nine scoped reachability checks pass. The matrix below reports those existing nine rows and their later bounded receipts, not a second registry.
 
-The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Negative aggregate, snow/interception and persistent ponded application binding remain unqualified; a corrected surface-N store is not introduced.
+The original atmospheric information deficit is resolved in the new positive historical gross-forcing route by an explicit independent N carrier. Original management_soil lines400..402 constructs gross atmospheric water input separately from evaporation. The admitted aggregate Soil-N owner receives one signed net surface-water carrier. Equal net water can correspond to different gross N inputs. The historical counterexample remains documented in [the original-source witness](MC_NUT01_HIST_GROSS_NET_BLOCKER_20261018.md). The programme owner selected original gross loading/order/aggregate ponding on20October. [The qualified successor](MC_NUT01_HISTORICAL_GROSS_TOP_CONTRACT_20261020.md) supplies that aggregate independently of accepted net soil water. Snow-free daily stateless Gash is now admitted through [its original-source and actual-model contract](MC_NUT01_GASH_COMPOSITION_20261020.md). Negative aggregate, snow, other interception routes and persistent ponded application binding remain unqualified; a corrected surface-N store is not introduced.
 
 Additional incomplete historical envelope: cross-record/general constructs outside the explicit native parser, fractional experimental-humus clocks and true extended diagnostics; no complete original-model multiyear comparison. These are recorded separately from the gross-carrier blocker. Native daily arrays/tables, material positions, same-record apostrophe concatenation, explicit false diagnostics and bounded experimental humus are admitted. The original half-day amendment gate stalls rather than applying a subdaily event; no new subdaily process is inferred from permissive date parsing.
 
@@ -31,6 +37,7 @@ The immutable archive is `integration/audits/evidence/SWAP431_B111_AUTHORITY.tar
 Authority is historical SWAP4.3.1 as pinned in these archives, with explicitly registered corrected-reference decisions. It is not unrestricted literal B0 equivalence. In particular:
 
 * MC-NUT01-R1 corrects the duplicated Bio term in the organic mineralisation coefficient. The defect witness and one-line transform remain immutable.
+* MC-NUT01-R2 corrects the original same-date amendment grouping defect; [the accepted calendar reconciliation](MC_NUT01_CALENDAR_RECONCILIATION_20261015.md) traces PR1242 and its exact corrected-reference authority.
 * Retained-stock follows its admitted corrected B1.12 contract, while growth ownership remains the admitted WOFOST81 path. This is not proof of the complete original crop trajectory.
 * The original seepage reader mistakenly assigns the nitrate-seepage field to the lateral field. The independent B0/B1 reader witness distinguishes the defect from the one-target correction; distinct current boundary parameters are preserved.
 * A rejected residue fraction up to eight spacings below its lower boundary is projected only with an exactly booked NH4 compensation. No external N is manufactured, and larger deviations remain rejected.
@@ -54,7 +61,7 @@ Every row below retains the master disposition. ADMITTED in the facet column ref
 | SW431-NUT-TRANSPORT | ACTIVE_MIGRATION | ADMITTED bounded facet; full envelope open | Analytical concentration, uptake and signed boundary exchange | `SWAP/wofost_soil_watern.f90` | `src/process/mod_b111_soil_n_transport.f90` | Accepted full-column daily water carrier, root uptake, bottom/lateral concentrations | Original watern plus actual Reference water; bounded top infiltration; gross/net counterexample limits full scope |
 | SW431-NUT-NFIX | ACTIVE_MIGRATION | ADMITTED bounded facet; full envelope open | Biological fixation booked as crop input | `SWAP/wofostnut.f90` | `src/crop/mod_b111_nfixation_policy.f90` | Explicit admitted source fixation policy; actual crop demand/supply | Vegetative/reproductive source witnesses, whole-system budgets and native continuation |
 
-Whole-envelope blockers attach principally to NUT-TRANSPORT, NUT-MINERAL and NUT-CROP through the atmospheric carrier, and to native input/application reachability where unsupported syntax is required. Organic, amendment, residue, nitrification, denitrification and fixation processes do exist and execute in admitted compositions. An old complete-absence statement cannot override those later admissions. The remaining envelope for each master row requires its own owner review before promotion.
+Whole-envelope blockers attach principally to NUT-TRANSPORT, NUT-MINERAL and NUT-CROP through the atmospheric carrier, and to native input/application reachability where unsupported syntax is required. Organic, amendment, residue, nitrification, denitrification and fixation processes do exist and execute in admitted compositions. An old complete-absence statement cannot override those later admissions. The actual original full-fallow caller now proves the negative/depleted-stock reference conflict; full active crop-N and multiyear equivalence remain unclaimed. The remaining envelope for each master row requires its own owner review before promotion.
 
 Aquifer functionality is outside this work unit. RossFast remains limited to previously approved use. Surface-water age is not a dissolved NH4/NO3 inventory and cannot close the N carrier gap. No phosphorus or other new biogeochemical model is inferred from the generic word nutrients.
 
@@ -310,3 +317,121 @@ The [native CHARACTER contract](MC_NUT01_NATIVE_CHARACTER_20261020.md) qualifies
 The original-library calendar fixture now executes the literal daily amendment gate: a half-day event never fires at integer daily calls and blocks the next queued event, while the two integer-date positive controls fire. This is a fixture with an amendment-call counter, not a full original trajectory. Fractional parsing is therefore distinct from qualified subdaily application; fractional humus start clocks and near-integer tolerance cases remain unqualified. True extended diagnostics remain unsupported, including their historical derived P columns. Empty concatenation pieces, tabs around concatenation and doubled apostrophe escapes are rejected by original TTUTIL and remain rejected. Canonical integration and mastercoverage receipts are owned by the existing native_character_successor status field.
 
 Actual native CHARACTER admission: [PR1337](https://github.com/abhedwig-cell/SWAP5/pull/1337), merge `8422c2a8ac3158b0d74f77b1155936fdc435b792`, qualified head `78576d691067253435ffc4e074dd4bef14411b32`, source `426f14c39eb251095168c6c9b523cee5203bfbb6`. Both actual-merge owner entrypoints pass. Existing master PR1072 receipt `185f7638a116adf38c99ac1e55d945e6b9e0e7d5` corrects nine obsolete active-queue absence statements and bounded receipt shapes in the original schema. Its original nine scoped reachability checks pass;234 other rows,243 dispositions, non-NUT queues and latest SOL receipts are exact. The nine full-row dispositions remain ACTIVE_MIGRATION. Full MC-NUT01 is not closed.
+
+## Gash source composition qualification, 20October2026
+
+The [original Gash/N composition contract](MC_NUT01_GASH_COMPOSITION_20261020.md)
+records an additional bounded source-to-stock application. A source-faithful
+one-line saturation-branch correction is checked against 54 executions of the
+literal original routine per optimization; the preimage differs in six. The
+actual coupled model includes intercepted and bypass irrigation, committed
+crop LAI, wet transpiration, accepted Reference water and historical Soil-N.
+Current-canonical PERF01 is retained and the complete affected coupled closure
+is re-executed. This is separate from the original surface process fixture and
+does not establish a complete original-model historical trajectory.
+
+The two-stage reconciliation is explicit: the first backend execution completed
+its individual cases but the final runner correctly rejected it after canonical
+source changed. Its raw outputs and guard failure are retained as superseded
+evidence. Only the fresh execution on the reconciled source is eligible for
+admission. No assertion or tolerance is weakened.
+
+The existing registry statuses must be read at their stated scope:
+
+| Evidence or boundary | Classification | Disposition consequence |
+| --- | --- | --- |
+| Versioned mineral/organic/crop/source/calendar/retained/restart facets | ADMITTED bounded facets | Nine full NUT rows stay ACTIVE_MIGRATION |
+| Original surface/pond diagnostic with prescribed top-node water | QUALIFICATION_ONLY | No complete original caller or negative-carrier admission |
+| Old historical development branch with no commits ahead | SUPERSEDED development lineage | Use current canonical implementations and later owner receipts |
+| Aquifer and new phosphorus model; new RossFast qualification | NOT_APPLICABLE to this work unit | No added nutrient capability or blocking dependency |
+| Negative original carrier with depleted supply | Concrete scientific blocker | Hard element conservation and literal depleted original output disagree in the documented conditional fixture |
+| General input/output and complete original trajectory | ACTIVE_MIGRATION / NOT_PROVEN evidence boundary | No automatic promotion from a merged branch |
+
+These are interpretations of the existing master and owner records, not new
+capability identifiers or an independent admission register. A qualification-only
+surface witness cannot be substituted for a complete original hydraulics/crop/N
+trajectory. The strictly isolated negative-source decision preserves every
+already admitted nonnegative source and coupled process path.
+
+The current Gash whole-N residual is3.6971294081755701e-16 kg/m² absolute,
+5.500308916124313e-16 relative; maximum over the six explicit whole-N budgets
+is5.034167527284694e-15 kg/m² absolute and7.410057146751128e-15 relative.
+The unchanged absolute gate is1e-10 kg/m². The complete profile table, source
+loading, uptake, hydraulic residuals and measured compilation/execution costs
+are in the Gash contract. All14 previous endpoint bytes and56 transition
+continuations pass on the reconciled current backend. These results do not
+resolve the separately documented negative/depleted-stock original conflict.
+
+Final Gash canonical admission: PR#1339, scientific commit `24868384b276b838ee704cff5535aad3bdb4a9c9`,
+qualified head `d7b747a2a1efbd0c88fdb2faa2fd0ec3af281b34`, exact full tree `60c1808d47b790f2006debd36a3c386155b80ebb`,
+production source `2b2d253d71eb89c96c025b885ce4b80e34283c8b`. The actual-merge
+registered owner passes. The final head has seven selected successful Actions:
+Gash39501800786, irrigation39501800246, focused NUT39501800042, historical
+actual B11239501800334, PERF01 run39501800076, F-CI39501800066 and
+documentation39501800625. The earlier head48dcb1f1 failed B112 compilation
+(run39500045231) due to an omitted imported Gash build provider; the corrected
+final head has a fresh successful full application build/run.
+
+The existing master PR1072 receipt `5d174905e82cdfb9cff4ec0c6ca29b92e9ef4ac3`
+updates nine NUT bounded receipts and the related already-admitted Gash row,
+preserves233 other rows and all243 dispositions/counts, and passes the original
+nine scoped bounded-reachability checks. It does not claim whole-master
+qualification. Full MC-NUT01 closure remains false at the explicitly documented
+scientific and remaining input/output/trajectory boundaries.
+
+## Actual original full-caller scientific blocker
+
+The [complete original caller qualification](MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md)
+supersedes the prescribed-top-node witness for configured-crop fallow reachability.
+Ten unchanged original main processes, all63 original providers at O0/O2,
+80 actual daily Soil-N steps and an exact frozen Andelst10-day control prefix
+prove that negative loading and natural stock exhaustion occur together.
+Worst whole-N daily residual is -3.594831001139163e-4kg/m² (3.594831kg/ha),
+relative0.9413431243; the conservative original output rounding bound is
+1.055500100e-7kg/m². The low-N/no-denitrification case also fails by
+8.116500012e-5kg/m². The ample/no-denitrification control is consistent with
+printed precision. Original water BALDEV8.50584e-7cm is far too small to
+explain the N discrepancy. All9 evidence corruption controls pass.
+
+This is a demonstrated scientific reference blocker, not missing current
+Soil-N implementation. Current production conserves N by continuing to reject
+negative historical carriers. Admitted nonnegative and Gash paths remain
+unchanged. A complete original active crop-N or multiyear equivalence claim
+is still not made; general native grammar, fractional humus clocks, true
+extended diagnostics and snow/persistent surface binding remain explicitly
+outside the bounded admissions. Full workstream closure is not asserted.
+
+## Definitive current closure decision and canonical receipt
+
+**BLOCKED, with all qualified bounded changes integrated.** PR#1340 integrates
+the actual original reference evidence at canonical `e41f36658f23dcd6aa3f34835e4722eae23fba42`,
+qualified head `171e45a48afe6a08d3e62a250c72ef6aba3fdd67`, exact tree
+`dc02644cc5846036b1f99a0535a14d98be15be8a`. Actual-merge original owner PASS;
+current production source stays `2b2d253d71eb89c96c025b885ce4b80e34283c8b`.
+No new hosted numeric campaign is claimed for this audit-only change.
+
+Existing master PR1072 receipt `34f5a9fc3a7f061d8fb05e8320b8f549f1465d1d`
+records the demonstrated blocker, preserves all admitted production receipts,
+234 other rows and all243 dispositions/counts, and passes the original nine
+scoped production-reachability checks. No competing capability register,
+whole-master qualification or full-row promotion is introduced.
+
+| Completion criterion | Final evidence/status |
+| --- | --- |
+| Historical process/source inventory | Nine existing master rows mapped above; admitted bounded organic/mineral/amendment/residue/crop/nitrification/denitrification/transport/fixation facets retained |
+| Actual current water/crop/N models | O0/O2 complete affected closure,14 prior endpoints exact, active Gash crop uptake and whole-N residual at most5.0342e-15kg/m² |
+| Current rollback/persistent restart |56 transition processes, exact endpoint/cumulative Gash ledgers and water/N/clean rejection; qualified and integrated |
+| Source-faithful Gash repair | PR1339, original54 cases/optimization exact; old six-case error removed; seven selected final-head Actions succeed |
+| Actual original source caller |63 original providers,10 model processes,80 daily N steps; O0/O2 CSV data exact; frozen10-day control prefix exact; QUALIFICATION_ONLY |
+| Full historical negative boundary | BLOCKED: actual original whole-N discrepancy3.594831kg/ha/day and4.902651kg/ha over10 days; conservation and literal depleted-stock loading conflict |
+| Canonical/admin/documentation | Qualified changes integrated; original and current evidence sealed; existing master/status/traceability updated; strict docs pass |
+| Remaining claim limits | Active original crop-N/multiyear equivalence, persistent surface/snow and specified general input/output envelope remain unadmitted; no new crop, aquifer or RossFast scope |
+
+The negative path cannot responsibly be admitted under both the unchanged
+original loading meaning and the required conservation/nonnegative-stock
+contract. Its separately registered blocker prevents a truthful full MC-NUT01
+closure declaration. It does not suspend the already admitted nonnegative
+application/process capabilities. A future corrected-reference decision must
+state which physical boundary-N flux is actually possible after depletion;
+silent resets, invented compensation or removal of the hard mass gate are
+not acceptable resolutions.
