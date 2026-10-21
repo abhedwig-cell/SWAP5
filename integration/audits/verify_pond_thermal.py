@@ -12,6 +12,8 @@ def sha(b):return hashlib.sha256(b).hexdigest()
 def record():return json.loads((ROOT/STATUS).read_text())['thermal_pond_successor']
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['source'](reader,changed)
  s=record();require(s['baseline']==BASE,'wrong predecessor');git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty scientific source')
  actual=changed if changed is not None else {x.split('\t')[1]:x.split('\t')[0] for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -102,8 +104,12 @@ def predecessor():
   finally:subprocess.run(['git','worktree','remove','--force',path],cwd=ROOT,check=True,capture_output=True)
  return True
 def verify_qualification():
+ if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['verify_qualification']()
  source();r=validate(capsule());r.update(predecessor_qualified=predecessor(),source_tree=git('rev-parse','HEAD:src'),current_source_tree=git('rev-parse','HEAD:src'));return r
 def self_test():
+ if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['self_test']()
  files=capsule();validate(files);controls=[]
  for name in ['physical/0.5/result.json','physical/2/O2/256/resumed.bin','qualified/1/result.json','season/O0-0.5-4/full/budget.csv','column/qualification/result.json','incumbent-comparison.json']:
   bad=dict(files);del bad[name]

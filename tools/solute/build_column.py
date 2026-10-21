@@ -39,6 +39,7 @@ def main():
     # TTUTIL objects are linked, avoiding unrelated legacy physics providers.
     from legacy_reader_sources import materialize
     original, ttutil = materialize(ROOT, output)
+    generated_inputs = [original] + sorted(p for p in ttutil[0].parent.rglob('*') if p.is_file())
     sources = list((ROOT / 'src').rglob('*.f90')) + list((ROOT / 'app/solute_column').glob('*.f90')) + [original]
     mapping = {}
     for source in sources:
@@ -81,7 +82,7 @@ def main():
     report = {'build_profile': args.build_profile, 'schema': 1, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'compiler': subprocess.check_output(fc + ['--version'], text=True).splitlines()[0],
               'compiler_command': fc, 'flags': flags, 'input_sha256': {str(p.relative_to(ROOT)): sha(p) for p in ordered if p.is_relative_to(ROOT)},
-              'generated_input_sha256': {str(p.relative_to(output)): sha(p) for p in [original] + ttutil},
+              'generated_input_sha256': {str(p.relative_to(output)): sha(p) for p in generated_inputs},
               'events': [], 'status': 'BUILDING'}
 
     def run(command, category):

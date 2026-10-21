@@ -1,5 +1,105 @@
 # MC-NUT01 final closure review
 
+## Latest bounded completion,21 October2026
+
+The finite-donor correction is ADMITTED through PR1350, canonical merge
+`30be55796107ea05d40aac0ea182f2218613af8b`, qualified head
+`c914a2ab60f9e6a82aa073194869c68e307b8ec5`, source tree
+`1feeeb02c7fce3554ca1634016fa411304d80b0d`. Actual merge tree equals the qualified
+tree `e780618eb8b950addce392347181c0d8a78381b0`; postmerge owner and15 corruption
+controls pass. All33 existing hosted runs reached terminal state:21 success and
+12 separately triaged failures, never relabelled PASS. Relevant successes:
+NUT-native39580912913, canonical39580912991, exact-owner39580913195,
+SOL-column39580913021 and documentation39580913289. The versioned hosted receipt
+is `integration/mc-nut01/MC_NUT01_FINITE_DONOR_HOSTED_20261021.json`.
+All six actual postmerge workflows subsequently completed SUCCESS: canonical
+39581702043, F-SI35 postimage39581702110, WOF43A39581702161, exact-owner39581702045,
+SOL-column39581702180 and fixed-interface groundwater39581702048. No additional
+aquifer science, full F-CI96 numerical replay or broad historical admission is
+inferred from those successes.
+The [contract](MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md) and existing
+HIST-COMPLETE record own this successor. Older blocked-negative statements below
+are historical: the configured-crop **fallow, nonnegative-production** subset now
+has a conservative corrected reference and working opt-in implementation. Full
+migration remains blocked for the separately listed active-crop/immobilisation,
+surface and input/output envelopes. No complete master row is promoted and no
+global B1 snapshot is changed.
+
+The complete nine-row matrix below remains the existing master-row mapping.
+Latest master receipt is `e67d37f2077ab45a605ba68dc94ccb5dde2d8a61` on the
+existing PR1072 branch. Exactly234 other rows, all243 dispositions and summary
+counts remain equal. Source/census/pinned-authority integrity and20 inheritance
+controls pass; source checks and strict MkDocs pass. This is administrative
+integrity, not complete master scientific qualification.
+MINERAL, TRANSPORT, NITRIF and DENIT acquire the new bounded proof; ORGANIC,
+AMEND, RESIDUE, CROP and NFIX retain their earlier admissions, freshly preserved
+by the complete HIST and retained owner runs. All nine full-row dispositions
+remain ACTIVE_MIGRATION. Bounded admitted facets are not full-row absence.
+
+The original63-provider main was rebuilt without stubs from the immutable
+SWAP4.3.1/TTUTIL archives with the exact three-provider SWAP-020 transform.
+Fourteen native main processes execute120 daily N steps at GNU13.3 O0/O2.
+Unrounded NH4, NO3, organic and whole-N books close to maximum absolute
+2.6020852139652106e-18kgN/m2 and relative9.173895969097472e-15. Original water
+outputs stay byte-exact. These are actual original-model calculations; the
+separate80 valid/four invalid inputs per optimization are process fixtures.
+
+The current actual Reference/Richards/WOFOST81/Soil-N driver computes a crop/root
+day, harvests and retires that crop, then advances12 fallow days with alternating
+water conditions, sources and negative aggregate forcing. This is a coupled
+contract calculation with controlled forcing, not field validation or complete
+original multiyear replay. O0/O2 endpoints and cumulative journals are identical:
+
+| Mineral availability | Initial N | External input | External output | Final N | Absolute residual kgN/m2 | Relative residual |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Low | 0.00027228986607720501 | 0.000056 | 0.000084048670507984481 | 0.00024424119556912857 | 9.194034422677078e-17 | 2.800584292332340e-13 |
+| High | 0.0030469170784187100 | 0.000056 | 0.0028586205587898912 | 0.00024429651962869394 | 1.249543003789544e-16 | 4.026994509393491e-14 |
+
+Relative residual divides absolute residual by initial N plus external input.
+Hard daily tolerance is1e-12kgN/m2; cumulative1e-10kgN/m2 (1e-6kg/ha). These
+absolute limits constrain physical loss independently of a small denominator;
+observed residuals are near double-precision arithmetic. Internal mineralisation
+and nitrification cancel as transfers. Requested/actual/unmet extraction are
+recorded per form; unmet extraction is never an extra source or inventory.
+
+Four uninterrupted runs and eight separately started day1/day6 restarts preserve
+native physical state and all15 cumulative journal fields byte-for-byte,
+including source/output, uptake, conversion, gas loss and residuals. Hydraulic
+rejection and chemical rejection after a completed water candidate preserve the
+same pre-trial bytes, followed by accepted retry. The existing56 transition
+restarts,16 incumbent endpoints and complete retained owner pass are preserved.
+
+Only six NUT providers change; defaults retain negative-forcing rejection.
+No solver, SOL transport, pond-N stock, physical state or restart schema changes.
+Concurrent canonical `fb00736e320498f2e610b0671af9c7dc5a381921` is merged unchanged;
+its SOL thermal-pond application/refinement proof is checked against current
+executed providers. Three frozen core-CI compiler footprints exclude all six NUT
+providers. Full F-CI96, RossFast and highest-low-air are NOT_SELECTED_IMPACT,
+not fresh numerical PASS claims.
+
+Raw outputs, commands, snapshots, logs, source hashes and failed attempts are
+sealed at the existing evidence location
+`mc-nut01-finite-donor-20261021/INDEX.json`, decoded SHA256
+`1029cc3581d678f5685a346caece0eab6d7bcf4867d4043b083ac6cbffb1b21c`.
+An executable-mode interruption in HIST is retained: `resume_nut_hist.py`
+checks the completed command prefix and source/object identities, executes the
+remaining commands and reruns every original assertion. Final new joint and
+retained gates completed freshly; failed attempts never count as complete PASS.
+
+Reproduce with GNU13, unlimited stack and OMP_NUM_THREADS=1. The SWAP-020
+`run.py --help` and `integration/audits/run_nut_negative.py --help` give the fresh
+runner interfaces; archived commands give exact flags and inputs. Run the
+unchanged reproductive/retained owner as recorded. Revalidate sealed evidence
+with `python -B integration/audits/verify_nut_negative.py`, `--self-test`, and
+`python -B integration/performance/authority.py`.
+
+Concrete remaining blockers: active-crop competing negative sinks and
+immobilisation need a justified donor-allocation contract; automatic snow and
+persistent-surface gross binding lack full source qualification; near-degenerate
+coefficients, fractional humus clocks, remaining grammar and enabled extended
+diagnostics lack complete qualification. Aquifer is excluded; SOL pond age is
+no dependency. These do not prevent the bounded admission above.
+
 Updated20 October2026 against actual scientific admission `24868384b276b838ee704cff5535aad3bdb4a9c9`. The19October review and its immutable evidence remain historical receipts.
 
 The latest [actual original full-caller evidence](MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md)

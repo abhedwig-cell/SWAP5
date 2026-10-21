@@ -255,7 +255,7 @@ end subroutine dtdpst
 subroutine swap_warning(origin, message)
   implicit none
   character(len=*), intent(in) :: origin, message
-  error stop 'standalone: disabled legacy entry swap_warning'
+  write(*,'(A)') 'SWAP_WARNING: '//trim(origin)//': '//trim(message)
 end subroutine swap_warning
 
 subroutine swap_error(origin, message)

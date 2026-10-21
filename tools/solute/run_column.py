@@ -73,13 +73,18 @@ def main():
         staged_swp.write_bytes(swp.read_bytes())
         if sha(staged_swp) != swp_hash:
             raise ValueError('SWP changed during staging')
-        command.append(str(staged_swp))
+        # TTUTIL FLNAME normalizes names to lowercase. Use the fixed local
+        # staging name, preserving arbitrary case in the user's parent path.
+        command.append(staged_swp.name)
     start = time.perf_counter()
-    result = subprocess.run(command, cwd=stage, capture_output=True)
+    result = subprocess.run(command, cwd=stage, capture_output=True, input=b'')
     (stage / 'stdout').write_bytes(result.stdout)
     (stage / 'stderr').write_bytes(result.stderr)
     if result.returncode or b'SWAP5_SOLUTE_COLUMN_COMPLETED' not in result.stdout:
         raise RuntimeError(f'column failed with exit {result.returncode}; diagnostics: {stage}')
+    # Original TTUTIL's indexed input cache is process scratch, not state.
+    for cache in stage.glob('inputrd$*.tmp'):
+        cache.unlink()
     names = ['input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr']
     if (stage / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
         names.append('temperature.csv')

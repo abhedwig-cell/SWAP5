@@ -10,9 +10,88 @@ module mod_b111_soil_n_transport
    real(real64)::concentration_end=0d0
    real(real64)::concentration_average=0d0
    real(real64)::production_actual=0d0
+   real(real64)::top_actual_rate=0d0,top_unmet=0d0,depletion_time=0d0
  end type
  public::evaluate_b111_soil_n_transport
+ public::evaluate_b111_soil_n_negative_boundary
 contains
+ ! Corrected historical aggregate, explicitly limited to a nonnegative source
+ ! and one finite mineral donor. This does not bind or mix a physical pond.
+ subroutine evaluate_b111_soil_n_negative_boundary(dz,dt,wt,w0,qout,qbot,qtop,qlat, &
+      rate,production,drybd,sorption,cbot,ctop,clat,c0,result)
+  real(real64),intent(in)::dz,dt,wt,w0,qout,qbot,qtop,qlat,rate,production
+  real(real64),intent(in)::drybd,sorption,cbot,ctop,clat,c0
+  type(b111_soil_n_transport_result_t),intent(out)::result
+  real(real64)::h,h1,h2,positive,requested,a1,a2,b1,b2,lo,hi,mid,candidate,roundoff,tau
+  integer::kind,i,code
+  result=b111_soil_n_transport_result_t();result%status=B111_NTRANS_INVALID
+  if(.not.all(ieee_is_finite([dz,dt,wt,w0,qout,qbot,qtop,qlat,rate,production, &
+       drybd,sorption,cbot,ctop,clat,c0])))return
+  if(dz<=0d0.or.dt<=0d0.or.min(wt,w0)<=0d0.or.qtop>=0d0)return
+  if(min(qout,qbot,qlat,rate,production,sorption,cbot,ctop,clat,c0,drybd)<0d0)return
+  positive=(qbot*cbot+qlat*clat)/dz+production
+  requested=-qtop*ctop/dz
+  h=(wt-w0)/dt
+  h1=h+qout/dz+rate*.5d0*(wt+w0)
+  h2=positive-requested
+  roundoff=32d0*epsilon(1d0)*max(abs(h),qout/dz+rate*.5d0*(wt+w0))
+  if(abs(h1)<=roundoff)h1=0d0
+  if(abs(h)<1d-8.and.abs(h)>0d0)return
+  if(abs(h1)<1d-8.and.abs(h1)>0d0)return
+  if(abs(h)>0d0.and.abs(h1)>0d0)then
+    if(abs(h-h1)>1d-8)then
+      kind=1
+    else if(abs(h-h1)<=roundoff)then
+      kind=2
+    else
+      return
+    end if
+  else if(abs(h)<=0d0.and.abs(h1)>0d0)then
+    kind=3
+  else if(abs(h)>0d0)then
+    kind=4
+  else
+    kind=5
+  end if
+  if(min(w0,wt)*dz<=1d-6)return
+  call detcoef(kind,a1,a2,sorption,b1,b2,h,h1,w0,drybd,dt,code)
+  if(code/=B111_NTRANS_OK)return
+  result%concentration_end=a1*c0+a2*h2;result%concentration_average=b1*c0+b2*h2
+  result%top_actual_rate=qtop*ctop;result%depletion_time=dt
+  result%solution_class=kind;result%production_actual=production
+  if(result%concentration_end<0d0)then
+    if(h2>=0d0)return
+    lo=0d0;hi=dt
+    do i=1,90
+      mid=lo+.5d0*(hi-lo)
+      if(mid<=lo.or.mid>=hi)exit
+      call detcoef(kind,a1,a2,sorption,b1,b2,h,h1,w0,drybd,mid,code)
+      if(code/=B111_NTRANS_OK)return
+      candidate=a1*c0+a2*h2
+      if(candidate>0d0)then
+        lo=mid
+      else
+        hi=mid
+      end if
+    end do
+    tau=lo+.5d0*(hi-lo)
+    if(abs(c0)<=0d0)tau=0d0
+    result%depletion_time=tau;result%concentration_average=0d0
+    if(tau>0d0)then
+      call detcoef(kind,a1,a2,sorption,b1,b2,h,h1,w0,drybd,tau,code)
+      if(code/=B111_NTRANS_OK)return
+      result%concentration_average=(tau/dt)*(b1*c0+b2*h2)
+    end if
+    result%concentration_end=0d0
+    result%top_actual_rate=-dz*(requested*tau+positive*(dt-tau))/dt
+    result%top_unmet=dz*(requested-positive)*(dt-tau)
+  end if
+  if(.not.all(ieee_is_finite([result%concentration_end,result%concentration_average, &
+       result%top_actual_rate,result%top_unmet,result%depletion_time])))return
+  if(min(result%concentration_end,result%concentration_average,result%top_unmet)<0d0)return
+  if(result%top_actual_rate>0d0.or.result%top_actual_rate<qtop*ctop)return
+  result%status=B111_NTRANS_OK
+ end subroutine
  subroutine detcoef(iflsol,a1,a2,avs,b1,b2,hv,hv1,mto,rhbd,t,status)
   integer,intent(in)::iflsol
   real(real64),intent(out)::a1,a2,b1,b2
