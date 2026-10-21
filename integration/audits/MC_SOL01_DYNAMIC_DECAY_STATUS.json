@@ -3167,5 +3167,144 @@
     },
     "hosted_receipt": "integration/audits/MC_SOL01_SWP_READER_HOSTED_20261021.json",
     "strict_documentation": "PASS; final source checks and strict MkDocs completed on sealed metadata"
+  },
+  "swp_water_successor": {
+    "work_unit": "MC-SOL01-SWP-WATER01",
+    "baseline": "48a59396d7e7745cf99ad4b1003cd84c946e3e3f",
+    "status": "SELECTED_ADMISSION_IN_PROGRESS",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": false,
+    "canonically_admitted": false,
+    "scope": "Explicit original TTUTIL native SWP grid/layered default MvG and unsaturated HTB bootstrap; explicit boundary/meteo/crop forcing retained",
+    "invariants": [
+      2,
+      3,
+      7,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "next_action": "Publish candidate; complete selected PR and canonical qualification",
+    "recovery_point": "work/mc-sol01-swp-water-20261021",
+    "blockers": [],
+    "dependency_surface": [
+      "app/solute_column",
+      "tools/solute",
+      "src/solver/mod_b110_default_mvg_provider.f90"
+    ],
+    "test_selection": {
+      "owner": "MC-SOL01",
+      "full_fci": "NOT_SELECTED_IMPACT: adapter-only bootstrap, no process/solver/runtime change",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "expected_seconds": 240,
+      "compile_seconds": 119.96280988905346,
+      "native_seconds": 10.081962469972495,
+      "physics_only_seconds": "UNKNOWN: includes native IO and launcher overhead"
+    },
+    "checkpoint_commit": "3b39dd2b3b7b1f50e977ef8e809fb94d4c7026b3",
+    "production_source_tree": "f1acdac28c67b500b6f59b2f9f694be149005560",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64",
+      "decoded_sha256": "72de82d69eefbcc8e6d2bdde339316520ce09101dd5e053fcaaeea7cce2af919",
+      "decoded_bytes": 357252,
+      "members": 7049
+    },
+    "postimages": {
+      ".github/workflows/mc-sol01-swp-reader.yml": "d46ff331ce6102eba5bceca5f86ec5f76cebaa3d86f19bc1a57eda774823f924",
+      ".github/workflows/mc-sol01-thermal-pond.yml": "5cd2b0b2ee3b7a41a379c257bb9ea9cffd93c8aec606dea159a19eccee0c4143",
+      "app/solute_column/README.md": "713038e36acb8dc38131db46b7dc0191ffdead7054886e90035d0348690a79a9",
+      "app/solute_column/main.f90": "0a6f549d8c384f76c2a7e6b0db1c4144ab206fbc0bf6623faa4ad1736301821d",
+      "app/solute_column/read_swp_water.f90": "fdaecbaaf692f4c645c839abd05899ef5afbe0f488e6404f44a064dff27b0f42",
+      "docs/science/MC_SOL01_SWP_WATER_CONTRACT.md": "9c1b2c647a85f5585fe21bd69a891045070820d310cbadae72166ec0f519f969",
+      "examples/solute_column/layered_water.swp": "d3b53006407bcfb807913b679f9b396f285634aaf7fa466a7086d3b377d64c3d",
+      "examples/solute_column/swp_water.nml": "8acc5a3ec3171f2ee08cd8c279e7e9af211e9a0097b82e4e9dec03fb00f5aa51",
+      "integration/audits/MC_SOL01_SWP_WATER_REVIEW.md": "6a0b21effa801ece3a5cf520fde83da97036b7a140a7625db1711fcc93f78a20",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "ec329c1efe9de1b719ed836f34dfe85ae108bdd85b22171f649346bf1df8ec7b",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "3d84a8c3502e3c6976a834846f9a5dbe611d76b0b2bd2a7fec0aea911669dccc",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "f4d6035d16e7c3c0607c24802c8d414c502fead5256484aeb075cb19fa434d3a",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "de3a2ba4ebcf464280225de87dc1e6fe7223afa7c8310f57aed8b29f2b7e5ded",
+      "integration/audits/verify_nut_output_generation.py": "e3b21f77114b1581ea0dc9d12d19552c438983c853870a29323abbfe62fcdfa3",
+      "integration/audits/verify_swp_water.py": "f90143d4a0cfeb89218de775889feac5ee123f0cb2f2794bf9650e29ef13f5ba",
+      "tests/nut-sol/qualify_swp_water.py": "c60f1e60c5e8d9e76e4aa6ddf3b1917aaf74f962f185e83c8c489bd858201169",
+      "tests/nut-sol/test_swp_water.f90": "b5f11f57ba9023c5cdcf38070292f605c22d153daf1d418233aa4d239ff24002"
+    },
+    "native": {
+      "mapping_cases": 12,
+      "independent_process_restarts": 12,
+      "invalid_cases": 60,
+      "old_application_observations": 86,
+      "original_chemistry_observations": 172,
+      "canonical_byte_comparisons": 152,
+      "max_water_residual_cm": 4.508112633194727e-16,
+      "max_solute_residual_mg_cm2": 1.7539366226754227e-13
+    },
+    "retained_failures": [
+      "Initial direct reader link missed existing swap_error/swap_warning provider; three-provider closure fixed without mock",
+      "Initial scalar IHWCKMODEL rejected by original RDFINR; original RDINAR/RDSINR branch restored, both builds repeated",
+      "First baseline comparison attempted random interrupted-stage directory names; comparison now excludes interrupted/corrupt results, 152 completed valid output files exact"
+    ],
+    "full_historical_migration": false,
+    "source_evidence_controls": 18,
+    "documentation": "source checks and strict MkDocs PASS; local validation only",
+    "inherited_inputs": {
+      "integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json": "36bbebabe2f0180604b8a04c190269a94369ec6a686afcf5f93d609b215711ab",
+      "integration/diagnostics/study_perf01_pond_policy.py": "7974f0f496974d98153bc073f042e842bb84ed2e64aaeecd8efeef16516ba838",
+      "src/runtime/mod_canonical_interval_runtime.f90": "7967d4c2fb3c32b5baf01c0b6dcfaaa686648d9a89a14ccd3b3c37307aa3188f",
+      "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json": "4e88dd0686774148974bbbe1938dc6de14b7f387fd688144f155a8ef235f158b",
+      "integration/diagnostics/verify_perf01_pond_policy.py": "fc2331202143f73b21c33d132fb5f9c338a6de2d62cdc7f65e35f2f9946a5720",
+      "src/transaction/mod_transaction_reference.f90": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde",
+      "src/legacy/b1_10_port/headcalc.f90": "11a8c8c1ed408adfd687ceafcc706cdfe575a83339028f7b2391e19d89fb8705",
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ec9441ea868476fd962f0d2986144f262b3d796ec4e2b5cab5eceea82432a0b6",
+      "integration/audits/evidence/MC_SOL01_SWP_FSI35_NATIVE_20261021.log": "beea63b7027fd55d36c7cbd7b5295b9400f98c16dd0cd7f516c5a22f9dc7cf94"
+    },
+    "admission": {
+      "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+      "predecessor": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json",
+        "sha256": "de3a2ba4ebcf464280225de87dc1e6fe7223afa7c8310f57aed8b29f2b7e5ded"
+      },
+      "annual": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json",
+        "sha256": "f4d6035d16e7c3c0607c24802c8d414c502fead5256484aeb075cb19fa434d3a"
+      },
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64",
+        "decoded_sha256": "3f1787e555e84a0fdce68a020952d43bd08b5406ec6466595559429fb7baed43",
+        "decoded_bytes": 389424,
+        "members": 354
+      },
+      "source_delta": {
+        ".github/workflows/mc-sol01-swp-reader.yml": "M",
+        ".github/workflows/mc-sol01-thermal-pond.yml": "M",
+        "app/solute_column/README.md": "M",
+        "app/solute_column/main.f90": "M",
+        "app/solute_column/read_swp_water.f90": "A",
+        "examples/solute_column/layered_water.swp": "A",
+        "examples/solute_column/swp_water.nml": "A",
+        "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json": "M",
+        "integration/audits/MC_SOL01_SWP_WATER_REVIEW.md": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "A",
+        "integration/audits/verify_nut_output_generation.py": "M",
+        "integration/audits/verify_swp_water.py": "A",
+        "tests/nut-sol/qualify_swp_water.py": "A",
+        "tests/nut-sol/test_swp_water.f90": "A"
+      }
+    },
+    "concurrent_reconciliation": {
+      "head": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+      "new_NUT_output_adapters": 5,
+      "compiled_input_intersection": [],
+      "all_incoming_files_preserved": true,
+      "scope": "All 190 executed input providers remain byte exact; full source tree includes five unrelated admitted NUT output adapters"
+    },
+    "publication_authorized": true
   }
 }

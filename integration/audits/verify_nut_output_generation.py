@@ -61,6 +61,8 @@ def predecessor():
  (ROOT.parent/'joint-output-admission-predecessor-receipt.json').write_text(json.dumps(r,indent=2)+'\n')
  return r
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'admission' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_water_successor',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_water.py'))['source'](reader,changed)
  r=record()
  for p,h in r['postimages'].items():require(sha(reader(p))==h,'new output source '+p)
  for p,h in r['qualified_input_sha256'].items():require(sha(reader(p))==h,'executed output dependency '+p)
@@ -110,8 +112,12 @@ def validate(f):
    require(b'PASS'in f['final/'+v['stdout']],'missing actual assertions')
  return dict(status='JOINT_OUTPUT_SOURCE_AND_EVIDENCE_PASS',invalids_per_optimization=14,crash_boundaries=4)
 def verify():
+ if 'admission' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_water_successor',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_water.py'))['verify_qualification']()
  source();r=validate(capsule());r['frozen_predecessor']=predecessor();return r
 def self_test():
+ if 'admission' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_water_successor',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_water.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()

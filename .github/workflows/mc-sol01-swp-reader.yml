@@ -40,6 +40,10 @@ jobs:
           python -B tools/solute/build_column.py --optimization O2 --output "$root/O2"
           python -B tests/nut-sol/qualify_swp_reader.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/native"
           python -B tests/nut-sol/test_column_input.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/column"
+      - name: Native SWP water bootstrap
+        run: |
+          root="$RUNNER_TEMP/swp-reader"
+          python -B tests/nut-sol/qualify_swp_water.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/water"
       - name: Source bound admission and negative controls
         run: |
           python -B integration/audits/verify_swp_reader.py
