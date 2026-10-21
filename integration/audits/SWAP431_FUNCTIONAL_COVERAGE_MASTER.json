@@ -9743,7 +9743,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "ADMITTED bounded matrix Freundlich0.5..2 (PR1228/1230), numeric-heat endpoint matrix composition(PR1342/1344), and fixed-temperature persistent pond/matrix composition(PR1346), including current-runtime rollback/balance/fresh native restart. PARKED wider0..10 reader domain, dynamic thermal pond, analytic heat, full historical/default and seasonal accuracy. No whole historical promotion.",
+        "claim": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -9859,6 +9859,27 @@
         "full_capability": false,
         "disposition_changed": false,
         "parked_remainder": "Dynamic thermal pond, exponent domain outside0.5..2, analytic heat, snow/exfiltration, age/N companions, enabled-proposal/nonlinear composition, full historical/default and seasonal scope; aquifer excluded and RossFast frozen"
+      },
+      "bounded_thermal_pond_admission": {
+        "work_unit": "MC-SOL01-THERMAL-POND01",
+        "pr": 1348,
+        "canonical_merge": "969aa918f0104546ec4ca2372feccf37b0145627",
+        "qualified_native_head": "b49525752f69ba2fb94dfca4d31281fd6939c1cb",
+        "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor",
+        "contract": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Opt-in numeric endpoint heat with existing dissolved pond and soil Freundlich 0.5..2, real file input, measured 30/365-day prescribed boundary runs",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_THERMAL_POND_20261021.tar.xz.b64",
+          "decoded_sha256": "3c6f17c971651c7fa0a66fd5acd28508dee1109b8a59dce5a458aaf3484a48dc",
+          "members": 4916
+        },
+        "qualification": "Six exponents O0/O2, literal/quad oracle, eight coupling meshes, joint balance/rollback/retry, exact fresh restart, 96 semantic native rejections, 24 SIGKILL publication controls; 86 incumbent app observations and 160 old output artifacts exact; 30/365-day cases .5/1/2 on three time grids with exact finest fresh restart",
+        "full_capability": false,
+        "disposition_changed": false,
+        "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
+        "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -9915,7 +9936,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "ADMITTED bounded source-order matrix decay(PR1228/1230), actual numeric-heat endpoint matrix composition(PR1342/1344), and nonlinear fixed-temperature pond/matrix transport/decay(PR1346). Historical temperature-off zero factor preserved. PARKED dynamic thermal pond, analytic heat, full historical/default and seasonal qualification; no aquifer dependency.",
+        "claim": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -10031,6 +10052,27 @@
         "full_capability": false,
         "disposition_changed": false,
         "parked_remainder": "Dynamic thermal pond, exponent domain outside0.5..2, analytic heat, snow/exfiltration, age/N companions, enabled-proposal/nonlinear composition, full historical/default and seasonal scope; aquifer excluded and RossFast frozen"
+      },
+      "bounded_thermal_pond_admission": {
+        "work_unit": "MC-SOL01-THERMAL-POND01",
+        "pr": 1348,
+        "canonical_merge": "969aa918f0104546ec4ca2372feccf37b0145627",
+        "qualified_native_head": "b49525752f69ba2fb94dfca4d31281fd6939c1cb",
+        "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor",
+        "contract": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Opt-in numeric endpoint heat with existing dissolved pond and soil Freundlich 0.5..2, real file input, measured 30/365-day prescribed boundary runs",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_THERMAL_POND_20261021.tar.xz.b64",
+          "decoded_sha256": "3c6f17c971651c7fa0a66fd5acd28508dee1109b8a59dce5a458aaf3484a48dc",
+          "members": 4916
+        },
+        "qualification": "Six exponents O0/O2, literal/quad oracle, eight coupling meshes, joint balance/rollback/retry, exact fresh restart, 96 semantic native rejections, 24 SIGKILL publication controls; 86 incumbent app observations and 160 old output artifacts exact; 30/365-day cases .5/1/2 on three time grids with exact finest fresh restart",
+        "full_capability": false,
+        "disposition_changed": false,
+        "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
+        "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -10171,7 +10213,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_pond_solute_route.f90",
-        "claim": "ADMITTED existing sole matrix pond mass, wet/dry/fill, infiltration, runon/runoff chemistry and fresh native restart; PR1346 adds soil Freundlich0.5..2 with fixed configured temperature, exact incumbent linear bytes, atomic rejection/retry and native configuration negatives. PARKED dynamic thermal pond, snow/exfiltration, full default/bootstrap/multicolumn, simultaneous age/N companions and seasonal scope. No sorbed phase is invented in pond water.",
+        "claim": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented.",
         "bounded_receipt": "MC_SOL01_SURFACE_CHEMISTRY_FINAL"
       },
       "restrictions": [
@@ -10356,6 +10398,27 @@
         "full_capability": false,
         "disposition_changed": false,
         "parked_remainder": "Dynamic thermal pond, exponent domain outside0.5..2, analytic heat, snow/exfiltration, age/N companions, enabled-proposal/nonlinear composition, full historical/default and seasonal scope; aquifer excluded and RossFast frozen"
+      },
+      "bounded_thermal_pond_admission": {
+        "work_unit": "MC-SOL01-THERMAL-POND01",
+        "pr": 1348,
+        "canonical_merge": "969aa918f0104546ec4ca2372feccf37b0145627",
+        "qualified_native_head": "b49525752f69ba2fb94dfca4d31281fd6939c1cb",
+        "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor",
+        "contract": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Opt-in numeric endpoint heat with existing dissolved pond and soil Freundlich 0.5..2, real file input, measured 30/365-day prescribed boundary runs",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_THERMAL_POND_20261021.tar.xz.b64",
+          "decoded_sha256": "3c6f17c971651c7fa0a66fd5acd28508dee1109b8a59dce5a458aaf3484a48dc",
+          "members": 4916
+        },
+        "qualification": "Six exponents O0/O2, literal/quad oracle, eight coupling meshes, joint balance/rollback/retry, exact fresh restart, 96 semantic native rejections, 24 SIGKILL publication controls; 86 incumbent app observations and 160 old output artifacts exact; 30/365-day cases .5/1/2 on three time grids with exact finest fresh restart",
+        "full_capability": false,
+        "disposition_changed": false,
+        "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
+        "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -17703,7 +17766,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "ADMITTED bounded source-order matrix decay(PR1228/1230), actual numeric-heat endpoint matrix composition(PR1342/1344), and nonlinear fixed-temperature pond/matrix transport/decay(PR1346). Historical temperature-off zero factor preserved. PARKED dynamic thermal pond, analytic heat, full historical/default and seasonal qualification; no aquifer dependency.",
+      "why_open": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17718,7 +17781,7 @@
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "ADMITTED existing sole matrix pond mass, wet/dry/fill, infiltration, runon/runoff chemistry and fresh native restart; PR1346 adds soil Freundlich0.5..2 with fixed configured temperature, exact incumbent linear bytes, atomic rejection/retry and native configuration negatives. PARKED dynamic thermal pond, snow/exfiltration, full default/bootstrap/multicolumn, simultaneous age/N companions and seasonal scope. No sorbed phase is invented in pond water.",
+      "why_open": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17733,7 +17796,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "ADMITTED bounded matrix Freundlich0.5..2 (PR1228/1230), numeric-heat endpoint matrix composition(PR1342/1344), and fixed-temperature persistent pond/matrix composition(PR1346), including current-runtime rollback/balance/fresh native restart. PARKED wider0..10 reader domain, dynamic thermal pond, analytic heat, full historical/default and seasonal accuracy. No whole historical promotion.",
+      "why_open": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,

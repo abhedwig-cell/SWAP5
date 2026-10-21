@@ -1,3 +1,16 @@
+# MC-SOL01 dynamic thermal pond and file application, 21 October 2026
+
+PR1348 / `969aa918f0104546ec4ca2372feccf37b0145627` admits bounded numeric endpoint heat with
+soil Freundlich 0.5..2 and the existing dissolved pond, explicit file inputs and
+complete atomic heat/water/chemical restart. Six exponents O0/O2, literal/quad
+oracle, eight refinement meshes, rollback/retry, 96 semantic native rejections,
+24 SIGKILL controls, all 86 incumbent application observations and 160 original
+output artifacts pass. Prescribed 30/365-day forcing runs qualify balances and
+fresh restart; annual grid differences are not strictly monotone and establish
+measured spread only. Full historical SWP/default, snow/exfiltration and
+companions remain parked. Exactly 240 other rows and all 243 dispositions stay
+unchanged; no whole-master or full migration qualification is claimed.
+
 # MC-SOL01 nonlinear persistent pond,21 October2026
 
 PR1346 / `8fabce512cc6347815fff591650be198c0ce213f` adds bounded soil Freundlich0.5..2 with the

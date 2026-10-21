@@ -1,4 +1,20 @@
 {
+  "mc_sol01_thermal_pond_20261021": {
+    "pr": 1348,
+    "canonical_merge": "969aa918f0104546ec4ca2372feccf37b0145627",
+    "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+    "authority": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor",
+    "capabilities": [
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND",
+      "SW431-SALT-SORPTION"
+    ],
+    "other_rows_exact": 240,
+    "all_dispositions_exact": 243,
+    "full_capability": false,
+    "complete_master_qualification": false,
+    "scope": "Opt-in numeric endpoint heat with existing dissolved pond and soil Freundlich 0.5..2, real file input, measured 30/365-day prescribed boundary runs"
+  },
   "mc_sol01_nonlinear_pond_20261021": {
     "pr": 1346,
     "canonical_merge": "8fabce512cc6347815fff591650be198c0ce213f",
