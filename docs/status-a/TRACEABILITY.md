@@ -1,5 +1,25 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 finite donor,21 October2026: SWAP-020 original63-provider reference,
+the [production contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md),
+existing HIST-COMPLETE status child `negative_reference_candidate_20261021` and
+`integration/audits/verify_nut_negative.py` own source, raw model budgets,
+rollback/restart and bounded qualification. Canonical admission is pending;
+the [closure matrix](../science/MC_NUT01_FINAL_CLOSURE.md) preserves all remaining
+scope limits. Frozen Status-A and global B1 are unchanged.
+
+Current bounded MC-SOL01 dynamic thermal pond and file admission: PR1348 /
+`969aa918f0104546ec4ca2372feccf37b0145627` composes numeric endpoint heat with existing soil
+Freundlich 0.5..2 and dissolved pond chemistry. Explicit opt-in file inputs and
+complete S5PT0001 heat/water/chemical restart are qualified. Six-exponent O0/O2
+literal/refinement/rollback/crash proof, all original file observations and
+prescribed 30/365-day balance/restart runs pass. Annual grid differences are not
+strictly monotone, so only measured spread is claimed. Full historical SWP/default
+and general seasonal scope remain outside admission; frozen Status-A is unchanged.
+See the [contract](../science/MC_SOL01_THERMAL_POND_CONTRACT.md) and existing
+`MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor`.
+
+
 PERF01 optional numerical policy, PR1345: the
 [contract](../performance/SWAP5-PERF01_PROPOSAL_CONTRACT.md),
 [result](../performance/SWAP5-PERF01_PROPOSAL_RESULT.md) and
@@ -207,3 +227,15 @@ Actual Gash/N canonical admission: PR#1339 / `24868384b276b838ee704cff5535aad3bd
 The [original full-caller qualification](../science/MC_NUT01_ORIGINAL_FULL_CALLER_20261020.md) proves negative-source/depleted-stock N nonconservation in the unchanged complete original main: O0/O2,63 providers,10 native processes and80 daily N steps; frozen10-day original Andelst prefix exact. Worst daily whole-N residual3.594831kg/ha, over3400 times the conservative printed uncertainty; the no-denitrification depletion control also fails. Ample-stock control stays within printed precision. Evidence is QUALIFICATION_ONLY; negative-carrier production admission remains blocked, all current admitted facets and providers unchanged. Nine evidence corruption controls pass.
 
 Actual original full-caller evidence integration: PR#1340 / `e41f36658f23dcd6aa3f34835e4722eae23fba42`, exact dc02644c qualified tree and actual-merge owner PASS; source2b2d253d unchanged. Existing master `34f5a9fc3a7f061d8fb05e8320b8f549f1465d1d` preserves234 other rows/all243 dispositions and all admitted production receipts. Full MC-NUT01 remains scientifically BLOCKED at the proven historical negative-source/depleted-stock contract; no negative capability or full migration is admitted.
+
+### MC-SOL01 nonlinear persistent pond, 21 October 2026
+
+The [bounded contract](../science/MC_SOL01_NONLINEAR_POND_CONTRACT.md), existing
+`MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_pond_successor`, independent initial
+and fresh current-runtime capsules, current source validator and original-owner
+handoffs govern PR1346 / `8fabce512cc6347815fff591650be198c0ce213f`. Soil nonlinear
+sorption combines with existing pond chemistry; no sorbed pond phase, dynamic
+thermal pond or full historical/default/seasonal claim is added. All actual-merge
+owning/native preservation workflows pass. Master registers three bounded facets
+while preserving 240 other rows and all 243 full dispositions. Exact hosted job IDs,
+source tree, failed publication diagnostics and master receipt stay in the owner.

@@ -40,6 +40,8 @@ def record():
 
 
 def source():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['source']()
     proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
     if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
         return runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_proposal_thermal_source')['source']()
@@ -156,6 +158,8 @@ def predecessor():
 
 
 def verify_qualification():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['verify_qualification']()
     proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
     if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
         return runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_proposal_thermal')['verify_qualification']()
@@ -171,6 +175,8 @@ def verify_qualification():
 
 
 def self_test():
+    if 'evidence' in record().get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_nonlinear_pond.py'))['self_test']()
     proposal=ROOT/'integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json'
     if proposal.exists() and 'evidence' in json.loads(proposal.read_text()):
         return runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'),run_name='registered_proposal_thermal_controls')['self_test']()

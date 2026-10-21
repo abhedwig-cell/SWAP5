@@ -50,7 +50,7 @@ contains
   if(any(p%temperature_c< -50d0).or.any(p%temperature_c>60d0))return
   if(any(p%gampar<0d0).or.any(p%gampar>1d0))return
   if(any(p%rtheta<1d-8).or.any(p%bexp>10d0))return
-  if(p%cref_mg_cm3<1d-8.or.p%frexp/=1d0)return
+  if(p%cref_mg_cm3<1d-8.or.p%frexp<.5d0.or.p%frexp>2d0)return
   if(any(mobile%concentration_mg_cm3>1d6).or.any(mobile%mass_mg_cm2>1d12).or. &
     any(amount%sorbed_matrix_mass>1d12))return
   if(amount%pond_mass>1d12.or.amount%aquifer_mass/=0d0.or.any(amount%age_amount/=0d0))return

@@ -1,6 +1,6 @@
 # MC-NUT01 finite-donor negative aggregate
 
-Status: production candidate, qualification pending. Baseline canonical
+Status: locally qualified bounded production successor; canonical pending. Baseline canonical
 `437d96ff51ac8a5825b605caf788661848c88be5`. Owner: MC-NUT01.
 The existing HIST-COMPLETE record remains the recovery/admission authority.
 
@@ -18,7 +18,7 @@ Independent unrounded form and whole-N books give maximum whole-N residual
 invalid direct inputs per optimization cover all five analytical classes,
 sorption, empty/depleted/ample donors and continuing sources. An independent
 numerical ODE agrees within4.73e-15 in the observed fields. These are completed
-local reference observations, pending sealed evidence. Published B1 snapshots
+local reference observations, sealed in the existing work-unit record. Published B1 snapshots
 remain immutable; no unrestricted B1.13 is implied.
 
 ## Existing production interfaces

@@ -1,0 +1,798 @@
+{
+  "work_unit": "MC-SOL01-NONLINEAR-POND01",
+  "qualified_head": "068d1a738dcefa11a9d518d6dbe8e212804d8c18",
+  "canonical_predecessor": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+  "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+  "total": 32,
+  "success": 22,
+  "failure": 10,
+  "all_terminal": true,
+  "failures_counted_as_pass": false,
+  "owning_runs": [
+    {
+      "id": 39569936390,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 17,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/logs",
+      "workflow_id": 390809132
+    },
+    {
+      "id": 39569936294,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 8002,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/logs",
+      "workflow_id": 351968455
+    },
+    {
+      "id": 39569936437,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 12,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/logs",
+      "workflow_id": 390988677
+    },
+    {
+      "id": 39569936419,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 5734,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/logs",
+      "workflow_id": 350231902
+    },
+    {
+      "id": 39569936324,
+      "name": "MC-SOL01 nonlinear persistent pond",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/logs",
+      "workflow_id": 391472187
+    },
+    {
+      "id": 39569936374,
+      "name": "MC-SOL01 dynamic accepted temperature decay",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/logs",
+      "workflow_id": 391376246
+    }
+  ],
+  "all_runs": [
+    {
+      "id": 39569938234,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1413,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569938234/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569938234/logs",
+      "workflow_id": 374169088
+    },
+    {
+      "id": 39569936348,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 837,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936348/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936348/logs",
+      "workflow_id": 377534434
+    },
+    {
+      "id": 39569936412,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 981,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936412/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936412/logs",
+      "workflow_id": 377436526
+    },
+    {
+      "id": 39569936339,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 3276,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936339/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936339/logs",
+      "workflow_id": 360931329
+    },
+    {
+      "id": 39569936695,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2186,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936695/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936695/logs",
+      "workflow_id": 369778710
+    },
+    {
+      "id": 39569936403,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2374,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936403/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936403/logs",
+      "workflow_id": 360940299
+    },
+    {
+      "id": 39569936305,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 3151,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936305/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936305/logs",
+      "workflow_id": 360804071
+    },
+    {
+      "id": 39569936423,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2388,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936423/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936423/logs",
+      "workflow_id": 360820711
+    },
+    {
+      "id": 39569936116,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2384,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936116/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936116/logs",
+      "workflow_id": 360945222
+    },
+    {
+      "id": 39569936390,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 17,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/logs",
+      "workflow_id": 390809132
+    },
+    {
+      "id": 39569936294,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 8002,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/logs",
+      "workflow_id": 351968455
+    },
+    {
+      "id": 39569936230,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 835,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936230/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936230/logs",
+      "workflow_id": 377461752
+    },
+    {
+      "id": 39569936215,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1609,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936215/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936215/logs",
+      "workflow_id": 373048667
+    },
+    {
+      "id": 39569936301,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2388,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936301/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936301/logs",
+      "workflow_id": 360819422
+    },
+    {
+      "id": 39569936125,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1432,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936125/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936125/logs",
+      "workflow_id": 374030810
+    },
+    {
+      "id": 39569936486,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 4990,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936486/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936486/logs",
+      "workflow_id": 361291030
+    },
+    {
+      "id": 39569936195,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2388,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936195/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936195/logs",
+      "workflow_id": 360835414
+    },
+    {
+      "id": 39569936137,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2393,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936137/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936137/logs",
+      "workflow_id": 360832909
+    },
+    {
+      "id": 39569936177,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1705,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936177/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936177/logs",
+      "workflow_id": 372453937
+    },
+    {
+      "id": 39569936427,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 3271,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936427/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936427/logs",
+      "workflow_id": 360941245
+    },
+    {
+      "id": 39569936328,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 898,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936328/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936328/logs",
+      "workflow_id": 377452065
+    },
+    {
+      "id": 39569936320,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2384,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936320/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936320/logs",
+      "workflow_id": 360870488
+    },
+    {
+      "id": 39569936437,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 12,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/logs",
+      "workflow_id": 390988677
+    },
+    {
+      "id": 39569936167,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 4241,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936167/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936167/logs",
+      "workflow_id": 366506117
+    },
+    {
+      "id": 39569936360,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2372,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936360/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936360/logs",
+      "workflow_id": 360950713
+    },
+    {
+      "id": 39569936419,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 5734,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/logs",
+      "workflow_id": 350231902
+    },
+    {
+      "id": 39569936368,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 2377,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936368/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936368/logs",
+      "workflow_id": 360931626
+    },
+    {
+      "id": 39569936310,
+      "name": "F-PERF-CANON01 D AHL50",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2067,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936310/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936310/logs",
+      "workflow_id": 367340071
+    },
+    {
+      "id": 39569936170,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2103,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936170/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936170/logs",
+      "workflow_id": 367302279
+    },
+    {
+      "id": 39569936329,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 3756,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936329/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936329/logs",
+      "workflow_id": 367350343
+    },
+    {
+      "id": 39569936324,
+      "name": "MC-SOL01 nonlinear persistent pond",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 2,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/logs",
+      "workflow_id": 391472187
+    },
+    {
+      "id": 39569936374,
+      "name": "MC-SOL01 dynamic accepted temperature decay",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 6,
+      "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/jobs",
+      "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/logs",
+      "workflow_id": 391376246
+    }
+  ],
+  "superseded": {
+    "head": "13ac2e987b510b1cb1eb03b1d82db1a7a6a3377a",
+    "runs": [
+      {
+        "id": 39569473174,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 5733,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569473174/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569473174/logs",
+        "workflow_id": 350231902
+      },
+      {
+        "id": 39569471573,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 8001,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471573/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471573/logs",
+        "workflow_id": 351968455
+      },
+      {
+        "id": 39569471766,
+        "name": "PUB-P1E02 post-solver rollback",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 2387,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471766/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471766/logs",
+        "workflow_id": 360819422
+      },
+      {
+        "id": 39569471793,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 3755,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471793/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471793/logs",
+        "workflow_id": 367350343
+      },
+      {
+        "id": 39569471928,
+        "name": "F-PERF-CANON01 B1 recomposition",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 2102,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471928/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471928/logs",
+        "workflow_id": 367302279
+      },
+      {
+        "id": 39569471723,
+        "name": "MC-SOL01 file-driven Reference column",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 16,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471723/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471723/logs",
+        "workflow_id": 390809132
+      },
+      {
+        "id": 39569471896,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 836,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471896/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471896/logs",
+        "workflow_id": 377534434
+      },
+      {
+        "id": 39569471760,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 834,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471760/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471760/logs",
+        "workflow_id": 377461752
+      },
+      {
+        "id": 39569471664,
+        "name": "MC-SOL01 nonlinear persistent pond",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 1,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471664/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471664/logs",
+        "workflow_id": 391472187
+      },
+      {
+        "id": 39569471784,
+        "name": "F-PERF-CANON01 D AHL50",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 2066,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471784/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471784/logs",
+        "workflow_id": 367340071
+      },
+      {
+        "id": 39569471472,
+        "name": "MC-SOL01 dynamic accepted temperature decay",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 5,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471472/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471472/logs",
+        "workflow_id": 391376246
+      },
+      {
+        "id": 39569471667,
+        "name": "PUB-P2E06 Reference local-balance scaling",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2383,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471667/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471667/logs",
+        "workflow_id": 360870488
+      },
+      {
+        "id": 39569471748,
+        "name": "PUB-ME D1 transition authority",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 3275,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471748/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471748/logs",
+        "workflow_id": 360931329
+      },
+      {
+        "id": 39569471516,
+        "name": "PUB-P2E08 Reference valid calibration domain",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2373,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471516/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471516/logs",
+        "workflow_id": 360940299
+      },
+      {
+        "id": 39569471786,
+        "name": "PUB-P2E02 Reference uncertainty",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2387,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471786/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471786/logs",
+        "workflow_id": 360820711
+      },
+      {
+        "id": 39569471504,
+        "name": "PUB-ME D3 origin authority",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 3270,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471504/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471504/logs",
+        "workflow_id": 360941245
+      },
+      {
+        "id": 39569471581,
+        "name": "PUB-P2E10 broad E0 paired matrix",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2371,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471581/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471581/logs",
+        "workflow_id": 360950713
+      },
+      {
+        "id": 39569471600,
+        "name": "PUB-P2E04 Reference failure census",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2392,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471600/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471600/logs",
+        "workflow_id": 360832909
+      },
+      {
+        "id": 39569471483,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 1704,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471483/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471483/logs",
+        "workflow_id": 372453937
+      },
+      {
+        "id": 39569471728,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 1412,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471728/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471728/logs",
+        "workflow_id": 374169088
+      },
+      {
+        "id": 39569471478,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 980,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471478/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471478/logs",
+        "workflow_id": 377436526
+      },
+      {
+        "id": 39569471801,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 897,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471801/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471801/logs",
+        "workflow_id": 377452065
+      },
+      {
+        "id": 39569471776,
+        "name": "SWAP5-PERF01 exact implementation admission",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 11,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471776/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471776/logs",
+        "workflow_id": 390988677
+      },
+      {
+        "id": 39569471773,
+        "name": "PUB-P2E07 Reference cancellation floor",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2376,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471773/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471773/logs",
+        "workflow_id": 360931626
+      },
+      {
+        "id": 39569471754,
+        "name": "PUB-P2E09 Reference-only threshold freeze",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2383,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471754/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471754/logs",
+        "workflow_id": 360945222
+      },
+      {
+        "id": 39569471598,
+        "name": "PUB-P2E01 E0 paired pilot",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 3150,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471598/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471598/logs",
+        "workflow_id": 360804071
+      },
+      {
+        "id": 39569471718,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4240,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471718/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471718/logs",
+        "workflow_id": 366506117
+      },
+      {
+        "id": 39569471789,
+        "name": "PUB-P2E04 Reference B/C sweeps",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_number": 2387,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471789/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471789/logs",
+        "workflow_id": 360835414
+      },
+      {
+        "id": 39569471785,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 1431,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471785/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471785/logs",
+        "workflow_id": 374030810
+      },
+      {
+        "id": 39569471717,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 2185,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471717/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471717/logs",
+        "workflow_id": 369778710
+      },
+      {
+        "id": 39569471899,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 4989,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471899/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471899/logs",
+        "workflow_id": 361291030
+      },
+      {
+        "id": 39569471800,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "run_number": 1608,
+        "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471800/jobs",
+        "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471800/logs",
+        "workflow_id": 373048667
+      }
+    ],
+    "reason": "Concurrent PERF01 receipt-only canonicalc62 update caused conservative source delta rejection; reconciled without replaying unchanged local physics."
+  },
+  "owning_native_jobs": {
+    "pond": 119121292412,
+    "thermal": 119121286796,
+    "column": 119121287155,
+    "canonical_feedback": 119122080680
+  },
+  "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json",
+  "actual_merge": {
+    "commit": "8fabce512cc6347815fff591650be198c0ce213f",
+    "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+    "runs": [
+      {
+        "id": 39571079837,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079837"
+      },
+      {
+        "id": 39571079816,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079816"
+      },
+      {
+        "id": 39571079791,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079791"
+      },
+      {
+        "id": 39571079679,
+        "name": "SWAP5-PERF01 exact implementation admission",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079679"
+      },
+      {
+        "id": 39571079674,
+        "name": "MC-SOL01 file-driven Reference column",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079674"
+      },
+      {
+        "id": 39571079913,
+        "name": "MC-SOL01 nonlinear persistent pond",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079913"
+      },
+      {
+        "id": 39571079684,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079684"
+      }
+    ],
+    "fgc_native_marker": "F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS",
+    "fgc_job": 119125115204,
+    "fsi35_postimage": "SKIPPED by existing policy"
+  },
+  "master_receipt": {
+    "commit": "d67b96ecca10956cc72fbddbcca3a452c94d0dbc",
+    "branch": "work/swap431-master-coverage-20261006",
+    "capabilities": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND"
+    ],
+    "other_rows_exact": 240,
+    "all_dispositions_exact": 243,
+    "whole_master_qualified": false
+  }
+}

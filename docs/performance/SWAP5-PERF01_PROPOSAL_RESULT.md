@@ -1,5 +1,9 @@
 # PERF01 optional production proposal: qualification result
 
+Follow-up historical [dry infiltration diagnosis](SWAP5-PERF01_DRY_DIAGNOSIS.md)
+identifies total-balance stagnation in four O0/O2, OFF/ON probes. It does not
+correct the solver or qualify the excluded long infiltrating dry32 regime.
+
 21 October 2026. Locally qualified bounded production implementation; default
 OFF. Actual canonical admission is recorded by the work-unit PR and its owning
 status. Starting baseline `9c16572a`, composed with admitted nonlinear thermal

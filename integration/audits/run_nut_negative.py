@@ -17,6 +17,8 @@ FC=os.environ.get('FC','gfortran');events=[];inputs={}
 
 def event(command,cwd,category,stdin=None,env=None):
  command=list(map(str,command));t=time.perf_counter()
+ exe=Path(command[0])
+ if exe.is_file()and exe.is_relative_to(OUT)and exe.read_bytes()[:4]==b'\x7fELF':exe.chmod(0o755)
  r=subprocess.run(command,cwd=cwd,input=stdin,capture_output=True,env=env)
  e=dict(command=command,category=category,returncode=r.returncode,seconds=time.perf_counter()-t)
  for stream in ['stdout','stderr']:

@@ -1,6 +1,6 @@
 # SWAP-020: bounded negative historical aggregate reference candidate
 
-Status: implementation candidate, not admitted to the global B1 line or SWAP5.
+Status: locally qualified bounded correction; global B1 unchanged, SWAP5 admission pending.
 Baseline canonical: `437d96ff51ac8a5825b605caf788661848c88be5`.
 Owner: MC-NUT01, existing HIST-COMPLETE status record.
 

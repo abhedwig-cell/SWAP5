@@ -71,3 +71,21 @@ allocates its immutable legacy symbol layout from the input grid. Except the his
 conductivity mean, old physics/numerical entries abort if called. All active
 hydraulic/transport calculations use existing production providers. Other
 application builds retain their own legacy module definitions.
+
+## Explicit numeric heat and nonlinear soil sorption
+
+`examples/solute_column/nonlinear_thermal_pond.nml` enables `dynamic_temperature`,
+`freundlich_exponent` (0.5..2), `reference_concentration` (mg/cm3),
+`decay_rate_day` (1/day), `gamma_temperature` (1/C), node `initial_temperature_c`
+and per-window `surface_temperature_c`. The surface temperatures prescribe the
+soil heat boundary; the bottom heat flux is zero. Pond solute stays dissolved.
+There is no additional pond thermal reservoir. `temperature.csv` is included in
+the complete-generation manifest. S5PT0001 binds water, heat and pond/soil chemical
+inventory and parameters; the original heat-off joint format remains unchanged.
+
+There are at most 2048 explicit reporting/coupling windows. Existing files retain
+linear sorption, zero decay and disabled heat by default. The optional retained
+step proposal is rejected with dynamic heat until that composition is qualified.
+See [the qualification contract](../../docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md)
+for splitting refinement and the limits of the prescribed 30/365-day experiments.
+The application remains opt-in and does not replace the historical SWP reader.
