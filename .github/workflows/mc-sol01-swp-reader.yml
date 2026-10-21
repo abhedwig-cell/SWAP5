@@ -1,0 +1,56 @@
+name: MC-SOL01 original SWP chemistry
+on:
+  pull_request:
+    paths:
+      - 'app/solute_column/**'
+      - 'tools/solute/**'
+      - 'tests/nut-sol/*swp*'
+      - 'integration/audits/*swp*'
+      - '.github/workflows/mc-sol01-swp-reader.yml'
+  push:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'app/solute_column/**'
+      - 'tools/solute/**'
+      - 'tests/nut-sol/*swp*'
+      - 'integration/audits/*swp*'
+      - '.github/workflows/mc-sol01-swp-reader.yml'
+permissions:
+  contents: read
+concurrency:
+  group: solute-swp-reader-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-reader:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Original native input and real application
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/swp-reader"
+          mkdir -p "$root"
+          python -B tools/solute/build_column.py --optimization O0 --output "$root/O0"
+          python -B tools/solute/build_column.py --optimization O2 --output "$root/O2"
+          python -B tests/nut-sol/qualify_swp_reader.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/native"
+          python -B tests/nut-sol/test_column_input.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/column"
+      - name: Source bound admission and negative controls
+        run: |
+          python -B integration/audits/verify_swp_reader.py
+          python -B integration/audits/verify_swp_reader.py --self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mc-sol01-swp-reader
+          path: |
+            ${{ runner.temp }}/swp-reader/**/*.json
+            ${{ runner.temp }}/swp-reader/**/*.stdout
+            ${{ runner.temp }}/swp-reader/**/*.stderr
+            ${{ runner.temp }}/swp-reader/**/*.csv
+            ${{ runner.temp }}/swp-reader/**/*.bin

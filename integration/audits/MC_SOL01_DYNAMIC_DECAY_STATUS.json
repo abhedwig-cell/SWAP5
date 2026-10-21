@@ -2778,5 +2778,181 @@
       ]
     },
     "strict_documentation": "PASS; final source checks and strict MkDocs on combined canonical metadata"
+  },
+  "swp_reader_successor": {
+    "status": "RECONCILED_LOCAL_O0_O2_QUALIFIED_CANONICAL_PENDING",
+    "baseline": "c8b35ac3e9f2a2cf2400033d0225aea8198469ea",
+    "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+    "invariants": [
+      2,
+      3,
+      7,
+      9,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "canonical_admitted": false,
+    "qualified": true,
+    "full_swp_default_application": false,
+    "recovery_branch": "work/mc-sol01-swp-reader-20261021",
+    "next_safe_step": "Exact thermal, finite-donor and trace-scope predecessors, hosted qualification, actual canonical integration",
+    "excluded": [
+      "aquifer",
+      "macropore",
+      "snow",
+      "analytic heat",
+      "time-varying bottom concentration",
+      "loose legacy restart",
+      "age and nitrogen companions"
+    ],
+    "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+    "predecessor": "fb00736e320498f2e610b0671af9c7dc5a381921",
+    "test_selection": {
+      "owner": "MC-SOL01",
+      "changed_dependency": "Original chemistry/grid input adapter and launcher provenance; no process equations changed",
+      "scientific_claim": "Native original grammar, initial inventory and layer-unit mapping; fresh-process restart and failure atomicity; old byte preservation",
+      "authority": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+      "expected_seconds": 240,
+      "full_fci": "NOT_SELECTED_IMPACT",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "FROZEN_UNCHANGED",
+      "aquifer": "EXCLUDED",
+      "compile_seconds": 97.76418565702261,
+      "physics_only_seconds": "UNKNOWN: native driver time includes original input IO",
+      "unchanged_process_physics": "Exact src tree against canonical PR1351 c8b35ac3e9f2a2cf2400033d0225aea8198469ea: immutable fresh six-exponent matrix/pond/month/year trace-scope preservation is selected, plus fresh current O0/O2 SWP and application runs."
+    },
+    "concurrent_canonical_reconciliation": {
+      "head": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+      "workstream": "MC-NUT01 finite donor PR1350",
+      "build_input_intersection": [],
+      "all_incoming_files_preserved": true,
+      "original_finite_donor_owner": "Exact c4ec414fe5ae55e992e557e394cb4003beaf3e39 worktree qualification selected; all predecessor bodies retained through additive handoff",
+      "trace_scope": {
+        "head": "c8b35ac3e9f2a2cf2400033d0225aea8198469ea",
+        "pr": 1351,
+        "changed_build_inputs": [
+          "src/runtime/mod_fmr_serialized_reference_backend.f90",
+          "src/transaction/mod_transaction_reference.f90"
+        ],
+        "rebuild": "O0/O2 and actual native SWP, original 86 and annual exact preservation selected",
+        "inherited_physics": "Exact c8 trace owner contains newly compiled six-exponent matrix/pond and month/year preservation; original bodies unchanged"
+      }
+    },
+    "postimages": {
+      ".github/workflows/mc-sol01-swp-reader.yml": {
+        "status": "A",
+        "sha256": "407c5b03d1f1420c54560fb6a2446d44466b83843dede5aabc6a23e86de0d0fb"
+      },
+      ".github/workflows/mc-sol01-thermal-pond.yml": {
+        "status": "M",
+        "sha256": "f5a0926f0089601a6e428a5b1b4886472d5007785caf64adf5f782f15649b678"
+      },
+      "app/solute_column/link_context.f90": {
+        "status": "M",
+        "sha256": "5fedb1269476b726375279b94b9cc9ac5378ae91476e07aa1496b8d59afe31ba"
+      },
+      "app/solute_column/main.f90": {
+        "status": "M",
+        "sha256": "961484b6c8bbe91d779df4e38f6a5e23cf0846a6dd62c02cc73b279a1465f573"
+      },
+      "app/solute_column/read_swp_chemistry.f90": {
+        "status": "A",
+        "sha256": "5da90907a6c5741daa7c131b8a144a8f6ef1b7f3804615381c9b00e4079cf0b7"
+      },
+      "examples/solute_column/layered_chemistry.swp": {
+        "status": "A",
+        "sha256": "312192c8319e76d5e5e21712a3b53ecbf2a9eeb307eaf085094924f04c595509"
+      },
+      "integration/audits/verify_nut_negative.py": {
+        "status": "M",
+        "sha256": "9a9a012a7d597a6af0e2870ff07136d183bc04db5b5e15a70e1d5a71b5fce0a3"
+      },
+      "integration/audits/verify_pond_thermal.py": {
+        "status": "M",
+        "sha256": "82d25615fb0e6da9b77ee741734acc994c1ace7b6d1e8945b011bcfd336046d8"
+      },
+      "integration/audits/verify_swp_reader.py": {
+        "status": "A",
+        "sha256": "8abb62189def9d74d55c16b8554da7fdc348346939dc6581ff735fc31a3536f7"
+      },
+      "tests/nut-sol/qualify_swp_reader.py": {
+        "status": "A",
+        "sha256": "b0a72803138abe3b0f3f7f9ae47728399293718fa5c274f34fa5fffc82025cda"
+      },
+      "tests/nut-sol/test_swp_reader.f90": {
+        "status": "A",
+        "sha256": "27010012f46f034060d2b16ebefdab550f1dcc7db6ded6cefba639c5b8694e17"
+      },
+      "tools/solute/build_column.py": {
+        "status": "M",
+        "sha256": "6879f2cdee6486104201169f21cc13931c0d08efdf06b9a3ad0ef8fe0d298828"
+      },
+      "tools/solute/legacy_reader_sources.py": {
+        "status": "A",
+        "sha256": "5d1b4da033c37c4c59c2e0a7c21542a21a492f6b29fdc92d1259a3458dac7b46"
+      },
+      "tools/solute/run_column.py": {
+        "status": "M",
+        "sha256": "2286cf852a36b317c3daafe4d0e1f196c5fec09abbe1f3425e790f32f515f147"
+      }
+    },
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+    "qualification": {
+      "native_observations": 172,
+      "valid_configurations": 22,
+      "invalid_original_inputs": 38,
+      "old_application_observations": 86,
+      "old_application_artifacts_exact": 160,
+      "annual_cases_exact": 18,
+      "full_swp_default_application": false,
+      "general_seasonal_accuracy": false
+    },
+    "recovery_point": "Fresh reconciled O0/O2 evidence and all three fixed predecessor owners pass; publish stable qualification head and monitor owning hosted runs",
+    "previous_input_qualification": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+      "decoded_sha256": "b8e4e308f05cde67e6bfe349ae3b754a32626cb340cb7ca59f734a357a3c77ca",
+      "decoded_bytes": 553992,
+      "members": 3180,
+      "git_ref": "67357a63ed8898166ca606661659a7069ef83e0b"
+    },
+    "previous_local_owner": {
+      "qualified": true,
+      "original_swp_chemistry": true,
+      "native_observations": 172,
+      "valid_configurations": 22,
+      "old_application_artifacts_exact": 160,
+      "annual_application_cases_exact": 18,
+      "predecessor_qualified": true,
+      "negative_controls": 9,
+      "full_swp_default_application": false,
+      "full_capability": false
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+      "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+      "decoded_bytes": 558108,
+      "members": 3182
+    },
+    "local_owner": {
+      "qualified": true,
+      "original_swp_chemistry": true,
+      "native_observations": 172,
+      "valid_configurations": 22,
+      "old_application_artifacts_exact": 160,
+      "annual_application_cases_exact": 18,
+      "fixed_predecessors": [
+        "fb00736e320498f2e610b0671af9c7dc5a381921",
+        "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+        "c8b35ac3e9f2a2cf2400033d0225aea8198469ea"
+      ],
+      "predecessor_qualified": true,
+      "negative_controls": 9,
+      "full_swp_default_application": false,
+      "full_capability": false
+    }
   }
 }

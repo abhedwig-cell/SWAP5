@@ -27,6 +27,8 @@ def hook(name):
          "    if 'evidence' in finite:\n"
          "        return runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_"+name+"')['"+name+"']()\n")
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['source'](reader,changed)
  if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
   import runpy
   return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['source'](reader,changed)
@@ -215,11 +217,15 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
      source_tree=git('rev-parse','HEAD:src'),full_fci='NOT_SELECTED_IMPACT_NUT_SEAM',
      highest_low_air='NOT_SELECTED_POLICY',mastercoverage_promotion=False)
 def verify_qualification():
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['verify_qualification']()
  if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
   import runpy
   return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['verify_qualification']()
  source();return validate(capsule())
 def self_test():
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['self_test']()
  if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
   import runpy
   return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['self_test']()

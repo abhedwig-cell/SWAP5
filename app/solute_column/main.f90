@@ -19,6 +19,7 @@ program swap5_solute_column
   use mod_pond_thermal_restart_file
   use mod_soil_temperature_contract
   use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
+  use mod_column_swp_chemistry,only:import_column_swp_chemistry
   use mod_matrix_joint_restart_file
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
   use mod_solute_compartment_state, only: solute_compartment_state_t
@@ -41,7 +42,7 @@ program swap5_solute_column
   real(real64) :: rain_c=0d0,irrigation_c=0d0,runon_c=0d0,dry_mg_cm2_day=0d0
   real(real64) :: clock,t0,t1,water_amount,infiltration,runoff,runon_amount,evap_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
-  character(1024) :: path,restart_path,arg,message
+  character(1024) :: path,restart_path,arg,message,legacy_swp
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
@@ -74,6 +75,7 @@ program swap5_solute_column
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
+  call get_command_argument(4,legacy_swp)
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
   if(len_trim(arg)>0)then
@@ -188,6 +190,10 @@ program swap5_solute_column
   chemistry%dispersivity_cm=spread(dispersivity_cm,1,numnod-1)
   chemistry%molecular_diffusion_cm2_day=diffusion_cm2_day;chemistry%tscf=tscf
   chemistry%cdrain_mg_cm3=cdrain_mg_cm3;chemistry%cseep_mg_cm3=cseep_mg_cm3
+  if(len_trim(legacy_swp)>0)then
+    call import_column_swp_chemistry(trim(legacy_swp),dz,z,dynamic_temperature,chemistry, &
+      concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)
+  end if
   column_id%column_id=660101_int64;column_id%template_id=660201_int64
   column_id%parameter_ref=1_int64;column_id%state_handle=1_int64;column_id%forcing_handle=1_int64
   column_id%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
