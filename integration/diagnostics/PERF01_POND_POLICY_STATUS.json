@@ -2,7 +2,7 @@
   "work_unit": "PERF01 completed pond cost and solver-capped proposal research",
   "baseline": "242a733aaab49bf173b52313bfa9af01cbecdc7b",
   "branch": "research/perf01-pond-policy-20261021",
-  "status": "QUALIFIED_GENERATED_RESEARCH_AWAITING_PUBLISHED_HEAD_AND_CANONICAL_REGISTRATION",
+  "status": "CANONICALLY_REGISTERED_RESEARCH_ACTUAL_MERGE_VERIFIED",
   "contract": "docs/performance/SWAP5-PERF01_POND_POLICY_CONTRACT.md",
   "production_changed": false,
   "production_policy_admitted": false,
@@ -10,7 +10,7 @@
   "expected_cost": "Profile build70s/native100..200s capped240s/512MiB; screen90s cap; full180s and refinement360s/512MiB selected only after complete screen",
   "full_fci": "NOT_SELECTED_GENERATED_DIAGNOSTICS_ONLY",
   "highest_low_air": "NOT_SELECTED_POLICY",
-  "next_action": "Publish exact qualified diagnostic tree, verify actual head and current canonical delta, register research without production activation",
+  "next_action": "Research complete; select representative forcing/mesh/seasonal application accuracy requirements before changing numerical defaults; capped policy and general cache remain unadmitted",
   "policy_failed": true,
   "full_day_policy_selected": false,
   "cache_selection": "Existing rejected exact patch reopened only for new heavy completed case; direct O0/O2/O3 before fresh ABI-dependent full builds and conditional six/full/pairs",
@@ -671,5 +671,20 @@
     ]
   },
   "incumbent_corruption_controls": 27,
-  "qualified_local_head": "710d3a32602a5e2865f75882f02f84c5d1b21f6f"
+  "qualified_local_head": "710d3a32602a5e2865f75882f02f84c5d1b21f6f",
+  "canonical_registration": {
+    "pull_request": 1357,
+    "merge": "7d699db8a9d6292d633289fdb09ec8266bd8fbb5",
+    "base": "242a733aaab49bf173b52313bfa9af01cbecdc7b",
+    "qualified_head": "06b043f7a8feb01761d468752d12f26e1b4b4abe",
+    "qualified_full_tree": "77bd4e2c32cc3fd8a1891a8914113b639b5cdd11",
+    "actual_merge_full_tree_exact": true,
+    "source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+    "actual_merge_research_qualified": true,
+    "actual_merge_research_controls": 13,
+    "actual_merge_incumbent_controls": 27,
+    "production_policy_admitted": false,
+    "general_cache_admitted": false,
+    "hosted_actions": "NONE_SELECTED_LOCAL_NATIVE_DIAGNOSTICS_SKIP_CI"
+  }
 }
