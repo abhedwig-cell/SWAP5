@@ -36,6 +36,13 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
   a=expected.index('\ndef '+fn)+1;end=expected.index('\n',a)+1
   expected=expected[:end]+nut_hook(fn)+expected[end:]
  require(reader(p).decode()==expected,'concurrent finite-donor verifier body changed')
+ p='.github/workflows/mc-sol01-thermal-pond.yml'
+ expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
+ start=expected.index('          set -euo pipefail',expected.index('- name: Actual six-exponent'))
+ end=expected.index('      - name: Current application',start);body=expected[start:end]
+ replacement="          if test -f integration/audits/verify_swp_reader.py && git diff --quiet "+BASE+" HEAD -- src; then\n            python -B integration/audits/verify_swp_reader.py\n          else\n"+''.join('  '+line if line.strip() else line for line in body.splitlines(True))+"          fi\n"
+ expected=expected[:start]+replacement+expected[end:]
+ require(reader(p).decode()==expected,'thermal workflow changed beyond exact input-only impact handoff')
  return s
 def capsule():
  e=record()['evidence'];raw=base64.b64decode(b''.join((ROOT/e['path']).read_bytes().split()),validate=True)

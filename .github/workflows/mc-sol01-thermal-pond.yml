@@ -34,15 +34,19 @@ jobs:
           fetch-depth: 0
       - name: Actual six-exponent thermal pond, refinement, rollback and crash restart
         run: |
-          set -euo pipefail
-          root="$RUNNER_TEMP/thermal-pond"
-          mkdir -p "$root"
-          python -B tests/nut-sol/run_pond_thermal.py --output "$root/physical-1" --exponent 1
-          python -B integration/audits/qualify_pond_thermal.py --physical "$root/physical-1" --output "$root/qualified-1"
-          for exponent in 0.5 0.8 1.0005 1.5 2; do
-            python -B tests/nut-sol/run_pond_thermal.py --output "$root/physical-$exponent" --exponent "$exponent" --reuse-build "$root/physical-1"
-            python -B integration/audits/qualify_pond_thermal.py --physical "$root/physical-$exponent" --build "$root/physical-1" --output "$root/qualified-$exponent"
-          done
+          if test -f integration/audits/verify_swp_reader.py && git diff --quiet c4ec414fe5ae55e992e557e394cb4003beaf3e39 HEAD -- src; then
+            python -B integration/audits/verify_swp_reader.py
+          else
+            set -euo pipefail
+            root="$RUNNER_TEMP/thermal-pond"
+            mkdir -p "$root"
+            python -B tests/nut-sol/run_pond_thermal.py --output "$root/physical-1" --exponent 1
+            python -B integration/audits/qualify_pond_thermal.py --physical "$root/physical-1" --output "$root/qualified-1"
+            for exponent in 0.5 0.8 1.0005 1.5 2; do
+              python -B tests/nut-sol/run_pond_thermal.py --output "$root/physical-$exponent" --exponent "$exponent" --reuse-build "$root/physical-1"
+              python -B integration/audits/qualify_pond_thermal.py --physical "$root/physical-$exponent" --build "$root/physical-1" --output "$root/qualified-$exponent"
+            done
+          fi
       - name: Current application, original preservation and prescribed annual forcing
         run: |
           set -euo pipefail

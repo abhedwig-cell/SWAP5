@@ -2828,7 +2828,8 @@
       "rossfast": "FROZEN_UNCHANGED",
       "aquifer": "EXCLUDED",
       "compile_seconds": 102.92538440297722,
-      "physics_only_seconds": "UNKNOWN: native driver time includes original input IO"
+      "physics_only_seconds": "UNKNOWN: native driver time includes original input IO",
+      "unchanged_process_physics": "Exact src tree against c4ec414fe5ae55e992e557e394cb4003beaf3e39: inherit immutable six-exponent qualification; current O0/O2 application and annual native run remain selected. Exact original workflow body retained behind production-change fallback."
     },
     "concurrent_canonical_reconciliation": {
       "head": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
@@ -2841,6 +2842,10 @@
       ".github/workflows/mc-sol01-swp-reader.yml": {
         "status": "A",
         "sha256": "407c5b03d1f1420c54560fb6a2446d44466b83843dede5aabc6a23e86de0d0fb"
+      },
+      ".github/workflows/mc-sol01-thermal-pond.yml": {
+        "status": "M",
+        "sha256": "50e03f939c61418c10be5cabc85bf76aa238e9a1041bbbe837118f9b2c520e96"
       },
       "app/solute_column/link_context.f90": {
         "status": "M",
@@ -2868,7 +2873,7 @@
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "A",
-        "sha256": "61fbe038ffd956f907e1d8ec6a70bf9ae1d86f576820f9a2270a783c89e39866"
+        "sha256": "f75737f0853315cf75ab5eb2e4cfe3fcadea79ff582f5257b5ba0abbcccb6521"
       },
       "tests/nut-sol/qualify_swp_reader.py": {
         "status": "A",
