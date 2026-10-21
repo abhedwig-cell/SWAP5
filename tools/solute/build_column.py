@@ -35,7 +35,11 @@ def main():
     context = ROOT / 'app/solute_column/link_context.f90'
     driver = ROOT / 'app/solute_column/main.f90'
     headcalc = ROOT / 'src/legacy/b1_10_port/headcalc.f90'
-    sources = list((ROOT / 'src').rglob('*.f90')) + [context]
+    # Original input providers are isolated in an archive: only referenced
+    # TTUTIL objects are linked, avoiding unrelated legacy physics providers.
+    from legacy_reader_sources import materialize
+    original, ttutil = materialize(ROOT, output)
+    sources = list((ROOT / 'src').rglob('*.f90')) + list((ROOT / 'app/solute_column').glob('*.f90')) + [original]
     mapping = {}
     for source in sources:
         for name in re.findall(r'^\s*module\s+(\w+)\s*$', source.read_text(), re.M | re.I):
@@ -76,7 +80,8 @@ def main():
         flags.append('-fcheck=all')
     report = {'build_profile': args.build_profile, 'schema': 1, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'compiler': subprocess.check_output(fc + ['--version'], text=True).splitlines()[0],
-              'compiler_command': fc, 'flags': flags, 'input_sha256': {str(p.relative_to(ROOT)): sha(p) for p in ordered},
+              'compiler_command': fc, 'flags': flags, 'input_sha256': {str(p.relative_to(ROOT)): sha(p) for p in ordered if p.is_relative_to(ROOT)},
+              'generated_input_sha256': {str(p.relative_to(output)): sha(p) for p in [original] + ttutil},
               'events': [], 'status': 'BUILDING'}
 
     def run(command, category):
@@ -93,16 +98,32 @@ def main():
         (output / 'build.json').write_text(json.dumps(report, indent=2) + '\n')
         result.check_returncode()
 
+    for path in [ROOT / 'tools/solute/legacy_reader_sources.py',
+                 ROOT / 'tools/solute/build_column.py',
+                 ROOT / 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64',
+                 ROOT / 'integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64']:
+        report['input_sha256'][str(path.relative_to(ROOT))] = sha(path)
+    legacy_flags = [f for f in flags if f != '-std=f2008'] + [
+        '-std=legacy', '-fallow-argument-mismatch', '-ffixed-line-length-none']
+    ttobjects = []
+    for index, source in enumerate(ttutil):
+        obj = output / f'tt{index:04d}.o'
+        run(fc + legacy_flags + ['-c', source, '-o', obj], 'compile-original-input')
+        ttobjects.append(obj)
+    archive = output / 'libttutil.a'
+    run(['ar', 'rcs', archive] + ttobjects, 'archive-original-input')
     objects = []
     for index, source in enumerate(ordered):
         obj = output / f'{index:04d}.o'
-        run(fc + flags + ['-c', source, '-o', obj], 'compile')
+        run(fc + (legacy_flags if source == original else flags) + ['-c', source, '-o', obj], 'compile')
         objects.append(obj)
     exe = output / 'swap5_solute_column'
-    run(fc + flags + objects + ['-o', exe], 'link')
+    run(fc + flags + objects + [archive, '-o', exe], 'link')
     if any(sha(ROOT / p) != h for p, h in report['input_sha256'].items()):
         raise RuntimeError('build input changed during compilation')
-    report.update(status='BUILT', executable_sha256=sha(exe), provider_count=len(ordered))
+    if any(sha(output / p) != h for p, h in report['generated_input_sha256'].items()):
+        raise RuntimeError('generated original source changed during compilation')
+    report.update(original_input_provider_count=len(ttutil), status='BUILT', executable_sha256=sha(exe), provider_count=len(ordered))
     (output / 'build-complete.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: report[k] for k in ['status', 'provider_count', 'executable_sha256']}))
 

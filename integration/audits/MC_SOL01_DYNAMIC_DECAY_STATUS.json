@@ -2778,5 +2778,37 @@
       ]
     },
     "strict_documentation": "PASS; final source checks and strict MkDocs on combined canonical metadata"
+  },
+  "swp_reader_successor": {
+    "status": "IMPLEMENTATION_CHECKPOINT_NOT_QUALIFIED",
+    "baseline": "fb00736e320498f2e610b0671af9c7dc5a381921",
+    "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+    "invariants": [
+      2,
+      3,
+      7,
+      9,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "canonical_admitted": false,
+    "qualified": false,
+    "full_swp_default_application": false,
+    "recovery_branch": "work/mc-sol01-swp-reader-20261021",
+    "next_safe_step": "Compile checked O0/O2 and qualify original-reader mappings, fail-closed controls and restart provenance",
+    "excluded": [
+      "aquifer",
+      "macropore",
+      "snow",
+      "analytic heat",
+      "time-varying bottom concentration",
+      "loose legacy restart",
+      "age and nitrogen companions"
+    ],
+    "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md"
   }
 }

@@ -19,6 +19,7 @@ def main():
     parser.add_argument('--exe', type=Path, required=True)
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--swp', type=Path, help='Original SWP chemistry and matching grid; explicit hydrology input remains required')
     parser.add_argument('--restart', type=Path, help='A complete earlier output directory')
     parser.add_argument('--stop-after', type=int, default=2048, help='Last input window to execute')
     args = parser.parse_args()
@@ -32,6 +33,8 @@ def main():
     if build.get('status') != 'BUILT' or build.get('executable_sha256') != sha(exe):
         raise ValueError('executable does not match its completed build')
     input_hash, exe_hash = sha(source), sha(exe)
+    swp = args.swp.resolve() if args.swp else None
+    swp_hash = sha(swp) if swp else None
     restart = None
     parent = None
     if args.restart:
@@ -41,7 +44,11 @@ def main():
             raise ValueError('restart generation incomplete')
         if parent.get('input_sha256') != input_hash or parent.get('executable_sha256') != exe_hash:
             raise ValueError('restart input or executable identity mismatch')
+        if parent.get('swp_sha256') != swp_hash:
+            raise ValueError('restart SWP identity mismatch')
         expected_files = {'input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr'}
+        if swp:
+            expected_files.add('input.swp')
         if (directory / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
             expected_files.add('temperature.csv')
         if set(parent.get('files', {})) != expected_files:
@@ -61,6 +68,12 @@ def main():
     if sha(staged_input) != input_hash:
         raise ValueError('input changed during staging')
     command = [str(exe), str(staged_input), str(restart) if restart else '-', str(args.stop_after)]
+    if swp:
+        staged_swp = stage / 'input.swp'
+        staged_swp.write_bytes(swp.read_bytes())
+        if sha(staged_swp) != swp_hash:
+            raise ValueError('SWP changed during staging')
+        command.append(str(staged_swp))
     start = time.perf_counter()
     result = subprocess.run(command, cwd=stage, capture_output=True)
     (stage / 'stdout').write_bytes(result.stdout)
@@ -70,6 +83,8 @@ def main():
     names = ['input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr']
     if (stage / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
         names.append('temperature.csv')
+    if swp:
+        names.append('input.swp')
     files = {name: sha(stage / name) for name in names}
     manifest = {'schema': 'SWAP5_SOLUTE_COLUMN_1', 'status': 'COMPLETE', 'input_sha256': input_hash,
                 'executable_sha256': exe_hash, 'build_candidate': build['candidate'],
@@ -77,6 +92,9 @@ def main():
                 'stop_after': args.stop_after, 'returncode': result.returncode,
                 'native_seconds': time.perf_counter() - start,
                 'parent_restart_sha256': parent['files']['restart.bin'] if parent else None, 'files': files}
+    if swp:
+        manifest['swp_sha256'] = swp_hash
+        manifest['build_generated_input_sha256'] = build['generated_input_sha256']
     (stage / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
     for path in stage.iterdir():
         with path.open('rb') as stream:
