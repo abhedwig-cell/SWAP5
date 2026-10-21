@@ -1,11 +1,11 @@
 {
   "work_unit": "PERF01 wetter coupled weather tolerance curve",
   "baseline": "a737c60596f7d77cf2415cb09c4181d35a8a25b5",
-  "status": "COMPLETE_LOCAL_VERIFIED_RESEARCH_WITH_FAILED_4X_CONTROL",
+  "status": "CANONICALLY_REGISTERED_INPUT_ONLY_WET_RESEARCH_WITH_RETAINED_FAILURES",
   "selection": "Same97day live crop/heat/free-drainage executable, rain2x and4x full-horizon feasibility probes at1e-3cm; three paired serial observations1e-6/1e-3/1e-2/1e-1/1cm for wet2x if complete; finer2.5e-7cm andO0/reconstruction after successful screen. Preserve all failures.",
   "physics": "Only daily rain token scaled; real timing/temperature/radiation/ET and material/crop/coupling geometry unchanged. Modified meteorology is a scenario, not observed weather. No production or acceptance changes.",
   "expected_cost": "Wet curve expected200s total,180s per native cap/512MiB; no full provider rebuild, diagnostic main onlylink expected3s",
-  "next_action": "Input-only wet curve complete; publish and register research. Four-rain failure cause remains unqualified, separate from the completed double-rain curve.",
+  "next_action": "Double-rain curve complete. Four-rain runtime failure remains for a separate causal investigation; no runoff or numerical-default activation.",
   "screen": "Wet2x completes97days, max daily reported head-0.06276cm. Wet4x fails first interval ofday35 with runtime status10 after34complete days; not classified as overflow without native diagnostics.",
   "completed_wet2_O2_observations": 20,
   "completed_wet2_checked_O0_observations": 3,
@@ -24,5 +24,16 @@
   "postimages": {
     "benchmarks/performance/study_perf01_wet_weather.py": "1c821d1ac0b21fb11e6b94792b5478191da7aa05e09b13998218e27276f1ab18",
     "benchmarks/performance/assess_perf01_wet_weather.py": "16608d74bb54d5c44faf9f8285ffbb48cb67d2a7c183eb454b94b373b63656c2"
+  },
+  "canonical_registration": {
+    "pull_request": 1360,
+    "merge": "fde21c4216039606fc6f2de2df776a0fa2ef07f5",
+    "qualified_head": "f6dc308949c94ab98f7f6b703ada55ad83be3ddf",
+    "qualified_tree": "7a77919711ef613cb7503a3478b58bf5a652b2e0",
+    "actual_merge_tree_exact": true,
+    "local_incumbent_owner_qualified": true,
+    "production_changed": false,
+    "production_policy_admitted": false,
+    "hosted_actions": "NONE_SELECTED_INPUT_ONLY_RESEARCH"
   }
 }
