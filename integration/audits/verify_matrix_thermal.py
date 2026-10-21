@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import os
+import runpy
 from pathlib import Path
 import subprocess
 import sys
@@ -39,6 +40,8 @@ def record():
 
 
 def source():
+    if 'evidence' in record().get('nonlinear_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['source']()
     s = record()
     require(s['baseline'] == BASE, 'thermal predecessor')
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
@@ -77,7 +80,7 @@ def capsule():
     return files
 
 
-def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
+def validate(files, reader=lambda p: (ROOT / p).read_bytes(), build=None):
     p = json.loads(files['physical/result.json'])
     q = json.loads(files['qualification/result.json'])
     require(p['status'] == 'FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED', 'missing native physical proof')
@@ -94,28 +97,36 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
                 require(f'{prefix}/{i:04d}.{stream}' in files, 'missing thermal raw stream')
             if '-c' in e['command']:
                 require('-fcheck=all' in e['command'] and '-ffpe-trap=invalid,zero,overflow' in e['command'], 'unchecked thermal compilation')
-    require(len(p['events']) == 594 and p['provider_count'] == 277, 'unmeasured thermal closure')
-    require(len(q['events']) == 39, 'missing thermal refinement/semantic/crash executions')
+    if build is None:
+        require(len(p['events']) == 594 and p['provider_count'] == 277, 'unmeasured thermal closure')
+    else:
+        compiled = json.loads(build)
+        require(len(p['events']) == 36 and p['provider_count'] == 277, 'unmeasured reused thermal executions')
+        require(len(compiled['events']) == 594 and compiled['provider_count'] == 277, 'unmeasured original build')
+        require(p['reused_physical_sha256'] == sha(build), 'unbound reused compilation')
+        require(p['inputs'] == compiled['inputs'] and p['executables'] == compiled['executables'], 'reused build source/binary drift')
+    require(len(q['events']) == (39 if build is None else 45), 'missing thermal refinement/semantic/crash executions')
     previous = None
     for opt in ['O0', 'O2']:
         result = {k: v for k, v in q['results'][opt].items() if k != 'executable_sha256'}
         if previous is not None:
             require(result == previous, 'thermal qualified O0/O2 drift')
         previous = result
-        require(result['windows'] == [2, 4, 8, 16, 32, 64, 128], 'missing complete fixed-horizon refinement')
+        windows = [2, 4, 8, 16, 32, 64, 128] + ([] if build is None else [256])
+        require(result['windows'] == windows, 'missing complete fixed-horizon refinement')
         for key in ['mass_delta', 'decay_delta']:
             d = result[key]
-            require(len(d) == 6 and all(a > b > 0 for a, b in zip(d, d[1:])), 'nondecreasing ' + key)
+            require(len(d) == len(windows)-1 and all(a > b > 0 for a, b in zip(d, d[1:])), 'nondecreasing ' + key)
         require(0 < result['final_relative_decay_difference'] < 1e-3, 'unresolved thermal split error')
         for n in [2, 4, 8, 16]:
             a = files[f'physical/{opt}/{n}/full.bin']
             require(a == files[f'physical/{opt}/{n}/resumed.bin'], 'thermal original fresh endpoint')
             require(sha(a) == p['results'][opt][str(n)]['endpoint_sha256'], 'thermal native endpoint digest')
-        for n in [32, 64, 128]:
+        for n in windows[4:]:
             require(files[f'qualification/{opt}/{n}/full.bin'] == files[f'qualification/{opt}/{n}/fresh.bin'], 'thermal refined fresh endpoint')
-        finest = files[f'qualification/{opt}/128/full.bin']
+        finest = files[f'qualification/{opt}/{windows[-1]}/full.bin']
         require(sha(finest) == result['finest_endpoint_sha256'], 'thermal finest digest')
-        require(finest == files['qualification/O0/128/full.bin'], 'thermal finest optimization')
+        require(finest == files[f'qualification/O0/{windows[-1]}/full.bin'], 'thermal finest optimization')
         for a, b in [('before', 'after'), ('initial', 'hydraulic')]:
             require(files[f'physical/{opt}/controls/control.{a}'] == files[f'physical/{opt}/controls/control.{b}'], 'thermal rejected owner mutation')
         require(set(result['semantic_negatives']) == {'overlong', 'water_clock', 'water_revision', 'physical_id', 'geometry', 'negative_water', 'nonfinite_temperature'}, 'thermal semantic negatives')
@@ -142,6 +153,8 @@ def predecessor():
 
 
 def verify_qualification():
+    if 'evidence' in record().get('nonlinear_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['verify_qualification']()
     source()
     current = validate(capsule())
     old = predecessor()
@@ -152,6 +165,8 @@ def verify_qualification():
 
 
 def self_test():
+    if 'evidence' in record().get('nonlinear_successor', {}):
+        return runpy.run_path(str(ROOT / 'integration/audits/verify_matrix_thermal_nonlinear.py'))['self_test']()
     f = capsule()
     validate(f)
     passed = []

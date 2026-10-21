@@ -1,5 +1,61 @@
 # MC-SOL01 dynamic accepted-temperature decay
 
+## Locally qualified bounded nonlinear successor (admission pending)
+
+MC-SOL01-DYNAMIC-DECAY02 starts at canonical `fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d`.
+It widens only the thermal composition's sorption guard to the existing matrix
+constructor domain, Freundlich exponent 0.5..2. Existing nonlinear inversion,
+source-order decay, accepted-water trace, immutable configuration, endpoint
+temperature splitting and S5MT0001 atomic-generation semantics remain unchanged.
+The independent literal loop and its real128 nonlinear inversion oracle qualify
+this combination at exponents .5/.8/1/1.0005/1.5/2, including refinement and fresh
+process restart. Every previously qualified linear endpoint must remain exact.
+Outside-domain constructors and analytic heat remain rejected. No pond, seasonal,
+full historical/default-file, RossFast or aquifer admission is proposed.
+The existing status record's `nonlinear_successor` owns recovery and admission;
+the linear predecessor receipt below remains historical, immutable evidence.
+
+GNU13.3.0 O0/O2 executes all six exponent cases with the same277-provider
+closure, built once per optimization (compile156.753697s; link0.251031s).
+Five nonlinear forcing cases reuse only source-manifest/binary-identical builds.
+Each case independently executes accepted Reference water/heat, literal nonlinear
+inversion/decay, water/solute balance, heat-off, hydraulic/chemical rejection,
+smaller retry, fresh-process restart on every mesh, semantic valid-CRC negatives
+and native SIGKILL before/after generation rename. The executed geometry/horizon
+remains four nodes,3cm,0.002day; physics-only timing is UNKNOWN.
+
+| Exponent | Coupling meshes | Final relative decay difference | Last inventory difference mg/cm2 |
+| --- | --- | --- | --- |
+| 1 | seven,2..128 | 0.000818936 | 1.000125e-8 |
+| 0.5 | eight,2..256 | 0.000476492 | 5.370931e-9 |
+| 0.8 | eight,2..256 | 0.000412301 | 3.739278e-9 |
+| 1.0005 | eight,2..256 | 0.000379835 | 3.014213e-9 |
+| 1.5 | eight,2..256 | 0.000330433 | 1.962521e-9 |
+| 2 | eight,2..256 | 0.000313868 | 1.491679e-9 |
+
+All successive mass and decay differences decrease strictly. Exponent0.5 at128
+intervals initially fails the unchanged1e-3 criterion at0.001019717;256 resolves
+it. No tolerance is relaxed. Per-interval water/solute residuals satisfy1e-10cm
+and1e-11mg/cm2. All original linear full and midpoint restart bytes remain exact
+on all seven meshes. Every nonlinear O0/O2/fresh endpoint is byte-identical.
+The source-bound capsule is
+`integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64`,
+decoded SHA256 `b0b41a437ed95088e8cd739d6a92676e1f0384fb2a690aa6979b7ce8666e69be`.
+It retains raw commands, endpoints, source manifests, failed refinement and
+incomplete report observations. Incomplete reports are rejected as proof; final
+test reports are atomically replaced, fsynced and read back. Production S5MT0001
+and its atomic publication are unchanged.
+
+The owning workflow runs every exponent; exact `fcfdd3ae` predecessor validation
+executes unchanged in a detached worktree. Current proof applies all existing
+thermal science assertions, adding build reuse and raw-stdout binding. Full moving
+F-CI is NOT_SELECTED_IMPACT; highest low-air remains NOT_SELECTED_POLICY.
+
+```bash
+python -B tests/nut-sol/run_matrix_thermal.py --exponent 0.5 --reuse-build /tmp/thermal-physical --output /tmp/nonlinear-physical
+python -B integration/audits/qualify_matrix_thermal.py --nonlinear-refinement --build /tmp/thermal-physical --physical /tmp/nonlinear-physical --output /tmp/nonlinear-qualified
+```
+
 Status: canonically admitted bounded numeric-heat/linear-matrix composition,
 PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73`. The completed admission
 receipt is `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json` on canonical.

@@ -1,4 +1,398 @@
 {
+  "nonlinear_successor": {
+    "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
+    "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+    "stage": "QUALIFIED_READY_FOR_CANONICAL",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "scope": "Numeric endpoint heat with existing Freundlich matrix exponent 0.5..2; no pond or new process formula",
+    "invariants_affected": [
+      3,
+      7,
+      13,
+      21,
+      23,
+      25
+    ],
+    "next_action": "Open and finish canonical PR, validate existing integrated runs to terminal, reconcile live refs, then update exact scoped master facets and final closure",
+    "recovery_point": "work/mc-sol01-nonlinear-thermal-20261021",
+    "blockers": [],
+    "selection": {
+      "focused": "RUN: changed composition guard, nonlinear equilibrium and actual heat must execute together; compile277 providers once per O0/O2, reuse only exact source-bound binaries across exponent forcing. Expected compile/link150s, native/refinement less than30s",
+      "incumbent_linear": "RUN: fresh exponent1 endpoints must equal original admitted bytes on every mesh",
+      "predecessor": "RUN: unchanged exact fcfdd3ae source/evidence admission gate",
+      "full_fci": "NOT_SELECTED_IMPACT: one isolated optional composition guard; existing process formulas, shared Reference/heat/accepted trace, disk ABI and incumbent application remain unchanged",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    },
+    "execution_commit": "0582be6e",
+    "checkpoint_commit": "5ccb82f5",
+    "last_reconciled_upstream": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64",
+      "decoded_sha256": "b0b41a437ed95088e8cd739d6a92676e1f0384fb2a690aa6979b7ce8666e69be",
+      "members": 4097,
+      "bytes": 513964
+    },
+    "physical": {
+      "1": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128
+        ],
+        "final_relative_decay_difference": 0.0008189358698727755,
+        "mass_delta": [
+          1.8851704197686558e-07,
+          1.0997544704072215e-07,
+          6.060513701999781e-08,
+          3.4377581996369866e-08,
+          1.787939007263928e-08,
+          1.0001248051949574e-08
+        ],
+        "decay_delta": [
+          1.9072703728922137e-07,
+          1.332015704052242e-07,
+          7.75815561684557e-08,
+          4.1305650733726925e-08,
+          2.11141707835267e-08,
+          1.0874885549269132e-08
+        ],
+        "finest_endpoint_sha256": "f73b7208d1d010449300971278911745dd38d87dc36b0a3bfa219fbb572786b5",
+        "physical_cost_seconds": {
+          "compile": 156.7536974930008,
+          "link": 0.2510307180000382,
+          "native": 1.4638770000046861
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.3241619909995279,
+          "crash_recovery_native": 0.05747929499921156,
+          "observer_compile_link": 0.039403447000040615,
+          "refinement_native": 0.5057820660003927,
+          "semantic_negative": 0.022803259998909198
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      },
+      "0.5": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256
+        ],
+        "final_relative_decay_difference": 0.00047649229346083817,
+        "mass_delta": [
+          2.4760751168861894e-07,
+          1.4894434163803538e-07,
+          9.27439872400182e-08,
+          5.245383349894439e-08,
+          2.7360097826223395e-08,
+          1.4927346969617616e-08,
+          5.370930977743882e-09
+        ],
+        "decay_delta": [
+          3.007815922195923e-07,
+          2.115620531625957e-07,
+          1.2404361080068459e-07,
+          6.629276901198809e-08,
+          3.3965071605008575e-08,
+          1.7491433391776445e-08,
+          8.16948571149702e-09
+        ],
+        "finest_endpoint_sha256": "af09a91c4670b4337c8c36554b6995efa16930f534f6ebe6f656a2fda1e9db85",
+        "physical_cost_seconds": {
+          "compile": 0,
+          "link": 0,
+          "native": 2.504533832004199
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.5775679580010546,
+          "crash_recovery_native": 0.09532932599995547,
+          "observer_compile_link": 0.034905693000837346,
+          "refinement_native": 1.4912515029973292,
+          "semantic_negative": 0.023843930999646545
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      },
+      "0.8": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256
+        ],
+        "final_relative_decay_difference": 0.0004123006444176694,
+        "mass_delta": [
+          2.041864056306908e-07,
+          1.2282441487487805e-07,
+          7.047881221688979e-08,
+          3.9930965409218366e-08,
+          2.0792059782226424e-08,
+          1.1514626349629076e-08,
+          3.739278151004832e-09
+        ],
+        "decay_delta": [
+          2.2513802648159694e-07,
+          1.5754033347792083e-07,
+          9.195130627747899e-08,
+          4.9018173822004435e-08,
+          2.5076841947742768e-08,
+          1.2914528258595442e-08,
+          6.005496812543518e-09
+        ],
+        "finest_endpoint_sha256": "df1985cda39789b80c91a14f46d147cb0c036ea10d8ad45b76b85ebfa4660ba0",
+        "physical_cost_seconds": {
+          "compile": 0,
+          "link": 0,
+          "native": 2.748268702000132
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.6795943359993544,
+          "crash_recovery_native": 0.14497365400075068,
+          "observer_compile_link": 0.03848685899993143,
+          "refinement_native": 2.0358883990011236,
+          "semantic_negative": 0.023202804996799387
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      },
+      "1.0005": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256
+        ],
+        "final_relative_decay_difference": 0.00037983526509686674,
+        "mass_delta": [
+          1.8848892852085797e-07,
+          1.0994711957534875e-07,
+          6.058418017956813e-08,
+          3.4365821285908815e-08,
+          1.7873206678564735e-08,
+          9.998008018707871e-09,
+          3.014212920926518e-09
+        ],
+        "decay_delta": [
+          1.9065348270916834e-07,
+          1.3314974875808695e-07,
+          7.755103871575e-08,
+          4.1289291474268296e-08,
+          2.110577058280363e-08,
+          1.0870562579821916e-08,
+          5.0409319508210455e-09
+        ],
+        "finest_endpoint_sha256": "7b8bb3434090f8f43d55da46c9bccca38041148fe464c76966033aba7a5977d4",
+        "physical_cost_seconds": {
+          "compile": 0,
+          "link": 0,
+          "native": 2.635518629002945
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.6730493989998649,
+          "crash_recovery_native": 0.11977897000087978,
+          "observer_compile_link": 0.04293952700027148,
+          "refinement_native": 1.9720235900031184,
+          "semantic_negative": 0.021672343001228
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      },
+      "1.5": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256
+        ],
+        "final_relative_decay_difference": 0.0003304326038254551,
+        "mass_delta": [
+          1.6483580767001627e-07,
+          9.48251822063817e-08,
+          5.0563220443944346e-08,
+          2.6447707801580123e-08,
+          1.363912466301187e-08,
+          7.797953512078681e-09,
+          1.9625209166096447e-09
+        ],
+        "decay_delta": [
+          1.3952123245765533e-07,
+          9.740735160252693e-08,
+          5.6614583931292056e-08,
+          3.009533701940495e-08,
+          1.5365587478325955e-08,
+          7.917395516442825e-09,
+          3.6518443575062184e-09
+        ],
+        "finest_endpoint_sha256": "ddab2457e8a4727a68befd868ca01f50ed52461490f5f18579d33a59408495a1",
+        "physical_cost_seconds": {
+          "compile": 0,
+          "link": 0,
+          "native": 2.385355713999161
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.6388546489988585,
+          "crash_recovery_native": 0.11754064799970365,
+          "observer_compile_link": 0.0424799719994553,
+          "refinement_native": 1.8268886210016717,
+          "semantic_negative": 0.023379277001367882
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      },
+      "2": {
+        "windows": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256
+        ],
+        "final_relative_decay_difference": 0.00031386783412979975,
+        "mass_delta": [
+          1.4808866216631245e-07,
+          8.519178579247111e-08,
+          4.542880388536119e-08,
+          2.3799752779662953e-08,
+          1.1891181567191822e-08,
+          6.909657235265598e-09,
+          1.491678780496386e-09
+        ],
+        "decay_delta": [
+          1.1656580980201297e-07,
+          8.163091589804022e-08,
+          4.748844357969376e-08,
+          2.5247358569286863e-08,
+          1.288834452784762e-08,
+          6.643491496727619e-09,
+          3.0573032501252686e-09
+        ],
+        "finest_endpoint_sha256": "a66846c200978221d7e185252721e2b9034c37e7bfb3d3524612a6c6ae6a1704",
+        "physical_cost_seconds": {
+          "compile": 0,
+          "link": 0,
+          "native": 1.5986863790003554
+        },
+        "qualification_cost_seconds": {
+          "crash_native": 0.4386401099991417,
+          "crash_recovery_native": 0.09163630100010778,
+          "observer_compile_link": 0.04061431799982529,
+          "refinement_native": 0.9569404920002853,
+          "semantic_negative": 0.02644845200029522
+        },
+        "executable_sha256": {
+          "O0": "185cd521c03052bde93b4adf7ec30974dae43ffb30c51c37448667ea1f7c6edb",
+          "O2": "a1013ec08c7642710241111cfb7ac2e1403a1a07d460a63471d142eafa95e25b"
+        }
+      }
+    },
+    "retained_observations": [
+      "Exponent0.5 at128 intervals fails unchanged1e-3 relative decay criterion;256 passes",
+      "Premature second-phase invocation rejected RUNNING first phase",
+      "Two initial1.0005 reports incomplete after stdout PASS; rejected as proof; report now atomic/fsynced and checked after publication",
+      "First report readback assertion rejected JSON integer/string key normalization; corrected and all final short assessments rerun; Fortran binaries unchanged"
+    ],
+    "postimages": {
+      ".github/workflows/mc-sol01-dynamic-decay.yml": {
+        "status": "M",
+        "sha256": "1016a113765c8ba07d33b3a6aaccd7a28e38ef716d02da9f00362e0c8edc5252"
+      },
+      "integration/audits/qualify_matrix_thermal.py": {
+        "status": "M",
+        "sha256": "2b2102a1a5e577ff6a2f6253e80f592f85ae6fd72ee19c08993ef119fb1ebdfd"
+      },
+      "integration/audits/verify_matrix_thermal.py": {
+        "status": "M",
+        "sha256": "a143d747e1cfa1ac9177d285deaf67a043204bdd549bf2b94313433920b468a4"
+      },
+      "integration/audits/verify_matrix_thermal_nonlinear.py": {
+        "status": "A",
+        "sha256": "af5832523104377910831020a4b46d2768e1c3b1a1f3b6e0fcce4d264c557108"
+      },
+      "src/runtime/mod_fmr_b111_matrix_thermal_application.f90": {
+        "status": "M",
+        "sha256": "dd7804b3919180a46f0543a8e96ea615153c5a5663058fc5940bbb350a3b5619"
+      },
+      "tests/nut-sol/run_matrix_thermal.py": {
+        "status": "M",
+        "sha256": "95b5e5d8b31f1f76318ada9638583d2eb463c1629d2bb3f58f3470a0436634e0"
+      },
+      "tests/nut-sol/test_matrix_thermal.f90": {
+        "status": "M",
+        "sha256": "5f2a4792b30825a2dae094c9d910888fecc34430f749d485aae0af94df9cf398"
+      }
+    },
+    "capability_status": "QUALIFICATION_ONLY",
+    "local_owners": {
+      "exact_fcfdd3ae_predecessor_and_current_source_evidence": "PASS",
+      "negative_controls": 9,
+      "strict_documentation": "PASS",
+      "fsi35_handoff": "unchanged dispatcher delegates to current bounded source authority",
+      "reconciled_9c_predecessor_and_current178_diagnostic_providers": "PASS"
+    },
+    "initial_baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+    "admission_pr": 1344,
+    "concurrent_reconciliation": {
+      "scope": "PERF01 diagnostic additions only; complete production/reference trees equal fcfdd3ae; every277 thermal input and178 diagnostic provider unchanged",
+      "all_incoming_files_preserved": true,
+      "native_repetition": "NOT_SELECTED_IMPACT: no executed input changed",
+      "qualification": "Exact9c predecessor full thermal/diagnostic gate plus current178provider/raw evidence validation"
+    },
+    "hosted": {
+      "qualified_head": "f6ed3156ce40f28b2077196691a155ce6db21383",
+      "reconciled_head": "17a376751cdcbc271c6a2af61775a424fef8a160",
+      "total": 31,
+      "success": 21,
+      "failure": 10,
+      "all_terminal": true,
+      "failures_counted_as_pass": false,
+      "thermal_run": 39562176823,
+      "thermal_job": 119095794626,
+      "column_run": 39562176763,
+      "column_job": 119095794691,
+      "canonical_run": 39562176647,
+      "perf_run": 39562176931,
+      "full_receipt": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_HOSTED_20261021.json",
+      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_CI_TRIAGE_20261021.json"
+    }
+  },
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
   "baseline": "3cb20b8a48440a9445277dfba0982b697197638a",
   "implemented": true,
