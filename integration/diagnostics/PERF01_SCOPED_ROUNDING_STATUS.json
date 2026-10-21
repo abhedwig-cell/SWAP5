@@ -1,0 +1,98 @@
+{
+  "workstream": "PERF01 numerical stagnation after trace reclamation",
+  "baseline": "d7b891759a8c378ba0367e1a1a112c684712199f",
+  "branch": "work/perf01-scoped-rounding",
+  "status": "GENERATED_FULL_DAY_AND_EXACT_RESTART_PASS_NATIVE_REFINEMENT_RUNNING",
+  "production_changed": false,
+  "production_qualified": false,
+  "contract": "docs/performance/SWAP5-PERF01_SCOPED_ROUNDING_CONTRACT.md",
+  "invariants": [
+    3,
+    5,
+    7,
+    22,
+    23,
+    25,
+    26
+  ],
+  "question": "Does the previously generated one-ULP correction complete the sixth dry32 window with admitted trace reclamation, or reveal another numerical/cost boundary?",
+  "selection": "One fresh latest-canonical O2 column build; matched observing unmodified control and exact prior experimental correction against latest inputs; six-window native probes under512MiB and90s, sampled internal progress and process-specific RSS. O0/restart/refinement follow only when a completed current candidate justifies them.",
+  "expected_cost": "Fresh production build approximately60s; generated-provider compilation approximately10s; native probe capped90s. No routine full F-CI, highest-low-air or unrelated migration runs.",
+  "recovery": "Persisted selection, contract and generator precede compiler/model execution",
+  "next_action": "Finish tighter native full-day reference comparison, seal complete proof, then choose bounded explicit production interface; legacy production still unchanged",
+  "canonical_admission": "NONE",
+  "control": "Latest canonical reproduces original budget/trajectory/stdout/work exactly; exit1,75016KiB",
+  "counterfactual": {
+    "returncode": -9,
+    "timed_out": true,
+    "max_rss_kib": 324000,
+    "seconds": 90.03445829400152
+  },
+  "last_sample": "internal0.0871140260636344,45312 accepted,197266 solver and658234 temporal rejections; external window6 never committed",
+  "temporal_capture": "64 rejected native full/half states;2048 nodal records; diagnostic stop after11.30s/63680KiB",
+  "finding": "Uppermost head dominates; reconstructed water difference/dt is+/-0.025cm/day, half prescribed pond evaporation; previous-pond classification toggles demand",
+  "selected_next": "Generated-only implicit empty-pond constraint, no bare demand or macro coupling; scalar conservation/continuity/split-step probe and six-window full model with original unchanged HeadCalc,90s/512MiB",
+  "direct_providers": 6,
+  "direct_conservation_cases_per_profile": 45,
+  "full_model": "Water window6 completed; joint chemical carrier rejects after5218 substeps; no external sixth-window publication",
+  "candidate_result": {
+    "returncode": 0,
+    "timed_out": false,
+    "max_rss_kib": 108040,
+    "seconds": 15.330748043998028
+  },
+  "actual_empty_pond_mass_before": 2.117582368135751e-22,
+  "full_day": {
+    "windows": 64,
+    "endpoint_day": 1.0,
+    "restart_split": 6,
+    "whole_run_seconds": 94.38682253400111,
+    "peak_rss_kib": 144584,
+    "water_residual_max_cm": 9.536642309182497e-14,
+    "solute_residual_max_mg_cm2": 2.694830959469878e-13
+  },
+  "optimization": "O0/O2 exact six-window physical files, restart and deterministic work",
+  "restart": "Uninterrupted versus sixth-window fresh-process continuation: exact final bytes and all64 reporting rows/work",
+  "independent_water_reference": {
+    "status": "INDEPENDENT_CONTINUOUS_WATER_REFERENCE_MEASURED_NOT_PRODUCTION_ADMISSION",
+    "scipy": "1.17.0",
+    "inputs": {
+      "/tmp/perf01-scoped-rounding/coupled-O2/native/trajectory.csv": "5ee5d15dff750936bd19dcee8e104716a330b1288507d85fdb19a0bb82884495",
+      "/tmp/perf01-scoped-rounding/coupled-O2/native/budget.csv": "ece8eda945bb9887dedb79f0a23a0801364f7c5b009ccc2ce024b4c994eb7cd6",
+      "/tmp/perf01-scoped-rounding/full-day-O2/native/trajectory.csv": "90cf253a0d815aabd29bc2ad216427682c69f147c88689c466fd47a518b39871",
+      "/tmp/perf01-scoped-rounding/full-day-O2/native/budget.csv": "ba6158725f1bcf3ee32e9578edd531e0eb6a7d403121ac0845c0faad8977ec4c"
+    },
+    "reference_spread": {
+      "head": 2.075758175124065e-06,
+      "theta": 1.1124567933507024e-10,
+      "pond": 2.3381296898605797e-11
+    },
+    "candidate_errors": {
+      "head": 0.011665268730780554,
+      "theta": 1.7857597487402899e-06,
+      "cumulative_evaporation": 4.843115133934539e-08,
+      "cumulative_runoff": 1.8676270316984964e-06
+    },
+    "references": [
+      {
+        "label": "tight",
+        "rtol": 1e-11,
+        "atol": 1e-14,
+        "onset_day": 0.08885965184195288,
+        "seconds": 0.1789907439997478,
+        "nfev": 2083,
+        "max_water_residual": 4.5581756685092456e-14
+      },
+      {
+        "label": "tighter",
+        "rtol": 1e-13,
+        "atol": 1e-16,
+        "onset_day": 0.0888596518158291,
+        "seconds": 0.35291089300153544,
+        "nfev": 3367,
+        "max_water_residual": 1.258399851336578e-13
+      }
+    ],
+    "exclusions": "No independent chemical truth; native full/half tolerance is not a global-error bound"
+  }
+}
