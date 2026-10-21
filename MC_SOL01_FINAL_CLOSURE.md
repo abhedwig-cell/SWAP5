@@ -1,5 +1,16 @@
 # MC-SOL01 final closure
 
+21 October 2026, bounded thermal successor: dynamic endpoint-temperature decay
+has local O0/O2 physical, literal-oracle, water/solute balance, rollback, seven
+interval meshes, independent-process restart and native crash-generation proof.
+See `docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md`; actual admission is owned
+by `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json`. This extends the
+matrix route with numeric restricted heat and linear sorption. Thermal pond,
+nonlinear thermal composition, analytic heat, full default input, seasonal
+accuracy and the complete historical SALT-DECAY envelope remain unadmitted.
+The parked dynamic-temperature wording below is the pre-successor snapshot;
+the remaining broader compositions continue to be parked explicitly.
+
 Current follow-up, 20 October 2026: the dry 138-cm input is qualified through
 the same 0.002-day final horizon using 100 equal reporting windows. The earlier
 short-window test ended at 0.00002 day, so it alone did not establish this claim.
