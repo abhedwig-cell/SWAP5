@@ -19,6 +19,7 @@ program swap5_solute_column
   use mod_pond_thermal_restart_file
   use mod_soil_temperature_contract
   use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
+  use mod_column_swp_water,only:import_column_swp_water
   use mod_column_swp_chemistry,only:import_column_swp_chemistry
   use mod_matrix_joint_restart_file
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
@@ -44,7 +45,8 @@ program swap5_solute_column
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
-  logical :: implicit_pond_evaporation=.false.
+  logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.
+  real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
   type(soil_temperature_field_view_t) :: heat_view
@@ -71,7 +73,7 @@ program swap5_solute_column
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
-    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation
+    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c
   call get_command_argument(1,path)
@@ -101,6 +103,13 @@ program swap5_solute_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
+  if(swp_water_bootstrap)then
+    call require(len_trim(legacy_swp)>0,'SWP water bootstrap requires --swp')
+    call require(schema==2.and.nodes==0.and.all(cell_thickness_cm==0d0),'SWP water bootstrap forbids a second grid')
+    call require(initial_head==-75d0.and.theta_r==.032d0.and.theta_s==.423d0.and.ksat_cm_day==.00475d0.and. &
+      alpha_per_cm==.0135d0.and.vg_n==1.455d0.and.pore_l==.365d0,'SWP water bootstrap forbids hydraulic overrides')
+    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen)
+  end if
   call require(nodes>=2.and.nodes<=MAX_NODES,'invalid node count')
   call require(all(ieee_is_finite(cell_thickness_cm)),'nonfinite grid')
   if(schema==1)then
@@ -166,9 +175,11 @@ program swap5_solute_column
   p%cofgen(7,:)=1d0-1d0/vg_n;p%cofgen(8,:)=alpha_per_cm
   p%cofgen(10,:)=ksat_cm_day;p%cofgen(11,:)=0.999d0;p%cofgen(12,:)=0.99d0*ksat_cm_day
   p%cofgen(22,:)=-1d6;p%cofgen(23,:)=1d-12
+  if(swp_water_bootstrap)p%cofgen=swp_cofgen
   p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%max_iterations=8;p%max_backtracking=4
   p%root_extraction_active=any(root_cm_day(1:numnod)>0d0)
   initial%active_nodes=numnod;initial%pressure_head=spread(initial_head,1,numnod)
+  if(swp_water_bootstrap)initial%pressure_head=swp_heads
   allocate(initial%water_content(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
   call initialize_b110_default_mvg_parameters(hp,p%cofgen)
   call bind_b110_default_mvg_provider(provider,hp,ends_day(1))
@@ -191,6 +202,7 @@ program swap5_solute_column
   chemistry%face_left_weight=0.5d0*dz(2:numnod)/chemistry%face_distance_cm
   chemistry%face_right_weight=0.5d0*dz(1:numnod-1)/chemistry%face_distance_cm
   chemistry%theta_sat_left=spread(theta_s,1,numnod-1)
+  if(swp_water_bootstrap)chemistry%theta_sat_left=p%cofgen(2,1:numnod-1)
   chemistry%dispersivity_cm=spread(dispersivity_cm,1,numnod-1)
   chemistry%molecular_diffusion_cm2_day=diffusion_cm2_day;chemistry%tscf=tscf
   chemistry%cdrain_mg_cm3=cdrain_mg_cm3;chemistry%cseep_mg_cm3=cseep_mg_cm3
