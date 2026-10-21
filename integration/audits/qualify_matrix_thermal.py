@@ -23,6 +23,7 @@ def main():
     parser.add_argument('--physical', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--build', type=Path)
+    parser.add_argument('--nonlinear-refinement', action='store_true')
     args = parser.parse_args()
     physical = args.physical.resolve()
     out = args.output.resolve()
@@ -56,7 +57,8 @@ def main():
         build = out / opt
         build.mkdir()
         points = {int(n): v['stdout'][0] for n, v in prior['results'][opt].items() if n != 'controls'}
-        for windows in [32, 64, 128]:
+        refined = [32, 64, 128, 256] if args.nonlinear_refinement else [32, 64, 128]
+        for windows in refined:
             case = build / str(windows)
             case.mkdir()
             path, full, fresh = case / 'restart.bin', case / 'full.bin', case / 'fresh.bin'
@@ -115,7 +117,7 @@ def main():
         report['results'][opt] = {'windows': keys, 'stdout': points, 'mass_delta': mass_delta,
                                   'decay_delta': decay_delta, 'final_relative_decay_difference': decay_delta[-1] / decay[-1],
                                   'semantic_negatives': sorted(mutants), 'kill_before_after_generation_exact': True,
-                                  'executable_sha256': sha(exe), 'finest_endpoint_sha256': sha(build / '128/full.bin')}
+                                  'executable_sha256': sha(exe), 'finest_endpoint_sha256': sha(build / str(keys[-1]) / 'full.bin')}
     assert {k: v for k, v in report['results']['O0'].items() if k != 'executable_sha256'} == {
         k: v for k, v in report['results']['O2'].items() if k != 'executable_sha256'}, 'qualification O0/O2 differs'
     assert all(sha(ROOT / p) == h for p, h in {**prior['inputs'], **report['inputs']}.items())
