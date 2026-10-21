@@ -12,7 +12,7 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = 'fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d'
+BASE = '9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c'
 STATUS = 'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
 SCIENCE = ['src', 'tests', 'tools', 'reference', '.github', 'app', 'examples',
            'integration/performance/authority.py', 'integration/audits/qualify_matrix_thermal.py',
@@ -53,6 +53,7 @@ def source():
     require((ROOT / p).read_text() == old.replace('if(p%frexp/=1d0)return', 'if(p%frexp<.5d0.or.p%frexp>2d0)return'), 'nonlinear process mutation')
     require((ROOT / 'integration/performance/authority.py').read_bytes() == subprocess.check_output(
         ['git', 'show', BASE + ':integration/performance/authority.py'], cwd=ROOT), 'incumbent dispatcher changed')
+    require(not git('diff', BASE, 'HEAD', '--', 'integration/performance'), 'concurrent PERF diagnostics changed')
     return s
 
 
@@ -130,16 +131,41 @@ def predecessor():
             require(r.returncode == 0, 'unchanged admitted predecessor: ' + r.stderr[-3000:])
             old = json.loads(r.stdout)
             require(old['qualified'], 'unqualified predecessor')
+            for arguments in [[], ['--self-test']]:
+                r = subprocess.run([sys.executable, '-B', 'integration/performance/verify_solver_study.py', *arguments],
+                                   cwd=base, capture_output=True, text=True,
+                                   env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'})
+                require(r.returncode == 0, 'exact concurrent diagnostic predecessor: ' + r.stderr[-2000:])
+                result = json.loads(r.stdout)
+                require(result.get('native_executions') == 159 if not arguments else result.get('count') == 5,
+                        'missing concurrent diagnostic evidence')
             return old
         finally:
             subprocess.run(['git', 'worktree', 'remove', '--force', str(base)], cwd=ROOT, check=True, capture_output=True)
+
+
+def concurrent_diagnostic():
+    # The unchanged complete verifier executes at its exact admitted predecessor.
+    # Revalidate every raw observation and all178 executed providers HERE as well;
+    # its whole-tree no-change preflight is not rebound to the thermal successor.
+    ns = runpy.run_path(str(ROOT / 'integration/performance/verify_solver_study.py'))
+    status = json.loads((ROOT / 'integration/performance/SWAP5-PERF01_SOLVER_STUDY_STATUS.json').read_text())
+    for kind, names in [('screen', ['temporal-'+p for p in ['cap', 'ceiling', 'recover', 'fallback']]),
+                        ('candidate', ['temporal-O0', 'temporal-O2'])]:
+        e = status['evidence'][kind]
+        files = ns['capsule'](ROOT / e['index'], e['sha256'])
+        ns['validate'](files, names)
+    require(ns['self_test']()['count'] == 5, 'current concurrent diagnostic controls')
+    return {'concurrent_solver_diagnostic_178_current_providers': True,
+            'concurrent_solver_diagnostic_exact_predecessor': BASE,
+            'concurrent_solver_diagnostic_controls': 5}
 
 
 def verify_qualification():
     source()
     current = validate(capsule())
     old = predecessor()
-    return {**old, **current, 'qualified': True, 'full_capability': False,
+    return {**old, **current, **concurrent_diagnostic(), 'qualified': True, 'full_capability': False,
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src'),
             'incumbent_production_unchanged': False,
             'production_delta': 'Only optional thermal Freundlich guard1 -> bounded0.5..2',

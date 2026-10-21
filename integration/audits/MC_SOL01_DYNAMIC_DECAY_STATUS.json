@@ -1,7 +1,7 @@
 {
   "nonlinear_successor": {
     "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
-    "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+    "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
     "stage": "LOCALLY_QUALIFIED_AWAITING_HOSTED_ADMISSION",
     "implemented": true,
     "persisted": true,
@@ -29,7 +29,7 @@
     },
     "execution_commit": "0582be6e",
     "checkpoint_commit": "5ccb82f5",
-    "last_reconciled_upstream": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+    "last_reconciled_upstream": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
     "evidence": {
       "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64",
       "decoded_sha256": "b0b41a437ed95088e8cd739d6a92676e1f0384fb2a690aa6979b7ce8666e69be",
@@ -344,7 +344,7 @@
       },
       "integration/audits/verify_matrix_thermal_nonlinear.py": {
         "status": "A",
-        "sha256": "4edb1c32b59ee9c26549a862ee9b869369df79770720c3e4e913d9efb71d9c19"
+        "sha256": "af5832523104377910831020a4b46d2768e1c3b1a1f3b6e0fcce4d264c557108"
       },
       "src/runtime/mod_fmr_b111_matrix_thermal_application.f90": {
         "status": "M",
@@ -365,6 +365,14 @@
       "negative_controls": 9,
       "strict_documentation": "PASS",
       "fsi35_handoff": "unchanged dispatcher delegates to current bounded source authority"
+    },
+    "initial_baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+    "admission_pr": 1344,
+    "concurrent_reconciliation": {
+      "scope": "PERF01 diagnostic additions only; complete production/reference trees equal fcfdd3ae; every277 thermal input and178 diagnostic provider unchanged",
+      "all_incoming_files_preserved": true,
+      "native_repetition": "NOT_SELECTED_IMPACT: no executed input changed",
+      "qualification": "Exact9c predecessor full thermal/diagnostic gate plus current178provider/raw evidence validation"
     }
   },
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
