@@ -6,7 +6,15 @@
   "scope": "Capture the final failed native iterate; standalone rounded-input and high-precision residual replay before selecting any correction",
   "production_changed": false,
   "interfaces_changed": false,
-  "invariants": [3, 5, 7, 22, 23, 25, 26],
+  "invariants": [
+    3,
+    5,
+    7,
+    22,
+    23,
+    25,
+    26
+  ],
   "selection": "Fresh current178-provider column O0 checked/O2 production; one diagnostic OFF capture per profile, exact budgets/trajectory/counters/clocks against prior failed oracle; standalone summation/storage/head-representability counterfactuals with unchanged criteria",
   "expected_cost": "Builds tens of seconds per profile; each native capture capped120s; isolated replay seconds. Full F-CI and low-air not selected without production change.",
   "recovery": "integration/diagnostics/capture_perf01_precision.py and original PERF01 diagnostic evidence",
@@ -24,5 +32,10 @@
   "retained_unsuccessful_runs": "SIGKILL six-window trial; bounded experimental sixth-window allocation failure; paired unmodified sixth-window allocation failure. Never relabelled PASS.",
   "excluded": "Full-day dry32, production rounding algorithm, global-error, full fresh-process restart equivalence and general performance claims",
   "production_qualified": false,
-  "canonical_admission": "PENDING_DIAGNOSTIC_EVIDENCE_ONLY"
+  "canonical_admission": "MERGED_PR1349_DIAGNOSTIC_EVIDENCE_ONLY_NO_PRODUCTION_CORRECTION",
+  "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1349",
+  "canonical_commit": "82a500a0c668b6cd317fe61a77cdcd6145f8297f",
+  "qualified_head": "4d4a9fdf3192a3e784b7b79bc41a35a6e9dc20e3",
+  "qualified_tree": "4ef436597767ee61dfd40e296dd54da7582230c2",
+  "canonical_source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c"
 }

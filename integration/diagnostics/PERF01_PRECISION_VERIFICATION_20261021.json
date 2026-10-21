@@ -144,5 +144,42 @@
     "integration/diagnostics/perf01_precision_replay.f90": "1b8eb69328d626cc75012c0f97a645c041d6bc253b0b25ef56c4b96e9dc4e05b",
     "integration/diagnostics/capture_perf01_precision.py": "7cacfabdff41843e870e7bd2824d6761172871ecffc18bbe6c860c4ce45f57d3",
     "integration/diagnostics/trial_perf01_rounding.py": "a34a69da42a8bf9379cffdae355788ab9caa17eb38014f3d1ec1e6d358285bbd"
+  },
+  "actual_admission": {
+    "canonical_admission": "MERGED_PR1349_DIAGNOSTIC_EVIDENCE_ONLY_NO_PRODUCTION_CORRECTION",
+    "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1349",
+    "canonical_commit": "82a500a0c668b6cd317fe61a77cdcd6145f8297f",
+    "qualified_head": "4d4a9fdf3192a3e784b7b79bc41a35a6e9dc20e3",
+    "qualified_tree": "4ef436597767ee61dfd40e296dd54da7582230c2",
+    "canonical_source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+    "canonical_tree_equals_qualified_tree": true,
+    "published_head_self_test": {
+      "count": 6,
+      "negative_controls": [
+        "capture-O0/native/iterate.csv",
+        "standalone-O2/REPLAY.json",
+        "trial-O2/TRIAL.json",
+        "prefix-O0/5/restart.bin",
+        "resource-control/6/stderr",
+        "progress-O2/6/progress.csv"
+      ]
+    },
+    "published_head_preservation_self_test": {
+      "count": 12,
+      "negative_controls": [
+        "0.5/result.json",
+        "2/O2/expected.bin",
+        "1.5/O0/fresh.bin",
+        "0.8/O2/gross.bin.gross-fresh",
+        "controls/0000.stdout",
+        "column/qualification/result.json",
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "src/process/mod_b111_solute_sorption.f90",
+        "tests/nut-sol/run_nonlinear_pond.py",
+        "source src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "source integration/performance/verify_proposal.py",
+        "foreign production delta"
+      ]
+    }
   }
 }
