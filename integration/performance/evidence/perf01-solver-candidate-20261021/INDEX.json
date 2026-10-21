@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "encoding": "concatenated-base64-xz-tar",
+  "parts": [
+    "evidence.part-000.b64"
+  ],
+  "decoded_sha256": "d7b5c0303f770550f3a58d60e17b3adb3630ebf2a4057f61b9408e4e59e50b0e",
+  "decoded_bytes": 197396,
+  "member_count": 1070,
+  "members_sha256": "cb8c79ddcda49c422727c37e8f5ddf6a72a38c106b30cb6c32e9d035f691f49e",
+  "disposition": {
+    "temporal-O0": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 45,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "dry32",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-O2": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 85,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "dry32",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    }
+  },
+  "fresh_reexecution": true,
+  "scope": "DIAGNOSTICS_ONLY_NO_PRODUCTION_ADMISSION"
+}

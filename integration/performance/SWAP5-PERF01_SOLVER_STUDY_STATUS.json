@@ -2,10 +2,16 @@
   "work_unit": "SWAP5-PERF01 solver-aware proposal diagnostics",
   "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
   "branch": "work/perf01-solver-proposal",
-  "status": "IMPLEMENTED_NOT_YET_EXECUTED",
+  "status": "EXECUTED_PENDING_EVIDENCE_VERIFICATION",
   "production_changed": false,
   "scope": "Generated diagnostic runtime only; numerical execution hypotheses, no production admission",
-  "invariants": ["transaction isolation", "hard mass acceptance", "exact chemical trace endpoints", "fresh-process restart", "default-OFF physical bytes"],
+  "invariants": [
+    "transaction isolation",
+    "hard mass acceptance",
+    "exact chemical trace endpoints",
+    "fresh-process restart",
+    "default-OFF physical bytes"
+  ],
   "source_contract": "Registered temporal driver stays byte-identical. This owning integration diagnostic wraps its generated runtime; all source/executable/provider hashes are checked and retained.",
   "live_delta": "MC-SOL01 thermal extension adds providers outside the unchanged 178-provider column closure; no thermal source or authority edits selected.",
   "selection": {
@@ -17,5 +23,30 @@
     "expected_cost": "Native cases generally under one second, fine-reference cost variable; existing 120-second per-process cap retained; total expected under five minutes",
     "reuse": "Separate original O0/O2 builds, only if every 178-provider source digest and executable digest matches; fresh native execution of every selected observation"
   },
-  "next_action": "Execute dry32 causal policy screen; retain failures as failures"
+  "next_action": "Verify evidence and unchanged current owner, persist diagnostic findings. Production implementation requires separate owning policy qualification.",
+  "source_sha256": {
+    "integration/performance/study_solver_proposal.py": "0912e46df2139058e25cd0a6a436a1316aea9c4f9292b7e75f912abdbe753022",
+    "integration/performance/verify_solver_study.py": "4e6810b08443d3f79902b294a2a21265b616de3d584dc0d9ff9147100c901f8b"
+  },
+  "evidence": {
+    "screen": {
+      "index": "integration/performance/evidence/perf01-solver-screen-20261021/INDEX.json",
+      "sha256": "a8d9b69eb44f2eef607ac1a5cc94987ba3dfdb2372e2a36ad7068b83c948399f",
+      "members": 269
+    },
+    "candidate": {
+      "index": "integration/performance/evidence/perf01-solver-candidate-20261021/INDEX.json",
+      "sha256": "d7b5c0303f770550f3a58d60e17b3adb3630ebf2a4057f61b9408e4e59e50b0e",
+      "members": 1070
+    }
+  },
+  "incumbent_temporal_evidence": {
+    "index": "integration/performance/evidence/perf01-temporal-20261021/INDEX.json",
+    "sha256": "c298a098a68c1101c99648cdb2577a60c22f787aa50e2df12d1d9988d3c891cd"
+  },
+  "screen_source_identity": {
+    "cap_ceiling_recover": "82a94d60b",
+    "fallback": "4859c1081",
+    "note": "Recover failed before the original wrapper wrote its terminal driver copy. Its exact generated main/runtime, compile commands and native failure are retained; wrapper source is the identical predecessor version retained in successful cap/ceiling directories."
+  }
 }

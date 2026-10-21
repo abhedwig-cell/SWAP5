@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "encoding": "concatenated-base64-xz-tar",
+  "parts": [
+    "evidence.part-000.b64"
+  ],
+  "decoded_sha256": "a8d9b69eb44f2eef607ac1a5cc94987ba3dfdb2372e2a36ad7068b83c948399f",
+  "decoded_bytes": 64044,
+  "member_count": 269,
+  "members_sha256": "09459386ca3cb4c4e627eb6005129209de0e442f9192b654d797db8ff2779a65",
+  "disposition": {
+    "temporal-cap": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 9,
+      "failures": [],
+      "complete_cases": [
+        "dry32"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-ceiling": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 9,
+      "failures": [],
+      "complete_cases": [
+        "dry32"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fallback": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 9,
+      "failures": [],
+      "complete_cases": [
+        "dry32"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-recover": {
+      "status": "NATIVE_FAILED_OR_CENSORED_NOT_QUALIFIED",
+      "native_runs": 2,
+      "failures": [
+        {
+          "directory": "dry32/1e-06-on-0",
+          "command": [
+            "/tmp/perf01-solver-screen/temporal-recover/on/column",
+            "/tmp/perf01-solver-screen/temporal-recover/dry32/1e-06.nml",
+            "-",
+            "8"
+          ],
+          "exit": 1,
+          "wall": 8.39952062500015
+        }
+      ],
+      "complete_cases": [],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    }
+  },
+  "fresh_reexecution": true,
+  "scope": "DIAGNOSTICS_ONLY_NO_PRODUCTION_ADMISSION"
+}
