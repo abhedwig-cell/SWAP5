@@ -1,7 +1,7 @@
 {
   "work_unit": "PERF01 live weather/crop head budget curve",
   "baseline": "f268731c8aaea7204095f77b4e6d2191bd51438a",
-  "status": "COMPLETE_BOUNDED_RESEARCH_LOCAL_VERIFIED",
+  "status": "PUBLISHED_BOUNDED_RESEARCH_NOT_CANONICAL",
   "scope": "Compose existing real historical Andelst meteorology, parameterized30cm soil, live WOFOST/Feddes uptake and numeric heat through existing bootstrap; not an Andelst site calibration",
   "temporal_policy": "Existing MODEL_CERTIFICATE with model_temporal_indicator_budget in cm; mode7 alpha estimate already admitted. Separate error/cost curve, not a full/half policy equivalence claim",
   "selection": "97day Jan20-Apr26 historical meteorology,64 windows/day; fresh3repeat budgets1e-3/1e-2/1e-1/1; strict1e-6 arm and1e-5,2.5e-6,2.5e-7 refinement; same-process close/reconstruct atday48; separate explicitly stress-sensitive Feddes parameter case. Individual180s/512MiB native cap; expected total below180s based measured1e-5=3.42s and2.5e-6=7.18s.",
@@ -31,5 +31,14 @@
     "benchmarks/performance/run_perf01_weather.py": "8b52fe95b6137a13c0dd1d9d167e2519fd8922ed3fdb5fd91ea5d2a6a64eba54",
     "benchmarks/performance/assess_perf01_weather.py": "364ddf938f5fecce98e116bc48d751d1226357671f16952615c7b1c951f7f54b",
     "benchmarks/performance/perf01_weather_main.inc": "9bee8662472253c926183b25c48b8ff0cd8c572cbf89282aa0f121bcc0bbc4e7"
+  },
+  "publication": {
+    "pull_request": 1359,
+    "head": "c3fce1d1f9db04914362c88fa529492b5b1de355",
+    "tree": "435be1c298bc850a19ba4522e3a10644f6445372",
+    "published_tree_equals_checked_local_tree": true,
+    "production_changed": false,
+    "canonical_admission": false,
+    "actions": "NOT_SELECTED_LOCAL_FOCUSED_NATIVE_ONLY"
   }
 }
