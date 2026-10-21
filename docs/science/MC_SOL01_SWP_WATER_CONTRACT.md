@@ -1,6 +1,6 @@
 # MC-SOL01 native SWP water bootstrap
 
-Proposed, not canonically admitted. Baseline48a59396d7e7745cf99ad4b1003cd84c946e3e3f.
+Canonically admitted bounded route through PR1362 and PR1363. Baseline48a59396d7e7745cf99ad4b1003cd84c946e3e3f.
 
 An explicit `swp_water_bootstrap=.true.` in the column namelist selects original
 TTUTIL input for ISUBLAY/ISOILLAY/HSUBLAY/NCOMP, default unimodal MvG layer
@@ -56,14 +56,32 @@ observations pass on these exact executables. Fresh baseline O0/O2 application
 builds compare152 completed valid output/restart files byte-for-byte. Interrupted
 random staging directories and intentionally corrupted generations are excluded
 from that byte count; their original crash/corruption assertions still execute.
-The unchanged full production src tree is bound in the owning record.
+The existing qualified production providers remain exact. Five concurrently
+admitted NUT output adapters outside the190-provider closure are preserved.
 
 The existing MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_water_successor owns the
 7049-member immutable evidence capsule, source-bound validator, actual costs and
-retained failures. Eight source/evidence corruption controls reject. This is
-local native validation, not canonical admission. Publication and integration are explicitly authorized. The current successor
+retained failures. Twenty-one source/evidence corruption controls reject. The actual canonical
+merge14fbefde has exactly the qualified tree7ab180aa. Publication and integration are explicitly authorized. The current successor
 retains the exact original NUT dispatcher bodies and binds their fixed95a3bd57
 source/evidence gate plus14 controls. All18 current annual cases pass. The old
 performance research validator body passes, while its CLI KeyError and missing
 source negative remain recorded as predecessor failures, never PASS. No
 historical capability or master-row promotion is claimed.
+
+
+## Canonical receipt
+
+All18 feature PR workflows and17 repair PR workflows terminate SUCCESS. Original
+postmerge run39673936142 failed at the old PERF01 top-adapter lock and is retained
+as FAILURE. PR1363 adds only the two exact admitted source registrations; every
+original immutable oracle and architectural/native assertion remains. Hosted
+job119481737620 and the actual canonical local replay report
+FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS. Six other actual PR1362 merge
+workflows pass. Actual repair tree7ab180aa equals the complete qualified head;
+its duplicate broad postmerge Actions are NOT_SELECTED_IMPACT. Local actual
+source/evidence,21 controls and full original native O0/O2 replay pass.
+
+The existing owner and MC_SOL01_SWP_WATER_HOSTED_20261021.json hold exact commits,
+run IDs, source identities and raw native success/failure evidence. Complete
+historical migration and every whole master capability remain open.

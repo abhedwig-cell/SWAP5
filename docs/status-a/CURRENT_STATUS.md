@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+MC-SOL01 native SWP water bootstrap,21 October2026: PR1362 admits the
+[bounded original water input route](../science/MC_SOL01_SWP_WATER_CONTRACT.md),
+with original TTUTIL grid/layered MvG and unsaturated HTB initial heads.
+PR1363 restores the original FSI35 O0/O2 native replay through the already
+admitted PERF01 top-provider registration. Native mapping, hard balances,
+atomic input rejection and independent-process restart pass;172 original
+chemistry observations,86 application observations,152 exact baseline artifacts
+and18 annual cases are preserved. Actual canonical14fbefde equals the complete
+qualified tree7ab180aa. Full historical meteo/crop/default orchestration remains
+open; frozen Status-A and all full capability dispositions are unchanged.
+
 MC-NUT01 bounded output/restart,21 October2026: PR1358 admits the explicit
 heat-off/nonharvested daily output application and one CRC-protected physical/
 diagnostic/reporting generation at canonical `49bba843210b49c58c991a23f67f52888895582f`.

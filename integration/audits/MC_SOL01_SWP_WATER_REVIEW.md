@@ -1,4 +1,4 @@
-# Native SWP water bootstrap: review candidate
+# Native SWP water bootstrap: admission review
 
 The opt-in solute column previously required a second, manually reconstructed
 water grid and hydraulic/initial-state input alongside original SWP chemistry.
@@ -10,14 +10,17 @@ solver policy, mass accounting or restart formats.
 Validation: checked GNU13.3 O0/O2;12 native mapping cases,12 exact fresh-process
 restarts,60 invalid-input rejections,172 original chemistry observations and86
 original application observations. Independent initial inventories and whole
-balances pass.152 completed baseline artifacts remain byte-exact. Eight
+balances pass.152 completed baseline artifacts remain byte-exact. Twenty-one
 source/evidence corruption controls reject; source and strict documentation pass.
 Initial link/scalar-input failures are retained in the immutable evidence.
 
-The change remains a local candidate. No PR, canonical integration, hosted science
-or master-row promotion is claimed. Historical meteorology, crop/default
+PR1362 and PR1363 are canonically integrated at14fbefde, exact qualified
+tree7ab180aa. All18 feature and17 repair PR workflows succeed; actual merge
+source/evidence and original FSI35 O0/O2 replay pass. No master-row promotion
+is claimed. Historical meteorology, crop/default
 orchestration, saturated initialization and the other explicit exclusions remain
-open. Existing strict predecessor admission guards need scoped reconciliation.
+open. The original predecessor admission guards retain their assertions through the
+exact registered source successor.
 
 Baseline:48a59396d7e7745cf99ad4b1003cd84c946e3e3f.
 Branch:work/mc-sol01-swp-water-20261021.

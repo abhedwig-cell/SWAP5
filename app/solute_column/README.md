@@ -96,4 +96,4 @@ schema2 with nodes=0 and no explicit grid/hydraulic overrides, plus `--swp`.
 See [the bounded water contract](../../docs/science/MC_SOL01_SWP_WATER_CONTRACT.md)
 and examples/solute_column/swp_water.nml with layered_water.swp. Surface, bottom,
 root, drainage, meteo and crop forcing remain explicit. This is not a complete
-historical default-SWP application and is not yet canonically admitted.
+historical default-SWP application and is canonically admitted only within the bounded water contract.
