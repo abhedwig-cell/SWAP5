@@ -44,6 +44,8 @@ def parent_source(text):
 
 
 def registered_additions(reader=lambda p:(ROOT/p).read_bytes()):
+    if 'joint_generation_successor' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('extended_output_component_20261021',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_output_generation.py'))['registered_additions'](reader)
     """Allow only these new diagnostics; retain every incumbent owning assertion."""
     r=record();require(r['baseline']==BASE,'research baseline')
     require(not r['production_changed'] and not r['production_policy_admitted'],'research claims production')
