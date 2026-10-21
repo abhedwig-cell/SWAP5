@@ -2834,7 +2834,8 @@
       "head": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
       "workstream": "MC-NUT01 finite donor PR1350",
       "build_input_intersection": [],
-      "all_incoming_files_preserved": true
+      "all_incoming_files_preserved": true,
+      "original_finite_donor_owner": "Exact c4ec414fe5ae55e992e557e394cb4003beaf3e39 worktree qualification selected; all predecessor bodies retained through additive handoff"
     },
     "postimages": {
       ".github/workflows/mc-sol01-swp-reader.yml": {
@@ -2857,13 +2858,17 @@
         "status": "A",
         "sha256": "312192c8319e76d5e5e21712a3b53ecbf2a9eeb307eaf085094924f04c595509"
       },
+      "integration/audits/verify_nut_negative.py": {
+        "status": "M",
+        "sha256": "7976d7441e236e77d8ffd37648d67923b4a6ae8524c43427a2d0ef60f7aebcca"
+      },
       "integration/audits/verify_pond_thermal.py": {
         "status": "M",
         "sha256": "0860a71fb2318a0b98b4cc9fc9e9f8905118bc6acdf6426eef490ba74761093d"
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "A",
-        "sha256": "ae9300ca193e8ce64c76634ca21f7bee66562f76be2d0555635f28623c0578e7"
+        "sha256": "2b7ca7ba68ee48cf55910666bac9db1e94f17cdf1773d957e4590b4dfaba531d"
       },
       "tests/nut-sol/qualify_swp_reader.py": {
         "status": "A",

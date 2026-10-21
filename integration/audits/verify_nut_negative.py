@@ -27,6 +27,8 @@ def hook(name):
          "    if 'evidence' in finite:\n"
          "        return runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_"+name+"')['"+name+"']()\n")
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['source'](reader,changed)
  s=record();require(s['baseline']==BASE,'finite donor baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty finite donor science')
@@ -49,7 +51,11 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  p='integration/performance/authority.py'
  original=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
  expected=original.replace('def verify_qualification():\n','def verify_qualification():\n'+hook('verify_qualification'),1)
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['verify_qualification']()
  expected=expected.replace('def self_test():\n','def self_test():\n'+hook('self_test'),1)
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['self_test']()
  fsi=("    finite=json.loads((ROOT/'"+STATUS+"').read_text()).get('"+KEY+"',{})\n"
       "    if 'evidence' in finite:\n"
       "        runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_fsi35')['source']()\n"

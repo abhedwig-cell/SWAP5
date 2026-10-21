@@ -7,7 +7,7 @@ PREDECESSOR='fb00736e320498f2e610b0671af9c7dc5a381921'
 STATUS='integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
 SCIENCE=['src','tests','tools','reference','.github','app','examples','integration/performance',
  'integration/audits/verify_nonlinear_pond.py','integration/audits/verify_pond_thermal.py',
- 'integration/audits/qualify_pond_thermal.py','integration/audits/verify_swp_reader.py']
+ 'integration/audits/qualify_pond_thermal.py','integration/audits/verify_swp_reader.py','integration/audits/verify_nut_negative.py']
 def sha(b):return hashlib.sha256(b).hexdigest()
 def require(ok,why):
  if not ok:raise ValueError(why)
@@ -15,6 +15,8 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).
 def record():return json.loads((ROOT/STATUS).read_text())['swp_reader_successor']
 def hook(fn):
  return " if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('swp_reader_successor', {}):\n  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['"+fn+"']("+('reader,changed' if fn=='source' else '')+")\n"
+def nut_hook(fn):
+ return " if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):\n  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['"+fn+"']("+('reader,changed' if fn=='source' else '')+")\n"
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  s=record();require(s['baseline']==BASE,'wrong input-route baseline');git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty scientific source')
@@ -28,6 +30,12 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
   a=expected.index('def '+fn);end=expected.index('\n',a)+1
   expected=expected[:end]+hook(fn)+expected[end:]
  require(reader(p).decode()==expected,'predecessor verifier body changed')
+ p='integration/audits/verify_nut_negative.py'
+ expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
+ for fn in ['source','verify_qualification','self_test']:
+  a=expected.index('def '+fn);end=expected.index('\n',a)+1
+  expected=expected[:end]+nut_hook(fn)+expected[end:]
+ require(reader(p).decode()==expected,'concurrent finite-donor verifier body changed')
  return s
 def capsule():
  e=record()['evidence'];raw=base64.b64decode(b''.join((ROOT/e['path']).read_bytes().split()),validate=True)
@@ -108,13 +116,14 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
  return {'qualified':True,'original_swp_chemistry':True,'native_observations':172,'valid_configurations':22,
          'old_application_artifacts_exact':160,'annual_application_cases_exact':18,'full_swp_default_application':False,'full_capability':False}
 def predecessor():
- with tempfile.TemporaryDirectory(prefix='swap5-swp-predecessor-') as tmp:
-  path=Path(tmp)/'base'
-  subprocess.run(['git','worktree','add','--detach',path,PREDECESSOR],cwd=ROOT,check=True,capture_output=True)
-  try:
-   r=subprocess.run([sys.executable,'-B','integration/audits/verify_pond_thermal.py'],cwd=path,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
-   require(r.returncode==0,'exact predecessor '+r.stderr[-1200:]);require(json.loads(r.stdout)['qualified'],'predecessor not qualified')
-  finally:subprocess.run(['git','worktree','remove','--force',path],cwd=ROOT,check=True,capture_output=True)
+ for ref,owner in [(PREDECESSOR,'integration/audits/verify_pond_thermal.py'),(BASE,'integration/audits/verify_nut_negative.py')]:
+  with tempfile.TemporaryDirectory(prefix='swap5-swp-predecessor-') as tmp:
+   path=Path(tmp)/'base'
+   subprocess.run(['git','worktree','add','--detach',path,ref],cwd=ROOT,check=True,capture_output=True)
+   try:
+    r=subprocess.run([sys.executable,'-B',owner],cwd=path,capture_output=True,text=True,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+    require(r.returncode==0,'exact predecessor '+ref+' '+r.stderr[-1200:]);require(json.loads(r.stdout)['qualified'],'predecessor not qualified')
+   finally:subprocess.run(['git','worktree','remove','--force',path],cwd=ROOT,check=True,capture_output=True)
  return True
 def verify_qualification():
  source();r=validate(capsule());r.update(predecessor_qualified=predecessor(),source_tree=git('rev-parse','HEAD:src'),current_source_tree=git('rev-parse','HEAD:src'));return r
