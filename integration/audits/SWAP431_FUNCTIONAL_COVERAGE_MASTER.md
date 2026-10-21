@@ -1,3 +1,7 @@
+# MC-SOL01 original SWP chemistry, 21 October 2026
+
+PR1352 / d7b891759a8c378ba0367e1a1a112c684712199f admits bounded original chemistry/grid import with original TTUTIL and read_solute_CDE, preserved layer units, initial concentration interpolation and complete SWP-bound fresh restart. The explicit water/heat input remains required. Local and hosted O0/O2 mapping, physical balances, invalid inputs, original outputs and fixed predecessor owners pass. Four capability facets are added; 239 other rows and all243 dispositions remain unchanged. Full historical SWP/default orchestration and general seasonal accuracy remain open.
+
 # MC-SOL01 dynamic thermal pond and file application, 21 October 2026
 
 PR1348 / `969aa918f0104546ec4ca2372feccf37b0145627` admits bounded numeric endpoint heat with

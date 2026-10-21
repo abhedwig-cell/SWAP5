@@ -1,4 +1,26 @@
 {
+  "mc_sol01_swp_chemistry_20261021": {
+    "pr": 1352,
+    "canonical_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+    "authority": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor",
+    "capabilities": [
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND",
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-TRANSPORT"
+    ],
+    "other_rows_exact": 239,
+    "all_dispositions_exact": 243,
+    "full_capability": false,
+    "complete_master_qualification": false,
+    "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+    "primary_feature_pr": 1352,
+    "fsi35_reconciliation_pr": 1353,
+    "fsi35_reconciliation_merge": "bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b",
+    "fsi35_qualified_head": "73f8d89b739f1af49d11ad3db32c1142da879eb8",
+    "native_qualified_head": "e4c601a27f4c7110f82783b76fe80e7dded65d13"
+  },
   "mc_sol01_thermal_pond_20261021": {
     "pr": 1348,
     "canonical_merge": "969aa918f0104546ec4ca2372feccf37b0145627",

@@ -9655,7 +9655,7 @@
       "production_reachability": {
         "established": true,
         "route": "src/process/mod_solute_mobile_advection_dispersion.f90",
-        "claim": "Selected matrix mobile state with donor-bounded substeps and signed qdra/bottom/top/root TSCF receipts; no sorption/decomposition/aquifer evolution"
+        "claim": "Selected matrix mobile state with donor-bounded substeps and signed qdra/bottom/top/root TSCF receipts; no sorption/decomposition/aquifer evolution PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open."
       },
       "restrictions": [
         "Selected matrix mobile state with donor-bounded substeps and signed qdra/bottom/top/root TSCF receipts; no sorption/decomposition/aquifer evolution"
@@ -9670,7 +9670,29 @@
         "regression_risk": 3
       },
       "classification": "CORE_PHYSICS",
-      "coverage_gap_type": null
+      "coverage_gap_type": null,
+      "bounded_swp_chemistry_admission": {
+        "work_unit": "MC-SOL01-SWP-CHEMISTRY01",
+        "pr": 1352,
+        "canonical_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+        "qualified_native_head": "e4c601a27f4c7110f82783b76fe80e7dded65d13",
+        "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor",
+        "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+          "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+          "decoded_bytes": 558108,
+          "members": 3182
+        },
+        "qualification": "Original read_solute_CDE and TTUTIL; 172 O0/O2 native observations, 22 valid configurations, 38 rejected inputs, original 86 observations, 160 old output artifacts and 18 annual cases byte exact; original thermal-pond and finite-donor owners independently verified on fixed commits",
+        "full_capability": false,
+        "full_swp_default_application": false,
+        "disposition_changed": false,
+        "remaining_scope": "Full SWP/default hydrology, meteorology and crop orchestration, general seasonal accuracy, wider exponent 0..10, snow/exfiltration and age/N companions; aquifer excluded, RossFast frozen"
+      }
     },
     {
       "capability_id": "SW431-SALT-SORPTION",
@@ -9743,7 +9765,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion.",
+        "claim": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -9880,6 +9902,28 @@
         "disposition_changed": false,
         "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
         "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
+      },
+      "bounded_swp_chemistry_admission": {
+        "work_unit": "MC-SOL01-SWP-CHEMISTRY01",
+        "pr": 1352,
+        "canonical_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+        "qualified_native_head": "e4c601a27f4c7110f82783b76fe80e7dded65d13",
+        "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor",
+        "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+          "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+          "decoded_bytes": 558108,
+          "members": 3182
+        },
+        "qualification": "Original read_solute_CDE and TTUTIL; 172 O0/O2 native observations, 22 valid configurations, 38 rejected inputs, original 86 observations, 160 old output artifacts and 18 annual cases byte exact; original thermal-pond and finite-donor owners independently verified on fixed commits",
+        "full_capability": false,
+        "full_swp_default_application": false,
+        "disposition_changed": false,
+        "remaining_scope": "Full SWP/default hydrology, meteorology and crop orchestration, general seasonal accuracy, wider exponent 0..10, snow/exfiltration and age/N companions; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -9936,7 +9980,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission.",
+        "claim": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -10073,6 +10117,28 @@
         "disposition_changed": false,
         "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
         "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
+      },
+      "bounded_swp_chemistry_admission": {
+        "work_unit": "MC-SOL01-SWP-CHEMISTRY01",
+        "pr": 1352,
+        "canonical_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+        "qualified_native_head": "e4c601a27f4c7110f82783b76fe80e7dded65d13",
+        "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor",
+        "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+          "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+          "decoded_bytes": 558108,
+          "members": 3182
+        },
+        "qualification": "Original read_solute_CDE and TTUTIL; 172 O0/O2 native observations, 22 valid configurations, 38 rejected inputs, original 86 observations, 160 old output artifacts and 18 annual cases byte exact; original thermal-pond and finite-donor owners independently verified on fixed commits",
+        "full_capability": false,
+        "full_swp_default_application": false,
+        "disposition_changed": false,
+        "remaining_scope": "Full SWP/default hydrology, meteorology and crop orchestration, general seasonal accuracy, wider exponent 0..10, snow/exfiltration and age/N companions; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -10213,7 +10279,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_pond_solute_route.f90",
-        "claim": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented.",
+        "claim": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
         "bounded_receipt": "MC_SOL01_SURFACE_CHEMISTRY_FINAL"
       },
       "restrictions": [
@@ -10419,6 +10485,28 @@
         "disposition_changed": false,
         "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
         "remaining_scope": "full historical SWP/default, wider exponent 0..10, snow/exfiltration, analytic heat, age/N companions and optional-proposal combination; aquifer excluded, RossFast frozen"
+      },
+      "bounded_swp_chemistry_admission": {
+        "work_unit": "MC-SOL01-SWP-CHEMISTRY01",
+        "pr": 1352,
+        "canonical_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+        "qualified_native_head": "e4c601a27f4c7110f82783b76fe80e7dded65d13",
+        "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor",
+        "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+          "decoded_sha256": "7917183890e2763358330aad654966859f66904633a349004ac5b09dcd449643",
+          "decoded_bytes": 558108,
+          "members": 3182
+        },
+        "qualification": "Original read_solute_CDE and TTUTIL; 172 O0/O2 native observations, 22 valid configurations, 38 rejected inputs, original 86 observations, 160 old output artifacts and 18 annual cases byte exact; original thermal-pond and finite-donor owners independently verified on fixed commits",
+        "full_capability": false,
+        "full_swp_default_application": false,
+        "disposition_changed": false,
+        "remaining_scope": "Full SWP/default hydrology, meteorology and crop orchestration, general seasonal accuracy, wider exponent 0..10, snow/exfiltration and age/N companions; aquifer excluded, RossFast frozen"
       }
     },
     {
@@ -17996,7 +18084,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission.",
+      "why_open": "Existing source-order moisture/depth/temperature decay and matrix thermal admissions preserved. PR1348 adds actual numeric endpoint temperature with nonlinear pond/matrix decay and explicit file activation. Heat-off zero factor, atomic rejection/retry and complete heat/water/chemistry restart qualified. Prescribed month/year runs have measured grid spread only; no full historical/default or seasonal accuracy admission. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -18011,7 +18099,7 @@
       "capability_id": "SW431-SALT-POND",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented.",
+      "why_open": "Existing dissolved pond/wet-dry-fill/gross source/runoff admissions preserved. PR1348 adds nonlinear soil plus actual numeric heat and complete S5PT0001 fresh/crash restart through the real file adapter. 30/365-day prescribed-boundary runs qualified for balances/restart and measured time-grid spread. Snow/exfiltration, full SWP/default/multicolumn, age/N companions and general seasonal domain remain parked. No pond sorbed or thermal reservoir is invented. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -18026,7 +18114,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion.",
+      "why_open": "Existing bounded matrix and thermal admissions preserved. PR1348 additionally admits numeric endpoint heat with persistent pond/matrix soil Freundlich 0.5..2 and explicit file parameters. Six exponents, balances, rollback and native restart qualified. Wider 0..10 historical reader/default and complete seasonal domain remain parked; no whole-row promotion. PR1352 additionally admits original SWP chemistry/grid import through original TTUTIL/read_solute_CDE, original concentration interpolation, scalar/layered parameters and preserved BDENS*Kf units. Hydrology and heat still require explicit typed inputs; full historical default orchestration remains open.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
