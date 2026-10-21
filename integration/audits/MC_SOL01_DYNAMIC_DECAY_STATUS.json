@@ -604,7 +604,7 @@
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
     "invariants_affected": [
       3,
@@ -618,8 +618,8 @@
       "src/runtime/mod_fmr_b111_pond_solute_route.f90",
       "tests/nut-sol/run_nonlinear_pond.py"
     ],
-    "next_action": "Merge exact qualified unchanged scientific postimages to canonical, verify actual source/owner/postmerge gates, then bounded three-row master receipt.",
-    "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
+    "next_action": "NONE within MC-SOL01-NONLINEAR-POND01. Dynamic thermal pond, enabled-proposal/nonlinear combination, wider historical/default/seasonal and snow/exfiltration/companion envelopes remain explicitly parked.",
+    "recovery_point": "integration/f-ci-canonical, admitted source tree 7d6853fa3e60f24b07b47a5a641840684b6cd09c",
     "blockers": [],
     "test_selection": {
       "physical": {
@@ -853,7 +853,7 @@
         }
       }
     },
-    "stage": "HOSTED_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_NONLINEAR_POND_CLOSED",
     "selection": {
       "full_fci": "NOT_SELECTED_IMPACT: one optional pond exponent guard; every incumbent linear pond endpoint and178-provider file application fresh-preserved, original exact predecessor authority still required",
       "highest_low_air": "NOT_SELECTED_POLICY",
@@ -899,7 +899,8 @@
       "fresh178provider_column_and86process_observations": "PASS",
       "sixty_semantic_native_restart_negatives": "PASS",
       "original_guard_executable_counterexample_and_linear_control": "PASS",
-      "strict_documentation": "PASS source checker and strictMkDocs after current runtime reconciliation"
+      "strict_documentation": "PASS; final metadata source checks and python -m mkdocs build --strict",
+      "actual_canonical_source_science_and12_controls": "PASS"
     },
     "initial_baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
     "last_reconciled_upstream": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
@@ -1656,7 +1657,82 @@
         "column": 119121287155,
         "canonical_feedback": 119122080680
       },
-      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json"
+      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json",
+      "actual_merge": {
+        "commit": "8fabce512cc6347815fff591650be198c0ce213f",
+        "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+        "runs": [
+          {
+            "id": 39571079837,
+            "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079837"
+          },
+          {
+            "id": 39571079816,
+            "name": "F-CI canonical qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079816"
+          },
+          {
+            "id": 39571079791,
+            "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079791"
+          },
+          {
+            "id": 39571079679,
+            "name": "SWAP5-PERF01 exact implementation admission",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079679"
+          },
+          {
+            "id": 39571079674,
+            "name": "MC-SOL01 file-driven Reference column",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079674"
+          },
+          {
+            "id": 39571079913,
+            "name": "MC-SOL01 nonlinear persistent pond",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079913"
+          },
+          {
+            "id": 39571079684,
+            "name": "F-GC fixed-interface groundwater closeout",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079684"
+          }
+        ],
+        "fgc_native_marker": "F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS",
+        "fgc_job": 119125115204,
+        "fsi35_postimage": "SKIPPED by existing policy"
+      }
+    },
+    "capability_status": "ADMITTED",
+    "canonical_merge": "8fabce512cc6347815fff591650be198c0ce213f",
+    "tested_canonical": "8fabce512cc6347815fff591650be198c0ce213f",
+    "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+    "full_capability": false,
+    "master_receipt": {
+      "commit": "d67b96ecca10956cc72fbddbcca3a452c94d0dbc",
+      "branch": "work/swap431-master-coverage-20261006",
+      "capabilities": [
+        "SW431-SALT-SORPTION",
+        "SW431-SALT-DECAY",
+        "SW431-SALT-POND"
+      ],
+      "other_rows_exact": 240,
+      "all_dispositions_exact": 243,
+      "whole_master_qualified": false
     }
   }
 }

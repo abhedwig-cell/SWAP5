@@ -1,17 +1,38 @@
 # MC-SOL01 final closure
 
-Current nonlinear pond successor,21 October2026: locally qualified candidate,
-canonical admission pending, PR1346. Fresh qualification after concurrent
-PERF01 canonical437d96ff is complete. The existing opt-in joint pond/matrix route now
-accepts Freundlich0.5..2 with configured temperature. All six exponents at
-O0/O2,360native observations,60extra valid-CRC/configuration negatives, original
-guard counterexample, exact incumbent linear bytes and the178-provider file
-application with86process observations pass. No dynamic thermal pond or full
-historical/default/seasonal admission is inferred. See
-`docs/science/MC_SOL01_NONLINEAR_POND_CONTRACT.md` and the existing
-`MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_pond_successor`.
+Current nonlinear pond admission, 21 October 2026: PR1346 is canonically admitted
+at `8fabce512cc6347815fff591650be198c0ce213f`, source tree
+`7d6853fa3e60f24b07b47a5a641840684b6cd09c`. The existing opt-in joint
+pond/matrix route now accepts soil Freundlich 0.5..2 with fixed configured
+temperature. Pond water remains dissolved; no pond sorbed store is invented.
+All six exponents at GNU O0/O2, 360 native observations, 60 extra valid-CRC/config
+negatives, original guard counterexample, exact incumbent linear bytes and the
+178-provider file application and all 86 process observations pass on current PERF01
+runtime. Initial proof and fresh post-PERF01 proof are separately retained.
+Every current thermal execution input and original raw science remains qualified.
+Twelve evidence/source controls and exact c62ca4ce predecessor authority pass.
 
-Current nonlinear thermal admission,21 October2026: PR1344, canonical merge
+All 32 qualified-head workflows are terminal: 22 SUCCESS and 10 retained unrelated
+publication failures. All seven actual canonical merge workflows are SUCCESS,
+including new pond (39571079913), file column (39571079674), canonical (39571079816),
+PERF01 (39571079679), WOF43A (39571079837), F-SI35 (39571079791) and original fixed-interface
+F-GC (39571079684). Its original native body emits
+`F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS`. F-SI35 native permanent preservation
+passes; its postimage job is SKIPPED by existing policy. Full moving F-CI remains
+NOT_SELECTED_IMPACT, highest low-air NOT_SELECTED_POLICY. No failed publication
+or skipped broad body is counted as physical PASS. The actual merge source/owner
+and 12 corruption controls pass locally.
+
+Existing `MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_pond_successor` owns the
+exact source/capsules/hosted receipts. Master `d67b96ecca10956cc72fbddbcca3a452c94d0dbc` updates
+only existing SORPTION/DECAY/POND facets and queue explanations: 240 other rows and
+all 243 full dispositions remain exact. Full historical rows remain ACTIVE_MIGRATION.
+Dynamic thermal pond, enabled-proposal/nonlinear combination, wider original
+reader/default and seasonal accuracy, snow/exfiltration and age/N companions
+remain parked. RossFast is frozen and aquifer excluded. This closes only
+MC-SOL01-NONLINEAR-POND01; it does not claim complete historical migration.
+
+Current nonlinear thermal admission, 21 October 2026: PR1344, canonical merge
 `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`, source tree
 `c408c50d457f63f254d3437c95867a68974e5aea`. The real numeric-heat endpoint
 composition now admits existing Freundlich matrix exponents0.5..2. Six exponent
@@ -39,9 +60,9 @@ The final metadata changes no executed provider or qualification input. Concurre
 diagnostic admission9c16572a is preserved, including current178-provider/raw
 evidence validation and unchanged exact predecessor gates. Master receipt
 `2eeeb0c28b6f62a689a7dbc67aaa62d0102cdc9a` updates only SORPTION/DECAY facets
-and their queue explanations:241other rows and all243dispositions stay exact.
+and their queue explanations:241other rows and all 243 dispositions stay exact.
 
-Nonlinear/thermal pond, analytic heat, wider original reader/default application
+Dynamic thermal pond, analytic heat, wider original reader/default application
 and seasonal accuracy remain explicitly parked. RossFast and excluded aquifer
 are unchanged. This closes MC-SOL01-DYNAMIC-DECAY02 within that bounded domain;
 it does not promote the complete historical SALT-SORPTION/SALT-DECAY envelopes.
@@ -154,10 +175,10 @@ The eight rows below are the existing master entries for subsystem `solute`, inc
 | --- | --- | --- | --- |
 | SW431-MACRO-SOLUTE | NOT_APPLICABLE | Historical input reader rejects SWSOLU > 0 with macropores. | Excluded historical combination; SWAP5 prototypes do not change that finding. |
 | SW431-SALT-TRANSPORT | ADMITTED | Mobile dissolved advection/diffusion/dispersion, signed faces, root TSCF, drain and bottom receipts. PPA-WU05E admission; reactive matrix successor PR #1228. | Closed within registered matrix domain. |
-| SW431-SALT-SORPTION | ACTIVE_MIGRATION, explicitly parked remainder | Real matrix application, linear and nonlinear Freundlich exponent 0.5..2, PR #1228/#1230. Numeric-heat/linear composition PR1342 and numeric-heat/nonlinear0.5..2 PR1344 are additionally ADMITTED. | Wider reader exponent0..10, nonlinear/thermal pond, analytic heat, full default application and seasonal accuracy remain parked. Production constructor rejects 0.49999 and 2.00001 in the real driver. Preserve the existing bounded route. |
-| SW431-SALT-DECAY | ACTIVE_MIGRATION, explicitly parked remainder | Source-order temperature/moisture/depth decay including nonlinear inventory, PR #1228/#1230. PR1342/1344 admit actual accepted numeric-heat endpoint temperature with linear/nonlinear0.5..2 matrix transport, atomic rollback and S5MT0001 fresh restart. `temperature_active=false` retains the historical zero factor. | Nonlinear/thermal pond, analytic heat, complete historical/default activation and seasonal accuracy remain parked. No aquifer dependency. |
+| SW431-SALT-SORPTION | ACTIVE_MIGRATION, explicitly parked remainder | Real matrix application, linear and nonlinear Freundlich exponent 0.5..2, PR #1228/#1230. Numeric-heat/linear composition PR1342 and numeric-heat/nonlinear0.5..2 PR1344 are additionally ADMITTED; PR1346 adds fixed-temperature pond/matrix 0.5..2 composition. | Wider reader exponent0..10, dynamic thermal pond, analytic heat, full default application and seasonal accuracy remain parked. Production constructor rejects 0.49999 and 2.00001 in the real driver. Preserve the existing bounded route. |
+| SW431-SALT-DECAY | ACTIVE_MIGRATION, explicitly parked remainder | Source-order temperature/moisture/depth decay including nonlinear inventory, PR #1228/#1230. PR1342/1344 admit actual accepted numeric-heat endpoint temperature with linear/nonlinear0.5..2 matrix transport, atomic rollback and S5MT0001 fresh restart. `temperature_active=false` retains the historical zero factor. | Dynamic thermal pond, analytic heat, complete historical/default activation and seasonal accuracy remain parked. No aquifer dependency. |
 | SW431-SALT-AQUIFER | REJECTED | No admitted evolving aquifer owner. Exact SWBR source has the documented numnod+1 bounds defect and lacks an aquifer bulk-density input defining rho*KFSAT+POROS. | Deliberately excluded; no invented bottom-soil density or reservoir law. |
-| SW431-SALT-POND | ACTIVE_MIGRATION, explicitly parked remainder | One matrix pond-mass owner, rain/irrigation/deposition, evolving pond, runon/runoff, infiltration, non-exporting evaporation, atomic retry and V2 restart. PR #1234/#1256/#1257/#1258/#1304. | Nonlinear pond sorption is rejected by the actual route's `frexp /= 1` guard. Snowmelt/exfiltration and complete default/bootstrap/multicolumn activation remain outside the admitted application. Simultaneous age/reactive/N companions are not inferred. |
+| SW431-SALT-POND | ACTIVE_MIGRATION, explicitly parked remainder | One matrix pond-mass owner, rain/irrigation/deposition, evolving pond, runon/runoff, infiltration, non-exporting evaporation, atomic retry and V2 restart. PR #1234/#1256/#1257/#1258/#1304. | PR1346 admits soil Freundlich 0.5..2 with the existing fixed-temperature pond/matrix route; dynamic thermal pond remains parked. Snowmelt/exfiltration and complete default/bootstrap/multicolumn activation remain outside the admitted application. Simultaneous age/reactive/N companions are not inferred. |
 | SW431-AGE-TRACER | ACTIVE_MIGRATION, explicitly parked remainder | Soil age and positive pond age on actual accepted Reference traces, aged external input, exactly-once handoff, joint transaction and fresh-process restart. PR #1233/#1309, supplemental #1315 and CI repair #1317/#1321. | Complete evaporative drying is scientifically blocked under the retained no-evaporative-age-export convention. Snow/exfiltration age, general outputs/default/multicolumn and simultaneous companions are not admitted. |
 | SW431-SALT-BOTTOM-C | SUPERSEDED | Typed immutable interval bottom concentration supplies shared-drain, independent constant or externally resolved time-varying concentration. | Closed by admitted external forcing replacement; no dynamic SWBR reservoir implied. |
 
@@ -220,8 +241,8 @@ The immutable current-session capsule is `integration/audits/evidence/MC_SOL01_F
 
 ## Parked work and re-entry criteria
 
-1. **SORPTION remainder:** preserve exponent 0.5..2. Widening to the full legacy reader domain requires an explicit numerical envelope, independent inverse, actual accepted-water transport and restart/rollback evidence. Nonlinear pond composition also requires qualifying the real pond route, which currently rejects any exponent other than one.
-2. **DECAY/thermal remainder:** PR1342/1344 bind actual accepted numeric-heat endpoint temperature for linear and nonlinear matrix0.5..2, immutable configuration, joint rollback and independent-process restart. Historical SWHEA=0 zero-factor controls pass. Nonlinear/thermal pond, analytic heat, full historical/default activation and seasonal accuracy remain explicitly parked.
+1. **SORPTION remainder:** preserve exponent 0.5..2. Widening to the full legacy reader domain requires an explicit numerical envelope, independent inverse, actual accepted-water transport and restart/rollback evidence. PR1346 admits the existing pond/matrix route for soil exponents 0.5..2 at fixed configured temperature; dynamic thermal pond remains parked.
+2. **DECAY/thermal remainder:** PR1342/1344 bind actual accepted numeric-heat endpoint temperature for linear and nonlinear matrix0.5..2, immutable configuration, joint rollback and independent-process restart. Historical SWHEA=0 zero-factor controls pass. Dynamic thermal pond, analytic heat, full historical/default activation and seasonal accuracy remain explicitly parked.
 3. **POND/application remainder:** keep unsupported snowmelt/exfiltration fail-closed. Any new source needs an accepted gross water receipt and constituent boundary contract; default-file/bootstrap/multicolumn activation needs real production reachability and end-to-end balances. Existing runon/runoff is already closed and must not be reopened.
 4. **AGE remainder:** changing evaporation-age export or allowing complete drying requires a scientific decision about whether the state represents physical water age or a nonvolatile tracer moment, followed by an independently derived balance and dry-limit/restart qualification. Default/output/multicolumn or simultaneous companions need separately selected application evidence. Strictly positive pond and existing zero-pond routes are already closed.
 
