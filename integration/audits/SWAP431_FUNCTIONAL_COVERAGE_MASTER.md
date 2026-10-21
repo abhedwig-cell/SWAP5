@@ -1,3 +1,14 @@
+# MC-SOL01 nonlinear numeric-heat composition,21 October2026
+
+PR1344 / `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0` admits the existing Freundlich matrix0.5..2
+with actual accepted numeric-heat endpoint decay. Six exponent O0/O2 cases pass
+literal oracle, joint balance, rollback/retry, interval refinement, exact fresh
+restart and crash-generation controls; all original seven-mesh linear bytes stay
+exact. Only existing SORPTION/DECAY facets and queue explanations change:241 other
+rows and all243 full dispositions remain exact. Nonlinear/thermal pond, analytic
+heat, wider reader/default and seasonal domains remain explicitly parked.
+No whole-master admission or performance-policy activation.
+
 # MC-SOL01 bounded dynamic decay, 21 October 2026
 
 PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73` adds actual accepted

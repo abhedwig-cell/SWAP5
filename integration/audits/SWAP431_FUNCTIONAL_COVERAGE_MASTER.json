@@ -9743,7 +9743,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230). PARKED full remainder: exponent0..10 reader domain, nonlinear pond composition (pond route rejects frexp/=1), live accepted thermal composition and default/bootstrap activation. No absent-process claim.",
+        "claim": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230), now also numeric-heat endpoint composition with joint rollback and S5MT0001 independent-process restart (PR1344). PARKED full remainder: exponent0..10 reader domain, nonlinear/thermal pond, analytic heat, full historical/default activation and seasonal qualification. No absent-process claim.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -9823,6 +9823,24 @@
         "concrete_gap": "The real matrix constructor rejects frexp<0.5 or>2; the pond route rejects frexp/=1. Existing tests/test_matrix_route prove0.49999 and2.00001 rejection. Wider domain/composition requires separate numerical and application qualification.",
         "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
         "full_capability": false
+      },
+      "bounded_nonlinear_dynamic_temperature_admission": {
+        "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
+        "pr": 1344,
+        "canonical_merge": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+        "qualified_native_head": "f6ed3156ce40f28b2077196691a155ce6db21383",
+        "reconciled_predecessor": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+        "source_tree": "c408c50d457f63f254d3437c95867a68974e5aea",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_successor",
+        "contract": "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Existing Freundlich matrix exponent0.5..2 with actual accepted numeric-heat endpoint decay; unchanged process operators and S5MT0001 atomic generation",
+        "qualification": "GNU13.3 O0/O2 six exponent cases, literal nonlinear oracle, water/solute closure, heat-off, rollback/smaller retry, seven/eight interval meshes, exact fresh-process restart and native crash negatives. All seven admitted linear endpoint/midpoint byte sequences exact.",
+        "evidence": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64",
+        "evidence_decoded_sha256": "b0b41a437ed95088e8cd739d6a92676e1f0384fb2a690aa6979b7ce8666e69be",
+        "full_capability": false,
+        "disposition_changed": false,
+        "parked_remainder": "Wider exponent0..10 reader envelope, nonlinear/thermal pond, analytic heat, full historical/default application and seasonal accuracy; no aquifer or RossFast dependency"
       }
     },
     {
@@ -9879,7 +9897,7 @@
         "established": true,
         "bounded": true,
         "route": "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
-        "claim": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230), plus dynamic accepted numeric-heat/linear-matrix endpoint composition with rollback and S5MT0001 fresh restart (PR1342). Historical SWHEA=0 retains zero temperature factor. PARKED nonlinear thermal/pond, analytic heat, complete historical/default activation and seasonal accuracy. No excluded-aquifer dependency.",
+        "claim": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230), actual numeric-heat/linear endpoint composition (PR1342), and numeric-heat/nonlinear matrix0.5..2 (PR1344). Historical SWHEA=0 retains zero factor. PARKED nonlinear/thermal pond, analytic heat, full historical/default activation and seasonal qualification. No excluded-aquifer dependency.",
         "bounded_receipt": "MC_SOL01_NONLINEAR_MATRIX_FINAL"
       },
       "restrictions": [
@@ -9959,6 +9977,24 @@
         "concrete_gap": "Reaction temperature is immutable configured forcing in current matrix route, not an accepted live temperature owner. A new adapter must bind accepted temperature to rollback/configuration identity/native continuation. Nonlinear inventory itself is already qualified.",
         "reentry": "Separate source-bound scientific/application contract and actual O0/O2 accepted-water mass/state/restart qualification; preserve admitted bounded source.",
         "full_capability": false
+      },
+      "bounded_nonlinear_dynamic_temperature_admission": {
+        "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
+        "pr": 1344,
+        "canonical_merge": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+        "qualified_native_head": "f6ed3156ce40f28b2077196691a155ce6db21383",
+        "reconciled_predecessor": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+        "source_tree": "c408c50d457f63f254d3437c95867a68974e5aea",
+        "authority_at_canonical": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_successor",
+        "contract": "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
+        "capability_status": "ADMITTED",
+        "scope": "Existing Freundlich matrix exponent0.5..2 with actual accepted numeric-heat endpoint decay; unchanged process operators and S5MT0001 atomic generation",
+        "qualification": "GNU13.3 O0/O2 six exponent cases, literal nonlinear oracle, water/solute closure, heat-off, rollback/smaller retry, seven/eight interval meshes, exact fresh-process restart and native crash negatives. All seven admitted linear endpoint/midpoint byte sequences exact.",
+        "evidence": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64",
+        "evidence_decoded_sha256": "b0b41a437ed95088e8cd739d6a92676e1f0384fb2a690aa6979b7ce8666e69be",
+        "full_capability": false,
+        "disposition_changed": false,
+        "parked_remainder": "Wider exponent0..10 reader envelope, nonlinear/thermal pond, analytic heat, full historical/default application and seasonal accuracy; no aquifer or RossFast dependency"
       }
     },
     {
@@ -17613,7 +17649,7 @@
       "capability_id": "SW431-SALT-DECAY",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "Bounded dynamic accepted numeric-heat/linear-matrix endpoint composition is admitted by PR1342, alongside previous source-order/nonlinear matrix decay. Only nonlinear thermal/pond composition, analytic heat, complete historical/default activation and seasonal accuracy remain parked. No aquifer dependency.",
+      "why_open": "ADMITTED bounded source-order decay including nonlinear matrix inventory (PR1228/1230), actual numeric-heat/linear endpoint composition (PR1342), and numeric-heat/nonlinear matrix0.5..2 (PR1344). Historical SWHEA=0 retains zero factor. PARKED nonlinear/thermal pond, analytic heat, full historical/default activation and seasonal qualification. No excluded-aquifer dependency.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -17643,7 +17679,7 @@
       "capability_id": "SW431-SALT-SORPTION",
       "work_unit": "MC-SOL01",
       "dependencies": [],
-      "why_open": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230). PARKED full remainder: exponent0..10 reader domain, nonlinear pond composition (pond route rejects frexp/=1), live accepted thermal composition and default/bootstrap activation. No absent-process claim.",
+      "why_open": "ADMITTED bounded real Reference matrix Freundlich0.5..2 (PR1228/1230), now also numeric-heat endpoint composition with joint rollback and S5MT0001 independent-process restart (PR1344). PARKED full remainder: exponent0..10 reader domain, nonlinear/thermal pond, analytic heat, full historical/default activation and seasonal qualification. No absent-process claim.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,

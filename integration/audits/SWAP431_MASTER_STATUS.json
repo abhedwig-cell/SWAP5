@@ -1,4 +1,20 @@
 {
+  "mc_sol01_nonlinear_thermal_20261021": {
+    "pr": 1344,
+    "canonical_merge": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+    "authority": "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_successor",
+    "scope": "Existing Freundlich matrix exponent0.5..2 with actual accepted numeric-heat endpoint decay; unchanged process operators and S5MT0001 atomic generation",
+    "capabilities": [
+      "SW431-SALT-DECAY",
+      "SW431-SALT-SORPTION"
+    ],
+    "full_capability": false,
+    "disposition_changed": false,
+    "other_rows_exact": 241,
+    "all_dispositions_exact": 243,
+    "complete_master_qualification": false,
+    "global_master_integrity": "No whole-master PASS; previous unrelated nine NUT bounded_receipt shape failures remain outside scoped SOL registration"
+  },
   "mc_sol01_dynamic_decay_20261021": {
     "pr": 1342,
     "canonical_merge": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
