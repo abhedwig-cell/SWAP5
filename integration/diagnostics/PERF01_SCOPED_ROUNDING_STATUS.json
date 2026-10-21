@@ -2,7 +2,7 @@
   "workstream": "PERF01 numerical stagnation after trace reclamation",
   "baseline": "eaa04cf7b00ff5d676eb533d160109c533a92c8a",
   "branch": "work/perf01-scoped-rounding",
-  "status": "BOUNDED_OPT_IN_PRODUCTION_QUALIFIED_AWAITING_PUBLISHED_HEAD_AND_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_OPT_IN_PHYSICS_ACTUAL_MERGE_VERIFIED",
   "production_changed": true,
   "production_qualified": true,
   "contract": "docs/performance/SWAP5-PERF01_SCOPED_ROUNDING_CONTRACT.md",
@@ -19,8 +19,22 @@
   "selection": "Actual small real interfaces O0/O2; current default86/SWP172/annual18; actual enabled O0/O2 six windows and complete O2 day; frozen NUT/SOL predecessor plus exact default-body projection; no full F-CI or retired highest low-air",
   "expected_cost": "Fresh production build approximately60s; generated-provider compilation approximately10s; native probe capped90s. No routine full F-CI, highest-low-air or unrelated migration runs.",
   "recovery": "Complete raw generated experiment and all three production epochs sealed with exact index/member hashes; final fresh189-provider O0/O2 closures are authoritative",
-  "next_action": "Publish exact qualified tree to PR1356, verify actual head and canonical delta, then admit and verify actual merge",
-  "canonical_admission": "NONE",
+  "next_action": "Bounded option closed; preserve default behavior and select a new explicit scientific contract before expanding the admitted profile",
+  "canonical_admission": {
+    "pull_request": 1356,
+    "merge": "62ab36090f863c7b4b8b197a24b342b114edfdbb",
+    "base": "eaa04cf7b00ff5d676eb533d160109c533a92c8a",
+    "qualified_head": "e71fc10f09834486c291854c3af900d6874df80d",
+    "qualified_full_tree": "27b88e35fb3bc287fef90dafab32433ff35e8eab",
+    "actual_merge_full_tree_exact": true,
+    "source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+    "actual_merge_owner_qualified": true,
+    "actual_merge_corruption_controls": 26,
+    "hosted_actions": "NONE_SELECTED_SKIP_CI_PROPORTIONAL_LOCAL_NATIVE_ADMISSION",
+    "open_reviews": 0,
+    "master_row_promotion": false,
+    "full_migration_qualified": false
+  },
   "control": "Latest canonical reproduces original budget/trajectory/stdout/work exactly; exit1,75016KiB",
   "counterfactual": {
     "returncode": -9,
@@ -361,8 +375,9 @@
       "mismatched policy performed water work"
     ]
   },
-  "qualified_local_head": "691a10ae9",
+  "qualified_local_head": "691a10ae96f5d774dcb8cd7f8b8cd58e5b42b4b4",
   "first_surface_only_result": "Water window6 completed; joint chemical carrier rejects after5218 substeps; no external sixth-window publication",
   "historical_selected_probe": "Generated-only implicit empty-pond constraint, no bare demand or macro coupling; scalar conservation/continuity/split-step probe and six-window full model with original unchanged HeadCalc,90s/512MiB",
-  "result": "docs/performance/SWAP5-PERF01_EMPTY_POND_RESULT.md"
+  "result": "docs/performance/SWAP5-PERF01_EMPTY_POND_RESULT.md",
+  "qualified_published_head": "e71fc10f09834486c291854c3af900d6874df80d"
 }
