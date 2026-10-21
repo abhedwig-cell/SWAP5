@@ -1,5 +1,9 @@
 # PERF01 dry infiltration: total-balance stagnation
 
+The subsequent [precision replay](SWAP5-PERF01_PRECISION_REPLAY.md) independently
+isolates pressure-head quantization with fresh O0/O2 captures and a three-source
+native fixture. Its local rounding experiment is not a qualified full-model fix.
+
 Historical baseline diagnosis, not a solver correction or extension of the
 [optional policy admission](SWAP5-PERF01_PROPOSAL_RESULT.md). Executed against
 `c62ca4ce2e33c65be3630f947b8ff322cd2f9863` with GNU Fortran 13.3.0. The separate
