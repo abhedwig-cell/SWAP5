@@ -1,0 +1,17 @@
+{
+  "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
+  "baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "scope": "Endpoint operator-split matrix transport/decay using actual staged Reference restricted heat; no historical substep-identity claim",
+  "authority_paths": ["docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md", "MC_SOL01_FINAL_CLOSURE.md"],
+  "relevant_paths": ["src/runtime/mod_fmr_b111_matrix_thermal_application.f90"],
+  "interfaces_held_fixed": ["Reference backend", "matrix route", "B1.11 process formulas", "incumbent disk formats"],
+  "invariants_affected": [3, 7, 13, 21, 23, 25],
+  "next_action": "Implement focused production driver and combined independent-process disk restart; execute O0/O2 and interval refinement",
+  "blockers": [],
+  "recovery_point": "work/mc-sol01-dynamic-decay-20261021"
+}
