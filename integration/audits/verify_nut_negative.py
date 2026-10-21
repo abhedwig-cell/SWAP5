@@ -51,11 +51,7 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  p='integration/performance/authority.py'
  original=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
  expected=original.replace('def verify_qualification():\n','def verify_qualification():\n'+hook('verify_qualification'),1)
- if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
-  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['verify_qualification']()
  expected=expected.replace('def self_test():\n','def self_test():\n'+hook('self_test'),1)
- if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
-  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['self_test']()
  fsi=("    finite=json.loads((ROOT/'"+STATUS+"').read_text()).get('"+KEY+"',{})\n"
       "    if 'evidence' in finite:\n"
       "        runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_fsi35')['source']()\n"
@@ -218,8 +214,12 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
      source_tree=git('rev-parse','HEAD:src'),full_fci='NOT_SELECTED_IMPACT_NUT_SEAM',
      highest_low_air='NOT_SELECTED_POLICY',mastercoverage_promotion=False)
 def verify_qualification():
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['verify_qualification']()
  source();return validate(capsule())
 def self_test():
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,broken=None,reader=lambda p:(ROOT/p).read_bytes()):
   try:validate(f if broken is None else broken,reader)

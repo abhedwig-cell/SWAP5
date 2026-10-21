@@ -27,13 +27,13 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  p='integration/audits/verify_pond_thermal.py'
  expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
  for fn in ['source','verify_qualification','self_test']:
-  a=expected.index('def '+fn);end=expected.index('\n',a)+1
+  a=expected.index('\ndef '+fn)+1;end=expected.index('\n',a)+1
   expected=expected[:end]+hook(fn)+expected[end:]
  require(reader(p).decode()==expected,'predecessor verifier body changed')
  p='integration/audits/verify_nut_negative.py'
  expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
  for fn in ['source','verify_qualification','self_test']:
-  a=expected.index('def '+fn);end=expected.index('\n',a)+1
+  a=expected.index('\ndef '+fn)+1;end=expected.index('\n',a)+1
   expected=expected[:end]+nut_hook(fn)+expected[end:]
  require(reader(p).decode()==expected,'concurrent finite-donor verifier body changed')
  return s
