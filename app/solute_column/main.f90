@@ -220,13 +220,12 @@ program swap5_solute_column
     end if
     call require(code==JOINT_OK,'restart rejected')
   else
-    call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok)
-    call require(ok,'water initialization failed')
     if(dynamic_temperature)then
-      call water%snapshot(physical,ok);call require(ok,'thermal detached snapshot')
-      call water%initialize(column_id%column_id,physical,ok,0d0,p)
-      call require(ok,'certified thermal initialization')
+      call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok,parameters=p)
+    else
+      call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok)
     end if
+    call require(ok,'water initialization failed')
     call initialize_matrix_solute(chemistry,9001_int64,0d0,initial%water_content,concentration_mg_cm3(1:numnod),solute,code)
     call require(code==MATRIX_OK,'chemical initialization failed')
     call solute%snapshot(clock,theta,mobile,companion,revision)

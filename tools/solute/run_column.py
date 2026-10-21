@@ -20,7 +20,7 @@ def main():
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--restart', type=Path, help='A complete earlier output directory')
-    parser.add_argument('--stop-after', type=int, default=128, help='Last input window to execute')
+    parser.add_argument('--stop-after', type=int, default=2048, help='Last input window to execute')
     args = parser.parse_args()
     exe, source, output = args.exe.resolve(), args.input.resolve(), args.output.resolve()
     if output.exists():
@@ -41,7 +41,10 @@ def main():
             raise ValueError('restart generation incomplete')
         if parent.get('input_sha256') != input_hash or parent.get('executable_sha256') != exe_hash:
             raise ValueError('restart input or executable identity mismatch')
-        if set(parent.get('files', {})) != {'input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr'}:
+        expected_files = {'input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr'}
+        if (directory / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
+            expected_files.add('temperature.csv')
+        if set(parent.get('files', {})) != expected_files:
             raise ValueError('invalid restart manifest inventory')
         for name, expected in parent['files'].items():
             if sha(directory / name) != expected:
@@ -64,8 +67,10 @@ def main():
     (stage / 'stderr').write_bytes(result.stderr)
     if result.returncode or b'SWAP5_SOLUTE_COLUMN_COMPLETED' not in result.stdout:
         raise RuntimeError(f'column failed with exit {result.returncode}; diagnostics: {stage}')
-    files = {name: sha(stage / name) for name in
-             ['input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr']}
+    names = ['input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr']
+    if (stage / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
+        names.append('temperature.csv')
+    files = {name: sha(stage / name) for name in names}
     manifest = {'schema': 'SWAP5_SOLUTE_COLUMN_1', 'status': 'COMPLETE', 'input_sha256': input_hash,
                 'executable_sha256': exe_hash, 'build_candidate': build['candidate'],
                 'build_input_sha256': build['input_sha256'], 'compiler': build['compiler'], 'flags': build['flags'],
