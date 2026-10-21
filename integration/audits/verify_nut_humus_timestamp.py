@@ -23,7 +23,10 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  if changed is None:changed={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  idx=ROOT/s['evidence']['index'];index=json.loads(idx.read_text());allowed={str(idx.relative_to(ROOT)),*[str((idx.parent/p).relative_to(ROOT))for p in index['parts']]}
  require(all(changed.get(p)=='A'for p in allowed),'missing exact capsule additions')
- actual={p:v for p,v in changed.items()if p not in allowed}
+ metadata=s.get('canonical_metadata',{})
+ require(set(metadata)=={'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json','integration/audits/MC_SOL01_SWP_READER_HOSTED_20261021.json'},'canonical metadata scope')
+ for p,v in metadata.items():require(changed.get(p)==v['status']and sha(reader(p))==v['sha256'],'canonical metadata identity '+p)
+ actual={p:v for p,v in changed.items()if p not in allowed and p not in metadata}
  require(s['postimages'].keys()==OWNED,'clock owning set')
  require(actual=={p:v['status']for p,v in s['postimages'].items()},'foreign clock delta')
  for p,v in s['postimages'].items():require(sha(reader(p))==v['sha256'],'clock source identity '+p)
@@ -121,7 +124,7 @@ def self_test():
   try:action()
   except (ValueError,KeyError,AssertionError,StopIteration):controls.append(name);return
   raise ValueError('corruption accepted '+name)
- for p in PRODUCTION:reject('source '+p,lambda p=p:source(lambda q:(ROOT/q).read_bytes()+(b'!'if q==p else b'')))
+ for p in PRODUCTION|set(record()['canonical_metadata']):reject('source '+p,lambda p=p:source(lambda q:(ROOT/q).read_bytes()+(b'!'if q==p else b'')))
  for p in ['native/result.json','legacy_native/result.json','reactive/result.json','physical/result.json','joint/O2/negative-high.fresh-6','joint/O0/negative-low.floor.ledger','predecessor.json']:
   broken=dict(f);broken.pop(p);reject('missing '+p,lambda broken=broken:validate(broken))
  broken=dict(f);p='joint/O0/negative-low.fresh-1';broken[p]+=b'!';reject('restart byte drift',lambda:validate(broken))

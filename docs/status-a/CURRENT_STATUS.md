@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+Current bounded MC-SOL01 original SWP chemistry, 21 October2026: PR1352
+admits original TTUTIL/read_solute_CDE chemistry, matching grid, original
+concentration interpolation and preserved layer units. Complete generations
+bind the exact SWP bytes to restart. PR1353 preserves the original F-SI35
+O0/O2 replay through the admitted transaction-trace successor. Native O0/O2
+mapping, balances, rejection and fresh restart pass; 160 old output artifacts
+and 18 annual cases stay byte exact. Full historical SWP/default orchestration
+and general seasonal accuracy remain open. See the
+[contract](../science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md) and existing work-unit
+record MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor.
+
+
 MC-NUT01 finite donor,21 October2026: the [bounded contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md)
 and [closure review](../science/MC_NUT01_FINAL_CLOSURE.md) record fresh O0/O2
 original-main and actual Richards/crop/fallow/N calculations, hard conservation,

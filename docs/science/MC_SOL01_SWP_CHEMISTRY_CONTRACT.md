@@ -1,6 +1,6 @@
 # MC-SOL01 original SWP chemistry adapter
 
-Implementation and local qualification candidate; canonical admission remains pending.
+Canonically admitted bounded chemistry/grid route through PR1352 and PR1353. Full historical SWP/default orchestration remains outside scope.
 
 The optional --swp route uses the archived original read_solute_CDE and original TTUTIL. Only its two global-context USE bindings change. The original AFGEN_2 and RDADORTB are retained. This imports chemistry and initial concentration into the existing production column. Explicit typed hydrology, forcing and numeric heat configuration remain required; this is not the complete historical default SWP application.
 
@@ -32,3 +32,7 @@ trace-scope scientific owners are verified on their exact fixed commits.
 The thermal workflow retains its complete original physical test body; the
 input-only route inherits that proof only when the complete src tree matches
 the reconciled baseline, while current O0/O2 file and annual runs remain selected.
+
+## Canonical admission
+
+PR1352 admits the original chemical reader at d7b891759a8c378ba0367e1a1a112c684712199f. PR1353 reconciles the already qualified transaction successor with the original F-SI35 native guard at bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b. Both actual source trees retain 035a4085b0f43d484ca39884a3e59dad641a63f0. All 19 feature PR workflows, all 17 reconciliation PR workflows and the selected actual final canonical workflows pass. Eleven source/evidence rejection controls pass. The original immutable F-SI35 O0/O2 replay remains intact. Four master capability facets are updated, with 239 other rows and all 243 dispositions unchanged. No complete historical migration or general seasonal accuracy is claimed.
