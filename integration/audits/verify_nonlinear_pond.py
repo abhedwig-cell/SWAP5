@@ -36,6 +36,8 @@ def record():
     return json.loads((ROOT/STATUS).read_text())['nonlinear_pond_successor']
 
 def source(reader=lambda p: (ROOT/p).read_bytes(), changed=None):
+    if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('thermal_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_pond_thermal.py'))['source'](reader,changed)
     s = record()
     require(s['baseline'] == BASE, 'wrong pond predecessor')
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
@@ -201,6 +203,8 @@ def current_thermal():
             'thermal_native_repetition':'NOT_SELECTED_IMPACT: every PERF01 thermal execution input is current'}
 
 def verify_qualification():
+    if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('thermal_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_pond_thermal.py'))['verify_qualification']()
     source()
     current = validate(capsule())
     thermal = current_thermal()
@@ -210,6 +214,8 @@ def verify_qualification():
             'incumbent_production_unchanged': False, 'production_delta': 'one pond exponent guard1 ->0.5..2'}
 
 def self_test():
+    if 'evidence' in json.loads((ROOT/STATUS).read_text()).get('thermal_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_pond_thermal.py'))['self_test']()
     files = capsule()
     validate(files)
     controls = []
