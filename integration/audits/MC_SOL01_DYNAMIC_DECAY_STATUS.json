@@ -596,5 +596,37 @@
     "Numeric restricted heat and linear sorption only; new route rejects nonlinear/analytic composition.",
     "No thermal pond, age/N companion, full default-file or multicolumn application admission.",
     "S5MT0001 is same-platform, serialized temporal-history Reference; no concurrent writers or portable ABI."
-  ]
+  ],
+  "nonlinear_pond_successor": {
+    "work_unit": "MC-SOL01-NONLINEAR-POND01",
+    "baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
+    "invariants_affected": [
+      3,
+      7,
+      13,
+      21,
+      23,
+      25
+    ],
+    "relevant_paths": [
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+      "tests/nut-sol/run_nonlinear_pond.py"
+    ],
+    "next_action": "Execute six exponent O0/O2 pond, signed boundaries, literal independent inverse, rollback/retry and independent-process native restart; then qualify source/admission/preservation.",
+    "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
+    "blockers": [],
+    "test_selection": {
+      "physical": {
+        "changed_dependency": "Pond guard now accepts same bounded matrix Freundlich domain",
+        "expected_seconds": 200,
+        "scientific_claim": "Nonlinear sorption plus existing persistent pond chemistry; unchanged transactions, water law and restart"
+      }
+    }
+  }
 }
