@@ -1,0 +1,18 @@
+{
+  "work_unit": "PERF01 fast tolerance curve extension",
+  "baseline": "48a59396d7e7745cf99ad4b1003cd84c946e3e3f",
+  "status": "COMPLETE_LOCAL_RESEARCH",
+  "scope": "Existing exact O2 observing executable; only temporal_tolerance varies; 64 windows, identical independent water reference",
+  "selection": "Serial same-CPU runs at 1e-3,3e-3,1e-2,3e-2,1e-1,1; three observations each; cap30s/512MiB per run",
+  "expected_cost": "Below30s aggregate based on prior1.77s coarse observation; no compilation required",
+  "metrics": "CPU and work, head and theta, soil/pond/total storage, cumulative infiltration/evaporation/runoff, runoff onset at reporting resolution, water and solute closure",
+  "invariants": "No production changes; mass/state/restart guards unchanged; physical/numerical separation retained",
+  "excluded": "Default change, annual/regional admission, full FCI, low-air, RossFast",
+  "next_action": "Review error/cost curve; select event forcing and head-dependent flux tests before default changes",
+  "production_changed": false,
+  "observations": 36,
+  "completed_native_days": 21,
+  "initial_input_rejections": 15,
+  "evidence_sha256": "1df36d48268d46167aa6b05531a1905e0f3380fdd23d8bf182f2067816b27a90",
+  "result": "benchmarks/performance/PERF01_FAST_CURVE_RESULT.md"
+}
