@@ -12,6 +12,11 @@ controls pass. All33 existing hosted runs reached terminal state:21 success and
 NUT-native39580912913, canonical39580912991, exact-owner39580913195,
 SOL-column39580913021 and documentation39580913289. The versioned hosted receipt
 is `integration/mc-nut01/MC_NUT01_FINITE_DONOR_HOSTED_20261021.json`.
+All six actual postmerge workflows subsequently completed SUCCESS: canonical
+39581702043, F-SI35 postimage39581702110, WOF43A39581702161, exact-owner39581702045,
+SOL-column39581702180 and fixed-interface groundwater39581702048. No additional
+aquifer science, full F-CI96 numerical replay or broad historical admission is
+inferred from those successes.
 The [contract](MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md) and existing
 HIST-COMPLETE record own this successor. Older blocked-negative statements below
 are historical: the configured-crop **fallow, nonnegative-production** subset now
