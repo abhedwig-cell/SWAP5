@@ -1,7 +1,7 @@
 {
   "work_unit": "PERF01 live weather/crop head budget curve",
   "baseline": "f268731c8aaea7204095f77b4e6d2191bd51438a",
-  "status": "PUBLISHED_BOUNDED_RESEARCH_NOT_CANONICAL",
+  "status": "CANONICALLY_REGISTERED_BOUNDED_RESEARCH",
   "scope": "Compose existing real historical Andelst meteorology, parameterized30cm soil, live WOFOST/Feddes uptake and numeric heat through existing bootstrap; not an Andelst site calibration",
   "temporal_policy": "Existing MODEL_CERTIFICATE with model_temporal_indicator_budget in cm; mode7 alpha estimate already admitted. Separate error/cost curve, not a full/half policy equivalence claim",
   "selection": "97day Jan20-Apr26 historical meteorology,64 windows/day; fresh3repeat budgets1e-3/1e-2/1e-1/1; strict1e-6 arm and1e-5,2.5e-6,2.5e-7 refinement; same-process close/reconstruct atday48; separate explicitly stress-sensitive Feddes parameter case. Individual180s/512MiB native cap; expected total below180s based measured1e-5=3.42s and2.5e-6=7.18s.",
@@ -40,5 +40,15 @@
     "production_changed": false,
     "canonical_admission": false,
     "actions": "NOT_SELECTED_LOCAL_FOCUSED_NATIVE_ONLY"
+  },
+  "canonical_registration": {
+    "pull_request": 1359,
+    "merge": "188a58e87de555740b4c351c2a5f2c77ca35a556",
+    "qualified_head": "822048a1f91b58c61361a1cadaefc9b913ef0c8c",
+    "qualified_tree": "4e086cd2e537e5f9b99c098cb3e6c6a0e99bdb8a",
+    "actual_merge_tree_exact": true,
+    "actual_merge_incumbent_owner_qualified": true,
+    "production_policy_admitted": false,
+    "production_changed": false
   }
 }
