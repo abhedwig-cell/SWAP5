@@ -24,8 +24,27 @@ module mod_soil_n_crop_extended_output
   logical::emitted=.false.
   real(real64)::values(8)=0d0
  end type
+ public::restore_crop_ext
  public::initialize_crop_ext,observe_crop_ext,format_crop_ext_row,format_crop_ext_extrema
 contains
+ pure subroutine restore_crop_ext(values,state,status)
+  real(real64),intent(in)::values(17)
+  type(crop_ext_state_t),intent(inout)::state
+  integer,intent(out)::status
+  integer::i
+  status=CROP_EXT_INVALID
+  if(.not.all(ieee_is_finite(values)))return
+  if(abs(values(1))>1d8)return
+  if(any(values(2:9)<0d0).or.any(values(2:9)>1d12))return
+  if(any(values(10:17)<0d0).or.any(values(10:17)>1d0))return
+  do i=10,16,2
+   if(values(i)>values(i+1))then
+    if(values(i)/=1d0.or.values(i+1)/=0d0)return
+   end if
+  end do
+  state%initialized=.true.;state%clock=values(1)
+  state%totals=values(2:9);state%extrema=values(10:17);status=CROP_EXT_OK
+ end subroutine
  pure subroutine initialize_crop_ext(clock,state,status)
   real(real64),intent(in)::clock
   type(crop_ext_state_t),intent(out)::state
