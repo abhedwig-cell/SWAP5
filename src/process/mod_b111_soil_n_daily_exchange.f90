@@ -1,7 +1,8 @@
 module mod_b111_soil_n_daily_exchange
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_b111_soil_n_transport, only: b111_soil_n_transport_result_t, evaluate_b111_soil_n_transport, B111_NTRANS_OK
+  use mod_b111_soil_n_transport, only: b111_soil_n_transport_result_t, evaluate_b111_soil_n_transport, &
+       evaluate_b111_soil_n_negative_boundary,B111_NTRANS_OK
   implicit none
   private
 
@@ -26,6 +27,7 @@ module mod_b111_soil_n_daily_exchange
     real(real64)::lai=0.0_real64
     real(real64)::lai_crit_nupt=0.0_real64
     logical::crop_calendar_active=.false.
+    logical::finite_donor_top=.false.
     real(real64)::drybd=0.0_real64
     real(real64)::sorpcoef=0.0_real64
     real(real64)::ratecon_nitrif=0.0_real64
@@ -60,6 +62,7 @@ module mod_b111_soil_n_daily_exchange
     real(real64)::no3_crop_uptake_kg_m2=0.0_real64
     real(real64)::external_input_kg_m2=0.0_real64
     real(real64)::external_output_kg_m2=0.0_real64
+    real(real64)::top_actual(2)=0d0,top_unmet(2)=0d0,top_requested(2)=0d0
   end type
 
   public::evaluate_b111_soil_n_daily_exchange
@@ -88,6 +91,30 @@ contains
 
     ! B1.11 mineralisation amount is converted to a volumetric production rate.
     prod_rate0=f%nminer_kg_m3/f%dt_day
+
+    if(f%finite_donor_top)then
+      call evaluate_b111_soil_n_negative_boundary(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0, &
+        f%wflux_out,f%wflux_inbot,f%wflux_intop,f%wflux_inlat,f%ratecon_nitrif,prod_rate0, &
+        f%drybd,f%sorpcoef,f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_selected)
+      if(r_selected%status/=B111_NTRANS_OK)then
+        result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
+      end if
+      result%cnh4_end=r_selected%concentration_end;result%cnh4_average=r_selected%concentration_average
+      result%top_actual(1)=r_selected%top_actual_rate*f%dt_day
+      result%top_unmet(1)=r_selected%top_unmet
+      prod_rate0=wavg*f%ratecon_nitrif*result%cnh4_average
+      result%nitrification_production_rate_kg_m3_day=prod_rate0
+      call evaluate_b111_soil_n_negative_boundary(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0, &
+        f%wflux_out,f%wflux_inbot,f%wflux_intop,f%wflux_inlat,f%ratecon_denitr,prod_rate0, &
+        0d0,0d0,f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_selected)
+      if(r_selected%status/=B111_NTRANS_OK)then
+        result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
+      end if
+      result%cno3_end=r_selected%concentration_end;result%cno3_average=r_selected%concentration_average
+      result%top_actual(2)=r_selected%top_actual_rate*f%dt_day
+      result%top_unmet(2)=r_selected%top_unmet
+      result%top_requested=f%wflux_intop*[f%cnh4_top,f%cno3_top]*f%dt_day
+    else
 
     ! --- ammonium: demand-limited versus supply-limited source branches.
     if(juvenile)then
@@ -192,6 +219,7 @@ contains
     if(result%nsupply_no3_kg_m3_day<0.0_real64.and.abs(result%nsupply_no3_kg_m3_day)<1.0e-12_real64) &
          result%nsupply_no3_kg_m3_day=0.0_real64
     if(result%nsupply_no3_kg_m3_day<0.0_real64)return
+    end if ! Explicit finite-donor fallow; incumbent active-crop path above.
     result%nsupply_total_kg_m2_day=(result%nsupply_nh4_kg_m3_day+result%nsupply_no3_kg_m3_day)*f%depth_m
     result%nh4_nitrified_kg_m2=wavg*f%ratecon_nitrif*result%cnh4_average*f%dt_day*f%depth_m
     result%no3_denitrified_kg_m2=wavg*f%ratecon_denitr*result%cno3_average*f%dt_day*f%depth_m
@@ -206,6 +234,12 @@ contains
     result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
     result%external_output_kg_m2=result%nh4_outflow_kg_m2+result%no3_outflow_kg_m2+ &
          result%nh4_crop_uptake_kg_m2+result%no3_crop_uptake_kg_m2+result%no3_denitrified_kg_m2
+    if(f%finite_donor_top)then
+      result%nh4_boundary_input_kg_m2=(f%cnh4_lat*f%wflux_inlat+f%cnh4_seep*f%wflux_inbot)*f%dt_day
+      result%no3_boundary_input_kg_m2=(f%cno3_lat*f%wflux_inlat+f%cno3_seep*f%wflux_inbot)*f%dt_day
+      result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
+      result%external_output_kg_m2=result%external_output_kg_m2-sum(result%top_actual)
+    end if
     if(.not.all(ieee_is_finite([result%cnh4_end,result%cnh4_average,result%cno3_end,result%cno3_average, &
          result%nsupply_nh4_kg_m3_day,result%nsupply_no3_kg_m3_day,result%nsupply_total_kg_m2_day, &
          result%nitrification_production_rate_kg_m3_day,result%nh4_nitrified_kg_m2,result%no3_denitrified_kg_m2, &
@@ -232,8 +266,16 @@ contains
        f%cnh4_top,f%cnh4_lat,f%cnh4_seep,f%cno3_top,f%cno3_lat]
     ok=all(ieee_is_finite(v)).and.all(ieee_is_finite([f%cno3_seep,cnh4_t0,cno3_t0]))
     if(.not.ok)return
+    if(f%finite_donor_top)then
+      if(f%crop_calendar_active.or.abs(f%crop_n_demand_kg_m2)>0d0.or.abs(f%wflux_transp)>0d0.or. &
+         f%wflux_intop>=0d0.or.f%nminer_kg_m3<0d0)then
+        ok=.false.;return
+      end if
+    else if(f%wflux_intop<0d0)then
+      ok=.false.;return
+    end if
     ok=f%depth_m>0.0_real64.and.abs(f%dt_day-1.0_real64)<=64.0_real64*epsilon(1.0_real64).and. &
-       min(f%wfrac_t,f%wfrac_t0,f%wflux_out,f%wflux_transp,f%wflux_inbot,f%wflux_intop,f%wflux_inlat, &
+       min(f%wfrac_t,f%wfrac_t0,f%wflux_out,f%wflux_transp,f%wflux_inbot,f%wflux_inlat, &
        f%tcsf_n,f%root_depth_cm,f%crop_n_demand_kg_m2,f%lai,f%lai_crit_nupt,f%drybd,f%sorpcoef, &
        f%ratecon_nitrif,f%ratecon_denitr,f%cnh4_top,f%cnh4_lat,f%cnh4_seep,f%cno3_top,f%cno3_lat, &
        f%cno3_seep,cnh4_t0,cno3_t0)>=0.0_real64

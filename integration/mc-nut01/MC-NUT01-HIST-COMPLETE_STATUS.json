@@ -5,7 +5,7 @@
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
     "audit_id": "SWAP-020",
     "contract": "reference/swap-4.3.1/patches/SWAP-020/CONTRACT.md",
-    "stage": "DIRECT_FEEDBACK_PASSED_FULL_CALLER_PENDING",
+    "stage": "ORIGINAL_FULL_CALLER_PASSED_PRODUCTION_COMPOSITION_PENDING",
     "implemented": true,
     "persisted": true,
     "tested": false,
@@ -19,7 +19,26 @@
     "scope": "Configured-crop fallow with nonnegative mineral production; active-crop sink allocation and immobilisation remain outside this first correction",
     "invariants": [3, 7, 13, 21, 23, 25, 26, 30],
     "feedback": "80 valid and four invalid inputs per O0/O2; five analytical classes, sorption, zero/depleted/ample donors and continuing sources. Independent numerical ODE and exact nondepleted original results. Local feedback maximum N residual 6.94e-18kg/m2; prior linker/threshold failures retained.",
-    "next_action": "Execute original complete caller O0/O2 on exact prior case inputs plus both-form nitrification controls; independently verify unrounded NH4, NO3, organic and total N, hydrological preservation and exact source transformation.",
+    "next_action": "Execute complete incumbent current HIST O0/O2 plus new finite-donor actual Reference/fallow/N native restart and rollback; seal independent evidence and requalify owning admission.",
+    "production_contract": "docs/science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md",
+    "production_implemented": true,
+    "reference_local_result": {
+      "native_models": 14,
+      "daily_N_steps": 120,
+      "max_abs_whole_N_residual_kg_m2": 2.6020852139652106e-18,
+      "max_relative_whole_N_residual": 9.173895969097472e-15,
+      "O0_O2_exact": true
+    },
+    "production_feedback": "84 reference/process inputs per O0/O2 and mineral owner emptying, default rejection, atomic failure and opaque continuation passed",
+    "selected_production_composition": {
+      "owner": "MC-NUT01",
+      "authority": "docs/science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md",
+      "changed_dependency": "Six existing soil-N transport/mineral/reactive/exchange/crop-fallow/direct-joint providers; additive false-default finite-donor forcing argument",
+      "scientific_claim": "All incumbent actual HIST endpoints/rollback/native continuation plus low/high finite-donor real Reference retired-crop model with full diagnostic restart",
+      "expected_seconds": 900,
+      "existing_evidence": "Current exact predecessor endpoints remain oracles; changed providers require fresh execution",
+      "prior_execution": "NONE"
+    },
     "selected_full_caller": {
       "owner": "MC-NUT01",
       "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md",

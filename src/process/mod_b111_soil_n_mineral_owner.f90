@@ -29,6 +29,7 @@ module mod_b111_soil_n_mineral_owner
    integer::status=MINERAL_INVALID,solution_class(2)=0
    real(real64)::mass_before=0d0,mass_after=0d0,external_in=0d0,external_out=0d0,residual=0d0
    real(real64)::concentration_end(2)=0d0,concentration_average(2)=0d0
+   real(real64)::top_requested(2)=0d0,top_actual(2)=0d0,top_unmet(2)=0d0
  end type
  type,public::mineral_restart_t
    private
@@ -109,10 +110,12 @@ contains
    integer(int64),intent(out)::id
    p=self%p;id=self%id
  end subroutine
- subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,surface_water,historical_top_water)
+ subroutine advance_mineral_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,receipt,surface_water,historical_top_water,finite_donor_top)
    type(mineral_state_t),intent(inout)::state
    real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water
    real(real64),intent(in),optional::surface_water,historical_top_water
+   logical,intent(in),optional::finite_donor_top
+   logical::bounded_top
    real(real64)::surface,top_n_water
    type(mineral_receipt_t),intent(out)::receipt
    type(b111_soil_n_concentration_state_t)::c
@@ -123,6 +126,8 @@ contains
    real(real64)::initial(2),sorption(2),mass(2),dz,dt,closure
    integer::i,code
    receipt=mineral_receipt_t()
+   bounded_top=.false.;if(present(finite_donor_top))bounded_top=finite_donor_top
+   if(bounded_top.and..not.present(historical_top_water))return
    surface=0d0;if(present(surface_water))surface=surface_water
    if(.not.ieee_is_finite(surface))return
    if(abs(surface)>100d0)return
@@ -132,7 +137,9 @@ contains
    top_n_water=max(0d0,surface)
    if(present(historical_top_water))then
      if(.not.ieee_is_finite(historical_top_water))return
-     if(historical_top_water<0d0.or.historical_top_water>100d0)return
+     if(abs(historical_top_water)>100d0)return
+     if(historical_top_water<0d0.and..not.bounded_top)return
+     if(bounded_top.and.historical_top_water>=0d0)return
      top_n_water=historical_top_water
    end if
    if(.not.state%ready())return
@@ -140,6 +147,7 @@ contains
    if(abs(t0-state%time)>0d0.or.abs(t1-t0-1d0)>0d0.or.abs(t1)>1d8)return
    if(water_end<1d-4.or.water_end>1d0)return
    if(min(outflow,in_bottom,in_lateral,root_water)<0d0.or.max(outflow,in_bottom,in_lateral,root_water)>100d0)return
+   if(bounded_top.and.abs(root_water)>0d0)return
    if(outflow>0d0.and.(in_bottom>0d0.or.in_lateral>0d0))return
    dz=state%p%inventory%depth_m;dt=t1-t0
    closure=(water_end-state%water)*dz-dt*(surface+in_bottom+in_lateral-outflow-root_water)
@@ -150,9 +158,15 @@ contains
    initial=[c%cnh4_kg_m3,c%cno3_kg_m3];sorption=[state%p%sorption,0d0]
    if(any(initial>1d6))return
    do i=1,2
+    if(bounded_top)then
+     call evaluate_b111_soil_n_negative_boundary(dz,dt,water_end,state%water,outflow,in_bottom,top_n_water, &
+       in_lateral,0d0,0d0,state%p%drybd,sorption(i),state%p%c_bottom(i),state%p%c_top(i), &
+       state%p%c_lateral(i),initial(i),r(i))
+    else
      call evaluate_b111_soil_n_transport(dz,dt,water_end,state%water,outflow,root_water,in_bottom,top_n_water, &
        in_lateral,0d0,0d0,0d0,state%p%drybd,sorption(i),state%p%c_bottom(i),state%p%c_top(i), &
        state%p%c_lateral(i),initial(i),r(i))
+    end if
      if(r(i)%status/=B111_NTRANS_OK)return
      receipt%concentration_end(i)=r(i)%concentration_end
      receipt%concentration_average(i)=r(i)%concentration_average
@@ -166,6 +180,12 @@ contains
    x%nitrate_n_delta_kg_m2=mass(2)-state%pools%nitrate_n_kg_m2
    x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral+top_n_water*state%p%c_top)
    x%external_n_output_kg_m2=dt*outflow*sum(receipt%concentration_average)
+   if(bounded_top)then
+    receipt%top_requested=dt*top_n_water*state%p%c_top
+    receipt%top_actual=dt*r%top_actual_rate;receipt%top_unmet=r%top_unmet
+    x%external_n_input_kg_m2=dt*sum(in_bottom*state%p%c_bottom+in_lateral*state%p%c_lateral)
+    x%external_n_output_kg_m2=x%external_n_output_kg_m2-sum(receipt%top_actual)
+   end if
    call apply_soil_n_transfer(state%p%inventory,state%pools,x,trial,budget)
    receipt%status=MINERAL_BALANCE
    receipt%mass_before=budget%nitrogen_before_kg_m2;receipt%mass_after=budget%nitrogen_after_kg_m2
