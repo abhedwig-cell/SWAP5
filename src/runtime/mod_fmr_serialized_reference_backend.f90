@@ -3611,7 +3611,7 @@ contains
     type(canonical_interval_t), intent(in) :: interval
     type(canonical_numerical_config_t), intent(in) :: config
     integer :: n, drainage_preflight_status
-    real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol
+    real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol, weather_balance_rate
     if (allocated(self%pond_input)) deallocate(self%pond_input)
     self%forcing_admitted = .false.
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
@@ -3632,6 +3632,19 @@ contains
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
     self%last_observation%practical_richards_total_balance_tolerance = self%total_balance_tolerance
+    if(self%weather_surface_active)then
+      ! Stop Newton only after its rate residual is compatible with the outer
+      ! transaction's depth gate. configure_parameters restores caller values
+      ! before every interval, so this tightening never accumulates across runs.
+      if(.not.associated(self%soil_parameters))return
+      if(.not.ieee_is_finite(config%transaction%mass_tolerance))return
+      if(config%transaction%mass_tolerance<=0.0_real64.or.interval%t1<=interval%t0)return
+      weather_balance_rate=config%transaction%mass_tolerance/ &
+        (16.0_real64*real(self%soil_parameters%active_nodes,real64)*(interval%t1-interval%t0))
+      self%compartment_balance_tolerance=min(self%compartment_balance_tolerance,weather_balance_rate)
+      self%total_balance_tolerance=min(self%total_balance_tolerance, &
+        real(self%soil_parameters%active_nodes,real64)*weather_balance_rate)
+    end if
     self%last_observation%temporal_indicator_enabled = self%temporal_indicator_history_enabled
     self%last_observation%fixed_weir_surface_water_active = self%fixed_weir_surface_water_active
     self%last_observation%black_evaporation_active = self%black_evaporation_active

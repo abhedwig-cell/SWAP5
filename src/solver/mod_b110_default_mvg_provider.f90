@@ -159,14 +159,16 @@ contains
     provider%step_duration = step_duration
   end subroutine bind_b110_default_mvg_provider
 
-  subroutine evaluate_b110_default_mvg_conductivity(parameters, node_index, pressure_head, conductivity, ok)
+  subroutine evaluate_b110_default_mvg_conductivity(parameters, node_index, pressure_head, conductivity, ok, dconductivity_dhead)
     type(b110_default_mvg_parameters_t), intent(in) :: parameters
     integer, intent(in) :: node_index
     real(real64), intent(in) :: pressure_head
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: ok
+    real(real64),intent(out),optional::dconductivity_dhead
     real(real64) :: theta
 
+    if(present(dconductivity_dhead))dconductivity_dhead=0.0_real64
     conductivity = 0.0_real64
     ok = .false.
     if (parameters%active_nodes <= 0 .or. .not. allocated(parameters%cofgen)) return
@@ -182,6 +184,11 @@ contains
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
        conductivity = 0.0_real64
        return
+    end if
+    if(present(dconductivity_dhead))then
+      if(parameters%continuous_saturation_conductivity) &
+        dconductivity_dhead=b110_continuous_conductivity_slope(parameters%cofgen(:,node_index),pressure_head)
+      if(.not.ieee_is_finite(dconductivity_dhead))return
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity

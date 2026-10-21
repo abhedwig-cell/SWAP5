@@ -5,7 +5,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
        soil_water_top_boundary_result_t, soil_water_parameter_set_t, &
        SW_TOP_BOUNDARY_AVAILABLE, SW_TOP_BOUNDARY_UNAVAILABLE, &
        SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD
-  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_parameters_t, evaluate_b110_default_mvg_conductivity
   use mod_b110_dynamic_top_boundary_provider, only: b110_dynamic_top_boundary_request_t, &
        b110_dynamic_top_boundary_result_t, evaluate_b110_dynamic_top_boundary, &
        B110_DYN_TOP_AVAILABLE, B110_DYN_TOP_REGIME_FLUX, B110_DYN_TOP_REGIME_HEAD
@@ -92,7 +92,8 @@ contains
     type(b110_dynamic_top_boundary_request_t) :: b110_request
     type(b110_dynamic_top_boundary_result_t) :: b110_result,plus,minus
     type(b110_dynamic_top_boundary_request_t) :: shifted
-    real(real64)::dh
+    real(real64)::dh,node_k,node_dk,distance,gradient
+    logical::node_ok,constant_evaporation
 
     result = soil_water_top_boundary_result_t()
     if (.not. associated(self%geometry) .or. .not. associated(self%hydraulics)) then
@@ -144,17 +145,38 @@ contains
        return
     end select
     if(self%implicit_conductivity)then
-       ! Total derivative of the actual dynamic flux, including K(h), pond
-       ! balance and the selected surface regime. Never relabel it as dhs/dh.
-       dh=max(1.0e-10_real64,1.0e-5_real64*abs(pressure_head_top))
-       shifted=b110_request;shifted%pressure_head_top_cm=pressure_head_top+dh
-       call evaluate_b110_dynamic_top_boundary(self%geometry,self%hydraulics,shifted,plus)
-       shifted%pressure_head_top_cm=pressure_head_top-dh
-       call evaluate_b110_dynamic_top_boundary(self%geometry,self%hydraulics,shifted,minus)
-       if(plus%status/=B110_DYN_TOP_AVAILABLE.or.minus%status/=B110_DYN_TOP_AVAILABLE)then
-          result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='implicit-top-derivative-unavailable';return
+       ! A finite head perturbation cannot resolve the singular near-zero
+       ! Mualem slope. Chain the provider's analytic dK/dh through the existing
+       ! exact fixed-K pond/runoff solution whenever atmospheric demand is fixed.
+       constant_evaporation=b110_result%bare_soil_evaporation_cm_per_day==self%potential_bare_soil_evaporation.or. &
+         (b110_result%bare_soil_evaporation_cm_per_day==0.0_real64.and. &
+          b110_result%ponded_water_evaporation_cm_per_day==self%potential_pond_evaporation)
+       if(b110_result%regime==B110_DYN_TOP_REGIME_HEAD.and.self%conductivity_mean_method==1.and. &
+          .not.self%macropore_pond_donor_active.and..not.self%implicit_pond_evaporation.and.constant_evaporation)then
+          call evaluate_b110_default_mvg_conductivity(self%hydraulics,1,pressure_head_top,node_k,node_ok,node_dk)
+          if(.not.node_ok)then
+             result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='implicit-top-node-derivative';return
+          end if
+          shifted=b110_request;shifted%fixed_top_node_conductivity_cm_per_day=node_k
+          call evaluate_b110_dynamic_top_boundary(self%geometry,self%hydraulics,shifted,plus)
+          if(plus%status/=B110_DYN_TOP_AVAILABLE.or..not.plus%surface_head_derivative_available)then
+             result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='implicit-top-pond-derivative';return
+          end if
+          distance=0.5_real64*self%geometry%dz(1)
+          gradient=(b110_result%surface_head_cm-pressure_head_top)/distance+1.0_real64
+          result%top_flux_dpressure_head_top=(b110_result%surface_face_conductivity_cm_per_day/distance- &
+            0.5_real64*node_dk*gradient)*(1.0_real64-plus%surface_head_dpressure_head_top)
+       else
+          dh=max(1.0e-10_real64,1.0e-5_real64*abs(pressure_head_top))
+          shifted=b110_request;shifted%pressure_head_top_cm=pressure_head_top+dh
+          call evaluate_b110_dynamic_top_boundary(self%geometry,self%hydraulics,shifted,plus)
+          shifted%pressure_head_top_cm=pressure_head_top-dh
+          call evaluate_b110_dynamic_top_boundary(self%geometry,self%hydraulics,shifted,minus)
+          if(plus%status/=B110_DYN_TOP_AVAILABLE.or.minus%status/=B110_DYN_TOP_AVAILABLE)then
+             result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='implicit-top-derivative-unavailable';return
+          end if
+          result%top_flux_dpressure_head_top=(plus%actual_top_flux_cm_per_day-minus%actual_top_flux_cm_per_day)/(2.0_real64*dh)
        end if
-       result%top_flux_dpressure_head_top=(plus%actual_top_flux_cm_per_day-minus%actual_top_flux_cm_per_day)/(2.0_real64*dh)
        if(.not.ieee_is_finite(result%top_flux_dpressure_head_top))then
           result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='implicit-top-derivative-nonfinite';return
        end if
