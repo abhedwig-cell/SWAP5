@@ -84,8 +84,24 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
         p = json.loads(subset['physical/result.json'])
         require(p['exponent'] == float(case), 'missing exponent qualification')
         incumbent['validate'](subset, reader, None if case == '1' else build)
+        q = json.loads(subset['qualification/result.json'])
+        for phase, report in [('physical', p), ('qualification', q)]:
+            for i, event in enumerate(report['events']):
+                category = event['category']
+                if category in ['compile', 'link', 'observer_compile_link']:
+                    continue
+                require(float(event['command'][-1]) == float(case), 'executed exponent drift')
+                raw = subset[f'{phase}/{i:04d}.stdout'].decode()
+                if category == 'native' and event['command'][1] in ['full', 'split', 'resume']:
+                    opt = Path(event['command'][0]).parent.name
+                    n = event['command'][-2]
+                    mode = ['full', 'split', 'resume'].index(event['command'][1])
+                    require(raw == p['results'][opt][n]['stdout'][mode], 'unbound native physical stdout')
+                if category == 'refinement_native' and event['command'][1] == 'full':
+                    opt = Path(event['command'][0]).parent.name
+                    n = event['command'][-2]
+                    require(raw == q['results'][opt]['stdout'][n], 'unbound refined physical stdout')
         for opt in ['O0', 'O2']:
-            q = json.loads(subset['qualification/result.json'])
             require(q['results'][opt]['executable_sha256'] == p['executables'][opt], 'qualified executable drift')
             for n in [2, 4, 8, 16]:
                 require(sha(subset[f'physical/{opt}/{n}/restart.bin']) == p['results'][opt][str(n)]['restart_sha256'], 'restart digest')

@@ -35,6 +35,16 @@ def main():
     report = {'physical_sha256': sha(physical / 'result.json'), 'events': [], 'results': {},
               'inputs': {str(p.relative_to(ROOT)): sha(p) for p in [Path(__file__).resolve(), ROOT / 'tests/nut-sol/thermal_rename_kill.c']}}
 
+    def persist():
+        # Replace a complete report; a reader must not observe an earlier
+        # event snapshot truncated while the final qualification is published.
+        temporary = out / 'result.pending'
+        with temporary.open('w') as stream:
+            stream.write(json.dumps(report, indent=2) + '\n')
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, out / 'result.json')
+
     def run(command, cwd, category, env=None, expected=0):
         start = time.perf_counter()
         r = subprocess.run(list(map(str, command)), cwd=cwd, capture_output=True, env=env)
@@ -44,7 +54,7 @@ def main():
         report['events'].append({'command': list(map(str, command)), 'category': category,
                                  'returncode': r.returncode, 'expected_returncode': expected,
                                  'seconds': time.perf_counter() - start, 'stdout': f'{i:04d}.stdout', 'stderr': f'{i:04d}.stderr'})
-        (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
+        persist()
         assert r.returncode == expected, (r.stdout, r.stderr)
         return r.stdout.decode()
 
@@ -124,7 +134,8 @@ def main():
     report['status'] = 'DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED'
     report['cost_seconds'] = {c: sum(e['seconds'] for e in report['events'] if e['category'] == c)
                               for c in sorted({e['category'] for e in report['events']})}
-    (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
+    persist()
+    assert json.loads((out / 'result.json').read_text()) == json.loads(json.dumps(report))
     print(report['status'])
 
 
