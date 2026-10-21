@@ -31,6 +31,27 @@ def sha(data):return hashlib.sha256(data).hexdigest()
 def require(ok,why):
  if not ok:raise ValueError(why)
 def record():return json.loads((ROOT/STATUS).read_text())['swp_water_successor']
+TOP_SUCCESSORS={
+ 'src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90':'abe2d699017300e890eeb69a56448bb071660d2d',
+ 'src/solver/mod_b110_dynamic_top_boundary_provider.f90':'5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae'}
+def fsi_registry_hook():
+ return "    if 'fsi35_reconciliation' in json.loads((ROOT/'"+STATUS+"').read_text()).get('swp_water_successor',{}):\n        return runpy.run_path(str(ROOT/'"+SELF+"'))['fsi35_successors']()\n"
+def fsi_script_projection():
+ text=subprocess.check_output(['git','show',BASE+':tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'],cwd=ROOT,text=True)
+ for path,old in TOP_SUCCESSORS.items():
+  line='test "$(git rev-parse HEAD:'+path+')" = '+old+' || fail "postimage drift '+path+'"'
+  require(text.count(line)==1,'original top source guard')
+  lines=['if [[ "$(git rev-parse HEAD:'+path+')" == '+old+' ]]; then','  '+line,'else',"  python3 - <<'PY_TOP_SUCCESSOR'",'import runpy,subprocess','path='+repr(path),"row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})","actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()","assert row.get('historical_blob')=="+repr(old)+" and row.get('canonical_blob')==actual,'unregistered top successor'","print('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')",'PY_TOP_SUCCESSOR','fi']
+  text=text.replace(line,'\n'.join(lines),1)
+ return text.encode()
+def fsi35_successors():
+ source()
+ rows=runpy.run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['fsi35_successors']()
+ for path,old in TOP_SUCCESSORS.items():
+  require((ROOT/path).read_bytes()==subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT),'admitted top provider drift')
+  rows[path]={'historical_blob':old,'canonical_blob':git('rev-parse','HEAD:'+path)}
+ return rows
+
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  r=record()
  if 'admission' in r:
@@ -41,6 +62,12 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
   current=json.loads(reader(STATUS));current.pop('swp_water_successor',None)
   require(current==prior,'unrelated SOL authority changed')
   for path in [PARENT]:require(reader(path)==project_parent(path),'predecessor assertions changed '+path)
+ if 'fsi35_reconciliation' in r:
+  path='tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'
+  require(reader(path)==fsi_script_projection(),'original native replay assertions changed')
+  path='integration/performance/authority.py'
+  old=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT,text=True)
+  require(reader(path).decode()==old.replace('def fsi35_successors():\n','def fsi35_successors():\n'+fsi_registry_hook(),1),'registry changed beyond bounded top successor')
  for p,h in r.get('inherited_inputs',{}).items():require(sha(reader(p))==h,'inherited source identity '+p)
  for p,h in r['postimages'].items():require(sha(reader(p))==h,'source identity '+p)
  tree=subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip()
@@ -111,7 +138,7 @@ def self_test():
   try:validate(bad)
   except (ValueError,KeyError,UnicodeError,json.JSONDecodeError):checks.append(p)
   else:raise AssertionError('corruption accepted '+p)
- for p in ['app/solute_column/read_swp_water.f90','app/solute_column/main.f90','tests/nut-sol/qualify_swp_water.py']+list(record().get('inherited_inputs',{})):
+ for p in ['app/solute_column/read_swp_water.f90','app/solute_column/main.f90','tests/nut-sol/qualify_swp_water.py']+list(record().get('inherited_inputs',{}))+([record()['fsi35_reconciliation']['native_log']] if 'native_log' in record().get('fsi35_reconciliation',{}) else []):
   def stale(path):return (ROOT/path).read_bytes()+(b'corrupt' if path==p else b'')
   try:source(stale)
   except ValueError:checks.append(p)
@@ -132,6 +159,10 @@ def predecessor():
 
 def verify_qualification():
  source();r=validate(capsule())
+ if 'native_log' in record().get('fsi35_reconciliation',{}):
+  fsi=record()['fsi35_reconciliation'];raw=(ROOT/fsi['native_log']).read_bytes()
+  require(sha(raw)==fsi['native_sha256'],'native replay log identity')
+  require(b'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS' in raw,'missing immutable native replay')
  if 'admission' in record():
   r['predecessor']=predecessor()
   e=record()['admission']['annual'];raw=(ROOT/e['path']).read_bytes();require(sha(raw)==e['sha256'],'annual receipt')

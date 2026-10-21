@@ -197,6 +197,8 @@ def verify_qualification():
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
 
 def fsi35_successors():
+    if 'fsi35_reconciliation' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_water_successor',{}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_swp_water.py'))['fsi35_successors']()
     swp=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
     if swp.exists() and 'evidence' in json.loads(swp.read_text()).get('swp_reader_successor',{}):
         return runpy.run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['fsi35_successors']()

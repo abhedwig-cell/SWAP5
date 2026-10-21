@@ -3227,9 +3227,13 @@
       "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "ec329c1efe9de1b719ed836f34dfe85ae108bdd85b22171f649346bf1df8ec7b",
       "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "3d84a8c3502e3c6976a834846f9a5dbe611d76b0b2bd2a7fec0aea911669dccc",
       "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "f4d6035d16e7c3c0607c24802c8d414c502fead5256484aeb075cb19fa434d3a",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log": "c35398f9ceea2a524f22999f0afa21652422a1c8917303e150ef21ed96e4a934",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
       "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "de3a2ba4ebcf464280225de87dc1e6fe7223afa7c8310f57aed8b29f2b7e5ded",
       "integration/audits/verify_nut_output_generation.py": "e3b21f77114b1581ea0dc9d12d19552c438983c853870a29323abbfe62fcdfa3",
-      "integration/audits/verify_swp_water.py": "f90143d4a0cfeb89218de775889feac5ee123f0cb2f2794bf9650e29ef13f5ba",
+      "integration/audits/verify_swp_water.py": "12fa8320d4630d7b9641e11621d70a942af4604c99bf67f736b63a33c2a8395b",
+      "integration/performance/authority.py": "63fd14b157715c2c061e409e1b295e956dc02c2c5a3e37c53805c5031fab5da2",
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ac4d9f5d78a2b8a49cdc9e9de9ec43bc997ee3e969bcdb87e359efa4afc79919",
       "tests/nut-sol/qualify_swp_water.py": "c60f1e60c5e8d9e76e4aa6ddf3b1917aaf74f962f185e83c8c489bd858201169",
       "tests/nut-sol/test_swp_water.f90": "b5f11f57ba9023c5cdcf38070292f605c22d153daf1d418233aa4d239ff24002"
     },
@@ -3249,7 +3253,7 @@
       "First baseline comparison attempted random interrupted-stage directory names; comparison now excludes interrupted/corrupt results, 152 completed valid output files exact"
     ],
     "full_historical_migration": false,
-    "source_evidence_controls": 18,
+    "source_evidence_controls": 21,
     "documentation": "source checks and strict MkDocs PASS; local validation only",
     "inherited_inputs": {
       "integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json": "36bbebabe2f0180604b8a04c190269a94369ec6a686afcf5f93d609b215711ab",
@@ -3259,8 +3263,10 @@
       "integration/diagnostics/verify_perf01_pond_policy.py": "fc2331202143f73b21c33d132fb5f9c338a6de2d62cdc7f65e35f2f9946a5720",
       "src/transaction/mod_transaction_reference.f90": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde",
       "src/legacy/b1_10_port/headcalc.f90": "11a8c8c1ed408adfd687ceafcc706cdfe575a83339028f7b2391e19d89fb8705",
-      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ec9441ea868476fd962f0d2986144f262b3d796ec4e2b5cab5eceea82432a0b6",
-      "integration/audits/evidence/MC_SOL01_SWP_FSI35_NATIVE_20261021.log": "beea63b7027fd55d36c7cbd7b5295b9400f98c16dd0cd7f516c5a22f9dc7cf94"
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ac4d9f5d78a2b8a49cdc9e9de9ec43bc997ee3e969bcdb87e359efa4afc79919",
+      "integration/audits/evidence/MC_SOL01_SWP_FSI35_NATIVE_20261021.log": "beea63b7027fd55d36c7cbd7b5295b9400f98c16dd0cd7f516c5a22f9dc7cf94",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "fde6f1869f2e4d1d00cb33c7ccaa8263ced656d408bc42c83d5f050dbc0682af",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "02c2a4eb5c41c23531989e46a40a2b4cad2e467557ee68c10ccd18897d17b7e8"
     },
     "admission": {
       "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
@@ -3291,9 +3297,13 @@
         "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "A",
         "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "A",
         "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log": "A",
         "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "A",
         "integration/audits/verify_nut_output_generation.py": "M",
         "integration/audits/verify_swp_water.py": "A",
+        "integration/performance/authority.py": "M",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "M",
         "tests/nut-sol/qualify_swp_water.py": "A",
         "tests/nut-sol/test_swp_water.f90": "A"
       }
@@ -3305,6 +3315,21 @@
       "all_incoming_files_preserved": true,
       "scope": "All 190 executed input providers remain byte exact; full source tree includes five unrelated admitted NUT output adapters"
     },
-    "publication_authorized": true
+    "publication_authorized": true,
+    "fsi35_reconciliation": {
+      "failure_run": 39673936142,
+      "failure_job": 119478740839,
+      "failure_commit": "5e5dc53638d4df9f8458c8cdb36cacae2da604b4",
+      "failure_log": "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log",
+      "cause": "Already admitted PERF01 explicit empty-pond top provider and solver adapter absent from original source registry",
+      "production_changed": false,
+      "status": "LOCAL_ORIGINAL_NATIVE_IMMUTABLE_O0_O2_PASS",
+      "scientific_assertions": "Original full O0/O2 native immutable oracle and every architecture/assertion retained; only two exact source guards get bounded admitted-successor branch",
+      "native_log": "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log",
+      "native_sha256": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
+      "native_returncode": 0,
+      "compile_seconds": "UNKNOWN: full native log retains commands and markers; no separate category timer",
+      "prerequisite_production": "All src providers unchanged from admitted95a3bd57"
+    }
   }
 }
