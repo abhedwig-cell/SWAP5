@@ -1,5 +1,44 @@
 # MC-SOL01 final closure
 
+Current dynamic thermal pond/file admission, 21 October 2026: PR1348 is
+canonically admitted at `969aa918f0104546ec4ca2372feccf37b0145627`, source tree
+`2d8a57b8ac5de5712fd520bf040468e5899c0540`. The existing numeric endpoint heat,
+nonlinear soil Freundlich 0.5..2 and dissolved pond routes now compose through
+one detached water/heat/chemical transaction. Actual opt-in file inputs activate
+the combination. S5PT0001 publishes complete CRC-bound water/heat/pond/soil
+restart generations with atomic POSIX rename. Incumbent process equations,
+solvers, tolerances and restart codecs remain unchanged.
+
+Six O0/O2 exponent cases pass independent literal/quad oracle, eight coupling
+meshes, hard water/solute balances, atomic overdraw/water rejection and smaller
+retry, heat-off, exact native restart, 96 semantic CRC rejections and 24 SIGKILL
+publication controls. The current 187-provider file application passes all 86
+original observations, with 160 admitted budget/state/endpoint/restart artifacts
+exact. Prescribed 30/365-day runs at exponents 0.5/1/2, three time grids and both
+optimizations retain closed balances and exact finest-grid fresh restart.
+Maximum annual window residuals are 5.83e-16 cm and 1.90e-13 mg/cm2. Annual
+inventory grid differences are small but not strictly monotone: measured spread
+only, no full seasonal accuracy or meteorological/regional validation claim.
+
+All owning PR workflows and all actual-merge push workflows pass. Ten unchanged
+non-owning publication failures remain explicitly recorded; there is no global
+CI-green claim. The original F-GC fixed-interface body emits its native PASS
+marker. Policy-skipped broad F-CI/FSI bodies are not called physical PASS.
+Exact predecessor authority, source-bound raw evidence and 11 corruption controls
+pass. Master `3d7f20540e8b4c765ba2eb1c502231459dd7d3b1` changes only three bounded facets,
+keeping 240 other rows and all 243 full dispositions unchanged.
+
+The existing `MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor` and
+`docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md` own exact commands, source,
+initial failed observations, immutable raw evidence, hosted jobs and admission.
+Full historical SWP/default activation, general seasonal accuracy, wider exponent
+0..10, snow/exfiltration and age/N companions remain outside admission. Complete
+evaporative dry-down of positive age is still blocked by the retained no-age-
+export convention. Aquifer is excluded and RossFast frozen. This closes the
+thermal pond/file successor; it does not claim complete historical migration.
+
+## Earlier bounded admissions
+
 Current nonlinear pond admission, 21 October 2026: PR1346 is canonically admitted
 at `8fabce512cc6347815fff591650be198c0ce213f`, source tree
 `7d6853fa3e60f24b07b47a5a641840684b6cd09c`. The existing opt-in joint

@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+Current bounded MC-SOL01 dynamic thermal pond and file admission: PR1348 /
+`969aa918f0104546ec4ca2372feccf37b0145627` composes numeric endpoint heat with existing soil
+Freundlich 0.5..2 and dissolved pond chemistry. Explicit opt-in file inputs and
+complete S5PT0001 heat/water/chemical restart are qualified. Six-exponent O0/O2
+literal/refinement/rollback/crash proof, all original file observations and
+prescribed 30/365-day balance/restart runs pass. Annual grid differences are not
+strictly monotone, so only measured spread is claimed. Full historical SWP/default
+and general seasonal scope remain outside admission; frozen Status-A is unchanged.
+See the [contract](../science/MC_SOL01_THERMAL_POND_CONTRACT.md) and existing
+`MC_SOL01_DYNAMIC_DECAY_STATUS.json#thermal_pond_successor`.
+
+
 PERF01 optional policy (21 October 2026): PR1345 provides a default-OFF numerical
 proposal with exact endpoints and solver fallback. Local O0/O2 qualifies the
 bounded prescribed-sink Reference columns and current nonlinear thermal

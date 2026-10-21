@@ -1,6 +1,7 @@
 # MC-SOL01 dynamic thermal pond and file application
 
-Proposed successor, baseline fda2a6de35ab60e8c836a6687482efa3774d95dc.
+Canonically admitted bounded successor, PR1348 / `969aa918f0104546ec4ca2372feccf37b0145627`.
+Baseline fda2a6de35ab60e8c836a6687482efa3774d95dc.
 This implements the requested composition of the existing numeric heat and
 nonlinear soil Freundlich 0.5..2 routes with the accepted persistent dissolved
 pond. It reuses production water, heat, surface mixing, transport and decay.
@@ -88,3 +89,12 @@ scientific executable executes independently. Direct physical compile/link/nativ
 costs in the successful report are 132.49/0.40/2.22 s, excluding the separately
 retained first O0 provider build. Annual application controller/native wall time
 is 38.59 s for 30 processes. Physics-only time remains UNKNOWN.
+
+Final admission: all owning PR workflows and all actual-merge push workflows
+pass; exact run/job identities and retained unrelated failures are in the existing
+status owner. Master receipt `3d7f20540e8b4c765ba2eb1c502231459dd7d3b1` preserves all 243 dispositions.
+
+Concurrent canonical 63e670ef adds only isolated precision diagnostics and
+documentation. The actual merge retains all incoming files; every production
+execution input and the qualified source tree are unchanged. The diagnostic
+owner and its six corruption controls also pass on the actual combined tree.
