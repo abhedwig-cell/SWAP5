@@ -1734,5 +1734,139 @@
       "all_dispositions_exact": 243,
       "whole_master_qualified": false
     }
+  },
+  "thermal_pond_successor": {
+    "work_unit": "MC-SOL01-THERMAL-POND01",
+    "baseline": "fda2a6de35ab60e8c836a6687482efa3774d95dc",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "stage": "LOCAL_QUALIFIED_HOSTED_ADMISSION_PENDING",
+    "scope": "dynamic numeric endpoint heat with nonlinear pond/matrix; opt-in file input and longer runs",
+    "invariants": [
+      2,
+      3,
+      7,
+      9,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "contract": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+    "next_action": "Run current hosted owning integration; reconcile canonical; admit only bounded thermal pond/file successor",
+    "recovery_point": "work/mc-sol01-thermal-pond-20261021",
+    "blockers": [],
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_THERMAL_POND_20261021.tar.xz.b64",
+      "decoded_sha256": "3c6f17c971651c7fa0a66fd5acd28508dee1109b8a59dce5a458aaf3484a48dc",
+      "members": 4916
+    },
+    "postimages": {
+      ".github/workflows/mc-sol01-thermal-pond.yml": {
+        "status": "A",
+        "sha256": "1fab976c2096ac084064c2d8e6d0e46122ffc3107f671d450a02e563767a45bf"
+      },
+      "app/solute_column/main.f90": {
+        "status": "M",
+        "sha256": "6f6ec8b9af02662611811b0acb4b8c34c67eb7c1efcb6b23fa47740fcefb43fb"
+      },
+      "examples/solute_column/nonlinear_thermal_pond.nml": {
+        "status": "A",
+        "sha256": "009b93846a4870425347b6879197c842bc24013da51c221a123e65640ec36df6"
+      },
+      "integration/audits/qualify_pond_thermal.py": {
+        "status": "A",
+        "sha256": "6d04db568a603608922ca52b1d71451c4bf8c6a823a0ca1eb9fe7df6ef2c61af"
+      },
+      "integration/audits/verify_nonlinear_pond.py": {
+        "status": "M",
+        "sha256": "a3f779608360e9dd4767cfd13524850d7529cb51eb189a6cab4101d9c74665b2"
+      },
+      "integration/audits/verify_pond_thermal.py": {
+        "status": "A",
+        "sha256": "b23b7435c83113c68cc5c6e7bce1edcad309cd46d2ce336d620dc407e83c6ff8"
+      },
+      "src/adapter/mod_pond_thermal_restart_file.f90": {
+        "status": "A",
+        "sha256": "fdd34b3ebcd85ed4a803980be1e34e7b17b489af03c91ec9b7b318d550300c47"
+      },
+      "src/runtime/mod_fmr_b111_pond_thermal_application.f90": {
+        "status": "A",
+        "sha256": "e11b6f7663eba7cf33797dce0b4d709f838a62c6da29c000f4d3895e5ee76817"
+      },
+      "tests/nut-sol/qualify_thermal_pond_application.py": {
+        "status": "A",
+        "sha256": "54e6f2f129cd0c27f1797ee1086bf053e08c391f324ba835486895a8075e6659"
+      },
+      "tests/nut-sol/run_pond_thermal.py": {
+        "status": "A",
+        "sha256": "c793b42f663fc91befbf42dabaf7a403f376b730553f13f6d567bf2f4ccc3306"
+      },
+      "tests/nut-sol/test_pond_thermal.f90": {
+        "status": "A",
+        "sha256": "b5dc6efa731b0f086f5c70986934247ef28e32c141c7609e652316a1942e8b07"
+      },
+      "tools/solute/run_column.py": {
+        "status": "M",
+        "sha256": "ea61e6f86b639bcf13e94dda35b7e60531e59ada3830cbcff61e6a074011bd3e"
+      },
+      "app/solute_column/README.md": {
+        "status": "M",
+        "sha256": "ae6deacc36de42c13baecc11d2cb6aae595214693f602c56892feae97fbe6883"
+      }
+    },
+    "test_selection": {
+      "changed_dependency": "new detached Reference numeric heat/pond/matrix transaction, S5PT0001 and actual file application",
+      "scientific_claim": "six exponent literal/quad physical composition; atomic rollback/crash/fresh restart; original application preservation; measured 30/365-day prescribed forcing spread",
+      "owner": "MC-SOL01",
+      "authority": "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+      "expected_seconds": 450,
+      "existing_evidence": "prior physics unchanged; exact predecessor validated; changed composition and caller freshly executed locally; new hosted joint integration selected",
+      "full_fci": "NOT_SELECTED_IMPACT: production solvers/process equations unchanged, new opt-in orchestration and file caller separately qualified",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "physics_only_seconds": "UNKNOWN"
+    },
+    "relevant_paths": [
+      ".github/workflows/mc-sol01-thermal-pond.yml",
+      "app/solute_column/main.f90",
+      "examples/solute_column/nonlinear_thermal_pond.nml",
+      "integration/audits/qualify_pond_thermal.py",
+      "integration/audits/verify_nonlinear_pond.py",
+      "integration/audits/verify_pond_thermal.py",
+      "src/adapter/mod_pond_thermal_restart_file.f90",
+      "src/runtime/mod_fmr_b111_pond_thermal_application.f90",
+      "tests/nut-sol/qualify_thermal_pond_application.py",
+      "tests/nut-sol/run_pond_thermal.py",
+      "tests/nut-sol/test_pond_thermal.f90",
+      "tools/solute/run_column.py"
+    ],
+    "authority_paths": [
+      "docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md",
+      "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
+      "docs/science/MC_SOL01_NONLINEAR_POND_CONTRACT.md"
+    ],
+    "last_reconciled_upstream": "fda2a6de35ab60e8c836a6687482efa3774d95dc",
+    "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+    "local_owner": {
+      "qualified": true,
+      "thermal_pond": true,
+      "six_exponents": true,
+      "semantic_native_controls": 96,
+      "original_application_artifacts_exact": 160,
+      "month_and_year_runs": true,
+      "full_capability": false,
+      "seasonal_accuracy_claim": "measured time-grid spread only; annual mass differences not strictly monotone",
+      "predecessor_qualified": true,
+      "source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540",
+      "current_source_tree": "2d8a57b8ac5de5712fd520bf040468e5899c0540"
+    },
+    "full_capability": false,
+    "seasonal_accuracy": "MEASURED_GRID_SPREAD_ONLY_ANNUAL_NOT_STRICTLY_MONOTONE",
+    "historical_reader": "NOT_MIGRATED_BY_OPT_IN_FILE_ADAPTER"
   }
 }
