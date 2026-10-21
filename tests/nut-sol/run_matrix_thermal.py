@@ -129,6 +129,9 @@ def main():
             path.write_bytes(raw)
             stdout = run([exe, 'reject', path, endpoint, 2], controls, 'native')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
+        for mode in ['reject-id', 'reject-heat', 'reject-chemical']:
+            stdout = run([exe, mode, build / '2/restart.bin', endpoint, 2], controls, 'native')
+            assert 'THERMAL_INVALID_RESTART=PASS' in stdout
         report['results'][opt] = results
         report['provider_count'] = len(ordered)
         print(opt + ' physical/literal/restart/rollback PASS', flush=True)

@@ -7,7 +7,8 @@ module mod_fmr_b111_matrix_thermal_application
  use mod_kernel_transactions
  use mod_fmr_runtime_core
  use mod_fmr_serialized_reference_backend
- use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view,SOIL_TEMP_OK
+ use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
+  SOIL_TEMP_OK,SOIL_TEMP_SOLUTION_NUMERIC
  use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
  use mod_fmr_b111_matrix_solute_route
  use mod_fmr_b111_matrix_joint_application,only:matrix_joint_result_t,JOINT_OK,JOINT_INVALID, &
@@ -47,6 +48,7 @@ contains
   call chemical%snapshot(t,theta,m,s,revision)
   if(t/=wt)return
   call chemical%configuration(p,id)
+  if(p%frexp/=1d0)return
   call water%certified_parameter_identity(identity,available)
   if(.not.available.or..not.identity%heat_enabled)return
   if(.not.allocated(identity%dz).or..not.allocated(p%dz_cm))return
@@ -67,8 +69,8 @@ contains
    if(q%active_nodes/=size(theta).or.size(q%water_content)/=size(theta))return
    if(size(q%pressure_head)/=size(theta))return
    if(.not.all(ieee_is_finite(q%pressure_head)).or..not.all(ieee_is_finite(q%water_content)))return
-   if(q%ponding_depth/=0d0)return
    if(.not.all(ieee_is_finite([q%ponding_depth,q%groundwater_level])))return
+   if(q%ponding_depth/=0d0)return
    if(any(abs(q%water_content-theta)>1024d0*epsilon(1d0)*max(1d0,maxval(abs(theta)))))return
    call build_soil_temperature_field_view(q%soil_temperature,heat,code)
    if(code/=SOIL_TEMP_OK.or.heat%active_nodes/=size(theta))return
@@ -105,10 +107,13 @@ contains
   result=matrix_joint_result_t()
   if(.not.matrix_thermal_template(template))return
   if(.not.matrix_thermal_states_match(water,chemical))return
-  if(.not.all(ieee_is_finite([t0,t1])).or.t1<=t0)return
+  if(.not.all(ieee_is_finite([t0,t1])))return
+  if(t1<=t0)return
   call water%current_time(clock,ok);if(.not.ok.or.clock/=t0)return
   call chemical%configuration(p,id)
   if(.not.parameters%soil_temperature_active.or.parameters%frost_active)return
+  if(.not.allocated(parameters%soil_temperature))return
+  if(parameters%soil_temperature%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
   if(.not.allocated(parameters%dz))return
   if(size(parameters%dz)/=size(p%dz_cm))return
   if(any(parameters%dz/=p%dz_cm))return

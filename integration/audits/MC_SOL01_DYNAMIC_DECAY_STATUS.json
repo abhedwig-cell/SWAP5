@@ -2,16 +2,103 @@
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
   "baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
   "implemented": true,
-  "persisted": false,
+  "persisted": true,
   "tested": false,
   "qualified": false,
   "canonically_admitted": false,
   "scope": "Endpoint operator-split matrix transport/decay using actual staged Reference restricted heat; no historical substep-identity claim",
-  "authority_paths": ["docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md", "MC_SOL01_FINAL_CLOSURE.md"],
-  "relevant_paths": ["src/runtime/mod_fmr_b111_matrix_thermal_application.f90"],
-  "interfaces_held_fixed": ["Reference backend", "matrix route", "B1.11 process formulas", "incumbent disk formats"],
-  "invariants_affected": [3, 7, 13, 21, 23, 25],
-  "next_action": "Implement focused production driver and combined independent-process disk restart; execute O0/O2 and interval refinement",
+  "authority_paths": [
+    "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
+    "MC_SOL01_FINAL_CLOSURE.md"
+  ],
+  "relevant_paths": [
+    "src/runtime/mod_fmr_b111_matrix_thermal_application.f90"
+  ],
+  "interfaces_held_fixed": [
+    "Reference backend",
+    "matrix route",
+    "B1.11 process formulas",
+    "incumbent disk formats"
+  ],
+  "invariants_affected": [
+    3,
+    7,
+    13,
+    21,
+    23,
+    25
+  ],
+  "next_action": "Complete final O0/O2 rerun after numeric/linear guards, replace prior capsule/postimages, then predecessor source/evidence gate, strict docs and owning integrated CI",
   "blockers": [],
-  "recovery_point": "work/mc-sol01-dynamic-decay-20261021"
+  "recovery_point": "work/mc-sol01-dynamic-decay-20261021",
+  "postimages": {
+    "src/runtime/mod_fmr_b111_matrix_thermal_application.f90": {
+      "status": "A",
+      "sha256": "9416b6b644f3e333687752909937eab48c2499bc66225daec8991060f516110a"
+    },
+    "src/adapter/mod_matrix_thermal_restart_file.f90": {
+      "status": "A",
+      "sha256": "c79014047c28778554788712bdf41806243ca5ddec5ce8a671cd715ef29fc4cc"
+    },
+    "tests/nut-sol/test_matrix_thermal.f90": {
+      "status": "A",
+      "sha256": "8faa334ac4ceb24ac094854675a1b6b1bae25fe329ea9dcd1db2884f127109d6"
+    },
+    "tests/nut-sol/run_matrix_thermal.py": {
+      "status": "A",
+      "sha256": "048e3591e0b41ee1a6ecaf18600bbc46d5a8559cbfe82cecb35a1b767c3b2d74"
+    },
+    "tests/nut-sol/thermal_rename_kill.c": {
+      "status": "A",
+      "sha256": "2dfb461c71b44721910db80481b2962b0dda126fd207249c90d5afa7de8c4289"
+    },
+    "integration/audits/qualify_matrix_thermal.py": {
+      "status": "A",
+      "sha256": "d9b064d19c313ebcedfc1861b0fddcdf38ad77e058426cc4248ddbd16de0660e"
+    },
+    "integration/audits/verify_matrix_thermal.py": {
+      "status": "A",
+      "sha256": "a89a11e54a1c9f7d7caad3af66f095699463a9b323ac397f666fdba1107b52c4"
+    },
+    "integration/performance/authority.py": {
+      "status": "M",
+      "sha256": "736521d2a9660d7564b01668bad57a661180b8fefba48ed66fc5554039d12eb8"
+    },
+    ".github/workflows/mc-sol01-dynamic-decay.yml": {
+      "status": "A",
+      "sha256": "b087f5a4049c60d6ada5aaf4f09ea575b16ea06fa513df035dc1ef404219959b"
+    }
+  },
+  "stage": "FINAL_NUMERIC_LINEAR_DOMAIN_GUARDS_REQUALIFICATION_RUNNING",
+  "checkpoint_commit": "f73ea924a102309ef0e461b27ddcd5ee5b10b736",
+  "execution_commit": "7477eda7",
+  "qualification_commit": "e5af8d46",
+  "evidence": {
+    "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_20261021.tar.xz.b64",
+    "decoded_sha256": "b41e23baca3342addd04956c8827522c5b950f2068db8f4a4cd02ccce061ae96"
+  },
+  "physical": {
+    "provider_count": 277,
+    "compile_seconds": 136.78842540499727,
+    "link_seconds": 0.2047693890001483,
+    "native_seconds": 1.26568420199942,
+    "physics_only_seconds": "UNKNOWN",
+    "windows": [
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128
+    ],
+    "final_relative_decay_difference": 0.0008189358698727755,
+    "finest_restart_sha256": "f73b7208d1d010449300971278911745dd38d87dc36b0a3bfa219fbb572786b5"
+  },
+  "selection": {
+    "full_fci": "NOT_SELECTED_IMPACT: no incumbent production file, state contract or physics changed; owning actual composition and exact predecessor validation selected",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "FROZEN_UNCHANGED",
+    "aquifer": "EXCLUDED"
+  }
 }

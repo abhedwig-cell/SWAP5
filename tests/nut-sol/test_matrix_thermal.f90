@@ -20,6 +20,7 @@ program test_matrix_thermal
  use mod_solute_compartment_state,only:solute_compartment_state_t
  use b111_literal_oracle,only:literal_step
  implicit none
+ real(real64),parameter::HARD_MASS_GATE=1d-10
  type(fmr_production_application_config_t)::cfg
  type(fmr_serialized_reference_backend_t)::backend
  type(fixed_flux_top_boundary_provider_t),target::top
@@ -30,9 +31,11 @@ program test_matrix_thermal
  type(matrix_joint_result_t)::r
  real(real64)::k,dt,t0,t1,decay_total,max_residual
  integer::status,j,windows,first,last,accepted
+ integer(int64)::restore_id
  character(512)::mode,path,endpoint,arg
  call get_command_argument(1,mode);call get_command_argument(2,path);call get_command_argument(3,endpoint)
  call get_command_argument(4,arg);read(arg,*)windows
+ t0=0d0;t1=.001d0
  call initialize_application_config(cfg,-75d0,k)
  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
  cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
@@ -46,6 +49,9 @@ program test_matrix_thermal
  call require(status==0,'nonuniform thermal owner')
  cfg%tiles(1)%base_forcing%top_flux=0d0;cfg%tiles(1)%base_forcing%bottom_flux=-.1d0
  cfg%tiles(1)%base_forcing%drainage_flux_by_level=1d-4;cfg%tiles(1)%base_forcing%subsurface_irrigation_source=0d0
+ cfg%tiles(1)%parameters%root_extraction_active=.true.
+ cfg%tiles(1)%base_forcing%root_extraction_sink=1d-4
+ cfg%tiles(1)%base_forcing%root_potential_transpiration=.0008d0
  cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_MODEL_CERTIFICATE
  cfg%numerical%model_temporal_indicator_budget_available=.true.;cfg%numerical%model_temporal_indicator_budget=1d-6
  cfg%numerical%transaction%temporal_tolerance=0d0
@@ -54,8 +60,12 @@ program test_matrix_thermal
  column%parameter_ref=1;column%state_handle=1;column%forcing_handle=1;column%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
  call parameters(p)
  call backend%initialize(top)
- if(trim(mode)=='reject')then
-  call read_matrix_thermal_restart(trim(path),column,cfg%tiles(1)%template,670001_int64,9001_int64, &
+ if(index(trim(mode),'reject')==1)then
+  restore_id=9001_int64
+  if(trim(mode)=='reject-id')restore_id=9002_int64
+  if(trim(mode)=='reject-heat')cfg%tiles(1)%parameters%soil_temperature%theta_sat(1)=.99d0
+  if(trim(mode)=='reject-chemical')p%decpot=p%decpot*2d0
+  call read_matrix_thermal_restart(trim(path),column,cfg%tiles(1)%template,670001_int64,restore_id, &
    cfg%tiles(1)%parameters,p,water,chemical,status)
   call require(status/=0.and..not.water%ready().and..not.chemical%ready(),'invalid generation atomic reject')
   print '(A)','THERMAL_INVALID_RESTART=PASS';stop
@@ -101,6 +111,22 @@ program test_matrix_thermal
    call write_matrix_thermal_restart(trim(endpoint)//'.initial',column,cfg%tiles(1)%template,670001_int64, &
     cfg%tiles(1)%parameters,initial,initial_c,status);call require(status==0,'initial serializable')
   end block
+  call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+   cfg%tiles(1)%base_forcing,cfg%numerical,chemical,ieee_value(0d0,ieee_quiet_nan),.001d0,r)
+  call require(r%status/=0,'nonfinite clock rejected under FPE traps')
+  pbad=p;pbad%frexp=.5d0
+  call initialize_matrix_solute(pbad,9001_int64,0d0,cfg%tiles(1)%initial_state%water_content, &
+   [.2d0,.3d0,.4d0,.5d0],badchemical,status)
+  call require(status==0,'incumbent nonlinear owner remains valid')
+  badwater=initial
+  call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,badwater, &
+   cfg%tiles(1)%base_forcing,cfg%numerical,badchemical,0d0,.001d0,r)
+  call require(r%status/=0.and.badwater%current_revision()==initial%current_revision(),'unqualified nonlinear thermal composition rejected')
+  cfg%tiles(1)%parameters%soil_temperature%solution_mode=SOIL_TEMP_SOLUTION_ANALYTIC
+  call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+   cfg%tiles(1)%base_forcing,cfg%numerical,chemical,0d0,.001d0,r)
+  call require(r%status/=0.and.water%current_revision()==initial%current_revision(),'unqualified analytic thermal composition rejected')
+  cfg%tiles(1)%parameters%soil_temperature%solution_mode=SOIL_TEMP_SOLUTION_NUMERIC
   ! Source SWHEA=0 branch: actual heat may evolve, decay remains zero.
   pbad=p;pbad%temperature_active=.false.
   call initialize_owners(badwater,badchemical,pbad)
@@ -127,8 +153,31 @@ program test_matrix_thermal
  print '(A,I0)','ACCEPTED=',accepted
  print '(A,ES25.17)','DECAY=',decay_total
  print '(A,ES25.17)','MAX_SOLUTE_RESIDUAL=',max_residual
+ call summary(water,chemical)
  print '(A)','THERMAL_PHYSICAL_LITERAL_RESTART=PASS'
 contains
+ subroutine summary(w,c)
+  type(kernel_committed_state_t),intent(in)::w
+  type(matrix_solute_state_t),intent(in)::c
+  class(transaction_state_t),allocatable::physical
+  type(soil_temperature_field_view_t)::heat
+  type(mobile_salt_state_t)::m
+  type(solute_compartment_state_t)::s
+  real(real64),allocatable::theta(:)
+  real(real64)::time
+  integer(int64)::rev
+  integer::code
+  logical::ok
+  call w%snapshot(physical,ok);call require(ok,'endpoint snapshot')
+  select type(physical)
+  class is(fmr_b110_physical_state_t)
+   call build_soil_temperature_field_view(physical%soil_temperature,heat,code)
+  end select
+  call require(code==0,'endpoint thermal summary')
+  call c%snapshot(time,theta,m,s,rev)
+  print '(A,4ES25.17)','MASS_VECTOR=',m%mass_mg_cm2+s%sorbed_matrix_mass
+  print '(A,4ES25.17)','HEAT_VECTOR=',heat%temperature_c
+ end subroutine
  subroutine initialize_owners(w,c,f)
   type(kernel_committed_state_t),intent(out)::w
   type(matrix_solute_state_t),intent(out)::c
@@ -203,7 +252,7 @@ contains
   f%bulk_density=spread(1.3d0,1,numnod);f%kf=spread(.2d0,1,numnod)
   f%temperature_active=.true.;f%temperature_c=spread(20d0,1,numnod)
   f%gampar=spread(.05d0,1,numnod);f%rtheta=spread(.3d0,1,numnod)
-  f%bexp=spread(1d0,1,numnod);f%decpot=spread(.02d0,1,numnod);f%fdepth=spread(1d0,1,numnod)
+  f%bexp=spread(1d0,1,numnod);f%decpot=spread(.02d0,1,numnod);f%fdepth=[1d0,.8d0,.5d0,.2d0]
   f%face_distance_cm=disnod(2:numnod)
   f%face_left_weight=.5d0*dz(2:numnod)/f%face_distance_cm;f%face_right_weight=.5d0*dz(1:numnod-1)/f%face_distance_cm
   f%theta_sat_left=cfg%tiles(1)%parameters%cofgen(2,1:numnod-1)

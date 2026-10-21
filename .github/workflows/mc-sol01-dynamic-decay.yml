@@ -1,0 +1,62 @@
+name: MC-SOL01 dynamic accepted temperature decay
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_b111_matrix_thermal_application.f90'
+      - 'src/adapter/mod_matrix_thermal_restart_file.f90'
+      - 'tests/nut-sol/run_matrix_thermal.py'
+      - 'tests/nut-sol/test_matrix_thermal.f90'
+      - 'tests/nut-sol/thermal_rename_kill.c'
+      - 'integration/audits/qualify_matrix_thermal.py'
+      - 'integration/audits/verify_matrix_thermal.py'
+      - 'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+      - '.github/workflows/mc-sol01-dynamic-decay.yml'
+  push:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_b111_matrix_thermal_application.f90'
+      - 'src/adapter/mod_matrix_thermal_restart_file.f90'
+      - 'tests/nut-sol/run_matrix_thermal.py'
+      - 'tests/nut-sol/test_matrix_thermal.f90'
+      - '.github/workflows/mc-sol01-dynamic-decay.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: solute-thermal-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  thermal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Real Reference heat and chemical O0 O2
+        run: python -B tests/nut-sol/run_matrix_thermal.py --output "$RUNNER_TEMP/thermal-physical"
+      - name: Refinement semantic restart and native crash controls
+        run: python -B integration/audits/qualify_matrix_thermal.py --physical "$RUNNER_TEMP/thermal-physical" --output "$RUNNER_TEMP/thermal-qualified"
+      - name: Exact current and incumbent scientific authority
+        run: |
+          python -B integration/audits/verify_matrix_thermal.py
+          python -B integration/audits/verify_matrix_thermal.py --self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mc-sol01-dynamic-decay-evidence
+          path: |
+            ${{ runner.temp }}/thermal-physical/**/*.json
+            ${{ runner.temp }}/thermal-physical/**/*.stdout
+            ${{ runner.temp }}/thermal-physical/**/*.stderr
+            ${{ runner.temp }}/thermal-physical/**/*.bin
+            ${{ runner.temp }}/thermal-qualified/**/*.json
+            ${{ runner.temp }}/thermal-qualified/**/*.stdout
+            ${{ runner.temp }}/thermal-qualified/**/*.stderr
+            ${{ runner.temp }}/thermal-qualified/**/*.bin

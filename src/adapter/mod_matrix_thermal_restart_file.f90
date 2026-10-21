@@ -79,7 +79,7 @@ contains
   type(matrix_solute_state_t),intent(in)::chemical
   integer,intent(out)::status
   type(fmr_committed_restart_bundle_t)::b
-  type(kernel_parameter_identity_t)::identity
+  type(kernel_parameter_identity_t)::identity,expected_identity
   type(b111_reactive_solute_substep_forcing_t)::p
   type(mobile_salt_state_t)::m
   type(solute_compartment_state_t)::s
@@ -95,7 +95,8 @@ contains
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
   if(.not.matrix_thermal_states_match(water,chemical))return
   call water%certified_parameter_identity(identity,ok);if(.not.ok)return
-  if(.not.parameters%matches_physical_identity(identity))return
+  call parameters%capture_identity(expected_identity,ok);if(.not.ok)return
+  if(.not.identity%matches(expected_identity))return
   call fmr_export_committed_restart([column],[template],[water],water_id,b,ok,code)
   if(.not.ok.or.code/=0)return
   call chemical%configuration(p,id);v=matrix_parameter_vector(p);hv=heat_vector(parameters)
@@ -180,6 +181,7 @@ contains
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
   expected=matrix_parameter_vector(p);want_heat=heat_vector(parameters)
   if(.not.allocated(expected).or..not.allocated(want_heat))return
+  if(.not.all(ieee_is_finite(expected)).or..not.all(ieee_is_finite(want_heat)))return
   call bytes(path,a,code);if(code/=0)return
   checksum=transfer(a(size(a)-3:),checksum)
   if(checksum/=crc32(a(:size(a)-4)))return

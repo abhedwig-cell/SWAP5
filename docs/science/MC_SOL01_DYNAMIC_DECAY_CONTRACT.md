@@ -21,7 +21,9 @@ water, heat or chemical trial publishes neither owner. Immutable chemical
 parameters, including the original temperature vector, remain byte-identical.
 `temperature_active=false` separately retains the source's zero-decay factor.
 
-The bounded domain is one matrix column, no surface input/pond, no macropores,
+The bounded domain is numeric restricted heat and linear sorption in one matrix
+column. Nonlinear sorption and analytic heat are rejected by this new composition;
+their incumbent standalone routes are unchanged. There is no surface input/pond, no macropores,
 snow, frost, aquifer, crop/N/age companions or RossFast extension. Existing
 Reference trace and restricted-heat contracts remain authoritative. Root,
 drain and bottom receipts are the existing accepted water receipts. Geometry,

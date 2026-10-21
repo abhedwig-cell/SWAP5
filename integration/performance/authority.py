@@ -176,6 +176,9 @@ def predecessor():
             subprocess.run(['git', 'worktree', 'remove', '--force', str(base)], cwd=ROOT, check=True, capture_output=True)
 
 def verify_qualification():
+    thermal=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if thermal.exists() and 'evidence' in json.loads(thermal.read_text()):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_matrix_thermal.py'),run_name='registered_sol_thermal')['verify_qualification']()
     current=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('gash_interception_successor',{})
     if 'evidence'in current:
      return runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_nut_gash')['verify_qualification']()
