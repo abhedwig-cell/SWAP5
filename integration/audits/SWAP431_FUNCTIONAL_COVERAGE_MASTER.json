@@ -11369,13 +11369,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11396,10 +11396,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -11409,7 +11409,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11510,6 +11511,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -11541,13 +11568,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11568,10 +11595,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -11581,7 +11608,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11682,6 +11710,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -11712,13 +11766,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Fertilizer/manure applications and volatilisation. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Fertilizer/manure applications and volatilisation. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -11746,10 +11800,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -11759,7 +11813,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11860,6 +11915,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -11894,13 +11975,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Crop residue transfers to organic soil pools. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Crop residue transfers to organic soil pools. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -11923,10 +12004,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -11936,7 +12017,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -12052,6 +12134,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -12081,13 +12189,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -12110,10 +12218,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -12123,7 +12231,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12224,6 +12333,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -14259,13 +14394,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -14285,10 +14420,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -14298,7 +14433,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14399,6 +14535,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -14435,13 +14597,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -14462,10 +14624,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -14475,7 +14637,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14576,6 +14739,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -14609,13 +14798,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -14635,10 +14824,10 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -14648,7 +14837,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14749,6 +14939,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -14808,13 +15024,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing bounded NUT admissions are preserved; PR1350 adds Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Remaining: Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing bounded process/crop/retained/source and PR1350 admissions are preserved. PR1354 adds Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Remaining: Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_finite_donor_20261021"
+        "bounded_receipt": "mc_nut01_humus_timestamp_20261021"
       },
       "restrictions": [
-        "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
-        "Original full caller defect remains immutable qualification-only historical evidence. PR1350 supersedes the blocker only for its explicit finite-donor fallow subset; no global B1 update."
+        "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "Bounded fractional humus timestamps now admitted; amendment events remain daily. No full-row promotion or global B1 update."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -14851,10 +15067,10 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "head": "0391d3cb70094c538df983086f6d3f8298912fcb",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit finite-donor negative historical aggregate in retired-crop/fallow with zero root extraction and nonnegative production; existing positive/process/crop/calendar/retained paths preserved. No full-row promotion. Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change. Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
@@ -14864,7 +15080,8 @@
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
         "gash_composition_receipt": "gash_composition_admission_20261020",
-        "finite_donor_receipt": "finite_donor_admission_20261021"
+        "finite_donor_receipt": "finite_donor_admission_20261021",
+        "humus_timestamp_receipt": "humus_timestamp_admission_20261021"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14965,6 +15182,32 @@
         "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
         "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
         "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+      },
+      "humus_timestamp_admission_20261021": {
+        "pr": 1354,
+        "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+        "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+        "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+        "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+        "max_relative_N_residual": 2.1201384179555724e-15
       }
     },
     {
@@ -18241,7 +18484,7 @@
       "capability_id": "SW431-NUT-MINERAL",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -18250,13 +18493,13 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-NFIX",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -18265,13 +18508,13 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-ORGANIC",
       "work_unit": "MC-NUT01",
       "dependencies": [],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 0,
         "functional_relevance": 2,
@@ -18280,7 +18523,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-ROOT-ANAE-GROW",
@@ -18536,7 +18779,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18545,7 +18788,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-CROP",
@@ -18553,7 +18796,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18562,7 +18805,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-DENIT",
@@ -18571,7 +18814,7 @@
         "SW431-NUT-MINERAL",
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18580,7 +18823,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-NITRIF",
@@ -18588,7 +18831,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18597,7 +18840,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-RESIDUE",
@@ -18605,7 +18848,7 @@
       "dependencies": [
         "SW431-NUT-ORGANIC"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18614,7 +18857,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-NUT-TRANSPORT",
@@ -18622,7 +18865,7 @@
       "dependencies": [
         "SW431-NUT-MINERAL"
       ],
-      "why_open": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified. Existing bounded process ownership and conservative fallow are admitted; no complete absence or full-row admission claim.",
+      "why_open": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified. Bounded process ownership, conservative fallow and fractional humus clocks are admitted; no full-row absence/admission claim.",
       "priority": {
         "dependency_depth": 1,
         "functional_relevance": 2,
@@ -18631,7 +18874,7 @@
         "regression_risk": 3
       },
       "implementation_absence_proven": false,
-      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json negative_reference_candidate_20261021"
+      "current_bounded_authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021"
     },
     {
       "capability_id": "SW431-TILL-REDIST",
@@ -19997,6 +20240,32 @@
       "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
       "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
       "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16
+    },
+    "mc_nut01_humus_timestamp_20261021": {
+      "pr": 1354,
+      "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+      "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+      "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+      "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+      "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+      "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+      "max_relative_N_residual": 2.1201384179555724e-15
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -20387,7 +20656,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "30be55796107ea05d40aac0ea182f2218613af8b",
+  "canonical_locator_head": "0391d3cb70094c538df983086f6d3f8298912fcb",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -22726,6 +22995,35 @@
     "remaining": "Active-crop/immobilisation negative sink allocation; automatic snow/persistent-surface aggregate binding; near-degenerate coefficients; wider native grammar/fractional humus/extended diagnostics and full original active trajectory remain unqualified.",
     "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
     "max_current_abs_N_residual_kg_m2": 1.2495430037895439e-16,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "whole_master_qualified": false
+  },
+  "latest_mc_nut01_humus_timestamp_20261021": {
+    "pr": 1354,
+    "canonical_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+    "qualified_head": "fc9a1b8e93d527f19563e2ac7528a4c5b207de2c",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json humus_timestamp_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+    "scope": "Original underscore fractional humus timestamp, normalized24..99hours and original fractional-second precision; existing endpoint predicate, immutable parameter/native identity, no process/state/schema change.",
+    "qualification": "GNU13.3 O0/O2:12 original TTUTIL exact/9 invalid,38 old native,original fractional chemistry,full current HIST16 exact old endpoints/56 transitions;4 new real Reference/crop/fallow/N cases,8 fresh restarts,8 endpoint controls;11 new and11 predecessor controls;actual merge source/owner PASS. All33 final-head hosted terminal23success/10 independently triaged unchanged publication failures.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "remaining": "Negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients; wider native grammar/enabled extended diagnostics and complete original active historical trajectories remain unqualified.",
+    "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+    "max_relative_N_residual": 2.1201384179555724e-15,
     "other_rows_exact": 234,
     "all_dispositions_exact": 243,
     "whole_master_qualified": false
