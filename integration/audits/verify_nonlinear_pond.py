@@ -40,7 +40,8 @@ def source():
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
     require(not git('status', '--porcelain', '--', *SCIENCE), 'dirty nonlinear pond source')
     changes = {v.split('\t')[1]: v.split('\t')[0] for v in git('diff', '--name-status', BASE, 'HEAD', '--', *SCIENCE).splitlines()}
-    require(changes == {p: v['status'] for p,v in s['postimages'].items()}, 'foreign pond scientific delta')
+    expected = {PRODUCTION:'M', 'tests/nut-sol/run_nonlinear_pond.py':'A', 'integration/audits/qualify_nonlinear_pond.py':'A', 'integration/audits/verify_nonlinear_pond.py':'A', 'integration/audits/verify_matrix_thermal.py':'M', '.github/workflows/mc-sol01-nonlinear-pond.yml':'A'}
+    require(changes == expected == {p: v['status'] for p,v in s['postimages'].items()}, 'foreign pond scientific delta')
     require({p for p in changes if p.startswith('src/')} == {PRODUCTION}, 'pond production boundary')
     for p,v in s['postimages'].items():
         require(sha((ROOT/p).read_bytes()) == v['sha256'], 'pond postimage '+p)

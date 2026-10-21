@@ -603,7 +603,7 @@
     "implemented": true,
     "persisted": true,
     "tested": true,
-    "qualified": false,
+    "qualified": true,
     "canonically_admitted": false,
     "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
     "invariants_affected": [
@@ -618,7 +618,7 @@
       "src/runtime/mod_fmr_b111_pond_solute_route.f90",
       "tests/nut-sol/run_nonlinear_pond.py"
     ],
-    "next_action": "Validate exact scientific source/evidence, execute corruption controls and strict docs, then observe integrated PR qualification and bounded canonical admission.",
+    "next_action": "Observe terminal owning PR native qualification, reconcile live canonical and safely admit bounded nonlinear pond scope; then master receipt.",
     "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
     "blockers": [],
     "test_selection": {
@@ -859,7 +859,7 @@
         }
       }
     },
-    "stage": "LOCAL_NATIVE_COMPLETE_SOURCE_EVIDENCE_VALIDATION_PENDING",
+    "stage": "LOCAL_QUALIFIED_INTEGRATED_ADMISSION_PENDING",
     "selection": {
       "full_fci": "NOT_SELECTED_IMPACT: one optional pond exponent guard; every incumbent linear pond endpoint and178-provider file application fresh-preserved, original exact predecessor authority still required",
       "highest_low_air": "NOT_SELECTED_POLICY",
@@ -881,7 +881,7 @@
       },
       "integration/audits/verify_nonlinear_pond.py": {
         "status": "A",
-        "sha256": "9e4878738cced6234c566fe1b1362282faa7e1a1d5462b5384daccc6ec366340"
+        "sha256": "ea493cc5a1fe6585b3b26274e76015084a3d51559d4ac94d202771968dbbf12c"
       },
       "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
         "status": "M",
@@ -891,6 +891,13 @@
         "status": "A",
         "sha256": "4bf0ec734ce88083b10ce5dcdbdd2873651de79942ec1869206d0cbf219acd1d"
       }
+    },
+    "checkpoint_commit": "f566b9ecab6dbde5f0a44f20190d8ad06be47bec",
+    "local_owners": {
+      "exact_predecessor_and_current_scientific_evidence": "PASS",
+      "corruption_controls": 9,
+      "column_178_provider_O0_O2_and86_observations": "PASS",
+      "original_guard_nonlinear_counterexample_and_linear_bytes": "PASS"
     }
   }
 }
