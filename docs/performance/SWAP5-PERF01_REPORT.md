@@ -107,4 +107,14 @@ Build, link, preparation, native execution and validation timings are retained b
 
 ## Remaining suitability boundary
 
+The [fresh temporal proposal study](SWAP5-PERF01_TEMPORAL_STUDY.md) retains 170
+native observations including two deliberately reproduced strict-endpoint
+failures. Wet/pulse cases gain 3.60 to 7.22 times, while the dry route remains
+2.27 times slower even with an isolated diagnostic endpoint correction. No
+production default or runtime module changes. The optional policy is not
+generally admitted; solver-aware stepping and exact endpoint semantics require
+their own scientific qualification. These fresh measurements replace a lost
+unpushed temporal-study bundle and must not be confused with the originally
+admitted exact implementation evidence above.
+
 The measured multi-fold trace bottleneck is removed without changing model outcomes. For equal fixed-step hydraulic work, SWAP5 is near the legacy speed but does not consistently match it. Excess temporal retry/full-half work remains a separate major cost. A real regional reference was found in LWKM commit `a6787b9d9620f037332b2dd2babbdd9a778ecd1f`, Work C2:101 original Intel-engine runs over354 days. The content-addressed archive was inspected and HRU7866 input hashes recovered. Its active crop, PM meteorology, rain duration, drainage, BBC lower boundary and heat route cannot be executed equivalently by the current benchmark application: the SWP probe fails closed at its required column namelist, and the documented application supplies prescribed sinks/qbot rather than the full seasonal orchestration. The selected archive also omits the hash-identified MET bytes, which require their parent source archive. See `SWAP5-PERF01_REGIONAL_ASSESSMENT.json`. The earlier `control_runs(2).zip` contains NHI/MODFLOW meteorological control data, not a complete SWAP package. Existing Intel runtime measurements are not compared with the GNU benchmark. No real regional or historical-meteorological SWAP5 run is qualified here. Prescribed sinks and a synthetic annual column do not meet that missing envelope. SWAP5 therefore cannot yet receive an unconditional large-scale HRU/regional performance qualification from these results; use the existing admitted physical scope and qualify representative regional jobs before capacity planning. No single favorable benchmark stands for every model.

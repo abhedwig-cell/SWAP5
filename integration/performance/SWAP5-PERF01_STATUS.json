@@ -53,6 +53,18 @@
     "evidence_index": "integration/performance/evidence/perf01-current-20261020/INDEX.json",
     "evidence_sha256": "221da8a4eaa38f56b6c04d939fd311243b4c638c575c30bc9158ccb95fc49e1a",
     "postimages": {
+      "tools/performance/study_perf01_temporal.py": {
+        "status": "A",
+        "sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+      },
+      "tools/performance/package_perf01_temporal.py": {
+        "status": "A",
+        "sha256": "7846aee7c3cf94e2c8d337eed1200984f7aaa423bb8e4363edfb6dea4fa12726"
+      },
+      "tools/performance/run_perf01_temporal_recovery.py": {
+        "status": "A",
+        "sha256": "45bf00bac3d2e693123ac5adca60505c5b01e68d00f594562c67e3ad0e250a4f"
+      },
       ".github/workflows/swap5-perf01.yml": {
         "status": "A",
         "sha256": "a09ec2118053b2c1f3bf7ea3ef3c1edf166a4092c9d3279c4f01ce2fa1b3f31f"
@@ -175,6 +187,27 @@
   "admission_commit": "5eec6ae73d3187630f244109380ef6adfadfe631",
   "admission_pr": 1335,
   "qualified_source_head": "4cb4e216e17985c1bccb3b03df77524215deadef",
+  "temporal_study": {
+    "status": "FRESH_DIAGNOSTIC_COMPLETE_GENERAL_ACTIVATION_NOT_ADMITTED",
+    "baseline": "9a3a15197adbf37dba340f4f9acbbb44fe76a989",
+    "recovery_point": "work/swap5-perf01-temporal-study",
+    "pr": 1341,
+    "production_changed": false,
+    "native_executions": 170,
+    "retained_native_failures": 2,
+    "fresh_reexecution_after_loss_of_unpushed_prior_workspace": true,
+    "report": "docs/performance/SWAP5-PERF01_TEMPORAL_STUDY.md",
+    "evidence_index": "integration/performance/evidence/perf01-temporal-20261021/INDEX.json",
+    "rejected_io_attempts_index": "integration/performance/evidence/perf01-temporal-rejected-io-20261021/INDEX.json",
+    "qualification": "Bounded convergence, work and exact fresh-process restart diagnostics only; no policy or regional admission",
+    "observed_O2_speedup": {"pond4": 7.221, "pond32": 6.286, "pond256": 3.598, "pulse4": 6.797, "dry32_corrected": 0.441},
+    "blockers": [
+      "Unmodified optional policy produces a non-exact final trace time; strict chemical consumer rejects, reproduced O0/O2 with external clocks preserved",
+      "Diagnostic exact-endpoint correction resolves that observed failure but dry-profile CPU rises 2.27x, solver rejections 278 to 808",
+      "Short synthetic columns do not establish seasonal or regional throughput or general temporal-policy admission"
+    ],
+    "next_action": "Review published diagnostics; develop and qualify solver-aware exact-endpoint proposal before production activation"
+  },
   "remaining_scientific_boundaries": [
     "Temporal proposal reuse changes trajectories; no production activation without independent accuracy/restart qualification",
     "Full real HRU crop/heat/BBC orchestration is outside present file application; no unconditional regional speed admission",

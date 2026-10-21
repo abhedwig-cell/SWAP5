@@ -103,7 +103,11 @@ def build_main(base, build, out, proposal, snap_endpoint):
     class default
       error stop 'diagnostic state type'
     end select
+    flush(perf_v)
+    flush(perf_u)
     clock=t1''')
+    text = replace_once(text, '  close(u)\n  call write_matrix_joint_restart_file',
+                        '  close(perf_v)\n  close(perf_u)\n  close(u)\n  call write_matrix_joint_restart_file')
     source = out/'main.f90'
     source.write_text(text)
     fc = build['compiler_command']
@@ -214,6 +218,13 @@ def main():
             record['core_cpu'] = sum(float(r['cpu']) for r in work)
             record['work'] = {f: sum(int(r[f]) for r in work) for f in FIELDS}
         budget = rows(directory/'budget.csv')
+        if (directory/'trajectory.csv').exists():
+            expected = len(budget)*len(rows(directory/'state.csv'))
+            if len(rows(directory/'trajectory.csv')) != expected:
+                report['status'] = 'INCOMPLETE_DIAGNOSTIC_OUTPUT_NOT_QUALIFIED'
+                report['failure'] = record['directory']
+                save()
+                raise ValueError('incomplete diagnostic trajectory: '+str(directory))
         record['max_water_residual'] = max(abs(float(r['water_residual_cm'])) for r in budget)
         record['max_solute_residual'] = max(abs(float(r['solute_residual_mg_cm2'])) for r in budget)
         save()
