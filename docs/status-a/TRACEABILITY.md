@@ -126,6 +126,12 @@ atomic S5MT0001 restart and SIGKILL evidence. Incumbent production providers and
 old disk formats are unchanged. Local qualification and actual canonical
 admission remain distinct; no full historical capability promotion is inferred.
 
+Actual thermal admission is PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73`;
+source tree19319aa9. The exact-merge source/evidence owner passes and the
+master receipt `a9ef00c6861e7939d19635b6d92766e6eedcf11b` preserves242 other
+rows/all243 dispositions. The existing scientific status and hosted receipt
+carry exact head/merge workflow results and the unrelated baseline failures.
+
 [MC_SOL01_FINAL_CLOSURE.md](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/MC_SOL01_FINAL_CLOSURE.md) is the consolidated audit entry for the eight existing solute capability rows. Scientific authority remains distributed: immutable B1.11 `SWAP/solute.f90`; accepted nonlinear inverse and Reference surface-chemistry decisions; existing trajectory3, surface-input and surface-age status/capsule records; actual canonical PR admissions; current source/evidence validators. The closure does not replace those authorities or create a second capability ledger. Full-envelope ACTIVE_MIGRATION rows retain exact parked restrictions rather than acquiring a blanket admission. Positive pond and atomic S5AT0001 restart evidence supersede earlier statements that only dry pond was qualified.
 
 MC-SOL01 closure native CI follow-up: `integration/audits/MC_SOL01_SURFACE_AGE03_CI_STATUS.json` owns the eight original native route results, exact recipe/source successor and `MC_SOL01_CLOSURE_CI_REPAIR_20261019.tar.xz.b64`. `MC_SOL01_FINAL_CLOSURE.md` distinguishes completed test infrastructure from unchanged physical admission and negative Thomas-Gladwell research outcomes.

@@ -1,7 +1,8 @@
 # MC-SOL01 dynamic accepted-temperature decay
 
-Status: local O0/O2 qualification completed; actual canonical admission is
-governed by `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json`.
+Status: canonically admitted bounded numeric-heat/linear-matrix composition,
+PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73`. The completed admission
+receipt is `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json` on canonical.
 Baseline: `83defb1a6a7a9f4d2fcd862faf73a21ad621072a`.
 
 Admission reconciliation: concurrent canonical `3cb20b8a48440a9445277dfba0982b697197638a`

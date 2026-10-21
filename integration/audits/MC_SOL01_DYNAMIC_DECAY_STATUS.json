@@ -4,8 +4,8 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
-  "canonically_admitted": false,
+  "qualified": true,
+  "canonically_admitted": true,
   "scope": "Endpoint operator-split matrix transport/decay using actual staged Reference restricted heat; no historical substep-identity claim",
   "authority_paths": [
     "docs/science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md",
@@ -28,9 +28,9 @@
     23,
     25
   ],
-  "next_action": "Execute current predecessor and exact source/evidence gates after preserving concurrent diagnostics, then bounded canonical admission.",
+  "next_action": "NONE within this bounded work unit; nonlinear thermal/pond, analytic heat, full default/historical activation and seasonal qualification remain explicitly parked.",
   "blockers": [],
-  "recovery_point": "work/mc-sol01-dynamic-decay-20261021",
+  "recovery_point": "integration/f-ci-canonical, qualified source tree19319aa98383c69aebd0bb4e0605b3c515821060",
   "postimages": {
     "src/runtime/mod_fmr_b111_matrix_thermal_application.f90": {
       "status": "A",
@@ -69,8 +69,8 @@
       "sha256": "b087f5a4049c60d6ada5aaf4f09ea575b16ea06fa513df035dc1ef404219959b"
     }
   },
-  "stage": "EXACT_SCIENCE_HOSTED_PASS_CONCURRENT_DIAGNOSTIC_RECONCILIATION",
-  "checkpoint_commit": "f9fcbf4556fd8a420a9a6274dbc86aea75e862a4",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_THERMAL_CLOSED",
+  "checkpoint_commit": "fa936e66ad5a3f8e5d2c7ab1eaf7b1b4d04f96eb",
   "execution_commit": "612db02d2240e6c4e11ca75aecc0b90e4751132f",
   "qualification_commit": "1da9e73c",
   "evidence": {
@@ -116,12 +116,55 @@
     "perf_run": 39555862719,
     "triage": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_CI_TRIAGE_20261021.json",
     "all_terminal": true,
-    "failures_counted_as_pass": false
+    "failures_counted_as_pass": false,
+    "merge": {
+      "commit": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+      "total": 7,
+      "all_success": true,
+      "thermal_run": 39557037336,
+      "thermal_job": 119079109267,
+      "column_run": 39557037306,
+      "column_job": 119079108491,
+      "canonical_run": 39557037305,
+      "perf_run": 39557037310,
+      "wof43a_run": 39557037304,
+      "fsi35_run": 39557037385,
+      "fgc_run": 39557037313,
+      "fgc_job": 119079108795
+    },
+    "full_receipt": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_HOSTED_20261021.json"
   },
   "concurrent_reconciliation": {
     "canonical": "3cb20b8a48440a9445277dfba0982b697197638a",
     "all_src_and_reference_identical_to_initial_baseline": true,
     "current_scientific_source_tree": "19319aa98383c69aebd0bb4e0605b3c515821060",
     "native_repetition": "NOT_SELECTED_IMPACT: every compiled/oracle/input/test source unchanged; new diagnostic predecessor authority is executed."
-  }
+  },
+  "capability_status": "ADMITTED",
+  "full_capability": false,
+  "admission_pr": 1342,
+  "canonical_merge": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+  "tested_canonical": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+  "master_receipt": {
+    "commit": "a9ef00c6861e7939d19635b6d92766e6eedcf11b",
+    "branch": "work/swap431-master-coverage-20261006",
+    "capability": "SW431-SALT-DECAY",
+    "other_rows_exact": 242,
+    "dispositions_exact": 243,
+    "whole_master_qualification": false
+  },
+  "local_owners": {
+    "reconciled_predecessor_source_evidence": "PASS",
+    "actual_canonical_source_evidence": "PASS",
+    "thermal_evidence_negative_controls": 8,
+    "exact_fsi35_handoff": "PASS",
+    "strict_documentation": "PASS"
+  },
+  "limitations": [
+    "Explicit endpoint operator split; no historical substep-temperature identity.",
+    "Executed physical envelope is four nodes,3cm,0.002day with seven interval meshes; no seasonal validation.",
+    "Numeric restricted heat and linear sorption only; new route rejects nonlinear/analytic composition.",
+    "No thermal pond, age/N companion, full default-file or multicolumn application admission.",
+    "S5MT0001 is same-platform, serialized temporal-history Reference; no concurrent writers or portable ABI."
+  ]
 }

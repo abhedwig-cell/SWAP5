@@ -7,6 +7,12 @@ restart. The [contract](../science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md) and exist
 work-unit status distinguish this bounded extension's actual canonical receipt
 from full SALT-DECAY, pond/nonlinear/seasonal and default-application scope.
 
+Actual admission: PR1342, canonical merge
+`7d04b00778684ff662ec36715b7b3e9654b8fb73`. The bounded dynamic numeric-heat/
+linear-matrix route is ADMITTED; the full SALT-DECAY envelope retains its
+explicitly parked remainder. Master receipt `a9ef00c6861e7939d19635b6d92766e6eedcf11b`
+preserves all243 dispositions.
+
 Date: 2026-09-16
 
 This page is the current documentation entry point for the SWAP5 Status-A baseline. It summarizes the admitted capability boundary and points readers to the underlying acceptance and preservation authorities. It does not replace capability-specific scientific contracts, qualification records, or historical migration evidence.
