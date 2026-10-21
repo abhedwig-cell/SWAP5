@@ -156,7 +156,10 @@ contains
    receipt=reactive_receipt_t()
    bounded_top=.false.;if(present(finite_donor_top))bounded_top=finite_donor_top
    if(bounded_top.and.(present(crop).or..not.present(historical_top_water)))return
-   if(bounded_top.and.abs(root_water)>0d0)return
+   if(bounded_top)then
+     if(.not.ieee_is_finite(root_water))return
+     if(abs(root_water)>0d0)return
+   end if
    surface=0d0;if(present(surface_water))surface=surface_water
    if(.not.ieee_is_finite(surface))return
    if(abs(surface)>100d0)return

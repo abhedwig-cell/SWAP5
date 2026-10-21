@@ -12,10 +12,10 @@
   logical::high,bounded
   high=trim(selected)=='negative-high'
   sp%mineral%c_top=[.002d0,.005d0];sp%mineral%c_bottom=0d0;sp%mineral%c_lateral=0d0
-  sp%organic_reference%ratecon_fom=0d0;sp%organic_reference%ratecon_hum=0d0
+  sp%organic_reference%ratecon_fom=1d-8;sp%organic_reference%ratecon_hum=1d-8
   sp%environment%nitrification_ref_per_day=.2d0;sp%environment%denitrification_ref_per_day=.25d0
   sp%environment%cdissi_half_kg_m2=1d-12
-  cp%harvest%crop_end=-1d0
+  cp%harvest%crop_end=0d0
   cfg%tiles(1)%base_forcing%bottom_flux=0d0
   cfg%tiles(1)%base_forcing%drainage_flux_by_level=0d0
   cfg%tiles(1)%base_forcing%root_extraction_sink=0d0
@@ -36,13 +36,26 @@
    theta=sum(dz*cfg%tiles(1)%initial_state%water_content)/sum(dz)
    initial_n=[1d-5,2d-5]
    if(high)initial_n=[.001d0,.002d0]
-   call initialize_soil_n_pool_state(sp%mineral%inventory,spread(0d0,1,8),1d-8,0d0, &
+   call initialize_soil_n_pool_state(sp%mineral%inventory,spread(0d0,1,8),1d-4,0d0, &
         initial_n(1),initial_n(2),pools,code)
    call require(code==0,'negative initial mineral stocks')
    call initialize_reactive(sp,9001_int64,0d0,theta,pools,soil,code)
    call require(code==0,'negative reaction owner initial state')
    call initialize_crop_soil(soil,crop,cp,9101_int64,state,code)
    call require(code==0,'negative real crop and soil owner')
+   ! Harvest requires an actually completed daily chemistry revision. Advance
+   ! one live crop/root/Richards interval before the tested fallow boundary.
+   forcing=cfg%tiles(1)%base_forcing
+   forcing%top_flux=0d0;forcing%root_extraction_sink=1d-4
+   forcing%root_potential_transpiration=.0008d0
+   e=soil_n_day_environment_t(0d0,1d0,20d0)
+   call run_crop_soil_n_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters, &
+        water,forcing,cfg%numerical,state,weather,0d0,1d0,r,e, &
+        atmospheric_n_surface=.true.,historical_top_water=0d0)
+   if(r%status/=0)print *,'NEGATIVE_PREPARATION_FAILURE',r%status,r%water%status,r%chemical%status, &
+        r%chemical%soil%status,r%chemical%soil%process%status,r%chemical%soil%process%exchange%status
+   call require(r%status==JOINT_OK,'negative preparation actual active crop/root/chemistry day')
+   print *,'NEGATIVE_ACTIVE_PREPARATION',r%chemical%internal_supply_kg_m2,r%chemical%whole_n_residual
    call harvest_crop_soil_boundary(state,hr);call require(hr%status==0,'negative real initial harvest')
    call consume_crop_soil_harvest_pending(state,hr);call require(hr%status==0,'negative retained residue transfer')
    call observe_crop_soil_harvest(state,ho,code);call require(code==0,'negative observe export')
@@ -55,7 +68,7 @@
    source=-.08d0
    if(d==0.or.d==6)source=.004d0
    bounded=source<0d0
-   e=soil_n_day_environment_t(real(d,real64),real(d+1,real64),20d0)
+   e=soil_n_day_environment_t(real(d+1,real64),real(d+2,real64),20d0)
    if(d==3.or.d==7)then
     write(arg,'(I0)')d
     call write_crop_soil_n_joint_restart_file(trim(path)//'.before-'//trim(arg),column, &

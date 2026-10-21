@@ -7,6 +7,7 @@ ap=argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--output',type=Path,required=True)
 ap.add_argument('--reference-result',type=Path,required=True)
 ap.add_argument('--direct-only',action='store_true')
+ap.add_argument('--reuse-physical',type=Path,help='Exact completed incumbent matrix from the same live execution; verify every source and module/object')
 a=ap.parse_args();OUT=a.output.resolve();OUT.mkdir(parents=True,exist_ok=False)
 reference=a.reference_result.resolve()
 ref=json.loads((reference/'result.json').read_text())
@@ -56,8 +57,18 @@ if not a.direct_only:
  (OUT/'literal.f90').write_bytes(literal)
  env={**os.environ,'N_HIST_RESULT_DIR':str(OUT/'physical'),'REPRODUCTIVE_LITERAL_FILE':str(OUT/'literal.f90'),
       'REPRODUCTIVE_LITERAL_SHA256':sha(literal),'PYTHONDONTWRITEBYTECODE':'1','OMP_NUM_THREADS':'1'}
- event([sys.executable,'-B',ROOT/'tests/nut-crop/run_hist_complete.py'],ROOT,'incumbent_physical',env=env)
- physical=json.loads((OUT/'physical/result.json').read_text())
+ physical_root=OUT/'physical'
+ if a.reuse_physical:
+  physical_root=a.reuse_physical.resolve()
+  reuse={'result_sha256':sha((physical_root/'result.json').read_bytes()),
+         'events_sha256':sha((physical_root/'events.json').read_bytes()),'artifacts':{}}
+  for p in physical_root.rglob('*'):
+   if p.suffix in ['.o','.mod']:reuse['artifacts'][str(p.relative_to(physical_root))]=sha(p.read_bytes())
+  assert reuse['artifacts']
+  (OUT/'PHYSICAL_REUSE.json').write_text(json.dumps(reuse,indent=2)+'\n')
+ else:
+  event([sys.executable,'-B',ROOT/'tests/nut-crop/run_hist_complete.py'],ROOT,'incumbent_physical',env=env)
+ physical=json.loads((physical_root/'result.json').read_text())
  assert physical['status']=='HIST_BOUNDED_PHYSICAL_PASS_NOT_FULL_MIGRATION'
  for p,h in physical['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h
  inputs.update(physical['input_sha256'])
@@ -70,15 +81,23 @@ if not a.direct_only:
  text=text.replace('\ncontains\n',"\ncontains\n include 'negative_joint.inc'\n",1)
  (OUT/'negative_driver.f90').write_text(text)
  input_path(include);input_path(old_driver)
- ee=json.loads((OUT/'physical/events.json').read_text())
+ ee=json.loads((physical_root/'events.json').read_text())
  for opt in ['O0','O2']:
-  b=OUT/'physical'/opt
-  link=next(e['command']for e in ee if e['category']=='link'and e['command'][-1]==str(b/'hist'))
+  providers=physical_root/opt
+  b=OUT/('joint-'+opt);b.mkdir()
+  link=next(e['command']for e in ee if e['category']=='link'and e['command'][-1]==str(providers/'hist'))
   objects=[x for x in link if x.endswith('.o')][:-1]
   flags=link[1:link.index(objects[0])]+['-I'+str(ROOT/'tests/nut-crop')]
   obj=b/'negative_driver.o';exe=b/'negative'
   event([FC,*flags,'-c',OUT/'negative_driver.f90','-o',obj],b,'joint_compile')
   event([FC,*flags,*objects,obj,'-o',exe],b,'joint_link')
+  invalid_driver=ROOT/'tests/nut-reactive/test_finite_donor_invalid.f90'
+  invalid_object=b/'invalid.o';invalid_exe=b/'invalid'
+  event([FC,*flags,'-c',invalid_driver,'-o',invalid_object],b,'joint_compile')
+  event([FC,*flags,*objects,invalid_object,'-o',invalid_exe],b,'joint_link')
+  invalid_out=event([invalid_exe],b,'invalid_native')
+  assert b'FINITE_DONOR_NONFINITE_ROOT_REJECTED=PASS'in invalid_out
+  input_path(invalid_driver)
   for name in ['negative-low','negative-high']:
    path=b/(name+'.restart');endpoint=b/(name+'.endpoint')
    out=event([exe,'write',path,endpoint,name],b,'joint_native')
@@ -95,6 +114,8 @@ if not a.direct_only:
        ledger_sha256=sha(Path(str(endpoint)+'.ledger').read_bytes()))
  for name in ['negative-low','negative-high']:
   assert joint['O0/'+name]==joint['O2/'+name],'joint optimization drift'
+ if a.reuse_physical:
+  assert all(sha((physical_root/p).read_bytes())==h for p,h in reuse['artifacts'].items()), 'reused provider artifact changed'
 input_path(Path(__file__))
 result=dict(status='FINITE_DONOR_DIRECT_PASS'if a.direct_only else'FINITE_DONOR_PRODUCTION_LOCAL_PASS_NOT_ADMITTED',
  execution_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
