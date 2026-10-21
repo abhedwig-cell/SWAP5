@@ -37,6 +37,12 @@ module mod_transaction_reference
   type, public :: transaction_attempt_context_t
   end type transaction_attempt_context_t
 
+  ! Opaque model-owned scratch lifetime. It is neither physical state nor an
+  ! externally restorable attempt context. The engine only passes it back.
+  type, public :: transaction_scratch_scope_t
+    integer(int64) :: token(2) = 0_int64
+  end type transaction_scratch_scope_t
+
   ! Generic accepted-result carrier. It is deliberately result metadata rather
   ! than committed physical state or solver scratch. A model may populate the
   ! value/method on a trial outcome; the transaction core owns accepted-route
@@ -85,6 +91,8 @@ module mod_transaction_reference
     procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
     procedure :: restore_attempt_context => default_restore_attempt_context
+    procedure :: begin_scratch_scope => default_begin_scratch_scope
+    procedure :: end_scratch_scope => default_end_scratch_scope
   end type transaction_model_t
 
   type, public :: transaction_policy_t
@@ -220,7 +228,36 @@ contains
     missing_mask = TX_MASS_MISSING_UNSPECIFIED
   end subroutine default_storage_accounting_status
 
+  subroutine default_begin_scratch_scope(self, scope)
+    class(transaction_model_t), intent(inout) :: self
+    type(transaction_scratch_scope_t), intent(out) :: scope
+    if (.not. same_type_as(self, self)) error stop 'unreachable transaction model type'
+    scope = transaction_scratch_scope_t()
+  end subroutine default_begin_scratch_scope
+
+  subroutine default_end_scratch_scope(self, scope)
+    class(transaction_model_t), intent(inout) :: self
+    type(transaction_scratch_scope_t), intent(in) :: scope
+    if (.not. same_type_as(self, self) .or. any(scope%token /= 0_int64)) &
+         error stop 'invalid default transaction scratch scope'
+  end subroutine default_end_scratch_scope
+
   subroutine execute_reference_interval(model, committed, t0, t1, policy, result)
+    class(transaction_model_t), intent(inout) :: model
+    class(transaction_state_t), allocatable, intent(inout) :: committed
+    real(real64), intent(in) :: t0, t1
+    type(transaction_policy_t), intent(in) :: policy
+    type(transaction_result_t), intent(out) :: result
+    type(transaction_scratch_scope_t) :: scope
+
+    call model%begin_scratch_scope(scope)
+    call execute_reference_interval_body(model, committed, t0, t1, policy, result)
+    ! The body's private checkpoint/half contexts have now left scope. A model
+    ! may reclaim their abandoned scratch without invalidating live contexts.
+    call model%end_scratch_scope(scope)
+  end subroutine execute_reference_interval
+
+  subroutine execute_reference_interval_body(model, committed, t0, t1, policy, result)
     class(transaction_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
     real(real64), intent(in) :: t0, t1
@@ -480,7 +517,7 @@ contains
 
     if (context_required) call model%restore_attempt_context(checkpoint_context)
     result%status = TX_STATUS_RETRY_EXHAUSTED
-  end subroutine execute_reference_interval
+  end subroutine execute_reference_interval_body
 
   subroutine execute_model_certificate_interval(model, committed, t0, t1, policy, result)
     class(transaction_model_t), intent(inout) :: model

@@ -2,7 +2,8 @@
 import base64,copy,csv,hashlib,io,json,os,subprocess,sys,tarfile,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-BASE='c4ec414fe5ae55e992e557e394cb4003beaf3e39'
+BASE='c8b35ac3e9f2a2cf2400033d0225aea8198469ea'
+NUT_PREDECESSOR='c4ec414fe5ae55e992e557e394cb4003beaf3e39'
 PREDECESSOR='fb00736e320498f2e610b0671af9c7dc5a381921'
 STATUS='integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
 SCIENCE=['src','tests','tools','reference','.github','app','examples','integration/performance',
@@ -123,7 +124,7 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
  return {'qualified':True,'original_swp_chemistry':True,'native_observations':172,'valid_configurations':22,
          'old_application_artifacts_exact':160,'annual_application_cases_exact':18,'full_swp_default_application':False,'full_capability':False}
 def predecessor():
- for ref,owner in [(PREDECESSOR,'integration/audits/verify_pond_thermal.py'),(BASE,'integration/audits/verify_nut_negative.py')]:
+ for ref,owner in [(PREDECESSOR,'integration/audits/verify_pond_thermal.py'),(NUT_PREDECESSOR,'integration/audits/verify_nut_negative.py'),(BASE,'integration/diagnostics/verify_trace_scope.py')]:
   with tempfile.TemporaryDirectory(prefix='swap5-swp-predecessor-') as tmp:
    path=Path(tmp)/'base'
    subprocess.run(['git','worktree','add','--detach',path,ref],cwd=ROOT,check=True,capture_output=True)

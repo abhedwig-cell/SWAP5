@@ -1,7 +1,7 @@
 module mod_fmr_serialized_reference_backend
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, trial_outcome_t, &
+  use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, transaction_scratch_scope_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
   use mod_pond_water_temporal_difference,only:evaluate_pond_water_temporal_difference
@@ -906,6 +906,8 @@ module mod_fmr_serialized_reference_backend
     procedure :: attempt_context_required => fmr_serialized_attempt_context_required
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
+    procedure :: begin_scratch_scope => fmr_serialized_begin_scratch_scope
+    procedure :: end_scratch_scope => fmr_serialized_end_scratch_scope
     procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot
   end type fmr_serialized_reference_model_t
 
@@ -2911,6 +2913,65 @@ contains
          self%bottom_thermal_carrier_active .or. .not. self%bottom_thermal_carrier_valid .or. &
          self%top_sensible_boundary_carrier_active .or. .not. self%top_sensible_boundary_carrier_valid
   end function fmr_serialized_attempt_context_required
+
+  subroutine fmr_serialized_begin_scratch_scope(self, scope)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(transaction_scratch_scope_t), intent(out) :: scope
+
+    scope%token = [-1_int64, 0_int64]
+    if (.not. self%accepted_water_flux_trace_enabled) return
+    scope%token = [self%trace_generation, int(self%trace_used, int64)]
+  end subroutine fmr_serialized_begin_scratch_scope
+
+  subroutine fmr_serialized_end_scratch_scope(self, scope)
+    class(fmr_serialized_reference_model_t), intent(inout) :: self
+    type(transaction_scratch_scope_t), intent(in) :: scope
+    type(fmr_trace_arena_entry_t), allocatable :: retained(:)
+    integer, allocatable :: chain(:)
+    integer :: watermark, cursor, live, j, index, prefix
+
+    if (scope%token(1) < 0_int64) return
+    if (scope%token(1) /= self%trace_generation .or. scope%token(2) < 0_int64 .or. &
+        scope%token(2) > int(self%trace_used, int64)) error stop 'Reference trace: invalid scratch scope'
+    watermark = int(scope%token(2))
+    if (watermark == self%trace_used) return
+    if (.not. allocated(self%trace_arena)) error stop 'Reference trace: missing scratch arena'
+    if (self%trace_used > size(self%trace_arena)) error stop 'Reference trace: invalid arena extent'
+    allocate(chain(self%trace_used-watermark))
+    cursor = self%trace_tail
+    live = 0
+    do while (cursor > watermark)
+      if (cursor > self%trace_used) error stop 'Reference trace: invalid scoped tail'
+      if (.not. allocated(self%trace_arena(cursor)%payload)) error stop 'Reference trace: missing scoped payload'
+      if (self%trace_arena(cursor)%predecessor < 0 .or. &
+          self%trace_arena(cursor)%predecessor >= cursor) error stop 'Reference trace: invalid scoped predecessor'
+      live = live + 1
+      chain(live) = cursor
+      cursor = self%trace_arena(cursor)%predecessor
+    end do
+    prefix = cursor
+    if (prefix < 0) error stop 'Reference trace: negative scoped prefix'
+    if (live == self%trace_used-watermark) return
+    allocate(retained(live))
+    do j = 1, live
+      index = chain(live-j+1)
+      call move_alloc(self%trace_arena(index)%payload, retained(j)%payload)
+      retained(j)%predecessor = watermark+j-1
+      if (j == 1) retained(j)%predecessor = prefix
+    end do
+    ! Every pre-watermark entry stays pinned for pre-existing external, sibling
+    ! and surrounding-kernel checkpoints. Only this scope's private suffix dies.
+    do index = watermark+1, self%trace_used
+      if (allocated(self%trace_arena(index)%payload)) deallocate(self%trace_arena(index)%payload)
+      self%trace_arena(index)%predecessor = 0
+    end do
+    do j = 1, live
+      call move_alloc(retained(j)%payload, self%trace_arena(watermark+j)%payload)
+      self%trace_arena(watermark+j)%predecessor = retained(j)%predecessor
+    end do
+    self%trace_used = watermark+live
+    if (live > 0) self%trace_tail = self%trace_used
+  end subroutine fmr_serialized_end_scratch_scope
 
   subroutine fmr_serialized_capture_attempt_context(self, context)
     class(fmr_serialized_reference_model_t), intent(inout) :: self

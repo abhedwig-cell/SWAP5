@@ -2780,8 +2780,8 @@
     "strict_documentation": "PASS; final source checks and strict MkDocs on combined canonical metadata"
   },
   "swp_reader_successor": {
-    "status": "LOCAL_O0_O2_QUALIFIED_CANONICAL_PENDING",
-    "baseline": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+    "status": "REQUALIFYING_AFTER_PERF01_TRACE_SCOPE_PR1351",
+    "baseline": "c8b35ac3e9f2a2cf2400033d0225aea8198469ea",
     "scope": "Original read_solute_CDE and TTUTIL chemistry, original grid identity, explicit typed hydrology and heat forcing",
     "invariants": [
       2,
@@ -2796,10 +2796,10 @@
       29
     ],
     "canonical_admitted": false,
-    "qualified": true,
+    "qualified": false,
     "full_swp_default_application": false,
     "recovery_branch": "work/mc-sol01-swp-reader-20261021",
-    "next_safe_step": "Owning source/evidence controls, strict docs, hosted qualification and canonical integration",
+    "next_safe_step": "Fresh builds and native SWP/application qualification on reconciled trace runtime",
     "excluded": [
       "aquifer",
       "macropore",
@@ -2811,12 +2811,6 @@
     ],
     "contract": "docs/science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md",
     "predecessor": "fb00736e320498f2e610b0671af9c7dc5a381921",
-    "evidence": {
-      "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
-      "decoded_sha256": "b8e4e308f05cde67e6bfe349ae3b754a32626cb340cb7ca59f734a357a3c77ca",
-      "decoded_bytes": 553992,
-      "members": 3180
-    },
     "test_selection": {
       "owner": "MC-SOL01",
       "changed_dependency": "Original chemistry/grid input adapter and launcher provenance; no process equations changed",
@@ -2836,7 +2830,17 @@
       "workstream": "MC-NUT01 finite donor PR1350",
       "build_input_intersection": [],
       "all_incoming_files_preserved": true,
-      "original_finite_donor_owner": "Exact c4ec414fe5ae55e992e557e394cb4003beaf3e39 worktree qualification selected; all predecessor bodies retained through additive handoff"
+      "original_finite_donor_owner": "Exact c4ec414fe5ae55e992e557e394cb4003beaf3e39 worktree qualification selected; all predecessor bodies retained through additive handoff",
+      "trace_scope": {
+        "head": "c8b35ac3e9f2a2cf2400033d0225aea8198469ea",
+        "pr": 1351,
+        "changed_build_inputs": [
+          "src/runtime/mod_fmr_serialized_reference_backend.f90",
+          "src/transaction/mod_transaction_reference.f90"
+        ],
+        "rebuild": "O0/O2 and actual native SWP, original 86 and annual exact preservation selected",
+        "inherited_physics": "Exact c8 trace owner contains newly compiled six-exponent matrix/pond and month/year preservation; original bodies unchanged"
+      }
     },
     "postimages": {
       ".github/workflows/mc-sol01-swp-reader.yml": {
@@ -2907,7 +2911,14 @@
       "full_swp_default_application": false,
       "general_seasonal_accuracy": false
     },
-    "local_owner": {
+    "recovery_point": "source-bound evidence committed; publish owning PR and monitor native qualification to terminal state",
+    "previous_input_qualification": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_READER_20261021.tar.xz.b64",
+      "decoded_sha256": "b8e4e308f05cde67e6bfe349ae3b754a32626cb340cb7ca59f734a357a3c77ca",
+      "decoded_bytes": 553992,
+      "members": 3180
+    },
+    "previous_local_owner": {
       "qualified": true,
       "original_swp_chemistry": true,
       "native_observations": 172,
@@ -2918,7 +2929,6 @@
       "negative_controls": 9,
       "full_swp_default_application": false,
       "full_capability": false
-    },
-    "recovery_point": "source-bound evidence committed; publish owning PR and monitor native qualification to terminal state"
+    }
   }
 }

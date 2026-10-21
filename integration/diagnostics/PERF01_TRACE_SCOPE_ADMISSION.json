@@ -1,0 +1,63 @@
+{
+  "pull_request": 1351,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1351",
+  "published_head": "dbb64445c9ce1dfb97c5d6c74f577dd2c6471efb",
+  "actual_merge": "018d9738664359ea5de1b02be55d3b0aec5c5a88",
+  "qualified_tree": "9efc9f368d5d0bbca497bc82aa27b3b88c435297",
+  "merge_tree_exact": true,
+  "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+  "actual_merge_central_qualification": {
+    "qualified": true,
+    "thermal_pond": true,
+    "six_exponents": true,
+    "semantic_native_controls": 96,
+    "original_application_artifacts_exact": 160,
+    "month_and_year_runs": true,
+    "full_capability": false,
+    "seasonal_accuracy_claim": "measured time-grid spread only; annual mass differences not strictly monotone",
+    "trace_scope": true,
+    "matrix_six_exponents": true,
+    "concurrent_finite_donor_preserved": true,
+    "fresh_nut_endpoint_artifacts": 26,
+    "memory_baseline_kib": 961660,
+    "memory_current_kib": 74968,
+    "memory_reduction_fraction": 0.9220431337478943,
+    "dry_numerical_failure_unchanged": true,
+    "speedup_claim": false,
+    "predecessor_qualified": true,
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+    "current_source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0"
+  },
+  "actual_merge_corruption_controls": {
+    "count": 12,
+    "negative_controls": [
+      "missing payload/DEEP.json",
+      "missing columns-v2/baseline-O2-512/RESOURCE.json",
+      "missing columns-v2/current-O2-512/work.csv",
+      "missing preservation/pond/0.8/qualified/result.json",
+      "missing preservation/matrix/2/physical/O2/16/resumed.bin",
+      "missing preservation/season/O0-0.5-4/full/budget.csv",
+      "missing nut/production/joint-O2/negative-high.endpoint.ledger",
+      "stale src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "stale src/transaction/mod_transaction_reference.f90",
+      "failed resource control relabelled PASS",
+      "source boundary 10",
+      "source boundary 11"
+    ]
+  },
+  "published_head_central_qualification": "PASS",
+  "published_head_corruption_controls": 12,
+  "premerge_snapshot": {
+    "base": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+    "mergeable": true,
+    "reviews": 0,
+    "review_threads": 0,
+    "workflow_runs_returned": 0,
+    "statuses_returned": 0
+  },
+  "hosted_science_pass_claim": false,
+  "full_fci": "NOT_SELECTED_TARGETED_NATIVE_PRESERVATION",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "mastercoverage_promotion": false,
+  "remaining": "Original dry32 numerical rounding exhaustion remains open; no production rounding correction included"
+}
