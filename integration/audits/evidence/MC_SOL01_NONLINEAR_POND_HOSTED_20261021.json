@@ -724,5 +724,75 @@
     "column": 119121287155,
     "canonical_feedback": 119122080680
   },
-  "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json"
+  "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json",
+  "actual_merge": {
+    "commit": "8fabce512cc6347815fff591650be198c0ce213f",
+    "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+    "runs": [
+      {
+        "id": 39571079837,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079837"
+      },
+      {
+        "id": 39571079816,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079816"
+      },
+      {
+        "id": 39571079791,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079791"
+      },
+      {
+        "id": 39571079679,
+        "name": "SWAP5-PERF01 exact implementation admission",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079679"
+      },
+      {
+        "id": 39571079674,
+        "name": "MC-SOL01 file-driven Reference column",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079674"
+      },
+      {
+        "id": 39571079913,
+        "name": "MC-SOL01 nonlinear persistent pond",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079913"
+      },
+      {
+        "id": 39571079684,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39571079684"
+      }
+    ],
+    "fgc_native_marker": "F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS",
+    "fgc_job": 119125115204,
+    "fsi35_postimage": "SKIPPED by existing policy"
+  },
+  "master_receipt": {
+    "commit": "d67b96ecca10956cc72fbddbcca3a452c94d0dbc",
+    "branch": "work/swap431-master-coverage-20261006",
+    "capabilities": [
+      "SW431-SALT-SORPTION",
+      "SW431-SALT-DECAY",
+      "SW431-SALT-POND"
+    ],
+    "other_rows_exact": 240,
+    "all_dispositions_exact": 243,
+    "whole_master_qualified": false
+  }
 }

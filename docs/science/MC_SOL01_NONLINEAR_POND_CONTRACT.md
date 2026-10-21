@@ -1,6 +1,7 @@
 # MC-SOL01 nonlinear persistent pond successor
 
-Status: locally qualified candidate; canonical admission and hosted owning qualification pending.
+Status: canonically admitted bounded successor, PR1346 /
+`8fabce512cc6347815fff591650be198c0ce213f`, source tree `7d6853fa3e60f24b07b47a5a641840684b6cd09c`.
 Baseline: e61d8e107121bc31fa1d9b0eac73439af29eb76f.
 Owning record: nonlinear_pond_successor in the existing MC_SOL01_DYNAMIC_DECAY_STATUS.json.
 
@@ -54,7 +55,7 @@ not a claim of seasonal accuracy or timestep convergence across this full scope.
 Compile/link/native costs and all compiler commands, generated literal oracles,
 inputs, native outputs, failed launch attempts and original guard counterexamples
 are in the immutable nonlinear-pond capsule named by the existing status record.
-Physics-only timing is UNKNOWN. Current source/evidence validation and12corruption
+Physics-only timing is UNKNOWN. Current source/evidence validation and 12 corruption
 controls pass, and the exact437d96ff predecessor authority executes unchanged. The initial e61d8e10
 predecessor proof remains separately retained.
 The source handoff adds only the bounded successor before existing thermal code;
@@ -86,3 +87,17 @@ Only exact additive dispatches in the thermal/PERF01 owners are composed, leavin
 each original body intact. Twelve evidence/source/foreign-delta negatives pass.
 The optional performance proposal stays disabled for this pond qualification;
 no new nonlinear-plus-enabled-proposal domain is inferred.
+
+## Final canonical admission
+
+Qualified source head 068d1a73 has all 32 automatic workflows terminal: 22 SUCCESS,
+10 retained non-owning publication preflight/old compile-closure failures. The
+unchanged-source receipt successor 3bce492f is admitted through PR1346 at 8fabce51.
+All seven actual-merge workflows are SUCCESS; the original fixed-interface
+F-GC body emits F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS. The actual merge's
+source/evidence and 12 controls pass. F-SI35 native preservation passes and its
+postimage job remains policy-SKIPPED, not a new full-body PASS. The final metadata
+changes no native provider/input/driver or oracle. Master updates only three
+bounded facets, preserving 240 other rows and all 243 dispositions. Full historical
+capability promotion remains false. Existing hosted/status receipts bind exact
+run/job identities, failed observations and master commit.
