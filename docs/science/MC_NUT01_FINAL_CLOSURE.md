@@ -2,7 +2,16 @@
 
 ## Latest bounded completion,21 October2026
 
-The finite-donor correction is locally qualified; canonical admission is pending.
+The finite-donor correction is ADMITTED through PR1350, canonical merge
+`30be55796107ea05d40aac0ea182f2218613af8b`, qualified head
+`c914a2ab60f9e6a82aa073194869c68e307b8ec5`, source tree
+`1feeeb02c7fce3554ca1634016fa411304d80b0d`. Actual merge tree equals the qualified
+tree `e780618eb8b950addce392347181c0d8a78381b0`; postmerge owner and15 corruption
+controls pass. All33 existing hosted runs reached terminal state:21 success and
+12 separately triaged failures, never relabelled PASS. Relevant successes:
+NUT-native39580912913, canonical39580912991, exact-owner39580913195,
+SOL-column39580913021 and documentation39580913289. The versioned hosted receipt
+is `integration/mc-nut01/MC_NUT01_FINITE_DONOR_HOSTED_20261021.json`.
 The [contract](MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md) and existing
 HIST-COMPLETE record own this successor. Older blocked-negative statements below
 are historical: the configured-crop **fallow, nonnegative-production** subset now
@@ -12,6 +21,11 @@ surface and input/output envelopes. No complete master row is promoted and no
 global B1 snapshot is changed.
 
 The complete nine-row matrix below remains the existing master-row mapping.
+Latest master receipt is `e67d37f2077ab45a605ba68dc94ccb5dde2d8a61` on the
+existing PR1072 branch. Exactly234 other rows, all243 dispositions and summary
+counts remain equal. Source/census/pinned-authority integrity and20 inheritance
+controls pass; source checks and strict MkDocs pass. This is administrative
+integrity, not complete master scientific qualification.
 MINERAL, TRANSPORT, NITRIF and DENIT acquire the new bounded proof; ORGANIC,
 AMEND, RESIDUE, CROP and NFIX retain their earlier admissions, freshly preserved
 by the complete HIST and retained owner runs. All nine full-row dispositions

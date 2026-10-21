@@ -3,8 +3,9 @@
 MC-NUT01 finite donor,21 October2026: the [bounded contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md)
 and [closure review](../science/MC_NUT01_FINAL_CLOSURE.md) record fresh O0/O2
 original-main and actual Richards/crop/fallow/N calculations, hard conservation,
-rollback, native restart and retained-stock preservation. Canonical admission
-is pending. Only explicit fallow negative aggregate with nonnegative production
+rollback, native restart and retained-stock preservation. PR1350 admits this at
+canonical `30be55796107ea05d40aac0ea182f2218613af8b`.
+Only explicit fallow negative aggregate with nonnegative production
 is qualified; full historical scope and all nine master rows remain open.
 
 Current bounded MC-SOL01 dynamic thermal pond and file admission: PR1348 /

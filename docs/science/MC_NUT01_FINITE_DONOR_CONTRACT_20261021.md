@@ -1,6 +1,7 @@
 # MC-NUT01 finite-donor negative aggregate
 
-Status: locally qualified bounded production successor; canonical pending. Baseline canonical
+Status: bounded ADMITTED through PR1350 at canonical
+`30be55796107ea05d40aac0ea182f2218613af8b`. Baseline canonical
 `437d96ff51ac8a5825b605caf788661848c88be5`. Owner: MC-NUT01.
 The existing HIST-COMPLETE record remains the recovery/admission authority.
 
@@ -69,3 +70,27 @@ sinks, immobilisation and near-degenerate analytical coefficients remain
 unsupported. Explicit historical aggregate forcing is not automatic pond
 chemistry or full migration. Existing common water, solute, age, restart and
 numerical contracts are read-only. Affected invariants:3,7,13,21,23,25,26,30.
+
+## Fresh reproduction
+
+Use separate, initially absent result directories; GNU Fortran13 and SciPy are
+required. Run from the repository root with unlimited stack. The retained runner
+uses its original literal hash, not the finite-donor reference's generated code.
+
+```bash
+ulimit -s unlimited
+export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
+python -B reference/swap-4.3.1/patches/SWAP-020/run.py --output /tmp/nut020-reference
+python -B integration/audits/run_nut_negative.py --reference-result /tmp/nut020-reference --output /tmp/nut020-production
+REPRODUCTIVE_PROCESS_RESULT_DIR=/tmp/nut020-literal python -B tests/nut-crop/run_reproductive_process.py
+CROP_N_RESULT_DIR=/tmp/nut020-retained REPRODUCTIVE_LITERAL_FILE=/tmp/nut020-literal/literal.f90 REPRODUCTIVE_LITERAL_SHA256=b64c01e310927bad85f40a467ac356c300c4f72a062d60cc113927f68ac76c14 python -B tests/nut-crop/run_b112_retained_joint.py
+python -B integration/audits/verify_nut_negative.py
+python -B integration/audits/verify_nut_negative.py --self-test
+```
+
+The last two commands independently verify the versioned raw capsule and current
+source; they do not execute new numerical runs. Fresh qualification additionally
+compares the newly generated raw results with the same owner assertions. Do not
+use `--reuse-physical` across source/compiler/object changes. The recorded local
+compiler was GNU13.3; custom installations must supply their own FC/PATH and
+link search paths. No compiler packages or generated binaries are production.

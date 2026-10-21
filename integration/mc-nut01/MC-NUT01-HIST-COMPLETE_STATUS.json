@@ -5,12 +5,12 @@
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
     "audit_id": "SWAP-020",
     "contract": "reference/swap-4.3.1/patches/SWAP-020/CONTRACT.md",
-    "stage": "LOCAL_QUALIFIED_CANONICAL_PENDING",
+    "stage": "BOUNDED_CANONICALLY_ADMITTED",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "production_changed": true,
     "full_work_unit_closed": false,
     "donor_decision": "Existing historical aggregated soil mineral stock, with linear NH4 sorption; finite-donor exhaustion and continuing supply. Not physical pond chemistry.",
@@ -28,7 +28,7 @@
       30
     ],
     "feedback": "80 valid and four invalid inputs per O0/O2; five analytical classes, sorption, zero/depleted/ample donors and continuing sources. Independent numerical ODE and exact nondepleted original results. Local feedback maximum N residual 6.94e-18kg/m2; prior linker/threshold failures retained.",
-    "next_action": "Exact-head owner/source and corruption controls, hosted qualification and canonical admission",
+    "next_action": "Bounded finite-donor fallow complete. Preserve this admitted facet; separately resolve active-crop/immobilisation donor allocation, automatic surface binding and wider source grammar/output contracts before full-row closure.",
     "production_contract": "docs/science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md",
     "production_implemented": true,
     "reference_local_result": {
@@ -165,6 +165,24 @@
       "max_reference_relative_N_residual": 9.173895969097472e-15,
       "max_current_abs_cumulative_N_residual_kg_m2": 1.2495430037895439e-16,
       "max_current_relative_cumulative_N_residual": 2.80058429233234e-13
+    },
+    "pr": 1350,
+    "canonical_merge": "30be55796107ea05d40aac0ea182f2218613af8b",
+    "qualified_head": "c914a2ab60f9e6a82aa073194869c68e307b8ec5",
+    "source_tree": "1feeeb02c7fce3554ca1634016fa411304d80b0d",
+    "hosted_receipt": "integration/mc-nut01/MC_NUT01_FINITE_DONOR_HOSTED_20261021.json",
+    "postmerge_owner_pass": true,
+    "postmerge_negative_controls": 15,
+    "master_receipt": "e67d37f2077ab45a605ba68dc94ccb5dde2d8a61",
+    "master_checks": {
+      "other_rows_exact": 234,
+      "all_dispositions_exact": 243,
+      "summary_exact": true,
+      "integrity": "PASS",
+      "inheritance_controls": 20,
+      "source_docs": "PASS",
+      "strict_docs": "PASS",
+      "full_master_scientific_qualification": false
     }
   },
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
@@ -222,15 +240,15 @@
     "native joint restart",
     "legacy TTUTIL/SNM grammar"
   ],
-  "next_action": "Full historical closure blocked at the now demonstrated original negative-source/depleted-stock reference contract. Preserve all admitted positive/gross/dry/Gash/process/native/restart facets; an explicit corrected-reference boundary decision is required before admitting that negative path. Remaining general input/output, fractional humus, snow/persistent surface and complete original active crop-N equivalence stay separately unqualified.",
-  "recovery_point": "PR1339 Gash production admitted24868384/receipt790fb52f with14 prior endpoints,56 transitions,14 controls and7 final-head hosted successes. PR1340 actual original full caller qualification-only integratede41f3665; full63-provider original O0/O2,10 main processes,80 daily N steps, exact frozen control prefix and9 controls; actual merge tree/owner PASS. Master34f5a9fc preserves234 other rows/all243 dispositions. Full historical closure remains scientifically blocked, not declared complete.",
+  "next_action": "Bounded finite-donor fallow complete. Preserve this admitted facet; separately resolve active-crop/immobilisation donor allocation, automatic surface binding and wider source grammar/output contracts before full-row closure.",
+  "recovery_point": "PR1350 bounded finite-donor fallow ADMITTED30be5579, qualifiedc914a2ab, treee780618e; actual merge/source/owner and15 controls PASS. Raw original14 models/120Nsteps, current4 coupled runs/8 restarts, full HIST/retained preservation;33 hosted terminal21success/12 explained failures. Full historical migration remains open; nine master dispositions unchanged. Master e67d37f2:234 other rows and243 dispositions exact,integrity/20 inheritance controls/source/strict docs PASS.",
   "blockers": [
-    "Actual complete original SWAP4.3.1 fallow main at O0/O2 proves negative carrier and naturally depleted stock: worst whole-N daily residual -3.594831001139163e-4kg/m2 (3.594831kg/ha); zero-denitrification low-N residual -8.1165000124e-5kg/m2. Hard conservation/nonnegative inventory and literal original full negative loading conflict. Current negative-carrier rejection retained; positive gross/dry/Gash and all admitted process facets unaffected. See original_full_caller_qualification_20261020.",
+    "The literal original depleted-stock negative loading is nonconservative. SWAP-020 conservative fallow/nonnegative-production correction is ADMITTED through PR1350; original contradiction is historical evidence, not a blocker for this admitted subset. Active-crop competing sinks/immobilisation, automatic snow/persistent-surface binding and near-degenerate analytical domains remain unqualified. Full active crop-N/multiyear equivalence is not claimed.",
     "Remaining native grammar beyond admitted daily arrays/tables, same-record apostrophe concatenation and explicit false diagnostic flag; fractional experimental-humus start clocks and true extended diagnostic output remain unsupported. No full original-model multiyear comparison is claimed."
   ],
   "mastercoverage_promotion": false,
-  "last_reconciled_head": "e41f36658f23dcd6aa3f34835e4722eae23fba42",
-  "last_reconciled_upstream": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+  "last_reconciled_head": "30be55796107ea05d40aac0ea182f2218613af8b",
+  "last_reconciled_upstream": "fb00736e320498f2e610b0671af9c7dc5a381921",
   "pr_1301": {
     "merged": true,
     "merge_commit": "15aaf51769a578d63fc67f2c61b03b06fd8f99fa",
@@ -1186,7 +1204,7 @@
     "runner": "integration/audits/run_nut_hist_carrier_gap.py",
     "driver": "integration/audits/test_nut_hist_carrier_gap.f90",
     "scope": "Original transport versus real mineral owner: equal net flux, distinct gross N input. Not a new production contract.",
-    "next_action": "Retain current negative-carrier rejection. Actual full original configured-crop fallow now proves the depleted-stock conservation conflict. Any negative-path admission needs an explicit corrected-reference boundary-N decision; preserve all admitted positive/process/native/restart paths.",
+    "next_action": "Bounded finite-donor fallow complete. Preserve this admitted facet; separately resolve active-crop/immobilisation donor allocation, automatic surface binding and wider source grammar/output contracts before full-row closure.",
     "mastercoverage_promotion": false,
     "execution_commit": "8432fff5b593b67a1380f89bd32304e0965d64b1",
     "source_tree": "ad87d0fdf6e8c7cb3e33efb6ee073cdd2ea8ac91",
@@ -1218,7 +1236,14 @@
     "receipt_commit": "36496735b79978be8cc1ba4fc92edeb978e57441",
     "owner_reference_decision_20261020": "RESOLVED: user chose original historical gross loading/order/aggregate ponding convention",
     "successor": "historical_gross_top_successor: source aggregate supplied independently of accepted net soil water; positive bounded domain physically executed; full historical producer/negative aggregate remains open",
-    "current_negative_reference_evidence": "original_full_caller_qualification_20261020"
+    "current_negative_reference_evidence": "original_full_caller_qualification_20261020",
+    "bounded_resolution_20261021": {
+      "authority": "negative_reference_candidate_20261021",
+      "pr": 1350,
+      "canonical_merge": "30be55796107ea05d40aac0ea182f2218613af8b",
+      "resolved_scope": "Explicit negative aggregate; retired crop/fallow; zero root extraction; nonnegative production",
+      "remaining": "Active-crop negative sink allocation, immobilisation and automatic snow/persistent surface; no full historical claim"
+    }
   },
   "material_label_successor": {
     "status": "CANONICALLY_ADMITTED_BOUNDED_PR1319",
@@ -2721,5 +2746,11 @@
       "General native grammar/fractional humus start clocks/true extended diagnostics"
     ],
     "no_reference_fix_invented": true
+  },
+  "remaining_scope_20261021": {
+    "scientific_blocker": "Finite-donor active-crop/immobilisation negative sink allocation has no qualified corrected-reference contract; the proven original stock deficit forbids simply enabling literal negative loading.",
+    "separate_implementation_or_qualification": "Automatic snow/persistent-surface gross binding; remaining native grammar, fractional humus clocks, extended output and complete active historical trajectories. These are not admitted and not relabelled NOT_APPLICABLE.",
+    "excluded": "Aquifer and new RossFast qualification; SOL positive-pond age is no dependency.",
+    "master": "Nine existing full rows ACTIVE_MIGRATION; bounded facets admitted; no competing register."
   }
 }
