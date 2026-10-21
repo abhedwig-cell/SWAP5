@@ -15,6 +15,7 @@ on:
       - 'src/adapter/mod_reference_richards_legacy_binding.f90'
       - 'tests/fci/run_fci58p_fsi35_current_canonical_postimage_reconciliation.sh'
       - 'tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh'
+      - 'tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'
       - 'integration/f-ci/F-CI58P_*.json'
       - 'integration/f-ci/F-CI93_STATUS.json'
       - 'integration/f-si/F-SI35_FINAL_COMPLETION.json'
@@ -29,6 +30,8 @@ jobs:
           fetch-depth: 0
       - name: Compiler identity
         run: gfortran --version
+      - name: Recover exact historical F-SI35 authorities
+        run: git fetch --no-tags origin 15ccbf4b6bcf6895b824a68c221762bef0bc08b9 5898e6616dbb6871a9f52d489038235ba1172cae fd93e50da5973f3e15c8f1b7fa57d72df6c31b72 19a67f7c398fcadbcbc9729509680a1c0c5424f3 f4f98637e963e07e2bedf7ef6acbcaab36e07e5a 48336cb7f14e9246b03c23e549fe7354a93f9e6b
       - name: Preserve F-SI35 through admitted semantic successor lineage
         shell: bash
         run: bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh

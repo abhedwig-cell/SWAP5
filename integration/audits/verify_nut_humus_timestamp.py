@@ -4,7 +4,7 @@ import base64,hashlib,io,json,re,runpy,struct,subprocess,sys,tarfile,zipfile
 ROOT=Path(__file__).resolve().parents[2]
 STATUS='integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
 KEY='humus_timestamp_20261021'
-BASE='d7b891759a8c378ba0367e1a1a112c684712199f'
+BASE='bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b'
 SCIENCE=['src','tests','tools','reference','.github','app','examples','integration/audits','integration/performance','integration/diagnostics']
 PRODUCTION={'src/process/mod_b111_soil_n_reactive_owner.f90','src/process/mod_soil_n_historical_activation.f90','src/process/mod_soil_n_historical_named_input.f90'}
 OWNED=PRODUCTION|{'tests/nut-reactive/test_reactive_owner.f90','tests/nut-input/test_humus_timestamp.f90',
@@ -104,6 +104,14 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
  # source-delta ownership on a later registered successor.
  old=runpy.run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))
  require(old['validate'](old['capsule'](),reader)['qualified'],'current SOL predecessor science')
+ # Concurrent PR1353 added the original FSI35 native replay and transaction
+ # registry. Its compiled historical providers are unchanged by this input work.
+ sol=json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_reader_successor']
+ native=sol['fsi35_reconciliation']['native_evidence']
+ require(sha(reader(native['path']))==native['sha256']and sha(reader('tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'))==native['script_sha256'],'FSI35 replay/script changed')
+ for p in ['src/transaction/mod_transaction_reference.f90','src/legacy/b1_10_port/headcalc.f90']:
+  require(reader(p)==subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT),'FSI35 provider changed')
+ require(helper['unchanged_ci_closure']()==3,'changed original core CI provider footprint')
  predecessor=js('predecessor.json');require(predecessor['qualified']and predecessor['source_tree']==git('rev-parse',BASE+':src'),'frozen predecessor owner')
  return dict(qualified=True,status='HUMUS_TIMESTAMP_ORIGINAL_NATIVE_AND_CURRENT_COUPLED_QUALIFIED',source_tree=git('rev-parse','HEAD:src'),full_capability=False,full_migration_qualified=False,clock_valid=12,clock_invalid=9,legacy_native=38,fresh_restarts=8,current_coupled_cases=4,max_abs_N_residual=max_abs,max_relative_N_residual=max_rel,old_domain_bodies_exact=True,full_fci='NOT_SELECTED_IMPACT_NUT_INPUT_CLOCK')
 def verify_qualification():source();return validate(capsule())

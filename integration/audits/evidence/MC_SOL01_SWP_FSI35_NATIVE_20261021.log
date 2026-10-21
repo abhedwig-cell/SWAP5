@@ -1,0 +1,545 @@
+FCI93_SELECTED_HEADCALC_SOURCE_BOUNDARY=PASS
+FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS
+FCI93_EXACT_TRANSITIVE_COMPILE_DEPENDENCIES=PASS
+FCI93_FIXED_K_EXACT_BOUNDED_POSTIMAGE=PASS
+FCI93_HISTORICAL_FSI35_EXACT_AUTHORITIES=PASS
+FCI93_SUCCESSOR_LINEAGE=PASS
+FCI93_FSI35_TYPED_SEAM_HEADCALC_ISOLATION=PASS
+FCI93_M1C3_HISTORICAL_STUB_INTERFACE_SHIM=PASS
+FCI93_IMMUTABLE_COMPILE_HELPER_MATERIALIZED=PASS
+src/solver/mod_soil_water_solver_contract.f90:455:11:
+
+  455 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:461:68:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:59:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:82:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:112:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:336:57:
+
+  336 |   logical function default_macropore_source_freezing(self) result(permitted)
+      |                                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:331:59:
+
+  331 |   real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:326:63:
+
+  326 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                               1
+Warning: Unused dummy argument ‘amount_cm’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:326:52:
+
+  326 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                    1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_provider.f90:387:8:
+
+  387 |     if (head_new == head_old) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:295:13:
+
+  295 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:303:19:
+
+  303 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:309:16:
+
+  309 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:322:16:
+
+  322 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:341:16:
+
+  341 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:350:16:
+
+  350 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:370:16:
+
+  370 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:388:11:
+
+  388 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:188:13:
+
+  188 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:196:19:
+
+  196 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:202:16:
+
+  202 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:215:16:
+
+  215 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:232:16:
+
+  232 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:240:16:
+
+  240 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:252:16:
+
+  252 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:265:11:
+
+  265 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:41:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:79:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                                                               1
+Warning: Unused dummy argument ‘water_content_top’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_b110_direct_retention_core.f90:62:13:
+
+   62 |       if(any(parameters%cofgen(:,2:parameters%active_nodes)/= &
+      |             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:385:13:
+
+  385 |     else if (request%runoff_exponent == 1.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:258:79:
+
+  258 |       if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
+      |                                                                               1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:288:8:
+
+  288 |     if (result%runoff_depth_cm == 0.0_real64) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_reference_richards_legacy_binding.f90:403:66:
+
+  403 |        if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+      |                                                                  1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_reference_richards_legacy_binding.f90:404:11:
+
+  404 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_reference_richards_legacy_binding.f90:181:52:
+
+  181 |           if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+      |                                                    1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_b110_production_soil_water_task2.f90:352:30:
+
+  352 |     if (rsro < 0.0_real64 .or. rsroexp /= 1.0_real64 .or. pondmx < 0.0_real64) return
+      |                              1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_b110_production_soil_water_task2.f90:353:12:
+
+  353 |     if (any(rfcp(1:numnod) /= 1.0_real64)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/legacy/b1_10_port/soilwater.f90:117:67:
+
+  113 |             do node = 1,numnod
+      |                              2                                     
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                   1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:117:88:
+
+  113 |             do node = 1,numnod
+      |                              2                                                          
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                                        1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:117:115:
+
+  113 |             do node = 1,numnod
+      |                              2                                                                                     
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                                                                   1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:48:
+
+  175 |             do i = 1,numnod
+      |                           2                     
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:63:
+
+  175 |             do i = 1,numnod
+      |                           2                                    
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                               1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:81:
+
+  175 |             do i = 1,numnod
+      |                           2                                                      
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                                                 1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/solver/mod_soil_water_solver_contract.f90:455:11:
+
+  455 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:461:68:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:59:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:82:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:461:112:
+
+  461 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:336:57:
+
+  336 |   logical function default_macropore_source_freezing(self) result(permitted)
+      |                                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:331:59:
+
+  331 |   real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:326:63:
+
+  326 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                               1
+Warning: Unused dummy argument ‘amount_cm’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:326:52:
+
+  326 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                    1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_provider.f90:387:8:
+
+  387 |     if (head_new == head_old) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:295:13:
+
+  295 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:303:19:
+
+  303 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:309:16:
+
+  309 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:322:16:
+
+  322 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:341:16:
+
+  341 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:350:16:
+
+  350 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:370:16:
+
+  370 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:388:11:
+
+  388 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:188:13:
+
+  188 |     else if (head == 0.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:196:19:
+
+  196 |           else if (raw_theta == c(2)) then
+      |                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:202:16:
+
+  202 |        else if (head == B110_H_CRIT) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:215:16:
+
+  215 |        else if (head == h105) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:232:16:
+
+  232 |        else if (head == B110_EXTREME_DRY_HEAD) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:240:16:
+
+  240 |        else if (relsat == B110_SAT_K_SWITCH) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:252:16:
+
+  252 |        else if (head == c(9)) then
+      |                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_default_mvg_directional_provider.f90:265:11:
+
+  265 |        if (denom == 0.0_real64) return
+      |           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:41:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_fixed_flux_top_boundary_provider.f90:14:79:
+
+   14 |   subroutine fixed_flux_top_evaluate(self, pressure_head_top, water_content_top, requested, &
+      |                                                                               1
+Warning: Unused dummy argument ‘water_content_top’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_b110_direct_retention_core.f90:62:13:
+
+   62 |       if(any(parameters%cofgen(:,2:parameters%active_nodes)/= &
+      |             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:385:13:
+
+  385 |     else if (request%runoff_exponent == 1.0_real64) then
+      |             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:258:79:
+
+  258 |       if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
+      |                                                                               1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_b110_dynamic_top_boundary_provider.f90:288:8:
+
+  288 |     if (result%runoff_depth_cm == 0.0_real64) then
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/legacy/b1_10_port/headcalc.f90:1347:6:
+
+ 1347 |       function dkmean(swkmean,kmain,ksub,dzmain,dzsub)
+      |      ^
+Warning: ‘__result_dkmean’ may be used uninitialized [-Wmaybe-uninitialized]
+src/legacy/b1_10_port/headcalc.f90:692:10:
+
+  692 |       if (dabs(sum1) > CritDevBalTot) flnonconv = .TRUE.
+      |          ^
+Warning: ‘sum1’ may be used uninitialized [-Wmaybe-uninitialized]
+src/legacy/b1_10_port/headcalc.f90:101:68:
+
+  101 |    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
+      |                                                                    ^
+note: ‘sum1’ was declared here
+src/adapter/mod_reference_richards_legacy_binding.f90:403:66:
+
+  403 |        if (.not. ieee_is_finite(request%boundary%bottom_flux) .or. request%boundary%bottom_flux /= 0.0_real64) return
+      |                                                                  1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_reference_richards_legacy_binding.f90:404:11:
+
+  404 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_reference_richards_legacy_binding.f90:181:52:
+
+  181 |           if (request%boundary%bottom_mode == 5 .or. ws%state_binding%qbot /= 0.0_real64) then
+      |                                                    1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_b110_production_soil_water_task2.f90:352:30:
+
+  352 |     if (rsro < 0.0_real64 .or. rsroexp /= 1.0_real64 .or. pondmx < 0.0_real64) return
+      |                              1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/adapter/mod_b110_production_soil_water_task2.f90:353:12:
+
+  353 |     if (any(rfcp(1:numnod) /= 1.0_real64)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/legacy/b1_10_port/soilwater.f90:117:67:
+
+  113 |             do node = 1,numnod
+      |                              2                                     
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                   1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:117:88:
+
+  113 |             do node = 1,numnod
+      |                              2                                                          
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                                        1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:117:115:
+
+  113 |             do node = 1,numnod
+      |                              2                                                                                     
+......
+  117 |                if (node > 1)      kmean(node) = hcomean(swkmean, k(node-1), k(node), dz(node-1), dz(node), node, h(node-1), h(node))
+      |                                                                                                                   1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:48:
+
+  175 |             do i = 1,numnod
+      |                           2                     
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:63:
+
+  175 |             do i = 1,numnod
+      |                           2                                    
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                               1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+src/legacy/b1_10_port/soilwater.f90:179:81:
+
+  175 |             do i = 1,numnod
+      |                           2                                                      
+......
+  179 |                   kmean(i) = hcomean(swkmean, k(i-1), k(i), dz(i-1), dz(i), i, h(i-1), h(i))
+      |                                                                                 1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2) [-Wdo-subscript]
+FKT15_ACCEPTED_TYPED_ROUTE=PASS
+FKT15_ACCEPTED_SENSITIVITY=PASS
+FKT15_SINGLE_HYDRAULIC_AUTHORITY=PASS
+FKT15_UNSUPPORTED_DIRECT_FALLBACK_SEAM=PASS
+FKT15_STALE_SENSITIVITY_CLEAR=PASS
+FKT15_WORKER_ISOLATION_1=PASS
+FKT15_WORKER_ISOLATION_2=PASS
+FKT15_WORKER_ISOLATION_4=PASS
+FKT15_WORKER_ISOLATION_8=PASS
+FKT15_EIGHT_WORKER_CAPSULE_ISOLATION=PASS
+FKT15_RETRY_FAIL_CLOSED=PASS
+FKT15_PRODUCTION_TASK2_GATE=PASS
+FKT15_PRODUCTION_SURFACE_FLUX=PASS
+FKT15_PRODUCTION_ATMOSPHERIC_HEAD=PASS
+FKT15_PRODUCTION_PONDED_HEAD=PASS
+FKT15_PRODUCTION_LINEAR_RUNOFF=PASS
+FKT15_PRODUCTION_SURFACE_METADATA_IDENTITY=PASS
+FKT15_PRODUCTION_SURFACE_HARD_MASS=PASS
+FKT15_PRODUCTION_FLUX_ONLY_TANGENT_SCOPE=PASS
+FKT15_PRODUCTION_SURFACE_REGIMES_GATE=PASS
+FSI35_STANDALONE_WORKER_TASK2_EQUIVALENCE=PASS
+FSI35_STANDALONE_USES_COMMON_SOLVER_SERVICE=PASS
+FCI93_FSI35_CURRENT_SEMANTIC_REPLAY=PASS
+FCI93_FSI35_SUCCESSOR_PRESERVATION=PASS
+FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS

@@ -1,6 +1,8 @@
 # Historical humus timestamps
 
-Candidate, MC-NUT01, baseline canonical d7b89175 (21 October2026).
+Candidate, MC-NUT01, science execution baseline d7b89175 (21 October2026),
+composed canonical bcf7a497. Concurrent PR1353 changes the F-SI35 evidence/registry
+only; all production sources and every executed NUT provider stay identical.
 The existing HIST-COMPLETE status remains the admission authority.
 
 Original archived TTUTIL RDDECT in rdlex.for accepts a date followed by an

@@ -15,7 +15,7 @@
     "selected_composition": "Fresh current Reference/crop/Soil-N across fractional humus clock and persistent restart; provider build cost UNKNOWN pending measured closure",
     "interfaces": "Existing immutable humus start clock accepts fractions; private native timestamp decoder only; no state or restart schema",
     "next_action": "Exact owner/source and corruption checks, current canonical reconciliation, bounded PR admission and existing master registration",
-    "baseline": "d7b891759a8c378ba0367e1a1a112c684712199f",
+    "baseline": "bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b",
     "local_result": {
       "source_timestamps_exact": 12,
       "invalid_timestamps_rejected": 9,
@@ -49,11 +49,11 @@
       },
       "integration/audits/verify_nut_humus_timestamp.py": {
         "status": "A",
-        "sha256": "102ce5c30e3ffbb9092847595a35e8326c8c19f2e36ad2025ba8ad74559756f2"
+        "sha256": "35f74ed6538c29a0148fd04f82ca8c82862d2a5b9be812a182ea2b4cdd0b4477"
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "M",
-        "sha256": "b758f6fe1b791500daea5043fb0bfa35588847e40c7b9cc303854578063489ba"
+        "sha256": "28fd627a705e071d3a9b0df12ec723ad4c63ca774e9a5b5fa7dafd059b8b6907"
       },
       "src/process/mod_b111_soil_n_reactive_owner.f90": {
         "status": "M",
@@ -75,7 +75,9 @@
         "status": "M",
         "sha256": "1e2ba7185d56de0dc8a3dd0a5769021937aa90e47123fc3b2b267601d0fbd3b0"
       }
-    }
+    },
+    "scientific_execution_base": "d7b891759a8c378ba0367e1a1a112c684712199f",
+    "concurrent_reconciliation": "PR1353 FSI35 registry/evidence has identical035a4085 source tree; exact additive owner handoff preserved; original native evidence/script and current core CI provider footprints checked"
   },
   "negative_reference_candidate_20261021": {
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
