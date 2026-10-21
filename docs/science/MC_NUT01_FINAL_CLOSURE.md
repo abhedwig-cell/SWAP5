@@ -1,5 +1,19 @@
 # MC-NUT01 final closure review
 
+## Fractional humus timestamp successor,21 October2026
+
+The [timestamp contract](MC_NUT01_HUMUS_TIMESTAMP_20261021.md) records a locally
+qualified, canonically pending input extension: original underscore time syntax,
+including normalized hours and original fractional-second precision. Twelve
+valid/nine invalid TTUTIL cases,38 incumbent native cases, original chemistry,
+the complete current HIST matrix and four new coupled calculations pass O0/O2.
+Eight fresh-process restarts preserve physical/cumulative state; maximum new
+whole-N residual1.0547118733938987e-15kg/m2, relative2.1201384179555724e-15.
+This resolves the bounded fractional humus clock gap once admitted. It does not
+resolve wider native grammar, extended diagnostics, negative active-crop sink
+allocation, automatic snow/persistent-surface binding or complete original
+multiyear equivalence. The existing nine-row master mapping below remains valid.
+
 ## Latest bounded completion,21 October2026
 
 The finite-donor correction is ADMITTED through PR1350, canonical merge

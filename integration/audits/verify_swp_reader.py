@@ -19,6 +19,8 @@ def hook(fn):
 def nut_hook(fn):
  return " if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_reader_successor', {}):\n  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['"+fn+"']("+('reader,changed' if fn=='source' else '')+")\n"
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('humus_timestamp_20261021',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_humus_timestamp.py'))['source'](reader,changed)
  s=record();require(s['baseline']==BASE,'wrong input-route baseline');git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty scientific source')
  actual=changed if changed is not None else {x.split('\t')[1]:x.split('\t')[0] for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -134,8 +136,12 @@ def predecessor():
    finally:subprocess.run(['git','worktree','remove','--force',path],cwd=ROOT,check=True,capture_output=True)
  return True
 def verify_qualification():
+ if 'evidence' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('humus_timestamp_20261021',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_humus_timestamp.py'))['verify_qualification']()
  source();r=validate(capsule());r.update(predecessor_qualified=predecessor(),source_tree=git('rev-parse','HEAD:src'),current_source_tree=git('rev-parse','HEAD:src'));return r
 def self_test():
+ if 'evidence' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('humus_timestamp_20261021',{}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_humus_timestamp.py'))['self_test']()
  source();files=capsule();validate(files);controls=[]
  def reject(name,fn):
   try:fn()

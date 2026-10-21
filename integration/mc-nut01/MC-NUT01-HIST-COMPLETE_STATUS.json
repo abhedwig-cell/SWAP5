@@ -3,18 +3,79 @@
   "work_unit": "MC-NUT01-HIST-COMPLETE",
   "humus_timestamp_20261021": {
     "baseline_ref": "d7b89175",
-    "stage": "IMPLEMENTED_UNQUALIFIED",
+    "stage": "LOCAL_QUALIFIED_CANONICAL_PENDING",
     "contract": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "canonical_admitted": false,
     "scope": "Original underscore hour/minute/second humus timestamps; endpoint predicate and equations unchanged; amendment dates remain daily",
     "selected_feedback": "Fresh original TTUTIL/native O0/O2 and original chemistry/reactive fractional switch, mass and opaque continuation; expected under60seconds per direct runner",
     "selected_composition": "Fresh current Reference/crop/Soil-N across fractional humus clock and persistent restart; provider build cost UNKNOWN pending measured closure",
     "interfaces": "Existing immutable humus start clock accepts fractions; private native timestamp decoder only; no state or restart schema",
-    "next_action": "Run direct source/native witnesses, then accepted-state composition and owning admission/preservation proof"
+    "next_action": "Exact owner/source and corruption checks, current canonical reconciliation, bounded PR admission and existing master registration",
+    "baseline": "d7b891759a8c378ba0367e1a1a112c684712199f",
+    "local_result": {
+      "source_timestamps_exact": 12,
+      "invalid_timestamps_rejected": 9,
+      "old_native_fixtures": 38,
+      "incumbent_endpoints_exact": 16,
+      "incumbent_transition_restarts": 56,
+      "new_coupled_cases": 4,
+      "new_process_restarts": 8,
+      "whole_day_controls": 8,
+      "max_abs_N_residual_kg_m2": 1.0547118733938987e-15,
+      "max_relative_N_residual": 2.1201384179555724e-15,
+      "O0_O2_exact": true
+    },
+    "predecessor_qualified": true,
+    "evidence": {
+      "index": "integration/audits/evidence/mc-nut01-humus-timestamp-20261021/INDEX.json",
+      "sha256": "25b417382298b6bcbe240d9a388e35740ca1a53fa7fbe475e61261e2561b36a9"
+    },
+    "postimages": {
+      "integration/audits/package_nut_humus_timestamp.py": {
+        "status": "A",
+        "sha256": "b0170afe260250a951e2844a0515d12004fddee6c2923eeb13fa3c13c3684443"
+      },
+      "integration/audits/run_nut_humus_joint.py": {
+        "status": "A",
+        "sha256": "3d35fb13af5a4e00a246e9c2397b61d159e8f8824c5affd6001c5656f4c60d4e"
+      },
+      "integration/audits/run_nut_humus_timestamp.py": {
+        "status": "A",
+        "sha256": "4e050f61f5aa0281a0b397398101decfcf64df67d910d9e0019a38b41c562ab1"
+      },
+      "integration/audits/verify_nut_humus_timestamp.py": {
+        "status": "A",
+        "sha256": "102ce5c30e3ffbb9092847595a35e8326c8c19f2e36ad2025ba8ad74559756f2"
+      },
+      "integration/audits/verify_swp_reader.py": {
+        "status": "M",
+        "sha256": "b758f6fe1b791500daea5043fb0bfa35588847e40c7b9cc303854578063489ba"
+      },
+      "src/process/mod_b111_soil_n_reactive_owner.f90": {
+        "status": "M",
+        "sha256": "ecf70a3b0bc6d42f00320f37e38297e7d5258a9b5caa94605c19bce911d490ab"
+      },
+      "src/process/mod_soil_n_historical_activation.f90": {
+        "status": "M",
+        "sha256": "17f0d9cf8de0ca1f6717989e8948951570875f39b1e27cfd932ef1c32e40e1bf"
+      },
+      "src/process/mod_soil_n_historical_named_input.f90": {
+        "status": "M",
+        "sha256": "e6d01ddb1ed17df3623b7772066d42f490ed0e8cd43a0652f2c75493220e6ca1"
+      },
+      "tests/nut-input/test_humus_timestamp.f90": {
+        "status": "A",
+        "sha256": "9ee263220896172de8e963a4fb4588e5e1821bdac7a664d10eb7483a49e904dc"
+      },
+      "tests/nut-reactive/test_reactive_owner.f90": {
+        "status": "M",
+        "sha256": "1e2ba7185d56de0dc8a3dd0a5769021937aa90e47123fc3b2b267601d0fbd3b0"
+      }
+    }
   },
   "negative_reference_candidate_20261021": {
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
@@ -188,7 +249,14 @@
     "hosted_receipt": "integration/mc-nut01/MC_NUT01_FINITE_DONOR_HOSTED_20261021.json",
     "postmerge_owner_pass": true,
     "postmerge_hosted_successes": 6,
-    "postmerge_hosted_runs": [39581702043, 39581702110, 39581702161, 39581702045, 39581702180, 39581702048],
+    "postmerge_hosted_runs": [
+      39581702043,
+      39581702110,
+      39581702161,
+      39581702045,
+      39581702180,
+      39581702048
+    ],
     "postmerge_negative_controls": 15,
     "master_receipt": "e67d37f2077ab45a605ba68dc94ccb5dde2d8a61",
     "master_checks": {
