@@ -49,7 +49,7 @@
       },
       "integration/audits/verify_nut_humus_timestamp.py": {
         "status": "A",
-        "sha256": "35f74ed6538c29a0148fd04f82ca8c82862d2a5b9be812a182ea2b4cdd0b4477"
+        "sha256": "6e6145966b62e2899b7a2cf45e11abbf1bb25cf108155ccc1211e100bda57df0"
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "M",
@@ -77,7 +77,17 @@
       }
     },
     "scientific_execution_base": "d7b891759a8c378ba0367e1a1a112c684712199f",
-    "concurrent_reconciliation": "PR1353 FSI35 registry/evidence has identical035a4085 source tree; exact additive owner handoff preserved; original native evidence/script and current core CI provider footprints checked"
+    "concurrent_reconciliation": "PR1353 FSI35 registry/evidence has identical035a4085 source tree; exact additive owner handoff preserved; original native evidence/script and current core CI provider footprints checked",
+    "canonical_metadata": {
+      "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json": {
+        "status": "M",
+        "sha256": "f08b322f13b6bf484f4dd6742880d2b720d519360865bdea7fb445788b842b48"
+      },
+      "integration/audits/MC_SOL01_SWP_READER_HOSTED_20261021.json": {
+        "status": "A",
+        "sha256": "bb10f9eff224cc6f28d817d9bf537dedaa64b92dc2c191da56b55b2bca2ac331"
+      }
+    }
   },
   "negative_reference_candidate_20261021": {
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",

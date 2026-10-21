@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-SOL01 original SWP chemistry: [contract](../science/MC_SOL01_SWP_CHEMISTRY_CONTRACT.md),
+PR1352 feature merge d7b891759a8c378ba0367e1a1a112c684712199f and PR1353
+FSI35 reconciliation bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b. Existing work-unit
+MC_SOL01_DYNAMIC_DECAY_STATUS.json#swp_reader_successor binds source postimages,
+native capsule, all three fixed predecessor owners, hosted actual gates and the
+four-row master receipt. Full historical/default application remains open.
+
+
 MC-NUT01 finite donor,21 October2026: SWAP-020 original63-provider reference,
 the [production contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md),
 existing HIST-COMPLETE status child `negative_reference_candidate_20261021` and
