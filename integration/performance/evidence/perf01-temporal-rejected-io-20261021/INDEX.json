@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "encoding": "concatenated-base64-xz-tar",
+  "parts": [
+    "evidence.part-000.b64"
+  ],
+  "decoded_sha256": "a37f46e8c5680d91f3a51f78ea9aa2e0085423087f7f1e4d1a8807d37aa61393",
+  "decoded_bytes": 213784,
+  "member_count": 1434,
+  "members_sha256": "a15bee9b4ed1b92c167f680c648ce7a7047037870b2603df2379727fdefc5c17",
+  "disposition": {
+    "temporal-O2": {
+      "status": "INCOMPLETE_DIAGNOSTIC_SEE_RETAINED_LOG",
+      "native_runs": 34,
+      "failures": [],
+      "complete_cases": [
+        "pond4"
+      ],
+      "driver_sha256": "7b9a03c454fddc248536878611691b573bf2d96c09c0c7c37dd2ab2f3c98e9f6"
+    },
+    "temporal-O2-final": {
+      "status": "INCOMPLETE_DIAGNOSTIC_SEE_RETAINED_LOG",
+      "native_runs": 51,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 68,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2-dry-control": {
+      "status": "NATIVE_FAILED_OR_CENSORED_NOT_QUALIFIED",
+      "native_runs": 2,
+      "failures": [
+        {
+          "directory": "dry32/1e-06-on-0",
+          "command": [
+            "/workspace/scratch/d48d46fc3bf1/perf01-recovered/temporal-fresh-O2-dry-control/on/column",
+            "/workspace/scratch/d48d46fc3bf1/perf01-recovered/temporal-fresh-O2-dry-control/dry32/1e-06.nml",
+            "-",
+            "8"
+          ],
+          "exit": 1,
+          "wall": 0.016665547000002334
+        }
+      ],
+      "complete_cases": [],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2-dry-snap": {
+      "status": "INCOMPLETE_DIAGNOSTIC_SEE_RETAINED_LOG",
+      "native_runs": 17,
+      "failures": [],
+      "complete_cases": [],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    }
+  },
+  "fresh_reexecution": true,
+  "scope": "DIAGNOSTICS_ONLY_NO_PRODUCTION_ADMISSION"
+}

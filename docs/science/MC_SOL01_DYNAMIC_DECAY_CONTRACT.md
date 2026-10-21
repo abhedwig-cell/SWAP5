@@ -4,6 +4,11 @@ Status: local O0/O2 qualification completed; actual canonical admission is
 governed by `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json`.
 Baseline: `83defb1a6a7a9f4d2fcd862faf73a21ad621072a`.
 
+Admission reconciliation: concurrent canonical `3cb20b8a48440a9445277dfba0982b697197638a`
+adds PERF01 diagnostic evidence/registration only. Its complete src/reference
+trees equal the original baseline. The exact new predecessor authority is
+executed; every previously executed thermal input retains its source hash.
+
 The existing B1.11 sorption, transport and temperature/moisture/depth decay
 operators remain the scientific implementation. This successor supplies an
 actual, node-resolved restricted-heat endpoint to those operators. It does not

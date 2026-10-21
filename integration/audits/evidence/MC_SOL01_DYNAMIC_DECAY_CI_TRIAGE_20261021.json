@@ -1,0 +1,154 @@
+{
+  "baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
+  "new_compiled_inputs_in_old_failures": false,
+  "preflight": {
+    "run_pub_p2e07_reference_cancellation_floor.sh": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "PUB_P2E07_GATE_FAIL P2E07 mutated src or reference\n",
+      "runner_sha256": "67dcf6a315c7a107a22378985d8d2a06f23632e97422226c7e7993db182a334f"
+    },
+    "run_pub_p2e08_reference_valid_calibration_domain.sh": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical\n",
+      "runner_sha256": "bd88b121bdfac3b9a626820d10ff8a22982b5a0788268dd9b1b1d71278ff1965"
+    },
+    "run_pub_p2e09_reference_threshold_freeze.sh": {
+      "returncode": 1,
+      "stdout": "PUB_P2E09_RECONCILED_BASE=83defb1a6a7a9f4d2fcd862faf73a21ad621072a\n",
+      "stderr": "PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical\nPUB_P2E09_GATE_FAIL admitted P2E08 Reference replay\n",
+      "runner_sha256": "1c7d39f4526cb566037bafd981057f4d393b1087c1ad58ef72b67b7e75bb9f81"
+    },
+    "run_pub_p2e10_e0_broad_paired_matrix.sh": {
+      "returncode": 1,
+      "stdout": "PUB_P2E10_RECONCILED_BASE=83defb1a6a7a9f4d2fcd862faf73a21ad621072a\n",
+      "stderr": "PUB_P2E10_GATE_FAIL solver contract drift\n",
+      "runner_sha256": "32b6541a7545d58ed914ea9d97d5cf747b9e5350b72c996bf2d45e8218a43e83"
+    },
+    "run_pub_p2e06_reference_local_balance_scaling.sh": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base\n",
+      "runner_sha256": "5790e610febabd2981a8eb9a16364479c7f186a0432953fb51b2fa7d5c726613"
+    },
+    "run_pub_me_d1_transition_authority.sh": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source\n",
+      "runner_sha256": "32f1dfe71baf2acfa2ec8cc54d43c663924ae743bb53d81c768535141aed1243"
+    },
+    "run_pub_me_d3_origin_authority.sh": {
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "PUB_ME_D3_GATE_FAIL D3 changed production/reference source\n",
+      "runner_sha256": "73dc0193f13a3f2f29296f001bf0229c2823d42b6dba723ad3c84278078dd0a9"
+    }
+  },
+  "compile_footprints": {
+    "run_pub_p2e02_reference_uncertainty_pilot.sh": {
+      "runner_and_all_literal_Fortran_inputs_identical_to_baseline": true,
+      "fortran_inputs": 57,
+      "missing_provider": "src/process/mod_drainage_dramet3_response.f90",
+      "required_by": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "provider_unchanged": true
+    },
+    "run_pub_p2e04_reference_bc_sweeps.sh": {
+      "runner_and_all_literal_Fortran_inputs_identical_to_baseline": true,
+      "fortran_inputs": 51,
+      "missing_provider": "src/process/mod_drainage_dramet3_response.f90",
+      "required_by": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "provider_unchanged": true
+    },
+    "run_pub_p2e04_reference_failure_census.sh": {
+      "runner_and_all_literal_Fortran_inputs_identical_to_baseline": true,
+      "fortran_inputs": 47,
+      "missing_provider": "src/process/mod_drainage_dramet3_response.f90",
+      "required_by": "src/runtime/mod_fmr_drainage_response_binding.f90",
+      "provider_unchanged": true
+    }
+  },
+  "hosted_failures": [
+    {
+      "run": 39555862813,
+      "job": 119075349926,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "errors": [
+        "2026-10-21T06:31:21.2903496Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "run": 39555862513,
+      "job": 119075349314,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "errors": [
+        "2026-10-21T06:32:10.2816473Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "run": 39555862805,
+      "job": 119075350228,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "errors": [
+        "2026-10-21T06:31:52.7807706Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    },
+    {
+      "run": 39555862533,
+      "job": 119075348914,
+      "name": "PUB-ME D3 origin authority",
+      "errors": [
+        "2026-10-21T06:31:16.4444035Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "run": 39555862631,
+      "job": 119075349803,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "errors": [
+        "2026-10-21T06:31:17.3092128Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "run": 39555862503,
+      "job": 119075349161,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "errors": [
+        "2026-10-21T06:31:27.9460055Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run": 39555862654,
+      "job": 119075349630,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "errors": [
+        "2026-10-21T06:31:03.8285769Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run": 39555862793,
+      "job": 119075350126,
+      "name": "PUB-ME D1 transition authority",
+      "errors": [
+        "2026-10-21T06:31:21.7068241Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "run": 39555862807,
+      "job": 119075352900,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "errors": [
+        "2026-10-21T06:32:33.2628447Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "run": 39555862781,
+      "job": 119075349905,
+      "name": "PUB-P2E04 Reference failure census",
+      "errors": [
+        "2026-10-21T06:32:07.5620961Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    }
+  ],
+  "classification": "TEN_UNCHANGED_PUBLICATION_RUNNER_FAILURES_NOT_THERMAL_SCIENCE_FAILURE"
+}

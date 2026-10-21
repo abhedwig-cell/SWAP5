@@ -1,6 +1,6 @@
 {
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
-  "baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
+  "baseline": "3cb20b8a48440a9445277dfba0982b697197638a",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -28,7 +28,7 @@
     23,
     25
   ],
-  "next_action": "Validate final exact predecessor handoff, open owning PR and wait for selected integrated checks.",
+  "next_action": "Execute current predecessor and exact source/evidence gates after preserving concurrent diagnostics, then bounded canonical admission.",
   "blockers": [],
   "recovery_point": "work/mc-sol01-dynamic-decay-20261021",
   "postimages": {
@@ -58,7 +58,7 @@
     },
     "integration/audits/verify_matrix_thermal.py": {
       "status": "A",
-      "sha256": "4e9e9ef98b9036bcac9f7ca15c7567e9f661d62e5a762a67d55a9d5731bf1a2d"
+      "sha256": "bf98a3a144a2116d54ff953258fae2c8cdaefd7501fefa16cd4038a4ab51669c"
     },
     "integration/performance/authority.py": {
       "status": "M",
@@ -69,7 +69,7 @@
       "sha256": "b087f5a4049c60d6ada5aaf4f09ea575b16ea06fa513df035dc1ef404219959b"
     }
   },
-  "stage": "LOCAL_QUALIFIED_FINAL_OWNER_HANDOFF_CHECK_PENDING",
+  "stage": "EXACT_SCIENCE_HOSTED_PASS_CONCURRENT_DIAGNOSTIC_RECONCILIATION",
   "checkpoint_commit": "f9fcbf4556fd8a420a9a6274dbc86aea75e862a4",
   "execution_commit": "612db02d2240e6c4e11ca75aecc0b90e4751132f",
   "qualification_commit": "1da9e73c",
@@ -100,5 +100,28 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "rossfast": "FROZEN_UNCHANGED",
     "aquifer": "EXCLUDED"
+  },
+  "initial_baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
+  "last_reconciled_upstream": "3cb20b8a48440a9445277dfba0982b697197638a",
+  "hosted": {
+    "qualified_head": "57c4e0be9600b46ecdfb5daf6d68a66e443c12d2",
+    "total": 31,
+    "success": 21,
+    "failure": 10,
+    "thermal_run": 39555862875,
+    "thermal_job": 119075350787,
+    "column_run": 39555862516,
+    "column_job": 119075349730,
+    "canonical_run": 39555862772,
+    "perf_run": 39555862719,
+    "triage": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_CI_TRIAGE_20261021.json",
+    "all_terminal": true,
+    "failures_counted_as_pass": false
+  },
+  "concurrent_reconciliation": {
+    "canonical": "3cb20b8a48440a9445277dfba0982b697197638a",
+    "all_src_and_reference_identical_to_initial_baseline": true,
+    "current_scientific_source_tree": "19319aa98383c69aebd0bb4e0605b3c515821060",
+    "native_repetition": "NOT_SELECTED_IMPACT: every compiled/oracle/input/test source unchanged; new diagnostic predecessor authority is executed."
   }
 }

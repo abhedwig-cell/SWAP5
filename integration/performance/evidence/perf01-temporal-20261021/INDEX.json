@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "encoding": "concatenated-base64-xz-tar",
+  "parts": [
+    "evidence.part-000.b64"
+  ],
+  "decoded_sha256": "c298a098a68c1101c99648cdb2577a60c22f787aa50e2df12d1d9988d3c891cd",
+  "decoded_bytes": 256592,
+  "member_count": 1417,
+  "members_sha256": "b14361d5497fe02e7bb506a3d6881f20e5f50081dc67a7be4b4aa718293f4947",
+  "disposition": {
+    "temporal-fresh-O0-dry-control": {
+      "status": "NATIVE_FAILED_OR_CENSORED_NOT_QUALIFIED",
+      "native_runs": 2,
+      "failures": [
+        {
+          "directory": "dry32/1e-06-on-0",
+          "command": [
+            "/tmp/swap5-perf01-recovered.S4caMW/temporal-fresh-O0-dry-control/on/column",
+            "/tmp/swap5-perf01-recovered.S4caMW/temporal-fresh-O0-dry-control/dry32/1e-06.nml",
+            "-",
+            "8"
+          ],
+          "exit": 1,
+          "wall": 0.01710220100017068
+        }
+      ],
+      "complete_cases": [],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O0-snap": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 45,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "dry32",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 68,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2-dry-control": {
+      "status": "NATIVE_FAILED_OR_CENSORED_NOT_QUALIFIED",
+      "native_runs": 2,
+      "failures": [
+        {
+          "directory": "dry32/1e-06-on-0",
+          "command": [
+            "/tmp/swap5-perf01-recovered.S4caMW/temporal-fresh-O2-dry-control/on/column",
+            "/tmp/swap5-perf01-recovered.S4caMW/temporal-fresh-O2-dry-control/dry32/1e-06.nml",
+            "-",
+            "8"
+          ],
+          "exit": 1,
+          "wall": 0.017069945000002917
+        }
+      ],
+      "complete_cases": [],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2-dry-snap": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 17,
+      "failures": [],
+      "complete_cases": [
+        "dry32"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    },
+    "temporal-fresh-O2-snap-preservation": {
+      "status": "DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
+      "native_runs": 36,
+      "failures": [],
+      "complete_cases": [
+        "pond4",
+        "pond32",
+        "pond256",
+        "pulse4"
+      ],
+      "driver_sha256": "1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5"
+    }
+  },
+  "fresh_reexecution": true,
+  "scope": "DIAGNOSTICS_ONLY_NO_PRODUCTION_ADMISSION"
+}
