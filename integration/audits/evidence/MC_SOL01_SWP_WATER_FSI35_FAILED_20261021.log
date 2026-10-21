@@ -1,0 +1,22 @@
+##[group]Run bash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh
+2026-10-21T20:52:23.5848268Z [36;1mbash tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh[0m
+2026-10-21T20:52:23.5908593Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-21T20:52:23.5908968Z ##[endgroup]
+2026-10-21T20:52:23.6560024Z FCI93_FIXED_K_FAIL postimage drift src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90
+2026-10-21T20:52:23.6578761Z ##[error]Process completed with exit code 93.
+2026-10-21T20:52:23.6713578Z Post job cleanup.
+2026-10-21T20:52:23.7611835Z [command]/usr/bin/git version
+2026-10-21T20:52:23.7660330Z git version 2.55.0
+2026-10-21T20:52:23.7704281Z Temporarily overriding HOME='/home/runner/work/_temp/b1b6d87f-7e0f-4534-8d3b-96321b0929ff' before making global git config changes
+2026-10-21T20:52:23.7705250Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-21T20:52:23.7712938Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/SWAP5/SWAP5
+2026-10-21T20:52:23.7758194Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-21T20:52:23.7799011Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-21T20:52:23.8087797Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-21T20:52:23.8127908Z http.https://github.com/.extraheader
+2026-10-21T20:52:23.8136264Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-21T20:52:23.8190247Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-21T20:52:23.8482567Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-21T20:52:23.8529438Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-21T20:52:23.8978307Z Cleaning up orphan processes
+2026-10-21T20:52:23.9280590Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
