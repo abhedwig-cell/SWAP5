@@ -1,0 +1,21 @@
+{
+  "work_unit": "SWAP5-PERF01 solver-aware proposal diagnostics",
+  "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+  "branch": "work/perf01-solver-proposal",
+  "status": "IMPLEMENTED_NOT_YET_EXECUTED",
+  "production_changed": false,
+  "scope": "Generated diagnostic runtime only; numerical execution hypotheses, no production admission",
+  "invariants": ["transaction isolation", "hard mass acceptance", "exact chemical trace endpoints", "fresh-process restart", "default-OFF physical bytes"],
+  "source_contract": "Registered temporal driver stays byte-identical. This owning integration diagnostic wraps its generated runtime; all source/executable/provider hashes are checked and retained.",
+  "live_delta": "MC-SOL01 thermal extension adds providers outside the unchanged 178-provider column closure; no thermal source or authority edits selected.",
+  "selection": {
+    "immediate": "O2 dry32, cap/ceiling/recover, two decreasing tolerances and fresh-process split restart; select winning bounded hypothesis by work and accuracy, never timing alone",
+    "candidate": "Selected hypothesis O2 all five cases, three timing repeats and four tolerances; O0 all five cases two tolerances; compare numerical work and physical bytes across optimization",
+    "preservation": "Current authority and self-tests, incumbent diagnostic registration negatives, docs strict build",
+    "full_fci": "NOT_SELECTED_IMPACT: no production or incumbent scientific-tool source change",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "expected_cost": "Native cases generally under one second, fine-reference cost variable; existing 120-second per-process cap retained; total expected under five minutes",
+    "reuse": "Separate original O0/O2 builds, only if every 178-provider source digest and executable digest matches; fresh native execution of every selected observation"
+  },
+  "next_action": "Execute dry32 causal policy screen; retain failures as failures"
+}
