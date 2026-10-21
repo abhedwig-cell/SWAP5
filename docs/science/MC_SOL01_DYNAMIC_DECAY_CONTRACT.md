@@ -1,5 +1,20 @@
 # MC-SOL01 dynamic accepted-temperature decay
 
+## Proposed bounded nonlinear successor (not admitted)
+
+MC-SOL01-DYNAMIC-DECAY02 starts at canonical `fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d`.
+It widens only the thermal composition's sorption guard to the existing matrix
+constructor domain, Freundlich exponent 0.5..2. Existing nonlinear inversion,
+source-order decay, accepted-water trace, immutable configuration, endpoint
+temperature splitting and S5MT0001 atomic-generation semantics remain unchanged.
+The independent literal loop and its real128 nonlinear inversion oracle qualify
+this combination at exponents .5/.8/1/1.0005/1.5/2, including refinement and fresh
+process restart. Every previously qualified linear endpoint must remain exact.
+Outside-domain constructors and analytic heat remain rejected. No pond, seasonal,
+full historical/default-file, RossFast or aquifer admission is proposed.
+The existing status record's `nonlinear_successor` owns recovery and admission;
+the linear predecessor receipt below remains historical, immutable evidence.
+
 Status: canonically admitted bounded numeric-heat/linear-matrix composition,
 PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73`. The completed admission
 receipt is `integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json` on canonical.

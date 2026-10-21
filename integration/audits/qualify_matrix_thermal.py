@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--physical', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--build', type=Path)
     args = parser.parse_args()
     physical = args.physical.resolve()
     out = args.output.resolve()
@@ -49,7 +50,9 @@ def main():
     library = out / 'rename-kill.so'
     run(['gcc', '-shared', '-fPIC', ROOT / 'tests/nut-sol/thermal_rename_kill.c', '-ldl', '-o', library], out, 'observer_compile_link')
     for opt in ['O0', 'O2']:
-        exe = physical / opt / 'thermal'
+        exe = (args.build.resolve() if args.build else physical) / opt / 'thermal'
+        assert sha(exe) == prior['executables'][opt]
+        exponent = str(prior['exponent'])
         build = out / opt
         build.mkdir()
         points = {int(n): v['stdout'][0] for n, v in prior['results'][opt].items() if n != 'controls'}
@@ -58,7 +61,7 @@ def main():
             case.mkdir()
             path, full, fresh = case / 'restart.bin', case / 'full.bin', case / 'fresh.bin'
             for mode, endpoint in [('full', full), ('split', full), ('resume', fresh)]:
-                stdout = run([exe, mode, path, endpoint, windows], case, 'refinement_native')
+                stdout = run([exe, mode, path, endpoint, windows, exponent], case, 'refinement_native')
                 assert 'THERMAL_PHYSICAL_LITERAL_RESTART=PASS' in stdout
                 if mode == 'full':
                     points[windows] = stdout
@@ -93,20 +96,20 @@ def main():
         for label, payload in mutants.items():
             path = build / (label + '.bin')
             path.write_bytes(payload + struct.pack('I', zlib.crc32(payload) & 0xffffffff))
-            stdout = run([exe, 'reject', path, build / 'unused', 2], build, 'semantic_negative')
+            stdout = run([exe, 'reject', path, build / 'unused', 2, exponent], build, 'semantic_negative')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
         for mode in ['before', 'after']:
             case = build / ('kill-' + mode)
             case.mkdir()
             target = case / 'generation.bin'
             target.write_bytes(raw)
-            run([exe, 'full', case / 'unused', target, 2], case, 'crash_native',
+            run([exe, 'full', case / 'unused', target, 2, exponent], case, 'crash_native',
                 {**os.environ, 'LD_PRELOAD': str(library), 'SWAP5_THERMAL_KILL_TARGET': str(target),
                  'SWAP5_THERMAL_KILL_MODE': mode}, expected=-signal.SIGKILL)
             expected = raw if mode == 'before' else (physical / opt / '2/full.bin').read_bytes()
             assert target.read_bytes() == expected, 'partial committed generation'
             if mode == 'before':
-                stdout = run([exe, 'resume', target, case / 'fresh.bin', 2], case, 'crash_recovery_native')
+                stdout = run([exe, 'resume', target, case / 'fresh.bin', 2, exponent], case, 'crash_recovery_native')
                 assert 'THERMAL_PHYSICAL_LITERAL_RESTART=PASS' in stdout
                 assert (case / 'fresh.bin').read_bytes() == (physical / opt / '2/full.bin').read_bytes()
         report['results'][opt] = {'windows': keys, 'stdout': points, 'mass_delta': mass_delta,

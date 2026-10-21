@@ -29,12 +29,15 @@ program test_matrix_thermal
  type(matrix_solute_state_t)::chemical,initial_c,badchemical
  type(b111_reactive_solute_substep_forcing_t)::p,pbad
  type(matrix_joint_result_t)::r
- real(real64)::k,dt,t0,t1,decay_total,max_residual
+ real(real64)::k,dt,t0,t1,decay_total,max_residual,exponent
  integer::status,j,windows,first,last,accepted
  integer(int64)::restore_id
  character(512)::mode,path,endpoint,arg
  call get_command_argument(1,mode);call get_command_argument(2,path);call get_command_argument(3,endpoint)
  call get_command_argument(4,arg);read(arg,*)windows
+ exponent=1d0
+ call get_command_argument(5,arg)
+ if(len_trim(arg)>0)read(arg,*)exponent
  t0=0d0;t1=.001d0
  call initialize_application_config(cfg,-75d0,k)
  cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
@@ -114,14 +117,14 @@ program test_matrix_thermal
   call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
    cfg%tiles(1)%base_forcing,cfg%numerical,chemical,ieee_value(0d0,ieee_quiet_nan),.001d0,r)
   call require(r%status/=0,'nonfinite clock rejected under FPE traps')
-  pbad=p;pbad%frexp=.5d0
+  pbad=p;pbad%frexp=.49999d0
   call initialize_matrix_solute(pbad,9001_int64,0d0,cfg%tiles(1)%initial_state%water_content, &
    [.2d0,.3d0,.4d0,.5d0],badchemical,status)
-  call require(status==0,'incumbent nonlinear owner remains valid')
-  badwater=initial
-  call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,badwater, &
-   cfg%tiles(1)%base_forcing,cfg%numerical,badchemical,0d0,.001d0,r)
-  call require(r%status/=0.and.badwater%current_revision()==initial%current_revision(),'unqualified nonlinear thermal composition rejected')
+  call require(status/=0,'below admitted nonlinear exponent rejected at owner construction')
+  pbad=p;pbad%frexp=2.00001d0
+  call initialize_matrix_solute(pbad,9001_int64,0d0,cfg%tiles(1)%initial_state%water_content, &
+   [.2d0,.3d0,.4d0,.5d0],badchemical,status)
+  call require(status/=0,'above admitted nonlinear exponent rejected at owner construction')
   cfg%tiles(1)%parameters%soil_temperature%solution_mode=SOIL_TEMP_SOLUTION_ANALYTIC
   call run_matrix_thermal_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
    cfg%tiles(1)%base_forcing,cfg%numerical,chemical,0d0,.001d0,r)
@@ -248,6 +251,7 @@ contains
  end subroutine
  subroutine parameters(f)
   type(b111_reactive_solute_substep_forcing_t),intent(out)::f
+  f%frexp=exponent
   f%dz_cm=dz;f%theta=cfg%tiles(1)%initial_state%water_content
   f%bulk_density=spread(1.3d0,1,numnod);f%kf=spread(.2d0,1,numnod)
   f%temperature_active=.true.;f%temperature_c=spread(20d0,1,numnod)

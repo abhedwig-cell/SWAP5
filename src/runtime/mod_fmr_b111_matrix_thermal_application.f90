@@ -48,7 +48,7 @@ contains
   call chemical%snapshot(t,theta,m,s,revision)
   if(t/=wt)return
   call chemical%configuration(p,id)
-  if(p%frexp/=1d0)return
+  if(p%frexp<.5d0.or.p%frexp>2d0)return
   call water%certified_parameter_identity(identity,available)
   if(.not.available.or..not.identity%heat_enabled)return
   if(.not.allocated(identity%dz).or..not.allocated(p%dz_cm))return

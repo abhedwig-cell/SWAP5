@@ -1,4 +1,26 @@
 {
+  "nonlinear_successor": {
+    "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
+    "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+    "stage": "IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonically_admitted": false,
+    "scope": "Numeric endpoint heat with existing Freundlich matrix exponent 0.5..2; no pond or new process formula",
+    "invariants_affected": [3, 7, 13, 21, 23, 25],
+    "next_action": "Execute persisted real Reference O0/O2 driver for exponent1 and .5/.8/1.0005/1.5/2, complete seven-mesh refinement, exact fresh restart, rejection/retry and crash generation; then exact incumbent and integrated owner admission",
+    "recovery_point": "work/mc-sol01-nonlinear-thermal-20261021",
+    "blockers": [],
+    "selection": {
+      "focused": "RUN: changed composition guard, nonlinear equilibrium and actual heat must execute together; compile277 providers once per O0/O2, reuse only exact source-bound binaries across exponent forcing. Expected compile/link150s, native/refinement less than30s",
+      "incumbent_linear": "RUN: fresh exponent1 endpoints must equal original admitted bytes on every mesh",
+      "predecessor": "RUN: unchanged exact fcfdd3ae source/evidence admission gate",
+      "full_fci": "NOT_SELECTED_IMPACT: one isolated optional composition guard; existing process formulas, shared Reference/heat/accepted trace, disk ABI and incumbent application remain unchanged",
+      "highest_low_air": "NOT_SELECTED_POLICY"
+    }
+  },
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
   "baseline": "3cb20b8a48440a9445277dfba0982b697197638a",
   "implemented": true,
