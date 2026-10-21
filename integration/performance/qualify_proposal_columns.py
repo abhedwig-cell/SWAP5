@@ -97,6 +97,10 @@ def main():
         return record
 
     cases = study.cases()
+    if args.suite != 'short':
+        # Also stress infiltration into the initially dry profile. The no-rain
+        # dry32 control alone has no solver rejections at coarse tolerance.
+        cases['dry_infiltration32'] = cases['dry32']
     report_windows = 8 if args.suite == 'short' else 64
     report['report_windows'] = report_windows
     if args.suite != 'short':

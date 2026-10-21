@@ -1,24 +1,69 @@
 {
   "work_unit": "SWAP5-PERF01 optional production proposal",
-  "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+  "baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
+  "starting_baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
+  "composition": "PR1344 nonlinear thermal admission composed. Every already-executed column and four-driver runtime provider remains identical; rerun the current six-exponent thermal original gates with a fresh build. Earlier linear-only proof retained under its original pinned source, not rebound.",
   "branch": "work/perf01-production-policy",
-  "status": "IMPLEMENTATION_AND_TEST_SELECTION_CHECKPOINT_NOT_QUALIFIED",
+  "status": "BOUNDED_OPTIONAL_PRODUCTION_QUALIFIED_DEFAULT_OFF",
   "contract": "docs/performance/SWAP5-PERF01_PROPOSAL_CONTRACT.md",
   "production_changed": true,
   "default_enabled": false,
   "scope": "Optional Reference external-full/half policy; exact endpoint completion and interval-local solver fallback; optional file input",
-  "invariants": ["external failure atomicity", "hard mass acceptance", "exact accepted endpoints", "restart", "default-OFF preservation", "solver/execution-policy separation"],
-  "dependency_surface": ["src/runtime/mod_canonical_interval_runtime.f90", "app/solute_column/main.f90", "all canonical runtime callers, with default-OFF semantic/source preservation"],
+  "invariants": [
+    "external failure atomicity",
+    "hard mass acceptance",
+    "exact accepted endpoints",
+    "restart",
+    "default-OFF preservation",
+    "solver/execution-policy separation"
+  ],
+  "dependency_surface": [
+    "src/runtime/mod_canonical_interval_runtime.f90",
+    "app/solute_column/main.f90",
+    "all canonical runtime callers, with default-OFF semantic/source preservation"
+  ],
   "selection": {
     "direct": "Existing analytic low_air_policy contract plus new exact-endpoint/solver-fallback/reset/mass/solver/substep atomicity tests O0/O2",
     "physical": "Rebuilt 178-provider actual column O0 checked/O2 production; incumbent 86-observation input/budget/grid/restart runner; default-OFF executable byte comparisons; optional short trajectory equivalence to prior diagnostic candidate",
-    "longer": "Wet, dry and changing rainfall at fixed longer horizons, four decreasing tolerances, actual errors against finite finest reference and Pareto cost/error comparison; first pilot determines runtime, failures remain failures",
-    "thermal": "Actual current thermal O0/O2 physical/restart/rollback and refinement/crash runner selected because canonical runtime is in its executed closure",
+    "longer": "One-day wet, dry and changing rainfall, four tolerances and paired error/cost assessment. Initial 16-window OFF fine reference rejects >100000 chemical trace entries and remains a retained failure. Repeat the SAME horizon and 1.5h forcing blocks at 64 reports, without relaxing the trace bound.",
+    "thermal": "Original current six-exponent nonlinear thermal O0/O2 physical/restart/rollback and refinement/crash runners selected because canonical runtime is in their executed closure. One fresh build, subsequent exponents reuse only with original runner source/executable checks.",
     "admission": "Explicit source successor from exact canonical, predecessor owner verification, fresh changed-runtime evidence and negative registration controls; no weakening existing oracles",
     "full_fci": "OWNER_SELECTED_TARGETED_RUNTIME_PRESERVATION: direct optional/default controller, original 86 column assertions, fresh thermal composition/refinement and original runtime preservation drivers. No full moving unrelated chemistry/crop migration rerun solely for disabled optional branches.",
     "highest_low_air": "NOT_SELECTED_POLICY; analytic low_air_policy test is short and selected, long physical stress not selected",
     "expected_cost": "Direct contract under seconds; builds tens of seconds each. Longer physical horizon UNKNOWN until pilot; individual 120s native budget, censored observations never PASS. Thermal full closure and refinement previously bounded, may exceed five minutes; explicitly selected for changed shared-runtime evidence.",
     "reuse": "Fresh column builds. Original incumbent builds only as exact default-OFF executable oracles after provider/executable identity checks. Physical thermal runner builds its own separate O0/O2 closure. No inherited numerical PASS for changed runtime."
   },
-  "next_action": "Compile direct contracts and fresh column builds, run fixed-horizon pilot, then targeted qualification and owning source admission"
+  "next_action": "Admit PR1345 only at the exact qualified source/evidence tree. Preserve default OFF and the excluded infiltrating dry regime; verify canonical after merge.",
+  "source_sha256": {
+    "integration/performance/build_proposal.py": "1eec583123881d2371f6b2d5b77cccb55e5200088c44c56df6aa86db884fc95f",
+    "integration/performance/compare_proposal_error_cost.py": "d21d8a437e7b670b742424406864c2fcf6c7a8cabc0157b65c459f4234e84dc8",
+    "integration/performance/compose_proposal.py": "a9d0147704ac98e3b4629ce187cef6e730444273412dcf30e746651dcd262f21",
+    "integration/performance/package_proposal.py": "803d8548fe3ea93aa059a967931ab0b591a4e479e973b96d64a4c17138690e69",
+    "integration/performance/preserve_proposal_runtime.py": "70dd54e59e26bcb733758b2372c466913b50256d957b0d0d6737f0854a18f480",
+    "integration/performance/probe_proposal_dry_infiltration.py": "b07a59f6ba85a9313ac882ea8f95829d464d83ff68814bd809215f9ca17d2b4c",
+    "integration/performance/qualify_proposal_columns.py": "670fbad51fef16349c46216cee6e90c9d10feb5432d3d13913d6fb9718db9518",
+    "integration/performance/study_solver_proposal.py": "0912e46df2139058e25cd0a6a436a1316aea9c4f9292b7e75f912abdbe753022",
+    "integration/performance/verify_proposal.py": "90578d9fef553734afe7c62555d82956c0f7add2b50f188b2fe649a8a1f19463"
+  },
+  "evidence": {
+    "index": "integration/performance/evidence/perf01-proposal-production-20261021/INDEX.json",
+    "sha256": "9ed16d322568a5a7e5a04245a5bad53403e5f4ee648b7e1d54c667eef5b064c3",
+    "members": 8454
+  },
+  "qualified_domain": "Optional Reference prescribed-sink column. Short wet4/32/256, dry32 and pulse4; one-day wet4, rain-free dry32 and pulse4 at64 reports; six-exponent thermal DEFAULT-OFF preservation. No long infiltrating dry32 admission.",
+  "excluded_regimes": [
+    "One-day infiltration into initially dry32: both incumbent and optional routes fail at t0=0.078125 day with identical partial budgets and untouched failed-window clocks. No accuracy/cost conclusion beyond that boundary.",
+    "Sixteen-report finest OFF reference exceeds unchanged 100000-entry chemical trace bound; retained failure, identical full-day forcing repeated with64 reports."
+  ],
+  "remaining_native_failures": {
+    "selected_control_reports": 2,
+    "excluded_optional_probe": 1,
+    "all_retained": true
+  },
+  "tested": true,
+  "qualified": true,
+  "canonical_admission": "PENDING_PR1345_MERGE",
+  "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1345",
+  "qualification_receipt": "integration/performance/SWAP5-PERF01_PROPOSAL_QUALIFICATION_20261021.json",
+  "result": "docs/performance/SWAP5-PERF01_PROPOSAL_RESULT.md"
 }

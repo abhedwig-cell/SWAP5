@@ -20,13 +20,15 @@ def sha(p):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--exponent', type=float, default=1.0)
+    parser.add_argument('--reuse-build', type=Path)
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     fc = shlex.split(os.environ.get('FC', 'gfortran'))
     report = {'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               'compiler': subprocess.check_output(fc + ['--version'], text=True).splitlines()[0],
-              'status': 'RUNNING', 'inputs': {}, 'events': [], 'results': {}}
+              'status': 'RUNNING', 'inputs': {}, 'events': [], 'results': {}, 'exponent': args.exponent}
 
     def run(command, cwd, category):
         start = time.perf_counter()
@@ -96,12 +98,22 @@ def main():
         flags = ['-' + opt, '-std=f2008', '-ffree-line-length-none', '-fopenmp', '-fcheck=all', '-fbacktrace',
                  '-ffpe-trap=invalid,zero,overflow', '-J' + str(build), '-I' + str(build), '-I' + str(out)]
         objects = []
-        for i, p in enumerate(ordered + [driver]):
+        for i, p in enumerate([] if args.reuse_build else ordered + [driver]):
             obj = build / f'{i:04d}.o'
             run(fc + flags + ['-c', p, '-o', obj], build, 'compile')
             objects.append(obj)
-        exe = build / 'thermal'
-        run(fc + flags + objects + ['-o', exe], build, 'link')
+        if args.reuse_build:
+            reused = args.reuse_build.resolve()
+            prior = json.loads((reused / 'result.json').read_text())
+            assert prior['inputs'] == report['inputs'], 'reused build input drift'
+            assert prior['status'] == 'FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED'
+            exe = reused / opt / 'thermal'
+            assert sha(exe) == prior['executables'][opt], 'reused executable drift'
+            report['reused_physical_sha256'] = sha(reused / 'result.json')
+        else:
+            exe = build / 'thermal'
+            run(fc + flags + objects + ['-o', exe], build, 'link')
+        report.setdefault('executables', {})[opt] = sha(exe)
         results = {}
         for windows in [2, 4, 8, 16]:
             case = build / str(windows)
@@ -109,7 +121,7 @@ def main():
             path, full, resumed = case / 'restart.bin', case / 'full.bin', case / 'resumed.bin'
             outputs = []
             for mode, endpoint in [('full', full), ('split', full), ('resume', resumed)]:
-                stdout = run([exe, mode, path, endpoint, windows], case, 'native')
+                stdout = run([exe, mode, path, endpoint, windows, args.exponent], case, 'native')
                 assert 'THERMAL_PHYSICAL_LITERAL_RESTART=PASS' in stdout
                 outputs.append(stdout)
             assert full.read_bytes() == resumed.read_bytes(), 'fresh-process endpoint differs'
@@ -117,7 +129,7 @@ def main():
         controls = build / 'controls'
         controls.mkdir()
         endpoint = controls / 'control'
-        stdout = run([exe, 'controls', controls / 'unused', endpoint, 2], controls, 'native')
+        stdout = run([exe, 'controls', controls / 'unused', endpoint, 2, args.exponent], controls, 'native')
         assert 'THERMAL_REJECTION_RETRY_HEAT_OFF=PASS' in stdout
         assert (controls / 'control.before').read_bytes() == (controls / 'control.after').read_bytes()
         assert (controls / 'control.initial').read_bytes() == (controls / 'control.hydraulic').read_bytes()
@@ -127,10 +139,10 @@ def main():
         for label, raw in [('truncated', original[:-12]), ('crc', original[:20] + bytes([original[20] ^ 1]) + original[21:])]:
             path = controls / (label + '.bin')
             path.write_bytes(raw)
-            stdout = run([exe, 'reject', path, endpoint, 2], controls, 'native')
+            stdout = run([exe, 'reject', path, endpoint, 2, args.exponent], controls, 'native')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
         for mode in ['reject-id', 'reject-heat', 'reject-chemical']:
-            stdout = run([exe, mode, build / '2/restart.bin', endpoint, 2], controls, 'native')
+            stdout = run([exe, mode, build / '2/restart.bin', endpoint, 2, args.exponent], controls, 'native')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
         report['results'][opt] = results
         report['provider_count'] = len(ordered)

@@ -11,6 +11,7 @@ from pathlib import Path
 import runpy
 import shlex
 import subprocess
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -65,6 +66,24 @@ def main():
           '--output', out/'thermal-qualified'], 'thermal-qualified.log')]:
         with (out/log).open('wb') as stream:
             subprocess.run(list(map(str, command)), cwd=ROOT, env=env, stdout=stream, stderr=subprocess.STDOUT, check=True)
+    baseline = '9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c'
+    with tempfile.TemporaryDirectory(prefix='perf01-proposal-predecessor-') as temp:
+        base = Path(temp)/'base'
+        subprocess.run(['git', 'worktree', 'add', '--detach', base, baseline], cwd=ROOT, capture_output=True, check=True)
+        try:
+            proof = {'baseline': baseline, 'source_tree': subprocess.check_output(['git', 'rev-parse', 'HEAD:src'], cwd=base, text=True).strip()}
+            for name, script, options in [('owner', 'integration/performance/authority.py', []),
+                                           ('gash-controls', 'integration/performance/authority.py', ['--self-test']),
+                                           ('thermal-controls', 'integration/audits/verify_matrix_thermal.py', ['--self-test'])]:
+                command = ['python', '-B', script, *options]
+                p = subprocess.run(command, cwd=base, env=env, capture_output=True)
+                (out/('predecessor-'+name+'.stdout')).write_bytes(p.stdout)
+                (out/('predecessor-'+name+'.stderr')).write_bytes(p.stderr)
+                p.check_returncode()
+                proof[name] = json.loads(p.stdout)
+            (out/'PREDECESSOR.json').write_text(json.dumps(proof, indent=2)+'\n')
+        finally:
+            subprocess.run(['git', 'worktree', 'remove', '--force', base], cwd=ROOT, capture_output=True, check=True)
     print(report['status'], 'THERMAL_PHYSICAL_REFINEMENT_CRASH_PASS', flush=True)
 
 

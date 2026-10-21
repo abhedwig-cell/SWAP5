@@ -1,5 +1,16 @@
 # MC-SOL01 file-driven Reference column
 
+## Optional numerical proposal successor, 21 October 2026
+
+The [PERF01 proposal contract](../performance/SWAP5-PERF01_PROPOSAL_CONTRACT.md)
+adds the optional logical `retain_accepted_step_proposal` to `&column`, default
+false for both schemas. It changes numerical execution only and leaves physical
+parameters, tolerances, hard budgets and restart schema intact. The
+[qualification result](../performance/SWAP5-PERF01_PROPOSAL_RESULT.md) specifies
+the bounded Reference cases, unchanged default-OFF files, one-day error/cost
+comparison and excluded long dry infiltration failure. General activation is
+not implied. Actual admission is through its owning PERF01 status and PR.
+
 ## Canonical schema2 grid successor, 20 October 2026
 
 PR1332 admits this bounded successor at

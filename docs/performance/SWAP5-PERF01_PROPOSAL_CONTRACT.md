@@ -1,7 +1,9 @@
 # PERF01 optional accepted-step proposal production contract
 
-Proposed implementation/admission work unit, baseline canonical
-`9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c`. Numerical execution policy, not a
+Implemented bounded optional policy, with qualification described in the
+[result](SWAP5-PERF01_PROPOSAL_RESULT.md). Starting canonical
+`9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c`, composed with nonlinear thermal
+canonical `e61d8e107121bc31fa1d9b0eac73439af29eb76f`. Numerical execution policy, not a
 change to physical equations or solver acceptance. The existing
 `canonical_numerical_config_t%retain_accepted_step_proposal` remains false by
 default. The column application's optional namelist field has the same name
