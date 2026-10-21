@@ -53,6 +53,10 @@ def source():
     path = 'integration/performance/authority.py'
     old = subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT, text=True)
     expected = old.replace('def verify_qualification():\n', 'def verify_qualification():\n' + HOOK, 1)
+    original_fsi = "    if 'evidence' in current:\n        runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_gash_fsi35')['source']()"
+    thermal_fsi = "    thermal=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'\n    if thermal.exists() and 'evidence' in json.loads(thermal.read_text()):\n        runpy.run_path(str(ROOT/'integration/audits/verify_matrix_thermal.py'),run_name='registered_sol_thermal_fsi35')['source']()\n    elif 'evidence' in current:\n        runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_gash_fsi35')['source']()"
+    require(old.count(original_fsi) == 1, 'unrecognized predecessor FSI35 handoff')
+    expected = expected.replace(original_fsi, thermal_fsi, 1)
     require((ROOT / path).read_text() == expected, 'thermal exact predecessor handoff')
     return s
 
@@ -142,6 +146,7 @@ def verify_qualification():
     current = validate(capsule())
     old = predecessor()
     return {**old, **current, 'qualified': True, 'full_capability': False,
+            'source_tree': git('rev-parse', 'HEAD:src'),
             'current_source_tree': git('rev-parse', 'HEAD:src'), 'full_fci': 'NOT_SELECTED_IMPACT',
             'incumbent_production_unchanged': True, 'thermal_admission': 'BOUNDED_ENDPOINT_SPLIT_ONLY'}
 

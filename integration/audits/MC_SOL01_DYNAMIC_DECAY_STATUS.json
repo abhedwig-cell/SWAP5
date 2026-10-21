@@ -3,7 +3,7 @@
   "baseline": "83defb1a6a7a9f4d2fcd862faf73a21ad621072a",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "scope": "Endpoint operator-split matrix transport/decay using actual staged Reference restricted heat; no historical substep-identity claim",
@@ -28,13 +28,13 @@
     23,
     25
   ],
-  "next_action": "Complete final O0/O2 rerun after numeric/linear guards, replace prior capsule/postimages, then predecessor source/evidence gate, strict docs and owning integrated CI",
+  "next_action": "Validate final exact predecessor handoff, open owning PR and wait for selected integrated checks.",
   "blockers": [],
   "recovery_point": "work/mc-sol01-dynamic-decay-20261021",
   "postimages": {
     "src/runtime/mod_fmr_b111_matrix_thermal_application.f90": {
       "status": "A",
-      "sha256": "9416b6b644f3e333687752909937eab48c2499bc66225daec8991060f516110a"
+      "sha256": "786991b147ee4a5f11521d00517b838e09a70cea8cca23fce8cd4f31b72092b3"
     },
     "src/adapter/mod_matrix_thermal_restart_file.f90": {
       "status": "A",
@@ -42,7 +42,7 @@
     },
     "tests/nut-sol/test_matrix_thermal.f90": {
       "status": "A",
-      "sha256": "8faa334ac4ceb24ac094854675a1b6b1bae25fe329ea9dcd1db2884f127109d6"
+      "sha256": "d64d6f0085321c64a0cce6b9f41b294f9c14f189ae9d9815e83f9ea786d4c2e1"
     },
     "tests/nut-sol/run_matrix_thermal.py": {
       "status": "A",
@@ -58,30 +58,30 @@
     },
     "integration/audits/verify_matrix_thermal.py": {
       "status": "A",
-      "sha256": "a89a11e54a1c9f7d7caad3af66f095699463a9b323ac397f666fdba1107b52c4"
+      "sha256": "4e9e9ef98b9036bcac9f7ca15c7567e9f661d62e5a762a67d55a9d5731bf1a2d"
     },
     "integration/performance/authority.py": {
       "status": "M",
-      "sha256": "736521d2a9660d7564b01668bad57a661180b8fefba48ed66fc5554039d12eb8"
+      "sha256": "8b81825694e1959cb99ea3015389d7ec1d2e52ad10b7c30def0e14feda3231ee"
     },
     ".github/workflows/mc-sol01-dynamic-decay.yml": {
       "status": "A",
       "sha256": "b087f5a4049c60d6ada5aaf4f09ea575b16ea06fa513df035dc1ef404219959b"
     }
   },
-  "stage": "FINAL_NUMERIC_LINEAR_DOMAIN_GUARDS_REQUALIFICATION_RUNNING",
-  "checkpoint_commit": "f73ea924a102309ef0e461b27ddcd5ee5b10b736",
-  "execution_commit": "7477eda7",
-  "qualification_commit": "e5af8d46",
+  "stage": "LOCAL_QUALIFIED_FINAL_OWNER_HANDOFF_CHECK_PENDING",
+  "checkpoint_commit": "f9fcbf4556fd8a420a9a6274dbc86aea75e862a4",
+  "execution_commit": "612db02d2240e6c4e11ca75aecc0b90e4751132f",
+  "qualification_commit": "1da9e73c",
   "evidence": {
     "path": "integration/audits/evidence/MC_SOL01_DYNAMIC_DECAY_20261021.tar.xz.b64",
-    "decoded_sha256": "b41e23baca3342addd04956c8827522c5b950f2068db8f4a4cd02ccce061ae96"
+    "decoded_sha256": "3b8632917226aee433546a358f7346e4e72be7dbdade67363e82fcc1795150f6"
   },
   "physical": {
     "provider_count": 277,
-    "compile_seconds": 136.78842540499727,
-    "link_seconds": 0.2047693890001483,
-    "native_seconds": 1.26568420199942,
+    "compile_seconds": 139.68650772200135,
+    "link_seconds": 0.20693305099985082,
+    "native_seconds": 1.365076701000362,
     "physics_only_seconds": "UNKNOWN",
     "windows": [
       2,

@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+Later MC-SOL01 dynamic-decay successor (21 October 2026): local O0/O2 qualifies
+actual staged Reference restricted heat feeding linear matrix transport/decay,
+joint balance/rollback, interval refinement and independent-process atomic
+restart. The [contract](../science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md) and existing
+work-unit status distinguish this bounded extension's actual canonical receipt
+from full SALT-DECAY, pond/nonlinear/seasonal and default-application scope.
+
 Date: 2026-09-16
 
 This page is the current documentation entry point for the SWAP5 Status-A baseline. It summarizes the admitted capability boundary and points readers to the underlying acceptance and preservation authorities. It does not replace capability-specific scientific contracts, qualification records, or historical migration evidence.

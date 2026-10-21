@@ -193,7 +193,10 @@ def verify_qualification():
 def fsi35_successors():
     """Exact HeadCalc registration only; original FSI35 native checks still run."""
     current=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('gash_interception_successor',{})
-    if 'evidence' in current:
+    thermal=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if thermal.exists() and 'evidence' in json.loads(thermal.read_text()):
+        runpy.run_path(str(ROOT/'integration/audits/verify_matrix_thermal.py'),run_name='registered_sol_thermal_fsi35')['source']()
+    elif 'evidence' in current:
         runpy.run_path(str(ROOT/'integration/audits/verify_nut_gash_successor.py'),run_name='registered_gash_fsi35')['source']()
     else:
         source()
