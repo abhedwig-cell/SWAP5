@@ -1,0 +1,881 @@
+{
+  "status": "COMPLETE_RAIN2X_CURVE_RAIN4X_FAILURES_RETAINED",
+  "baseline": "a737c60596f7d77cf2415cb09c4181d35a8a25b5",
+  "scenario": "Only daily precipitation doubled; same97days,30cm/four-cell geometry, live crop/heat, free drainage and64coupling intervals/day",
+  "curve": [
+    {
+      "head_budget_cm": 1e-06,
+      "median_user_seconds": 17.668605,
+      "user_seconds": [
+        17.668605,
+        17.616723,
+        18.031977
+      ],
+      "median_core_cpu_seconds": 17.398518999999997,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "1e-06",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 1e-06,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 17.668605,
+        "system_seconds": 0.036549,
+        "wall_seconds": 17.712437845999375,
+        "max_rss_kib": 19176,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "1a6d6b1cce490b6b9ba3301bc50fb7972f2343b5e669a154d804df40944247e3",
+          "daily.csv": "98d9fac03e07fb86e73fc45fa84459c5f5a7ff2ae1ab99df20d0be8d6af996bf",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.13341271795133,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 352544,
+          "headcalc_calls": 2164709,
+          "temporal_rejections": 957785
+        },
+        "core_cpu_seconds": 17.398518999999997,
+        "max_gross_daily_closure_mm": 1.2608540600478335e-10,
+        "period_gross_closure_mm": -1.1042402547900565e-09,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.000217701516888269,
+          "end_difference": 0.0001573190168784322
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.00021021725709502448,
+          "end_difference": -1.7333570203614812e-05,
+          "total_difference": -0.0001573173899118152,
+          "max_cumulative_abs": 0.00021770104648610733
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.0022704132720718917,
+        "max_theta": 2.5138220312026505e-06
+      },
+      "maximum_reported_head_cm": -0.06276138549525472,
+      "days_top_head_above_minus_1cm": 1
+    },
+    {
+      "head_budget_cm": 0.001,
+      "median_user_seconds": 1.419184,
+      "user_seconds": [
+        1.419184,
+        1.388145,
+        1.50209
+      ],
+      "median_core_cpu_seconds": 1.1539389999999996,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "0.001",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 0.001,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 1.419184,
+        "system_seconds": 0.029674,
+        "wall_seconds": 1.453440512996167,
+        "max_rss_kib": 19212,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "a23af46f4a4e33c2e362bdca23095f3ff1330f822006ea2f925d8514646cc5f0",
+          "daily.csv": "e81ed28038b5002b6dc203b0c15a6d3c6f97a12882e20755f6b1a4030fcc6081",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.12671297478244,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 34622,
+          "headcalc_calls": 113330,
+          "temporal_rejections": 2954
+        },
+        "core_cpu_seconds": 1.1539389999999996,
+        "max_gross_daily_closure_mm": 1.1446843473095214e-11,
+        "period_gross_closure_mm": 7.617018127348274e-11,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.006857063366169314,
+          "end_difference": 0.006857063366169314
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.004831198126021619,
+          "end_difference": -0.0002636861004072788,
+          "total_difference": -0.006857060558802697,
+          "max_cumulative_abs": 0.006857060558802697
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.11092895284362214,
+        "max_theta": 0.0001274883465677279
+      },
+      "maximum_reported_head_cm": -0.06276138550421229,
+      "days_top_head_above_minus_1cm": 1
+    },
+    {
+      "head_budget_cm": 0.01,
+      "median_user_seconds": 1.378571,
+      "user_seconds": [
+        1.378571,
+        1.403206,
+        1.3170060000000001
+      ],
+      "median_core_cpu_seconds": 1.091949999999999,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "0.01",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 0.01,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 1.378571,
+        "system_seconds": 0.016626,
+        "wall_seconds": 1.4149340340009076,
+        "max_rss_kib": 19360,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "82abdcc7550e1668c7096c68081dd4ec3f678df793991575e270e126a9843b82",
+          "daily.csv": "be5617cc8c2020344fa8e17061246baabe0c6ea48939b1538ace250ee49cf989",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.12610602023517,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 31577,
+          "headcalc_calls": 101472,
+          "temporal_rejections": 226
+        },
+        "core_cpu_seconds": 1.091949999999999,
+        "max_gross_daily_closure_mm": 1.1784795361791112e-11,
+        "period_gross_closure_mm": 1.1812062439275905e-10,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.007464017955385316,
+          "end_difference": 0.007464017955385316
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.004875528266852669,
+          "end_difference": -6.688858284853438e-05,
+          "total_difference": -0.0074640151060543225,
+          "max_cumulative_abs": 0.0074640151060543225
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.20533597762126732,
+        "max_theta": 0.00023784863995301997
+      },
+      "maximum_reported_head_cm": -0.06276138550164814,
+      "days_top_head_above_minus_1cm": 1
+    },
+    {
+      "head_budget_cm": 0.1,
+      "median_user_seconds": 1.4038819999999999,
+      "user_seconds": [
+        1.31071,
+        1.41692,
+        1.4038819999999999
+      ],
+      "median_core_cpu_seconds": 1.1075110000000001,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "0.1",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 0.1,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 1.31071,
+        "system_seconds": 0.017062,
+        "wall_seconds": 1.3325660580012482,
+        "max_rss_kib": 19360,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "defb87f63ef69c2e2c4b8dbe244aac102ebbe4cab285f0279021fc7cb7a34ad8",
+          "daily.csv": "3f15c719901666c6793c7473eb258f6c9b2cc635ff773341e54aac24693e30df",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.1258993702137,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 31356,
+          "headcalc_calls": 100566,
+          "temporal_rejections": 21
+        },
+        "core_cpu_seconds": 1.05205,
+        "max_gross_daily_closure_mm": 1.0578649067838342e-11,
+        "period_gross_closure_mm": 1.1448264558566734e-10,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.007670667973229683,
+          "end_difference": 0.007670667973229683
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.004866761633596894,
+          "end_difference": -9.455774240785253e-05,
+          "total_difference": -0.0076706651275325055,
+          "max_cumulative_abs": 0.0076706651275325055
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.20894251193635682,
+        "max_theta": 0.00024202728152167285
+      },
+      "maximum_reported_head_cm": -0.06276138550613253,
+      "days_top_head_above_minus_1cm": 1
+    },
+    {
+      "head_budget_cm": 1.0,
+      "median_user_seconds": 1.377062,
+      "user_seconds": [
+        1.315126,
+        1.377062,
+        1.439068
+      ],
+      "median_core_cpu_seconds": 1.097781999999999,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "1.0",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 1.0,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 1.315126,
+        "system_seconds": 0.007941,
+        "wall_seconds": 1.3308949019992724,
+        "max_rss_kib": 19220,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "7272eb37b4caaff09a4573f18326179a5255c8e92fd8770880f638b7973f2c22",
+          "daily.csv": "aa5bdd06549c9f41bfedca02fc20a6724cc1742befa8471fd6267bb669a808c5",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.1258413396353,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 31307,
+          "headcalc_calls": 100113,
+          "temporal_rejections": 2
+        },
+        "core_cpu_seconds": 1.0532979999999998,
+        "max_gross_daily_closure_mm": 1.1591172466296484e-11,
+        "period_gross_closure_mm": 1.1243628250667825e-10,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.007728698549556157,
+          "end_difference": 0.007728698549556157
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.0047195751526292185,
+          "end_difference": -0.00013379511626454565,
+          "total_difference": -0.007728695705888411,
+          "max_cumulative_abs": 0.007728695705888411
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.208946524634122,
+        "max_theta": 0.00024203193077676488
+      },
+      "maximum_reported_head_cm": -0.0627613855054163,
+      "days_top_head_above_minus_1cm": 1
+    }
+  ],
+  "reference": {
+    "status": "COMPLETE_NATIVE_OBSERVATION",
+    "command": [
+      "taskset",
+      "-c",
+      "0",
+      "/tmp/perf01-wet2-build/weather",
+      "/tmp/perf01-wet2-build/weather.999",
+      "2.5e-07",
+      "97",
+      "64",
+      "continuous",
+      "original"
+    ],
+    "head_budget_cm": 2.5e-07,
+    "days": 97,
+    "windows_per_day": 64,
+    "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+    "timeout": 180.0,
+    "returncode": 0,
+    "timed_out": false,
+    "user_seconds": 41.925112,
+    "system_seconds": 0.062124,
+    "wall_seconds": 42.00170600399724,
+    "max_rss_kib": 19184,
+    "completed_days": 97,
+    "raw_sha256": {
+      "stdout": "2f96a082f7bece9406b4fcb73fd1e282bbe2af81dd7f3a9785b72e052723f3b0",
+      "daily.csv": "94b538186afcf52fbacc7f614fc3aa884544c54dfe70d5f082a03d3f73f6b8be",
+      "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "initial_storage_mm": 103.77346899380083,
+    "totals": {
+      "rain_mm": 454.0,
+      "soil_evaporation_mm": 12.972095884283286,
+      "pond_evaporation_mm": 0.0,
+      "runoff_mm": 0.0,
+      "bottom_mm": 364.1335700353412,
+      "transpiration_mm": 84.9554041157167,
+      "potential_transpiration_mm": 84.9554041157167,
+      "stress_deficit_mm": 1.1102230246251565e-16
+    },
+    "work": {
+      "accepted": 650189,
+      "headcalc_calls": 4616655,
+      "temporal_rejections": 2405439
+    },
+    "core_cpu_seconds": 41.6333,
+    "max_gross_daily_closure_mm": 2.64852806353133e-10,
+    "period_gross_closure_mm": -2.7312125894241035e-09,
+    "stress_days": 0
+  },
+  "refinements": [
+    {
+      "budget_cm": 1e-05,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "1e-05",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 1e-05,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 5.480375,
+        "system_seconds": 0.036599,
+        "wall_seconds": 5.526176804996794,
+        "max_rss_kib": 19332,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "ee10608aecd70a0f4b3de2d5567f38e903bb8531c8e7055bdd7578dc1d2f2666",
+          "daily.csv": "38b332e0f4cee2b3b7bd646c8f0051b98f2c466cbe4f4e9d55bd14f5b0a146c3",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.13077042856906,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 122220,
+          "headcalc_calls": 579839,
+          "temporal_rejections": 172185
+        },
+        "core_cpu_seconds": 5.21038,
+        "max_gross_daily_closure_mm": 5.920974821549407e-11,
+        "period_gross_closure_mm": 6.25618667982053e-10,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.002799610129002872,
+          "end_difference": 0.002799610129002872
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.000978001893625624,
+          "end_difference": -0.00048049869172683835,
+          "total_difference": -0.002799606772172003,
+          "max_cumulative_abs": 0.002799606772172003
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.020050711773166086,
+        "max_theta": 1.601005795537347e-05
+      }
+    },
+    {
+      "budget_cm": 2.5e-06,
+      "metrics": {
+        "status": "COMPLETE_NATIVE_OBSERVATION",
+        "command": [
+          "taskset",
+          "-c",
+          "0",
+          "/tmp/perf01-wet2-build/weather",
+          "/tmp/perf01-wet2-build/weather.999",
+          "2.5e-06",
+          "97",
+          "64",
+          "continuous",
+          "original"
+        ],
+        "head_budget_cm": 2.5e-06,
+        "days": 97,
+        "windows_per_day": 64,
+        "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+        "timeout": 180.0,
+        "returncode": 0,
+        "timed_out": false,
+        "user_seconds": 11.148009,
+        "system_seconds": 0.012419999999999999,
+        "wall_seconds": 11.177755805998459,
+        "max_rss_kib": 19188,
+        "completed_days": 97,
+        "raw_sha256": {
+          "stdout": "ebef382fd4c39b27ccc7117c72a6c3a3b65ca6861d1352d1a3538b92d2d5ceae",
+          "daily.csv": "352880213d8e7ed97f6a9792e41123ddbeb4cc5c91985b01e8d539e84ba2c095",
+          "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "initial_storage_mm": 103.77346899380083,
+        "totals": {
+          "rain_mm": 454.0,
+          "soil_evaporation_mm": 12.972095884283286,
+          "pond_evaporation_mm": 0.0,
+          "runoff_mm": 0.0,
+          "bottom_mm": 364.1328836208645,
+          "transpiration_mm": 84.9554041157167,
+          "potential_transpiration_mm": 84.9554041157167,
+          "stress_deficit_mm": 1.1102230246251565e-16
+        },
+        "work": {
+          "accepted": 226195,
+          "headcalc_calls": 1254065,
+          "temporal_rejections": 488785
+        },
+        "core_cpu_seconds": 10.841448000000002,
+        "max_gross_daily_closure_mm": 8.174320942355706e-11,
+        "period_gross_closure_mm": -2.1111645764904097e-10,
+        "stress_days": 0
+      },
+      "differences_vs_fine": {
+        "storage_mm": {
+          "max_daily_abs": 0.0008150457786655352,
+          "end_difference": 0.0006864169967997213
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.0005838012916905555,
+          "end_difference": 4.512587960947556e-05,
+          "total_difference": -0.0006864144766892122,
+          "max_cumulative_abs": 0.0008150433403451562
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.005360645152691745,
+        "max_theta": 5.547168180353168e-06
+      }
+    }
+  ],
+  "wet4_failed_controls": [
+    {
+      "status": "FAILED_OR_CENSORED",
+      "command": [
+        "taskset",
+        "-c",
+        "0",
+        "/tmp/perf01-wet4-build/weather",
+        "/tmp/perf01-wet4-build/weather.999",
+        "1e-06",
+        "97",
+        "64",
+        "continuous",
+        "original"
+      ],
+      "head_budget_cm": 1e-06,
+      "days": 97,
+      "windows_per_day": 64,
+      "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+      "timeout": 180.0,
+      "returncode": 1,
+      "timed_out": false,
+      "user_seconds": 11.699568,
+      "system_seconds": 0.023073999999999997,
+      "wall_seconds": 11.736470428004395,
+      "max_rss_kib": 10180,
+      "completed_days": 34,
+      "raw_sha256": {
+        "stdout": "c8c5b11c498833a8e1d99707e3e00f38a9ddf0cf24e760f6cbaf91f8e551a0c8",
+        "daily.csv": "77c6cc3da3b15c65f934c1a9ba340bda6b97a76955267b6f3fcd45fa8d396401",
+        "stderr": "879409e8858d3ac372ca4873f90a3fec1130ba8cb0815c23542c069a450b11f1"
+      }
+    },
+    {
+      "status": "FAILED_OR_CENSORED",
+      "command": [
+        "taskset",
+        "-c",
+        "0",
+        "/tmp/perf01-wet4-build/weather",
+        "/tmp/perf01-wet4-build/weather.999",
+        "1.0",
+        "97",
+        "64",
+        "continuous",
+        "original"
+      ],
+      "head_budget_cm": 1.0,
+      "days": 97,
+      "windows_per_day": 64,
+      "executable_sha256": "c66c46dfd280f8961bdffe7daa5ec35eb395aa4dde5f849b6f5e7681fa35bd19",
+      "timeout": 180.0,
+      "returncode": 1,
+      "timed_out": false,
+      "user_seconds": 0.946244,
+      "system_seconds": 0.012641999999999999,
+      "wall_seconds": 0.9710831600023084,
+      "max_rss_kib": 9960,
+      "completed_days": 34,
+      "raw_sha256": {
+        "stdout": "4b936ca3a40a3c290f209d5c39c3d113a80e393548f68b9d007cdbda7ec29ae9",
+        "daily.csv": "4770c1c277716ee7d18cf16ec6d63ab9632cbfac55e1c8fff0a1540a102b09b6",
+        "stderr": "0ed76f618a9a44c1e5779358676be2f3c062a6bd24bfffa72556934aba628576"
+      }
+    }
+  ],
+  "restart": "All daily physical values, fluxes and deterministic work exact after same-process midpoint close/reconstruct at1e-3 and1cm",
+  "claim_ceiling": "Modified meteorology is synthetic wet forcing, not observations. Certificate head-budget curve, not full-half equivalence. Completed2x arm remains inside existing flux-only boundary domain."
+}
