@@ -37,6 +37,10 @@ contains
        route = 'b110-mvg-parameters-unbound'
        return
     end if
+    if(provider%parameters%continuous_saturation_conductivity)then
+       route='continuous-weather-deferred'
+       return
+    end if
     n = provider%parameters%active_nodes
     if (n <= 0 .or. .not. allocated(provider%parameters%cofgen)) then
        route = 'b110-mvg-parameters-invalid'
@@ -116,6 +120,10 @@ contains
     water_content_direction = 0.0_real64
     if (.not. associated(provider%parameters)) then
        route = 'b110-mvg-parameters-unbound'
+       return
+    end if
+    if(provider%parameters%continuous_saturation_conductivity)then
+       route='continuous-weather-deferred'
        return
     end if
     n = provider%parameters%active_nodes

@@ -469,6 +469,7 @@ module mod_fmr_serialized_reference_backend
   ! Rain and irrigation are gross rates; evaporation/runoff are outside this route.
   type, public :: fmr_pond_input_forcing_t
     real(real64) :: rain_rate_cm_day = 0.0_real64
+    real(real64) :: potential_bare_soil_evaporation_cm_day = 0.0_real64
     real(real64) :: irrigation_rate_cm_day = 0.0_real64
     real(real64) :: runon_rate_cm_day = 0.0_real64
     real(real64) :: potential_pond_evaporation_cm_day = 0.0_real64
@@ -508,6 +509,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_macropore_top_input_forcing_t), allocatable :: macropore_top_input
     type(rfm_surface_forcing_t), allocatable :: rfm_surface
     type(fmr_pond_input_forcing_t), allocatable :: pond_input
+    ! Immutable atmospheric rates; resolved inside each Richards sibling/retry.
+    type(fmr_pond_input_forcing_t), allocatable :: weather_surface
     type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
@@ -520,6 +523,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: pond_start_cm = 0.0_real64, pond_end_cm = 0.0_real64
     ! Read-only converged diagnostics, NOT yet an accepted gross-flux receipt.
     logical :: converged_surface_available = .false.
+    real(real64) :: converged_bare_soil_evaporation_cm_day = 0.0_real64
     real(real64) :: converged_pond_evaporation_cm_day = 0.0_real64
     real(real64) :: converged_runoff_depth_cm = 0.0_real64
     logical :: converged_gross_sources_available = .false.
@@ -840,6 +844,7 @@ module mod_fmr_serialized_reference_backend
     type(rfm_surface_forcing_t) :: rfm_surface_forcing
     logical :: trusted_prepared_default_mvg = .false.
     logical :: temporal_indicator_history_enabled = .false.
+    logical :: weather_surface_active = .false.
     logical :: macropore_reduction_continuation_enabled = .false.
     logical :: temporal_indicator_budget_supplied = .false.
     logical :: temporal_indicator_budget_valid = .false.
@@ -2384,6 +2389,7 @@ contains
     real(real64) :: rutter_source_origin, rutter_sink_total, rutter_scale
     real(real64) :: rutter_rain_amount, rutter_total_input, rutter_surface_output, rutter_storage_change, rutter_residual
     type(fmr_b110_physical_forcing_t) :: trial_forcing
+    type(canonical_numerical_config_t) :: trial_config
     type(rutter_source_state_t) :: rutter_accepted_state, rutter_candidate_state
     type(rutter_source_trial_t) :: rutter_trial
     type(rutter_interval_result_t) :: rutter_result
@@ -2705,6 +2711,35 @@ contains
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
     trial_forcing = forcing
+    trial_config = config
+    self%model%weather_surface_active = allocated(forcing%weather_surface)
+    if (self%model%weather_surface_active) then
+      ! This composition has no smooth dynamic-top history certificate.
+      ! Use the existing full/half transaction with the same requested cm budget.
+      if (allocated(forcing%pond_input).or.config%accepted_trajectory_direction%requested.or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+          parameters%bottom_mode/=7.or.parameters%elasticity_active.or.parameters%hysteresis_active.or. &
+          parameters%swkmean/=1.or.parameters%ksatexm_extension_active.or.parameters%conductivity_power_tail_active.or. &
+          allocated(parameters%micro_de_willigen).or.allocated(parameters%bartholomeus)) then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+      if (config%transaction%temporal_mode==TX_TEMPORAL_MODEL_CERTIFICATE) then
+        if (.not.config%model_temporal_indicator_budget_available.or. &
+            .not.ieee_is_finite(config%model_temporal_indicator_budget)) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+        if (config%model_temporal_indicator_budget<=0.0_real64) then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+        trial_config%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+        trial_config%transaction%temporal_tolerance=config%model_temporal_indicator_budget
+      end if
+      allocate(trial_forcing%pond_input,source=forcing%weather_surface)
+      self%model%accepted_water_flux_trace_enabled=.true.
+    end if
     if (self%model%rutter_active) then
       if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%source_window%valid()) then
         call reject_backend_trial(result, candidate, diagnostics)
@@ -2812,13 +2847,13 @@ contains
     if (allocated(forcing%c_drain_salt)) self%model%c_drain_salt_forcing = forcing%c_drain_salt
     if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
     if (allocated(forcing%legacy_swbotb5_control)) then
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_hbot5_proposal)
     else if (allocated(forcing%legacy_swbotb3_implicit_control)) then
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_cauchy3_proposal)
     else
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, config, t0, t1, checkpoint, &
+      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
            result, candidate, diagnostics)
     end if
     if (associated(self%model%constitutive)) nullify(self%model%constitutive%parameters)
@@ -3413,7 +3448,7 @@ contains
       self%soil_parameters%z = parameters%z
       self%soil_parameters%dz = parameters%dz
       self%soil_parameters%node_distance = parameters%node_distance
-      if (self%trusted_prepared_default_mvg .and. associated(self%trusted_parameter_source) .and. &
+      if (.not.self%weather_surface_active.and.self%trusted_prepared_default_mvg .and. associated(self%trusted_parameter_source) .and. &
           prepared_default_mvg_structurally_compatible(parameters)) then
         self%hydraulic_parameters => self%trusted_parameter_source%prepared_default_mvg
       else
@@ -3431,6 +3466,7 @@ contains
                  enable_conductivity_power_tail=parameters%conductivity_power_tail_active)
           end if
         end if
+        self%owned_hydraulic_parameters%continuous_saturation_conductivity=self%weather_surface_active
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
       self%hysteresis_active = parameters%hysteresis_active
@@ -4011,12 +4047,14 @@ contains
       if (allocated(forcing%pond_input)) then
         if (.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
             forcing%pond_input%irrigation_rate_cm_day,forcing%pond_input%runon_rate_cm_day, &
+            forcing%pond_input%potential_bare_soil_evaporation_cm_day, &
             forcing%pond_input%potential_pond_evaporation_cm_day,forcing%pond_input%ponding_max_cm, &
             forcing%pond_input%runoff_resistance_day,forcing%top_flux]))) return
         if (min(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)<0.0_real64.or. &
             max(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day, &
             forcing%pond_input%runon_rate_cm_day)>5.e5_real64.or. &
-            min(forcing%pond_input%runon_rate_cm_day,forcing%pond_input%potential_pond_evaporation_cm_day, &
+            min(forcing%pond_input%potential_bare_soil_evaporation_cm_day, &
+            forcing%pond_input%runon_rate_cm_day,forcing%pond_input%potential_pond_evaporation_cm_day, &
             forcing%pond_input%ponding_max_cm,forcing%pond_input%runoff_resistance_day)<0.0_real64) return
         if (forcing%top_flux/=0.0_real64.or.self%snow_active.or.self%black_evaporation_active.or. &
             self%boesten_evaporation_active.or.self%rutter_active.or.self%macropore_active.or. &
@@ -4025,7 +4063,9 @@ contains
             allocated(forcing%boesten_evaporation).or.allocated(forcing%rutter).or. &
             allocated(forcing%rfm_surface).or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl/=0.or.self%analytical_hydraulics_active.or.self%direct_retention_active) return
-        if (self%temporal_indicator_history_enabled.or..not.self%soil_water_selection%uses_reference()) return
+        if (.not.self%soil_water_selection%uses_reference()) return
+        if (self%temporal_indicator_history_enabled.and..not.self%weather_surface_active) return
+        if(.not.self%weather_surface_active.and.forcing%pond_input%potential_bare_soil_evaporation_cm_day/=0.0_real64)return
         if (config%transaction%temporal_mode/=TX_TEMPORAL_EXTERNAL_FULL_HALF) return
         allocate(self%pond_input,source=forcing%pond_input)
       end if
@@ -4518,6 +4558,7 @@ contains
       self%last_observation%hbot5_sample_t1900 = self%hbot5_proposal%legacy_sample_t1900
       self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
     end if
+    request%numerical%consistent_provider_conductivity=self%weather_surface_active
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
@@ -5061,10 +5102,11 @@ contains
       call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters, &
            self%hydraulic_parameters,self%swkmean,request%base_state%ponding_depth,step_duration, &
            self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
-           0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &
+           0.0_real64,self%pond_input%runon_rate_cm_day,self%pond_input%potential_bare_soil_evaporation_cm_day, &
            self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &
            self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity, &
-           implicit_pond_evaporation=self%pond_input%implicit_pond_evaporation)
+           implicit_pond_evaporation=self%pond_input%implicit_pond_evaporation, &
+           implicit_conductivity=self%weather_surface_active)
       request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
       nullify(request%evaluation%top_boundary)
       request%evaluation%dynamic_top_boundary=>rfm_top_provider
@@ -5324,6 +5366,18 @@ contains
       self%last_observation%temporal_normalized_indicator = rossfast_temporal_indicator
       self%last_observation%temporal_indicator_route = 'rossfast-model-certificate'
       self%last_observation%temporal_certificate_unavailable_reason = 'available'
+    else if (self%temporal_indicator_history_enabled.and.self%weather_surface_active) then
+      ! Preserve truthful numerical continuation on the actually selected sibling.
+      select type(physical=>state)
+      type is(fmr_b110_temporal_indicator_state_t)
+        call physical%temporal_history%replace( &
+          (solve_result%candidate_state%pressure_head-request%base_state%pressure_head)/step_duration,temporal_history_ok)
+        if(.not.temporal_history_ok)return
+      class default
+        return
+      end select
+      self%last_observation%temporal_indicator_route='weather-surface-full-half'
+      self%last_observation%temporal_certificate_unavailable_reason='external-full-half'
     else if (self%temporal_indicator_history_enabled) then
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
       if (.not. temporal_history_ok) return
@@ -5737,6 +5791,7 @@ contains
           abs(step%top_flux*(t1-t0)), &
           abs(self%workspace%converged_surface_result%net_potential_surface_flux*(t1-t0)))) return
       step%converged_surface_available = .true.
+      step%converged_bare_soil_evaporation_cm_day = self%workspace%converged_surface_result%bare_soil_evaporation
       step%converged_pond_evaporation_cm_day = self%workspace%converged_surface_result%ponded_water_evaporation
       step%converged_runoff_depth_cm = self%workspace%converged_surface_result%runoff_depth
       if (self%workspace%gross_surface_sources_available) then
@@ -6144,6 +6199,10 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     if(allocated(self%pond_input))then
+      if(self%weather_surface_active)then
+        value=fmr_weather_surface_temporal_error(self,full_state,half_state)
+        return
+      end if
       value=fmr_pond_input_temporal_error(full_state,half_state)
       return
     end if
@@ -6254,15 +6313,85 @@ contains
     end if
   end function fmr_serialized_temporal_identity
 
+  ! Mixed Richards states are differential in theta but algebraic in h once
+  ! saturated. Across that event use equivalent water depths, including every
+  ! face exchange. Unsaturated head differences keep the original cm budget.
+  real(real64) function fmr_weather_surface_temporal_error(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),allocatable::kf(:),kh(:)
+    real(real64)::dt,qf,qh,d,storage_error,head_error
+    logical::ok
+    integer::n,i
+    value=huge(0.0_real64)
+    if(.not.associated(self%soil_parameters).or..not.associated(self%hydraulic_parameters).or. &
+       .not.associated(self%constitutive))return
+    ! temporal_error follows the actual second sibling; its provider owns dt/2.
+    dt=2.0_real64*self%constitutive%step_duration
+    if(.not.ieee_is_finite(dt).or.dt<=0.0_real64)return
+    select type(full=>full_state)
+    class is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      class is(fmr_b110_physical_state_t)
+        n=full%active_nodes
+        if(n<1.or.n>4096.or.half%active_nodes/=n)return
+        if(self%soil_parameters%active_nodes/=n)return
+        if(.not.allocated(self%soil_parameters%dz).or..not.allocated(self%soil_parameters%node_distance))return
+        if(size(self%soil_parameters%dz)/=n.or.size(self%soil_parameters%node_distance)<n)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+           .not.allocated(full%water_content).or..not.allocated(half%water_content))return
+        if(size(full%pressure_head)/=n.or.size(half%pressure_head)/=n.or. &
+           size(full%water_content)/=n.or.size(half%water_content)/=n)return
+        if(any(full%water_content<0.0_real64).or.any(half%water_content<0.0_real64).or. &
+           any(full%water_content>1.0_real64).or.any(half%water_content>1.0_real64))return
+        if(any(.not.ieee_is_finite(full%pressure_head)).or.any(.not.ieee_is_finite(half%pressure_head)).or. &
+           any(.not.ieee_is_finite(full%water_content)).or.any(.not.ieee_is_finite(half%water_content)))return
+        if(.not.all(ieee_is_finite([full%ponding_depth,half%ponding_depth, &
+           full%groundwater_level,half%groundwater_level])))return
+        if(min(full%ponding_depth,half%ponding_depth)<0.0_real64)return
+        allocate(kf(n),kh(n));head_error=0.0_real64
+        do i=1,n
+          if(max(full%pressure_head(i),half%pressure_head(i))<0.0_real64) &
+            head_error=max(head_error,abs(full%pressure_head(i)-half%pressure_head(i)))
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,i,full%pressure_head(i),kf(i),ok)
+          if(.not.ok)return
+          call evaluate_b110_default_mvg_conductivity(self%hydraulic_parameters,i,half%pressure_head(i),kh(i),ok)
+          if(.not.ok)return
+        end do
+        storage_error=sum(abs(full%water_content-half%water_content)*self%soil_parameters%dz)
+        value=max(head_error,storage_error,abs(full%ponding_depth-half%ponding_depth), &
+          abs(full%groundwater_level-half%groundwater_level))
+        ! Free bottom and interior Darcy exchanges, in cm over this whole trial.
+        value=max(value,dt*abs(kf(n)-kh(n)))
+        do i=2,n
+          d=self%soil_parameters%node_distance(i)
+          qf=.5_real64*(kf(i-1)+kf(i))*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)
+          qh=.5_real64*(kh(i-1)+kh(i))*((half%pressure_head(i-1)-half%pressure_head(i))/d+1.0_real64)
+          value=max(value,dt*abs(qf-qh))
+        end do
+        if(max(full%ponding_depth,half%ponding_depth)>0.0_real64.or. &
+           max(full%pressure_head(1),half%pressure_head(1))>=0.0_real64)then
+          d=.5_real64*self%soil_parameters%dz(1)
+          qf=.5_real64*(self%hydraulic_parameters%cofgen(3,1)+kf(1))* &
+            ((full%ponding_depth-full%pressure_head(1))/d+1.0_real64)
+          qh=.5_real64*(self%hydraulic_parameters%cofgen(3,1)+kh(1))* &
+            ((half%ponding_depth-half%pressure_head(1))/d+1.0_real64)
+          value=max(value,dt*abs(qf-qh))
+        end if
+        if(.not.ieee_is_finite(value))value=huge(0.0_real64)
+      end select
+    end select
+  end function
+
   ! New opt-in domain only. Existing identity and certificate routes are unchanged.
   real(real64) function fmr_pond_input_temporal_error(full_state,half_state) result(value)
     class(transaction_state_t),intent(in)::full_state,half_state
     logical::available
     value=huge(0.0_real64)
     select type(full=>full_state)
-    type is(fmr_b110_physical_state_t)
+    class is(fmr_b110_physical_state_t)
       select type(half=>half_state)
-      type is(fmr_b110_physical_state_t)
+      class is(fmr_b110_physical_state_t)
         if(full%active_nodes/=half%active_nodes)return
         if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
            .not.allocated(full%water_content).or..not.allocated(half%water_content))return
