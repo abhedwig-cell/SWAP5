@@ -1,0 +1,119 @@
+{
+  "workstream": "MC-SOL01",
+  "scope": "Final canonical metadata and exact source authority composition; no model changes",
+  "pull_request": 1355,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1355",
+  "head": "377d5b1095d65e418f762a25265e493a43387de1",
+  "head_tree": "d93da448c62e704f9018186f34da859d36c0cc35",
+  "actual_merge": "355d8e3449fba1f10176f439897d2411a6ba8082",
+  "actual_merge_tree": "d93da448c62e704f9018186f34da859d36c0cc35",
+  "concurrent_nut_merge": "0391d3cb70094c538df983086f6d3f8298912fcb",
+  "source_tree": "ef338ba42e5456d3f2f67ca580ffcedb3c00d0c0",
+  "master_receipt": "7e09c5c9b2c6e7197be7ce98bea1a9cc7cc0bf41",
+  "pr_workflows": [
+    {
+      "id": 39592685774,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685777,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685728,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685829,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685647,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685917,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685689,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685710,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685731,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685811,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685938,
+      "name": "MC-SOL01 dynamic accepted temperature decay",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39592685836,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "local": {
+    "source_bound_evidence": "PASS",
+    "negative_controls": 13,
+    "documentation_sources": "PASS",
+    "strict_mkdocs": "PASS",
+    "actual_merge_matches_tested_tree": true,
+    "concurrent_implementation_and_evidence_postimages_exact": 17
+  },
+  "full_capability": false,
+  "full_historical_swp_default": false,
+  "actual_merge_workflows": [
+    {
+      "id": 39593136973,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39593136936,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 39593136821,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "actual_merge_qualified": true,
+  "qualification_scope": "Original SWP chemistry/grid import admitted; original feature and FSI35 scientific evidence remains in MC_SOL01_SWP_READER_HOSTED_20261021.json; this receipt seals metadata and concurrent owner composition only."
+}
