@@ -131,5 +131,49 @@
     "mkdocs_strict": "PASS",
     "fresh_native_profiles": "O0 checked, O2 production, FPE traps retained",
     "full_fci": "NOT_SELECTED_NO_PRODUCTION_CHANGE"
+  },
+  "actual_admission": {
+    "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1347",
+    "canonical_commit": "421916a59d0f7baa5c3abe68c5caeb41ab1bb9c8",
+    "qualified_head": "81a20e216e75e7c7544d03371f821b624b246c4d",
+    "qualified_tree": "815854f893efe9b251bc0e9d0b4dd6c1f4a2989e",
+    "canonical_tree_equals_qualified_tree": true,
+    "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+    "published_head_diagnostic_self_test": {
+      "negative_controls": 5,
+      "rejected": [
+        "missing terminal failure",
+        "O2-v6/RESULT.json",
+        "O0/off/solver_failure.csv",
+        "O2-v6/observer/headcalc.f90",
+        "oracle/budget.csv"
+      ]
+    },
+    "published_head_current_preservation_self_test": {
+      "count": 12,
+      "negative_controls": [
+        "0.5/result.json",
+        "2/O2/expected.bin",
+        "1.5/O0/fresh.bin",
+        "0.8/O2/gross.bin.gross-fresh",
+        "controls/0000.stdout",
+        "column/qualification/result.json",
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "src/process/mod_b111_solute_sorption.f90",
+        "tests/nut-sol/run_nonlinear_pond.py",
+        "source src/runtime/mod_fmr_b111_pond_solute_route.f90",
+        "source integration/performance/verify_proposal.py",
+        "foreign production delta"
+      ]
+    },
+    "published_head_docs_source_check": "PASS",
+    "published_head_mkdocs_strict": "PASS",
+    "new_hosted_compile_runs": 0,
+    "current_canonical_before_merge": "aa4c011b8a6f92caaffa96e5dac2972ab58ab03c",
+    "current_qualification_rechecked_on_composition": true
+  },
+  "diagnostic_source_sha256": {
+    "integration/diagnostics/diagnose_perf01_dry.py": "a69c7199c73a61f5e61fbd6eb30d79921fd3a059da96c72273d4e957e616899a",
+    "integration/diagnostics/verify_perf01_dry.py": "9c79f17f9c157d3f3be1e76106f43b29d08786b5f8d03fcca909dc2c411203ae"
   }
 }
