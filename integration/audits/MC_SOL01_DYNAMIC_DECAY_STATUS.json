@@ -599,7 +599,7 @@
   ],
   "nonlinear_pond_successor": {
     "work_unit": "MC-SOL01-NONLINEAR-POND01",
-    "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "baseline": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
     "implemented": true,
     "persisted": true,
     "tested": true,
@@ -875,7 +875,7 @@
       },
       "integration/audits/verify_nonlinear_pond.py": {
         "status": "A",
-        "sha256": "e40960010beabc02124c48c14b8fa55c2947016f2a75a157d4f9e8ee7f063b16"
+        "sha256": "779937decca6582a206d30dbd0155c985857b4e57b3e144a94cab8a1e2ee4e14"
       },
       "integration/performance/verify_proposal.py": {
         "status": "M",
@@ -902,7 +902,7 @@
       "strict_documentation": "PASS before reconciliation; final strict docs gate follows"
     },
     "initial_baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
-    "last_reconciled_upstream": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "last_reconciled_upstream": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
     "pre_reconciliation_evidence": {
       "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_20261021.tar.xz.b64",
       "decoded_sha256": "215e012765a1d982ad9f858c6247747f80c68710b49db32b0c7fd392a3ba6597",
@@ -922,6 +922,13 @@
       "fresh_current_pond_and_column": "PASS O0/O2; sixexponents/360+86processes/60configuration negatives",
       "current_thermal": "PASS: every PERF01 six-exponent execution input byte is current; original raw science validated",
       "all_incoming_files_preserved": true
+    },
+    "production_reconciled_predecessor": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "metadata_reconciliation": {
+      "canonical": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+      "changed": "Only two PERF01 admission/qualification JSON receipts; allsrc/app/test/reference/scientific inputs unchanged",
+      "physical_repetition": "NOT_SELECTED_IMPACT; current actual physical evidence remains byte-bound",
+      "reason": "First PR merge checkout correctly failed conservative whole-performance-directory source guard on concurrent receipt; no numerical failure."
     }
   }
 }

@@ -13,7 +13,7 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = '437d96ff51ac8a5825b605caf788661848c88be5'
+BASE = 'c62ca4ce2e33c65be3630f947b8ff322cd2f9863'
 STATUS = 'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
 PRODUCTION = 'src/runtime/mod_fmr_b111_pond_solute_route.f90'
 CASES = ['1', '0.5', '0.8', '1.0005', '1.5', '2']
