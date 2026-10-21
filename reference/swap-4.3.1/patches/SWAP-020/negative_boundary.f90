@@ -9,7 +9,7 @@ subroutine Wofost_SoilWaterN_Negative(dz,dt,wt,w0,qout,qroot,qbot,qtop,qlat, &
   real(8),intent(in)::sorption,cbot,ctop,clat,c0
   real(8),intent(out)::ce,ca,top_actual,unmet,depleted
   integer,intent(out)::status
-  real(8)::h,h1,h2,positive,requested,a1,a2,b1,b2,lo,hi,mid,candidate,unused
+  real(8)::h,h1,h2,positive,requested,a1,a2,b1,b2,lo,hi,mid,candidate,unused,roundoff
   integer::kind,i
   ce=0d0;ca=0d0;top_actual=0d0;unmet=0d0;depleted=0d0;status=1
   if(.not.all(ieee_is_finite([dz,dt,wt,w0,qout,qroot,qbot,qtop,qlat,tcsf,rate,production, &
@@ -23,12 +23,14 @@ subroutine Wofost_SoilWaterN_Negative(dz,dt,wt,w0,qout,qroot,qbot,qtop,qlat, &
   h=(wt-w0)/dt
   h1=h+qout/dz+tcsf*qroot/dz+rate*.5d0*(wt+w0)
   h2=positive-requested
+  roundoff=32d0*epsilon(1d0)*max(abs(h),qout/dz+tcsf*qroot/dz+rate*.5d0*(wt+w0))
+  if(abs(h1)<=roundoff)h1=0d0
   if(abs(h)<1d-8.and.h/=0d0)return
   if(abs(h1)<1d-8.and.h1/=0d0)return
   if(h/=0d0.and.h1/=0d0)then
     if(abs(h-h1)>1d-8)then
       kind=1
-    else if(h==h1)then
+    else if(abs(h-h1)<=roundoff)then
       kind=2
     else
       return

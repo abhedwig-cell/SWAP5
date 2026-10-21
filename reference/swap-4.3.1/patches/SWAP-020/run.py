@@ -89,7 +89,7 @@ from scipy.integrate import solve_ivp
 direct_checks = []
 for x, line in zip(cases, direct['O0'].splitlines()):
     code, *r = map(float, line.split())
-    if len(direct_checks) >= 160:
+    if len(direct_checks) >= len(cases)-4:
         assert code != 0, 'unsupported input accepted'
         direct_checks.append(dict(invalid_rejected=True))
         continue
@@ -214,7 +214,7 @@ result=dict(status='BOUNDED_NEGATIVE_REFERENCE_LOCAL_PASS_NOT_PRODUCTION_ADMITTE
             compiler=subprocess.check_output(FC+['--version'],text=True).splitlines()[0],
             input_sha256={str(p.relative_to(ROOT)):sha(p.read_bytes())for p in [HERE/'run.py',HERE/'apply.py',
               HERE/'negative_boundary.f90',HERE/'test_negative.f90',archive,ROOT/'tools/performance/build_swap431_perf01.py']},
-            transform=changed,direct_cases=len(cases),valid_direct_cases=160,
+            transform=changed,direct_cases=len(cases),valid_direct_cases=len(cases)-4,
             direct_max_abs_residual=max(abs(r.get('residual',0.))for r in direct_checks),
             direct_max_relative_residual=max(abs(r.get('residual',0.))/r.get('scale',1.)for r in direct_checks),
             direct_max_oracle_error=max(r.get('oracle_max_error',0.)for r in direct_checks),
