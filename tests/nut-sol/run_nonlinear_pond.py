@@ -156,8 +156,8 @@ for opt in ('O0','O2'):
         assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in iw and ie.read_bytes()==ifresh.read_bytes()
         results['runs'][opt][variant+'_incumbent_endpoint_sha256']=digest(ie)
     gross_restart=build/'gross.bin'
-    gw=run([incumbent_exe,'gross',gross_restart,build/'unused'],'gross_native')
-    gr=run([incumbent_exe,'gross-resume',gross_restart,build/'unused'],'gross_native')
+    gw=run([incumbent_exe,'gross',gross_restart,build/'unused'],build,'gross_native')
+    gr=run([incumbent_exe,'gross-resume',gross_restart,build/'unused'],build,'gross_native')
     assert b'MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS' in gw
     assert (build/'gross.bin.gross-next').read_bytes()==(build/'gross.bin.gross-fresh').read_bytes()
     results['runs'][opt]['gross_endpoint_sha256']=digest(build/'gross.bin.gross-next')
@@ -174,6 +174,7 @@ for opt in ('O0','O2'):
     for label,data in negatives.items():
         path=build/(label+'.bin');path.write_bytes(data)
         out=run([exe,'reject',path,fresh],build,'physical_native');assert b'POND_JOINT_INVALID_FILE=PASS' in out
+    pond_mod=(build/'b111_literal_oracle.mod').read_bytes()
     original=ROOT/'tests/nut-sol/test_surface_joint.f90';bind(original)
     original_oracle=build/'literal_original.f90'
     original_oracle.write_text(oracle.replace('literal_step(f,cml,cmsy_mass,surface_mass,decay_out','literal_step(f,cml,cmsy_mass,decay_out').replace('cml(:),cmsy_mass(:),surface_mass','cml(:),cmsy_mass(:)').replace('csurf=surface_mass;pond=f%pond_end_cm;','csurf=0;pond=0;').replace(' surface_mass=csurf\n',''))
@@ -190,6 +191,7 @@ for opt in ('O0','O2'):
     assert b'SURFACE_JOINT_FRESH_PROCESS=PASS' in original_resume
     assert (build/'old-expected.bin').read_bytes()==(build/'old-fresh.bin').read_bytes()
     assert digest(build/'old-expected.bin')=='7927b66f0ccf253d00795dd6c174a8323ac6e06d5bd6d384248e9bb0e7331d9e'
+    (build/'b111_literal_oracle.mod').write_bytes(pond_mod)
     results['runs'][opt].update(original_surface_stdout=original_stdout.decode(),original_surface_endpoint=digest(build/'old-expected.bin'))
     results['runs'][opt].update(physical_stdout=stdout.decode(),physical_provider_count=len(ordered),
         endpoint_sha256=digest(expected),fresh_sha256=digest(fresh),restart_negatives=list(negatives))
