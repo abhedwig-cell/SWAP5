@@ -1,5 +1,10 @@
 # PERF01 temporal proposal diagnostic recovery
 
+The subsequent [solver-aware diagnostic study](SWAP5-PERF01_SOLVER_STUDY.md)
+retains the wet proposal trajectory and removes the measured dry regression
+with a window-local fallback. It remains a diagnostic candidate; production
+policy is unchanged.
+
 Status: reconstruction and fresh execution, not production admission.
 Scientific source baseline: `9a3a15197adbf37dba340f4f9acbbb44fe76a989`.
 
