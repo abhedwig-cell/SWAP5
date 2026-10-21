@@ -1,0 +1,127 @@
+{
+  "work_unit": "MC-SOL01-NONLINEAR-POND01",
+  "qualified_head": "068d1a738dcefa11a9d518d6dbe8e212804d8c18",
+  "previous_triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_CI_TRIAGE_20261021.json",
+  "failure_count": 10,
+  "failures_counted_as_pass": false,
+  "failures": [
+    {
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "run": 39569936195,
+      "job": 119121284673,
+      "error_excerpt": "2026-10-21T08:32:02.2559142Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+      "failure_markers": [
+        "2026-10-21T08:32:02.2559142Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E04 Reference failure census",
+      "run": 39569936137,
+      "job": 119121284229,
+      "error_excerpt": "2026-10-21T08:31:56.7445208Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+      "failure_markers": [
+        "2026-10-21T08:31:56.7445208Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-ME D3 origin authority",
+      "run": 39569936427,
+      "job": 119121285609,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:32:11.8176279Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
+      "run": 39569936320,
+      "job": 119121284533,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:32:09.4203982Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "run": 39569936360,
+      "job": 119121285273,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:32:42.2574631Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "run": 39569936368,
+      "job": 119121285289,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:32:28.1834630Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "workflow": "PUB-ME D1 transition authority",
+      "run": 39569936339,
+      "job": 119121285219,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:33:41.9328508Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "run": 39569936423,
+      "job": 119121285522,
+      "error_excerpt": "2026-10-21T08:33:01.0205673Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+      "failure_markers": [
+        "2026-10-21T08:33:01.0205673Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "run": 39569936116,
+      "job": 119121285233,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:32:59.1669636Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
+      "run": 39569936403,
+      "job": 119121286067,
+      "error_excerpt": "",
+      "failure_markers": [
+        "2026-10-21T08:33:08.5506107Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    }
+  ],
+  "conclusions": [
+    "Seven unchanged historical publication preflights reject production/reference source changes. They do not compile the changed pond route; no failure is relabelled as scientific PASS.",
+    "Three unchanged publication compile lists omit mod_drainage_dramet3_response. All literal providers and recipes equal exactc62 baseline and do not compile the changed pond route.",
+    "All current owning pond/thermal/column/canonical/exact-performance/docs routes are SUCCESS; full moving F-CI remains NOT_SELECTED_IMPACT."
+  ],
+  "literal_provider_checks": {
+    "run_pub_p2e02_reference_uncertainty_pilot.sh": {
+      "runner_unchanged": true,
+      "literal_provider_count": 55,
+      "all_literal_providers_unchanged": true,
+      "pond_route_compiled": false,
+      "existing_error": "Missing mod_drainage_dramet3_response module before any changed pond input"
+    },
+    "run_pub_p2e04_reference_bc_sweeps.sh": {
+      "runner_unchanged": true,
+      "literal_provider_count": 49,
+      "all_literal_providers_unchanged": true,
+      "pond_route_compiled": false,
+      "existing_error": "Missing mod_drainage_dramet3_response module before any changed pond input"
+    },
+    "run_pub_p2e04_reference_failure_census.sh": {
+      "runner_unchanged": true,
+      "literal_provider_count": 45,
+      "all_literal_providers_unchanged": true,
+      "pond_route_compiled": false,
+      "existing_error": "Missing mod_drainage_dramet3_response module before any changed pond input"
+    }
+  }
+}

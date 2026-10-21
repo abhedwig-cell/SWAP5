@@ -45,6 +45,9 @@ def git(*args):
 
 
 def source(reader=lambda p: (ROOT/p).read_bytes(), changed=None):
+    pond_status=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if pond_status.exists() and 'evidence' in json.loads(pond_status.read_text()).get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_nonlinear_pond.py'),run_name='registered_nonlinear_pond')['source'](reader,changed)
     status = json.loads(STATUS.read_text())
     require(status['baseline'] == BASE and status['default_enabled'] is False, 'policy baseline/default')
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
@@ -236,6 +239,9 @@ def validate(files, reader=lambda p: (ROOT/p).read_bytes()):
 
 
 def verify_qualification():
+    pond_status=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if pond_status.exists() and 'evidence' in json.loads(pond_status.read_text()).get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_nonlinear_pond.py'),run_name='registered_nonlinear_pond')['verify_qualification']()
     source()
     result = validate(capsule())
     old = result.pop('predecessor_owner')
@@ -257,6 +263,9 @@ def verify_qualification():
 
 
 def self_test():
+    pond_status=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if pond_status.exists() and 'evidence' in json.loads(pond_status.read_text()).get('nonlinear_pond_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_nonlinear_pond.py'),run_name='registered_nonlinear_pond')['self_test']()
     source()
     files = capsule()
     validate(files)
