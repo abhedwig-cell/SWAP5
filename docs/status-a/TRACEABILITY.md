@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 finite donor,21 October2026: SWAP-020 original63-provider reference,
+the [production contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md),
+existing HIST-COMPLETE status child `negative_reference_candidate_20261021` and
+`integration/audits/verify_nut_negative.py` own source, raw model budgets,
+rollback/restart and bounded qualification. Canonical admission is pending;
+the [closure matrix](../science/MC_NUT01_FINAL_CLOSURE.md) preserves all remaining
+scope limits. Frozen Status-A and global B1 are unchanged.
+
 Current bounded MC-SOL01 dynamic thermal pond and file admission: PR1348 /
 `969aa918f0104546ec4ca2372feccf37b0145627` composes numeric endpoint heat with existing soil
 Freundlich 0.5..2 and dissolved pond chemistry. Explicit opt-in file inputs and

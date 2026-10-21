@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 finite donor,21 October2026: the [bounded contract](../science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md)
+and [closure review](../science/MC_NUT01_FINAL_CLOSURE.md) record fresh O0/O2
+original-main and actual Richards/crop/fallow/N calculations, hard conservation,
+rollback, native restart and retained-stock preservation. Canonical admission
+is pending. Only explicit fallow negative aggregate with nonnegative production
+is qualified; full historical scope and all nine master rows remain open.
+
 Current bounded MC-SOL01 dynamic thermal pond and file admission: PR1348 /
 `969aa918f0104546ec4ca2372feccf37b0145627` composes numeric endpoint heat with existing soil
 Freundlich 0.5..2 and dissolved pond chemistry. Explicit opt-in file inputs and

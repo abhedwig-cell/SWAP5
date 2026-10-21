@@ -1,6 +1,172 @@
 {
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
+  "negative_reference_candidate_20261021": {
+    "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "audit_id": "SWAP-020",
+    "contract": "reference/swap-4.3.1/patches/SWAP-020/CONTRACT.md",
+    "stage": "LOCAL_QUALIFIED_CANONICAL_PENDING",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonical_admitted": false,
+    "production_changed": true,
+    "full_work_unit_closed": false,
+    "donor_decision": "Existing historical aggregated soil mineral stock, with linear NH4 sorption; finite-donor exhaustion and continuing supply. Not physical pond chemistry.",
+    "owned_surface": "Six existing NUT providers; additive false-default finite-donor fallow forcing and independent bounded original-reference patch",
+    "read_only_authorities": "MC-SOL01, PERF01, original archives and all published B1 snapshots",
+    "scope": "Configured-crop fallow with nonnegative mineral production; active-crop sink allocation and immobilisation remain outside this first correction",
+    "invariants": [
+      3,
+      7,
+      13,
+      21,
+      23,
+      25,
+      26,
+      30
+    ],
+    "feedback": "80 valid and four invalid inputs per O0/O2; five analytical classes, sorption, zero/depleted/ample donors and continuing sources. Independent numerical ODE and exact nondepleted original results. Local feedback maximum N residual 6.94e-18kg/m2; prior linker/threshold failures retained.",
+    "next_action": "Exact-head owner/source and corruption controls, hosted qualification and canonical admission",
+    "production_contract": "docs/science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md",
+    "production_implemented": true,
+    "reference_local_result": {
+      "native_models": 14,
+      "daily_N_steps": 120,
+      "max_abs_whole_N_residual_kg_m2": 2.6020852139652106e-18,
+      "max_relative_whole_N_residual": 9.173895969097472e-15,
+      "O0_O2_exact": true
+    },
+    "production_feedback": "84 reference/process inputs per O0/O2 and mineral owner emptying, default rejection, atomic failure and opaque continuation passed",
+    "selected_production_composition": {
+      "owner": "MC-NUT01",
+      "authority": "docs/science/MC_NUT01_FINITE_DONOR_CONTRACT_20261021.md",
+      "changed_dependency": "Six existing soil-N transport/mineral/reactive/exchange/crop-fallow/direct-joint providers; additive false-default finite-donor forcing argument",
+      "scientific_claim": "All incumbent actual HIST endpoints/rollback/native continuation plus low/high finite-donor real Reference retired-crop model with full diagnostic restart",
+      "expected_seconds": 900,
+      "existing_evidence": "Current exact predecessor endpoints remain oracles; changed providers require fresh execution",
+      "prior_execution": "NONE"
+    },
+    "selected_full_caller": {
+      "owner": "MC-NUT01",
+      "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md",
+      "scientific_claim": "Bounded corrected-reference finite-donor negative extraction on actual original complete main",
+      "expected_seconds": 120,
+      "existing_evidence": "Immutable original defect and frozen control inputs retained; corrected execution must run freshly",
+      "prior_execution": "NONE"
+    },
+    "selected_retained_preservation": {
+      "owner": "MC-NUT01",
+      "authority": "docs/science/MC_NUT01_B112_RETAINED_STOCK_CONTRACT_20261016.md#Frozen qualification conditions",
+      "changed_dependency": "Six incumbent chemistry and direct-joint providers used by the retained owner",
+      "scientific_claim": "Fresh complete retained/default/request/reproductive source, invalid native snapshots, original124-day process restart; unchanged assertions",
+      "expected_seconds": 900,
+      "existing_evidence": "HIST shares scientific endpoints but does not execute all retained input/profile controls; original owner explicitly selected",
+      "prior_execution": "NONE"
+    },
+    "concurrent_canonical": "fb00736e320498f2e610b0671af9c7dc5a381921",
+    "source_qualified_commit": "e8b96829",
+    "evidence": {
+      "index": "integration/audits/evidence/mc-nut01-finite-donor-20261021/INDEX.json",
+      "sha256": "1029cc3581d678f5685a346caece0eab6d7bcf4867d4043b083ac6cbffb1b21c"
+    },
+    "postimages": {
+      "integration/audits/package_nut_negative.py": {
+        "status": "A",
+        "sha256": "6220f14dc74f44f2b0bae6e7e7839da551351587db003b6a977a09afc9a1e8cd"
+      },
+      "integration/audits/resume_nut_hist.py": {
+        "status": "A",
+        "sha256": "3772beac9cdf2c82f7ede6f1155fb9aa1ef12e1872db931f42857cc83aebc631"
+      },
+      "integration/audits/resume_nut_retained.py": {
+        "status": "A",
+        "sha256": "15862f95237c82333049af6780410b43c54063f39ec5e41935f30eb1aea74da6"
+      },
+      "integration/audits/run_nut_negative.py": {
+        "status": "A",
+        "sha256": "b0588be36ebb7eea1a745c1fa6b3f93d24374d4d49b40b9ff1247c2c8a4a03ac"
+      },
+      "integration/audits/verify_nut_negative.py": {
+        "status": "A",
+        "sha256": "c874bd1747b74bc91c4d508524cb0121fb7ec9a425b28bfaa2e2133bcfb18b17"
+      },
+      "integration/performance/authority.py": {
+        "status": "M",
+        "sha256": "db1815896deed324c973778c6ca6c6ad76d5c20f8c594131e3ce2bb7b56f2b1c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-020/CONTRACT.md": {
+        "status": "A",
+        "sha256": "1279b096567156c23b2be5c7b72477423625d35564820905b210bcbdec14257c"
+      },
+      "reference/swap-4.3.1/patches/SWAP-020/apply.py": {
+        "status": "A",
+        "sha256": "011861be3d1127c7083c8a4957f8fd7051dbe0cba39fa8050e416972a0bf9ac4"
+      },
+      "reference/swap-4.3.1/patches/SWAP-020/negative_boundary.f90": {
+        "status": "A",
+        "sha256": "24cbcd01bb53a9ce054433a8bd62e18e0080fe7bdcd89bdc0c41e8f6ee2dba13"
+      },
+      "reference/swap-4.3.1/patches/SWAP-020/run.py": {
+        "status": "A",
+        "sha256": "5445dd300732d17aa4c6222a73cb2e8de79ad933dd408ce0710afc1afb4dae8f"
+      },
+      "reference/swap-4.3.1/patches/SWAP-020/test_negative.f90": {
+        "status": "A",
+        "sha256": "3d9508e58d79dd2ba10e2c3026e39a169a50cf881a758ca5bddc632c36364813"
+      },
+      "src/crop/mod_crop_soil_n_day.f90": {
+        "status": "M",
+        "sha256": "85ee99fd00ff758b3e3d225203b975794e5952e1483724858805e8367f65eff6"
+      },
+      "src/process/mod_b111_soil_n_daily_exchange.f90": {
+        "status": "M",
+        "sha256": "77da0128ff79d5431ea4cf476540a260d213f74858d5bac64b80efd55598801a"
+      },
+      "src/process/mod_b111_soil_n_mineral_owner.f90": {
+        "status": "M",
+        "sha256": "ae661f30ae3c17406e0960c04ee740bb00ae4c98b9e4a8b0765597d9e9d8511a"
+      },
+      "src/process/mod_b111_soil_n_reactive_owner.f90": {
+        "status": "M",
+        "sha256": "9071e044895b484dd3649286d60af266271c336ad68a5113aea613b425cdc6cf"
+      },
+      "src/process/mod_b111_soil_n_transport.f90": {
+        "status": "M",
+        "sha256": "da6c51349f1b5cbc90e108edc7e99cbfb8887702954b8ea593479fa926d963df"
+      },
+      "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": {
+        "status": "M",
+        "sha256": "740d812937d35e74b4b6fa04b41ffd761269d85c488a35195f27577997d54ea0"
+      },
+      "tests/nut-crop/negative_joint.inc": {
+        "status": "A",
+        "sha256": "f58f46d2f9ace75ed171ffad6a740bc96787c2dcb52dba7d9df2bc6e58067fb8"
+      },
+      "tests/nut-mineral/test_negative_boundary.f90": {
+        "status": "A",
+        "sha256": "7b939b292283eca1f2239751b96112dbe6ee3d87c9ba93d02cfd1a551caf290b"
+      },
+      "tests/nut-reactive/test_finite_donor_invalid.f90": {
+        "status": "A",
+        "sha256": "8af4050c63b674a2f4a9e20a89f8beeaa5269308b5580a6547264b242b6987dd"
+      }
+    },
+    "local_result": {
+      "reference_native_models": 14,
+      "reference_daily_N_steps": 120,
+      "current_native_cases": 4,
+      "current_fresh_restarts": 8,
+      "incumbent_endpoints_exact": 16,
+      "retained_owner_pass": true,
+      "O0_O2_exact": true,
+      "max_reference_abs_N_residual_kg_m2": 2.6020852139652106e-18,
+      "max_reference_relative_N_residual": 9.173895969097472e-15,
+      "max_current_abs_cumulative_N_residual_kg_m2": 1.2495430037895439e-16,
+      "max_current_relative_cumulative_N_residual": 2.80058429233234e-13
+    }
+  },
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
   "checkpoint_commit": "e41f36658f23dcd6aa3f34835e4722eae23fba42",
   "implemented": [
