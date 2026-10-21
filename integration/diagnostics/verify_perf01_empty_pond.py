@@ -97,6 +97,8 @@ def default_projection(reader):
 
 
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+    if 'joint_generation_successor' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('extended_output_component_20261021',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_output_generation.py'))['source'](reader,changed)
     s = record()
     require(s['baseline']==BASE and s['measured_baseline']==MEASURED,'source baseline')
     git('merge-base','--is-ancestor',BASE,'HEAD')
@@ -375,6 +377,8 @@ def predecessor():
 
 
 def verify_qualification():
+    if 'joint_generation_successor' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('extended_output_component_20261021',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_output_generation.py'))['verify']()
     source();capsule('earlier_production_evidence');capsule('arithmetic_guard_evidence')
     r=validate(capsule('production_evidence'),capsule('experiment_evidence'))
     r['frozen_predecessor_replayed']=predecessor()
@@ -382,6 +386,8 @@ def verify_qualification():
 
 
 def self_test():
+    if 'joint_generation_successor' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('extended_output_component_20261021',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_output_generation.py'))['self_test']()
     source();p=capsule('production_evidence');f=capsule('experiment_evidence');validate(p,f);controls=[]
     def reject(name,action):
         try:action()

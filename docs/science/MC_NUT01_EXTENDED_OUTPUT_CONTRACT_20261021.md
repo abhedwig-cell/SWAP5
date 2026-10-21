@@ -124,3 +124,87 @@ remains draft. The fixture's separate diagnostic value file is deliberately
 not claimed as a crash-safe joint checkpoint. Automatic historical `.TRUE.`
 activation, complete run orchestration and atomic combined physical/diagnostic
 restart publication remain open, as does full MC-NUT01 migration.
+
+## Joint generation and automatic-day successor contract
+
+Baseline PR1358 head28ace73b; concurrent canonicala737c605 adds only performance
+research files, with every scientific provider and prior output proof unchanged.
+
+A new same-platform POSIX envelope stores the existing validated physical
+restart bytes, all17 diagnostic continuation values and all raw accepted
+report rows/dates in one CRC32-protected generation. The existing physical
+restart reader remains the identity/state authority; its format is unchanged.
+Sizes, bounds, row formatting/order, diagnostic reconstruction and equal physical/
+diagnostic clocks are checked before publication/restoration. Heat is excluded.
+Reads stage all physical, diagnostic and reporting state, then publish together.
+Writers create a new same-directory generation, close and fsync it before
+rename. A process killed before rename leaves the old generation; after rename
+it leaves the complete new generation. File replacement is serialized per path;
+concurrent publishers to one path are outside this contract.
+
+The explicit output-day application stages the existing actual senescence day,
+observes its accepted candidate, stages reporting history, writes the complete
+joint generation, and only then publishes caller memory. A failure before file
+replacement leaves the original caller state and previous checkpoint unchanged.
+A separate CSV is a reproducible view of the joint generation and is not part
+of the checkpoint authority. A CSV-export failure does not invalidate a saved
+model generation. Native `.TRUE.` project parsing and unqualified harvest/
+rotation/negative-donor routes are outside this bounded explicit application.
+
+Selected verification reuses only unchanged provider objects identified by the
+preceding exact-source proof. New bundle/application providers and drivers compile
+fresh O0/O2. Actual uninterrupted/fresh-process days, diagnostic and row history,
+CRC/truncation/semantic/identity negatives, failed publication, and SIGKILL at
+pre/post-rename boundaries govern the new claim. No unrelated physical campaign.
+
+## Joint-generation local result
+
+The final actual O0/O2 application passes two-day physical/diagnostic/reporting
+continuation after both separate first-day files are removed. Its automatically
+saved model bytes equal the original ordinary day; physical endpoints, complete
+report history and CSV files remain exact across optimization and fresh process.
+Four owned subprocesses are stopped by a test-only preload at the selected
+rename, then killed with SIGKILL. Before rename the old generation reconstructs;
+after rename the complete new generation reconstructs. The production adapters
+contain no environment-controlled crash hook.
+
+Fourteen invalid generations per optimization reject without changing an
+already valid caller state. They include CRC, truncation, repaired-CRC malformed
+metadata/values/date/history, and wrong crop identity. Report-derived extrema
+must match the saved diagnostic extrema. Missing publication directories leave
+all caller authority unchanged. A later CSV-only failure returns a distinct
+VIEW_FAILED status while retaining the already saved and published model state;
+the CSV can be regenerated from that checkpoint.
+
+Raw failed development attempts are retained: initial restore passed a ready
+inner target to the existing blank-target-only physical decoder; a following
+attempt exposed a zero-length CHARACTER constructor. Both are corrected in the
+final postimage, without changes to the original decoder or physical model.
+Final measured costs across O0/O2: new providers4.53s, drivers24.95s, linking0.33s,
+normal native2.39s and fresh native0.33s. Earlier successful327-provider object
+closures are reused only with before/after identity checks.
+
+The explicit application and joint persistence route are locally qualified for
+the declared nonharvested heat-off daily scenario. The local source/evidence guard was initially an additional review artifact.
+The later exact additive handoff below supersedes that admission limitation.
+Native `.TRUE.` parsing remains unchanged; no full historical MC-NUT01 closure
+is claimed.
+
+
+## Exact preservation handoff
+
+Current owning entrypoints delegate to the new bounded output owner through
+additive hooks. Every preceding owner statement is retained byte-for-byte,
+verified by exact source projection. The complete scientific delta is pinned
+and foreign additions reject. Every executed old/new provider is source-bound.
+The original current-canonical owner and neutral research entrypoints execute
+unchanged at exact predecessora737c605: full owning qualification, all27 original
+controls, research qualification and all13 research controls pass. The new
+14-control source/evidence guard also passes through the current owning entrypoint.
+The immutable predecessor receipt is versioned; it is not a substituted native
+PASS for changed code. Model and physical application providers remain unchanged.
+
+The bounded explicit heat-off/nonharvested daily application, complete generation
+and CSV view are qualified for canonical admission. The existing native project
+flag is still rejected because it promises a wider historical execution domain.
+Full MC-NUT01 master dispositions remain open.

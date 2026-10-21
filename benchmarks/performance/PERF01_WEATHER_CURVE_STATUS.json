@@ -1,0 +1,54 @@
+{
+  "work_unit": "PERF01 live weather/crop head budget curve",
+  "baseline": "f268731c8aaea7204095f77b4e6d2191bd51438a",
+  "status": "CANONICALLY_REGISTERED_BOUNDED_RESEARCH",
+  "scope": "Compose existing real historical Andelst meteorology, parameterized30cm soil, live WOFOST/Feddes uptake and numeric heat through existing bootstrap; not an Andelst site calibration",
+  "temporal_policy": "Existing MODEL_CERTIFICATE with model_temporal_indicator_budget in cm; mode7 alpha estimate already admitted. Separate error/cost curve, not a full/half policy equivalence claim",
+  "selection": "97day Jan20-Apr26 historical meteorology,64 windows/day; fresh3repeat budgets1e-3/1e-2/1e-1/1; strict1e-6 arm and1e-5,2.5e-6,2.5e-7 refinement; same-process close/reconstruct atday48; separate explicitly stress-sensitive Feddes parameter case. Individual180s/512MiB native cap; expected total below180s based measured1e-5=3.42s and2.5e-6=7.18s.",
+  "production_changed": false,
+  "invariants": "Hard mass and accepted-state/crop provenance retained; no guard bypass; failures retained",
+  "full_fci": "NOT_SELECTED_DIAGNOSTIC_DRIVER_ONLY",
+  "highest_low_air": "NOT_SELECTED",
+  "next_action": "Bounded curve complete. General site-calibrated SWP/annual/HRU and overflow/rain-duration composition remain separate scope; no default change.",
+  "observing": "Read-only accepted bottom and surface flux prints; exact physical preservation checked against unobserved seven-day run",
+  "checked_selection": "Fresh256provider checkedO0 build expected30..50s, bounded7day at1e-3 and1cm plus97day1e-3; compare real physical outputs/work to O2; no broad FCI.",
+  "native_principal_observations": 26,
+  "checked_O0_observations": 3,
+  "checked_O0_O2": "All97day physical values, accepted fluxes and deterministic work exact at1e-3 and1cm; O0 midpoint reconstruction exact at1e-3",
+  "source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+  "result": "benchmarks/performance/PERF01_WEATHER_CURVE_RESULT.md",
+  "summary": "benchmarks/performance/PERF01_WEATHER_CURVE_SUMMARY.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WEATHER_CURVE_EVIDENCE.tar.xz",
+    "sha256": "9b00c7fdc95bb485cae312245a980621c93272076f1d2aa5822b56073cc6942e",
+    "bytes": 1537188,
+    "members": 1317,
+    "member_manifest_sha256": "ba01accb2e42b60ba24a683e831057b8fc3aba8320d403bcdc0b27619b9cf6f9"
+  },
+  "incumbent_owner_qualified": true,
+  "postimages": {
+    "benchmarks/performance/build_perf01_weather.py": "0cdda6df7a8786c377374e25e287cfee1b5af2d37e23d127eea723d9fc4fee6d",
+    "benchmarks/performance/run_perf01_weather.py": "8b52fe95b6137a13c0dd1d9d167e2519fd8922ed3fdb5fd91ea5d2a6a64eba54",
+    "benchmarks/performance/assess_perf01_weather.py": "364ddf938f5fecce98e116bc48d751d1226357671f16952615c7b1c951f7f54b",
+    "benchmarks/performance/perf01_weather_main.inc": "9bee8662472253c926183b25c48b8ff0cd8c572cbf89282aa0f121bcc0bbc4e7"
+  },
+  "publication": {
+    "pull_request": 1359,
+    "head": "c3fce1d1f9db04914362c88fa529492b5b1de355",
+    "tree": "435be1c298bc850a19ba4522e3a10644f6445372",
+    "published_tree_equals_checked_local_tree": true,
+    "production_changed": false,
+    "canonical_admission": false,
+    "actions": "NOT_SELECTED_LOCAL_FOCUSED_NATIVE_ONLY"
+  },
+  "canonical_registration": {
+    "pull_request": 1359,
+    "merge": "188a58e87de555740b4c351c2a5f2c77ca35a556",
+    "qualified_head": "822048a1f91b58c61361a1cadaefc9b913ef0c8c",
+    "qualified_tree": "4e086cd2e537e5f9b99c098cb3e6c6a0e99bdb8a",
+    "actual_merge_tree_exact": true,
+    "actual_merge_incumbent_owner_qualified": true,
+    "production_policy_admitted": false,
+    "production_changed": false
+  }
+}

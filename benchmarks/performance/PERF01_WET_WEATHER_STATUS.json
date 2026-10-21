@@ -1,0 +1,28 @@
+{
+  "work_unit": "PERF01 wetter coupled weather tolerance curve",
+  "baseline": "a737c60596f7d77cf2415cb09c4181d35a8a25b5",
+  "status": "COMPLETE_LOCAL_VERIFIED_RESEARCH_WITH_FAILED_4X_CONTROL",
+  "selection": "Same97day live crop/heat/free-drainage executable, rain2x and4x full-horizon feasibility probes at1e-3cm; three paired serial observations1e-6/1e-3/1e-2/1e-1/1cm for wet2x if complete; finer2.5e-7cm andO0/reconstruction after successful screen. Preserve all failures.",
+  "physics": "Only daily rain token scaled; real timing/temperature/radiation/ET and material/crop/coupling geometry unchanged. Modified meteorology is a scenario, not observed weather. No production or acceptance changes.",
+  "expected_cost": "Wet curve expected200s total,180s per native cap/512MiB; no full provider rebuild, diagnostic main onlylink expected3s",
+  "next_action": "Input-only wet curve complete; publish and register research. Four-rain failure cause remains unqualified, separate from the completed double-rain curve.",
+  "screen": "Wet2x completes97days, max daily reported head-0.06276cm. Wet4x fails first interval ofday35 with runtime status10 after34complete days; not classified as overflow without native diagnostics.",
+  "completed_wet2_O2_observations": 20,
+  "completed_wet2_checked_O0_observations": 3,
+  "wet4_control": "Fails day35 at1e-6/1e-3/1cm; diagnostic prefix exact, no numerical guard relaxed",
+  "result": "benchmarks/performance/PERF01_WET_WEATHER_RESULT.md",
+  "summary": "benchmarks/performance/PERF01_WET_WEATHER_SUMMARY.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WET_WEATHER_EVIDENCE.tar.xz",
+    "sha256": "3535e7361af0a134f1181456cbfba9efe448aba373ec09534844350813b123e5",
+    "bytes": 806132,
+    "members": 152,
+    "members_sha256": "50f373b9f660bce04de725210496592c6418d1e6358d924754185c58550e10f3"
+  },
+  "production_changed": false,
+  "source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+  "postimages": {
+    "benchmarks/performance/study_perf01_wet_weather.py": "1c821d1ac0b21fb11e6b94792b5478191da7aa05e09b13998218e27276f1ab18",
+    "benchmarks/performance/assess_perf01_wet_weather.py": "16608d74bb54d5c44faf9f8285ffbb48cb67d2a7c183eb454b94b373b63656c2"
+  }
+}

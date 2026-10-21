@@ -1,0 +1,40 @@
+{
+  "work_unit": "PERF01 practical-run accuracy/cost readiness",
+  "baseline": "cad212b7039ac7eb4638d68795295162fe67da73",
+  "status": "BOUNDED_LIVE_WEATHER_SUCCESSOR_COMPLETE_GENERAL_FIELD_RUN_OPEN",
+  "requested_tolerances": [
+    0.001,
+    0.01,
+    0.1,
+    1.0
+  ],
+  "completed_practical_comparisons": 0,
+  "source_checks_pass": true,
+  "source_sha256": {
+    "app/solute_column/README.md": "ae6deacc36de42c13baecc11d2cb6aae595214693f602c56892feae97fbe6883",
+    "app/solute_column/main.f90": "cba8b592aa69dcaf4ea027bb00ee51622dd8672ef82ed2055fe98c1ed754a328",
+    "tests/fmig431/test_crop_file_weather_production.f90": "cc98b93b26cad5b029b95fc63d038a73f8d31c3dd22fa49b7e96bcf48fb515f4",
+    "src/transaction/mod_transaction_reference.f90": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde",
+    "integration/performance/SWAP5-PERF01_REGIONAL_ASSESSMENT.json": "b7d5b61edf5b6e08520b102b1498597ce270b57185d60c03253138e01a3b0d8a"
+  },
+  "findings": [
+    "Only current standalone file application uses prescribed sinks and qbot; no full historical SWP seasonal weather/crop/groundwater orchestration",
+    "Existing rooted historical weather driver uses model-certificate temporal indicator, not the pond full/half absolute-head tolerance; same numeric values would not be an equivalent test",
+    "Prior actual LWKM HRU7866 package assessment records incompatible application and missing referenced meteorology bytes",
+    "Current canonical standalone README verified using GitHub connector and agrees with local application boundary",
+    "Library search for Kalmthout SWAP, SWAP run invoer, Andelst found no complete executable practical package"
+  ],
+  "production_changed": false,
+  "model_runs_selected": false,
+  "reason_no_native_runs": "Do not replace live flux feedback with prescribed sinks or report a numerically inactive parameter sweep as a practical speed/accuracy test",
+  "next_safe_work": [
+    "Select one site package with meteorology, soil and vegetation and all boundary inputs",
+    "Compose admitted weather, crop/root, evaporation and relevant boundary processes into a seasonal executable; preserve physical identity",
+    "Choose an applicable temporal acceptance policy with known units; keep hard water conservation",
+    "Then measure four tolerances with daily flux/storage/stress and peak diagnostics; label finer-run differences as spread unless reference convergence is established"
+  ],
+  "scope_ceiling": "No practical-run speed factor measured; synthetic curve remains valid only in its measured domain",
+  "historical_status": "BLOCKED_APPLICATION_AND_NUMERICAL_ROUTE_COMPOSITION",
+  "bounded_successor": "benchmarks/performance/PERF01_WEATHER_CURVE_STATUS.json",
+  "resolved_scope": "Executed97day live crop/weather/thermal/free-drainage driver with applicable certificate budgets; earlier unavailable full-half comparison not relabelled as an equivalent policy"
+}
