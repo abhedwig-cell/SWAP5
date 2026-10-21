@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 PR1358 bounded admission: explicit heat-off/nonharvested daily output,
+atomic physical/diagnostic/reporting restart and reproducible CSV view are
+admitted at `49bba843210b49c58c991a23f67f52888895582f`. The
+[contract](../science/MC_NUT01_EXTENDED_OUTPUT_CONTRACT_20261021.md), existing
+HIST-COMPLETE status child `extended_output_component_20261021/joint_generation_successor`
+and `MC_NUT01_OUTPUT_GENERATION_ADMISSION_20261021.json` receipt bind actual model,
+restart/crash proof, exact preservation handoff and actual merge validation.
+No full master-row, native `.TRUE.` or frozen Status-A denominator promotion.
+
+
 MC-NUT01 fractional humus clock: PR1354, canonical `0391d3cb70094c538df983086f6d3f8298912fcb`,
 [contract and qualification](../science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md),
 existing HIST-COMPLETE child `humus_timestamp_20261021`, raw evidence index

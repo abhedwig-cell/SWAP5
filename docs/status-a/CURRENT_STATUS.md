@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 bounded output/restart,21 October2026: PR1358 admits the explicit
+heat-off/nonharvested daily output application and one CRC-protected physical/
+diagnostic/reporting generation at canonical `49bba843210b49c58c991a23f67f52888895582f`.
+Actual O0/O2, independent-process continuation,14 invalid generations per
+optimization and four pre/post-rename SIGKILL cases pass. Existing physical
+providers remain unchanged. Native extended-output activation and full MC-NUT01
+remain open. See the [contract](../science/MC_NUT01_EXTENDED_OUTPUT_CONTRACT_20261021.md).
+
 MC-NUT01 fractional humus clock,21 October2026: PR1354 admits the
 [bounded original timestamp contract](../science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md)
 at canonical `0391d3cb70094c538df983086f6d3f8298912fcb`. Original TTUTIL precision

@@ -1,0 +1,41 @@
+{
+  "workstream": "MC-NUT01",
+  "scope": "Bounded explicit heat-off nonharvested daily output/atomic restart application",
+  "pr": 1358,
+  "qualified_head": "4e8142f8b68e56378e0c7fbeb47893f418005af1",
+  "qualified_tree": "37f8cf1c814afa97e3c2a5b2cb1c33748a629c0f",
+  "canonical_merge": "49bba843210b49c58c991a23f67f52888895582f",
+  "canonical_tree": "e0637b6a2c5acab5683dbe01d59b88bb06681ef9",
+  "whole_tree_exact": false,
+  "concurrent_delta": [
+    "benchmarks/performance/PERF01_WET_WEATHER_STATUS.json"
+  ],
+  "concurrent_delta_is_unexecuted_performance_metadata": true,
+  "qualified_source_and_evidence_exact": true,
+  "postmerge_owner": "JOINT_OUTPUT_SOURCE_AND_EVIDENCE_PASS",
+  "postmerge_controls": {
+    "status": "JOINT_OUTPUT_GUARD_CONTROLS_PASS",
+    "count": 14,
+    "controls": [
+      "source src/adapter/mod_crop_n_output_generation.f90",
+      "source src/adapter/mod_crop_soil_n_output_day.f90",
+      "source src/legacy/b1_10_port/headcalc.f90",
+      "missing final/result.json",
+      "missing final/driver.f90",
+      "missing final/O0/model.endpoint.generation",
+      "missing final/O2/model.fresh.output",
+      "missing final/O0/crash-before/recovered",
+      "missing final/O2/crash-after/model.restart.generation",
+      "missing final/O0/model.restart.failed-save-after",
+      "changed final/O0/model.fresh.csv",
+      "changed final/O2/model.restart.view-failed.memory",
+      "changed final/O0/crash-before/model.restart.generation",
+      "missing negatives"
+    ]
+  },
+  "original_owner_controls": 27,
+  "original_research_controls": 13,
+  "hosted_workflows": "NOT_SELECTED; exact merge lookup returned zero runs; no hosted PASS claim",
+  "full_mc_nut01_closed": false,
+  "native_true_enabled": false
+}

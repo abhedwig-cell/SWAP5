@@ -1,6 +1,7 @@
 # MC-NUT01 extended crop output component
 
-Status: proposed bounded diagnostic component; no full MC-NUT01 admission.
+Status: bounded explicit daily output/restart application canonically admitted
+through PR1358; full MC-NUT01 remains open.
 Baseline: `48a59396d7e7745cf99ad4b1003cd84c946e3e3f`.
 Owner: existing MC-NUT01-HIST-COMPLETE record.
 
@@ -208,3 +209,13 @@ The bounded explicit heat-off/nonharvested daily application, complete generatio
 and CSV view are qualified for canonical admission. The existing native project
 flag is still rejected because it promises a wider historical execution domain.
 Full MC-NUT01 master dispositions remain open.
+
+
+Actual admission: PR1358, canonical49bba843210b49c58c991a23f67f52888895582f.
+The published/local qualified tree is identical. The actual merge additionally
+retains the concurrent PR1360 performance-metadata receipt; every qualified
+scientific source and evidence file is exact. Owning qualification and all14 new
+controls pass on the actual merge. The versioned admission receipt records this
+distinction and the inherited27/13 controls. No hosted numerical PASS is inferred
+from the deliberately empty workflow lookup. All full master dispositions remain
+unchanged; native `.TRUE.` activation and complete MC-NUT01 stay open.
