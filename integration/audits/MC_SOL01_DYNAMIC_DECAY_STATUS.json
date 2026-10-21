@@ -2843,6 +2843,10 @@
       }
     },
     "postimages": {
+      ".github/workflows/fci58p-fsi35-postimage-reconciliation.yml": {
+        "status": "M",
+        "sha256": "e6498dd04c064ac35145c35276604fc34467d98950d12931361891ddaf9703ba"
+      },
       ".github/workflows/mc-sol01-swp-reader.yml": {
         "status": "A",
         "sha256": "407c5b03d1f1420c54560fb6a2446d44466b83843dede5aabc6a23e86de0d0fb"
@@ -2877,7 +2881,15 @@
       },
       "integration/audits/verify_swp_reader.py": {
         "status": "A",
-        "sha256": "8abb62189def9d74d55c16b8554da7fdc348346939dc6581ff735fc31a3536f7"
+        "sha256": "bc96d28231ea9bf4695f2389cafd218b69375635166f50a8f2d7dfc2743b289d"
+      },
+      "integration/performance/authority.py": {
+        "status": "M",
+        "sha256": "3fd58c994a749aea2e867adca9f5dc416b59af8b2d9a3b2319e536dd28761955"
+      },
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": {
+        "status": "M",
+        "sha256": "ec9441ea868476fd962f0d2986144f262b3d796ec4e2b5cab5eceea82432a0b6"
       },
       "tests/nut-sol/qualify_swp_reader.py": {
         "status": "A",
@@ -2950,9 +2962,34 @@
         "c8b35ac3e9f2a2cf2400033d0225aea8198469ea"
       ],
       "predecessor_qualified": true,
-      "negative_controls": 9,
+      "negative_controls": 11,
       "full_swp_default_application": false,
       "full_capability": false
+    },
+    "fsi35_reconciliation": {
+      "failure_run": 39587624222,
+      "failure_job": 119180363067,
+      "cause": "Pre-PR1351 transaction byte lock; current headcalc qualified but transaction successor missing from registry",
+      "selected": "Original complete FCI93 fixed-K historical authorities, architecture invariants and O0/O2 native semantic replay; only registered transaction byte successor added",
+      "production_changed": false,
+      "status": "LOCAL_ORIGINAL_IMMUTABLE_NATIVE_O0_O2_PASS",
+      "primary_merge": "d7b891759a8c378ba0367e1a1a112c684712199f",
+      "native_evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_FSI35_NATIVE_20261021.log",
+        "sha256": "beea63b7027fd55d36c7cbd7b5295b9400f98c16dd0cd7f516c5a22f9dc7cf94",
+        "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+        "script_sha256": "ec9441ea868476fd962f0d2986144f262b3d796ec4e2b5cab5eceea82432a0b6",
+        "returncode": 0,
+        "mode": "FULL_ORIGINAL_REPLAY",
+        "compile_seconds": "UNKNOWN",
+        "native_seconds": "UNKNOWN"
+      },
+      "local_initial_attempt": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_FSI35_MISSING_AUTHORITY_20261021.log",
+        "sha256": "7556dfbd8bfaea2072333d0f84d967f52d32756047484ef9a7c203e64915e94b",
+        "returncode": 93,
+        "reason": "Sparse local object database missed six exact historical authorities; restored verified original commits/trees and four oracle files without source edits"
+      }
     }
   }
 }

@@ -197,6 +197,9 @@ def verify_qualification():
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
 
 def fsi35_successors():
+    swp=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
+    if swp.exists() and 'evidence' in json.loads(swp.read_text()).get('swp_reader_successor',{}):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['fsi35_successors']()
     finite=json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text()).get('negative_reference_candidate_20261021',{})
     if 'evidence' in finite:
         runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_fsi35')['source']()
