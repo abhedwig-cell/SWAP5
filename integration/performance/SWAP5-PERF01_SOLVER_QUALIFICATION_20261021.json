@@ -1,0 +1,105 @@
+{
+  "current_owner": {
+    "status": "GASH_ORIGINAL_SOURCE_AND_ACTUAL_N_COMPOSITION_PASS",
+    "old_endpoints_exact": 14,
+    "fresh_transition_processes": 56,
+    "new_gash_process_cases_per_optimization": 54,
+    "original_mismatches_corrected_per_optimization": 6,
+    "full_capability": false,
+    "current_column_grid_providers": 178,
+    "prior_grid_process_observations": 86,
+    "current_grid_providers_unchanged": true,
+    "qualified": true,
+    "predecessor_qualified": true,
+    "accepted_atmosphere": true,
+    "historical_gross_top": true,
+    "full_migration_qualified": false,
+    "mastercoverage_promotion": false,
+    "source_tree": "19319aa98383c69aebd0bb4e0605b3c515821060",
+    "current_source_tree": "19319aa98383c69aebd0bb4e0605b3c515821060",
+    "independent_ci_compile_logs": 3,
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "dynamic_accepted_endpoint_decay": true,
+    "thermal_independent_process_restart": true,
+    "thermal_rollback": true,
+    "thermal_crash_generation": true,
+    "thermal_refinement": true,
+    "incumbent_production_unchanged": true,
+    "thermal_admission": "BOUNDED_ENDPOINT_SPLIT_ONLY"
+  },
+  "gash_controls": {
+    "gash_negative_controls": [
+      "Gash process drift",
+      "incumbent/O0/b112-fresh.bin",
+      "incumbent/O2/source-startup-fresh.bin",
+      "physical/O0/gash-profile-fresh-6",
+      "physical/O2/gash-profile-fresh-1.ledger",
+      "physical/O0/gash-profile.restart.water-reject-6",
+      "physical/O0/gash-profile.restart.reject-after-6",
+      "physical/O0/gash-profile.restart.clean-reject-6",
+      "physical/O2/surface-profile.endpoint",
+      "authority/literal.f90",
+      "authority/preimage.f90",
+      "missing original native",
+      "missing fresh process",
+      "unchecked physical compiler"
+    ],
+    "count": 14
+  },
+  "thermal_controls": {
+    "count": 8,
+    "negative_controls": [
+      "physical/result.json",
+      "qualification/result.json",
+      "physical/O2/2/resumed.bin",
+      "physical/O0/controls/control.after",
+      "qualification/O0/128/fresh.bin",
+      "qualification/O2/kill-after/generation.bin",
+      "src/runtime/mod_fmr_b111_matrix_thermal_application.f90",
+      "src/process/mod_b111_solute_decay.f90"
+    ]
+  },
+  "registered_predecessor_controls": {
+    "status": "EXACT_DIAGNOSTIC_REGISTRATION_PASS",
+    "negative_controls": [
+      "diagnostic source drift tools/performance/study_perf01_temporal.py",
+      "diagnostic source drift tools/performance/package_perf01_temporal.py",
+      "diagnostic source drift tools/performance/run_perf01_temporal_recovery.py",
+      "production flag",
+      "missing registration",
+      "foreign registration hash",
+      "native failures relabelled",
+      "unregistered tool",
+      "changed production"
+    ],
+    "count": 9
+  },
+  "diagnostic": {
+    "status": "BOUNDED_DIAGNOSTIC_PASS_NO_PRODUCTION_ADMISSION",
+    "native_executions": 159,
+    "retained_failures": 1,
+    "optimization_exact_observations": 45,
+    "incumbent_wet_exact_observations": 16,
+    "fresh_restart_policy_cases": 20
+  },
+  "diagnostic_controls": {
+    "negative_controls": [
+      "temporal-O2/on/mod_canonical_interval_runtime.f90",
+      "temporal-O2/dry32/1e-06-on-0/state.csv",
+      "temporal-O0/pond4/on-restart/restart.bin",
+      "temporal-O2/pond32/1e-06-on-0/trajectory.csv",
+      "stale production provider"
+    ],
+    "count": 5
+  },
+  "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
+  "tested_evidence_commit": "0201506b260c1133c1fb4d4cd554f21c33461c28",
+  "tested_evidence_tree": "1be3deffc66ffdc2b8b3e630460fb894c8d05a39",
+  "production_changed": false,
+  "production_policy_admitted": false,
+  "docs_check": "PASS",
+  "docs_strict_build": "PASS with pre-existing informational anchor notices",
+  "full_fci": "NOT_SELECTED_IMPACT",
+  "highest_low_air": "NOT_SELECTED_POLICY"
+}

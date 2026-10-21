@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-PERF01 solver-aware proposal diagnostics",
   "baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
   "branch": "work/perf01-solver-proposal",
-  "status": "EXECUTED_PENDING_EVIDENCE_VERIFICATION",
+  "status": "BOUNDED_DIAGNOSTIC_COMPLETE_NO_PRODUCTION_ADMISSION",
   "production_changed": false,
   "scope": "Generated diagnostic runtime only; numerical execution hypotheses, no production admission",
   "invariants": [
@@ -17,13 +17,13 @@
   "selection": {
     "immediate": "O2 dry32, cap/ceiling/recover, two decreasing tolerances and fresh-process split restart; select winning bounded hypothesis by work and accuracy, never timing alone",
     "candidate": "Selected hypothesis O2 all five cases, three timing repeats and four tolerances; O0 all five cases two tolerances; compare numerical work and physical bytes across optimization",
-    "preservation": "Current authority and self-tests, incumbent diagnostic registration negatives, docs strict build",
+    "preservation": "Current thermal authority PASS, Gash controls 14, thermal controls 8, diagnostic controls 5, exact predecessor diagnostic registration controls 9, docs check and strict build PASS",
     "full_fci": "NOT_SELECTED_IMPACT: no production or incumbent scientific-tool source change",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "expected_cost": "Native cases generally under one second, fine-reference cost variable; existing 120-second per-process cap retained; total expected under five minutes",
     "reuse": "Separate original O0/O2 builds, only if every 178-provider source digest and executable digest matches; fresh native execution of every selected observation"
   },
-  "next_action": "Verify evidence and unchanged current owner, persist diagnostic findings. Production implementation requires separate owning policy qualification.",
+  "next_action": "Separate production-policy contract and implementation qualification. Current optional default remains OFF; this diagnostic admission does not activate it.",
   "source_sha256": {
     "integration/performance/study_solver_proposal.py": "0912e46df2139058e25cd0a6a436a1316aea9c4f9292b7e75f912abdbe753022",
     "integration/performance/verify_solver_study.py": "4e6810b08443d3f79902b294a2a21265b616de3d584dc0d9ff9147100c901f8b"
@@ -45,8 +45,11 @@
     "sha256": "c298a098a68c1101c99648cdb2577a60c22f787aa50e2df12d1d9988d3c891cd"
   },
   "screen_source_identity": {
-    "cap_ceiling_recover": "82a94d60b",
-    "fallback": "4859c1081",
+    "cap_ceiling_recover": "screen capsule temporal-cap/solver-driver.py and temporal-ceiling/solver-driver.py",
+    "fallback": "candidate capsule temporal-O2/solver-driver.py",
     "note": "Recover failed before the original wrapper wrote its terminal driver copy. Its exact generated main/runtime, compile commands and native failure are retained; wrapper source is the identical predecessor version retained in successful cap/ceiling directories."
-  }
+  },
+  "tested": true,
+  "qualified_scope": "Generated diagnostic candidate and unchanged incumbent preservation only",
+  "qualification_receipt": "integration/performance/SWAP5-PERF01_SOLVER_QUALIFICATION_20261021.json"
 }
