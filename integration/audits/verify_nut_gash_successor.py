@@ -11,19 +11,37 @@ ADDED={GASH,'src/process/mod_gash_daily_application.f90'}
 OWNED={GASH,'tests/fpm/test_f_mig431_int12_d_gash.f90','tests/nut-crop/test_b112_retained_joint.f90',
  'tests/nut-crop/run_hist_complete.py','tests/nut-crop/run_b112_retained_joint.py','integration/audits/run_nut_gash_authority.py',
  'integration/audits/verify_nut_gash_successor.py','integration/audits/verify_nut_native_character.py','integration/performance/authority.py'}
+DIAGNOSTIC_TOOLS={
+ 'tools/performance/study_perf01_temporal.py':'1b0fed6a387b42da90afb9831b031ea1f93e32ef0804c571bbfc31284c3cecb5',
+ 'tools/performance/package_perf01_temporal.py':'7846aee7c3cf94e2c8d337eed1200984f7aaa423bb8e4363edfb6dea4fa12726',
+ 'tools/performance/run_perf01_temporal_recovery.py':'45bf00bac3d2e693123ac5adca60505c5b01e68d00f594562c67e3ad0e250a4f'}
 def require(ok,why):
  if not ok:raise ValueError(why)
 def sha(b):return hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def record():return json.loads((ROOT/STATUS).read_text())['gash_interception_successor']
 def helpers():return runpy.run_path(str(ROOT/'tests/nut-crop/verify_historical_gross.py'),run_name='gash_gross_helpers')
+def diagnostic_source_successors(reader=lambda q:(ROOT/q).read_bytes()):
+ """Exact reviewed diagnostic additions; never an exemption for tool directories."""
+ perf=json.loads(reader('integration/performance/SWAP5-PERF01_STATUS.json'))
+ temporal=perf.get('temporal_study',{})
+ if not temporal:return {}
+ require(temporal.get('status')=='FRESH_DIAGNOSTIC_COMPLETE_GENERAL_ACTIVATION_NOT_ADMITTED','diagnostic scope status')
+ require(temporal.get('baseline')==BASE and temporal.get('production_changed') is False,'diagnostic production boundary')
+ require(temporal.get('native_executions')==170 and temporal.get('retained_native_failures')==2,'diagnostic bounded evidence')
+ for q,h in DIAGNOSTIC_TOOLS.items():
+  require(perf['exact_successor']['postimages'].get(q)=={'status':'A','sha256':h},'diagnostic exact registration '+q)
+  require(sha(reader(q))==h,'diagnostic source drift '+q)
+ return {q:'A'for q in DIAGNOSTIC_TOOLS}
 def source():
  s=record();require(s['base_canonical']==BASE,'Gash predecessor identity')
  require(set(s['postimages'])==OWNED,'Gash ownership boundary')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE,*OWNED),'dirty Gash source')
  rows={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
- require(rows=={q:'M'for q in OWNED if q.startswith(('src/','tests/'))},'foreign Gash scientific delta')
+ expected={q:'M'for q in OWNED if q.startswith(('src/','tests/'))}
+ expected.update(diagnostic_source_successors())
+ require(rows==expected,'foreign Gash scientific delta')
  for q,h in s['postimages'].items():require(sha((ROOT/q).read_bytes())==h,'Gash postimage '+q)
  old=subprocess.check_output(['git','show',BASE+':'+GASH],cwd=ROOT,text=True)
  require((ROOT/GASH).read_text()==old.replace('if(input%gross_rain_cm<psatcan)then','if(rpd<psatcan)then',1),'Gash original rpd repair scope')
