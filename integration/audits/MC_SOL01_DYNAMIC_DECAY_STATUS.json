@@ -596,5 +596,1067 @@
     "Numeric restricted heat and linear sorption only; new route rejects nonlinear/analytic composition.",
     "No thermal pond, age/N companion, full default-file or multicolumn application admission.",
     "S5MT0001 is same-platform, serialized temporal-history Reference; no concurrent writers or portable ABI."
-  ]
+  ],
+  "nonlinear_pond_successor": {
+    "work_unit": "MC-SOL01-NONLINEAR-POND01",
+    "baseline": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": false,
+    "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
+    "invariants_affected": [
+      3,
+      7,
+      13,
+      21,
+      23,
+      25
+    ],
+    "relevant_paths": [
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+      "tests/nut-sol/run_nonlinear_pond.py"
+    ],
+    "next_action": "Merge exact qualified unchanged scientific postimages to canonical, verify actual source/owner/postmerge gates, then bounded three-row master receipt.",
+    "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
+    "blockers": [],
+    "test_selection": {
+      "physical": {
+        "changed_dependency": "Pond guard now accepts same bounded matrix Freundlich domain",
+        "expected_seconds": 200,
+        "scientific_claim": "Nonlinear sorption plus existing persistent pond chemistry; unchanged transactions, water law and restart"
+      }
+    },
+    "physical": {
+      "1": {
+        "cost_seconds": {
+          "gross_native": 0.8024611239998194,
+          "physical_compile": 150.55004395201468,
+          "physical_link": 0.21693776100073592,
+          "physical_native": 1.0639133820059214,
+          "preservation_compile": 16.00792050599921,
+          "preservation_link": 0.4433399429981364,
+          "preservation_native": 2.4023670780024986,
+          "process_compile": 0.2503985659968748,
+          "process_link": 0.0683067009995284,
+          "process_native": 0.003138695999950869
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "68ebe807ef59b3c92216096b588dfd2f93b06f8182d38cbcda8debedd6efed47",
+            "fill_endpoint_sha256": "338849f2aeac0db8765188e9ae4d4cc79ff6a96551d676f9327ec398826e33a2",
+            "wet_incumbent_endpoint_sha256": "d7bbcc08cc461b64a1ef35fa6e0ea4b17bdf1535b912a830422068d9c46a8e7e",
+            "dry_incumbent_endpoint_sha256": "15516481d3817df78e6420a93f05f048e4dd4eac890040590827fd5c36daf328",
+            "gross_endpoint_sha256": "e8c1cc51c7dc4fe677b8368fbf7fd8ea579e17d52e795348401a4552bcab77d3",
+            "endpoint_sha256": "ffffe92659890fb383ce0fe50c95dc0eea85d4a81901929f71b393a2ed1af035",
+            "fresh_sha256": "ffffe92659890fb383ce0fe50c95dc0eea85d4a81901929f71b393a2ed1af035"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "68ebe807ef59b3c92216096b588dfd2f93b06f8182d38cbcda8debedd6efed47",
+            "fill_endpoint_sha256": "338849f2aeac0db8765188e9ae4d4cc79ff6a96551d676f9327ec398826e33a2",
+            "wet_incumbent_endpoint_sha256": "d7bbcc08cc461b64a1ef35fa6e0ea4b17bdf1535b912a830422068d9c46a8e7e",
+            "dry_incumbent_endpoint_sha256": "15516481d3817df78e6420a93f05f048e4dd4eac890040590827fd5c36daf328",
+            "gross_endpoint_sha256": "e8c1cc51c7dc4fe677b8368fbf7fd8ea579e17d52e795348401a4552bcab77d3",
+            "endpoint_sha256": "ffffe92659890fb383ce0fe50c95dc0eea85d4a81901929f71b393a2ed1af035",
+            "fresh_sha256": "ffffe92659890fb383ce0fe50c95dc0eea85d4a81901929f71b393a2ed1af035"
+          }
+        }
+      },
+      "0.5": {
+        "cost_seconds": {
+          "gross_native": 1.3717787870009488,
+          "physical_link": 0.23513912700218498,
+          "physical_native": 1.9017230490007933,
+          "preservation_compile": 18.97407435900095,
+          "preservation_link": 0.47524552599861636,
+          "preservation_native": 4.515725466995718,
+          "process_compile": 0.283551789001649,
+          "process_link": 0.07329725499948836,
+          "process_native": 0.0031786509971425403
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "58b2f8391046b30993bad81dc906a999c35fa883d2de1f70ed6ee693ddd7e8ef",
+            "fill_endpoint_sha256": "317ff8a60abeec71a69f0a33ca748d4fce1b38c207303d6df72142528a24199e",
+            "wet_incumbent_endpoint_sha256": "ac79d04c4cec17114c03baacf6e997d18d411e492a5ef28860f268aea3ad475c",
+            "dry_incumbent_endpoint_sha256": "72bddca21e24c4a84d5efa2f23012df1865f8f2d456f93e6cc60ee7fe7d8e3d0",
+            "gross_endpoint_sha256": "40b9f682c6e5ad2393cffc87c770c274f3a76f149e8367d0744190fdb738f3d9",
+            "endpoint_sha256": "c617b9f4aa75f04642a25aa8f9e93a83888c13631aec38416be21172c903d104",
+            "fresh_sha256": "c617b9f4aa75f04642a25aa8f9e93a83888c13631aec38416be21172c903d104"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "58b2f8391046b30993bad81dc906a999c35fa883d2de1f70ed6ee693ddd7e8ef",
+            "fill_endpoint_sha256": "317ff8a60abeec71a69f0a33ca748d4fce1b38c207303d6df72142528a24199e",
+            "wet_incumbent_endpoint_sha256": "ac79d04c4cec17114c03baacf6e997d18d411e492a5ef28860f268aea3ad475c",
+            "dry_incumbent_endpoint_sha256": "72bddca21e24c4a84d5efa2f23012df1865f8f2d456f93e6cc60ee7fe7d8e3d0",
+            "gross_endpoint_sha256": "40b9f682c6e5ad2393cffc87c770c274f3a76f149e8367d0744190fdb738f3d9",
+            "endpoint_sha256": "c617b9f4aa75f04642a25aa8f9e93a83888c13631aec38416be21172c903d104",
+            "fresh_sha256": "c617b9f4aa75f04642a25aa8f9e93a83888c13631aec38416be21172c903d104"
+          }
+        }
+      },
+      "0.8": {
+        "cost_seconds": {
+          "gross_native": 1.5940872350001882,
+          "physical_link": 0.24888788999851386,
+          "physical_native": 2.22515197300163,
+          "preservation_compile": 19.076488862998303,
+          "preservation_link": 0.4507612050001626,
+          "preservation_native": 4.666913185999874,
+          "process_compile": 0.297935676000634,
+          "process_link": 0.06349252099971636,
+          "process_native": 0.0031599130015820265
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "7413822948c6ba281f4efa865ef9a1a8a1c45ac1feec3a5dec750a540497e782",
+            "fill_endpoint_sha256": "3f98d900d3d7ea45d78b94dc5a6acd74216dacecbaed083f52bd9e00ccd93e06",
+            "wet_incumbent_endpoint_sha256": "e622a4387a568b407c979abbfe060827e3da2941a78f49c7486fe51a428c3c3e",
+            "dry_incumbent_endpoint_sha256": "9652196c25ace15f4099b6cb91df9067c7e5e97bffd205240255738731dd2587",
+            "gross_endpoint_sha256": "506018f6dce60ca224683d03f595483841f6684a45f977c220eea153dddc4e9f",
+            "endpoint_sha256": "e9698c5682ade4f8baa5ab887ddc777066b6d7d9c67e722cb0fbcb961f156b41",
+            "fresh_sha256": "e9698c5682ade4f8baa5ab887ddc777066b6d7d9c67e722cb0fbcb961f156b41"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "7413822948c6ba281f4efa865ef9a1a8a1c45ac1feec3a5dec750a540497e782",
+            "fill_endpoint_sha256": "3f98d900d3d7ea45d78b94dc5a6acd74216dacecbaed083f52bd9e00ccd93e06",
+            "wet_incumbent_endpoint_sha256": "e622a4387a568b407c979abbfe060827e3da2941a78f49c7486fe51a428c3c3e",
+            "dry_incumbent_endpoint_sha256": "9652196c25ace15f4099b6cb91df9067c7e5e97bffd205240255738731dd2587",
+            "gross_endpoint_sha256": "506018f6dce60ca224683d03f595483841f6684a45f977c220eea153dddc4e9f",
+            "endpoint_sha256": "e9698c5682ade4f8baa5ab887ddc777066b6d7d9c67e722cb0fbcb961f156b41",
+            "fresh_sha256": "e9698c5682ade4f8baa5ab887ddc777066b6d7d9c67e722cb0fbcb961f156b41"
+          }
+        }
+      },
+      "1.0005": {
+        "cost_seconds": {
+          "gross_native": 1.4223199939988262,
+          "physical_link": 0.2610681529986323,
+          "physical_native": 2.1554709150004783,
+          "preservation_compile": 18.69250867700066,
+          "preservation_link": 0.5136801839998952,
+          "preservation_native": 4.275025673005075,
+          "process_compile": 0.30083050599569106,
+          "process_link": 0.08024242599822173,
+          "process_native": 0.003035615000044345
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "67af9fd2f415c6e8d2098a3f69eb6295da13a5301e2bfdaf776cb8cacd498afa",
+            "fill_endpoint_sha256": "74c6bbe18285a79aaece3bb557ff19fb31cc9f90812da53c5f03ade3775c058b",
+            "wet_incumbent_endpoint_sha256": "8d347b887779e9ba3d7577360eb899125e95069f2fa9566d90d89edc261a8beb",
+            "dry_incumbent_endpoint_sha256": "2a5e12afabb96e1839cb26ca2928cc6ed93d67a37df0b60dfccc695ca5c89e73",
+            "gross_endpoint_sha256": "9d1539e203315e46a4cbf028f0bf55d4ce916dc34c8695d89f5ee14cef654c5a",
+            "endpoint_sha256": "9da66cefabd68fa5a0b5efcbe92e7dda22b9a24fbd447d8a04d7177c288ff2b0",
+            "fresh_sha256": "9da66cefabd68fa5a0b5efcbe92e7dda22b9a24fbd447d8a04d7177c288ff2b0"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "67af9fd2f415c6e8d2098a3f69eb6295da13a5301e2bfdaf776cb8cacd498afa",
+            "fill_endpoint_sha256": "74c6bbe18285a79aaece3bb557ff19fb31cc9f90812da53c5f03ade3775c058b",
+            "wet_incumbent_endpoint_sha256": "8d347b887779e9ba3d7577360eb899125e95069f2fa9566d90d89edc261a8beb",
+            "dry_incumbent_endpoint_sha256": "2a5e12afabb96e1839cb26ca2928cc6ed93d67a37df0b60dfccc695ca5c89e73",
+            "gross_endpoint_sha256": "9d1539e203315e46a4cbf028f0bf55d4ce916dc34c8695d89f5ee14cef654c5a",
+            "endpoint_sha256": "9da66cefabd68fa5a0b5efcbe92e7dda22b9a24fbd447d8a04d7177c288ff2b0",
+            "fresh_sha256": "9da66cefabd68fa5a0b5efcbe92e7dda22b9a24fbd447d8a04d7177c288ff2b0"
+          }
+        }
+      },
+      "1.5": {
+        "cost_seconds": {
+          "gross_native": 1.4803340790003858,
+          "physical_link": 0.23548560900053417,
+          "physical_native": 2.0000987659987004,
+          "preservation_compile": 19.14227470500009,
+          "preservation_link": 0.4694359040022391,
+          "preservation_native": 4.331990030996167,
+          "process_compile": 0.3188328040014312,
+          "process_link": 0.06443102700177405,
+          "process_native": 0.004377354998723604
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "605434184f8286363397a4c58b98eb4cca43c8a9d7a9d21d5df08aa5bf669d7d",
+            "fill_endpoint_sha256": "bac74544ceaf9e07165f01452ad239a4ae41a2910ee975ebe590a42ef7ff497f",
+            "wet_incumbent_endpoint_sha256": "0aab5373ca2eb17050df68aa0819af74b10429649c10c455f657840e5fb33b44",
+            "dry_incumbent_endpoint_sha256": "8e3c97caf068130003054de2e0df8c450ac36a47f36f4feeb3550b12c6c3f8ad",
+            "gross_endpoint_sha256": "e0ff458d6a13432f1294889cf5fedecf63b224912b4282acb42cd15781f3472f",
+            "endpoint_sha256": "c34d49b5cf70f0db0af83f78c2d37580037c5368ca7e4dac00a05fd8f8e679e8",
+            "fresh_sha256": "c34d49b5cf70f0db0af83f78c2d37580037c5368ca7e4dac00a05fd8f8e679e8"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "605434184f8286363397a4c58b98eb4cca43c8a9d7a9d21d5df08aa5bf669d7d",
+            "fill_endpoint_sha256": "bac74544ceaf9e07165f01452ad239a4ae41a2910ee975ebe590a42ef7ff497f",
+            "wet_incumbent_endpoint_sha256": "0aab5373ca2eb17050df68aa0819af74b10429649c10c455f657840e5fb33b44",
+            "dry_incumbent_endpoint_sha256": "8e3c97caf068130003054de2e0df8c450ac36a47f36f4feeb3550b12c6c3f8ad",
+            "gross_endpoint_sha256": "e0ff458d6a13432f1294889cf5fedecf63b224912b4282acb42cd15781f3472f",
+            "endpoint_sha256": "c34d49b5cf70f0db0af83f78c2d37580037c5368ca7e4dac00a05fd8f8e679e8",
+            "fresh_sha256": "c34d49b5cf70f0db0af83f78c2d37580037c5368ca7e4dac00a05fd8f8e679e8"
+          }
+        }
+      },
+      "2": {
+        "cost_seconds": {
+          "gross_native": 1.2976697939993755,
+          "physical_link": 0.27679933499894105,
+          "physical_native": 1.8990154860020994,
+          "preservation_compile": 19.495758122999177,
+          "preservation_link": 0.5201390399997763,
+          "preservation_native": 3.8919852410017484,
+          "process_compile": 0.2902240069997788,
+          "process_link": 0.07712485600131913,
+          "process_native": 0.002872705001209397
+        },
+        "provider_count": 275,
+        "native_observations": 60,
+        "endpoints": {
+          "O0": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "7073098aad471c94357d00e72ad5227726fa3a4f6be1f590d40b9635c13da6c5",
+            "fill_endpoint_sha256": "8ced65f0851b888d8a808013ff8669f684e739066317a02993b65b37dcac5e9a",
+            "wet_incumbent_endpoint_sha256": "23d11a1b749c1c8de9508e32d4f232bc898463ad51fe93e6403b29e6ac61d2aa",
+            "dry_incumbent_endpoint_sha256": "70899fbbd86ca9f305ed56268afd8e7e64f031ce8adddc44c32ccd776b704239",
+            "gross_endpoint_sha256": "e9f3380171b88cdaebc71409a75d15982a15cd6f38835b976cffe8294cc588bd",
+            "endpoint_sha256": "9be1449aaad0d6c5836259af94e964a94fd4b87b5c9cad57fa7fd7624e1960e9",
+            "fresh_sha256": "9be1449aaad0d6c5836259af94e964a94fd4b87b5c9cad57fa7fd7624e1960e9"
+          },
+          "O2": {
+            "oracle_sha256": "85d04a15f12f9726761c1ec95e53333b65e7dbd47a92a2da3a1077e3c2dea6de",
+            "dry_endpoint_sha256": "7073098aad471c94357d00e72ad5227726fa3a4f6be1f590d40b9635c13da6c5",
+            "fill_endpoint_sha256": "8ced65f0851b888d8a808013ff8669f684e739066317a02993b65b37dcac5e9a",
+            "wet_incumbent_endpoint_sha256": "23d11a1b749c1c8de9508e32d4f232bc898463ad51fe93e6403b29e6ac61d2aa",
+            "dry_incumbent_endpoint_sha256": "70899fbbd86ca9f305ed56268afd8e7e64f031ce8adddc44c32ccd776b704239",
+            "gross_endpoint_sha256": "e9f3380171b88cdaebc71409a75d15982a15cd6f38835b976cffe8294cc588bd",
+            "endpoint_sha256": "9be1449aaad0d6c5836259af94e964a94fd4b87b5c9cad57fa7fd7624e1960e9",
+            "fresh_sha256": "9be1449aaad0d6c5836259af94e964a94fd4b87b5c9cad57fa7fd7624e1960e9"
+          }
+        }
+      }
+    },
+    "stage": "HOSTED_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+    "selection": {
+      "full_fci": "NOT_SELECTED_IMPACT: one optional pond exponent guard; every incumbent linear pond endpoint and178-provider file application fresh-preserved, original exact predecessor authority still required",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "FROZEN_UNCHANGED",
+      "aquifer": "EXCLUDED"
+    },
+    "postimages": {
+      ".github/workflows/mc-sol01-nonlinear-pond.yml": {
+        "status": "A",
+        "sha256": "2c12d542245da2319ffc31e5bcb29889ecc23d492681de5f2814acbeebd80522"
+      },
+      "integration/audits/qualify_nonlinear_pond.py": {
+        "status": "A",
+        "sha256": "e73b7392bea126131efc8e13ef44e7b584ec29d90c5d7e4f5c3d6662eb725d7b"
+      },
+      "integration/audits/verify_matrix_thermal.py": {
+        "status": "M",
+        "sha256": "1a65492893770643ebdbac9a35fa0fbd97290b0e84832a97cd33abb435dc953f"
+      },
+      "integration/audits/verify_nonlinear_pond.py": {
+        "status": "A",
+        "sha256": "779937decca6582a206d30dbd0155c985857b4e57b3e144a94cab8a1e2ee4e14"
+      },
+      "integration/performance/verify_proposal.py": {
+        "status": "M",
+        "sha256": "6b8af7305bfc24e2d899edf95a8ba2d86f99f80a1682afbf4e6f4929b905e288"
+      },
+      "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+        "status": "M",
+        "sha256": "11f491c5a67b7b7ba92f9bc9d88712f0bf6fdc9f5ef9bdce95453a9a1fd3f85d"
+      },
+      "tests/nut-sol/run_nonlinear_pond.py": {
+        "status": "A",
+        "sha256": "4bf0ec734ce88083b10ce5dcdbdd2873651de79942ec1869206d0cbf219acd1d"
+      }
+    },
+    "checkpoint_commit": "f566b9ecab6dbde5f0a44f20190d8ad06be47bec",
+    "local_owners": {
+      "exact_437d96ff_predecessor_and_current_source_science": "PASS",
+      "current_thermal_every_execution_input_and_raw_science": "PASS",
+      "corruption_controls": 12,
+      "fresh_275provider_pond_six_exponents_and360native_observations": "PASS",
+      "fresh178provider_column_and86process_observations": "PASS",
+      "sixty_semantic_native_restart_negatives": "PASS",
+      "original_guard_executable_counterexample_and_linear_control": "PASS",
+      "strict_documentation": "PASS source checker and strictMkDocs after current runtime reconciliation"
+    },
+    "initial_baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
+    "last_reconciled_upstream": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+    "pre_reconciliation_evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_20261021.tar.xz.b64",
+      "decoded_sha256": "215e012765a1d982ad9f858c6247747f80c68710b49db32b0c7fd392a3ba6597",
+      "decoded_bytes": 213560,
+      "members": 5209
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_RECONCILED_20261021.tar.xz.b64",
+      "decoded_sha256": "0c5aff8fa88dd14bc2f45415e7c82267e6e9773bb6d49c132450c5ac07f305e3",
+      "decoded_bytes": 195320,
+      "members": 3963
+    },
+    "admission_pr": 1346,
+    "concurrent_reconciliation": {
+      "canonical": "437d96ff51ac8a5825b605caf788661848c88be5",
+      "production_delta": "PERF01 optional runtime and file input retained exactly; no optional default activation",
+      "fresh_current_pond_and_column": "PASS O0/O2; sixexponents/360+86processes/60configuration negatives",
+      "current_thermal": "PASS: every PERF01 six-exponent execution input byte is current; original raw science validated",
+      "all_incoming_files_preserved": true
+    },
+    "production_reconciled_predecessor": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "metadata_reconciliation": {
+      "canonical": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+      "changed": "Only two PERF01 admission/qualification JSON receipts; allsrc/app/test/reference/scientific inputs unchanged",
+      "physical_repetition": "NOT_SELECTED_IMPACT; current actual physical evidence remains byte-bound",
+      "reason": "First PR merge checkout correctly failed conservative whole-performance-directory source guard on concurrent receipt; no numerical failure."
+    },
+    "hosted": {
+      "work_unit": "MC-SOL01-NONLINEAR-POND01",
+      "qualified_head": "068d1a738dcefa11a9d518d6dbe8e212804d8c18",
+      "canonical_predecessor": "c62ca4ce2e33c65be3630f947b8ff322cd2f9863",
+      "source_tree": "7d6853fa3e60f24b07b47a5a641840684b6cd09c",
+      "total": 32,
+      "success": 22,
+      "failure": 10,
+      "all_terminal": true,
+      "failures_counted_as_pass": false,
+      "owning_runs": [
+        {
+          "id": 39569936390,
+          "name": "MC-SOL01 file-driven Reference column",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 17,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/logs",
+          "workflow_id": 390809132
+        },
+        {
+          "id": 39569936294,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 8002,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/logs",
+          "workflow_id": 351968455
+        },
+        {
+          "id": 39569936437,
+          "name": "SWAP5-PERF01 exact implementation admission",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 12,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/logs",
+          "workflow_id": 390988677
+        },
+        {
+          "id": 39569936419,
+          "name": "Documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 5734,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/logs",
+          "workflow_id": 350231902
+        },
+        {
+          "id": 39569936324,
+          "name": "MC-SOL01 nonlinear persistent pond",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/logs",
+          "workflow_id": 391472187
+        },
+        {
+          "id": 39569936374,
+          "name": "MC-SOL01 dynamic accepted temperature decay",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/logs",
+          "workflow_id": 391376246
+        }
+      ],
+      "all_runs": [
+        {
+          "id": 39569938234,
+          "name": "F-MIG431-INT12-E detailed interception qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1413,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569938234/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569938234/logs",
+          "workflow_id": 374169088
+        },
+        {
+          "id": 39569936348,
+          "name": "SWAP431 empirical root oxygen qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 837,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936348/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936348/logs",
+          "workflow_id": 377534434
+        },
+        {
+          "id": 39569936412,
+          "name": "SWAP431 crop rootgrow DVS qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 981,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936412/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936412/logs",
+          "workflow_id": 377436526
+        },
+        {
+          "id": 39569936339,
+          "name": "PUB-ME D1 transition authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 3276,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936339/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936339/logs",
+          "workflow_id": 360931329
+        },
+        {
+          "id": 39569936695,
+          "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2186,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936695/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936695/logs",
+          "workflow_id": 369778710
+        },
+        {
+          "id": 39569936403,
+          "name": "PUB-P2E08 Reference valid calibration domain",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2374,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936403/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936403/logs",
+          "workflow_id": 360940299
+        },
+        {
+          "id": 39569936305,
+          "name": "PUB-P2E01 E0 paired pilot",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 3151,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936305/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936305/logs",
+          "workflow_id": 360804071
+        },
+        {
+          "id": 39569936423,
+          "name": "PUB-P2E02 Reference uncertainty",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2388,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936423/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936423/logs",
+          "workflow_id": 360820711
+        },
+        {
+          "id": 39569936116,
+          "name": "PUB-P2E09 Reference-only threshold freeze",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2384,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936116/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936116/logs",
+          "workflow_id": 360945222
+        },
+        {
+          "id": 39569936390,
+          "name": "MC-SOL01 file-driven Reference column",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 17,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936390/logs",
+          "workflow_id": 390809132
+        },
+        {
+          "id": 39569936294,
+          "name": "F-CI canonical qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 8002,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936294/logs",
+          "workflow_id": 351968455
+        },
+        {
+          "id": 39569936230,
+          "name": "SWAP431 root constant LRV qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 835,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936230/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936230/logs",
+          "workflow_id": 377461752
+        },
+        {
+          "id": 39569936215,
+          "name": "F-MIG431 LOW08-A qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1609,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936215/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936215/logs",
+          "workflow_id": 373048667
+        },
+        {
+          "id": 39569936301,
+          "name": "PUB-P1E02 post-solver rollback",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2388,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936301/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936301/logs",
+          "workflow_id": 360819422
+        },
+        {
+          "id": 39569936125,
+          "name": "F-MIG431-INT12-D Gash qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1432,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936125/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936125/logs",
+          "workflow_id": 374030810
+        },
+        {
+          "id": 39569936486,
+          "name": "F-GC42 live whole-window service",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4990,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936486/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936486/logs",
+          "workflow_id": 361291030
+        },
+        {
+          "id": 39569936195,
+          "name": "PUB-P2E04 Reference B/C sweeps",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2388,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936195/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936195/logs",
+          "workflow_id": 360835414
+        },
+        {
+          "id": 39569936137,
+          "name": "PUB-P2E04 Reference failure census",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2393,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936137/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936137/logs",
+          "workflow_id": 360832909
+        },
+        {
+          "id": 39569936177,
+          "name": "F-MIG431-INT12-P0 qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1705,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936177/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936177/logs",
+          "workflow_id": 372453937
+        },
+        {
+          "id": 39569936427,
+          "name": "PUB-ME D3 origin authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 3271,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936427/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936427/logs",
+          "workflow_id": 360941245
+        },
+        {
+          "id": 39569936328,
+          "name": "SWAP431 crop CO2 response qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 898,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936328/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936328/logs",
+          "workflow_id": 377452065
+        },
+        {
+          "id": 39569936320,
+          "name": "PUB-P2E06 Reference local-balance scaling",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2384,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936320/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936320/logs",
+          "workflow_id": 360870488
+        },
+        {
+          "id": 39569936437,
+          "name": "SWAP5-PERF01 exact implementation admission",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 12,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936437/logs",
+          "workflow_id": 390988677
+        },
+        {
+          "id": 39569936167,
+          "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4241,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936167/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936167/logs",
+          "workflow_id": 366506117
+        },
+        {
+          "id": 39569936360,
+          "name": "PUB-P2E10 broad E0 paired matrix",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2372,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936360/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936360/logs",
+          "workflow_id": 360950713
+        },
+        {
+          "id": 39569936419,
+          "name": "Documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 5734,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936419/logs",
+          "workflow_id": 350231902
+        },
+        {
+          "id": 39569936368,
+          "name": "PUB-P2E07 Reference cancellation floor",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 2377,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936368/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936368/logs",
+          "workflow_id": 360931626
+        },
+        {
+          "id": 39569936310,
+          "name": "F-PERF-CANON01 D AHL50",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2067,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936310/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936310/logs",
+          "workflow_id": 367340071
+        },
+        {
+          "id": 39569936170,
+          "name": "F-PERF-CANON01 B1 recomposition",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2103,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936170/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936170/logs",
+          "workflow_id": 367302279
+        },
+        {
+          "id": 39569936329,
+          "name": "F-CI110 reconstructed performance admission",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 3756,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936329/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936329/logs",
+          "workflow_id": 367350343
+        },
+        {
+          "id": 39569936324,
+          "name": "MC-SOL01 nonlinear persistent pond",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 2,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936324/logs",
+          "workflow_id": 391472187
+        },
+        {
+          "id": 39569936374,
+          "name": "MC-SOL01 dynamic accepted temperature decay",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6,
+          "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/jobs",
+          "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569936374/logs",
+          "workflow_id": 391376246
+        }
+      ],
+      "superseded": {
+        "head": "13ac2e987b510b1cb1eb03b1d82db1a7a6a3377a",
+        "runs": [
+          {
+            "id": 39569473174,
+            "name": "Documentation",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 5733,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569473174/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569473174/logs",
+            "workflow_id": 350231902
+          },
+          {
+            "id": 39569471573,
+            "name": "F-CI canonical qualification",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 8001,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471573/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471573/logs",
+            "workflow_id": 351968455
+          },
+          {
+            "id": 39569471766,
+            "name": "PUB-P1E02 post-solver rollback",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 2387,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471766/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471766/logs",
+            "workflow_id": 360819422
+          },
+          {
+            "id": 39569471793,
+            "name": "F-CI110 reconstructed performance admission",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 3755,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471793/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471793/logs",
+            "workflow_id": 367350343
+          },
+          {
+            "id": 39569471928,
+            "name": "F-PERF-CANON01 B1 recomposition",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 2102,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471928/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471928/logs",
+            "workflow_id": 367302279
+          },
+          {
+            "id": 39569471723,
+            "name": "MC-SOL01 file-driven Reference column",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 16,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471723/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471723/logs",
+            "workflow_id": 390809132
+          },
+          {
+            "id": 39569471896,
+            "name": "SWAP431 empirical root oxygen qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 836,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471896/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471896/logs",
+            "workflow_id": 377534434
+          },
+          {
+            "id": 39569471760,
+            "name": "SWAP431 root constant LRV qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 834,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471760/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471760/logs",
+            "workflow_id": 377461752
+          },
+          {
+            "id": 39569471664,
+            "name": "MC-SOL01 nonlinear persistent pond",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 1,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471664/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471664/logs",
+            "workflow_id": 391472187
+          },
+          {
+            "id": 39569471784,
+            "name": "F-PERF-CANON01 D AHL50",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 2066,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471784/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471784/logs",
+            "workflow_id": 367340071
+          },
+          {
+            "id": 39569471472,
+            "name": "MC-SOL01 dynamic accepted temperature decay",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 5,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471472/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471472/logs",
+            "workflow_id": 391376246
+          },
+          {
+            "id": 39569471667,
+            "name": "PUB-P2E06 Reference local-balance scaling",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2383,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471667/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471667/logs",
+            "workflow_id": 360870488
+          },
+          {
+            "id": 39569471748,
+            "name": "PUB-ME D1 transition authority",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 3275,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471748/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471748/logs",
+            "workflow_id": 360931329
+          },
+          {
+            "id": 39569471516,
+            "name": "PUB-P2E08 Reference valid calibration domain",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2373,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471516/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471516/logs",
+            "workflow_id": 360940299
+          },
+          {
+            "id": 39569471786,
+            "name": "PUB-P2E02 Reference uncertainty",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2387,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471786/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471786/logs",
+            "workflow_id": 360820711
+          },
+          {
+            "id": 39569471504,
+            "name": "PUB-ME D3 origin authority",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 3270,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471504/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471504/logs",
+            "workflow_id": 360941245
+          },
+          {
+            "id": 39569471581,
+            "name": "PUB-P2E10 broad E0 paired matrix",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2371,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471581/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471581/logs",
+            "workflow_id": 360950713
+          },
+          {
+            "id": 39569471600,
+            "name": "PUB-P2E04 Reference failure census",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2392,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471600/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471600/logs",
+            "workflow_id": 360832909
+          },
+          {
+            "id": 39569471483,
+            "name": "F-MIG431-INT12-P0 qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 1704,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471483/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471483/logs",
+            "workflow_id": 372453937
+          },
+          {
+            "id": 39569471728,
+            "name": "F-MIG431-INT12-E detailed interception qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 1412,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471728/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471728/logs",
+            "workflow_id": 374169088
+          },
+          {
+            "id": 39569471478,
+            "name": "SWAP431 crop rootgrow DVS qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 980,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471478/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471478/logs",
+            "workflow_id": 377436526
+          },
+          {
+            "id": 39569471801,
+            "name": "SWAP431 crop CO2 response qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 897,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471801/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471801/logs",
+            "workflow_id": 377452065
+          },
+          {
+            "id": 39569471776,
+            "name": "SWAP5-PERF01 exact implementation admission",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 11,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471776/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471776/logs",
+            "workflow_id": 390988677
+          },
+          {
+            "id": 39569471773,
+            "name": "PUB-P2E07 Reference cancellation floor",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2376,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471773/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471773/logs",
+            "workflow_id": 360931626
+          },
+          {
+            "id": 39569471754,
+            "name": "PUB-P2E09 Reference-only threshold freeze",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2383,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471754/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471754/logs",
+            "workflow_id": 360945222
+          },
+          {
+            "id": 39569471598,
+            "name": "PUB-P2E01 E0 paired pilot",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 3150,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471598/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471598/logs",
+            "workflow_id": 360804071
+          },
+          {
+            "id": 39569471718,
+            "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 4240,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471718/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471718/logs",
+            "workflow_id": 366506117
+          },
+          {
+            "id": 39569471789,
+            "name": "PUB-P2E04 Reference B/C sweeps",
+            "status": "completed",
+            "conclusion": "failure",
+            "run_number": 2387,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471789/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471789/logs",
+            "workflow_id": 360835414
+          },
+          {
+            "id": 39569471785,
+            "name": "F-MIG431-INT12-D Gash qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 1431,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471785/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471785/logs",
+            "workflow_id": 374030810
+          },
+          {
+            "id": 39569471717,
+            "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 2185,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471717/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471717/logs",
+            "workflow_id": 369778710
+          },
+          {
+            "id": 39569471899,
+            "name": "F-GC42 live whole-window service",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 4989,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471899/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471899/logs",
+            "workflow_id": 361291030
+          },
+          {
+            "id": 39569471800,
+            "name": "F-MIG431 LOW08-A qualification",
+            "status": "completed",
+            "conclusion": "success",
+            "run_number": 1608,
+            "jobs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471800/jobs",
+            "logs_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/runs/39569471800/logs",
+            "workflow_id": 373048667
+          }
+        ],
+        "reason": "Concurrent PERF01 receipt-only canonicalc62 update caused conservative source delta rejection; reconciled without replaying unchanged local physics."
+      },
+      "owning_native_jobs": {
+        "pond": 119121292412,
+        "thermal": 119121286796,
+        "column": 119121287155,
+        "canonical_feedback": 119122080680
+      },
+      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_CI_TRIAGE_20261021.json"
+    }
+  }
 }

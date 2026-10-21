@@ -1,5 +1,16 @@
 # MC-SOL01 final closure
 
+Current nonlinear pond successor,21 October2026: locally qualified candidate,
+canonical admission pending, PR1346. Fresh qualification after concurrent
+PERF01 canonical437d96ff is complete. The existing opt-in joint pond/matrix route now
+accepts Freundlich0.5..2 with configured temperature. All six exponents at
+O0/O2,360native observations,60extra valid-CRC/configuration negatives, original
+guard counterexample, exact incumbent linear bytes and the178-provider file
+application with86process observations pass. No dynamic thermal pond or full
+historical/default/seasonal admission is inferred. See
+`docs/science/MC_SOL01_NONLINEAR_POND_CONTRACT.md` and the existing
+`MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_pond_successor`.
+
 Current nonlinear thermal admission,21 October2026: PR1344, canonical merge
 `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`, source tree
 `c408c50d457f63f254d3437c95867a68974e5aea`. The real numeric-heat endpoint

@@ -1,0 +1,59 @@
+name: MC-SOL01 nonlinear persistent pond
+
+on:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_b111_pond_solute_route.f90'
+      - 'tests/nut-sol/run_nonlinear_pond.py'
+      - 'integration/audits/verify_nonlinear_pond.py'
+      - 'integration/audits/qualify_nonlinear_pond.py'
+      - '.github/workflows/mc-sol01-nonlinear-pond.yml'
+  push:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'src/runtime/mod_fmr_b111_pond_solute_route.f90'
+      - 'tests/nut-sol/run_nonlinear_pond.py'
+      - 'integration/audits/verify_nonlinear_pond.py'
+      - '.github/workflows/mc-sol01-nonlinear-pond.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: solute-nonlinear-pond-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  pond:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Six real pond exponents and independent restart
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/nonlinear-pond"
+          mkdir -p "$root"
+          DYNAMIC_POND_RESULT_DIR="$root/pond-1-final" python -B tests/nut-sol/run_nonlinear_pond.py
+          for exponent in 0.5 0.8 1.0005 1.5 2; do
+            POND_EXPONENT="$exponent" POND_REUSE_BUILD="$root/pond-1-final" DYNAMIC_POND_RESULT_DIR="$root/pond-$exponent" python -B tests/nut-sol/run_nonlinear_pond.py
+          done
+          python -B integration/audits/qualify_nonlinear_pond.py --physical-root "$root" --output "$root/controls"
+      - name: Current exact scientific owner and corruption controls
+        run: |
+          python -B integration/audits/verify_nonlinear_pond.py
+          python -B integration/audits/verify_nonlinear_pond.py --self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mc-sol01-nonlinear-pond-evidence
+          path: |
+            ${{ runner.temp }}/nonlinear-pond/**/*.json
+            ${{ runner.temp }}/nonlinear-pond/**/*.stdout
+            ${{ runner.temp }}/nonlinear-pond/**/*.stderr
+            ${{ runner.temp }}/nonlinear-pond/**/*.bin
