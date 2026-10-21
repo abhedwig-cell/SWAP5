@@ -27,6 +27,9 @@ def hook(name):
          "    if 'evidence' in finite:\n"
          "        return runpy.run_path(str(ROOT/'integration/audits/verify_nut_negative.py'),run_name='finite_donor_"+name+"')['"+name+"']()\n")
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
+  import runpy
+  return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['source'](reader,changed)
  s=record();require(s['baseline']==BASE,'finite donor baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty finite donor science')
@@ -212,8 +215,14 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
      source_tree=git('rev-parse','HEAD:src'),full_fci='NOT_SELECTED_IMPACT_NUT_SEAM',
      highest_low_air='NOT_SELECTED_POLICY',mastercoverage_promotion=False)
 def verify_qualification():
+ if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
+  import runpy
+  return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['verify_qualification']()
  source();return validate(capsule())
 def self_test():
+ if 'evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json').read_text()):
+  import runpy
+  return runpy.run_path(str(ROOT/'integration/diagnostics/verify_trace_scope.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,broken=None,reader=lambda p:(ROOT/p).read_bytes()):
   try:validate(f if broken is None else broken,reader)

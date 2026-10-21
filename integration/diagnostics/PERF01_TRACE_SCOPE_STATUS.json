@@ -1,0 +1,70 @@
+{
+  "workstream": "PERF01 retained flux-history memory",
+  "baseline": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+  "branch": "work/perf01-trace-scope",
+  "status": "NATIVE_SCOPE_COLUMNS_RUNTIME_THERMAL_PASS_CONCURRENT_NUT_RUNNING",
+  "contract": "docs/performance/SWAP5-PERF01_TRACE_SCOPE_CONTRACT.md",
+  "implementation": "Opaque scratch-scope hooks; original transaction body preserved; Reference suffix reclamation after internal contexts expire",
+  "interfaces_changed": "Two default-no-op transaction model hooks and opaque transient token; existing execution signature unchanged",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "selection": "Contract-selected direct lifecycle/real arena O0/O2; fresh column/original86 assertions and exact failed dry32 bytes/work/clocks; paired bounded memory; original runtime/policy and current matrix/pond thermal preservation; frozen predecessor plus explicit successor source admission",
+  "expected_cost": "Builds tens of seconds; native resource probes at most120s with address-space bound; thermal fresh targeted gates may take several minutes",
+  "recovery": "Contract and next implementation persisted before compiler/model work",
+  "tested": true,
+  "production_qualified": false,
+  "canonical_admission": "NONE",
+  "next_action": "Complete fresh concurrent NUT preservation and source-bound successor admission",
+  "measured_baseline": "969aa918f0104546ec4ca2372feccf37b0145627",
+  "postimages": {
+    "integration/audits/verify_nut_negative.py": {
+      "status": "M",
+      "sha256": "a9f355fd752708b71d1cf5d4f87a4e04ded1ccd6b5014e0e9880a8b8023b655c"
+    },
+    "integration/audits/verify_pond_thermal.py": {
+      "status": "M",
+      "sha256": "49b443d7f75d7d2fd408840fa73361e2d3d6e3ed4c42993b814af2962ddb5153"
+    },
+    "integration/diagnostics/build_trace_scope.py": {
+      "status": "A",
+      "sha256": "88a69eff7b6e6eab668fcfa65ca96eec306c77972c7c8288ffe213526bad9f53"
+    },
+    "integration/diagnostics/qualify_trace_scope.py": {
+      "status": "A",
+      "sha256": "68fc5fb949b8e610647b230dd8028305e283af79a444ff80532b1c60b2bba9ff"
+    },
+    "integration/diagnostics/verify_trace_scope.py": {
+      "status": "A",
+      "sha256": "763d8c4a9a57f22b36e08e9ce36f822e4db3dd5c4cd7b2d736cfcc3ad6cb5396"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "status": "M",
+      "sha256": "b5ef598c13570542ee3c57fe0971b1f511b7881c5da60aee619cf09344c3776c"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "status": "M",
+      "sha256": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde"
+    },
+    "tests/performance/test_perf01_scratch_lifecycle.f90": {
+      "status": "A",
+      "sha256": "b69ae9a5d88fe6a9dac666165296474fa305705462f2cac72c8bf9eb1fec1eee"
+    },
+    "tests/performance/test_perf01_trace_scope.f90": {
+      "status": "A",
+      "sha256": "dccb47c70271efa740d5ed2348eedb1a3028e02842fcb35af83600999685fce6"
+    },
+    "tests/performance/test_perf01_trace_scope_payload.f90": {
+      "status": "A",
+      "sha256": "2180ea5223c51083ec38b508395f3a64fc017de4fd9a129dbf137adca7f8140e"
+    }
+  }
+}
