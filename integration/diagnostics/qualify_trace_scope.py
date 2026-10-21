@@ -39,11 +39,7 @@ def validate_columns(out,old):
         assert r['exit']==1 and r['max_rss_kib']<128*1024 and not r['timed_out']
 
 
-def observer(root,build,out):
-    out.mkdir()
-    b=json.loads((build/'build-complete.json').read_text())
-    assert all(sha(root/p)==h for p,h in b['input_sha256'].items())
-    source=out/'main.f90';text=(root/'app/solute_column/main.f90').read_text()
+def observer_source(text):
     text=once(text,'  implicit none','  implicit none\n  integer :: perf_u,perf_v,perf_n\n  real(real64)::perf_start,perf_end')
     fields=['attempts','accepted_substeps','temporal_rejections','solver_rejections','mass_rejections','headcalc_calls','nonlinear_iterations']
     text=once(text,'  do j=first,stop_after',"  open(newunit=perf_u,file='work.csv',status='new')\n"
@@ -76,7 +72,14 @@ def observer(root,build,out):
     flush(perf_v)
     flush(u)
     clock=t1""")
-    source.write_text(text)
+    return text
+
+
+def observer(root,build,out):
+    out.mkdir()
+    b=json.loads((build/'build-complete.json').read_text())
+    assert all(sha(root/p)==h for p,h in b['input_sha256'].items())
+    source=out/'main.f90';source.write_text(observer_source((root/'app/solute_column/main.f90').read_text()))
     fc=b['compiler_command'];flags=[f for f in b['flags'] if not f.startswith(('-I','-J'))]+['-J'+str(out),'-I'+str(out),'-I'+str(build)]
     objects=[e['command'][e['command'].index('-o')+1] for e in b['events'] if e['category']=='compile'
         and not e['command'][e['command'].index('-c')+1].endswith('/app/solute_column/main.f90')]

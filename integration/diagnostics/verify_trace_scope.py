@@ -26,6 +26,7 @@ ADDED = {'tests/performance/test_perf01_scratch_lifecycle.f90',
          'tests/performance/test_perf01_trace_scope_payload.f90',
          'integration/diagnostics/build_trace_scope.py',
          'integration/diagnostics/qualify_trace_scope.py',
+         'integration/diagnostics/package_trace_scope.py',
          'integration/diagnostics/verify_trace_scope.py'}
 CASES = ['1', '0.5', '0.8', '1.0005', '1.5', '2']
 
@@ -72,6 +73,13 @@ def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
     require(set(s['postimages']) == set(expected), 'postimage inventory')
     for path in expected:
         require(sha(reader(path)) == s['postimages'][path]['sha256'], 'source identity ' + path)
+    for path, key in [
+        ('integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json', 'negative_reference_candidate_20261021'),
+        ('integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json', 'thermal_pond_successor')]:
+        inherited = json.loads(subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT))[key]
+        actual_record = json.loads(reader(path))[key]
+        require(all(actual_record[field] == inherited[field] for field in ['baseline', 'postimages', 'evidence']),
+                'inherited authority changed ' + key)
     for owner in [OWNER, NUT_OWNER]:
         original = subprocess.check_output(['git', 'show', BASE + ':' + owner], cwd=ROOT, text=True)
         for fn in ['source', 'verify_qualification', 'self_test']:
@@ -134,6 +142,10 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
         projected = files['build/private-' + opt + '/backend.f90']
         expected = reader('src/runtime/mod_fmr_serialized_reference_backend.f90').replace(b'  implicit none\n  private\n', b'  implicit none\n  public\n', 1)
         require(projected == expected, 'private test changed executable logic')
+    baseline = js('build/baseline-O2/build-complete.json')
+    for path, digest in baseline['input_sha256'].items():
+        original = subprocess.check_output(['git', 'show', MEASURED_BASE + ':' + path], cwd=ROOT)
+        require(sha(original) == digest, 'stale measured baseline ' + path)
     deep = js('payload/DEEP.json')
     require(deep['source_sha256'] == sha(reader('tests/performance/test_perf01_trace_scope_payload.f90')), 'stale deep-payload test')
     require({r['opt'] for r in deep['runs']} == {'O0', 'O2'}, 'missing payload optimization')
@@ -141,6 +153,21 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
     c = js('columns-v2/RESULT.json')
     require(c['status'] == 'ORIGINAL86_AND_EXACT_DRY_FAILURE_UNDER512MIB_PASS', 'dry probes unfinished')
     current(c['inputs'])
+    require([(d['tag'], d['address_space_mib']) for d in c['dry']] == [
+        ('baseline-O2', 1536), ('baseline-O2', 512), ('current-O2', 512), ('current-O0', 512)], 'resource experiment inventory')
+    for probe in c['dry']:
+        prefix = 'columns-v2/' + probe['tag'] + '-' + str(probe['address_space_mib']) + '/'
+        require(probe['command'][-1] == '6' and probe['timeout'] == 90, 'shortened resource experiment')
+        require(js(prefix + 'RESOURCE.json')['exit'] == probe['returncode'], 'resource exit relabelled')
+        for name, digest in probe['raw_sha256'].items():
+            require(sha(files[prefix + name]) == digest, 'resource raw observation drift')
+    projection = runpy.run_path(str(ROOT / 'integration/diagnostics/qualify_trace_scope.py'))['observer_source']
+    for tag in ['baseline-O2', 'current-O2', 'current-O0']:
+        main = reader('app/solute_column/main.f90') if tag.startswith('current') else subprocess.check_output(
+            ['git', 'show', MEASURED_BASE + ':app/solute_column/main.f90'], cwd=ROOT)
+        observed = files['columns-v2/' + tag + '-observer/main.f90']
+        require(observed == projection(main.decode()).encode(), 'observing main changed physical calls')
+        require(sha(observed) == c['observers'][tag]['main_sha256'], 'observing executable input identity')
     old = runpy.run_path(str(ROOT / 'integration/diagnostics/verify_perf01_dry.py'))['capsule']()
     def rows(raw):
         return [{k: v for k, v in r.items() if k != 'cpu'} for r in csv.DictReader(io.StringIO(raw.decode()))]
@@ -198,7 +225,14 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
     nut = runpy.run_path(str(ROOT / NUT_OWNER))
     prior = nut['capsule']()
     native = runpy.run_path(str(ROOT / 'tests/nut-crop/verify_historical_gross.py'))
-    require(js('nut/RESULT.json')['status'] == 'CONCURRENT_FINITE_DONOR_AND_RETAINED_FRESH_PASS', 'unfinished concurrent NUT preservation')
+    nut_run = js('nut/RESULT.json')
+    require(nut_run['status'] == 'CONCURRENT_FINITE_DONOR_AND_RETAINED_FRESH_PASS', 'unfinished concurrent NUT preservation')
+    require(nut_run['stack_limit'] == 'unlimited for original large retained driver', 'missing original driver stack setup')
+    current(nut_run['inputs'])
+    for event in nut_run['events']:
+        require(event['returncode'] == 0, 'concurrent NUT caller failed')
+        for stream in ['stdout', 'stderr']:
+            require('nut/' + event[stream] in files, 'missing NUT caller evidence')
     mapped_nut = {}
     project('nut/', '', mapped_nut)
     for prefix in ['production', 'production/physical', 'retained']:
@@ -260,7 +294,8 @@ def self_test():
     controls = []
     for path in ['payload/DEEP.json', 'columns-v2/baseline-O2-512/RESOURCE.json',
                  'columns-v2/current-O2-512/work.csv', 'preservation/pond/0.8/qualified/result.json',
-                 'preservation/matrix/2/physical/O2/16/resumed.bin', 'preservation/season/O0-0.5-4/full/budget.csv']:
+                 'preservation/matrix/2/physical/O2/16/resumed.bin', 'preservation/season/O0-0.5-4/full/budget.csv',
+                 'nut/production/joint-O2/negative-high.endpoint.ledger']:
         bad = dict(files)
         del bad[path]
         try:
