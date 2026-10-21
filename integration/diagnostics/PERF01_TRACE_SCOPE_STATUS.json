@@ -2,7 +2,7 @@
   "workstream": "PERF01 retained flux-history memory",
   "baseline": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
   "branch": "work/perf01-trace-scope",
-  "status": "QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "status": "CANONICALLY_ADMITTED_ACTUAL_MERGE_VERIFIED",
   "contract": "docs/performance/SWAP5-PERF01_TRACE_SCOPE_CONTRACT.md",
   "implementation": "Opaque scratch-scope hooks; original transaction body preserved; Reference suffix reclamation after internal contexts expire",
   "interfaces_changed": "Two default-no-op transaction model hooks and opaque transient token; existing execution signature unchanged",
@@ -22,8 +22,15 @@
   "recovery": "Contract and next implementation persisted before compiler/model work",
   "tested": true,
   "production_qualified": true,
-  "canonical_admission": "NONE",
-  "next_action": "Publish sealed candidate, qualify actual remote head, reconcile live PR and safely merge if exact",
+  "canonical_admission": {
+    "pull_request": 1351,
+    "published_head": "dbb64445c9ce1dfb97c5d6c74f577dd2c6471efb",
+    "actual_merge": "018d9738664359ea5de1b02be55d3b0aec5c5a88",
+    "qualified_tree": "9efc9f368d5d0bbca497bc82aa27b3b88c435297",
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+    "merge_tree_exact": true
+  },
+  "next_action": "Completed memory work unit; dry32 rounding correction remains a separate unqualified work unit",
   "measured_baseline": "969aa918f0104546ec4ca2372feccf37b0145627",
   "postimages": {
     "integration/audits/verify_nut_negative.py": {
@@ -141,5 +148,6 @@
     "costs": "Actual compile/link/native/validation events remain in capsule; source and qualification checks execute locally",
     "preserved_nut_endpoints": 26,
     "doc_source_and_strict_build": "PASS"
-  }
+  },
+  "admission_receipt": "integration/diagnostics/PERF01_TRACE_SCOPE_ADMISSION.json"
 }
