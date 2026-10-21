@@ -240,3 +240,17 @@ thermal pond or full historical/default/seasonal claim is added. All actual-merg
 owning/native preservation workflows pass. Master registers three bounded facets
 while preserving 240 other rows and all 243 full dispositions. Exact hosted job IDs,
 source tree, failed publication diagnostics and master receipt stay in the owner.
+
+### PERF01 transaction-scoped trace storage, 21 October 2026
+
+The [scope contract](../performance/SWAP5-PERF01_TRACE_SCOPE_CONTRACT.md),
+[measured result](../performance/SWAP5-PERF01_TRACE_SCOPE_RESULT.md) and
+`integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json` own PR1351. The original
+transaction calculation is preserved; abandoned new Reference trace payloads are
+reclaimed after private contexts expire, with older checkpoints pinned. Fresh
+O0/O2 lifecycle, immutable-branch, deep-payload, application, thermal and concurrent
+finite-donor/retained joint proof supports the bounded successor. The source-bound
+verifier checks raw artifacts and exact additive predecessor handoffs. The status
+record distinguishes qualification from actual canonical admission. Dry numerical
+exhaustion remains unchanged; no speedup, full migration or master promotion is
+claimed.

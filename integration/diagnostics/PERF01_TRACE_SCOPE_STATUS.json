@@ -1,0 +1,145 @@
+{
+  "workstream": "PERF01 retained flux-history memory",
+  "baseline": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+  "branch": "work/perf01-trace-scope",
+  "status": "QUALIFIED_NOT_CANONICALLY_ADMITTED",
+  "contract": "docs/performance/SWAP5-PERF01_TRACE_SCOPE_CONTRACT.md",
+  "implementation": "Opaque scratch-scope hooks; original transaction body preserved; Reference suffix reclamation after internal contexts expire",
+  "interfaces_changed": "Two default-no-op transaction model hooks and opaque transient token; existing execution signature unchanged",
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "selection": "Contract-selected direct lifecycle/real arena O0/O2; fresh column/original86 assertions and exact failed dry32 bytes/work/clocks; paired bounded memory; original runtime/policy and current matrix/pond thermal preservation; frozen predecessor plus explicit successor source admission",
+  "expected_cost": "Builds tens of seconds; native resource probes at most120s with address-space bound; thermal fresh targeted gates may take several minutes",
+  "recovery": "Contract and next implementation persisted before compiler/model work",
+  "tested": true,
+  "production_qualified": true,
+  "canonical_admission": "NONE",
+  "next_action": "Publish sealed candidate, qualify actual remote head, reconcile live PR and safely merge if exact",
+  "measured_baseline": "969aa918f0104546ec4ca2372feccf37b0145627",
+  "postimages": {
+    "integration/audits/verify_nut_negative.py": {
+      "status": "M",
+      "sha256": "a9f355fd752708b71d1cf5d4f87a4e04ded1ccd6b5014e0e9880a8b8023b655c"
+    },
+    "integration/audits/verify_pond_thermal.py": {
+      "status": "M",
+      "sha256": "49b443d7f75d7d2fd408840fa73361e2d3d6e3ed4c42993b814af2962ddb5153"
+    },
+    "integration/diagnostics/build_trace_scope.py": {
+      "status": "A",
+      "sha256": "88a69eff7b6e6eab668fcfa65ca96eec306c77972c7c8288ffe213526bad9f53"
+    },
+    "integration/diagnostics/package_trace_scope.py": {
+      "status": "A",
+      "sha256": "165da3eb133ca8085f562314bcf6b9dbb006688fba827edf7e9d9ee74366a46a"
+    },
+    "integration/diagnostics/qualify_trace_scope.py": {
+      "status": "A",
+      "sha256": "47787db170846b5a90656db48c22201512fd8c82dfa81094df84f90a00c15d60"
+    },
+    "integration/diagnostics/verify_trace_scope.py": {
+      "status": "A",
+      "sha256": "610ce874b8aa0040fb7bb55f2352003f794b1e57210dfbe7d55945ee5df4b546"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "status": "M",
+      "sha256": "b5ef598c13570542ee3c57fe0971b1f511b7881c5da60aee619cf09344c3776c"
+    },
+    "src/transaction/mod_transaction_reference.f90": {
+      "status": "M",
+      "sha256": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde"
+    },
+    "tests/performance/test_perf01_scratch_lifecycle.f90": {
+      "status": "A",
+      "sha256": "b69ae9a5d88fe6a9dac666165296474fa305705462f2cac72c8bf9eb1fec1eee"
+    },
+    "tests/performance/test_perf01_trace_scope.f90": {
+      "status": "A",
+      "sha256": "dccb47c70271efa740d5ed2348eedb1a3028e02842fcb35af83600999685fce6"
+    },
+    "tests/performance/test_perf01_trace_scope_payload.f90": {
+      "status": "A",
+      "sha256": "2180ea5223c51083ec38b508395f3a64fc017de4fd9a129dbf137adca7f8140e"
+    }
+  },
+  "pull_request": 1351,
+  "fresh_concurrent_finite_donor_production": "PASS_EXACT_INCUMBENT_DIRECT_JOINT_AND_PHYSICAL",
+  "documentation": "SOURCE_CHECK_AND_STRICT_MKDOCS_PASS",
+  "fresh_concurrent_retained": "ORIGINAL_852_EVENTS_PASS",
+  "evidence": {
+    "parts": [
+      "evidence.part-000.b64",
+      "evidence.part-001.b64",
+      "evidence.part-002.b64",
+      "evidence.part-003.b64",
+      "evidence.part-004.b64",
+      "evidence.part-005.b64"
+    ],
+    "decoded_sha256": "71c5a213622e97516d114a328dcbe0409245d3b823e519e535887543ac7e979c",
+    "members": 17881,
+    "decoded_bytes": 2099988,
+    "members_sha256": "efbecb88f4502000ac2c4708c4c14da11997311ee7af2d1f59ab8eb7b763f0d6",
+    "includes_failed_and_successful_observations": true,
+    "compiler_binaries_excluded": true,
+    "directory": "integration/diagnostics/evidence/perf01-trace-scope"
+  },
+  "qualification": {
+    "qualified": true,
+    "thermal_pond": true,
+    "six_exponents": true,
+    "semantic_native_controls": 96,
+    "original_application_artifacts_exact": 160,
+    "month_and_year_runs": true,
+    "full_capability": false,
+    "seasonal_accuracy_claim": "measured time-grid spread only; annual mass differences not strictly monotone",
+    "trace_scope": true,
+    "matrix_six_exponents": true,
+    "concurrent_finite_donor_preserved": true,
+    "fresh_nut_endpoint_artifacts": 26,
+    "memory_baseline_kib": 961660,
+    "memory_current_kib": 74968,
+    "memory_reduction_fraction": 0.9220431337478943,
+    "dry_numerical_failure_unchanged": true,
+    "speedup_claim": false,
+    "predecessor_qualified": true,
+    "source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0",
+    "current_source_tree": "035a4085b0f43d484ca39884a3e59dad641a63f0"
+  },
+  "corruption_controls": {
+    "count": 12,
+    "negative_controls": [
+      "missing payload/DEEP.json",
+      "missing columns-v2/baseline-O2-512/RESOURCE.json",
+      "missing columns-v2/current-O2-512/work.csv",
+      "missing preservation/pond/0.8/qualified/result.json",
+      "missing preservation/matrix/2/physical/O2/16/resumed.bin",
+      "missing preservation/season/O0-0.5-4/full/budget.csv",
+      "missing nut/production/joint-O2/negative-high.endpoint.ledger",
+      "stale src/transaction/mod_transaction_reference.f90",
+      "stale src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "failed resource control relabelled PASS",
+      "source boundary 10",
+      "source boundary 11"
+    ]
+  },
+  "full_fci": "NOT_SELECTED_TARGETED_SHARED_TRANSACTION_AND_REFERENCE_PRESERVATION",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "mastercoverage_promotion": false,
+  "validation_recovery": {
+    "raw": "17881-member immutable capsule",
+    "measured_baseline": "969aa918f0104546ec4ca2372feccf37b0145627",
+    "exact_canonical_predecessor": "c4ec414fe5ae55e992e557e394cb4003beaf3e39",
+    "costs": "Actual compile/link/native/validation events remain in capsule; source and qualification checks execute locally",
+    "preserved_nut_endpoints": 26,
+    "doc_source_and_strict_build": "PASS"
+  }
+}
