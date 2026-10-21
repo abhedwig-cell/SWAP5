@@ -42,7 +42,7 @@ contains
     real(real64) :: cursor, next_cursor, tol, transaction_t1, proposed_dt, proposal_factor
     real(real64) :: aggregate_bottom_exchange, terminal_bottom_flux, aggregate_transpiration
     logical :: aggregate_transpiration_available
-    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, proposal_active
+    logical :: aggregate_mass_complete, aggregate_bottom_available, selector_valid, proposal_active, solver_limited
     integer :: isub, max_retries_cap
 
     result = canonical_result_t()
@@ -83,6 +83,7 @@ contains
     cursor = interval%t0
     proposal_active = .false.
     proposed_dt = 0.0_real64
+    solver_limited = .false.
 
     do isub = 1, config%max_committed_substeps
       transaction_t1 = interval%t1
@@ -93,6 +94,10 @@ contains
         call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
       end if
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
+      ! Choose the exact endpoint before execution, never relabel a solved trace.
+      if (config%retain_accepted_step_proposal .and. proposal_active) then
+        if (transaction_t1 < interval%t1 .and. interval%t1-transaction_t1 <= tol) transaction_t1 = interval%t1
+      end if
       if (.not. selector_valid .or. .not. ieee_is_finite(transaction_t1) .or. &
           transaction_t1 <= cursor .or. transaction_t1 > interval%t1 .or. max_retries_cap < 0) then
         result%status = CANONICAL_STATUS_INVALID_REQUEST
@@ -132,7 +137,12 @@ contains
         return
       end if
 
-      if (config%retain_accepted_step_proposal .and. (proposal_active .or. tx%temporal_rejections > 0)) then
+      ! Solver rejection invalidates temporal-only growth for this interval.
+      ! Policy memory is private and resets at the next requested interval.
+      solver_limited = solver_limited .or. tx%solver_rejections > 0
+      if (solver_limited) proposal_active = .false.
+      if (config%retain_accepted_step_proposal .and. .not. solver_limited .and. &
+          (proposal_active .or. tx%temporal_rejections > 0)) then
         proposal_factor = 2.0_real64
         ! Clamp before division: finite budget/tiny indicator must not overflow
         ! while calculating a proposal whose bounded factor is already known.
@@ -148,7 +158,8 @@ contains
       result%diagnostics%committed_substeps = result%diagnostics%committed_substeps + 1
       result%completed_t = cursor
 
-      if (abs(cursor - interval%t1) <= tol) then
+      if (abs(cursor - interval%t1) <= tol .and. &
+          (.not. config%retain_accepted_step_proposal .or. cursor == interval%t1)) then
         call move_alloc(working, committed)
         result%status = CANONICAL_STATUS_COMPLETED
         result%completed = .true.

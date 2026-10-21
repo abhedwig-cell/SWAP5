@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+PERF01 optional policy (21 October 2026): PR1345 provides a default-OFF numerical
+proposal with exact endpoints and solver fallback. Local O0/O2 qualifies the
+bounded prescribed-sink Reference columns and current nonlinear thermal
+default-OFF preservation. The [result](../performance/SWAP5-PERF01_PROPOSAL_RESULT.md)
+and owning status record admission separately. Long infiltrating dry32,
+seasonal/regional performance and general activation remain excluded. No master
+capability disposition changes.
+
 Current bounded MC-SOL01 successor,21 October2026: PR1344, merge
 `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`, admits numeric-heat endpoint
 decay with existing Freundlich matrix exponent0.5..2. Six GNU O0/O2 cases pass

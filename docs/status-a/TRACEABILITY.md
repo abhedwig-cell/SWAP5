@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+PERF01 optional numerical policy, PR1345: the
+[contract](../performance/SWAP5-PERF01_PROPOSAL_CONTRACT.md),
+[result](../performance/SWAP5-PERF01_PROPOSAL_RESULT.md) and
+`integration/performance/SWAP5-PERF01_PROPOSAL_STATUS.json` own the exact source,
+fresh O0/O2/error-cost/restart proof, current thermal preservation and bounded
+admission receipt. Default OFF and the excluded long dry infiltration failure
+remain explicit. This adds no item to the frozen Status-A denominator.
+
 Post-Status-A MC-SOL01 numeric-heat/nonlinear matrix admission is PR1344 at
 `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`. Current source tree
 `c408c50d457f63f254d3437c95867a68974e5aea` and all raw O0/O2/refinement/

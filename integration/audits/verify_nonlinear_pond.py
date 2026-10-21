@@ -12,7 +12,7 @@ import tarfile
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = 'e61d8e107121bc31fa1d9b0eac73439af29eb76f'
+BASE = '437d96ff51ac8a5825b605caf788661848c88be5'
 STATUS = 'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'
 PRODUCTION = 'src/runtime/mod_fmr_b111_pond_solute_route.f90'
 CASES = ['1', '0.5', '0.8', '1.0005', '1.5', '2']
@@ -34,25 +34,33 @@ def git(*args):
 def record():
     return json.loads((ROOT/STATUS).read_text())['nonlinear_pond_successor']
 
-def source():
+def source(reader=lambda p: (ROOT/p).read_bytes(), changed=None):
     s = record()
     require(s['baseline'] == BASE, 'wrong pond predecessor')
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
     require(not git('status', '--porcelain', '--', *SCIENCE), 'dirty nonlinear pond source')
-    changes = {v.split('\t')[1]: v.split('\t')[0] for v in git('diff', '--name-status', BASE, 'HEAD', '--', *SCIENCE).splitlines()}
-    expected = {PRODUCTION:'M', 'tests/nut-sol/run_nonlinear_pond.py':'A', 'integration/audits/qualify_nonlinear_pond.py':'A', 'integration/audits/verify_nonlinear_pond.py':'A', 'integration/audits/verify_matrix_thermal.py':'M', '.github/workflows/mc-sol01-nonlinear-pond.yml':'A'}
+    changes = changed if changed is not None else {v.split('\t')[1]: v.split('\t')[0] for v in git('diff', '--name-status', BASE, 'HEAD', '--', *SCIENCE).splitlines()}
+    expected = {PRODUCTION:'M', 'tests/nut-sol/run_nonlinear_pond.py':'A', 'integration/audits/qualify_nonlinear_pond.py':'A', 'integration/audits/verify_nonlinear_pond.py':'A', 'integration/audits/verify_matrix_thermal.py':'M', 'integration/performance/verify_proposal.py':'M', '.github/workflows/mc-sol01-nonlinear-pond.yml':'A'}
     require(changes == expected == {p: v['status'] for p,v in s['postimages'].items()}, 'foreign pond scientific delta')
     require({p for p in changes if p.startswith('src/')} == {PRODUCTION}, 'pond production boundary')
     for p,v in s['postimages'].items():
-        require(sha((ROOT/p).read_bytes()) == v['sha256'], 'pond postimage '+p)
+        require(sha(reader(p)) == v['sha256'], 'pond postimage '+p)
     old = subprocess.check_output(['git', 'show', BASE+':'+PRODUCTION], cwd=ROOT, text=True)
     require(old.count('p%frexp/=1d0') == 1, 'unknown pond exponent guard')
-    require((ROOT/PRODUCTION).read_text() == old.replace('p%frexp/=1d0', 'p%frexp<.5d0.or.p%frexp>2d0'), 'pond physics mutation')
+    require(reader(PRODUCTION).decode() == old.replace('p%frexp/=1d0', 'p%frexp<.5d0.or.p%frexp>2d0'), 'pond physics mutation')
     path = 'integration/audits/verify_matrix_thermal.py'
     expected = subprocess.check_output(['git', 'show', BASE+':'+path], cwd=ROOT, text=True)
     for fn in ['source', 'verify_qualification', 'self_test']:
         expected = expected.replace('def '+fn+'():\n', 'def '+fn+'():\n'+HOOK.replace('{function}',fn), 1)
-    require((ROOT/path).read_text() == expected, 'original thermal authority changed')
+    require(reader(path).decode() == expected, 'original thermal authority changed')
+    path = 'integration/performance/verify_proposal.py'
+    expected = subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT,text=True)
+    for fn in ['source','verify_qualification','self_test']:
+        marker='def '+fn+('(' if fn=='source' else '():')
+        start=expected.index(marker);end=expected.index('\n',start)+1
+        hook="    pond_status=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'\n    if pond_status.exists() and 'evidence' in json.loads(pond_status.read_text()).get('nonlinear_pond_successor', {}):\n        return runpy.run_path(str(ROOT/'integration/audits/verify_nonlinear_pond.py'),run_name='registered_nonlinear_pond')['"+fn+"']("+('reader,changed' if fn=='source' else '')+")\n"
+        expected=expected[:end]+hook+expected[end:]
+    require(reader(path).decode()==expected,'original PERF01 authority changed')
     return s
 
 def unpack(e):

@@ -599,11 +599,11 @@
   ],
   "nonlinear_pond_successor": {
     "work_unit": "MC-SOL01-NONLINEAR-POND01",
-    "baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
+    "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
     "implemented": true,
     "persisted": true,
-    "tested": true,
-    "qualified": true,
+    "tested": false,
+    "qualified": false,
     "canonically_admitted": false,
     "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
     "invariants_affected": [
@@ -618,7 +618,7 @@
       "src/runtime/mod_fmr_b111_pond_solute_route.f90",
       "tests/nut-sol/run_nonlinear_pond.py"
     ],
-    "next_action": "Observe terminal owning PR native qualification, reconcile live canonical and safely admit bounded nonlinear pond scope; then master receipt.",
+    "next_action": "Fresh-build all six pond exponents and178-provider column after live PERF01 canonical runtime admission; retain old proof separately, requalify source and admit.",
     "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
     "blockers": [],
     "test_selection": {
@@ -627,12 +627,6 @@
         "expected_seconds": 200,
         "scientific_claim": "Nonlinear sorption plus existing persistent pond chemistry; unchanged transactions, water law and restart"
       }
-    },
-    "evidence": {
-      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_20261021.tar.xz.b64",
-      "decoded_sha256": "215e012765a1d982ad9f858c6247747f80c68710b49db32b0c7fd392a3ba6597",
-      "decoded_bytes": 213560,
-      "members": 5209
     },
     "physical": {
       "1": {
@@ -859,7 +853,7 @@
         }
       }
     },
-    "stage": "LOCAL_QUALIFIED_INTEGRATED_ADMISSION_PENDING",
+    "stage": "RECONCILED_SHARED_RUNTIME_REQUALIFICATION_PENDING",
     "selection": {
       "full_fci": "NOT_SELECTED_IMPACT: one optional pond exponent guard; every incumbent linear pond endpoint and178-provider file application fresh-preserved, original exact predecessor authority still required",
       "highest_low_air": "NOT_SELECTED_POLICY",
@@ -877,11 +871,11 @@
       },
       "integration/audits/verify_matrix_thermal.py": {
         "status": "M",
-        "sha256": "03812d50552dd27bb7924677d161c7aa043c8e510282d05a86fd785bb12af145"
+        "sha256": "1a65492893770643ebdbac9a35fa0fbd97290b0e84832a97cd33abb435dc953f"
       },
       "integration/audits/verify_nonlinear_pond.py": {
         "status": "A",
-        "sha256": "ea493cc5a1fe6585b3b26274e76015084a3d51559d4ac94d202771968dbbf12c"
+        "sha256": "6b9746a440e42e9f13690d8049a43eb1fa2af82ba81ef499a4346c02d24a2371"
       },
       "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
         "status": "M",
@@ -890,6 +884,10 @@
       "tests/nut-sol/run_nonlinear_pond.py": {
         "status": "A",
         "sha256": "4bf0ec734ce88083b10ce5dcdbdd2873651de79942ec1869206d0cbf219acd1d"
+      },
+      "integration/performance/verify_proposal.py": {
+        "status": "M",
+        "sha256": "6b8af7305bfc24e2d899edf95a8ba2d86f99f80a1682afbf4e6f4929b905e288"
       }
     },
     "checkpoint_commit": "f566b9ecab6dbde5f0a44f20190d8ad06be47bec",
@@ -898,6 +896,14 @@
       "corruption_controls": 9,
       "column_178_provider_O0_O2_and86_observations": "PASS",
       "original_guard_nonlinear_counterexample_and_linear_bytes": "PASS"
+    },
+    "initial_baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
+    "last_reconciled_upstream": "437d96ff51ac8a5825b605caf788661848c88be5",
+    "pre_reconciliation_evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_20261021.tar.xz.b64",
+      "decoded_sha256": "215e012765a1d982ad9f858c6247747f80c68710b49db32b0c7fd392a3ba6597",
+      "decoded_bytes": 213560,
+      "members": 5209
     }
   }
 }
