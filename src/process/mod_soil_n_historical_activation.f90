@@ -113,7 +113,6 @@ contains
    if(source%hum_exp_per_year<0d0.and.abs(source%hum_exp_per_year+1d0)>0d0)return
    if(source%hum_exp_per_year>100d0)return
    if(source%hum_exp_start_day<0d0.or.source%hum_exp_start_day>3d6)return
-   if(abs(source%hum_exp_start_day-anint(source%hum_exp_start_day))>0d0)return
    if(source%hum_exp_per_year<0d0.and.abs(source%hum_exp_start_day)>0d0)return
    ! Top concentrations bind to the same immutable mineral owner. Only an
    ! explicitly admitted accepted-water surface route may deliver their flux.

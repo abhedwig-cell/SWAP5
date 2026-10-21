@@ -1,6 +1,21 @@
 {
   "workstream": "MC-NUT01",
   "work_unit": "MC-NUT01-HIST-COMPLETE",
+  "humus_timestamp_20261021": {
+    "baseline_ref": "d7b89175",
+    "stage": "IMPLEMENTED_UNQUALIFIED",
+    "contract": "docs/science/MC_NUT01_HUMUS_TIMESTAMP_20261021.md",
+    "implemented": true,
+    "persisted": true,
+    "tested": false,
+    "qualified": false,
+    "canonical_admitted": false,
+    "scope": "Original underscore hour/minute/second humus timestamps; endpoint predicate and equations unchanged; amendment dates remain daily",
+    "selected_feedback": "Fresh original TTUTIL/native O0/O2 and original chemistry/reactive fractional switch, mass and opaque continuation; expected under60seconds per direct runner",
+    "selected_composition": "Fresh current Reference/crop/Soil-N across fractional humus clock and persistent restart; provider build cost UNKNOWN pending measured closure",
+    "interfaces": "Existing immutable humus start clock accepts fractions; private native timestamp decoder only; no state or restart schema",
+    "next_action": "Run direct source/native witnesses, then accepted-state composition and owning admission/preservation proof"
+  },
   "negative_reference_candidate_20261021": {
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
     "audit_id": "SWAP-020",
