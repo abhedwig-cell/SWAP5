@@ -79,13 +79,14 @@ module mod_b111_reactive_solute_substep
 contains
 
   subroutine advance_b111_reactive_solute_substep(committed_mobile,committed_companion,f,candidate_mobile, &
-       candidate_companion,receipt)
+       candidate_companion,receipt,exact_empty_pond_limit)
     type(mobile_salt_state_t),intent(in)::committed_mobile
     type(solute_compartment_state_t),intent(in)::committed_companion
     type(b111_reactive_solute_substep_forcing_t),intent(in)::f
     type(mobile_salt_state_t),intent(out)::candidate_mobile
     type(solute_compartment_state_t),intent(out)::candidate_companion
     type(b111_reactive_solute_substep_receipt_t),intent(out)::receipt
+    logical,intent(in),optional::exact_empty_pond_limit
 
     type(b111_pond_solute_result_t)::pond
     type(b111_sorption_result_t)::sorp,partition
@@ -129,7 +130,8 @@ contains
     receipt%mass_before_mg_cm2=sum(committed_mobile%mass_mg_cm2)+committed_companion%solute_total()
     call evaluate_b111_pond_solute_exchange(committed_companion%pond_mass,f%rain_rate_cm_day,f%rain_c_mg_cm3, &
          f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3,f%q_face_up_cm_day(1),f%macropore_area_fraction, &
-         f%pond_end_cm,f%dt_day,pond,f%runon_rate_cm_day,f%runon_c_mg_cm3,f%runoff_depth_cm)
+         f%pond_end_cm,f%dt_day,pond,f%runon_rate_cm_day,f%runon_c_mg_cm3,f%runoff_depth_cm, &
+         exact_empty_pond_limit=exact_empty_pond_limit)
     if(pond%status/=B111_POND_SOL_OK)return
     candidate_companion%pond_mass=pond%mass_after
     receipt%pond_to_soil_mg_cm2=pond%soil_transfer

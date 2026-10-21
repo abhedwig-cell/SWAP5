@@ -21,6 +21,7 @@ module mod_b111_persistent_pond
   ! Accepted gross pond evaporation removes water, never dissolved solute.
   real(real64)::pond_evaporation_rate=0d0
   real(real64)::runon_rate=0d0,runon_c=0d0,runoff_depth=0d0
+  logical::implicit_pond_evaporation=.false.
  end type
  type,public::persistent_pond_receipt_t
   integer::status=POND_INVALID
@@ -99,7 +100,8 @@ contains
   r%mass_before=committed%mass;r%dry_input=s%dry_deposition_rate*dt
   available=committed%mass+r%dry_input
   call evaluate_b111_pond_solute_exchange(available,s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c, &
-    s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth)
+    s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth, &
+    exact_empty_pond_limit=s%implicit_pond_evaporation)
   if(mix%status/=B111_POND_SOL_OK)return
   if(mix%mass_after>1d12.or.mix%soil_transfer>1d12)return
   if(.not.bounded_values(s%t1,s%depth_end,mix%mass_after,committed%revision+1))return

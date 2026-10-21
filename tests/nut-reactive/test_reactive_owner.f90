@@ -16,7 +16,7 @@ program test_reactive_owner
  real(real64)::hum_rates(6)
  real(real64)::w,temp(4),moisture(4),time,theta,nit,denit,carbon
  integer(int64)::revision
- integer::i,j,code
+ integer::i,j,k,code
  call parameters(p)
  call initialize_soil_n_pool_state(p%mineral%inventory,[10d0,20d0],5d0,40d0,.02d0,.03d0,pools,code)
  call require(code==0,'initial pools')
@@ -98,8 +98,9 @@ program test_reactive_owner
  call parameters(p);base_vector=reactive_parameter_vector(p)
  hum_rates=[-1d0,0d0,.5d-6,1d-6,1.0001d-6,.02d0/365.2425d0]
  do i=1,size(hum_rates)
+  do k=1,2
   call parameters(p);p%hum_exp_daily=hum_rates(i)
-  if(i>1)p%hum_exp_start_day=2d0
+  if(i>1)p%hum_exp_start_day=merge(2d0,1.5d0,k==1)
   experiment_vector=reactive_parameter_vector(p)
   if(i==1)then
    call require(all(experiment_vector==base_vector),'absent humus experiment old parameter identity')
@@ -127,11 +128,12 @@ program test_reactive_owner
    end if
    pools=got
   end do
+  end do
  end do
  bad=p;bad%hum_exp_daily=-.1d0
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'negative humus experiment rejected')
  bad=p;bad%hum_exp_start_day=1.5d0
- call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'fractional humus switch rejected')
+ call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code==0,'fractional humus switch accepted exactly')
  bad=p;bad%hum_exp_daily=ieee_value(0d0,ieee_quiet_nan)
  call initialize_reactive(bad,9001_int64,0d0,.34d0,pools,copy,code);call require(code/=0,'NaN humus experiment rejected')
  call parameters(p);p%mineral%c_top=[.005d0,.015d0]

@@ -52,6 +52,7 @@ module mod_b110_dynamic_top_boundary_provider
     logical :: macropore_pond_donor_active = .false.
     real(real64) :: macropore_pond_threshold_cm = 0.0_real64
     real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64
+    logical :: implicit_pond_evaporation = .false.
   end type b110_dynamic_top_boundary_request_t
 
   type, public :: b110_dynamic_top_boundary_result_t
@@ -89,6 +90,7 @@ contains
     real(real64) :: k_atm, k_top, k_sat, k1_atm, k1_max
     real(real64) :: emax, q0, q1, h0, h0max, p1, p2
     real(real64) :: top_dz, top_distance
+    real(real64) :: available_supply, infiltration_capacity, actual_pond_evaporation
     real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm
     logical :: ok, donor_ok
 
@@ -106,6 +108,17 @@ contains
 
     top_dz = geometry%dz(1)
     top_distance = geometry%node_distance(1)
+    if (request%implicit_pond_evaporation) then
+      if (request%potential_bare_soil_evaporation_cm_per_day /= 0.0_real64 .or. &
+          request%macropore_pond_donor_active .or. request%matrix_source_area_partition .or. &
+          request%fixed_top_node_conductivity_cm_per_day < 0.0_real64 .or. &
+          request%conductivity_mean_method /= 1 .or. &
+          request%pressure_head_top_cm >= top_distance) then
+        result%status = B110_DYN_TOP_UNSUPPORTED
+        result%route = 'implicit-pond-outside-profile'
+        return
+      end if
+    end if
 
     call evaluate_b110_default_mvg_conductivity(hydraulics, 1, B110_DYN_TOP_ATMOSPHERIC_HEAD_CM, k_atm, ok)
     if (.not. ok) then
@@ -171,6 +184,36 @@ contains
          q0 = q0 * (1.0_real64-request%macropore_surface_area_fraction)
     q0 = q0 + request%runon_rate_cm_per_day - &
          result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day
+    if (request%implicit_pond_evaporation .and. request%potential_pond_evaporation_cm_per_day > 0.0_real64) then
+      ! Resolve the endpoint constraint: a dry surface has no pond evaporation;
+      ! an active empty pond limits evaporation to supply above infiltration;
+      ! a positive pond supplies the full demand. Old callers retain their
+      ! previous-depth classification through the default-false physical option.
+      available_supply = request%precipitation_rate_cm_per_day + request%irrigation_rate_cm_per_day + &
+           request%snowmelt_rate_cm_per_day + request%runon_rate_cm_per_day
+      infiltration_capacity = k1_max * (1.0_real64-request%pressure_head_top_cm/top_distance)
+      actual_pond_evaporation = min(request%potential_pond_evaporation_cm_per_day, max(0.0_real64, &
+           available_supply+request%previous_ponding_depth_cm/request%step_duration_day-infiltration_capacity))
+      result%bare_soil_evaporation_cm_per_day = 0.0_real64
+      result%ponded_water_evaporation_cm_per_day = actual_pond_evaporation
+      q0 = available_supply-actual_pond_evaporation
+      if (actual_pond_evaporation > 0.0_real64 .and. &
+          actual_pond_evaporation < request%potential_pond_evaporation_cm_per_day) then
+        result%regime = B110_DYN_TOP_REGIME_HEAD
+        result%surface_head_cm = 0.0_real64
+        result%surface_face_conductivity_cm_per_day = k1_max
+        result%surface_head_derivative_available = .true.
+        result%surface_head_dpressure_head_top = 0.0_real64
+        result%candidate_ponding_depth_cm = 0.0_real64
+        result%runoff_depth_cm = 0.0_real64
+        result%runoff_potential = .false.
+        result%actual_top_flux_cm_per_day = -infiltration_capacity
+        result%net_potential_surface_flux_cm_per_day = q0
+        result%status = B110_DYN_TOP_AVAILABLE
+        result%route = 'implicit-empty-pond-evaporation'
+        return
+      end if
+    end if
     q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day
     result%net_potential_surface_flux_cm_per_day = q0
 

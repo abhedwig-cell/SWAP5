@@ -44,6 +44,7 @@ program swap5_solute_column
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
+  logical :: implicit_pond_evaporation=.false.
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
   type(soil_temperature_field_view_t) :: heat_view
@@ -70,7 +71,7 @@ program swap5_solute_column
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
-    decay_rate_day,gamma_temperature,initial_temperature_c
+    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c
   call get_command_argument(1,path)
@@ -155,6 +156,8 @@ program swap5_solute_column
     all(surface_temperature_c>=-50d0).and.all(surface_temperature_c<=60d0),'heat outside admitted domain')
   call require(dynamic_temperature.or.decay_rate_day==0d0,'decay requires explicit dynamic heat activation')
   call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')
+  call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &
+    .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')
   p%parameter_set_id=670001_int64;p%active_nodes=numnod
   p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)
   allocate(p%cofgen(24,numnod));p%cofgen=0d0
@@ -177,6 +180,7 @@ program swap5_solute_column
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
   allocate(forcing%pond_input)
   forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
+  forcing%pond_input%implicit_pond_evaporation=implicit_pond_evaporation
   chemistry%dz_cm=dz;chemistry%theta=initial%water_content
   chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)
   chemistry%frexp=freundlich_exponent;chemistry%cref_mg_cm3=reference_concentration
@@ -194,6 +198,8 @@ program swap5_solute_column
     call import_column_swp_chemistry(trim(legacy_swp),dz,z,dynamic_temperature,chemistry, &
       concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)
   end if
+  call require(.not.implicit_pond_evaporation.or.(chemistry%frexp==1d0.and. &
+    .not.chemistry%temperature_active),'implicit pond imported chemistry not qualified')
   column_id%column_id=660101_int64;column_id%template_id=660201_int64
   column_id%parameter_ref=1_int64;column_id%state_handle=1_int64;column_id%forcing_handle=1_int64
   column_id%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
@@ -263,6 +269,7 @@ program swap5_solute_column
     supply=pond_step_t();supply%t0=t0;supply%t1=t1;supply%rain_rate=rain_cm_day(j)
     supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c
     supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day
+    supply%implicit_pond_evaporation=implicit_pond_evaporation
     if(dynamic_temperature)then
       forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
       call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)

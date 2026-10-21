@@ -77,12 +77,31 @@ program test_perf01_empty_pond_replay
   enddo
  enddo
  if(old_spread<.024999d0)error stop 'incumbent split-source counterexample missing'
+ a%implicit_pond_evaporation=.true.
+ a%potential_bare_soil_evaporation_cm_per_day=.01d0
+ call old_evaluate(geometry,hydraulics,a,of)
+ if(of%status==1)error stop 'unsupported bare-soil coupling admitted'
+ a%potential_bare_soil_evaporation_cm_per_day=0d0
+ a%fixed_top_node_conductivity_cm_per_day=-1d0
+ call old_evaluate(geometry,hydraulics,a,of)
+ if(of%status==1)error stop 'unsupported implicit conductivity admitted'
+ a%fixed_top_node_conductivity_cm_per_day=ktop
+ a%conductivity_mean_method=3
+ call old_evaluate(geometry,hydraulics,a,of)
+ if(of%status==1)error stop 'unqualified conductivity mean admitted'
+ a%conductivity_mean_method=1
+ a%pressure_head_top_cm=1d0
+ call old_evaluate(geometry,hydraulics,a,of)
+ if(of%status==1)error stop 'unsupported nonpositive infiltration capacity admitted'
  print '(A,I0)','EMPTY_POND_CONSERVATION_BOUNDS_SPLIT_SOURCE_CONTINUITY_PASS=',observations
  print '(A,ES25.17E3)','INCUMBENT_FULL_HALF_EVAP_RATE_SPREAD=',old_spread
+ print '(A)','PRODUCTION_OPTION_DEFAULT_UNSUPPORTED_PATHS_PASS'
 contains
  subroutine check_surface(request,result)
   type(new_request),intent(in)::request
   type(new_result),intent(in)::result
+  type(old_request)::request_actual
+  type(old_result)::actual
   real(real64)::residual
   if(result%status/=1)error stop 'surface unavailable'
   residual=result%candidate_ponding_depth_cm-request%previous_ponding_depth_cm- &
@@ -93,5 +112,24 @@ contains
      result%ponded_water_evaporation_cm_per_day>.05d0)error stop 'water/demand bounds'
   if(result%candidate_ponding_depth_cm>1d-13.and.abs(result%ponded_water_evaporation_cm_per_day-.05d0)>1d-14) &
     error stop 'positive pond must satisfy demand'
+  request_actual=old_request()
+  request_actual%conductivity_mean_method=request%conductivity_mean_method
+  request_actual%pressure_head_top_cm=request%pressure_head_top_cm
+  request_actual%water_content_top=request%water_content_top
+  request_actual%previous_ponding_depth_cm=request%previous_ponding_depth_cm
+  request_actual%step_duration_day=request%step_duration_day
+  request_actual%runon_rate_cm_per_day=request%runon_rate_cm_per_day
+  request_actual%potential_pond_evaporation_cm_per_day=request%potential_pond_evaporation_cm_per_day
+  request_actual%ponding_max_cm=request%ponding_max_cm
+  request_actual%runoff_resistance_day=request%runoff_resistance_day
+  request_actual%fixed_top_node_conductivity_cm_per_day=request%fixed_top_node_conductivity_cm_per_day
+  request_actual%implicit_pond_evaporation=.true.
+  call old_evaluate(geometry,hydraulics,request_actual,actual)
+  if(actual%status/=result%status.or.actual%regime/=result%regime.or. &
+     actual%actual_top_flux_cm_per_day/=result%actual_top_flux_cm_per_day.or. &
+     actual%surface_head_cm/=result%surface_head_cm.or. &
+     actual%candidate_ponding_depth_cm/=result%candidate_ponding_depth_cm.or. &
+     actual%ponded_water_evaporation_cm_per_day/=result%ponded_water_evaporation_cm_per_day.or. &
+     actual%runoff_depth_cm/=result%runoff_depth_cm)error stop 'actual production option differs from qualified generator'
  end subroutine
 end program

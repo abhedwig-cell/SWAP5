@@ -143,7 +143,8 @@ contains
     f%runon_rate_cm_day=supply%runon_rate;f%runon_c_mg_cm3=supply%runon_c
     f%pond_end_cm=t%pond_end_cm;f%runoff_depth_cm=pond_step%runoff_depth
     f%macropore_area_fraction=0d0
-    call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r)
+    call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r, &
+      exact_empty_pond_limit=supply%implicit_pond_evaporation)
     receipt%status=MATRIX_PROCESS;receipt%process_status=r%status
     if(r%status/=B111_REACTIVE_OK)return
     scale=max(1d0,pond_receipt%soil_transfer,pond_receipt%mass_after)

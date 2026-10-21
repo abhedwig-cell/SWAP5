@@ -1,6 +1,6 @@
 ! Restricted named-field source export, NOT a full TTUTIL/SNM parser.
 module mod_soil_n_historical_named_input
- use iso_fortran_env,only:real64,iostat_end,iostat_eor
+ use iso_fortran_env,only:real32,real64,iostat_end,iostat_eor
  use ieee_arithmetic,only:ieee_is_finite
  use mod_soil_n_amendment_input,only:parse_soil_n_date
  use mod_soil_n_historical_activation,only:soil_n_historical_initial_t,soil_n_historical_rates_t
@@ -45,6 +45,55 @@ module mod_soil_n_historical_named_input
  end type
  public::read_historical_soil_n_named_export,parse_historical_soil_n_named_lines
 contains
+ pure subroutine parse_humus_timestamp(token,day,status)
+  character(*),intent(in)::token
+  real(real64),intent(out)::day
+  integer,intent(out)::status
+  integer::split,n,i,ios,hour,minute,second
+  real(real32)::fraction
+  real(real64)::date
+  character(32)::clock
+  day=0d0;status=N_NAMED_INVALID
+  split=index(trim(token),'_')
+  if(split==0)then
+   call parse_soil_n_date(trim(token),day,status)
+   return
+  end if
+  if(split/=11.and.split/=12)return
+  call parse_soil_n_date(token(:split-1),date,ios)
+  if(ios/=0)return
+  clock=token(split+1:);n=len_trim(clock)
+  if(n/=5.and.n/=8.and.(n<9.or.n>20))return
+  if(clock(3:3)/=':')return
+  if(n>5)then
+   if(clock(6:6)/=':')return
+  end if
+  if(n>8)then
+   if(clock(9:9)/='.')return
+  end if
+  do i=1,n
+   if(i==3.or.i==6.or.i==9)cycle
+   if(index('0123456789',clock(i:i))==0)return
+  end do
+  read(clock(1:2),'(I2)',iostat=ios)hour;if(ios/=0)return
+  read(clock(4:5),'(I2)',iostat=ios)minute;if(ios/=0)return
+  second=0;fraction=0.0_real32
+  if(n>5)then
+   read(clock(7:8),'(I2)',iostat=ios)second;if(ios/=0)return
+  end if
+  if(n>9)then
+   read(clock(9:n),*,iostat=ios)fraction;if(ios/=0)return
+  end if
+  ! Original DTSYS deliberately permits hours above24 and adds each field
+  ! separately in its day1 epoch. Preserve that order and REAL FSEC precision.
+  if(minute>59.or.second>59.or.fraction>=1.0_real32)return
+  day=date+1d0
+  day=day+real(hour,real64)/24d0
+  day=day+real(minute,real64)/1440d0
+  day=day+real(second,real64)/86400d0
+  day=day+real(fraction,real64)/86400d0-1d0
+  status=N_NAMED_OK
+ end subroutine
  subroutine read_historical_soil_n_named_export(path,initial,rates,status,error_line,ages)
    character(*),intent(in)::path
    type(soil_n_residue_age_t),intent(out),optional::ages
@@ -148,7 +197,7 @@ contains
       if(trim(token)/='.false.')return
       x=0d0
      else if(native.and.field_index==34)then
-      call parse_soil_n_date(trim(token),x,ios)
+      call parse_humus_timestamp(trim(token),x,ios)
       if(ios/=0)return
      else
       if(native.and.scan(trim(token),'.eEdD')==0)return

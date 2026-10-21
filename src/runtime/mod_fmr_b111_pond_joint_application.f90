@@ -74,7 +74,9 @@ contains
     else
       if(supply%runon_rate/=0d0.and..not.allocated(forcing%pond_input))return
     end if
+    if(supply%implicit_pond_evaporation.and..not.allocated(forcing%pond_input))return
     if(allocated(forcing%pond_input))then
+      if(forcing%pond_input%implicit_pond_evaporation.neqv.supply%implicit_pond_evaporation)return
       if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
       if(.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
           forcing%pond_input%irrigation_rate_cm_day, &

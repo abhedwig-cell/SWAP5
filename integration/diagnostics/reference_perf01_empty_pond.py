@@ -14,7 +14,7 @@ from scipy.integrate import solve_ivp
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--prefix',type=Path,required=True)
-    ap.add_argument('--continuation',type=Path,required=True)
+    ap.add_argument('--continuation',type=Path)
     ap.add_argument('--output',type=Path,required=True)
     a = ap.parse_args()
     out = a.output.resolve()
@@ -87,7 +87,7 @@ def main():
     native = []
     budgets = []
     inputs = {}
-    for folder in [a.prefix.resolve(),a.continuation.resolve()]:
+    for folder in [a.prefix.resolve()] + ([a.continuation.resolve()] if a.continuation else []):
         for name in ['trajectory.csv','budget.csv']:
             p = folder / name
             inputs[str(p)] = hashlib.sha256(p.read_bytes()).hexdigest()

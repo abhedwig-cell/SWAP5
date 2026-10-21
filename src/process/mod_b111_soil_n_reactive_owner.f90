@@ -75,7 +75,6 @@ contains
    if(p%hum_exp_daily<0d0.and.abs(p%hum_exp_daily+1d0)>0d0)return
    if(p%hum_exp_daily>100d0/365.2425d0)return
    if(p%hum_exp_start_day<0d0.or.p%hum_exp_start_day>3d6)return
-   if(abs(p%hum_exp_start_day-anint(p%hum_exp_start_day))>0d0)return
    if(p%hum_exp_daily<0d0.and.abs(p%hum_exp_start_day)>0d0)return
    n=size(p%mineral%inventory%nfrac_fom)
    if(n>8)return

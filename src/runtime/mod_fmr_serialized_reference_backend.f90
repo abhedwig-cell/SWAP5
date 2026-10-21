@@ -474,6 +474,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: potential_pond_evaporation_cm_day = 0.0_real64
     real(real64) :: ponding_max_cm = 1.e6_real64
     real(real64) :: runoff_resistance_day = 0.0_real64
+    logical :: implicit_pond_evaporation = .false.
   end type fmr_pond_input_forcing_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
@@ -5062,7 +5063,8 @@ contains
            self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
            0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &
            self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &
-           self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity)
+           self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity, &
+           implicit_pond_evaporation=self%pond_input%implicit_pond_evaporation)
       request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER
       nullify(request%evaluation%top_boundary)
       request%evaluation%dynamic_top_boundary=>rfm_top_provider
