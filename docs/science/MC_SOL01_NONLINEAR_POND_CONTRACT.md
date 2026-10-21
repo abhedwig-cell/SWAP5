@@ -54,8 +54,9 @@ not a claim of seasonal accuracy or timestep convergence across this full scope.
 Compile/link/native costs and all compiler commands, generated literal oracles,
 inputs, native outputs, failed launch attempts and original guard counterexamples
 are in the immutable nonlinear-pond capsule named by the existing status record.
-Physics-only timing is UNKNOWN. Current source/evidence validation and9corruption
-controls pass, and the exact e61d8e10 predecessor authority executes unchanged.
+Physics-only timing is UNKNOWN. Current source/evidence validation and12corruption
+controls pass, and the exact437d96ff predecessor authority executes unchanged. The initial e61d8e10
+predecessor proof remains separately retained.
 The source handoff adds only the bounded successor before existing thermal code;
 its source and science body remain exact. No existing assertion is removed.
 
@@ -66,3 +67,22 @@ predecessor validation. Owning current physical composition and selected hosted
 admission remain required. Highest low-air is NOT_SELECTED_POLICY; RossFast
 remains frozen and aquifer excluded. This is no full historical SALT-POND,
 SORPTION or DECAY promotion. The complete envelope remains ACTIVE_MIGRATION.
+
+## Concurrent canonical reconciliation
+
+PERF01 PR1345 advanced canonical to437d96ff during this execution, changing the
+shared optional interval runtime and the file caller. All incoming files are
+preserved. Consequently the initial proof is retained separately, not rebound:
+a completely fresh275-provider pond O0/O2 build, all six exponents/360native
+observations,178-provider checked column O0/O2 rebuilds/all86original processes,
+and60native configuration negatives pass again on the actual combined source.
+The16original linear pond/surface endpoint/restart comparisons remain byte-exact.
+
+The existing PERF01 source/science owner executes unchanged at its exact437d96ff
+predecessor. Its current six-exponent thermal raw science is also validated
+against every current executed input: the changed pond guard is absent from that
+closure. No unchanged thermal physics is rerun merely for the added pond guard.
+Only exact additive dispatches in the thermal/PERF01 owners are composed, leaving
+each original body intact. Twelve evidence/source/foreign-delta negatives pass.
+The optional performance proposal stays disabled for this pond qualification;
+no new nonlinear-plus-enabled-proposal domain is inferred.

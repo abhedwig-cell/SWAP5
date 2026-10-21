@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 import os
+import runpy
 from pathlib import Path
 import subprocess
 import sys
@@ -183,11 +184,28 @@ def predecessor():
         finally:
             subprocess.run(['git','worktree','remove','--force',str(base)], cwd=ROOT, check=True, capture_output=True)
 
+def current_thermal():
+    # PERF01 already freshly executed every thermal exponent on its changed
+    # runtime. Every thermal compiled/oracle/input byte is still current: the
+    # pond guard is absent from that execution closure. Revalidate original
+    # raw science here, without rebinding old column proof or rerunning physics.
+    perf = runpy.run_path(str(ROOT/'integration/performance/verify_proposal.py'))
+    files = perf['capsule']()
+    subset = {p.removeprefix('composition/thermal/'):raw for p,raw in files.items() if p.startswith('composition/thermal/')}
+    owner = runpy.run_path(str(ROOT/'integration/audits/verify_matrix_thermal_nonlinear.py'))
+    result = owner['validate'](subset)
+    require(result['nonlinear_dynamic_endpoint_decay'], 'current six-exponent thermal evidence missing')
+    report = json.loads(subset['1/physical/result.json'])
+    require(PRODUCTION not in report['inputs'], 'pond guard entered thermal closure')
+    return {'current_six_exponent_thermal_original_raw_science':True,
+            'thermal_native_repetition':'NOT_SELECTED_IMPACT: every PERF01 thermal execution input is current'}
+
 def verify_qualification():
     source()
     current = validate(capsule())
+    thermal = current_thermal()
     old = predecessor()
-    return {**old, **current, 'qualified': True, 'full_capability': False,
+    return {**old, **current, **thermal, 'qualified': True, 'full_capability': False,
             'source_tree': git('rev-parse','HEAD:src'), 'current_source_tree': git('rev-parse','HEAD:src'),
             'incumbent_production_unchanged': False, 'production_delta': 'one pond exponent guard1 ->0.5..2'}
 
@@ -212,6 +230,21 @@ def self_test():
             controls.append(path)
         else:
             raise ValueError('stale source accepted '+path)
+    source()
+    for path in [PRODUCTION, 'integration/performance/verify_proposal.py']:
+        try:
+            source(lambda p: (ROOT/p).read_bytes()+(b'!' if p == path else b''))
+        except ValueError:
+            controls.append('source '+path)
+        else:
+            raise ValueError('unregistered source mutation accepted '+path)
+    changes = {p:v['status'] for p,v in record()['postimages'].items()}
+    try:
+        source(changed={**changes, 'src/foreign.f90':'A'})
+    except ValueError:
+        controls.append('foreign production delta')
+    else:
+        raise ValueError('foreign production accepted')
     return {'count':len(controls), 'negative_controls':controls}
 
 if __name__ == '__main__':

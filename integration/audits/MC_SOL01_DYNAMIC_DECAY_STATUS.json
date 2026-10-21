@@ -602,8 +602,8 @@
     "baseline": "437d96ff51ac8a5825b605caf788661848c88be5",
     "implemented": true,
     "persisted": true,
-    "tested": false,
-    "qualified": false,
+    "tested": true,
+    "qualified": true,
     "canonically_admitted": false,
     "scope": "Existing opt-in persistent pond joint route with Freundlich0.5..2; fixed configured temperature, no dynamic heat",
     "invariants_affected": [
@@ -618,7 +618,7 @@
       "src/runtime/mod_fmr_b111_pond_solute_route.f90",
       "tests/nut-sol/run_nonlinear_pond.py"
     ],
-    "next_action": "Fresh-build all six pond exponents and178-provider column after live PERF01 canonical runtime admission; retain old proof separately, requalify source and admit.",
+    "next_action": "Observe terminal original owning PR/native/column/source integration; reconcile canonical and admit; update only bounded SOL master facets.",
     "recovery_point": "work/mc-sol01-nonlinear-pond-20261021",
     "blockers": [],
     "test_selection": {
@@ -631,16 +631,16 @@
     "physical": {
       "1": {
         "cost_seconds": {
-          "gross_native": 0.9687916830007453,
-          "physical_compile": 165.29775506601436,
-          "physical_link": 0.2756875670002046,
-          "physical_native": 0.9977201979963866,
-          "preservation_compile": 15.974411497996698,
-          "preservation_link": 0.4588761870018061,
-          "preservation_native": 2.8486905279987695,
-          "process_compile": 0.2737364200020238,
-          "process_link": 0.06075702199996158,
-          "process_native": 0.003572513998733484
+          "gross_native": 0.8024611239998194,
+          "physical_compile": 150.55004395201468,
+          "physical_link": 0.21693776100073592,
+          "physical_native": 1.0639133820059214,
+          "preservation_compile": 16.00792050599921,
+          "preservation_link": 0.4433399429981364,
+          "preservation_native": 2.4023670780024986,
+          "process_compile": 0.2503985659968748,
+          "process_link": 0.0683067009995284,
+          "process_native": 0.003138695999950869
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -669,15 +669,15 @@
       },
       "0.5": {
         "cost_seconds": {
-          "gross_native": 1.5782090120010253,
-          "physical_link": 0.24957268000071053,
-          "physical_native": 2.000522230006027,
-          "preservation_compile": 20.13110421700003,
-          "preservation_link": 0.7138483859998814,
-          "preservation_native": 4.576040394002121,
-          "process_compile": 0.2882948690021294,
-          "process_link": 0.08589974999813421,
-          "process_native": 0.004557155998554663
+          "gross_native": 1.3717787870009488,
+          "physical_link": 0.23513912700218498,
+          "physical_native": 1.9017230490007933,
+          "preservation_compile": 18.97407435900095,
+          "preservation_link": 0.47524552599861636,
+          "preservation_native": 4.515725466995718,
+          "process_compile": 0.283551789001649,
+          "process_link": 0.07329725499948836,
+          "process_native": 0.0031786509971425403
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -706,15 +706,15 @@
       },
       "0.8": {
         "cost_seconds": {
-          "gross_native": 1.636236939999435,
-          "physical_link": 0.24505210999996052,
-          "physical_native": 2.2484893850032677,
-          "preservation_compile": 20.6827998560002,
-          "preservation_link": 0.4857365329989989,
-          "preservation_native": 4.6520954399984475,
-          "process_compile": 0.31267616900004214,
-          "process_link": 0.07058244899963029,
-          "process_native": 0.0026534929984336486
+          "gross_native": 1.5940872350001882,
+          "physical_link": 0.24888788999851386,
+          "physical_native": 2.22515197300163,
+          "preservation_compile": 19.076488862998303,
+          "preservation_link": 0.4507612050001626,
+          "preservation_native": 4.666913185999874,
+          "process_compile": 0.297935676000634,
+          "process_link": 0.06349252099971636,
+          "process_native": 0.0031599130015820265
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -743,15 +743,15 @@
       },
       "1.0005": {
         "cost_seconds": {
-          "gross_native": 1.6077022819972626,
-          "physical_link": 0.3257757310002489,
-          "physical_native": 2.083657248007512,
-          "preservation_compile": 20.680737786002283,
-          "preservation_link": 0.5065403080006945,
-          "preservation_native": 4.646824256999025,
-          "process_compile": 0.26390984100180503,
-          "process_link": 0.07023162199948274,
-          "process_native": 0.006058263999875635
+          "gross_native": 1.4223199939988262,
+          "physical_link": 0.2610681529986323,
+          "physical_native": 2.1554709150004783,
+          "preservation_compile": 18.69250867700066,
+          "preservation_link": 0.5136801839998952,
+          "preservation_native": 4.275025673005075,
+          "process_compile": 0.30083050599569106,
+          "process_link": 0.08024242599822173,
+          "process_native": 0.003035615000044345
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -780,15 +780,15 @@
       },
       "1.5": {
         "cost_seconds": {
-          "gross_native": 1.5356322239986184,
-          "physical_link": 0.24397659600072075,
-          "physical_native": 1.9239462919995276,
-          "preservation_compile": 20.54194965499846,
-          "preservation_link": 0.512020885000311,
-          "preservation_native": 4.7818363230035175,
-          "process_compile": 0.30363703499824624,
-          "process_link": 0.06962831999953778,
-          "process_native": 0.004044015000545187
+          "gross_native": 1.4803340790003858,
+          "physical_link": 0.23548560900053417,
+          "physical_native": 2.0000987659987004,
+          "preservation_compile": 19.14227470500009,
+          "preservation_link": 0.4694359040022391,
+          "preservation_native": 4.331990030996167,
+          "process_compile": 0.3188328040014312,
+          "process_link": 0.06443102700177405,
+          "process_native": 0.004377354998723604
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -817,15 +817,15 @@
       },
       "2": {
         "cost_seconds": {
-          "gross_native": 1.5411502899987681,
-          "physical_link": 0.26214322399937373,
-          "physical_native": 1.735982836000403,
-          "preservation_compile": 20.206418190000477,
-          "preservation_link": 0.5221141889996943,
-          "preservation_native": 3.859916028002772,
-          "process_compile": 0.2783216910029296,
-          "process_link": 0.06246044500039716,
-          "process_native": 0.003721918999872287
+          "gross_native": 1.2976697939993755,
+          "physical_link": 0.27679933499894105,
+          "physical_native": 1.8990154860020994,
+          "preservation_compile": 19.495758122999177,
+          "preservation_link": 0.5201390399997763,
+          "preservation_native": 3.8919852410017484,
+          "process_compile": 0.2902240069997788,
+          "process_link": 0.07712485600131913,
+          "process_native": 0.002872705001209397
         },
         "provider_count": 275,
         "native_observations": 60,
@@ -853,7 +853,7 @@
         }
       }
     },
-    "stage": "RECONCILED_SHARED_RUNTIME_REQUALIFICATION_PENDING",
+    "stage": "RECONCILED_LOCAL_QUALIFIED_INTEGRATED_ADMISSION_PENDING",
     "selection": {
       "full_fci": "NOT_SELECTED_IMPACT: one optional pond exponent guard; every incumbent linear pond endpoint and178-provider file application fresh-preserved, original exact predecessor authority still required",
       "highest_low_air": "NOT_SELECTED_POLICY",
@@ -875,7 +875,11 @@
       },
       "integration/audits/verify_nonlinear_pond.py": {
         "status": "A",
-        "sha256": "6b9746a440e42e9f13690d8049a43eb1fa2af82ba81ef499a4346c02d24a2371"
+        "sha256": "e40960010beabc02124c48c14b8fa55c2947016f2a75a157d4f9e8ee7f063b16"
+      },
+      "integration/performance/verify_proposal.py": {
+        "status": "M",
+        "sha256": "6b8af7305bfc24e2d899edf95a8ba2d86f99f80a1682afbf4e6f4929b905e288"
       },
       "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
         "status": "M",
@@ -884,18 +888,18 @@
       "tests/nut-sol/run_nonlinear_pond.py": {
         "status": "A",
         "sha256": "4bf0ec734ce88083b10ce5dcdbdd2873651de79942ec1869206d0cbf219acd1d"
-      },
-      "integration/performance/verify_proposal.py": {
-        "status": "M",
-        "sha256": "6b8af7305bfc24e2d899edf95a8ba2d86f99f80a1682afbf4e6f4929b905e288"
       }
     },
     "checkpoint_commit": "f566b9ecab6dbde5f0a44f20190d8ad06be47bec",
     "local_owners": {
-      "exact_predecessor_and_current_scientific_evidence": "PASS",
-      "corruption_controls": 9,
-      "column_178_provider_O0_O2_and86_observations": "PASS",
-      "original_guard_nonlinear_counterexample_and_linear_bytes": "PASS"
+      "exact_437d96ff_predecessor_and_current_source_science": "PASS",
+      "current_thermal_every_execution_input_and_raw_science": "PASS",
+      "corruption_controls": 12,
+      "fresh_275provider_pond_six_exponents_and360native_observations": "PASS",
+      "fresh178provider_column_and86process_observations": "PASS",
+      "sixty_semantic_native_restart_negatives": "PASS",
+      "original_guard_executable_counterexample_and_linear_control": "PASS",
+      "strict_documentation": "PASS before reconciliation; final strict docs gate follows"
     },
     "initial_baseline": "e61d8e107121bc31fa1d9b0eac73439af29eb76f",
     "last_reconciled_upstream": "437d96ff51ac8a5825b605caf788661848c88be5",
@@ -904,6 +908,20 @@
       "decoded_sha256": "215e012765a1d982ad9f858c6247747f80c68710b49db32b0c7fd392a3ba6597",
       "decoded_bytes": 213560,
       "members": 5209
+    },
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_POND_RECONCILED_20261021.tar.xz.b64",
+      "decoded_sha256": "0c5aff8fa88dd14bc2f45415e7c82267e6e9773bb6d49c132450c5ac07f305e3",
+      "decoded_bytes": 195320,
+      "members": 3963
+    },
+    "admission_pr": 1346,
+    "concurrent_reconciliation": {
+      "canonical": "437d96ff51ac8a5825b605caf788661848c88be5",
+      "production_delta": "PERF01 optional runtime and file input retained exactly; no optional default activation",
+      "fresh_current_pond_and_column": "PASS O0/O2; sixexponents/360+86processes/60configuration negatives",
+      "current_thermal": "PASS: every PERF01 six-exponent execution input byte is current; original raw science validated",
+      "all_incoming_files_preserved": true
     }
   }
 }

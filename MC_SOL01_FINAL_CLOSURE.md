@@ -1,7 +1,8 @@
 # MC-SOL01 final closure
 
 Current nonlinear pond successor,21 October2026: locally qualified candidate,
-canonical admission pending. The existing opt-in joint pond/matrix route now
+canonical admission pending, PR1346. Fresh qualification after concurrent
+PERF01 canonical437d96ff is complete. The existing opt-in joint pond/matrix route now
 accepts Freundlich0.5..2 with configured temperature. All six exponents at
 O0/O2,360native observations,60extra valid-CRC/configuration negatives, original
 guard counterexample, exact incumbent linear bytes and the178-provider file
