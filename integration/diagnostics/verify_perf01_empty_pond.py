@@ -105,6 +105,8 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
         changed = dict((x.split('\t')[1],x.split('\t')[0]) for x in
                        git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines())
     allowed = {STATUS}
+    if (ROOT/'integration/diagnostics/PERF01_POND_POLICY_STATUS.json').exists():
+        allowed |= runpy.run_path(str(ROOT/'integration/diagnostics/verify_perf01_pond_policy.py'))['registered_additions'](reader)
     for key in ['experiment_evidence','production_evidence','earlier_production_evidence','arithmetic_guard_evidence']:
         e = s[key];index = e['directory']+'/INDEX.json'
         idx = json.loads(reader(index))

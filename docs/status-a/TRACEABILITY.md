@@ -282,3 +282,14 @@ independent continuous water refinement, complete-day restart, small real
 providers and preserved predecessor assertions. The status records qualification
 and actual admission separately. This is changed opt-in surface physics; no
 matched-physics speedup, full migration or master-row promotion is claimed.
+
+### PERF01 completed-day accuracy and cost research, 21 October 2026
+
+The [research contract](../performance/SWAP5-PERF01_POND_POLICY_CONTRACT.md),
+[complete native result](../performance/SWAP5-PERF01_POND_POLICY_RESULT.md) and
+`integration/diagnostics/PERF01_POND_POLICY_STATUS.json` bind whole-day sampling,
+the rejected capped proposal, exact prepared-cache counterfactual and existing
+temporal-input error/cost curve. All production source files remain unchanged.
+The neutral source registration retains the incumbent assertions and exact native
+oracles. Changed-accuracy timings are distinct from implementation speedups;
+neither the failed policy nor a general cache or regional tolerance is admitted.
