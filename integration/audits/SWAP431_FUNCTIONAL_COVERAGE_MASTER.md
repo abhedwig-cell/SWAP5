@@ -1,3 +1,14 @@
+# MC-SOL01 nonlinear persistent pond,21 October2026
+
+PR1346 / `8fabce512cc6347815fff591650be198c0ce213f` adds bounded soil Freundlich0.5..2 with the
+existing fixed-temperature pond/matrix route. Sixexponents O0/O2,360native
+observations,60semantic restart negatives, exact incumbent linear bytes and
+actual178-provider application/all86processes pass on current canonical.
+Only existing SORPTION/DECAY/POND facets and queue explanations change:
+240other rows and all243dispositions remain exact. Dynamic thermal pond,
+full historical/default and seasonal domains remain parked; no whole-master
+qualification or automatic performance-policy activation is claimed.
+
 # MC-SOL01 nonlinear numeric-heat composition,21 October2026
 
 PR1344 / `8e0a07f43e814bbb634e04855fa5ed6e5372f3b0` admits the existing Freundlich matrix0.5..2
