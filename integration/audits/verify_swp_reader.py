@@ -44,6 +44,28 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  replacement="          if test -f integration/audits/verify_swp_reader.py && git diff --quiet "+BASE+" HEAD -- src; then\n            python -B integration/audits/verify_swp_reader.py\n          else\n"+''.join('  '+line if line.strip() else line for line in body.splitlines(True))+"          fi\n"
  expected=expected[:start]+replacement+expected[end:]
  require(reader(p).decode()==expected,'thermal workflow changed beyond exact input-only impact handoff')
+ p='integration/performance/authority.py'
+ expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
+ start=expected.index('\ndef fsi35_successors():')+1;end=expected.index('\n',start)+1
+ expected=expected[:end]+"    swp=ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'\n    if swp.exists() and 'evidence' in json.loads(swp.read_text()).get('swp_reader_successor',{}):\n        return runpy.run_path(str(ROOT/'integration/audits/verify_swp_reader.py'))['fsi35_successors']()\n"+expected[end:]
+ require(reader(p).decode()==expected,'PERF01 registry changed beyond exact SWP handoff')
+ p='tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'
+ expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
+ expected=expected.replace('test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = 33a0880325be36116dcbb781006b6283da5dac69 || fail "postimage drift src/transaction/mod_transaction_reference.f90"','if [[ "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" == 33a0880325be36116dcbb781006b6283da5dac69 ]]; then\n  test "$(git rev-parse HEAD:src/transaction/mod_transaction_reference.f90)" = 33a0880325be36116dcbb781006b6283da5dac69 || fail "postimage drift src/transaction/mod_transaction_reference.f90"\nelse\n  python3 - <<\'PY_TX_SUCCESSOR\'\nimport runpy,subprocess\nproof=runpy.run_path(\'integration/performance/authority.py\')\npath=\'src/transaction/mod_transaction_reference.f90\'\nrow=proof[\'fsi35_successors\']().get(path,{})\nactual=subprocess.check_output([\'git\',\'rev-parse\',\'HEAD:\'+path],text=True).strip()\nassert row.get(\'historical_blob\')==\'33a0880325be36116dcbb781006b6283da5dac69\' and row.get(\'canonical_blob\')==actual,\'unregistered transaction successor\'\nprint(\'FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS\')\nPY_TX_SUCCESSOR\nfi',1)
+ require(reader(p).decode()==expected,'FSI35 original preservation assertions changed')
+ p='.github/workflows/fci58p-fsi35-postimage-reconciliation.yml'
+ expected=subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT,text=True)
+ expected=expected.replace("      - 'tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh'\n","      - 'tests/fci/run_fci93_fsi35_semantic_successor_preservation.sh'\n      - 'tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'\n",1)
+ expected=expected.replace('      - name: Preserve F-SI35 through admitted semantic successor lineage\n','      - name: Recover exact historical F-SI35 authorities\n        run: git fetch --no-tags origin 15ccbf4b6bcf6895b824a68c221762bef0bc08b9 5898e6616dbb6871a9f52d489038235ba1172cae fd93e50da5973f3e15c8f1b7fa57d72df6c31b72 19a67f7c398fcadbcbc9729509680a1c0c5424f3 f4f98637e963e07e2bedf7ef6acbcaab36e07e5a 48336cb7f14e9246b03c23e549fe7354a93f9e6b\n      - name: Preserve F-SI35 through admitted semantic successor lineage\n',1)
+ require(reader(p).decode()==expected,'FSI35 workflow changed beyond selected guard path')
+ native=s.get('fsi35_reconciliation',{}).get('native_evidence')
+ if native:
+  raw=reader(native['path'])
+  require(sha(raw)==native['sha256'],'FSI35 native replay identity')
+  require(native['source_tree']==git('rev-parse','HEAD:src'),'FSI35 native source tree drift')
+  require(native['script_sha256']==sha(reader('tests/fci/run_fci93_non_m1_fixed_k_qualification.sh')),'FSI35 native script drift')
+  for marker in ['FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS','FCI93_HISTORICAL_FSI35_EXACT_AUTHORITIES=PASS','FCI93_FSI35_TYPED_SEAM_HEADCALC_ISOLATION=PASS','FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS']:
+   require(marker.encode() in raw,'missing original FSI35 native marker '+marker)
  return s
 def capsule():
  e=record()['evidence'];raw=base64.b64decode(b''.join((ROOT/e['path']).read_bytes().split()),validate=True)
@@ -135,6 +157,18 @@ def predecessor():
  return True
 def verify_qualification():
  source();r=validate(capsule());r.update(predecessor_qualified=predecessor(),source_tree=git('rev-parse','HEAD:src'),current_source_tree=git('rev-parse','HEAD:src'));return r
+def fsi35_successors():
+ source()
+ pairs={'src/legacy/b1_10_port/headcalc.f90':'7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac',
+        'src/transaction/mod_transaction_reference.f90':'33a0880325be36116dcbb781006b6283da5dac69'}
+ result={}
+ for p,old in pairs.items():
+  current=git('rev-parse','HEAD:'+p)
+  require(current==git('rev-parse',BASE+':'+p),'unregistered FSI35 current provider '+p)
+  if p.startswith('src/transaction/'):
+   require(git('rev-parse',NUT_PREDECESSOR+':'+p)==old,'historical transaction registry drift')
+  result[p]={'historical_blob':old,'canonical_blob':current}
+ return result
 def self_test():
  source();files=capsule();validate(files);controls=[]
  def reject(name,fn):
@@ -145,6 +179,9 @@ def self_test():
  reject('changed reader source',lambda:source(lambda x:(ROOT/x).read_bytes()+(b'\n! mutation' if x==p else b'')))
  actual={p:v['status'] for p,v in record()['postimages'].items()};actual['src/unregistered.f90']='A'
  reject('unregistered process change',lambda:source(changed=actual))
+ reject('changed FSI35 source guard',lambda:source(lambda p:(ROOT/p).read_bytes()+(b'\n# mutation' if p=='tests/fci/run_fci93_non_m1_fixed_k_qualification.sh' else b'')))
+ native=record()['fsi35_reconciliation']['native_evidence']['path']
+ reject('changed FSI35 native replay',lambda:source(lambda p:(ROOT/p).read_bytes()+(b'!' if p==native else b'')))
  for name,path,edit in [
   ('missing native case','native/result.json',lambda d:d['cases'].pop(next(iter(d['cases'])))),
   ('failed native negative','native/result.json',lambda d:d['events'][-1].update(returncode=0)),
