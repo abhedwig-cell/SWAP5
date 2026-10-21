@@ -18,6 +18,8 @@ def record():return json.loads((ROOT/STATUS).read_text())[KEY]
 def hook(fn):
  return " if 'evidence' in json.loads((ROOT/'"+STATUS+"').read_text()).get('"+KEY+"',{}):\n  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_humus_timestamp.py'))['"+fn+"']("+('reader,changed' if fn=='source' else '')+")\n"
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'production_evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json').read_text()):
+  return __import__('runpy').run_path(str(ROOT/'integration/diagnostics/verify_perf01_empty_pond.py'))['source'](reader,changed)
  s=record();require(s['baseline']==BASE,'clock baseline');git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty clock source')
  if changed is None:changed={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -117,8 +119,13 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
  require(helper['unchanged_ci_closure']()==3,'changed original core CI provider footprint')
  predecessor=js('predecessor.json');require(predecessor['qualified']and predecessor['source_tree']==git('rev-parse',BASE+':src'),'frozen predecessor owner')
  return dict(qualified=True,status='HUMUS_TIMESTAMP_ORIGINAL_NATIVE_AND_CURRENT_COUPLED_QUALIFIED',source_tree=git('rev-parse','HEAD:src'),full_capability=False,full_migration_qualified=False,clock_valid=12,clock_invalid=9,legacy_native=38,fresh_restarts=8,current_coupled_cases=4,max_abs_N_residual=max_abs,max_relative_N_residual=max_rel,old_domain_bodies_exact=True,full_fci='NOT_SELECTED_IMPACT_NUT_INPUT_CLOCK')
-def verify_qualification():source();return validate(capsule())
+def verify_qualification():
+ if 'production_evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json').read_text()):
+  return __import__('runpy').run_path(str(ROOT/'integration/diagnostics/verify_perf01_empty_pond.py'))['verify_qualification']()
+ source();return validate(capsule())
 def self_test():
+ if 'production_evidence' in json.loads((ROOT/'integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json').read_text()):
+  return __import__('runpy').run_path(str(ROOT/'integration/diagnostics/verify_perf01_empty_pond.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,action):
   try:action()

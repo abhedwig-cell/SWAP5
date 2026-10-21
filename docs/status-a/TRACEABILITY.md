@@ -262,3 +262,15 @@ verifier checks raw artifacts and exact additive predecessor handoffs. The statu
 record distinguishes qualification from actual canonical admission. Dry numerical
 exhaustion remains unchanged; no speedup, full migration or master promotion is
 claimed.
+
+### PERF01 explicit empty-pond evaporation, 21 October 2026
+
+The [physical option contract](../performance/SWAP5-PERF01_EMPTY_POND_PRODUCTION_CONTRACT.md),
+[measured result and limits](../performance/SWAP5-PERF01_EMPTY_POND_RESULT.md) and
+`integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json` own the default-false
+surface option and exact empty-pool solute limit. Its source-bound successor
+checks current production native proof, original default/SWP/annual assertions,
+independent continuous water refinement, complete-day restart, small real
+providers and preserved predecessor assertions. The status records qualification
+and actual admission separately. This is changed opt-in surface physics; no
+matched-physics speedup, full migration or master-row promotion is claimed.

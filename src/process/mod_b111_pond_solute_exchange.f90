@@ -19,10 +19,11 @@ module mod_b111_pond_solute_exchange
  public::evaluate_b111_pond_solute_exchange
 contains
  pure subroutine evaluate_b111_pond_solute_exchange(mass_before,rain_rate,rain_c,irr_rate,irr_c, &
-      qtop,macropore_area,pond_end,dt,result,runon_rate,runon_c,runoff_depth)
+      qtop,macropore_area,pond_end,dt,result,runon_rate,runon_c,runoff_depth,exact_empty_pond_limit)
   real(real64),intent(in)::mass_before,rain_rate,rain_c,irr_rate,irr_c,qtop,macropore_area,pond_end,dt
   type(b111_pond_solute_result_t),intent(out)::result
   real(real64),intent(in),optional::runon_rate,runon_c,runoff_depth
+  logical,intent(in),optional::exact_empty_pond_limit
   real(real64)::rr,rc,ro
   real(real64)::available,denom,cfluxt
   result=b111_pond_solute_result_t();result%status=B111_POND_SOL_INVALID
@@ -60,6 +61,14 @@ contains
     end if
     result%mass_after=available-result%runoff_output
   end if
+  if(present(exact_empty_pond_limit))then
+    if(exact_empty_pond_limit.and.qtop < -1d-6.and.macropore_area==0d0.and.pond_end==0d0.and.ro==0d0)then
+      ! Analytical zero-pool limit: every available solute amount infiltrates.
+      ! This avoids subtracting rounded equal amounts; it is not a mass clamp.
+      result%soil_transfer=available
+      result%mass_after=0d0
+    endif
+  endif
   if(result%mass_after<0d0.or..not.all(ieee_is_finite([ &
     result%pond_concentration,result%soil_transfer,result%runoff_output,result%mass_after])))return
   result%balance_residual=result%mass_after+result%soil_transfer+result%runoff_output-available

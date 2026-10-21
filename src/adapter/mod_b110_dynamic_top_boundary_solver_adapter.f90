@@ -31,6 +31,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      real(real64) :: macropore_pond_threshold = 0.0_real64
      real(real64) :: macropore_surface_conductivity = 0.0_real64
      logical :: matrix_source_area_partition = .false.
+     logical :: implicit_pond_evaporation = .false.
    contains
      procedure :: evaluate => b110_dynamic_solver_top_evaluate
   end type b110_dynamic_top_boundary_solver_provider_t
@@ -44,7 +45,7 @@ contains
        precipitation_rate, irrigation_rate, snowmelt_rate, runon_rate, &
        potential_bare_soil_evaporation, potential_pond_evaporation, &
        ponding_max, runoff_resistance, runoff_exponent, fixed_top_node_conductivity, &
-       macropore_pond_threshold, macropore_surface_conductivity)
+       macropore_pond_threshold, macropore_surface_conductivity, implicit_pond_evaporation)
     type(b110_dynamic_top_boundary_solver_provider_t), intent(out) :: provider
     type(soil_water_parameter_set_t), target, intent(in) :: geometry
     type(b110_default_mvg_parameters_t), target, intent(in) :: hydraulics
@@ -55,6 +56,7 @@ contains
     real(real64), intent(in) :: ponding_max, runoff_resistance, runoff_exponent
     real(real64), intent(in), optional :: fixed_top_node_conductivity
     real(real64), intent(in), optional :: macropore_pond_threshold, macropore_surface_conductivity
+    logical, intent(in), optional :: implicit_pond_evaporation
 
     provider%geometry => geometry
     provider%hydraulics => hydraulics
@@ -75,6 +77,7 @@ contains
     provider%macropore_pond_donor_active = present(macropore_pond_threshold) .and. present(macropore_surface_conductivity)
     if (present(macropore_pond_threshold)) provider%macropore_pond_threshold = macropore_pond_threshold
     if (present(macropore_surface_conductivity)) provider%macropore_surface_conductivity = macropore_surface_conductivity
+    if (present(implicit_pond_evaporation)) provider%implicit_pond_evaporation = implicit_pond_evaporation
   end subroutine bind_b110_dynamic_top_boundary_solver_provider
 
   subroutine b110_dynamic_solver_top_evaluate(self, pressure_head_top, water_content_top, &
@@ -114,6 +117,7 @@ contains
     b110_request%macropore_pond_donor_active = self%macropore_pond_donor_active
     b110_request%macropore_pond_threshold_cm = self%macropore_pond_threshold
     b110_request%macropore_surface_conductivity_cm_per_day = self%macropore_surface_conductivity
+    b110_request%implicit_pond_evaporation = self%implicit_pond_evaporation
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)
     if (b110_result%status /= B110_DYN_TOP_AVAILABLE) then

@@ -1,0 +1,368 @@
+{
+  "workstream": "PERF01 numerical stagnation after trace reclamation",
+  "baseline": "eaa04cf7b00ff5d676eb533d160109c533a92c8a",
+  "branch": "work/perf01-scoped-rounding",
+  "status": "BOUNDED_OPT_IN_PRODUCTION_QUALIFIED_AWAITING_PUBLISHED_HEAD_AND_CANONICAL_ADMISSION",
+  "production_changed": true,
+  "production_qualified": true,
+  "contract": "docs/performance/SWAP5-PERF01_SCOPED_ROUNDING_CONTRACT.md",
+  "invariants": [
+    3,
+    5,
+    7,
+    22,
+    23,
+    25,
+    26
+  ],
+  "question": "Qualify explicit default-false implicit pond evaporation with exact empty-pool solute limit",
+  "selection": "Actual small real interfaces O0/O2; current default86/SWP172/annual18; actual enabled O0/O2 six windows and complete O2 day; frozen NUT/SOL predecessor plus exact default-body projection; no full F-CI or retired highest low-air",
+  "expected_cost": "Fresh production build approximately60s; generated-provider compilation approximately10s; native probe capped90s. No routine full F-CI, highest-low-air or unrelated migration runs.",
+  "recovery": "Complete raw generated experiment and all three production epochs sealed with exact index/member hashes; final fresh189-provider O0/O2 closures are authoritative",
+  "next_action": "Publish exact qualified tree to PR1356, verify actual head and canonical delta, then admit and verify actual merge",
+  "canonical_admission": "NONE",
+  "control": "Latest canonical reproduces original budget/trajectory/stdout/work exactly; exit1,75016KiB",
+  "counterfactual": {
+    "returncode": -9,
+    "timed_out": true,
+    "max_rss_kib": 324000,
+    "seconds": 90.03445829400152
+  },
+  "last_sample": "internal0.0871140260636344,45312 accepted,197266 solver and658234 temporal rejections; external window6 never committed",
+  "temporal_capture": "64 rejected native full/half states;2048 nodal records; diagnostic stop after11.30s/63680KiB",
+  "finding": "Uppermost head dominates; reconstructed water difference/dt is+/-0.025cm/day, half prescribed pond evaporation; previous-pond classification toggles demand",
+  "direct_providers": 6,
+  "direct_conservation_cases_per_profile": 45,
+  "candidate_result": {
+    "returncode": 0,
+    "timed_out": false,
+    "max_rss_kib": 108040,
+    "seconds": 15.330748043998028
+  },
+  "actual_empty_pond_mass_before": 2.117582368135751e-22,
+  "full_day": {
+    "windows": 64,
+    "endpoint_day": 1.0,
+    "restart_split": 6,
+    "whole_run_seconds": 94.38682253400111,
+    "peak_rss_kib": 144584,
+    "water_residual_max_cm": 9.536642309182497e-14,
+    "solute_residual_max_mg_cm2": 2.694830959469878e-13
+  },
+  "optimization": "O0/O2 exact six-window physical files, restart and deterministic work",
+  "restart": "Uninterrupted versus sixth-window fresh-process continuation: exact final bytes and all64 reporting rows/work",
+  "independent_water_reference": {
+    "status": "INDEPENDENT_CONTINUOUS_WATER_REFERENCE_MEASURED_NOT_PRODUCTION_ADMISSION",
+    "scipy": "1.17.0",
+    "inputs": {
+      "/tmp/perf01-scoped-rounding/coupled-O2/native/trajectory.csv": "5ee5d15dff750936bd19dcee8e104716a330b1288507d85fdb19a0bb82884495",
+      "/tmp/perf01-scoped-rounding/coupled-O2/native/budget.csv": "ece8eda945bb9887dedb79f0a23a0801364f7c5b009ccc2ce024b4c994eb7cd6",
+      "/tmp/perf01-scoped-rounding/full-day-O2/native/trajectory.csv": "90cf253a0d815aabd29bc2ad216427682c69f147c88689c466fd47a518b39871",
+      "/tmp/perf01-scoped-rounding/full-day-O2/native/budget.csv": "ba6158725f1bcf3ee32e9578edd531e0eb6a7d403121ac0845c0faad8977ec4c"
+    },
+    "reference_spread": {
+      "head": 2.075758175124065e-06,
+      "theta": 1.1124567933507024e-10,
+      "pond": 2.3381296898605797e-11
+    },
+    "candidate_errors": {
+      "head": 0.011665268730780554,
+      "theta": 1.7857597487402899e-06,
+      "cumulative_evaporation": 4.843115133934539e-08,
+      "cumulative_runoff": 1.8676270316984964e-06
+    },
+    "references": [
+      {
+        "label": "tight",
+        "rtol": 1e-11,
+        "atol": 1e-14,
+        "onset_day": 0.08885965184195288,
+        "seconds": 0.1789907439997478,
+        "nfev": 2083,
+        "max_water_residual": 4.5581756685092456e-14
+      },
+      {
+        "label": "tighter",
+        "rtol": 1e-13,
+        "atol": 1e-16,
+        "onset_day": 0.0888596518158291,
+        "seconds": 0.35291089300153544,
+        "nfev": 3367,
+        "max_water_residual": 1.258399851336578e-13
+      }
+    ],
+    "exclusions": "No independent chemical truth; native full/half tolerance is not a global-error bound"
+  },
+  "measured_baseline": "d7b891759a8c378ba0367e1a1a112c684712199f",
+  "refinement": {
+    "status": "INDEPENDENT_WATER_ERROR_DECREASES_WITH_TIGHTER_NATIVE_TOLERANCE",
+    "coarse": {
+      "head": 0.011665268730780554,
+      "theta": 1.7857597487402899e-06,
+      "cumulative_evaporation": 4.843115133934539e-08,
+      "cumulative_runoff": 1.8676270316984964e-06
+    },
+    "refined": {
+      "head": 0.00361188017961922,
+      "theta": 5.635448236396279e-07,
+      "cumulative_evaporation": 1.8324241062017688e-08,
+      "cumulative_runoff": 5.875166799666331e-07
+    },
+    "reference_spread": {
+      "head": 2.075758175124065e-06,
+      "theta": 1.1124567933507024e-10,
+      "pond": 2.3381296898605797e-11
+    }
+  },
+  "production_contract": "docs/performance/SWAP5-PERF01_EMPTY_POND_PRODUCTION_CONTRACT.md",
+  "pull_request": 1356,
+  "small_contracts": {
+    "surface_providers": 6,
+    "mass_providers": 3,
+    "profiles": [
+      "O0",
+      "O2"
+    ],
+    "generated_algorithm_parity": true,
+    "default_counterexamples_preserved": true,
+    "unsupported_requests_rejected": true
+  },
+  "experiment_evidence": {
+    "parts": [
+      "evidence.part-000.b64"
+    ],
+    "decoded_sha256": "a7273e30eda8e9eced636dc8097730c425330d24633209994a7ee106194de64e",
+    "members": 2141,
+    "decoded_bytes": 287460,
+    "members_sha256": "7489c83f2150e3f9507f5400bbd0411050daf7fbb5828d252c229ba5d986abdf",
+    "includes_failed_and_successful_observations": true,
+    "compiler_binaries_excluded": true,
+    "directory": "integration/diagnostics/evidence/perf01-empty-pond-experiment",
+    "index_sha256": "9871f50e1864b46c7c501b06961fb6bcbf241a29b1beb653d725d87238b356bc"
+  },
+  "production_evidence": {
+    "parts": [
+      "evidence.part-000.b64",
+      "evidence.part-001.b64"
+    ],
+    "decoded_sha256": "a6fa0a707242022684c3b48520cb4359f02279354b5987ec676f25df3b4c0802",
+    "members": 4131,
+    "decoded_bytes": 727732,
+    "members_sha256": "eaa2e2dc03d4da35cdbf922483b6934be952f05699c5897524dafa3f4d70d22c",
+    "includes_failed_and_successful_observations": true,
+    "compiler_binaries_excluded": true,
+    "directory": "integration/diagnostics/evidence/perf01-empty-pond-admission",
+    "index_sha256": "10a952ae4bafaa0e527fe01148048a750a252841a5b7b64a97f1e3a03f50c6ba"
+  },
+  "postimages": {
+    "app/solute_column/main.f90": {
+      "status": "M",
+      "sha256": "cba8b592aa69dcaf4ea027bb00ee51622dd8672ef82ed2055fe98c1ed754a328"
+    },
+    "examples/solute_column/dry32_implicit_pond.nml": {
+      "status": "A",
+      "sha256": "02c43be67b27eccae94885728e04bd09cf10b0c3ad0bbe3a0e7a23134a77fce7"
+    },
+    "integration/audits/verify_nut_humus_timestamp.py": {
+      "status": "M",
+      "sha256": "bad0d6b1be075c97420c5c08c81046cca0e9b08b0d353099c0556fde215b363c"
+    },
+    "integration/diagnostics/perf01_default_false_projection.json": {
+      "status": "A",
+      "sha256": "3d10ec593de9e154cd5b4a98491988fe2ea7e95417c05fa74e7fd54486471fbd"
+    },
+    "integration/diagnostics/qualify_perf01_empty_pond.py": {
+      "status": "A",
+      "sha256": "bf1f6a1331d0c4b4a975f94ce6fd7ee08bb3789b194d3fd9faf0ccea804015e9"
+    },
+    "integration/diagnostics/reference_perf01_empty_pond.py": {
+      "status": "A",
+      "sha256": "b2effcf6cba056ad7288b07733765b03f2916efd4c0db02c4e50eae74bf7eae9"
+    },
+    "integration/diagnostics/refresh_perf01_main.py": {
+      "status": "A",
+      "sha256": "fd8dd25d041702aebc81178f2de25948f90aa854cb3490194fa3cba9dcc8fc40"
+    },
+    "integration/diagnostics/replay_perf01_empty_pond.py": {
+      "status": "A",
+      "sha256": "eb16e01be8ca14338aa8b8ee9b7fb5efc3d2c38bfdc6e8b15e406f04aa172a0d"
+    },
+    "integration/diagnostics/trial_perf01_scoped_rounding.py": {
+      "status": "A",
+      "sha256": "2e54ae6800372bf18dd37da1a101b09586c5c5e94f3b99a08b26b60bf01dffda"
+    },
+    "integration/diagnostics/verify_perf01_empty_pond.py": {
+      "status": "A",
+      "sha256": "1f6965d90ee97b0539e540a4f96f0c275cf434ffef4ae73826a68dfd8164068d"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
+      "status": "M",
+      "sha256": "fde6f1869f2e4d1d00cb33c7ccaa8263ced656d408bc42c83d5f050dbc0682af"
+    },
+    "src/process/mod_b111_persistent_pond.f90": {
+      "status": "M",
+      "sha256": "a8f78266d01e06e1b6392024161c8c8819ebf9d4ae6bb217002c84cf68b6bb95"
+    },
+    "src/process/mod_b111_pond_solute_exchange.f90": {
+      "status": "M",
+      "sha256": "e78834e5ecd4cb8e074549e8bc031ce9a6964c13d098fbc56736f8cbd61e1ed3"
+    },
+    "src/process/mod_b111_reactive_solute_substep.f90": {
+      "status": "M",
+      "sha256": "44c79cd9c7844018ebb472d21309f7809c0629c17ea1a1943deea0f0d28b7458"
+    },
+    "src/runtime/mod_fmr_b111_pond_joint_application.f90": {
+      "status": "M",
+      "sha256": "3af8fc131d80d3fdd854c8b3850aedf9d1eb63fc3149e06f7d11fef73314e011"
+    },
+    "src/runtime/mod_fmr_b111_pond_solute_route.f90": {
+      "status": "M",
+      "sha256": "9193447edf9ce110644e97e79511c314e721b667b516a52bbdf46103d63d59e1"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "status": "M",
+      "sha256": "162a8faf6b41e44ae13f50cb2ef6815942994b197a1aa6f789dbeec96f1b207f"
+    },
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": {
+      "status": "M",
+      "sha256": "02c2a4eb5c41c23531989e46a40a2b4cad2e467557ee68c10ccd18897d17b7e8"
+    },
+    "tests/performance/test_perf01_empty_pond_mass.f90": {
+      "status": "A",
+      "sha256": "9064824b2463f351353c49069c40684ecc088df60f72ca27eb73b5967c10df73"
+    },
+    "tests/performance/test_perf01_empty_pond_replay.f90": {
+      "status": "A",
+      "sha256": "9b7bf5e067205d146ddd32ae13598add26c1c2e410c946f35a2bf6d7c36c7e3d"
+    }
+  },
+  "inherited_records": {
+    "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json": "f08b322f13b6bf484f4dd6742880d2b720d519360865bdea7fb445788b842b48",
+    "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json": "36ea5bbb1da0bd434bf274ef3310c3774500a5fd5c4979eae8585c718ff6f52c",
+    "integration/diagnostics/PERF01_TRACE_SCOPE_STATUS.json": "534f9246207a8de6a2dedb748ad4812cdca782940ac6e9cc64c0e43ef44f2606"
+  },
+  "earlier_production_evidence": {
+    "parts": [
+      "evidence.part-000.b64",
+      "evidence.part-001.b64",
+      "evidence.part-002.b64",
+      "evidence.part-003.b64"
+    ],
+    "decoded_sha256": "2569ab8410f1c32f8cfc7dbb1a58bb3f0dd019200ce174dcd045c6da1f196477",
+    "members": 8182,
+    "decoded_bytes": 1438384,
+    "members_sha256": "3a6742a65eac6a8c10c5fed72f142a1616c40ea0ec0416ace92fea3f35127f2a",
+    "includes_failed_and_successful_observations": true,
+    "compiler_binaries_excluded": true,
+    "directory": "integration/diagnostics/evidence/perf01-empty-pond-production",
+    "index_sha256": "c73b04b3811b56134273687bd3be020adf3baf625e4e9c6827b3cffc6c84249b"
+  },
+  "arithmetic_guard_evidence": {
+    "parts": [
+      "evidence.part-000.b64",
+      "evidence.part-001.b64"
+    ],
+    "decoded_sha256": "d8d0888db0a9c97a0a5ecc833446246c5d9d5530fc586c5f78851affd4a66461",
+    "members": 4120,
+    "decoded_bytes": 747340,
+    "members_sha256": "d4995469160b30920d7763b2e2e44e8bf0330a217cee9841485fdbe5c2c41186",
+    "includes_failed_and_successful_observations": true,
+    "compiler_binaries_excluded": true,
+    "directory": "integration/diagnostics/evidence/perf01-empty-pond-arithmetic-guard",
+    "index_sha256": "cdc7ec81faf0f1ec57d116a4393fc31aac7091843ce41ed27bfd7f96a4fbb75f"
+  },
+  "qualified_domain": "Explicit default-false arithmetic-face implicit pond evaporation; zero bare demand, fixed top conductivity, no macro coupling; linear nonthermal file application without proposal continuation",
+  "preserved_default": "Original86/SWP172/annual18 actual fresh final builds exact against admitted immutable artifacts",
+  "negative_combinations": 6,
+  "current_native_source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+  "current_full_day_resource": {
+    "returncode": 0,
+    "timed_out": false,
+    "max_rss_kib": 144816,
+    "seconds": 103.39057119900099
+  },
+  "costs": {
+    "O0": {
+      "archive-original-input": 0.020170691001112573,
+      "compile": 22.548052797981654,
+      "compile-original-input": 3.582145387012133,
+      "link": 0.10142820200053393
+    },
+    "O2": {
+      "archive-original-input": 0.017717479000566527,
+      "compile": 61.9527333170081,
+      "compile-original-input": 5.83554178999475,
+      "link": 0.08920768399912049
+    }
+  },
+  "qualification": {
+    "qualified": true,
+    "status": "OPT_IN_EMPTY_POND_CURRENT_NATIVE_AND_DEFAULT_PRESERVATION_QUALIFIED",
+    "source_tree": "d33b91286c478708e2a7db41bee4c3c0eb141c19",
+    "production_option_default": false,
+    "current_default_observations": 86,
+    "current_swp_observations": 172,
+    "current_annual_cases": 18,
+    "enabled_full_day": true,
+    "default_body_projection": true,
+    "negative_combinations": 6,
+    "independent_water": {
+      "water_residual": 9.536642309182497e-14,
+      "solute_residual": 2.694830959469878e-13,
+      "coarse": {
+        "head": 0.011665268730780554,
+        "theta": 1.7857597487402899e-06,
+        "cumulative_evaporation": 4.843115133934539e-08,
+        "cumulative_runoff": 1.8676270316984964e-06
+      },
+      "refined": {
+        "head": 0.00361188017961922,
+        "theta": 5.635448236396279e-07,
+        "cumulative_evaporation": 1.8324241062017688e-08,
+        "cumulative_runoff": 5.875166799666331e-07
+      }
+    },
+    "independent_chemical_truth": false,
+    "full_capability": false,
+    "full_migration_qualified": false,
+    "master_row_promotion": false,
+    "nut_qualification": "FROZEN_PREDECESSOR_PLUS_DEFAULT_PATH_PROJECTION",
+    "full_fci": "NOT_SELECTED_OPTIONAL_GUARDED_POND_PHYSICS",
+    "frozen_predecessor_replayed": true
+  },
+  "corruption_controls": {
+    "count": 26,
+    "negative_controls": [
+      "source src/process/mod_b111_pond_solute_exchange.f90",
+      "source src/runtime/mod_fmr_b111_pond_joint_application.f90",
+      "source src/runtime/mod_fmr_b111_pond_solute_route.f90",
+      "source src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "source src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+      "source app/solute_column/main.f90",
+      "source src/process/mod_b111_persistent_pond.f90",
+      "source integration/diagnostics/perf01_default_false_projection.json",
+      "source src/process/mod_b111_reactive_solute_substep.f90",
+      "source src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "unregistered scientific source",
+      "missing enabled/O2-day/restart.bin",
+      "missing default/swp/result.json",
+      "missing production-direct-mass/0003.stdout",
+      "missing controls/imported-nonlinear/source.swp",
+      "missing build-O0/build-complete.json",
+      "missing predecessor.json",
+      "missing independent-water/tighter.csv",
+      "missing controls/missing-water-policy/work.csv",
+      "missing full-day-O2/native/restart.bin",
+      "missing refined-O2/native/budget.csv",
+      "missing independent-water/tighter.csv",
+      "missing temporal-O2/native/temporal.csv",
+      "censored relabelled complete",
+      "current production restart drift",
+      "mismatched policy performed water work"
+    ]
+  },
+  "qualified_local_head": "691a10ae9",
+  "first_surface_only_result": "Water window6 completed; joint chemical carrier rejects after5218 substeps; no external sixth-window publication",
+  "historical_selected_probe": "Generated-only implicit empty-pond constraint, no bare demand or macro coupling; scalar conservation/continuity/split-step probe and six-window full model with original unchanged HeadCalc,90s/512MiB",
+  "result": "docs/performance/SWAP5-PERF01_EMPTY_POND_RESULT.md"
+}

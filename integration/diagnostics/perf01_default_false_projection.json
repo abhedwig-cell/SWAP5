@@ -1,0 +1,124 @@
+{
+  "app/solute_column/main.f90": [
+    {
+      "enabled_extension": "  character(1024) :: path,restart_path,arg,message,legacy_swp\n  logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.\n  logical :: implicit_pond_evaporation=.false.\n  real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0\n  real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0\n",
+      "incumbent": "  character(1024) :: path,restart_path,arg,message,legacy_swp\n  logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.\n  real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0\n  real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0\n"
+    },
+    {
+      "enabled_extension": "    root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &\n    retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &\n    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation\n  namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &\n    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c\n",
+      "incumbent": "    root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &\n    retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &\n    decay_rate_day,gamma_temperature,initial_temperature_c\n  namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &\n    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c\n"
+    },
+    {
+      "enabled_extension": "  call require(dynamic_temperature.or.decay_rate_day==0d0,'decay requires explicit dynamic heat activation')\n  call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')\n  call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &\n    .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')\n  p%parameter_set_id=670001_int64;p%active_nodes=numnod\n  p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)\n",
+      "incumbent": "  call require(dynamic_temperature.or.decay_rate_day==0d0,'decay requires explicit dynamic heat activation')\n  call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')\n  p%parameter_set_id=670001_int64;p%active_nodes=numnod\n  p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)\n"
+    },
+    {
+      "enabled_extension": "  allocate(forcing%pond_input)\n  forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day\n  forcing%pond_input%implicit_pond_evaporation=implicit_pond_evaporation\n  chemistry%dz_cm=dz;chemistry%theta=initial%water_content\n  chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)\n",
+      "incumbent": "  allocate(forcing%pond_input)\n  forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day\n  chemistry%dz_cm=dz;chemistry%theta=initial%water_content\n  chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)\n"
+    },
+    {
+      "enabled_extension": "      concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)\n  end if\n  call require(.not.implicit_pond_evaporation.or.(chemistry%frexp==1d0.and. &\n    .not.chemistry%temperature_active),'implicit pond imported chemistry not qualified')\n  column_id%column_id=660101_int64;column_id%template_id=660201_int64\n  column_id%parameter_ref=1_int64;column_id%state_handle=1_int64;column_id%forcing_handle=1_int64\n",
+      "incumbent": "      concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)\n  end if\n  column_id%column_id=660101_int64;column_id%template_id=660201_int64\n  column_id%parameter_ref=1_int64;column_id%state_handle=1_int64;column_id%forcing_handle=1_int64\n"
+    },
+    {
+      "enabled_extension": "    supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c\n    supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day\n    supply%implicit_pond_evaporation=implicit_pond_evaporation\n    if(dynamic_temperature)then\n      forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)\n",
+      "incumbent": "    supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c\n    supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day\n    if(dynamic_temperature)then\n      forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)\n"
+    }
+  ],
+  "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": [
+    {
+      "enabled_extension": "     real(real64) :: macropore_surface_conductivity = 0.0_real64\n     logical :: matrix_source_area_partition = .false.\n     logical :: implicit_pond_evaporation = .false.\n   contains\n     procedure :: evaluate => b110_dynamic_solver_top_evaluate\n",
+      "incumbent": "     real(real64) :: macropore_surface_conductivity = 0.0_real64\n     logical :: matrix_source_area_partition = .false.\n   contains\n     procedure :: evaluate => b110_dynamic_solver_top_evaluate\n"
+    },
+    {
+      "enabled_extension": "       potential_bare_soil_evaporation, potential_pond_evaporation, &\n       ponding_max, runoff_resistance, runoff_exponent, fixed_top_node_conductivity, &\n       macropore_pond_threshold, macropore_surface_conductivity, implicit_pond_evaporation)\n    type(b110_dynamic_top_boundary_solver_provider_t), intent(out) :: provider\n    type(soil_water_parameter_set_t), target, intent(in) :: geometry\n",
+      "incumbent": "       potential_bare_soil_evaporation, potential_pond_evaporation, &\n       ponding_max, runoff_resistance, runoff_exponent, fixed_top_node_conductivity, &\n       macropore_pond_threshold, macropore_surface_conductivity)\n    type(b110_dynamic_top_boundary_solver_provider_t), intent(out) :: provider\n    type(soil_water_parameter_set_t), target, intent(in) :: geometry\n"
+    },
+    {
+      "enabled_extension": "    real(real64), intent(in), optional :: fixed_top_node_conductivity\n    real(real64), intent(in), optional :: macropore_pond_threshold, macropore_surface_conductivity\n    logical, intent(in), optional :: implicit_pond_evaporation\n\n    provider%geometry => geometry\n",
+      "incumbent": "    real(real64), intent(in), optional :: fixed_top_node_conductivity\n    real(real64), intent(in), optional :: macropore_pond_threshold, macropore_surface_conductivity\n\n    provider%geometry => geometry\n"
+    },
+    {
+      "enabled_extension": "    if (present(macropore_pond_threshold)) provider%macropore_pond_threshold = macropore_pond_threshold\n    if (present(macropore_surface_conductivity)) provider%macropore_surface_conductivity = macropore_surface_conductivity\n    if (present(implicit_pond_evaporation)) provider%implicit_pond_evaporation = implicit_pond_evaporation\n  end subroutine bind_b110_dynamic_top_boundary_solver_provider\n\n",
+      "incumbent": "    if (present(macropore_pond_threshold)) provider%macropore_pond_threshold = macropore_pond_threshold\n    if (present(macropore_surface_conductivity)) provider%macropore_surface_conductivity = macropore_surface_conductivity\n  end subroutine bind_b110_dynamic_top_boundary_solver_provider\n\n"
+    },
+    {
+      "enabled_extension": "    b110_request%macropore_pond_threshold_cm = self%macropore_pond_threshold\n    b110_request%macropore_surface_conductivity_cm_per_day = self%macropore_surface_conductivity\n    b110_request%implicit_pond_evaporation = self%implicit_pond_evaporation\n\n    call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)\n",
+      "incumbent": "    b110_request%macropore_pond_threshold_cm = self%macropore_pond_threshold\n    b110_request%macropore_surface_conductivity_cm_per_day = self%macropore_surface_conductivity\n\n    call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)\n"
+    }
+  ],
+  "src/process/mod_b111_persistent_pond.f90": [
+    {
+      "enabled_extension": "  real(real64)::pond_evaporation_rate=0d0\n  real(real64)::runon_rate=0d0,runon_c=0d0,runoff_depth=0d0\n  logical::implicit_pond_evaporation=.false.\n end type\n type,public::persistent_pond_receipt_t\n",
+      "incumbent": "  real(real64)::pond_evaporation_rate=0d0\n  real(real64)::runon_rate=0d0,runon_c=0d0,runoff_depth=0d0\n end type\n type,public::persistent_pond_receipt_t\n"
+    },
+    {
+      "enabled_extension": "  available=committed%mass+r%dry_input\n  call evaluate_b111_pond_solute_exchange(available,s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c, &\n    s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth, &\n    exact_empty_pond_limit=s%implicit_pond_evaporation)\n  if(mix%status/=B111_POND_SOL_OK)return\n  if(mix%mass_after>1d12.or.mix%soil_transfer>1d12)return\n",
+      "incumbent": "  available=committed%mass+r%dry_input\n  call evaluate_b111_pond_solute_exchange(available,s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c, &\n    s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth)\n  if(mix%status/=B111_POND_SOL_OK)return\n  if(mix%mass_after>1d12.or.mix%soil_transfer>1d12)return\n"
+    }
+  ],
+  "src/process/mod_b111_pond_solute_exchange.f90": [
+    {
+      "enabled_extension": "contains\n pure subroutine evaluate_b111_pond_solute_exchange(mass_before,rain_rate,rain_c,irr_rate,irr_c, &\n      qtop,macropore_area,pond_end,dt,result,runon_rate,runon_c,runoff_depth,exact_empty_pond_limit)\n  real(real64),intent(in)::mass_before,rain_rate,rain_c,irr_rate,irr_c,qtop,macropore_area,pond_end,dt\n  type(b111_pond_solute_result_t),intent(out)::result\n  real(real64),intent(in),optional::runon_rate,runon_c,runoff_depth\n  logical,intent(in),optional::exact_empty_pond_limit\n  real(real64)::rr,rc,ro\n  real(real64)::available,denom,cfluxt\n",
+      "incumbent": "contains\n pure subroutine evaluate_b111_pond_solute_exchange(mass_before,rain_rate,rain_c,irr_rate,irr_c, &\n      qtop,macropore_area,pond_end,dt,result,runon_rate,runon_c,runoff_depth)\n  real(real64),intent(in)::mass_before,rain_rate,rain_c,irr_rate,irr_c,qtop,macropore_area,pond_end,dt\n  type(b111_pond_solute_result_t),intent(out)::result\n  real(real64),intent(in),optional::runon_rate,runon_c,runoff_depth\n  real(real64)::rr,rc,ro\n  real(real64)::available,denom,cfluxt\n"
+    },
+    {
+      "enabled_extension": "    result%mass_after=available-result%runoff_output\n  end if\n  if(present(exact_empty_pond_limit))then\n    if(exact_empty_pond_limit.and.qtop < -1d-6.and.macropore_area==0d0.and.pond_end==0d0.and.ro==0d0)then\n      ! Analytical zero-pool limit: every available solute amount infiltrates.\n      ! This avoids subtracting rounded equal amounts; it is not a mass clamp.\n      result%soil_transfer=available\n      result%mass_after=0d0\n    endif\n  endif\n  if(result%mass_after<0d0.or..not.all(ieee_is_finite([ &\n    result%pond_concentration,result%soil_transfer,result%runoff_output,result%mass_after])))return\n",
+      "incumbent": "    result%mass_after=available-result%runoff_output\n  end if\n  if(result%mass_after<0d0.or..not.all(ieee_is_finite([ &\n    result%pond_concentration,result%soil_transfer,result%runoff_output,result%mass_after])))return\n"
+    }
+  ],
+  "src/process/mod_b111_reactive_solute_substep.f90": [
+    {
+      "enabled_extension": "\n  subroutine advance_b111_reactive_solute_substep(committed_mobile,committed_companion,f,candidate_mobile, &\n       candidate_companion,receipt,exact_empty_pond_limit)\n    type(mobile_salt_state_t),intent(in)::committed_mobile\n    type(solute_compartment_state_t),intent(in)::committed_companion\n",
+      "incumbent": "\n  subroutine advance_b111_reactive_solute_substep(committed_mobile,committed_companion,f,candidate_mobile, &\n       candidate_companion,receipt)\n    type(mobile_salt_state_t),intent(in)::committed_mobile\n    type(solute_compartment_state_t),intent(in)::committed_companion\n"
+    },
+    {
+      "enabled_extension": "    type(solute_compartment_state_t),intent(out)::candidate_companion\n    type(b111_reactive_solute_substep_receipt_t),intent(out)::receipt\n    logical,intent(in),optional::exact_empty_pond_limit\n\n    type(b111_pond_solute_result_t)::pond\n",
+      "incumbent": "    type(solute_compartment_state_t),intent(out)::candidate_companion\n    type(b111_reactive_solute_substep_receipt_t),intent(out)::receipt\n\n    type(b111_pond_solute_result_t)::pond\n"
+    },
+    {
+      "enabled_extension": "    call evaluate_b111_pond_solute_exchange(committed_companion%pond_mass,f%rain_rate_cm_day,f%rain_c_mg_cm3, &\n         f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3,f%q_face_up_cm_day(1),f%macropore_area_fraction, &\n         f%pond_end_cm,f%dt_day,pond,f%runon_rate_cm_day,f%runon_c_mg_cm3,f%runoff_depth_cm, &\n         exact_empty_pond_limit=exact_empty_pond_limit)\n    if(pond%status/=B111_POND_SOL_OK)return\n    candidate_companion%pond_mass=pond%mass_after\n",
+      "incumbent": "    call evaluate_b111_pond_solute_exchange(committed_companion%pond_mass,f%rain_rate_cm_day,f%rain_c_mg_cm3, &\n         f%irrigation_rate_cm_day,f%irrigation_c_mg_cm3,f%q_face_up_cm_day(1),f%macropore_area_fraction, &\n         f%pond_end_cm,f%dt_day,pond,f%runon_rate_cm_day,f%runon_c_mg_cm3,f%runoff_depth_cm)\n    if(pond%status/=B111_POND_SOL_OK)return\n    candidate_companion%pond_mass=pond%mass_after\n"
+    }
+  ],
+  "src/runtime/mod_fmr_b111_pond_joint_application.f90": [
+    {
+      "enabled_extension": "    end if\n    if(supply%implicit_pond_evaporation.and..not.allocated(forcing%pond_input))return\n    if(allocated(forcing%pond_input))then\n      if(forcing%pond_input%implicit_pond_evaporation.neqv.supply%implicit_pond_evaporation)return\n      if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return\n      if(.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &\n",
+      "incumbent": "    end if\n    if(allocated(forcing%pond_input))then\n      if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return\n      if(.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &\n"
+    }
+  ],
+  "src/runtime/mod_fmr_b111_pond_solute_route.f90": [
+    {
+      "enabled_extension": "    f%pond_end_cm=t%pond_end_cm;f%runoff_depth_cm=pond_step%runoff_depth\n    f%macropore_area_fraction=0d0\n    call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r, &\n      exact_empty_pond_limit=supply%implicit_pond_evaporation)\n    receipt%status=MATRIX_PROCESS;receipt%process_status=r%status\n    if(r%status/=B111_REACTIVE_OK)return\n",
+      "incumbent": "    f%pond_end_cm=t%pond_end_cm;f%runoff_depth_cm=pond_step%runoff_depth\n    f%macropore_area_fraction=0d0\n    call advance_b111_reactive_solute_substep(mobile,amount,f,next_mobile,next_amount,r)\n    receipt%status=MATRIX_PROCESS;receipt%process_status=r%status\n    if(r%status/=B111_REACTIVE_OK)return\n"
+    }
+  ],
+  "src/runtime/mod_fmr_serialized_reference_backend.f90": [
+    {
+      "enabled_extension": "    real(real64) :: ponding_max_cm = 1.e6_real64\n    real(real64) :: runoff_resistance_day = 0.0_real64\n    logical :: implicit_pond_evaporation = .false.\n  end type fmr_pond_input_forcing_t\n\n",
+      "incumbent": "    real(real64) :: ponding_max_cm = 1.e6_real64\n    real(real64) :: runoff_resistance_day = 0.0_real64\n  end type fmr_pond_input_forcing_t\n\n"
+    },
+    {
+      "enabled_extension": "           0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &\n           self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &\n           self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity, &\n           implicit_pond_evaporation=self%pond_input%implicit_pond_evaporation)\n      request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER\n      nullify(request%evaluation%top_boundary)\n",
+      "incumbent": "           0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &\n           self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &\n           self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity)\n      request%boundary%top_mode=FSI_TOP_MODE_DYNAMIC_PROVIDER\n      nullify(request%evaluation%top_boundary)\n"
+    }
+  ],
+  "src/solver/mod_b110_dynamic_top_boundary_provider.f90": [
+    {
+      "enabled_extension": "    real(real64) :: macropore_pond_threshold_cm = 0.0_real64\n    real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64\n    logical :: implicit_pond_evaporation = .false.\n  end type b110_dynamic_top_boundary_request_t\n\n",
+      "incumbent": "    real(real64) :: macropore_pond_threshold_cm = 0.0_real64\n    real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64\n  end type b110_dynamic_top_boundary_request_t\n\n"
+    },
+    {
+      "enabled_extension": "    real(real64) :: emax, q0, q1, h0, h0max, p1, p2\n    real(real64) :: top_dz, top_distance\n    real(real64) :: available_supply, infiltration_capacity, actual_pond_evaporation\n    real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm\n    logical :: ok, donor_ok\n",
+      "incumbent": "    real(real64) :: emax, q0, q1, h0, h0max, p1, p2\n    real(real64) :: top_dz, top_distance\n    real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm\n    logical :: ok, donor_ok\n"
+    },
+    {
+      "enabled_extension": "    top_dz = geometry%dz(1)\n    top_distance = geometry%node_distance(1)\n    if (request%implicit_pond_evaporation) then\n      if (request%potential_bare_soil_evaporation_cm_per_day /= 0.0_real64 .or. &\n          request%macropore_pond_donor_active .or. request%matrix_source_area_partition .or. &\n          request%fixed_top_node_conductivity_cm_per_day < 0.0_real64 .or. &\n          request%conductivity_mean_method /= 1 .or. &\n          request%pressure_head_top_cm >= top_distance) then\n        result%status = B110_DYN_TOP_UNSUPPORTED\n        result%route = 'implicit-pond-outside-profile'\n        return\n      end if\n    end if\n\n    call evaluate_b110_default_mvg_conductivity(hydraulics, 1, B110_DYN_TOP_ATMOSPHERIC_HEAD_CM, k_atm, ok)\n",
+      "incumbent": "    top_dz = geometry%dz(1)\n    top_distance = geometry%node_distance(1)\n\n    call evaluate_b110_default_mvg_conductivity(hydraulics, 1, B110_DYN_TOP_ATMOSPHERIC_HEAD_CM, k_atm, ok)\n"
+    },
+    {
+      "enabled_extension": "    q0 = q0 + request%runon_rate_cm_per_day - &\n         result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day\n    if (request%implicit_pond_evaporation .and. request%potential_pond_evaporation_cm_per_day > 0.0_real64) then\n      ! Resolve the endpoint constraint: a dry surface has no pond evaporation;\n      ! an active empty pond limits evaporation to supply above infiltration;\n      ! a positive pond supplies the full demand. Old callers retain their\n      ! previous-depth classification through the default-false physical option.\n      available_supply = request%precipitation_rate_cm_per_day + request%irrigation_rate_cm_per_day + &\n           request%snowmelt_rate_cm_per_day + request%runon_rate_cm_per_day\n      infiltration_capacity = k1_max * (1.0_real64-request%pressure_head_top_cm/top_distance)\n      actual_pond_evaporation = min(request%potential_pond_evaporation_cm_per_day, max(0.0_real64, &\n           available_supply+request%previous_ponding_depth_cm/request%step_duration_day-infiltration_capacity))\n      result%bare_soil_evaporation_cm_per_day = 0.0_real64\n      result%ponded_water_evaporation_cm_per_day = actual_pond_evaporation\n      q0 = available_supply-actual_pond_evaporation\n      if (actual_pond_evaporation > 0.0_real64 .and. &\n          actual_pond_evaporation < request%potential_pond_evaporation_cm_per_day) then\n        result%regime = B110_DYN_TOP_REGIME_HEAD\n        result%surface_head_cm = 0.0_real64\n        result%surface_face_conductivity_cm_per_day = k1_max\n        result%surface_head_derivative_available = .true.\n        result%surface_head_dpressure_head_top = 0.0_real64\n        result%candidate_ponding_depth_cm = 0.0_real64\n        result%runoff_depth_cm = 0.0_real64\n        result%runoff_potential = .false.\n        result%actual_top_flux_cm_per_day = -infiltration_capacity\n        result%net_potential_surface_flux_cm_per_day = q0\n        result%status = B110_DYN_TOP_AVAILABLE\n        result%route = 'implicit-empty-pond-evaporation'\n        return\n      end if\n    end if\n    q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day\n    result%net_potential_surface_flux_cm_per_day = q0\n",
+      "incumbent": "    q0 = q0 + request%runon_rate_cm_per_day - &\n         result%bare_soil_evaporation_cm_per_day - result%ponded_water_evaporation_cm_per_day\n    q1 = -q0 - request%previous_ponding_depth_cm/request%step_duration_day\n    result%net_potential_surface_flux_cm_per_day = q0\n"
+    }
+  ]
+}
