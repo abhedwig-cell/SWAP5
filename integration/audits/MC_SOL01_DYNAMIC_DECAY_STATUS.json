@@ -1,13 +1,14 @@
 {
+  "current_scope_authority": "nonlinear_successor; remaining top-level MC-SOL01-DYNAMIC-DECAY01 fields preserve the exact admitted linear predecessor receipt and its historical source/evidence boundary",
   "nonlinear_successor": {
     "work_unit": "MC-SOL01-DYNAMIC-DECAY02",
     "baseline": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
-    "stage": "QUALIFIED_READY_FOR_CANONICAL",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_NONLINEAR_THERMAL_CLOSED",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "scope": "Numeric endpoint heat with existing Freundlich matrix exponent 0.5..2; no pond or new process formula",
     "invariants_affected": [
       3,
@@ -17,8 +18,8 @@
       23,
       25
     ],
-    "next_action": "Open and finish canonical PR, validate existing integrated runs to terminal, reconcile live refs, then update exact scoped master facets and final closure",
-    "recovery_point": "work/mc-sol01-nonlinear-thermal-20261021",
+    "next_action": "NONE within MC-SOL01-DYNAMIC-DECAY02; nonlinear/thermal pond, analytic heat, wider historical reader/default application and seasonal accuracy remain explicitly parked in existing capability matrix",
+    "recovery_point": "integration/f-ci-canonical; admitted/tested merge8e0a07f43e814bbb634e04855fa5ed6e5372f3b0; source/evidence authority nonlinear_successor",
     "blockers": [],
     "selection": {
       "focused": "RUN: changed composition guard, nonlinear equilibrium and actual heat must execute together; compile277 providers once per O0/O2, reuse only exact source-bound binaries across exponent forcing. Expected compile/link150s, native/refinement less than30s",
@@ -27,8 +28,8 @@
       "full_fci": "NOT_SELECTED_IMPACT: one isolated optional composition guard; existing process formulas, shared Reference/heat/accepted trace, disk ABI and incumbent application remain unchanged",
       "highest_low_air": "NOT_SELECTED_POLICY"
     },
-    "execution_commit": "0582be6e",
-    "checkpoint_commit": "5ccb82f5",
+    "execution_commit": "0582be6e0707af30fd9149ff637c43ac681d6d85",
+    "checkpoint_commit": "43850c5dda97fd9c5a30d436f740cadf918f0be9",
     "last_reconciled_upstream": "9c16572a57ada1c4b7e619bae8c1bdfb3c6f5e9c",
     "evidence": {
       "path": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_20261021.tar.xz.b64",
@@ -359,13 +360,14 @@
         "sha256": "5f2a4792b30825a2dae094c9d910888fecc34430f749d485aae0af94df9cf398"
       }
     },
-    "capability_status": "QUALIFICATION_ONLY",
+    "capability_status": "ADMITTED",
     "local_owners": {
       "exact_fcfdd3ae_predecessor_and_current_source_evidence": "PASS",
       "negative_controls": 9,
       "strict_documentation": "PASS",
       "fsi35_handoff": "unchanged dispatcher delegates to current bounded source authority",
-      "reconciled_9c_predecessor_and_current178_diagnostic_providers": "PASS"
+      "reconciled_9c_predecessor_and_current178_diagnostic_providers": "PASS",
+      "actual_canonical_source_evidence": "PASS"
     },
     "initial_baseline": "fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d",
     "admission_pr": 1344,
@@ -390,8 +392,42 @@
       "canonical_run": 39562176647,
       "perf_run": 39562176931,
       "full_receipt": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_HOSTED_20261021.json",
-      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_CI_TRIAGE_20261021.json"
-    }
+      "triage": "integration/audits/evidence/MC_SOL01_NONLINEAR_THERMAL_CI_TRIAGE_20261021.json",
+      "merge": {
+        "commit": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+        "total": 7,
+        "all_success": true,
+        "thermal_run": 39562998236,
+        "thermal_job": 119098445423,
+        "column_run": 39562998303,
+        "column_job": 119098445142,
+        "canonical_run": 39562998287,
+        "perf_run": 39562998271,
+        "wof43a_run": 39562998202,
+        "fsi35_run": 39562998255,
+        "fsi35_native_job": 119098444697,
+        "fsi35_postimage_job": "SKIPPED per existing workflow",
+        "fgc_run": 39562998432,
+        "fgc_job": 119098445266,
+        "native_fgc_marker": "F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS",
+        "full_fci": "NOT_SELECTED_IMPACT; successful canonical selection/feedback is not a full moving run"
+      }
+    },
+    "canonical_merge": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+    "master_receipt": {
+      "commit": "2eeeb0c28b6f62a689a7dbc67aaa62d0102cdc9a",
+      "branch": "work/swap431-master-coverage-20261006",
+      "capabilities": [
+        "SW431-SALT-SORPTION",
+        "SW431-SALT-DECAY"
+      ],
+      "other_rows_exact": 241,
+      "dispositions_exact": 243,
+      "whole_master_qualification": false
+    },
+    "full_capability": false,
+    "tested_canonical": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+    "source_tree": "c408c50d457f63f254d3437c95867a68974e5aea"
   },
   "work_unit": "MC-SOL01-DYNAMIC-DECAY01",
   "baseline": "3cb20b8a48440a9445277dfba0982b697197638a",

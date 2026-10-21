@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+Current bounded MC-SOL01 successor,21 October2026: PR1344, merge
+`8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`, admits numeric-heat endpoint
+decay with existing Freundlich matrix exponent0.5..2. Six GNU O0/O2 cases pass
+literal oracle, joint balance, rollback/retry, interval refinement and independent
+process/crash-safe restart; original seven-mesh linear bytes stay exact. See the
+[contract](../science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md) and existing status
+record `nonlinear_successor`. Master receipt2eeeb0c2 preserves241other rows and
+all243dispositions. Nonlinear/thermal pond, analytic heat, wider reader/default
+and seasonal domains remain parked; the frozen Status-A denominator is unchanged.
+
+Historical linear thermal admission:
+
 Later MC-SOL01 dynamic-decay successor (21 October 2026): local O0/O2 qualifies
 actual staged Reference restricted heat feeding linear matrix transport/decay,
 joint balance/rollback, interval refinement and independent-process atomic

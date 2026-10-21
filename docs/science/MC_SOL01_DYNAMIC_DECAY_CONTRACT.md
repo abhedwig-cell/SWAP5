@@ -1,8 +1,9 @@
 # MC-SOL01 dynamic accepted-temperature decay
 
-## Locally qualified bounded nonlinear successor (admission pending)
+## Canonically admitted bounded nonlinear successor
 
-MC-SOL01-DYNAMIC-DECAY02 starts at canonical `fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d`.
+PR1344 admits MC-SOL01-DYNAMIC-DECAY02 at canonical merge
+`8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`. Initial baseline: `fcfdd3ae6bb2c9516c6e303b7aa112e418e04b3d`.
 It widens only the thermal composition's sorption guard to the existing matrix
 constructor domain, Freundlich exponent 0.5..2. Existing nonlinear inversion,
 source-order decay, accepted-water trace, immutable configuration, endpoint
@@ -11,9 +12,12 @@ The independent literal loop and its real128 nonlinear inversion oracle qualify
 this combination at exponents .5/.8/1/1.0005/1.5/2, including refinement and fresh
 process restart. Every previously qualified linear endpoint must remain exact.
 Outside-domain constructors and analytic heat remain rejected. No pond, seasonal,
-full historical/default-file, RossFast or aquifer admission is proposed.
+full historical/default-file, RossFast or aquifer admission is included.
 The existing status record's `nonlinear_successor` owns recovery and admission;
 the linear predecessor receipt below remains historical, immutable evidence.
+Concurrent9c16572a adds diagnostics only; all incoming PERF01 files are preserved.
+Exact predecessor thermal/diagnostic gates and all178current diagnostic providers
+are checked without repeating unchanged physical samples.
 
 GNU13.3.0 O0/O2 executes all six exponent cases with the same277-provider
 closure, built once per optimization (compile156.753697s; link0.251031s).
@@ -55,6 +59,8 @@ F-CI is NOT_SELECTED_IMPACT; highest low-air remains NOT_SELECTED_POLICY.
 python -B tests/nut-sol/run_matrix_thermal.py --exponent 0.5 --reuse-build /tmp/thermal-physical --output /tmp/nonlinear-physical
 python -B integration/audits/qualify_matrix_thermal.py --nonlinear-refinement --build /tmp/thermal-physical --physical /tmp/nonlinear-physical --output /tmp/nonlinear-qualified
 ```
+
+## Historical linear predecessor
 
 Status: canonically admitted bounded numeric-heat/linear-matrix composition,
 PR1342 / `7d04b00778684ff662ec36715b7b3e9654b8fb73`. The completed admission

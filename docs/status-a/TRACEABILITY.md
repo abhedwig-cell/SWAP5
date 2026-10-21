@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Post-Status-A MC-SOL01 numeric-heat/nonlinear matrix admission is PR1344 at
+`8e0a07f43e814bbb634e04855fa5ed6e5372f3b0`. Current source tree
+`c408c50d457f63f254d3437c95867a68974e5aea` and all raw O0/O2/refinement/
+rollback/restart proof are owned by
+`integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_successor` and
+[the thermal contract](../science/MC_SOL01_DYNAMIC_DECAY_CONTRACT.md). Existing
+B1.11 source authority and accepted nonlinear inversion remain unchanged.
+`MC_SOL01_FINAL_CLOSURE.md` consolidates the matrix and explicit parked remainder;
+this does not revise the frozen Status-A denominator below.
+
 Date: 2026-09-16
 
 SWAP5 does not have, and does not need, one artificial master theory file for all Status-A capabilities. Scientific and architectural authority is capability-distributed. This page makes that distributed authority navigable without replacing the underlying records.

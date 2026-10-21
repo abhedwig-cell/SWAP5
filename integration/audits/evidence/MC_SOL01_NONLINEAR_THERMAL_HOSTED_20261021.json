@@ -257,5 +257,237 @@
   "local_reconciled_owner": "PASS complete exact9c predecessor plus current thermal/case proofs and178diagnostic provider validation",
   "self_test_controls": 9,
   "full_fci": "NOT_SELECTED_IMPACT",
-  "highest_low_air": "NOT_SELECTED_POLICY"
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "canonical_merge": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+  "canonical_workflows": [
+    {
+      "id": 39562998287,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998287",
+      "jobs": [
+        {
+          "id": 119098445203,
+          "name": "selection-preflight",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 119098633129,
+          "name": "modular-feedback",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 119098634794,
+          "name": "frozen-fci40-effective-forcing-executor-source-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098634924,
+          "name": "frozen-fci19-candidate-preservation",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635035,
+          "name": "historical-fci03-through-fci18",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635059,
+          "name": "frozen-fci39-surface-evaporation-capacity-source-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635188,
+          "name": "frozen-fci19-source-lineage",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635207,
+          "name": "frozen-fci30-restricted-parallel-v1-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635447,
+          "name": "frozen-fci31-reference-et-root-uptake-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635506,
+          "name": "frozen-fci29-ptra-ownership-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635561,
+          "name": "frozen-fci36-divdra-active-runtime-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635568,
+          "name": "frozen-fci27-reference-et-runtime-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635583,
+          "name": "frozen-fci24-reference-et-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635794,
+          "name": "current-restricted-canonical-preservation",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635813,
+          "name": "frozen-fci28-restart-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098635848,
+          "name": "frozen-fci37-parallel-root-uptake-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 119098636623,
+          "name": "frozen-fci34-root-attribution-authority",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    {
+      "id": 39562998303,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998303",
+      "jobs": [
+        {
+          "id": 119098445142,
+          "name": "column",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 39562998255,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998255",
+      "jobs": [
+        {
+          "id": 119098444697,
+          "name": "fsi35-permanent-preservation",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 119098446881,
+          "name": "fci58p-postimage-reconciliation",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    {
+      "id": 39562998432,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998432",
+      "jobs": [
+        {
+          "id": 119098445266,
+          "name": "closeout",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 39562998271,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998271",
+      "jobs": [
+        {
+          "id": 119098445094,
+          "name": "exact-successor",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 39562998236,
+      "name": "MC-SOL01 dynamic accepted temperature decay",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998236",
+      "jobs": [
+        {
+          "id": 119098445423,
+          "name": "thermal",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 39562998202,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39562998202",
+      "jobs": [
+        {
+          "id": 119098446415,
+          "name": "preserve-qualified-wof43a",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "native_fgc_markers": [
+    "2026-10-21T07:37:15.9403115Z FGC44_REAL_FMR_O0_O2_IDENTITY=PASS",
+    "2026-10-21T07:40:05.6753846Z PPA_WU01_O0_O2_OUTPUT_IDENTITY=PASS",
+    "2026-10-21T07:42:58.3225226Z FGC24_O0_O2_SIGNATURE_IDENTITY=PASS",
+    "2026-10-21T07:42:58.3307849Z F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS"
+  ],
+  "thermal_native_markers": {
+    "job": 119098445423,
+    "physical_case_passes": 6,
+    "refinement_restart_crash_case_passes": 6,
+    "negative_controls": 9
+  },
+  "master_receipt": "2eeeb0c28b6f62a689a7dbc67aaa62d0102cdc9a",
+  "actual_merge_local_owner": "PASS",
+  "strict_documentation": "PASS"
 }
