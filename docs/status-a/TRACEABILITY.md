@@ -379,6 +379,16 @@ failed-line-search policy is not a production default or admitted general
 solver change; the repaired production source and warm-start default stay
 unchanged. Research evidence integration does not promote a master capability.
 
+The actual typed default-OFF successor is owned by
+[the bounded line-search retry contract](../science/PERF01_WEATHER_LINE_SEARCH_RETRY.md)
+and `benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json`.
+Its separate current physical/source/FSI35 receipts qualify the implemented
+option and unchanged default envelope. Actual production paired measurements
+are 34.8% lower wet4 median CPU and approximately unchanged1x CPU; the earlier
+generated research timing is not substituted for this implementation. The
+versioned record distinguishes qualification from actual admission. No master
+capability or general surface-formulation promotion is implied.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original

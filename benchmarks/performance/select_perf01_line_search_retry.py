@@ -9,6 +9,7 @@ import time
 ROOT=Path(__file__).resolve().parents[2]
 ap=argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--build',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
+ap.add_argument('--off',action='store_true');ap.add_argument('--observe-work',action='store_true')
 a=ap.parse_args();base,out=a.build.resolve(),a.output.resolve();out.mkdir(parents=True,exist_ok=False)
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 b=json.loads((base/'BUILD.json').read_text())
@@ -21,7 +22,17 @@ assert sha(ROOT/'src/legacy/b1_10_port/headcalc.f90')==b['headcalc_sha256']
 text=(base/'driver.f90').read_text()
 anchor="  call ta%initialize(tc,st);call require(st==FMR_APP_BOOT_OK,'live weather crop bootstrap')"
 assert text.count(anchor)==1
-text=text.replace(anchor,'  tc%tiles(1)%parameters%weather_line_search_retry=.true.\n'+anchor,1)
+text=text.replace(anchor,'  tc%tiles(1)%parameters%weather_line_search_retry='+('.false.'if a.off else'.true.')+'\n'+anchor,1)
+if a.observe_work:
+    for before,after in [
+        ('accepted,heads,rejections\n','accepted,heads,rejections,njac,nback,nfailed\n'),
+        ('residual=0d0;accepted=0;heads=0;rejections=0','residual=0d0;accepted=0;heads=0;rejections=0;njac=0;nback=0;nfailed=0'),
+        ('      rejections=rejections+rr(1)%temporal_rejections',
+         '      njac=njac+rr(1)%solver_jacobian_builds;nback=nback+rr(1)%solver_backtracking_attempts\n'+
+         '      nfailed=nfailed+rr(1)%solver_rejections\n      rejections=rejections+rr(1)%temporal_rejections'),
+        ('    call cpu_time(endcpu)',"    call cpu_time(endcpu)\n    write(*,'(a,4(1x,i0))') 'NEWTON_WORK',d+1,njac,nback,nfailed")]:
+        assert text.count(before)==1
+        text=text.replace(before,after,1)
 for p in base.iterdir():
     if p.is_file()and p.name not in ['driver.f90','weather','BUILD.json']:(out/p.name).symlink_to(p)
 (out/'driver.f90').write_text(text)
@@ -32,7 +43,7 @@ command=b['compiler_command']+flags+[str(out/'driver.f90'),str(ROOT/'src/legacy/
 start=time.monotonic();r=subprocess.run(command,capture_output=True)
 for stream in ['stdout','stderr']:(out/('link.'+stream)).write_bytes(getattr(r,stream))
 r.check_returncode();assert all(sha(Path(p))==h for p,h in pinned.items())
-b.update(executable_sha256=sha(out/'weather'),generated_driver_sha256=sha(out/'driver.f90'),weather_line_search_retry=True,
+b.update(executable_sha256=sha(out/'weather'),generated_driver_sha256=sha(out/'driver.f90'),weather_line_search_retry=not a.off,observe_work=a.observe_work,
     option_parent_build=str(base),option_link=dict(command=command,returncode=r.returncode,seconds=time.monotonic()-start),
     pinned_objects=pinned)
 (out/'BUILD.json').write_text(json.dumps(b,indent=2)+'\n')

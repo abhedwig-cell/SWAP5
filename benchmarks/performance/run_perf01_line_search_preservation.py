@@ -25,6 +25,9 @@ def run(script,args,label):
     if a.resume and '--output'in args:
         target=Path(args[args.index('--output')+1])
         if target.exists():target.rename(target.with_name(target.name+'-retained-incomplete'))
+        for stream in ['stdout','stderr']:
+            old=path('controller-'+label+'.'+stream)
+            if old.exists():old.rename(old.with_name(old.name+'.retained-incomplete'))
     command=[sys.executable,'-B',str(ROOT/script),*map(str,args)]
     started=time.monotonic();r=subprocess.run(command,cwd=ROOT,capture_output=True)
     for stream in ['stdout','stderr']:path('controller-'+label+'.'+stream).write_bytes(getattr(r,stream))

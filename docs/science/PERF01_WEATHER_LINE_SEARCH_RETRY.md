@@ -1,6 +1,7 @@
 # Bounded weather retry after exhausted line search
 
-Status: proposed production implementation,22 October2026.
+Status: implemented and locally qualified; actual canonical admission is recorded
+separately by the versioned work-unit status.
 Baseline: canonical17a6c17a478238e5fafc469aa275313bcdf2e184.
 Research authority: PR1376 and `PERF01_NEWTON_WORK_20261022_EVIDENCE`.
 
@@ -48,3 +49,32 @@ its numerical type/provider changes require fresh selected native execution.
 The completed generated research establishes a bounded candidate, not a
 universal convergence or speed guarantee. Activation and canonical admission
 require the current source/native evidence for the actual implementation.
+
+## Completed current qualification
+
+The actual typed implementation now passes the21-provider direct O0/O2 OFF/
+ON, failure and unsupported-root/sensitivity contracts. The existing minimum-
+step typed deferral rejects before HeadCalc under both option states; it never
+enters the legacy continue-without-convergence path. Original warm/cold corner,
+retry and top-derivative assertions remain unchanged and pass. The six original
+weather profiles and original two default solver contracts pass per optimization.
+
+Fresh256-provider weather,190/194-provider column and336-provider NUT cold
+closures are rebuilt for the numerical type change. Both97-day1x/4x OFF/ON
+and four original warm seasons complete. Actual ON physical stdout and work
+are exact to the qualified generated research for O0 and O2; OFF retains306
+incumbent physical artifacts/streams. OFF/ON wet-day35 reconstruction and
+complete21-word rollback pass. Current SOL/ETref/crop/root-substep and NUT
+cold/thermal/calendar/harvest/saved-output assertions all pass on fresh native
+outputs. Unchanged reader builds are reused only after complete input identity.
+
+The complete frozen17a6c17a source owner and34 controls remain preserved.
+The new exact additive source seam passes15 controls and all five current
+owning entrypoints. The entire original FSI35 O0/O2 native runner passes anew
+(36.921seconds), including its original source guards and immutable oracles;
+the earlier native proof is not inherited for this type/HeadCalc change.
+
+The versioned status distinguishes completed science/source qualification,
+the separate terminal FSI35 gate and actual canonical admission. The final
+production timing experiment is separate from the generated research timing.
+No claim or default activation follows from the earlier proposed label.
