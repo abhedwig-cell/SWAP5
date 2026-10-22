@@ -158,6 +158,30 @@ weather candidate. The f7c60410 qualification cannot be applied to that later
 backend. Compose that exact delta, preserve its original new owners and execute
 the affected current contracts before canonical merge. The PR remains a draft.
 
+## Later80dbce8d composition selection
+
+Preserve the admitted optional root request and per-trial sink reconstruction,
+accepted root trace and NUT calendar output. None is replaced by weather or warm
+cache state. Preserve both existing canonical dispatches behind one new exact
+weather composition successor, whose baseline is80dbce8d. Frozen complete80dbce8d
+owner assertions remain required in addition to fresh affected native execution.
+
+Rebuild weather256-provider and column190/194-provider O0/O2 executables and
+the current NUT336-provider cold closure because their backend source changed.
+Execute original weather, default preservation, full1x/4x and wet reconstruction,
+all previously selected SOL/ETref/crop assertions, original root-substep daily
+and A/B/A transaction controls, and current cold/thermal/calendar NUT drivers.
+Expected concurrent build/native cost:900seconds, chiefly current NUT cold
+compilation. Detailed categories must be measured; earlier host observations
+are only estimates. Existing readers' entire source/compiler/generated-input
+identity is unchanged; reuse their build artifacts, execute every new driver.
+
+The original FSI35 native body and all its27 compiled dependencies are unchanged
+by80dbce8d; inherit its55.245-second terminal native result only after proving
+every actual compile/oracle/flag/runner-body identity. Execute current source
+preflight and new rejection controls again. Full F-CI/low-air/RossFast selections
+remain as above. Archive earlier f7c60410 qualification without changing it.
+
 Documentation source checks and the strict `python -m mkdocs build --strict`
 pass. Initial controller attempts that reached O2 before its build completed
 failed on missing build receipts; the final complete controllers reran in fresh

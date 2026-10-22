@@ -100,7 +100,8 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
        FMR_BARTHOLOMEUS_DISABLED
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
-  use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t
+  use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t, &
+       root_water_uptake_parameters_t, root_water_uptake_request_t, evaluate_macro_feddes_drought_uptake, ROOT_UPTAKE_OK
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, &
        ROOT_COMP_OFF, ROOT_COMP_JARVIS, ROOT_COMP_WALSUM, ROOT_COMP_FROST, root_walsum_geometry_t, ROOT_COMP_OK, &
        attribute_root_stress_losses, evaluate_walsum_geometry
@@ -479,6 +480,12 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: potential_bare_soil_evaporation_cm_day = 0.0_real64
   end type fmr_pond_input_forcing_t
 
+  ! Immutable physical request, not a solver policy or a persistent state owner.
+  type, public :: fmr_substep_root_forcing_t
+    type(root_water_uptake_parameters_t) :: parameters
+    type(root_water_uptake_request_t) :: request
+  end type
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
     real(real64), allocatable :: frost_divdra_scalars_cm_per_day(:)
@@ -496,6 +503,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     real(real64), allocatable :: subsurface_irrigation_source(:)
     real(real64), allocatable :: root_extraction_sink(:)
+    type(fmr_substep_root_forcing_t), allocatable :: substep_root
     integer :: micro_rooted_nodes = 0
     real(real64), allocatable :: micro_root_length_density(:)
     real(real64) :: root_potential_transpiration = 0.0_real64
@@ -537,6 +545,11 @@ module mod_fmr_serialized_reference_backend
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
          macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
     real(real64) :: converged_soil_evaporation_cm_day = 0.0_real64
+    logical :: substep_root_available = .false.
+    real(real64) :: root_potential_cm_day = 0.0_real64
+    real(real64) :: root_drought_reduction_cm_day = 0.0_real64
+    real(real64) :: root_oxygen_reduction_cm_day = 0.0_real64
+    real(real64), allocatable :: root_pressure_head_start(:)
   end type fmr_water_flux_substep_trace_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -722,6 +735,8 @@ module mod_fmr_serialized_reference_backend
   end type fmr_serialized_attempt_context_t
 
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
+    type(fmr_substep_root_forcing_t), allocatable :: substep_root
+    type(root_water_uptake_diagnostics_t) :: substep_root_diagnostics
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
@@ -3619,6 +3634,8 @@ contains
     integer :: n, drainage_preflight_status
     real(real64) :: black_values(9), boesten_values(9), rutter_values(14), time_tol, weather_balance_rate
     if (allocated(self%pond_input)) deallocate(self%pond_input)
+    if (allocated(self%substep_root)) deallocate(self%substep_root)
+    self%substep_root_diagnostics = root_water_uptake_diagnostics_t()
     self%forcing_admitted = .false.
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
@@ -3690,6 +3707,19 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
+      if (allocated(forcing%substep_root)) then
+        if (.not.self%root_extraction_active) return
+        if (forcing%substep_root%parameters%active_nodes /= n) return
+        if (any(forcing%root_extraction_sink /= 0.0_real64)) return
+        if (allocated(self%micro_de_willigen).or.allocated(self%bartholomeus)) return
+        if (self%root_compensation%method /= ROOT_COMP_OFF.or.self%root_salinity_active.or.self%root_frost%active) return
+        if (self%soil_temperature_active.or.self%frost_active.or.self%rutter_active.or.self%snow_active) return
+        if (self%rfm_configuration%enabled.or.self%macropore_active.or.allocated(forcing%macropore_top_input)) return
+        if (self%swkimpl /= 0) return
+        if (allocated(forcing%root_potential_sink).or.allocated(forcing%crop_oxygen)) return
+        if (forcing%root_potential_transpiration /= 0.0_real64.or.forcing%root_drought_reduction_total /= 0.0_real64) return
+        self%substep_root = forcing%substep_root
+      end if
       if (allocated(self%micro_de_willigen)) then
         if (.not. self%root_extraction_active .or. .not. allocated(self%micro_tables)) return
         if (.not. allocated(forcing%micro_root_length_density)) return
@@ -4844,6 +4874,18 @@ contains
         if (.not. allocated(self%qrot_unmodified)) return
         self%qrot = self%qrot_unmodified
       end if
+      if (allocated(self%substep_root)) then
+        block
+          type(root_water_uptake_flux_result_t) :: roots
+          ! Always rebuild from THIS full/half/retry base, never a previous trial.
+          call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
+          if (.not.hydraulic_view_ok) return
+          call evaluate_macro_feddes_drought_uptake(self%substep_root%parameters, hydraulic_start, &
+               self%substep_root%request, roots, self%substep_root_diagnostics)
+          if (self%substep_root_diagnostics%status /= ROOT_UPTAKE_OK) return
+          self%qrot = roots%root_extraction_sink
+        end block
+      end if
       if(allocated(self%bartholomeus)) then
         call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
         if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
@@ -5862,6 +5904,14 @@ contains
     step%drainage_sink = sum(self%qdra,dim=1)
     step%drainage_sink_by_level = self%qdra
     step%root_sink = self%qrot
+    if (allocated(self%substep_root)) then
+      if (self%substep_root_diagnostics%status /= ROOT_UPTAKE_OK) return
+      step%substep_root_available = .true.
+      step%root_pressure_head_start = request%base_state%pressure_head
+      step%root_potential_cm_day = self%substep_root_diagnostics%potential_uptake_total
+      step%root_drought_reduction_cm_day = self%substep_root_diagnostics%drought_reduction_total
+      step%root_oxygen_reduction_cm_day = self%substep_root_diagnostics%oxygen_reduction_total
+    end if
     allocate(step%macropore_matrix_exchange(n))
     allocate(step%macropore_matrix_exchange_domain(0,n))
     allocate(step%macropore_water_start(0,n),step%macropore_water_end(0,n))

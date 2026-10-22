@@ -614,10 +614,20 @@
   },
   "later_canonical_20261022": {
     "ref": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
-    "status": "INSPECTED_NOT_COMPOSED",
+    "status": "COMPOSED_CURRENT_PRODUCTION_NATIVE_PENDING",
+    "composition_checkpoint_local": "2d48e8a64342a4de44fd82f22181e49882c2f6cd",
     "delta": "PR root-substep and native NUT calendar output. Backend adds immutable optional root request, recalculates sinks at each trial origin, and publishes accepted root diagnostics. The current root-joint source owner adds two successor dispatches.",
     "overlap": ["src/runtime/mod_fmr_serialized_reference_backend.f90", "integration/audits/verify_crop_root_joint.py"],
     "qualification_limit": "The sealed f7c60410 source/native qualification stays valid at that exact candidate; it does not qualify the later shared backend."
   },
-  "next_action": "Keep warm start default OFF. Compose exact later canonical80dbce8d root/backend and calendar-output changes, preserve their current source authorities and requalify the affected current providers before merge. The f7c60410 weather source registration and original FSI35 body are now complete, so do not rediscover or repeat that phase."
+  "source_composition_80db": {
+    "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+    "stage": "PRODUCTION_COMPOSED_NATIVE_AND_SOURCE_QUALIFICATION_PENDING",
+    "qualified": false,
+    "canonically_admitted": false,
+    "test_selection": "benchmarks/performance/PERF01_CANONICAL_RECONCILIATION_20261022.md#later80dbce8d-composition-selection",
+    "runs_prefix": "/tmp/perf01-compose2-",
+    "reader_build_reuse": "/tmp/perf01-compose-{daily,crop,root}-{O0,O2}; exact source/compiler/generated input identity unchanged; execute native consumers anew"
+  },
+  "next_action": "Keep warm start default OFF. Execute the selected current80dbce8d production builds and weather/SOL/root-substep/NUT thermal/calendar proof, preserve exact complete80dbce8d owner authority, then register that bounded source successor. Production merge is already checkpointed. Do not redo the qualified f7c60410 phase or silently inherit it for the later backend."
 }

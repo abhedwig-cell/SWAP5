@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+MC-SOL01 opt-in trial-beginning root stress,22 October2026: the
+[bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) recalculates
+Feddes/empirical oxygen uptake for every full/half/retried Reference water step
+with SWKIMPL=0. Native O0/O2 gives128 daily balances,16 exact restarts,64 exact
+incumbent daily artifacts and real rejection/retry/A/B/A/absent-option identity.
+Current cold, thermal and PR1371 calendar NUT output preservation execute the
+changed backend freshly. Admission is recorded separately in the existing
+`root_joint_successor/substep_feedback_work` record. Daily demand/geometry remain
+prescribed; physical oxygen, heat/snow/age/NUT root composition and full historical
+input/default dispatch remain open. No frozen master capability is promoted.
+
 
 MC-SOL01 actual daily native crop/root/solute composition,22 October2026:
 the [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) executes

@@ -1,5 +1,56 @@
 # Native daily crop/root/solute composition
 
+## Locally qualified opt-in hydraulic-substep successor
+
+The explicit `substep_root_stress` crop option has separate native O0/O2 proof;
+canonical admission is recorded in the existing `substep_feedback_work` child,
+not established by the earlier daily qualification below. Immutable Feddes parameters
+and daily demand/root geometry travel as typed physical forcing. Each full, half
+and retried hydraulic trial evaluates the existing production root process from
+that trial's beginning physical state, before solving water. A second prescribed
+root sink is forbidden. Neither rejected water trials nor rejected chemistry may
+publish committed state. Read-only water-trial diagnostics can survive a chemical
+rejection but never become a successful joint budget or saved generation. Only
+accepted water trace rates are integrated for
+actual uptake and drought/oxygen losses. This adds no restart owner or state layout.
+The worker must clear optional forcing on every interval bind, including invalid
+and absent forcing, to prevent cross-column and A/B/A contamination.
+
+The immutable original `SWAP/swap.f90` calls RootExtraction(2) before BoundBottom
+and the water-step/retry loop. The admitted typed root provider requires SWKIMPL=0;
+the separate original SWKIMPL=1 Newton-iteration root call is not this successor.
+Initial scope is Reference SWKIMPL=0, macro-Feddes, optional empirical oxygen, bare pond and
+static daily root geometry. Compensation, microscopic uptake, physical oxygen,
+salinity, heat/frost, interception, snow, macropores and RFM are excluded. The
+existing daily default and its frozen evidence remain unchanged in meaning.
+Changed shared-backend execution inputs require fresh targeted composition and
+preservation evidence; old byte-bound execution is not current qualification.
+
+The original process's negligible-demand early return is retained. The tested
+native plans use zero demand or demand above that process threshold. No additional
+very-small-demand domain is qualified by these cases.
+
+Qualification:16 physical cases,128 hard daily balances,16 exact fresh-process
+restarts and two rejected mode-changing restarts. All64 admitted daily-mode state,
+endpoint, restart and budget artifacts remain byte exact. The separate real
+Reference driver observes28 accepted steps in a discriminating0.2-day drought
+window; every root sink is checked against the production process and actual
+beginning head/water. Integrated uptake is0.00097616971783802cm versus0.002cm
+potential. Root-rate variation exceeds0.000235cm/day, so this is not a frozen
+daily sink. Chemical rejection, retry/fresh binary identity, A/B/A, invalid
+distribution and absent-option worker clearing pass O0/O2.
+
+All194 current application inputs are checked. The transaction driver reuses193
+same-build provider objects per optimization. Current NUT cold/thermal and the
+concurrent PR1371 calendar/output routes execute the changed backend freshly;
+the latter also compiles its newly admitted adapter. Original thermal arithmetic,
+cold endpoints,12 frozen thermal artifacts, two calendar report schedules,
+80 rejected day trials and independent-process continuations remain exact.
+The strict composed owner is `integration/audits/verify_root_substep.py`.
+Earlier complete assertion bodies and frozen raw proof remain preserved, explicitly
+distinguished from fresh current execution. Full F-CI is NOT_SELECTED_IMPACT and
+highest low-air is NOT_SELECTED_POLICY. This is no full historical migration claim.
+
 Status: locally qualified bounded native daily composition; canonical admission
 is recorded separately in the existing recovery record. Owner: existing MC-SOL01 recovery record,
 simple-crop preparation child, `root_joint_successor`. Baseline63676062.
