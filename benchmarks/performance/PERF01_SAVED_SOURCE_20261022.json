@@ -1,0 +1,76 @@
+{
+  "status": "CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED",
+  "qualified": true,
+  "canonical_input": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
+  "physical_baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+  "source_checkpoint": "b24e368591037bbd46ebd9ef4ee3de64156daa45",
+  "current_source_tree": "7ccbd382f229bf816b2c7b43a2acb77a5d989ca3",
+  "current_controls": 34,
+  "frozen_root_controls": 36,
+  "frozen_harvest_controls": 18,
+  "physical_evidence": {
+    "path": "benchmarks/performance/PERF01_ROOT_COMPOSITION_20261022_EVIDENCE.tar.xz",
+    "sha256": "f6ea403ebe2cb1bd33219d38c02854f239688806a67e0bbdd379e206d253954b",
+    "members": 20045,
+    "bytes": 3505424
+  },
+  "harvest_evidence": {
+    "path": "benchmarks/performance/PERF01_HARVEST_COMPOSITION_20261022.tar.xz",
+    "sha256": "a4d203f687add4323b696120cfde3ce4dd872797f6d1c0219c325119c7cfa84f",
+    "bytes": 142172,
+    "members": 2043
+  },
+  "fsi35_native_inheritance": {
+    "candidate": "48d61aafcc152122de0f6e43b3e1fe3bcddbf0cb",
+    "input_sha256": {
+      "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "62c88eb7012ccd7b2c8c14f98c71ac9ffca0618de2337bf91cc29975540595dd",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "404eaec8088ce384a5dcec4686ac1b04163323304c9caebb9d09dc29580880ba",
+      "src/adapter/mod_b110_production_soil_water_task2.f90": "11fa6fc7d8f5f080c89e7fb014647cbce0067f9dfae8df23f97874f4cc972734",
+      "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "c09975cb3aeaaaa503868e436900e371c41589475d6c362f6d0d72fbda667c4f",
+      "src/adapter/mod_reference_richards_legacy_binding.f90": "5595746a7809d663cafeb2289100ba0617c269bac72cfc215b797c9a4b53021b",
+      "src/legacy/b1_10_port/headcalc.f90": "7c30d1fb4506aecaf5c4c3552f785754ac1e09fdcbfe52b9d9a51fd1a32b7ef9",
+      "src/legacy/b1_10_port/soilwater.f90": "3fe811413bfd823b825d3638e1e5263201b61e87f47faf0bd12da24e660c9139",
+      "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+      "src/runtime/mod_a23bu_worker_execution_context.f90": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+      "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90": "96832f90e498ba501fdebc10bea77a85a1c577d190f184ad2511e2361a1df4b2",
+      "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90": "94f5852d14dfdfbdad80b37335d6eb00d365091efb47953467a89cbf4c1f504f",
+      "src/solver/mod_b110_default_mvg_directional_provider.f90": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+      "src/solver/mod_b110_default_mvg_provider.f90": "33f10ef923a4cb33333a8fd7b4385d189c8abd5179f764772ba50fa47894d389",
+      "src/solver/mod_b110_direct_retention_core.f90": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
+      "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "02c2a4eb5c41c23531989e46a40a2b4cad2e467557ee68c10ccd18897d17b7e8",
+      "src/solver/mod_b110_root_sink_provider.f90": "7679dec5f23ea59ceabd3f5a1f7de65b30728b4ca6999dc33d499665acd0cd2e",
+      "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
+      "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": "5078e73bdfe436ced624d8ca44eaa3451ce78ce4d871f4663a3a1e3cbc963217",
+      "src/solver/mod_fixed_flux_top_boundary_provider.f90": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
+      "src/solver/mod_reference_linear_solver.f90": "99924ba6e42d3ade458333f65d71d48b71e262b570a2381b5350682919ec14eb",
+      "src/solver/mod_reference_richards_state_binding.f90": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+      "src/solver/mod_reference_richards_temporal_indicator.f90": "68b4956d9bf2f2e52ac2623b5f64ce2c0285e8ed7121ca6752212b79e0a72f2a",
+      "src/solver/mod_reference_richards_workspace.f90": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+      "src/solver/mod_soil_water_solver_contract.f90": "4dbe50cf59f782c38556b7a89602bbbeaab6be6e22683152baf9c6a7ce50f700",
+      "src/solver/mod_surface_evaporation_capacity_contract.f90": "9d6ebd186ed612ab0ca150190c5092b3056009954fc691bf2def8830cd46dae2",
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f"
+    },
+    "receipt": "benchmarks/performance/PERF01_WEATHER_SOURCE_ADMISSION_20261022.tar.xz",
+    "compiler_command": "/workspace/scratch/4112bba79f91/compiler-bin/gfortran",
+    "toolchain_sha256": {
+      "/workspace/scratch/4112bba79f91/compiler-bin/gfortran": "1cb7244a5e6e41bdc275b7cad9f1f363d692c61d8cdd270b69f8ab5d8816b330",
+      "/workspace/scratch/4112bba79f91/compiler/usr/bin/x86_64-linux-gnu-gfortran-13": "142861efc95f49e33705852027dae8c2e5382fd1155fcec6116ef973f25d8f84"
+    }
+  },
+  "canonically_admitted": false,
+  "saved_evidence": {
+    "path": "benchmarks/performance/PERF01_SAVED_COMPOSITION_20261022.tar.xz",
+    "sha256": "315dcb73013ad758f842dfdaf56274fe642cac282a5e3f0d0c9878fbab77e211",
+    "bytes": 145584,
+    "members": 1114
+  },
+  "frozen_saved_controls": 19,
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_SAVED_SOURCE_20261022.tar.xz",
+    "sha256": "796cdebce1fe32dc034bf6192cc2900e156dddc0f1c1182ca98459ba648da96d",
+    "bytes": 159516,
+    "members": 36
+  }
+}

@@ -247,3 +247,27 @@ qualification covers precisely the illustrative Reference/default-MvG weather
 column and affected preservation envelope. Warm start remains default OFF;
 the paired experiment was slower. No1e-6, highest-low-air or RossFast expansion
 is selected. Canonical admission requires the safe PR merge and its receipt.
+
+### Final7eb6f10b saved-output composition
+
+Canonical advanced once more with four new saved-harvest/fallow providers,
+their native component/physical tests and one additive harvest-owner dispatch.
+Every input of the executed weather/root/NUT cold/thermal/calendar/harvest
+builds remains exact; no previous scientific result is relabelled for a changed
+provider. Select only the original new saved-residue O0/O2 component comparison
+and saved-output O0/O2 physical/restart/crash driver, reusing the controlled
+cold objects. Expected added cost120seconds. Execute the complete unmodified
+7eb6f10b source owner and19 controls in an exact worktree. Keep every incumbent
+assertion body, add one exact dispatch for this owner, then rerun the current
+source and FSI35 preflight gates. Preserve the preceding0be6037b receipt intact.
+
+This selection completed:6808 literal checks and234 reports per optimization,
+12 fresh phase roundtrips,12 phase/fallow progressions, four fresh fallow
+continuations,72 invalid-generation rejections, four identity rejections and
+four actual process crashes. All five current owning entrypoints and34 current
+source/evidence rejection controls pass. Original FSI35 source preflight, docs
+source checks and strict MkDocs pass. Immutable current saved-output and source
+receipts are `PERF01_SAVED_COMPOSITION_20261022` and
+`PERF01_SAVED_SOURCE_20261022`; their JSON files pin the complete inventories.
+No earlier numerical provider, selected physical output or warm-start timing
+claim changed in this final additive composition.

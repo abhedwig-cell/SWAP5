@@ -1,5 +1,6 @@
 """Retain completed current owner/source gates separately from native archives."""
 import hashlib
+import argparse
 import io
 import json
 from pathlib import Path
@@ -8,6 +9,11 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 STEM = ROOT / 'benchmarks/performance/PERF01_COMPOSED_SOURCE_20261022'
+parser = argparse.ArgumentParser()
+parser.add_argument('--saved', action='store_true')
+args = parser.parse_args()
+if args.saved:
+    STEM = ROOT / 'benchmarks/performance/PERF01_SAVED_SOURCE_20261022'
 paths = {
     'owner.json': '/tmp/perf01-current80-owner.json',
     'owner.stderr': '/tmp/perf01-current80-owner.stderr',
@@ -21,7 +27,7 @@ files = {p: Path(v).read_bytes() for p, v in paths.items()}
 owner = json.loads(files['owner.json'])
 assert owner['qualified'] and owner['current_harvest_output']['qualified']
 controls = json.loads(files['controls.json'])
-assert len(controls) == len(set(controls)) == 33
+assert len(controls) == len(set(controls)) == (34 if args.saved else 33)
 assert all(r['qualified'] and r['returncode'] == 0 for r in json.loads(files['owning-entrypoints.json']))
 assert all(not v for p, v in files.items() if p.endswith('.stderr'))
 assert b'FCI93_FIXED_K_EXACT_BOUNDED_POSTIMAGE=PASS' in files['fsi35-source.stdout']
@@ -38,6 +44,9 @@ summary = dict(status='CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED', qualified=
     current_controls=len(controls), frozen_root_controls=36, frozen_harvest_controls=18,
     physical_evidence=status['evidence'], harvest_evidence=status['harvest_evidence'],
     fsi35_native_inheritance=status['fsi35_native_inheritance'], canonically_admitted=False)
+if args.saved:
+    summary.update(saved_evidence=status['saved_evidence'], frozen_saved_controls=19)
+    assert owner['current_saved_output']['qualified']
 files['SUMMARY.json'] = (json.dumps(summary, indent=2) + '\n').encode()
 files['MANIFEST.json'] = (json.dumps({p: sha(v) for p, v in sorted(files.items())}, indent=2) + '\n').encode()
 target = STEM.with_suffix('.tar.xz')

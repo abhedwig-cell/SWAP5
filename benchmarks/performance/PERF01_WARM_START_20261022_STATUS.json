@@ -2,7 +2,7 @@
   "workstream": "PERF01 / HY / RT",
   "work_unit": "WEATHER_WARM_START",
   "baseline": "3e23aa83de6637a8460e080e023abde89bca8127",
-  "canonical_observed": "0be6037b670fdd3cb004ff616b0925291ae56728",
+  "canonical_observed": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
   "status": "CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED_DEFAULT_OFF",
   "implemented": true,
   "first_prototype": {
@@ -21,7 +21,7 @@
   "default_off": true,
   "tested_production_checkpoint": "10f8d6b6",
   "benchmark_checkpoint": "4cc6269a",
-  "bounded_native_qualification": "PASS: current0be6037b composition, all selected source/native preservation and docs gates. Canonical merge pending.",
+  "bounded_native_qualification": "PASS: current7eb6f10b composition, all selected source/native preservation and docs gates. Canonical merge pending.",
   "result": "benchmarks/performance/PERF01_WARM_START_20261022_RESULT.md",
   "summary": "benchmarks/performance/PERF01_WARM_START_20261022_EVIDENCE.json",
   "verifier": "benchmarks/performance/verify_perf01_warm_start.py",
@@ -635,7 +635,7 @@
     "qualification_limit": "The sealed f7c60410 source/native qualification stays valid at that exact candidate; it does not qualify the later shared backend."
   },
   "source_composition_80db": {
-    "baseline": "0be6037b670fdd3cb004ff616b0925291ae56728",
+    "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
     "physical_baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
     "stage": "CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED",
     "qualified": true,
@@ -652,9 +652,16 @@
       "bytes": 142172,
       "members": 2043
     },
+    "saved_evidence": {
+      "path": "benchmarks/performance/PERF01_SAVED_COMPOSITION_20261022.tar.xz",
+      "sha256": "315dcb73013ad758f842dfdaf56274fe642cac282a5e3f0d0c9878fbab77e211",
+      "bytes": 145584,
+      "members": 1114
+    },
     "source_delta": {
       "integration/audits/verify_crop_root_joint.py": "M",
       "integration/audits/verify_nut_harvest_output.py": "M",
+      "integration/audits/verify_nut_saved_output.py": "M",
       "integration/audits/verify_root_substep.py": "M",
       "integration/performance/authority.py": "M",
       "integration/performance/verify_weather_composed_successor.py": "A",
@@ -682,10 +689,11 @@
     },
     "postimages": {
       "integration/audits/verify_crop_root_joint.py": "99b8cfd0a4dcfd224913abad8e5b4a793b4b6aa75d1dc78b66cc562bd0d18d88",
-      "integration/audits/verify_nut_harvest_output.py": "61423a914d45f049460bd6c0601993750418fd5a76ab5c48a80d1114ee4f04f2",
+      "integration/audits/verify_nut_harvest_output.py": "99dd924dbeef9b6166cead06c59ad5304c28264710adb8f3434bbcafb236844b",
+      "integration/audits/verify_nut_saved_output.py": "5fe206bdf2b9af9a37370552bd026882a0c6c8b2f90e3a26ba93a6b6ee60af14",
       "integration/audits/verify_root_substep.py": "57681481178f422752036cc83490c84fc1cc00d3f6fb2913b4aba4edf241981f",
       "integration/performance/authority.py": "37a965786751d3fed443be17499e5809b47153254a054b4808db9145deb16d73",
-      "integration/performance/verify_weather_composed_successor.py": "44dd5d5d4768d1608fd1469077dcfa1b8c70d62003e85d88cb3474f8d162c0c8",
+      "integration/performance/verify_weather_composed_successor.py": "d1896255c3b85362c4a793b21ed846732d23350ff857bd78dbd193d39530c352",
       "integration/performance/verify_weather_surface_successor.py": "ef749363b43f3c22b3d6fe4a1adb1334589496d460e8f08fd11ede10de952682",
       "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "404eaec8088ce384a5dcec4686ac1b04163323304c9caebb9d09dc29580880ba",
       "src/adapter/mod_reference_richards_legacy_binding.f90": "5595746a7809d663cafeb2289100ba0617c269bac72cfc215b797c9a4b53021b",
@@ -1113,7 +1121,15 @@
       "integration/audits/verify_nut_calendar_output.py": "e317ae3a01f7da3491e4191d3b36694bbfde432e2750c32ef9c454239cc8e0bb",
       "src/adapter/mod_crop_soil_n_output_harvest.f90": "b4bf567e73e79619736d12bf5464e4954ee16e375b4886a773116ccc64c091c1",
       "tests/nut-output/harvest_output_proof.inc": "fe326cb741cd5339e5f8a9ee343c0d20cc7fcf9fee6de6d41fd7bacdb09282f4",
-      "tests/nut-output/run_harvest_output.py": "78cecb27a5b2a94f30875e38ba30ea0eb21755dd10baa59fdd9b294a3c48e7c0"
+      "tests/nut-output/run_harvest_output.py": "78cecb27a5b2a94f30875e38ba30ea0eb21755dd10baa59fdd9b294a3c48e7c0",
+      "src/adapter/mod_crop_ext_saved_residue.f90": "3e99469f342a88291424b23b1bb346fb442123f144d83d4d23272cbfe4aa2498",
+      "tests/nut-output/test_saved_residue.f90": "20231176d177808f00de97c89fc8d9930d78dc4513530b48c3a525e8198deea5",
+      "tests/nut-output/run_saved_residue.py": "70bf9ac56107746ea53c723e7df8bee3220dd992af662b4063e1a1930e9a0665",
+      "src/adapter/mod_crop_soil_n_saved_harvest.f90": "12d35afd722955fb16ab606d5d6e2afe0512c8f21f455b6d82cf99cb64bc665c",
+      "src/adapter/mod_crop_n_saved_generation.f90": "cc35051bfa08aeb41f8c597c66d841fe95da8807da900e393e7b3e676b89d9dd",
+      "src/adapter/mod_crop_soil_n_saved_output.f90": "8b48960ce5c23e17b490a3816274db2ef58dd8f3ac883b11363a4b57e7562515",
+      "tests/nut-output/run_saved_output.py": "1bf28da6b39409ffc9031a46f3fd2057f146ad1a436a30ea7622f7ca6c40ab78",
+      "tests/nut-output/saved_output_proof.inc": "8846146b98b99c2b364d1283bec3fd78bb923143c169824bb6895dab7def3d9c"
     },
     "historical_controller": {
       "path": "integration/audits/verify_root_substep.py",
@@ -1122,6 +1138,7 @@
     },
     "frozen_owner_controls": 36,
     "frozen_latest_owner_controls": 18,
+    "frozen_saved_owner_controls": 19,
     "frozen_fsi35_successors": {
       "src/solver/mod_b110_default_mvg_provider.f90": {
         "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
@@ -1195,14 +1212,14 @@
     "test_selection": "benchmarks/performance/PERF01_CANONICAL_RECONCILIATION_20261022.md",
     "warm_start_default": false,
     "source_receipt": {
-      "path": "benchmarks/performance/PERF01_COMPOSED_SOURCE_20261022.tar.xz",
-      "sha256": "e13b734f49cc9b71404c6a2df042969c34e74dc6a7468f8ecbcc8af78935b4cf",
-      "bytes": 157352,
-      "members": 35
+      "path": "benchmarks/performance/PERF01_SAVED_SOURCE_20261022.tar.xz",
+      "sha256": "796cdebce1fe32dc034bf6192cc2900e156dddc0f1c1182ca98459ba648da96d",
+      "bytes": 159516,
+      "members": 36
     },
-    "source_controls": 33,
-    "owning_entrypoints": "SOL/crop, root-substep, harvest, NUT thermal PASS",
+    "source_controls": 34,
+    "owning_entrypoints": "SOL/crop, root-substep, harvest, NUT thermal, saved-output PASS",
     "fsi35_current_source": "PASS"
   },
-  "next_action": "Publish the exact qualified tree, verify live canonical and PR mergeability, safely admit the bounded repair, then record actual merge and source identities. Keep warm start OFF."
+  "next_action": "Safely merge the exact published qualified tree and record the actual canonical source/admission identities. Warm start stays OFF."
 }

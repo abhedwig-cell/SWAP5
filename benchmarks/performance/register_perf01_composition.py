@@ -18,6 +18,9 @@ harvest = json.loads((ROOT / 'benchmarks/performance/PERF01_HARVEST_COMPOSITION_
 inputs = dict(physical['current_inputs'])
 controller = inputs.pop(guard['ROOT_PARENT'])
 inputs.update(json.loads(Path('/tmp/perf01-compose2-nut-harvest/result.json').read_text())['input_sha256'])
+saved = json.loads((ROOT / 'benchmarks/performance/PERF01_SAVED_COMPOSITION_20261022.json').read_text())
+for prefix in ['component', 'physical']:
+    inputs.update(json.loads(Path('/tmp/perf01-compose3-saved-' + prefix + '/result.json').read_text())['input_sha256'])
 for p, h in inputs.items():
     assert sha((ROOT / p).read_bytes()) == h, p
 delta = {line.split('\t')[1]: line.split('\t')[0] for line in
@@ -38,12 +41,12 @@ status[guard['KEY']] = dict(
     baseline=guard['BASE'], physical_baseline=guard['PHYSICAL_BASE'],
     stage='CURRENT_NATIVE_PASS_SOURCE_QUALIFICATION_PENDING', qualified=False, canonically_admitted=False,
     evidence=dict(path='benchmarks/performance/PERF01_ROOT_COMPOSITION_20261022_EVIDENCE.tar.xz', **index),
-    harvest_evidence=harvest['evidence'], source_delta=delta,
+    harvest_evidence=harvest['evidence'], saved_evidence=saved['evidence'], source_delta=delta,
     postimages={p: sha((ROOT / p).read_bytes()) for p in delta},
     executed_input_sha256=inputs,
     historical_controller=dict(path=guard['ROOT_PARENT'], sha256=controller,
         scope='Only the noncompiled authority controller is projected for immutable physical-capsule replay; live original owner bodies are pinned by exact additive projection.'),
-    frozen_owner_controls=36, frozen_latest_owner_controls=18,
+    frozen_owner_controls=36, frozen_latest_owner_controls=18, frozen_saved_owner_controls=19,
     frozen_fsi35_successors=previous['frozen_fsi35_successors'],
     fsi35_native='INHERITED_TERMINAL_O0_O2_IDENTICAL_27_PROVIDERS_NATIVE_BODY_COMPILER',
     fsi35_native_inheritance=dict(candidate=candidate, input_sha256=native_hashes,

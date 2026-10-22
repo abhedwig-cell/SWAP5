@@ -11,7 +11,7 @@ import subprocess
 import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BASE = '0be6037b670fdd3cb004ff616b0925291ae56728'
+BASE = '7eb6f10baabae2f26af168c59bf63459fa0a3516'
 PHYSICAL_BASE = '80dbce8d325e9197a53b7189ad184bcdf91f6f5c'
 STATUS = 'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json'
 KEY = 'source_composition_80db'
@@ -19,6 +19,7 @@ SELF = 'integration/performance/verify_weather_composed_successor.py'
 PARENT = 'integration/audits/verify_crop_root_joint.py'
 ROOT_PARENT = 'integration/audits/verify_root_substep.py'
 HARVEST_PARENT = 'integration/audits/verify_nut_harvest_output.py'
+SAVED_PARENT = 'integration/audits/verify_nut_saved_output.py'
 REGISTRY = 'integration/performance/authority.py'
 RUNNER = 'tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'
 MANIFEST = 'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json'
@@ -63,7 +64,7 @@ def hook(name, arguments='', indent=' '):
 
 def projection(path):
     text = subprocess.check_output(['git', 'show', BASE + ':' + path], cwd=ROOT, text=True)
-    if path in [PARENT, ROOT_PARENT, HARVEST_PARENT]:
+    if path in [PARENT, ROOT_PARENT, HARVEST_PARENT, SAVED_PARENT]:
         for entry, args in [('source', 'reader,changed'), ('verify', ''), ('self_test', '')]:
             offset = text.index('\n', text.index('def ' + entry + '(')) + 1
             text = text[:offset] + hook(entry, args) + text[offset:]
@@ -110,7 +111,7 @@ def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
     require(not any(p.startswith('reference/') for p in delta), 'changed original reference')
     for p, h in r['postimages'].items():
         require(sha(reader(p)) == h, 'weather successor postimage ' + p)
-    for p in [PARENT, ROOT_PARENT, HARVEST_PARENT, REGISTRY, RUNNER]:
+    for p in [PARENT, ROOT_PARENT, HARVEST_PARENT, SAVED_PARENT, REGISTRY, RUNNER]:
         require(reader(p) == projection(p), 'original owner assertions changed ' + p)
     for p, h in r['executed_input_sha256'].items():
         require(sha(reader(p)) == h, 'weather current compiled input ' + p)
@@ -200,8 +201,25 @@ def verify():
     frozen_controls = json.loads(hf['FROZEN_LATEST_CONTROLS.json'])
     require(frozen_latest['qualified'] and frozen_latest['status'] == 'HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED' and
             len(frozen_controls) == 18, 'complete frozen latest harvest owner')
+    saved_record = record()['saved_evidence']
+    raw = (ROOT / saved_record['path']).read_bytes()
+    require(sha(raw) == saved_record['sha256'] and len(raw) == saved_record['bytes'], 'current saved-output receipt identity')
+    with tarfile.open(fileobj=io.BytesIO(raw), mode='r:xz') as t:
+        ms = t.getmembers()
+        require(len(ms) == saved_record['members'] == len({m.name for m in ms}) and
+                all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in ms), 'saved receipt inventory')
+        sf = {m.name: t.extractfile(m).read() for m in ms}
+    inventory = json.loads(sf.pop('MANIFEST.json'))
+    require(set(sf) == set(inventory) and all(sha(sf[p]) == h for p, h in inventory.items()), 'saved receipt bytes')
+    saved = runpy.run_path(str(ROOT / SAVED_PARENT))['validate'](sf)
+    for prefix in ['component', 'physical']:
+        for p, h in json.loads(sf[prefix + '/result.json'])['input_sha256'].items():
+            require(sha((ROOT / p).read_bytes()) == h, 'current saved executed input ' + p)
+    frozen_saved = json.loads(sf['FROZEN_LATEST.json'])
+    require(frozen_saved['qualified'] and frozen_saved['status'] == 'SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED' and
+            len(json.loads(sf['FROZEN_LATEST_CONTROLS.json'])) == 19, 'complete frozen saved-output owner')
     # All earlier owner fields remain available to their existing callers.
-    return {**prior, 'weather_successor': current, 'current_harvest_output': harvest,
+    return {**prior, 'weather_successor': current, 'current_harvest_output': harvest, 'current_saved_output': saved,
             'frozen_latest_owner': '0be6037b /18 controls', 'current_source_tree': git('rev-parse', 'HEAD:src'),
             'source_tree': git('rev-parse', 'HEAD:src'), 'qualified': True,
             'qualification_scope': 'CURRENT_BOUNDED_WEATHER_SOL_ROOT_SUBSTEP_NUT_CALENDAR_COMPOSITION',
