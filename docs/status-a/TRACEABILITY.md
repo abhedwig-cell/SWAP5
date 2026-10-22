@@ -369,6 +369,16 @@ whose complete tree is exactly the published qualified tree. Actual merge and
 postmerge source verification are recorded in
 `benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json`.
 
+The subsequent generated-executable study is owned separately by
+`benchmarks/performance/PERF01_NEWTON_WORK_20261022_STATUS.json`, its plan,
+result and sealed raw evidence. Three serial alternating pairs per rainfall
+show37.9% lower wet4 and16.5% lower1x median CPU with unchanged acceptance
+criteria; checked O0/O2, wet-day reconstruction and original direct corner/
+rollback assertions pass. This qualifies bounded research only. The early
+failed-line-search policy is not a production default or admitted general
+solver change; the repaired production source and warm-start default stay
+unchanged. Research evidence integration does not promote a master capability.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original
