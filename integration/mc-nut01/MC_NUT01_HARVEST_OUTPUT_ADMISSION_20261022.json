@@ -102,5 +102,21 @@
   "scope": "Transactional existing harvest/incorporation/observation-retirement phases saved with unchanged physical/diagnostic/report-history generation; no new day or diagnostic quantity.",
   "full_harvest_day_reporting": false,
   "full_mc_nut01_closed": false,
-  "master_rows_promoted": false
+  "master_rows_promoted": false,
+  "master_receipt": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
+  "master_checks": {
+    "scoped_bounded_reachability": 9,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "all_queues_exact": true,
+    "old_bounded_receipts_exact": true,
+    "integrity": "PASS",
+    "inheritance_controls": 20,
+    "source_docs": "PASS",
+    "strict_docs": "PASS",
+    "full_master_qualified": false
+  },
+  "final_metadata_owner": "PASS",
+  "final_metadata_controls": 18
 }

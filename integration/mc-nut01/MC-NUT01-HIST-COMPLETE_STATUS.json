@@ -5030,7 +5030,7 @@
       "contract": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
       "scope": "Transactional existing harvest/incorporation/observation-retirement phases saved with unchanged physical/diagnostic/report-history generation; no new day or diagnostic quantity.",
       "test_selection": "Fresh current cold O0/O2 bootstrap expected360s, thermal and phase drivers expected150s; actual accepted-state/codec composition requires roughly331 providers. Same-session hashed provider reuse; no full730day,broadFCI,highestlowair,newRossFast,aquifer.",
-      "next_action": "Register bounded harvest-phase generation receipt on existing master without row promotion. Saved next-day harvest return diagnostics and fallow/rotation output need a separately traced contract; no synthetic diagnostic day or full migration closure.",
+      "next_action": "Existing harvest-phase generations are admitted and registered on the existing master. Next substantive output contract must retain source-faithful saved next-day harvest-return diagnostics across compact retirement/fallow; the current17-value output state does not separately retain those organ inputs. Do not substitute harvest exports/current pools or fabricate a diagnostic day. General/default orchestration and active-crop negative allocation remain open.",
       "evidence_index": "integration/audits/evidence/mc-nut01-harvest-output-20261022/INDEX.json",
       "evidence_index_sha256": "cc4fb864f17c6b1a0de1d2ed7805f070460c84a86507cc1d86344251f7c6de7c",
       "qualified_input_sha256": {
@@ -5487,7 +5487,9 @@
       "owning_controls": 18,
       "full_harvest_day_reporting": false,
       "full_mc_nut01_closed": false,
-      "admission_receipt": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json"
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json",
+      "master_receipt": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
+      "master_rows_promoted": false
     }
   }
 }
