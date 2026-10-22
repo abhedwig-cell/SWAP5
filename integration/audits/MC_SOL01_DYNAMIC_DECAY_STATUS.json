@@ -4001,7 +4001,8 @@
                 "status": "PROPOSED_PREPARATION_O0_O2_PASS_ANNUAL_TRANSPORT_BLOCKED_NOT_ADMITTED",
                 "positive_transport_successor": {
                   "baseline": "e387b89d382afaee325f3cf2c2760f0713f258e4",
-                  "status": "IMPLEMENTED_FOCUSED_O0_O2_PASS_ACTUAL_DAY229_REPLAY_PASS_ANNUAL_PENDING",
+                  "status": "CONSERVATIVE_STORAGE_IMPLEMENTED_FOCUSED_O0_O2_PASS_CURRENT_REBUILD",
+                  "retained_implicit_failure": "The first implicit candidate passes actual day229 replay but all four annual compound runs fail their initial short control after668 accepted substeps:day residual4.69e-12, process0, existing route mass certificate exceeded. Sources and logs retained. Conservative primary-amount storage replaces accumulated inverse-recompute drift; no tolerance changes.",
                   "focused_result": "36 high-Peclet/nonlinear positivity and conservation cases per optimization, independent2x2 linear oracle,6 source/sink/decay cases and3 analytic advection meshes. Analytic L1 error decreases1.34460,0.85810,0.50982 for20/40/80cells; this first-order policy has material numerical diffusion.",
                   "failed_day_replay": "O0/O2:actual committed day228 physical states reinitialized with the new explicit policy in a test-only driver; day229 succeeds with hard water/solute mass. Public cross-policy restart conversion remains forbidden.",
                   "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md#proposed-positive-transport-numerical-policy",
@@ -4011,6 +4012,7 @@
                   "test_selection": {
                     "focused": "Real6-provider process O0/O2, independent linear implicit oracle, positivity/mass, source/sink/nonlinear, invalid/nonmutation/Reference preservation; expected60s",
                     "build": "Rebuild current194 providers O0/O2 because shared forcing type changes; expected120s; no unsafe old-object reuse",
+                    "default_preservation": "Current original root daily/transaction controls, cold/thermal/calendar NUT output with current rebuilt physical providers; actual unchanged Reference endpoints and all existing assertions required. Expected180s cold build and120s linked controls. Frozen numeric ancestry is historical until these current runs complete.",
                     "annual": "Actual original blocked coarse/refined year and cross-year with opt-in implicit upwind, unchanged physical inputs and tolerances; expected3600s; source exact Reference prefixes retained",
                     "full_fci": "PENDING_STABLE_CANDIDATE_OWNER_RECONCILIATION",
                     "highest_low_air": "NOT_SELECTED_POLICY"

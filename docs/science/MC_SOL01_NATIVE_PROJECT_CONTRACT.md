@@ -128,3 +128,14 @@ is measured separately. Expected focused feedback60s; checked builds120s; annual
 composition up to3600s (selected to test the actual blocked physical route).
 Any admission additionally requires current owning preservation and F-CI impact
 reconciliation. Highest low-air remains NOT_SELECTED_POLICY; RossFast is unused.
+
+The first implicit attempt resolves the retained day229 but the original short
+fixture exposes accumulated inversion roundoff:after668 accepted chemical steps
+the day residual4.69e-12 exceeds its existing mass-scaled certificate. Retain this
+failed attempt. Total finite-volume amount must be primary. After the implicit
+concentrations converge, compute each face once, update conservative cell amounts
+and use the physical Freundlich inverse for their equilibrium split. Normalize
+its positive dissolved/sorbed fractions onto that exact amount, recompute C from
+dissolved amount and theta, and require the existing2048eps equilibrium identity.
+This removes repeated inversion-roundoff mass creation without changing the
+physical balance or its tolerance. A negative conservative amount still rejects.

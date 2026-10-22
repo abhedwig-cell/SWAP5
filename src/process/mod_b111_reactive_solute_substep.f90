@@ -262,6 +262,7 @@ contains
     real(real64)::a(size(f%theta)-1),b(size(f%theta)-1),c(size(f%theta)),diag(size(f%theta))
     real(real64)::initial(size(f%theta)),source(size(f%theta)),rate(size(f%theta)),drain(size(f%theta))
     real(real64)::pivot(size(f%theta)),right(size(f%theta)),factor
+    real(real64)::face(size(f%theta)-1),amount,dissolved_fraction,physical_amount
     real(real64)::rhs,thetav,diffus,q,g,residual,local_scale,tol,largest,dt
     integer::n,i,k,sweep
     next=m;next_s=s;r=b111_reactive_solute_substep_receipt_t()
@@ -359,11 +360,43 @@ contains
     end if
     next%concentration_mg_cm3=c;next_s%pond_mass=pond%mass_after
     r%pond_to_soil_mg_cm2=pond%soil_transfer;r%runoff_output_mg_cm2=pond%runoff_output
+    face=a*c(:n-1)+b*c(2:n)
     do i=1,n
       call b111_sorption_storage_from_concentration(f%theta(i),f%bulk_density(i),f%kf(i), &
         f%cref_mg_cm3,f%frexp,c(i),storage)
-      next%mass_mg_cm2(i)=storage%dissolved_density*f%dz_cm(i)
-      next_s%sorbed_matrix_mass(i)=storage%sorbed_density*f%dz_cm(i)
+      ! Total amount, not an approximate inversion's recomputed density, is
+      ! the primary finite-volume state. Each internal face occurs once with
+      ! opposite signs. The final equilibrium split preserves that amount.
+      amount=source(i)-dt*(rate(i)*storage%total_density*f%dz_cm(i)+ &
+        (f%tscf*f%root_sink_cm_day(i)+drain(i))*c(i))
+      if(i>1)amount=amount-dt*face(i-1)
+      if(i<n)amount=amount+dt*face(i)
+      if(i==n)amount=amount+dt*min(q,0.0_real64)*c(n)
+      if(amount<0.0_real64)then
+        next=m;next_s=s;r%status=B111_REACTIVE_NEGATIVE;return
+      end if
+      call b111_sorption_partition_total(f%theta(i),f%bulk_density(i),f%kf(i), &
+        f%cref_mg_cm3,f%frexp,amount/f%dz_cm(i),c(i),partition)
+      if(partition%status/=B111_SORP_OK)then
+        next=m;next_s=s;r%status=B111_REACTIVE_PARTITION;return
+      end if
+      ! Normalized positive physical fractions remove only inversion roundoff.
+      ! Below the inherited inversion floor a reactive trace amount remains
+      ! in the sorbed owner (within the same absolute equilibrium certificate).
+      dissolved_fraction=0.0_real64
+      if(partition%total_density>0.0_real64) &
+        dissolved_fraction=partition%dissolved_density/partition%total_density
+      if(f%bulk_density(i)*f%kf(i)==0.0_real64)dissolved_fraction=1.0_real64
+      next%mass_mg_cm2(i)=amount*dissolved_fraction
+      next_s%sorbed_matrix_mass(i)=amount-next%mass_mg_cm2(i)
+      next%concentration_mg_cm3(i)=next%mass_mg_cm2(i)/(f%theta(i)*f%dz_cm(i))
+      call b111_sorption_storage_from_concentration(f%theta(i),f%bulk_density(i),f%kf(i), &
+        f%cref_mg_cm3,f%frexp,next%concentration_mg_cm3(i),partition)
+      physical_amount=partition%sorbed_density*f%dz_cm(i)
+      if(abs(physical_amount-next_s%sorbed_matrix_mass(i))> &
+        2048.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(physical_amount),next_s%sorbed_matrix_mass(i)))then
+        next=m;next_s=s;r%status=B111_REACTIVE_STATE_MISMATCH;return
+      end if
       r%decay_output_mg_cm2=r%decay_output_mg_cm2+dt*rate(i)*storage%total_density*f%dz_cm(i)
       r%root_output_mg_cm2=r%root_output_mg_cm2+dt*f%tscf*f%root_sink_cm_day(i)*c(i)
       r%drain_output_mg_cm2=r%drain_output_mg_cm2+dt*drain(i)*c(i)
