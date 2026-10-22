@@ -23,7 +23,12 @@ def parent_projection(path=PARENT):
  indent='    ' if path==PARENT else ' '
  for name,args in [('source','reader,changed'),('verify',''),('self_test','')]:
   offset=text.index('\n',text.index('def '+name+'('))+1
-  hook=indent+"if "+condition+":\n"+indent*2+"return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"
+  call="__import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")"
+  hook=indent+"if "+condition+":\n"
+  if path==PARENT:hook+=indent*2+"return "+call+"\n"
+  elif name=='source':hook+="  "+call+"\n  return record(reader)\n"
+  elif name=='verify':hook+="  composed="+call+"\n  return dict(composed['current_concurrent_nut'],composed_owner=composed)\n"
+  else:hook+="  controls="+call+"\n  return dict(status='THERMAL_OUTPUT_GUARD_CONTROLS_PASS',count=len(controls),controls=controls,predecessor_controls=27,thermal_predecessor_controls=21,composed_owner='integration/audits/verify_crop_root_joint.py')\n"
   text=text[:offset]+hook+text[offset:]
  return text.encode()
 def frozen_physical_reader(path):

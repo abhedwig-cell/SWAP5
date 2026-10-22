@@ -24,7 +24,8 @@ def projection():
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor']['etref_successor']['simple_crop_preparation_successor'].get('root_joint_successor',{}):
-  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['source'](reader,changed)
+  __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['source'](reader,changed)
+  return record(reader)
  r=record(reader);require(r['baseline']==BASE,'thermal baseline')
  for p,h in r['postimages'].items():require(sha(reader(p))==h,'thermal postimage '+p)
  for p,h in r['qualified_input_sha256'].items():require(sha(reader(p))==h,'executed thermal input '+p)
@@ -102,11 +103,13 @@ def validate(f):
  return dict(status='THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS',qualified=True,invalids_per_opt=17,crash_boundaries=4,old_cold_exact=True,full_mc_nut01_closed=False)
 def verify():
  if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor']['etref_successor']['simple_crop_preparation_successor'].get('root_joint_successor',{}):
-  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['verify']()
+  composed=__import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['verify']()
+  return dict(composed['current_concurrent_nut'],composed_owner=composed)
  source();return validate(capsule())
 def self_test():
  if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor']['etref_successor']['simple_crop_preparation_successor'].get('root_joint_successor',{}):
-  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['self_test']()
+  controls=__import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['self_test']()
+  return dict(status='THERMAL_OUTPUT_GUARD_CONTROLS_PASS',count=len(controls),controls=controls,predecessor_controls=27,thermal_predecessor_controls=21,composed_owner='integration/audits/verify_crop_root_joint.py')
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()

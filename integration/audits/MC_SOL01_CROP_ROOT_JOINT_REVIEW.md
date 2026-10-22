@@ -73,3 +73,7 @@ assertions. Both owning entrypoints receive exact additive handoffs to the
 composed crop guard; all earlier assertion bodies remain byte-preserved.
 No physical rerun is selected for the crop column because every actual compiled
 input, forcing, driver, oracle, compiler flag and recorded result is unchanged.
+
+The NUT entrypoint retains its component status and dictionary return schemas for
+source, verification and controls; the complete composed result is explicit.
+Its current39 controls do not overwrite the separately frozen21-control receipt.
