@@ -38,6 +38,16 @@ root uptake, coupled crop restart and full historical/default orchestration rema
 open. Existing MC-SOL01 recovery ownership records admission separately; no master
 capability disposition changes.
 
+PERF01 wet4 saturation repair (22 October2026): PR1361 is admitted at
+`0e3cc542e2a01b778b8ad8b25e20b0e29f3961f4`. The bounded97-day1x/4x
+Reference/default-MvG weather proof and current SOL/crop/root/NUT output
+preservation pass O0/O2 with unchanged hard balance, rollback and restart gates.
+The optional warm start remains default OFF because the paired experiment was
+slower. Source/native and actual-merge authority is
+`benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json`;
+the general surface redesign and failed-Newton cost remain research. No master
+capability disposition changes.
+
 MC-NUT01 explicit native output startup,22 October2026: the
 [bounded successor](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md) supports
 SNM TRUE through an output-aware startup API and the admitted heat-off/nonharvested

@@ -60,6 +60,10 @@ module mod_soil_water_solver_contract
   end type soil_water_physical_config_t
 
   type, public :: soil_water_numerical_config_t
+     ! Default OFF: consistent endpoint K(h) derivative for free drainage.
+     logical :: consistent_provider_conductivity = .false.
+     ! Numerical guess only; physical base and all acceptance gates stay fixed.
+     logical :: reuse_trial_head = .false.
      integer :: max_iterations = 0
      integer :: max_backtracking = 0
      integer :: conductivity_implicit_mode = 0
@@ -84,6 +88,8 @@ module mod_soil_water_solver_contract
      real(real64) :: runoff_depth = 0.0_real64
      real(real64) :: net_potential_surface_flux = 0.0_real64
      real(real64) :: macropore_pond_requested_lateral_cm = 0.0_real64
+     logical :: top_flux_derivative_available = .false.
+     real(real64) :: top_flux_dpressure_head_top = 0.0_real64
      logical :: surface_head_derivative_available = .false.
      real(real64) :: surface_head_dpressure_head_top = 0.0_real64
      logical :: carries_surface_mass_terms = .false.
@@ -160,6 +166,7 @@ module mod_soil_water_solver_contract
   end type soil_water_solve_request_t
 
   type, public :: soil_water_solver_diagnostics_t
+     integer :: headcalc_calls = 0
      integer :: nonlinear_iterations = 0
      integer :: jacobian_builds = 0
      integer :: linear_solves = 0

@@ -22,6 +22,8 @@ def projection():
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['source'](reader,changed)
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'saved baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
  require(reader(PARENT)==projection(),'original harvest owner assertions')
@@ -103,6 +105,8 @@ def validate(f):
  return dict(qualified=True,status='SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED',literal_checks_per_optimization=6808,literal_reports_per_optimization=234,independent_phase_roundtrips=12,independent_phase_fallow_progressions=12,fresh_fallow_progressions=4,invalid_generations=36,invalid_live_generations=36,identity_rejections=4,process_crashes=4,incumbent_physics_unchanged=True,full_mc_nut01_closed=False)
 def verify():
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['verify']()
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['verify']()
  source();r=validate(capsule());old=runpy.run_path(str(ROOT/PARENT));r['incumbent_harvest']=old['validate'](old['capsule']())
  root=runpy.run_path(str(ROOT/'integration/audits/verify_root_substep.py'));prior=root['validate'](root['capsule']())
  r['incumbent_root_substep']=prior
@@ -110,6 +114,8 @@ def verify():
  return r
 def self_test():
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['self_test']()
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()

@@ -3,10 +3,14 @@ module mod_reference_richards_legacy_binding
   use, intrinsic :: iso_fortran_env, only: int64, real64
   use mod_soil_water_solver_contract, only: soil_water_solver_t, soil_water_solver_workspace_base_t, &
        soil_water_solve_request_t, soil_water_solve_result_t, soil_water_top_boundary_result_t, &
+       soil_water_numerical_config_t, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
        SW_SOLVE_CONVERGED, SW_SOLVE_RETRY_ADVISED, SW_SOLVE_FAILED, SW_TOP_BOUNDARY_AVAILABLE, &
        SW_TEMPORAL_INDICATOR_FAILED, validate_soil_water_request, evaluate_resistive_bottom_boundary
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t
+  use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
+  use mod_b110_source_sink_provider, only: b110_source_sink_provider_t
+  use mod_b110_root_sink_provider, only: b110_root_sink_provider_t
   use mod_reference_richards_workspace, only: reference_richards_workspace_t, ensure_reference_workspace_shape, &
        prepare_reference_tridag_factorization_capture, &
        release_reference_tridag_factorization_capture
@@ -37,6 +41,14 @@ module mod_reference_richards_legacy_binding
      real(real64) :: irrigation_rate_cm_day = 0.0_real64
      real(real64) :: snowmelt_rate_cm_day = 0.0_real64
      real(real64) :: runon_rate_cm_day = 0.0_real64
+     ! Worker-only numerical history, never a physical checkpoint/restart field.
+     real(real64), allocatable :: trial_origin_key(:), trial_guess_head(:)
+     real(real64), allocatable :: trial_endpoint_key(:)
+     real(real64) :: trial_guess_duration = 0.0_real64
+     integer(int64) :: trial_parameter_id = 0_int64
+     logical :: trial_guess_available = .false.
+     integer :: warm_start_attempts = 0, warm_start_fallbacks = 0, warm_start_invalidations = 0
+     integer :: warm_start_continuations = 0
    end type reference_richards_legacy_workspace_t
 
   type, extends(soil_water_solver_t), public :: reference_richards_legacy_solver_t
@@ -47,6 +59,7 @@ module mod_reference_richards_legacy_binding
   end type reference_richards_legacy_solver_t
 
   public :: build_legacy_reference_request
+  public :: clear_reference_trial_guess
 
   interface
      subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_context, boundary_conditions, &
@@ -72,6 +85,71 @@ module mod_reference_richards_legacy_binding
   end interface
 
 contains
+
+  subroutine clear_reference_trial_guess(workspace)
+    type(reference_richards_legacy_workspace_t), intent(inout) :: workspace
+    workspace%trial_guess_available = .false.
+  end subroutine clear_reference_trial_guess
+
+  subroutine trial_guess_key(request, key, allowed)
+    type(soil_water_solve_request_t), intent(in) :: request
+    real(real64), allocatable, intent(out) :: key(:)
+    logical, intent(out) :: allowed
+    real(real64) :: source(request%parameters%active_nodes), sink(request%parameters%active_nodes)
+    real(real64) :: root(request%parameters%active_nodes)
+
+    allowed=.false.
+    if(.not.request%numerical%reuse_trial_head.or..not.request%numerical%consistent_provider_conductivity)return
+    if(request%numerical%conductivity_mean_method/=1)return
+    if(request%physical%macropore_active.or.request%request_interface_sensitivity)return
+    if(request%boundary%bottom_mode/=7.or.request%boundary%top_mode/=FSI_TOP_MODE_DYNAMIC_PROVIDER)return
+    if(allocated(request%physical%matrix_area_fraction))return
+    if(.not.associated(request%evaluation%dynamic_top_boundary).or. &
+       .not.associated(request%evaluation%constitutive))return
+    select type(top=>request%evaluation%dynamic_top_boundary)
+    type is(b110_dynamic_top_boundary_solver_provider_t)
+      if(.not.top%implicit_conductivity.or.top%implicit_pond_evaporation.or. &
+         top%macropore_pond_donor_active.or.top%matrix_source_area_partition)return
+      if(top%conductivity_mean_method/=1)return
+      if(.not.associated(top%hydraulics))return
+      select type(hyd=>request%evaluation%constitutive)
+      type is(b110_default_mvg_provider_t)
+        if(.not.associated(hyd%parameters,top%hydraulics))return
+        if(.not.hyd%parameters%continuous_saturation_conductivity.or.hyd%parameters%ksatexm_extension_enabled.or. &
+           hyd%parameters%elastic_storage_active.or.hyd%parameters%conductivity_power_tail_enabled)return
+      class default
+        return
+      end select
+      source=0.0_real64;sink=0.0_real64;root=0.0_real64
+      if(associated(request%evaluation%source_sink))then
+        select type(provider=>request%evaluation%source_sink)
+        type is(b110_source_sink_provider_t)
+          call provider%evaluate(request%base_state%pressure_head,request%base_state%water_content,source,sink)
+        class default
+          return
+        end select
+      end if
+      if(associated(request%evaluation%root_sink))then
+        select type(provider=>request%evaluation%root_sink)
+        type is(b110_root_sink_provider_t)
+          call provider%evaluate(request%base_state%pressure_head,request%base_state%water_content,root)
+        class default
+          return
+        end select
+      end if
+      key=[request%base_state%pressure_head,request%base_state%water_content, &
+        request%base_state%ponding_depth,request%base_state%groundwater_level, &
+        request%parameters%z,request%parameters%dz,request%parameters%node_distance, &
+        reshape(top%hydraulics%cofgen,[size(top%hydraulics%cofgen)]),source,sink,root, &
+        top%precipitation_rate,top%irrigation_rate,top%snowmelt_rate,top%runon_rate, &
+        top%potential_bare_soil_evaporation,top%potential_pond_evaporation, &
+        top%ponding_max,top%runoff_resistance,top%runoff_exponent,top%fixed_top_node_conductivity, &
+        request%boundary%top_flux,request%boundary%top_head,request%boundary%bottom_flux,request%boundary%bottom_head]
+      allowed=all(ieee_is_finite(key))
+    class default
+      return
+    end select
+  end subroutine trial_guess_key
 
   subroutine build_legacy_reference_request(request, parameters, constitutive, top_boundary, source_sink)
     use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, constitutive_hydraulics_provider_t, &
@@ -121,7 +199,10 @@ contains
     class(soil_water_solver_workspace_base_t), intent(inout) :: workspace
     type(soil_water_solve_result_t), intent(out) :: result
 
-    logical :: ok, sensitivity_capture
+    logical :: ok, sensitivity_capture, warm_allowed, warm_used, same_origin, same_forcing, continuation
+    type(soil_water_numerical_config_t) :: warm_config
+    real(real64), allocatable :: origin_key(:), guess(:)
+    real(real64) :: duration_ratio
     type(a23bu_solver_history_t) :: call_history
     type(soil_water_top_boundary_result_t) :: final_top
     integer :: n, tangent_ierror, interface_sensitivity_backsolves, reset_calls_before
@@ -160,15 +241,86 @@ contains
        ! hydraulic intermediates in worker-owned scratch/state.
        call initialize_reference_state_binding(ws%state_binding, request)
 
+       warm_allowed=.false.
+       if(request%numerical%reuse_trial_head)call trial_guess_key(request,origin_key,warm_allowed)
+       warm_used=.false.;same_origin=.false.;same_forcing=.false.;continuation=.false.
+       if(warm_allowed.and.ws%trial_guess_available)then
+          if(allocated(ws%trial_origin_key).and.allocated(ws%trial_guess_head))then
+             if(size(ws%trial_origin_key)==size(origin_key).and.size(ws%trial_guess_head)==n) &
+               same_forcing=ws%trial_parameter_id==request%parameters%parameter_set_id
+             if(same_forcing)same_forcing=all(ws%trial_origin_key(2*n+3:)==origin_key(2*n+3:))
+             if(same_forcing)then
+                same_origin=all(ws%trial_origin_key(:2*n+2)==origin_key(:2*n+2))
+                if(allocated(ws%trial_endpoint_key))then
+                   if(size(ws%trial_endpoint_key)==2*n+2) &
+                     continuation=all(ws%trial_endpoint_key==origin_key(:2*n+2))
+                end if
+             end if
+          end if
+          if(.not.same_origin.and..not.continuation)ws%warm_start_invalidations=ws%warm_start_invalidations+1
+          if((same_origin.or.continuation).and.ws%trial_guess_duration>0.0_real64.and. &
+             request%step_duration<=merge(2.0_real64,1.0_real64,continuation)*ws%trial_guess_duration)then
+            if(all(ieee_is_finite(ws%trial_guess_head)))then
+             if(maxval(abs(ws%trial_guess_head))<=1.0e6_real64)then
+             duration_ratio=request%step_duration/ws%trial_guess_duration
+             guess=request%base_state%pressure_head+duration_ratio*(ws%trial_guess_head-ws%trial_origin_key(:n))
+             if(all(ieee_is_finite(guess)))then
+                ws%state_binding%h=guess
+                ws%legacy_worker%diagnostics%constitutive_evaluations= &
+                  ws%legacy_worker%diagnostics%constitutive_evaluations+1
+                ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations= &
+                  ws%legacy_worker%diagnostics%constitutive_initial_full_evaluations+1
+                call request%evaluation%constitutive%evaluate(guess,ws%state_binding%theta, &
+                  ws%richards%provider_k,ws%richards%provider_capacity,ws%richards%provider_dkdh)
+                warm_used=.true.;ws%warm_start_attempts=ws%warm_start_attempts+1
+                if(continuation)ws%warm_start_continuations=ws%warm_start_continuations+1
+             end if
+             end if
+            end if
+          end if
+       end if
+       if(.not.warm_allowed)call clear_reference_trial_guess(ws)
+
        ! Only the qualified prescribed-qbot route needs reusable-factor capture.
        ! Expanding the existing gamma scratch is temporary worker state; the
        ! normal no-sensitivity path keeps the exact compact allocation.
        sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
        if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
 
+       warm_config=request%numerical
+       if(warm_used)warm_config%max_iterations=min(3,request%numerical%max_iterations)
        call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
-            request%evaluation, request%boundary, request%numerical, request%physical, &
+            request%evaluation, request%boundary, warm_config, request%physical, &
             request%step_duration, request%parameters, final_top)
+
+       if(warm_used.and.(ws%state_binding%fldecdt.or.ws%legacy_worker%control%request_dt_reduction))then
+          ! Rebuild the physical origin; retain both phases in diagnostic totals.
+          ws%warm_start_fallbacks=ws%warm_start_fallbacks+1
+          call initialize_reference_state_binding(ws%state_binding,request)
+          call a23bu_reset_attempt_control(ws%legacy_worker)
+          call headcalc(ws%legacy_worker,ws%richards,call_history,ws%state_binding, &
+            request%evaluation,request%boundary,request%numerical,request%physical, &
+            request%step_duration,request%parameters,final_top)
+       end if
+       if(warm_allowed)then
+          ws%trial_guess_available=.false.
+          if(allocated(ws%trial_endpoint_key))deallocate(ws%trial_endpoint_key)
+          if(ws%legacy_worker%diagnostics%nonlinear_iterations>0)then
+             if(ws%state_binding%fldecdt.or.ws%legacy_worker%control%request_dt_reduction)then
+                guess=ws%richards%old_head
+             else
+                guess=ws%state_binding%h
+                ws%trial_endpoint_key=[ws%state_binding%h,ws%state_binding%theta, &
+                  ws%state_binding%pond,ws%state_binding%gwl]
+             end if
+             if(all(ieee_is_finite(guess)))then
+                ws%trial_origin_key=origin_key;ws%trial_guess_head=guess
+                ws%trial_guess_duration=request%step_duration
+                ws%trial_parameter_id=request%parameters%parameter_set_id
+                ws%trial_guess_available=.true.
+             end if
+          end if
+       end if
 
        ! B1.10 SWBOTB=5 and active SWBOTB=8 prescribe head at the lower boundary face, so qbot is
        ! an output rather than an input boundary condition. HeadCalc already
@@ -252,6 +404,7 @@ contains
        result%candidate_state%groundwater_level = ws%state_binding%gwl
        result%top_flux = ws%state_binding%qtop
        result%bottom_flux = ws%state_binding%qbot
+       result%diagnostics%headcalc_calls = ws%legacy_worker%diagnostics%headcalc_calls
        result%diagnostics%nonlinear_iterations = ws%legacy_worker%diagnostics%nonlinear_iterations
        result%diagnostics%jacobian_builds = ws%legacy_worker%diagnostics%jacobian_builds
        result%diagnostics%linear_solves = ws%legacy_worker%diagnostics%linear_solves

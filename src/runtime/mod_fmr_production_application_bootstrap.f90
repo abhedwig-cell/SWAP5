@@ -1322,8 +1322,24 @@ contains
     geometry%node_distance=self%parameters(1)%node_distance
     call initialize_b110_default_mvg_parameters(hydraulics,self%parameters(1)%cofgen)
     call evaluate_b110_dynamic_top_boundary(geometry,hydraulics,common%top_request,top)
-    call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(1),top,effective(1),s)
-    if(s/=PPA_WU03_OK) return
+    if (.not.self%weather_configuration%file_weather_irrigation) then
+      ! Keep gross atmospheric rates until the solver resolves its actual
+      ! trial surface. A start-of-window flux must not suppress later ponding.
+      effective(1)=self%base_forcing(1)
+      if(allocated(effective(1)%pond_input).or.allocated(effective(1)%weather_surface))return
+      allocate(effective(1)%weather_surface)
+      effective(1)%top_flux=0.0_real64
+      effective(1)%weather_surface%rain_rate_cm_day=common%top_request%precipitation_rate_cm_per_day
+      effective(1)%weather_surface%potential_bare_soil_evaporation_cm_day= &
+        common%top_request%potential_bare_soil_evaporation_cm_per_day
+      effective(1)%weather_surface%potential_pond_evaporation_cm_day= &
+        common%top_request%potential_pond_evaporation_cm_per_day
+      effective(1)%weather_surface%ponding_max_cm=request%ponding_max_cm
+      effective(1)%weather_surface%runoff_resistance_day=request%runoff_resistance_day
+    else
+      call bind_ppa_wu03_flux_result_to_effective_forcing(self%base_forcing(1),top,effective(1),s)
+      if(s/=PPA_WU03_OK) return
+    end if
     qrot=0.0_real64;ptra=0.0_real64
     if(rooted) then
       if(self%weather_configuration%file_weather_root_depth_mode==2)then

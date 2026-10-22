@@ -2,9 +2,10 @@
 from pathlib import Path
 import base64,hashlib,io,json,runpy,struct,subprocess,tarfile,zlib
 ROOT=Path(__file__).resolve().parents[2]
-BASE='7eb6f10baabae2f26af168c59bf63459fa0a3516'
+BASE='f4ef44cb20cfb73ae7a582487790a4eb0292b144'
 STATUS='integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
 PARENT='integration/audits/verify_nut_saved_output.py'
+PERF='integration/performance/verify_weather_composed_successor.py'
 SELF='integration/audits/verify_nut_thermal_fallow_output.py'
 KEY='thermal_fallow_successor_20261022'
 SCIENCE=['src','app','tools','tests','examples','reference','.github','integration/audits','integration/performance','integration/diagnostics']
@@ -14,23 +15,25 @@ def require(ok,why):
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def historical(p):return subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT)
 def record(reader=lambda p:(ROOT/p).read_bytes()):return json.loads(reader(STATUS))['extended_output_component_20261021'][KEY]
-def projection():
- text=historical(PARENT).decode();condition="'postimages' in json.loads((ROOT/'"+STATUS+"').read_text())['extended_output_component_20261021'].get('"+KEY+"',{})"
+def projection(path=PARENT):
+ text=historical(path).decode();condition="'postimages' in json.loads((ROOT/'"+STATUS+"').read_text())['extended_output_component_20261021'].get('"+KEY+"',{})"
  for name,args in [('source','reader,changed'),('verify',''),('self_test','')]:
   offset=text.index('\n',text.index('def '+name+'('))+1
-  text=text[:offset]+" if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
+  indent=text[offset:offset+len(text[offset:])-len(text[offset:].lstrip(' '))]
+  text=text[:offset]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  r=record(reader);require(r['baseline']==BASE,'saved baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
  require(reader(PARENT)==projection(),'original harvest owner assertions')
+ require(reader(PERF)==projection(PERF),'original weather owner assertions')
  current=json.loads(reader(STATUS));current['extended_output_component_20261021'].pop(KEY)
  require(current==json.loads(historical(STATUS)),'unrelated NUT authority')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty saved-output science')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}if changed is None else changed
  require(delta==r['scientific_delta'],'foreign saved-output science')
- require(all(k=='A'or p in [PARENT,'src/adapter/mod_crop_n_saved_generation.f90'] for p,k in delta.items()),'changed incumbent physical implementation')
+ require(all(k=='A'or p in [PARENT,PERF,'src/adapter/mod_crop_n_saved_generation.f90'] for p,k in delta.items()),'changed incumbent physical implementation')
  return r
 def capsule():
  r=record();p=ROOT/r['evidence_index'];require(sha(p.read_bytes())==r['evidence_index_sha256'],'saved index')
@@ -101,7 +104,7 @@ def validate(f):
    require(f[p+'generation']==f[p+'recovered']==f[b+'endpoint.stages.saved.phase-'+wanted],'partial crash generation')
    crash=js(p+'result.json');require(crash['returncode']==-9 and crash['complete'],'saved crash did not execute')
    require(sha(f[p+'generation'])==r['results'][opt]['crashes'][phase]['sha256'],'saved crash receipt')
- require(prior['qualified']and prior['controls']==19 and prior['source_tree']==git('rev-parse',BASE+':src'),'exact admitted predecessor')
+ require(prior['qualified']and prior['controls']==34 and prior['source_tree']==git('rev-parse',BASE+':src'),'exact admitted predecessor')
  require(r['thermal_selected']and r['crash_selected']and not r['full_work_unit_closed'],'saved scope')
  return dict(qualified=True,status='THERMAL_SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED',literal_checks_per_optimization=6808,literal_reports_per_optimization=234,independent_phase_roundtrips=12,independent_phase_fallow_progressions=12,fresh_fallow_progressions=4,invalid_generations=36,invalid_live_generations=36,identity_rejections=4,heat_identity_rejections=8,process_crashes=4,original_temperature_exact=True,incumbent_physics_unchanged=True,full_mc_nut01_closed=False)
 def cold_validate(f):
@@ -111,7 +114,7 @@ def cold_validate(f):
 def verify():
  source();f=capsule();r=validate(f);r['cold_preservation']=cold_validate(f)
  old=runpy.run_path(str(ROOT/PARENT));r['incumbent_saved_output']=old['validate'](old['capsule']())
- root=runpy.run_path(str(ROOT/'integration/audits/verify_root_substep.py'));prior=root['validate'](root['capsule']())
+ prior=verify_current_predecessor(json.loads(f['preservation.json'])['fsi35_original_native_body_sha256'])
  r['incumbent_root_substep']=prior
  for key in ['current_calendar_nut','current_concurrent_nut','frozen_daily_predecessor']:r[key]=prior[key]
  return r
@@ -121,7 +124,7 @@ def self_test():
   try:fn()
   except(ValueError,KeyError,AssertionError,UnicodeError,struct.error):controls.append(name);return
   raise ValueError('saved corruption accepted '+name)
- for p in ['src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90','src/adapter/mod_crop_soil_n_thermal_saved_output.f90','src/adapter/mod_crop_ext_saved_residue.f90','src/adapter/mod_crop_n_saved_generation.f90','src/adapter/mod_crop_soil_n_saved_harvest.f90','src/adapter/mod_crop_soil_n_saved_output.f90','src/crop/mod_crop_soil_n_day.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',PARENT]:
+ for p in ['src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90','src/adapter/mod_crop_soil_n_thermal_saved_output.f90','src/adapter/mod_crop_ext_saved_residue.f90','src/adapter/mod_crop_n_saved_generation.f90','src/adapter/mod_crop_soil_n_saved_harvest.f90','src/adapter/mod_crop_soil_n_saved_output.f90','src/crop/mod_crop_soil_n_day.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',PARENT,PERF]:
   reject('source '+p,lambda p=p:source(lambda x:(ROOT/x).read_bytes()+(b'!'if x==p else b'')))
  for p in ['component/result.json','thermal/result.json','thermal/driver.f90','thermal/O0/saved-roundtrip-1','thermal/O2/deferred-continue-3.day-4','PREDECESSOR.json']:
   bad=dict(f);bad.pop(p);reject('missing '+p,lambda bad=bad:validate(bad))
@@ -131,4 +134,94 @@ def self_test():
   bad=dict(f);bad[p]+=b'!';reject('cold drift '+p,lambda bad=bad:cold_validate(bad))
  bad=dict(record()['scientific_delta']);bad['src/foreign_saved.f90']='A';reject('foreign science',lambda:source(changed=bad))
  return controls
+def verify_current_predecessor(native_body_sha256):
+    # Preserve the admitted PERF01 raw assertions and public FSI35 source continuity.
+    perf = runpy.run_path(str(ROOT / PERF))
+    record, evidence = perf['record'], perf['evidence']
+    PROOF, ROOT_PARENT, PHYSICAL_BASE = perf['PROOF'], perf['ROOT_PARENT'], perf['PHYSICAL_BASE']
+    HARVEST_PARENT, SAVED_PARENT, RUNNER = perf['HARVEST_PARENT'], perf['SAVED_PARENT'], perf['RUNNER']
+    inherited = record()['fsi35_native_inheritance']
+    require(inherited['candidate'] == '48d61aafcc152122de0f6e43b3e1fe3bcddbf0cb', 'native inheritance origin')
+    marker = b'# Historical F-CI58P/F-SI35 authorities remain immutable evidence.'
+    current_body = (ROOT / RUNNER).read_bytes()
+    previous_body = subprocess.check_output(['git', 'show', BASE + ':' + RUNNER], cwd=ROOT)
+    require(current_body[current_body.index(marker):] == previous_body[previous_body.index(marker):], 'changed original FSI35 native body')
+    require(sha(previous_body[previous_body.index(marker):]) == native_body_sha256, 'original/public native source continuity')
+    for p, h in inherited['input_sha256'].items():
+        require(sha((ROOT / p).read_bytes()) == h and
+                sha(subprocess.check_output(['git', 'show', BASE + ':' + p], cwd=ROOT)) == h,
+                'changed inherited FSI35 compiled input ' + p)
+    import io
+    receipt = (ROOT / inherited['receipt']).read_bytes()
+    require(sha(receipt) == '3812d0f0ffa054e854c7e454f8bac320b03fe17104ca77fafcfb4a17988cb77f', 'original native receipt identity')
+    with tarfile.open(fileobj=io.BytesIO(receipt), mode='r:xz') as t:
+        terminal = json.loads(t.extractfile('fsi35/RESULT.json').read())
+        stdout = t.extractfile('fsi35/stdout').read()
+        require(terminal['status'] == 'PASS' and terminal['returncode'] == 0 and
+                sha(stdout) == terminal['raw_sha256']['stdout'] and
+                b'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS' in stdout, 'original native terminal proof')
+    require(subprocess.check_output([inherited['compiler_command'], '--version'], text=True) == terminal['compiler'],
+            'inherited native compiler changed')
+    for p, h in inherited['toolchain_sha256'].items():
+        require(sha(Path(p).read_bytes()) == h, 'inherited native compiler bytes changed')
+    files = evidence()
+    checker = runpy.run_path(str(ROOT / PROOF))
+    # This controller is not compiled or executed by the scientific drivers.
+    # Pin its current exact additive dispatch separately in source(); retain
+    # only its recorded controller snapshot for the immutable physical capsule.
+    def physical_reader(p):
+        return files['current-source/' + p] if p == ROOT_PARENT else (ROOT / p).read_bytes()
+    current = checker['verify'](files, physical_reader)
+    prior = json.loads(files['frozen-canonical-owner.json'])
+    require(prior['qualified'] and prior['controls'] == record()['frozen_owner_controls'] and
+            prior['current_source_tree'] == git('rev-parse', PHYSICAL_BASE + ':src'), 'complete frozen original canonical owner')
+    concurrent = record()['harvest_evidence']
+    raw = (ROOT / concurrent['path']).read_bytes()
+    require(sha(raw) == concurrent['sha256'] and len(raw) == concurrent['bytes'], 'current harvest receipt identity')
+    with tarfile.open(fileobj=io.BytesIO(raw), mode='r:xz') as t:
+        ms = t.getmembers()
+        require(len(ms) == concurrent['members'] == len({m.name for m in ms}) and
+                all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in ms), 'harvest receipt inventory')
+        hf = {m.name: t.extractfile(m).read() for m in ms}
+    inventory = json.loads(hf.pop('MANIFEST.json'))
+    require(set(hf) == set(inventory) and all(sha(hf[p]) == h for p, h in inventory.items()), 'harvest receipt bytes')
+    harvest_owner = runpy.run_path(str(ROOT / HARVEST_PARENT))
+    harvest = harvest_owner['validate'](hf)
+    native_harvest = json.loads(hf['harvest/result.json'])
+    for p, h in native_harvest['input_sha256'].items():
+        require(sha((ROOT / p).read_bytes()) == h, 'current harvest executed input ' + p)
+    frozen_latest = json.loads(hf['FROZEN_LATEST.json'])
+    frozen_controls = json.loads(hf['FROZEN_LATEST_CONTROLS.json'])
+    require(frozen_latest['qualified'] and frozen_latest['status'] == 'HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED' and
+            len(frozen_controls) == 18, 'complete frozen latest harvest owner')
+    saved_record = record()['saved_evidence']
+    raw = (ROOT / saved_record['path']).read_bytes()
+    require(sha(raw) == saved_record['sha256'] and len(raw) == saved_record['bytes'], 'current saved-output receipt identity')
+    with tarfile.open(fileobj=io.BytesIO(raw), mode='r:xz') as t:
+        ms = t.getmembers()
+        require(len(ms) == saved_record['members'] == len({m.name for m in ms}) and
+                all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in ms), 'saved receipt inventory')
+        sf = {m.name: t.extractfile(m).read() for m in ms}
+    inventory = json.loads(sf.pop('MANIFEST.json'))
+    require(set(sf) == set(inventory) and all(sha(sf[p]) == h for p, h in inventory.items()), 'saved receipt bytes')
+    saved = runpy.run_path(str(ROOT / SAVED_PARENT))['validate'](sf)
+    for prefix in ['component', 'physical']:
+        for p, h in json.loads(sf[prefix + '/result.json'])['input_sha256'].items():
+            if p == 'src/adapter/mod_crop_n_saved_generation.f90':
+                require(h == sha(historical(p)), 'frozen saved codec preimage')
+                codec_authority = json.loads((ROOT / STATUS).read_text())['extended_output_component_20261021'][KEY]
+                require(sha((ROOT / p).read_bytes()) == codec_authority['qualified_input_sha256'][p], 'fresh qualified saved codec')
+            else:
+                require(sha((ROOT / p).read_bytes()) == h, 'current saved executed input ' + p)
+    frozen_saved = json.loads(sf['FROZEN_LATEST.json'])
+    require(frozen_saved['qualified'] and frozen_saved['status'] == 'SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED' and
+            len(json.loads(sf['FROZEN_LATEST_CONTROLS.json'])) == 19, 'complete frozen saved-output owner')
+    # All earlier owner fields remain available to their existing callers.
+    return {**prior, 'weather_successor': current, 'current_harvest_output': harvest, 'current_saved_output': saved,
+            'frozen_latest_owner': '0be6037b /18 controls', 'current_source_tree': git('rev-parse', 'HEAD:src'),
+            'source_tree': git('rev-parse', 'HEAD:src'), 'qualified': True,
+            'qualification_scope': 'CURRENT_BOUNDED_WEATHER_SOL_ROOT_SUBSTEP_NUT_CALENDAR_COMPOSITION',
+            'canonically_admitted': False, 'fsi35_native': record().get('fsi35_native', 'PENDING')}
+
+
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

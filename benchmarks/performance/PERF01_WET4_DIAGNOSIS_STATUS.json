@@ -1,0 +1,49 @@
+{
+  "workstream": "PERF01",
+  "work_unit": "WET4_CAUSAL_DIAGNOSIS",
+  "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+  "status": "BOUNDED_WET4_CAUSAL_DIAGNOSIS_VERIFIED",
+  "production_changed": false,
+  "production_policy_admitted": false,
+  "scope": "Diagnose existing wet4 day35 failure; no physical or numerical default change",
+  "result": "benchmarks/performance/PERF01_WET4_DIAGNOSIS_RESULT.md",
+  "summary": "benchmarks/performance/PERF01_WET4_DIAGNOSIS_SUMMARY.json",
+  "postimages": {
+    "benchmarks/performance/diagnose_perf01_wet4.py": "7f82ca759f80743e65215cf7e77a1f1d5eb2052fbef505e05935de91113b2438",
+    "benchmarks/performance/assess_perf01_wet4_diagnosis.py": "57c8e007a2b37fc30b6b7d1acf004d9b60e9aebbff563b27634476f07e79e771",
+    "benchmarks/performance/PERF01_WET4_DIAGNOSIS_RESULT.md": "33ccace82bc82cf6cec3ccc85654613d64fb0a77b964ec730874a5636e20b119",
+    "benchmarks/performance/PERF01_WET4_DIAGNOSIS_SUMMARY.json": "323b750880233f4516474d264c711cca1f073f718d1b4f99a91865383453c327"
+  },
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WET4_DIAGNOSIS_EVIDENCE.tar.xz",
+    "sha256": "d1d419d597794fc392d95436e01b916b676c6d66e9a22766fefd10477b30b0b7",
+    "bytes": 9351860,
+    "members": 1226,
+    "members_sha256": "07785487b00e4fa2bb239144dd36e4c84aaf236cc2ae75256b42dea17da80db5"
+  },
+  "terminal": "Certificate retry exhaustion at1e-6/1e-3; solver retry exhaustion at1cm; saturation transition, not terminal mass failure at1e-3",
+  "limits": "No wet4 day35 accepted water balance, no runoff amount or full97day control qualification",
+  "owner_wrapper": "Preexisting baseline KeyError qualified, not PASS; underlying source/evidence and actual successor owner pass",
+  "next_safe_step": "Design/test coupled saturation certificate and dynamic surface transition; retain guards; no default tolerance change",
+  "validation": {
+    "native_assessment": "BOUNDED_WET4_CAUSAL_DIAGNOSIS_VERIFIED",
+    "capsule_members_and_no_ELF": "PASS",
+    "docs_source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "standalone_legacy_wrapper": "PREEXISTING_KEYERROR_NOT_PASS",
+    "source_and_evidence_components": "PASS",
+    "hosted_full_FCI": "NOT_SELECTED_INPUT_PRINT_ONLY_RESEARCH"
+  },
+  "publication_mode": "Research evidence branch and draft PR; no numerical or physics activation",
+  "publication": {
+    "pull_request": 1361,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1361",
+    "branch": "research/perf01-wet4-cause-20261021",
+    "qualified_head": "4336b36f9c019b1b88de15be93789adbc081e48f",
+    "qualified_tree": "ce6a1475f8e5a4cb057612f35499a63807d27c9d",
+    "remote_tree_exact": true,
+    "state": "DRAFT_RESEARCH_EVIDENCE_ONLY",
+    "canonical_merged": false,
+    "workflow_runs": []
+  }
+}

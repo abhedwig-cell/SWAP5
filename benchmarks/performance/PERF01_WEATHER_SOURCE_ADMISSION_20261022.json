@@ -1,0 +1,48 @@
+{
+  "status": "EXACT_WEATHER_SOURCE_AND_ORIGINAL_FSI35_O0_O2_PASS",
+  "source_checkpoint": "72382433392750d53eb37b9687860a22a106c330",
+  "canonical_input": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
+  "current_source_tree": "ea9336d2a7742aa747a513a775b877a0d1a83a70",
+  "native_fsi35_seconds": 55.24506711499998,
+  "source_evidence_controls": 28,
+  "original_frozen_owner_controls": 40,
+  "canonically_admitted": false,
+  "postimages": {
+    "integration/audits/verify_crop_root_joint.py": "da97f96d59c70b1d269eb1aee63dcd6ff342abbf5ce0840d0d098a10100257f2",
+    "integration/performance/authority.py": "48727f66ec0b960ff2fd2771b68f95c24cb3f5035274242d589214383f92f493",
+    "integration/performance/verify_weather_surface_successor.py": "ef749363b43f3c22b3d6fe4a1adb1334589496d460e8f08fd11ede10de952682",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "404eaec8088ce384a5dcec4686ac1b04163323304c9caebb9d09dc29580880ba",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "5595746a7809d663cafeb2289100ba0617c269bac72cfc215b797c9a4b53021b",
+    "src/legacy/b1_10_port/headcalc.f90": "7c30d1fb4506aecaf5c4c3552f785754ac1e09fdcbfe52b9d9a51fd1a32b7ef9",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90": "7ada905b00afb0bb47d50b1fef8f503f5267dfa56a0d37539ff673dbe5f468e5",
+    "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "83db4ce1b22f65ccb52db67e258fe8ad647e2862af40b387bad800867395edf5",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "9bbd5b95dbb01b403f9e9a474c1d1648a7024329d5cc2782082a87e2bfc5d69f",
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
+    "src/solver/mod_b110_default_mvg_provider.f90": "33f10ef923a4cb33333a8fd7b4385d189c8abd5179f764772ba50fa47894d389",
+    "src/solver/mod_soil_water_solver_contract.f90": "4dbe50cf59f782c38556b7a89602bbbeaab6be6e22683152baf9c6a7ce50f700",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "74330ccb5ae760c4b99f0e05857c5f8afc3dd6049dfb4e3e3a641291896d7e7c",
+    "tests/fmig431/build_weather_surface_controls.py": "aa4087616eb9eb37889c06eee023a17da32f3c5964340720aaead44d99c151d4",
+    "tests/fmig431/preserve_weather_surface_default.py": "b9687bc696a7d1d44802ac3128fed445d2a02e31098dda66d7d6af26d95495a4",
+    "tests/fmig431/qualify_weather_canonical_trace.py": "b79b84e1c8f07879811b97d43bb2dab8c045122c1c228425648f935333c58de0",
+    "tests/fmig431/qualify_weather_surface_repair.py": "4f5ebd600c7f614714949dd8f4cba8daecb31b272a414051315f6efa5c708c8b",
+    "tests/fmig431/qualify_weather_warm_start.py": "83af8564d00d1962b073006249a32922318c6a75009237a0848897258281e23f",
+    "tests/fsi/test_weather_surface_continuous_mvg.f90": "313d48d09c7fa909196f56ca652de2de2817d1997338b820f70320472a2c6f58",
+    "tests/fsi/test_weather_surface_desaturation.f90": "02685371f118663a95e7a0c2968112f19fb3fa3094ca05d080c74af9676ccad1",
+    "tests/fsi/test_weather_surface_retry.f90": "3fae1cd4ed904f13f2515ab035ec3e176f72efc377a45f9eef2d1f20cd801af1",
+    "tests/fsi/test_weather_surface_top_derivative.f90": "0804bf63cdfb1b01d34c69410f98e84a1c9437d20079d55d9c8ebf37f1cf9387",
+    "tests/fsi/test_weather_surface_warm_start.f90": "c1d502d0066435b5b536f0a1af6c5f98d6b5952e7365b2c0a66b090384422f7e"
+  },
+  "physical_evidence": {
+    "path": "benchmarks/performance/PERF01_CANONICAL_COMPOSITION_20261022_EVIDENCE.tar.xz",
+    "sha256": "978896827b5fc1701a04ce871da6747bf6af874fe5b470f5de0c7af89ea558e5",
+    "members": 16426,
+    "bytes": 2775140
+  },
+  "next_action": "Reconcile later canonical80dbce8d root/backend and calendar-output changes before merge. This proof remains qualified at its exact f7c60410 composition.",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WEATHER_SOURCE_ADMISSION_20261022.tar.xz",
+    "sha256": "3812d0f0ffa054e854c7e454f8bac320b03fe17104ca77fafcfb4a17988cb77f",
+    "bytes": 155752,
+    "members": 39
+  }
+}

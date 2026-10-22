@@ -5020,8 +5020,8 @@
       "master_rows_promoted": false
     },
     "thermal_fallow_successor_20261022": {
-      "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
-      "stage": "LOCAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "baseline": "f4ef44cb20cfb73ae7a582487790a4eb0292b144",
+      "stage": "LOCAL_CURRENT_COMPOSITION_QUALIFIED_PENDING_CANONICAL_ADMISSION",
       "implemented": true,
       "persisted": true,
       "tested": true,
@@ -5030,25 +5030,124 @@
       "contract": "docs/science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md",
       "scope": "Explicit actual Richards/accepted-temperature/material/retired-crop chemistry with saved harvest next-day diagnostics, complete certified thermal generation and independent process restart. Cold saved-output bytes preserved.",
       "test_selection": "Persisted contract selects five fresh modules plus source/artifact/flag/compiler-bound unchanged331-provider closure; expected cold plus thermal under300s. Fresh cold full saved-output O0/O2, actual thermal first2 incumbent days plus harvest/retire/2 fallow days, literal original depth-temperature and harvest-addition/previous-day oracles, hard water/whole-N, phase/day restart, rollback/save/view/replay/environment/root/heat-input and parameter identity negatives, four process kills per route. Initial extraction-import error retained NOT_USED; successful development rerun retained separately. Final thermal rerun adds unallocated forcing safety. Exact detached predecessor19 controls retained; broad FCI,highestlowair,newRossFast,aquifer NOT_SELECTED_IMPACT/POLICY.",
-      "next_action": "Validate exact sealed source/owner and24 corruption controls, source/strict docs; admit qualified/actual whole merge tree and register bounded receipt on existing master. Successor-crop output, general/default dispatch, active negative allocation and persistent surface/snow remain open.",
+      "next_action": "Validate exact current sealed source/weather/root/FSI35/owner and25 corruption controls, source/strict docs; admit qualified/actual whole merge tree and register bounded receipt on existing master. Successor-crop output, general/default dispatch, active negative allocation and persistent surface/snow remain open.",
       "evidence_index": "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json",
-      "evidence_index_sha256": "c5556551f022f402f87c94ce104edb216410add87fbce08adebda596bc2702ea",
+      "evidence_index_sha256": "000fb4360e21ef4884f932ba7affb519b21b7af9e383f44d559662f3fea78897",
+      "execution_result": {
+        "O0": {
+          "generations": {
+            "saved": {
+              "3": "d2bb1186100ac9f84471d2528469d0b623f20a116eef7372aec613b946ee67a6",
+              "4": "8a1158115aa42133e9e635a07e9c4b0550ecd40257bd2c977a7da125857a8955"
+            },
+            "deferred": {
+              "3": "6a5d6d9c87b0e69236c099ad18d1443914259cbc4acf6cd667b849decf92a730",
+              "4": "85b254adacfc0618ac6be07df0769f9c92dead259c5f5418c983d03a7a121217"
+            }
+          },
+          "crashes": {
+            "before": {
+              "returncode": -9,
+              "complete": true,
+              "sha256": "9e923dd1b75a1747acb9edbcadc4fedede08df0d9fbbd62065aeb6e6c1a3e930"
+            },
+            "after": {
+              "returncode": -9,
+              "complete": true,
+              "sha256": "f039582a6528d4f22c909991f7ff47150a1205bd32436a4278fba08d6528e780"
+            }
+          }
+        },
+        "O2": {
+          "generations": {
+            "saved": {
+              "3": "d2bb1186100ac9f84471d2528469d0b623f20a116eef7372aec613b946ee67a6",
+              "4": "8a1158115aa42133e9e635a07e9c4b0550ecd40257bd2c977a7da125857a8955"
+            },
+            "deferred": {
+              "3": "6a5d6d9c87b0e69236c099ad18d1443914259cbc4acf6cd667b849decf92a730",
+              "4": "85b254adacfc0618ac6be07df0769f9c92dead259c5f5418c983d03a7a121217"
+            }
+          },
+          "crashes": {
+            "before": {
+              "returncode": -9,
+              "complete": true,
+              "sha256": "9e923dd1b75a1747acb9edbcadc4fedede08df0d9fbbd62065aeb6e6c1a3e930"
+            },
+            "after": {
+              "returncode": -9,
+              "complete": true,
+              "sha256": "f039582a6528d4f22c909991f7ff47150a1205bd32436a4278fba08d6528e780"
+            }
+          }
+        }
+      },
+      "measured_cost_seconds": {
+        "cold": {
+          "actual_native": 6.1680758469956345,
+          "crash_reconstruction": 0.02798422000341816,
+          "driver_compile": 65.31479627000226,
+          "fallow_fresh": 0.4463247870080522,
+          "invalid_generation": 0.15864962002524408,
+          "invalid_identity": 0.023484311997890472,
+          "invalid_live_generation": 0.5563022639762494,
+          "link": 0.6239191409986233,
+          "original_fresh": 2.26770787199348,
+          "phase_fresh_fallow": 4.755637448986818,
+          "phase_roundtrip": 0.13772984301613178,
+          "preload_compile": 0.0651529489987297,
+          "provider_compile": 10.97953644500376
+        },
+        "thermal": {
+          "actual_native": 7.558907131002343,
+          "crash_reconstruction": 0.04611445399496006,
+          "driver_compile": 57.08420810000098,
+          "fallow_fresh": 0.4726281149996794,
+          "invalid_generation": 0.1714217309927335,
+          "invalid_heat_identity": 0.03165139500197256,
+          "invalid_identity": 0.018816786992829293,
+          "invalid_live_generation": 0.5154464910010574,
+          "link": 0.8766285399906337,
+          "original_fresh": 2.5602835199970286,
+          "phase_fresh_fallow": 5.49735652799427,
+          "phase_roundtrip": 0.12107292599830544,
+          "preload_compile": 0.07288346900168108,
+          "provider_compile": 14.793279213008645
+        }
+      },
+      "changed_dependencies": {
+        "src/adapter/mod_crop_n_saved_generation.f90": {
+          "old_sha256": "cc35051bfa08aeb41f8c597c66d841fe95da8807da900e393e7b3e676b89d9dd",
+          "current_sha256": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
+          "reason": "Nested physical codec already supports certified heat. Preserve S5NS0001 layout and cold bytes; require caller heat parameters and existing certificate validation on thermal reads."
+        }
+      },
+      "preservation": {
+        "predecessor_owner_controls": 34,
+        "current_cold_thermal_source_artifact_bound": true,
+        "cold_saved_output_results_exact": true,
+        "incumbent_thermal_endpoints_exact": true,
+        "current_weather_root_calendar_fsi35_assertions_preserved": true,
+        "all_full_rows_unchanged": true
+      },
+      "pre_concurrent_feature": "bb7ad9a6a51e72fb8db911bb1c2a254acc522519",
       "qualified_input_sha256": {
         "app/solute_crop/main.f90": "386cdfb8ab978aa5f244eb72ea576737701be8ed2b8ba1bc327e62509e450520",
         "docs/science/MC_NUT01_CALENDAR_OUTPUT_20261022.md": "8b640954eedf102742047c326d65325373225578ca1d79fb00be755e70554f6b",
         "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md": "577eb0798e81f7dfaf5172361027b601940f93b94509b7af1b526d518e43bed0",
-        "docs/status-a/CURRENT_STATUS.md": "39166fde4cdee74e4766ba46b72effb0b5e00e42168db517d9af3c9668cb7650",
-        "docs/status-a/TRACEABILITY.md": "212e0c69ca1a700eec9f6016598774c31faf1192f734d7b42b9c33052c98ed25",
+        "docs/status-a/CURRENT_STATUS.md": "48f5b2c540310a97675498fa9492d4f7e8bf64746e140ca7d707c8ffe0cf5798",
+        "docs/status-a/TRACEABILITY.md": "77a45f12303d7d02d22c38284b710d5a99b94d0e04d2440041fe8e5c429a5f71",
         "integration/audits/MC_SOL01_ROOT_SUBSTEP_REVIEW.md": "0cdb456aff523abca82a8132822ecb404a68b619fade84908f407a8a80d4eae2",
         "integration/audits/build_root_substep_evidence.py": "50898bf5931b5d4ca6f05b6a0a3fc5033a11d006097678bef05a85dc5f791d2b",
         "integration/audits/evidence/MC_SOL01_ROOT_SUBSTEP_20261022.tar.xz.b64": "c6f821fbfee5aac6744df600e10990c5f0407479bea65cfa4f0a4f63761e197e",
         "integration/audits/evidence/mc-nut01-calendar-output-20261022/INDEX.json": "0bfda3e3d7a6e7c30d9bb62659363a4f0cfaba809bf0d1288bab4b6191b7cd6f",
         "integration/audits/evidence/mc-nut01-calendar-output-20261022/evidence.tar.xz.b64": "daedc8c97a21359285d9f2f26469d76d6eaa27d7bca237b2e2ae53e44ed9ff4d",
-        "integration/audits/verify_crop_root_joint.py": "cabca53342e6731ba0f0ac89c2a0cb71af3de4ae47d9f4a3524377d31fba6940",
+        "integration/audits/verify_crop_root_joint.py": "99b8cfd0a4dcfd224913abad8e5b4a793b4b6aa75d1dc78b66cc562bd0d18d88",
         "integration/audits/verify_nut_calendar_output.py": "e317ae3a01f7da3491e4191d3b36694bbfde432e2750c32ef9c454239cc8e0bb",
         "integration/mc-nut01/MC_NUT01_CALENDAR_OUTPUT_ADMISSION_20261022.json": "18acf563a42f684d3728f7403b7a8def0ba61e02b86cf810bff3a4f6595549b2",
         "src/adapter/mod_crop_soil_n_calendar_output_day.f90": "422e18236b8104ff52005d811fef8a8fd958eaf90ca9cf9852b219739679461c",
-        "src/runtime/mod_fmr_serialized_reference_backend.f90": "56f2b58a941af154a97e8b088592f6a19818519e916e9203c6d4ff76d34a91ae",
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": "d0318e51a0d283dcbeab37954bad28688676298452de6f6bcce908a7881e2eb6",
         "tests/nut-output/run_calendar_output.py": "03c551dc010e32dba390f877e84232a0a9a9a5562cf9535a047e550eed6b7424",
         "tests/nut-sol/qualify_root_substep_daily.py": "2c3bd7bc0d29370906879ef590716a28bdc825f75e23fbb8b137a81734ee7561",
         "tests/nut-sol/qualify_root_substep_transaction.py": "b7ec9676e4d881800b8cce259e38f5fd59f70d28ee137b87ebb7f9a503787503",
@@ -5076,15 +5175,15 @@
         "src/runtime/mod_rutter_source_window_processor.f90": "ef96289da429efea5b243167aabfb223ea09917f356ab3306cd2f40417433c5d",
         "src/runtime/mod_fmr_bottom_thermal_carrier.f90": "11bd9843d454f2e64295afd8b7a1e120de3c5d048af3f217e15fb8724b1e9ead",
         "src/runtime/mod_fmr_top_sensible_boundary_carrier.f90": "1f18e99142f8ef30c1684e31af3ab21fea54b85e875aa69a22001c9c1a4a4d1f",
-        "src/solver/mod_soil_water_solver_contract.f90": "0fc4d1ba94451697754e3b93a54bf47ae2d6f852301e59ad35f1db36dad08905",
-        "src/solver/mod_b110_default_mvg_provider.f90": "8240bebcd71853ff8d225823415c36a3d68e44899bee583cab2de6fa576e3661",
+        "src/solver/mod_soil_water_solver_contract.f90": "4dbe50cf59f782c38556b7a89602bbbeaab6be6e22683152baf9c6a7ce50f700",
+        "src/solver/mod_b110_default_mvg_provider.f90": "33f10ef923a4cb33333a8fd7b4385d189c8abd5179f764772ba50fa47894d389",
         "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
         "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "02c2a4eb5c41c23531989e46a40a2b4cad2e467557ee68c10ccd18897d17b7e8",
-        "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "fde6f1869f2e4d1d00cb33c7ccaa8263ced656d408bc42c83d5f050dbc0682af",
+        "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "404eaec8088ce384a5dcec4686ac1b04163323304c9caebb9d09dc29580880ba",
         "src/solver/mod_reference_richards_workspace.f90": "cb899e79f1cb667d852ea97342efaa4924b90cbb2a1529629819291012273f5e",
         "src/solver/mod_reference_linear_solver.f90": "99924ba6e42d3ade458333f65d71d48b71e262b570a2381b5350682919ec14eb",
         "src/solver/mod_reference_richards_state_binding.f90": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
-        "src/solver/mod_b110_default_mvg_directional_provider.f90": "bc5cb47ea986c9dbb39db722dae75e5637d78efa178236fa2d62ecc48e94a0b1",
+        "src/solver/mod_b110_default_mvg_directional_provider.f90": "40ed0f09d7ab29007cb89008c9e95d9b8dee2be882972775a8385798ebffe55b",
         "src/solver/mod_b110_direct_retention_core.f90": "6bdc5210911803a9b36e41b38aa706c92b8cab3e30ca797cc6d6be2586153336",
         "src/solver/mod_b110_direct_retention_provider.f90": "fd2d6134778af5f20c5815fc7a6a6addb7fcf850ab73f48a32df714029cac0b9",
         "src/solver/mod_b110_source_sink_provider.f90": "9f77a9fbd2f79b93aff97f8f5bee3ba8d7314a9d179c2fb3f3a0b93de33f118d",
@@ -5092,7 +5191,7 @@
         "src/solver/mod_fixed_flux_top_boundary_provider.f90": "83fac9a3f6bbae7f097b9f0d72d018b3d8d50553a8325f5a3f7b7f1d86f7e9e8",
         "src/solver/mod_reference_richards_temporal_indicator.f90": "68b4956d9bf2f2e52ac2623b5f64ce2c0285e8ed7121ca6752212b79e0a72f2a",
         "src/runtime/mod_a23bu_worker_execution_context.f90": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
-        "src/adapter/mod_reference_richards_legacy_binding.f90": "c9bdffb776b83aaf50d3da12be951ac736c87598c1d086557d68cce3b4f43b41",
+        "src/adapter/mod_reference_richards_legacy_binding.f90": "5595746a7809d663cafeb2289100ba0617c269bac72cfc215b797c9a4b53021b",
         "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": "62c88eb7012ccd7b2c8c14f98c71ac9ffca0618de2337bf91cc29975540595dd",
         "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": "c09975cb3aeaaaa503868e436900e371c41589475d6c362f6d0d72fbda667c4f",
         "src/runtime/mod_fmr_soil_water_application_host.f90": "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c",
@@ -5268,7 +5367,7 @@
         "src/runtime/mod_fmr_bottom_external_thermal_provider.f90": "7636652591748f5cca23e327050fa56249505f4b0453d8f9a193c9bd4c931313",
         "src/process/mod_liquid_water_sensible_enthalpy.f90": "cdb5a82de7632b2fbd61f7238378dd7675cd0afa0203607e63c9e115d0379431",
         "src/runtime/mod_fmr_bottom_sensible_energy.f90": "d5b21307928708de5eb863092b68863bee8a6890b500510a8927a8dce1e53414",
-        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "6b2c36d634fc02585d4db3c7dd9e610f86c69c91dcbbc61e1a1a5b328a446b1e",
+        "src/runtime/mod_fmr_serialized_multiswap_runtime.f90": "83db4ce1b22f65ccb52db67e258fe8ad647e2862af40b387bad800867395edf5",
         "src/runtime/mod_groundwater_coupling_contract.f90": "81001c48c7fd98faec9c3612092cd6729c8f98d16b6057ecfc5ecb090b306252",
         "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "d5f6645e27e8fc89bdc46838fe34e9766e8163b444027f5e6d80ea950759b8e1",
         "src/runtime/mod_fmr_groundwater_head_forcing_adapter.f90": "9dba7109d7247de394e62eeaa1e76bd8235e19845e8f5e74559ed4380b327bc4",
@@ -5310,7 +5409,7 @@
         "src/runtime/mod_fmr_irrigation_allocation_binding.f90": "6032785508565a1ccdfce9c28764ab2f31aac84b1241fd3e18f41963df9eb16c",
         "src/crop/mod_crop_rotation_calendar.f90": "8084e05504a7d6829cf254de03aae6cdcef2feaf456373ce4b912bc881fafa13",
         "src/runtime/mod_fmr_irrigation_material_root_binding.f90": "b067a5807f691fa7cc07dd547f9d7b13d7ef692b27ba17e688a010cbcd51c40f",
-        "src/runtime/mod_fmr_production_application_bootstrap.f90": "315d2570104d4ca2f02ddaa37cd1022500a5f57996e315e0f196115d753fb70c",
+        "src/runtime/mod_fmr_production_application_bootstrap.f90": "7ada905b00afb0bb47d50b1fef8f503f5267dfa56a0d37539ff673dbe5f468e5",
         "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
         "src/process/mod_b111_soil_n_storage_conversion.f90": "ba83005da68fdb8d30f899e48c04e17336469646f4b2971d8fb4c675b4aa43c0",
         "src/process/mod_b111_soil_n_transport.f90": "da6c51349f1b5cbc90e108edc7e99cbfb8887702954b8ea593479fa926d963df",
@@ -5375,7 +5474,7 @@
         "src/adapter/mod_crop_ext_csv_file.f90": "91652f4c7ee265a8f8df7da7df3c9d3a0385282b8d544933b2f768f9b6253a84",
         "src/adapter/mod_crop_soil_n_output_observation.f90": "5bc45d2b6c929c1151e2802cdd33dc63086d25994d5524026c57ff578d56261c",
         "src/adapter/mod_crop_soil_n_output_day.f90": "20d71493f72ea8bd83aa16df47612ed602f93d87527dd25747657eeb1ff9608a",
-        "src/legacy/b1_10_port/headcalc.f90": "11a8c8c1ed408adfd687ceafcc706cdfe575a83339028f7b2391e19d89fb8705",
+        "src/legacy/b1_10_port/headcalc.f90": "7c30d1fb4506aecaf5c4c3552f785754ac1e09fdcbfe52b9d9a51fd1a32b7ef9",
         "tests/nut-crop/test_historical_atmosphere_trace.f90": "80bc8874f0853ef01f20febc35e89302285911e34a38a4f84635b1d3f07edf2d",
         "tests/nut-output/native_output_project.inc": "02acb6368cb0544d0e16fea4ff449b389479f5a303396b8848a88516e5b05f59",
         "tests/nut-output/run_native_output_project.py": "623d8a8e8740b0be3acf9b82a62f010d51f4dce128b512883b9b917cd7b56cab",
@@ -5392,7 +5491,7 @@
         "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md": "8300348011e34e40e7634e34651c61bee8465d243502439a720045d7a494a656",
         "integration/audits/evidence/mc-nut01-harvest-output-20261022/INDEX.json": "cc4fb864f17c6b1a0de1d2ed7805f070460c84a86507cc1d86344251f7c6de7c",
         "integration/audits/evidence/mc-nut01-harvest-output-20261022/evidence.tar.xz.b64": "60958cff2fbe4b8f48e8655d0ba02a5fa95a5dbaf487279c8db7e4563acfa64a",
-        "integration/audits/verify_root_substep.py": "856b31c09598560c0c88ee367b3359f4f9a5d21710c5300a062eb603c4e15a53",
+        "integration/audits/verify_root_substep.py": "57681481178f422752036cc83490c84fc1cc00d3f6fb2913b4aba4edf241981f",
         "src/adapter/mod_crop_ext_saved_residue.f90": "3e99469f342a88291424b23b1bb346fb442123f144d83d4d23272cbfe4aa2498",
         "src/adapter/mod_crop_soil_n_saved_harvest.f90": "12d35afd722955fb16ab606d5d6e2afe0512c8f21f455b6d82cf99cb64bc665c",
         "src/adapter/mod_crop_soil_n_saved_output.f90": "8b48960ce5c23e17b490a3816274db2ef58dd8f3ac883b11363a4b57e7562515",
@@ -5404,115 +5503,79 @@
         "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md": "87e8ca50264d5655baa2fca216e6b94208be65e3dac01b6ba5e9f3034b94395e",
         "integration/audits/evidence/mc-nut01-saved-output-20261022/INDEX.json": "3e8522100c5703633ce50f007edc4b30ad9861c8879dcbe9156d60b698294ed3",
         "integration/audits/evidence/mc-nut01-saved-output-20261022/evidence.tar.xz.b64": "ca171794bff1eef564d135ab8c14616a56ac9cac8e3c071feb7a7d5fee73ce2c",
-        "integration/audits/verify_nut_harvest_output.py": "3433e705c06c62cebac68c38b8ae3743327e882b7900235bd246bad139daaa87",
+        "integration/audits/verify_nut_harvest_output.py": "99dd924dbeef9b6166cead06c59ad5304c28264710adb8f3434bbcafb236844b",
+        "app/solute_column/link_context.f90": "5fedb1269476b726375279b94b9cc9ac5378ae91476e07aa1496b8d59afe31ba",
+        "src/process/mod_solute_compartment_state.f90": "b02f470222aa1a8b55a2a0a5b7d37741821bb9b755cbe7272db47cf30f7db046",
+        "src/process/mod_b111_solute_sorption.f90": "0eef10b501db3ab8e60715c24f7b5e403166b4007288a5ef8b31f6280490f7eb",
+        "src/process/mod_b111_solute_decay.f90": "601c4b77d33520d023286b44b00a658337417c76ee3a12d51e25674421447b9c",
+        "src/process/mod_b111_pond_solute_exchange.f90": "e78834e5ecd4cb8e074549e8bc031ce9a6964c13d098fbc56736f8cbd61e1ed3",
+        "src/process/mod_b111_reactive_solute_substep.f90": "44c79cd9c7844018ebb472d21309f7809c0629c17ea1a1943deea0f0d28b7458",
+        "src/process/mod_b111_persistent_pond.f90": "13111270523eb5b819bb8e011943fdd1d8375b8f58cd314b098240d37e6be4ee",
+        "src/runtime/mod_fmr_b111_matrix_solute_route.f90": "8615d7bb895db8a86f2290aac55cb1cfbd0e16bbdaccf711f23404bde596211d",
+        "src/runtime/mod_fmr_b111_matrix_joint_application.f90": "ee0370eb992430a020d9ab4e343dd0ab0d46f46e856fc54de7030afb9588b31d",
+        "src/runtime/mod_fmr_b111_pond_solute_route.f90": "0588f949ad78b242826cec22a7090ad9a1527a1a4efda2acd89447f846b0e438",
+        "src/runtime/mod_fmr_b111_pond_joint_application.f90": "3af8fc131d80d3fdd854c8b3850aedf9d1eb63fc3149e06f7d11fef73314e011",
+        "src/runtime/mod_fmr_b111_pond_thermal_application.f90": "e11b6f7663eba7cf33797dce0b4d709f838a62c6da29c000f4d3895e5ee76817",
+        "src/process/mod_b111_age_tracer_substep.f90": "be5c5d7b8f4b2db63ed80786ca48ff5208e9ab5227777d8f4e62809b2335b5db",
+        "src/process/mod_b111_surface_age_budget.f90": "79d0b6dc8101d58a61d166345fa8dcc2d89f0ca3fea674ce51a39ca1f8bb89fe",
+        "src/process/mod_b111_surface_age_owner.f90": "ee4058b331134ffed68f2c528b56518b9502365fa0117bef0e237fc8d023e855",
+        "src/runtime/mod_b111_surface_age_trace_bridge.f90": "a3754179c3ff63c3d310cf77e2cd79bb4374dbafa10165e8039d99bee7e99c36",
+        "src/runtime/mod_fmr_b111_age_route.f90": "b2bdfb98f883aa7d6b9d7be89f388d5d73626bc0fa009f7764640834cfad87e4",
+        "src/runtime/mod_fmr_b111_age_joint_application.f90": "c73f6f03df022f394f5db0edad4ad83c1bf454fdd55fd6c51ef77a83cc69e366",
+        "src/adapter/mod_age_joint_restart_file.f90": "ff03a0f733e3d681c3b71cd4bb1ac3b2224cf933014ff6510cb14ef4da48e364",
+        "src/adapter/mod_pond_thermal_restart_file.f90": "fdd34b3ebcd85ed4a803980be1e34e7b17b489af03c91ec9b7b318d550300c47",
+        "app/solute_column/read_swp_water.f90": "fdaecbaaf692f4c645c839abd05899ef5afbe0f488e6404f44a064dff27b0f42",
+        "app/solute_column/read_swp_chemistry.f90": "5da90907a6c5741daa7c131b8a144a8f6ef1b7f3804615381c9b00e4079cf0b7",
+        "src/adapter/mod_matrix_joint_restart_file.f90": "7b60235c0d2d908e228c7ffb421a1eef53d9b4c26deaa0e32627e793aa402c52",
+        "app/solute_column/main.f90": "6d55169b51c6e24e38959d8cb9155441c1f7a8fa66c627eb266a20adb62c0faf",
+        "tools/solute/legacy_reader_sources.py": "5d1b4da033c37c4c59c2e0a7c21542a21a492f6b29fdc92d1259a3458dac7b46",
+        "tools/solute/build_column.py": "6879f2cdee6486104201169f21cc13931c0d08efdf06b9a3ad0ef8fe0d298828",
+        "integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64": "4221b5bf89bc979673e88229858f6820e0c8d196083a68d56068c46e61b2d98b",
+        "tools/solute/build_crop_column.py": "cb498ccba77df3c3f55066e0781de59270d973e883b2ff8958ed374312f7a8d0",
+        "app/solute_column/read_swp_daily.f90": "52a5cff16f6b4f0746cd2a392913cfce05e62c6fd97ade3e2f39d5814a4f8cb4",
+        "tools/solute/build_daily.py": "0ee7438a873afed8b1d40f91a824286c37ef754f8a8e22fa2a6c040e6a5dae9a",
+        "app/solute_crop/read_swp_crop.f90": "cd776b3874600be720b99f35930dd76af79c35e484bd0af5ae69e16fb1d65c08",
+        "src/crop/mod_crop_fixed_phenology.f90": "df1d40af80b151925049826fd069e9b6a5f4409461ea1fac673cfc5b3b679b7f",
+        "tools/solute/build_crop.py": "028438e89e17bd22840e76f8bc1c167bcb4a91866e66e3c26fa9756e885ca443",
+        "app/solute_crop/read_swp_root.f90": "01fb9031de64952dbab4324877ec67d4d842c5eaf696b3832e884cf58b6cca79",
+        "tools/solute/build_root.py": "0bc0f4347bf871a3b063ba401df9d10e61e85bc1389d90c5d8dfad43eed13217",
+        "tests/fmig431/qualify_weather_warm_start.py": "83af8564d00d1962b073006249a32922318c6a75009237a0848897258281e23f",
+        "tests/fsi/test_weather_surface_warm_start.f90": "c1d502d0066435b5b536f0a1af6c5f98d6b5952e7365b2c0a66b090384422f7e",
+        "tests/fmig431/test_crop_file_weather_production.f90": "cc98b93b26cad5b029b95fc63d038a73f8d31c3dd22fa49b7e96bcf48fb515f4",
+        "tests/fsi/test_weather_surface_continuous_mvg.f90": "313d48d09c7fa909196f56ca652de2de2817d1997338b820f70320472a2c6f58",
+        "tests/fsi/test_weather_surface_retry.f90": "3fae1cd4ed904f13f2515ab035ec3e176f72efc377a45f9eef2d1f20cd801af1",
+        "tests/fsi/test_weather_surface_top_derivative.f90": "0804bf63cdfb1b01d34c69410f98e84a1c9437d20079d55d9c8ebf37f1cf9387",
+        "tests/fsi/test_weather_surface_desaturation.f90": "02685371f118663a95e7a0c2968112f19fb3fa3094ca05d080c74af9676ccad1",
+        "tests/nut-sol/qualify_swp_reader.py": "b0a72803138abe3b0f3f7f9ae47728399293718fa5c274f34fa5fffc82025cda",
+        "tests/nut-sol/test_swp_reader.f90": "27010012f46f034060d2b16ebefdab550f1dcc7db6ded6cefba639c5b8694e17",
+        "tools/solute/run_column.py": "2286cf852a36b317c3daafe4d0e1f196c5fec09abbe1f3425e790f32f515f147",
+        "tests/nut-sol/qualify_swp_water.py": "c60f1e60c5e8d9e76e4aa6ddf3b1917aaf74f962f185e83c8c489bd858201169",
+        "tests/nut-sol/test_swp_water.f90": "b5f11f57ba9023c5cdcf38070292f605c22d153daf1d418233aa4d239ff24002",
+        "examples/solute_column/layered_water.swp": "d3b53006407bcfb807913b679f9b396f285634aaf7fa466a7086d3b377d64c3d",
+        "examples/solute_column/swp_water.nml": "8acc5a3ec3171f2ee08cd8c279e7e9af211e9a0097b82e4e9dec03fb00f5aa51",
+        "tools/solute/run_daily.py": "9c4f5a3c66e95e97d3b55cb511df20c0234477fffe14083a5441e8a64aa91cf0",
+        "tests/nut-sol/qualify_swp_daily.py": "354d37f6ecdea247a33429d9f28665ad0c2a385f05543b1e0e14eb5fee53925b",
+        "examples/solute_column/daily_fallow.swp": "3766270f9e8b0084d7e6ff3d9bb263e0bedc37e43d4ddbe7bf19c7aec6bc5dbd",
+        "examples/solute_column/daily_fallow.met": "a022d2bf35b9261046bd378f11d242f5b9a12cb8816c4f2ef0a14ad18d3dbb1f",
+        "tests/nut-sol/qualify_swp_etref.py": "dfcae43f54ef9376f091dfe9d2293e3808c5e82d4e64d09d1b306e1059ecbba5",
+        "tests/nut-sol/test_soil_evaporation_pond.f90": "9ecfbc27d6db8700f759dd56529c04b28cbbd2fee36796ab95805aefdca3b30b",
+        "tests/nut-sol/qualify_crop_root_joint.py": "6c08fdab24acf8462f19b2abc31e69447993d4d5cc43f193ca1d8a48a808457e",
+        "tests/nut-sol/test_crop_root_transaction.f90": "9b3aea633a3ae6f43d897b35bc9e620305e9fd63a38d6539d74cad09bc6d43fe",
+        "tests/nut-sol/qualify_crop_root_transaction.py": "b06a2775d8324648c53ed9f4545104f1181d83fdbfb9e826549b40739854ddd8",
+        "tests/fmig431/qualify_weather_canonical_trace.py": "b79b84e1c8f07879811b97d43bb2dab8c045122c1c228425648f935333c58de0",
+        "benchmarks/performance/verify_perf01_root_composition.py": "931c60c6cc5e64d140d0b11ba511eddf80579e6556c760df66c77e859fb0c526",
         "src/adapter/mod_crop_n_saved_generation.f90": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
         "src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90": "49fa0dee8d929ede7fc783a963ab9bd4bb2df6513509f58f604bc12dba02bb39",
         "src/adapter/mod_crop_soil_n_thermal_saved_output.f90": "471a78d19d6e155dbd27736f276bbac81b0eab3bfe0a18612ad88fcea7eaed95",
         "tests/nut-output/thermal_fallow_manual.inc": "5757620ac50109ea3d93738489b2b1d7bf3db53d662d1df481cbe930e7e177ea",
         "tests/nut-output/run_thermal_fallow_output.py": "2459e3e9ff2db2e0f9a31286fb9c02ca8aba9d2212ba6b90ed214297c7b6e588"
       },
-      "execution_result": {
-        "O0": {
-          "generations": {
-            "saved": {
-              "3": "d2bb1186100ac9f84471d2528469d0b623f20a116eef7372aec613b946ee67a6",
-              "4": "8a1158115aa42133e9e635a07e9c4b0550ecd40257bd2c977a7da125857a8955"
-            },
-            "deferred": {
-              "3": "6a5d6d9c87b0e69236c099ad18d1443914259cbc4acf6cd667b849decf92a730",
-              "4": "85b254adacfc0618ac6be07df0769f9c92dead259c5f5418c983d03a7a121217"
-            }
-          },
-          "crashes": {
-            "before": {
-              "returncode": -9,
-              "complete": true,
-              "sha256": "9e923dd1b75a1747acb9edbcadc4fedede08df0d9fbbd62065aeb6e6c1a3e930"
-            },
-            "after": {
-              "returncode": -9,
-              "complete": true,
-              "sha256": "f039582a6528d4f22c909991f7ff47150a1205bd32436a4278fba08d6528e780"
-            }
-          }
-        },
-        "O2": {
-          "generations": {
-            "saved": {
-              "3": "d2bb1186100ac9f84471d2528469d0b623f20a116eef7372aec613b946ee67a6",
-              "4": "8a1158115aa42133e9e635a07e9c4b0550ecd40257bd2c977a7da125857a8955"
-            },
-            "deferred": {
-              "3": "6a5d6d9c87b0e69236c099ad18d1443914259cbc4acf6cd667b849decf92a730",
-              "4": "85b254adacfc0618ac6be07df0769f9c92dead259c5f5418c983d03a7a121217"
-            }
-          },
-          "crashes": {
-            "before": {
-              "returncode": -9,
-              "complete": true,
-              "sha256": "9e923dd1b75a1747acb9edbcadc4fedede08df0d9fbbd62065aeb6e6c1a3e930"
-            },
-            "after": {
-              "returncode": -9,
-              "complete": true,
-              "sha256": "f039582a6528d4f22c909991f7ff47150a1205bd32436a4278fba08d6528e780"
-            }
-          }
-        }
-      },
-      "measured_cost_seconds": {
-        "cold": {
-          "actual_native": 4.471525595996354,
-          "crash_reconstruction": 0.022502140993310604,
-          "driver_compile": 34.24925440399966,
-          "fallow_fresh": 0.2924838079998153,
-          "invalid_generation": 0.10261437500594184,
-          "invalid_identity": 0.011263642998528667,
-          "invalid_live_generation": 0.30488551499001915,
-          "link": 0.660531583998818,
-          "original_fresh": 2.1298551869986113,
-          "phase_fresh_fallow": 4.133524591015885,
-          "phase_roundtrip": 0.09373760100424988,
-          "preload_compile": 0.06737920200248482,
-          "provider_compile": 8.159863618995587
-        },
-        "thermal": {
-          "actual_native": 8.207678576000035,
-          "crash_reconstruction": 0.046858284003974404,
-          "driver_compile": 41.61568906400498,
-          "fallow_fresh": 0.5262553559950902,
-          "invalid_generation": 0.1995010090249707,
-          "invalid_heat_identity": 0.033290868006588425,
-          "invalid_identity": 0.015877543002716266,
-          "invalid_live_generation": 0.44784903901745565,
-          "link": 0.705614565005817,
-          "original_fresh": 5.561782792996382,
-          "phase_fresh_fallow": 5.662372565988335,
-          "phase_roundtrip": 0.15705122498911805,
-          "preload_compile": 0.07398379599908367,
-          "provider_compile": 15.701660073988023
-        }
-      },
-      "changed_dependencies": {
-        "src/adapter/mod_crop_n_saved_generation.f90": {
-          "old_sha256": "cc35051bfa08aeb41f8c597c66d841fe95da8807da900e393e7b3e676b89d9dd",
-          "current_sha256": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
-          "reason": "Nested physical codec already supports certified heat. Preserve S5NS0001 layout and cold bytes; require caller heat parameters and existing certificate validation on thermal reads."
-        }
-      },
-      "preservation": {
-        "predecessor_owner_controls": 19,
-        "cold_saved_output_results_exact": true,
-        "incumbent_thermal_endpoints_exact": true,
-        "existing_physical_equations_unchanged": true,
-        "all_full_rows_unchanged": true
-      },
       "scientific_delta": {
         "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json": "A",
         "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/evidence.tar.xz.b64": "A",
         "integration/audits/verify_nut_saved_output.py": "M",
         "integration/audits/verify_nut_thermal_fallow_output.py": "A",
+        "integration/performance/verify_weather_composed_successor.py": "M",
         "src/adapter/mod_crop_n_saved_generation.f90": "M",
         "src/adapter/mod_crop_soil_n_thermal_saved_output.f90": "A",
         "src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90": "A",
@@ -5520,11 +5583,12 @@
         "tests/nut-output/thermal_fallow_manual.inc": "A"
       },
       "postimages": {
-        "docs/science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md": "b2403edd2f0491cb59ab36b36a5c0eb4596682376022c09637c437d8900ca28e",
-        "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json": "c5556551f022f402f87c94ce104edb216410add87fbce08adebda596bc2702ea",
-        "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/evidence.tar.xz.b64": "e06050f89b4b10c3d8b673b4716c5e6ae0a990d1c032c0b464b4fe8c2536a218",
-        "integration/audits/verify_nut_saved_output.py": "1d76f49c29b97b8d0e44e30e66a4c6401cf1b65f453fb958bf4cba40c7994498",
-        "integration/audits/verify_nut_thermal_fallow_output.py": "dce691708b9a1386555c28a830872389dcc78d8039372f14de50340b4d52e69e",
+        "docs/science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md": "e7851504c27ba82012838b2ae92542859775301daa0d6209cfa11a9d74b16cc8",
+        "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json": "000fb4360e21ef4884f932ba7affb519b21b7af9e383f44d559662f3fea78897",
+        "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/evidence.tar.xz.b64": "8805fd89f1c512fc75467c60f0b1495b293ae338dda58be5569275af62973817",
+        "integration/audits/verify_nut_saved_output.py": "b61e34ef4327f4ac2058f0cc190316f70f7d8fdabbbf85600b9f52048a12ed89",
+        "integration/audits/verify_nut_thermal_fallow_output.py": "9b2894deb4c85418d5c75c91b38070c065e44a1e29f724fe461c420a83eceee2",
+        "integration/performance/verify_weather_composed_successor.py": "ce98fd13a937b371c8c15715d8f6e96c71921298b25cc6f46c149c706a699193",
         "src/adapter/mod_crop_n_saved_generation.f90": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
         "src/adapter/mod_crop_soil_n_thermal_saved_output.f90": "471a78d19d6e155dbd27736f276bbac81b0eab3bfe0a18612ad88fcea7eaed95",
         "src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90": "49fa0dee8d929ede7fc783a963ab9bd4bb2df6513509f58f604bc12dba02bb39",

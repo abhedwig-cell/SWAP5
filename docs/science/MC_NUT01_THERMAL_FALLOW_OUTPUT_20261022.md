@@ -1,6 +1,8 @@
 # MC-NUT01 accepted thermal fallow and saved output
 
-Development successor at canonical7eb6f10baabae2f26af168c59bf63459fa0a3516.
+Composed successor at canonicalf4ef44cb20cfb73ae7a582487790a4eb0292b144.
+The earlier7eb6f10b development qualification is preserved at feature commit
+bb7ad9a6a51e72fb8db911bb1c2a254acc522519, not inherited for changed hydraulics.
 Owner: existing HIST-COMPLETE extended-output record. Full MC-NUT01 remains open.
 
 The new explicit runtime application composes the existing accepted Richards/heat
@@ -45,3 +47,29 @@ new global state are absent. The output schema remains compact and optional.
 Full historical/default orchestration, successor-crop/rotation output, corrected
 active-crop negative allocation and snow/persistent-surface N remain separate.
 This contract is not a seasonal or power-loss durability qualification.
+
+## Concurrent weather repair composition
+
+The admitted saturation repair changes shared water/heat providers. Repeat the
+complete cold saved-output and new amended thermal-output drivers on that exact
+implementation. The existing PERF01 current cold build has331 providers and328
+registered inputs. Reuse only after matching every input, original terminal
+evidence, compiler identity and recorded thermal object/module hashes. Expected
+added focused cost160seconds. Existing numerical/physical assertions stay fixed.
+Old7eb6f10b numerical evidence remains a historical observation, not current proof.
+
+Preserve the complete PERF01 owner bodies behind additive dispatches. The new
+owner checks its existing raw weather/root/calendar/harvest/saved capsules, with
+the exact recorded controller-only projection for immutable physical evidence.
+Only the saved-generation provider acquires a new compiled identity, established
+by fresh complete cold preservation and new thermal proof. Its historical
+preimage remains checked against the published concurrent baseline.
+
+The original55.245-second FSI35 native proof remains inherited. Its old local
+candidate48d61aaf is not a published GitHub object. Baseline qualification obtained
+that exact Git object from the original local worktree and verified all34
+canonical controls. The complete native runner body and all27 compiled inputs
+are byte-identical in publicf4ef44cb. Preserve that independently checked body
+hash and the immutable original native receipt; use the public equivalent source
+for reproducible source checks. Compiler version/bytes and all original native
+assertions remain required. This is source continuity, not a new native execution.

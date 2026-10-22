@@ -36,6 +36,8 @@ def frozen_physical_reader(path):
   return subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
  return (ROOT/path).read_bytes()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['source'](reader,changed)
  if 'evidence' in record().get('substep_feedback_work',{}):
   return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['source'](reader,changed)
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('calendar_output_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_calendar_output.py'))['source'](reader,changed)
@@ -155,6 +157,8 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
          'root_chemical_reject_retry':'O0_O2_EXACT_BINARY_PASS','input_boundary_exact_artifacts':64,'full_historical_migration':False,'substep_stress_feedback':False}
 
 def self_test():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['self_test']()
  if 'evidence' in record().get('substep_feedback_work',{}):
   return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['self_test']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('calendar_output_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_calendar_output.py'))['self_test']()
@@ -190,6 +194,8 @@ def self_test():
  return controls
 
 def verify():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['verify']()
  if 'evidence' in record().get('substep_feedback_work',{}):
   return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['verify']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('calendar_output_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_calendar_output.py'))['verify']()
