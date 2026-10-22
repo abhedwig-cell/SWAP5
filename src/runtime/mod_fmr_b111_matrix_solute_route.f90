@@ -234,6 +234,9 @@ contains
          p%molecular_diffusion_cm2_day,p%cdrain_mg_cm3,p%cseep_mg_cm3,p%tscf,p%cref_mg_cm3,p%frexp, &
          p%rain_rate_cm_day,p%rain_c_mg_cm3,p%irrigation_rate_cm_day,p%irrigation_c_mg_cm3, &
          p%macropore_area_fraction,merge(1.0_real64,0.0_real64,p%temperature_active)]
+    ! Preserve the exact Reference restart vector; a tagged opt-in policy must
+    ! nevertheless reject cross-policy restore rather than silently changing it.
+    if(p%transport_scheme/=0)v=[v,-11101.0_real64,real(p%transport_scheme,real64)]
   end function
 
   subroutine reconstruct_matrix_solute_trusted(p,parameter_id,revision,time,water,concentration, &

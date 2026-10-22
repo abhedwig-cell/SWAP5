@@ -38,6 +38,7 @@ program swap5_native_project_column
   integer :: nodes=4
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
+  integer :: solute_transport_scheme=0
   integer(int64) :: revision
   real(real64) :: initial_head=-75d0,initial_pond_cm=0d0,initial_pond_mass_mg_cm2=0d0
   real(real64) :: concentration_mg_cm3(MAX_NODES)=0d0
@@ -109,7 +110,7 @@ program swap5_native_project_column
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
-    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap
+    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -293,6 +294,7 @@ program swap5_native_project_column
   forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
   forcing%pond_input%implicit_pond_evaporation=implicit_pond_evaporation
   chemistry%dz_cm=dz;chemistry%theta=initial%water_content
+  chemistry%transport_scheme=solute_transport_scheme
   chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)
   chemistry%frexp=freundlich_exponent;chemistry%cref_mg_cm3=reference_concentration
   chemistry%temperature_active=dynamic_temperature;chemistry%temperature_c=spread(0d0,1,numnod)

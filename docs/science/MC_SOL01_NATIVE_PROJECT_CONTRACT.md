@@ -84,3 +84,47 @@ complete original fixed.f90 and ETpot. A passing preparation comparison does not
 qualify annual physical execution, hydraulic accuracy or the complete original
 Andelst project. Retain failed annual inputs and diagnostics alongside this
 bounded evidence. The successor remains proposed and is not canonically admitted.
+
+## Proposed positive transport numerical policy
+
+Continuation baseline:e387b89d382afaee325f3cf2c2760f0713f258e4 (PR1373 draft).
+Original SWAP/solute.f90:436-438 zeroes negative cmsy and adds its signed amount
+to rounderr. This is historical numerical error accounting, not conservation of
+nonnegative physical storage. Source-exact centered Reference remains available.
+
+Implement an explicit opt-in implicit upwind policy in the same reactive process.
+Use donor concentration for advection and the original physical diffusion and
+dispersivity for centered diffusion. Backward Euler evaluates transport, root/
+drain outflow and decay on the new concentration/storage. There is no temporal
+Taylor dispersion term in this implicit discretization. Existing pond exchange,
+Freundlich storage and decay-rate providers remain the physical authorities.
+The nonlinear finite-volume equations have nonpositive neighbour coefficients,
+positive storage and nonnegative sources. Solve them by bounded positive scalar
+Gauss-Seidel using the existing monotone Freundlich inversion. Require a local
+equation residual and the existing hard global balance before returning success.
+Failure returns the original candidate owners. No negative concentration reset
+or numerical mass source is introduced.
+
+Owned shared interfaces:one numerical selector in reactive forcing, validated
+default0 Reference and opt-in1 implicit_upwind; the matrix immutable parameter
+fingerprint includes a tagged selector only for opt-in1 so existing Reference
+restart vectors remain unchanged. The native project CLI records the explicit
+choice in its bound input. Reference physical arithmetic and default remain.
+Invariants2,3,5,7,9,13,21,23,25,26,29,30 are affected and must remain satisfied.
+Cross-workstream effects include all callers of the reactive forcing type and
+matrix restart fingerprint. Current shared builds must be rebuilt; raw old proof
+is historical until changed-default preservation has actually run. No admission
+owner or historical assertion is waived by adding this policy.
+
+Qualification selection:small real process O0/O2 positivity/conservation across
+flow directions, Freundlich0.5..2, temperature/root/drain/pond sources, large dt,
+invalid selector and unchanged Reference outcomes; independent two-cell linear
+implicit solution and spatial/time convergence against analytic advection/decay.
+Then current project builds and exact short default/rejection preservation,
+mode-bound restart, actual original coarse/refined annual and cross-year runs,
+unchanged weather/soil/crop/chemistry/tolerances. Compare water and crop fields
+exactly across policies where Reference has an accepted prefix; solute accuracy
+is measured separately. Expected focused feedback60s; checked builds120s; annual
+composition up to3600s (selected to test the actual blocked physical route).
+Any admission additionally requires current owning preservation and F-CI impact
+reconciliation. Highest low-air remains NOT_SELECTED_POLICY; RossFast is unused.

@@ -27,7 +27,8 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference'):
+ if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
  if not math.isfinite(temporal_tolerance) or temporal_tolerance<=0:raise ValueError('positive finite temporal tolerance required')
  executables={k:Path(bundle[k]).resolve()for k in ['project_reader','crop_reader','root_reader','exe']}
  if bundle.get('schema')!=1 or bundle.get('status')!='BUILT':raise ValueError('invalid build bundle')
@@ -87,6 +88,9 @@ def prepare(bundle,swp,temporal_tolerance):
   ' soil_evaporation_cm_day='+','.join(r['soil_evaporation_cm_day']for r in combined),
   ' evaporation_cm_day='+','.join(r['pond_evaporation_cm_day']for r in combined),'/']
  first_root=prepared[0]['root'].strip()
+ if solute_transport!='reference':
+  # Keep all old Reference input lines byte-identical except source binding.
+  lines.insert(lines.index('&surface')-1,' solute_transport_scheme=1')
  if not first_root.upper().startswith('&CROP')or first_root.count('/')!=1:raise ValueError('foreign root namelist')
  lines+=[first_root[:-1],' substep_root_stress=.true.',
   ' crop_active='+','.join('.true.'if float(r['active'])==1 else'.false.'for r in combined),
@@ -108,14 +112,16 @@ def prepare(bundle,swp,temporal_tolerance):
  lines+=['/']
  audit=dict(schema=1,route='NATIVE_SWP_SIMPLE_CROP_ROTATION_ETREF',original_sources={name:sha(raw)for name,raw in sources},
   normalized_weather_sha256=sha(weather),periods=len(prepared),days=len(combined),profile_index=indices,prepared_periods=prepared)
+ if solute_transport!='reference':audit['solute_transport']=solute_transport
  return '\n'.join(lines)+'\n',swp_bytes,audit,executables['exe']
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('swp',type=Path);ap.add_argument('--bundle',type=Path,required=True)
  ap.add_argument('--output',type=Path,required=True);ap.add_argument('--restart',type=Path);ap.add_argument('--stop-after',type=int,default=2048)
- ap.add_argument('--temporal-tolerance',type=float,default=1e-4);a=ap.parse_args()
+ ap.add_argument('--temporal-tolerance',type=float,default=1e-4)
+ ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
- document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance)
+ document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport)
  # Keep all audit information inside the already-bound immutable input document;
  # never add an unbound sidecar to the admitted atomic output inventory.
  encoded=base64.b64encode(json.dumps(audit,sort_keys=True).encode()).decode()

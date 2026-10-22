@@ -3999,6 +3999,26 @@
               "native_project_successor": {
                 "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
                 "status": "PROPOSED_PREPARATION_O0_O2_PASS_ANNUAL_TRANSPORT_BLOCKED_NOT_ADMITTED",
+                "positive_transport_successor": {
+                  "baseline": "e387b89d382afaee325f3cf2c2760f0713f258e4",
+                  "status": "IMPLEMENTED_FOCUSED_O0_O2_PASS_ACTUAL_DAY229_REPLAY_PASS_ANNUAL_PENDING",
+                  "focused_result": "36 high-Peclet/nonlinear positivity and conservation cases per optimization, independent2x2 linear oracle,6 source/sink/decay cases and3 analytic advection meshes. Analytic L1 error decreases1.34460,0.85810,0.50982 for20/40/80cells; this first-order policy has material numerical diffusion.",
+                  "failed_day_replay": "O0/O2:actual committed day228 physical states reinitialized with the new explicit policy in a test-only driver; day229 succeeds with hard water/solute mass. Public cross-policy restart conversion remains forbidden.",
+                  "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md#proposed-positive-transport-numerical-policy",
+                  "owned_surface": "Reactive forcing explicit numerical selector and private implicit finite-volume solve; conditional matrix configuration fingerprint; native project opt-in",
+                  "invariants": [2,3,5,7,9,13,21,23,25,26,29,30],
+                  "source_finding": "Original solute.f90:436-438 resets negative cmsy and accumulates rounderr. Centered flux cannot guarantee positivity at small physical dispersion merely by reducing dt.",
+                  "test_selection": {
+                    "focused": "Real6-provider process O0/O2, independent linear implicit oracle, positivity/mass, source/sink/nonlinear, invalid/nonmutation/Reference preservation; expected60s",
+                    "build": "Rebuild current194 providers O0/O2 because shared forcing type changes; expected120s; no unsafe old-object reuse",
+                    "annual": "Actual original blocked coarse/refined year and cross-year with opt-in implicit upwind, unchanged physical inputs and tolerances; expected3600s; source exact Reference prefixes retained",
+                    "full_fci": "PENDING_STABLE_CANDIDATE_OWNER_RECONCILIATION",
+                    "highest_low_air": "NOT_SELECTED_POLICY"
+                  },
+                  "next_action": "Implement explicit implicit-upwind option and minimal process controls, then current project builds and blocked annual route",
+                  "qualified": false,
+                  "canonically_admitted": false
+                },
                 "implementation": "Native SWP paths/year-file weather/ordered simple-crop rotations, period-specific root profiles and source-bound restart front end implemented separately; unchanged193 physical providers. Existing apps/SRC unchanged.",
                 "completed_controls": {
                   "historical_preparation": "O0/O2,365-day/two-period1998 and481-day/three-period cross-year:39114 daily field values exactly equal to complete original fixed.f90/ETpot;12 rejected missing/unsupported future inputs",
