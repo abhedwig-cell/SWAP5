@@ -3989,11 +3989,11 @@
           },
           "root_joint_successor": {
             "baseline": "636760624e930f11517a42707fd16d885902c045",
-            "status": "LOCALLY_QUALIFIED_BOUNDED_NATIVE_DAILY_ROOT_JOINT",
+            "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_DAILY_ROOT_JOINT",
             "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
             "full_historical_migration": false,
             "substep_stress_feedback": false,
-            "next_action": "Admit input-boundary correction; then original within-hydraulic-substep stress feedback and wider historical/default composition",
+            "next_action": "Original within-hydraulic-substep root stress feedback; then broader historical/default water/meteo/crop and heat/snow/age/NUT physical composition. Current bounded daily native uptake complete.",
             "test_selection": {
               "groups": {
                 "native_root_joint": {
@@ -4009,7 +4009,7 @@
               },
               "full_fci": "NOT_SELECTED_IMPACT",
               "highest_low_air": "NOT_SELECTED_POLICY",
-              "candidate": "1d9baee8cea0ff72bd4606824975d7437babc06e"
+              "candidate": "d540382d105bf9c061a82dbee1119f795fe1f616"
             },
             "evidence": {
               "path": "integration/audits/evidence/MC_SOL01_CROP_ROOT_JOINT_20261022.tar.xz.b64",
@@ -4017,7 +4017,7 @@
               "decoded_bytes": 800332,
               "members": 7631
             },
-            "recovery_point": "PR1369 main composition admitted; O0/O2 forcing-boundary correction qualified with40 controls and64 exact valid artifacts; admit correction next",
+            "recovery_point": "integration/f-ci-canonical; PR1369 actual daily root composition and PR1370 forcing bounds; corrected mergef3173b85; composed owner verify_crop_root_joint.py/40 controls; actual per-hydraulic-substep feedback remains open",
             "actual_daily_root_uptake": true,
             "hosted_selection": "NOT_SELECTED_LOCAL_INTEGRATED_QUALIFICATION_COMPLETE",
             "affected_invariants": [
@@ -4198,7 +4198,9 @@
               "original_merge": "d58d0c00e203f7135f2a3d3ff110cc6a9686d22a",
               "new_invalid_cases": 4,
               "exact_valid_physical_artifacts": 64,
-              "status": "LOCALLY_QUALIFIED_O0_O2"
+              "status": "CANONICALLY_ADMITTED",
+              "pr": 1370,
+              "merge_commit": "f3173b85d107e8516fcd8d0d6cd98366f1a7b4bb"
             },
             "initial_canonical_admission": {
               "pr": 1369,
@@ -4207,6 +4209,61 @@
               "qualified_and_merge_tree": "14e10fc512c4e39400b15aaa7e7c75cb661aaedc",
               "actual_merge_controls": 39,
               "scope": "Original bounded daily root composition; input-boundary correction separately qualified"
+            },
+            "canonical_admission": {
+              "pr": 1370,
+              "url": "https://github.com/abhedwig-cell/SWAP5/pull/1370",
+              "composition_pr": 1369,
+              "candidate": "d540382d105bf9c061a82dbee1119f795fe1f616",
+              "merge_commit": "f3173b85d107e8516fcd8d0d6cd98366f1a7b4bb",
+              "qualified_and_actual_merge_tree": "b4ddd3bd247a2b65d5bb095eede8139d0c31defb",
+              "actual_merge_owner": {
+                "qualified": true,
+                "status": "NATIVE_DAILY_CROP_ROOT_JOINT_O0_O2_QUALIFIED",
+                "actual_daily_cases": 16,
+                "daily_balance_observations": 128,
+                "fresh_restarts": 16,
+                "invalid_inputs": 34,
+                "exact_fallow_artifacts": 6,
+                "root_chemical_reject_retry": "O0_O2_EXACT_BINARY_PASS",
+                "input_boundary_exact_artifacts": 64,
+                "full_historical_migration": false,
+                "substep_stress_feedback": false,
+                "incumbent_preparation": {
+                  "qualified": true,
+                  "status": "NATIVE_SIMPLE_CROP_PREPARATION_O0_O2_QUALIFIED",
+                  "original_exact_values": 576,
+                  "native_cases": 8,
+                  "invalid_inputs": 22,
+                  "coupled_actual_root_uptake": false,
+                  "full_historical_migration": false
+                },
+                "baseline_physical_and_frozen_nut": {
+                  "qualified": true,
+                  "status": "FALLOW_ETREF_O0_O2_MASS_RESTART_QUALIFIED",
+                  "native_cases": 8,
+                  "fresh_restarts": 8,
+                  "original_etpot_checks": 40,
+                  "old_exact_artifacts": 152,
+                  "concurrent_nut_exact_files": 24,
+                  "concurrent_nut_preserved": true,
+                  "full_historical_migration": false
+                },
+                "prior_nut_scope": "FROZEN_63676062; current NUT replaced by thermal-output authority",
+                "current_concurrent_nut": {
+                  "status": "THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS",
+                  "qualified": true,
+                  "invalids_per_opt": 17,
+                  "crash_boundaries": 4,
+                  "old_cold_exact": true,
+                  "full_mc_nut01_closed": false
+                },
+                "controls": 40,
+                "current_source_tree": "34952123a596846c07f413f088640d5e7504700e"
+              },
+              "actual_merge_owner_sha256": "a894dcc772aa54f73a63d07008668d0fa51cd0ba81e9c4ccfd99227ffdce0257",
+              "hosted_checks": "NOT_SELECTED_LOCAL_QUALIFICATION_COMPLETE",
+              "actual_merge_docs_source": "PASS"
             }
           }
         }
