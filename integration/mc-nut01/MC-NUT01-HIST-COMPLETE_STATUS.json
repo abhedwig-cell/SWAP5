@@ -4146,7 +4146,21 @@
       "actual_merge_tree_exact": true,
       "postmerge_owner_pass": true,
       "postmerge_corruption_controls": 20,
-      "admission_receipt": "integration/mc-nut01/MC_NUT01_NATIVE_OUTPUT_START_ADMISSION_20261022.json"
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_NATIVE_OUTPUT_START_ADMISSION_20261022.json",
+      "master_receipt": "bb811019b02558fff389e8397fe8493037acb433",
+      "master_checks": {
+        "scoped_bounded_reachability": 9,
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "old_bounded_receipts_exact": true,
+        "non_NUT_queues_exact": true,
+        "integrity": "PASS",
+        "inheritance_controls": 20,
+        "source_docs": "PASS",
+        "strict_docs": "PASS",
+        "full_master_qualified": false
+      }
     }
   }
 }
