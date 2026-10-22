@@ -4775,5 +4775,39 @@
     "all_dispositions_exact": 243,
     "summary_exact": true,
     "whole_master_qualified": false
+  },
+  "mc_nut01_thermal_output_20261022": {
+    "pr": 1368,
+    "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+    "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+    "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+    "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+    "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+    "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+    "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
   }
 }

@@ -11369,13 +11369,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11396,15 +11396,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11412,7 +11412,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11600,6 +11601,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -11631,13 +11666,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11658,15 +11693,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11674,7 +11709,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11862,6 +11898,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -11892,13 +11962,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Fertilizer/manure applications and volatilisation. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Fertilizer/manure applications and volatilisation. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -11926,15 +11996,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11942,7 +12012,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12130,6 +12201,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -12164,13 +12269,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Crop residue transfers to organic soil pools. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Crop residue transfers to organic soil pools. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -12193,15 +12298,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12209,7 +12314,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -12412,6 +12518,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -12441,13 +12581,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -12470,15 +12610,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12486,7 +12626,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12674,6 +12815,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -14709,13 +14884,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -14735,15 +14910,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -14751,7 +14926,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -14939,6 +15115,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -14975,13 +15185,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -15002,15 +15212,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15018,7 +15228,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15206,6 +15417,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -15239,13 +15484,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -15265,15 +15510,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15281,7 +15526,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15469,6 +15715,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -15528,13 +15808,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing process, finite-donor fallow, fractional humus and PR1358 output/restart remain admitted. PR1365 adds Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing process, finite-donor fallow, fractional humus, cold output and explicit native TRUE startup remain admitted. PR1368 adds Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_native_output_start_20261022"
+        "bounded_receipt": "mc_nut01_thermal_output_20261022"
       },
       "restrictions": [
-        "General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
-        "Native TRUE is admitted only through the explicit output-aware startup API; complete master row remains ACTIVE_MIGRATION."
+        "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "Thermal output is an explicit nonharvested API composition; no general native/default or full-row promotion."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -15571,15 +15851,15 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+        "head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit output-aware native SNM TRUE startup and existing heat-off/nonharvested output-day/joint-generation application; default startup still rejects TRUE. General/default native TRUE orchestration and wider grammar; output across heat/harvest/rotation; negative active-crop/immobilisation donor allocation; automatic snow/persistent-surface gross binding; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact. General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "latest_scientific_merge": "f29d91857855200651234deedb07b03845881d07",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15587,7 +15867,8 @@
         "finite_donor_receipt": "finite_donor_admission_20261021",
         "humus_timestamp_receipt": "humus_timestamp_admission_20261021",
         "output_generation_receipt": "output_generation_admission_20261022",
-        "native_output_start_receipt": "native_output_start_admission_20261022"
+        "native_output_start_receipt": "native_output_start_admission_20261022",
+        "thermal_output_receipt": "thermal_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15775,6 +16056,40 @@
         ],
         "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
         "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+      },
+      "thermal_output_admission_20261022": {
+        "pr": 1368,
+        "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+        "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+        "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+        "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+        "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
       }
     },
     {
@@ -20894,6 +21209,40 @@
       ],
       "hosted": "NOT_SELECTED: zero exact-head and actual-merge runs; never PASS",
       "preexisting_research": "Separate unchanged pond research gate fails stale main.f90 hash at exact baseline288ba1473, not a production failure or PASS."
+    },
+    "mc_nut01_thermal_output_20261022": {
+      "pr": 1368,
+      "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+      "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+      "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+      "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+      "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+      "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+      "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+      "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "full_mc_nut01_closed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+      "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+      "other_rows_exact": 234,
+      "all_dispositions_exact": 243,
+      "summary_exact": true,
+      "whole_master_qualified": false,
+      "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -21284,7 +21633,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "b2bcf7f49c2acd7b10434ff82b8b546485bba947",
+  "canonical_locator_head": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -23727,5 +24076,39 @@
     "all_dispositions_exact": 243,
     "summary_exact": true,
     "whole_master_qualified": false
+  },
+  "latest_mc_nut01_thermal_output_20261022": {
+    "pr": 1368,
+    "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+    "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+    "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json at 2c777901b2260ae75ea7c52b89ad1e02c252566b",
+    "scope": "Explicit nonharvested accepted thermal output day and complete physical/diagnostic/history generation with heat-parameter identity. No new thermal equations or physical restart schema; cold behavior exact.",
+    "qualification": "Fresh GNU13.3 O0/O2 cold native and original/augmented retained-thermal actual two-day output; independent-process combined generation;17 invalids per optimization;4 SIGKILL boundaries;12 frozen thermal artifacts and old PR1365 cold endpoints exact;original task6 2721checks/216reports per opt;actual whole merge tree exact and21 controls PASS.",
+    "remaining": "General historical/default native TRUE orchestration and wider grammar; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "2c777901b2260ae75ea7c52b89ad1e02c252566b",
+    "master_predecessor": "bb811019b02558fff389e8397fe8493037acb433",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero qualified/merge workflows, check runs and statuses; never PASS"
   }
 }

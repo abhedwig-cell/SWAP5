@@ -1,5 +1,20 @@
 # MC-SOL01 original SWP chemistry, 21 October 2026
 
+## Current accepted thermal nutrient output,22 October2026
+
+PR1368 at `f29d91857855200651234deedb07b03845881d07` adds the explicit
+nonharvested accepted thermal output-day and combined physical/diagnostic/
+report-history restart. O0/O2 actual composition and independent-process
+continuation,17 invalids per optimization and four SIGKILL boundaries pass.
+All twelve frozen thermal artifacts and previous cold endpoints remain exact.
+The complete merge tree matches qualification; the actual-merge owner and21
+corruption controls pass. Hosted checks were not selected and are not PASS.
+All nine NUT rows remain ACTIVE_MIGRATION. The other234 rows, all243
+dispositions, summary, queues and earlier receipts are unchanged. General
+historical/default orchestration, harvest/rotation output, active-crop negative
+allocation and snow/persistent-surface N remain open. Sections below are
+historical; the JSON register records the current bounded scope.
+
 ## Current explicit native nutrient output startup,22 October2026
 
 PR1365 at `142ef684f57abf879d37b3902a1f9c7fd60ada7d` admits native SNM TRUE through the explicit
