@@ -53,6 +53,8 @@ def fsi35_successors():
  return rows
 
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'daily_meteo_successor' in record():
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_daily.py'))['source'](reader,changed)
  r=record()
  if 'admission' in r:
   git('merge-base','--is-ancestor',BASE,'HEAD')
@@ -132,6 +134,8 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
  return {'qualified':True,'local_native_validated':True,'water_mapping_cases':12,'fresh_process_restarts':12,'invalid_cases':60,'old_exact_artifacts':152,'full_historical_migration':False,'canonically_admitted':False}
 
 def self_test():
+ if 'daily_meteo_successor' in record():
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_daily.py'))['self_test']()
  files=capsule();checks=[]
  for p in ['qualified-native/result.json','qualified-native/O2/layered/full/restart.bin','qualified-native/O0/layered/full/budget.csv','qualified-incumbent/O0/full/state.csv','preservation.json']:
   bad=dict(files);bad[p]=bad[p]+b'corrupt'
@@ -158,6 +162,8 @@ def predecessor():
  return r
 
 def verify_qualification():
+ if 'daily_meteo_successor' in record():
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_daily.py'))['verify']()
  source();r=validate(capsule())
  if 'native_log' in record().get('fsi35_reconciliation',{}):
   fsi=record()['fsi35_reconciliation'];raw=(ROOT/fsi['native_log']).read_bytes()
