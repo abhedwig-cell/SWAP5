@@ -1,6 +1,6 @@
 # MC-NUT01 explicit native output startup
 
-Status: locally qualified bounded explicit native startup; canonical admission pending.
+Status: bounded explicit native startup canonically admitted through PR1365.
 Baseline: `288ba1473c478b9a2a637f0b12d624fbcc63ca4a`.
 Owner: existing HIST-COMPLETE `extended_output_component_20261021/native_startup_successor_20261022`.
 
@@ -61,3 +61,14 @@ PASS. Original numerical evidence and previous owning assertions remain intact;
 the new gate validates the bounded changed input/startup seam and inherits the
 recorded exact-baseline production result. No new process, solver policy,
 highest-low-air or hosted numerical campaign is selected.
+
+## Canonical admission
+
+PR1365 merged at `142ef684f57abf879d37b3902a1f9c7fd60ada7d` from qualified head
+`c362348c3adb9501879c6d58f3b9ddc4a091c0ff`. The complete actual merge tree
+`efae631297e7309646e945b35658c0952f20f86d` equals the locally qualified/published tree.
+Actual-merge source/evidence and all20 corruption controls pass. No hosted
+workflow/check run was selected at the qualified head. Native TRUE is admitted
+only through the explicit startup API above; the general/default route still
+rejects TRUE. The1927-member capsule and39 exact-predecessor production controls
+remain bound. Full MC-NUT01 and all nine complete master rows remain open.
