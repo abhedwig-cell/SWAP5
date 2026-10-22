@@ -44,6 +44,13 @@ jobs:
         run: |
           root="$RUNNER_TEMP/swp-reader"
           python -B tests/nut-sol/qualify_swp_water.py --build-O0 "$root/O0" --build-O2 "$root/O2" --output "$root/water"
+      - name: Native daily MET and actual fallow column
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/swp-reader"
+          python -B tools/solute/build_daily.py --optimization O0 --output "$root/daily-O0"
+          python -B tools/solute/build_daily.py --optimization O2 --output "$root/daily-O2"
+          python -B tests/nut-sol/qualify_swp_daily.py --reader-O0 "$root/daily-O0/swap5_read_daily" --reader-O2 "$root/daily-O2/swap5_read_daily" --column-O0 "$root/O0/swap5_solute_column" --column-O2 "$root/O2/swap5_solute_column" --output "$root/daily"
       - name: Source bound admission and negative controls
         run: |
           python -B integration/audits/verify_swp_reader.py

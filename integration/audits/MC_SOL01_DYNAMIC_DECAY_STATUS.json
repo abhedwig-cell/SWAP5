@@ -3348,6 +3348,61 @@
     "canonical_merge": "14fbefdec245462580f961d073605ffbbcd3e72e",
     "qualified_head": "139eb9701e22b7a91d030b1fcf2c158b3cffca4a",
     "qualified_tree": "7ab180aa7b19527b55ff149ab850805196aa06b7",
-    "hosted_receipt": "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json"
+    "hosted_receipt": "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json",
+    "daily_meteo_successor": {
+      "baseline": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
+      "status": "LOCAL_O0_O2_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "implementation_status": "Bounded native TTUTIL daily rain-only fallow orchestration implemented; incumbent physical providers unchanged",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64",
+        "decoded_sha256": "72b82772fbf4151c2a5467c5897352152a115496110577c0825fd6e8e2d2dec1",
+        "members": 1394,
+        "decoded_bytes": 266456
+      },
+      "postimages": {
+        "app/solute_column/read_swp_daily.f90": "778ea9681cb2cf444368e976b047ab7acd9db98e3b8849bdab341dfdae137c47",
+        "tools/solute/build_daily.py": "3078c8f499082536ddeb9f05975d0090e328f5f1e7d3a24c7983c80c36615692",
+        "tools/solute/run_daily.py": "cff78b16d22c912f7a0f7d42a78e5bbfbf5df41b7bcd323d2ed071657d764ac3",
+        "tests/nut-sol/qualify_swp_daily.py": "354d37f6ecdea247a33429d9f28665ad0c2a385f05543b1e0e14eb5fee53925b",
+        "examples/solute_column/daily_fallow.swp": "3766270f9e8b0084d7e6ff3d9bb263e0bedc37e43d4ddbe7bf19c7aec6bc5dbd",
+        "examples/solute_column/daily_fallow.met": "a022d2bf35b9261046bd378f11d242f5b9a12cb8816c4f2ef0a14ad18d3dbb1f",
+        "integration/audits/verify_swp_daily.py": "69229e1ae726b79b05f29d71cca5d70fdec9360986d6a8da935904be3685154d",
+        "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "6fb34b2cae0540ad5d79ce1ac73bc1b0814530d53a9f56093f7e1a9ebb30f862",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "072f7c39134dc5121e8150d7a410d910578b0f33fce1c42097485e2dbaa1a840",
+        "docs/science/MC_SOL01_SWP_DAILY_CONTRACT.md": "ac5e50ce4ed699cc0cb1232c4a9eebb38efd61ea8d5bb8288ad80d984747de99",
+        ".github/workflows/mc-sol01-swp-reader.yml": "3d62b65629be45ca5e3cbb101603db7c426faccaa587882850edd7462820ac22"
+      },
+      "additive_science_delta": {
+        "app/solute_column/read_swp_daily.f90": "A",
+        "tools/solute/build_daily.py": "A",
+        "tools/solute/run_daily.py": "A",
+        "tests/nut-sol/qualify_swp_daily.py": "A",
+        "examples/solute_column/daily_fallow.swp": "A",
+        "examples/solute_column/daily_fallow.met": "A",
+        "integration/audits/verify_swp_daily.py": "A",
+        "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "A"
+      },
+      "qualification": {
+        "original_comparisons": 8,
+        "invalid_reader_cases": 42,
+        "native_column_runs": 8,
+        "fresh_restarts": 2,
+        "rejected_generations": 4,
+        "processes": 72
+      },
+      "test_selection": {
+        "local": "Independent O0/O2 adapter builds, complete original loader and actual current column composition with hard mass/restart/output identity",
+        "full_fci": "NOT_SELECTED_IMPACT: no existing physical/runtime/provider change",
+        "annual_physics": "NOT_SELECTED_IMPACT: incumbent providers and input domains unchanged",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "expected_seconds": 180,
+        "existing_evidence": "All 190 physical build inputs and executable identities checked; composition executed anew"
+      },
+      "full_historical_migration": false,
+      "next_action": "Physical ETref partitioning and native crop-calendar/default orchestration; nonzero ETref remains rejected",
+      "recovery_point": "work/swp-daily-meteo-20261022; existing SOL status; final raw capsule and exact source/evidence validator",
+      "blockers": []
+    }
   }
 }
