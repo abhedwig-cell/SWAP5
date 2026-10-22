@@ -27,7 +27,8 @@ def main():
     fc = shlex.split(os.environ.get('FC', 'gfortran'))
     _, providers = materialize(ROOT, out)
     driver = ROOT / 'app/solute_column/read_swp_daily.f90'
-    inputs = [driver, Path(__file__), ROOT / 'tools/solute/legacy_reader_sources.py',
+    demand = ROOT / 'src/process/mod_reference_et_demand_process.f90'
+    inputs = [driver, demand, Path(__file__), ROOT / 'tools/solute/legacy_reader_sources.py',
               ROOT / 'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64',
               ROOT / 'integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64']
     flags = ['-' + args.optimization, '-fcheck=all', '-fbacktrace',
@@ -40,7 +41,7 @@ def main():
         'input_sha256': {str(p.relative_to(ROOT)): sha(p) for p in inputs},
         'generated_input_sha256': {str(p.relative_to(out)): sha(p)
                                    for p in sorted(providers[0].parent.rglob('*')) if p.is_file()},
-        'events': [], 'application_providers': 1, 'original_input_providers': len(providers)}
+        'events': [], 'application_providers': 2, 'original_input_providers': len(providers)}
 
     def run(command, category):
         start = time.perf_counter()
@@ -62,7 +63,7 @@ def main():
     library = out / 'libttutil.a'
     run(['ar', 'rcs', library] + objects, 'archive')
     exe = out / 'swap5_read_daily'
-    run(fc + flags + ['-std=f2008', driver, library, '-o', exe], 'compile-link-adapter')
+    run(fc + flags + ['-std=f2008', demand, driver, library, '-o', exe], 'compile-link-adapter')
     assert all(sha(ROOT / p) == h for p, h in report['input_sha256'].items())
     assert all(sha(out / p) == h for p, h in report['generated_input_sha256'].items())
     report.update(status='BUILT', executable_sha256=sha(exe))

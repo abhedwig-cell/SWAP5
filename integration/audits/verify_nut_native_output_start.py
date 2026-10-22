@@ -23,6 +23,8 @@ def projection():
   s=s[:offset]+hook+s[offset:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'native startup baseline')
  for p,h in r['postimages'].items():require(sha(reader(p))==h,'native startup postimage '+p)
  for p,h in r['qualified_input_sha256'].items():require(sha(reader(p))==h,'executed native startup input '+p)
@@ -84,8 +86,12 @@ def validate(f):
  require(predecessor['research_observation']['status']=='PREEXISTING_FAILURE','research failure relabelled')
  return dict(status='NATIVE_OUTPUT_START_SOURCE_EVIDENCE_PASS',qualified=True,native_cases_per_opt=26,old_cases_per_opt=38,compiled_controls=3,actual_native_runs=4,full_migration=False)
 def verify():
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['verify']()
  source();return validate(capsule())
 def self_test(include_predecessor=True):
+ if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()

@@ -68,6 +68,8 @@ def parent_namespace():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['source'](reader,changed)
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['source'](reader,changed)
     r = record(reader)
@@ -171,6 +173,8 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
 
 
 def self_test(include_predecessor=True):
+    if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['self_test']()
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['self_test'](include_predecessor)
     files = capsule()
@@ -213,6 +217,8 @@ def self_test(include_predecessor=True):
 
 
 def verify():
+    if 'evidence' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text())['swp_water_successor']['daily_meteo_successor'].get('etref_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_swp_etref.py'))['verify']()
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['verify']()
     source()

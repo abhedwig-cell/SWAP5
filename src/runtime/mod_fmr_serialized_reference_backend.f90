@@ -475,6 +475,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: ponding_max_cm = 1.e6_real64
     real(real64) :: runoff_resistance_day = 0.0_real64
     logical :: implicit_pond_evaporation = .false.
+    real(real64) :: potential_bare_soil_evaporation_cm_day = 0.0_real64
   end type fmr_pond_input_forcing_t
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
@@ -531,6 +532,7 @@ module mod_fmr_serialized_reference_backend
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
          macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
+    real(real64) :: converged_soil_evaporation_cm_day = 0.0_real64
   end type fmr_water_flux_substep_trace_t
 
   type, public :: fmr_serialized_physical_observation_t
@@ -4012,12 +4014,14 @@ contains
         if (.not.all(ieee_is_finite([forcing%pond_input%rain_rate_cm_day, &
             forcing%pond_input%irrigation_rate_cm_day,forcing%pond_input%runon_rate_cm_day, &
             forcing%pond_input%potential_pond_evaporation_cm_day,forcing%pond_input%ponding_max_cm, &
-            forcing%pond_input%runoff_resistance_day,forcing%top_flux]))) return
+            forcing%pond_input%runoff_resistance_day,forcing%top_flux, &
+            forcing%pond_input%potential_bare_soil_evaporation_cm_day]))) return
         if (min(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day)<0.0_real64.or. &
             max(forcing%pond_input%rain_rate_cm_day,forcing%pond_input%irrigation_rate_cm_day, &
             forcing%pond_input%runon_rate_cm_day)>5.e5_real64.or. &
             min(forcing%pond_input%runon_rate_cm_day,forcing%pond_input%potential_pond_evaporation_cm_day, &
-            forcing%pond_input%ponding_max_cm,forcing%pond_input%runoff_resistance_day)<0.0_real64) return
+            forcing%pond_input%ponding_max_cm,forcing%pond_input%runoff_resistance_day, &
+            forcing%pond_input%potential_bare_soil_evaporation_cm_day)<0.0_real64) return
         if (forcing%top_flux/=0.0_real64.or.self%snow_active.or.self%black_evaporation_active.or. &
             self%boesten_evaporation_active.or.self%rutter_active.or.self%macropore_active.or. &
             self%rfm_configuration%enabled.or.self%fixed_weir_surface_water_active) return
@@ -5061,7 +5065,8 @@ contains
       call bind_b110_dynamic_top_boundary_solver_provider(rfm_top_provider,self%soil_parameters, &
            self%hydraulic_parameters,self%swkmean,request%base_state%ponding_depth,step_duration, &
            self%pond_input%rain_rate_cm_day,self%pond_input%irrigation_rate_cm_day, &
-           0.0_real64,self%pond_input%runon_rate_cm_day,0.0_real64, &
+           0.0_real64,self%pond_input%runon_rate_cm_day, &
+           self%pond_input%potential_bare_soil_evaporation_cm_day, &
            self%pond_input%potential_pond_evaporation_cm_day,self%pond_input%ponding_max_cm, &
            self%pond_input%runoff_resistance_day,1.0_real64,fixed_top_conductivity, &
            implicit_pond_evaporation=self%pond_input%implicit_pond_evaporation)
@@ -5721,9 +5726,11 @@ contains
         self%workspace%converged_surface_result%status == SW_TOP_BOUNDARY_AVAILABLE .and. &
         self%workspace%converged_surface_result%runoff_resolved) then
       if (.not.all(ieee_is_finite([self%workspace%converged_surface_result%ponded_water_evaporation, &
-          self%workspace%converged_surface_result%runoff_depth]))) return
+          self%workspace%converged_surface_result%runoff_depth, &
+          self%workspace%converged_surface_result%bare_soil_evaporation]))) return
       if (self%workspace%converged_surface_result%ponded_water_evaporation < 0.0_real64 .or. &
-          self%workspace%converged_surface_result%runoff_depth < 0.0_real64) return
+          self%workspace%converged_surface_result%runoff_depth < 0.0_real64 .or. &
+          self%workspace%converged_surface_result%bare_soil_evaporation < 0.0_real64) return
       if (abs(self%workspace%converged_surface_result%candidate_ponding_depth-step%pond_end_cm) > &
           128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(step%pond_end_cm))) return
       ! HeadCalc's final dynamic-top balance, checked again at the accepted
@@ -5737,6 +5744,7 @@ contains
           abs(step%top_flux*(t1-t0)), &
           abs(self%workspace%converged_surface_result%net_potential_surface_flux*(t1-t0)))) return
       step%converged_surface_available = .true.
+      step%converged_soil_evaporation_cm_day = self%workspace%converged_surface_result%bare_soil_evaporation
       step%converged_pond_evaporation_cm_day = self%workspace%converged_surface_result%ponded_water_evaporation
       step%converged_runoff_depth_cm = self%workspace%converged_surface_result%runoff_depth
       if (self%workspace%gross_surface_sources_available) then

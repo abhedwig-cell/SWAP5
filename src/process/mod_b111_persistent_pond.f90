@@ -22,6 +22,8 @@ module mod_b111_persistent_pond
   real(real64)::pond_evaporation_rate=0d0
   real(real64)::runon_rate=0d0,runon_c=0d0,runoff_depth=0d0
   logical::implicit_pond_evaporation=.false.
+  real(real64)::soil_evaporation_rate=0d0
+  logical::exact_empty_pool_chemistry=.false.
  end type
  type,public::persistent_pond_receipt_t
   integer::status=POND_INVALID
@@ -83,25 +85,28 @@ contains
   if(committed%revision>=100000000_int64)return
   if(.not.all(ieee_is_finite([s%t0,s%t1,s%depth_begin,s%depth_end,s%qtop, &
     s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c,s%dry_deposition_rate, &
-    s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth])))return
+    s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth,s%soil_evaporation_rate])))return
   if(abs(s%t0)>1d8.or.abs(s%t1)>1d8.or.s%t1<=s%t0)return
   if(s%t0/=committed%clock.or.s%depth_begin/=committed%depth)return
   dt=s%t1-s%t0
   if(dt<1d-100.or.dt>1d3)return
   if(min(s%depth_begin,s%depth_end,s%rain_rate,s%rain_c,s%irrigation_rate, &
-    s%irrigation_c,s%dry_deposition_rate,s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth)<0d0)return
+    s%irrigation_c,s%dry_deposition_rate,s%pond_evaporation_rate,s%runon_rate,s%runon_c,s%runoff_depth, &
+    s%soil_evaporation_rate)<0d0)return
   if(max(s%depth_begin,s%depth_end,s%rain_c,s%irrigation_c,s%runon_c,s%dry_deposition_rate)>1d6)return
-  if(max(s%rain_rate,s%irrigation_rate,s%runon_rate,s%pond_evaporation_rate)>5d5.or.s%qtop>0d0.or.s%qtop< -1d6)return
+  if(max(s%rain_rate,s%irrigation_rate,s%runon_rate,s%pond_evaporation_rate,s%soil_evaporation_rate)>5d5.or. &
+    s%qtop>s%soil_evaporation_rate.or.s%qtop< -1d6)return
+  if(s%soil_evaporation_rate>0d0.and.(s%pond_evaporation_rate>0d0.or.s%depth_begin>1d-10))return
   r%status=POND_WATER
   r%water_residual=s%depth_end-s%depth_begin- &
-    (s%rain_rate+s%irrigation_rate+s%runon_rate-s%pond_evaporation_rate+s%qtop)*dt+s%runoff_depth
+    (s%rain_rate+s%irrigation_rate+s%runon_rate-s%pond_evaporation_rate-s%soil_evaporation_rate+s%qtop)*dt+s%runoff_depth
   if(abs(r%water_residual)>1d-10)return
   r%status=POND_MASS
   r%mass_before=committed%mass;r%dry_input=s%dry_deposition_rate*dt
   available=committed%mass+r%dry_input
   call evaluate_b111_pond_solute_exchange(available,s%rain_rate,s%rain_c,s%irrigation_rate,s%irrigation_c, &
     s%qtop,0d0,s%depth_end,dt,mix,s%runon_rate,s%runon_c,s%runoff_depth, &
-    exact_empty_pond_limit=s%implicit_pond_evaporation)
+    exact_empty_pond_limit=s%implicit_pond_evaporation.or.s%exact_empty_pool_chemistry)
   if(mix%status/=B111_POND_SOL_OK)return
   if(mix%mass_after>1d12.or.mix%soil_transfer>1d12)return
   if(.not.bounded_values(s%t1,s%depth_end,mix%mass_after,committed%revision+1))return
