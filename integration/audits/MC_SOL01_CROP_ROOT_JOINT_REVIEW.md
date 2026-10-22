@@ -28,8 +28,8 @@ SWP comment already invalidates continuation. Physical oxygen, salinity stress,
 adaptive density, compensation, snow/heat/water-age/NUT and default dispatch stay
 excluded. Active native nutrients are rejected, not silently ignored.
 
-Evidence:82 native controller processes,16 physical O0/O2 cases,128 daily hard
-water and solute balances,16 fresh-process restart triplets,30 invalid/source-change
+Evidence:86 native controller processes,16 physical O0/O2 cases,128 daily hard
+water and solute balances,16 fresh-process restart triplets,34 invalid/source-change
 rejections and six exact zero-root artifacts. Existing common budget rows are
 also exact against the incumbent app. Four more compile/run events prove actual
 root evaluation is read-only, a completed water trial followed by chemical
@@ -43,7 +43,7 @@ these are local costs, not a performance comparison.
 
 Earlier observations remain in the capsule. The first physical suite passed the
 then-selected70 processes. Later input auditing exposed an overly narrow test
-regex and Fortran repeat notation, not a numerical model failure. The final82
+regex and Fortran repeat notation, not a numerical model failure. The final86
 processes use the corrected reader of native namelist output. Diagnostic results
 are not added to final process or case counts. Source snapshots bind earlier
 compiled front-end variants; the final proof has strict current provider identity.
@@ -76,4 +76,19 @@ input, forcing, driver, oracle, compiler flag and recorded result is unchanged.
 
 The NUT entrypoint retains its component status and dictionary return schemas for
 source, verification and controls; the complete composed result is explicit.
-Its current39 controls do not overwrite the separately frozen21-control receipt.
+Its current40 controls do not overwrite the separately frozen21-control receipt.
+
+
+Final input-boundary correction:the actual daily route explicitly requires
+SWRAIN=0 and rejects SWEVAP=0. The prior preparation-only executable need not
+select an actual rain/evaporation policy, but its physical consumer must reject
+unsupported active switches. Two additional O0/O2 negative cases increase the
+final controller count to86 and invalid-input count to34. Valid forcing,
+physical application, all194 compiled application inputs and transaction driver
+remain unchanged. The native root adapter is rebuilt and the complete daily
+suite is re-executed; no earlier86-process PASS is inferred.
+
+The input-boundary fix preserves64 valid physical state/endpoint/restart/budget
+artifacts exactly against the actual PR1369 admission. Both application build
+records are identical; the changed parser and four new rejects are qualified
+through the complete final86-event native suite.

@@ -6,7 +6,7 @@ the [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) execute
 single-period simple-crop demand, original static root density, macro-Feddes
 and optional empirical oxygen stress with accepted Reference water and solute.
 O0/O2 gives128 hard daily balance observations,16 exact fresh restarts,
-30 invalid/source-boundary rejections and exact chemical rejection/retry ownership.
+34 invalid/source-boundary rejections and exact chemical rejection/retry ownership.
 Six zero-root artifacts match the incumbent application. Root stress is evaluated
 at the accepted beginning of each daily window. Full within-substep feedback,
 physical oxygen, heat/snow/age/NUT composition and general historical/default

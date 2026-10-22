@@ -75,7 +75,7 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
   for p,h in mapping.items():require(sha(reader(p))==h,label+' '+p)
  result=js('qualified/result.json');transaction=js('transaction/result.json')
  require(result['status']=='NATIVE_CROP_ROOT_JOINT_O0_O2_PASS' and len(result['cases'])==16 and
-         len(result['events'])==82 and result['invalid_inputs']==30 and result['fresh_restarts']==16,'incomplete actual joint proof')
+         len(result['events'])==86 and result['invalid_inputs']==34 and result['fresh_restarts']==16,'incomplete actual joint proof')
  inputs(result['inputs'],'joint executed test')
  current_nut=js('concurrent-owner.json');controls=js('concurrent-controls.json')
  require(current_nut['qualified'] and current_nut['status']=='THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS' and
@@ -140,10 +140,16 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
   require(r['case'] in ['root_contract','root_oxygen'] and r['optimization'] in [0,2],'root modular selection')
   inputs(r['inputs'],'root contract source')
   for p,h in r['artifact_sha256'].items():require(sha(files['modular/'+p])==h,'root modular raw artifact')
+ comparison=js('input-boundary-preservation.json')
+ require(comparison['status']=='INPUT_BOUNDARY_FIX_VALID_PHYSICAL_ARTIFACTS_EXACT_PASS' and
+         comparison['previous_admission']=='d58d0c00e203f7135f2a3d3ff110cc6a9686d22a' and
+         len(comparison['files'])==64 and comparison['application_builds_identical'],'input-boundary comparison')
+ for path,h in comparison['files'].items():
+  require(files['qualified/'+path]==files['diagnostics/qualified/'+path] and sha(files['qualified/'+path])==h,'valid physical route changed')
  require(observations==128,'joint day census')
  return {'qualified':True,'status':'NATIVE_DAILY_CROP_ROOT_JOINT_O0_O2_QUALIFIED','actual_daily_cases':16,
-         'daily_balance_observations':128,'fresh_restarts':16,'invalid_inputs':30,'exact_fallow_artifacts':6,
-         'root_chemical_reject_retry':'O0_O2_EXACT_BINARY_PASS','full_historical_migration':False,'substep_stress_feedback':False}
+         'daily_balance_observations':128,'fresh_restarts':16,'invalid_inputs':34,'exact_fallow_artifacts':6,
+         'root_chemical_reject_retry':'O0_O2_EXACT_BINARY_PASS','input_boundary_exact_artifacts':64,'full_historical_migration':False,'substep_stress_feedback':False}
 
 def self_test():
  controls=[]
@@ -154,7 +160,7 @@ def self_test():
   else:raise AssertionError('stale joint source accepted '+path)
  files=capsule()
  for path in ['qualified/result.json','qualified/O0/dry/full/budget.csv','qualified/O2/oxygen/resumed/restart.bin',
-              'qualified/O0/fallow/old/endpoint.csv','transaction/O0/rejected.bin','transaction/O2/fresh.bin','root-O0/build-complete.json','modular/RESULTS.json']:
+              'qualified/O0/fallow/old/endpoint.csv','transaction/O0/rejected.bin','transaction/O2/fresh.bin','root-O0/build-complete.json','modular/RESULTS.json','input-boundary-preservation.json']:
   bad=dict(files);bad[path]+=b'corrupt'
   try:validate(bad)
   except (ValueError,KeyError,json.JSONDecodeError):controls.append(path)

@@ -165,7 +165,7 @@ ADCRH=.5
                  ('density-order','crop.crp','RDCTB=0.,2.,.5,1.,1.,0.','RDCTB=0.,2.,0.,1.,1.,0.'),
                  ('empty-density','crop.crp','RDCTB=0.,2.,.5,1.,1.,0.','RDCTB=0.,0.,.5,0.,1.,0.'),
                  ('stress-order','crop.crp','ADCRH=.5','ADCRH=.05'),('depth','input.swp','RDS=3.','RDS=4.'),
-                 ('snow','input.swp','SWSNOW=0','SWSNOW=1'),('nutrients','input.swp','SWCROP=1','SWCROP=1\nSWCROPSNM=1'),('bad-calendar','weather.met','29 2 2024','1 3 2024')]
+                 ('rain-mode','input.swp','SWRAIN=0','SWRAIN=1'),('evaporation-off','input.swp','SWRAIN=0','SWRAIN=0\nSWEVAP=0'),('snow','input.swp','SWSNOW=0','SWSNOW=1'),('nutrients','input.swp','SWCROP=1','SWCROP=1\nSWCROPSNM=1'),('bad-calendar','weather.met','29 2 2024','1 3 2024')]
         for name,filename,old,new in invalid:
             case=folder/('invalid-'+name);case.mkdir()
             for f in ['input.swp','crop.crp','weather.met']:(case/f).write_bytes((base/f).read_bytes())
