@@ -3167,5 +3167,410 @@
     },
     "hosted_receipt": "integration/audits/MC_SOL01_SWP_READER_HOSTED_20261021.json",
     "strict_documentation": "PASS; final source checks and strict MkDocs completed on sealed metadata"
+  },
+  "swp_water_successor": {
+    "work_unit": "MC-SOL01-SWP-WATER01",
+    "baseline": "48a59396d7e7745cf99ad4b1003cd84c946e3e3f",
+    "status": "CANONICALLY_ADMITTED_BOUNDED_SWP_WATER_BOOTSTRAP_CLOSED",
+    "implemented": true,
+    "persisted": true,
+    "tested": true,
+    "qualified": true,
+    "canonically_admitted": true,
+    "scope": "Explicit original TTUTIL native SWP grid/layered default MvG and unsaturated HTB bootstrap; explicit boundary/meteo/crop forcing retained",
+    "invariants": [
+      2,
+      3,
+      7,
+      13,
+      21,
+      23,
+      25,
+      27,
+      29
+    ],
+    "next_action": "Historical SWP meteorology and crop/default orchestration; remaining full-domain SOL/age/N companions remain open",
+    "recovery_point": "integration/f-ci-canonical; admitted14fbefde; existing swp_water_successor",
+    "blockers": [],
+    "dependency_surface": [
+      "app/solute_column",
+      "tools/solute",
+      "src/solver/mod_b110_default_mvg_provider.f90"
+    ],
+    "test_selection": {
+      "owner": "MC-SOL01",
+      "full_fci": "NOT_SELECTED_IMPACT: adapter-only bootstrap, no process/solver/runtime change",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "expected_seconds": 240,
+      "compile_seconds": 119.96280988905346,
+      "native_seconds": 10.081962469972495,
+      "physics_only_seconds": "UNKNOWN: includes native IO and launcher overhead"
+    },
+    "checkpoint_commit": "3b39dd2b3b7b1f50e977ef8e809fb94d4c7026b3",
+    "production_source_tree": "f1acdac28c67b500b6f59b2f9f694be149005560",
+    "evidence": {
+      "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64",
+      "decoded_sha256": "72de82d69eefbcc8e6d2bdde339316520ce09101dd5e053fcaaeea7cce2af919",
+      "decoded_bytes": 357252,
+      "members": 7049
+    },
+    "postimages": {
+      ".github/workflows/mc-sol01-swp-reader.yml": "d46ff331ce6102eba5bceca5f86ec5f76cebaa3d86f19bc1a57eda774823f924",
+      ".github/workflows/mc-sol01-thermal-pond.yml": "5cd2b0b2ee3b7a41a379c257bb9ea9cffd93c8aec606dea159a19eccee0c4143",
+      "app/solute_column/README.md": "692d3666b076a95f7d64fe382cc78efdaebe23ffea909d95a844ed9fb27d2a73",
+      "app/solute_column/main.f90": "0a6f549d8c384f76c2a7e6b0db1c4144ab206fbc0bf6623faa4ad1736301821d",
+      "app/solute_column/read_swp_water.f90": "fdaecbaaf692f4c645c839abd05899ef5afbe0f488e6404f44a064dff27b0f42",
+      "docs/science/MC_SOL01_SWP_WATER_CONTRACT.md": "3d3eaaf65b3a8ac9fc6da318c27032e8e7761562c582671c8294f18045488a2e",
+      "docs/status-a/CURRENT_STATUS.md": "5dab610f7375805caa757f5fa12bac3dc726825f39e3034083fd492c93a7688f",
+      "docs/status-a/TRACEABILITY.md": "1b85ac4f297dae66aa8ea44c80ad3de14f8e0c4f748d37ecbf43096dd63b2023",
+      "examples/solute_column/layered_water.swp": "d3b53006407bcfb807913b679f9b396f285634aaf7fa466a7086d3b377d64c3d",
+      "examples/solute_column/swp_water.nml": "8acc5a3ec3171f2ee08cd8c279e7e9af211e9a0097b82e4e9dec03fb00f5aa51",
+      "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json": "2a534bf773cf4e612eaee373724ad4161bc8d8ae7e571dc487a404210fe350db",
+      "integration/audits/MC_SOL01_SWP_WATER_REVIEW.md": "82047b90d979c415b2d937be666dcec21aec50c63341a0d3057745a162d76404",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "ec329c1efe9de1b719ed836f34dfe85ae108bdd85b22171f649346bf1df8ec7b",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "3d84a8c3502e3c6976a834846f9a5dbe611d76b0b2bd2a7fec0aea911669dccc",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "f4d6035d16e7c3c0607c24802c8d414c502fead5256484aeb075cb19fa434d3a",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_ACTUAL_MERGE_20261021.log": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log": "c35398f9ceea2a524f22999f0afa21652422a1c8917303e150ef21ed96e4a934",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
+      "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "de3a2ba4ebcf464280225de87dc1e6fe7223afa7c8310f57aed8b29f2b7e5ded",
+      "integration/audits/verify_nut_output_generation.py": "e3b21f77114b1581ea0dc9d12d19552c438983c853870a29323abbfe62fcdfa3",
+      "integration/audits/verify_swp_water.py": "12fa8320d4630d7b9641e11621d70a942af4604c99bf67f736b63a33c2a8395b",
+      "integration/performance/authority.py": "63fd14b157715c2c061e409e1b295e956dc02c2c5a3e37c53805c5031fab5da2",
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ac4d9f5d78a2b8a49cdc9e9de9ec43bc997ee3e969bcdb87e359efa4afc79919",
+      "tests/nut-sol/qualify_swp_water.py": "c60f1e60c5e8d9e76e4aa6ddf3b1917aaf74f962f185e83c8c489bd858201169",
+      "tests/nut-sol/test_swp_water.f90": "b5f11f57ba9023c5cdcf38070292f605c22d153daf1d418233aa4d239ff24002"
+    },
+    "native": {
+      "mapping_cases": 12,
+      "independent_process_restarts": 12,
+      "invalid_cases": 60,
+      "old_application_observations": 86,
+      "original_chemistry_observations": 172,
+      "canonical_byte_comparisons": 152,
+      "max_water_residual_cm": 4.508112633194727e-16,
+      "max_solute_residual_mg_cm2": 1.7539366226754227e-13
+    },
+    "retained_failures": [
+      "Initial direct reader link missed existing swap_error/swap_warning provider; three-provider closure fixed without mock",
+      "Initial scalar IHWCKMODEL rejected by original RDFINR; original RDINAR/RDSINR branch restored, both builds repeated",
+      "First baseline comparison attempted random interrupted-stage directory names; comparison now excludes interrupted/corrupt results, 152 completed valid output files exact"
+    ],
+    "full_historical_migration": false,
+    "source_evidence_controls": 21,
+    "documentation": "PASS: final source checks and strict MkDocs; raw compiler-log whitespace retained byte-exact",
+    "inherited_inputs": {
+      "integration/diagnostics/PERF01_SCOPED_ROUNDING_STATUS.json": "36bbebabe2f0180604b8a04c190269a94369ec6a686afcf5f93d609b215711ab",
+      "integration/diagnostics/study_perf01_pond_policy.py": "7974f0f496974d98153bc073f042e842bb84ed2e64aaeecd8efeef16516ba838",
+      "src/runtime/mod_canonical_interval_runtime.f90": "7967d4c2fb3c32b5baf01c0b6dcfaaa686648d9a89a14ccd3b3c37307aa3188f",
+      "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json": "4e88dd0686774148974bbbe1938dc6de14b7f387fd688144f155a8ef235f158b",
+      "integration/diagnostics/verify_perf01_pond_policy.py": "fc2331202143f73b21c33d132fb5f9c338a6de2d62cdc7f65e35f2f9946a5720",
+      "src/transaction/mod_transaction_reference.f90": "4cdce04ee4129441e97f3be7d0be2d5d98360d3997dcb15cae1fa71b1a711dde",
+      "src/legacy/b1_10_port/headcalc.f90": "11a8c8c1ed408adfd687ceafcc706cdfe575a83339028f7b2391e19d89fb8705",
+      "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "ac4d9f5d78a2b8a49cdc9e9de9ec43bc997ee3e969bcdb87e359efa4afc79919",
+      "integration/audits/evidence/MC_SOL01_SWP_FSI35_NATIVE_20261021.log": "beea63b7027fd55d36c7cbd7b5295b9400f98c16dd0cd7f516c5a22f9dc7cf94",
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "fde6f1869f2e4d1d00cb33c7ccaa8263ced656d408bc42c83d5f050dbc0682af",
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90": "02c2a4eb5c41c23531989e46a40a2b4cad2e467557ee68c10ccd18897d17b7e8"
+    },
+    "admission": {
+      "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+      "predecessor": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json",
+        "sha256": "de3a2ba4ebcf464280225de87dc1e6fe7223afa7c8310f57aed8b29f2b7e5ded"
+      },
+      "annual": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json",
+        "sha256": "f4d6035d16e7c3c0607c24802c8d414c502fead5256484aeb075cb19fa434d3a"
+      },
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64",
+        "decoded_sha256": "3f1787e555e84a0fdce68a020952d43bd08b5406ec6466595559429fb7baed43",
+        "decoded_bytes": 389424,
+        "members": 354
+      },
+      "source_delta": {
+        ".github/workflows/mc-sol01-swp-reader.yml": "M",
+        ".github/workflows/mc-sol01-thermal-pond.yml": "M",
+        "app/solute_column/README.md": "M",
+        "app/solute_column/main.f90": "M",
+        "app/solute_column/read_swp_water.f90": "A",
+        "examples/solute_column/layered_water.swp": "A",
+        "examples/solute_column/swp_water.nml": "A",
+        "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json": "M",
+        "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json": "A",
+        "integration/audits/MC_SOL01_SWP_WATER_REVIEW.md": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_20261021.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_ADMISSION_20261021.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_ANNUAL_20261021.json": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_ACTUAL_MERGE_20261021.log": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_WATER_PREDECESSOR_20261021.json": "A",
+        "integration/audits/verify_nut_output_generation.py": "M",
+        "integration/audits/verify_swp_water.py": "A",
+        "integration/performance/authority.py": "M",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh": "M",
+        "tests/nut-sol/qualify_swp_water.py": "A",
+        "tests/nut-sol/test_swp_water.f90": "A"
+      }
+    },
+    "concurrent_reconciliation": {
+      "head": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
+      "new_NUT_output_adapters": 5,
+      "compiled_input_intersection": [],
+      "all_incoming_files_preserved": true,
+      "scope": "All 190 executed input providers remain byte exact; full source tree includes five unrelated admitted NUT output adapters"
+    },
+    "publication_authorized": true,
+    "fsi35_reconciliation": {
+      "failure_run": 39673936142,
+      "failure_job": 119478740839,
+      "failure_commit": "5e5dc53638d4df9f8458c8cdb36cacae2da604b4",
+      "failure_log": "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_FAILED_20261021.log",
+      "cause": "Already admitted PERF01 explicit empty-pond top provider and solver adapter absent from original source registry",
+      "production_changed": false,
+      "status": "CANONICALLY_ADMITTED_ORIGINAL_NATIVE_O0_O2_PASS",
+      "scientific_assertions": "Original full O0/O2 native immutable oracle and every architecture/assertion retained; only two exact source guards get bounded admitted-successor branch",
+      "native_log": "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_NATIVE_20261021.log",
+      "native_sha256": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
+      "native_returncode": 0,
+      "compile_seconds": "UNKNOWN: full native log retains commands and markers; no separate category timer",
+      "prerequisite_production": "All src providers unchanged from admitted95a3bd57",
+      "pr": 1363,
+      "canonical_merge": "14fbefdec245462580f961d073605ffbbcd3e72e",
+      "hosted_native_job": 119481737620,
+      "actual_merge_native_log": "integration/audits/evidence/MC_SOL01_SWP_WATER_FSI35_ACTUAL_MERGE_20261021.log",
+      "actual_merge_native_sha256": "847ebf98539af9049f7c523927300dffb40783359af37ca2a2abfc818c0c3b23",
+      "actual_merge_native_returncode": 0
+    },
+    "admission_pr": 1362,
+    "repair_pr": 1363,
+    "canonical_merge": "14fbefdec245462580f961d073605ffbbcd3e72e",
+    "qualified_head": "139eb9701e22b7a91d030b1fcf2c158b3cffca4a",
+    "qualified_tree": "7ab180aa7b19527b55ff149ab850805196aa06b7",
+    "hosted_receipt": "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json",
+    "daily_meteo_successor": {
+      "baseline": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_DAILY_MET",
+      "implementation_status": "Bounded native TTUTIL daily rain-only fallow orchestration implemented; incumbent physical providers unchanged",
+      "evidence": {
+        "path": "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64",
+        "decoded_sha256": "72b82772fbf4151c2a5467c5897352152a115496110577c0825fd6e8e2d2dec1",
+        "members": 1394,
+        "decoded_bytes": 266456
+      },
+      "postimages": {
+        "app/solute_column/read_swp_daily.f90": "778ea9681cb2cf444368e976b047ab7acd9db98e3b8849bdab341dfdae137c47",
+        "tools/solute/build_daily.py": "3078c8f499082536ddeb9f05975d0090e328f5f1e7d3a24c7983c80c36615692",
+        "tools/solute/run_daily.py": "cff78b16d22c912f7a0f7d42a78e5bbfbf5df41b7bcd323d2ed071657d764ac3",
+        "tests/nut-sol/qualify_swp_daily.py": "354d37f6ecdea247a33429d9f28665ad0c2a385f05543b1e0e14eb5fee53925b",
+        "examples/solute_column/daily_fallow.swp": "3766270f9e8b0084d7e6ff3d9bb263e0bedc37e43d4ddbe7bf19c7aec6bc5dbd",
+        "examples/solute_column/daily_fallow.met": "a022d2bf35b9261046bd378f11d242f5b9a12cb8816c4f2ef0a14ad18d3dbb1f",
+        "integration/audits/verify_swp_daily.py": "69229e1ae726b79b05f29d71cca5d70fdec9360986d6a8da935904be3685154d",
+        "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "6fb34b2cae0540ad5d79ce1ac73bc1b0814530d53a9f56093f7e1a9ebb30f862",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "072f7c39134dc5121e8150d7a410d910578b0f33fce1c42097485e2dbaa1a840",
+        "docs/science/MC_SOL01_SWP_DAILY_CONTRACT.md": "6624b0e7ab1725fb8d04577033e083b7979a785d39adbfc5aeb58970207ab294",
+        ".github/workflows/mc-sol01-swp-reader.yml": "3d62b65629be45ca5e3cbb101603db7c426faccaa587882850edd7462820ac22",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64": "64086ffa8f8ed3c4507e2e2e97c1331da19a1d8fa3c9609106c9493cb1bea30a"
+      },
+      "additive_science_delta": {
+        "app/solute_column/read_swp_daily.f90": "A",
+        "tools/solute/build_daily.py": "A",
+        "tools/solute/run_daily.py": "A",
+        "tests/nut-sol/qualify_swp_daily.py": "A",
+        "examples/solute_column/daily_fallow.swp": "A",
+        "examples/solute_column/daily_fallow.met": "A",
+        "integration/audits/verify_swp_daily.py": "A",
+        "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64": "A"
+      },
+      "qualification": {
+        "original_comparisons": 8,
+        "invalid_reader_cases": 42,
+        "native_column_runs": 8,
+        "fresh_restarts": 2,
+        "rejected_generations": 4,
+        "processes": 72,
+        "source_evidence_owner": "PASS",
+        "actual_merge_controls": 38,
+        "hosted_workflows_success": 17,
+        "final_receipt_controls": 39,
+        "final_source_docs": "PASS",
+        "final_strict_docs": "PASS"
+      },
+      "test_selection": {
+        "local": "Independent O0/O2 adapter builds, complete original loader and actual current column composition with hard mass/restart/output identity",
+        "full_fci": "NOT_SELECTED_IMPACT: no existing physical/runtime/provider change",
+        "annual_physics": "NOT_SELECTED_IMPACT: incumbent providers and input domains unchanged",
+        "highest_low_air": "NOT_SELECTED_POLICY",
+        "expected_seconds": 180,
+        "existing_evidence": "All 190 physical build inputs and executable identities checked; composition executed anew"
+      },
+      "full_historical_migration": false,
+      "next_action": "Physical ETref partitioning and native crop-calendar/default orchestration; nonzero ETref remains rejected",
+      "recovery_point": "integration/f-ci-canonical; actual PR1364 merge48cb9452; existing SOL status daily_meteo_successor and exact source/evidence validator",
+      "blockers": [],
+      "canonical_merge": "48cb945235a86d7a793f9e73c393cb57c051dd0c",
+      "pr": 1364,
+      "admission": {
+        "candidate": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+        "qualified_full_tree": "11aa820c9b7d26808804f98373baa8d76ee01a00",
+        "canonical_merge": "48cb945235a86d7a793f9e73c393cb57c051dd0c",
+        "full_tree_exact": true,
+        "hosted_runs": [
+          {
+            "id": 39701626532,
+            "name": "F-MIG431-INT12-P0 qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626532"
+          },
+          {
+            "id": 39701626850,
+            "name": "F-GC42 live whole-window service",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626850"
+          },
+          {
+            "id": 39701626779,
+            "name": "SWAP431 crop CO2 response qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626779"
+          },
+          {
+            "id": 39701626676,
+            "name": "F-MIG431-INT12-D Gash qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626676"
+          },
+          {
+            "id": 39701626629,
+            "name": "F-MIG431-INT12-E detailed interception qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626629"
+          },
+          {
+            "id": 39701626645,
+            "name": "Documentation",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626645"
+          },
+          {
+            "id": 39701626663,
+            "name": "F-CI110 reconstructed performance admission",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626663"
+          },
+          {
+            "id": 39701626639,
+            "name": "F-CI canonical qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626639"
+          },
+          {
+            "id": 39701626792,
+            "name": "SWAP431 empirical root oxygen qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626792"
+          },
+          {
+            "id": 39701626765,
+            "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626765"
+          },
+          {
+            "id": 39701626591,
+            "name": "SWAP431 crop rootgrow DVS qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626591"
+          },
+          {
+            "id": 39701626951,
+            "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626951"
+          },
+          {
+            "id": 39701626736,
+            "name": "MC-SOL01 dynamic accepted temperature decay",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626736"
+          },
+          {
+            "id": 39701626685,
+            "name": "MC-SOL01 file-driven Reference column",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626685"
+          },
+          {
+            "id": 39701626862,
+            "name": "SWAP431 root constant LRV qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626862"
+          },
+          {
+            "id": 39701626722,
+            "name": "F-MIG431 LOW08-A qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626722"
+          },
+          {
+            "id": 39701626812,
+            "name": "MC-SOL01 original SWP chemistry",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626812"
+          }
+        ],
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64",
+          "decoded_sha256": "3c2373e694d1afbf240bc953cf158bc08615e014beaccd654366b86d2a124031",
+          "members": 7,
+          "decoded_bytes": 62036,
+          "native_log_sha256": "b8ef521d683ace918473eb59053586453fe1c80354b2248b289927ae32fc6b6e"
+        },
+        "actual_merge_owner": "PASS",
+        "actual_merge_controls": {
+          "predecessor": 21,
+          "daily": 17
+        },
+        "postmerge_actions": "NOT_SELECTED_IDENTICAL_COMPLETE_QUALIFIED_TREE",
+        "new_postmerge_numerics": false
+      }
+    }
   }
 }

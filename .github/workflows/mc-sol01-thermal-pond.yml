@@ -34,7 +34,9 @@ jobs:
           fetch-depth: 0
       - name: Actual six-exponent thermal pond, refinement, rollback and crash restart
         run: |
-          if test -f integration/audits/verify_swp_reader.py && git diff --quiet c8b35ac3e9f2a2cf2400033d0225aea8198469ea HEAD -- src; then
+          if test -f integration/audits/verify_swp_water.py && git diff --quiet 95a3bd5721a4dfb4c0c38823c475ff55b95bee57 HEAD -- src; then
+            python -B integration/audits/verify_swp_water.py
+          elif test -f integration/audits/verify_swp_reader.py && git diff --quiet c8b35ac3e9f2a2cf2400033d0225aea8198469ea HEAD -- src; then
             python -B integration/audits/verify_swp_reader.py
           else
             set -euo pipefail

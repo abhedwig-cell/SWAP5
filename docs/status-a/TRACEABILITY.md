@@ -303,3 +303,17 @@ temporal-input error/cost curve. All production source files remain unchanged.
 The neutral source registration retains the incumbent assertions and exact native
 oracles. Changed-accuracy timings are distinct from implementation speedups;
 neither the failed policy nor a general cache or regional tolerance is admitted.
+
+
+### MC-SOL01 native SWP water bootstrap,21 October2026
+
+The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original
+TTUTIL/AFGEN_2 input adapter, existing swp_water_successor record and immutable
+initial/annual/native capsules bind PR1362 and the PR1363 FSI35 registration.
+Canonical14fbefde has exactly qualified tree7ab180aa. All18 feature and17 repair
+PR workflows terminate SUCCESS. The original failed postmerge old-blob guard
+remains FAILURE; the repaired complete original O0/O2 replay passes on the hosted
+qualified tree and locally on the actual merge. Six other actual first-merge
+workflows succeed. Current source/evidence and21 controls pass. Native water
+bootstrap stays bounded to unsaturated HTB and default layered MvG; historical
+meteo/crop/default orchestration and full MC-SOL01 remain open.

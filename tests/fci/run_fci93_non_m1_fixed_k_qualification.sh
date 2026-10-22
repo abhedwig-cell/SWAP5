@@ -6,8 +6,30 @@ fail(){ echo "FCI93_FIXED_K_FAIL $*" >&2; exit 93; }
 BASE=d8414c1ba11bee9f061622fd2495f631a57d2383
 git merge-base --is-ancestor "$BASE" HEAD || fail "canonical base absent"
 test "$(git rev-parse HEAD:src/adapter/mod_b110_production_soil_water_task2.f90)" = ed678be6e27621ac076a883c947abba8032ac7e6 || fail "postimage drift src/adapter/mod_b110_production_soil_water_task2.f90"
-test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" = abe2d699017300e890eeb69a56448bb071660d2d || fail "postimage drift src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90"
-test "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" = 5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae || fail "postimage drift src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+if [[ "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" == abe2d699017300e890eeb69a56448bb071660d2d ]]; then
+  test "$(git rev-parse HEAD:src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90)" = abe2d699017300e890eeb69a56448bb071660d2d || fail "postimage drift src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90"
+else
+  python3 - <<'PY_TOP_SUCCESSOR'
+import runpy,subprocess
+path='src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90'
+row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+assert row.get('historical_blob')=='abe2d699017300e890eeb69a56448bb071660d2d' and row.get('canonical_blob')==actual,'unregistered top successor'
+print('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')
+PY_TOP_SUCCESSOR
+fi
+if [[ "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" == 5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae ]]; then
+  test "$(git rev-parse HEAD:src/solver/mod_b110_dynamic_top_boundary_provider.f90)" = 5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae || fail "postimage drift src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+else
+  python3 - <<'PY_TOP_SUCCESSOR'
+import runpy,subprocess
+path='src/solver/mod_b110_dynamic_top_boundary_provider.f90'
+row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+assert row.get('historical_blob')=='5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae' and row.get('canonical_blob')==actual,'unregistered top successor'
+print('FCI93_SELECTED_TOP_SOURCE_BOUNDARY=PASS')
+PY_TOP_SUCCESSOR
+fi
 # HeadCalc and three providers have separately admitted canonical successors.
 # Their exact table is owned by the selected age work unit; no arbitrary drift.
 python3 - <<'PY_CURRENT'

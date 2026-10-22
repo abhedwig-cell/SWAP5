@@ -89,3 +89,11 @@ step proposal is rejected with dynamic heat until that composition is qualified.
 See [the qualification contract](../../docs/science/MC_SOL01_THERMAL_POND_CONTRACT.md)
 for splitting refinement and the limits of the prescribed 30/365-day experiments.
 The application remains opt-in and does not replace the historical SWP reader.
+
+The opt-in `swp_water_bootstrap=.true.` additionally imports native SWP grid,
+layered default MvG parameters and unsaturated HTB initial pressure heads. Use
+schema2 with nodes=0 and no explicit grid/hydraulic overrides, plus `--swp`.
+See [the bounded water contract](../../docs/science/MC_SOL01_SWP_WATER_CONTRACT.md)
+and examples/solute_column/swp_water.nml with layered_water.swp. Surface, bottom,
+root, drainage, meteo and crop forcing remain explicit. This is not a complete
+historical default-SWP application and is canonically admitted only within the bounded water contract.

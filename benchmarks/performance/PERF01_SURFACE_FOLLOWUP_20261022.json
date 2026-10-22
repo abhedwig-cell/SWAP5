@@ -1,0 +1,94 @@
+{
+  "workstream": "PERF01",
+  "work_unit": "WET4_SURFACE_INTEGRATION_AND_RESEARCH_RECONCILIATION",
+  "repair_head": "fe37b48a7c9f5ff39f9b8aa6e9f122951168d978",
+  "canonical_reconciled": "288ba1473c478b9a2a637f0b12d624fbcc63ca4a",
+  "top03_research_head": "f5063889e4a7ab1ad075509e1ce9f4c1955ee58d",
+  "status": "BOUNDED_OBSERVATION_AND_INCUMBENT_PRESERVATION_PASS_ADMISSION_BLOCKED",
+  "implemented": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "tested": true,
+  "recovery_branch": "work/perf01-surface-integration-20261022",
+  "probe_execution_checkpoint": "45b1729e7",
+  "result": "benchmarks/performance/PERF01_SURFACE_FOLLOWUP_20261022_RESULT.md",
+  "assessment": "benchmarks/performance/PERF01_SURFACE_FOLLOWUP_20261022_EVIDENCE.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_SURFACE_FOLLOWUP_20261022_EVIDENCE.tar.xz",
+    "sha256": "4d1600cd354a6e9539ec8b6b2d6524974f051b951a1644c52fc901050024eb2d",
+    "bytes": 4038964,
+    "members": 4052
+  },
+  "observed_work": {
+    "tolerance_cm": 0.001,
+    "physical_work_receipts_exact": true,
+    "1x_headcalc_calls": 58321,
+    "4x_headcalc_calls": 138057,
+    "1x_failed_solver_calls": 423,
+    "4x_failed_solver_calls": 12371,
+    "4x_switching_calls": 450,
+    "4x_failed_calls_without_internal_switch": 12197,
+    "4x_failed_cpu_share_approx": 0.62,
+    "4x_switching_call_cpu_share_approx": 0.007,
+    "timing_limit": "Diagnostic clocks and tracing overhead included; no causal or portable performance claim."
+  },
+  "fresh_current_preservation": {
+    "checked_O0_O2_providers_each": 190,
+    "column_process_observations": 86,
+    "water_process_observations": 110,
+    "daily_process_observations": 72,
+    "byte_exact_incumbent_physical_artifacts": 160,
+    "original_assertions_changed": false,
+    "source_owner_override": false
+  },
+  "production_changes_this_followup": false,
+  "interfaces_changed": [],
+  "invariants": "Read-only generated diagnostic observer; physical laws, tolerances, conservation, transaction and restart ownership unchanged.",
+  "canonical_delta": "No src changes since repair baseline 95a3bd5; merge is conflict free. Later changes concern solute input, evidence and admission routing.",
+  "test_selection": {
+    "incumbent_application_preservation": {
+      "owner": "PERF01 with existing MC-SOL01 application authority",
+      "authority": "docs/development/workstream-execution-protocol.md#change-impact-selection-for-already-qualified-components-2026-10-15",
+      "changed_dependency": "Eight changed weather solver/runtime source providers consumed by existing default solute application",
+      "scientific_claim": "Fresh checked O0/O2 real production builds and unchanged current SWP water/daily/original application assertions; compare incumbent outputs with predecessor evidence",
+      "expected_seconds_per_optimization": 240,
+      "existing_evidence": "Original immutable admitted capsules remain predecessor-only; new current-source runs required",
+      "full_fci": "Not selected solely by shared imports; owning FSI35 source guards remain unresolved"
+    },
+    "surface_work_probe": {
+      "owner": "PERF01 weather surface repair",
+      "authority": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md#qualification-and-limits",
+      "changed_dependency": "Diagnostic generated HeadCalc only; no production source edit",
+      "scientific_claim": "Count Newton work, regime changes and fallback attempts in the existing 97-day 1x/4x fixture, with physical/work/receipt identity to original executable",
+      "tolerance_cm": 0.001,
+      "tolerance_status": "Diagnostic comparison point, not a newly selected production default",
+      "expected_seconds_per_case": 30,
+      "existing_evidence": "Existing complete same-executable 1x/4x observations and build objects retained; all input and executable hashes checked before reuse",
+      "full_fci": "NOT_SELECTED_FOR_DIAGNOSTIC_OBSERVER",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NO_SCOPE_EXPANSION"
+    }
+  },
+  "admission_reconciliation": {
+    "source_bound_wet4_capsule": "PASS including four rejection controls on composed current source",
+    "current_swp_daily_owner": "FAIL: foreign daily scientific delta",
+    "reason": "The existing immutable SWP owner admits only its input-adapter delta and unchanged production tree; the eight-file weather solver/runtime successor is not registered there.",
+    "not_a_physics_verdict": true,
+    "required_before_merge": [
+      "Register exact weather successor with the live SOL/NUT/FSI35 authority chain, preserving predecessor checks",
+      "Fresh affected default application/transaction/solute preservation on current weather source; retain original physical assertions",
+      "Reconcile additional direct frozen FSI35 solver-contract guard and transitive compile closure",
+      "Verify live canonical and exact source/evidence before admission"
+    ]
+  },
+  "relevant_paths": [
+    "benchmarks/performance/probe_perf01_surface_work.py",
+    "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_STATUS.json",
+    "integration/performance/authority.py",
+    "integration/audits/verify_swp_daily.py",
+    "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90"
+  ],
+  "next_action": "Register an exact weather successor with SOL/NUT/FSI35 authorities using original predecessor checks and current affected physical coverage; do not merge while source/admission gates reject the candidate. Research next targets repeated failed Newton trials and timestep regrowth, beginning with the retained day84 trace."
+}

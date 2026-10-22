@@ -120,15 +120,15 @@ The original8MiB failure and missing-libgomp relocation attempt remain failures.
 Direct original-source output checks still pass2721 checks/216 rows per opt;
 all9 deliberately changed components compile and fail native assertions.
 
-This qualifies only the stated local observation/export composition. PR1358
-remains draft. The fixture's separate diagnostic value file is deliberately
-not claimed as a crash-safe joint checkpoint. Automatic historical `.TRUE.`
-activation, complete run orchestration and atomic combined physical/diagnostic
-restart publication remain open, as does full MC-NUT01 migration.
+At this intermediate checkpoint only the observation/export composition was
+qualified, and PR1358 was still draft. Its separate diagnostic file was not a
+crash-safe joint checkpoint. The joint-generation successor below subsequently
+closed that persistence seam and was canonically admitted. Native `.TRUE.`
+activation and full historical orchestration remain open.
 
 ## Joint generation and automatic-day successor contract
 
-Baseline PR1358 head28ace73b; concurrent canonicala737c605 adds only performance
+Development baseline: PR1358 head28ace73b; concurrent canonicala737c605 adds only performance
 research files, with every scientific provider and prior output proof unchanged.
 
 A new same-platform POSIX envelope stores the existing validated physical
@@ -219,3 +219,20 @@ controls pass on the actual merge. The versioned admission receipt records this
 distinction and the inherited27/13 controls. No hosted numerical PASS is inferred
 from the deliberately empty workflow lookup. All full master dispositions remain
 unchanged; native `.TRUE.` activation and complete MC-NUT01 stay open.
+
+## Coverage reconciliation,22 October2026
+
+Existing master PR1072 receipt `32e76c66f2ca3b5cae95e89bb0b947f5d88a9f8a` records PR1358
+in the nine existing MC-NUT01 rows and their active queue. The [reconciliation
+proof](https://github.com/abhedwig-cell/SWAP5/blob/32e76c66f2ca3b5cae95e89bb0b947f5d88a9f8a/integration/audits/MC_NUT01_OUTPUT_MASTER_RECONCILIATION_20261022.json)
+passes all nine original bounded-reachability checks, historical source/census
+integrity and20 inheritance controls.234 other rows, all243 dispositions, the
+summary, previous bounded receipts and all other queues are exact. Every full
+NUT row stays ACTIVE_MIGRATION; no whole-master scientific PASS is asserted.
+
+At canonical `46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6`, the original joint-output
+capsule validates again, including14 invalids per optimization and four crash
+boundaries. The current composed owner and21 corruption controls also pass.
+These checks validate persisted evidence and dependency identity; no fresh
+numerical execution or new hosted qualification is claimed. Documentation
+source checks and strict MkDocs builds pass on both records.
