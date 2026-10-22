@@ -350,6 +350,20 @@ oracles. Changed-accuracy timings are distinct from implementation speedups;
 neither the failed policy nor a general cache or regional tolerance is admitted.
 
 
+### PERF01 wet4 saturation repair and optional warm start,22 October2026
+
+The [surface repair contract](../science/PERF01_WEATHER_SURFACE_REPAIR.md),
+[warm-start contract](../science/PERF01_WEATHER_WARM_START.md) and versioned
+`benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json` bind PR1361.
+Its current composition preserves the admitted SOL/crop/root and NUT output
+assertions through exact additive source dispatches and sealed native evidence.
+The status record distinguishes current source/native qualification from the
+actual canonical admission receipt. This remains the bounded illustrative
+Reference/default-MvG column; no full migration or master-row promotion is
+claimed. Warm start defaults OFF because the alternating paired experiment
+was slower. The general surface formulation and failed-Newton cost remain
+future research.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original

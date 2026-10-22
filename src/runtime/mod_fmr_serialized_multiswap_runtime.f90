@@ -71,6 +71,9 @@ module mod_fmr_serialized_multiswap_runtime
     logical :: actual_transpiration_available = .false.
     real(real64) :: actual_transpiration_amount = 0.0_real64
     type(canonical_mass_accounting_t) :: mass
+    logical :: surface_fluxes_available = .false.
+    real(real64) :: bare_soil_evaporation_cm=0.0_real64,pond_evaporation_cm=0.0_real64,runoff_cm=0.0_real64
+    real(real64) :: surface_to_soil_cm=0.0_real64
   end type fmr_serialized_column_result_t
 
   ! Sparse ephemeral receipt output. The explicit column id makes the
@@ -744,9 +747,10 @@ contains
     type(fmr_bottom_thermal_candidate_t) :: thermal_candidate
     type(fmr_prepared_bottom_energy_publication_t) :: prepared_bottom_energy
     type(fmr_owned_commit_receipt_t) :: local_energy_receipt
-    integer :: commit_status, receipt_status, simultaneous_physical_calls
+    integer :: commit_status, receipt_status, simultaneous_physical_calls, surface_step
     logical :: checkpoint_ok, candidate_ready, did_commit, energy_requested, receipt_path, exported_receipt_available
-    logical :: do_track_physical_concurrency
+    logical :: do_track_physical_concurrency, surface_valid
+    real(real64) :: accepted_surface(4)
 
     do_track_physical_concurrency = .true.
     if (present(track_physical_concurrency)) do_track_physical_concurrency = track_physical_concurrency
@@ -848,6 +852,42 @@ contains
       return
     end if
 
+    accepted_surface=0.0_real64
+    if(allocated(effective_forcing%weather_surface))then
+      ! Prevalidate every gross receipt BEFORE the physical commit.
+      surface_valid=observation%accepted_water_flux_trace_available
+      surface_valid=surface_valid.and.allocated(observation%accepted_water_flux_substeps)
+      if(surface_valid)then
+        do surface_step=1,size(observation%accepted_water_flux_substeps)
+          associate(step=>observation%accepted_water_flux_substeps(surface_step))
+            if(.not.step%converged_surface_available)then
+              surface_valid=.false.;exit
+            end if
+            if(.not.all(ieee_is_finite([step%converged_bare_soil_evaporation_cm_day, &
+                step%converged_pond_evaporation_cm_day,step%converged_runoff_depth_cm])))then
+              surface_valid=.false.;exit
+            end if
+            if(min(step%converged_bare_soil_evaporation_cm_day,step%converged_pond_evaporation_cm_day, &
+                step%converged_runoff_depth_cm)<0.0_real64)then
+              surface_valid=.false.;exit
+            end if
+            accepted_surface=accepted_surface+[ &
+              step%converged_bare_soil_evaporation_cm_day*(step%t1-step%t0), &
+              step%converged_pond_evaporation_cm_day*(step%t1-step%t0), &
+              step%converged_runoff_depth_cm,-step%top_flux*(step%t1-step%t0)]
+          end associate
+        end do
+      end if
+      surface_valid=surface_valid.and.all(ieee_is_finite(accepted_surface))
+      if(.not.surface_valid)then
+        if(candidate_ready)call fmr_discard_candidate(transaction_control,candidate,kernel_diag)
+        diagnostic%rejected=1
+        diagnostic%failure_classification='WEATHER_SURFACE_RECEIPT_REJECTED'
+        call update_committed_provenance(committed_state,output,diagnostic)
+        return
+      end if
+    end if
+
     if (.not. kernel_result%mass%complete .or. &
         kernel_result%mass%missing_contribution_mask /= TX_MASS_MISSING_NONE) then
       if (candidate_ready) call fmr_discard_candidate(transaction_control, candidate, kernel_diag)
@@ -926,6 +966,13 @@ contains
     end if
     output%completed = .true.
     output%committed = .true.
+    if(allocated(effective_forcing%weather_surface))then
+      output%surface_fluxes_available=.true.
+      output%bare_soil_evaporation_cm=accepted_surface(1)
+      output%pond_evaporation_cm=accepted_surface(2)
+      output%runoff_cm=accepted_surface(3)
+      output%surface_to_soil_cm=accepted_surface(4)
+    end if
     diagnostic%accepted = 1
     diagnostic%failure_classification = 'NONE'
     diagnostic%unrounded_mass_residual = output%mass%residual

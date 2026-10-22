@@ -1,0 +1,104 @@
+{
+  "status": "BOUNDED_WET4_CAUSAL_DIAGNOSIS_VERIFIED",
+  "terminal": {
+    "normal": {
+      "cursor_day": 34.0008443918709,
+      "seconds_into_day": 72.95545764568487,
+      "attempts": 33,
+      "solver_rejections": 4,
+      "mass_rejections": 2,
+      "temporal_rejections": 27,
+      "mass_residual_cm": -2.1691096028722752e-15,
+      "mass_tolerance_cm": 1e-14,
+      "normalized_temporal_indicator": 1.1493798618216038,
+      "last_step_days": 3.4413785042941732e-12
+    },
+    "strict": {
+      "cursor_day": 34.000858031235076,
+      "seconds_into_day": 74.13389871055642,
+      "attempts": 33,
+      "solver_rejections": 4,
+      "mass_rejections": 2,
+      "temporal_rejections": 27,
+      "mass_residual_cm": 1.3359705015864184e-15,
+      "mass_tolerance_cm": 1e-14,
+      "normalized_temporal_indicator": 443.32944597292715,
+      "last_step_days": 3.43820284235387e-12
+    },
+    "coarse": {
+      "cursor_day": 34.0041543060045,
+      "seconds_into_day": 358.9320387889302,
+      "attempts": 33,
+      "solver_rejections": 33,
+      "mass_rejections": 0,
+      "temporal_rejections": 0,
+      "final_equation_balance_rate_cm_per_day": 0.06140193943568928,
+      "balance_rate_threshold_cm_per_day": 0.0001048045126050315,
+      "final_heads_cm": [
+        0.22942939161975492,
+        0.1881698414736795,
+        0.15356292290654733,
+        -0.01238604233374156
+      ]
+    }
+  },
+  "controls": {
+    "rain475-normal": {
+      "status": "FAILED_OR_CENSORED",
+      "days": 34
+    },
+    "rain475-coarse": {
+      "status": "FAILED_OR_CENSORED",
+      "days": 34
+    },
+    "rain470-normal": {
+      "status": "FAILED_OR_CENSORED",
+      "days": 34
+    },
+    "rain400-normal": {
+      "status": "COMPLETE_NATIVE_OBSERVATION",
+      "days": 35
+    },
+    "rain0-normal": {
+      "status": "COMPLETE_NATIVE_OBSERVATION",
+      "days": 35
+    },
+    "retries48": {
+      "status": "FAILED_OR_CENSORED",
+      "days": 34,
+      "cursor_day": 34.00408076541875,
+      "attempts": 49,
+      "last_step_days": 4.101336010809252e-17
+    }
+  },
+  "exact_original_prefixes": 3,
+  "exact_O0_O2_full_traces": 2,
+  "rejected_external_states_exact": 2,
+  "control400_last_day": {
+    "day": "35",
+    "rain_mm": "4.00000000000000000E+001",
+    "etref_mm": "1.02639999999999998E+000",
+    "transpiration_mm": "6.91154301850262165E-001",
+    "storage_mm": "1.26881751883989793E+002",
+    "water_in_mm": "3.96657543018502992E+001",
+    "water_out_mm": "3.96477516928023306E+001",
+    "residual_mm": "-2.13010165062144097E-012",
+    "biomass": "6.07814277402957146E+002",
+    "dvs": "8.55809569038748358E-002",
+    "lai": "2.33114400622934426E+000",
+    "head1_cm": "-3.61118315580208793E-001",
+    "head2_cm": "-3.76498203789511265E-001",
+    "head3_cm": "-4.11704182100148253E-001",
+    "head4_cm": "-4.11704182100069593E-001",
+    "theta1": "4.22947128994521915E-001",
+    "theta2": "4.22943822184780327E-001",
+    "theta3": "4.22936021625123448E-001",
+    "theta4": "4.22936021625123448E-001",
+    "potential_transpiration_mm": "6.91154301850262165E-001",
+    "accepted": "444",
+    "headcalc_calls": "2246",
+    "temporal_rejections": "2"
+  },
+  "production_changed": false,
+  "standalone_preexisting_owner_wrapper": "BLOCKED_KEYERROR_qualified; unchanged baseline; component source/evidence and successor owner checks pass"
+}

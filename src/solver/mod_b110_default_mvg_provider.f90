@@ -17,6 +17,8 @@ module mod_b110_default_mvg_provider
      logical :: ksatexm_extension_enabled = .false.
      logical :: elastic_storage_active = .false.
      logical :: conductivity_power_tail_enabled = .false.
+     ! Exact continuous K(theta) near saturation for coupled weather surfaces.
+     logical :: continuous_saturation_conductivity = .false.
      real(real64), allocatable :: specific_elastic_storage(:)
   end type b110_default_mvg_parameters_t
 
@@ -157,14 +159,16 @@ contains
     provider%step_duration = step_duration
   end subroutine bind_b110_default_mvg_provider
 
-  subroutine evaluate_b110_default_mvg_conductivity(parameters, node_index, pressure_head, conductivity, ok)
+  subroutine evaluate_b110_default_mvg_conductivity(parameters, node_index, pressure_head, conductivity, ok, dconductivity_dhead)
     type(b110_default_mvg_parameters_t), intent(in) :: parameters
     integer, intent(in) :: node_index
     real(real64), intent(in) :: pressure_head
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: ok
+    real(real64),intent(out),optional::dconductivity_dhead
     real(real64) :: theta
 
+    if(present(dconductivity_dhead))dconductivity_dhead=0.0_real64
     conductivity = 0.0_real64
     ok = .false.
     if (parameters%active_nodes <= 0 .or. .not. allocated(parameters%cofgen)) return
@@ -176,10 +180,15 @@ contains
     theta = b110_watcon(parameters%cofgen(:,node_index), pressure_head)
     if (.not. ieee_is_finite(theta)) return
     conductivity = b110_hconduc(parameters%cofgen(:,node_index), pressure_head, theta, &
-         parameters%ksatexm_extension_enabled, parameters%conductivity_power_tail_enabled)
+         parameters%ksatexm_extension_enabled, parameters%conductivity_power_tail_enabled, parameters%continuous_saturation_conductivity)
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
        conductivity = 0.0_real64
        return
+    end if
+    if(present(dconductivity_dhead))then
+      if(parameters%continuous_saturation_conductivity) &
+        dconductivity_dhead=b110_continuous_conductivity_slope(parameters%cofgen(:,node_index),pressure_head)
+      if(.not.ieee_is_finite(dconductivity_dhead))return
     end if
     ok = .true.
   end subroutine evaluate_b110_default_mvg_conductivity
@@ -203,6 +212,13 @@ contains
           previous_pressure_head(i) >= 0.0_real64) then
         increment(i) = self%parameters%specific_elastic_storage(i) * &
              (pressure_head(i)-previous_pressure_head(i))
+      else if(self%parameters%continuous_saturation_conductivity.and. &
+          self%parameters%cofgen(9,i)>B110_H_CRIT.and. &
+          min(pressure_head(i),previous_pressure_head(i))>B110_H_CRIT)then
+        ! Exact piecewise-linear storage across the saturation corner. Never
+        ! subtract two rounded theta_s values when one sibling crosses h=0.
+        increment(i)=self%parameters%cofgen(27,i)* &
+          (min(pressure_head(i),0.0_real64)-min(previous_pressure_head(i),0.0_real64))
       else
         increment(i) = b110_watcon_increment(self%parameters%cofgen(:,i), pressure_head(i), &
              previous_pressure_head(i), water_content(i), previous_water_content(i))
@@ -222,14 +238,18 @@ contains
     real(real64), intent(in) :: pressure_head, water_content
     real(real64), intent(out) :: conductivity
     logical, intent(out) :: available
+    real(real64) :: evaluated_theta
 
     conductivity = 0.0_real64
     available = .false.
     if (.not. associated(self%parameters)) return
     if (node_index < 1 .or. node_index > self%parameters%active_nodes) return
     if (.not. ieee_is_finite(pressure_head) .or. .not. ieee_is_finite(water_content)) return
-    conductivity = b110_hconduc(self%parameters%cofgen(:,node_index), pressure_head, water_content, &
-         self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
+    evaluated_theta=water_content
+    if(self%parameters%continuous_saturation_conductivity) &
+      evaluated_theta=b110_watcon(self%parameters%cofgen(:,node_index),pressure_head)
+    conductivity = b110_hconduc(self%parameters%cofgen(:,node_index), pressure_head, evaluated_theta, &
+         self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled, self%parameters%continuous_saturation_conductivity)
     if (.not. ieee_is_finite(conductivity) .or. conductivity < 0.0_real64) then
       conductivity = 0.0_real64
       return
@@ -278,7 +298,7 @@ contains
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           water_content(i) = theta_local
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled, self%parameters%continuous_saturation_conductivity)
        end do
        return
     case (CONSTITUTIVE_DEMAND_CONDUCTIVITY + CONSTITUTIVE_DEMAND_CAPACITY)
@@ -288,7 +308,7 @@ contains
                theta_local = self%parameters%cofgen(2,i) + &
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled, self%parameters%continuous_saturation_conductivity)
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
           if (self%parameters%elastic_storage_active .and. pressure_head(i) >= 0.0_real64) &
                capacity(i) = self%parameters%specific_elastic_storage(i)
@@ -311,7 +331,7 @@ contains
                     pressure_head(i)*self%parameters%specific_elastic_storage(i)
           if (need_theta) water_content(i) = theta_local
           if (need_k) conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), theta_local, &
-               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
+               self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled, self%parameters%continuous_saturation_conductivity)
        end if
        if (need_capacity) then
           capacity(i) = b110_moiscap(self%parameters%cofgen(:,i), pressure_head(i), self%step_duration)
@@ -319,7 +339,14 @@ contains
                capacity(i) = self%parameters%specific_elastic_storage(i)
        end if
     end do
-    if (need_dkdh) dconductivity_dhead = 0.0_real64
+    if (need_dkdh) then
+       dconductivity_dhead = 0.0_real64
+       if(self%parameters%continuous_saturation_conductivity)then
+          do i=1,n
+             dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i))
+          end do
+       end if
+    end if
   end subroutine b110_default_mvg_evaluate_demand
 
   subroutine b110_default_mvg_evaluate(self, pressure_head, water_content, conductivity, capacity, dconductivity_dhead)
@@ -344,10 +371,15 @@ contains
           capacity(i) = self%parameters%specific_elastic_storage(i)
        end if
        conductivity(i) = b110_hconduc(self%parameters%cofgen(:,i), pressure_head(i), water_content(i), &
-            self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled)
+            self%parameters%ksatexm_extension_enabled, self%parameters%conductivity_power_tail_enabled, self%parameters%continuous_saturation_conductivity)
     end do
     ! swkimpl=1 is deliberately not admitted by F-SI09. The common interface reserves this output.
     dconductivity_dhead = 0.0_real64
+    if(self%parameters%continuous_saturation_conductivity)then
+       do i=1,n
+          dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i))
+       end do
+    end if
   end subroutine b110_default_mvg_evaluate
 
   pure real(real64) function b110_watcon(c, head) result(watcon)
@@ -487,12 +519,33 @@ contains
     end if
   end function b110_moiscap
 
-  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension, enable_power_tail) result(hconduc)
+  pure real(real64) function b110_continuous_conductivity_slope(c,head) result(value)
+    real(real64),intent(in)::c(:),head
+    real(real64)::dh,kplus,kminus,logse,a,t,dlogse
+    value=0.0_real64
+    if(head>=0.0_real64)return
+    if(c(9)>B110_H_CRIT.and.head>B110_H_CRIT)then
+      logse=b110_log1p(c(27)*head/c(25))
+      a=-b110_expm1(logse*c(32));t=a**c(7)
+      dlogse=(c(27)/c(25))/(1.0_real64+c(27)*head/c(25))
+      value=c(3)*exp(c(5)*logse)*dlogse*(c(5)*(1-t)**2+2*(1-t)*max(a,tiny(1.0_real64))**(c(7)-1)*exp(logse*c(32)))
+      return
+    end if
+    dh=max(1.0e-10_real64,1.0e-5_real64*abs(head))
+    kplus=b110_hconduc(c,head+dh,b110_watcon(c,head+dh),.false.,.false.,.true.)
+    kminus=b110_hconduc(c,head-dh,b110_watcon(c,head-dh),.false.,.false.,.true.)
+    value=(kplus-kminus)/(2.0_real64*dh)
+  end function
+
+  pure real(real64) function b110_hconduc(c, head, theta, enable_ksatexm_extension, enable_power_tail, continuous_saturation) result(hconduc)
     real(real64), intent(in) :: c(:), head, theta
     logical, intent(in) :: enable_ksatexm_extension
+    logical, intent(in), optional :: continuous_saturation
     logical, intent(in), optional :: enable_power_tail
     real(real64) :: relsat, term1, term2, se
-    logical :: ksatexm_applied, power_tail
+    logical :: ksatexm_applied, power_tail, continuous
+    continuous=.false.
+    if(present(continuous_saturation))continuous=continuous_saturation
     relsat = (theta-c(1))/c(25)
     ksatexm_applied = .false.
     power_tail = .false.
@@ -504,12 +557,27 @@ contains
     else if (c(9) > B110_H_CRIT) then
        if (head < -1.0e14_real64) then
           hconduc = B110_HCON_VSMALL
-       else if (relsat > (1.0_real64-1.0e-6_real64)) then
+       else if (continuous.and.head>B110_H_CRIT.and.head<0.0_real64) then
+          ! The retained near-zero water-content branch is linear. Recover
+          ! its saturation deficit from h, before theta subtraction rounds it
+          ! to zero. This keeps K continuous even at machine-sized deficits.
+          term2=b110_log1p(c(27)*head/c(25))
+          term1=(-b110_expm1(term2*c(32)))**c(7)
+          hconduc=c(3)*exp(c(5)*term2)*(1.0_real64-term1)**2
+       else if (relsat >= 1.0_real64.or. &
+            (.not.continuous.and.relsat > (1.0_real64-1.0e-6_real64))) then
           hconduc = c(3)
        else if (power_tail .and. head <= c(22)) then
           hconduc = c(23)*(abs(c(22))/abs(head))**c(33)
        else
+          if(continuous.and.relsat>1.0_real64-1.0e-6_real64)then
+             ! The legacy early Ksat shortcut creates a finite conductivity
+             ! jump and a gap with no implicit free-drainage solution. Retain
+             ! the Mualem curve; expm1 avoids cancellation as theta -> theta_s.
+             term1 = (-b110_expm1(log(relsat)*c(32)))**c(7)
+          else
           term1 = (1.0_real64-relsat**c(32))**c(7)
+          end if
           hconduc = c(3)*(relsat**c(5))*(1.0_real64-term1)**2
        end if
     else

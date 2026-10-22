@@ -21,6 +21,8 @@ def projection():
   text=text[:offset]+" if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'saved baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
  require(reader(PARENT)==projection(),'original harvest owner assertions')
@@ -101,12 +103,16 @@ def validate(f):
  require(not r['thermal_selected']and r['crash_selected']and not r['full_work_unit_closed'],'saved scope')
  return dict(qualified=True,status='SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED',literal_checks_per_optimization=6808,literal_reports_per_optimization=234,independent_phase_roundtrips=12,independent_phase_fallow_progressions=12,fresh_fallow_progressions=4,invalid_generations=36,invalid_live_generations=36,identity_rejections=4,process_crashes=4,incumbent_physics_unchanged=True,full_mc_nut01_closed=False)
 def verify():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['verify']()
  source();r=validate(capsule());old=runpy.run_path(str(ROOT/PARENT));r['incumbent_harvest']=old['validate'](old['capsule']())
  root=runpy.run_path(str(ROOT/'integration/audits/verify_root_substep.py'));prior=root['validate'](root['capsule']())
  r['incumbent_root_substep']=prior
  for key in ['current_calendar_nut','current_concurrent_nut','frozen_daily_predecessor']:r[key]=prior[key]
  return r
 def self_test():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()
