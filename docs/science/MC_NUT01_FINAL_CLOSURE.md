@@ -1,5 +1,40 @@
 # MC-NUT01 final closure review
 
+## Current output/restart scope,22 October2026
+
+PR1358 canonically admits the [explicit daily output and joint restart route](MC_NUT01_EXTENDED_OUTPUT_CONTRACT_20261021.md)
+at `49bba843210b49c58c991a23f67f52888895582f`. Model state, all17 diagnostic
+continuation values and accepted report history are replaced as one checked
+generation; complete CSV is a reproducible view. Original task6 O0/O2 gives
+2721 checks and216 exact reports per optimization; the actual two-day
+Richards/crop/N application, independent-process continuation,14 invalid
+generations per optimization and four pre/post-rename SIGKILL trials pass.
+Failed model publication preserves prior authority. CSV-only failure retains
+the saved model and returns its distinct status.
+
+This is the explicit heat-off/nonharvested route. Native `flCropExt=.TRUE.`
+project activation, wider grammar, output over heat/harvest/rotation,
+automatic snow/persistent-surface N binding and complete original active
+historical trajectories remain open. The scientifically unresolved negative
+active-crop/immobilisation allocation remains separate; PR1350 already admits
+finite-donor fallow with nonnegative production. PR1354 already resolves the
+bounded fractional humus clock. All nine full master rows remain
+ACTIVE_MIGRATION. Older dated reviews below retain their historical evidence;
+their complete-absence or whole-negative-blocked wording does not supersede
+these later bounded admissions.
+
+The PR1358 qualified scientific/evidence surface is exact in the actual merge.
+The whole merge tree differs only by a concurrent PERF01 status receipt; it
+must not be described as full-tree exact. No hosted workflows were selected
+for PR1358. The existing owner and21 corruption controls were rechecked at
+canonical `46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6`; this is evidence validation,
+not a new numerical replay. The original output capsule and admission receipt
+remain authoritative. Existing master PR1072 receipt
+`32e76c66f2ca3b5cae95e89bb0b947f5d88a9f8a` records the bounded output admission; all nine
+original scoped checks, source/census integrity and20 inheritance controls pass.
+234 other rows, all243 dispositions and the summary are exact. Its proof is
+linked from the output contract.
+
 ## Fractional humus timestamp successor,21 October2026
 
 The [timestamp contract](MC_NUT01_HUMUS_TIMESTAMP_20261021.md) records an ADMITTED input extension through PR1354,
@@ -518,7 +553,7 @@ is still not made; general native grammar, fractional humus clocks, true
 extended diagnostics and snow/persistent surface binding remain explicitly
 outside the bounded admissions. Full workstream closure is not asserted.
 
-## Definitive current closure decision and canonical receipt
+## Historical closure decision and canonical receipt,20 October2026
 
 **BLOCKED, with all qualified bounded changes integrated.** PR#1340 integrates
 the actual original reference evidence at canonical `e41f36658f23dcd6aa3f34835e4722eae23fba42`,

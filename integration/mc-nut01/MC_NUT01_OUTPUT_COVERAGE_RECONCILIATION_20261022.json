@@ -1,0 +1,40 @@
+{
+  "work_unit": "MC-NUT01-OUTPUT-COVERAGE-RECONCILIATION",
+  "date": "2026-10-22",
+  "canonical_execution_base": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
+  "canonical_output_merge": "49bba843210b49c58c991a23f67f52888895582f",
+  "master_pr": 1072,
+  "master_branch": "work/swap431-master-coverage-20261006",
+  "master_receipt": "32e76c66f2ca3b5cae95e89bb0b947f5d88a9f8a",
+  "master_tree": "1533c14884e7a109ae91813e8318a3c61595d4bc",
+  "master_proof_url": "https://github.com/abhedwig-cell/SWAP5/blob/32e76c66f2ca3b5cae95e89bb0b947f5d88a9f8a/integration/audits/MC_NUT01_OUTPUT_MASTER_RECONCILIATION_20261022.json",
+  "checks": {
+    "scoped_bounded_reachability": 9,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "non_NUT_queues_exact": true,
+    "previous_bounded_receipts_exact": true,
+    "historical_source_census_integrity": "PASS",
+    "inheritance_controls": 20,
+    "current_composed_owner": "PASS",
+    "current_corruption_controls": 21,
+    "original_output_capsule": "PASS",
+    "source_docs": "PASS",
+    "strict_docs": "PASS"
+  },
+  "source_changed": false,
+  "new_numerical_execution": false,
+  "hosted_workflows": "NOT_SELECTED_METADATA_ONLY",
+  "full_mc_nut01_closed": false,
+  "whole_master_scientifically_qualified": false,
+  "native_true_enabled": false,
+  "remaining": [
+    "Native TRUE project activation and wider grammar",
+    "Output coverage across heat/harvest/rotation",
+    "Active-crop/immobilisation finite-donor allocation",
+    "Automatic snow/persistent-surface N binding",
+    "Near-degenerate coefficients and full original active trajectories"
+  ],
+  "preserved_authority": "Existing HIST-COMPLETE status and all source/evidence remain unchanged; this is an administrative coverage receipt."
+}
