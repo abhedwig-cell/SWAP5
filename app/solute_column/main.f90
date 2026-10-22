@@ -40,6 +40,7 @@ program swap5_solute_column
   real(real64) :: pond_max_cm=1d6,runoff_resistance_day=0d0,temporal_tolerance=1d-6
   real(real64) :: ends_day(MAX_WINDOWS)=0d0,rain_cm_day(MAX_WINDOWS)=0d0
   real(real64) :: irrigation_cm_day(MAX_WINDOWS)=0d0,runon_cm_day(MAX_WINDOWS)=0d0,evaporation_cm_day(MAX_WINDOWS)=0d0
+  real(real64) :: soil_evaporation_cm_day(MAX_WINDOWS)=0d0,soil_evap_amount
   real(real64) :: rain_c=0d0,irrigation_c=0d0,runon_c=0d0,dry_mg_cm2_day=0d0
   real(real64) :: clock,t0,t1,water_amount,infiltration,runoff,runon_amount,evap_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
@@ -75,7 +76,7 @@ program swap5_solute_column
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
-    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c
+    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -149,10 +150,10 @@ program swap5_solute_column
   t0=0d0
   do j=1,windows
     call require(all(ieee_is_finite([ends_day(j),rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j), &
-      evaporation_cm_day(j)])),'nonfinite surface input')
+      evaporation_cm_day(j),soil_evaporation_cm_day(j)])),'nonfinite surface input')
     call require(ends_day(j)>t0.and.ends_day(j)-t0<=1d3.and.ends_day(j)<=1d6,'invalid reporting window')
-    call require(min(rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j),evaporation_cm_day(j))>=0d0.and. &
-      max(rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j),evaporation_cm_day(j))<=5d5,'invalid surface rate')
+    call require(min(rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j),evaporation_cm_day(j),soil_evaporation_cm_day(j))>=0d0.and. &
+      max(rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j),evaporation_cm_day(j),soil_evaporation_cm_day(j))<=5d5,'invalid surface rate')
     t0=ends_day(j)
   end do
   call require(all(ieee_is_finite([freundlich_exponent,reference_concentration,decay_rate_day,gamma_temperature, &
@@ -167,6 +168,8 @@ program swap5_solute_column
   call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')
   call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &
     .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')
+  call require(.not.any(soil_evaporation_cm_day>0d0).or.(.not.dynamic_temperature.and. &
+    .not.retain_accepted_step_proposal.and..not.implicit_pond_evaporation),'soil evaporation combination not qualified')
   p%parameter_set_id=670001_int64;p%active_nodes=numnod
   p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)
   allocate(p%cofgen(24,numnod));p%cofgen=0d0
@@ -269,18 +272,25 @@ program swap5_solute_column
   call require(first<=stop_after,'no requested windows remain')
   open(newunit=u,file='budget.csv',status='new',action='write',iostat=io)
   call require(io==0,'cannot create budget output')
-  write(u,'(A)')'window,t0_day,t1_day,water_start_cm,water_end_cm,water_in_cm,water_out_cm,water_residual_cm,'// &
+  write(u,'(A)',advance='no')'window,t0_day,t1_day,water_start_cm,water_end_cm,water_in_cm,water_out_cm,water_residual_cm,'// &
     'solute_start_mg_cm2,solute_end_mg_cm2,solute_in_mg_cm2,solute_out_mg_cm2,solute_residual_mg_cm2,'// &
     'infiltration_cm,runon_cm,runoff_cm,pond_evaporation_cm,accepted_substeps'
+  if(any(soil_evaporation_cm_day>0d0))then
+    write(u,'(A)')',soil_evaporation_cm'
+  else
+    write(u,'(A)')''
+  end if
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
     forcing%pond_input%rain_rate_cm_day=rain_cm_day(j)
     forcing%pond_input%irrigation_rate_cm_day=irrigation_cm_day(j)
     forcing%pond_input%runon_rate_cm_day=runon_cm_day(j)
+    forcing%pond_input%potential_bare_soil_evaporation_cm_day=soil_evaporation_cm_day(j)
     forcing%pond_input%potential_pond_evaporation_cm_day=evaporation_cm_day(j)
     supply=pond_step_t();supply%t0=t0;supply%t1=t1;supply%rain_rate=rain_cm_day(j)
     supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c
     supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day
+    supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)
     supply%implicit_pond_evaporation=implicit_pond_evaporation
     if(dynamic_temperature)then
       forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
@@ -294,20 +304,26 @@ program swap5_solute_column
     call require(abs(result%water%mass%residual)<=1d-10.and.abs(result%chemical%residual)<=1d-10,'balance rejected')
     observation=backend%observation()
     call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
-    infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0
+    infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
         infiltration=infiltration+max(0d0,-s%top_flux)*(s%t1-s%t0)
         runoff=runoff+s%converged_runoff_depth_cm
         runon_amount=runon_amount+s%converged_runon_rate_cm_day*(s%t1-s%t0)
+        soil_evap_amount=soil_evap_amount+s%converged_soil_evaporation_cm_day*(s%t1-s%t0)
         evap_amount=evap_amount+s%converged_pond_evaporation_cm_day*(s%t1-s%t0)
       end associate
     end do
-    write(u,'(I0,16(",",ES25.17E3),",",I0)')j,t0,t1,result%water%mass%storage_start,result%water%mass%storage_end, &
+    write(u,'(I0,16(",",ES25.17E3),",",I0)',advance='no')j,t0,t1,result%water%mass%storage_start,result%water%mass%storage_end, &
       result%water%mass%total_in,result%water%mass%total_out,result%water%mass%residual, &
       result%chemical%mass_before,result%chemical%mass_after,result%chemical%external_in, &
       result%chemical%external_out,result%chemical%residual,infiltration,runon_amount,runoff,evap_amount, &
       size(observation%accepted_water_flux_substeps)
+    if(any(soil_evaporation_cm_day>0d0))then
+      write(u,'(A,ES25.17E3)')',',soil_evap_amount
+    else
+      write(u,'(A)')''
+    end if
     clock=t1
   end do
   close(u)
