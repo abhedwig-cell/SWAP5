@@ -29,7 +29,7 @@ def native(exe,args,stage,marker):
  return cp
 def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject'):
  if surface_exfiltration not in ['reject','historical_zero']:raise ValueError('unknown surface exfiltration law')
- if water_conductivity not in ['frozen','picard']:raise ValueError('unknown water conductivity policy')
+ if water_conductivity not in ['frozen','picard','picard_continuous']:raise ValueError('unknown water conductivity policy')
  if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
  if not math.isfinite(temporal_tolerance) or temporal_tolerance<=0:raise ValueError('positive finite temporal tolerance required')
  executables={k:Path(bundle[k]).resolve()for k in ['project_reader','crop_reader','root_reader','exe']}
@@ -90,7 +90,8 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   ' soil_evaporation_cm_day='+','.join(r['soil_evaporation_cm_day']for r in combined),
   ' evaporation_cm_day='+','.join(r['pond_evaporation_cm_day']for r in combined),'/']
  first_root=prepared[0]['root'].strip()
- if water_conductivity=='picard':lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
+ if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
+ if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
  if solute_transport!='reference':
   # Keep all old Reference input lines byte-identical except source binding.
@@ -125,7 +126,7 @@ def main():
  ap.add_argument('--output',type=Path,required=True);ap.add_argument('--restart',type=Path);ap.add_argument('--stop-after',type=int,default=2048)
  ap.add_argument('--temporal-tolerance',type=float,default=1e-4)
  ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference')
- ap.add_argument('--water-conductivity',choices=['frozen','picard'],default='frozen')
+ ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())

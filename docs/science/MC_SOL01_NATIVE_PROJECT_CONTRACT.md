@@ -294,3 +294,142 @@ detail causes stagnation. The general annual/cross-year route remains blocked.
 Wider NUT/source-owner admission reconciliation remains pending. Work is locally
 committed only: automatic approval review rejected remote publication, and no
 alternate publication route was attempted. No canonical admission is claimed.
+
+### Day65 conductivity study, 23 October 2026
+
+Published baseline801e78ee has the exact previously tested tree10ee4f77.
+Canonicala1f9fb2b adds a separate default-OFF failed-line-search weather policy.
+Its bottom7/consistent-provider scope does not activate it for this bottom2
+Picard project. The source delta is composed before any current shared build.
+
+The layer2 native parameters alpha=.02,n=1.6 imply that the inherited early-Ksat
+shortcut at relative saturation1-1e-6 starts at h=-.016413490934930813cm.
+The retained day65 accepted heads approach this same value. The underlying
+Mualem value there is about.983819Ksat; the shortcut jumps toKsat. This is a
+specific constitutive discontinuity hypothesis, not yet a demonstrated repair.
+
+First execute the real two-provider curve for both layers at checked O0/O2,
+including cutoff-side values, unchanged retention and existing continuous-curve
+selection. Then rebuild current shared providers,expected500s,and replay the
+actual day64 committed state with unchanged weather/crop/bottom/chemistry and
+1e-4 temporal budget. A copied diagnostic backend selects the existing continuous
+curve only for the explicit Picard test. The existing native surface option is
+selected to avoid confusing a later already-understood chemical exfiltration
+rejection with the water result. Expected native120s/optimization. Separately
+test the old head norm and the already-investigated saturation-aware norm if
+needed. No production/default constitutive law, acceptance tolerance, mass gate
+or public restart conversion is changed by this diagnostic. A success requires
+an explicit policy contract and current preservation before admission.
+
+The real leaf confirms conductivity jumps from9.62116757to10 and
+1.96763756to2cm/day at the respective native cutoffs. The actual day65 cutoff
+replay still rejects with exact committed owners; continuous-curve O0/O2 replays
+complete with the unchanged original head norm. A separate continuous-curve plus
+saturation-aware norm O2 replay also completes; that metric is not selected for
+production by this result. The matched-intervention evidence identifies the
+inherited conductivity shortcut as the cause of this retained blockage.
+
+Proposed explicit option: `--water-conductivity picard_continuous`. It selects
+the existing prepared-default-MvG continuous curve and existing64-iteration
+Picard route. Reuse the typed prepared hydraulic flag; add no generic solver
+field or independent equation. The backend honors a compatible prepared curve
+only with the bounded Picard compatibility contract. Neither the frozen default
+nor existing `picard` behavior changes. Prepared coefficients remain immutable;
+worker-owned copies remain separate when needed. Retention and physical forcing
+are unchanged. The old temporal norm and all hard acceptance gates remain.
+Native continuous-project parameter identity670002 distinguishes its raw restart
+from the retained670001 route; public source/executable/input binding also
+rejects cross-mode continuation. Actual historical checkpoint experiments are
+explicit physical-state counterfactuals, never public restart conversions.
+Select fresh current O0/O2 builds and day65/day267 production replays, default
+root/crop/solute preservation, opted-in short/native restart and raw/public mode
+rejections, and affected current NUT preservation. Then select actual annual
+coarse/refined continuation and cross-year work with unchanged physical inputs.
+No whole MC-SOL01 or full capability admission follows from a focused day replay.
+
+The existing continuous-provider flag also selects stable near-zero storage
+increments. To isolate the conductivity inference, additionally replay with a
+copied test-only provider selecting the continuous K function while leaving its
+parameter flag false. This retains the old storage-increment branch and old
+temporal norm. The actual driver must demonstrate a sub-Ksat value in the band
+and explicitly assert the unchanged storage-policy flag. This is a causal
+discriminator only, not an additional production selector; expected120s/O2.
+
+### Composite saturation successor
+
+The curve-only production candidate completes the actual day65 replays but its
+coarse whole-year run rejects water day257 after256 accepted days. Replay of
+that exact new day256 state rejects at256.57903459002995 with3555 solver and
+15258 temporal rejections,zero mass rejections. Selecting the existing
+saturation-aware storage/Darcy norm on the same continuous curve completes that
+day. Both interventions are therefore needed for the broader candidate.
+
+For the proposed `picard_continuous` option only, use the existing weather norm
+for this compatible prepared continuous curve. Omit its free-drainage bottom
+conductivity displacement for bottom2, whose prescribed bottom flux has zero
+sibling difference. Unsaturated head, integrated absolute storage, pond/GWL and
+integrated interior/wet-top Darcy differences remain controlled. Positive head
+is algebraic; no uniform saturated-pressure accuracy claim is made. Existing
+frozen/Picard modes keep their original norm, and weather bottom7 keeps its
+existing free-drainage term. The1e-4 budget and all local/global mass gates stay
+unchanged. Earlier curve-only results and failed year remain immutable evidence.
+
+Stop the obsolete refined curve-only year after its current accepted prefix:
+it is a censored superseded candidate,not a newly established physical failure.
+Select a complete coarse O2 year/cross-year and a focused98-day refined prefix
+past day65, with exact fresh-process restart. Full refined annual qualification
+is not inferred. This avoids repeating the known failed candidate or using a
+whole second fine-grid year where the shorter saturation fixture distinguishes
+the changed numerical policy. Retain source identities,actual costs and all
+failure/censoring information. Recompile only changed providers when the
+compiled module interfaces and unchanged object identities are exact; execute
+the current scientific programs afresh. No old numerical PASS is rebound.
+
+The bounded98-day native observations contain no runoff; the complete coarse
+year does (36.57245247925319cm). The initial prefix recipe incorrectly retained
+the full-year positive-runoff coverage assertion. Correct only that test-scope
+condition: retain the positive-runoff requirement for every full period, not a
+truncated prefix. All hard mass, source/original fixed/ETpot and exact
+full/split/resume assertions remain. The numerical programs are unchanged.
+Retain the original recipe, raw events and wrapper failure, then validate its
+completed native observations with `validate_native_project_prefix.py`.
+The composed evidence gate accepts exactly this one reviewed validation-only
+source delta, not arbitrary changed execution inputs. It explicitly records
+that the unchanged physical programs were not rerun for the coverage correction.
+
+### Current bounded composite result, 23 October 2026
+
+The real prepared-interface day65 replay passes checked O0/O2 with four exact
+physical/budget/restart artifacts; the exact day256 state also completes day257
+using current production providers, without a copied constitutive or temporal
+backend. The fresh public native mode is tested separately from these labelled
+historical-state counterfactuals. Current rollback/compatibility,12 native exact
+restart files,8 transport-mode,6 curve-mode and2 surface-mode rejections pass.
+The incumbent daily route retains64 exact files,128 hard daily balances and16
+fresh restarts; cold, thermal, calendar, harvested-phase and saved-harvest/fallow
+NUT programs all execute on the current shared postimage and pass. Cold endpoints
+and retained thermal/calendar/saved result identities remain exact.
+
+Actual O2 native composition now completes the365-day1998 and481-day1998/1999
+coarse calculations, including exact full/split/resumed state, endpoint and raw
+restart, daily gross water/solute balances and literal original fixed/ETpot
+preparation. The41-cell refined prefix completes98 days with the same independent
+restart and hard balances. Its original annual-event assertion failure and the
+subsequent scope-correct validation remain separate retained observations.
+Maximum reported water/solute residuals are2.2648549702353193e-14cm and
+1.3288675715372733e-13mg/cm2 over the coarse481-day calculation; the refined
+prefix maxima are2.606248550307555e-14cm and7.92681892347602e-14mg/cm2.
+
+Over the matched first98 days, maximum coarse/refined daily water-storage spread
+is.0015127562025867292cm; solute-stock spread is.3935686314517852mg/cm2.
+This is a measured two-grid spread, not demonstrated convergence, a spatially
+resolved annual solute solution, or equivalence to the full historical Andelst
+model. The original low dispersivities, prescribed crop demand and all physical
+inputs remain explicit. Full refined annual execution, broader physics/default
+dispatch, full MC-SOL01 and canonical admission are not claimed.
+
+Owning recovery is the existing `day65_continuation_20261023` child in
+`MC_SOL01_DYNAMIC_DECAY_STATUS.json`. The new source/raw research gate is
+`integration/audits/verify_sol_day65_continuation.py`; its capsule retains source
+versions, actual costs, failed curve-only year, censored obsolete refined year,
+compiler/cache provenance and every current raw scientific observation.

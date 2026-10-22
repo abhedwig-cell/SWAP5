@@ -91,15 +91,19 @@ contains
     workspace%trial_guess_available = .false.
   end subroutine clear_reference_trial_guess
 
-  subroutine trial_guess_key(request, key, allowed)
+  subroutine trial_guess_key(request, key, allowed, allow_line_search_retry)
     type(soil_water_solve_request_t), intent(in) :: request
     real(real64), allocatable, intent(out) :: key(:)
     logical, intent(out) :: allowed
+    logical, intent(in), optional :: allow_line_search_retry
+    logical :: selected
     real(real64) :: source(request%parameters%active_nodes), sink(request%parameters%active_nodes)
     real(real64) :: root(request%parameters%active_nodes)
 
     allowed=.false.
-    if(.not.request%numerical%reuse_trial_head.or..not.request%numerical%consistent_provider_conductivity)return
+    selected=request%numerical%reuse_trial_head
+    if(present(allow_line_search_retry))selected=selected.or.allow_line_search_retry
+    if(.not.selected.or..not.request%numerical%consistent_provider_conductivity)return
     if(request%numerical%conductivity_mean_method/=1)return
     if(request%physical%macropore_active.or.request%request_interface_sensitivity)return
     if(request%boundary%bottom_mode/=7.or.request%boundary%top_mode/=FSI_TOP_MODE_DYNAMIC_PROVIDER)return
@@ -200,8 +204,9 @@ contains
     type(soil_water_solve_result_t), intent(out) :: result
 
     logical :: ok, sensitivity_capture, warm_allowed, warm_used, same_origin, same_forcing, continuation
-    type(soil_water_numerical_config_t) :: warm_config
-    real(real64), allocatable :: origin_key(:), guess(:)
+    logical :: line_search_retry_allowed
+    type(soil_water_numerical_config_t) :: warm_config, cold_config
+    real(real64), allocatable :: origin_key(:), guess(:), line_search_route_key(:)
     real(real64) :: duration_ratio
     type(a23bu_solver_history_t) :: call_history
     type(soil_water_top_boundary_result_t) :: final_top
@@ -287,7 +292,12 @@ contains
        sensitivity_capture = request%request_interface_sensitivity .and. request%boundary%bottom_mode == 2
        if (sensitivity_capture) call prepare_reference_tridag_factorization_capture(ws%richards)
 
-       warm_config=request%numerical
+       cold_config=request%numerical
+       line_search_retry_allowed=.false.
+       if(request%numerical%abort_failed_line_search) &
+         call trial_guess_key(request,line_search_route_key,line_search_retry_allowed,allow_line_search_retry=.true.)
+       cold_config%abort_failed_line_search=line_search_retry_allowed
+       warm_config=cold_config
        if(warm_used)warm_config%max_iterations=min(3,request%numerical%max_iterations)
        call headcalc(ws%legacy_worker, ws%richards, call_history, ws%state_binding, &
             request%evaluation, request%boundary, warm_config, request%physical, &
@@ -299,7 +309,7 @@ contains
           call initialize_reference_state_binding(ws%state_binding,request)
           call a23bu_reset_attempt_control(ws%legacy_worker)
           call headcalc(ws%legacy_worker,ws%richards,call_history,ws%state_binding, &
-            request%evaluation,request%boundary,request%numerical,request%physical, &
+            request%evaluation,request%boundary,cold_config,request%physical, &
             request%step_duration,request%parameters,final_top)
        end if
        if(warm_allowed)then

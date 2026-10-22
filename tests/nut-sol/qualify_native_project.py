@@ -14,14 +14,21 @@ def main():
  ap.add_argument('--output',type=Path,required=True);ap.add_argument('--short-only',action='store_true')
  ap.add_argument('--optimization',choices=['O0','O2'],nargs='+',default=['O0','O2'])
  ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference')
- ap.add_argument('--water-conductivity',choices=['frozen','picard'],default='frozen')
+ ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
+ ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
+ ap.add_argument('--physical-limit',type=int)
+ ap.add_argument('--cases',choices=['single','annual1998','cross_year'],nargs='+')
  ap.add_argument('--grid',choices=['coarse','refined'],default='refined');a=ap.parse_args()
+ assert a.physical_limit is None or a.physical_limit>=8
+ assert a.cases is None or 'single'in a.cases
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  old=runpy.run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['capsule']()
  paths=['tests/nut-sol/qualify_native_project.py','tests/nut-sol/qualify_native_simple_crop.py','tools/solute/run_project.py','tools/solute/run_column.py',
         'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64',WEATHER+'998.gz',WEATHER+'999.gz']
  report=dict(status='RUNNING',inputs={p:sha((ROOT/p).read_bytes())for p in paths},events=[],bundles={},cases={},invalid_inputs=0,exact_single_files=0,fresh_restarts=0,original_exact_values=0)
  report.update(solute_transport=a.solute_transport,water_conductivity=a.water_conductivity,grid=a.grid,optimizations=a.optimization)
+ report['surface_exfiltration']=a.surface_exfiltration
+ report['physical_limit']=a.physical_limit
  def save():(out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
  def run(cmd,cwd,valid=True):
   t=time.perf_counter();r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,input=b'',timeout=1800);i=len(report['events'])
@@ -42,7 +49,7 @@ def main():
   original=folder/'original'
   run(column_meta['compiler_command']+['-'+opt,'-std=legacy','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace',
       '-ffpe-trap=invalid,zero,overflow','-J'+str(folder),folder/'original.f90',archives[0],'-o',original],folder)
-  for name in (['single']if a.short_only else ['single','annual1998','cross_year']):
+  for name in (['single']if a.short_only else (a.cases or ['single','annual1998','cross_year'])):
    case=folder/name;case.mkdir();(case/'Crop Data').mkdir();(case/'Weather Data').mkdir()
    swp=old['daily/'+opt+'/dry/input.swp'].decode();crp=old['daily/'+opt+'/dry/crop.crp'].decode()
    swp+='\nSWBOTB=2\nSW2=1\nSINAVE=0.\nSINAMP=0.\nSINMAX=1.\nPONDMX=1000.\nRSRO=.001\nRSROEXP=1.\nPATHATM=\'Weather Data\'\nPATHCROP=\'Crop Data\'\n'
@@ -71,10 +78,14 @@ def main():
    common=[sys.executable,ROOT/'tools/solute/run_project.py',source,'--bundle',bundle]
    if a.solute_transport!='reference':common+=['--solute-transport',a.solute_transport]
    if a.water_conductivity!='frozen':common+=['--water-conductivity',a.water_conductivity]
+   if a.surface_exfiltration!='reject':common+=['--surface-exfiltration',a.surface_exfiltration]
+   simulated_days=min(days,a.physical_limit)if a.physical_limit is not None else days
+   if simulated_days<days:split=min(split,simulated_days//2)
    for target,extra in [('full',[]),('split',['--stop-after',str(split)]),('resumed',['--restart',case/'split'])]:
+    if a.physical_limit is not None and target!='split':extra+=['--stop-after',str(simulated_days)]
     run(common+['--output',case/target]+extra,case)
    for f in ['state.csv','endpoint.csv','restart.bin']:assert (case/'full'/f).read_bytes()==(case/'resumed'/f).read_bytes()
-   budget=rows(case/'full/budget.csv');assert len(budget)==days and rows(case/'resumed/budget.csv')==budget[split:]
+   budget=rows(case/'full/budget.csv');assert len(budget)==simulated_days and rows(case/'resumed/budget.csv')==budget[split:]
    info=audit(case/'full/input.nml');assert info['days']==days
    # Complete original fixed.f90 and original ETpot, not a translated formula.
    oracle_case=case/'oracle';oracle_case.mkdir();document=(case/'full/input.nml').read_text()
@@ -108,9 +119,9 @@ def main():
     assert info['periods']==(2 if name=='annual1998' else 3)
     assert max(info['profile_index'])==info['periods']
     assert all(any(float(r['active'])==1 for r in p['plan'])for p in info['prepared_periods'])
-    assert sum(d['runoff_cm']for d in budget)>0
+    if simulated_days==days:assert sum(d['runoff_cm']for d in budget)>0
     assert sum(d['solute_out_mg_cm2']for d in budget)>0
-   report['cases'][opt+'-'+name]=dict(days=days,budget=budget,rain_cm=rain,profiles=info['profile_index'],
+   report['cases'][opt+'-'+name]=dict(days=simulated_days,declared_days=days,full_period_simulated=simulated_days==days,budget=budget,rain_cm=rain,profiles=info['profile_index'],
     restart_sha256=sha((case/'full/restart.bin').read_bytes()),historical_weather=name!='single',original_Andelst_model=False)
    report['fresh_restarts']+=1;save()
   # Reject activated unsupported physics and input changes without publishing output.
@@ -126,6 +137,7 @@ def main():
   run([sys.executable,ROOT/'tools/solute/run_project.py',base/'Project.SWP','--bundle',bundle,'--output',target,'--restart',base/'split'],base,False)
   assert not target.exists();report['invalid_inputs']+=1
  report['status']=('NATIVE_PROJECT_SHORT_PASS'if a.short_only else'NATIVE_PROJECT_HISTORICAL_WEATHER_ANNUAL_PASS')+'_'+a.solute_transport.upper()
+ if a.physical_limit is not None:report['status']='NATIVE_PROJECT_BOUNDED_PREFIX_'+str(a.physical_limit)+'_DAYS_PASS'
  report['optimizations']=a.optimization
  save();print(json.dumps({k:v for k,v in report.items()if k not in ['events','cases','inputs','bundles']}))
 if __name__=='__main__':main()

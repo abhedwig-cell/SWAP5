@@ -40,6 +40,7 @@ program swap5_native_project_column
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
   integer :: solute_transport_scheme=0
   logical :: picard_conductivity_iteration=.false.
+  logical :: continuous_mvg=.false.
   integer(int64) :: revision
   real(real64) :: initial_head=-75d0,initial_pond_cm=0d0,initial_pond_mass_mg_cm2=0d0
   real(real64) :: concentration_mg_cm3(MAX_NODES)=0d0
@@ -115,7 +116,7 @@ program swap5_native_project_column
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
-    picard_conductivity_iteration
+    picard_conductivity_iteration,continuous_mvg
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -274,6 +275,8 @@ program swap5_native_project_column
   root_parameters=root_water_uptake_parameters_t(numnod,hlim3l,hlim3h,hlim4,adcrl,adcrh, &
     empirical_oxygen_enabled,upper_layer_bottom_node,hlim1,hlim2u,hlim2l)
   p%parameter_set_id=670001_int64;p%active_nodes=numnod
+  call require(.not.continuous_mvg.or.picard_conductivity_iteration,'continuous MvG requires explicit Picard route')
+  if(continuous_mvg)p%parameter_set_id=670002_int64
   p%z=z;p%dz=dz;p%node_distance=disnod(1:numnod)
   allocate(p%cofgen(24,numnod));p%cofgen=0d0
   p%cofgen(1,:)=theta_r;p%cofgen(2,:)=theta_s;p%cofgen(3,:)=ksat_cm_day
@@ -290,6 +293,10 @@ program swap5_native_project_column
   if(swp_water_bootstrap)initial%pressure_head=swp_heads
   allocate(initial%water_content(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
   call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+  if(continuous_mvg)then
+    hp%continuous_saturation_conductivity=.true.
+    p%prepared_default_mvg=hp;p%prepared_default_mvg_available=.true.
+  end if
   call bind_b110_default_mvg_provider(provider,hp,ends_day(1))
   call provider%evaluate(initial%pressure_head,initial%water_content,conductivity,capacity,dkdh)
   initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0

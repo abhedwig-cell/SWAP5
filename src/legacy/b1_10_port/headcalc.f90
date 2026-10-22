@@ -686,6 +686,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
  1    continue
 
+      if (present(numerical_config)) then
+         if (numerical_config%abort_failed_line_search .and. consistent_provider_conductivity .and. &
+             provider_dynamic_top_active .and. .not. provider_macropore_active .and. swbotb == 7 .and. swkmean == 1) then
+            ! No line-search candidate improved the residual or met the
+            ! compartment gate. End this phase through the original corner
+            ! restart / immutable-origin retry path below, never accept it.
+            if (itry > MaxBackTr .and. sump >= sumold .and. Fmax >= CritDevBalCp) exit
+         end if
+      end if
+
 !     check on convergence of solution
 
 !     initialize flags

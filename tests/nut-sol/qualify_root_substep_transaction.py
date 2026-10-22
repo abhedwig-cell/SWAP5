@@ -6,11 +6,14 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  ap=argparse.ArgumentParser()
  for opt in ['O0','O2']:ap.add_argument('--column-'+opt,type=Path,required=True)
- ap.add_argument('--output',type=Path,required=True);ap.add_argument('--picard',action='store_true');args=ap.parse_args()
+ ap.add_argument('--output',type=Path,required=True);ap.add_argument('--picard',action='store_true')
+ ap.add_argument('--continuous-mvg',action='store_true');args=ap.parse_args()
+ assert not args.continuous_mvg or args.picard
  out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
  inputs=['tests/nut-sol/test_root_substep_transaction.f90','tests/nut-sol/qualify_root_substep_transaction.py']
  report={'status':'RUNNING','inputs':{p:sha(ROOT/p) for p in inputs},'builds':{},'events':[],'cases':{}}
  report['picard']=args.picard
+ report['continuous_mvg']=args.continuous_mvg
  source=(ROOT/inputs[0]).read_text()
  if args.picard:
   source=source.replace('p%max_iterations=8','p%max_iterations=64;p%picard_conductivity_iteration=.true.')
@@ -28,6 +31,26 @@ def main():
  call compare_water(water,base)
  call write_matrix_joint_restart_file('policy-rejected.bin',column,template,p%parameter_set_id,water,chemical,s,allow_surface_mass=.true.)
  call check(s==JOINT_OK,'rejected policy snapshot')
+ '''+restore+'\n'
+  source=source.replace(anchor,anchor+checks)
+ if args.continuous_mvg:
+  anchor=' call initialize_b110_default_mvg_parameters(hp,p%cofgen)'
+  assert source.count(anchor)==1
+  source=source.replace(anchor,anchor+'''
+ hp%continuous_saturation_conductivity=.true.
+ p%prepared_default_mvg=hp;p%prepared_default_mvg_available=.true.
+''')
+  anchor=' invalid=supply;invalid%rain_c=-1d0'
+  checks=''
+  for setup,restore in [('p%picard_conductivity_iteration=.false.','p%picard_conductivity_iteration=.true.'),
+   ('p%prepared_default_mvg_available=.false.','p%prepared_default_mvg_available=.true.'),
+   ('p%prepared_default_mvg%cofgen(3,1)=2*p%cofgen(3,1)','p%prepared_default_mvg%cofgen(3,1)=p%cofgen(3,1)')]:
+   checks+='\n '+setup+'''
+ call run_pond_joint_interval(backend,column,template,p,water,forcing,config,chemical,supply,0d0,.2d0,result)
+ call check(result%status/=JOINT_OK,'unsupported prepared continuous curve rejects')
+ call compare_water(water,base)
+ call write_matrix_joint_restart_file('curve-rejected.bin',column,template,p%parameter_set_id,water,chemical,s,allow_surface_mass=.true.)
+ call check(s==JOINT_OK,'rejected continuous curve snapshot')
  '''+restore+'\n'
   source=source.replace(anchor,anchor+checks)
  def save():(out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
@@ -63,6 +86,7 @@ def main():
   assert (case/'retry.bin').read_bytes()==(case/'again.bin').read_bytes()
   assert (case/'original.bin').read_bytes()==(case/'invalid.bin').read_bytes()
   if args.picard:assert (case/'original.bin').read_bytes()==(case/'policy-rejected.bin').read_bytes()
+  if args.continuous_mvg:assert (case/'original.bin').read_bytes()==(case/'curve-rejected.bin').read_bytes()
   assert (case/'absent.bin').read_bytes()==(case/'absent-fresh.bin').read_bytes()
   report['cases'][opt]={'original_rejected_sha256':sha(case/'original.bin'),'retry_fresh_sha256':sha(case/'retry.bin'),'reused_provider_objects':len(objects),'reused_artifact_sha256':identities}
  report['status']=('PICARD_'if args.picard else'')+'ROOT_SUBSTEP_REAL_TRACE_REJECT_RETRY_ABA_O0_O2_PASS';save();print(json.dumps({'status':report['status'],'provider_objects':len(objects)}))

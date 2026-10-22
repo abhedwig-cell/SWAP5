@@ -335,6 +335,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swsophy = 0
     logical :: picard_conductivity_iteration = .false.
     logical :: weather_trial_warm_start = .false.
+    logical :: weather_line_search_retry = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -823,6 +824,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     logical :: weather_trial_warm_start = .false.
+    logical :: weather_line_search_retry = .false.
     integer :: max_iterations = 8
     logical :: picard_conductivity_iteration = .false.
     integer :: max_backtracking = 4
@@ -3140,6 +3142,12 @@ contains
              .not. allocated(parameters%bartholomeus) .and. .not. allocated(parameters%micro_de_willigen) .and. &
              parameters%root_compensation%method == ROOT_COMP_OFF
       end if
+      if (parameters%prepared_default_mvg%continuous_saturation_conductivity) then
+        ! A prepared continuous curve has an explicit bounded owner. Weather
+        ! uses its own private selection; native bottom2 selects Picard only.
+        ok = ok .and. parameters%prepared_default_mvg_available .and. &
+             prepared_default_mvg_compatible(parameters) .and. parameters%picard_conductivity_iteration
+      end if
       if (ok) ok = size(parameters%z) == parameters%active_nodes .and. &
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
@@ -3514,6 +3522,10 @@ contains
           end if
         end if
         self%owned_hydraulic_parameters%continuous_saturation_conductivity=self%weather_surface_active
+        if (parameters%prepared_default_mvg_available) &
+          self%owned_hydraulic_parameters%continuous_saturation_conductivity = &
+            self%owned_hydraulic_parameters%continuous_saturation_conductivity.or. &
+            parameters%prepared_default_mvg%continuous_saturation_conductivity
         self%hydraulic_parameters => self%owned_hydraulic_parameters
       end if
       self%hysteresis_active = parameters%hysteresis_active
@@ -3556,6 +3568,7 @@ contains
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
       self%weather_trial_warm_start = parameters%weather_trial_warm_start
+      self%weather_line_search_retry = parameters%weather_line_search_retry
       self%max_backtracking = parameters%max_backtracking
       self%min_step_duration = parameters%min_step_duration
       self%practical_richards_a2c_active = parameters%practical_richards_a2c_active
@@ -4638,6 +4651,7 @@ contains
     end if
     request%numerical%consistent_provider_conductivity=self%weather_surface_active
     request%numerical%reuse_trial_head=self%weather_surface_active.and.self%weather_trial_warm_start
+    request%numerical%abort_failed_line_search=self%weather_surface_active.and.self%weather_line_search_retry
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
@@ -6308,6 +6322,12 @@ contains
         value=fmr_weather_surface_temporal_error(self,full_state,half_state)
         return
       end if
+      if(self%picard_conductivity_iteration.and.associated(self%hydraulic_parameters))then
+        if(self%hydraulic_parameters%continuous_saturation_conductivity)then
+          value=fmr_weather_surface_temporal_error(self,full_state,half_state)
+          return
+        end if
+      end if
       value=fmr_pond_input_temporal_error(full_state,half_state)
       return
     end if
@@ -6467,7 +6487,7 @@ contains
         value=max(head_error,storage_error,abs(full%ponding_depth-half%ponding_depth), &
           abs(full%groundwater_level-half%groundwater_level))
         ! Free bottom and interior Darcy exchanges, in cm over this whole trial.
-        value=max(value,dt*abs(kf(n)-kh(n)))
+        if(self%bottom_mode==7)value=max(value,dt*abs(kf(n)-kh(n)))
         do i=2,n
           d=self%soil_parameters%node_distance(i)
           qf=.5_real64*(kf(i-1)+kf(i))*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)

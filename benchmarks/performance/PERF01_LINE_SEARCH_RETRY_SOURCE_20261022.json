@@ -1,0 +1,255 @@
+{
+  "status": "CURRENT_TYPED_OPTION_SCIENCE_SOURCE_FSI35_AND_PAIRED_NATIVE_PASS",
+  "candidate": "11cc066500df8041fece5d9eeb1634332882b013",
+  "source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+  "postimages": {
+    "integration/performance/verify_weather_composed_successor.py": "4c715c37e226ef4f441f92ef36d1059f30683b8caf97422025f372dc560d3ec4",
+    "integration/performance/verify_weather_line_search_successor.py": "84d355bdb2ae05996e17dd0cae78b421452febcc21bf5d9f1a5199cdc4e8f26f",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "c2ab4aba640a867f9817ecd783b378e618135eaa751a94fe6a44b061a4e83448",
+    "src/legacy/b1_10_port/headcalc.f90": "21e56c483263557449cecf6019a36eb9f60b904fd44a7fb65f3621c34b3859ea",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "18aa4ebc23b9821724c360549c99dafd4fdeb60c360ac889f72346ec3d7a0d86",
+    "src/solver/mod_soil_water_solver_contract.f90": "19466d764e17cf1bfad84011a83d0bf49c170ca0f09055e83158571351a3e996"
+  },
+  "physical_evidence": {
+    "path": "benchmarks/performance/PERF01_LINE_SEARCH_COMPOSITION_20261022_EVIDENCE.tar.xz",
+    "sha256": "bcf446368a5cc8a1cfe41deac4718bc3f66f05712abe05972a17446c2fd16f3d",
+    "members": 25836,
+    "bytes": 4520156
+  },
+  "native_fsi35_seconds": 36.92145067600359,
+  "source_controls": 15,
+  "frozen_controls": 34,
+  "actual_typed_paired_cases": {
+    "4": {
+      "differences": {
+        "storage_mm": {
+          "max_daily_abs": 6.828501945221888e-05,
+          "end_difference": 0.0
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 4.7652537732423284e-07,
+          "end_difference": 0.0,
+          "total_difference": 5.958868551871002e-07,
+          "max_cumulative_abs": 5.959041521445829e-07
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.00016253765009821564,
+          "end_difference": 0.0,
+          "total_difference": -0.00012447306859386664,
+          "max_cumulative_abs": 0.00016051188696608598
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.00011966197538876289,
+          "end_difference": 0.0,
+          "total_difference": 0.0001244730685717488,
+          "max_cumulative_abs": 0.0001244730685717488
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.0006910654984721987,
+        "max_theta": 6.602173383551957e-07
+      },
+      "arms": {
+        "baseline": {
+          "cpu_seconds": [
+            8.596678,
+            8.22794,
+            9.19421
+          ],
+          "median_cpu_seconds": 8.596678,
+          "work": {
+            "accepted": 18135,
+            "headcalc_calls": 138057,
+            "temporal_rejections": 22752
+          },
+          "observed_work": {
+            "jacobians": 673078,
+            "backtracks": 1773872,
+            "solver_rejections": 12371
+          },
+          "observed_day84": [
+            84,
+            111639,
+            558785,
+            4823
+          ],
+          "max_gross_daily_closure_mm": 2.0039525594484076e-13,
+          "day84_core_cpu_seconds": [
+            1.3182739999999997,
+            1.310593,
+            1.3528860000000007
+          ]
+        },
+        "candidate": {
+          "cpu_seconds": [
+            5.842517,
+            5.603282,
+            5.386309
+          ],
+          "median_cpu_seconds": 5.603282,
+          "work": {
+            "accepted": 18160,
+            "headcalc_calls": 138848,
+            "temporal_rejections": 22753
+          },
+          "observed_work": {
+            "jacobians": 537794,
+            "backtracks": 792638,
+            "solver_rejections": 13179
+          },
+          "observed_day84": [
+            84,
+            55336,
+            140958,
+            5190
+          ],
+          "max_gross_daily_closure_mm": 2.0039525594484076e-13,
+          "day84_core_cpu_seconds": [
+            0.5592110000000003,
+            0.45029500000000056,
+            0.4113849999999992
+          ]
+        }
+      },
+      "candidate_over_baseline_cpu": 0.6517961938320825
+    },
+    "1": {
+      "differences": {
+        "storage_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "transpiration_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "soil_evaporation_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "bottom_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "runoff_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "stress_deficit_mm": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0,
+          "total_difference": 0.0,
+          "max_cumulative_abs": 0.0
+        },
+        "biomass": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "lai": {
+          "max_daily_abs": 0.0,
+          "end_difference": 0.0
+        },
+        "max_head_cm": 0.0,
+        "max_theta": 0.0
+      },
+      "arms": {
+        "baseline": {
+          "cpu_seconds": [
+            2.553495,
+            2.59961,
+            2.76211
+          ],
+          "median_cpu_seconds": 2.59961,
+          "work": {
+            "accepted": 11202,
+            "headcalc_calls": 58321,
+            "temporal_rejections": 8048
+          },
+          "observed_work": {
+            "jacobians": 185167,
+            "backtracks": 227364,
+            "solver_rejections": 423
+          },
+          "observed_day84": [
+            84,
+            4685,
+            9684,
+            54
+          ],
+          "max_gross_daily_closure_mm": 5.986877660291157e-14,
+          "day84_core_cpu_seconds": [
+            0.0625,
+            0.06392500000000023,
+            0.06439800000000018
+          ]
+        },
+        "candidate": {
+          "cpu_seconds": [
+            2.5028509999999997,
+            2.333917,
+            2.52232
+          ],
+          "median_cpu_seconds": 2.5028509999999997,
+          "work": {
+            "accepted": 11202,
+            "headcalc_calls": 58321,
+            "temporal_rejections": 8048
+          },
+          "observed_work": {
+            "jacobians": 179829,
+            "backtracks": 184660,
+            "solver_rejections": 423
+          },
+          "observed_day84": [
+            84,
+            4074,
+            4796,
+            54
+          ],
+          "max_gross_daily_closure_mm": 5.986877660291157e-14,
+          "day84_core_cpu_seconds": [
+            0.0651189999999997,
+            0.04891100000000037,
+            0.04622100000000007
+          ]
+        }
+      },
+      "candidate_over_baseline_cpu": 0.9627794169125367
+    }
+  },
+  "warm_start_default": false,
+  "line_search_retry_default": false,
+  "canonically_admitted": false,
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_SOURCE_20261022.tar.xz",
+    "sha256": "63a0913b5205e5d810bbb7eb52003b9347f14c41b8689bc4b84ae61515db0a64",
+    "bytes": 594424,
+    "members": 1167
+  }
+}

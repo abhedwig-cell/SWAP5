@@ -15,6 +15,9 @@ def main():
  ap.add_argument('--historical-zero-solute-exfiltration',action='store_true')
  ap.add_argument('--production-historical-zero',action='store_true')
  ap.add_argument('--saturation-temporal-probe',action='store_true')
+ ap.add_argument('--continuous-mvg-probe',action='store_true')
+ ap.add_argument('--production-continuous-mvg',action='store_true')
+ ap.add_argument('--curve-only-probe',action='store_true')
  ap.add_argument('--temporal-tolerance',type=float)
  ap.add_argument('--expect',choices=['success','reject','diagnostic'],default='reject');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -41,6 +44,18 @@ def main():
       write(*,*)'max temporal/mass:',result%diagnostics%max_temporal_indicator, &
         result%diagnostics%max_abs_step_mass_residual
 """)
+ if a.production_continuous_mvg:
+  assert a.production_picard and not a.continuous_mvg_probe
+  # A labelled physical-state counterfactual: decode the old validated state
+  # first, then select the real prepared-curve interface. Public restarts do
+  # not get this conversion; the native application's new mode has ID670002.
+  anchor="  call require(first<=stop_after,'no requested windows remain')"
+  assert source.count(anchor)==1
+  source=source.replace(anchor,"""  call initialize_b110_default_mvg_parameters(p%prepared_default_mvg,p%cofgen)
+  p%prepared_default_mvg%continuous_saturation_conductivity=.true.
+  p%prepared_default_mvg_available=.true.
+  print *, 'PRODUCTION_CONTINUOUS_MVG_COUNTERFACTUAL'
+"""+anchor)
  bundle=json.loads((a.bundle/'bundle.json').read_text())
  build=json.loads((Path(bundle['exe']).parent/'build-complete.json').read_text())
  assert all(sha((ROOT/p).read_bytes())==h for p,h in build['input_sha256'].items())
@@ -53,31 +68,62 @@ def main():
   for stream in ['stdout','stderr']:(out/f'{i:04d}.{stream}').write_bytes(getattr(r,stream))
   events.append(dict(command=list(map(str,cmd)),seconds=time.perf_counter()-start,returncode=r.returncode));return r
  flags=[f for f in build['flags']if not f.startswith('-J')]+['-J'+str(out)]
+ curve_only_provider_sha256=None
+ if a.curve_only_probe:
+  assert a.production_picard and not a.production_continuous_mvg and not a.continuous_mvg_probe
+  path='src/solver/mod_b110_default_mvg_provider.f90';provider=(ROOT/path).read_text()
+  needle='    continuous=.false.\n    if(present(continuous_saturation))continuous=continuous_saturation'
+  assert provider.count(needle)==1
+  provider=provider.replace(needle,'    continuous=.true. ! Test-only K curve; storage-increment policy remains default.')
+  curve_only_provider_sha256=sha(provider.encode());(out/'curve_only.f90').write_text(provider)
+  old_object=[e['command'][-1]for e in build['source_build']['events']if e['category']=='compile'and e['command'][-3]==str(ROOT/path)]
+  assert len(old_object)==1;objects=[p for p in objects if p!=old_object[0]]
+  assert run(build['compiler_command']+flags+['-c',out/'curve_only.f90','-o',out/'curve_only.o']).returncode==0
+  objects+=[str(out/'curve_only.o')]
+  anchor="  call require(first<=stop_after,'no requested windows remain')"
+  assert source.count(anchor)==1
+  source=source.replace(anchor,"""  call require(.not.hp%continuous_saturation_conductivity,'storage policy must remain old')
+  call evaluate_b110_default_mvg_conductivity(hp,1,-.005d0,conductivity(1),ok)
+  call require(ok.and.conductivity(1)<hp%cofgen(3,1),'copied curve must actually execute')
+  print *, 'CURVE_ONLY_PROBE',conductivity(1)
+"""+anchor)
+  (out/'driver.f90').write_text(source)
  saturation_temporal_provider_sha256=None
- if a.saturation_temporal_probe:
+ continuous_mvg_provider_sha256=None
+ if a.saturation_temporal_probe or a.continuous_mvg_probe:
   # Research only: use the admitted weather metric's unsaturated-head,
   # integrated-storage and Darcy-exchange terms on this fixed-flux-bottom
   # fixture. Fixed prescribed bottom flux has exactly zero sibling error.
   assert a.production_picard and not a.temporal_components
   path='src/runtime/mod_fmr_serialized_reference_backend.f90'
   provider=(ROOT/path).read_text()
-  needle='value=fmr_pond_input_temporal_error(full_state,half_state)'
-  assert provider.count(needle)==1
-  provider=provider.replace(needle,'value=fmr_weather_surface_temporal_error(self,full_state,half_state)')
-  needle='value=max(value,dt*abs(kf(n)-kh(n)))'
-  assert provider.count(needle)==1
-  provider=provider.replace(needle,'if(self%bottom_mode==7)value=max(value,dt*abs(kf(n)-kh(n)))')
-  needle='    logical :: same\n    if(allocated(self%pond_input))then'
-  assert provider.count(needle)==1
-  provider=provider.replace(needle,'    logical :: same\n    integer,save::saturation_probe_calls=0\n    if(allocated(self%pond_input))then')
-  needle='value=fmr_weather_surface_temporal_error(self,full_state,half_state)'
-  # Instrument both dispatches; the first few calls must prove the selected
-  # diagnostic provider actually owns the executed estimator.
-  provider=provider.replace(needle,needle+'''
+  if a.saturation_temporal_probe:
+   needle='value=fmr_pond_input_temporal_error(full_state,half_state)'
+   assert provider.count(needle)==1
+   provider=provider.replace(needle,'value=fmr_weather_surface_temporal_error(self,full_state,half_state)')
+   needle='value=max(value,dt*abs(kf(n)-kh(n)))'
+   assert provider.count(needle)==1
+   provider=provider.replace(needle,'if(self%bottom_mode==7)value=max(value,dt*abs(kf(n)-kh(n)))')
+   needle='    logical :: same\n    if(allocated(self%pond_input))then'
+   assert provider.count(needle)==1
+   provider=provider.replace(needle,'    logical :: same\n    integer,save::saturation_probe_calls=0\n    if(allocated(self%pond_input))then')
+   needle='value=fmr_weather_surface_temporal_error(self,full_state,half_state)'
+   provider=provider.replace(needle,needle+'''
         saturation_probe_calls=saturation_probe_calls+1
         if(saturation_probe_calls<=3)print *, 'SATURATION_METRIC_PROBE',saturation_probe_calls,value
 ''')
-  saturation_temporal_provider_sha256=sha(provider.encode())
+  if a.continuous_mvg_probe:
+   needle='.not.self%weather_surface_active.and.self%trusted_prepared_default_mvg'
+   assert provider.count(needle)==1
+   provider=provider.replace(needle,'.not.self%weather_surface_active.and..not.parameters%picard_conductivity_iteration.and.self%trusted_prepared_default_mvg')
+   needle='self%owned_hydraulic_parameters%continuous_saturation_conductivity=self%weather_surface_active'
+   assert provider.count(needle)==1
+   provider=provider.replace(needle,needle+'.or.parameters%picard_conductivity_iteration'+'''
+        if(parameters%picard_conductivity_iteration)print *, 'CONTINUOUS_MVG_PROBE', &
+          self%owned_hydraulic_parameters%continuous_saturation_conductivity
+''')
+   continuous_mvg_provider_sha256=sha(provider.encode())
+  if a.saturation_temporal_probe:saturation_temporal_provider_sha256=sha(provider.encode())
   (out/'saturation_temporal.f90').write_text(provider)
   old_object=[e['command'][-1]for e in build['source_build']['events']if e['category']=='compile'and e['command'][-3]==str(ROOT/path)]
   assert len(old_object)==1
@@ -201,6 +247,10 @@ end module''')
   text,count=re.subn(r'(?m)^ temporal_tolerance=.*$',f' temporal_tolerance={a.temporal_tolerance:.17e}',text)
   assert count==1;(out/'input.nml').write_text(text)
  r=run([exe,'input.nml','before.bin',str(a.day),'input.swp'])
+ if a.saturation_temporal_probe:assert b'SATURATION_METRIC_PROBE'in r.stdout
+ if a.continuous_mvg_probe:assert re.search(rb'CONTINUOUS_MVG_PROBE\s+T',r.stdout)
+ if a.production_continuous_mvg:assert b'PRODUCTION_CONTINUOUS_MVG_COUNTERFACTUAL'in r.stdout
+ if a.curve_only_probe:assert b'CURVE_ONLY_PROBE'in r.stdout
  rejection_kind=None
  if r.returncode!=0:
   if b'water progress:'in r.stdout:
@@ -226,6 +276,9 @@ end module''')
   historical_exfiltration_provider_sha256=historical_exfiltration_provider_sha256)
  report['production_historical_zero']=a.production_historical_zero
  report['saturation_temporal_provider_sha256']=saturation_temporal_provider_sha256
+ report['continuous_mvg_provider_sha256']=continuous_mvg_provider_sha256
+ report['production_continuous_mvg']=a.production_continuous_mvg
+ report['curve_only_provider_sha256']=curve_only_provider_sha256
  (out/'result.json').write_text(json.dumps(report,indent=2)+'\n');print(r.stdout.decode())
  if a.expect!='diagnostic':assert(r.returncode==0)==(a.expect=='success')
 if __name__=='__main__':main()

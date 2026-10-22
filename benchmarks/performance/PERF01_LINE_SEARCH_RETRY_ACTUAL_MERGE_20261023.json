@@ -1,0 +1,176 @@
+{
+  "qualified": true,
+  "status": "TRIAL_BEGINNING_ROOT_SUBSTEP_O0_O2_QUALIFIED",
+  "substep_stress_feedback": true,
+  "physical_cases": 16,
+  "daily_balance_observations": 128,
+  "fresh_restarts": 16,
+  "exact_default_files": 64,
+  "transaction": "O0_O2_EXACT_REJECT_RETRY_ABA_ABSENT",
+  "mode_restart_rejections": 2,
+  "frozen_daily_predecessor": {
+    "qualified": true,
+    "status": "NATIVE_DAILY_CROP_ROOT_JOINT_O0_O2_QUALIFIED",
+    "actual_daily_cases": 16,
+    "daily_balance_observations": 128,
+    "fresh_restarts": 16,
+    "invalid_inputs": 34,
+    "exact_fallow_artifacts": 6,
+    "root_chemical_reject_retry": "O0_O2_EXACT_BINARY_PASS",
+    "input_boundary_exact_artifacts": 64,
+    "full_historical_migration": false,
+    "substep_stress_feedback": false
+  },
+  "current_preparation": {
+    "qualified": true,
+    "status": "NATIVE_SIMPLE_CROP_PREPARATION_O0_O2_QUALIFIED",
+    "original_exact_values": 576,
+    "native_cases": 8,
+    "invalid_inputs": 22,
+    "coupled_actual_root_uptake": false,
+    "full_historical_migration": false
+  },
+  "frozen_original_physics": {
+    "qualified": true,
+    "status": "FALLOW_ETREF_O0_O2_MASS_RESTART_QUALIFIED",
+    "native_cases": 8,
+    "fresh_restarts": 8,
+    "original_etpot_checks": 40,
+    "old_exact_artifacts": 152,
+    "concurrent_nut_exact_files": 24,
+    "concurrent_nut_preserved": true,
+    "full_historical_migration": false
+  },
+  "current_concurrent_nut": {
+    "status": "THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS",
+    "qualified": true,
+    "invalids_per_opt": 17,
+    "crash_boundaries": 4,
+    "old_cold_exact": true,
+    "full_mc_nut01_closed": false
+  },
+  "current_calendar_nut": {
+    "qualified": true,
+    "status": "NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED",
+    "actual_processes": 8,
+    "rejected_day_trials": 80,
+    "replay_trials": 8,
+    "simultaneous_gifts": true,
+    "report_schedules": 2,
+    "cold_exact": true,
+    "full_mc_nut01_closed": false
+  },
+  "full_historical_migration": false,
+  "controls": 36,
+  "current_source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+  "weather_successor": {
+    "status": "CURRENT_ROOT_CALENDAR_WEATHER_NATIVE_PASS_OWNER_ADMISSION_PENDING",
+    "native_processes": {
+      "incumbent-final": 86,
+      "chemistry": 172,
+      "water": 110,
+      "daily-proof": 72,
+      "etref-final": 44,
+      "crop-joint-final": 86,
+      "crop-transaction": 4,
+      "trace": 4
+    },
+    "current_root_feedback": {
+      "qualified": true,
+      "physical_cases": 16,
+      "daily_balance_observations": 128,
+      "fresh_restarts": 16
+    },
+    "current_calendar_output": {
+      "qualified": true,
+      "status": "NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED",
+      "actual_processes": 8,
+      "rejected_day_trials": 80,
+      "replay_trials": 8,
+      "simultaneous_gifts": true,
+      "report_schedules": 2,
+      "cold_exact": true,
+      "full_mc_nut01_closed": false
+    },
+    "current_active_warm_97day_seasons": 4,
+    "exact_predecessor_files": 306,
+    "max_gross_daily_closure_mm": {
+      "season-O0-4x": 1.9328982858723975e-13,
+      "season-O2-4x": 1.9328982858723975e-13,
+      "season-O2-1x": 5.6094018319186034e-14,
+      "restart-native": 1.9328982858723975e-13
+    },
+    "canonically_admitted": false
+  },
+  "current_harvest_output": {
+    "qualified": true,
+    "status": "HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED",
+    "actual_programs": 14,
+    "phase_roundtrips": 6,
+    "fresh_phase_progressions": 4,
+    "diagnostics_unchanged": true,
+    "incumbent_physics_unchanged": true,
+    "full_harvest_day_reporting": false,
+    "full_mc_nut01_closed": false
+  },
+  "current_saved_output": {
+    "qualified": true,
+    "status": "SAVED_HARVEST_FALLOW_OUTPUT_O0_O2_QUALIFIED",
+    "literal_checks_per_optimization": 6808,
+    "literal_reports_per_optimization": 234,
+    "independent_phase_roundtrips": 12,
+    "independent_phase_fallow_progressions": 12,
+    "fresh_fallow_progressions": 4,
+    "invalid_generations": 36,
+    "invalid_live_generations": 36,
+    "identity_rejections": 4,
+    "process_crashes": 4,
+    "incumbent_physics_unchanged": true,
+    "full_mc_nut01_closed": false
+  },
+  "frozen_latest_owner": "0be6037b /18 controls",
+  "source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+  "qualification_scope": "BOUNDED_TYPED_WEATHER_LINE_SEARCH_AND_CURRENT_DEFAULT_PRESERVATION",
+  "canonically_admitted": false,
+  "fsi35_native": "PASS",
+  "line_search_retry": {
+    "status": "CURRENT_LINE_SEARCH_NATIVE_PASS_OWNER_ADMISSION_PENDING",
+    "native_processes": {
+      "incumbent-final": 86,
+      "chemistry": 172,
+      "water": 110,
+      "daily-proof": 72,
+      "etref-final": 44,
+      "crop-joint-final": 86,
+      "crop-transaction": 4,
+      "trace": 4
+    },
+    "current_root_feedback": {
+      "qualified": true,
+      "physical_cases": 16,
+      "daily_balance_observations": 128,
+      "fresh_restarts": 16
+    },
+    "current_calendar_output": {
+      "qualified": true,
+      "status": "NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED",
+      "actual_processes": 8,
+      "rejected_day_trials": 80,
+      "replay_trials": 8,
+      "simultaneous_gifts": true,
+      "report_schedules": 2,
+      "cold_exact": true,
+      "full_mc_nut01_closed": false
+    },
+    "current_active_warm_97day_seasons": 4,
+    "exact_predecessor_files": 306,
+    "max_gross_daily_closure_mm": {
+      "season-O0-4x": 1.9328982858723975e-13,
+      "season-O2-4x": 1.9328982858723975e-13,
+      "season-O2-1x": 5.6094018319186034e-14,
+      "restart-native": 1.9328982858723975e-13
+    },
+    "canonically_admitted": false
+  },
+  "default_on": false
+}

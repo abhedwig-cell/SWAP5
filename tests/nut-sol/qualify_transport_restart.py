@@ -8,7 +8,7 @@ def main():
  ap=argparse.ArgumentParser()
  for opt in ['O0','O2']:ap.add_argument('--bundle-'+opt,type=Path,required=True)
  ap.add_argument('--single-fixture',type=Path,required=True);ap.add_argument('--output',type=Path,required=True)
- ap.add_argument('--water-conductivity',choices=['frozen','picard'],default='frozen')
+ ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  report=dict(status='RUNNING',inputs={p:sha(ROOT/p)for p in ['tests/nut-sol/qualify_transport_restart.py','tools/solute/run_project.py',
@@ -16,6 +16,7 @@ def main():
  report['water_conductivity']=a.water_conductivity
  report['surface_exfiltration']=a.surface_exfiltration
  report['surface_mode_rejections']=0
+ report['curve_mode_rejections']=0
  def save():(out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
  def run(cmd,cwd,valid=True):
   start=time.perf_counter();r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,input=b'',timeout=120);i=len(report['events'])
@@ -56,12 +57,27 @@ def main():
    assert b'restart rejected'in r.stdout and not(stage/'budget.csv').exists()and not(stage/'restart.bin').exists()
    assert sha(stage/'before.bin')==before;report['invalids']+=1
   report['cases'][opt]=dict(days=8,modes=['reference','implicit_upwind'],water_root_fields_exact=True);save()
-  if a.water_conductivity=='picard':
+  if a.water_conductivity in ['picard','picard_continuous']:
    target=folder/'forbidden-water-public'
    frozen=[x for x in base]
-   frozen[frozen.index('picard')]='frozen'
+   frozen[frozen.index(a.water_conductivity)]='frozen'
    run(frozen+['--solute-transport','implicit_upwind','--restart',folder/'implicit_upwind-split','--output',target],folder,False)
    assert not target.exists()
+  if a.water_conductivity=='picard_continuous':
+   plain=list(base);plain[plain.index('picard_continuous')]='picard'
+   run(plain+['--solute-transport','implicit_upwind','--output',folder/'plain-full'],folder)
+   target=folder/'forbidden-curve-public'
+   cp=run(plain+['--solute-transport','implicit_upwind','--restart',folder/'implicit_upwind-split','--output',target],folder,False)
+   assert not target.exists() and b'restart input or executable identity mismatch'in cp.stderr
+   report['curve_mode_rejections']+=1
+   for name,input_dir,restart_dir in [('new-from-old','implicit_upwind-full','plain-full'),('old-from-new','plain-full','implicit_upwind-split')]:
+    stage=folder/('forbidden-curve-native-'+name);stage.mkdir()
+    for f in ['input.nml','input.swp']:(stage/f).write_bytes((folder/input_dir/f).read_bytes())
+    (stage/'before.bin').write_bytes((folder/restart_dir/'restart.bin').read_bytes());before=sha(stage/'before.bin')
+    cp=run([meta['exe'],'input.nml','before.bin','8','input.swp'],stage,False)
+    assert b'restart rejected'in cp.stdout and not(stage/'budget.csv').exists() and not(stage/'restart.bin').exists()
+    assert sha(stage/'before.bin')==before
+    report['curve_mode_rejections']+=1
   if a.surface_exfiltration=='historical_zero':
    # Public generations bind this boundary through their complete input.
    target=folder/'forbidden-surface-public'

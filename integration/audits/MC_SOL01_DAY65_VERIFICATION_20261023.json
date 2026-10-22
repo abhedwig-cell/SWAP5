@@ -1,0 +1,29 @@
+{
+  "status": "BOUNDED_COMPOSITE_RESEARCH_CHECKPOINT",
+  "day65_O0_O2_exact": true,
+  "day257_repaired": true,
+  "default_exact_files": 64,
+  "fresh_daily_restarts": 16,
+  "native_curve_mode_rejections": 6,
+  "coarse_days": [
+    365,
+    481
+  ],
+  "refined_prefix_days": 98,
+  "full_refined_year_qualified": false,
+  "full_historical_migration": false,
+  "canonically_admitted": false,
+  "decoded_sha256": "6bbe90ab5dc26770b910ed62b759b1f14f15e150536cdba560eab7ef99d45465",
+  "controls": [
+    "missing:proof/composite-day65-O2/budget.csv",
+    "missing:proof/composite-day257-O2/0001.stdout",
+    "missing:proof/composite-default-daily/O0/dry/daily/restart.bin",
+    "missing:proof/composite-restart/O2/implicit_upwind-resumed/restart.bin",
+    "missing:proof/composite-coarse/O2/cross_year/full/budget.csv",
+    "missing:proof/composite-nut-thermal/events.json",
+    "false:canonically_admitted",
+    "false:full_historical_migration",
+    "false:full_refined_year_qualified",
+    "foreign:src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ]
+}
