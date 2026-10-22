@@ -1,6 +1,7 @@
 # Native daily MET preparation for the solute column
 
-Status: locally qualified O0/O2 candidate, awaiting canonical admission. Baseline is
+Status: canonically admitted bounded route through PR1364, merge
+`48cb945235a86d7a793f9e73c393cb57c051dd0c`. Baseline is
 `46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6`.
 
 This additive file adapter reads original TTUTIL `TSTART`, `TEND`, `METFIL`
@@ -75,3 +76,21 @@ Use the existing column builder for the physical executable. Repeat the identica
 command with `--stop-after 1` for a partial generation, then `--restart` pointing
 to that generation for continuation into a fresh output directory. All options,
 original source bytes, reader executable and generator must match.
+
+## Canonical receipt,22 October2026
+
+PR1364 head `8488c810a6c7df397e3fbc50bd20857ebf87219a` passes all17
+selected PR workflows, including the native daily O0/O2 suite. Actual merge
+`48cb945235a86d7a793f9e73c393cb57c051dd0c` has the identical complete tree
+`11aa820c9b7d26808804f98373baa8d76ee01a00`. The owning source/evidence
+verification and all21 predecessor plus17 daily controls pass on the actual
+merge. Concurrent canonicald7c1accc changes only NUT documentation/coverage.
+The admitted initial scientific capsule and a separate hosted/actual-merge
+capsule retain raw observations and the original failed oracle link.
+
+Duplicate postmerge Actions were explicitly skipped for that identical complete
+qualified tree. Actual-merge source/evidence validation is a local check, not a
+new numerical replay. The final metadata receipt changes only this contract,
+the existing status and the raw hosted capsule; the original native execution
+inputs and all physical providers remain exact. Full historical migration,
+nonzero ETref partitioning and live crop/default orchestration remain open.

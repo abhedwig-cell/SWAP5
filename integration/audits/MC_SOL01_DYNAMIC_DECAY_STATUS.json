@@ -3351,7 +3351,7 @@
     "hosted_receipt": "integration/audits/MC_SOL01_SWP_WATER_HOSTED_20261021.json",
     "daily_meteo_successor": {
       "baseline": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
-      "status": "LOCAL_O0_O2_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_DAILY_MET",
       "implementation_status": "Bounded native TTUTIL daily rain-only fallow orchestration implemented; incumbent physical providers unchanged",
       "evidence": {
         "path": "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64",
@@ -3369,8 +3369,9 @@
         "integration/audits/verify_swp_daily.py": "69229e1ae726b79b05f29d71cca5d70fdec9360986d6a8da935904be3685154d",
         "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "6fb34b2cae0540ad5d79ce1ac73bc1b0814530d53a9f56093f7e1a9ebb30f862",
         "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "072f7c39134dc5121e8150d7a410d910578b0f33fce1c42097485e2dbaa1a840",
-        "docs/science/MC_SOL01_SWP_DAILY_CONTRACT.md": "ac5e50ce4ed699cc0cb1232c4a9eebb38efd61ea8d5bb8288ad80d984747de99",
-        ".github/workflows/mc-sol01-swp-reader.yml": "3d62b65629be45ca5e3cbb101603db7c426faccaa587882850edd7462820ac22"
+        "docs/science/MC_SOL01_SWP_DAILY_CONTRACT.md": "6624b0e7ab1725fb8d04577033e083b7979a785d39adbfc5aeb58970207ab294",
+        ".github/workflows/mc-sol01-swp-reader.yml": "3d62b65629be45ca5e3cbb101603db7c426faccaa587882850edd7462820ac22",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64": "64086ffa8f8ed3c4507e2e2e97c1331da19a1d8fa3c9609106c9493cb1bea30a"
       },
       "additive_science_delta": {
         "app/solute_column/read_swp_daily.f90": "A",
@@ -3381,7 +3382,8 @@
         "examples/solute_column/daily_fallow.met": "A",
         "integration/audits/verify_swp_daily.py": "A",
         "integration/audits/MC_SOL01_SWP_DAILY_REVIEW.md": "A",
-        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "A"
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_20261022.tar.xz.b64": "A",
+        "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64": "A"
       },
       "qualification": {
         "original_comparisons": 8,
@@ -3389,7 +3391,13 @@
         "native_column_runs": 8,
         "fresh_restarts": 2,
         "rejected_generations": 4,
-        "processes": 72
+        "processes": 72,
+        "source_evidence_owner": "PASS",
+        "actual_merge_controls": 38,
+        "hosted_workflows_success": 17,
+        "final_receipt_controls": 39,
+        "final_source_docs": "PASS",
+        "final_strict_docs": "PASS"
       },
       "test_selection": {
         "local": "Independent O0/O2 adapter builds, complete original loader and actual current column composition with hard mass/restart/output identity",
@@ -3401,8 +3409,168 @@
       },
       "full_historical_migration": false,
       "next_action": "Physical ETref partitioning and native crop-calendar/default orchestration; nonzero ETref remains rejected",
-      "recovery_point": "work/swp-daily-meteo-20261022; existing SOL status; final raw capsule and exact source/evidence validator",
-      "blockers": []
+      "recovery_point": "integration/f-ci-canonical; actual PR1364 merge48cb9452; existing SOL status daily_meteo_successor and exact source/evidence validator",
+      "blockers": [],
+      "canonical_merge": "48cb945235a86d7a793f9e73c393cb57c051dd0c",
+      "pr": 1364,
+      "admission": {
+        "candidate": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+        "qualified_full_tree": "11aa820c9b7d26808804f98373baa8d76ee01a00",
+        "canonical_merge": "48cb945235a86d7a793f9e73c393cb57c051dd0c",
+        "full_tree_exact": true,
+        "hosted_runs": [
+          {
+            "id": 39701626532,
+            "name": "F-MIG431-INT12-P0 qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626532"
+          },
+          {
+            "id": 39701626850,
+            "name": "F-GC42 live whole-window service",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626850"
+          },
+          {
+            "id": 39701626779,
+            "name": "SWAP431 crop CO2 response qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626779"
+          },
+          {
+            "id": 39701626676,
+            "name": "F-MIG431-INT12-D Gash qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626676"
+          },
+          {
+            "id": 39701626629,
+            "name": "F-MIG431-INT12-E detailed interception qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626629"
+          },
+          {
+            "id": 39701626645,
+            "name": "Documentation",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626645"
+          },
+          {
+            "id": 39701626663,
+            "name": "F-CI110 reconstructed performance admission",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626663"
+          },
+          {
+            "id": 39701626639,
+            "name": "F-CI canonical qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626639"
+          },
+          {
+            "id": 39701626792,
+            "name": "SWAP431 empirical root oxygen qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626792"
+          },
+          {
+            "id": 39701626765,
+            "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626765"
+          },
+          {
+            "id": 39701626591,
+            "name": "SWAP431 crop rootgrow DVS qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626591"
+          },
+          {
+            "id": 39701626951,
+            "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626951"
+          },
+          {
+            "id": 39701626736,
+            "name": "MC-SOL01 dynamic accepted temperature decay",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626736"
+          },
+          {
+            "id": 39701626685,
+            "name": "MC-SOL01 file-driven Reference column",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626685"
+          },
+          {
+            "id": 39701626862,
+            "name": "SWAP431 root constant LRV qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626862"
+          },
+          {
+            "id": 39701626722,
+            "name": "F-MIG431 LOW08-A qualification",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626722"
+          },
+          {
+            "id": 39701626812,
+            "name": "MC-SOL01 original SWP chemistry",
+            "head_sha": "8488c810a6c7df397e3fbc50bd20857ebf87219a",
+            "status": "completed",
+            "conclusion": "success",
+            "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/39701626812"
+          }
+        ],
+        "evidence": {
+          "path": "integration/audits/evidence/MC_SOL01_SWP_DAILY_HOSTED_20261022.tar.xz.b64",
+          "decoded_sha256": "3c2373e694d1afbf240bc953cf158bc08615e014beaccd654366b86d2a124031",
+          "members": 7,
+          "decoded_bytes": 62036,
+          "native_log_sha256": "b8ef521d683ace918473eb59053586453fe1c80354b2248b289927ae32fc6b6e"
+        },
+        "actual_merge_owner": "PASS",
+        "actual_merge_controls": {
+          "predecessor": 21,
+          "daily": 17
+        },
+        "postmerge_actions": "NOT_SELECTED_IDENTICAL_COMPLETE_QUALIFIED_TREE",
+        "new_postmerge_numerics": false
+      }
     }
   }
 }
