@@ -334,6 +334,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkmean = 1
     integer :: swsophy = 0
     logical :: weather_trial_warm_start = .false.
+    logical :: weather_line_search_retry = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -821,6 +822,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     logical :: weather_trial_warm_start = .false.
+    logical :: weather_line_search_retry = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -3528,6 +3530,7 @@ contains
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
       self%weather_trial_warm_start = parameters%weather_trial_warm_start
+      self%weather_line_search_retry = parameters%weather_line_search_retry
       self%max_backtracking = parameters%max_backtracking
       self%min_step_duration = parameters%min_step_duration
       self%practical_richards_a2c_active = parameters%practical_richards_a2c_active
@@ -4608,6 +4611,7 @@ contains
     end if
     request%numerical%consistent_provider_conductivity=self%weather_surface_active
     request%numerical%reuse_trial_head=self%weather_surface_active.and.self%weather_trial_warm_start
+    request%numerical%abort_failed_line_search=self%weather_surface_active.and.self%weather_line_search_retry
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl

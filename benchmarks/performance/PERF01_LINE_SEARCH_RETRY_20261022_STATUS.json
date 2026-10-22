@@ -1,0 +1,45 @@
+{
+  "workstream": "PERF01 / HY / TX",
+  "work_unit": "BOUNDED_WEATHER_LINE_SEARCH_RETRY",
+  "baseline": "17a6c17a478238e5fafc469aa275313bcdf2e184",
+  "recovery_branch": "work/perf01-newton-linefail-20261022",
+  "status": "IMPLEMENTED_DIRECT_O0_O2_PASS_SHARED_NATIVE_RUNNING",
+  "qualified": false,
+  "canonically_admitted": false,
+  "default_on": false,
+  "contract": "docs/science/PERF01_WEATHER_LINE_SEARCH_RETRY.md",
+  "research": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_STATUS.json",
+  "test_selection": {
+    "smallest_contract": "Real Reference solver OFF/ON and unsupported-route preservation; original cold/corner fallback and rejection ownership",
+    "smallest_expected_seconds": 30,
+    "affected_admission": "Current numerical type, HeadCalc, typed adapter and backend; rebuild affected production closures and execute original physical/source owners",
+    "shared_expected_seconds": 900,
+    "new_1e_6": "NOT_SELECTED_USER",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NO_EXPANSION",
+    "full_fci": "NOT_SELECTED_SOLELY_IMPORTS"
+  },
+  "interfaces_allowed": [
+    "default-false typed numerical and weather-column flags",
+    "private eligibility and failed Newton phase"
+  ],
+  "interfaces_fixed": [
+    "physical laws",
+    "acceptance gates",
+    "transaction time policy",
+    "committed and restart schemas"
+  ],
+  "next_action": "Implement the bounded default-OFF option, persist, execute smallest actual solver and default/nonmutation controls, then qualify the selected affected current closures and exact source owners before activation.",
+  "implemented": true,
+  "direct_qualified": true,
+  "direct_evidence": {
+    "path": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_DIRECT_20261022.tar.xz",
+    "sha256": "e2a301c9ff40b7cb75e7b41be2d5c3b31b8ef4031275f462fc42420d21928f4c",
+    "bytes": 14656,
+    "members": 237
+  },
+  "current_runs_prefix": "/tmp/perf01-lsr-",
+  "reader_reuse": "All6 daily/crop/root reader input maps remain exact; shared read-only builds, execute consumers freshly.",
+  "frozen_owner": "/tmp/perf01-lsr-frozen-owner.json",
+  "frozen_owner_controls": 34
+}

@@ -64,6 +64,8 @@ module mod_soil_water_solver_contract
      logical :: consistent_provider_conductivity = .false.
      ! Numerical guess only; physical base and all acceptance gates stay fixed.
      logical :: reuse_trial_head = .false.
+     ! Explicit bounded weather policy: abandon a fully failed line search.
+     logical :: abort_failed_line_search = .false.
      integer :: max_iterations = 0
      integer :: max_backtracking = 0
      integer :: conductivity_implicit_mode = 0
