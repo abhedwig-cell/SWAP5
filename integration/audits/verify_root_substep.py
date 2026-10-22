@@ -34,6 +34,7 @@ def projection(path=PARENT):
   text=text[:offset]+hook+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('harvest_generation_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_harvest_output.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'substep baseline')
  before=json.loads(historical(STATUS));current=json.loads(reader(STATUS))
  current['swp_water_successor']['daily_meteo_successor']['etref_successor']['simple_crop_preparation_successor']['root_joint_successor'].pop('substep_feedback_work')
@@ -155,6 +156,7 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
              frozen_daily_predecessor=predecessor,current_preparation=preparation,
              frozen_original_physics=original_physics,current_concurrent_nut=current_nut,current_calendar_nut=current_calendar,full_historical_migration=False)
 def self_test():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('harvest_generation_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_harvest_output.py'))['self_test']()
  controls=[]
  for path in record()['postimages']:
   def altered(p):return (ROOT/p).read_bytes()+(b'corrupt' if p==path else b'')
@@ -176,6 +178,7 @@ def self_test():
  else:raise AssertionError('foreign science accepted')
  return controls
 def verify():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('harvest_generation_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_harvest_output.py'))['verify']()
  source();result=validate(capsule());result['controls']=len(self_test());result['current_source_tree']=git('rev-parse','HEAD:src')
  return result
 if __name__=='__main__':print(json.dumps(verify(),indent=2))

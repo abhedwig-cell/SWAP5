@@ -1,6 +1,7 @@
 # MC-NUT01 joint generation at existing harvest boundaries
 
-Status: implementation candidate. Admission remains separate from testing.
+Status: locally qualified composition. Canonical admission is owned separately
+by the existing HIST-COMPLETE child and its admission receipt.
 Baseline: `80dbce8d325e9197a53b7189ad184bcdf91f6f5c`.
 
 The existing crop/soil owner already owns configured harvest, one-time residue
@@ -43,3 +44,30 @@ The roughly331-provider closure is necessary for real accepted states and physic
 codecs; expected360s cold plus150s thermal/phase drivers, explicitly selected once.
 No full730-day, broad F-CI, highest low-air or unrelated component requalification.
 Keep failed/censored events; unmeasured physics/controller time is UNKNOWN.
+
+## Completed qualification
+
+Current GNU13.3 O0/O2 cold/native execution passes680 events, with292.80s summed
+event time. Original/output-aware thermal execution passes59 events,45.85s;
+the phase add-on passes20 events,35.55s. The combined374.20s event sum is not
+full controller or physics-only time. Those categories remain UNKNOWN.
+
+Four actual two-day programs retain original chemistry, whole N/water, source
+crop, harvest and restart assertions. They exercise44 rejected phase/save/
+acknowledgement requests and12 CSV-only saved-state cases. Three phase generations
+per optimization match their caller-memory copies and manual physical counterparts
+exactly. Six independent-process phase roundtrips and four fresh next-phase
+continuations are byte-identical. Diagnostic clock, interval totals, extrema and
+all report-history bytes remain unchanged across every biological phase.
+
+Existing cold and thermal endpoints match the current admitted root-substep
+capsule exactly. The current original thermal17 invalids per optimization and
+four pre/post-rename process kills execute freshly; no new phase-specific crash
+or power-loss claim follows. The unchanged generic writer/codec owns publication.
+
+The first predecessor check overlapped local edits, so its final observed source
+tree was not the pinned baseline. It is retained but not used as qualification.
+A detached exact baseline was rechecked with all36 original source/evidence
+controls. The new owning handoff preserves those original assertion bodies,
+checks all unchanged inputs, and revalidates both predecessor and fresh thermal
+raw science. Full harvest-day/fallow/rotation reporting remains explicitly open.

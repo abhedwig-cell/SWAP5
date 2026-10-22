@@ -80,12 +80,17 @@ def validate(f):
    if phase!='1':require(stage==f[b+'fresh-phase-'+phase],'fresh biological phase progression drift')
   require(f[b+'endpoint']==f['thermal/'+opt+'/output.endpoint'],'harvest changes original thermal execution')
   require(c['results'][opt]==js('preservation.json')['cold_previous_results'][opt],'prior cold endpoint drift')
+  require(t['results'][opt]==js('preservation.json')['thermal_previous_results'][opt],'prior thermal endpoint drift')
  require(prior['qualified']and prior['status']=='TRIAL_BEGINNING_ROOT_SUBSTEP_O0_O2_QUALIFIED'and prior['controls']==36,'current root substep qualification')
  require(prior['current_source_tree']==git('rev-parse',BASE+':src'),'predecessor exact source tree')
  require(h['actual_programs']==14 and h['phase_roundtrips']==6 and h['independent_phase_continuations']==4,'harvest process inventory')
  return dict(qualified=True,status='HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED',actual_programs=14,phase_roundtrips=6,fresh_phase_progressions=4,diagnostics_unchanged=True,incumbent_physics_unchanged=True,full_harvest_day_reporting=False,full_mc_nut01_closed=False)
 def verify():
- source();r=validate(capsule());owner=runpy.run_path(str(ROOT/PARENT));prior=owner['validate'](owner['capsule']())
+ source();files=capsule();r=validate(files);owner=runpy.run_path(str(ROOT/PARENT));old=owner['capsule']();prior=owner['validate'](old)
+ nut=runpy.run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))
+ current={p[len('nut/'):]:v for p,v in old.items()if p.startswith('nut/')}
+ current.update({p:v for p,v in files.items()if p.startswith(('cold/','thermal/'))})
+ r['fresh_thermal_science']=nut['validate'](current)
  r['incumbent_root_substep']=prior
  for key in ['current_calendar_nut','current_concurrent_nut','frozen_daily_predecessor']:r[key]=prior[key]
  return r
