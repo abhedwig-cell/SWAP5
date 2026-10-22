@@ -42,6 +42,8 @@ for source,name in [('tests/fsi/test_weather_surface_continuous_mvg.f90','contin
   (out/'mualem-oracle.json').write_text(json.dumps(dict(precision_digits=80,max_abs_error=max(errors)))+'\n')
 run(fc+flags+[ROOT/'tests/fsi/test_weather_surface_retry.f90',ROOT/'src/legacy/b1_10_port/headcalc.f90',*objects,'-o',out/'desaturation'],'link-desaturation')
 assert b'WEATHER_SURFACE_RETRY_PASS' in run([out/'desaturation'],'desaturation')
+run(fc+flags+[ROOT/'tests/fsi/test_weather_surface_desaturation.f90',ROOT/'src/legacy/b1_10_port/headcalc.f90',*objects,'-o',out/'strict-corner'],'link-strict-corner')
+assert b'WEATHER_SURFACE_DESATURATION_PASS' in run([out/'strict-corner'],'strict-corner')
 run(fc+flags+[ROOT/'tests/fsi/test_weather_surface_top_derivative.f90',ROOT/'src/legacy/b1_10_port/headcalc.f90',*objects,'-o',out/'top-derivative'],'link-top-derivative')
 top_data=run([out/'top-derivative'],'top-derivative').decode().splitlines()
 assert any('WEATHER_SURFACE_TOP_DERIVATIVE_PASS' in x for x in top_data)
@@ -62,5 +64,5 @@ with localcontext() as context:
   exact=(top_flux(hd+perturb)-top_flux(hd-perturb))/(2*perturb) if h<0 else (top_flux(hd+perturb)-top_flux(hd))/perturb
   error=abs((Decimal(dq)-exact)/exact);assert error<Decimal('5e-8'),(h,error);errors.append(float(error))
  (out/'top-derivative-oracle.json').write_text(json.dumps(dict(precision_digits=80,max_relative_error=max(errors)))+'\n')
-result=dict(status='WEATHER_SURFACE_NATIVE_PRESERVATION_PASS',parent_build=str(build),native_original_profiles=6,original_same_process_restart_pairs=3,small_provider_contracts=2,retry_contracts=1,analytic_top_contracts=1,events=events,input_sha256={str(p.relative_to(ROOT)):sha(p) for p in [driver,ROOT/'src/legacy/b1_10_port/headcalc.f90',ROOT/'tests/fsi/test_weather_surface_continuous_mvg.f90',ROOT/'tests/fsi/test_weather_surface_retry.f90',ROOT/'tests/fsi/test_weather_surface_top_derivative.f90']},raw_sha256={p.name:sha(p) for p in out.iterdir() if p.is_file() and p.suffix in ('.stdout','.stderr','.json')})
+result=dict(status='WEATHER_SURFACE_NATIVE_PRESERVATION_PASS',parent_build=str(build),native_original_profiles=6,original_same_process_restart_pairs=3,small_provider_contracts=2,retry_contracts=1,analytic_top_contracts=1,strict_corner_contracts=1,events=events,input_sha256={str(p.relative_to(ROOT)):sha(p) for p in [driver,ROOT/'src/legacy/b1_10_port/headcalc.f90',ROOT/'tests/fsi/test_weather_surface_continuous_mvg.f90',ROOT/'tests/fsi/test_weather_surface_retry.f90',ROOT/'tests/fsi/test_weather_surface_top_derivative.f90',ROOT/'tests/fsi/test_weather_surface_desaturation.f90']},raw_sha256={p.name:sha(p) for p in out.iterdir() if p.is_file() and p.suffix in ('.stdout','.stderr','.json')})
 (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'])

@@ -2,7 +2,7 @@
   "workstream": "PERF01",
   "work_unit": "WET4_PRODUCTION_SURFACE_REPAIR",
   "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
-  "status": "IMPLEMENTED_BOUNDED_NATIVE_QUALIFIED_CANONICAL_ADMISSION_PENDING",
+  "status": "LOCAL_CODE_SUCCESSOR_TESTED_PUBLICATION_AUTHORIZED_CANONICAL_ADMISSION_PENDING",
   "production_changed": true,
   "canonically_admitted": false,
   "contract": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md",
@@ -60,7 +60,7 @@
     "branch": "research/perf01-wet4-cause-20261021",
     "state": "DRAFT_CODE_REPAIR"
   },
-  "next_safe_step": "Review proposed production/temporal contract and reconcile affected owning source/admission authority before canonical merge",
+  "next_safe_step": "Publish byte-exact final postimage to existing PR1361, verify published full tree, then reconcile owning source/admission guards before any canonical merge.",
   "postimages": {
     "benchmarks/performance/assess_weather_surface_repair.py": "6db4990eab495fc1735c3d6fccec4202d14d9ae43d0d8831e4cd6b7e17353853",
     "benchmarks/performance/build_perf01_weather_surface.py": "66fcebcddeaf107f94e8d19eb36fa34beb1aa85205ed095a39d976afda0bccac",
@@ -83,5 +83,115 @@
     "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_RESULT.md": "63260ac4b2ff3b83cd49f04c7b6c66382e7b3a5aa7562583ce8e4bcfb27439c6",
     "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_SUMMARY.json": "7f510d35ded9596716f904f84302a17b894d023fe7e20c44ed017c940f840aa6",
     "tests/fsi/test_weather_surface_retry.f90": "3fae1cd4ed904f13f2515ab035ec3e176f72efc377a45f9eef2d1f20cd801af1"
+  },
+  "review_20261022": {
+    "baseline": "bb0d816176d33254e3f4fb6d3d7e2a0563f663c5",
+    "canonical_checked": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
+    "status": "BOUNDED_CURRENT_NATIVE_PASS_PUBLICATION_AUTHORIZED_PENDING",
+    "test_selection": {
+      "strict_refinement": {
+        "changed_dependency": "Proposed weather full/half saturation norm and continuous MvG/implicit surface coupling",
+        "scientific_claim": "Determine whether the previously censored 1e-6 four-rain 97-day run crosses saturation and completes; compare independent daily gross budgets with 1e-4 and 1e-3",
+        "owner": "PERF01 WET4_PRODUCTION_SURFACE_REPAIR",
+        "authority": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md#qualification-and-limits",
+        "expected_seconds": 600,
+        "prior_execution": "UNEXPECTED_LONG",
+        "diagnosis": "Previous 180s run censored at day32 while sharing the pinned CPU. Reuse exact verified production build; bounded 600s completion observation retains censoring if incomplete. No changed tolerances or shortened forcing. First new attempt completed original227mm weather, not wet4908mm. Retain as wrong-forcing observation. Repeat using exact wet4 input hash b69d91f8af402b4783a3b5bbd51026492b93b04de6be90717648e9b806db0fb8 and explicit908mm assertion. Runner now binds actual weather bytes and validates declared rainfall."
+      }
+    },
+    "invariants": "Mass gate, rejected-state nonmutation, accepted-only surface receipts and worker parameter ownership unchanged",
+    "next_action": "Publish byte-exact final postimage to existing PR1361, verify published full tree, then reconcile owning source/admission guards before any canonical merge.",
+    "first_strict_attempt": "WRONG_FORCING_227MM_NOT_WET4: retained at /tmp/wet4-review-20261022-strict; no wet4 qualification",
+    "forcing_guard": "New run_perf01_weather_bound.py preserves the sealed original runner, checks actual weather hash, requires declared rainfall, returns nonzero for mismatch. Valid1day, wrong-declared-rain and mutated-weather-before-native controls pass.",
+    "review_invariants": "Production files unchanged from bb0d81617; original capsule verifier and all4 rejection controls PASS. Current focused O0/O2 native preservation PASS. First transient runner edit was reverted byte-exact to keep immutable predecessor proof; its executed snapshot remains with the strict observation.",
+    "strict_actual_result": {
+      "status": "FAILED_AT_DAY43_AFTER42_COMPLETE_DAYS",
+      "source_head": "bb0d816176d33254e3f4fb6d3d7e2a0563f663c5",
+      "budget_cm": 1e-06,
+      "weather_sha256": "b69d91f8af402b4783a3b5bbd51026492b93b04de6be90717648e9b806db0fb8",
+      "location": "42.28125..42.296875 day",
+      "native_user_seconds": 124.23702,
+      "exit": 1,
+      "mass_temporal_or_solver_cause": "UNKNOWN_PENDING_TRACE",
+      "evidence": "/tmp/wet4-review-20261022-strict-correct"
+    },
+    "trace_diagnosis": "33solver rejections,0mass/temporal at42.287931002257956. Exact bottom head2.1596686945289869e-13cm. Increasing MaxIt20to80 or backtracking8to64 separately fails. Cubic crossing-only trial damping converges at dt1e-3,1e-6,1e-9 with unchanged physical residual gates.",
+    "prototype_broad_crossing": "FAILED at day35 for1e-6 and1e-4, day36for1e-3; retained, no PASS",
+    "selected_damping": "Original solve always first. Only genuine iteration exhaustion with a solve-entry saturated machine-near-zero corner allows one deep-state-restored damped Newton restart with the same per-phase caps and physical gates. Diagnostics count both phases; maxlocalwork2x.",
+    "prototype_narrow_crossing": "FAILED day36at1e-4 and1e-6;1e-3 completed97. Retained, not selected.",
+    "tested_source_commit": "a1c127a6e6ad6c09c2133eff27d85a3f3d1005a7",
+    "production_postimages": {
+      "src/legacy/b1_10_port/headcalc.f90": "785b1560b198b476902e255912ff7b2ffc08d69d7c6daa019d9cf2c5ccaf8bb2"
+    },
+    "strict_success": {
+      "budget_cm": 1e-06,
+      "completed_days": 97,
+      "rain_mm": 908,
+      "user_seconds": 248.693691,
+      "status": "COMPLETE_NATIVE_OBSERVATION",
+      "max_independent_daily_gross_closure_mm": 2.785549568784518e-13
+    },
+    "qualification": {
+      "completed_97day_budgets_cm": [
+        1e-06,
+        0.0001,
+        0.001,
+        0.01,
+        0.1,
+        1
+      ],
+      "O0_O2_full_97day_physical_and_work_exact_at_1e3": true,
+      "active_wet_day35_reconstruction_exact": true,
+      "rollback_21bits_after_one_private_step": true,
+      "O0_O2_exact_day43_corner_and_forced_failed_fallback_nonmutation": true,
+      "native_original_weather_profiles_per_optimization": 6,
+      "unchanged_real_default_solver_contracts_per_optimization": 2,
+      "evidence_negative_controls": 4,
+      "hard_transaction_mass_gate_cm": 1e-14,
+      "docs_source_check": "PASS",
+      "strict_mkdocs": "PASS",
+      "strict_full97day_optimization": "O2_ONLY",
+      "source_owner_guards": "PREDECESSOR_HISTORICAL_NOT_INHERITED_FOR_CHANGED_HEADCALC",
+      "canonical_admission": "PENDING"
+    },
+    "result": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_RESULT.md",
+    "summary": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_SUMMARY.json",
+    "verifier": "benchmarks/performance/verify_perf01_wet4_review.py",
+    "publication_blocker": "Automatic approval review rejected git push to the existing PR branch, stating repository export to an unverified GitHub destination lacks explicit publication authorization. No alternate write method attempted.",
+    "historical_result_scope": "All predecessor qualification/evidence/postimages fields above this child refer to bb0d81617 only. New current native proof is owned by this child and its new capsule; no frozen owner PASS is claimed.",
+    "evidence": {
+      "path": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_EVIDENCE.tar.xz",
+      "sha256": "804e683e352acf47df28a8561b4447e0c60294154706eb8da99852bf62bdbe78",
+      "bytes": 863760,
+      "members": 551
+    },
+    "last_reconciled_head": "a1c127a6e6ad6c09c2133eff27d85a3f3d1005a7",
+    "last_reconciled_upstream": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
+    "recovery_branch": "work/perf01-wet4-review-20261022",
+    "relevant_paths": [
+      "src/legacy/b1_10_port/headcalc.f90",
+      "tests/fsi/test_weather_surface_desaturation.f90",
+      "tests/fmig431/qualify_weather_surface_repair.py",
+      "benchmarks/performance/run_perf01_weather_bound.py",
+      "benchmarks/performance/assess_perf01_wet4_review.py",
+      "benchmarks/performance/verify_perf01_wet4_review.py",
+      "benchmarks/performance/PERF01_WET4_REVIEW_20261022_RESULT.md",
+      "benchmarks/performance/PERF01_WET4_REVIEW_20261022_SUMMARY.json",
+      "benchmarks/performance/PERF01_WET4_REVIEW_20261022_EVIDENCE.tar.xz"
+    ],
+    "rainfall_comparison": {
+      "status": "SAME_REPAIRED_EXECUTABLE_97DAY_RAINFALL_COMPARISON_COMPLETE",
+      "summary": "benchmarks/performance/PERF01_RAINFALL_COMPARISON_20261022.json",
+      "evidence": {
+        "path": "benchmarks/performance/PERF01_RAINFALL_COMPARISON_20261022.tar.xz",
+        "sha256": "73787afa14a9836cdf016964643da06a10ede99e45163469921f2ca7ea312fd2",
+        "bytes": 858660,
+        "members": 55
+      },
+      "source_commit": "a1c127a6e6ad6c09c2133eff27d85a3f3d1005a7",
+      "scope": "Same repaired4cell30cm97day illustrative Reference/MvG/freebottom live crop/weather/heat executable,64windows/day. Only rainfall differs, exactly4x in116weather records;227vs908mmover97days."
+    },
+    "publication_authorization": "Explicit user approval: Ok\u00e9, Goedgekeurd, following the request to publish the tested successor to PR1361.",
+    "publication_transport": "GitHub connector fallback after ordinary git push failed: could not read Username for https://github.com. Exact full-tree publication required; no canonical merge authorized by this receipt."
   }
 }

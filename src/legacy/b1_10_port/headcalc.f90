@@ -64,6 +64,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(a23bu_solver_history_t), pointer :: hist
    type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
    type(reference_richards_state_binding_t), target :: local_state_binding
+   type(reference_richards_state_binding_t) :: corner_entry_state
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
@@ -81,6 +82,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: scale_matrix_area
    logical :: typed_bottom_invalid, typed_bottom_ok
    logical :: consistent_provider_conductivity
+   logical :: corner_retry_available, corner_retry_active
    real(8) :: bottom_dkdh
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
@@ -372,6 +374,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (swbotb == 9) NN = numnod - 1
    end if
 
+   ! Preserve every successful ordinary solve. Only a failed solve entering
+   ! desaturation at a machine-near-zero head gets one bounded damped restart.
+   corner_retry_active = .false.
+   corner_retry_available = consistent_provider_conductivity .and. provider_dynamic_top_active .and. swmacro == 0
+   if (corner_retry_available) then
+      corner_retry_available = any(state%hm1 >= 0.0d0 .and. state%hm1 <= sqrt(epsilon(1.0d0)))
+      if (corner_retry_available) corner_entry_state = state
+   end if
+900 continue
+
 !  reset conductivities (state%k, state%kmean) to time level t
    if (provider_constitutive_active) then
       ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
@@ -525,6 +537,18 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          else
             do i = 1, NN
                state%h(i) = fsi_ws%old_head(i) - factor * fsi_ws%delta_head(i)
+            end do
+         end if
+
+         if (corner_retry_active) then
+            ! Enter the unsaturated side without a finite negative overshoot
+            ! at the Mualem corner. The one-cm scale is the existing absolute
+            ! head normalization. This damps trial iterates only; the original
+            ! residual, balance and convergence tests still decide acceptance.
+            do i = 1, NN
+               if (state%hm1(i) >= 0.0d0 .and. state%hm1(i) <= sqrt(epsilon(1.0d0)) .and. &
+                   fsi_ws%old_head(i) >= 0.0d0 .and. state%h(i) < 0.0d0 .and. state%h(i) > -1.0d0) &
+                    state%h(i) = -abs(state%h(i))**3
             end do
          end if
 
@@ -784,6 +808,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    state%numbit = solver_numbit
 
 !  Convergence could not been reached
+   if (corner_retry_available .and. .not. corner_retry_active) then
+      state = corner_entry_state
+      corner_retry_active = .true.
+      iBackTr = 0
+      goto 900
+   end if
    if (.NOT.fldtmin) then
 
 !     reset soil state variables
