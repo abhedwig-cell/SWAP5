@@ -5021,16 +5021,16 @@
     },
     "harvest_generation_successor_20261022": {
       "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
-      "stage": "LOCAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_HARVEST_PHASE_GENERATIONS_FULL_HIST_OPEN",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonical_admitted": false,
+      "canonical_admitted": true,
       "contract": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
       "scope": "Transactional existing harvest/incorporation/observation-retirement phases saved with unchanged physical/diagnostic/report-history generation; no new day or diagnostic quantity.",
       "test_selection": "Fresh current cold O0/O2 bootstrap expected360s, thermal and phase drivers expected150s; actual accepted-state/codec composition requires roughly331 providers. Same-session hashed provider reuse; no full730day,broadFCI,highestlowair,newRossFast,aquifer.",
-      "next_action": "Run sealed source/evidence owner,18 corruption controls and source/strict docs; publish exact qualified tree and verify actual canonical merge, then update existing master bounded receipt. No full harvest-day/fallow/rotation reporting closure.",
+      "next_action": "Register bounded harvest-phase generation receipt on existing master without row promotion. Saved next-day harvest return diagnostics and fallow/rotation output need a separately traced contract; no synthetic diagnostic day or full migration closure.",
       "evidence_index": "integration/audits/evidence/mc-nut01-harvest-output-20261022/INDEX.json",
       "evidence_index_sha256": "cc4fb864f17c6b1a0de1d2ed7805f070460c84a86507cc1d86344251f7c6de7c",
       "qualified_input_sha256": {
@@ -5477,7 +5477,17 @@
         "src/adapter/mod_crop_soil_n_output_harvest.f90": "b4bf567e73e79619736d12bf5464e4954ee16e375b4886a773116ccc64c091c1",
         "tests/nut-output/harvest_output_proof.inc": "fe326cb741cd5339e5f8a9ee343c0d20cc7fcf9fee6de6d41fd7bacdb09282f4",
         "tests/nut-output/run_harvest_output.py": "78cecb27a5b2a94f30875e38ba30ea0eb21755dd10baa59fdd9b294a3c48e7c0"
-      }
+      },
+      "pr": 1374,
+      "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+      "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+      "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+      "whole_merge_tree_exact": true,
+      "owning_guard": "PASS",
+      "owning_controls": 18,
+      "full_harvest_day_reporting": false,
+      "full_mc_nut01_closed": false,
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json"
     }
   }
 }
