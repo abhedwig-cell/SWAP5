@@ -22,6 +22,7 @@ def projection():
   text=text[:offset]+" if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_residue_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_output.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==git('rev-parse',BASE),'harvest baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'harvest postimage '+p)
  require(reader(PARENT)==projection(),'root substep predecessor assertions')
@@ -86,6 +87,7 @@ def validate(f):
  require(h['actual_programs']==14 and h['phase_roundtrips']==6 and h['independent_phase_continuations']==4,'harvest process inventory')
  return dict(qualified=True,status='HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED',actual_programs=14,phase_roundtrips=6,fresh_phase_progressions=4,diagnostics_unchanged=True,incumbent_physics_unchanged=True,full_harvest_day_reporting=False,full_mc_nut01_closed=False)
 def verify():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_residue_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_output.py'))['verify']()
  source();files=capsule();r=validate(files);owner=runpy.run_path(str(ROOT/PARENT));old=owner['capsule']();prior=owner['validate'](old)
  nut=runpy.run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))
  current={p[len('nut/'):]:v for p,v in old.items()if p.startswith('nut/')}
@@ -95,6 +97,7 @@ def verify():
  for key in ['current_calendar_nut','current_concurrent_nut','frozen_daily_predecessor']:r[key]=prior[key]
  return r
 def self_test():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_residue_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_output.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()
