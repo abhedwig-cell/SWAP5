@@ -6,6 +6,7 @@ module mod_crop_n_output_generation
  use mod_crop_soil_n_joint_restart_file
  use mod_kernel_transactions,only:kernel_committed_state_t
  use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
+ use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_parameters_t
  use mod_crop_soil_n_day,only:crop_soil_state_t
  use mod_crop_soil_n_configuration,only:crop_n_configuration_t
  use mod_b111_soil_n_reactive_owner,only:reactive_state_t,reactive_parameters_t
@@ -159,7 +160,6 @@ contains
   integer(int32)::np,nr,crc
   logical::ok,ready
   status=CROP_EXT_INVALID
-  if(soil_n_thermal_template(template))return
   if(.not.history_matches_output(dates,rows,output).or..not.clocks_match(water,chemical,output))return
   call temporary_paths(path,physical,pending,ok);if(.not.ok)return
   call write_crop_soil_n_joint_restart_file(physical,column,template,water_id,water,chemical,code)
@@ -203,7 +203,7 @@ contains
   status=CROP_EXT_OK
  end subroutine
  subroutine read_crop_n_output_generation(path,column,template,water_id,soil_id,crop_id,p,cp, &
-     water,chemical,output,dates,rows,status)
+     water,chemical,output,dates,rows,status,heat_parameters)
   character(*),intent(in)::path
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -216,6 +216,7 @@ contains
   character(10),allocatable,intent(inout)::dates(:)
   type(crop_ext_row_t),allocatable,intent(inout)::rows(:)
   integer,intent(out)::status
+  type(fmr_b110_physical_parameters_t),intent(in),optional::heat_parameters
   type(kernel_committed_state_t)::water_trial
   type(crop_soil_state_t)::chemical_trial
   type(crop_ext_state_t)::output_trial
@@ -229,7 +230,8 @@ contains
   real(real64)::v(17)
   logical::ok
   status=CROP_EXT_INVALID
-  if(soil_n_thermal_template(template))return
+  ! Heat continuation must bind the persisted certificate to caller parameters.
+  if(soil_n_thermal_template(template).and..not.present(heat_parameters))return
   call temporary_paths(path,physical,pending,ok);if(.not.ok)return
   inquire(file=path,size=n,iostat=io);if(io/=0.or.n<156.or.n>MAX_BYTES)return
   status=10
@@ -262,7 +264,8 @@ contains
   if(io/=0)then;call erase(physical);return;end if
   status=13
   water_trial=kernel_committed_state_t();chemical_trial=crop_soil_state_t()
-  call read_crop_soil_n_joint_restart_file(physical,column,template,water_id,soil_id,crop_id,p,cp,water_trial,chemical_trial,code)
+  call read_crop_soil_n_joint_restart_file(physical,column,template,water_id,soil_id,crop_id,p,cp, &
+    water_trial,chemical_trial,code,heat_parameters)
   call erase(physical)
   if(code/=0)return
   status=14
