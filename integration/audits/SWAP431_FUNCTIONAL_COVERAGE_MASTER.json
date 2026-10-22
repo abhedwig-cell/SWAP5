@@ -11369,13 +11369,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11396,15 +11396,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11414,7 +11414,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11665,6 +11666,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -11701,13 +11737,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11728,15 +11764,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11746,7 +11782,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12002,6 +12039,41 @@
         "summary_exact": true,
         "whole_master_qualified": false,
         "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
       }
     },
     {
@@ -12032,13 +12104,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Fertilizer/manure applications and volatilisation. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Fertilizer/manure applications and volatilisation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -12066,15 +12138,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12084,7 +12156,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12335,6 +12408,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -12374,13 +12482,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Crop residue transfers to organic soil pools. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Crop residue transfers to organic soil pools. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -12403,15 +12511,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12421,7 +12529,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -12692,6 +12801,41 @@
         "summary_exact": true,
         "whole_master_qualified": false,
         "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
       }
     },
     {
@@ -12721,13 +12865,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -12750,15 +12894,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12768,7 +12912,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13019,6 +13164,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15059,13 +15239,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -15085,15 +15265,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15103,7 +15283,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15354,6 +15535,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15395,13 +15611,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -15422,15 +15638,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15440,7 +15656,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15696,6 +15913,41 @@
         "summary_exact": true,
         "whole_master_qualified": false,
         "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
       }
     },
     {
@@ -15729,13 +15981,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -15755,15 +16007,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15773,7 +16025,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16024,6 +16277,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -16088,13 +16376,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing process, finite-donor fallow, fractional humus, cold/thermal output and explicit native TRUE startup remain admitted. PR1371 adds Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_calendar_output_20261022"
+        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
       },
       "restrictions": [
-        "General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
-        "Immutable future management must be supplied explicitly after restart; no general/default or full-row promotion."
+        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -16131,15 +16419,15 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Automatic daily amendment selection from the existing immutable native calendar into the explicit nonharvested prescribed-environment output day; stage/save/publish and independent-process combined continuation. No incumbent physics, event cursor or restart schema change. General historical/default orchestration and wider grammar; heat-specific calendar composition; harvest/rotation output; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and full original active trajectories remain open.",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "d79217149734928e957015bace05d78a5ba7905a",
+        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -16149,7 +16437,8 @@
         "output_generation_receipt": "output_generation_admission_20261022",
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
-        "calendar_output_receipt": "calendar_output_admission_20261022"
+        "calendar_output_receipt": "calendar_output_admission_20261022",
+        "harvest_generations_receipt": "harvest_generations_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16400,6 +16689,41 @@
         ],
         "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
         "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "harvest_generations_admission_20261022": {
+        "pr": 1374,
+        "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+        "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+        "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+        "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "full_harvest_day_reporting": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -21592,6 +21916,41 @@
       "summary_exact": true,
       "whole_master_qualified": false,
       "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+    },
+    "mc_nut01_harvest_generations_20261022": {
+      "pr": 1374,
+      "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+      "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+      "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+      "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+      "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+      "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+      "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+      "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "full_harvest_day_reporting": false,
+      "full_mc_nut01_closed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+      "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+      "other_rows_exact": 234,
+      "all_dispositions_exact": 243,
+      "summary_exact": true,
+      "whole_master_qualified": false,
+      "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -21982,7 +22341,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
+  "canonical_locator_head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -24488,6 +24847,41 @@
     ],
     "canonical_admission_receipt": "a412984d3ca26f43fa7459156bd7c695d62fb9c0",
     "master_predecessor": "07239f30d1c1470e52a0a9b106f5409679f9f6a5",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+  },
+  "latest_mc_nut01_harvest_generations_20261022": {
+    "pr": 1374,
+    "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+    "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+    "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+    "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+    "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+    "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "full_harvest_day_reporting": false,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+    "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
     "other_rows_exact": 234,
     "all_dispositions_exact": 243,
     "summary_exact": true,

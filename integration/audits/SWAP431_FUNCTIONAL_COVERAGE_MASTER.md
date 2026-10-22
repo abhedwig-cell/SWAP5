@@ -1,5 +1,19 @@
 # MC-SOL01 original SWP chemistry, 21 October 2026
 
+## Current joint generations for nutrient harvest phases,22 October2026
+
+PR1374 at `efa6532631696fc74d1be742bfc6f4d030dd5dac` joins existing harvest,
+incorporation and explicit observation/retirement to atomic joint generations.
+No physical equation,water revision,diagnostic day,report row or schema changes.
+O0/O2 manual physical bytes,diagnostic/history invariance,six fresh phase
+roundtrips,four next-phase continuations,44 rejected requests and12 CSV-only
+saved-state cases pass. Current cold/thermal endpoints remain exact. Complete
+actual merge tree and18 corruption controls pass. Full harvest-day/fallow/
+rotation reporting is not claimed. All nine NUT rows remain ACTIVE_MIGRATION;
+234 other rows,all243 dispositions,summary,queues and earlier receipts remain
+exact. Hosted checks were not selected and are never counted as PASS. The JSON
+register is current; earlier sections below retain historical scope receipts.
+
 ## Current native calendar-driven nutrient output,22 October2026
 
 PR1371 at `d79217149734928e957015bace05d78a5ba7905a` joins the existing

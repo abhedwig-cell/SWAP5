@@ -4843,5 +4843,40 @@
     "summary_exact": true,
     "whole_master_qualified": false,
     "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+  },
+  "mc_nut01_harvest_generations_20261022": {
+    "pr": 1374,
+    "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+    "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+    "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json at bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+    "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation.",
+    "qualification": "Fresh GNU13.3 O0/O2 cold680,thermal59 and harvest20 events;14 actual programs,six phase roundtrips,four fresh phase progressions,44 rejected requests and12 CSV-only saved phases PASS. Exact manual original physical and diagnostic/history bytes;current cold/thermal endpoints unchanged. Complete actual merge tree and18 corruption controls PASS;exact predecessor36controls and raw root-substep science retained.",
+    "remaining": "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "full_harvest_day_reporting": false,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+    "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
   }
 }
