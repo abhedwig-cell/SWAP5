@@ -11369,13 +11369,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Organic matter and organic nitrogen turnover/mineralisation. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11396,15 +11396,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11415,7 +11415,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11701,6 +11702,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -11737,13 +11773,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11764,15 +11800,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11783,7 +11819,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12069,6 +12106,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -12104,13 +12176,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Fertilizer/manure applications and volatilisation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Fertilizer/manure applications and volatilisation. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -12138,15 +12210,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12157,7 +12229,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12443,6 +12516,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -12482,13 +12590,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Crop residue transfers to organic soil pools. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Crop residue transfers to organic soil pools. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -12511,15 +12619,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12530,7 +12638,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -12836,6 +12945,41 @@
         "summary_exact": true,
         "whole_master_qualified": false,
         "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
       }
     },
     {
@@ -12865,13 +13009,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Demand/supply coupling and nitrogen-limited crop growth. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -12894,15 +13038,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12913,7 +13057,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13199,6 +13344,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15239,13 +15419,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -15265,15 +15445,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15284,7 +15464,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15570,6 +15751,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15611,13 +15827,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -15638,15 +15854,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -15657,7 +15873,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -15943,6 +16160,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15981,13 +16233,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -16007,15 +16259,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -16026,7 +16278,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16312,6 +16565,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -16376,13 +16664,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup and calendar output remain admitted. PR1374 adds Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "claim": "Biological nitrogen fixation as a separately booked crop N input. Existing admitted process,finite-donor fallow,fractional humus,cold/thermal output,native TRUE startup,calendar and harvest-phase generation facets remain unchanged. PR1375 adds Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_harvest_generations_20261022"
+        "bounded_receipt": "mc_nut01_saved_output_20261022"
       },
       "restrictions": [
-        "Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
-        "Joint biological-phase persistence does not establish full historical harvest-day/fallow reporting or master-row closure."
+        "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "Bounded saved harvest/fallow output does not establish full historical/default orchestration or master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -16419,15 +16707,15 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+        "head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Existing harvest,incorporation and explicit observation/retirement staged and saved in the existing joint physical/diagnostic/history generation before publication. Water and diagnostic clock,totals,extrema/history unchanged;no new inventory,cursor,schema or physical equation. Full harvest-day and next-day saved harvest-return/fallow/rotation diagnostics; general historical/default orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch. Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "latest_scientific_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -16438,7 +16726,8 @@
         "native_output_start_receipt": "native_output_start_admission_20261022",
         "thermal_output_receipt": "thermal_output_admission_20261022",
         "calendar_output_receipt": "calendar_output_admission_20261022",
-        "harvest_generations_receipt": "harvest_generations_admission_20261022"
+        "harvest_generations_receipt": "harvest_generations_admission_20261022",
+        "saved_output_receipt": "saved_output_admission_20261022"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16724,6 +17013,41 @@
         ],
         "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
         "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+      },
+      "saved_output_admission_20261022": {
+        "pr": 1375,
+        "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+        "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+        "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+        "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "thermal_fallow_qualified": false,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+        "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -21951,6 +22275,41 @@
       "summary_exact": true,
       "whole_master_qualified": false,
       "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+    },
+    "mc_nut01_saved_output_20261022": {
+      "pr": 1375,
+      "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+      "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+      "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+      "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+      "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+      "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+      "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+      "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "thermal_fallow_qualified": false,
+      "full_mc_nut01_closed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+      "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
+      "other_rows_exact": 234,
+      "all_dispositions_exact": 243,
+      "summary_exact": true,
+      "whole_master_qualified": false,
+      "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -22341,7 +22700,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
+  "canonical_locator_head": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -24882,6 +25241,41 @@
     ],
     "canonical_admission_receipt": "bdd923d6bd9e316d9676b17ed143aa0440d3d475",
     "master_predecessor": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero qualified/merge workflows,check runs and statuses;never PASS"
+  },
+  "latest_mc_nut01_saved_output_20261022": {
+    "pr": 1375,
+    "canonical_merge": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+    "qualified_head": "c31c00f2cd404b156e6de6c197c2012b8ab0513e",
+    "qualified_tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_SAVED_RESIDUE_20261022.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json at 7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+    "scope": "Opt-in cold original previous-day harvest return diagnostics captured before incorporation, retained across compact retirement, reported once on actual accepted Richards fallow days. S5NS0001 atomically publishes complete unchanged physical/17-value/history generation plus nine saved diagnostic values. No second physical inventory or default dispatch.",
+    "qualification": "GNU13.3 O0/O2:6808 literal task6 checks and234 reports per optimization; original wofostnut addition oracle; all actual original physical endpoints exact;12 independent phase roundtrips,12 phase-to-fallow progressions,4 fresh day3 continuations;36 malformed and36 live-state invalid generations,4 identity rejections,4 before/after-rename SIGKILL recoveries;save/cadence/CSV/replay/nonfinite/roots controls PASS. Exact actual merge tree and19 corruption controls PASS;predecessor18controls and raw incumbent science retained.",
+    "remaining": "Thermal fallow and successor-crop/rotation output; general/default historical orchestration; heat-specific calendar; active-crop/immobilisation negative allocation; automatic snow/persistent-surface nitrogen; near-degenerate coefficients and complete original active trajectories remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "thermal_fallow_qualified": false,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "7f079f8e95d7a389d1fc588ab5e1e1011bc864db",
+    "master_predecessor": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
     "other_rows_exact": 234,
     "all_dispositions_exact": 243,
     "summary_exact": true,
