@@ -2,7 +2,7 @@
   "workstream": "PERF01",
   "work_unit": "WET4_PRODUCTION_SURFACE_REPAIR",
   "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
-  "status": "LOCAL_CODE_SUCCESSOR_TESTED_PUBLICATION_AUTHORIZED_CANONICAL_ADMISSION_PENDING",
+  "status": "PUBLISHED_CODE_SUCCESSOR_TESTED_CANONICAL_ADMISSION_PENDING",
   "production_changed": true,
   "canonically_admitted": false,
   "contract": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md",
@@ -60,7 +60,7 @@
     "branch": "research/perf01-wet4-cause-20261021",
     "state": "DRAFT_CODE_REPAIR"
   },
-  "next_safe_step": "Publish byte-exact final postimage to existing PR1361, verify published full tree, then reconcile owning source/admission guards before any canonical merge.",
+  "next_safe_step": "Reconcile affected shared source/admission owners on the published code before canonical integration; retain bounded scope and unchanged physical gates.",
   "postimages": {
     "benchmarks/performance/assess_weather_surface_repair.py": "6db4990eab495fc1735c3d6fccec4202d14d9ae43d0d8831e4cd6b7e17353853",
     "benchmarks/performance/build_perf01_weather_surface.py": "66fcebcddeaf107f94e8d19eb36fa34beb1aa85205ed095a39d976afda0bccac",
@@ -87,7 +87,7 @@
   "review_20261022": {
     "baseline": "bb0d816176d33254e3f4fb6d3d7e2a0563f663c5",
     "canonical_checked": "46ad96ee2cc65fdee48a1f3b47e3290f86f7ffd6",
-    "status": "BOUNDED_CURRENT_NATIVE_PASS_PUBLICATION_AUTHORIZED_PENDING",
+    "status": "PUBLISHED_BOUNDED_CURRENT_NATIVE_PASS_CANONICAL_ADMISSION_PENDING",
     "test_selection": {
       "strict_refinement": {
         "changed_dependency": "Proposed weather full/half saturation norm and continuous MvG/implicit surface coupling",
@@ -100,7 +100,7 @@
       }
     },
     "invariants": "Mass gate, rejected-state nonmutation, accepted-only surface receipts and worker parameter ownership unchanged",
-    "next_action": "Publish byte-exact final postimage to existing PR1361, verify published full tree, then reconcile owning source/admission guards before any canonical merge.",
+    "next_action": "Reconcile affected shared source/admission owners on the published code before canonical integration; retain bounded scope and unchanged physical gates.",
     "first_strict_attempt": "WRONG_FORCING_227MM_NOT_WET4: retained at /tmp/wet4-review-20261022-strict; no wet4 qualification",
     "forcing_guard": "New run_perf01_weather_bound.py preserves the sealed original runner, checks actual weather hash, requires declared rainfall, returns nonzero for mismatch. Valid1day, wrong-declared-rain and mutated-weather-before-native controls pass.",
     "review_invariants": "Production files unchanged from bb0d81617; original capsule verifier and all4 rejection controls PASS. Current focused O0/O2 native preservation PASS. First transient runner edit was reverted byte-exact to keep immutable predecessor proof; its executed snapshot remains with the strict observation.",
@@ -157,7 +157,6 @@
     "result": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_RESULT.md",
     "summary": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_SUMMARY.json",
     "verifier": "benchmarks/performance/verify_perf01_wet4_review.py",
-    "publication_blocker": "Automatic approval review rejected git push to the existing PR branch, stating repository export to an unverified GitHub destination lacks explicit publication authorization. No alternate write method attempted.",
     "historical_result_scope": "All predecessor qualification/evidence/postimages fields above this child refer to bb0d81617 only. New current native proof is owned by this child and its new capsule; no frozen owner PASS is claimed.",
     "evidence": {
       "path": "benchmarks/performance/PERF01_WET4_REVIEW_20261022_EVIDENCE.tar.xz",
@@ -192,6 +191,19 @@
       "scope": "Same repaired4cell30cm97day illustrative Reference/MvG/freebottom live crop/weather/heat executable,64windows/day. Only rainfall differs, exactly4x in116weather records;227vs908mmover97days."
     },
     "publication_authorization": "Explicit user approval: Ok\u00e9, Goedgekeurd, following the request to publish the tested successor to PR1361.",
-    "publication_transport": "GitHub connector fallback after ordinary git push failed: could not read Username for https://github.com. Exact full-tree publication required; no canonical merge authorized by this receipt."
+    "publication_transport": "GitHub connector fallback after ordinary git push failed: could not read Username for https://github.com. Exact full-tree publication required; no canonical merge authorized by this receipt.",
+    "historical_publication_blocker": "Automatic approval review rejected git push to the existing PR branch, stating repository export to an unverified GitHub destination lacks explicit publication authorization. No alternate write method attempted.",
+    "publication_receipt": {
+      "pull_request": 1361,
+      "url": "https://github.com/abhedwig-cell/SWAP5/pull/1361",
+      "branch": "research/perf01-wet4-cause-20261021",
+      "code_commit": "d10e86cfd517164d0c9d2ffa852c72eaaf574b79",
+      "full_tree": "f22487eb0d0678897d37052d70c74905fb7c2dde",
+      "byte_exact_local_tree_commit": "34f5242597dab102b5d0c753d4f90d7319dccbf3",
+      "verified_remote_pr_head": true,
+      "draft": true,
+      "merged": false,
+      "transport": "Authorized GitHub connector after git push lacked credentials; binary Git blob SHAs and full tree exactly match local inputs. Local forensic history is retained on work/perf01-wet4-review-20261022."
+    }
   }
 }
