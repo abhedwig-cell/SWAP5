@@ -1,0 +1,17 @@
+[
+  "source:integration/performance/verify_weather_line_search_successor.py",
+  "source:src/runtime/mod_fmr_serialized_reference_backend.f90",
+  "source:src/legacy/b1_10_port/headcalc.f90",
+  "source:src/solver/mod_soil_water_solver_contract.f90",
+  "source:integration/performance/verify_weather_composed_successor.py",
+  "source:src/crop/mod_crop_soil_n_day.f90",
+  "source:src/adapter/mod_reference_richards_legacy_binding.f90",
+  "source:tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+  "foreign scientific source",
+  "missing:on-season-O2-4x/native/stdout",
+  "missing:season-O0-4x/native/stdout",
+  "missing:root-substep-transaction/0001.stdout",
+  "missing:nut-owner/thermal/O2/output.restart.environment-after",
+  "missing:saved-owner/physical/O2/deferred-continue-3.day-4",
+  "missing:on-restart-native/stdout"
+]

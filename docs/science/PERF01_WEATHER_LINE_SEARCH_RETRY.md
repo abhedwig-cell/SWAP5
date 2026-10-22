@@ -1,7 +1,9 @@
 # Bounded weather retry after exhausted line search
 
-Status: implemented and locally qualified; actual canonical admission is recorded
-separately by the versioned work-unit status.
+Status: canonically admitted as an explicit default-OFF option via PR1378 at
+`a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e`. Actual merge verification and
+admission are recorded in `PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json`
+under `benchmarks/performance`; the versioned work-unit status points to it.
 Baseline: canonical17a6c17a478238e5fafc469aa275313bcdf2e184.
 Research authority: PR1376 and `PERF01_NEWTON_WORK_20261022_EVIDENCE`.
 

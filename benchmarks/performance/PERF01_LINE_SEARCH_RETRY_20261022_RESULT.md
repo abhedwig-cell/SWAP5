@@ -6,6 +6,11 @@ dempingszoektocht eindigt de Newton-fase eerder; de bestaande corner-herstart
 of kleinere tijdstap volgt. Alle criteria voor een geaccepteerde oplossing
 blijven gelijk. De warme start staat eveneens uit.
 
+Geïntegreerd via PR1378 op `a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e`.
+De complete samengevoegde boom is exact de gekwalificeerde boom; de
+bron-/bewijscontrole en15 afwijzingscontroles slagen op die werkelijke merge.
+Het definitieve bewijs staat in `PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json`.
+
 ## Rekentijd van de daadwerkelijke implementatie
 
 Drie afwisselende seriële paren per neerslagreeks, dezelfde nieuwe O2-code,

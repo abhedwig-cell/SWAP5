@@ -3,9 +3,11 @@
   "work_unit": "BOUNDED_WEATHER_LINE_SEARCH_RETRY",
   "baseline": "17a6c17a478238e5fafc469aa275313bcdf2e184",
   "recovery_branch": "work/perf01-newton-linefail-20261022",
-  "status": "CURRENT_TYPED_OPTION_FULL_SELECTED_QUALIFICATION_PASS",
+  "status": "CANONICALLY_ADMITTED_DEFAULT_OFF_TYPED_OPTION",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "admission_receipt": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json",
+  "actual_merge": "a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e",
   "default_on": false,
   "contract": "docs/science/PERF01_WEATHER_LINE_SEARCH_RETRY.md",
   "research": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_STATUS.json",
@@ -29,7 +31,7 @@
     "transaction time policy",
     "committed and restart schemas"
   ],
-  "next_action": "Publish exact qualified code/evidence after final docs/source checks, safely merge the explicit default-OFF option and record actual canonical admission.",
+  "next_action": "Bounded explicit option admitted via PR1378; any broader activation or surface formulation research is a separate work unit.",
   "implemented": true,
   "direct_qualified": true,
   "direct_evidence": {
@@ -523,7 +525,8 @@
     },
     "qualified_science": true,
     "qualified_fsi35": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
+    "actual_merge": "a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e",
     "native_fsi35": {
       "receipt": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_SOURCE_20261022.tar.xz",
       "sha256": "63a0913b5205e5d810bbb7eb52003b9347f14c41b8689bc4b84ae61515db0a64",
