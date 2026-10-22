@@ -182,9 +182,68 @@ every actual compile/oracle/flag/runner-body identity. Execute current source
 preflight and new rejection controls again. Full F-CI/low-air/RossFast selections
 remain as above. Archive earlier f7c60410 qualification without changing it.
 
+Also execute the opt-in warm mode for full97-day1x/4x at both O0/O2 on the
+latest backend. Reuse these exact current objects and relink only the driver.
+Apply the original warm/cold physical screening limits and compare O0/O2.
+Expected added native/link cost:90seconds. These are preservation observations,
+not a new alternating serial timing experiment; the default remains OFF.
+
+### Concurrent0be6037b harvest output
+
+Later canonical0be6037b adds only a new harvest-output provider and its tests/
+authority; the backend and every input of the freshly executed weather, column,
+root and NUT cold/thermal/calendar builds are unchanged. Prove that complete
+build-input intersection before composition. Reuse those exact builds/results.
+Execute the new original harvest O0/O2 driver against the current cold/thermal
+objects (expected60seconds) and execute its complete unmodified source/evidence
+authority at exact0be6037b with its18 controls.
+
+Retain all original harvest assertion bodies behind the composed successor.
+The only historical projection allowed while validating the80dbce8d physical
+capsule is its source-controller snapshot `verify_root_substep.py`: later changes
+are exact additive dispatches, not executed numerical providers or physical
+assertions. Pin the live controller to its exact0be6037b projection separately;
+never project a current compiled provider to an old source. Freeze the original
+physical capsule and bind the new current harvest proof alongside it.
+
 Documentation source checks and the strict `python -m mkdocs build --strict`
 pass. Initial controller attempts that reached O2 before its build completed
 failed on missing build receipts; the final complete controllers reran in fresh
 folders. The modular runner needs `gfortran` on PATH, not just FC. These were
 execution setup failures, not failed physical observations; no partial attempt
 was counted as native PASS.
+
+## Final current composition qualification
+
+The later80dbce8d and0be6037b selections above are now complete. All four
+current SOL/crop, root-substep, harvest and NUT thermal owning entrypoints pass.
+The exact composed-source guard passes33 rejection controls; the unmodified
+frozen80dbce8d owner passes36 and the unmodified0be6037b harvest owner18.
+Original FSI35 source preflight passes, including every transitive dependency
+and the direct solver-contract lock. Its completed55.245-second O0/O2 native
+result is inherited only after checking all27 provider entries, SoilWater,
+the complete original native runner body, compiler version and compiler bytes.
+The original native receipt remains immutable.
+
+Fresh current root-substep tests cover16 cases,128 daily balances,16 restarts,
+66 transaction processes and64 exact default physical files. Current NUT
+cold/thermal/calendar and harvest output all pass O0/O2, including rejected
+day trials, crash recovery, fresh phase reconstruction and atomic publication.
+Full97-day weather1x/4x, wet-day reconstruction,21-bit rollback, original
+weather/default contracts and four opt-in warm seasons pass.306 incumbent
+physical files/streams remain exact. Maximum4x daily gross closure is
+1.933e-13mm. These runs qualify preservation, not a new paired timing claim.
+
+Immutable evidence:
+
+| Capsule | SHA256 | Members |
+| --- | --- | ---: |
+| `PERF01_ROOT_COMPOSITION_20261022_EVIDENCE.tar.xz` | `f6ea403ebe2cb1bd33219d38c02854f239688806a67e0bbdd379e206d253954b` | 20045 |
+| `PERF01_HARVEST_COMPOSITION_20261022.tar.xz` | `a4d203f687add4323b696120cfde3ce4dd872797f6d1c0219c325119c7cfa84f` | 2043 |
+| `PERF01_COMPOSED_SOURCE_20261022.tar.xz` | `e13b734f49cc9b71404c6a2df042969c34e74dc6a7468f8ecbcc8af78935b4cf` | 35 |
+
+Earlier pending labels are historical at their recorded checkpoints. Current
+qualification covers precisely the illustrative Reference/default-MvG weather
+column and affected preservation envelope. Warm start remains default OFF;
+the paired experiment was slower. No1e-6, highest-low-air or RossFast expansion
+is selected. Canonical admission requires the safe PR merge and its receipt.
