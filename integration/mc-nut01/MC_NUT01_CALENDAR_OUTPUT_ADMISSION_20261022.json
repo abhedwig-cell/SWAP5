@@ -1,0 +1,106 @@
+{
+  "work_unit": "MC-NUT01-CALENDAR-OUTPUT",
+  "date": "2026-10-22",
+  "pr": 1371,
+  "baseline": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
+  "qualified_head": "e60417b54f1d210734281233d839140127c5f417",
+  "canonical_merge": "d79217149734928e957015bace05d78a5ba7905a",
+  "qualified_tree": "33e707b5fbbf0463c5b7b93df35d9bf10c2057f4",
+  "actual_merge_tree": "33e707b5fbbf0463c5b7b93df35d9bf10c2057f4",
+  "whole_merge_tree_exact": true,
+  "incumbent_production_unchanged": true,
+  "postmerge_owner": {
+    "qualified": true,
+    "status": "NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED",
+    "actual_processes": 8,
+    "rejected_day_trials": 80,
+    "replay_trials": 8,
+    "simultaneous_gifts": true,
+    "report_schedules": 2,
+    "cold_exact": true,
+    "full_mc_nut01_closed": false,
+    "incumbent_root_science": {
+      "qualified": true,
+      "status": "NATIVE_DAILY_CROP_ROOT_JOINT_O0_O2_QUALIFIED",
+      "actual_daily_cases": 16,
+      "daily_balance_observations": 128,
+      "fresh_restarts": 16,
+      "invalid_inputs": 34,
+      "exact_fallow_artifacts": 6,
+      "root_chemical_reject_retry": "O0_O2_EXACT_BINARY_PASS",
+      "input_boundary_exact_artifacts": 64,
+      "full_historical_migration": false,
+      "substep_stress_feedback": false
+    },
+    "current_concurrent_nut": {
+      "status": "THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS",
+      "qualified": true,
+      "invalids_per_opt": 17,
+      "crash_boundaries": 4,
+      "old_cold_exact": true,
+      "full_mc_nut01_closed": false
+    }
+  },
+  "postmerge_controls": {
+    "status": "PASS",
+    "count": 19,
+    "controls": [
+      "source src/adapter/mod_crop_soil_n_calendar_output_day.f90",
+      "source src/crop/mod_crop_soil_n_calendar_day.f90",
+      "source src/process/mod_soil_n_amendment_calendar.f90",
+      "source src/adapter/mod_crop_soil_n_output_day.f90",
+      "source app/solute_crop/main.f90",
+      "source integration/audits/verify_crop_root_joint.py",
+      "missing calendar/result.json",
+      "missing cold/result.json",
+      "missing PREDECESSOR.json",
+      "missing calendar/driver.f90",
+      "missing calendar/calendar_output_project.inc",
+      "missing calendar/O0/1/endpoint.csv",
+      "missing calendar/O2/2/fresh.true",
+      "changed calendar/O0/1/endpoint.false",
+      "changed calendar/O2/2/fresh",
+      "changed calendar/O0/2/endpoint.after-2",
+      "changed calendar/O2/1/endpoint.after-rejected-start",
+      "changed calendar/O0/1/endpoint.csv",
+      "foreign calendar science"
+    ]
+  },
+  "predecessor_source_and_controls": "PASS_AT_EXACT_BASELINE_40_CONTROLS",
+  "evidence": "integration/audits/evidence/mc-nut01-calendar-output-20261022/INDEX.json",
+  "measured_cost_seconds": {
+    "cold": {
+      "compile": 356.58193840499735,
+      "link": 1.3582224189995031,
+      "native": 2.377030094001384,
+      "native_output": 0.49911567800154444,
+      "native_output_restart": 0.36571985299815424,
+      "trace_native": 0.011830179999378743
+    },
+    "calendar": {
+      "calendar_fresh": 3.7812046299986832,
+      "calendar_native": 7.0232435559955775,
+      "driver_compile": 81.80071872499684,
+      "link": 2.6070679529984773,
+      "provider_compile": 3.3748866050009383
+    }
+  },
+  "hosted": {
+    "qualified_head_workflows": 0,
+    "qualified_head_check_runs": 0,
+    "qualified_head_statuses": 0,
+    "merge_workflows": 0,
+    "merge_check_runs": 0,
+    "merge_statuses": 0,
+    "selection": "NOT_SELECTED_BOUNDED_LOCAL_ADAPTER_COMPOSITION",
+    "counted_as_pass": false
+  },
+  "source_docs": "PASS",
+  "strict_docs": "PASS",
+  "scope": "Existing immutable native calendar automatically selects daily amendments for existing explicit output-day application. No incumbent physics/state/schema changes.",
+  "immutable_future_schedule": "Caller explicitly reconstructs the plan; no schedule identity in restart and no event-consumption cursor.",
+  "thermal_calendar_qualified": false,
+  "general_default_orchestration": false,
+  "full_mc_nut01_closed": false,
+  "master_rows_promoted": false
+}

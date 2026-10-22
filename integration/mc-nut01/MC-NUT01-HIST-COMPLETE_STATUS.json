@@ -4577,16 +4577,16 @@
     },
     "calendar_output_successor_20261022": {
       "baseline": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
-      "stage": "LOCAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_CALENDAR_OUTPUT_FULL_HIST_OPEN",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonical_admitted": false,
+      "canonical_admitted": true,
       "contract": "docs/science/MC_NUT01_CALENDAR_OUTPUT_20261022.md",
       "scope": "Existing immutable native calendar automatically selects daily amendments for existing explicit output-day application. No incumbent physics/state/schema changes.",
       "test_selection": "Fresh cold native/output O0/O2 roughly331-provider closure expected360s; necessary real accepted-state bootstrap for native/calendar/output composition. Hash-reuse current objects then fresh driver; exact original endpoints and source/evidence owner; no full730day, broad FCI, highest low-air, RossFast expansion or aquifer.",
-      "next_action": "Run sealed current owning chain and corruption controls, source/strict docs; publish qualified tree, reconcile live canonical, verify actual merge and register bounded master receipt. Full MC-NUT01 remains open.",
+      "next_action": "Register bounded calendar-output receipt on existing master without full-row promotion. General/default orchestration, heat-specific calendar, harvest/rotation output, active-crop/immobilisation negative allocation and snow/persistent-surface remain open.",
       "evidence_index": "integration/audits/evidence/mc-nut01-calendar-output-20261022/INDEX.json",
       "evidence_index_sha256": "0bfda3e3d7a6e7c30d9bb62659363a4f0cfaba809bf0d1288bab4b6191b7cd6f",
       "qualified_input_sha256": {
@@ -5007,7 +5007,15 @@
         "integration/audits/verify_nut_calendar_output.py": "f730b7e1a7d91a0198412759fc461d873381ce4f7180a8689bd310bd29ea1700",
         "src/adapter/mod_crop_soil_n_calendar_output_day.f90": "422e18236b8104ff52005d811fef8a8fd958eaf90ca9cf9852b219739679461c",
         "tests/nut-output/run_calendar_output.py": "03c551dc010e32dba390f877e84232a0a9a9a5562cf9535a047e550eed6b7424"
-      }
+      },
+      "pr": 1371,
+      "qualified_head": "e60417b54f1d210734281233d839140127c5f417",
+      "canonical_merge": "d79217149734928e957015bace05d78a5ba7905a",
+      "qualified_tree": "33e707b5fbbf0463c5b7b93df35d9bf10c2057f4",
+      "whole_merge_tree_exact": true,
+      "owning_guard": "PASS",
+      "owning_controls": 19,
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_CALENDAR_OUTPUT_ADMISSION_20261022.json"
     }
   }
 }
