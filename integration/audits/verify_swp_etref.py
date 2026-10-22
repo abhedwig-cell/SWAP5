@@ -66,6 +66,8 @@ def projection(path):
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if 'evidence' in record().get('simple_crop_preparation_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_simple_crop.py'))['source'](reader,changed)
     r = record(reader)
     require(r['baseline'] == BASE, 'ETref baseline')
     before = json.loads(subprocess.check_output(['git', 'show', BASE + ':' + STATUS], cwd=ROOT))
@@ -202,6 +204,8 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
 
 
 def self_test():
+    if 'evidence' in record().get('simple_crop_preparation_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_simple_crop.py'))['self_test']()
     checks = []
     for p in record()['postimages']:
         def stale(path):
@@ -234,6 +238,8 @@ def self_test():
 
 
 def verify():
+    if 'evidence' in record().get('simple_crop_preparation_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_simple_crop.py'))['verify']()
     source()
     result = validate(capsule())
     result['controls'] = len(self_test())

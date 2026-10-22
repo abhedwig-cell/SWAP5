@@ -1,5 +1,17 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+
+MC-SOL01 native simple-crop preparation,22 October2026: the
+[bounded successor](../science/MC_SOL01_NATIVE_SIMPLE_CROP_CONTRACT.md) adds original
+fixed-cycle and thermal-sum phenology, single-period SWP/CRP/MET input and existing
+canopy/ETref/DVS-root-depth composition. Native checked O0/O2 matches576 original
+values exactly, repeats eight schedules and rejects22 invalid inputs atomically.
+The one-provider state contract passes; incumbent water/solute/NUT execution bytes
+and raw proof remain valid. This prepares potential demand only. Actual hydraulic
+root uptake, coupled crop restart and full historical/default orchestration remain
+open. Existing MC-SOL01 recovery ownership records admission separately; no master
+capability disposition changes.
+
 MC-NUT01 explicit native TRUE startup: [contract and claim limits](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md),
 existing HIST-COMPLETE child
 `extended_output_component_20261021/native_startup_successor_20261022`,
