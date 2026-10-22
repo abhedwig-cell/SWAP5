@@ -1,0 +1,81 @@
+{
+  "workstream": "PERF01 / HY / RT",
+  "work_unit": "WEATHER_WARM_START",
+  "baseline": "3e23aa83de6637a8460e080e023abde89bca8127",
+  "canonical_observed": "636760624e930f11517a42707fd16d885902c045",
+  "status": "LOCAL_IMPLEMENTATION_AND_PHYSICAL_PROOF_PASS_NO_SPEEDUP_DEFAULT_OFF",
+  "implemented": true,
+  "first_prototype": {
+    "status": "97DAY_COMPLETES_FOCUSED_PASS_BUT_SLOWER_RETAINED",
+    "source": "c8f39c88",
+    "cold_user_seconds": 7.43141,
+    "warm_user_seconds": 9.316563,
+    "timing_limit": "Single screening observations; cold run overlapped compilation, no portable speed claim",
+    "max_daily_storage_difference_mm": 0.00026787294973473763,
+    "max_head_difference_cm": 0.0014772090687813488,
+    "diagnosis": "Full-budget warm failure duplicates expensive work before cold fallback. Same-origin-only cache also misses successful next-step continuation. Revised warm cap3 and exact-endpoint continuation require new execution."
+  },
+  "tested": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "default_off": true,
+  "tested_production_checkpoint": "10f8d6b6",
+  "benchmark_checkpoint": "4cc6269a",
+  "bounded_native_qualification": "PASS; overall source/admission owners remain pending",
+  "result": "benchmarks/performance/PERF01_WARM_START_20261022_RESULT.md",
+  "summary": "benchmarks/performance/PERF01_WARM_START_20261022_EVIDENCE.json",
+  "verifier": "benchmarks/performance/verify_perf01_warm_start.py",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_WARM_START_20261022_EVIDENCE.tar.xz",
+    "sha256": "818f2d847503d449194c6dea24307cb867f8a1dae2515258e035fa4defbae801",
+    "bytes": 807876,
+    "members": 2690
+  },
+  "final_observations": {
+    "same_source_serial_alternating_pairs_per_rainfall": 3,
+    "tolerance_cm": 0.001,
+    "1x_cold_median_cpu_seconds": 2.027336,
+    "1x_warm_median_cpu_seconds": 2.330267,
+    "4x_cold_median_cpu_seconds": 7.260299,
+    "4x_warm_median_cpu_seconds": 8.086937,
+    "4x_actual_headcalc_calls_cold": 138057,
+    "4x_actual_headcalc_calls_warm": 155353,
+    "4x_max_daily_storage_difference_mm": 0.0002967236132178641,
+    "4x_total_runoff_difference_mm": 0.000531838542393166,
+    "4x_total_bottom_difference_mm": -0.0005294976875103163,
+    "O0_checked_vs_O2_97day_physical_receipts_exact": true,
+    "active_wetday35_same_process_reconstruction_exact": true,
+    "rollback_21bits_crop_revision_absent_receipts": true,
+    "focused_warm_cold_origin_invalidation_fallback_controls_O0_O2": "PASS",
+    "original_weather_profiles_per_optimization": 6,
+    "unchanged_default_solver_contracts_per_optimization": 2,
+    "evidence_negative_controls": 4,
+    "timing_limit": "Substantial host timing variability retained; no portable speed guarantee. No speedup in either tested rainfall case."
+  },
+  "contract": "docs/science/PERF01_WEATHER_WARM_START.md",
+  "recovery_branch": "work/perf01-warm-start-20261022",
+  "scope": "Bounded PR1361 weather Full Richards initialization; general solver default off",
+  "interfaces_allowed": ["soil_water_numerical_config_t opt-in", "Reference worker-only warm cache", "weather request numerical selection"],
+  "interfaces_fixed": ["committed physical state", "mass gates", "accepted receipts", "restart payload", "hydraulic laws", "temporal acceptance"],
+  "test_selection": {
+    "focused": {
+      "owner": "PERF01 / Reference solver",
+      "authority": "docs/science/PERF01_WEATHER_WARM_START.md",
+      "scientific_claim": "Validate warm-start request isolation, identity guards and cold fallback on actual production solver",
+      "expected_seconds": 120,
+      "existing_evidence": "Predecessor archives retained; source changes require current execution"
+    },
+    "seasonal": {
+      "owner": "PERF01 weather composition",
+      "authority": "docs/science/PERF01_WEATHER_WARM_START.md",
+      "scientific_claim": "97day1x/4x at1e-3, independent gross closure, O0/O2, restart, rollback, then paired CPU work comparison including day84",
+      "expected_seconds": 240,
+      "strict_1e6": "NOT_SELECTED_USER_DECISION",
+      "highest_low_air": "NOT_SELECTED_POLICY",
+      "rossfast": "NO_SCOPE_EXPANSION",
+      "full_fci": "NOT_SELECTED_FOR_PROTOTYPE"
+    }
+  },
+  "canonical_delta": "Later canonical has independent NUT/SOL changes including the backend; do not overwrite them or claim this pinned PR is canonically reconciled.",
+  "next_action": "Keep tested warm option default OFF. Complete the existing source/admission owner reconciliation before any canonical integration. Further performance research must reduce actual failed Newton work; this same-origin/continuation predictor did not improve the 1x/4x season."
+}

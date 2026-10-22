@@ -53,7 +53,7 @@ module mod_fmr_serialized_reference_backend
   use mod_reference_richards_accepted_step_directional_service, only: solve_with_accepted_step_direction
   use mod_reference_richards_state_binding, only: FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
   use mod_reference_richards_legacy_binding, only: reference_richards_legacy_solver_t, &
-       reference_richards_legacy_workspace_t
+       reference_richards_legacy_workspace_t, clear_reference_trial_guess
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_fmr_rossfast_solver_selection_binding, only: fmr_rossfast_solver_selection_binding_t, &
        FMR_ROSSFAST_BIND_INTERNAL_ERROR
@@ -332,6 +332,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
+    logical :: weather_trial_warm_start = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -803,6 +804,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: swbotb3_explicit_shape_3 = 1.0_real64
     integer :: swkimpl = 0
     integer :: swkmean = 1
+    logical :: weather_trial_warm_start = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
@@ -2846,6 +2848,8 @@ contains
     self%model%soil_salt_boundary_forcing = fmr_soil_salt_boundary_forcing_t()
     if (allocated(forcing%c_drain_salt)) self%model%c_drain_salt_forcing = forcing%c_drain_salt
     if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
+    ! Warm numerical history is local to this immutable external interval.
+    call clear_reference_trial_guess(self%model%workspace)
     if (allocated(forcing%legacy_swbotb5_control)) then
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
            result, candidate, diagnostics, target_selector=select_hbot5_proposal)
@@ -3507,6 +3511,7 @@ contains
       self%swkimpl = parameters%swkimpl
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
+      self%weather_trial_warm_start = parameters%weather_trial_warm_start
       self%max_backtracking = parameters%max_backtracking
       self%min_step_duration = parameters%min_step_duration
       self%practical_richards_a2c_active = parameters%practical_richards_a2c_active
@@ -4572,6 +4577,7 @@ contains
       self%last_observation%hbot5_pressure_head_cm = self%hbot5_proposal%pressure_head_cm
     end if
     request%numerical%consistent_provider_conductivity=self%weather_surface_active
+    request%numerical%reuse_trial_head=self%weather_surface_active.and.self%weather_trial_warm_start
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
@@ -5304,7 +5310,7 @@ contains
     if (self%soil_water_selection%uses_rossfast()) then
       outcome%headcalc_calls = 0
     else
-      outcome%headcalc_calls = 1
+      outcome%headcalc_calls = solve_result%diagnostics%headcalc_calls
     end if
     outcome%jacobian_builds = solve_result%diagnostics%jacobian_builds
     outcome%linear_solves = solve_result%diagnostics%linear_solves

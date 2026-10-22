@@ -65,6 +65,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    type(reference_richards_state_binding_t), target, intent(inout), optional :: state_binding
    type(reference_richards_state_binding_t), target :: local_state_binding
    type(reference_richards_state_binding_t) :: corner_entry_state
+   type(reference_richards_state_binding_t) :: warm_probe_state
+   logical :: warm_probe_pending, cold_probe_pending
+   real(8) :: warm_probe_norm
    type(reference_richards_state_binding_t), pointer :: state
    type(hydraulic_evaluation_context_t), intent(in), optional :: evaluation_context
    type(soil_water_top_boundary_result_t) :: provider_dynamic_top_result
@@ -377,6 +380,12 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    ! Preserve every successful ordinary solve. Only a failed solve entering
    ! desaturation at a machine-near-zero head gets one bounded damped restart.
    corner_retry_active = .false.
+   warm_probe_pending=.false.;cold_probe_pending=.false.
+   if(present(numerical_config))then
+      if(numerical_config%reuse_trial_head.and.consistent_provider_conductivity.and. &
+         provider_dynamic_top_active.and.swmacro==0) &
+        warm_probe_pending=any(state%h/=state%hm1)
+   end if
    corner_retry_available = consistent_provider_conductivity .and. provider_dynamic_top_active .and. swmacro == 0
    if (corner_retry_available) then
       corner_retry_available = any(state%hm1 >= 0.0d0 .and. state%hm1 <= sqrt(epsilon(1.0d0)))
@@ -428,6 +437,26 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 
 !  initial estimate of fsi_ws%residual inner product
    sumold = 0.5d0 * dot_product(fsi_ws%residual(1:NN), fsi_ws%residual(1:NN))
+   ! Evaluate both initial residuals before spending Newton iterations on a
+   ! predictor. Only a substantially better guess receives the warm budget.
+   ! These are candidate evaluations, never changed physical storage origins.
+   if(warm_probe_pending)then
+      warm_probe_state=state;warm_probe_norm=sumold
+      state%h=state%hm1;state%theta=state%thetm1
+      state%pond=state%pondm1;state%gwl=state%gwlm1
+      warm_probe_pending=.false.;cold_probe_pending=.true.
+      goto 900
+   end if
+   if(cold_probe_pending)then
+      cold_probe_pending=.false.
+      if(warm_probe_norm<0.01d0*sumold)then
+         state=warm_probe_state
+         goto 900
+      end if
+      state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.
+      ctx%diagnostics%internal_retries=ctx%diagnostics%internal_retries+1
+      return
+   end if
 
 !  start iteration loop, MaxIt specified in the input
    MaxIt1 = MaxIt
