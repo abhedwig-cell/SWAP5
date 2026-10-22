@@ -1,0 +1,26 @@
+{
+  "workstream": "PERF01 / HY / TX",
+  "work_unit": "FAILED_NEWTON_WORK_AND_STEP_REGROWTH",
+  "baseline": "f4ef44cb20cfb73ae7a582487790a4eb0292b144",
+  "recovery_branch": "research/perf01-newton-work-20261022",
+  "status": "GENERATED_RESEARCH_SCREEN_RUNNING",
+  "production_changed": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "plan": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_PLAN.md",
+  "interfaces_changed": [],
+  "invariants": "Unchanged physical law, committed origin, water conservation, acceptance criteria, retry and restart authority. Research executables may alter Newton execution only.",
+  "test_selection": {
+    "smallest_real_contract": "Relink generated Newton variants to source-verified current256-provider weather objects; no mock or copied physical solver.",
+    "affected_scope": "97-day1x/4x illustrative Reference/default-MvG weather column, temporal comparison budget1e-3cm, original numerical mass/head criteria.",
+    "expected_compile_link_seconds_each": 10,
+    "expected_screen_native_seconds_total": 60,
+    "expected_followup_seconds": 90,
+    "full_fci": "NOT_SELECTED_GENERATED_RESEARCH_ONLY",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NO_EXPANSION",
+    "new_1e_6_runs": "NOT_SELECTED_USER"
+  },
+  "current_execution": "/tmp/perf01-newton-screen/RESULT.json",
+  "next_action": "Observe all8 original/candidate rainfall arms through terminal status, retain failures, independently screen physical differences, then select only promising arms for checked/restart/paired observations. No production promotion from screening alone."
+}
