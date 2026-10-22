@@ -94,6 +94,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    real(8) :: provider_macropore_surface_area_fraction
    logical :: provider_tuple_valid, provider_tuple_from_candidate
    logical :: provider_point_conductivity_supported, provider_point_conductivity_available
+   logical :: picard_conductivity_iteration
 !  local
    type(a23bu_worker_context_t), target :: local_worker
    type(a23bu_worker_context_t), pointer :: ctx
@@ -144,6 +145,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    else
       numnod = legacy_numnod
    end if
+   picard_conductivity_iteration = .false.
+   if (present(numerical_config)) picard_conductivity_iteration = numerical_config%picard_conductivity_iteration
    canonical_trial = present(worker)
    if (canonical_trial) then
       ctx => worker
@@ -255,6 +258,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (.not. provider_source_sink_active) error stop 'HeadCalc: explicit source/sink provider required'
       if (provider_root_sink_active .and. SwKimpl /= 0) &
            error stop 'HeadCalc: root-sink provider requires swkimpl=0 in F-SI11'
+   end if
+   if (picard_conductivity_iteration) then
+      if (legacy_state_binding .or. .not. provider_constitutive_active .or. SwKimpl /= 0) &
+           error stop 'HeadCalc: Picard conductivity requires explicit constitutive provider and swkimpl=0'
    end if
    if (.not. legacy_state_binding .and. present(evaluation_context) .and. present(boundary_conditions)) then
       provider_top_active = associated(evaluation_context%top_boundary) .and. &
@@ -585,13 +592,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          if (provider_constitutive_active) then
             provider_tuple_valid = .false.
             ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
-            if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. swbotb /= 7 .and. swbotb /= -2) then
+            if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. .not.picard_conductivity_iteration .and. swbotb /= 7 .and. swbotb /= -2) then
                ctx%diagnostics%constitutive_candidate_demand_evaluations = &
                     ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
                call evaluation_context%constitutive%evaluate_demand(state%h(1:numnod), &
                     CONSTITUTIVE_DEMAND_WATER_CONTENT, fsi_ws%provider_theta, fsi_ws%provider_k, &
                     fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
-            else if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. (swbotb == 7 .or. swbotb == -2) .and. &
+            else if (SwKimpl == 0 .and. .not.consistent_provider_conductivity .and. .not.picard_conductivity_iteration .and. (swbotb == 7 .or. swbotb == -2) .and. &
                      provider_point_conductivity_supported) then
                ctx%diagnostics%constitutive_candidate_demand_evaluations = &
                     ctx%diagnostics%constitutive_candidate_demand_evaluations + 1
@@ -622,6 +629,21 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             end do
          end if
 
+!        Modified Picard: refresh physical conductivity at each candidate while
+!        retaining the SwKimpl=0 matrix (no legacy derivative/root calls).
+         if (picard_conductivity_iteration) then
+            state%k(1:numnod)=fsi_ws%provider_k(1:numnod)
+            do i=1,numnod
+               if (scale_matrix_area) state%k(i)=matrix_fraction(i)*state%k(i)
+               if (i>1)state%kmean(i)=hcomean(swkmean,state%k(i-1),state%k(i),grid_dz(i-1),grid_dz(i), &
+                    i,state%h(i-1),state%h(i))
+            end do
+            state%kmean(numnod+1)=state%k(numnod)
+            do i=2,numnod
+               fsi_ws%dfdh_upper(i)=-state%kmean(i)/grid_disnod(i)
+               fsi_ws%dfdh_lower(i-1)=fsi_ws%dfdh_upper(i)
+            end do
+         end if
 !        update gradient in state%h
          do i = 2, NN
             fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0

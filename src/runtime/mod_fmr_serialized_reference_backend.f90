@@ -333,6 +333,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkimpl = 0
     integer :: swkmean = 1
     integer :: swsophy = 0
+    logical :: picard_conductivity_iteration = .false.
     logical :: weather_trial_warm_start = .false.
     integer :: max_iterations = 8
     integer :: max_backtracking = 4
@@ -627,6 +628,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: solver_equation_residual = 0.0_real64
     logical :: solver_equation_residual_available = .false.
     type(soil_water_solver_diagnostics_t) :: solver_diagnostics
+    logical :: picard_conductivity_iteration = .false.
     logical :: practical_richards_a2c_active = .false.
     real(real64) :: practical_richards_head_abs_tolerance = 0.0_real64
     real(real64) :: practical_richards_head_rel_tolerance = 0.0_real64
@@ -822,6 +824,7 @@ module mod_fmr_serialized_reference_backend
     integer :: swkmean = 1
     logical :: weather_trial_warm_start = .false.
     integer :: max_iterations = 8
+    logical :: picard_conductivity_iteration = .false.
     integer :: max_backtracking = 4
     real(real64) :: min_step_duration = 1.0e-6_real64
     real(real64) :: compartment_balance_tolerance = 1.0e-12_real64
@@ -3113,6 +3116,30 @@ contains
       ok = ok .and. parameters%parameter_set_id > 0_int64 .and. parameters%active_nodes > 0 .and. &
            allocated(parameters%z) .and. allocated(parameters%dz) .and. allocated(parameters%node_distance) .and. &
            allocated(parameters%cofgen)
+      if (parameters%picard_conductivity_iteration) then
+        ! Bounded numerical successor; no implied admission of other physics.
+        ok = ok .and. self%soil_water_selection%uses_reference() .and. &
+             parameters%swkimpl == 0 .and. parameters%swkmean == 1 .and. parameters%swsophy == 0 .and. &
+             parameters%bottom_mode == 2 .and. parameters%max_iterations == 64 .and. &
+             numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF .and. &
+             .not. numerical_config%accepted_trajectory_direction%requested .and. &
+             .not. numerical_config%retain_accepted_step_proposal .and. &
+             .not. self%temporal_indicator_history_enabled .and. .not. self%fixed_weir_surface_water_active .and. &
+             .not. self%rutter_active .and. .not. self%rfm_configuration%enabled .and. &
+             .not. self%bottom_thermal_carrier_active .and. .not. self%top_sensible_boundary_carrier_active .and. &
+             .not. allocated(parameters%hydraulic_model_kind) .and. .not. allocated(parameters%linear_hydraulic_table) .and. &
+             .not. parameters%tabulated_hydraulics_active .and. .not. parameters%direct_retention_active .and. &
+             .not. parameters%ksatexm_extension_active .and. .not. parameters%conductivity_power_tail_active .and. &
+             .not. parameters%extended_model6_active .and. .not. parameters%pdi_vapor_active .and. &
+             .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &
+             .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
+             .not. parameters%soil_temperature_active .and. .not. parameters%frost_active .and. &
+             .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &
+             .not. parameters%boesten_evaporation_active .and. .not. parameters%practical_richards_a2c_active .and. &
+             .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
+             .not. allocated(parameters%bartholomeus) .and. .not. allocated(parameters%micro_de_willigen) .and. &
+             parameters%root_compensation%method == ROOT_COMP_OFF
+      end if
       if (ok) ok = size(parameters%z) == parameters%active_nodes .and. &
            size(parameters%dz) == parameters%active_nodes .and. &
            size(parameters%node_distance) == parameters%active_nodes .and. &
@@ -3525,6 +3552,7 @@ contains
       self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
       self%swbotb3_explicit_shape_3 = parameters%swbotb3_explicit_shape_3
       self%swkimpl = parameters%swkimpl
+      self%picard_conductivity_iteration = parameters%picard_conductivity_iteration
       self%swkmean = parameters%swkmean
       self%max_iterations = parameters%max_iterations
       self%weather_trial_warm_start = parameters%weather_trial_warm_start
@@ -3651,6 +3679,7 @@ contains
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%drainage_response_active = self%drainage_response_active
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
+    self%last_observation%picard_conductivity_iteration = self%picard_conductivity_iteration
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
@@ -4357,6 +4386,7 @@ contains
     rfm_deep_receipt_cm = 0.0_real64
     self%last_observation = fmr_serialized_physical_observation_t()
     self%last_observation%practical_richards_a2c_active = self%practical_richards_a2c_active
+    self%last_observation%picard_conductivity_iteration = self%picard_conductivity_iteration
     self%last_observation%practical_richards_head_abs_tolerance = self%head_abs_tolerance
     self%last_observation%practical_richards_head_rel_tolerance = self%head_rel_tolerance
     self%last_observation%practical_richards_compartment_balance_tolerance = self%compartment_balance_tolerance
@@ -4611,6 +4641,7 @@ contains
     request%numerical%max_iterations = self%max_iterations
     request%numerical%max_backtracking = self%max_backtracking
     request%numerical%conductivity_implicit_mode = self%swkimpl
+    request%numerical%picard_conductivity_iteration = self%picard_conductivity_iteration
     request%numerical%conductivity_mean_method = self%swkmean
     request%numerical%min_step_duration = self%min_step_duration
     request%numerical%compartment_balance_tolerance = max(self%compartment_balance_tolerance, &

@@ -24,6 +24,9 @@ module mod_b111_persistent_pond
   logical::implicit_pond_evaporation=.false.
   real(real64)::soil_evaporation_rate=0d0
   logical::exact_empty_pool_chemistry=.false.
+  ! Explicit historical surface law: upward water carries zero solute.
+  ! This does not implement a soil-concentration donor return.
+  logical::historical_zero_solute_exfiltration=.false.
  end type
  type,public::persistent_pond_receipt_t
   integer::status=POND_INVALID
@@ -95,7 +98,8 @@ contains
     s%soil_evaporation_rate)<0d0)return
   if(max(s%depth_begin,s%depth_end,s%rain_c,s%irrigation_c,s%runon_c,s%dry_deposition_rate)>1d6)return
   if(max(s%rain_rate,s%irrigation_rate,s%runon_rate,s%pond_evaporation_rate,s%soil_evaporation_rate)>5d5.or. &
-    s%qtop>s%soil_evaporation_rate.or.s%qtop< -1d6)return
+    s%qtop>1d6.or.s%qtop< -1d6)return
+  if(s%qtop>s%soil_evaporation_rate.and..not.s%historical_zero_solute_exfiltration)return
   if(s%soil_evaporation_rate>0d0.and.(s%pond_evaporation_rate>0d0.or.s%depth_begin>1d-10))return
   r%status=POND_WATER
   r%water_residual=s%depth_end-s%depth_begin- &

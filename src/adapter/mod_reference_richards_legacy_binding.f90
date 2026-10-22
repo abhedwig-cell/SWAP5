@@ -539,6 +539,13 @@ contains
        route = 'legacy-implicit-k-deferred'
        return
     end if
+    if (request%numerical%picard_conductivity_iteration .and. &
+        (request%boundary%bottom_mode /= 2 .or. request%numerical%conductivity_mean_method /= 1 .or. &
+         request%numerical%max_iterations /= 64 .or. request%physical%macropore_active .or. &
+         request%request_interface_sensitivity)) then
+       route = 'picard-conductivity-composition-deferred'
+       return
+    end if
     if (fldtmin) then
        route = 'legacy-min-dt-deferred'
        return

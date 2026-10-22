@@ -3996,6 +3996,204 @@
             "substep_feedback_work": {
               "baseline": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
               "status": "CANONICALLY_ADMITTED_BOUNDED_TRIAL_BEGINNING_ROOT_SUBSTEP",
+              "native_project_successor": {
+                "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+                "status": "PROPOSED_PREPARATION_O0_O2_PASS_ANNUAL_TRANSPORT_BLOCKED_NOT_ADMITTED",
+                "positive_transport_successor": {
+                  "baseline": "e387b89d382afaee325f3cf2c2760f0713f258e4",
+                  "status": "POSITIVE_TRANSPORT_AND_PICARD_FOCUSED_PASS_ANNUAL_EXFILTRATION_AND_WATER_BLOCKED",
+                  "research_evidence": {
+                    "path": "integration/audits/evidence/MC_SOL01_POSITIVE_TRANSPORT_RESEARCH_20261022.tar.xz.b64",
+                    "decoded_sha256": "afbe6ddbc158e968431bdcbf2eb5d6020e9ad56cd710e12aeaf8d7856ec91962",
+                    "decoded_bytes": 2042792,
+                    "members": 18936,
+                    "source_checkpoint": "8175bf08",
+                    "verifier": "integration/audits/verify_positive_transport_checkpoint.py",
+                    "verification": "BOUNDED_RESEARCH_DEFAULT_PRESERVATION_ANNUAL_BLOCKED;11 current/focused controls checked,660 failed-Picard-prefix daily observations checked;5 negative controls reject false annual admission,missing source census,changed incumbent endpoint,bad daily water balance and mislabelled duplicate optimization",
+                    "annual_qualified": false,
+                    "canonically_admitted": false
+                  },
+                  "picard_successor_20261022": {
+                    "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
+                    "implementation": "Explicit default-OFF numerical conductivity iteration, Reference/default MvG only;64 iterations, unchanged1e-12 local and1e-10 mass criteria; no legacy SwKimpl1",
+                    "focused": "Actual day257 O0/O2 PASS; current193-object root rejection/retry/A/B/A and7 invalid compatibility controls per optimization PASS; current native within-mode restarts and cross-mode rejections PASS",
+                    "default_preservation": "Final current O0/O2:default daily128 balances,16 fresh restarts,64 exact predecessor files and2 mode rejections PASS; default transaction PASS; current336-provider cold native,calendar,thermal/crash,harvest phases and saved-harvest/fallow output PASS. Native/default NUT endpoints equal the pre-Picard incumbent exactly.",
+                    "historical_exfiltration_finding": "Authenticated SWAP431 solute.f90:346-355 sets surface chemical flux0 for qtop>=-1e-6. A test-only carrier permitting upward water with that unchanged chemical operator passes actual day267 in O0/O2. A nonzero soil-concentration donor return would be new physics, not an exact historical migration. Production carrier remains unchanged in this checkpoint.",
+                    "annual": {
+                      "coarse_O0_O2": "266 accepted days; day267 rejects surface exfiltration in persistent pond carrier before chemical commit",
+                      "refined_O0_O2": "64 accepted days; day65 water transaction fails near internal saturation",
+                      "optimization_identity": "Both grids have byte-identical O0/O2 budget prefixes and rejected committed snapshots",
+                      "full_generations": "NOT_PUBLISHED",
+                      "restart_and_cross_year": "NOT_REACHED_DEPENDENCY",
+                      "qualified": false
+                    },
+                    "exfiltration_diagnostic": "Actual day267:step2 dt=.25day, pond .015733932160572135cm to0, qtop=+.039407159969323521cm/day, pond evaporation=.10234288861161206cm/day, soil evaporation=0. POND_INVALID at existing qtop>soil_evaporation carrier guard; zero water balance error. No unqualified soil-to-pond solute return is synthesized.",
+                    "water_diagnostic": "Actual refined day65 remains rejected at1e-4 and largest admitted temporal tolerance1e-3; pond/GWL full/half differences0, internal pressure differences near saturation.1e-2 and1e-1 reject the existing input domain before a water trial.",
+                    "excluded_runs": "picard-transaction-preflight supplied O0 twice and is explicitly invalid; picard-nut-cold mixed pre/post guard source versions and is excluded. Final current builds and controls replace them.",
+                    "next_safe_work": "Resolve internal-saturation water robustness with a preregistered error-control study, and implement source-backed soil-to-pond solute exfiltration ownership. Then rerun both grids/optimizations, annual restart and cross-year before qualification/admission.",
+                    "canonically_admitted": false,
+                    "full_historical_migration": false
+                  },
+                  "current_controls": {
+                    "process": "O0/O2 real6-provider36 positivity cases,6 source/sink/decay cases,3 analytic convergence meshes per optimization PASS",
+                    "short_project": "O0/O2 current conservative source:2 exact fresh restarts and14 invalid inputs PASS",
+                    "policy_restart": "O0/O2 both modes:12 exact fresh files,8 public/native cross-policy rejections and exact water/root fields PASS",
+                    "Reference_default": "O0/O2 current194-provider builds:128 root daily balances,16 exact restarts,64 predecessor default files,2 restart-mode rejections and real reject/retry/A/B/A/absent-option transaction PASS",
+                    "day229": "Current O0/O2 positive policy actual day replay PASS; current Reference actual rejection retains both owners byte exactly",
+                    "NUT": "Pre-Picard current336-provider cold/calendar and fresh rebuilt thermal/crash O0/O2 PASS. Initial thermal executable-mode failure retained. Picard successor requires its separate final current preservation controls."
+                  },
+                  "water_failure": {
+                    "day": 257,
+                    "accepted_prefix_days": 256,
+                    "optimizations": [
+                      "O0",
+                      "O2"
+                    ],
+                    "completed_t": 256.5788216367938,
+                    "accepted_substeps_in_rejected_day": 58836,
+                    "attempts": 1104523,
+                    "retries": 1045686,
+                    "solver_rejections": 125288,
+                    "temporal_rejections": 920399,
+                    "mass_rejections": 0,
+                    "minimum_accepted_dt_day": 3.922529179588627e-10,
+                    "disposition": "Historical frozen-conductivity experiment: all four coarse/refined O0/O2 runs terminate after256 accepted days. Retained proposal and extra Newton iterations do not cure the actual failure. Explicit Picard successor passes day257 but fails the full years at separate boundaries; see picard_successor_20261022."
+                  },
+                  "retained_implicit_failure": "The first implicit candidate passes actual day229 replay but all four annual compound runs fail their initial short control after668 accepted substeps:day residual4.69e-12, process0, existing route mass certificate exceeded. Sources and logs retained. Conservative primary-amount storage replaces accumulated inverse-recompute drift; no tolerance changes.",
+                  "focused_result": "36 high-Peclet/nonlinear positivity and conservation cases per optimization, independent2x2 linear oracle,6 source/sink/decay cases and3 analytic advection meshes. Analytic L1 error decreases1.34460,0.85810,0.50982 for20/40/80cells; this first-order policy has material numerical diffusion.",
+                  "failed_day_replay": "O0/O2:actual committed day228 physical states reinitialized with the new explicit policy in a test-only driver; day229 succeeds with hard water/solute mass. Public cross-policy restart conversion remains forbidden.",
+                  "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md#proposed-positive-transport-numerical-policy",
+                  "owned_surface": "Reactive forcing explicit numerical selector and private implicit finite-volume solve; conditional matrix configuration fingerprint; native project opt-in",
+                  "invariants": [
+                    2,
+                    3,
+                    5,
+                    7,
+                    9,
+                    13,
+                    21,
+                    23,
+                    25,
+                    26,
+                    29,
+                    30
+                  ],
+                  "source_finding": "Original solute.f90:436-438 resets negative cmsy and accumulates rounderr. Centered flux cannot guarantee positivity at small physical dispersion merely by reducing dt.",
+                  "test_selection": {
+                    "focused": "Real6-provider process O0/O2, independent linear implicit oracle, positivity/mass, source/sink/nonlinear, invalid/nonmutation/Reference preservation; expected60s",
+                    "build": "Rebuild current194 providers O0/O2 because shared forcing type changes; expected120s; no unsafe old-object reuse",
+                    "default_preservation": "Current original root daily/transaction controls, cold/thermal/calendar NUT output with current rebuilt physical providers; actual unchanged Reference endpoints and all existing assertions required. Expected180s cold build and120s linked controls. Frozen numeric ancestry is historical until these current runs complete.",
+                    "annual": "Actual original blocked coarse/refined year and cross-year with opt-in implicit upwind, unchanged physical inputs and tolerances; expected3600s; source exact Reference prefixes retained",
+                    "full_fci": "PENDING_STABLE_CANDIDATE_OWNER_RECONCILIATION",
+                    "highest_low_air": "NOT_SELECTED_POLICY"
+                  },
+                  "next_action": "Complete current default preservation and retain source-bound successful/failed experiments; resolve internal-saturation water robustness and explicit chemical exfiltration before rerunning annual restart/cross-year",
+                  "qualified": false,
+                  "canonically_admitted": false,
+                  "saturation_surface_continuation_20261022": {
+                    "baseline": "17a6c17a478238e5fafc469aa275313bcdf2e184",
+                    "composition_commit": "9c3d719a",
+                    "implemented": true,
+                    "persisted": true,
+                    "tested": true,
+                    "qualified": false,
+                    "canonically_admitted": false,
+                    "day65_current": "The copied admitted weather estimator is demonstrably invoked by the instrumented O2 probe; same rejection at64.967257647735735 and1674 accepted/18877 attempts. The route-specific canonical saturation repair is not active for this prescribed-bottom2 pond route.",
+                    "day267_current": "Production historical-zero boundary and separate upward-water/zero-solute report pass O0/O2;4 exact budget/state/endpoint/restart files; default false still rejects with exact owners.",
+                    "scope": "Explicit default-false historical zero-solute upward-water boundary; unchanged historical surface operator and hard water/solute mass",
+                    "next_action": "Resolve the remaining actual day65 internal-saturation solve/constitutive stagnation with a source-bound discriminating study; the tested saturation-aware estimator substitution alone is insufficient. Complete current wider owning/NUT preservation and annual/cross-year qualification before admission.",
+                    "expected_build_seconds": 500,
+                    "remote_persistence": "BLOCKED_AUTO_REVIEW: branch push rejected because continue instruction considered insufficient remote-publication authorization. No bypass attempted.",
+                    "evidence_root": "/workspace/scratch/5d8653f0be6d/proof",
+                    "excluded": "Initial O2 composition build overlapped pond-type edit and failed at project compilation with old .mod; never PASS. Retain logs; fresh builds selected.",
+                    "status": "LOCAL_TESTED_HISTORICAL_ZERO_SURFACE_BOUNDARY_ANNUAL_WATER_BLOCKED",
+                    "source_checkpoint": "f0be64d9",
+                    "implementation_checkpoint": "1d97cbe3",
+                    "completed_controls": {
+                      "pond": "O0/O2 incumbent240 plus240 source-exact upward cases,nonmutation,restore,remobilize,runoff",
+                      "default_daily": {
+                        "exact_files": 64,
+                        "balances": 128,
+                        "fresh_restarts": 16,
+                        "mode_rejections": 2
+                      },
+                      "default_transaction": "Current193-object real reject/retry/A/B/A O0/O2 PASS",
+                      "native_short": {
+                        "incumbent_exact_files": 8,
+                        "original_exact_values": 144,
+                        "invalid_inputs": 14,
+                        "fresh_restarts": 2
+                      },
+                      "native_opted_restart": {
+                        "exact_files": 12,
+                        "transport_mode_rejections": 8,
+                        "public_surface_mode_rejections": 2
+                      },
+                      "annual": "NOT_RERUN_KNOWN_WATER_BLOCKER",
+                      "full_fci": "NOT_SELECTED_DEVELOPMENT",
+                      "NUT_current": "PENDING_ADMISSION_SELECTION"
+                    },
+                    "evidence_path": "integration/audits/evidence/MC_SOL01_SURFACE_CONTINUATION_20261022.tar.xz.b64",
+                    "evidence": {
+                      "path": "integration/audits/evidence/MC_SOL01_SURFACE_CONTINUATION_20261022.tar.xz.b64",
+                      "decoded_sha256": "824e3f7c8a0ae371ccf0b25bf3b11bc6bb5a1903db8e029b205624ee6bfbe744",
+                      "decoded_bytes": 1625444,
+                      "members": 5586
+                    },
+                    "documentation": {
+                      "source_checks": "PASS",
+                      "strict_mkdocs": "PASS"
+                    },
+                    "recovery_point": "Local branch work/mc-sol01-resume-20261022; current sourcebf1f95aa; sealed5586-member evidence. Remote publication blocked by automatic review.",
+                    "day267_surface_exfiltration_cm": 0.00985178999233088,
+                    "day267_surface_solute_exfiltration_mg_cm2": 0.0
+                  }
+                },
+                "implementation": "Native SWP paths/year-file weather/ordered simple-crop rotations, period-specific root profiles and source-bound restart front end implemented separately; unchanged193 physical providers. Existing apps/SRC unchanged.",
+                "completed_controls": {
+                  "historical_preparation": "O0/O2,365-day/two-period1998 and481-day/three-period cross-year:39114 daily field values exactly equal to complete original fixed.f90/ETpot;12 rejected missing/unsupported future inputs",
+                  "short_physical": "O0/O2:8 exact predecessor output files,2 fresh exact restarts,144 original daily field values,14 invalid inputs",
+                  "coarse_rejection": "Actual day229 replay O0/O2:both committed owners byte-exact unchanged, no successful output publication",
+                  "spatial_probe": "Real6-provider centered transport:small dt does not cure a coarse-grid negative; a separately defined resolved1cm/1cm-dispersivity control is positive and conservative. Not a success claim for the annual fixture.",
+                  "documentation": "tools/docs/check_docs.py PASS",
+                  "annual_transport": "FAILED_NOT_QUALIFIED",
+                  "cross_year_transport": "NOT_REACHED_DEPENDENCY"
+                },
+                "evidence_checkpoint": {
+                  "path": "integration/audits/evidence/MC_SOL01_NATIVE_PROJECT_DRAFT_20261022.tar.xz.b64",
+                  "decoded_sha256": "1244197e5c0772b3b5155f6122e76158c9a43efa327c77d2f652378e43272579",
+                  "members": 509,
+                  "verification": "python -B integration/audits/verify_native_project_checkpoint.py --evidence integration/audits/evidence/MC_SOL01_NATIVE_PROJECT_DRAFT_20261022.tar.xz.b64 --self-test",
+                  "disposition": "Recoverable draft only, not registered as canonical admission authority; all failures retained, source versions and current postimages bound"
+                },
+                "retained_failure": {
+                  "path": "proof/native-project/annual/O0/annual1998/full.pending-0fwsdanl",
+                  "accepted_days": 228,
+                  "water_status": 0,
+                  "joint_status": 3,
+                  "chemical_status": 3,
+                  "disposition": "NOT_QUALIFIED; preserve inputs and failed output; no changed tolerance or forcing",
+                  "diagnosis": "Original12-cell year rejects day229 after228 accepted days; both refined41-cell O0/O2 years reject day141 after140 accepted days. Actual chemical process status3 is a negative explicit update. Smaller joint timesteps failed to resolve coarse positivity and were removed. LDIS=.01/.02 is cm, not1/2cm; original reader performs no conversion. No annual transport/restart PASS or canonical admission."
+                },
+                "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md",
+                "scope": "SWP-led native paths/year weather and up to64 simple-crop periods with unchanged physical kernel",
+                "next_action": "Complete independent annual/cross-year original crop preparation checks and current short O0/O2 controls, retain all failed annual evidence; numerical positivity requires a separate scientific/reference decision before annual route admission",
+                "full_historical_migration": false,
+                "test_selection": {
+                  "native_project": {
+                    "changed_dependency": "New native project metadata/weather adapter, multi-period preparation and explicit physical front end",
+                    "scientific_claim": "Correct original paths/year calendars and period-specific original crop/root preparation; actual hard annual water/solute mass and source-bound restart",
+                    "owner": "MC-SOL01 native_project_successor",
+                    "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md",
+                    "expected_seconds": 2400,
+                    "existing_evidence": "All SRC and old applications unchanged; current193 providers and native crop/root readers can be identity-checked and reused; no inherited new front-end PASS",
+                    "prior_execution": "FAILED",
+                    "diagnosis": "TERMINAL_FAILED:coarse day229; refined O0/O2 day141. The original .01/.02cm dispersivity was initially misinterpreted as1/2cm; refined grid was not resolved. Do not change physics/tolerances to manufacture a passing year. Cross-year physical execution NOT_REACHED_DEPENDENCY. Separate annual/cross-year preparation-only original fixed/ETpot comparison and current short controls selected, expected120s. Full physical qualification remains blocked."
+                  },
+                  "full_fci": "NOT_SELECTED_IMPACT",
+                  "highest_low_air": "NOT_SELECTED_POLICY"
+                }
+              },
               "concurrent_ref": "75877297daffcd50084d3705f91459a4f1272af7",
               "concurrent_reconciliation": "PR1371 adds a native NUT calendar/output adapter outside all194 crop inputs and outside the current336 cold providers. Original bodies and source preserved; fresh current calendar driver explicitly selected using current cold objects.",
               "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
