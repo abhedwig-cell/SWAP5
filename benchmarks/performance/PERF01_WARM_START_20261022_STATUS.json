@@ -53,7 +53,18 @@
     "timing_limit": "Substantial host timing variability retained; no portable speed guarantee. No speedup in either tested rainfall case."
   },
   "contract": "docs/science/PERF01_WEATHER_WARM_START.md",
-  "recovery_branch": "work/perf01-warm-start-20261022",
+  "recovery_branch": "research/perf01-wet4-cause-20261021",
+  "local_forensic_branch": "work/perf01-warm-start-20261022",
+  "publication": {
+    "pull_request": 1361,
+    "code_commit": "11b31e34eb70cc5922db93a4a93c7770c2eab360",
+    "full_code_evidence_tree": "b61986e01072213c5071295ab8b38940c9c114a9",
+    "exact_local_tree_checkpoint": "4e49015a603bba6a8193abb203d7816db63a95ad",
+    "transport": "GitHub connector; Git blob and complete tree identities checked",
+    "draft": true,
+    "merged": false,
+    "note": "Local checkpoint identifiers in evidence are forensic; published source hashes and exact tree bind the executable proof."
+  },
   "scope": "Bounded PR1361 weather Full Richards initialization; general solver default off",
   "interfaces_allowed": ["soil_water_numerical_config_t opt-in", "Reference worker-only warm cache", "weather request numerical selection"],
   "interfaces_fixed": ["committed physical state", "mass gates", "accepted receipts", "restart payload", "hydraulic laws", "temporal acceptance"],
