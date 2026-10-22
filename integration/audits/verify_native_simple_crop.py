@@ -46,6 +46,8 @@ def parent_projection():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if 'evidence' in record().get('root_joint_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['source'](reader,changed)
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['source'](reader,changed)
     r = record(reader)
@@ -150,6 +152,8 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
 
 
 def self_test():
+    if 'evidence' in record().get('root_joint_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['self_test']()
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['self_test']()
     controls = []
@@ -195,6 +199,8 @@ def self_test():
 
 
 def verify():
+    if 'evidence' in record().get('root_joint_successor', {}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_crop_root_joint.py'))['verify']()
     if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
         return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['verify']()
     source()
