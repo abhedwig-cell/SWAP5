@@ -3812,7 +3812,7 @@
         },
         "simple_crop_preparation_successor": {
           "baseline": "f95b95d1f459f4f4688f7822d9b3c031ab028837",
-          "status": "LOCALLY_QUALIFIED_NATIVE_SIMPLE_CROP_PREPARATION",
+          "status": "CANONICALLY_ADMITTED_BOUNDED_SIMPLE_CROP_PREPARATION",
           "scope": "Native single-period CROPTYPE=1 potential preparation; not actual coupled uptake",
           "authority": "docs/science/MC_SOL01_NATIVE_SIMPLE_CROP_CONTRACT.md",
           "affected_invariants": [
@@ -3840,7 +3840,7 @@
             },
             "full_fci": "NOT_SELECTED_IMPACT",
             "highest_low_air": "NOT_SELECTED_POLICY",
-            "candidate": "51c59d1b909c66298085195daa6b5ac33b8b1c33"
+            "candidate": "03fdf34883e1b03a393546def927476000917dc8"
           },
           "evidence": {
             "path": "integration/audits/evidence/MC_SOL01_NATIVE_SIMPLE_CROP_20261022.tar.xz.b64",
@@ -3848,7 +3848,7 @@
             "members": 1977,
             "decoded_bytes": 267816
           },
-          "recovery_point": "Strict owner integration/audits/verify_native_simple_crop.py; qualified complete source postimage and raw evidence; canonical admission next",
+          "recovery_point": "integration/f-ci-canonical; PR1367 merge56381d2c; strict composed owner verify_native_simple_crop.py; no actual coupled root uptake admission",
           "qualified_cases": 8,
           "original_exact_values": 576,
           "invalid_inputs": 22,
@@ -3954,6 +3954,38 @@
             "incumbent_nut_exact_artifacts": 24,
             "docs_source": "PASS",
             "docs_strict": "PASS"
+          },
+          "canonical_admission": {
+            "pr": 1367,
+            "url": "https://github.com/abhedwig-cell/SWAP5/pull/1367",
+            "candidate": "03fdf34883e1b03a393546def927476000917dc8",
+            "merge_commit": "56381d2c9379233a2f7ca5843809ebf827e869f1",
+            "qualified_and_actual_merge_tree": "4ab41404a98158f03784738a9e1dd2aa12a808fc",
+            "local_actual_merge_owner": {
+              "qualified": true,
+              "status": "NATIVE_SIMPLE_CROP_PREPARATION_O0_O2_QUALIFIED",
+              "original_exact_values": 576,
+              "native_cases": 8,
+              "invalid_inputs": 22,
+              "coupled_actual_root_uptake": false,
+              "full_historical_migration": false,
+              "incumbent": {
+                "qualified": true,
+                "status": "FALLOW_ETREF_O0_O2_MASS_RESTART_QUALIFIED",
+                "native_cases": 8,
+                "fresh_restarts": 8,
+                "original_etpot_checks": 40,
+                "old_exact_artifacts": 152,
+                "concurrent_nut_exact_files": 24,
+                "concurrent_nut_preserved": true,
+                "full_historical_migration": false
+              },
+              "controls": 27,
+              "current_source_tree": "0cd1cbd07bc810921284aa0a4f89a9f252660350"
+            },
+            "local_actual_merge_owner_sha256": "0964db172addb30645f32ce1f738d1732bc5c482036121b6ae869190fe316069",
+            "hosted_checks": "NOT_SELECTED_LOCAL_QUALIFICATION_COMPLETE",
+            "actual_merge_docs_source": "PASS"
           }
         }
       }
