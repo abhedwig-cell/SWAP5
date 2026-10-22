@@ -1,5 +1,12 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 explicit native TRUE startup: [contract and claim limits](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md),
+existing HIST-COMPLETE child
+`extended_output_component_20261021/native_startup_successor_20261022`,
+source-bound1927-member capsule and `verify_nut_native_output_start.py` own
+local source/native/physical/restart proof and exact predecessor preservation.
+Default TRUE remains rejected; no full-row or frozen-denominator promotion.
+
 MC-NUT01 PR1358 bounded admission: explicit heat-off/nonharvested daily output,
 atomic physical/diagnostic/reporting restart and reproducible CSV view are
 admitted at `49bba843210b49c58c991a23f67f52888895582f`. The
