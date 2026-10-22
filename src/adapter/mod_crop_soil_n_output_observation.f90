@@ -11,12 +11,13 @@ module mod_crop_soil_n_output_observation
  use mod_crop_senescence_residue,only:crop_residue_pending_t
  use mod_fmr_crop_soil_n_senescence_application,only:senescence_joint_result_t
  use mod_fmr_crop_soil_n_joint_application,only:JOINT_OK,crop_soil_n_joint_states_match
+ use mod_fmr_crop_soil_n_thermal_application,only:thermal_crop_soil_states_match
  implicit none
  private
  public::observe_accepted_crop_soil_n_day
 contains
  subroutine observe_accepted_crop_soil_n_day(output,water_before,soil_before,water_after,soil_after, &
-     result,t0,t1,report,row,status)
+     result,t0,t1,report,row,status,thermal)
   type(crop_ext_state_t),intent(inout)::output
   type(kernel_committed_state_t),intent(in)::water_before,water_after
   type(crop_soil_state_t),intent(in)::soil_before,soil_after
@@ -25,20 +26,27 @@ contains
   logical,intent(in)::report
   type(crop_ext_row_t),intent(out)::row
   integer,intent(out)::status
+  logical,intent(in),optional::thermal
   type(reactive_state_t)::soil
   type(wofost81_crop_owner_state_t)::crop
   type(soil_n_pool_state_t)::pools
   type(crop_residue_pending_t)::pending
   real(real64)::clock,theta,dm(4),n(4),up(2)
   integer(int64)::revision
-  logical::has
+  logical::has,thermal_states
   row=crop_ext_row_t();status=CROP_EXT_INVALID
   if(.not.all(ieee_is_finite([t0,t1])))return
   if(t1-t0/=1d0)return
   if(result%status/=JOINT_OK.or.result%joint%status/=JOINT_OK.or.result%joint%joint%status/=JOINT_OK)return
   if(result%senescence%status/=0.or.result%joint%joint%chemical%status/=0)return
-  if(.not.crop_soil_n_joint_states_match(water_before,soil_before))return
-  if(.not.crop_soil_n_joint_states_match(water_after,soil_after))return
+  thermal_states=.false.;if(present(thermal))thermal_states=thermal
+  if(thermal_states)then
+   if(.not.thermal_crop_soil_states_match(water_before,soil_before))return
+   if(.not.thermal_crop_soil_states_match(water_after,soil_after))return
+  else
+   if(.not.crop_soil_n_joint_states_match(water_before,soil_before))return
+   if(.not.crop_soil_n_joint_states_match(water_after,soil_after))return
+  end if
   if(water_after%current_revision()<=water_before%current_revision())return
   call soil_before%snapshot(soil,crop)
   if(crop%harvested().or.crop%harvest_retired())return

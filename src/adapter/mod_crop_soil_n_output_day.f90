@@ -6,6 +6,7 @@ module mod_crop_soil_n_output_day
  use mod_crop_ext_csv_file
  use mod_crop_soil_n_output_observation
  use mod_fmr_crop_soil_n_senescence_application
+ use mod_fmr_crop_soil_n_thermal_application,only:soil_n_thermal_template,run_crop_soil_n_thermal_interval
  use mod_fmr_crop_soil_n_joint_application,only:JOINT_OK,JOINT_COMMIT_REJECTED
  use mod_canonical_contracts,only:canonical_numerical_config_t
  use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
@@ -57,8 +58,12 @@ contains
   real(real64)::v(17)
   character(128)::line
   integer::code,n
-  logical::ready
+  logical::ready,thermal
   result=senescence_joint_result_t();status=OUTPUT_DAY_INVALID
+  thermal=soil_n_thermal_template(template)
+  ! The thermal route owns its accepted profile; explicit day temperature is
+  ! not a competing forcing authority for that route.
+  if(thermal.and.present(environment))return
   if(.not.allocated(rows).or..not.allocated(dates))return
   if(.not.output_history_valid(dates,rows))return
   call output%snapshot(v(1),v(2:9),v(10:17),ready)
@@ -71,10 +76,16 @@ contains
    end if
   end if
   water_trial=water;chemical_trial=chemical;output_trial=output
-  call run_crop_soil_n_senescence_interval(backend,column,template,parameters,water_trial,forcing,config, &
-    chemical_trial,weather,t0,t1,items,split,policy,result,environment)
+  if(thermal)then
+   call run_crop_soil_n_thermal_interval(backend,column,template,parameters,water_trial,forcing,config, &
+     chemical_trial,weather,t0,t1,items,split,policy,result)
+  else
+   call run_crop_soil_n_senescence_interval(backend,column,template,parameters,water_trial,forcing,config, &
+     chemical_trial,weather,t0,t1,items,split,policy,result,environment)
+  end if
   if(result%status/=JOINT_OK)return
-  call observe_accepted_crop_soil_n_day(output_trial,water,chemical,water_trial,chemical_trial,result,t0,t1,report,row,code)
+  call observe_accepted_crop_soil_n_day(output_trial,water,chemical,water_trial,chemical_trial,result,t0,t1, &
+    report,row,code,thermal)
   if(code/=0)then;result%status=JOINT_COMMIT_REJECTED;return;end if
   n=size(rows);allocate(dates_trial(n+merge(1,0,report)),rows_trial(n+merge(1,0,report)))
   dates_trial(:n)=dates;rows_trial(:n)=rows

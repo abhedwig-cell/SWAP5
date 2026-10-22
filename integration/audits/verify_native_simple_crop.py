@@ -46,6 +46,8 @@ def parent_projection():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['source'](reader,changed)
     r = record(reader)
     require(r['baseline'] == BASE, 'crop baseline')
     current = json.loads(reader(STATUS))
@@ -148,6 +150,8 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
 
 
 def self_test():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['self_test']()
     controls = []
     for path in record()['postimages']:
         def changed(p):
@@ -191,6 +195,8 @@ def self_test():
 
 
 def verify():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_output_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_output.py'))['verify']()
     source()
     result = validate(capsule())
     # The predecessor's complete raw scientific assertions are retained. Every
