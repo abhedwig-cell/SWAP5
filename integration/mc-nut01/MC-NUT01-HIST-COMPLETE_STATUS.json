@@ -5018,6 +5018,19 @@
       "admission_receipt": "integration/mc-nut01/MC_NUT01_CALENDAR_OUTPUT_ADMISSION_20261022.json",
       "master_receipt": "70a2d2bae145e9bb9d66c68f1ef5c1889d7c26fe",
       "master_rows_promoted": false
+    },
+    "harvest_generation_successor_20261022": {
+      "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+      "stage": "IMPLEMENTED_QUALIFICATION_PENDING",
+      "implemented": true,
+      "persisted": false,
+      "tested": false,
+      "qualified": false,
+      "canonical_admitted": false,
+      "contract": "docs/science/MC_NUT01_OUTPUT_HARVEST_20261022.md",
+      "scope": "Transactional existing harvest/incorporation/observation-retirement phases saved with unchanged physical/diagnostic/report-history generation; no new day or diagnostic quantity.",
+      "test_selection": "Fresh current cold O0/O2 bootstrap expected360s, thermal and phase drivers expected150s; actual accepted-state/codec composition requires roughly331 providers. Same-session hashed provider reuse; no full730day,broadFCI,highestlowair,newRossFast,aquifer.",
+      "next_action": "Run fresh current cold and thermal proof, then harvest generation phases and fresh-process/atomic rejection controls. Seal evidence, preserve current root-substep owner and admit only exact qualified scope."
     }
   }
 }
