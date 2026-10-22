@@ -88,11 +88,16 @@ def main():
     ap.add_argument('--temporal-tolerance', type=float, default=1e-4)
     ap.add_argument('--initial-pond-cm', type=float, default=0.)
     ap.add_argument('--bottom-up-cm-day', type=float, default=0.)
+    ap.add_argument('--substep-root-stress', action='store_true',
+                    help='Opt into trial-beginning Feddes feedback; daily geometry and demand remain prescribed')
     args = ap.parse_args()
     if args.output.exists():raise FileExistsError(args.output)
     options = {name: getattr(args, name) for name in ['temporal_tolerance', 'initial_pond_cm', 'bottom_up_cm_day']}
     document, snapshot = prepare(args.crop_reader.resolve(), args.root_reader.resolve(), args.swp.resolve(),
                                  args.crop.resolve(), args.met.resolve(), options)
+    if args.substep_root_stress:
+        end = document.rfind('/')
+        document = document[:end] + ' substep_root_stress=.true.\n' + document[end:]
     with tempfile.TemporaryDirectory(prefix='swap5-crop-run-') as tmp:
         stage = Path(tmp);(stage / 'input.nml').write_text(document);(stage / 'input.swp').write_bytes(snapshot)
         cmd = [sys.executable, str(ROOT / 'tools/solute/run_column.py'), '--exe', str(args.exe.resolve()),

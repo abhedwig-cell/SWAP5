@@ -23,6 +23,9 @@ def projection():
   text=text[:offset]+" if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['record']():
+  __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['source'](reader,changed)
+  return record(reader)
  r=record(reader);require(r['baseline']==BASE,'calendar baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'calendar executed postimage '+p)
  require(reader(PARENT)==projection(),'incumbent root assertion bodies')
@@ -73,6 +76,9 @@ def validate(f):
  require(r['days_per_execution']==3 and r['processes']==8 and r['rejection_trials']==80,'calendar assertion census')
  return dict(qualified=True,status='NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED',actual_processes=8,rejected_day_trials=80,replay_trials=8,simultaneous_gifts=True,report_schedules=2,cold_exact=True,full_mc_nut01_closed=False)
 def verify():
+ if 'evidence' in __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['record']():
+  composed=__import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['verify']()
+  return dict(composed['current_calendar_nut'],current_concurrent_nut=composed['current_concurrent_nut'],incumbent_root_science=composed['frozen_daily_predecessor'],composed_owner=composed)
  source();r=validate(capsule())
  # All incumbent equations/callers/inputs are unchanged. Re-evaluate their raw
  # scientific evidence, not their now-superseded exact-delta source inventory.
@@ -81,6 +87,8 @@ def verify():
  r['current_concurrent_nut']=nut['validate'](nut['capsule']())
  return r
 def self_test():
+ if 'evidence' in __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['record']():
+  return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['self_test']()
  source();f=capsule();validate(f);controls=[]
  def reject(name,fn):
   try:fn()

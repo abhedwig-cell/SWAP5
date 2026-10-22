@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-SOL01 opt-in hydraulic-substep roots: the
+[contract](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md), existing
+`root_joint_successor/substep_feedback_work`, source-bound
+`MC_SOL01_ROOT_SUBSTEP_20261022.tar.xz.b64` and composed
+`verify_root_substep.py` own current O0/O2 root/water/solute mass, fresh restart,
+binary rollback/isolation and64 exact daily-mode artifacts. Original process and
+frozen predecessor raw assertions are retained. Fresh cold/thermal/calendar NUT
+execution covers the changed shared backend, including concurrent PR1371's
+unchanged adapter. This is a bounded explicit Reference SWKIMPL=0 route, not full
+historical/default dispatch or full root/heat/snow/age/NUT composition.
+
 
 MC-SOL01 actual daily native crop/root/solute composition,22 October2026:
 the [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) executes

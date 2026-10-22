@@ -83,7 +83,8 @@ program swap5_crop_solute_column
   real(real64)::hlim3l=0d0,hlim3h=0d0,hlim4=0d0,adcrl=0d0,adcrh=0d0,hlim1=0d0,hlim2u=0d0,hlim2l=0d0
   logical::empirical_oxygen_enabled=.false.,crop_active(MAX_WINDOWS)=.false.
   real(real64)::potential_transpiration_cm_day(MAX_WINDOWS)=0d0,root_depth_cm(MAX_WINDOWS)=0d0
-  real(real64)::transpiration_amount,expected_transpiration
+  real(real64)::transpiration_amount,expected_transpiration,drought_amount,oxygen_amount,potential_amount
+  logical::substep_root_stress=.false.
   type(wofost_rate_table_t)::density_table
   type(root_water_uptake_parameters_t)::root_parameters
   type(fmr_root_uptake_crop_input_t)::crop_input
@@ -92,7 +93,7 @@ program swap5_crop_solute_column
   type(fmr_root_uptake_binding_diagnostics_t)::root_binding
   namelist /crop/ root_table_points,upper_layer_bottom_node,maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,empirical_oxygen_enabled,crop_active, &
-    potential_transpiration_cm_day,root_depth_cm
+    potential_transpiration_cm_day,root_depth_cm,substep_root_stress
   namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
@@ -352,6 +353,16 @@ program swap5_crop_solute_column
       'committed crop root binding')
     forcing%root_extraction_sink=root_fluxes%root_extraction_sink
     expected_transpiration=sum(root_fluxes%root_extraction_sink)*(t1-t0)
+    if(substep_root_stress)then
+      if(allocated(forcing%substep_root))deallocate(forcing%substep_root)
+      allocate(forcing%substep_root)
+      forcing%substep_root%parameters=root_parameters
+      forcing%substep_root%request%potential_transpiration=crop_input%potential_transpiration
+      forcing%substep_root%request%rooted_nodes=crop_input%rooted_nodes
+      if(allocated(crop_input%cumulative_root_fraction)) &
+        forcing%substep_root%request%cumulative_root_fraction=crop_input%cumulative_root_fraction
+      forcing%root_extraction_sink=0d0
+    end if
     forcing%pond_input%rain_rate_cm_day=rain_cm_day(j)
     forcing%pond_input%irrigation_rate_cm_day=irrigation_cm_day(j)
     forcing%pond_input%runon_rate_cm_day=runon_cm_day(j)
@@ -375,10 +386,16 @@ program swap5_crop_solute_column
     observation=backend%observation()
     call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
-    transpiration_amount=0d0
+    transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
         transpiration_amount=transpiration_amount+sum(s%root_sink)*(s%t1-s%t0)
+        if(substep_root_stress)then
+          call require(s%substep_root_available,'accepted substep root diagnostics unavailable')
+          drought_amount=drought_amount+s%root_drought_reduction_cm_day*(s%t1-s%t0)
+          oxygen_amount=oxygen_amount+s%root_oxygen_reduction_cm_day*(s%t1-s%t0)
+          potential_amount=potential_amount+s%root_potential_cm_day*(s%t1-s%t0)
+        end if
         infiltration=infiltration+max(0d0,-s%top_flux)*(s%t1-s%t0)
         runoff=runoff+s%converged_runoff_depth_cm
         runon_amount=runon_amount+s%converged_runon_rate_cm_day*(s%t1-s%t0)
@@ -386,7 +403,16 @@ program swap5_crop_solute_column
         evap_amount=evap_amount+s%converged_pond_evaporation_cm_day*(s%t1-s%t0)
       end associate
     end do
-    call require(abs(transpiration_amount-expected_transpiration)<=1d-12,'accepted root carrier mismatch')
+    if(substep_root_stress)then
+      call require(abs(potential_amount-transpiration_amount-drought_amount-oxygen_amount)<=1d-12, &
+        'accepted substep root reconciliation')
+      call require(abs(potential_amount-potential_transpiration_cm_day(j)*(t1-t0))<=1d-12, &
+        'accepted substep potential demand mismatch')
+    else
+      call require(abs(transpiration_amount-expected_transpiration)<=1d-12,'accepted root carrier mismatch')
+      drought_amount=root_diagnostics%drought_reduction_total*(t1-t0)
+      oxygen_amount=root_diagnostics%oxygen_reduction_total*(t1-t0)
+    end if
     write(u,'(I0,16(",",ES25.17E3),",",I0)',advance='no')j,t0,t1,result%water%mass%storage_start,result%water%mass%storage_end, &
       result%water%mass%total_in,result%water%mass%total_out,result%water%mass%residual, &
       result%chemical%mass_before,result%chemical%mass_after,result%chemical%external_in, &
@@ -394,7 +420,7 @@ program swap5_crop_solute_column
       size(observation%accepted_water_flux_substeps)
     if(any(soil_evaporation_cm_day>0d0))write(u,'(A,ES25.17E3)',advance='no')',',soil_evap_amount
     write(u,'(4(A,ES25.17E3))')',',potential_transpiration_cm_day(j)*(t1-t0),',',transpiration_amount, &
-      ',',root_diagnostics%drought_reduction_total*(t1-t0),',',root_diagnostics%oxygen_reduction_total*(t1-t0)
+      ',',drought_amount,',',oxygen_amount
     clock=t1
   end do
   close(u)
