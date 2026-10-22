@@ -17,6 +17,9 @@ def validate(files):
  c=json.loads(files['CURRENT.json'])
  assert c['status']=='BOUNDED_RESEARCH_DEFAULT_PRESERVATION_ANNUAL_BLOCKED'
  assert c['annual_qualified']is False and c['full_historical_migration']is False and c['canonically_admitted']is False
+ paths=subprocess.check_output(['git','diff','--name-only',c['baseline'],c['source_checkpoint']],cwd=ROOT,text=True).splitlines()
+ paths=[p for p in paths if p!=STATUS and not p.startswith('integration/audits/evidence/')]
+ assert set(paths)==set(c['postimages']),'postimage census changed'
  for p,h in c['postimages'].items():assert sha((ROOT/p).read_bytes())==h,('current postimage changed',p)
  def report(group):return json.loads(files[group+'/result.json'])
  expected={
@@ -25,6 +28,7 @@ def validate(files):
   'picard-final-default-transaction':'ROOT_SUBSTEP_REAL_TRACE_REJECT_RETRY_ABA_O0_O2_PASS',
   'picard-final-transaction':'PICARD_ROOT_SUBSTEP_REAL_TRACE_REJECT_RETRY_ABA_O0_O2_PASS',
   'picard-final-policy-restart':'PICARD_TRANSPORT_NATIVE_WITHIN_POLICY_RESTART_CROSS_POLICY_REJECT_O0_O2_PASS',
+  'picard-historical-exfiltration-source':'HISTORICAL_SURFACE_EXACT_ZERO_UPWARD_O0_O2_PASS',
   'picard-final-nut-cold':'NATIVE_TRUE_OUTPUT_PROJECT_O0_O2_FRESH_PASS',
   'picard-final-nut-calendar':'NATIVE_CALENDAR_OUTPUT_ACTUAL_O0_O2_FRESH_PASS',
   'picard-final-nut-thermal':'THERMAL_OUTPUT_ACTUAL_O0_O2_RESTART_ATOMIC_PASS',
@@ -41,6 +45,7 @@ def validate(files):
   assert '-'+opt in b['flags']and b['reused_provider_objects']==193
   for p,h in b['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,('current physical build changed',p)
   assert report('picard-final-day257-'+opt)['status']=='ACTUAL_WATER_DAY_PASS'
+  assert report('picard-historical-exfiltration-day267-'+opt)['status']=='ACTUAL_WATER_DAY_PASS'
   for grid,days in [('coarse',266),('refined',64)]:
    group='picard-'+grid+'-'+opt;assert report(group)['status']=='FAILED'
    prefix=group+'/'+opt+'/annual1998/full.pending-'
@@ -68,5 +73,9 @@ def validate(files):
  return dict(status=c['status'],annual_qualified=False,canonically_admitted=False,current_controls=len(expected),failed_picard_daily_observations=660)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('capsule',type=Path);a=ap.parse_args()
- raw,files=capsule(a.capsule);r=validate(files);r['decoded_sha256']=sha(raw);print(json.dumps(r,indent=2))
+ raw,files=capsule(a.capsule);r=validate(files)
+ status=json.loads((ROOT/STATUS).read_text());p=status
+ for key in ['swp_water_successor','daily_meteo_successor','etref_successor','simple_crop_preparation_successor','root_joint_successor','substep_feedback_work','native_project_successor','positive_transport_successor']:p=p[key]
+ assert sha(raw)==p['research_evidence']['decoded_sha256'],'research capsule identity changed'
+ r['decoded_sha256']=sha(raw);print(json.dumps(r,indent=2))
 if __name__=='__main__':main()

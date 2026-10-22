@@ -160,6 +160,22 @@ explicit numerical policy, owning source/preservation gates and renewed annual
 composition before production use. Source-exact Reference remains available.
 # Explicit conductivity iteration successor (2026-10-22)
 
+Final current O0/O2 default preservation passes:128 root daily balances,16 fresh
+restarts,64 exact predecessor artifacts, default and Picard rejection/retry/A/B/A,
+seven Picard compatibility rejects per optimization, native cross-policy rejection,
+and cold/calendar/thermal/crash/harvest/saved-harvest NUT composition. Native/default
+NUT endpoints match the pre-Picard incumbent exactly. These are preservation and
+focused research results; they do not promote the failed annual scope.
+
+Authenticated `SWAP/solute.f90`:346-355 explicitly sets `cfluxt=0` when
+`qtop>=-1e-6`. A test-only pond carrier permitting upward water, with the existing
+unchanged zero-solute surface operator, passes actual day267 in O0/O2. Therefore
+a soil-concentration donor return is new physics, not an exact reconstruction of
+this historical source. This checkpoint leaves the production carrier guard
+unchanged. A separately named historical-zero boundary can be qualified as a
+bounded source-exact extension; physical donor-return transport needs its own
+scientific/reference contract. Evaporation must never export dissolved solute.
+
 The implemented policy is still experimental. Both O0/O2 annual experiments
 terminate: coarse accepts266 days then the existing pond carrier rejects actual
 soil-to-pond exfiltration on day267; refined accepts64 days then the water

@@ -8,6 +8,7 @@ def sha(raw):return hashlib.sha256(raw).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--proof',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ a.output=a.output.resolve()
  assert not git('diff','--name-only','HEAD').strip(),'commit sources before collecting evidence'
  files={};groups=[]
  for folder in sorted(a.proof.iterdir()):

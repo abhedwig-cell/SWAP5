@@ -12,6 +12,7 @@ def main():
  ap.add_argument('--picard-conductivity',action='store_true')
  ap.add_argument('--production-picard',action='store_true')
  ap.add_argument('--trace-chemical',action='store_true')
+ ap.add_argument('--historical-zero-solute-exfiltration',action='store_true')
  ap.add_argument('--temporal-tolerance',type=float)
  ap.add_argument('--expect',choices=['success','reject','diagnostic'],default='reject');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -86,6 +87,21 @@ end module''')
   objects+=[str(out/'temporal.o')]
  picard_provider_sha256=None
  chemical_provider_sha256=None
+ historical_exfiltration_provider_sha256=None
+ if a.historical_zero_solute_exfiltration:
+  path='src/process/mod_b111_persistent_pond.f90';provider=(ROOT/path).read_text()
+  needle='s%qtop>s%soil_evaporation_rate.or.s%qtop< -1d6'
+  assert provider.count(needle)==1
+  # Diagnostic only: historical solute.f90:347-355 sets cfluxt=0 for
+  # qtop>=-1e-6. Keep that existing chemical operator, and permit upward
+  # water in this copied carrier. No production guard or source is changed.
+  provider=provider.replace(needle,'s%qtop>1d6.or.s%qtop< -1d6')
+  historical_exfiltration_provider_sha256=sha(provider.encode());(out/'historical_exfiltration.f90').write_text(provider)
+  old_object=[e['command'][-1]for e in build['source_build']['events']if e['category']=='compile'and e['command'][-3]==str(ROOT/path)]
+  assert len(old_object)==1
+  objects=[p for p in objects if p!=old_object[0]]
+  assert run(build['compiler_command']+flags+['-c',out/'historical_exfiltration.f90','-o',out/'historical_exfiltration.o']).returncode==0
+  objects+=[str(out/'historical_exfiltration.o')]
  if a.trace_chemical:
   path='src/runtime/mod_fmr_b111_pond_solute_route.f90';provider=(ROOT/path).read_text()
   lines=[]
@@ -168,7 +184,8 @@ end module''')
   retain_water_proposal=a.retain_water_proposal,max_iterations=a.max_iterations,expected=a.expect,
   diagnostic_provider_sha256=diagnostic_provider_sha256,picard_provider_sha256=picard_provider_sha256,
   production_picard=a.production_picard,chemical_provider_sha256=chemical_provider_sha256,
-  temporal_tolerance=a.temporal_tolerance,rejection_kind=rejection_kind)
+  temporal_tolerance=a.temporal_tolerance,rejection_kind=rejection_kind,
+  historical_exfiltration_provider_sha256=historical_exfiltration_provider_sha256)
  (out/'result.json').write_text(json.dumps(report,indent=2)+'\n');print(r.stdout.decode())
  if a.expect!='diagnostic':assert(r.returncode==0)==(a.expect=='success')
 if __name__=='__main__':main()

@@ -4002,11 +4002,23 @@
                 "positive_transport_successor": {
                   "baseline": "e387b89d382afaee325f3cf2c2760f0713f258e4",
                     "status": "POSITIVE_TRANSPORT_AND_PICARD_FOCUSED_PASS_ANNUAL_EXFILTRATION_AND_WATER_BLOCKED",
+                    "research_evidence": {
+                      "path": "integration/audits/evidence/MC_SOL01_POSITIVE_TRANSPORT_RESEARCH_20261022.tar.xz.b64",
+                      "decoded_sha256": "afbe6ddbc158e968431bdcbf2eb5d6020e9ad56cd710e12aeaf8d7856ec91962",
+                      "decoded_bytes": 2042792,
+                      "members": 18936,
+                      "source_checkpoint": "8175bf08",
+                      "verifier": "integration/audits/verify_positive_transport_checkpoint.py",
+                      "verification": "BOUNDED_RESEARCH_DEFAULT_PRESERVATION_ANNUAL_BLOCKED;11 current/focused controls checked,660 failed-Picard-prefix daily observations checked;5 negative controls reject false annual admission,missing source census,changed incumbent endpoint,bad daily water balance and mislabelled duplicate optimization",
+                      "annual_qualified": false,
+                      "canonically_admitted": false
+                    },
                     "picard_successor_20261022": {
                       "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
                       "implementation": "Explicit default-OFF numerical conductivity iteration, Reference/default MvG only;64 iterations, unchanged1e-12 local and1e-10 mass criteria; no legacy SwKimpl1",
                       "focused": "Actual day257 O0/O2 PASS; current193-object root rejection/retry/A/B/A and7 invalid compatibility controls per optimization PASS; current native within-mode restarts and cross-mode rejections PASS",
-                      "default_preservation": "Current default daily128 balances,16 fresh restarts,64 exact predecessor files and2 mode rejections PASS; current default transaction PASS. Final NUT preservation still running.",
+                      "default_preservation": "Final current O0/O2:default daily128 balances,16 fresh restarts,64 exact predecessor files and2 mode rejections PASS; default transaction PASS; current336-provider cold native,calendar,thermal/crash,harvest phases and saved-harvest/fallow output PASS. Native/default NUT endpoints equal the pre-Picard incumbent exactly.",
+                      "historical_exfiltration_finding": "Authenticated SWAP431 solute.f90:346-355 sets surface chemical flux0 for qtop>=-1e-6. A test-only carrier permitting upward water with that unchanged chemical operator passes actual day267 in O0/O2. A nonzero soil-concentration donor return would be new physics, not an exact historical migration. Production carrier remains unchanged in this checkpoint.",
                       "annual": {
                         "coarse_O0_O2": "266 accepted days; day267 rejects surface exfiltration in persistent pond carrier before chemical commit",
                         "refined_O0_O2": "64 accepted days; day65 water transaction fails near internal saturation",
