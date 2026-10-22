@@ -236,3 +236,13 @@ boundaries. The current composed owner and21 corruption controls also pass.
 These checks validate persisted evidence and dependency identity; no fresh
 numerical execution or new hosted qualification is claimed. Documentation
 source checks and strict MkDocs builds pass on both records.
+
+## Explicit native startup successor,22 October2026
+
+The [native startup contract](MC_NUT01_NATIVE_OUTPUT_START_20261022.md) qualifies
+TRUE through a new explicit output-aware startup API, followed by this admitted
+output-day/generation route. Default callers continue to reject TRUE. Fresh
+O0/O2 native input, actual TRUE/FALSE physical equivalence, year-boundary reports
+and independent-process joint continuation pass. This resolves that bounded
+startup seam; general/default historical dispatch and heat/harvest/rotation
+output are not added. Admission is recorded in the existing HIST-COMPLETE child.

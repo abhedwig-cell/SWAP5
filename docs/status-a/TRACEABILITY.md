@@ -1,5 +1,39 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+
+MC-SOL01 actual daily native crop/root/solute composition,22 October2026:
+the [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) executes
+single-period simple-crop demand, original static root density, macro-Feddes
+and optional empirical oxygen stress with accepted Reference water and solute.
+O0/O2 gives128 hard daily balance observations,16 exact fresh restarts,
+34 invalid/source-boundary rejections and exact chemical rejection/retry ownership.
+Six zero-root artifacts match the incumbent application. Root stress is evaluated
+at the accepted beginning of each daily window. Full within-substep feedback,
+physical oxygen, heat/snow/age/NUT composition and general historical/default
+orchestration remain open. Admission is recorded in the existing MC-SOL01
+simple-crop child `root_joint_successor`; all full capability dispositions remain
+unchanged. The earlier preparation-only boundary below remains historical for
+its separately admitted interface, not a claim that current actual uptake is absent.
+
+
+MC-SOL01 native simple-crop preparation,22 October2026: the
+[bounded successor](../science/MC_SOL01_NATIVE_SIMPLE_CROP_CONTRACT.md) adds original
+fixed-cycle and thermal-sum phenology, single-period SWP/CRP/MET input and existing
+canopy/ETref/DVS-root-depth composition. Native checked O0/O2 matches576 original
+values exactly, repeats eight schedules and rejects22 invalid inputs atomically.
+The one-provider state contract passes; incumbent water/solute/NUT execution bytes
+and raw proof remain valid. This prepares potential demand only. Actual hydraulic
+root uptake, coupled crop restart and full historical/default orchestration remain
+open. Existing MC-SOL01 recovery ownership records admission separately; no master
+capability disposition changes.
+
+MC-NUT01 explicit native TRUE startup: [contract and claim limits](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md),
+existing HIST-COMPLETE child
+`extended_output_component_20261021/native_startup_successor_20261022`,
+source-bound1927-member capsule and `verify_nut_native_output_start.py` own
+local source/native/physical/restart proof and exact predecessor preservation.
+Default TRUE remains rejected; no full-row or frozen-denominator promotion.
+
 MC-NUT01 PR1358 bounded admission: explicit heat-off/nonharvested daily output,
 atomic physical/diagnostic/reporting restart and reproducible CSV view are
 admitted at `49bba843210b49c58c991a23f67f52888895582f`. The

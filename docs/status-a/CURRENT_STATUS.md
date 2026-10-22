@@ -1,5 +1,40 @@
 # SWAP5 Status-A current status
 
+
+MC-SOL01 actual daily native crop/root/solute composition,22 October2026:
+the [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) executes
+single-period simple-crop demand, original static root density, macro-Feddes
+and optional empirical oxygen stress with accepted Reference water and solute.
+O0/O2 gives128 hard daily balance observations,16 exact fresh restarts,
+34 invalid/source-boundary rejections and exact chemical rejection/retry ownership.
+Six zero-root artifacts match the incumbent application. Root stress is evaluated
+at the accepted beginning of each daily window. Full within-substep feedback,
+physical oxygen, heat/snow/age/NUT composition and general historical/default
+orchestration remain open. Admission is recorded in the existing MC-SOL01
+simple-crop child `root_joint_successor`; all full capability dispositions remain
+unchanged. The earlier preparation-only boundary below remains historical for
+its separately admitted interface, not a claim that current actual uptake is absent.
+
+
+MC-SOL01 native simple-crop preparation,22 October2026: the
+[bounded successor](../science/MC_SOL01_NATIVE_SIMPLE_CROP_CONTRACT.md) adds original
+fixed-cycle and thermal-sum phenology, single-period SWP/CRP/MET input and existing
+canopy/ETref/DVS-root-depth composition. Native checked O0/O2 matches576 original
+values exactly, repeats eight schedules and rejects22 invalid inputs atomically.
+The one-provider state contract passes; incumbent water/solute/NUT execution bytes
+and raw proof remain valid. This prepares potential demand only. Actual hydraulic
+root uptake, coupled crop restart and full historical/default orchestration remain
+open. Existing MC-SOL01 recovery ownership records admission separately; no master
+capability disposition changes.
+
+MC-NUT01 explicit native output startup,22 October2026: the
+[bounded successor](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md) supports
+SNM TRUE through an output-aware startup API and the admitted heat-off/nonharvested
+day/generation route. Native O0/O2, actual TRUE/FALSE physical byte equality and
+independent-process reporting continuation pass. General/default historical
+TRUE dispatch, heat/harvest/rotation output and full migration remain open.
+Admission is owned by the existing HIST-COMPLETE native-startup child.
+
 MC-SOL01 native SWP water bootstrap,21 October2026: PR1362 admits the
 [bounded original water input route](../science/MC_SOL01_SWP_WATER_CONTRACT.md),
 with original TTUTIL grid/layered MvG and unsaturated HTB initial heads.

@@ -3,15 +3,28 @@
 program read_swp_daily
   use iso_fortran_env, only: real64
   use ieee_arithmetic, only: ieee_is_finite
+  use mod_reference_et_demand_process,only:reference_et_demand_parameters_t,reference_et_demand_forcing_t, &
+    reference_et_demand_canopy_view_t,reference_et_demand_result_t,reference_et_demand_diagnostics_t, &
+    evaluate_restricted_reference_et_demand,REF_ET_DEMAND_OK
   implicit none
   integer :: n,i,mode,u,datea(6),first,last
   integer,allocatable :: dd(:),mm(:),yyyy(:)
   real(real64),allocatable :: tmin(:),tmax(:),rain(:),etref(:),times(:)
   real(real64) :: tstart,tend
   character(1024) :: swp,met,declared
+  character(32)::option
+  logical::with_etref
+  type(reference_et_demand_parameters_t)::parameters
+  type(reference_et_demand_forcing_t)::forcing
+  type(reference_et_demand_canopy_view_t)::canopy
+  type(reference_et_demand_result_t)::demand
+  type(reference_et_demand_diagnostics_t)::diagnostics
   logical :: rdinqr
   call get_command_argument(1,swp)
   call get_command_argument(2,met)
+  call get_command_argument(3,option)
+  with_etref=trim(option)=='etref'
+  call require(len_trim(option)==0.or.with_etref,'unknown daily input mode')
   call rdinit(74,0,trim(swp))
   call rdstim('tstart',tstart)
   call rdstim('tend',tend)
@@ -39,6 +52,14 @@ program read_swp_daily
   if(rdinqr('swdivide'))then
     call rdsinr('swdivide',0,1,mode);call require(mode==0,'PM-direct not selected')
   end if
+  if(with_etref)then
+    call rdsinr('swredu',0,2,mode);call require(mode==0,'empirical evaporation not selected')
+    call rdsinr('swcfbs',0,1,mode);call require(mode==0,'soil factor not selected')
+    call rdsdor('cfevappond',0d0,10d0,parameters%pond_evaporation_factor)
+    if(rdinqr('swevap'))then
+      call rdsinr('swevap',0,1,mode);call require(mode==1,'disabled evaporation not selected')
+    end if
+  end if
   close(74)
   call rdinit(74,0,trim(met))
   call rdinne('yyyy',n)
@@ -65,12 +86,29 @@ program read_swp_daily
   call require(times(1)<=tstart.and.times(n)>=tend,'incomplete MET calendar')
   first=nint(tstart-times(1))+1;last=nint(tend-times(1))+1
   ! Positive ETref requires soil/crop/pond partitioning, not a rain-only adapter.
-  call require(all(etref(first:last)==0d0),'nonzero ETref needs physical evaporation coupling')
+  if(with_etref)then
+    call require(all(etref(first:last)>=0d0),'negative ETref not selected')
+  else
+    call require(all(etref(first:last)==0d0),'nonzero ETref needs physical evaporation coupling')
+  end if
   open(newunit=u,file='daily.csv',status='new',action='write')
-  write(u,'(A)')'end_day,t1900,rain_cm_day,tmin_c,tmax_c,tav_c,etref_cm_day'
+  if(with_etref)then
+    write(u,'(A)')'end_day,t1900,rain_cm_day,tmin_c,tmax_c,tav_c,etref_mm_day,soil_demand_cm_day,pond_demand_cm_day'
+  else
+    write(u,'(A)')'end_day,t1900,rain_cm_day,tmin_c,tmax_c,tav_c,etref_cm_day'
+  end if
   do i=first,last
-    write(u,'(I0,6(A,ES25.16E3))')i-first+1,',',times(i),',',rain(i)*0.1d0, &
+    write(u,'(I0,6(A,ES25.16E3))',advance='no')i-first+1,',',times(i),',',rain(i)*0.1d0, &
       ',',tmin(i),',',tmax(i),',',(tmax(i)+tmin(i))*0.5d0,',',etref(i)
+    if(with_etref)then
+      forcing%reference_et_mm_per_day=etref(i)
+      call evaluate_restricted_reference_et_demand(parameters,forcing,canopy,demand,diagnostics)
+      call require(diagnostics%status==REF_ET_DEMAND_OK.and.diagnostics%result_produced,'ETref demand rejected')
+      write(u,'(2(A,ES25.16E3))')',',demand%potential_soil_evaporation_cm_per_day, &
+        ',',demand%potential_pond_evaporation_cm_per_day
+    else
+      write(u,'(A)')''
+    end if
   end do
   close(u)
   print '(A)','SWP_NATIVE_DAILY_MET_IMPORTED'

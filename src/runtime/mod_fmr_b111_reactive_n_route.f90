@@ -17,7 +17,7 @@ module mod_fmr_b111_reactive_n_route
  public::consume_reactive_n_trace,initialize_historical_reactive_n_route,initialize_historical_reactive_n_from_tables,initialize_historical_reactive_n_complete_tables,initialize_historical_reactive_n_named_files,initialize_historical_reactive_n_unified_export
 contains
  subroutine initialize_historical_reactive_n_unified_export(selection,template,id,clock,water, &
-    path,origin,plan,state,parameters,tcsf,lai,status,error_line,ages)
+    path,origin,plan,state,parameters,tcsf,lai,status,error_line,ages,extended_output)
    type(soil_n_historical_selection_t),intent(in)::selection
    type(reactive_parameters_t),intent(in)::template
    integer(int64),intent(in)::id
@@ -37,17 +37,26 @@ contains
    type(reactive_state_t)::candidate
    real(real64)::candidate_tcsf,candidate_lai
    integer::code
+ logical,intent(out),optional::extended_output
+ logical::candidate_output
    plan=soil_n_amendment_calendar_t();state=reactive_state_t()
    parameters=reactive_parameters_t();tcsf=0d0;lai=0d0;status=1;error_line=0
    if(present(ages))ages=soil_n_residue_age_t()
+ if(present(extended_output))extended_output=.false.
    if(selection%swcropsnm/=1.or.selection%sw_wofost/=1.or..not.selection%source_parameters_complete)return
+ candidate_output=.false.
+ if(present(extended_output))then
+   call read_soil_n_unified_export(path,origin,candidate_plan,initial,rates,code,error_line,candidate_ages,extended_output=candidate_output)
+ else
    call read_soil_n_unified_export(path,origin,candidate_plan,initial,rates,code,error_line,candidate_ages)
+ end if
    if(code/=N_UNIFIED_OK)return
    call bind_historical_organic_source_profile(template,organic,code)
    if(code/=0)return
    call initialize_historical_soil_n_complete(selection,rates,initial,organic,id,clock,water, &
        candidate,derived,candidate_tcsf,candidate_lai,code)
    if(code/=0)return
+ if(present(extended_output))extended_output=candidate_output
    plan=candidate_plan;state=candidate;parameters=derived
    tcsf=candidate_tcsf;lai=candidate_lai;status=0
    if(present(ages))ages=candidate_ages

@@ -23,7 +23,7 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
-def prepare(reader, swp, met, column):
+def prepare(reader, swp, met, column, with_etref=False):
     meta = json.loads((reader.parent / 'build-complete.json').read_text())
     if meta.get('status') != 'BUILT' or meta.get('executable_sha256') != sha(reader.read_bytes()):
         raise ValueError('daily reader executable identity mismatch')
@@ -37,7 +37,7 @@ def prepare(reader, swp, met, column):
         stage = Path(tmp)
         (stage / 'input.swp').write_bytes(swp_bytes)
         (stage / met.name.lower()).write_bytes(met_bytes)
-        result = subprocess.run([str(reader), 'input.swp', met.name.lower()], cwd=stage,
+        result = subprocess.run([str(reader), 'input.swp', met.name.lower()] + (['etref'] if with_etref else []), cwd=stage,
                                 input=b'', capture_output=True, timeout=60)
         if result.returncode or b'SWP_NATIVE_DAILY_MET_IMPORTED' not in result.stdout:
             raise ValueError('native MET import failed:\n' + result.stdout.decode(errors='replace') +
@@ -59,11 +59,15 @@ def prepare(reader, swp, met, column):
     lines += ['/', '&surface', f' windows={len(rows)}',
               ' ends_day=' + ','.join(r['end_day'] for r in rows),
               ' rain_cm_day=' + ','.join(r['rain_cm_day'] for r in rows), '/']
+    if with_etref:
+        lines[-1:-1] = [' soil_evaporation_cm_day=' + ','.join(r['soil_demand_cm_day'] for r in rows),
+                        ' evaporation_cm_day=' + ','.join(r['pond_demand_cm_day'] for r in rows)]
     return '\n'.join(lines) + '\n'
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--etref', action='store_true', help='Explicit SWREDU=0 fallow evaporation composition')
     parser.add_argument('--reader', type=Path, required=True)
     parser.add_argument('--exe', type=Path, required=True)
     parser.add_argument('--swp', type=Path, required=True)
@@ -71,6 +75,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--restart', type=Path)
     parser.add_argument('--stop-after', type=int, default=2048)
+    parser.add_argument('--temporal-tolerance', type=float, help='Existing explicit column temporal policy')
     parser.add_argument('--initial-pond-cm', type=float, default=0.)
     parser.add_argument('--bottom-up-cm-day', type=float, default=0.)
     parser.add_argument('--pond-max-cm', type=float, default=1e6)
@@ -78,9 +83,11 @@ def main():
     args = parser.parse_args()
     column = {name: getattr(args, name) for name in ['initial_pond_cm', 'bottom_up_cm_day',
                                                    'pond_max_cm', 'runoff_resistance_day']}
+    if args.temporal_tolerance is not None:
+        column['temporal_tolerance'] = args.temporal_tolerance
     if args.output.exists():
         raise FileExistsError(args.output)
-    document = prepare(args.reader.resolve(), args.swp.resolve(), args.met.resolve(), column)
+    document = prepare(args.reader.resolve(), args.swp.resolve(), args.met.resolve(), column, args.etref)
     with tempfile.TemporaryDirectory(prefix='swap5-daily-run-') as tmp:
         source = Path(tmp) / 'daily.nml'
         source.write_text(document)

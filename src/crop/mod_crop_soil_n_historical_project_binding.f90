@@ -17,7 +17,7 @@ module mod_crop_soil_n_historical_project_binding
  public::initialize_historical_crop_soil_project,initialize_historical_crop_soil_owner
 contains
  subroutine initialize_historical_crop_soil_owner(selection,soil_template,crop_template,crop_owner, &
-   soil_id,crop_id,clock,water,path,origin,plan,coupled,senescence,status,error_line)
+   soil_id,crop_id,clock,water,path,origin,plan,coupled,senescence,status,error_line,extended_output)
  type(soil_n_historical_selection_t),intent(in)::selection
  type(reactive_parameters_t),intent(in)::soil_template
  type(crop_n_configuration_t),intent(in)::crop_template
@@ -36,18 +36,28 @@ contains
  type(crop_n_configuration_t)::configuration
  type(crop_senescence_policy_t)::candidate_senescence
  integer::code
+ logical,intent(out),optional::extended_output
+ logical::candidate_output
  plan=soil_n_amendment_calendar_t();coupled=crop_soil_state_t()
  senescence=crop_senescence_policy_t();status=1;error_line=0
+ if(present(extended_output))extended_output=.false.
+ candidate_output=.false.
+ if(present(extended_output))then
+ call initialize_historical_crop_soil_project(selection,soil_template,crop_template,soil_id,clock,water, &
+   path,origin,candidate_plan,soil,parameters,configuration,candidate_senescence,code,error_line,extended_output=candidate_output)
+ else
  call initialize_historical_crop_soil_project(selection,soil_template,crop_template,soil_id,clock,water, &
    path,origin,candidate_plan,soil,parameters,configuration,candidate_senescence,code,error_line)
+ end if
  if(code/=0)return
  call initialize_crop_soil(soil,crop_owner,configuration,crop_id,candidate_coupled,code)
  if(code/=0.or..not.candidate_coupled%ready())return
+ if(present(extended_output))extended_output=candidate_output
  plan=candidate_plan;coupled=candidate_coupled;senescence=candidate_senescence
  status=0;error_line=0
  end subroutine
  subroutine initialize_historical_crop_soil_project(selection,soil_template,crop_template, &
-   id,clock,water,path,origin,plan,soil,soil_parameters,crop,senescence,status,error_line)
+   id,clock,water,path,origin,plan,soil,soil_parameters,crop,senescence,status,error_line,extended_output)
  type(soil_n_historical_selection_t),intent(in)::selection
  type(reactive_parameters_t),intent(in)::soil_template
  type(crop_n_configuration_t),intent(in)::crop_template
@@ -68,16 +78,26 @@ contains
  type(soil_n_residue_age_t)::ages
  real(real64)::tcsf,lai
  integer::code
+ logical,intent(out),optional::extended_output
+ logical::candidate_output
  plan=soil_n_amendment_calendar_t();soil=reactive_state_t()
  soil_parameters=reactive_parameters_t();crop=crop_template
  senescence=crop_senescence_policy_t();status=1;error_line=0
+ if(present(extended_output))extended_output=.false.
+ candidate_output=.false.
+ if(present(extended_output))then
+ call initialize_historical_reactive_n_unified_export(selection,soil_template,id,clock,water, &
+   path,origin,candidate_plan,candidate_soil,candidate_parameters,tcsf,lai,code,error_line,ages,extended_output=candidate_output)
+ else
  call initialize_historical_reactive_n_unified_export(selection,soil_template,id,clock,water, &
    path,origin,candidate_plan,candidate_soil,candidate_parameters,tcsf,lai,code,error_line,ages)
+ end if
  if(code/=0)return
  call bind_historical_residue_ages(ages,crop_template,candidate_policy,candidate_crop,code)
  if(code/=RESIDUE_AGE_BIND_OK)return
  candidate_crop%tcsf_n=tcsf
  candidate_crop%lai_crit_nupt=lai
+ if(present(extended_output))extended_output=candidate_output
  plan=candidate_plan;soil=candidate_soil;soil_parameters=candidate_parameters
  crop=candidate_crop;senescence=candidate_policy;status=0;error_line=0
  end subroutine

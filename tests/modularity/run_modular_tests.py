@@ -30,6 +30,8 @@ CASES.update({
               'marker':None,'validator':'drainage','flags':COMMON},
  'assimilation': {'driver':'tests/fwof/pp02/test_wofost81_assimilation_driver.f90',
                   'marker':None,'validator':'assimilation','flags':['-std=f2008']}})
+CASES['fixed_crop']={'driver':'tests/nut-sol/test_fixed_crop_phenology.f90',
+                     'marker':'FIXED_CROP_STATE_NONMUTATION_ABA_REJECTION_PASS','flags':COMMON}
 CASES['low_air_policy']={'driver':'tests/modularity/test_low_air_step_policy.f90','marker':'LOW_AIR_STEP_POLICY_CONTRACT=PASS','flags':COMMON}
 CASES['b111_request']={'driver':'tests/nut-crop/test_b111_request_boundaries.f90',
                      'marker':'B111_REQUEST_BOUNDARY_TINY_DEMAND_MULTI_ORGAN_NONFINITE=PASS',

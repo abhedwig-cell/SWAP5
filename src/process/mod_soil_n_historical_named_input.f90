@@ -132,7 +132,7 @@ contains
      call parse_historical_soil_n_named_lines(lines(:n),initial,rates,status,error_line,ages)
    end block
  end subroutine
- subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line,ages,native_snm)
+ subroutine parse_historical_soil_n_named_lines(lines,initial,rates,status,error_line,ages,native_snm,extended_output)
    character(*),intent(in)::lines(:)
    type(soil_n_residue_age_t),intent(out),optional::ages
    type(soil_n_historical_initial_t),intent(out)::initial
@@ -140,6 +140,7 @@ contains
    integer,intent(out)::status,error_line
    character(512)::line,field,token
    logical,intent(in),optional::native_snm
+   logical,intent(out),optional::extended_output
    logical::native
    logical::seen(COUNT)
    real(real64)::v(COUNT),x
@@ -149,6 +150,7 @@ contains
    initial=soil_n_historical_initial_t();rates=soil_n_historical_rates_t()
    status=N_NAMED_INVALID;error_line=0;seen=.false.;v=0d0
    if(present(ages))ages=soil_n_residue_age_t()
+   if(present(extended_output))extended_output=.false.
    native=.false.;if(present(native_snm))native=native_snm
    source_line=0
    if(size(lines)>512)return
@@ -189,13 +191,18 @@ contains
      if(scan(trim(token),' /,;*!')/=0)return
      if(len_trim(token)>32.or.len_trim(token)==0)return
      if(native.and.field_index==35)then
-      ! Original rdslog accepts .FALSE. case-insensitively. Explicit false
-      ! is equivalent to omission; true requires the unadmitted output owner.
+      ! TRUE requires a caller explicitly capturing the output request.
+      ! Default callers retain their previous rejection contract.
       do j=1,len_trim(token)
        c=iachar(token(j:j));if(c>=65.and.c<=90)token(j:j)=achar(c+32)
       end do
-      if(trim(token)/='.false.')return
       x=0d0
+      if(trim(token)=='.true.')then
+       if(.not.present(extended_output))return
+       x=1d0
+      else if(trim(token)/='.false.')then
+       return
+      end if
      else if(native.and.field_index==34)then
       call parse_humus_timestamp(trim(token),x,ios)
       if(ios/=0)return
@@ -265,6 +272,7 @@ contains
      if(seen(29))ages%stem=v(29)
      if(seen(30))ages%storage=v(30)
    end if
+   if(present(extended_output))extended_output=v(35)==1d0
    status=N_NAMED_OK;error_line=0
  end subroutine
 end module
