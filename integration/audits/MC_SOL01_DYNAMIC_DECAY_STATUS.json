@@ -3996,6 +3996,54 @@
             "substep_feedback_work": {
               "baseline": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
               "status": "CANONICALLY_ADMITTED_BOUNDED_TRIAL_BEGINNING_ROOT_SUBSTEP",
+              "native_project_successor": {
+                "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+                "status": "PROPOSED_PREPARATION_O0_O2_PASS_ANNUAL_TRANSPORT_BLOCKED_NOT_ADMITTED",
+                "implementation": "Native SWP paths/year-file weather/ordered simple-crop rotations, period-specific root profiles and source-bound restart front end implemented separately; unchanged193 physical providers. Existing apps/SRC unchanged.",
+                "completed_controls": {
+                  "historical_preparation": "O0/O2,365-day/two-period1998 and481-day/three-period cross-year:39114 daily field values exactly equal to complete original fixed.f90/ETpot;12 rejected missing/unsupported future inputs",
+                  "short_physical": "O0/O2:8 exact predecessor output files,2 fresh exact restarts,144 original daily field values,14 invalid inputs",
+                  "coarse_rejection": "Actual day229 replay O0/O2:both committed owners byte-exact unchanged, no successful output publication",
+                  "spatial_probe": "Real6-provider centered transport:small dt does not cure a coarse-grid negative; a separately defined resolved1cm/1cm-dispersivity control is positive and conservative. Not a success claim for the annual fixture.",
+                  "documentation": "tools/docs/check_docs.py PASS",
+                  "annual_transport": "FAILED_NOT_QUALIFIED",
+                  "cross_year_transport": "NOT_REACHED_DEPENDENCY"
+                },
+                "evidence_checkpoint": {
+                  "path": "integration/audits/evidence/MC_SOL01_NATIVE_PROJECT_DRAFT_20261022.tar.xz.b64",
+                  "decoded_sha256": "1244197e5c0772b3b5155f6122e76158c9a43efa327c77d2f652378e43272579",
+                  "members": 509,
+                  "verification": "python -B integration/audits/verify_native_project_checkpoint.py --evidence integration/audits/evidence/MC_SOL01_NATIVE_PROJECT_DRAFT_20261022.tar.xz.b64 --self-test",
+                  "disposition": "Recoverable draft only, not registered as canonical admission authority; all failures retained, source versions and current postimages bound"
+                },
+                "retained_failure": {
+                  "path": "proof/native-project/annual/O0/annual1998/full.pending-0fwsdanl",
+                  "accepted_days": 228,
+                  "water_status": 0,
+                  "joint_status": 3,
+                  "chemical_status": 3,
+                  "disposition": "NOT_QUALIFIED; preserve inputs and failed output; no changed tolerance or forcing",
+                  "diagnosis": "Original12-cell year rejects day229 after228 accepted days; both refined41-cell O0/O2 years reject day141 after140 accepted days. Actual chemical process status3 is a negative explicit update. Smaller joint timesteps failed to resolve coarse positivity and were removed. LDIS=.01/.02 is cm, not1/2cm; original reader performs no conversion. No annual transport/restart PASS or canonical admission."
+                },
+                "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md",
+                "scope": "SWP-led native paths/year weather and up to64 simple-crop periods with unchanged physical kernel",
+                "next_action": "Complete independent annual/cross-year original crop preparation checks and current short O0/O2 controls, retain all failed annual evidence; numerical positivity requires a separate scientific/reference decision before annual route admission",
+                "full_historical_migration": false,
+                "test_selection": {
+                  "native_project": {
+                    "changed_dependency": "New native project metadata/weather adapter, multi-period preparation and explicit physical front end",
+                    "scientific_claim": "Correct original paths/year calendars and period-specific original crop/root preparation; actual hard annual water/solute mass and source-bound restart",
+                    "owner": "MC-SOL01 native_project_successor",
+                    "authority": "docs/science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md",
+                    "expected_seconds": 2400,
+                    "existing_evidence": "All SRC and old applications unchanged; current193 providers and native crop/root readers can be identity-checked and reused; no inherited new front-end PASS",
+                    "prior_execution": "FAILED",
+                    "diagnosis": "TERMINAL_FAILED:coarse day229; refined O0/O2 day141. The original .01/.02cm dispersivity was initially misinterpreted as1/2cm; refined grid was not resolved. Do not change physics/tolerances to manufacture a passing year. Cross-year physical execution NOT_REACHED_DEPENDENCY. Separate annual/cross-year preparation-only original fixed/ETpot comparison and current short controls selected, expected120s. Full physical qualification remains blocked."
+                  },
+                  "full_fci": "NOT_SELECTED_IMPACT",
+                  "highest_low_air": "NOT_SELECTED_POLICY"
+                }
+              },
               "concurrent_ref": "75877297daffcd50084d3705f91459a4f1272af7",
               "concurrent_reconciliation": "PR1371 adds a native NUT calendar/output adapter outside all194 crop inputs and outside the current336 cold providers. Original bodies and source preserved; fresh current calendar driver explicitly selected using current cold objects.",
               "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
