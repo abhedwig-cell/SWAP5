@@ -2862,19 +2862,19 @@
   "extended_output_component_20261021": {
     "thermal_output_successor_20261022": {
       "baseline": "636760624e930f11517a42707fd16d885902c045",
-      "stage": "LOCAL_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_BOUNDED_THERMAL_OUTPUT_FULL_HIST_OPEN",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonical_admitted": false,
+      "canonical_admitted": true,
       "contract": "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md",
       "scope": "Explicit nonharvested accepted thermal output day and joint physical/diagnostic/report generation. Cold behavior preserved; no thermal equations or physical restart schema change.",
       "interfaces": "Optional observer thermal selector and generation-reader heat parameters; explicit output day dispatches existing thermal owner and rejects competing prescribed environment.",
       "selected_feedback": "Cold native/output O0/O2, original output source arithmetic, thermal before/after certificates, missing/wrong heat identity and atomic generation validation.",
       "selected_composition": "Fresh roughly330-provider cold closure once per optimization plus original and augmented real retained-thermal drivers. Two-day balances, exact output-disabled physical states, fresh joint restart, failed save/view/replay and4 process-kill boundaries. Expected combined under300seconds; actual costs recorded.",
       "not_selected": "Full730day, highest low-air, unrelated FCI, new RossFast and aquifer; no physics changes.",
-      "next_action": "Run registered source/evidence owning chain and mutation controls, publish exact qualified tree, then verify actual canonical merge before admission receipt.",
+      "next_action": "Reconcile existing master bounded reachability without promotion. General historical/default orchestration, harvest/rotation output and active-crop negative allocation remain separate work.",
       "evidence_index": "integration/audits/evidence/mc-nut01-thermal-output-20261022/INDEX.json",
       "evidence_index_sha256": "daac67a3ede9e145bee342a7e00afc0dc71398f41870f0e3e394a876eb73f66b",
       "qualified_input_sha256": {
@@ -3251,7 +3251,7 @@
         "tests/nut-output/thermal_output_proof.inc": "A"
       },
       "postimages": {
-        "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md": "cec48ae34a285b44e5fe28b59eb52f821de0e197a7bb22070001260a071964c7",
+        "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md": "9e7aa04e62a832c4584437c5d9fb4553511a4de3256e661b21a06fad6c193f57",
         "integration/audits/evidence/mc-nut01-thermal-output-20261022/INDEX.json": "daac67a3ede9e145bee342a7e00afc0dc71398f41870f0e3e394a876eb73f66b",
         "integration/audits/evidence/mc-nut01-thermal-output-20261022/evidence.tar.xz.b64": "4ec3c327446f8800b72f89fad91a06a61ff31d106d8c32d02b672f5469ac3cf4",
         "integration/audits/verify_native_simple_crop.py": "e037e283fb8b7ffd311328eb228d3656b00132c77c980a8d855a6e7a33260360",
@@ -3261,7 +3261,15 @@
         "src/adapter/mod_crop_soil_n_output_observation.f90": "5bc45d2b6c929c1151e2802cdd33dc63086d25994d5524026c57ff578d56261c",
         "tests/nut-output/run_thermal_output.py": "9f12fd8de290be46b950d1df3812872cbf7974e343b053063ecf3118aca75246",
         "tests/nut-output/thermal_output_proof.inc": "9b8b5c7d159841947c0ac35bc7ae74436896f44ed329279e4cff3d8e27a51711"
-      }
+      },
+      "pr": 1368,
+      "qualified_head": "11bd2553070c7bcb2dddeb5b38a6096f70c209e6",
+      "canonical_merge": "f29d91857855200651234deedb07b03845881d07",
+      "qualified_tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+      "whole_merge_tree_exact": true,
+      "owning_guard": "PASS",
+      "owning_controls": 21,
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json"
     },
     "baseline": "48a59396d7e7745cf99ad4b1003cd84c946e3e3f",
     "stage": "BOUNDED_CANONICALLY_ADMITTED",

@@ -1,6 +1,7 @@
 # MC-NUT01 accepted thermal output composition
 
-Status: locally qualified bounded successor; canonical admission remains separate.
+Status: bounded successor canonically admitted through PR1368 at
+`f29d91857855200651234deedb07b03845881d07`.
 Baseline: `636760624e930f11517a42707fd16d885902c045`.
 Owner: existing HIST-COMPLETE extended-output thermal successor.
 
@@ -71,3 +72,13 @@ outside that conditional hook.
 Full MC-NUT01 remains open: active-crop/immobilisation finite donor allocation,
 general historical/default orchestration, harvest/rotation output and
 snow/persistent-surface nitrogen are not closed by this bounded composition.
+
+## Canonical admission
+
+The complete actual merge tree `f92553a48110a1f72ba360a16261bc0c9fcaed97`
+equals the published qualified tree at
+`11bd2553070c7bcb2dddeb5b38a6096f70c209e6`. The actual-merge owning
+source/evidence check and all21 corruption controls passed. Hosted workflows,
+check runs and statuses were zero on the qualified and merge commits; they
+are NOT_SELECTED and never counted as PASS. The admission receipt is
+`integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json`.
