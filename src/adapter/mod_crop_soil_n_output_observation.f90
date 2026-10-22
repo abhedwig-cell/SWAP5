@@ -33,14 +33,14 @@ contains
   type(crop_residue_pending_t)::pending
   real(real64)::clock,theta,dm(4),n(4),up(2)
   integer(int64)::revision
-  logical::has,use_heat
+  logical::has,thermal_states
   row=crop_ext_row_t();status=CROP_EXT_INVALID
   if(.not.all(ieee_is_finite([t0,t1])))return
   if(t1-t0/=1d0)return
   if(result%status/=JOINT_OK.or.result%joint%status/=JOINT_OK.or.result%joint%joint%status/=JOINT_OK)return
   if(result%senescence%status/=0.or.result%joint%joint%chemical%status/=0)return
-  use_heat=.false.;if(present(thermal))use_heat=thermal
-  if(use_heat)then
+  thermal_states=.false.;if(present(thermal))thermal_states=thermal
+  if(thermal_states)then
    if(.not.thermal_crop_soil_states_match(water_before,soil_before))return
    if(.not.thermal_crop_soil_states_match(water_after,soil_after))return
   else

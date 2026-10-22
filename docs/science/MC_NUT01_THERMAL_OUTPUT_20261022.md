@@ -1,6 +1,6 @@
 # MC-NUT01 accepted thermal output composition
 
-Status: implementation candidate, not qualified or admitted.
+Status: locally qualified bounded successor; canonical admission remains separate.
 Baseline: `636760624e930f11517a42707fd16d885902c045`.
 Owner: existing HIST-COMPLETE extended-output thermal successor.
 
@@ -37,3 +37,37 @@ combined cost under five minutes; measure all stages. Original task6 arithmetic
 and the current owning source/evidence guard remain required. Full730-day,
 highest-low-air, unrelated F-CI, RossFast expansion and aquifer are not selected.
 Invariants2,3,7,13,23,26,29 retain their existing ownership boundaries.
+
+## Completed qualification
+
+Fresh current cold O0/O2 completed with 680 successful recorded events and
+317.81 seconds summed event time. The thermal add-on completed with 59
+successful recorded events and 45.67 seconds summed event time. The combined
+363.48 seconds exceeded the initial under300-second estimate; compilation of
+the cold provider closure dominated. These are recorded event times, not full
+wall time. Crash-orchestration category time is UNKNOWN. The initial failed
+dependency-scan attempt is retained separately and is not counted as PASS.
+
+The original retained thermal driver ran unchanged at both optimizations.
+All twelve frozen physical artifacts, including its original harvest checks,
+match the admitted 20261017 evidence exactly. The new output-day composition
+does not thereby acquire a harvest-output contract. Previous PR1365 cold
+physical, combined-generation and CSV endpoints remain exact. Original task6
+arithmetic passed 2721 checks and 216 reports at each optimization.
+
+The real two-day thermal composition passed combined-generation continuation
+in a separate process, seventeen invalid-generation/identity cases per
+optimization, atomic environment/material/save rejection, replay rejection,
+saved-state preservation after CSV failure, and four process kills at the
+pre/post-rename boundaries. No power-loss claim is made.
+
+The source/evidence owner is `integration/audits/verify_nut_thermal_output.py`.
+Its immutable capsule contains raw outputs, generated sources, execution
+streams, provider identities, the failed attempt and predecessor qualification.
+The existing owning chain delegates only when this successor's registered
+postimages are present; the predecessor assertions remain byte-preserved
+outside that conditional hook.
+
+Full MC-NUT01 remains open: active-crop/immobilisation finite donor allocation,
+general historical/default orchestration, harvest/rotation output and
+snow/persistent-surface nitrogen are not closed by this bounded composition.
