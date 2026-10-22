@@ -1,5 +1,21 @@
 # MC-SOL01 original SWP chemistry, 21 October 2026
 
+## Current native calendar-driven nutrient output,22 October2026
+
+PR1371 at `d79217149734928e957015bace05d78a5ba7905a` joins the existing
+immutable native amendment calendar to the accepted nonharvested output day.
+Actual three-day O0/O2 execution includes an empty day, simultaneous Jan1 gifts,
+two report schedules and independent ordinary physical/manual diagnostic checks.
+Eight actual processes,80 rejected-day trials,eight replay rejections and exact
+fresh-process combined generation/CSV pass. Current cold endpoints are unchanged.
+The actual complete merge tree equals qualification;19 corruption controls pass.
+No incumbent equation, event-consumption cursor or restart schema changed.
+All nine NUT rows remain ACTIVE_MIGRATION;234 other rows,all243 dispositions,
+summary,queues and earlier receipts remain exact. General/default orchestration,
+heat-specific calendar,harvest/rotation output and active-crop negative allocation
+remain open. Hosted checks were not selected and are never counted as PASS.
+The JSON register is current; earlier sections below are historical receipts.
+
 ## Current accepted thermal nutrient output,22 October2026
 
 PR1368 at `f29d91857855200651234deedb07b03845881d07` adds the explicit
