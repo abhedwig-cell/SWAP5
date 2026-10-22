@@ -4001,7 +4001,49 @@
                 "status": "PROPOSED_PREPARATION_O0_O2_PASS_ANNUAL_TRANSPORT_BLOCKED_NOT_ADMITTED",
                 "positive_transport_successor": {
                   "baseline": "e387b89d382afaee325f3cf2c2760f0713f258e4",
-                  "status": "CONSERVATIVE_STORAGE_IMPLEMENTED_FOCUSED_O0_O2_PASS_CURRENT_REBUILD",
+                    "status": "POSITIVE_TRANSPORT_AND_PICARD_FOCUSED_PASS_ANNUAL_EXFILTRATION_AND_WATER_BLOCKED",
+                    "picard_successor_20261022": {
+                      "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
+                      "implementation": "Explicit default-OFF numerical conductivity iteration, Reference/default MvG only;64 iterations, unchanged1e-12 local and1e-10 mass criteria; no legacy SwKimpl1",
+                      "focused": "Actual day257 O0/O2 PASS; current193-object root rejection/retry/A/B/A and7 invalid compatibility controls per optimization PASS; current native within-mode restarts and cross-mode rejections PASS",
+                      "default_preservation": "Current default daily128 balances,16 fresh restarts,64 exact predecessor files and2 mode rejections PASS; current default transaction PASS. Final NUT preservation still running.",
+                      "annual": {
+                        "coarse_O0_O2": "266 accepted days; day267 rejects surface exfiltration in persistent pond carrier before chemical commit",
+                        "refined_O0_O2": "64 accepted days; day65 water transaction fails near internal saturation",
+                        "optimization_identity": "Both grids have byte-identical O0/O2 budget prefixes and rejected committed snapshots",
+                        "full_generations": "NOT_PUBLISHED",
+                        "restart_and_cross_year": "NOT_REACHED_DEPENDENCY",
+                        "qualified": false
+                      },
+                      "exfiltration_diagnostic": "Actual day267:step2 dt=.25day, pond .015733932160572135cm to0, qtop=+.039407159969323521cm/day, pond evaporation=.10234288861161206cm/day, soil evaporation=0. POND_INVALID at existing qtop>soil_evaporation carrier guard; zero water balance error. No unqualified soil-to-pond solute return is synthesized.",
+                      "water_diagnostic": "Actual refined day65 remains rejected at1e-4 and largest admitted temporal tolerance1e-3; pond/GWL full/half differences0, internal pressure differences near saturation.1e-2 and1e-1 reject the existing input domain before a water trial.",
+                      "excluded_runs": "picard-transaction-preflight supplied O0 twice and is explicitly invalid; picard-nut-cold mixed pre/post guard source versions and is excluded. Final current builds and controls replace them.",
+                      "next_safe_work": "Resolve internal-saturation water robustness with a preregistered error-control study, and implement source-backed soil-to-pond solute exfiltration ownership. Then rerun both grids/optimizations, annual restart and cross-year before qualification/admission.",
+                      "canonically_admitted": false,
+                      "full_historical_migration": false
+                    },
+                  "current_controls": {
+                    "process": "O0/O2 real6-provider36 positivity cases,6 source/sink/decay cases,3 analytic convergence meshes per optimization PASS",
+                    "short_project": "O0/O2 current conservative source:2 exact fresh restarts and14 invalid inputs PASS",
+                    "policy_restart": "O0/O2 both modes:12 exact fresh files,8 public/native cross-policy rejections and exact water/root fields PASS",
+                    "Reference_default": "O0/O2 current194-provider builds:128 root daily balances,16 exact restarts,64 predecessor default files,2 restart-mode rejections and real reject/retry/A/B/A/absent-option transaction PASS",
+                    "day229": "Current O0/O2 positive policy actual day replay PASS; current Reference actual rejection retains both owners byte exactly",
+                      "NUT": "Pre-Picard current336-provider cold/calendar and fresh rebuilt thermal/crash O0/O2 PASS. Initial thermal executable-mode failure retained. Picard successor requires its separate final current preservation controls."
+                  },
+                  "water_failure": {
+                    "day": 257,
+                    "accepted_prefix_days": 256,
+                    "optimizations": ["O0","O2"],
+                    "completed_t": 256.5788216367938,
+                    "accepted_substeps_in_rejected_day": 58836,
+                    "attempts": 1104523,
+                    "retries": 1045686,
+                    "solver_rejections": 125288,
+                    "temporal_rejections": 920399,
+                    "mass_rejections": 0,
+                    "minimum_accepted_dt_day": 3.922529179588627e-10,
+                    "disposition": "Historical frozen-conductivity experiment: all four coarse/refined O0/O2 runs terminate after256 accepted days. Retained proposal and extra Newton iterations do not cure the actual failure. Explicit Picard successor passes day257 but fails the full years at separate boundaries; see picard_successor_20261022."
+                  },
                   "retained_implicit_failure": "The first implicit candidate passes actual day229 replay but all four annual compound runs fail their initial short control after668 accepted substeps:day residual4.69e-12, process0, existing route mass certificate exceeded. Sources and logs retained. Conservative primary-amount storage replaces accumulated inverse-recompute drift; no tolerance changes.",
                   "focused_result": "36 high-Peclet/nonlinear positivity and conservation cases per optimization, independent2x2 linear oracle,6 source/sink/decay cases and3 analytic advection meshes. Analytic L1 error decreases1.34460,0.85810,0.50982 for20/40/80cells; this first-order policy has material numerical diffusion.",
                   "failed_day_replay": "O0/O2:actual committed day228 physical states reinitialized with the new explicit policy in a test-only driver; day229 succeeds with hard water/solute mass. Public cross-policy restart conversion remains forbidden.",
@@ -4017,7 +4059,7 @@
                     "full_fci": "PENDING_STABLE_CANDIDATE_OWNER_RECONCILIATION",
                     "highest_low_air": "NOT_SELECTED_POLICY"
                   },
-                  "next_action": "Implement explicit implicit-upwind option and minimal process controls, then current project builds and blocked annual route",
+                  "next_action": "Complete current default preservation and retain source-bound successful/failed experiments; resolve internal-saturation water robustness and explicit chemical exfiltration before rerunning annual restart/cross-year",
                   "qualified": false,
                   "canonically_admitted": false
                 },

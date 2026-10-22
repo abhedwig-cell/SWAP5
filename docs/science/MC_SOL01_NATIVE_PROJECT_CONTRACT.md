@@ -139,3 +139,66 @@ its positive dissolved/sorbed fractions onto that exact amount, recompute C from
 dissolved amount and theta, and require the existing2048eps equilibrium identity.
 This removes repeated inversion-roundoff mass creation without changing the
 physical balance or its tolerance. A negative conservative amount still rejects.
+
+The conservative transport candidate passes1024 daily balances across the two
+grids and O0/O2 before all four years reject water day257. The source is the
+existing SWKIMPL0 hydraulic route, before chemical replay. At a partially
+saturated interior interface, the last full/half candidates differ in pressure
+while pond and groundwater level are identical. Retaining step proposals is
+ineffective after the existing sticky solver-rejection fallback;16 Newton
+iterations still rejects. No completed historical year is claimed.
+
+Select one short research probe before any new annual execution:using the exact
+day256 state and original forcing, iterate physical conductivity inside the
+existing typed SWKIMPL0 solve (modified Picard) with64 iterations. Reuse the exact
+physical constitutive/root/top providers, full/half tolerance and hard mass
+certificate. The generated diagnostic HeadCalc replaces only its original object
+in the checked build; it is not production or admission. This distinguishes the
+frozen-conductivity algebraic saturation issue from a chemical defect. Expected
+30s compile and180s bounded native execution. A positive result requires a new
+explicit numerical policy, owning source/preservation gates and renewed annual
+composition before production use. Source-exact Reference remains available.
+# Explicit conductivity iteration successor (2026-10-22)
+
+The implemented policy is still experimental. Both O0/O2 annual experiments
+terminate: coarse accepts266 days then the existing pond carrier rejects actual
+soil-to-pond exfiltration on day267; refined accepts64 days then the water
+transaction fails near internal saturation on day65. Both grids' O0/O2 budget
+prefixes and rejected committed snapshots are byte-identical. Annual physical
+restart and cross-year remain unexecuted dependencies. Passing actual day257
+does not establish mesh robustness or annual qualification.
+
+The day267 diagnostic identifies the existing `qtop > soil_evaporation_rate`
+carrier guard: qtop=.039407159969323521cm/day, soil evaporation0, pond
+evaporation=.10234288861161206cm/day, dt=.25day, pond .015733932160572135cm
+to0. The water balance closes exactly. This is the unimplemented exfiltration
+chemical ownership boundary, not evidence of negative implicit transport.
+The refined day65 replay also fails at the largest admitted temporal tolerance
+1e-3;1e-2 and1e-1 reject the existing input domain before any water trial.
+No tolerance or carrier guard has been relaxed. Further saturation/error-control
+research and source-backed exfiltration coupling precede a new annual attempt.
+
+Canonical moved from80dbce8d to7eb6f10b while the experiments ran. The independent
+NUT harvest/saved-output adapters have been merged into this working branch;
+their fresh default preservation is selected alongside cold/thermal/calendar
+controls. No root/SOL predecessor status or scientific source is overwritten.
+
+The actual day-257 O2 research replay completed with modified Picard conductivity
+and 64 iterations, without changing the physical providers, beginning-of-trial
+root sink, temporal tolerance (1e-4), local tolerances (1e-12), or daily mass
+limit (1e-10). This is a focused result, not annual qualification.
+
+Implementation contract: `picard_conductivity_iteration` is an explicit numerical
+switch, default false, carried by the existing typed solver numerical request.
+It refreshes candidate conductivity and face means from the constitutive provider
+while retaining the SwKimpl=0 Picard matrix. It does not enter legacy SwKimpl=1.
+The initial FMR scope is Reference/default MvG, mean method 1, constant-flux bottom
+mode 2, 64 iterations, external full/half control, no temporal history, and no
+extended hydraulics, thermal, snow, macropore, drainage-response or additional
+root physiology. The historical project exposes this as `--water-conductivity
+picard`; frozen conductivity remains the default. Input binding must distinguish
+the modes across public restart. New shared numerical fields require fresh
+default-preservation and dependent NUT builds. Architecture invariants 2, 3, 5,
+7, 9, 13, 21, 23, 25, 26, 29 and 30 remain applicable. No canonical admission or
+full historical migration claim follows from this implementation contract.
+

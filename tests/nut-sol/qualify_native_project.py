@@ -14,13 +14,14 @@ def main():
  ap.add_argument('--output',type=Path,required=True);ap.add_argument('--short-only',action='store_true')
  ap.add_argument('--optimization',choices=['O0','O2'],nargs='+',default=['O0','O2'])
  ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference')
+ ap.add_argument('--water-conductivity',choices=['frozen','picard'],default='frozen')
  ap.add_argument('--grid',choices=['coarse','refined'],default='refined');a=ap.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  old=runpy.run_path(str(ROOT/'integration/audits/verify_root_substep.py'))['capsule']()
  paths=['tests/nut-sol/qualify_native_project.py','tests/nut-sol/qualify_native_simple_crop.py','tools/solute/run_project.py','tools/solute/run_column.py',
         'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64',WEATHER+'998.gz',WEATHER+'999.gz']
  report=dict(status='RUNNING',inputs={p:sha((ROOT/p).read_bytes())for p in paths},events=[],bundles={},cases={},invalid_inputs=0,exact_single_files=0,fresh_restarts=0,original_exact_values=0)
- report.update(solute_transport=a.solute_transport,grid=a.grid,optimizations=a.optimization)
+ report.update(solute_transport=a.solute_transport,water_conductivity=a.water_conductivity,grid=a.grid,optimizations=a.optimization)
  def save():(out/'result.json').write_text(json.dumps(report,indent=2)+'\n')
  def run(cmd,cwd,valid=True):
   t=time.perf_counter();r=subprocess.run(list(map(str,cmd)),cwd=cwd,capture_output=True,input=b'',timeout=1800);i=len(report['events'])
@@ -69,6 +70,7 @@ def main():
    source=case/'Project.SWP';source.write_text(swp)
    common=[sys.executable,ROOT/'tools/solute/run_project.py',source,'--bundle',bundle]
    if a.solute_transport!='reference':common+=['--solute-transport',a.solute_transport]
+   if a.water_conductivity!='frozen':common+=['--water-conductivity',a.water_conductivity]
    for target,extra in [('full',[]),('split',['--stop-after',str(split)]),('resumed',['--restart',case/'split'])]:
     run(common+['--output',case/target]+extra,case)
    for f in ['state.csv','endpoint.csv','restart.bin']:assert (case/'full'/f).read_bytes()==(case/'resumed'/f).read_bytes()
@@ -98,7 +100,7 @@ def main():
     assert abs(d['potential_transpiration_cm']-d['actual_transpiration_cm']-d['drought_reduction_cm']-d['oxygen_reduction_cm'])<1e-12
     if info['profile_index'][i]==0:assert d['actual_transpiration_cm']==0.
    assert sum(d['actual_transpiration_cm']for d in budget)>0
-   if name=='single'and a.solute_transport=='reference':
+   if name=='single'and a.solute_transport=='reference'and a.water_conductivity=='frozen':
     for f in ['state.csv','endpoint.csv','restart.bin','budget.csv']:
      assert (case/'full'/f).read_bytes()==old['daily/'+opt+'/dry/full/'+f],('single preservation',f)
      report['exact_single_files']+=1

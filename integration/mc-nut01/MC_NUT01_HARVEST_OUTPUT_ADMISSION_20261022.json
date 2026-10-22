@@ -1,0 +1,122 @@
+{
+  "work_unit": "MC-NUT01-HARVEST-PHASE-GENERATIONS",
+  "date": "2026-10-22",
+  "pr": 1374,
+  "baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+  "qualified_head": "903ea8d62e53f476206c7e44e23155c102840c8d",
+  "canonical_merge": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+  "qualified_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+  "actual_merge_tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+  "whole_merge_tree_exact": true,
+  "incumbent_production_unchanged": true,
+  "postmerge_owner": {
+    "qualified": true,
+    "status": "HARVEST_OUTPUT_PHASE_O0_O2_QUALIFIED",
+    "actual_programs": 14,
+    "phase_roundtrips": 6,
+    "fresh_phase_progressions": 4,
+    "diagnostics_unchanged": true,
+    "incumbent_physics_unchanged": true,
+    "full_harvest_day_reporting": false,
+    "full_mc_nut01_closed": false,
+    "fresh_thermal_science": {
+      "status": "THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS",
+      "qualified": true,
+      "invalids_per_opt": 17,
+      "crash_boundaries": 4,
+      "old_cold_exact": true,
+      "full_mc_nut01_closed": false
+    }
+  },
+  "postmerge_controls": {
+    "status": "PASS",
+    "count": 18,
+    "controls": [
+      "source src/adapter/mod_crop_soil_n_output_harvest.f90",
+      "source src/crop/mod_crop_soil_n_day.f90",
+      "source src/adapter/mod_crop_n_output_generation.f90",
+      "source src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "source integration/audits/verify_root_substep.py",
+      "missing harvest/result.json",
+      "missing thermal/result.json",
+      "missing cold/result.json",
+      "missing PREDECESSOR.json",
+      "missing harvest/driver.f90",
+      "missing harvest/O0/endpoint.harvest.phase-1",
+      "missing harvest/O2/fresh-phase-3",
+      "changed harvest/O0/endpoint.harvest.failed-before-stage",
+      "changed harvest/O2/endpoint.harvest.manual-2",
+      "changed harvest/O0/endpoint.harvest.view-memory-3",
+      "changed harvest/O2/endpoint.harvest.unbound-observation-after",
+      "changed harvest/O0/roundtrip-1",
+      "foreign harvest science"
+    ]
+  },
+  "predecessor_source_and_controls": "PASS_AT_EXACT_DETACHED_BASELINE_36_CONTROLS",
+  "incumbent_root_substep_science": "TRIAL_BEGINNING_ROOT_SUBSTEP_O0_O2_QUALIFIED",
+  "evidence": "integration/audits/evidence/mc-nut01-harvest-output-20261022/INDEX.json",
+  "measured_cost_seconds": {
+    "cold": {
+      "compile": 287.19526218694955,
+      "link": 1.3257071800035192,
+      "native": 3.0435218200000236,
+      "native_output": 0.8665715120005189,
+      "native_output_restart": 0.36146298899984686,
+      "trace_native": 0.007961512004840188
+    },
+    "thermal": {
+      "crash_reconstruction": 0.02232788300170796,
+      "driver_compile": 39.00411430600798,
+      "invalid_generation": 0.228860886010807,
+      "invalid_identity": 0.06195202897652052,
+      "link": 1.165895577003539,
+      "original_fresh": 0.24338811400230043,
+      "original_native": 1.323704596994503,
+      "output_fresh": 0.5214829100004863,
+      "output_native": 3.172898486001941,
+      "reconstruction": 0.026288750006642658,
+      "test_hook_build": 0.08174304700514767
+    },
+    "harvest": {
+      "driver_compile": 29.394673390997923,
+      "harvest_native": 2.7984944870040636,
+      "harvest_native_fresh": 0.4947533139929874,
+      "link": 0.5669473240050138,
+      "phase_continuation": 0.022102017006545793,
+      "phase_roundtrip": 0.035258498988696374,
+      "provider_compile": 2.240488887000538
+    }
+  },
+  "hosted": {
+    "qualified_head_workflows": 0,
+    "qualified_head_check_runs": 0,
+    "qualified_head_statuses": 0,
+    "merge_workflows": 0,
+    "merge_check_runs": 0,
+    "merge_statuses": 0,
+    "selection": "NOT_SELECTED_BOUNDED_LOCAL_PHASE_PERSISTENCE",
+    "counted_as_pass": false
+  },
+  "source_docs": "PASS",
+  "strict_docs": "PASS",
+  "scope": "Transactional existing harvest/incorporation/observation-retirement phases saved with unchanged physical/diagnostic/report-history generation; no new day or diagnostic quantity.",
+  "full_harvest_day_reporting": false,
+  "full_mc_nut01_closed": false,
+  "master_rows_promoted": false,
+  "master_receipt": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
+  "master_checks": {
+    "scoped_bounded_reachability": 9,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "all_queues_exact": true,
+    "old_bounded_receipts_exact": true,
+    "integrity": "PASS",
+    "inheritance_controls": 20,
+    "source_docs": "PASS",
+    "strict_docs": "PASS",
+    "full_master_qualified": false
+  },
+  "final_metadata_owner": "PASS",
+  "final_metadata_controls": 18
+}

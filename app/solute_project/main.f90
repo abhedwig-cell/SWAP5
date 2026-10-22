@@ -39,6 +39,7 @@ program swap5_native_project_column
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
   integer :: solute_transport_scheme=0
+  logical :: picard_conductivity_iteration=.false.
   integer(int64) :: revision
   real(real64) :: initial_head=-75d0,initial_pond_cm=0d0,initial_pond_mass_mg_cm2=0d0
   real(real64) :: concentration_mg_cm3(MAX_NODES)=0d0
@@ -110,7 +111,8 @@ program swap5_native_project_column
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
-    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme
+    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
+    picard_conductivity_iteration
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -278,6 +280,8 @@ program swap5_native_project_column
   p%cofgen(22,:)=-1d6;p%cofgen(23,:)=1d-12
   if(swp_water_bootstrap)p%cofgen=swp_cofgen
   p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%max_iterations=8;p%max_backtracking=4
+  p%picard_conductivity_iteration=picard_conductivity_iteration
+  if(picard_conductivity_iteration)p%max_iterations=64
   p%root_extraction_active=.true.
   initial%active_nodes=numnod;initial%pressure_head=spread(initial_head,1,numnod)
   if(swp_water_bootstrap)initial%pressure_head=swp_heads
