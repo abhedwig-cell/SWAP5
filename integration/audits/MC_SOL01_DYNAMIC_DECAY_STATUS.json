@@ -3573,7 +3573,7 @@
       },
       "etref_successor": {
         "baseline": "288ba1473c478b9a2a637f0b12d624fbcc63ca4a",
-        "status": "LOCAL_O0_O2_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+        "status": "CANONICALLY_ADMITTED_BOUNDED_FALLOW_ETREF",
         "affected_invariants": [
           2,
           3,
@@ -3596,8 +3596,8 @@
           "docs/science/MC_SOL01_SWP_ETREF_CONTRACT.md",
           "docs/science/surface-evaporation.md"
         ],
-        "next_action": "Current exact source/evidence controls, local docs, publish and admit bounded route",
-        "recovery_point": "work/swp-etref-fallow-20261022",
+        "next_action": "Live crop/calendar/default and broader physical composition; current bounded fallow ETref admission complete",
+        "recovery_point": "integration/f-ci-canonical; PR1366 merge04e59af7; existing SOL status daily_meteo_successor.etref_successor; exact composed owner verify_swp_etref.py",
         "blockers": [],
         "full_historical_migration": false,
         "test_selection": {
@@ -3646,7 +3646,9 @@
           "frozen_predecessor_controls": 39,
           "concurrent_native_nut": "FRESH_O0_O2_PROJECT_INPUT_COMPILED_CONTROLS_PASS",
           "concurrent_exact_files": 24,
-          "concurrent_frozen_controls": 20
+          "concurrent_frozen_controls": 20,
+          "actual_merge_controls": 43,
+          "final_receipt_controls": 44
         },
         "hosted_selection": "NOT_SELECTED_LOCAL_INTEGRATED_QUALIFICATION_COMPLETE",
         "postimages": {
@@ -3655,7 +3657,7 @@
           "app/solute_column/read_swp_daily.f90": "52a5cff16f6b4f0746cd2a392913cfce05e62c6fd97ade3e2f39d5814a4f8cb4",
           "docs/science/MC_NUT01_EXTENDED_OUTPUT_CONTRACT_20261021.md": "b6cf3185fbf6f451a09f96e8a1e41a96d0eabafaa1457c3b33a6dfc7027721f1",
           "docs/science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md": "b51c2636c7137381c3b180c11ed31a4324b0d7794ba70c5b85fbc858c8071e13",
-          "docs/science/MC_SOL01_SWP_ETREF_CONTRACT.md": "2cff48e59da50458a5fb24cb18265dce28f92c75d01735ce99eff8af7be56e83",
+          "docs/science/MC_SOL01_SWP_ETREF_CONTRACT.md": "1a6a392a970d3fa312ad36a6b6e6a82767b288641aa0f58ea84d67e27bc2dc3d",
           "docs/status-a/CURRENT_STATUS.md": "08d4cc4eda5172674f97033ab04003005b07d6cdce50e8e26a150715eb43591a",
           "docs/status-a/TRACEABILITY.md": "e22531ef54697828e317e904fd0cecf4a3eed134645b532fb46f12c71af5b8ba",
           "integration/audits/MC_SOL01_SWP_ETREF_REVIEW.md": "a8de208f9ac7bcda957f24fa3ff0f8778fd1e806d69b298ac43278ae0191a1c0",
@@ -3684,7 +3686,8 @@
           "tests/nut-sol/qualify_swp_etref.py": "dfcae43f54ef9376f091dfe9d2293e3808c5e82d4e64d09d1b306e1059ecbba5",
           "tests/nut-sol/test_soil_evaporation_pond.f90": "9ecfbc27d6db8700f759dd56529c04b28cbbd2fee36796ab95805aefdca3b30b",
           "tools/solute/build_daily.py": "0ee7438a873afed8b1d40f91a824286c37ef754f8a8e22fa2a6c040e6a5dae9a",
-          "tools/solute/run_daily.py": "9c4f5a3c66e95e97d3b55cb511df20c0234477fffe14083a5441e8a64aa91cf0"
+          "tools/solute/run_daily.py": "9c4f5a3c66e95e97d3b55cb511df20c0234477fffe14083a5441e8a64aa91cf0",
+          "integration/audits/evidence/MC_SOL01_SWP_ETREF_ADMISSION_20261022.tar.xz.b64": "c825aba295fb22dab23fbfe3b07961d5524cdae361a622b75825d7143d2211da"
         },
         "source_delta": {
           ".github/workflows/mc-sol01-swp-reader.yml": "M",
@@ -3715,7 +3718,8 @@
           "tests/nut-sol/qualify_swp_etref.py": "A",
           "tests/nut-sol/test_soil_evaporation_pond.f90": "A",
           "tools/solute/build_daily.py": "M",
-          "tools/solute/run_daily.py": "M"
+          "tools/solute/run_daily.py": "M",
+          "integration/audits/evidence/MC_SOL01_SWP_ETREF_ADMISSION_20261022.tar.xz.b64": "A"
         },
         "inherited_science_paths": [
           "tools/solute/build_daily.py",
@@ -3787,6 +3791,24 @@
           "decoded_sha256": "b3c421a851e00dbbfbb97cca0f86d2df2e625cf0d0fdbe5edeaf2839e8f2682f",
           "members": 1911,
           "decoded_bytes": 91344
+        },
+        "pr": 1366,
+        "canonical_merge": "04e59af76e8d4a1564058067ec6b8f3cf977f376",
+        "admission": {
+          "candidate": "4b37f317835497437e6c43aee703ea18f45d830c",
+          "canonical_merge": "04e59af76e8d4a1564058067ec6b8f3cf977f376",
+          "qualified_full_tree": "a6a4c5ab0a3cb508c0f0cfbb44e329d0f629f424",
+          "full_tree_exact": true,
+          "actual_merge_owner": "PASS",
+          "actual_merge_controls": 43,
+          "hosted_workflows": "NOT_SELECTED_LOCAL_INTEGRATED_QUALIFICATION_COMPLETE",
+          "new_postmerge_numerics": false,
+          "evidence": {
+            "path": "integration/audits/evidence/MC_SOL01_SWP_ETREF_ADMISSION_20261022.tar.xz.b64",
+            "decoded_sha256": "62d3a409cdea155a053fd8fd6dbcb9ed19699ed8fddcc4b1cb450a5c55a1601b",
+            "members": 4,
+            "decoded_bytes": 9032
+          }
         }
       }
     }

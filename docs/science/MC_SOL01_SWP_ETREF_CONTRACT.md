@@ -1,6 +1,7 @@
 # Fallow ETref water and solute composition
 
-Status: locally qualified O0/O2; canonical admission pending. Baseline:
+Status: canonically admitted through PR1366, merge
+`04e59af76e8d4a1564058067ec6b8f3cf977f376`. Baseline:
 `288ba1473c478b9a2a637f0b12d624fbcc63ca4a`.
 
 The opt-in successor composes original daily ETref with the existing production
@@ -116,3 +117,18 @@ startup, original FALSE/default behavior, fresh process output continuation,
 26 new/38 incumbent input observations and three compiled rejecting mutants.
 All24 selected prior NUT endpoint/output bytes remain exact. Its separate raw
 capsule and frozen20-control receipt are bound by the current ETref owner.
+
+## Actual canonical receipt
+
+PR1366 candidate4b37f317 and actual merge04e59af7 share complete qualified tree
+`a6a4c5ab0a3cb508c0f0cfbb44e329d0f629f424`. The combined source/evidence
+owner and43 negative controls pass on the actual merge. This receipt validates
+executed local native evidence and exact current dependencies; it is not a new
+postmerge numerical replay. Hosted workflows were deliberately not selected,
+and no hosted numerical PASS is asserted. The original native workflow remains
+available with every predecessor assertion plus the new ETref step.
+
+The final receipt changes only this contract, the existing SOL status and an
+immutable actual-merge admission capsule. Full historical migration remains
+false; live crop/default, reduction, heat/snow/frost, age and ETref/N composition
+remain outside this bounded admission.
