@@ -3993,7 +3993,7 @@
             "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
             "full_historical_migration": false,
             "substep_stress_feedback": false,
-            "next_action": "Canonical admission; then original within-hydraulic-substep root stress feedback and wider historical/default physical composition",
+            "next_action": "Admit input-boundary correction; then original within-hydraulic-substep stress feedback and wider historical/default composition",
             "test_selection": {
               "groups": {
                 "native_root_joint": {
@@ -4002,21 +4002,22 @@
                   "owner": "MC-SOL01 root_joint_successor",
                   "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
                   "expected_seconds": 240,
-                  "existing_evidence": "New194-provider crop application and original SOL source/driver/forcing/toolchain inputs unchanged by concurrent NUT PR1368. Current NUT336-source cold/thermal proof and21 frozen owner controls preserved independently.",
-                  "prior_execution": "PASS"
+                  "existing_evidence": "All194 physical inputs and all transaction/modular/current NUT dependencies unchanged. Rebuild changed native reader and execute86 native events/34 invalid inputs;64 valid artifacts exact against PR1369.",
+                  "prior_execution": "PASS",
+                  "diagnosis": "Native reader gained explicit rain/evaporation mode guards, changing its source/executable identity. Rebuilt O0/O2 and re-executed complete86 events. All194 physical inputs unchanged;64 prior outputs are byte exact."
                 }
               },
               "full_fci": "NOT_SELECTED_IMPACT",
               "highest_low_air": "NOT_SELECTED_POLICY",
-              "candidate": "b09c85362f19ae5e43e9ccae0424902e28b5861a"
+              "candidate": "1d9baee8cea0ff72bd4606824975d7437babc06e"
             },
             "evidence": {
               "path": "integration/audits/evidence/MC_SOL01_CROP_ROOT_JOINT_20261022.tar.xz.b64",
-              "decoded_sha256": "b90876b485b59eb59e25c042a8a27900a79f89d2a814a8be0184c5accc53c169",
-              "decoded_bytes": 753536,
-              "members": 6912
+              "decoded_sha256": "d9546bd8a656b1c29c9a08cae95b25f0d51466f506b96d7168be4d9a0805d6ef",
+              "decoded_bytes": 800332,
+              "members": 7631
             },
-            "recovery_point": "Composed qualified tree after concurrent NUT thermal output PR1368; exact own/current NUT entrypoints39 controls; canonical admission next",
+            "recovery_point": "PR1369 main composition admitted; O0/O2 forcing-boundary correction qualified with40 controls and64 exact valid artifacts; admit correction next",
             "actual_daily_root_uptake": true,
             "hosted_selection": "NOT_SELECTED_LOCAL_INTEGRATED_QUALIFICATION_COMPLETE",
             "affected_invariants": [
@@ -4032,9 +4033,9 @@
             "qualification": {
               "physical_cases": 16,
               "daily_balance_observations": 128,
-              "native_controller_events": 82,
+              "native_controller_events": 86,
               "fresh_restarts": 16,
-              "invalid_inputs": 30,
+              "invalid_inputs": 34,
               "exact_fallow_artifacts": 6,
               "rejection_retry_compile_run_events": 4,
               "application_providers": 194,
@@ -4047,22 +4048,23 @@
               "prior_NUT": "FROZEN_63676062",
               "concurrent_NUT": "CURRENT_COLD_THERMAL_O0_O2_NATIVE_INPUT_IDENTITIES_PASS",
               "concurrent_frozen_controls": 21,
-              "composed_source_raw_controls": 39,
+              "composed_source_raw_controls": 40,
+              "input_boundary_exact_artifacts": 64,
               "docs_source": "PASS",
               "docs_strict": "PASS"
             },
             "postimages": {
               "app/solute_crop/main.f90": "6f1ff9774844953f8e2a093c660012950545f88e201213faf7bc77208f0ece37",
-              "app/solute_crop/read_swp_root.f90": "00dbf6b542fec5f2d67b8030221469f973ec1a977c7358a50caa43ea02be745c",
+              "app/solute_crop/read_swp_root.f90": "01fb9031de64952dbab4324877ec67d4d842c5eaf696b3832e884cf58b6cca79",
               "docs/science/MC_NUT01_THERMAL_OUTPUT_20261022.md": "9e7aa04e62a832c4584437c5d9fb4553511a4de3256e661b21a06fad6c193f57",
-              "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md": "6204286c67a02d60d3b6b77dbe039fd31e54dbcc3e304ecd3ff487e58a40d3bd",
-              "docs/status-a/CURRENT_STATUS.md": "8f03293e3d264eec3d89bbcfee6b0d23d379b7cb1e58ae471b901d428bbde699",
-              "docs/status-a/TRACEABILITY.md": "85337e19cd8b9f3e0b0495c60a7f0af8a2269a120803100c9cd9db7b92a3fd40",
-              "integration/audits/MC_SOL01_CROP_ROOT_JOINT_REVIEW.md": "bc488910caa6437a31d842988a0ceb01a1b8e55c57f3fd91797f0afeb227f46f",
-              "integration/audits/evidence/MC_SOL01_CROP_ROOT_JOINT_20261022.tar.xz.b64": "df36037225ed324d8c68e64bc431ec981c2b2159b77d848ba580ecd767c80034",
+              "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md": "409e4adc0317b555d2e53a3df751f757a72fc4a6af8e85d3492ab870c3265fdb",
+              "docs/status-a/CURRENT_STATUS.md": "1964e3b2a0c1c169a4295241323b5bfab3d85484a8f82f894bf9d795525341ba",
+              "docs/status-a/TRACEABILITY.md": "97162575625c426222e117a7fea0497729cc02a9fb7b8372b62e4b8ad45b919a",
+              "integration/audits/MC_SOL01_CROP_ROOT_JOINT_REVIEW.md": "c192485db35edc6c742acb2627cd36324d507cd5d2d81e74947eeb198e3b9959",
+              "integration/audits/evidence/MC_SOL01_CROP_ROOT_JOINT_20261022.tar.xz.b64": "8a8c4f45fd73a33922a16299932f325565858e9c17e71f6c27c08ca015e9ea8c",
               "integration/audits/evidence/mc-nut01-thermal-output-20261022/INDEX.json": "daac67a3ede9e145bee342a7e00afc0dc71398f41870f0e3e394a876eb73f66b",
               "integration/audits/evidence/mc-nut01-thermal-output-20261022/evidence.tar.xz.b64": "4ec3c327446f8800b72f89fad91a06a61ff31d106d8c32d02b672f5469ac3cf4",
-              "integration/audits/verify_crop_root_joint.py": "8d1f629df743286af50e0a8693edd508cdf8e6bd5c17d72960ec746f74697070",
+              "integration/audits/verify_crop_root_joint.py": "75b5a1228008e5fb7464f4e52f6342353817e2e24ee33168d4da6bef7ce6c866",
               "integration/audits/verify_native_simple_crop.py": "57919c5e68b890ee749f695bab9163e4ba3882aff645a446f5cb1bb8dd2d8670",
               "integration/audits/verify_nut_thermal_output.py": "f1460e1b3285752c54cf9f785db6a823ec5bca5d2ad2887bc6a59fb89be57107",
               "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json": "156ffbc17ac41a04f2377a939e82492bacc82d2c98da988b8ec331f7360c5145",
@@ -4072,7 +4074,7 @@
               "src/adapter/mod_crop_soil_n_output_observation.f90": "5bc45d2b6c929c1151e2802cdd33dc63086d25994d5524026c57ff578d56261c",
               "tests/nut-output/run_thermal_output.py": "9f12fd8de290be46b950d1df3812872cbf7974e343b053063ecf3118aca75246",
               "tests/nut-output/thermal_output_proof.inc": "9b8b5c7d159841947c0ac35bc7ae74436896f44ed329279e4cff3d8e27a51711",
-              "tests/nut-sol/qualify_crop_root_joint.py": "b4a9f161828865ec32220442cf9cbdaa2859497573d8c5db290db9cb74df28ca",
+              "tests/nut-sol/qualify_crop_root_joint.py": "6c08fdab24acf8462f19b2abc31e69447993d4d5cc43f193ca1d8a48a808457e",
               "tests/nut-sol/qualify_crop_root_transaction.py": "b06a2775d8324648c53ed9f4545104f1181d83fdbfb9e826549b40739854ddd8",
               "tests/nut-sol/test_crop_root_transaction.f90": "9b3aea633a3ae6f43d897b35bc9e620305e9fd63a38d6539d74cad09bc6d43fe",
               "tools/solute/build_crop_column.py": "cb498ccba77df3c3f55066e0781de59270d973e883b2ff8958ed374312f7a8d0",
@@ -4189,7 +4191,23 @@
               "src/adapter/mod_crop_soil_n_output_day.f90",
               "src/adapter/mod_crop_soil_n_output_observation.f90"
             ],
-            "concurrent_evidence_index": "integration/audits/evidence/mc-nut01-thermal-output-20261022/INDEX.json"
+            "concurrent_evidence_index": "integration/audits/evidence/mc-nut01-thermal-output-20261022/INDEX.json",
+            "input_boundary_fix": {
+              "scope": "Explicit SWRAIN=0, no SWEVAP=0; no valid model trajectory change",
+              "original_admission_pr": 1369,
+              "original_merge": "d58d0c00e203f7135f2a3d3ff110cc6a9686d22a",
+              "new_invalid_cases": 4,
+              "exact_valid_physical_artifacts": 64,
+              "status": "LOCALLY_QUALIFIED_O0_O2"
+            },
+            "initial_canonical_admission": {
+              "pr": 1369,
+              "candidate": "72867cb144c0f4125751d42956caab3628c93e4b",
+              "merge_commit": "d58d0c00e203f7135f2a3d3ff110cc6a9686d22a",
+              "qualified_and_merge_tree": "14e10fc512c4e39400b15aaa7e7c75cb661aaedc",
+              "actual_merge_controls": 39,
+              "scope": "Original bounded daily root composition; input-boundary correction separately qualified"
+            }
           }
         }
       }

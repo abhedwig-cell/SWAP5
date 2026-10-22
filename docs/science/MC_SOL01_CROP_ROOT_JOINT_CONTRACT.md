@@ -52,8 +52,8 @@ providers and proof are identity-checked, not blindly rerun. Full F-CI is
 NOT_SELECTED_IMPACT; highest low-air is NOT_SELECTED_POLICY.
 
 Qualification:16 O0/O2 physical cases and128 daily balance observations;16
-independent-process restarts are byte exact;30 invalid/source-changed inputs
-reject atomic publication.82 application controller processes pass their expected
+independent-process restarts are byte exact;34 invalid/source-changed inputs
+reject atomic publication.86 application controller processes pass their expected
 outcomes. Original upper-layer stress support, scalar parameters and both RDCTB
 axes are checked explicitly after native serialization. A zero-density or rootless
 future plan rejects even when only an initial fallow prefix was requested.
@@ -87,3 +87,13 @@ assertions. Both owning entrypoints receive exact additive handoffs to the
 composed crop guard; all earlier assertion bodies remain byte-preserved.
 No physical rerun is selected for the crop column because every actual compiled
 input, forcing, driver, oracle, compiler flag and recorded result is unchanged.
+
+
+Final input-boundary correction:the actual daily route explicitly requires
+SWRAIN=0 and rejects SWEVAP=0. The prior preparation-only executable need not
+select an actual rain/evaporation policy, but its physical consumer must reject
+unsupported active switches. Two additional O0/O2 negative cases increase the
+final controller count to86 and invalid-input count to34. Valid forcing,
+physical application, all194 compiled application inputs and transaction driver
+remain unchanged. The native root adapter is rebuilt and the complete daily
+suite is re-executed; no earlier86-process PASS is inferred.

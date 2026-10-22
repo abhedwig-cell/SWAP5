@@ -17,6 +17,10 @@ program read_swp_root
   call get_command_argument(1,swp);call get_command_argument(2,crp);call get_command_argument(3,met)
   call rdinit(74,0,trim(swp))
   call rdsinr('swcrop',0,2,mode);call require(mode==1,'crop must be native active')
+  call rdsinr('swrain',0,3,mode);call require(mode==0,'only uniform daily rain selected')
+  if(rdinqr('swevap'))then
+    call rdsinr('swevap',0,1,mode);call require(mode==1,'disabled evaporation not selected')
+  end if
   call zero_switch('swsnow',1);call zero_switch('swhea',2);call zero_switch('swmacro',1)
   call zero_switch('swfrost',1);call zero_switch('swtill',1);call zero_switch('swcropsnm',1)
   call rdsdor('rds',1d0,5000d0,maximum_root_depth_cm)
