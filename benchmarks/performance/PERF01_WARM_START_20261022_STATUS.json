@@ -3,7 +3,7 @@
   "work_unit": "WEATHER_WARM_START",
   "baseline": "3e23aa83de6637a8460e080e023abde89bca8127",
   "canonical_observed": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
-  "status": "CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED_DEFAULT_OFF",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_REPAIR_WARM_DEFAULT_OFF",
   "implemented": true,
   "first_prototype": {
     "status": "97DAY_COMPLETES_FOCUSED_PASS_BUT_SLOWER_RETAINED",
@@ -17,11 +17,11 @@
   },
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "default_off": true,
   "tested_production_checkpoint": "10f8d6b6",
   "benchmark_checkpoint": "4cc6269a",
-  "bounded_native_qualification": "PASS: current7eb6f10b composition, all selected source/native preservation and docs gates. Canonical merge pending.",
+  "bounded_native_qualification": "PASS on exact current composition and actual canonical merge source verification.",
   "result": "benchmarks/performance/PERF01_WARM_START_20261022_RESULT.md",
   "summary": "benchmarks/performance/PERF01_WARM_START_20261022_EVIDENCE.json",
   "verifier": "benchmarks/performance/verify_perf01_warm_start.py",
@@ -637,9 +637,9 @@
   "source_composition_80db": {
     "baseline": "7eb6f10baabae2f26af168c59bf63459fa0a3516",
     "physical_baseline": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
-    "stage": "CURRENT_COMPOSED_SOURCE_AND_NATIVE_QUALIFIED",
+    "stage": "CANONICALLY_ADMITTED_BOUNDED_CURRENT_SOURCE_NATIVE_PASS",
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "evidence": {
       "path": "benchmarks/performance/PERF01_ROOT_COMPOSITION_20261022_EVIDENCE.tar.xz",
       "sha256": "f6ea403ebe2cb1bd33219d38c02854f239688806a67e0bbdd379e206d253954b",
@@ -1219,7 +1219,10 @@
     },
     "source_controls": 34,
     "owning_entrypoints": "SOL/crop, root-substep, harvest, NUT thermal, saved-output PASS",
-    "fsi35_current_source": "PASS"
+    "fsi35_current_source": "PASS",
+    "admission_merge": "0e3cc542e2a01b778b8ad8b25e20b0e29f3961f4",
+    "admission_receipt": "benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json"
   },
-  "next_action": "Safely merge the exact published qualified tree and record the actual canonical source/admission identities. Warm start stays OFF."
+  "next_action": "Repair/integration complete. Keep warm start default OFF. Future research: repeated failed Newton work and timestep regrowth at day84, then reassess the general surface formulation.",
+  "admission_receipt": "benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json"
 }

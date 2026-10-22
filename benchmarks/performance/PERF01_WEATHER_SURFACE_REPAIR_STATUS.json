@@ -2,9 +2,9 @@
   "workstream": "PERF01",
   "work_unit": "WET4_PRODUCTION_SURFACE_REPAIR",
   "baseline": "95a3bd5721a4dfb4c0c38823c475ff55b95bee57",
-  "status": "PUBLISHED_CODE_SUCCESSOR_TESTED_CANONICAL_ADMISSION_PENDING",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_REPAIR",
   "production_changed": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "docs/science/PERF01_WEATHER_SURFACE_REPAIR.md",
   "result": "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_RESULT.md",
   "summary": "benchmarks/performance/PERF01_WEATHER_SURFACE_REPAIR_SUMMARY.json",
@@ -60,7 +60,7 @@
     "branch": "research/perf01-wet4-cause-20261021",
     "state": "DRAFT_CODE_REPAIR"
   },
-  "next_safe_step": "Continue exact source-owner reconciliation from benchmarks/performance/PERF01_SURFACE_FOLLOWUP_20261022.json; current SOL/NUT/FSI35 admission is still pending. Retain bounded scope and unchanged physical gates.",
+  "next_safe_step": "Repair complete; optional warm start remains OFF. Follow recorded failed-Newton and timestep-regrowth research without broadening admitted physics.",
   "surface_followup_20261022": "benchmarks/performance/PERF01_SURFACE_FOLLOWUP_20261022.json",
   "warm_start_20261022": "benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json",
   "postimages": {
@@ -207,5 +207,6 @@
       "merged": false,
       "transport": "Authorized GitHub connector after git push lacked credentials; binary Git blob SHAs and full tree exactly match local inputs. Local forensic history is retained on work/perf01-wet4-review-20261022."
     }
-  }
+  },
+  "admission_receipt": "benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json"
 }

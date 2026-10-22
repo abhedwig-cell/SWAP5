@@ -364,6 +364,11 @@ claimed. Warm start defaults OFF because the alternating paired experiment
 was slower. The general surface formulation and failed-Newton cost remain
 future research.
 
+PR1361 was admitted at canonical `0e3cc542e2a01b778b8ad8b25e20b0e29f3961f4`,
+whose complete tree is exactly the published qualified tree. Actual merge and
+postmerge source verification are recorded in
+`benchmarks/performance/PERF01_CANONICAL_ADMISSION_20261022.json`.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original
