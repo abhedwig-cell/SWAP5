@@ -3995,7 +3995,7 @@
             "substep_stress_feedback": false,
             "substep_feedback_work": {
               "baseline": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
-              "status": "LOCAL_SOURCE_RAW_O0_O2_36_CONTROLS_QUALIFIED_NOT_ADMITTED",
+              "status": "CANONICALLY_ADMITTED_BOUNDED_TRIAL_BEGINNING_ROOT_SUBSTEP",
               "concurrent_ref": "75877297daffcd50084d3705f91459a4f1272af7",
               "concurrent_reconciliation": "PR1371 adds a native NUT calendar/output adapter outside all194 crop inputs and outside the current336 cold providers. Original bodies and source preserved; fresh current calendar driver explicitly selected using current cold objects.",
               "authority": "docs/science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md",
@@ -4011,7 +4011,87 @@
                 29
               ],
               "recovery_point": "work/native-root-substep-20261022; published source/raw candidatebb550e8a73ffb2a006893472bb782162c4166338,tree22421193567de1027c05e2c5e22014a3e5941e2a; current cold/thermal/calendar proof; explicit Reference SWKIMPL0 only",
-              "next_action": "Exact canonical admission of qualified candidate; then broaden original historical/default water/meteo/crop dispatch and remaining physical composition.",
+              "next_action": "Broaden original historical/default water/meteo/crop dispatch and remaining physical composition. Explicit Reference SWKIMPL0 substep stress is admitted; full SWKIMPL1, physical oxygen, heat/snow/age/NUT root composition remain open.",
+              "canonical_admission": {
+                "pr": 1372,
+                "url": "https://github.com/abhedwig-cell/SWAP5/pull/1372",
+                "candidate": "633e924743b9d58e7c7054d189100687ee767d26",
+                "merge_commit": "b4292e6f8ea179d4628dd75796655eb25f8897b4",
+                "qualified_and_actual_merge_tree": "36df32c3543ad343fdb362b6c68ffa3833a5d3fb",
+                "actual_merge_owner": {
+                  "qualified": true,
+                  "status": "TRIAL_BEGINNING_ROOT_SUBSTEP_O0_O2_QUALIFIED",
+                  "substep_stress_feedback": true,
+                  "physical_cases": 16,
+                  "daily_balance_observations": 128,
+                  "fresh_restarts": 16,
+                  "exact_default_files": 64,
+                  "transaction": "O0_O2_EXACT_REJECT_RETRY_ABA_ABSENT",
+                  "mode_restart_rejections": 2,
+                  "frozen_daily_predecessor": {
+                    "qualified": true,
+                    "status": "NATIVE_DAILY_CROP_ROOT_JOINT_O0_O2_QUALIFIED",
+                    "actual_daily_cases": 16,
+                    "daily_balance_observations": 128,
+                    "fresh_restarts": 16,
+                    "invalid_inputs": 34,
+                    "exact_fallow_artifacts": 6,
+                    "root_chemical_reject_retry": "O0_O2_EXACT_BINARY_PASS",
+                    "input_boundary_exact_artifacts": 64,
+                    "full_historical_migration": false,
+                    "substep_stress_feedback": false
+                  },
+                  "current_preparation": {
+                    "qualified": true,
+                    "status": "NATIVE_SIMPLE_CROP_PREPARATION_O0_O2_QUALIFIED",
+                    "original_exact_values": 576,
+                    "native_cases": 8,
+                    "invalid_inputs": 22,
+                    "coupled_actual_root_uptake": false,
+                    "full_historical_migration": false
+                  },
+                  "frozen_original_physics": {
+                    "qualified": true,
+                    "status": "FALLOW_ETREF_O0_O2_MASS_RESTART_QUALIFIED",
+                    "native_cases": 8,
+                    "fresh_restarts": 8,
+                    "original_etpot_checks": 40,
+                    "old_exact_artifacts": 152,
+                    "concurrent_nut_exact_files": 24,
+                    "concurrent_nut_preserved": true,
+                    "full_historical_migration": false
+                  },
+                  "current_concurrent_nut": {
+                    "status": "THERMAL_OUTPUT_SOURCE_EVIDENCE_PASS",
+                    "qualified": true,
+                    "invalids_per_opt": 17,
+                    "crash_boundaries": 4,
+                    "old_cold_exact": true,
+                    "full_mc_nut01_closed": false
+                  },
+                  "current_calendar_nut": {
+                    "qualified": true,
+                    "status": "NATIVE_CALENDAR_OUTPUT_O0_O2_QUALIFIED",
+                    "actual_processes": 8,
+                    "rejected_day_trials": 80,
+                    "replay_trials": 8,
+                    "simultaneous_gifts": true,
+                    "report_schedules": 2,
+                    "cold_exact": true,
+                    "full_mc_nut01_closed": false
+                  },
+                  "full_historical_migration": false,
+                  "controls": 36,
+                  "current_source_tree": "07e617d8ece56da58333388b90908783b85eacfd"
+                },
+                "actual_merge_owner_sha256": "9f668a122c068d8e7ebbc6e1db8a1617abc6db48db2cfef91299b551c519b7e5",
+                "docs_source": "PASS",
+                "docs_strict": "PASS_IDENTICAL_DOCUMENTATION_INPUTS",
+                "hosted_checks": "NOT_SELECTED_LOCAL_QUALIFICATION_COMPLETE",
+                "observed_candidate_action_runs": 0,
+                "observed_merge_action_runs": 0,
+                "full_historical_migration": false
+              },
               "test_selection": {
                 "candidate": "bb550e8a73ffb2a006893472bb782162c4166338",
                 "groups": {
