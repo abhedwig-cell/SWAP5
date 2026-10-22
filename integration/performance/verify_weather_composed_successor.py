@@ -70,6 +70,8 @@ def projection(path):
             text = text[:offset] + hook(entry, args) + text[offset:]
     elif path == REGISTRY:
         marker = 'def fsi35_successors():\n'
+    if (ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').is_file() and 'postimages' in json.loads((ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').read_text()).get('source_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_weather_line_search_successor.py'))['fsi35_successors']()
         require(text.count(marker) == 1, 'registry hook point')
         text = text.replace(marker, marker + hook('fsi35_successors', indent='    '), 1)
     elif path == RUNNER:
@@ -101,6 +103,8 @@ def evidence():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if (ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').is_file() and 'postimages' in json.loads((ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').read_text()).get('source_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_weather_line_search_successor.py'))['source'](reader, changed)
     r = record(reader)
     require(r['baseline'] == BASE, 'weather source baseline')
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
@@ -147,6 +151,8 @@ def fsi35_successors():
 
 
 def verify():
+    if (ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').is_file() and 'postimages' in json.loads((ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').read_text()).get('source_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_weather_line_search_successor.py'))['verify']()
     source()
     inherited = record()['fsi35_native_inheritance']
     require(inherited['candidate'] == '48d61aafcc152122de0f6e43b3e1fe3bcddbf0cb', 'native inheritance origin')
@@ -227,6 +233,8 @@ def verify():
 
 
 def self_test():
+    if (ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').is_file() and 'postimages' in json.loads((ROOT/'benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json').read_text()).get('source_successor', {}):
+        return runpy.run_path(str(ROOT/'integration/performance/verify_weather_line_search_successor.py'))['self_test']()
     controls = []
     for p in record()['postimages']:
         def reader(q):
