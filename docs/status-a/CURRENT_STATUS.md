@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 explicit native output startup,22 October2026: the
+[bounded successor](../science/MC_NUT01_NATIVE_OUTPUT_START_20261022.md) supports
+SNM TRUE through an output-aware startup API and the admitted heat-off/nonharvested
+day/generation route. Native O0/O2, actual TRUE/FALSE physical byte equality and
+independent-process reporting continuation pass. General/default historical
+TRUE dispatch, heat/harvest/rotation output and full migration remain open.
+Admission is owned by the existing HIST-COMPLETE native-startup child.
+
 MC-SOL01 native SWP water bootstrap,21 October2026: PR1362 admits the
 [bounded original water input route](../science/MC_SOL01_SWP_WATER_CONTRACT.md),
 with original TTUTIL grid/layered MvG and unsaturated HTB initial heads.

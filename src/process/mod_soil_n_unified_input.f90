@@ -11,9 +11,10 @@ module mod_soil_n_unified_input
  integer,parameter,public::N_UNIFIED_OK=0,N_UNIFIED_INVALID=1,N_UNIFIED_IO=2
  public::read_soil_n_unified_export,read_soil_n_snm_keyword_file
 contains
- subroutine read_soil_n_unified_export(path,origin,plan,initial,rates,status,error_line,ages)
+ subroutine read_soil_n_unified_export(path,origin,plan,initial,rates,status,error_line,ages,extended_output)
  character(*),intent(in)::path,origin
  type(soil_n_residue_age_t),intent(out),optional::ages
+ logical,intent(out),optional::extended_output
  type(soil_n_amendment_calendar_t),intent(out)::plan
  type(soil_n_historical_initial_t),intent(out)::initial
  type(soil_n_historical_rates_t),intent(out)::rates
@@ -29,12 +30,13 @@ contains
  plan=soil_n_amendment_calendar_t();initial=soil_n_historical_initial_t()
  rates=soil_n_historical_rates_t();status=N_UNIFIED_IO;error_line=0
  if(present(ages))ages=soil_n_residue_age_t()
+ if(present(extended_output))extended_output=.false.
  nmat=0;nparam=0;section=0
  ! The source-grounded bounded .snm keyword-array route is distinct from
  ! the bracketed modern export contract. No hidden grammar autodetection.
  if(len_trim(path)>=4)then
   if(snm_lower(path(len_trim(path)-3:len_trim(path)))=='.snm')then
-   call read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages)
+   call read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages,extended_output)
    return
   end if
  end if
@@ -83,13 +85,14 @@ contains
  ! All 11 management columns must be complete and equal-sized within each table.
  ! Supports typed tables, assignment arrays, continuation and positive repeats.
  ! Source nutrient scalars retain existing strict named-export validation.
- subroutine read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages)
+ subroutine read_soil_n_snm_keyword_file(path,origin,plan,initial,rates,status,error_line,ages,extended_output)
   character(*),intent(in)::path,origin
   type(soil_n_amendment_calendar_t),intent(out)::plan
   type(soil_n_historical_initial_t),intent(out)::initial
   type(soil_n_historical_rates_t),intent(out)::rates
   integer,intent(out)::status,error_line
   type(soil_n_residue_age_t),intent(out),optional::ages
+ logical,intent(out),optional::extended_output
   character(16),parameter::keys(11)=[character(16):: &
    'MatNum','MatName','AppAge','OrgMatFrac','OrgNFrac','NH4NFrac','NO3NFrac', &
    'smedate','iMat','Dosagekgha','VolatFraction']
@@ -101,7 +104,7 @@ contains
   logical::is_header,array_declared(11),has_repeat
   integer::nvalues(11),nparam,nmat,nevt,unit,ios,nbytes,code,closed,record,j,k,eq,nt
   integer::parameter_source_line(512),parameter_error_line,table_error_column
-  logical::ok
+  logical::ok,candidate_output
   type(soil_n_amendment_calendar_t)::candidate_plan
   type(soil_n_historical_initial_t)::candidate_initial
   type(soil_n_historical_rates_t)::candidate_rates
@@ -109,6 +112,7 @@ contains
   plan=soil_n_amendment_calendar_t();initial=soil_n_historical_initial_t()
   rates=soil_n_historical_rates_t();candidate_ages=soil_n_residue_age_t()
   if(present(ages))ages=soil_n_residue_age_t()
+ if(present(extended_output))extended_output=.false.
   status=N_UNIFIED_IO;error_line=0
   allocate(values(11,1000),rows(1022));values='';rows='';parameters=''
   nvalues=-1;nparam=0;record=0;active_key=0;nh=0;value_line=0;array_declared=.false.
@@ -234,8 +238,14 @@ contains
    end if
    return
   end if
+  candidate_output=.false.
+  if(present(extended_output))then
+  call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial, &
+    candidate_rates,code,parameter_error_line,candidate_ages,native_snm=.true.,extended_output=candidate_output)
+  else
   call parse_historical_soil_n_named_lines(parameters(:nparam),candidate_initial, &
     candidate_rates,code,parameter_error_line,candidate_ages,native_snm=.true.)
+  end if
   if(code/=N_NAMED_OK)then
     ! The named parser counts only extracted nutrient fields. Report the
     ! physical source file record instead, including interleaved TTUTIL arrays.
@@ -245,6 +255,7 @@ contains
   end if
   plan=candidate_plan;initial=candidate_initial;rates=candidate_rates
   if(present(ages))ages=candidate_ages
+  if(present(extended_output))extended_output=candidate_output
   status=N_UNIFIED_OK;error_line=0
  end subroutine
 

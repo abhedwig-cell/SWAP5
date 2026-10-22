@@ -68,6 +68,8 @@ def parent_namespace():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['source'](reader,changed)
     r = record(reader)
     require(r['baseline'] == BASE, 'daily baseline drift')
     baseline = json.loads(historical(STATUS))
@@ -169,6 +171,8 @@ def validate(files, reader=lambda p: (ROOT / p).read_bytes()):
 
 
 def self_test(include_predecessor=True):
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['self_test'](include_predecessor)
     files = capsule()
     controls = []
     for path in record()['postimages']:
@@ -209,6 +213,8 @@ def self_test(include_predecessor=True):
 
 
 def verify():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('native_startup_successor_20261022',{}):
+        return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_native_output_start.py'))['verify']()
     source()
     result = validate(capsule())
     # Run all original scientific/evidence assertions, not a substitute receipt.
