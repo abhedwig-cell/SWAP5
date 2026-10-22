@@ -36,6 +36,8 @@ def frozen_physical_reader(path):
   return subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
  return (ROOT/path).read_bytes()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_successor_20261022',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_surface_successor.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'root joint baseline')
  current=json.loads(reader(STATUS));current['swp_water_successor']['daily_meteo_successor']['etref_successor']['simple_crop_preparation_successor'].pop(KEY)
  require(current==json.loads(subprocess.check_output(['git','show',BASE+':'+STATUS],cwd=ROOT)),'unrelated recovery state changed')
@@ -152,6 +154,8 @@ def validate(files,reader=lambda p:(ROOT/p).read_bytes()):
          'root_chemical_reject_retry':'O0_O2_EXACT_BINARY_PASS','input_boundary_exact_artifacts':64,'full_historical_migration':False,'substep_stress_feedback':False}
 
 def self_test():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_successor_20261022',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_surface_successor.py'))['self_test']()
  controls=[]
  for path in record()['postimages']:
   def altered(p):return (ROOT/p).read_bytes()+(b'corrupt' if p==path else b'')
@@ -184,6 +188,8 @@ def self_test():
  return controls
 
 def verify():
+ if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_successor_20261022',{}):
+  return runpy.run_path(str(ROOT/'integration/performance/verify_weather_surface_successor.py'))['verify']()
  source();result=validate(capsule())
  parent=runpy.run_path(str(ROOT/PARENT));result['incumbent_preparation']=parent['validate'](parent['capsule']())
  old=runpy.run_path(str(ROOT/'integration/audits/verify_swp_etref.py'));result['baseline_physical_and_frozen_nut']=old['validate'](old['capsule'](),reader=frozen_physical_reader)

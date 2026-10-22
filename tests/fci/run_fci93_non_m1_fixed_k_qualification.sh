@@ -66,7 +66,18 @@ assert row.get('historical_blob')=='33a0880325be36116dcbb781006b6283da5dac69' an
 print('FCI93_SELECTED_TRANSACTION_SOURCE_BOUNDARY=PASS')
 PY_TX_SUCCESSOR
 fi
-test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 7b16c3fcf58179f1491104a1dce3279010b4178a || fail "postimage drift src/solver/mod_soil_water_solver_contract.f90"
+if [[ "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" == 7b16c3fcf58179f1491104a1dce3279010b4178a ]]; then
+  test "$(git rev-parse HEAD:src/solver/mod_soil_water_solver_contract.f90)" = 7b16c3fcf58179f1491104a1dce3279010b4178a || fail "postimage drift src/solver/mod_soil_water_solver_contract.f90"
+else
+  python3 - <<'PY_CONTRACT_SUCCESSOR'
+import runpy,subprocess
+path='src/solver/mod_soil_water_solver_contract.f90'
+row=runpy.run_path('integration/performance/authority.py')['fsi35_successors']().get(path,{})
+actual=subprocess.check_output(['git','rev-parse','HEAD:'+path],text=True).strip()
+assert row.get('historical_blob')=='7b16c3fcf58179f1491104a1dce3279010b4178a' and row.get('canonical_blob')==actual,'unregistered solver contract successor'
+print('FCI93_SELECTED_CONTRACT_SOURCE_BOUNDARY=PASS')
+PY_CONTRACT_SUCCESSOR
+fi
 test "$(git rev-parse "$BASE:tests/support/augment_bartholomeus_backend_sources.py")" = bd186c18e54b66907e9e1bc50f4bd9ce99f386b0 || fail "immutable compile helper drift"
 test "$(git rev-parse HEAD:integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json)" = 96a409fc2017eee91355a5b4a43f2017c58673dd || fail "compile closure manifest drift"
 python3 - <<'PY_CLOSURE'

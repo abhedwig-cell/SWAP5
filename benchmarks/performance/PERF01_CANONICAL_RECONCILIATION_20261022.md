@@ -112,6 +112,27 @@ are byte-exact to the canonical ETref/crop or prior repaired weather evidence.
 Maximum independently reconstructed4x daily gross closure is
 1.933e-13mm;1x is5.610e-14mm. The warm option is still OFF in these seasons.
 
+## Proposed exact source registration
+
+Register this nine-file production postimage through the current crop/root
+owner and the existing performance FSI35 registry. Add only early dispatch
+hooks; mechanically compare every remainder to the exact f7c60410 originals.
+The new owner must reject extra scientific paths, dirty source, any changed
+postimage, compiled input or capsule, and a caller's unknown scientific path.
+It must evaluate the fresh composed proof and preserve the complete original
+canonical owner/40 controls at their original source. No numerical formula,
+mass test, historical oracle or capability scope changes in this phase.
+
+The direct FSI35 solver-contract blob lock gains the same exact-successor seam
+already used for HeadCalc/top/transaction. Retain its original blob assertion
+and the complete original native body. Select that original O0/O2 native body
+on the new postimage, with all original drivers and checks. Authority:
+`tests/fci/run_fci93_non_m1_fixed_k_qualification.sh`, current Richards/typed-seam
+preservation in the Status-A traceability. Expected source plus compile/native
+cost:240seconds, detailed categories UNKNOWN. Full moving F-CI is not selected
+solely by registration; inspect any additional admission requirement after this
+bounded owner replay. Highest low-air and RossFast expansion remain unselected.
+
 Documentation source checks and the strict `python -m mkdocs build --strict`
 pass. Initial controller attempts that reached O2 before its build completed
 failed on missing build receipts; the final complete controllers reran in fresh
