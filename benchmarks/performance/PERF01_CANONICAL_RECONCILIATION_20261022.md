@@ -41,8 +41,80 @@ fresh affected native proof. Never widen a source allowlist without that proof.
 Full moving F-CI is not yet selected: this is a composition candidate, not a
 stable admitted candidate. Highest low-air and RossFast expansion are not selected.
 
+The current thermal NUT output owner also compiles the changed backend. Select
+its existing native TRUE/default Richards/crop/N startup and thermal output
+continuation, rejected-generation and crash-atomicity proofs anew, rather than
+using its frozen raw capsule as current proof. Authority:
+`integration/audits/verify_nut_thermal_output.py` and its owning contract. Expected
+cold O0/O2 build plus both drivers: 480 seconds; measured category costs UNKNOWN.
+This is affected shared-state integration, not unrelated nitrogen research.
+
 ## Recovery
 
 The existing warm-start status is the owning recovery record. This document is
 the explicit resolution and execution contract, not a second capability ledger.
 Earlier repair and warm evidence remain historical at their original sources.
+
+## Current result
+
+The candidate merges the exact canonical input above and preserves every newer
+production file except the explicitly composed backend. The positive-demand
+restriction was an additional semantic conflict not caught by textual merge:
+the old weather branch rejected positive bare-soil demand outside weather mode,
+but the admitted ETref/crop application now requires precisely that path. Remove
+that obsolete restriction while retaining finite/nonnegative demand validation.
+Both accepted evaporation API names are assigned from one converged observation.
+
+Fresh actual O0/O2 passes: 86 original file-column, 172 original chemistry,
+110 native water, 72 daily meteorology, 44 ETref and 86 crop/root controller
+processes. The crop proof includes16 physical cases,16 independent-process
+restarts and34 rejected inputs. Four original chemical rejection/retry events
+and four additive positive-evaporation alias events retain exact binary owners.
+The four small root contract/oxygen cases pass. No original scientific driver
+or numerical assertion was weakened.
+
+Weather passes full97-day4x at checked O0 and O2 and1x at O2,1e-3cm. Physical
+stdout is exact to the earlier repaired default-OFF runs, and exact between
+4x O0/O2 and reconstruction after day35. Both optimizations pass the focused
+warm/cold/corner tests, six original weather profiles and two original default
+solver contracts. Rejected private progress passes the21-bit rollback control.
+This reconstruction is within one process, not an independent-process weather
+restart claim. The existing joint SOL and NUT restarts do use fresh processes.
+
+Current NUT native TRUE/default output and retained thermal output execute
+anew at O0/O2. The unchanged thermal owner's full raw physical assertions pass,
+including17 invalid generations per optimization, four crash boundaries, exact
+old cold output and frozen retained-thermal artifacts. The cold driver used
+471.84 measured event seconds under concurrent compilation; do not add this
+to an overlapping controller wall time. All timing here is execution cost,
+not a matched serial performance experiment. Warm start remains default OFF.
+
+The original canonical owner plus its40 corruption controls passes unchanged
+at f7c60410. On the composed candidate, that same owner stops earlier than the
+old daily inventory guard: `current thermal NUT input
+src/solver/mod_soil_water_solver_contract.f90`. This is a stale exact-source
+binding requiring an explicit qualified successor, not a numerical failure.
+No dispatch hook, source allowlist or old evidence hash was changed. Registration
+of the exact nine-file successor and the original current FSI35 native replay
+remain required before any canonical integration. The PR stays draft/unmerged.
+
+Raw current build/provider identities, commands, stdout/stderr, physical files,
+frozen-owner result and actual current rejection are sealed by
+`verify_perf01_canonical_composition.py`. It independently reconstructs daily
+gross weather closure and checks byte-exact canonical ETref/crop artifacts.
+Use `--self-test` to replay the capsule and four rejection controls. Original
+archives remain historical; the composed proof never relabels them current.
+
+Final capsule:2,775,140bytes,16,426members, SHA256
+`978896827b5fc1701a04ce871da6747bf6af874fe5b470f5de0c7af89ea558e5`.
+All four verifier rejection controls pass.306 selected physical files/streams
+are byte-exact to the canonical ETref/crop or prior repaired weather evidence.
+Maximum independently reconstructed4x daily gross closure is
+1.933e-13mm;1x is5.610e-14mm. The warm option is still OFF in these seasons.
+
+Documentation source checks and the strict `python -m mkdocs build --strict`
+pass. Initial controller attempts that reached O2 before its build completed
+failed on missing build receipts; the final complete controllers reran in fresh
+folders. The modular runner needs `gfortran` on PATH, not just FC. These were
+execution setup failures, not failed physical observations; no partial attempt
+was counted as native PASS.

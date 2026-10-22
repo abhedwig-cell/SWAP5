@@ -2,7 +2,7 @@
   "workstream": "PERF01 / HY / RT",
   "work_unit": "WEATHER_WARM_START",
   "baseline": "3e23aa83de6637a8460e080e023abde89bca8127",
-  "canonical_observed": "636760624e930f11517a42707fd16d885902c045",
+  "canonical_observed": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
   "status": "LOCAL_IMPLEMENTATION_AND_PHYSICAL_PROOF_PASS_NO_SPEEDUP_DEFAULT_OFF",
   "implemented": true,
   "first_prototype": {
@@ -87,6 +87,33 @@
       "full_fci": "NOT_SELECTED_FOR_PROTOTYPE"
     }
   },
-  "canonical_delta": "Later canonical has independent NUT/SOL changes including the backend; do not overwrite them or claim this pinned PR is canonically reconciled.",
-  "next_action": "Keep tested warm option default OFF. Complete the existing source/admission owner reconciliation before any canonical integration. Further performance research must reduce actual failed Newton work; this same-origin/continuation predictor did not improve the 1x/4x season."
+  "canonical_delta": "Composed the exact f7c60410 SOL/NUT/crop/root/output delta on the research branch. Removed the old weather-only positive-soil-evaporation restriction, retained one forcing field and populated both accepted evaporation trace API names from one converged flux. Fresh composed native O0/O2 passes; canonical admission remains pending.",
+  "canonical_composition_20261022": {
+    "baseline": "4449221f530f75e303c8942e7d16241c5eea911e",
+    "canonical_input": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
+    "production_checkpoint_local": "2d80c0509367bdec8aed6f7e1971c0c2f0347b8c",
+    "production_checkpoint_published": "18dea56b676a58ac99855df761145e7f56f2848f",
+    "checkpoint_tree": "d886db7e2de262b41db34a68027d92a64ca4c3d6",
+    "contract_and_result": "benchmarks/performance/PERF01_CANONICAL_RECONCILIATION_20261022.md",
+    "verifier": "benchmarks/performance/verify_perf01_canonical_composition.py",
+    "summary": "benchmarks/performance/PERF01_CANONICAL_COMPOSITION_20261022_EVIDENCE.json",
+    "evidence": {
+      "path": "benchmarks/performance/PERF01_CANONICAL_COMPOSITION_20261022_EVIDENCE.tar.xz",
+      "sha256": "978896827b5fc1701a04ce871da6747bf6af874fe5b470f5de0c7af89ea558e5",
+      "bytes": 2775140,
+      "members": 16426,
+      "negative_controls": 4,
+      "exact_predecessor_files": 306,
+      "max_4x_daily_gross_closure_mm": 1.9328982858723975e-13
+    },
+    "native_tests": "PASS: O0/O2 warm/cold and original corner controls, six original weather profiles and two default solver contracts per optimization, full 97-day 4x O0/O2, 1x O2, wet-day35 reconstruction, rollback, 86 incumbent column, 172 chemistry, 110 water, 72 daily, 44 ETref and 86 crop/root processes, four chemical rejection/retry and four positive-evaporation alias events, root modular contracts, actual current NUT cold/thermal output with atomic crash/restart",
+    "physical_identity": "1x and4x stdout exact to earlier repaired default-OFF season;4x O0/O2 and same-process reconstruction exact. Canonical ETref and crop physical artifacts compared byte-exact.",
+    "source_owner": "BLOCKED: unchanged canonical root-joint authority rejects current thermal NUT input src/solver/mod_soil_water_solver_contract.f90. Current proof is not source-owner admission.",
+    "qualified": false,
+    "canonically_admitted": false,
+    "full_fci": "NOT_SELECTED_COMPOSITION_CANDIDATE",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NO_SCOPE_EXPANSION"
+  },
+  "next_action": "Keep warm start default OFF. Use the sealed current f7c60410 composition proof to register the exact nine-file weather/warm successor with SOL/NUT and FSI35 owners, preserve their original assertions and run the current original FSI35 native body before admission. Do not repeat the unchanged physical composition solely for a metadata checkpoint. Further performance research must reduce actual failed Newton work."
 }
