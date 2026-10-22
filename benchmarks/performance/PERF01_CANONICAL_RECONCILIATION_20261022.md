@@ -133,6 +133,31 @@ cost:240seconds, detailed categories UNKNOWN. Full moving F-CI is not selected
 solely by registration; inspect any additional admission requirement after this
 bounded owner replay. Highest low-air and RossFast expansion remain unselected.
 
+## Exact f7c60410 source qualification completed
+
+The registered source owner and all28 new source/evidence rejection controls
+PASS. It checks the exact nine production files, all affected compiled inputs,
+the sealed current physical proof, and byte-preserved predecessor assertion
+bodies. It also retains the independently qualified age dependency map.
+The original current FSI35 native runner executes all original Task2, surface,
+worker-isolation, hard-mass, retry and standalone/worker dispatch assertions at
+O0/O2, with exact optimization outputs: PASS,55.245067seconds. Source-only
+preflight and actual full native execution are retained separately.
+SOL/crop and NUT thermal owning entrypoints now pass on this exact candidate.
+
+Receipt:`PERF01_WEATHER_SOURCE_ADMISSION_20261022.tar.xz`,155,752bytes,
+39members, SHA256
+`3812d0f0ffa054e854c7e454f8bac320b03fe17104ca77fafcfb4a17988cb77f`.
+This supersedes the f7c60410 registration blocker above; earlier failure logs
+and pending labels inside the frozen physical capsule stay historical.
+
+During this phase canonical advanced to80dbce8d through admitted root-substep
+feedback and NUT calendar output. That delta changes the same backend and root
+source dispatcher. It has been inspected, but is not present in the qualified
+weather candidate. The f7c60410 qualification cannot be applied to that later
+backend. Compose that exact delta, preserve its original new owners and execute
+the affected current contracts before canonical merge. The PR remains a draft.
+
 Documentation source checks and the strict `python -m mkdocs build --strict`
 pass. Initial controller attempts that reached O2 before its build completed
 failed on missing build receipts; the final complete controllers reran in fresh

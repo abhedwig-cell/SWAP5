@@ -2,7 +2,7 @@
   "workstream": "PERF01 / HY / RT",
   "work_unit": "WEATHER_WARM_START",
   "baseline": "3e23aa83de6637a8460e080e023abde89bca8127",
-  "canonical_observed": "f7c6041096a0cc1a7a71fbe9e37b390d976744ac",
+  "canonical_observed": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
   "status": "LOCAL_IMPLEMENTATION_AND_PHYSICAL_PROOF_PASS_NO_SPEEDUP_DEFAULT_OFF",
   "implemented": true,
   "first_prototype": {
@@ -108,7 +108,7 @@
     },
     "native_tests": "PASS: O0/O2 warm/cold and original corner controls, six original weather profiles and two default solver contracts per optimization, full 97-day 4x O0/O2, 1x O2, wet-day35 reconstruction, rollback, 86 incumbent column, 172 chemistry, 110 water, 72 daily, 44 ETref and 86 crop/root processes, four chemical rejection/retry and four positive-evaporation alias events, root modular contracts, actual current NUT cold/thermal output with atomic crash/restart",
     "physical_identity": "1x and4x stdout exact to earlier repaired default-OFF season;4x O0/O2 and same-process reconstruction exact. Canonical ETref and crop physical artifacts compared byte-exact.",
-    "source_owner": "BLOCKED: unchanged canonical root-joint authority rejects current thermal NUT input src/solver/mod_soil_water_solver_contract.f90. Current proof is not source-owner admission.",
+    "source_owner": "RESOLVED at the exact f7c60410 composition: current SOL/NUT owners,28 source/evidence rejection controls and the complete original FSI35 O0/O2 native body PASS. Later canonical80dbce8d remains to be composed.",
     "qualified": false,
     "canonically_admitted": false,
     "full_fci": "NOT_SELECTED_COMPOSITION_CANDIDATE",
@@ -572,9 +572,21 @@
       "benchmarks/performance/verify_perf01_canonical_composition.py": "64678e45a2ae278c531cad77df6f92033a56b01b89ce5cd3cc214c8a59d19bf2"
     },
     "frozen_fsi35_successors": {
+      "src/solver/mod_b110_default_mvg_provider.f90": {
+        "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+        "canonical_blob": "226dec2740dd3cf2eb677928f54f433086354c3f"
+      },
+      "src/solver/mod_reference_richards_temporal_indicator.f90": {
+        "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+        "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+      },
       "src/legacy/b1_10_port/headcalc.f90": {
         "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
         "canonical_blob": "794f3dc6b3a3594677cd6185de7b58e0d5af4c8b"
+      },
+      "src/adapter/mod_reference_richards_legacy_binding.f90": {
+        "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+        "canonical_blob": "65ece4c8a1515fda94d1f9bae10b5a6aae729fd2"
       },
       "src/transaction/mod_transaction_reference.f90": {
         "historical_blob": "33a0880325be36116dcbb781006b6283da5dac69",
@@ -589,9 +601,23 @@
         "canonical_blob": "fd6c160d82191044a2d391af3d5bd0554a21bdc2"
       }
     },
-    "fsi35_native": "PENDING",
-    "qualified": false,
+    "fsi35_native": "PASS_ORIGINAL_CURRENT_O0_O2_55.245067_SECONDS",
+    "native_receipt": {
+      "path": "benchmarks/performance/PERF01_WEATHER_SOURCE_ADMISSION_20261022.tar.xz",
+      "sha256": "3812d0f0ffa054e854c7e454f8bac320b03fe17104ca77fafcfb4a17988cb77f",
+      "bytes": 155752,
+      "members": 39,
+      "summary": "benchmarks/performance/PERF01_WEATHER_SOURCE_ADMISSION_20261022.json"
+    },
+    "qualified": true,
     "canonically_admitted": false
   },
-  "next_action": "Keep warm start default OFF. Use the sealed current f7c60410 composition proof to register the exact nine-file weather/warm successor with SOL/NUT and FSI35 owners, preserve their original assertions and run the current original FSI35 native body before admission. Do not repeat the unchanged physical composition solely for a metadata checkpoint. Further performance research must reduce actual failed Newton work."
+  "later_canonical_20261022": {
+    "ref": "80dbce8d325e9197a53b7189ad184bcdf91f6f5c",
+    "status": "INSPECTED_NOT_COMPOSED",
+    "delta": "PR root-substep and native NUT calendar output. Backend adds immutable optional root request, recalculates sinks at each trial origin, and publishes accepted root diagnostics. The current root-joint source owner adds two successor dispatches.",
+    "overlap": ["src/runtime/mod_fmr_serialized_reference_backend.f90", "integration/audits/verify_crop_root_joint.py"],
+    "qualification_limit": "The sealed f7c60410 source/native qualification stays valid at that exact candidate; it does not qualify the later shared backend."
+  },
+  "next_action": "Keep warm start default OFF. Compose exact later canonical80dbce8d root/backend and calendar-output changes, preserve their current source authorities and requalify the affected current providers before merge. The f7c60410 weather source registration and original FSI35 body are now complete, so do not rediscover or repeat that phase."
 }
