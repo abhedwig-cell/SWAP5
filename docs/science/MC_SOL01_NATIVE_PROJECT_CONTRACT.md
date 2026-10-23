@@ -486,3 +486,28 @@ source/raw corruption controls pass. The durable receipt is
 The numerical proof's own `canonically_admitted=false` remains an immutable
 qualification-time assertion; this separate actual-merge receipt establishes
 the later bounded admission. Full migration flags remain false.
+
+## HIST-INTEGRATION01 seasonal prescribed bottom successor
+
+Baseline 6a21c4251d48959bde4a99ef5127d4039d5ab952. Proposed, not admitted.
+Native SWBOTB2/SW2=1 nonzero SINAMP now binds the existing
+PPA-LOW02-TIME Reference application control, with original t1900 origin
+and exact January-first calendar knots including the final year sentinel.
+The backend evaluates flux at every trial-start, including rejected/full/half
+trials. No daily-mean sinus approximation or new physics/state owner.
+Zero amplitude preserves the previous generated input and physical path.
+The new optional budget bottom_up_cm sums the actual accepted bottom flux.
+All original SWP bytes and generated calendar bind public restart as before.
+SW2=2, other bottom modes and SWBOTB1 remain rejected here.
+
+Changed owned surface: native project reader, launcher, application only.
+No shared interface/source, reference bytes, crop, SOL or NUT owners change.
+Invariants 2,3,7,9,13,21,23,29 remain. This extends the bounded native
+fixture; it is not full Andelst or general historical project equivalence.
+Select checked O0/O2 builds with hash-verified unchanged193 physical
+providers, independent existing LOW02 oracle, zero-amplitude physical
+preservation, actual seasonal joint budgets/restart across January1 and
+positive/negative bottom flow. Expected build60s, short feedback60s,
+481-day composition up to1800s. Existing annual evidence remains historical
+until actual application preservation; full F-CI NOT_SELECTED_IMPACT,
+highest low-air NOT_SELECTED_POLICY, RossFast unused.
