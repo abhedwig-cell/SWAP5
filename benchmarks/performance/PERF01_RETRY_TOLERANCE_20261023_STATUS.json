@@ -3,7 +3,9 @@
   "baseline": "53010691c79d3e132914ce372059cf873d88b96d",
   "source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
   "status": "COMPLETE_BOUNDED_INPUT_RESEARCH_VERIFIED",
-  "research_integrated": false,
+  "research_integrated": true,
+  "actual_merge": "f81dc28b43f612b3bdf772b4e72150d9637d2c61",
+  "integration_receipt": "benchmarks/performance/PERF01_RETRY_TOLERANCE_ADMISSION_20261023.json",
   "result": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_RESULT.md",
   "evidence": {
     "path": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_EVIDENCE.tar.xz",
@@ -42,5 +44,5 @@
   "production_changed": false,
   "default_changed": false,
   "canonically_admitted_policy": false,
-  "next_action": "Integrate exact bounded research evidence; any universal default or new surface formulation remains a separate proposal."
+  "next_action": "Bounded research integrated via PR1379. Existing1e-2 input is a useful explicit choice in the measured column; any universal default or surface reformulation remains separate."
 }
