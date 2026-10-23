@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+PR1387 explicit historical saved-output caller is admitted at
+`188f75ef04cd64a5a78ace0aa4b8977e7a130537`,exact qualified/actual merge tree
+`db1143475778b4a4bf302f20a00e20619b01673b`. Actual-merge source/raw owner
+and all163 controls PASS. Existing `historical_caller_successor_20261023` and
+`MC_NUT01_HISTORICAL_OUTPUT_CALLER_ADMISSION_20261023.json` own admission.
+Master receipt `40c8ff17d31ca4d3d4e707fd257bbc62c666d3a3` updates nine bounded facets,
+with234 other rows and all243 dispositions exact;20 inheritance controls pass.
+General historical project/default activation and full MC-NUT01 remain open.
+
 MC-NUT01 explicit historical saved-output application caller,23 October2026:
 [contract and fixture distinction](../science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md),
 existing HIST-COMPLETE `historical_caller_successor_20261023`,source-bound raw

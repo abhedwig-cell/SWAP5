@@ -1107,6 +1107,18 @@
     "classification": "NOT_SELECTED",
     "check_runs": "UNKNOWN_NOT_EXPOSED"
   },
-  "master_registration": "PENDING_NINE_EXISTING_BOUNDED_FACETS",
+  "master_registration": {
+    "head": "40c8ff17d31ca4d3d4e707fd257bbc62c666d3a3",
+    "branch": "work/swap431-master-coverage-20261006",
+    "pr": 1072,
+    "draft": true,
+    "bounded_facets": 9,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "inheritance_controls": 20,
+    "source_docs": "PASS",
+    "strict_docs": "PASS",
+    "receipt": "integration/audits/MC_NUT01_HISTORICAL_OUTPUT_CALLER_MASTER_RECONCILIATION_20261023.json"
+  },
   "remaining": "General/default historical SWP/MET/CRP executable and arbitrary input rotation;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open."
 }
