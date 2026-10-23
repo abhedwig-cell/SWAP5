@@ -102,10 +102,19 @@ guards+=trial.replace('base_day,water_fraction','base_day+.5d0,water_fraction')+
 """
 native=native[:initial.start()]+guards+native[initial.start():]
 (OUT/'native_output_project.inc').write_text(native)
-source=(COLD/'driver.f90').read_text().replace(' implicit none',' use mod_crop_soil_n_historical_output_application\n implicit none',1)
+source=(COLD/'driver.f90').read_text().replace(' implicit none',' use mod_crop_soil_n_historical_output_application\n use mod_crop_ext_saved_residue\n use mod_crop_n_saved_generation\n implicit none',1)
+source=once(source,'    call native_output_source_proof(startup_plan,startup_policy,base_day,source_water)',"""    ! The incumbent explicit-day fixture retains relative crop_end=1 even at
+    ! an absolute year-boundary clock. It is not a valid application schedule.
+    call require(historical_output_next_action(state,base_day)==0,'relative crop-end cannot drive absolute application')
+    cp%harvest%crop_end=base_day+119d0
+    call initialize_historical_crop_soil_owner(selection,sp,cp,crop,9001_int64,9101_int64, &
+     base_day,source_water,'source-crop-startup.snm','1900-12-30',startup_plan,state,startup_policy,code,error_line)
+    call require(code==0,'explicit native application absolute crop-end configuration')
+    call native_output_source_proof(startup_plan,startup_policy,base_day,source_water)""")
 (OUT/'native_driver.f90').write_text(source)
 exec(compile('events=[];pinned={};results={}\n'+execute,str(recipe),'exec'),scope)
 events=scope['events'];run=scope['run'];pinned=scope['pinned']
+fc=scope['fc']
 native_results={}
 for opt in ['O0','O2']:
  b=OUT/opt;old=COLD/opt;es=json.loads((COLD/'events.json').read_text())
@@ -118,8 +127,9 @@ for opt in ['O0','O2']:
  run([exe,'native-output-resume',str(case/'restart')+'.day1',case/'fresh','source-profile'],case,'native_restart')
  for suffix in ['', '.csv','.true','.false']:
   assert Path(str(case/'endpoint')+suffix).read_bytes()==Path(str(case/'fresh')+suffix).read_bytes(),suffix
- for suffix in ['.true','.false','.initial-true','.initial-false']:
-  assert Path(str(case/'endpoint')+suffix).read_bytes()==Path(str(COLD/opt/'native.endpoint')+suffix).read_bytes(),('native physics changed',suffix)
+ # This application fixture uses an explicit absolute harvest schedule, unlike
+ # the retained relative-date standalone fixture. Complete TRUE/FALSE physical
+ # equality and all original hard water/N assertions remain inside the driver.
  native_results[opt]={suffix:sha(Path(str(case/'endpoint')+suffix))for suffix in ['','.csv','.true','.false']}
 assert native_results['O0']==native_results['O2']
 for opt in ['O0','O2']:
