@@ -623,3 +623,28 @@ The separate receipt is `integration/mc-sol01/drainage/ADMISSION.json`.
 This does not admit the failed day470, the failed wet day7, or full original
 Andelst. The next implementation target is Reference nonlinear convergence at
 day470 with the existing hard mass criteria preserved.
+
+
+## Post-Status-A MC-NUT01 one stationary receiving pool, 2026-10-23
+
+PR #1407, actual merge `ba2dfc4dd7c681216a5d4afc41f96a2d9fad1cf2`, admits exactly one
+zero biomass/humus turnover rate using the regular original linear ODE response
+and its interval averages. Both directions retain actual net immobilisation and
+crop uptake. GNU13.3 O0/O2 qualifies 466 formerly rejected cases against independent
+ODE and matrix-exponential oracles, with 192 incumbent cases byte exact. Fourteen
+actual eight-day water/crop/N runs and 28 native process restarts preserve whole
+N balance and exact stale/exhaustion/water rollback. Current drainage HIST runs
+all original assertions with 78 fresh processes including 56 restarts, 74 affected
+compiles and 580 verified unchanged closures; incumbent results are exact.
+All 134 source/raw controls pass on the actual merge, including all 36 drainage
+and 75 prior NUT controls. Current owner/general/HIST/FSI35 checks pass and the
+complete merge tree equals the qualified tree. Native SOL compile footprints
+exclude the changed NUT providers; concurrent PR1406 research controls pass.
+All failed/censored rounds are retained, including the source-binding failure
+before the final fixed-source qualification. Positive-rate organic resonances,
+selected mineral exhaustion, snow/persistent-surface N and full NUT remain open;
+no master row is promoted. Owning contract and actual admission receipt:
+`integration/mc-nut01/single_zero_pool/CONTRACT.md` and
+`integration/mc-nut01/single_zero_pool/ADMISSION.json`. Scientific discussion:
+[one stationary organic receiving pool](../science/MC_NUT01_SINGLE_ZERO_POOL_20261023.md).
+

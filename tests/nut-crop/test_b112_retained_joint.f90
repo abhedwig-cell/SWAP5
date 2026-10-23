@@ -217,7 +217,7 @@ program test_b112_retained_joint
  block
   type(crop_soil_state_t)::bad_state
   type(kernel_committed_state_t)::bad_water
-  bad_sp=sp;bad_sp%organic_reference%ratecon_bio=0d0
+ bad_sp=sp;bad_sp%organic_reference%asfa_bio=.5d0;bad_sp%organic_reference%asfa_hum=.5d0
   call initialize_reactive(bad_sp,9001_int64,0d0,theta,pools,after_soil,status)
   call initialize_crop_soil(after_soil,crop,cp,9101_int64,bad_state,status)
   call require(status==0,'stage singular organic trial')

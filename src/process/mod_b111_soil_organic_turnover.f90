@@ -25,7 +25,7 @@ module mod_b111_soil_organic_turnover
     real(real64)::humus_kg_m3=0.0_real64
   end type
 
-  public::evaluate_b111_organic_turnover,b111_decay_fractions
+  public::evaluate_b111_organic_turnover,b111_decay_fractions,b111_single_zero_response
 
 contains
 
@@ -38,6 +38,7 @@ contains
     real(real64)::d1,d2,e1,e2,ef,loss,average
     integer::code
     integer::fn,n
+    real(real64),allocatable::endpoint(:),mean_pool(:)
 
     result=b111_organic_turnover_result_t()
     n=size(fom0)
@@ -69,6 +70,14 @@ contains
       if(.not.all(ieee_is_finite([result%biomass_kg_m3,result%humus_kg_m3])))then
         result=b111_organic_turnover_result_t();return
       end if
+      result%status=B111_ORG_TURNOVER_OK;return
+    end if
+
+    if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64)then
+      call b111_single_zero_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
+      if(code/=B111_ORG_TURNOVER_OK)return
+      result%fom_kg_m3=endpoint(:n)
+      result%biomass_kg_m3=endpoint(n+1);result%humus_kg_m3=endpoint(n+2)
       result%status=B111_ORG_TURNOVER_OK;return
     end if
 
@@ -131,6 +140,90 @@ contains
     end if
     result%status=B111_ORG_TURNOVER_OK
   end subroutine
+
+  ! Exponential and interval mean of the original linear pool equations.
+  ! Restricted to exactly one stationary receiving pool. Scaling/squaring
+  ! avoids division by zero rates or coincident decay eigenvalues.
+  subroutine b111_single_zero_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,status)
+    real(real64),intent(in)::fom0(:),biomass0,humus0,dt
+    type(b111_organic_turnover_parameters_t),intent(in)::p
+    real(real64),allocatable,intent(out)::endpoint(:),mean_pool(:)
+    integer,intent(out)::status
+    real(real64),allocatable::a(:,:),transition(:,:),mean_transition(:,:),term(:,:),initial(:)
+    real(real64)::rate,scaled_dt
+    integer::n,m,i,j,s,halvings
+    status=B111_ORG_TURNOVER_INVALID;n=size(fom0);m=n+2
+    if(n<1.or..not.allocated(p%ratecon_fom).or..not.allocated(p%asfa_fom_bio).or. &
+        .not.allocated(p%asfa_fom_hum))return
+    if(size(p%ratecon_fom)/=n.or.size(p%asfa_fom_bio)/=n.or.size(p%asfa_fom_hum)/=n)return
+    if(.not.all(ieee_is_finite(fom0)).or..not.all(ieee_is_finite(p%ratecon_fom)).or. &
+        .not.all(ieee_is_finite(p%asfa_fom_bio)).or..not.all(ieee_is_finite(p%asfa_fom_hum)).or. &
+        .not.all(ieee_is_finite([biomass0,humus0,dt,p%ratecon_bio,p%ratecon_hum,p%asfa_bio,p%asfa_hum])))return
+    if(any(fom0<0d0).or.min(biomass0,humus0)<0d0.or.dt<=0d0)return
+    if(any(p%ratecon_fom<0d0).or.min(p%ratecon_bio,p%ratecon_hum)<0d0)return
+    if((p%ratecon_bio==0d0).eqv.(p%ratecon_hum==0d0))return
+    if(any(p%asfa_fom_bio<0d0).or.any(p%asfa_fom_hum<0d0).or. &
+        any(p%asfa_fom_bio+p%asfa_fom_hum>1d0))return
+    if(min(p%asfa_bio,p%asfa_hum)<0d0.or.p%asfa_bio+p%asfa_hum>1d0)return
+    allocate(a(m,m),transition(m,m),mean_transition(m,m),term(m,m),initial(m))
+    rate=max(maxval(p%ratecon_fom),p%ratecon_bio,p%ratecon_hum)
+    ! Each column has absolute sum <=2*rate. Form scaled products only.
+    scaled_dt=dt;halvings=0
+    if(rate>0.0625_real64/huge(rate))then
+      do while(scaled_dt>0.0625_real64/rate)
+        scaled_dt=scaled_dt*0.5_real64;halvings=halvings+1
+      end do
+    end if
+    a=0d0
+    do i=1,n
+      a(i,i)=-p%ratecon_fom(i)*scaled_dt
+      a(n+1,i)=p%asfa_fom_bio(i)*p%ratecon_fom(i)*scaled_dt
+      a(n+2,i)=p%asfa_fom_hum(i)*p%ratecon_fom(i)*scaled_dt
+    end do
+    a(n+1,n+1)=-(1d0-p%asfa_bio)*p%ratecon_bio*scaled_dt
+    a(n+1,n+2)=p%asfa_bio*p%ratecon_hum*scaled_dt
+    a(n+2,n+1)=p%asfa_hum*p%ratecon_bio*scaled_dt
+    a(n+2,n+2)=-(1d0-p%asfa_hum)*p%ratecon_hum*scaled_dt
+    transition=0d0
+    do i=1,m
+      transition(i,i)=1d0
+    end do
+    mean_transition=transition;term=transition
+    do j=1,32
+      term=pool_matrix_product(a,term)/real(j,real64)
+      transition=transition+term;mean_transition=mean_transition+term/real(j+1,real64)
+    end do
+    do s=1,halvings
+      mean_transition=0.5_real64*(mean_transition+pool_matrix_product(transition,mean_transition))
+      transition=pool_matrix_product(transition,transition)
+    end do
+    initial=[fom0,biomass0,humus0]
+    allocate(endpoint(m),mean_pool(m));endpoint=0d0;mean_pool=0d0
+    do j=1,m
+      do i=1,m
+        endpoint(i)=endpoint(i)+transition(i,j)*initial(j)
+        mean_pool(i)=mean_pool(i)+mean_transition(i,j)*initial(j)
+      end do
+    end do
+    if(.not.all(ieee_is_finite(endpoint)).or..not.all(ieee_is_finite(mean_pool)))return
+    if(any(endpoint<0d0).or.any(mean_pool<0d0))return
+    status=B111_ORG_TURNOVER_OK
+  end subroutine
+
+  ! Explicit accumulation order keeps the O0/O2 restart representation exact.
+  function pool_matrix_product(a,b)result(c)
+    real(real64),intent(in)::a(:,:),b(:,:)
+    real(real64)::c(size(a,1),size(b,2))
+    integer::i,j,k
+    c=0d0
+    do j=1,size(b,2)
+      do k=1,size(a,2)
+        do i=1,size(a,1)
+          c(i,j)=c(i,j)+a(i,k)*b(k,j)
+        end do
+      end do
+    end do
+  end function
 
   ! Dimensionless FOM loss and mean accumulated fraction over the interval.
   ! loss=1-exp(-x); average=1-(1-exp(-x))/x, including their exact x=0 limits.

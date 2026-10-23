@@ -62,3 +62,9 @@ Earlier development captures remain distinct: an incomplete qualification had
 finished O0 before the O2 bundle existed; both builds are now preflighted. Earlier
 builds were superseded when actual guarded sources/canonical drainage changed.
 Only the composed final captures define the table and62-process result above.
+
+PR1407 was subsequently preserved through canonical `ef2110c6`. Its two changed
+organic providers lie outside the actual measured native closure. Complete
+capsule replay rechecks all executed current inputs and passes after that merge.
+Current owner dispatch now reaches `verify_nut_single_zero_pool.py`; its successor
+preservation remains pending. This source reconciliation grants no NUT PASS.
