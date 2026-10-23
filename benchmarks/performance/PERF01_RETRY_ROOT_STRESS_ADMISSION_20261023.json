@@ -1,0 +1,49 @@
+{
+  "work_unit": "PERF01_RETRY_ROOT_STRESS_RESEARCH",
+  "status": "BOUNDED_ACTIVE_STRESS_RESEARCH_INTEGRATED_ACTUAL_MERGE_VERIFIED",
+  "baseline": "ead21ff0a325f4d5a96be889c1fec083e7c8ba4d",
+  "pull_request": 1380,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1380",
+  "published_head": "29202245ccb3775a107922883cdf3e72f78310c7",
+  "actual_merge": "cc53b8d71e2cf3158e80973dec71268504db7c70",
+  "qualified_candidate_tree": "6a188b019053911ed052b38a34624c5885384349",
+  "actual_merge_tree": "6a188b019053911ed052b38a34624c5885384349",
+  "actual_merge_exact_qualified_tree": true,
+  "unchanged_source_tree": "bda16ceab3a21eb7cd2a4c340348aea2d5a41929",
+  "actual_merge_raw_archive_replay": "PASS",
+  "actual_merge_current_admitted_source_owner": "PASS",
+  "all_256_actual_source_hashes_and_ordered_closure_exact": true,
+  "compiled_provider_rebuilds": 0,
+  "native_observations": 24,
+  "rejection_controls": 6,
+  "checks": {
+    "existing_independent_hard_daily_water_balance": "PASS",
+    "deterministic_physical_work_repetitions": "PASS",
+    "checked_O0_O2_endpoints_both_rainfalls": "PASS",
+    "exact_day48_close_reconstruct_both_rainfalls": "PASS",
+    "prior_complete_original_profile_archive": "PASS",
+    "active_root_stress_native_profile": "PASS",
+    "docs_source_and_strict_build": "PASS"
+  },
+  "stress_days_at_1e3": {"1x": 38, "4x": 5},
+  "median_cpu_seconds": {
+    "1x_1e3": 1.596745,
+    "1x_1e2": 0.936877,
+    "4x_1e3": 3.902015,
+    "4x_1e2": 1.866368
+  },
+  "total_transpiration_shift_mm": {"1x": 0.0004943021395953946, "4x": 0.00017509240990441245},
+  "max_daily_storage_spread_mm": {"1x": 0.008210389224416303, "4x": 0.016082420657909324},
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_EVIDENCE.tar.xz",
+    "sha256": "aa46499d7df808b6f70204676a47404567b944a5c1965424193b325f40b8aa60",
+    "bytes": 663448,
+    "members": 217
+  },
+  "research_integrated": true,
+  "production_changed": false,
+  "default_changed": false,
+  "canonically_admitted_new_policy": false,
+  "claim": "Existing1e-2 input is supported by bounded measured original and active-stress profiles; no independent truth-error bound, universal default or new root/soil/surface domain is inferred",
+  "master_capability_dispositions_changed": false
+}
