@@ -1,0 +1,287 @@
+{
+  "work_unit": "SWAP5-PERF01_NATIVE_COST_SPLIT",
+  "status": "COMPLETE_RESEARCH_OBSERVATIONS_BYTE_EXACT_OUTPUTS",
+  "baseline": "7ae093c5b32b4abfd10a6a37c8113ecffa2cdbb6",
+  "production_changed": false,
+  "temporal_tolerance": 0.001,
+  "days": 97,
+  "repetitions_per_arm_and_rain": 3,
+  "profile_source_sha256": "173a70af5afff0bda92999c3c3462cadb9eb9382cf2325f597457b7b87165d29",
+  "affected_invariants": [
+    2,
+    5,
+    7,
+    13,
+    23,
+    26
+  ],
+  "cases": {
+    "1": {
+      "native_wall_seconds": 1.211559909999778,
+      "instrumented_wall_seconds": 1.1957084390014643,
+      "joint_seconds": 1.171951502,
+      "transaction_state_controller_seconds": 0.03719434399999999,
+      "provider_adapter_state_seconds": 0.297056918,
+      "headcalc_seconds": 0.77814133,
+      "chemistry_joint_orchestration_seconds": 0.05955891000000002,
+      "native_setup_output_launch_seconds": 0.023756937001464307,
+      "rejected_attempt_seconds": 0.968250841,
+      "counts": [
+        37371,
+        37371,
+        72455,
+        1352,
+        31041,
+        0,
+        475366,
+        109826,
+        494391,
+        35142,
+        9956,
+        35201
+      ],
+      "full_frontend_wall_seconds": 1.2819669470009103,
+      "full_wrapper_native_seconds": 1.130772092998086,
+      "outside_native_prepare_python_publication_seconds": 0.15119485400282429,
+      "paired_native_seconds": [
+        1.130772092998086,
+        1.0940577580004174,
+        1.2003913530024874
+      ],
+      "paired_full_seconds": [
+        1.2819669470009103,
+        1.2378310109997983,
+        1.3602821150016098
+      ],
+      "accepted_half_substeps": 9956,
+      "accepted_transactions": 4978,
+      "discarded_attempt_fraction": 0.866795108506596,
+      "discarded_time_fraction_of_instrumented_native": 0.8097716879949313,
+      "timed_headcalc_calls": [
+        109826,
+        109826,
+        109826
+      ],
+      "original_iteration_hits": 979,
+      "original_logged_nonlinear_iterations": 3223,
+      "physical_observations": {
+        "inputs": {
+          "days": 97,
+          "rain_multiplier": 1,
+          "files": {
+            "swap.swp": "544512ef750d690117a28e3a57d3516828172c770e46d4195a48d8fe425056fa",
+            "crop.crp": "7ea80233872379edf1fbd153c80b88192352c1d2cab5cacba3e94d97ce37f0e7",
+            "weather.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72"
+          },
+          "template_sha256": "7258996c83d48200d24dd031ea7c8285d4c5e18999c3008e95fa3015b9460ca7",
+          "scope": "Constructed common complete SWP/simple crop/ETref with zero tracer; not WOFOST or original Andelst model"
+        },
+        "totals_mm": {
+          "runoff": {
+            "legacy": 104.79538037935001,
+            "current": 104.79534997814343
+          },
+          "soil_evaporation": {
+            "legacy": 24.1882518069,
+            "current": 24.30455489455835
+          },
+          "pond_evaporation": {
+            "legacy": 18.39543153284,
+            "current": 18.279128445198225
+          },
+          "potential_transpiration": {
+            "legacy": 55.34381666025,
+            "current": 55.343816660243434
+          },
+          "actual_transpiration": {
+            "legacy": 55.34381666025,
+            "current": 55.343816660243434
+          }
+        },
+        "max_daily_difference_mm": {
+          "runoff": 0.0021272170405852928,
+          "soil_evaporation": 0.048501133467152915,
+          "pond_evaporation": 0.04850113346281437,
+          "potential_transpiration": 4.997530167472064e-12,
+          "actual_transpiration": 4.997530167472064e-12
+        },
+        "current_max_independent_gross_balance_mm": 6.017061848773153e-13,
+        "rain_total_mm": 227.0,
+        "legacy_total_storage_change_mm": 14.577160351315241,
+        "current_total_storage_change_mm": 14.577150021854948,
+        "legacy_max_daily_balance_deviation_mm": 5.917037296244001e-06,
+        "current_max_daily_balance_deviation_mm": 4.621303340002214e-14,
+        "current_accepted_substeps": 9956.0,
+        "max_daily_total_evaporation_difference_mm": 5.945183581546054e-12,
+        "max_daily_total_storage_difference_mm": 0.0021269832701165114,
+        "timing": {
+          "legacy": {
+            "wall_seconds": 0.02046273200176074,
+            "user_seconds": 0.01912699999999999,
+            "system_seconds": 0.0
+          },
+          "current": {
+            "wall_seconds": 1.2819669470009103,
+            "user_seconds": 1.220666,
+            "system_seconds": 0.056263999999999995
+          }
+        },
+        "observed_end_to_end_wall_ratio": 62.648865600673545
+      },
+      "nonaccepted_trajectory_nonlinear_work_fraction": 0.9260738041845652
+    },
+    "4": {
+      "native_wall_seconds": 1.0232952139995177,
+      "instrumented_wall_seconds": 1.1285208250010328,
+      "joint_seconds": 1.112940584,
+      "transaction_state_controller_seconds": 0.0329641850000002,
+      "provider_adapter_state_seconds": 0.26744617599999987,
+      "headcalc_seconds": 0.76031784,
+      "chemistry_joint_orchestration_seconds": 0.05221238299999986,
+      "native_setup_output_launch_seconds": 0.015580241001032835,
+      "rejected_attempt_seconds": 0.954050467,
+      "counts": [
+        32702,
+        32702,
+        63007,
+        1597,
+        27528,
+        0,
+        448141,
+        95709,
+        507521,
+        25640,
+        7154,
+        25693
+      ],
+      "full_frontend_wall_seconds": 1.2771371630005888,
+      "full_wrapper_native_seconds": 1.125156001002324,
+      "outside_native_prepare_python_publication_seconds": 0.15198116199826472,
+      "paired_native_seconds": [
+        1.1306940089998534,
+        1.0897386540018488,
+        1.125156001002324
+      ],
+      "paired_full_seconds": [
+        1.3029518269977416,
+        1.2228589840015047,
+        1.2771371630005888
+      ],
+      "accepted_half_substeps": 7154,
+      "accepted_transactions": 3577,
+      "discarded_attempt_fraction": 0.8906183108066785,
+      "discarded_time_fraction_of_instrumented_native": 0.8453990798079661,
+      "timed_headcalc_calls": [
+        95709,
+        95709,
+        95709
+      ],
+      "original_iteration_hits": 979,
+      "original_logged_nonlinear_iterations": 3100,
+      "physical_observations": {
+        "inputs": {
+          "days": 97,
+          "rain_multiplier": 4,
+          "files": {
+            "swap.swp": "544512ef750d690117a28e3a57d3516828172c770e46d4195a48d8fe425056fa",
+            "crop.crp": "7ea80233872379edf1fbd153c80b88192352c1d2cab5cacba3e94d97ce37f0e7",
+            "weather.999": "b69d91f8af402b4783a3b5bbd51026492b93b04de6be90717648e9b806db0fb8"
+          },
+          "template_sha256": "7258996c83d48200d24dd031ea7c8285d4c5e18999c3008e95fa3015b9460ca7",
+          "scope": "Constructed common complete SWP/simple crop/ETref with zero tracer; not WOFOST or original Andelst model"
+        },
+        "totals_mm": {
+          "runoff": {
+            "legacy": 783.40537054857,
+            "current": 783.4052831163249
+          },
+          "soil_evaporation": {
+            "legacy": 12.415098671680001,
+            "current": 13.614832202588454
+          },
+          "pond_evaporation": {
+            "legacy": 30.16858466806,
+            "current": 28.968851137168123
+          },
+          "potential_transpiration": {
+            "legacy": 55.34381666025,
+            "current": 55.343816660243434
+          },
+          "actual_transpiration": {
+            "legacy": 55.34381666025,
+            "current": 55.343816660243434
+          }
+        },
+        "max_daily_difference_mm": {
+          "runoff": 0.008576638052985612,
+          "soil_evaporation": 0.7219115223849106,
+          "pond_evaporation": 0.7219115223786305,
+          "potential_transpiration": 4.997530167472064e-12,
+          "actual_transpiration": 4.997530167472064e-12
+        },
+        "current_max_independent_gross_balance_mm": 5.984622519772387e-13,
+        "rain_total_mm": 908.0,
+        "legacy_total_storage_change_mm": 16.96722803323,
+        "current_total_storage_change_mm": 16.967216883668055,
+        "legacy_max_daily_balance_deviation_mm": 8.997240306986001e-06,
+        "current_max_daily_balance_deviation_mm": 3.9968028886505635e-14,
+        "current_accepted_substeps": 7154.0,
+        "max_daily_total_evaporation_difference_mm": 7.385654587910295e-12,
+        "max_daily_total_storage_difference_mm": 0.008253145610535029,
+        "timing": {
+          "legacy": {
+            "wall_seconds": 0.028291317001276184,
+            "user_seconds": 0.019922000000000217,
+            "system_seconds": 0.007763999999999993
+          },
+          "current": {
+            "wall_seconds": 1.2771371630005888,
+            "user_seconds": 1.2164019999999995,
+            "system_seconds": 0.04712500000000003
+          }
+        },
+        "observed_end_to_end_wall_ratio": 45.14237223183986
+      },
+      "nonaccepted_trajectory_nonlinear_work_fraction": 0.942785864270397
+    }
+  },
+  "count_order": [
+    "attempts",
+    "full_trials",
+    "half_trials",
+    "solver_rejections",
+    "temporal_rejections",
+    "mass_rejections",
+    "nonlinear_iterations",
+    "headcalc_calls",
+    "backtracking_attempts",
+    "accepted_nonlinear_iterations",
+    "accepted_headcalc_calls",
+    "accepted_backtracking_attempts"
+  ],
+  "interpretation": "Runtime resets transaction target to the remaining interval when retain_accepted_step_proposal=false. Existing proposal option is explicitly excluded for this native crop/soil evaporation combination. No qualification extension or production policy change is made.",
+  "limits": [
+    "Constructed four-cell simple crop/ETref/zero-tracer case, not WOFOST/regional production",
+    "GNU13.3 O2 current runtime checks and original compatibility initialization differ",
+    "Wall measurements fluctuate; instrumentation overhead is not a portable speed claim",
+    "Native setup/output/launch residual is an upper envelope, not pure filesystem output time",
+    "Existing historical_zero exfiltration explicitly selected; default remains reject",
+    "Original iteration hits and current accepted half-substeps have different semantics",
+    "Work outside the accepted trajectory includes the mandatory full-step comparator as well as rejected work; only the separately timed rejected attempts are classified as rejected time."
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_NATIVE_COST_20261023_EVIDENCE.tar.xz",
+    "sha256": "649a4d529cabd52e4f2b0b85c76c77898f9ad36af1ddb59336636b69f48687fb",
+    "bytes": 122024,
+    "members": 271
+  },
+  "validation": {
+    "capsule_manifest": "PASS_271_MEMBERS",
+    "nine_generations_per_rain_byte_exact": "PASS",
+    "saturated_flux_source_native_owner": "PASS",
+    "negative_source_evidence_controls": 18,
+    "documentation_source": "PASS",
+    "documentation_strict_build": "PASS",
+    "hosted_qualification": "NOT_SELECTED_NO_PRODUCTION_CHANGE"
+  }
+}
