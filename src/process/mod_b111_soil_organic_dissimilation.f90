@@ -3,7 +3,7 @@ module mod_b111_soil_organic_dissimilation
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t, b111_organic_turnover_result_t, &
        B111_ORG_TURNOVER_OK,b111_decay_fractions,b111_single_zero_response, &
-       b111_resonant_response,b111_requires_resonant_response
+       b111_resonant_response,b111_requires_resonant_response,b111_singular_response,b111_requires_singular_response
   implicit none
   private
 
@@ -69,9 +69,12 @@ contains
       result%status=B111_ORG_DISS_OK;return
     end if
 
-    if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64.or.b111_requires_resonant_response(p))then
+    if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64.or.b111_requires_resonant_response(p).or. &
+       b111_requires_singular_response(p))then
       if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64)then
         call b111_single_zero_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
+      else if(b111_requires_singular_response(p))then
+        call b111_singular_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
       else
         call b111_resonant_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
       end if

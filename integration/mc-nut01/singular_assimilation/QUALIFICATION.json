@@ -1,0 +1,126 @@
+{
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "qualified_head": "5f02e8a7202e3aaa51b2f4c829edc2dc873381cf",
+  "checks": {
+    "owner": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_singular_pool.py"
+      ],
+      "returncode": 0,
+      "seconds": 5.205838825997489,
+      "stdout_sha256": "dd41bcfabbb7d9f53f4e93bc54de2afaf2cd5c4b849cfa6349f8cf7f09aba967",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_singular_pool.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "seconds": 17.085274204000598,
+      "stdout_sha256": "5b76c77ba19c15ff35834533204bd5d8e6c8809bebce5878505c013c0ba3dbfc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "general": {
+      "command": [
+        "python",
+        "-B",
+        "integration/performance/authority.py"
+      ],
+      "returncode": 0,
+      "seconds": 5.290092026996717,
+      "stdout_sha256": "dd41bcfabbb7d9f53f4e93bc54de2afaf2cd5c4b849cfa6349f8cf7f09aba967",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "history": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_historical_output_caller.py"
+      ],
+      "returncode": 0,
+      "seconds": 5.274197187005484,
+      "stdout_sha256": "dd41bcfabbb7d9f53f4e93bc54de2afaf2cd5c4b849cfa6349f8cf7f09aba967",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fsi35": {
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,runpy;print(json.dumps(runpy.run_path('integration/performance/authority.py')['fsi35_successors'](),indent=2))"
+      ],
+      "returncode": 0,
+      "seconds": 0.23850799500360154,
+      "stdout_sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs": {
+      "command": [
+        "python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.2579630359978182,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mkdocs": {
+      "command": [
+        "python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "../nut-singular-docsite"
+      ],
+      "returncode": 0,
+      "seconds": 16.13388888099871,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "4ceb2f94526fea401cc970dae6fd74f483c340c726cf310a004b387a84a6479d"
+    }
+  },
+  "control_count": 179,
+  "predecessor_controls": 156,
+  "new_controls": 23,
+  "measured_seconds": {
+    "direct-02": {
+      "compile": 2.2804068260156782,
+      "link": 0.13514143099746434,
+      "common_current": 0.21718478399998276,
+      "zero_current": 0.0846691050028312,
+      "fraction_compile": 0.041557141004886944,
+      "fraction_link": 0.05710434199863812,
+      "fraction_native": 0.0029808199979015626,
+      "invalid": 0.0029496140050468966,
+      "common_previous": 0.26090894200024195,
+      "zero_previous": 0.019406339000852313
+    },
+    "hist-02": {
+      "compile": 65.18687423000665,
+      "link": 0.6241903280024417,
+      "trace_native": 0.003340615992783569,
+      "native": 13.670670782987145,
+      "restart_native": 33.61728939702152,
+      "compiler": 0.001836941999499686
+    },
+    "joint-01": {
+      "compile": 20.632938145005028,
+      "link": 0.3701198360067792,
+      "previous_compile": 1.2250666820109473,
+      "previous_link": 0.37444431399489986,
+      "previous_native": 0.3772341969961417,
+      "native": 9.5935153019891,
+      "restart_native": 12.475057638010185
+    }
+  },
+  "full_mc_nut01_closed": false,
+  "selected_mineral_exhaustion_allocation": "OPEN_FAIL_CLOSED",
+  "failed_rounds": "Failed HIST and four rejected fixture probes retained with raw outputs; last failed uncaught subprocess duration UNKNOWN. Probe05 proves reaction exchange failure and completes all original native assertions."
+}
