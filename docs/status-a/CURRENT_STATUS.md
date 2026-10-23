@@ -518,3 +518,16 @@ current composition. The receipt is
 This does not change the frozen Status-A denominator or close full MC-SOL01,
 full refined-year/spatial convergence, broader historical/default heat/snow/age
 composition or full MC-NUT01.
+
+
+HIST-INTEGRATION01 detailed rain continuation is locally qualified in
+`integration/mc-sol01/detailed_rain/STATUS.json`; canonical admission is a
+separate receipt. Actual SWRAIN3/RAINFIL interval execution and SWCFBS1 use the
+existing native ETref/simple-crop/Reference owners: O0/O2 complete481days,
+original whole LoadRainData/ETpot witnesses, exact day365 restart and daily
+water/solute budgets pass. Existing daily/seasonal481day and wet97day proposal
+physical outputs stay exact. Actual four-times-rain failure after14 intervals
+preserves both complete day6 states. Full original Andelst still rejects SWREDU2;
+macropore/drainage/Cauchy3/numerical heat composition remains open. This does
+not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
+production completion or general performance.
