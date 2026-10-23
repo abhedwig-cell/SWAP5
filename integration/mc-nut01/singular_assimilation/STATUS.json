@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "baseline": "247b9f5b6d9e3da7505fdf85c192b45a1cc41e2a",
   "source_base": "247b9f5b6d9e3da7505fdf85c192b45a1cc41e2a",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_REGULAR_ORGANIC_DETERMINANT_BOUNDARY",
   "production_changes": [
     "src/process/mod_b111_soil_organic_turnover.f90",
     "src/process/mod_b111_soil_organic_dissimilation.f90"
@@ -28,7 +28,7 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
   },
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "evidence": {
     "path": "integration/mc-nut01/singular_assimilation/EVIDENCE.tar.xz.b64",
@@ -191,5 +191,11 @@
       "native": 9.5935153019891,
       "restart_native": 12.475057638010185
     }
+  },
+  "canonical_admission": {
+    "pr": 1412,
+    "actual_merge": "b4001c0b2033052ad2a203b41f49c85be5a611dd",
+    "complete_tree": "95dd1c4616353abf5f8b9e983cf69eb78e687814",
+    "receipt": "integration/mc-nut01/singular_assimilation/ADMISSION.json"
   }
 }

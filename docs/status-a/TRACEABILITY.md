@@ -747,3 +747,29 @@ master row is promoted. Owning contract and actual receipt:
 [positive-rate organic resonance](../science/MC_NUT01_ORGANIC_RESONANCE_20261023.md).
 
 
+## Post-Status-A MC-NUT01 regular organic determinant boundary, 2026-10-23
+
+PR #1412, actual merge `b4001c0b2033052ad2a203b41f49c85be5a611dd`, admits positive
+receiving rates at the unchanged absolute determinant guard, including
+conservative assimilation and small nonzero determinants. The existing matrix
+endpoint/interval-mean engine evaluates the original linear pool equations.
+GNU13.3 O0/O2 covers528 formerly rejected cases against independent ODE/matrix
+oracles, while1630 incumbent cases remain byte exact. Twenty-two actual eight-day
+Richards/crop/N runs and44 process restarts retain uptake, immobilisation,
+nitrogen closure and exact rejection rollback; all nine incumbent profiles match.
+All original HIST assertions pass in78 fresh processes including56 restarts,
+with48 affected/transitive compiles and606 verified unchanged closures.
+All179 controls, retaining all156 predecessor controls, and owner/general/HIST/
+FSI35 checks pass on the actual merge. Its complete tree
+`95dd1c4616353abf5f8b9e983cf69eb78e687814` equals the qualified composition.
+Only the obsolete negative input changes; all original stage, reaction rejection
+and rollback assertion bodies remain exact. The replacement valid boundary
+fixture reaches actual mineral exchange failure after crop preparation.
+Concurrent PR1411 research and its separate admission are preserved, with190
+unchanged inputs, five generated files and all eight corruption controls checked.
+Full NUT, selected mineral exhaustion allocation and snow/persistent-surface N
+remain open. No frozen master row is promoted. Owning contract and actual receipt:
+`integration/mc-nut01/singular_assimilation/CONTRACT.md` and
+`integration/mc-nut01/singular_assimilation/ADMISSION.json`.
+Scientific discussion:
+[regular organic determinant boundary](../science/MC_NUT01_SINGULAR_ASSIMILATION_20261023.md).
