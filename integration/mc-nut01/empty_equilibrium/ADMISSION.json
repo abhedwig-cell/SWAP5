@@ -1,0 +1,82 @@
+{
+  "workstream": "MC-NUT01",
+  "work_unit": "EMPTY_HOMOGENEOUS_MINERAL_POOL",
+  "pr": 1414,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1414",
+  "canonical_branch": "integration/f-ci-canonical",
+  "baseline": "03c1c7a41d66924e2d974275cd14d4bdc4101047",
+  "qualified_local_head": "f4289a2f7d7798a92e53608fa01ea03879cec1f3",
+  "published_qualified_head": "a6528f34dc59a3ce5867ef77053aa8a69dfb42a6",
+  "qualified_complete_tree": "44294b383deee81d0a27cbf8b41e8c656b2bb0fd",
+  "actual_merge": "1b69c9d90a5e57b32c24517b1d378eb6d6275071",
+  "actual_merge_first_parent": "03c1c7a41d66924e2d974275cd14d4bdc4101047",
+  "actual_merge_tree": "44294b383deee81d0a27cbf8b41e8c656b2bb0fd",
+  "complete_actual_tree_exact": true,
+  "canonically_admitted": true,
+  "actual_merge_checks": {
+    "owner": {
+      "returncode": 0,
+      "seconds": 4.584337382002559,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "controls": {
+      "returncode": 0,
+      "seconds": 17.508692903000338,
+      "stdout_sha256": "7db669996a8e139e0ac6fbb0437e2ea76c7e9036cd700407149c3653444f16f7"
+    },
+    "general": {
+      "returncode": 0,
+      "seconds": 4.780454847001238,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "history": {
+      "returncode": 0,
+      "seconds": 4.963105635004467,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "fsi35": {
+      "returncode": 0,
+      "seconds": 0.25370759700308554,
+      "stdout_sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "current_corruption_controls": 198,
+  "predecessor_controls_retained": 179,
+  "new_controls": 19,
+  "scientific_results": {
+    "direct_cases_per_optimization": 96,
+    "formerly_rejected": 96,
+    "incumbent_cases_byte_exact": 288,
+    "fresh_HIST_compiles": 44,
+    "reused_HIST_compiles": 610,
+    "fresh_HIST_processes": 78,
+    "fresh_HIST_process_restarts": 56,
+    "actual_coupled_runs": 26,
+    "days_per_run": 8,
+    "separate_process_restarts": 52,
+    "previous_composition_rejection_probes": 4
+  },
+  "evidence": {
+    "path": "integration/mc-nut01/empty_equilibrium/EVIDENCE.tar.xz.b64",
+    "sha256": "dd77fc6a14467168536096c3d3b84a605655d28f0b20d4f32ad566af819cd4d3",
+    "bytes": 231556,
+    "members": 3776,
+    "excluded": "Objects, modules and executables hashed, not embedded; raw receipts and native restart states retained."
+  },
+  "scope": "Exact homogeneous WaterN branch at zero concentration, zero signed production and no boundary loading; exhausted demand loses ties to valid zero supply. Empty NH4 permits positive NO3 uptake. Exact mineralisation/juvenile-demand cancellation is qualified.",
+  "preservation": "All288 incumbent signed/default cases byte exact, all11 incumbent coupled profiles exact, original reaction rejection fixture/assertions unchanged. All179 predecessor controls retained with one explicit archived daily-exchange identity and separate current direct/HIST/coupled proof.",
+  "zero_load_negative": "For both-empty profile, invalid chemical temperature replaces the meaningless nitrogen-exhaustion witness; stale-span and water rejection independent. All whole-state bytes exact after rejection.",
+  "original_reference": "Unmodified original WaterN validates the homogeneous branch; DOP853 validates complete daily selection. No full original daily selector equivalence claim for formerly rejected empty inputs.",
+  "hosted_workflow_runs": [],
+  "hosted_status_checks": [],
+  "full_FCI": "NOT_SELECTED_IMPACT",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "RossFast": "NOT_SELECTED",
+  "full_mc_nut01_closed": false,
+  "mastercoverage_promoted": false,
+  "remaining_open": [
+    "Genuine selected-sink exhaustion allocation",
+    "Snow/persistent-surface nitrogen"
+  ],
+  "receipt_changes": "Metadata only; all numerical sources and sealed raw evidence unchanged."
+}

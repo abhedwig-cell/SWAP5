@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "baseline": "03c1c7a41d66924e2d974275cd14d4bdc4101047",
   "source_base": "03c1c7a41d66924e2d974275cd14d4bdc4101047",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_EMPTY_HOMOGENEOUS_MINERAL_POOL",
   "production_changes": [
     "src/process/mod_b111_soil_n_daily_exchange.f90"
   ],
@@ -26,7 +26,7 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
   },
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "evidence": {
     "path": "integration/mc-nut01/empty_equilibrium/EVIDENCE.tar.xz.b64",
@@ -195,5 +195,11 @@
       "native": 11.55383672901371,
       "restart_native": 14.608631952003634
     }
+  },
+  "canonical_admission": {
+    "pr": 1414,
+    "actual_merge": "1b69c9d90a5e57b32c24517b1d378eb6d6275071",
+    "complete_tree": "44294b383deee81d0a27cbf8b41e8c656b2bb0fd",
+    "receipt": "integration/mc-nut01/empty_equilibrium/ADMISSION.json"
   }
 }
