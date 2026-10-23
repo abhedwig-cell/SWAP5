@@ -42,6 +42,11 @@ program swap5_native_project_column
   integer :: bottom_year_count=0
   real(real64) :: bottom_amplitude=0d0,bottom_daymax=0d0,bottom_legacy_origin=0d0,bottom_year_starts(10)=0d0
   real(real64) :: bottom_amount
+  integer,parameter :: MAX_RAIN_EVENTS=100000
+  logical :: detailed_rain=.false.
+  integer :: rain_count=0,accepted_count=0,rain_segments_completed=0
+  real(real64) :: rain_ends(MAX_RAIN_EVENTS)=0d0,rain_rates(MAX_RAIN_EVENTS)=0d0,rain_supplied_cm=0d0
+  namelist /rain_events/ rain_count,rain_ends,rain_rates
   integer :: solute_transport_scheme=0
   logical :: picard_conductivity_iteration=.false.
   logical :: continuous_mvg=.false.
@@ -121,7 +126,7 @@ program swap5_native_project_column
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
-    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts
+    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -147,6 +152,16 @@ program swap5_native_project_column
   read(u,nml=rotation,iostat=io,iomsg=message)
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid rotation namelist')
+  if(detailed_rain)then
+    read(u,nml=rain_events,iostat=io,iomsg=message)
+    call require(io==0,'invalid detailed rain namelist')
+    call require(rain_count>=1.and.rain_count<=MAX_RAIN_EVENTS,'detailed rain capacity')
+    call require(all(ieee_is_finite(rain_ends)).and.all(ieee_is_finite(rain_rates)),'nonfinite detailed rain')
+    call require(rain_ends(1)>0d0.and.rain_ends(rain_count)>=ends_day(windows),'detailed rain calendar coverage')
+    call require(all(rain_ends(2:rain_count)>rain_ends(1:rain_count-1)),'detailed rain order')
+    call require(all(rain_rates(:rain_count)>=0d0).and.all(rain_rates(:rain_count)<=5d5),'detailed rain rate')
+    call require(all(rain_rates(rain_count+1:)==0d0).and.all(rain_ends(rain_count+1:)==0d0),'inactive rain data')
+  end if
   ! The explicit project application requires the complete immutable period map.
   do
     read(u,'(A)',iostat=io)message
@@ -225,7 +240,7 @@ program swap5_native_project_column
     .not.implicit_pond_evaporation),'soil evaporation combination not qualified')
   call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation,'crop combination not admitted')
   call require(.not.retain_accepted_step_proposal.or.(.not.picard_conductivity_iteration.and. &
-    .not.continuous_mvg.and..not.seasonal_bottom.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
+    .not.continuous_mvg.and..not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
   call require(swp_water_bootstrap.and.all(root_cm_day==0d0),'native crop forbids prescribed second root sink')
   call require(root_table_points>=2.and.root_table_points<=MAX_ROOT_KNOTS,'root knot count')
   call require(all(ieee_is_finite([maximum_root_depth_cm,root_relative_depth,root_density, &
@@ -411,6 +426,7 @@ program swap5_native_project_column
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
   if(seasonal_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
+  if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
   write(u,'(A)')''
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
@@ -449,7 +465,9 @@ program swap5_native_project_column
     supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)
     supply%implicit_pond_evaporation=implicit_pond_evaporation
     supply%historical_zero_solute_exfiltration=historical_zero_solute_exfiltration
-    if(dynamic_temperature)then
+    if(detailed_rain)then
+      call run_detailed_rain_day(t0,t1,result)
+    else if(dynamic_temperature)then
       forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
       call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
     else
@@ -477,31 +495,13 @@ program swap5_native_project_column
     call require(result%status==JOINT_OK,'joint interval rejected')
     call require(result%water%mass%complete,'incomplete water accounting')
     call require(abs(result%water%mass%residual)<=1d-10.and.abs(result%chemical%residual)<=1d-10,'balance rejected')
-    observation=backend%observation()
-    call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
-    bottom_amount=0d0
-    infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
-    surface_exfiltration_amount=0d0
-    transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
-    do k=1,size(observation%accepted_water_flux_substeps)
-      associate(s=>observation%accepted_water_flux_substeps(k))
-        bottom_amount=bottom_amount+s%bottom_flux*(s%t1-s%t0)
-        transpiration_amount=transpiration_amount+sum(s%root_sink)*(s%t1-s%t0)
-        if(substep_root_stress)then
-          call require(s%substep_root_available,'accepted substep root diagnostics unavailable')
-          drought_amount=drought_amount+s%root_drought_reduction_cm_day*(s%t1-s%t0)
-          oxygen_amount=oxygen_amount+s%root_oxygen_reduction_cm_day*(s%t1-s%t0)
-          potential_amount=potential_amount+s%root_potential_cm_day*(s%t1-s%t0)
-        end if
-        infiltration=infiltration+max(0d0,-s%top_flux)*(s%t1-s%t0)
-        surface_exfiltration_amount=surface_exfiltration_amount+ &
-          max(0d0,s%top_flux-s%converged_soil_evaporation_cm_day)*(s%t1-s%t0)
-        runoff=runoff+s%converged_runoff_depth_cm
-        runon_amount=runon_amount+s%converged_runon_rate_cm_day*(s%t1-s%t0)
-        soil_evap_amount=soil_evap_amount+s%converged_soil_evaporation_cm_day*(s%t1-s%t0)
-        evap_amount=evap_amount+s%converged_pond_evaporation_cm_day*(s%t1-s%t0)
-      end associate
-    end do
+    if(.not.detailed_rain)then
+      observation=backend%observation()
+      call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
+      call reset_day_totals()
+      call accumulate_fluxes(observation)
+    end if
+
     if(substep_root_stress)then
       call require(abs(potential_amount-transpiration_amount-drought_amount-oxygen_amount)<=1d-12, &
         'accepted substep root reconciliation')
@@ -516,13 +516,14 @@ program swap5_native_project_column
       result%water%mass%total_in,result%water%mass%total_out,result%water%mass%residual, &
       result%chemical%mass_before,result%chemical%mass_after,result%chemical%external_in, &
       result%chemical%external_out,result%chemical%residual,infiltration,runon_amount,runoff,evap_amount, &
-      size(observation%accepted_water_flux_substeps)
+      accepted_count
     if(any(soil_evaporation_cm_day>0d0))write(u,'(A,ES25.17E3)',advance='no')',',soil_evap_amount
     write(u,'(4(A,ES25.17E3))',advance='no')',',potential_transpiration_cm_day(j)*(t1-t0),',',transpiration_amount, &
       ',',drought_amount,',',oxygen_amount
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
     if(seasonal_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
+    if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
     write(u,'(A)')''
     clock=t1
   end do
@@ -568,6 +569,115 @@ program swap5_native_project_column
   end select
   print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'
 contains
+  subroutine reset_day_totals()
+    bottom_amount=0d0
+    infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
+    surface_exfiltration_amount=0d0
+    transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
+    accepted_count=0;rain_supplied_cm=0d0;rain_segments_completed=0
+  end subroutine
+  subroutine accumulate_fluxes(observation)
+    type(fmr_serialized_physical_observation_t),intent(in)::observation
+    integer::k
+    accepted_count=accepted_count+size(observation%accepted_water_flux_substeps)
+    do k=1,size(observation%accepted_water_flux_substeps)
+      associate(s=>observation%accepted_water_flux_substeps(k))
+        bottom_amount=bottom_amount+s%bottom_flux*(s%t1-s%t0)
+        transpiration_amount=transpiration_amount+sum(s%root_sink)*(s%t1-s%t0)
+        if(substep_root_stress)then
+          call require(s%substep_root_available,'accepted substep root diagnostics unavailable')
+          drought_amount=drought_amount+s%root_drought_reduction_cm_day*(s%t1-s%t0)
+          oxygen_amount=oxygen_amount+s%root_oxygen_reduction_cm_day*(s%t1-s%t0)
+          potential_amount=potential_amount+s%root_potential_cm_day*(s%t1-s%t0)
+        end if
+        infiltration=infiltration+max(0d0,-s%top_flux)*(s%t1-s%t0)
+        surface_exfiltration_amount=surface_exfiltration_amount+ &
+          max(0d0,s%top_flux-s%converged_soil_evaporation_cm_day)*(s%t1-s%t0)
+        runoff=runoff+s%converged_runoff_depth_cm
+        runon_amount=runon_amount+s%converged_runon_rate_cm_day*(s%t1-s%t0)
+        soil_evap_amount=soil_evap_amount+s%converged_soil_evaporation_cm_day*(s%t1-s%t0)
+        evap_amount=evap_amount+s%converged_pond_evaporation_cm_day*(s%t1-s%t0)
+      end associate
+    end do
+  end subroutine
+  subroutine run_detailed_rain_day(day_start,day_end,day_result)
+    real(real64),intent(in)::day_start,day_end
+    type(matrix_joint_result_t),intent(out)::day_result
+    type(matrix_joint_result_t)::part
+    type(kernel_committed_state_t)::candidate_water
+    type(matrix_solute_state_t)::candidate_solute
+    type(fmr_b110_physical_forcing_t)::segment_forcing
+    type(pond_step_t)::segment_supply
+    type(fmr_serialized_physical_observation_t)::segment_observation
+    real(real64)::cursor,endpoint
+    integer::idx,left,right,middle,diagnostic_status
+    logical::first_segment
+    ! Existing owner types stage a day candidate. No persistent rain cursor or
+    ! second physical state layout. Publish only after every interval succeeds.
+    candidate_water=water;candidate_solute=solute
+    cursor=day_start;first_segment=.true.;day_result=matrix_joint_result_t()
+    call reset_day_totals()
+    left=1;right=rain_count
+    do while(left<right)
+      middle=(left+right)/2
+      if(rain_ends(middle)<=cursor)then
+        left=middle+1
+      else
+        right=middle
+      end if
+    end do
+    idx=left
+    do while(cursor<day_end)
+      endpoint=min(day_end,rain_ends(idx))
+      call require(endpoint>cursor,'nonprogressing detailed rain interval')
+      segment_forcing=forcing;segment_forcing%pond_input%rain_rate_cm_day=rain_rates(idx)
+      segment_supply=supply;segment_supply%t0=cursor;segment_supply%t1=endpoint
+      segment_supply%rain_rate=rain_rates(idx)
+      call run_pond_joint_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &
+        candidate_solute,segment_supply,cursor,endpoint,part)
+      if(part%status/=JOINT_OK)then
+        day_result=part
+        write(*,*)'detailed rain completed intervals:',rain_segments_completed
+        call write_matrix_joint_restart_file('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
+          candidate_water,candidate_solute,diagnostic_status,allow_surface_mass=.true.)
+        call require(diagnostic_status==JOINT_OK,'partial day diagnostic')
+        return
+      end if
+      call require(part%water%mass%complete,'incomplete rain interval accounting')
+      call require(abs(part%water%mass%residual)<=1d-10.and.abs(part%chemical%residual)<=1d-10,'rain interval balance')
+      if(first_segment)then
+        day_result=part;first_segment=.false.
+      else
+        day_result%water%mass%storage_end=part%water%mass%storage_end
+        day_result%water%mass%total_in=day_result%water%mass%total_in+part%water%mass%total_in
+        day_result%water%mass%total_out=day_result%water%mass%total_out+part%water%mass%total_out
+        day_result%water%mass%accepted_transaction_count=day_result%water%mass%accepted_transaction_count+ &
+          part%water%mass%accepted_transaction_count
+        day_result%chemical%mass_after=part%chemical%mass_after
+        day_result%chemical%external_in=day_result%chemical%external_in+part%chemical%external_in
+        day_result%chemical%external_out=day_result%chemical%external_out+part%chemical%external_out
+        day_result%chemical%decay_out=day_result%chemical%decay_out+part%chemical%decay_out
+        day_result%chemical%completed_substeps=day_result%chemical%completed_substeps+part%chemical%completed_substeps
+        day_result%chemical%max_water_residual=max(day_result%chemical%max_water_residual,part%chemical%max_water_residual)
+      end if
+      segment_observation=backend%observation()
+      call require(segment_observation%accepted_water_flux_trace_available,'detailed rain trace missing')
+      call accumulate_fluxes(segment_observation)
+      rain_supplied_cm=rain_supplied_cm+rain_rates(idx)*(endpoint-cursor)
+      rain_segments_completed=rain_segments_completed+1
+      cursor=endpoint
+      if(cursor<day_end)idx=idx+1
+    end do
+    day_result%water%requested_t0=day_start;day_result%water%requested_t1=day_end;day_result%water%completed_t=day_end
+    day_result%water%mass%interval_t0=day_start;day_result%water%mass%interval_t1=day_end
+    day_result%water%mass%storage_change=day_result%water%mass%storage_end-day_result%water%mass%storage_start
+    day_result%water%mass%residual=day_result%water%mass%storage_change- &
+      day_result%water%mass%total_in+day_result%water%mass%total_out
+    day_result%chemical%residual=day_result%chemical%mass_after-day_result%chemical%mass_before- &
+      day_result%chemical%external_in+day_result%chemical%external_out
+    call require(abs(day_result%water%mass%residual)<=1d-10.and.abs(day_result%chemical%residual)<=1d-10,'detailed day balance')
+    water=candidate_water;solute=candidate_solute
+  end subroutine
   subroutine select_project_profile(index)
     integer,intent(in)::index
     integer::selected

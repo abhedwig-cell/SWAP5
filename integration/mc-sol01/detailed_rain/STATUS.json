@@ -1,0 +1,103 @@
+{
+  "workstream": "MC-SOL01",
+  "work_unit": "HIST-INTEGRATION01 detailed rain and CFBS",
+  "baseline": "c22fe5b2bfad9cd832be4bca34c8fde1ac40cae7",
+  "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "scientific_delta": {
+    "app/solute_crop/read_swp_crop.f90": "M",
+    "app/solute_crop/read_swp_project.f90": "M",
+    "app/solute_project/main.f90": "M",
+    "integration/audits/verify_native_detailed_rain.py": "A",
+    "integration/performance/verify_native_proposal_successor.py": "M",
+    "tests/nut-sol/measure_detailed_rain.py": "A",
+    "tests/nut-sol/preserve_rain_predecessor.py": "A",
+    "tests/nut-sol/qualify_detailed_rain_rollback.py": "A",
+    "tests/nut-sol/qualify_native_detailed_rain.py": "A",
+    "tools/solute/run_project.py": "M"
+  },
+  "postimages": {
+    "app/solute_crop/read_swp_crop.f90": "876beee36582d4eaa4e9b4e98d35a0047e640977519a868e4abf678fa0eeb74f",
+    "app/solute_crop/read_swp_project.f90": "b511c01b5ac5c3b1cf55d66da6336dd731b93a9ce091143c25dea74b6718d846",
+    "app/solute_project/main.f90": "f9ba8618980a2680fada6616ef0469a6a0c4455977fbed318fea48b3cbdd0070",
+    "integration/audits/verify_native_detailed_rain.py": "4eeb033fa81b1d2893c63b37b3069939dadf5a155c4495ace6447ec36b4ba12a",
+    "integration/performance/verify_native_proposal_successor.py": "ab5d6763b7e0885655a387c63b0093cc602d5daa7d66ff2e9dc89e51032c8c3a",
+    "tests/nut-sol/measure_detailed_rain.py": "79f049389c8367171ddf4e2e855808f1fabfb419ae358cc61f0604bba116eeec",
+    "tests/nut-sol/preserve_rain_predecessor.py": "971d89d907a98809e18fefae570bf7003862eea434a6017b1764e29787c8ce0f",
+    "tests/nut-sol/qualify_detailed_rain_rollback.py": "f0e226c5805eb1b8c41189a619b3c1c04274aeb32edd14401c36716c10f664f8",
+    "tests/nut-sol/qualify_native_detailed_rain.py": "10ea96a1e64ba130ff832e03d65d9b0dff293425e1bf5b1ed82182f564e7f3dc",
+    "tools/solute/run_project.py": "281558588cbd512c1214e70ca580ce161477b24c0638b8be2ae1eb0d9814a151"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/detailed_rain/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "b38aec915315e1cf852ceb1261ae7c968256f3059c00c257e02bc9724cee2f5a",
+    "bytes": 1034292,
+    "members": 699
+  },
+  "test_selection": {
+    "local_O0_O2": true,
+    "actual_481_days": true,
+    "within_day_failure": true,
+    "original_LoadRainData_ETpot": true,
+    "physical_provider_policy": "fresh canonical 193 objects, all input hashes verified",
+    "expected_build_seconds": 180,
+    "expected_native_seconds": 1800,
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "full_original_Andelst": false,
+  "remaining_dependencies": [
+    "SWREDU2 evaporation process coupling",
+    "macropores",
+    "drainage",
+    "Cauchy mode3",
+    "numerical heat/frost as required by original input"
+  ],
+  "wet_picard_blocker": "4x detailed rain rejects day7 after14 successful intervals; complete day6 preserved",
+  "tolerance_1e_2": "Rejected by existing application domain <=1e-3; no domain weakening or new qualification",
+  "cpu": {
+    "status": "ACTUAL_CPU_OBSERVATIONS_NOT_A_SPEED_COMPARISON",
+    "runs": {
+      "normal": {
+        "command": [
+          "/workspace/scratch/40264571eb43/rain3-canonical-v2-O2/column/swap5_solute_project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "returncode": 0,
+        "wall_seconds": 45.400317932999315,
+        "user_cpu_seconds": 45.312073,
+        "system_cpu_seconds": 0.07706099999999999,
+        "complete_days": 481,
+        "temporal_tolerance": 0.001
+      },
+      "wet": {
+        "command": [
+          "/workspace/scratch/40264571eb43/rain3-canonical-v2-O2/column/swap5_solute_project",
+          "input.nml",
+          "-",
+          "97",
+          "input.swp"
+        ],
+        "returncode": 1,
+        "wall_seconds": 30.484689269000228,
+        "user_cpu_seconds": 30.474705,
+        "system_cpu_seconds": 0.007982000000000003,
+        "complete_days": 6,
+        "temporal_tolerance": 0.001
+      }
+    }
+  },
+  "qualification": {
+    "owner": "integration/audits/verify_native_detailed_rain.py",
+    "fresh_controls": 17,
+    "frozen_predecessor_controls": 24,
+    "source_reconciliation": "Canonical research FCT successor 2a417d60 leaves all production src/app/tools/tests and original references unchanged"
+  }
+}

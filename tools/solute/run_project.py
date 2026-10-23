@@ -36,19 +36,20 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if bundle.get('schema')!=1 or bundle.get('status')!='BUILT':raise ValueError('invalid build bundle')
  metadata={k:check_reader(p)for k,p in executables.items()}
  if any(sha(p.read_bytes())!=bundle['executable_sha256'][str(p)]for p in executables.values()):raise ValueError('changed bundle executable')
- swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[]
+ swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[];rain_events=[]
  with tempfile.TemporaryDirectory(prefix='swap5-project-input-')as tmp:
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
   native(executables['project_reader'],['input.swp','scan'],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
   paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop']}
   for r in references:
-   if r['kind']not in ['met','crop']:continue
-   kind=r['kind'];folder=paths['pathatm'if kind=='met'else'pathcrop'].replace('\\','/').strip()
+   if r['kind']not in ['met','crop','rain']:continue
+   kind=r['kind'];folder=paths['pathcrop'if kind=='crop'else'pathatm'].replace('\\','/').strip()
    name=(Path(folder)/r['value'])if folder else Path(r['value'])
    path=resolve_file(swp.parent,str(name));raw=path.read_bytes();sources.append((kind+'_'+r['index'],raw))
-   (stage/(('weather-'if kind=='met'else'crop-')+r['index']+('.met'if kind=='met'else'.crp'))).write_bytes(raw)
+   (stage/({'met':'weather-','crop':'crop-','rain':'rain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain'}[kind])).write_bytes(raw)
   native(executables['project_reader'],['input.swp','prepare'],stage,b'SWP_NATIVE_PROJECT_PREPARED')
+  if any(r['kind']=='detailed_rain'for r in references):rain_events=list(csv.DictReader((stage/'rain_events.csv').open()))
   for r in references:
    if r['kind']!='crop':continue
    index=r['index'];names=['period-'+index+'.swp','crop-'+index+'.crp','weather.met']
@@ -129,6 +130,12 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration
+ if rain_events:
+  lines.insert(lines.index('&surface')-1,' detailed_rain=.true.')
+  lines+=['&rain_events',' rain_count='+str(len(rain_events)),
+   ' rain_ends='+','.join(r['end_day']for r in rain_events),
+   ' rain_rates='+','.join(r['rate_cm_day']for r in rain_events),'/']
+  audit['rain_events']=rain_events
  return '\n'.join(lines)+'\n',swp_bytes,audit,executables['exe']
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('swp',type=Path);ap.add_argument('--bundle',type=Path,required=True)

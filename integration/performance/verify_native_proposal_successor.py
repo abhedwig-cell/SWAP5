@@ -24,6 +24,7 @@ def projection():
   s=s[:offset]+hook+s[offset:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/detailed_rain/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_detailed_rain.py'))['source'](reader,changed)
  r=record(reader)['source_admission'];git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  require(delta=={APP:'M',FRONT:'M',PARENT:'M',SELF:'A'},'foreign native proposal scientific delta')
@@ -126,8 +127,11 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
   proposal_scope='Constructed native97day simple crop/ETref zero tracer1x/4x, optional only',
   native_application_processes=40,actual_failed_water_rollbacks=8,negative_native_controls=6,
   canonically_admitted=False,measured={k:v for k,v in q['cases'].items()if k.startswith('O2')})
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/detailed_rain/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_detailed_rain.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-sol01/detailed_rain/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_detailed_rain.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

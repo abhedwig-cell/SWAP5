@@ -598,3 +598,16 @@ qualified tree and locally on the actual merge. Six other actual first-merge
 workflows succeed. Current source/evidence and21 controls pass. Native water
 bootstrap stays bounded to unsaturated HTB and default layered MvG; historical
 meteo/crop/default orchestration and full MC-SOL01 remain open.
+
+
+HIST-INTEGRATION01 detailed rain continuation is locally qualified in
+`integration/mc-sol01/detailed_rain/STATUS.json`; canonical admission is a
+separate receipt. Actual SWRAIN3/RAINFIL interval execution and SWCFBS1 use the
+existing native ETref/simple-crop/Reference owners: O0/O2 complete481days,
+original whole LoadRainData/ETpot witnesses, exact day365 restart and daily
+water/solute budgets pass. Existing daily/seasonal481day and wet97day proposal
+physical outputs stay exact. Actual four-times-rain failure after14 intervals
+preserves both complete day6 states. Full original Andelst still rejects SWREDU2;
+macropore/drainage/Cauchy3/numerical heat composition remains open. This does
+not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
+production completion or general performance.

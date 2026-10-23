@@ -689,6 +689,58 @@ checks41cell2day state/endpoint/budget equality; historical82/164executions are
 not relabeled. Current owner and30controls pass. Research, source/raw proof and
 claim limits are separate from production/defaults and full SOL/NUT admission.
 
+## HIST-INTEGRATION01 detailed rain and soil-factor successor
+
+Implemented continuation, reconciled with canonical
+`c22fe5b2bfad9cd832be4bca34c8fde1ac40cae7`. Existing
+SWRAIN0 remains exact. SWRAIN3 resolves original RAINFIL year naming or one
+.RAIN file through TTUTIL DAY/MONTH/YEAR/TIME/AMOUNT. Original LoadRainData
+amounts belong to the preceding interval. Preserve complete source bytes,
+including future unused data, in the existing restart-bound input document.
+The native preparation day view integrates original rain records; physical
+execution consumes the actual interval endpoints/rates, never a daily average.
+
+The native application stages the existing water and solute owner types for
+one reporting day, executes the existing joint pond transactions at rain
+boundaries, and publishes only after every segment and the unchanged hard
+daily water/solute certificates pass. A rain cursor is derived from the opaque
+committed time; no new persistent owner, restart ABI, physics kernel or shared
+interface. Scalar output receipts sum actual accepted trace contributions,
+without constructing/copying an ever-growing concatenated flux trace.
+SWCFBS1/CFBS0..1.5 uses the existing daily atmospheric-demand provider. SWREDU,
+macropores, drainage and heat remain explicitly rejected by this front end.
+No silent reduction or deactivation is performed on original physical input.
+
+Owning surfaces: existing project/crop readers, launcher and native application.
+Shared src and original reference bytes unchanged. Invariants2,3,7,9,13,21,23,29
+remain binding. Select original whole LoadRainData and fixed/ETpot witnesses,
+O0/O2 actual interval/day budgets, within-day failure rollback, source-bound
+fresh restart and future-source rejection; preserve existing daily/seasonal
+physical outputs. Reuse only hash-verified193 physical providers. Expected
+build30s, focused60s, actual481-day composition up to1800s to test original
+rainfall timing. Full F-CI NOT_SELECTED_IMPACT; highest low-air
+NOT_SELECTED_POLICY; RossFast unused. Full original project parity is separate.
+
+Actual evidence: `integration/mc-sol01/detailed_rain/STATUS.json` and its sealed
+capsule. O0/O2 complete481days,2630 original rain intervals, original whole
+LoadRainData and fixed/ETpot witnesses, day365 fresh restart and future-source
+rejection pass. Daily water/solute residuals stay below1e-10 without clamps;
+all O0/O2 physical outputs are byte-exact. The incumbent daily seasonal481day
+and admitted wet97day proposal outputs remain exact. Four-times-rain Picard
+fails on day7 after14 successful intervals: the rejected committed generation
+is exactly the independent complete day6 restart, while the partial candidate
+has advanced. This is failure atomicity evidence, not a completed wet product run.
+
+A separate O2 native CPU observation measures45.389s CPU/45.400s wall for the
+normal481days, and30.483s CPU/30.485s wall for the rejected wet prefix. These
+checked builds and different completed durations establish no speed comparison.
+All new long runs explicitly use1e-3. The requested1e-2 probe is rejected by the
+existing application domain; no tolerance bound is relaxed. Full original
+Andelst now reaches the explicit unsupported SWREDU rejection. Numerical heat,
+macropores, drainage and Cauchy3 remain separate missing compositions. This
+admission covers the existing ETref/simple-crop native route, not full original
+Andelst, profile accuracy, full SOL/NUT closure or a mastercoverage promotion.
+
 ### Bounded conservative-correction prototype, 23 October 2026
 
 `integration/mc-sol01/fct_prototype/STATUS.json` owns an isolated research module

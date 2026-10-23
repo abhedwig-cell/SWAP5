@@ -15,7 +15,9 @@ program read_swp_crop
   real(real64),allocatable::tmin(:),tmax(:),etref(:),times(:),x(:),y(:),cf_x(:),cf_y(:),output(:,:)
   character(1024)::swp,crp,met,declared,names(64)
   logical::rdinqr,active,starts_today,harvested
-  integer::crop_types(64),swharv
+  integer::crop_types(64),swharv,soil_factor_mode=0
+  type(daily_atmospheric_demand_parameters_t)::daily_et
+  type(traditional_pm_weather_t)::unused_pm
   type(fixed_crop_parameters_t)::parameters
   type(fixed_crop_state_t)::state,candidate
   type(crop_calendar_t)::calendar
@@ -55,7 +57,11 @@ program read_swp_crop
   call require(status==CROP_CAL_OK,'crop calendar rejected')
   call rdsdor('rds',1d0,5000d0,rds)
   call rdsdor('cfevappond',0d0,10d0,et_parameters%pond_evaporation_factor)
-  call zero_switch('swcfbs',1);call zero_switch('swredu',2)
+  if(rdinqr('swcfbs'))call rdsinr('swcfbs',0,1,soil_factor_mode)
+  if(soil_factor_mode==1)call rdsdor('cfbs',0d0,1.5d0,daily_et%soil_factor)
+  daily_et%soil_factor_enabled=soil_factor_mode==1
+  daily_et%pond_factor=et_parameters%pond_evaporation_factor
+  call zero_switch('swredu',2)
   call zero_switch('swmetdetail',1);call zero_switch('swdivide',1)
   close(74)
   call rdinit(74,0,trim(crp))
@@ -123,8 +129,13 @@ program read_swp_crop
     et_canopy%crop_emerged=active;et_canopy%vegetation_cover_fraction=canopy%vegetation_cover_fraction
     et_canopy%crop_factor=canopy%crop_factor;et_canopy%co2_transpiration_factor=canopy%co2_transpiration_factor
     et_forcing%reference_et_mm_per_day=etref(i)
+    if(soil_factor_mode==1)then
+      call evaluate_daily_atmospheric_demand(daily_et,unused_pm,etref(i),et_canopy,demand,status)
+      call require(status==REF_ET_DEMAND_OK,'soil-factor ETref')
+    else
     call evaluate_restricted_reference_et_demand(et_parameters,et_forcing,et_canopy,demand,et_diagnostics)
     call require(et_diagnostics%status==REF_ET_DEMAND_OK.and.et_diagnostics%result_produced,'ETref')
+    end if
     output(:,j)=[times(i),merge(1d0,0d0,active),merge(state%development_stage,0d0,active), &
       lai,canopy%vegetation_cover_fraction,rd,demand%potential_transpiration_cm_per_day, &
       demand%potential_soil_evaporation_cm_per_day,demand%potential_pond_evaporation_cm_per_day]
