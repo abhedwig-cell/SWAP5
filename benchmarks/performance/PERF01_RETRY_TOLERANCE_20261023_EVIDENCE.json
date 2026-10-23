@@ -1,0 +1,123 @@
+{
+  "assessment": {
+    "status": "RAW_REPLAY_O0_O2_RESTART_PREDECESSOR_PASS",
+    "native_observations": 24,
+    "cases": {
+      "4": {
+        "cpu_ratio": 0.5222431934356085,
+        "differences": {
+          "storage_mm": {
+            "max_daily_abs": 0.016082420657909324,
+            "end_difference": 0.006549498923078545
+          },
+          "transpiration_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "soil_evaporation_mm": {
+            "max_daily_abs": 1.0888630073000306e-05,
+            "end_difference": 0.0,
+            "total_difference": 1.1868653142856337e-05,
+            "max_cumulative_abs": 1.186883354349849e-05
+          },
+          "bottom_mm": {
+            "max_daily_abs": 0.020535655923367813,
+            "end_difference": 0.0009249339391472766,
+            "total_difference": -0.007573865210201758,
+            "max_cumulative_abs": 0.016082420657948848
+          },
+          "runoff_mm": {
+            "max_daily_abs": 0.0015649072397589947,
+            "end_difference": 0.0,
+            "total_difference": 0.0010243662870624086,
+            "max_cumulative_abs": 0.0015355995456843036
+          },
+          "stress_deficit_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "biomass": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0
+          },
+          "lai": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0
+          },
+          "max_head_cm": 0.049143750455037605,
+          "max_theta": 5.53869632500259e-05
+        }
+      },
+      "1": {
+        "cpu_ratio": 0.5639599159468579,
+        "differences": {
+          "storage_mm": {
+            "max_daily_abs": 0.008259466595646359,
+            "end_difference": 1.4631095268669014e-05
+          },
+          "transpiration_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "soil_evaporation_mm": {
+            "max_daily_abs": 5.551115123125783e-17,
+            "end_difference": 0.0,
+            "total_difference": -5.643441714376501e-17,
+            "max_cumulative_abs": 5.643441714376501e-17
+          },
+          "bottom_mm": {
+            "max_daily_abs": 0.009797907980066967,
+            "end_difference": -1.7832089999558765e-05,
+            "total_difference": -1.463109513871741e-05,
+            "max_cumulative_abs": 0.008259466595544995
+          },
+          "runoff_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "stress_deficit_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "biomass": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0
+          },
+          "lai": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0
+          },
+          "max_head_cm": 0.07550497152702462,
+          "max_theta": 5.3831046933572324e-05
+        }
+      }
+    },
+    "source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+    "default_changed": false,
+    "general_accuracy_guarantee": false,
+    "raw_replay_seconds": 2.170647694000081
+  },
+  "controls": [
+    "missing native stdout",
+    "changed physical bytes",
+    "changed observer",
+    "missing native event",
+    "changed median"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_EVIDENCE.tar.xz",
+    "sha256": "5e7efad9a0d9851d7a4b920a015cf5fbb3739c00bfae554e4025cd8843bfa71b",
+    "bytes": 704028,
+    "members": 1284
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "work_unit": "PERF01_RETRY_TOLERANCE_RESEARCH",
+  "baseline": "53010691c79d3e132914ce372059cf873d88b96d",
+  "source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+  "status": "COMPLETE_BOUNDED_INPUT_RESEARCH_VERIFIED",
+  "research_integrated": false,
+  "result": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_RESULT.md",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_EVIDENCE.tar.xz",
+    "sha256": "5e7efad9a0d9851d7a4b920a015cf5fbb3739c00bfae554e4025cd8843bfa71b",
+    "bytes": 704028,
+    "members": 1284
+  },
+  "native_observations": 24,
+  "rejection_controls": 5,
+  "restart_scope": "Existing same-process close/reconstruct after day48, exact physical daily values and work at1e-2 for both rainfalls",
+  "actual_observation_wall_seconds": 61.22301339899968,
+  "on_1e2_over_on_1e3_cpu": {"1x": 0.5639599159468579, "4x": 0.5222431934356085},
+  "initial_failed_setup": "First native run completed but independent closure rejected its obsolete proposed-surface-flux observer. Raw run and original build metadata are retained; no acceptance assertion relaxed. Reuse unchanged 254 objects, recompile the two observation providers with existing build_perf01_weather_surface.py --relink --observe, and require generated observers exact to the admitted capsule.",
+  "question": "Does moving from 1e-3 to 3e-3 or 1e-2 cm reduce residual saturation cost with the admitted explicit retry option ON, and how do storage and accepted runoff/bottom exchange change?",
+  "scope": "Unchanged production source and algorithms; original 97-day 1x/4x weather fixtures, existing allowed input budgets, explicit retry ON and warm start OFF",
+  "test_selection": {
+    "expected_seconds": 240,
+    "builds": "Fresh observed 256-provider O0/O2 weather closures because scratch build objects were removed; record complete compiler/source/object identities",
+    "timing": "Three alternating serial O2 observations at each of three budgets per rainfall; no own build while timed",
+    "checks": "Independent original hard daily mass reconstruction, exact repeat work/physics, O0/O2 at endpoints, wet-day reconstruction at loose endpoint; report physical spread, not assumed equivalence",
+    "new_1e_6": "NOT_SELECTED_USER",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast_expansion": "NOT_SELECTED",
+    "full_fci": "NOT_SELECTED_UNCHANGED_PRODUCTION"
+  },
+  "invariants": "No change to physical laws, acceptance gates, transaction ownership or restart schema; only explicit input accuracy is varied",
+  "production_changed": false,
+  "default_changed": false,
+  "canonically_admitted_policy": false,
+  "next_action": "Integrate exact bounded research evidence; any universal default or new surface formulation remains a separate proposal."
+}
