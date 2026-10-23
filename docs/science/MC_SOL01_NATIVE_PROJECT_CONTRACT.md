@@ -780,6 +780,23 @@ needs the existing Boesten owner layout in the pond joint transaction and
 lossless restart; the present BASE-only transaction and S5MJ0001/0002 writer
 explicitly reject this composition. Merely accepting the SWP flag is unsafe.
 
+### Actual accepted-carrier correction research,23October2026
+
+`integration/mc-sol01/fct_accepted_trace/STATUS.json` owns a separate bounded
+successor. Actual committed Reference traces from12checked O0/O2 two-day runs,
+2486accepted substeps and40/80/160cells feed72 real process/research replays.
+All360late batch rejections and72exact split continuations pass. Maximum chemical
+mass residual5.371e-14mg/cm2; water and solute postimages are exact O0/O2.
+Independent carrier-defined refined finite-volume references support41.4% to
+88.1% lower L1 deviation than low order across18Gaussian cases, with explicit
+reference-resolution criteria and the failed/coarse rounds retained. The
+existing exact-empty-pond physical option is explicitly selected on both sides;
+the unselected production default is not qualified by this experiment.
+This advances the earlier prescribed-step limitation only for pure downward
+no-sink carriers and uniform material. Production activation, joint native
+water/chemical transactions, dispersion/decay/root/crop/age composition, native
+restart/year accuracy and full MC-SOL01 closure remain separate and open.
+
 ## HIST-INTEGRATION01 Boesten continuation
 
 Baseline: canonical22cdf5700dbea526c2ef217db20b738048e3eebe, complete tree

@@ -1,0 +1,20 @@
+{
+  "status": "CURRENT_BOESTEN_WATER_AND_REPLAY_REQUALIFIED_EXACT",
+  "previous_published_head": "2570ba6f43f67599fd62762e51112535ac316605",
+  "previous_capsule_sha256": "e8167024768acfa76b99e1a87aa01561044e7e8675aaae6a41416997892a85cb",
+  "current_capsule_sha256": "662295833db1ecf70e666eb2272152e9f658df5b81a753bb5aafcd3c924309c8",
+  "changed_water_inputs": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "07f524d2a21e38617f7c12c690320fc5d924b66c131615219d2f13e8223d9dbd",
+      "after": "3e48b40c3b7e4f03365033e8c87945104435ce4c451d6251138b956e7f0ef9c2"
+    }
+  },
+  "unchanged_replay_inputs": true,
+  "water_cases_exact": 12,
+  "replay_profiles_exact": 72,
+  "independent_accuracy_result_exact": true,
+  "current_water_checkpoint": "2194df48f0a1b5fa323a18094a97424fc6a8a0c0",
+  "current_replay_checkpoint": "cdba227149e41e48b45c4aa7fffed11054e70002",
+  "current_preservation_controls": 36,
+  "source_sha256": "eab895b897a9a3eb902b6d6e75fe710a13febc9b2e2ccee9402acd908fa8d130"
+}
