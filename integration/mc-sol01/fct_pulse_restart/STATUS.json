@@ -1,0 +1,44 @@
+{
+  "work_unit": "MC-SOL01-FCT-PULSE-RESTART01",
+  "baseline": "eb4288359e8208bb2fb03b22c622a68315836455",
+  "stage": "PULSE_AND_FRESH_PROCESS_JOINT_DISK_O0_O2_QUALIFIED",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_activated": false,
+  "full_mc_sol01_closed": false,
+  "contract": "integration/mc-sol01/fct_pulse_restart/CONTRACT.md",
+  "pulse_checkpoint": "52876d12a1ba85bbee485c4a29f5a1e3529a018f",
+  "pulse_development_result": "36 checked actual ON/OFF O0/O2 pulses; corrected L1 ratios0.05409 to0.51789; monotone spatial and temporal refinement; maximum mass residual2.371e-14; O0/O2 output values exact",
+  "disk_restart_qualified": true,
+  "fresh_process_restart_qualified": true,
+  "bounded_POSIX_process_crash_publication_qualified": true,
+  "qualification_checkpoint": "77b21eca",
+  "measurements": "integration/mc-sol01/fct_pulse_restart/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_pulse_restart/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "5a9401058766117ab45bc961edaba1133f5b003d00b0eaff8452bd466a4000f1",
+    "bytes": 401184,
+    "members": 1057,
+    "controls": 8
+  },
+  "preservation": {"current_owner_qualified": true, "current_owner_controls": 156, "reactive_predecessor_controls": 8},
+  "current_reconciliation": {
+    "record": "integration/mc-sol01/fct_pulse_restart/CURRENT_RECONCILIATION.json",
+    "canonical": "247b9f5b6d9e3da7505fdf85c192b45a1cc41e2a",
+    "qualified_inputs_byte_exact": 190,
+    "current_owner_controls": 156,
+    "new_capsule_and_eight_controls_pass": true
+  },
+  "test_selection": {
+    "pulse": "10-source real reactive O0/O2;40/80/160cells,80/160/320steps,8days,ON/OFF;36 actual pulse executions with independent closed-form Gaussian cell averages",
+    "disk": "181-source real water/reactive/production disk-codec O0/O2;24 cases,150 separate native processes,96 rejected envelopes,72 native invalid-parameter/corruption rejections,4 publisher kills and exact recovery",
+    "expected_seconds": 150,
+    "measured_current_seconds": 108.26370951598801,
+    "full_fci": "NOT_SELECTED_IMPACT: isolated research source only",
+    "native_year_RossFast_highest_low_air": "NOT_SELECTED_SCOPE_POLICY"
+  },
+  "qualification_ceiling": "Analytical linear-sorption homogeneous constant-water Gaussian pulse, and bounded same-platform POSIX joint water/reactive disk continuation with Freundlich0.5/1/2. Process-kill old/new generation publication only; no hardware power-loss/cross-platform proof, general nonlinear pulse/PDE accuracy, root/drainage sink composition or default/native application dispatch activation.",
+  "next_safe_work": "Reconcile current canonical, verify actual merge and record bounded admission. Production application binding and additional physical domains still need explicit qualification before activation."
+}
