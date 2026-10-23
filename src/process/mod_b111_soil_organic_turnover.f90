@@ -25,7 +25,7 @@ module mod_b111_soil_organic_turnover
     real(real64)::humus_kg_m3=0.0_real64
   end type
 
-  public::evaluate_b111_organic_turnover
+  public::evaluate_b111_organic_turnover,b111_decay_fractions
 
 contains
 
@@ -35,7 +35,8 @@ contains
     type(b111_organic_turnover_result_t),intent(out)::result
     real(real64)::p1,p2,p3,p4,p5,eval1,eval2
     real(real64)::p111,p112,p121,p122,p211,p212,p221,p222
-    real(real64)::d1,d2,e1,e2,ef
+    real(real64)::d1,d2,e1,e2,ef,loss,average
+    integer::code
     integer::fn,n
 
     result=b111_organic_turnover_result_t()
@@ -51,6 +52,25 @@ contains
     if(any(p%asfa_fom_bio<0.0_real64).or.any(p%asfa_fom_hum<0.0_real64).or. &
        any(p%asfa_fom_bio+p%asfa_fom_hum>1.0_real64))return
     if(p%asfa_bio<0.0_real64.or.p%asfa_hum<0.0_real64.or.p%asfa_bio+p%asfa_hum>1.0_real64)return
+
+    ! Exact continuous ODE limit when neither receiving pool turns over.
+    if(p%ratecon_bio==0.0_real64.and.p%ratecon_hum==0.0_real64)then
+      allocate(result%fom_kg_m3(n))
+      result%fom_kg_m3=fom0*exp(-p%ratecon_fom*dt)
+      result%biomass_kg_m3=biomass0;result%humus_kg_m3=humus0
+      do fn=1,n
+        call b111_decay_fractions(p%ratecon_fom(fn)*dt,loss,average,code)
+        if(code/=B111_ORG_TURNOVER_OK)then
+          result=b111_organic_turnover_result_t();return
+        end if
+        result%biomass_kg_m3=result%biomass_kg_m3+p%asfa_fom_bio(fn)*fom0(fn)*loss
+        result%humus_kg_m3=result%humus_kg_m3+p%asfa_fom_hum(fn)*fom0(fn)*loss
+      end do
+      if(.not.all(ieee_is_finite([result%biomass_kg_m3,result%humus_kg_m3])))then
+        result=b111_organic_turnover_result_t();return
+      end if
+      result%status=B111_ORG_TURNOVER_OK;return
+    end if
 
     p1=(1.0_real64-p%asfa_bio)*p%ratecon_bio
     p2=p%asfa_bio*p%ratecon_hum
@@ -112,4 +132,28 @@ contains
     result%status=B111_ORG_TURNOVER_OK
   end subroutine
 
+  ! Dimensionless FOM loss and mean accumulated fraction over the interval.
+  ! loss=1-exp(-x); average=1-(1-exp(-x))/x, including their exact x=0 limits.
+  subroutine b111_decay_fractions(x,loss,average,status)
+    real(real64),intent(in)::x
+    real(real64),intent(out)::loss,average
+    integer,intent(out)::status
+    real(real64)::term
+    integer::j
+    loss=0.0_real64;average=0.0_real64;status=B111_ORG_TURNOVER_INVALID
+    if(.not.ieee_is_finite(x))return
+    if(x<0.0_real64)return
+    if(x<=0.125_real64)then
+      term=x
+      do j=1,64
+        loss=loss+term;average=average+term/real(j+1,real64)
+        term=-term*x/real(j+1,real64)
+      end do
+    else
+      loss=1.0_real64-exp(-x);average=1.0_real64-loss/x
+    end if
+    if(.not.all(ieee_is_finite([loss,average])))return
+    if(min(loss,average)<0.0_real64.or.max(loss,average)>1.0_real64)return
+    status=B111_ORG_TURNOVER_OK
+  end subroutine
 end module

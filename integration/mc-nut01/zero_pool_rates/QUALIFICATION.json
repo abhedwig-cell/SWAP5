@@ -1,0 +1,54 @@
+{
+  "qualified_head": "4c499c5daab8841c6e6a9fce71971c9abd1e46ee",
+  "checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "b9fc29f15885bbae20c7e7731272f676be5d156d01c09548a1d10b42343d0acd"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "f1d79412b32d75597863470eb4fd04848aae7d0ad7860fbc0383871983e53f7d"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "b9fc29f15885bbae20c7e7731272f676be5d156d01c09548a1d10b42343d0acd"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "b9fc29f15885bbae20c7e7731272f676be5d156d01c09548a1d10b42343d0acd"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    },
+    "peer": {
+      "result": "PASS",
+      "sha256": "13683738a2ba2e94dbc36886868c1fadfcbf87ba44839894e99ee47fc0d90649"
+    },
+    "control_count": 75
+  },
+  "peer_source_path_portability": {
+    "result": "PASS",
+    "controls": [
+      "missing actual accepted carrier",
+      "missing replay profile",
+      "missing failed water stderr",
+      "missing failed surface replay",
+      "missing current compiler-link failure",
+      "missing unresolved reference round",
+      "false native activation claim",
+      "wrong physical surface option",
+      "negative corrected mass with consistent stream hashes",
+      "duplicate water clock with consistent carrier hash",
+      "negative independent reference stock",
+      "missing preservation receipt"
+    ],
+    "source_reads": "current exact sources",
+    "compile_path_identity": "original recorded absolute root projected for portability only",
+    "changed_NUT_sources_in_closure": false
+  },
+  "preservation": "48 fresh affected/transitive compiles,606 exact unchanged closures,78 fresh native runs including56 restarts",
+  "failed_obsolete_fixture": "Retained in numerical capsule; assertions unchanged, only rejected input changed",
+  "full_mc_nut01_closed": false,
+  "canonically_admitted": false
+}

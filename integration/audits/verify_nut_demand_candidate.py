@@ -19,6 +19,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/zero_pool_rates/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_zero_pools.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -101,9 +102,11 @@ def validate(f):
     for suffix in ['','.ledger']:assert f[stem+'.endpoint'+suffix]==f['joint/O0/'+case+'.endpoint'+suffix]
  return dict(qualified=True,status='UNUSED_DEMAND_EXHAUSTION_SUPPLY_LIMITED_CROP_O0_O2_QUALIFIED',direct_cases=288,newly_accepted=144,actual_coupled_runs=6,process_restarts=12,hist_native_processes=78,full_mc_nut01_closed=False,exhausting_selected_solution='OPEN_FAIL_CLOSED',canonically_admitted=False)
 def verify():
+ if (ROOT/'integration/mc-nut01/zero_pool_rates/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_zero_pools.py'))['verify']()
  source();prior=predecessor()['verify']();current=validate(capsule())
  return {**prior,**current,'current_NUT_coupled_runs':6,'current_NUT_process_restarts':12,'predecessor_controls':36,'predecessor_scope':'Exact Boesten assertions, one explicitly historical NUT input; fresh current HIST/crop proof separately validated'}
 def self_test():
+ if (ROOT/'integration/mc-nut01/zero_pool_rates/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_zero_pools.py'))['self_test']()
  source();old=predecessor()['self_test']();assert len(old)==36
  passed=['predecessor:'+p for p in old];f=capsule();validate(f)
  def reject(label,fn):

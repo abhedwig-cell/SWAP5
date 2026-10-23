@@ -2,7 +2,7 @@ module mod_b111_soil_organic_dissimilation
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t, b111_organic_turnover_result_t, &
-       B111_ORG_TURNOVER_OK
+       B111_ORG_TURNOVER_OK,b111_decay_fractions
   implicit none
   private
 
@@ -29,7 +29,8 @@ contains
     real(real64),intent(in)::cfrac_fom(:),cfrac_biomass,cfrac_humus
     type(b111_organic_dissimilation_result_t),intent(out)::result
     real(real64)::p1,p2,p3,p4,denom
-    real(real64)::fom2bio,fom2hum,rhs_bio,rhs_hum,help
+    real(real64)::fom2bio,fom2hum,rhs_bio,rhs_hum,help,loss,average
+    integer::code
     integer::fn,n
 
     result=b111_organic_dissimilation_result_t()
@@ -43,6 +44,28 @@ contains
        .not.all(ieee_is_finite([biomass0,humus0,depth_m,dt,cfrac_biomass,cfrac_humus])))return
     if(depth_m<=0.0_real64.or.dt<=0.0_real64.or.any(fom0<0.0_real64).or.biomass0<0.0_real64.or.humus0<0.0_real64)return
     if(any(cfrac_fom<0.0_real64).or.cfrac_biomass<0.0_real64.or.cfrac_humus<0.0_real64)return
+
+    if(p%ratecon_bio==0.0_real64.and.p%ratecon_hum==0.0_real64)then
+      result%biomass_average_kg_m3=biomass0;result%humus_average_kg_m3=humus0
+      do fn=1,n
+        call b111_decay_fractions(p%ratecon_fom(fn)*dt,loss,average,code)
+        if(code/=B111_ORG_TURNOVER_OK)then
+          result=b111_organic_dissimilation_result_t();return
+        end if
+        result%biomass_average_kg_m3=result%biomass_average_kg_m3+p%asfa_fom_bio(fn)*fom0(fn)*average
+        result%humus_average_kg_m3=result%humus_average_kg_m3+p%asfa_fom_hum(fn)*fom0(fn)*average
+        result%carbon_dissimilation_kg_m2=result%carbon_dissimilation_kg_m2+cfrac_fom(fn)*fom0(fn)*loss* &
+          depth_m*(1.0_real64-p%asfa_fom_bio(fn)-p%asfa_fom_hum(fn))
+      end do
+      if(.not.all(ieee_is_finite([result%biomass_average_kg_m3,result%humus_average_kg_m3, &
+          result%carbon_dissimilation_kg_m2])))then
+        result=b111_organic_dissimilation_result_t();return
+      end if
+      if(min(result%biomass_average_kg_m3,result%humus_average_kg_m3,result%carbon_dissimilation_kg_m2)<0d0)then
+        result=b111_organic_dissimilation_result_t();return
+      end if
+      result%status=B111_ORG_DISS_OK;return
+    end if
 
     p1=(1.0_real64-p%asfa_bio)*p%ratecon_bio
     p2=p%asfa_bio*p%ratecon_hum
