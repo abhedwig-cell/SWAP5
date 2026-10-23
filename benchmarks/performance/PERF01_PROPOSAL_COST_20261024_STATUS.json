@@ -1,0 +1,22 @@
+{
+  "work_unit": "PERF01_NATIVE_PROPOSAL_REMAINING_COST",
+  "baseline": "22cdf5700dbea526c2ef217db20b738048e3eebe",
+  "status": "IMPLEMENTED_RESEARCH_INSTRUMENTATION_NOT_TESTED",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "production_changed": false,
+  "policy_changed": false,
+  "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_detailed_rain.py"],
+  "dependency_surface": ["all 194 measured native build inputs", "current application", "admitted PR1394 native input/output oracles", "checked O0/O2 compiler and artifacts"],
+  "relevant_paths": ["benchmarks/performance/profile_perf01_proposal_cost.py", "src/runtime/mod_canonical_interval_runtime.f90", "src/transaction/mod_transaction_reference.f90"],
+  "test_selection": {
+    "expected_seconds": 90,
+    "selected": "Generated checked O0/O2 current native relinks; full 97-day OFF/ON 1x/4x; O2 three alternating repeats; exact physical/restart bytes against admitted oracle; regime/rejection/output timers",
+    "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full F-CI", "production numerical policy change"]
+  },
+  "affected_invariants": [2, 5, 7, 13, 23, 26],
+  "next_action": "Persist instrumentation then run verified native research profiling. Investigate safe next policy only after measured regime costs.",
+  "blockers": []
+}
