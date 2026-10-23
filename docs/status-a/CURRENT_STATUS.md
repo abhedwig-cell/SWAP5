@@ -1,5 +1,20 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 explicit successor/repeated-harvest output,23 October2026:
+PR1381 is admitted at `8dd2561c7f4207034c35e12b6e9c64d24db25213`,whole tree
+exactly qualified `5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8`. The saved-output
+route now preserves previous-day residue diagnostics and history through existing
+physical successor initialization,active cold/heat days,a second harvest and
+following fallow. Actual O0/O2/manual generations,64 independent-process
+progressions,64 roundtrips,64 old-crop identity rejections,eight crash recoveries
+and all53 original/new source-evidence controls pass,including the actual merge.
+The existing HIST-COMPLETE `cycle_successor_20261023`,cycle-output contract and
+`MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json` own this bounded admission.
+General/default historical orchestration,heat-specific calendar,negative active
+allocation and automatic snow/persistent-surface N remain open. No full NUT/master
+row promotion;older dated harvest-only/fallow-only limits remain historical.
+
+
 MC-NUT01 thermal harvest/fallow output,23 October2026: PR1377 is admitted at
 `ddaf00c33da51fb84552b3d59e6f342cff97bf04`, complete merge tree exactly qualified
 `9b7bfa194270283c561eeb0c7840957ef9c8dc18`. The explicit accepted-temperature

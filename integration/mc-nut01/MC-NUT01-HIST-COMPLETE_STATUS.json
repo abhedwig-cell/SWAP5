@@ -6613,16 +6613,16 @@
       "master_rows_promoted": false
     },
     "cycle_successor_20261023": {
-      "stage": "LOCALLY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER",
       "baseline": "ead21ff0a325f4d5a96be889c1fec083e7c8ba4d",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "contract": "docs/science/MC_NUT01_CYCLE_OUTPUT_20261023.md",
       "scope": "Explicit successor initialization,active saved-output days and repeated harvest,cold/accepted-heat; complete S5NS0001 generation preserved.",
-      "next_action": "Publish exact qualified tree,inspect actual hosted checks,merge with unchanged science,verify actual whole merge tree and composed owner/53controls,record actual canonical admission and register bounded existing nine-row master. General/default orchestration,heat-specific calendar,negative active allocation and automatic snow/persistent-surface nitrogen remain open. No full NUT closure.",
+      "next_action": "Register bounded two-crop saved-output admission on the existing nine-row master;then separately select heat-specific calendar or general/default historical orchestration. Negative active-crop/immobilisation allocation and automatic snow/persistent-surface N remain open. No full MC-NUT01 closure.",
       "test_selection": "Focused cold/heat real two-crop composition and complete36-control predecessor;expected additional cost<180s. Full FCI/highestlowair/newRossFast/aquifer NOT_SELECTED. No full NUT closure.",
       "evidence_index": "integration/audits/evidence/mc-nut01-cycle-output-20261023/INDEX.json",
       "evidence_index_sha256": "35000095f19608eb155725d230716e0348ee65be4f9dc378fff4c5e463cab74f",
@@ -7111,7 +7111,13 @@
       "source_controls": 53,
       "qualification_receipt": "integration/mc-nut01/MC_NUT01_CYCLE_OUTPUT_QUALIFICATION_20261023.json",
       "source_docs": "PASS",
-      "strict_docs": "PASS"
+      "strict_docs": "PASS",
+      "canonical_merge": "8dd2561c7f4207034c35e12b6e9c64d24db25213",
+      "qualified_head": "95abf48066c5acc62e8b64c61fb7c522df2df268",
+      "qualified_tree": "5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8",
+      "actual_merge_tree": "5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8",
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json",
+      "postmerge_controls": 53
     }
   }
 }
