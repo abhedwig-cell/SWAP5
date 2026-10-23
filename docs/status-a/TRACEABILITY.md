@@ -470,6 +470,16 @@ median CPU falls41.3%/52.2%; total transpiration shifts0.000494/0.000175mm.
 This adds bounded accuracy evidence with actual crop response, without changing
 production physics, defaults, general surface policy or master dispositions.
 
+The [current original4.3.1 kernel comparison](../performance/PERF01_CURRENT_431_20261023_RESULT.md)
+and `benchmarks/performance/PERF01_CURRENT_431_20261023_STATUS.json` bind96 native
+O0/O2 processes,392,000 retained complete records and eight evidence controls.
+The current closure was rebuilt at76d2ab9 after relevant source advancement;
+the earlier96 native observations remain separately bound to02d1e527.
+Matched50-cell/fixed-step kernels remain near historical roundoff; O2 median
+SWAP5/4.3.1 ratios range0.962–1.297 with host variation. This does not convert
+the weather/retry/accuracy gains into a complete application or regional speed
+claim. Production/default physics and all master dispositions remain unchanged.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original

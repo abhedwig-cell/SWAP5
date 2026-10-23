@@ -1,0 +1,37 @@
+{
+  "work_unit": "PERF01_CURRENT_MATCHED_431_KERNELS",
+  "baseline": "76d2ab9db8c20e976a25bb4c7414f176dd02c5cb",
+  "source_tree": "ef90d0d745d85ba4090d22f238ee67dd8606e535",
+  "status": "COMPLETE_CURRENT_MATCHED_KERNEL_RESEARCH_VERIFIED",
+  "result": "docs/performance/PERF01_CURRENT_431_20261023_RESULT.md",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_CURRENT_431_20261023_EVIDENCE.tar.xz",
+    "sha256": "6160ca83cfff989cf3b48669387eab13ebf1ff9f86164a5ae08b60b903c716ae",
+    "bytes": 30561824,
+    "members": 1623
+  },
+  "native_processes": 96,
+  "complete_retained_physical_rows": 392000,
+  "historical_native_processes": 96,
+  "historical_baseline": "02d1e527f4a3cc0a64ae9a600c134c10a14afc7d",
+  "historical_physical_traces_byte_exact_to_current": true,
+  "rejection_controls": 8,
+  "actual_cost": {"compile_link_wall_seconds": 7.607128711999394, "native_process_wall_seconds": 33.19803617200432, "evidence_packaging_seconds": "UNKNOWN"},
+  "historical_actual_cost": {"compile_link_wall_seconds": 43.50046902299982, "native_process_wall_seconds": 35.271522291998735},
+  "largest_historical_head_difference_cm": 5.8051341511600185e-12,
+  "largest_independent_mass_residual_cm": 4.263256414560601e-14,
+  "question": "How do current SWAP5 and original SWAP4.3.1 kernels compare under identical existing50-cell/fixed-step inputs after the saturation repair?",
+  "scope": "Existing8 synthetic diagnostic regimes, unchanged original legacy and current real production solver drivers; excludes weather/crop orchestration and transaction-controller timing",
+  "test_selection": {
+    "expected_seconds": 240,
+    "builds": "Fresh original B1.11 and TTUTIL plus exact current minimal Full Richards closure at O0/O2, GNU13.3; no physics stubs in the legacy comparator",
+    "native": "Five alternating serial O2 pairs and one checked O0 pair per existing regime;96 processes, no compilation during timing",
+    "science": "Original per-step1e-12cm hard mass assertions, matched step/forcing traces, repeat determinism; report all historical deltas and require h/flux1e-8cm or cm/day and theta1e-10 agreement for the bounded screen",
+    "not_selected": ["new temporal1e-6 accuracy run", "highest low-air", "RossFast expansion", "unrelated full F-CI"]
+  },
+  "invariants": "Unchanged physics, conservation, accepted-state and failure/rollback ownership; observation only",
+  "production_changed": false,
+  "default_changed": false,
+  "research_integrated": false,
+  "next_action": "Integrate exact current kernel evidence and actual merge receipt. A complete SWAP5/SWAP431 weather/crop job ratio remains unqualified."
+}
