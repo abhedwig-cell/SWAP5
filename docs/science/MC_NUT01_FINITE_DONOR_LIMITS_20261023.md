@@ -1,6 +1,6 @@
 # Finite-donor regular coefficient limits
 
-Proposed numerical extension of MC-NUT01's admitted finite-donor fallow route.
+Qualified numerical extension candidate of MC-NUT01's admitted finite-donor fallow route.
 Baseline: `d6f52d935c0bee6039051fe4e4a7b810df507822`. The existing
 HIST-COMPLETE record owns recovery; no full migration or admission is implied.
 
@@ -69,3 +69,40 @@ executed. Automatic approval review initially rejected branch publication. The u
 explicitly authorized publishing this change as a draft PR. Canonical admission
 is still pending. Current canonical21871ca changes HeadCalc through PERF01;
 the earlier native tests do not qualify that new composition. Active competing sinks remain explicitly excluded.
+
+
+## Current canonical composition qualification
+
+PR1391 is now qualified against canonical93c46252, including its admitted
+HeadCalc repair. Two changed HeadCalc O0/O2 compilations were fresh;652 unchanged
+provider compilation receipts were reused only after exact source,flags and
+object/module checks. All78 HIST native/trace/restart processes ran freshly,
+including56 separate-process continuations. Complete original HIST results
+remain exact. Existing finite-donor joint qualification adds four fresh coupled
+runs and eight fresh continuations; all physical endpoints and journals equal
+the earlier qualified result. Fresh HeadCalc compilation3.457s,link0.807s,
+HIST native14.503s,restart36.362s; inherited compilation is not summed as fresh.
+
+The18 predecessor corruption assertions stay unchanged and pass through the
+new bounded source owner. Fifteen new source/raw controls give33 current controls.
+The original163 output controls were also re-executed on exact original188f
+source, with their own baseline and result retained in the new capsule. This
+is not a claim that163 old native runs were repeated on the new source.
+Current output/PERF/general authority and FSI35 registry entrypoints pass.
+No numerical assertion or physical threshold was weakened.
+
+Additional SOL accuracy replay exposed an existing absolute-command-path
+assumption. With explicit recorded-command anchoring, every original scientific
+assessment assertion passes and all live source/raw observations are exact.
+The wrapper's final bitwise summary equality still fails:20 derived fields differ
+by at most3.553e-15. Both failures remain recorded, not PASS. The previously
+accepted SOL evidence is inherited for its unchanged source and observations;
+no new SOL accuracy claim follows and no SOL runner was modified.
+
+The current receipt is
+`integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_QUALIFICATION_20261023.json`.
+The finite-donor/source/current-composition capsule is indexed at
+`integration/audits/evidence/mc-nut01-regular-limits-composition-20261023/INDEX.json`.
+Canonical admission and actual-merge verification remain separate from this
+qualification. Full MC-NUT01,active competing sinks,immobilisation and automatic
+snow/persistent-surface binding remain open; all master dispositions stay fixed.

@@ -1,0 +1,119 @@
+{
+  "baseline": "93c46252217c51cdb50c1bdf223d2d77d551c8fc",
+  "qualification_source_head": "c236c9bac5e5e7dd3243c1c1348b3c3257fa6a94",
+  "qualified": true,
+  "canonically_admitted": false,
+  "owner": {
+    "qualified": true,
+    "status": "FINITE_DONOR_REGULAR_LIMITS_CURRENT_HEADCALC_O0_O2_QUALIFIED",
+    "full_application_processes": 16,
+    "days": 97,
+    "midpoint_restart_cases": 2,
+    "typed_control_processes": 12,
+    "fsi35_native": "ORIGINAL_NATIVE_ORACLES_O0_O2_PASS",
+    "predecessor_controls": 147,
+    "concurrent_predecessor_controls": 163,
+    "predecessor_scope": "Actually rerun at exact710b baseline, not relabelled as new-current native execution",
+    "inheritance": "Insertion-only failed-solve refinement; successful original path and excluded provider remain exact; new path independently exercised",
+    "measured_current_O2_seconds": {
+      "1": 1.2372683039975527,
+      "4": 1.087754471001972
+    },
+    "equivalent_accuracy_performance": false,
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "source_tree": "5075f42eba0f261ed30aac7a9f65dda49e520f38",
+    "current_source_tree": "5075f42eba0f261ed30aac7a9f65dda49e520f38",
+    "qualification_scope": "BOUNDED_FINITE_DONOR_NUMERICAL_LIMITS_WITH_CURRENT_COMPOSITION_AND_FROZEN_PREDECESSOR_ASSERTIONS",
+    "canonically_admitted": false,
+    "direct_cases_per_optimization": 516,
+    "original_cases": 84,
+    "hist_fresh_native_processes": 78,
+    "hist_process_restarts": 56,
+    "coupled_runs": 4,
+    "coupled_fresh_restarts": 8,
+    "predecessor163_scope": "Re-executed on exact original188f source; current composition separately qualified"
+  },
+  "controls": [
+    "predecessor:source src/legacy/b1_10_port/headcalc.f90",
+    "predecessor:source integration/audits/native_project_admission.py",
+    "predecessor:source integration/audits/verify_nut_saved_calendar_output.py",
+    "predecessor:source integration/audits/verify_nut_historical_output_caller.py",
+    "predecessor:source integration/performance/verify_saturated_flux_successor.py",
+    "predecessor:source src/crop/mod_crop_soil_n_day.f90",
+    "predecessor:foreign scientific source",
+    "predecessor:missing predecessor/owner.stdout",
+    "predecessor:missing predecessor/controls.stdout",
+    "predecessor:missing predecessor-composed/owner.stdout",
+    "predecessor:missing predecessor-composed/controls.stdout",
+    "predecessor:missing raw/perf01-native-fixed-study/RESULT.json",
+    "predecessor:missing raw/perf01-native-fixed-O0-study/RESULT.json",
+    "predecessor:missing raw/perf01-native-fixed-contract-v2/RESULT.json",
+    "predecessor:missing raw/perf01-native-fixed-direct/RESULT.json",
+    "predecessor:missing raw/perf01-native-fixed-original-full-fsi35-v2.stdout",
+    "predecessor:changed raw/perf01-native-fixed-resume4/restart.bin",
+    "predecessor:changed raw/perf01-native-fixed-resume1/budget.csv",
+    "source src/process/mod_b111_soil_n_transport.f90",
+    "source integration/audits/verify_nut_regular_limits.py",
+    "source integration/performance/verify_saturated_flux_successor.py",
+    "source integration/audits/run_nut_limits_composition.py",
+    "source tests/nut-mineral/run_negative_limits.py",
+    "foreign source",
+    "missing direct/result.json",
+    "missing direct/checks.json",
+    "missing hist/REUSE.json",
+    "missing hist/result.json",
+    "missing coupled/result.json",
+    "missing incumbent163.json",
+    "changed hist/O0/default.endpoint",
+    "changed coupled/joint-O0/negative-low.endpoint",
+    "changed coupled/joint-O2/negative-high.fresh-6.ledger"
+  ],
+  "current_hist_reuse": {
+    "reused_compile_events": 652,
+    "fresh_compile_events": 2,
+    "fresh_native_events": 78,
+    "all_original_assertions_completed": true,
+    "complete_incumbent_results_exact": true,
+    "fresh_seconds": {
+      "compile": 3.4572816010004317,
+      "native": 14.50332506000268,
+      "link": 0.8072594850018504,
+      "restart_native": 36.361758464991,
+      "compiler": 0.001954886000021361,
+      "trace_native": 0.0031548790029773954
+    },
+    "current_execution_commit": "11930fa8feea2d6b1570178a07584ee377cc7c87"
+  },
+  "original163": {
+    "baseline": "188f75ef04cd64a5a78ace0aa4b8977e7a130537",
+    "controls": 163,
+    "scope": "Original source and original assertions; not current native replay."
+  },
+  "canonical_entrypoints_pass": [
+    "integration/audits/verify_nut_regular_limits.py",
+    "integration/audits/verify_nut_historical_output_caller.py",
+    "integration/performance/verify_saturated_flux_successor.py",
+    "integration/performance/authority.py",
+    "native_project_admission.py:fsi35_successors"
+  ],
+  "solute_accuracy_inheritance": {
+    "source_inputs_and_raw_capsule": "EXACT_UNCHANGED",
+    "original_scientific_assess_assertions": "PASS",
+    "portable_original_capsule_cli": "FAILURE: old absolute command paths use different workspace",
+    "path_adapter_exact_summary": "FAILURE:20 derived floating-point summary fields differ by at most3.552713678800501e-15. Raw observations and sources exact; all original scientific thresholds passed.",
+    "disposition": "Historical accepted SOL accuracy evidence inherited only for unchanged source/observations; no new SOL accuracy qualification or softened assertion. Failures retained."
+  },
+  "test_selection": {
+    "not_selected_impact": [
+      "full moving F-CI",
+      "highest low-air",
+      "new RossFast",
+      "repeat unchanged direct numerical compilation"
+    ],
+    "hosted": "NOT_SELECTED; never PASS"
+  },
+  "full_mc_nut01_closed": false,
+  "master_promotion": false,
+  "next_action": "Verify final persisted candidate and documentation, publish and safely admit exact qualified tree; verify actual merge."
+}

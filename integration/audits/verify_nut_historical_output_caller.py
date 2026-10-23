@@ -21,6 +21,7 @@ def projection():
   text=text[:at]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'historical caller baseline')
  for path,h in {**r['incumbent_input_sha256'],**r['postimages']}.items():require(sha(reader(path))==h,'historical caller source '+path)
  require(reader(PARENT)==projection(),'incumbent147 assertion bodies')
@@ -86,9 +87,11 @@ def validate(files):
  frozen=json.loads(files['PREDECESSOR.json']);require(frozen['baseline']==BASE and frozen['owner']['qualified']and len(frozen['controls'])==147,'complete147 predecessor')
  return dict(qualified=True,status='HISTORICAL_SAVED_OUTPUT_CALLER_QUALIFIED',optimizations=2,roundtrips=64,fresh_progressions=64,crash_recoveries=16,native_startup_and_restart=4,complete_incumbent_generations_exact=True,full_mc_nut01_closed=False)
 def verify():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['nut_verify']()
  source();prior=legacy()['verify']();result=validate(capsule())
  return {**prior,'qualified':True,'historical_output_caller':result,'qualification_scope':'EXPLICIT_HISTORICAL_SAVED_OUTPUT_APPLICATION_CALLER_WITH_INCUMBENT_PRESERVATION'}
 def self_test():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['self_test']()
  source();prior=legacy()['self_test']();require(len(prior)==147,'incumbent147 controls lost')
  controls=['incumbent:'+label for label in prior];files=capsule();validate(files)
  def reject(label,fn):

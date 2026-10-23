@@ -1,0 +1,99 @@
+{
+  "schema": "SWAP5_MC_SOL01_REFINED_YEAR_1",
+  "date": "2026-10-23",
+  "status": "SOURCE_UNCHANGED_REFINED_NATIVE_365_DAY_O2_QUALIFIED",
+  "canonically_admitted": false,
+  "execution_checkpoint": "7bde3165791a33120aeef0fc9828a5d790f066f8",
+  "execution_source_baseline": "c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0",
+  "reconciled_canonical": "710b41736214bcec80f0fe9bea6660cafa449024",
+  "scope": "Existing explicit native supported SWP fixture, original 1998 Andelst forcing, 41-cell 120-cm profile; checked O0 short and O2 full365/split180/fresh resume185",
+  "policies": {
+    "solute_transport": "implicit_upwind",
+    "water_conductivity": "picard_continuous",
+    "surface_exfiltration": "historical_zero",
+    "temporal_tolerance": 0.0001,
+    "physical_and_numerical_inputs_changed": false,
+    "production_sources_changed": false,
+    "defaults_changed": false,
+    "per_process_timeout_seconds": 1800
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/evidence/MC_SOL01_REFINED_YEAR_20261023.tar.xz.b64",
+    "decoded_sha256": "7dfe7a6cee6666484ebbbc8614a979d8ea86b240f7a46ddb3b66358d27303b4e",
+    "decoded_bytes": 1192144,
+    "members": 2197,
+    "verifier_member": "verify_refined_year.py",
+    "verification_recipe": "Decode capsule as tar.xz, read/extract only verify_refined_year.py, then run python -B <verifier> --root <SWAP5-checkout> --capsule integration/mc-sol01/evidence/MC_SOL01_REFINED_YEAR_20261023.tar.xz.b64 --expected-sha256 7dfe7a6cee6666484ebbbc8614a979d8ea86b240f7a46ddb3b66358d27303b4e"
+  },
+  "qualification": {
+    "status": "SOURCE_UNCHANGED_REFINED_NATIVE_365_DAY_O2_QUALIFIED",
+    "days": 365,
+    "nodes": 41,
+    "optimizations": "O0 short; O2 complete year",
+    "independent_restart_day": 180,
+    "exact_terminal_files": 3,
+    "exact_prior_prefix_daily_budget_days": 98,
+    "original_annual_exact_values": 6570,
+    "rejection_controls": 14,
+    "original_total_exact_values": 6714,
+    "maxima": {
+      "water_cm": 2.9032332093947844e-14,
+      "solute_mg_cm2": 2.605051591109131e-13,
+      "gross_water_cm": 9.482171992036825e-14
+    },
+    "cumulative_residuals": {
+      "water_cm": -7.105427357601002e-15,
+      "solute_mg_cm2": 3.0393465522138285e-12
+    },
+    "annual_native_seconds": {
+      "full": 1775.876956303,
+      "split": 648.2621390220011,
+      "resumed": 1154.9226620699992
+    },
+    "annual_accepted_substeps": 417026,
+    "incumbent_source_raw_controls": 147,
+    "full_mc_sol01_closed": false,
+    "spatial_convergence": false,
+    "original_Andelst_model": false,
+    "controls": [
+      "missing:annual-O2/result.json",
+      "missing:annual-O2/O2/annual1998/full/budget.csv",
+      "missing:annual-O2/O2/annual1998/resumed/restart.bin",
+      "missing:prior-refined98-budget.csv",
+      "missing:preservation-current.json",
+      "foreign transport",
+      "false:full_mc_sol01_closed",
+      "false:spatial_convergence",
+      "false:original_Andelst_model",
+      "corrupt:annual-O2/O2/annual1998/full/budget.csv",
+      "corrupt:annual-O2/O2/annual1998/resumed/restart.bin"
+    ],
+    "decoded_sha256": "7dfe7a6cee6666484ebbbc8614a979d8ea86b240f7a46ddb3b66358d27303b4e",
+    "decoded_bytes": 1192144,
+    "members": 2197
+  },
+  "preservation": {
+    "owner": "integration/audits/verify_nut_saved_calendar_output.py",
+    "qualified": true,
+    "controls": 147,
+    "raw_report_member": "preservation-current.json",
+    "inherited_unchanged_execution_inputs": 213,
+    "new_evidence_controls": 11
+  },
+  "not_selected": {
+    "whole_F_CI": "NOT_SELECTED_IMPACT: no production/caller/test changes; current source/raw owner and all147 controls executed",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED_POLICY",
+    "O0_full_refined_year": "NOT_SELECTED: current selected O0 short and O2 annual coverage only"
+  },
+  "claim_limits": {
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "spatial_convergence": false,
+    "original_Andelst_model": false,
+    "full_historical_default_orchestration": false,
+    "general_heat_snow_age_NUT_composition": false,
+    "portable_performance_claim": false
+  },
+  "next_safe_work": "Source-backed spatial/time accuracy and broader historical/default/heat/snow/age composition, without reclassifying this constructed supported fixture as the original full Andelst model."
+}

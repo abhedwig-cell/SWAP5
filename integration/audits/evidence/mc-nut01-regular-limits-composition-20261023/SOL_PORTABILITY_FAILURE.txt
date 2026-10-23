@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/281436eb488f/SWAP5/integration/mc-sol01/transport_accuracy/run.py", line 159, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/scratch/281436eb488f/SWAP5/integration/mc-sol01/transport_accuracy/run.py", line 125, in main
+    result=assess(folder)
+           ^^^^^^^^^^^^^^
+  File "/workspace/scratch/281436eb488f/SWAP5/integration/mc-sol01/transport_accuracy/run.py", line 42, in assess
+    assert {str(Path(p).relative_to(ROOT)) for p in compiled}=={p for p in report['inputs'] if p.endswith('.f90')}
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 682, in relative_to
+    raise ValueError(f"{str(self)!r} is not in the subpath of {str(other)!r}")
+ValueError: '/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_pond_solute_exchange.f90' is not in the subpath of '/workspace/scratch/281436eb488f/SWAP5'

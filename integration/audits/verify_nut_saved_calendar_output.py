@@ -21,6 +21,7 @@ def projection():
   text=text[:at]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['source'](reader,changed)
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('historical_caller_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_historical_output_caller.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'saved calendar baseline')
  for path,h in {**r['incumbent_input_sha256'],**r['postimages']}.items():require(sha(reader(path))==h,'saved calendar source '+path)
@@ -98,10 +99,12 @@ def validate(files):
  frozen=json.loads(files['PREDECESSOR.json']);require(frozen['baseline']==BASE and frozen['owner']['qualified']and len(frozen['controls'])==130,'complete saved calendar predecessor')
  return dict(qualified=True,status='COLD_HEAT_SAVED_CALENDAR_HARVEST_FALLOW_QUALIFIED',roundtrips=64,fresh_progressions=64,old_identity_rejections=64,crash_recoveries=16,crash_fresh_progressions=16,report_schedules=2,rejected_trials=rejected,replay_rejections=replayed,manual_generations_exact=True,full_mc_nut01_closed=False)
 def verify():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['nut_verify']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('historical_caller_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_historical_output_caller.py'))['verify']()
  source();old=legacy();prior=old['verify']();result=validate(capsule())
  return {**prior,'qualified':True,'saved_calendar_output':result,'qualification_scope':'EXPLICIT_SAVED_CALENDAR_CROP_HARVEST_FALLOW_WITH_COMPLETE_CURRENT_INCUMBENT_PRESERVATION'}
 def self_test():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['self_test']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('historical_caller_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_historical_output_caller.py'))['self_test']()
  source();old=legacy();prior=old['self_test']();require(len(prior)==130,'incumbent130 controls lost')
  controls=['incumbent:'+label for label in prior];files=capsule();validate(files)
