@@ -688,3 +688,18 @@ Current seasonal-caller reconciliation keeps the SRC tree exact and freshly
 checks41cell2day state/endpoint/budget equality; historical82/164executions are
 not relabeled. Current owner and30controls pass. Research, source/raw proof and
 claim limits are separate from production/defaults and full SOL/NUT admission.
+
+### Bounded conservative-correction prototype, 23 October 2026
+
+`integration/mc-sol01/fct_prototype/STATUS.json` owns an isolated research module
+that calls actual implicit upwind and corrects internal face transfers with
+MUSCL-Hancock prediction and positive/max-preserving budgets. Checked O0/O2:
+64uniform constant-water linear-advection profiles,288unsupported/CFL atomic
+rejections, analytic cell-average improvement and hard mass pass. At320cells
+the Gaussian peak deficit changes10.57%to1.01% without sorption and5.60%to0.73%
+with linear sorption. These are zero-diffusion/zero-decay research cases, not
+current native accuracy or timing results. The failed initial tiny-flux ratio
+overflow is retained; traps and physical gates were not relaxed. No production
+activation, changing-water/nonlinear/source/age/crop/restart/native qualification
+or full SOL/NUT closure is inferred. Actual accepted-water coupling remains a
+separate required scientific step.
