@@ -1,5 +1,6 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+
 PR1388 refined native year is canonically admitted at
 `8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0`; the complete merge tree exactly equals the
 qualified `ce3c27cec3af23dce16958eff3f8c5ec48317208`. Actual-merge capsule validation,
@@ -9,6 +10,7 @@ owns this admission. Production/defaults, capability dispositions and the
 qualification-time record are unchanged. Spatial convergence, the original full
 Andelst configuration, general historical/default dispatch and full SOL/NUT
 closure remain open.
+
 
 MC-SOL01 complete refined native year,23 October2026: the
 [native contract](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md) and
@@ -21,6 +23,7 @@ incumbent and11 new controls pass. This is execution coverage for the constructe
 supported41-cell fixture, not spatial convergence, the original full Andelst
 model, default dispatch or full SOL/NUT closure. Canonical admission is separate.
 
+
 PR1387 explicit historical saved-output caller is admitted at
 `188f75ef04cd64a5a78ace0aa4b8977e7a130537`,exact qualified/actual merge tree
 `db1143475778b4a4bf302f20a00e20619b01673b`. Actual-merge source/raw owner
@@ -30,6 +33,18 @@ Master receipt `40c8ff17d31ca4d3d4e707fd257bbc62c666d3a3` updates nine bounded f
 with234 other rows and all243 dispositions exact;20 inheritance controls pass.
 General historical project/default activation and full MC-NUT01 remain open.
 
+PERF01 complete original-input application and saturated-flux refinement:
+[result and limits](../performance/PERF01_NATIVE_431_WEATHER_20261023_RESULT.md),
+[numerical contract](../science/PERF01_SATURATED_FLUX_RESTART.md), existing
+PERF01 native-weather status,manifest-bound raw capsule and
+`integration/performance/verify_saturated_flux_successor.py` own the bounded
+source/native/restart/FSI35 proof. Full predecessor owner and147 controls were
+actually replayed at710b; original successful paths are inherited under an
+exact insertion-only failed-solve refinement, not relabelled as new whole NUT
+execution. The concurrent PR1387 owner and163 controls were additionally
+replayed at188f75ef, preserving its independent caller unchanged.
+Actual canonical admission is recorded separately. No physical law,
+acceptance gate, master disposition or RossFast scope change.
 MC-NUT01 explicit historical saved-output application caller,23 October2026:
 [contract and fixture distinction](../science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md),
 existing HIST-COMPLETE `historical_caller_successor_20261023`,source-bound raw
