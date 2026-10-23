@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+MC-SOL01 refined native year,23 October2026: the existing explicit supported
+[native project](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md) passes all365
+1998 days on41 cells at O2, with byte-identical independent day180 restart and
+185 continued daily budgets. Fresh O0 short/O2 year builds,6714 original
+preparation values,14 negative cases,147 incumbent and11 new source/raw controls
+pass. No production/default change. The separate
+`MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json` owns this bounded proof;
+actual canonical admission is recorded separately. Earlier full-refined-year
+execution limits below are historical, not spatial convergence or full
+MC-SOL01/MC-NUT01 closure.
+
 PR1387 explicit historical saved-output caller is canonically admitted at
 `188f75ef04cd64a5a78ace0aa4b8977e7a130537`,complete merge tree exactly qualified
 `db1143475778b4a4bf302f20a00e20619b01673b`. Actual-merge owner and all163
