@@ -7,7 +7,17 @@
   "tested": true,
   "qualified": true,
   "qualification_scope": "Generated research only: current OFF/ON cost split and three bounded policy discriminators; no production policy admission",
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "canonical_admission_scope": "RESEARCH_EVIDENCE_ONLY_NO_NEW_PRODUCTION_POLICY",
+  "canonical_admission": {
+    "pr": 1398,
+    "merge": "9b4b59f36439ad0afc02a9e6879d07a2bae9ff1b",
+    "complete_tree": "20fc7fadb4cc55dd15f38aae13e3ff061a8827dc",
+    "whole_tree_exact": true,
+    "actual_research_controls": 8,
+    "actual_existing_native_owner_controls": 17,
+    "receipt": "benchmarks/performance/PERF01_PROPOSAL_COST_20261024_ACTUAL_MERGE.json"
+  },
   "production_changed": false,
   "policy_changed": false,
   "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_detailed_rain.py"],
@@ -65,7 +75,7 @@
   "last_reconciled_head": "67a21309490a4e5398e619bb28f0414d6d774757",
   "reconciliation": "Concurrent FCT water/sorption research and its contract note leave every executed production/app/tool input and existing native owners unchanged. No inherited result is relabelled as a new physical run.",
   "documentation_checks": {"source": "PASS", "strict_build": "PASS"},
-  "recovery_point": "Persisted research scripts and sealed raw evidence on work/perf01-proposal-cost-20261024; actual admission receipt follows separately",
-  "next_action": "Publish bounded research and verify actual merge. Next scientific target is incumbent solver-rejection cause/cost on fallback days, not output tuning or activation of these research policies.",
+  "recovery_point": "9b4b59f36439ad0afc02a9e6879d07a2bae9ff1b",
+  "next_action": "Research publication and actual merge complete. Next scientific target is incumbent solver-rejection cause/cost on fallback days, not output tuning or activation of these research policies.",
   "blockers": []
 }

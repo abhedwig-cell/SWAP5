@@ -118,3 +118,10 @@ restart semantics. Output tuning is not the leading native opportunity. No new
 1e-6 run, RossFast extension, highest-low-air test or unrelated full F-CI was
 selected. Affected invariants2,5,7,13,23,24,26 are preserved. Production admission
 of a different numerical policy is outside this research result.
+
+Research evidence is admitted through PR1398 at actual merge
+`9b4b59f36439ad0afc02a9e6879d07a2bae9ff1b`. Its complete tree
+`20fc7fadb4cc55dd15f38aae13e3ff061a8827dc` exactly equals the qualified tree.
+Actual-merge research replay/eight controls and current native owner/seventeen
+controls PASS. This is evidence admission, not new production policy activation.
+The versioned `PERF01_PROPOSAL_COST_20261024_ACTUAL_MERGE.json` is the receipt.
