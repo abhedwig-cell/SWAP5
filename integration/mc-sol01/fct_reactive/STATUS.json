@@ -1,0 +1,46 @@
+{
+  "work_unit": "MC-SOL01-FCT-REACTIVE01",
+  "baseline": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
+  "stage": "BOUNDED_REACTIVE_FCT_JOINT_O0_O2_QUALIFIED",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "production_activated": false,
+  "canonically_admitted": false,
+  "disk_restart_qualified": false,
+  "full_mc_sol01_closed": false,
+  "contract": "integration/mc-sol01/fct_reactive/CONTRACT.md",
+  "small_checkpoint": "c386b13be4f877cbe662e18f48bbceb94f3b5bc9",
+  "small_cases": 24,
+  "small_max_equation_residual": 3.5459916253310908e-15,
+  "optimization_comparison": "New arithmetic composition is compared numerically within1e-12; observed analytical-mode O0/O2 difference is roundoff. Exact retry/delegation/checkpoint assertions remain exact within each build.",
+  "joint_checkpoint": "c557f7f9cd9dbcb0dbb350ba94f7e2d8b7398054",
+  "measurements": "integration/mc-sol01/fct_reactive/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_reactive/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "2f16f9cb025353d22b8490ded9362307776ce8b2574628dfacda7add2ca38fdb",
+    "bytes": 324860,
+    "members": 543,
+    "controls": 8
+  },
+  "preservation": {"current_owner_qualified": true, "current_owner_controls": 134},
+  "current_reconciliation": {
+    "record": "integration/mc-sol01/fct_reactive/CURRENT_RECONCILIATION.json",
+    "canonical": "5b15885ad079477f31373ed96c9856e9e161fa11",
+    "unchanged_qualified_inputs": 181,
+    "current_owner_controls": 156,
+    "current_owner_qualified": true,
+    "capsule_and_eight_controls_pass": true
+  },
+  "test_selection": {
+    "small": "10-source checked real reactive closure at O0/O2:24 cases, exact OFF and zero-process delegation, invalid-rate rejection, independent finite-volume equations, analytical mode and temporal refinement",
+    "joint": "175-source checked real water/research closure at O0/O2:24 cases,2292 primary substeps,480 rejected trials,96 retries and48 in-memory checkpoint continuation windows",
+    "expected_seconds": 120,
+    "current_measured_seconds": 115.1349595950087,
+    "full_fci": "NOT_SELECTED_IMPACT: isolated research source only",
+    "native_year_and_disk_restart": "NOT_SELECTED_SCOPE",
+    "RossFast_and_highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "qualification_ceiling": "Constant-material uniform16-cell fixed-water process oracles and40/80cell real water, Freundlich0.5/1/2, molecular/mechanical dispersion and positive decay at20C, four0.1daywindows. Independent discrete equation and no-flow analytical temporal accuracy; no general advective-dispersive pulse or full coupled-PDE accuracy claim. No native/default activation, disk/fresh-process/crash-atomic restart or root/drainage sink qualification.",
+  "next_safe_work": "Actual-merge verification and separate bounded research admission; then durable joint restart and advective-dispersive pulse/refinement accuracy before production activation."
+}

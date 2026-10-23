@@ -1,0 +1,23 @@
+{
+  "status": "PR1409_NUT_RECONCILED_ZERO_SOL_INPUT_OVERLAP",
+  "qualification_base": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
+  "reconciled_canonical": "5b15885ad079477f31373ed96c9856e9e161fa11",
+  "local_composed_checkpoint": "9f4106ffa58581c9a6246b57128b1262a0170354",
+  "previous_published_head": "f8dddbf534fdb0c7caf7c1877c1869f1fcfd44e1",
+  "concurrent_paths": 15,
+  "qualified_input_count": 181,
+  "qualified_inputs_byte_exact": true,
+  "generated_sources_byte_exact": 5,
+  "concurrent_input_overlap": [],
+  "capsule_verifier_pass": true,
+  "capsule_controls": 8,
+  "qualification_time_owner_controls": 134,
+  "current_owner_entrypoint": "integration/audits/verify_nut_single_zero_pool.py",
+  "current_owner_status": "RESONANT_RECEIVING_POOL_O0_O2_QUALIFIED",
+  "current_owner_qualified": true,
+  "current_owner_controls": 156,
+  "numerical_rerun": "NOT_SELECTED_UNCHANGED_INPUTS: all181 original and five generated inputs verified exact; actual source/raw composed owner rerun separately",
+  "production_activated": false,
+  "disk_restart_qualified": false,
+  "full_mc_sol01_closed": false
+}
