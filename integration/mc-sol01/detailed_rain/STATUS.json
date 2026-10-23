@@ -2,7 +2,7 @@
   "workstream": "MC-SOL01",
   "work_unit": "HIST-INTEGRATION01 detailed rain and CFBS",
   "baseline": "c22fe5b2bfad9cd832be4bca34c8fde1ac40cae7",
-  "status": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_DETAILED_RAIN_CFBS",
   "scientific_delta": {
     "app/solute_crop/read_swp_crop.f90": "M",
     "app/solute_crop/read_swp_project.f90": "M",
@@ -48,7 +48,7 @@
   "implemented": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "full_original_Andelst": false,
   "remaining_dependencies": [
     "SWREDU2 evaporation process coupling",
@@ -99,5 +99,6 @@
     "fresh_controls": 17,
     "frozen_predecessor_controls": 24,
     "source_reconciliation": "Canonical research FCT successor 2a417d60 leaves all production src/app/tools/tests and original references unchanged"
-  }
+  },
+  "admission": "integration/mc-sol01/detailed_rain/ADMISSION.json"
 }

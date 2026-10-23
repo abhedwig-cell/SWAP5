@@ -1,0 +1,86 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_DETAILED_RAIN_CFBS",
+  "canonically_admitted": true,
+  "qualified": true,
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1396",
+  "merge_commit": "ba6b12ec5cff7844bce474e20ef136984a22d5ac",
+  "qualified_complete_tree": "93423c229671a4e0a38e3548e1e0fe922ccf2f73",
+  "actual_merge_complete_tree": "93423c229671a4e0a38e3548e1e0fe922ccf2f73",
+  "actual_merge_tree_exact": true,
+  "head_commit": "2634fac028bc6f49c2ee1b53160fa93dbdeb08ec",
+  "canonical_base": "2a417d60b79fb58793a02abeff36a63b9aa6d4e3",
+  "proof_owner": "integration/audits/verify_native_detailed_rain.py",
+  "actual_merge_owner": {
+    "qualified": true,
+    "status": "NATIVE_DETAILED_RAIN_CFBS_O0_O2_481_DAY_AND_ATOMIC_DAY_QUALIFIED",
+    "historical_rain_intervals": 2630,
+    "full_original_Andelst": false,
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "canonically_admitted": false,
+    "predecessor_controls": 24,
+    "predecessor_scope": "Frozen exact canonical assertion execution; current application physical preservation is freshly tested"
+  },
+  "actual_merge_controls": [
+    "source app/solute_crop/read_swp_crop.f90",
+    "source app/solute_crop/read_swp_project.f90",
+    "source app/solute_project/main.f90",
+    "source integration/audits/verify_native_detailed_rain.py",
+    "source integration/performance/verify_native_proposal_successor.py",
+    "source tests/nut-sol/measure_detailed_rain.py",
+    "source tests/nut-sol/preserve_rain_predecessor.py",
+    "source tests/nut-sol/qualify_detailed_rain_rollback.py",
+    "source tests/nut-sol/qualify_native_detailed_rain.py",
+    "source tools/solute/run_project.py",
+    "foreign caller",
+    "raw rain-O2/cross_year/full/budget.csv",
+    "raw rain-O0/pulse/resumed/restart.bin",
+    "raw rain-O2/cross_year/original-events.csv",
+    "raw predecessor/controls.json",
+    "raw wet-O2/rejected/diagnostic-rejected.bin",
+    "raw proposal-O0/current/restart.bin"
+  ],
+  "actual_merge_current_entrypoints": {
+    "native_project_admission.py": {
+      "qualified": true,
+      "controls": 17,
+      "status": "NATIVE_DETAILED_RAIN_CFBS_O0_O2_481_DAY_AND_ATOMIC_DAY_QUALIFIED"
+    },
+    "verify_nut_saved_calendar_output.py": {
+      "qualified": true,
+      "controls": 17,
+      "status": "NATIVE_DETAILED_RAIN_CFBS_O0_O2_481_DAY_AND_ATOMIC_DAY_QUALIFIED"
+    },
+    "verify_nut_historical_output_caller.py": {
+      "qualified": true,
+      "controls": 17,
+      "status": "NATIVE_DETAILED_RAIN_CFBS_O0_O2_481_DAY_AND_ATOMIC_DAY_QUALIFIED"
+    }
+  },
+  "original_reference": "SWAP4.3.1 B1.12 original LoadRainData and fixed/ETpot bodies unchanged",
+  "full_original_Andelst": false,
+  "full_SOL_NUT": false,
+  "mastercoverage_promoted": false,
+  "Actions": "NOT_SELECTED_IMPACT; zero check-runs on qualified head; local O0/O2 selected proof completed",
+  "docs_source_check": "PASS",
+  "mkdocs_strict": "PASS",
+  "next_major_step": "Compose existing Boesten SWREDU2 physical continuation with pond-solute transaction and restart before expanding original project",
+  "concrete_next_blockers": [
+    {
+      "path": "src/runtime/mod_fmr_b111_pond_joint_application.f90",
+      "reason": "bounded_template accepts BASE only and routine explicitly rejects forcing%boesten_evaporation"
+    },
+    {
+      "path": "src/adapter/mod_matrix_joint_restart_file.f90",
+      "reason": "S5MJ0001/0002 writer accepts exact BASE or temporal-history state only; Boesten SPEV/SAEV continuation cannot roundtrip"
+    },
+    {
+      "path": "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "reason": "Existing physical Boesten owner and layout must be reused; cannot replace by daily scalar reduction"
+    },
+    {
+      "path": "integration/mc-sol01/detailed_rain/STATUS.json",
+      "reason": "Wet Picard detailed rain rejects day7; both published states remain at day6"
+    }
+  ]
+}

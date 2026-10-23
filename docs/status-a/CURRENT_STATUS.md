@@ -520,9 +520,10 @@ full refined-year/spatial convergence, broader historical/default heat/snow/age
 composition or full MC-NUT01.
 
 
-HIST-INTEGRATION01 detailed rain continuation is locally qualified in
-`integration/mc-sol01/detailed_rain/STATUS.json`; canonical admission is a
-separate receipt. Actual SWRAIN3/RAINFIL interval execution and SWCFBS1 use the
+HIST-INTEGRATION01 detailed rain continuation is canonically admitted by
+PR1396 / `ba6b12ec5cff7844bce474e20ef136984a22d5ac`, exact qualified tree
+`93423c229671a4e0a38e3548e1e0fe922ccf2f73`. The receipt is
+`integration/mc-sol01/detailed_rain/ADMISSION.json`. Actual SWRAIN3/RAINFIL interval execution and SWCFBS1 use the
 existing native ETref/simple-crop/Reference owners: O0/O2 complete481days,
 original whole LoadRainData/ETpot witnesses, exact day365 restart and daily
 water/solute budgets pass. Existing daily/seasonal481day and wet97day proposal

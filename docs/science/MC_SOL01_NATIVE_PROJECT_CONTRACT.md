@@ -755,3 +755,12 @@ overflow is retained; traps and physical gates were not relaxed. No production
 activation, changing-water/nonlinear/source/age/crop/restart/native qualification
 or full SOL/NUT closure is inferred. Actual accepted-water coupling remains a
 separate required scientific step.
+
+PR1396 admits the detailed-rain/CFBS scope above at actual merge
+`ba6b12ec5cff7844bce474e20ef136984a22d5ac`, complete tree
+`93423c229671a4e0a38e3548e1e0fe922ccf2f73`. Actual-merge entrypoint controls
+and source/tree identity are recorded in
+`integration/mc-sol01/detailed_rain/ADMISSION.json`. The SWREDU2 continuation
+needs the existing Boesten owner layout in the pond joint transaction and
+lossless restart; the present BASE-only transaction and S5MJ0001/0002 writer
+explicitly reject this composition. Merely accepting the SWP flag is unsafe.
