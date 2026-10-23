@@ -5852,12 +5852,12 @@
   "historical_integration01_20261023": {
     "work_unit": "SWAP5-HIST-INTEGRATION01",
     "baseline": "7ae093c5b32b4abfd10a6a37c8113ecffa2cdbb6",
-    "stage": "CURRENT_481_DAY_O0_O2_QUALIFIED_CANONICAL_PENDING",
+    "stage": "BOUNDED_SEASONAL_BOTTOM_CANONICALLY_ADMITTED",
     "implemented": true,
     "persisted": true,
     "tested": true,
     "qualified": true,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "scope": "Native SWBOTB2/SW2=1 seasonal prescribed flux; original 481-day historical-weather constructed project",
     "source_tree": "f4191d388647d401fb2574b68b530624fe9848c0",
     "postimages": {
@@ -6109,7 +6109,7 @@
       "highest_low_air": "NOT_SELECTED_POLICY",
       "rossfast": "NOT_USED"
     },
-    "next_action": "Publish single integration PR; current canonical lease and exact merge-tree/source/raw controls; record separate actual admission",
+    "next_action": "Connect original SWRAIN3 and compatible evaporation/soil-factor/drainage/Cauchy/macropore/heat owners in native original-project execution; separately diagnose actual Picard wet day8",
     "recovery_point": "work/hist-integration01-20261023",
     "blockers": [
       "Original SWRAIN3 native dispatch and the original simultaneous soil-factor/reduction/macropore/drainage/Cauchy/heat composition are not implemented by this front end",
@@ -6144,6 +6144,10 @@
       "donor_B112_original_O2": "481_DAYS_EXACT_B111_PHYSICAL_OUTPUT",
       "original_parity": false,
       "wet4": "REJECTED_WATER_DAY8_EXACT_COMMITTED_STATE"
-    }
+    },
+    "admission_receipt": "integration/mc-sol01/MC_SOL01_HIST_INTEGRATION01_ADMISSION_20261023.json",
+    "canonical_merge": "03fd18d7d60e423c59e1ecef5661d259f470f69e",
+    "qualified_complete_tree": "e3cac9919741b40fe29e5cf6555f50ea72aab704",
+    "last_reconciled_upstream": "93c46252217c51cdb50c1bdf223d2d77d551c8fc"
   }
 }
