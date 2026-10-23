@@ -1,0 +1,76 @@
+{
+  "work_unit": "MC-SOL01-FCT-ACCEPTED-TRACE01",
+  "baseline": "67a21309490a4e5398e619bb28f0414d6d774757",
+  "stage": "QUALIFIED_BOUNDED_ACCEPTED_CARRIER_REPLAY_AND_ACCURACY",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_activated": false,
+  "native_qualified": false,
+  "actual_water_trace_qualified": true,
+  "time_series_accuracy_qualified": true,
+  "full_mc_sol01_closed": false,
+  "contract": "integration/mc-sol01/fct_accepted_trace/CONTRACT.md",
+  "test_selection": {
+    "real_water": "Fresh strict production backend closure plus fail-closed link context, O0/O2 actual committed traces,40/80/160cells,0.8/1.2 initial conductivity,2days, temporal budget1e-3",
+    "expected_compile_seconds": 150,
+    "native_reference_seconds": "UNKNOWN,120s per process bound",
+    "replay": "small real production/research process closure; original accepted traces, independent refined carrier MOL reference, positivity, water/solute closure and atomic batch rejection",
+    "full_fci": "NOT_SELECTED_IMPACT: isolated research, no production/default/runtime change",
+    "native_year_restart": "NOT_SELECTED_SCOPE",
+    "RossFast": "NOT_SELECTED_POLICY",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "execution_checkpoints": {
+    "water_failed": "10b1b4e15",
+    "water": "35beef047",
+    "replay_failed_1": "b6e890574",
+    "replay_failed_2": "8fd455e78",
+    "replay": "74d3dcbbc",
+    "reference_failed": "b080bf980",
+    "reference": "c95de660a"
+  },
+  "reconciled_canonical": "b17be3044128cca5fe79c6c44b2e2419bca7f57f",
+  "measurements": "integration/mc-sol01/fct_accepted_trace/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_accepted_trace/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "e8167024768acfa76b99e1a87aa01561044e7e8675aaae6a41416997892a85cb",
+    "bytes": 1926028,
+    "members": 696,
+    "controls": 11
+  },
+  "summary": {
+    "water_cases": 12,
+    "water_accepted_substeps": 2486,
+    "replays": 72,
+    "late_atomic_rejections": 360,
+    "exact_split_continuations": 72,
+    "max_mass_residual": 5.3701487997580353e-14,
+    "max_equilibrium_error": 2.831068712794149e-15,
+    "max_constant_error": 1.787459069646502e-14,
+    "max_water_optimization_difference": 0.0,
+    "max_solute_optimization_difference": 0.0,
+    "minimum_corrected_to_low_ratio": 0.118905777192681,
+    "maximum_corrected_to_low_ratio": 0.5856096227439453,
+    "maximum_reference_refinement_to_corrected_ratio": 0.2486052013666687
+  },
+  "failed_attempts": [
+    "Initial water driver omitted standalone context initialization and failed qrot bounds. Fixed through the existing public initializer; no production change. Fresh narrower163-provider O0/O2 closure succeeded.",
+    "Two replay diagnostic rounds failed low-order surface subtraction at prefix142. Existing exact_empty_pond_limit explicitly selected for both low and corrected solves through an exact two-keyword generated successor; default and frozen prototype unchanged.",
+    "32/64 reference-resolution gate failed two160cell cases. Original gate retained,128subcells added only for the two unresolved cases. Same25percent/spread-separation criteria now pass all18 comparisons."
+  ],
+  "physical_option": "EXPLICIT_EXISTING_EXACT_EMPTY_POND_LIMIT_TRUE_BOTH_COMPARATORS",
+  "preservation": {
+    "qualification_time_capsule_owner_controls": 17,
+    "current_owner_qualified": true,
+    "current_owner_controls": 40,
+    "reconciliation": "Concurrent PERF01 research and NUT nondepleting coupling admitted. All163 water and8 replay provider inputs exact; current capsule plus11controls and current composed owner plus40controls freshly pass. Original capsule17-control receipt remains historical and immutable.",
+    "storage_prototype_qualified": true,
+    "storage_prototype_controls": 8,
+    "linear_prototype_qualified": true,
+    "linear_prototype_controls": 6
+  },
+  "qualification_ceiling": "Recorded two-day actual Reference carriers, uniform40cm material, pure downward no-sink advection, Gaussian positive background and constant control, Freundlich0.5/1/2,Kf0.2. Independent empirical carrier-reference accuracy, not a rigorous full coupled PDE bound. No joint/native/default/full-year/restart or additional-process qualification.",
+  "next_safe_work": "Qualify joint water/chemical trial acceptance and native composition, including physical dispersion/decay and restart, before any production activation. Admission is recorded separately after exact actual-merge verification."
+}
