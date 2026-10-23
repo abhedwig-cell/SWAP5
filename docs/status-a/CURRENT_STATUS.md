@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+PERF01's explicit water-state/flux temporal option is canonically admitted by
+[PR1408](https://github.com/abhedwig-cell/SWAP5/pull/1408), actual merge
+`462395b00e8c0234bfc5457d9d1fdf92486a7329`. The complete actual tree exactly
+equals qualified `5dce015dd9203222b04163dd2b30638c83649bcb`; actual-merge
+owner replay,163 current source/raw controls and six typed evidence controls
+PASS. Current NUT26/52 and all three FCT owners are preserved; native194 inputs
+remain exact for the retained469/481 and typed62 proofs. This is a bounded,
+default-OFF changed-accuracy option, not an accuracy-matched4.3.1 speed claim or
+full SOL/NUT closure. The existing drainage day470/wet-day7 limits remain open.
+See [result](../performance/PERF01_TYPED_WATER_FLUX_20261023_RESULT.md) and
+`PERF01_TYPED_WATER_FLUX_20261024_ACTUAL_MERGE.json`.
+
 PR1394 optional native zero-tracer step proposals are canonically admitted at
 `2f5e0a9993a5e01ce43d0f12df5f7395da369f54`,exact qualified/actual complete tree
 `069a752484d4ec21fb5cae6fdd0961079e528d41`. Actual-merge owner,24 source/raw

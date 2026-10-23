@@ -1,5 +1,17 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+PERF01's explicit water-state/flux temporal option: production contract
+`docs/science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md`; native62 and current
+NUT/FCT evidence in the versioned typed status and separate live capsules;
+actual admission [PR1408](https://github.com/abhedwig-cell/SWAP5/pull/1408), merge
+`462395b00e8c0234bfc5457d9d1fdf92486a7329`, exact qualified/actual complete tree
+`5dce015dd9203222b04163dd2b30638c83649bcb`. Actual owner replay,163 current
+source/raw controls and six original typed controls PASS. Receipt:
+`benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261024_ACTUAL_MERGE.json`.
+Current NUT26 coupled/52 restart, all three FCT owners and unchanged native194
+input surfaces preserve existing proofs; no default activation, equal-accuracy
+timing claim, full SOL/NUT closure or expansion beyond the explicit policy.
+
 PR1394 optional native zero-tracer step proposals are canonically admitted at
 `2f5e0a9993a5e01ce43d0f12df5f7395da369f54`,exact qualified/actual complete tree
 `069a752484d4ec21fb5cae6fdd0961079e528d41`. Actual-merge owner,24 source/raw

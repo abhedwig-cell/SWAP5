@@ -1,9 +1,11 @@
-# Typed water-state and flux candidate
+# Qualified typed water-state and flux option
 
-Implemented on `work/perf01-typed-water-flux-20261023`, reconciled with canonical
-`5659a644` (PR1405 drainage and PR1406 FCT joint research). Local bounded native
-tests pass. Owner qualification against pinned canonical `ef2110c6` now passes;
-later PR1409/1410 reconciliation and canonical admission remain pending.
+Canonically admitted by [PR1408](https://github.com/abhedwig-cell/SWAP5/pull/1408),
+actual merge `462395b00e8c0234bfc5457d9d1fdf92486a7329`, after preserving
+the current NUT and all FCT owners through canonical `f33adbe93`.
+The actual complete tree `5dce015dd9203222b04163dd2b30638c83649bcb` exactly
+equals the qualified complete tree. Actual-merge owner replay, all163 current
+source/raw controls and all six original typed evidence controls pass.
 This is an explicit changed-accuracy option, not a default change or an
 accuracy-matched comparison to4.3.1.
 
@@ -143,3 +145,24 @@ explicit toolchain identity files required by that owner; this metadata
 validation failure and its complete capture are retained. The recipe is rerun
 with the actual compiler driver, frontend and runtime-library identities; no
 assertion is relaxed and no native result is relabelled.
+
+## Actual canonical admission
+
+The final5557-member live capsule retains the entire focused execution and
+validation history. Current NUT completes78 HIST processes and26 coupled cases
+with52 process restarts;44 compiles are fresh and610 exact closures reused.
+FCT-sinks independently passes162 process and48 joint cases,3240 process and
+960 joint atomic rejections,192 exact retries and96 continuation windows.
+Its maximum mass residual is1.22e-14 and maximum independent equation residual
+5.48e-15. Original reactive FCT and pulse/disk restart proofs also pass against
+their unchanged original validators. None of these research FCT paths is
+activated by this admission.
+
+The immutable full native469/481 and typed62 proofs are retained only after
+checking every actual compiled native194 input. All163 current source/raw
+controls and the six original typed evidence controls pass again on the actual
+merge. The separate `PERF01_TYPED_WATER_FLUX_20261024_ACTUAL_MERGE.json` records
+the merge, published head, exact complete tree, physical scope and actual replay.
+Earlier pending statements below the opening describe historical checkpoints,
+not the final admission. Default remains OFF; full SOL/NUT and the existing
+day470/wet-day7 limits are unchanged.

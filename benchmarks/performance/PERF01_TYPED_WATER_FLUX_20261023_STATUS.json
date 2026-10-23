@@ -1,12 +1,12 @@
 {
   "work_unit": "PERF01_TYPED_WATER_FLUX",
   "baseline": "57e1b3f2635559df0db0350a96f0e06b2e3b9cc7",
-  "status": "CURRENT_CANONICAL_COMPOSITION_QUALIFIED_PENDING_ACTUAL_MERGE",
+  "status": "CANONICALLY_ADMITTED_ACTUAL_MERGE_VERIFIED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "authority_paths": [
     "docs/science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md",
     "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md",
@@ -56,7 +56,7 @@
     ]
   },
   "owning_preservation": "PASS against pinned ef2110: fresh HIST78, NUT14 coupled/28 restart, O0/O2 drainage469 and Boesten481 exact incumbent files, 12 SOL traces, 24 FCT joint cases, unchanged failure atomicity; all134 predecessor and241 combined negative controls PASS. New PR1409/1410 canonical overlap requires separate preservation before admission.",
-  "next_action": "Publish qualified tree, mark PR1408 ready, merge expected exact head and verify actual canonical tree and owner gates",
+  "next_action": "Bounded optional policy admitted; retain default OFF and existing day470/wet-day7 and fullSOL/NUT limits",
   "recovery_point": "work/perf01-typed-water-flux-20261023; local commits and sealed evidence; draft production option, not canonical",
   "blockers": [],
   "last_reconciled_head": "f33adbe938368449e97aa14301c40d13440a65c1",
@@ -567,8 +567,8 @@
       "bytes": 1304336,
       "members": 5557
     },
-    "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
-    "canonically_admitted": false,
+    "status": "CANONICALLY_ADMITTED_ACTUAL_MERGE_VERIFIED",
+    "canonically_admitted": true,
     "scope": "Current original NUT96 direct inherited exact inputs, HIST78 fresh, joint26/52 fresh; FCT reactive24/24 and pulse36/disk24 exact-input inheritance; native194 unchanged inheritance; historical241/198 controls explicitly separate",
     "qualified": true,
     "current_controls": 163,
@@ -576,7 +576,8 @@
     "qualification": {
       "path": "benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261024_LIVE3_LIVE_QUALIFICATION.json",
       "sha256": "1ccf23d9a092e3d8c80828caef868531578e37980263e04fe6e5a639f295cfdc"
-    }
+    },
+    "actual_merge": "462395b00e8c0234bfc5457d9d1fdf92486a7329"
   },
   "live_predecessor_compositions": [
     {
@@ -863,5 +864,8 @@
         "sha256": "c079d057f3dcf6c8bcf50aca856860e778916812129d22c4f383f42158d534a8"
       }
     }
-  ]
+  ],
+  "actual_merge": "462395b00e8c0234bfc5457d9d1fdf92486a7329",
+  "actual_qualified_tree": "5dce015dd9203222b04163dd2b30638c83649bcb",
+  "actual_merge_receipt": "benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261024_ACTUAL_MERGE.json"
 }
