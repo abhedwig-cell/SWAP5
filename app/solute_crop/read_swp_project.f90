@@ -6,11 +6,14 @@ program read_swp_project
  implicit none
  integer,parameter::MAX_CROPS=64,MAX_SUB=256
  integer::ncrop,n,m,i,j,k,u,code,mode,swcrop,first_year,last_year,dates(6),layers(MAX_SUB),counts(MAX_SUB)
- integer::types(MAX_CROPS),nyears,first,last,total
+ integer::types(MAX_CROPS),nyears,first,last,total,rain_mode,soil_factor_mode,nrainfiles,nrain,rn,lo,hi
  integer,allocatable::dd(:),mm(:),yyyy(:)
  real(real64),allocatable::tmn(:),tmx(:),rain(:),etref(:),times(:),output(:,:)
+ real(real64)::soil_factor=1d0,rtim,dayrain,previous,legacy_time
+ real(real64),allocatable::rain_times(:),rain_amounts(:),event_times(:),event_rates(:)
+ integer,allocatable::rain_dd(:),rain_mm(:),rain_yyyy(:)
  real(real64)::tstart,tend,starts(MAX_CROPS),ends(MAX_CROPS),rds,pondmx,rsro,exponent,bottom,amplitude,daymax,fraction
- character(1024)::swp,action,metfil,pathatm,pathcrop,crops(MAX_CROPS),filename,crp,metnames(8)
+ character(1024)::swp,action,metfil,pathatm,pathcrop,crops(MAX_CROPS),filename,crp,metnames(8),rainnames(8),rainfil
  character(16)::start_text,end_text,a,b,index_text,ext
  logical::rdinqr
  type(crop_calendar_t)::calendar
@@ -22,8 +25,11 @@ program read_swp_project
  call require(tstart==aint(tstart).and.tend==aint(tend).and.tend>=tstart.and.tend-tstart<2048d0,'whole calendar/capacity')
  call rdsinr('swcrop',0,2,swcrop);call require(swcrop==1,'project currently requires simple crop periods')
  call rdsinr('swetr',0,1,mode);call require(mode==1,'SWETR0/PM requires a separate physical demand composition')
- call rdsinr('swrain',0,3,mode);call require(mode==0,'uniform daily rain required')
- call zero('swmetdetail',1);call zero('swdivide',1);call zero('swcfbs',1);call zero('swredu',2)
+ call rdsinr('swrain',0,3,rain_mode);call require(rain_mode==0.or.rain_mode==3,'only daily or detailed rain selected')
+ soil_factor_mode=0
+ if(rdinqr('swcfbs'))call rdsinr('swcfbs',0,1,soil_factor_mode)
+ if(soil_factor_mode==1)call rdsdor('cfbs',0d0,1.5d0,soil_factor)
+ call zero('swmetdetail',1);call zero('swdivide',1);call zero('swredu',2)
  call zero('swdra',3);call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
  call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
@@ -65,6 +71,18 @@ program read_swp_project
    write(ext,'(I3.3)')mod(first_year+i-1,1000);metnames(i)=trim(metfil)//'.'//trim(ext)
   end do
  end if
+ rainnames='';nrainfiles=0
+ if(rain_mode==3)then
+  call rdscha('rainfil',rainfil);call lowerc(rainfil);call safe(rainfil)
+  if(index(trim(rainfil),'.rain')>0)then
+   nrainfiles=1;rainnames(1)=rainfil
+  else
+   nrainfiles=last_year-first_year+1;call require(nrainfiles<=size(rainnames),'rain year capacity')
+   do i=1,nrainfiles
+    write(ext,'(I3.3)')mod(first_year+i-1,1000);rainnames(i)=trim(rainfil)//'.'//trim(ext)
+   end do
+  end if
+ end if
  close(74)
  if(trim(action)=='scan')then
   open(newunit=u,file='project.csv',status='new',action='write')
@@ -74,6 +92,10 @@ program read_swp_project
   do i=1,nyears
    write(u,'(A,I0,A)')'met,',i,','//trim(metnames(i))
   end do
+  do i=1,nrainfiles
+   write(u,'(A,I0,A)')'rain,',i,','//trim(rainnames(i))
+  end do
+  if(rain_mode==3)write(u,'(A)')'detailed_rain,0,1'
   do i=1,ncrop
    write(u,'(A,I0,A)')'crop,',i,','//trim(crops(i))//'.crp'
   end do
@@ -101,7 +123,9 @@ program read_swp_project
   allocate(dd(m),mm(m),yyyy(m),tmn(m),tmx(m),rain(m),etref(m),times(m))
   call rdfinr('dd',1,31,dd,m,m);call rdfinr('mm',1,12,mm,m,m);call rdfint('yyyy',yyyy,m,m)
   call rdfdor('tmin',-1d5,1d5,tmn,m,m);call rdfdor('tmax',-1d5,1d5,tmx,m,m)
-  call rdfdor('rain',0d0,1000d0,rain,m,m);call rdfdor('etref',0d0,100d0,etref,m,m);close(74)
+  rain=0d0
+  if(rain_mode==0)call rdfdor('rain',0d0,1000d0,rain,m,m)
+  call rdfdor('etref',0d0,100d0,etref,m,m);close(74)
   call require(all(ieee_is_finite(tmn)).and.all(ieee_is_finite(tmx)).and.all(ieee_is_finite(rain)).and. &
     all(ieee_is_finite(etref)),'nonfinite daily weather')
   do i=1,m
@@ -118,6 +142,7 @@ program read_swp_project
   write(index_text,'(I0)')k;crp='crop-'//trim(index_text)//'.crp'
   call rdinit(74,0,trim(crp));call zero('swirrf',3);close(74)
  end do
+ if(rain_mode==3)call detailed_rain_input()
  open(newunit=u,file='weather.met',status='new',action='write')
  write(u,'(A)')'DD MM YYYY TMIN TMAX RAIN ETREF'
  do i=1,total
@@ -129,7 +154,9 @@ program read_swp_project
   open(newunit=u,file=trim(filename),status='new',action='write')
   write(u,'(A)')'TSTART='//trim(start_text);write(u,'(A)')'TEND='//trim(end_text)
   write(u,'(A)')"METFIL='weather.met'"
-  write(u,'(A)')'SWCROP=1','SWETR=1','SWRAIN=0','SWEVAP=1','SWCFBS=0','SWREDU=0','SWHEA=0','SWSNOW=0','SWMACRO=0'
+  write(u,'(A)')'SWCROP=1','SWETR=1','SWRAIN=0','SWEVAP=1','SWREDU=0','SWHEA=0','SWSNOW=0','SWMACRO=0'
+  write(u,'(A,I0)')'SWCFBS=',soil_factor_mode
+  if(soil_factor_mode==1)write(u,'(A,ES25.16E3)')'CFBS=',soil_factor
   write(u,'(A,ES25.16E3)')'RDS=',rds
   ! Native preparation needs only these explicit flags; physical original SWP
   ! remains separate. Pond factor is read from that original in this same adapter.
@@ -149,6 +176,80 @@ program read_swp_project
  end do
  print '(A)','SWP_NATIVE_PROJECT_PREPARED'
 contains
+ subroutine detailed_rain_input()
+  ! Original TTUTIL fields and MOD_meteo:LoadRainData interval convention.
+  ! Full original rain bytes remain bound by the launcher, including unused tail.
+  allocate(event_times(100001),event_rates(100001));rn=0
+  previous=-huge(1d0)
+  do k=1,nrainfiles
+   write(index_text,'(I0)')k;filename='rain-'//trim(index_text)//'.rain'
+   call rdinit(74,0,trim(filename));call rdinne('year',m)
+   call require(m>0.and.rn+m<=100000,'detailed rain capacity')
+   allocate(rain_dd(m),rain_mm(m),rain_yyyy(m),rain_times(m),rain_amounts(m))
+   call rdfinr('day',1,31,rain_dd,m,m);call rdfinr('month',1,12,rain_mm,m,m)
+   call rdfinr('year',1,3000,rain_yyyy,m,m)
+   call rdfdor('time',0d0,1d0,rain_times,m,m);call rdfdor('amount',0d0,10000d0,rain_amounts,m,m);close(74)
+   call require(all(ieee_is_finite(rain_times)).and.all(ieee_is_finite(rain_amounts)),'nonfinite detailed rain')
+   do i=1,m
+    dates=0;dates(1:3)=[rain_yyyy(i),rain_mm(i),rain_dd(i)];call dtardp(dates,0.,legacy_time)
+    legacy_time=legacy_time+rain_times(i)
+    if(previous/=-huge(1d0))call require(legacy_time-previous>=1d-8,'detailed rain timestamps must ascend')
+    if(legacy_time>=tstart)then
+     if(previous==-huge(1d0))then
+      if(legacy_time-tstart>1d-8)then
+       rn=rn+1;event_times(rn)=legacy_time;event_rates(rn)=rain_amounts(i)*.1d0/(legacy_time-tstart)
+      end if
+     else
+      rn=rn+1;event_times(rn)=legacy_time;event_rates(rn)=rain_amounts(i)*.1d0/(legacy_time-previous)
+     end if
+    end if
+    previous=legacy_time
+   end do
+   deallocate(rain_dd,rain_mm,rain_yyyy,rain_times,rain_amounts)
+  end do
+  ! The historical reader closes the last event with a zero-flux sentinel.
+  ! Only the first interval ending at/after simulation end is consumed here.
+  nrain=rn
+  do i=1,rn
+   if(event_times(i)>=tend+1d0)then
+    nrain=i;exit
+   end if
+  end do
+  if(nrain==0)then
+   nrain=1;event_times(1)=tend+2d0;event_rates(1)=0d0
+  else if(event_times(nrain)<tend+1d0)then
+   nrain=nrain+1;event_times(nrain)=tend+2d0;event_rates(nrain)=0d0
+  end if
+  call require(all(ieee_is_finite(event_rates(:nrain))).and.all(event_rates(:nrain)>=0d0).and. &
+   all(event_rates(:nrain)<=5d5),'detailed rate outside existing surface forcing domain')
+  open(newunit=u,file='rain_events.csv',status='new',action='write')
+  write(u,'(A)')'end_day,rate_cm_day'
+  do i=1,nrain
+   if(event_times(i)<=tstart)cycle
+   write(u,'(ES25.16E3,A,ES25.16E3)')event_times(i)-tstart,',',event_rates(i)
+  end do
+  close(u)
+  ! Literal original day integration; day records prepare ET/root views only.
+  output(7,:)=0d0;rn=1
+  do j=1,total
+   if(output(1,j)<tstart.or.output(1,j)>tend)cycle
+   dayrain=0d0
+   do while(event_times(rn)<output(1,j)+1d0)
+    if(rn==1)then
+     rtim=event_times(rn)-tstart
+    else
+     rtim=event_times(rn)-max(output(1,j),event_times(rn-1))
+    end if
+    dayrain=dayrain+rtim*event_rates(rn);rn=rn+1
+   end do
+   if(rn==1)then
+    rtim=min(1d0,min(event_times(rn),output(1,j)+1d0)-tstart)
+   else
+    rtim=min(1d0,min(event_times(rn),output(1,j)+1d0)-event_times(rn-1))
+   end if
+   dayrain=dayrain+rtim*event_rates(rn);output(7,j)=dayrain*10d0
+  end do
+ end subroutine
  subroutine require(ok,message)
   logical,intent(in)::ok
   character(*),intent(in)::message

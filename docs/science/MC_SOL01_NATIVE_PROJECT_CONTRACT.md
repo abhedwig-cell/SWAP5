@@ -688,3 +688,34 @@ Current seasonal-caller reconciliation keeps the SRC tree exact and freshly
 checks41cell2day state/endpoint/budget equality; historical82/164executions are
 not relabeled. Current owner and30controls pass. Research, source/raw proof and
 claim limits are separate from production/defaults and full SOL/NUT admission.
+
+## HIST-INTEGRATION01 detailed rain and soil-factor successor
+
+Proposed continuation at74516db1bc4e9a74f167610f3940fd818853aced. Existing
+SWRAIN0 remains exact. SWRAIN3 resolves original RAINFIL year naming or one
+.RAIN file through TTUTIL DAY/MONTH/YEAR/TIME/AMOUNT. Original LoadRainData
+amounts belong to the preceding interval. Preserve complete source bytes,
+including future unused data, in the existing restart-bound input document.
+The native preparation day view integrates original rain records; physical
+execution consumes the actual interval endpoints/rates, never a daily average.
+
+The native application stages the existing water and solute owner types for
+one reporting day, executes the existing joint pond transactions at rain
+boundaries, and publishes only after every segment and the unchanged hard
+daily water/solute certificates pass. A rain cursor is derived from the opaque
+committed time; no new persistent owner, restart ABI, physics kernel or shared
+interface. Scalar output receipts sum actual accepted trace contributions,
+without constructing/copying an ever-growing concatenated flux trace.
+SWCFBS1/CFBS0..1.5 uses the existing daily atmospheric-demand provider. SWREDU,
+macropores, drainage and heat remain explicitly rejected by this front end.
+No silent reduction or deactivation is performed on original physical input.
+
+Owning surfaces: existing project/crop readers, launcher and native application.
+Shared src and original reference bytes unchanged. Invariants2,3,7,9,13,21,23,29
+remain binding. Select original whole LoadRainData and fixed/ETpot witnesses,
+O0/O2 actual interval/day budgets, within-day failure rollback, source-bound
+fresh restart and future-source rejection; preserve existing daily/seasonal
+physical outputs. Reuse only hash-verified193 physical providers. Expected
+build30s, focused60s, actual481-day composition up to1800s to test original
+rainfall timing. Full F-CI NOT_SELECTED_IMPACT; highest low-air
+NOT_SELECTED_POLICY; RossFast unused. Full original project parity is separate.
