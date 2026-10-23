@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 saved-calendar output through harvest/fallow,23 October2026:
+[bounded contract](../science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md),existing
+HIST-COMPLETE `saved_calendar_successor_20261023`,source-bound raw capsule and
+`verify_nut_saved_calendar_output.py` own the cold/accepted-heat O0/O2 proof.
+All130 incumbent plus17 new controls remain executed. The additive adapter selects
+immutable calendar batches and delegates accepted-state publication to existing
+saved-output owners. Current shared physical providers,complete saved restart,
+hard water/N gates and full capability dispositions remain unchanged. Local
+qualification and actual canonical admission are recorded separately.
+
 PR1383 accepted-temperature calendar/output is canonically admitted at
 `dce306d7f3a81ecf4662751070aaa4230ad1fbd2`,whole merge tree exactly qualified
 `b07af9a1c85ea8f49c20df535554bc49d4f42643`. Actual-merge owner and all130

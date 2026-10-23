@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 saved-calendar crop/harvest/fallow,23 October2026: the
+[bounded continuation](../science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md)
+is locally qualified on current cold/accepted-heat O0/O2 providers. Immutable
+calendar forcing now composes with saved active-crop output,existing harvest
+phases and fallow output. All independent complete generations,64 roundtrips,
+64 fresh progressions,16 crash recoveries,1036 rejected day trials,216 replay
+rejections and all147 source/raw controls pass. Current cold physical results
+remain exact. The existing HIST-COMPLETE child `saved_calendar_successor_20261023`
+owns qualification and separate canonical admission. General/default historical
+orchestration,active negative allocation and automatic snow/persistent-surface N
+remain open;no full MC-NUT01 or master capability disposition changes.
+
 PR1383 accepted-temperature calendar/output is canonically admitted at
 `dce306d7f3a81ecf4662751070aaa4230ad1fbd2`,whole merge tree exactly qualified
 `b07af9a1c85ea8f49c20df535554bc49d4f42643`. Actual-merge owner and all130
