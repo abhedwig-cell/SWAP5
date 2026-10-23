@@ -2,10 +2,11 @@
 from pathlib import Path
 import argparse,hashlib,json,os,resource,signal,subprocess,time
 ROOT=Path(__file__).resolve().parents[2]
-p=argparse.ArgumentParser();p.add_argument('--build-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();W=a.build_root.resolve();OUT=a.output.resolve();OUT.mkdir(exist_ok=False)
+p=argparse.ArgumentParser();p.add_argument('--build-root',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--thermal-saved-folder',default='thermal-saved');a=p.parse_args();W=a.build_root.resolve();OUT=a.output.resolve();OUT.mkdir(exist_ok=False)
+THERMAL_SAVED=a.thermal_saved_folder
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 resource.setrlimit(resource.RLIMIT_STACK,(64*1024*1024,resource.getrlimit(resource.RLIMIT_STACK)[1]))
-proofs={k:json.loads((W/k/'result.json').read_text())for k in ['cold','thermal','saved','thermal-saved']}
+proofs={k:json.loads((W/k/'result.json').read_text())for k in ['cold','thermal','saved',THERMAL_SAVED]}
 inputs={}
 for k,r in proofs.items():
  for name in ['input_sha256','cold_input_sha256','thermal_input_sha256']:
@@ -18,7 +19,7 @@ def run(cmd,cwd,category):
  events.append(dict(command=cmd,returncode=r.returncode,category=category,seconds=time.perf_counter()-started,stdout=f'{i:04d}.stdout',stderr=f'{i:04d}.stderr'));(OUT/'events.json').write_text(json.dumps(events,indent=2)+'\n')
  if r.returncode:raise RuntimeError(str(i)+' '+r.stdout.decode()+r.stderr.decode())
  return r
-for kind,folder in [('cold','saved'),('heat','thermal-saved')]:
+for kind,folder in [('cold','saved'),('heat',THERMAL_SAVED)]:
  d=OUT/kind;d.mkdir();thermal=kind=='heat';s=(W/folder/'driver.f90').read_text();s=s.replace(' implicit none',' use mod_crop_soil_n_saved_cycle_output\n implicit none',1)
  basehelper=(ROOT/'tests/nut-output/saved_output_proof.inc').read_text()if not thermal else(W/folder/'thermal_fallow_proof.inc').read_text()
  anchor='  call saved_fallow_proof(prefix,actual_water,actual,o,s,dates,rows,delayed,manual_water,manual)';assert basehelper.count(anchor)==1
@@ -37,15 +38,15 @@ for kind,folder in [('cold','saved'),('heat','thermal-saved')]:
  for opt in ['O0','O2']:
   b=d/opt;b.mkdir();old=W/'cold'/opt;es=json.loads((W/'cold/events.json').read_text());link=next(e['command']for e in es if e['category']=='link'and e['command'][-1]==str(old/'hist'));objects=[v for v in link if v.endswith('.o')][:-1]
   flags=[('-J'+str(b))if x.startswith('-J')else x for x in link[1:link.index(objects[0])]]
-  flags+=['-I'+str(W/'saved'/opt),'-I'+str(W/'thermal-saved'/opt),'-I'+str(W/'thermal/profile'),'-I'+str(W/folder),'-I'+str(d),'-I'+str(ROOT/'tests/nut-output')]
+  flags+=['-I'+str(W/'saved'/opt),'-I'+str(W/THERMAL_SAVED/opt),'-I'+str(W/'thermal/profile'),'-I'+str(W/folder),'-I'+str(d),'-I'+str(ROOT/'tests/nut-output')]
   extra={}
-  for name in ['saved','thermal-saved']:
+  for name in ['saved',THERMAL_SAVED]:
    es=json.loads((W/name/'events.json').read_text());cmd=next(e['command']for e in es if e['category']=='link'and e['command'][-1]==str(W/name/opt/'saved'))
    for obj in [v for v in cmd if v.endswith('.o')][:-1]:
     if obj not in objects:extra[Path(obj).name]=obj
   objects+=list(extra.values())
   for obj in objects:pinned[obj]=sha(Path(obj))
-  for name in ['cold','saved','thermal-saved']:
+  for name in ['cold','saved',THERMAL_SAVED]:
    for mod in (W/name/opt).glob('*.mod'):pinned[str(mod)]=sha(mod)
   fc=os.environ.get('FC','gfortran');obj=b/'cycle.o';driver=b/'driver.o';exe=b/'cycle'
   run([fc,*flags,'-c',ROOT/'src/adapter/mod_crop_soil_n_saved_cycle_output.f90','-o',obj],b,'provider_compile')

@@ -194,6 +194,55 @@ program test_persistent_pond
  call restore_persistent_pond(2,0d0,0d0,0.25d0,0_int64,state,status)
  call require(status/=POND_OK,'version rejected')
  call same(state,saved,'version restore unchanged')
+ ! Explicit upward water must preserve the authenticated historical zero
+ ! chemical flux. It is deliberately rejected without the new selector.
+ do i=1,240
+  dt=real(i,real64)/256d0
+  call initialize_persistent_pond(0d0,0.5d0,0.25d0,state,status)
+  s=pond_step_t();s%t1=dt;s%depth_begin=0.5d0;s%qtop=0.04d0
+  s%rain_rate=0.1d0;s%rain_c=0.25d0;s%pond_evaporation_rate=0.05d0
+  s%depth_end=0.5d0+(s%rain_rate-s%pond_evaporation_rate+s%qtop)*dt
+  call advance_persistent_pond(state,s,next,r)
+  call require(r%status==POND_INVALID,'default upward water still rejected')
+  call same(state,next,'default upward rejection exact')
+  s%historical_zero_solute_exfiltration=.true.
+  call advance_persistent_pond(state,s,next,r)
+  call require(r%status==POND_OK,'explicit historical upward water')
+  call literal_surface(0.25d0,s%rain_rate,s%rain_c,0d0,0d0,s%qtop,s%depth_end,dt,c,transfer,remaining)
+  call require(r%soil_transfer==transfer.and.transfer==0d0.and.r%mass_after==remaining, &
+    'literal historical upward chemical flux')
+  call require(abs(r%water_residual)<1d-14.and.abs(r%mass_residual)<1d-14,'upward hard budgets')
+  saved=next
+  bad=s;bad%depth_end=bad%depth_end+1d-5
+  call advance_persistent_pond(state,bad,next,r)
+  call require(r%status==POND_WATER,'upward water mismatch rejected')
+  call same(state,next,'upward water failure exact')
+  bad=s;bad%qtop=1d6+1d0
+  call advance_persistent_pond(state,bad,next,r)
+  call require(r%status==POND_INVALID,'upward rate domain retained')
+  call same(state,next,'upward invalid input exact')
+  call saved%snapshot(clock,depth,mass,revision)
+  call restore_persistent_pond(1,clock,depth,mass,revision,restored,status)
+  call require(status==POND_OK,'upward state restore')
+  call same(saved,restored,'upward restored state exact')
+  ! All retained mass, including rain, can subsequently infiltrate. No
+  ! unreported loss or duplicated soil-to-pond transfer may accumulate.
+  s=pond_step_t();s%t0=clock;s%t1=clock+1d0;s%depth_begin=depth
+  s%qtop=-depth;s%exact_empty_pool_chemistry=.true.
+  call advance_persistent_pond(restored,s,next,r)
+  call require(r%status==POND_OK.and.r%mass_after==0d0.and.r%soil_transfer==mass, &
+    'upward retained mass remobilizes exactly')
+ end do
+ ! Upward water with runoff exports only the existing runoff mass.
+ call initialize_persistent_pond(0d0,1d0,3d0,state,status)
+ s=pond_step_t();s%t1=1d0;s%depth_begin=1d0;s%depth_end=0.75d0
+ s%qtop=0.25d0;s%runoff_depth=0.5d0;s%historical_zero_solute_exfiltration=.true.
+ call advance_persistent_pond(state,s,next,r)
+ call require(r%status==POND_OK.and.r%soil_transfer==0d0,'upward runoff accepted')
+ call require(abs(r%runoff_output-1.2d0)<1d-14.and.abs(r%mass_after-1.8d0)<1d-14, &
+   'upward runoff has one declared chemical export')
+ call require(abs(r%mass_residual)<1d-14.and.abs(r%water_residual)<1d-14,'upward runoff budgets')
+ print '(A)','HISTORICAL_ZERO_UPWARD_240_ORACLE_REJECTION_RESTORE_REMOBILIZE_RUNOFF=PASS'
  print '(A)','PERSISTENT_POND_LITERAL_240_DRY_REWET_BALANCE_REPLAY_RESTORE_NEGATIVES=PASS'
 contains
  subroutine same(a,b,label)

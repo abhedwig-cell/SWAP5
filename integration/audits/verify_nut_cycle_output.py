@@ -21,6 +21,10 @@ def projection():
   text=text[:at]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ native=ROOT/'integration/audits/native_project_admission.py'
+ if native.is_file():
+  successor=runpy.run_path(str(native))
+  if successor['enabled']():return successor['nut_source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'cycle baseline')
  for p,h in {**r['incumbent_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'cycle source '+p)
  require(reader(PARENT)==projection(),'original thermal owner bodies')
@@ -78,9 +82,17 @@ def validate(f):
  frozen=json.loads(f['PREDECESSOR.json']);require(frozen['baseline']==BASE and frozen['owner']['qualified']and len(frozen['controls'])==36,'complete exact cycle predecessor')
  return dict(qualified=True,status='COLD_HEAT_TWO_CROP_SAVED_OUTPUT_QUALIFIED',physical_modes=4,report_schedules=2,roundtrips=64,fresh_progressions=64,old_identity_rejections=64,crash_recoveries=8,manual_generations_exact=True,full_mc_nut01_closed=False)
 def verify():
+ native=ROOT/'integration/audits/native_project_admission.py'
+ if native.is_file():
+  successor=runpy.run_path(str(native))
+  if successor['enabled']():return successor['verify']()
  source();old=legacy();prior=old['verify']();v=validate(capsule())
  return {**prior,'qualified':True,'cycle_output':v,'qualification_scope':'EXPLICIT_COLD_HEAT_TWO_CROP_SAVED_OUTPUT_WITH_INCUMBENT_RAW_PRESERVATION'}
 def self_test():
+ native=ROOT/'integration/audits/native_project_admission.py'
+ if native.is_file():
+  successor=runpy.run_path(str(native))
+  if successor['enabled']():return successor['self_test']()
  source();old=legacy();prior=old['self_test']();require(len(prior)==36,'incumbent controls lost');controls=['incumbent:'+p for p in prior];f=capsule();validate(f)
  def reject(label,fn):
   try:fn()

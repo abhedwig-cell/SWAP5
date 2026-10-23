@@ -69,6 +69,8 @@ module mod_soil_water_solver_contract
      integer :: max_iterations = 0
      integer :: max_backtracking = 0
      integer :: conductivity_implicit_mode = 0
+     ! Explicit numerical policy; physical constitutive equations are unchanged.
+     logical :: picard_conductivity_iteration = .false.
      integer :: conductivity_mean_method = 0
      real(real64) :: min_step_duration = 0.0_real64
      real(real64) :: compartment_balance_tolerance = 0.0_real64
