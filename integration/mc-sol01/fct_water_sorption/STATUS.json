@@ -1,0 +1,44 @@
+{
+  "work_unit": "MC-SOL01-FCT-WATER-SORPTION01",
+  "baseline": "22cdf5700",
+  "stage": "QUALIFIED_BOUNDED_RESEARCH_NOT_NATIVE_OR_PRODUCTION",
+  "contract": "integration/mc-sol01/fct_water_sorption/CONTRACT.md",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_activated": false,
+  "native_qualified": false,
+  "actual_water_trace_qualified": false,
+  "time_series_accuracy_qualified": false,
+  "full_mc_sol01_closed": false,
+  "test_selection": {
+    "immediate": "192 checked O0/O2 real7-provider prescribed water-balanced single steps, independent nonlinear low/corrected oracle, exact solutions,2880 atomic rejections,384 OFF delegations",
+    "expected_seconds": 30,
+    "preservation": "current composed source/raw owner plus frozen prototype capsule",
+    "full_fci": "NOT_SELECTED_IMPACT: production and accepted runtime unchanged",
+    "native_year_restart": "NOT_SELECTED_SCOPE: not activated or qualified for native water traces",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED_IMPACT"
+  },
+  "execution_checkpoint": "103c97b1e",
+  "measurements": "integration/mc-sol01/fct_water_sorption/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_water_sorption/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "36764e94f77d3dbdd01f540abba9a672c2437ac4660398f7302a289e15ddc4d2",
+    "bytes": 83228,
+    "members": 812,
+    "controls": 8
+  },
+  "cost_seconds": 4.502036183017481,
+  "failed_attempt": "First192 native cases all passed; independent Brent assessment failed after100iterations at near-zero sharp tails. Original checkpoint/source/native streams and separate unchanged-oracle failure reproduction retained. Exact stable quadratic-root oracle replaces search, no physical gate changes. Intermediate successful oracle round remains local; final192-case checkpoint is the qualified sealed run.",
+  "preservation": {
+    "current_owner": "integration/audits/verify_nut_historical_output_caller.py",
+    "current_owner_qualified": true,
+    "current_owner_controls": 17,
+    "prototype_qualified": true,
+    "prototype_controls": 6,
+    "baseline": "22cdf5700"
+  },
+  "next_safe_work": "Qualify replay of actual accepted water-solver traces and nonlinear transient accuracy before production/native exposure. No native or full-year accuracy improvement inferred from these prescribed single steps. Canonical admission is recorded separately after actual-merge verification."
+}
