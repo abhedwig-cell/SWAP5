@@ -1050,6 +1050,15 @@
     "classification": "NOT_SELECTED",
     "check_runs": "UNKNOWN_NOT_EXPOSED"
   },
-  "master_registration": "PENDING_EXACT_NINE_EXISTING_BOUNDED_FACETS",
+  "master_registration": {
+    "head": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
+    "pr": 1072,
+    "draft": true,
+    "bounded_facets": 9,
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "inheritance_controls": 20,
+    "receipt": "integration/audits/MC_NUT01_THERMAL_CALENDAR_OUTPUT_MASTER_RECONCILIATION_20261023.json"
+  },
   "remaining": "General historical/default orchestration;saved-calendar rotation/harvest/fallow composition;active negative allocation;automatic snow/persistent-surface N. No full capability promotion."
 }
