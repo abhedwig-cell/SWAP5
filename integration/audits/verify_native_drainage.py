@@ -19,6 +19,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/single_zero_pool/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_single_zero_pool.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -98,8 +99,11 @@ def validate(f):
  cpu=js('cpu/result.json');assert cpu['status']=='ACTUAL_CPU_NOT_GENERAL_SPEED_CLAIM'and cpu['runs']['normal']['complete_days']==469 and cpu['runs']['wet']['complete_days']==6
  assert b'64          64'in f['headtol-diagnostic/stdout']
  return dict(qualified=True,status='BOUNDED_NATIVE_DRAMET3_DIVDRA_BOESTEN_469_DAY_QUALIFIED',bounded_days=469,full_original_Andelst=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False,canonically_admitted=False,frozen_predecessor_controls=75,current_NUT_HIST_processes=78,current_NUT_coupled_runs=10,current_NUT_process_restarts=20,current_SOL_research_water_traces=12,open_blocker='day470 Reference nonlinear iteration / wet day7')
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-nut01/single_zero_pool/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_single_zero_pool.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-nut01/single_zero_pool/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_single_zero_pool.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

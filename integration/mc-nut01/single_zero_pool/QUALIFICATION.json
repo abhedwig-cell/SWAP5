@@ -1,0 +1,89 @@
+{
+  "checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "2ac5bd84c87d62960da6b95b809a69039a9b8378b040d3c35b523636be4bd335"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "a57d0b9f0e9e50657534d63630f2547052e962d19eb048fe2d9a9ad92b712faa"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "2ac5bd84c87d62960da6b95b809a69039a9b8378b040d3c35b523636be4bd335"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "2ac5bd84c87d62960da6b95b809a69039a9b8378b040d3c35b523636be4bd335"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "measured_seconds": {
+    "direct": {
+      "compile": 1.8477107180078747,
+      "link": 0.14445486299518961,
+      "common_current": 0.008757331997912843,
+      "zero_current": 0.080355680998764,
+      "fraction_compile": 0.04098994999367278,
+      "fraction_link": 0.05632395299471682,
+      "fraction_native": 0.003501515995594673,
+      "invalid": 0.002329650000319816,
+      "common_previous": 0.01405519599938998,
+      "zero_previous": 0.02725635799288284
+    },
+    "initial_negative_fixture": {
+      "compile": 46.51143091805716,
+      "link": 0.32722642600128893,
+      "trace_native": 0.0017212870006915182,
+      "native": 0.20442805600032443
+    },
+    "interrupted_source_binding": {
+      "compile": 179.67459381596564,
+      "link": 0.6488960010028677,
+      "trace_native": 0.002989424996485468,
+      "native": 13.548994835997291,
+      "restart_native": 33.83829457101092
+    },
+    "current_hist": {
+      "compile": 119.60647765696922,
+      "link": 0.645955474996299,
+      "trace_native": 0.0032784110007924028,
+      "native": 13.916078909991484,
+      "restart_native": 34.13794543000404,
+      "compiler": 0.0021387880042311735
+    },
+    "current_joint": {
+      "compile": 20.24342579599761,
+      "link": 0.32180041200626874,
+      "previous_compile": 0.489565391013457,
+      "previous_link": 0.3192390740077826,
+      "previous_native": 0.27930541000387166,
+      "native": 5.512633194972295,
+      "restart_native": 7.052828292988124
+    }
+  },
+  "qualified_head": "aeaf988a12235fe46f790a4e4a2f57131ab8c8bb",
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "predecessor_controls": {
+    "drainage": 36,
+    "zero_pool": 75
+  },
+  "new_controls": 23,
+  "total_controls": 134,
+  "docs": {
+    "source": "PASS",
+    "strict_mkdocs": "PASS"
+  },
+  "research_preservation": {
+    "pr": 1406,
+    "controls": 8,
+    "status": "PASS",
+    "source_reads": "current exact inputs",
+    "portability": "Only original recorded absolute compile-root identity projected; assertions unchanged",
+    "production_activated": false
+  },
+  "full_mc_nut01_closed": false
+}
