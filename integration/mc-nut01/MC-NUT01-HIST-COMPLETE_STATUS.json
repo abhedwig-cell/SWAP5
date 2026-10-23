@@ -5021,7 +5021,7 @@
     },
     "thermal_fallow_successor_20261022": {
       "baseline": "f4ef44cb20cfb73ae7a582487790a4eb0292b144",
-      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER_RECEIPT",
+      "stage": "CANONICALLY_ADMITTED_MASTER_REGISTERED",
       "implemented": true,
       "persisted": true,
       "tested": true,
@@ -5030,7 +5030,7 @@
       "contract": "docs/science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md",
       "scope": "Explicit actual Richards/accepted-temperature/material/retired-crop chemistry with saved harvest next-day diagnostics, complete certified thermal generation and independent process restart. Cold saved-output bytes preserved.",
       "test_selection": "Persisted contract selects five fresh modules plus source/artifact/flag/compiler-bound unchanged331-provider closure; expected cold plus thermal under300s. Fresh cold full saved-output O0/O2, actual thermal first2 incumbent days plus harvest/retire/2 fallow days, literal original depth-temperature and harvest-addition/previous-day oracles, hard water/whole-N, phase/day restart, rollback/save/view/replay/environment/root/heat-input and parameter identity negatives, four process kills per route. Initial extraction-import error retained NOT_USED; successful development rerun retained separately. Final thermal rerun adds unallocated forcing safety. Exact detached predecessor19 controls retained; broad FCI,highestlowair,newRossFast,aquifer NOT_SELECTED_IMPACT/POLICY.",
-      "next_action": "Register bounded thermal fallow receipt on the existing nine-row master. Successor-crop/rotation and heat-calendar output,general/default orchestration,active-crop negative allocation and automatic snow/persistent-surface N remain open.",
+      "next_action": "Thermal harvest/amended-fallow output is admitted and registered. Next separately owned output contracts: successor-crop/rotation and heat-specific calendar; general/default historical orchestration,active-crop/immobilisation negative allocation and automatic snow/persistent-surface N remain open. Preserve original previous-day semantics,complete physical/diagnostic-memory restart and all full-row dispositions; no full MC-NUT01 closure.",
       "evidence_index": "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json",
       "evidence_index_sha256": "650f28dc35a07066beddcd46f162ecc1dd5c6d510c51dd442ad04e5d9259f355",
       "execution_result": {
@@ -5633,7 +5633,9 @@
       "actual_merge_tree": "9b7bfa194270283c561eeb0c7840957ef9c8dc18",
       "admission_receipt": "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json",
       "postmerge_owner": "PASS",
-      "postmerge_controls": 36
+      "postmerge_controls": 36,
+      "master_receipt": "995167735ba529fe01c2be429aad97628af63546",
+      "master_rows_promoted": false
     },
     "saved_residue_successor_20261022": {
       "baseline": "0be6037b670fdd3cb004ff616b0925291ae56728",

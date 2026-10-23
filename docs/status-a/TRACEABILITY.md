@@ -5,7 +5,9 @@ MC-NUT01 current thermal harvest/fallow output: the
 `thermal_fallow_successor_20261022`, source-bound6354-member capsule and
 `verify_nut_thermal_fallow_output.py` own the fresh current331-provider cold
 build,thermal/saved-output proof,36 corruption controls and exact actual PR1377
-merge atddaf00c3. Its admission receipt records unchanged original FSI35 compiled
+merge atddaf00c3. Existing master receipt995167735ba529fe01c2be429aad97628af63546
+updates nine bounded facets with234other rows and all243dispositions unchanged;
+20inheritance controls pass. Its admission receipt records unchanged original FSI35 compiled
 inputs/compiler and actual terminal native evidence separately from fresh NUT
 execution. No broad native rerun or complete master-row admission is inferred.
 
