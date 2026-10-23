@@ -52,3 +52,19 @@ inputs. Broad F-CI, highest low-air, new RossFast and aquifer are NOT_SELECTED_I
 General/default historical orchestration, arbitrary rotation input, active-crop
 negative allocation and automatic snow/persistent-surface nitrogen remain open.
 No full MC-NUT01/master capability promotion follows from this bounded route.
+
+Actual local execution passes O0/O2 in both modes and both reporting schedules.
+All complete independent physical/diagnostic generations match. The proof includes
+64 roundtrips,64 independent-process progressions,64 old-crop identity rejections,
+16 process kills on both sides of active and first-fallow gift publication with
+16 fresh continuations,1036 rejected day trials and216 replay rejections. Report
+schedules preserve identical physical endpoints. All fresh current cold/native
+results equal the admitted PR1382 physical specimen exactly.
+
+Measured current cold compile242.643s,link0.854s,native3.060s. Additional provider
+and driver compile95.016s,link0.771s,native/restart/identity checks22.412s. Individual
+killed-process wall receipts also include their subsequent fresh continuation;
+do not add those overlapping values to controller event sums. Physics-only time
+and full engineering/controller cost are UNKNOWN. The initial missing-include
+attempt remains retained as failed preparation,not qualified evidence. All130
+incumbent plus17 new source/raw corruption controls are selected before admission.

@@ -23,6 +23,7 @@ def projection():
   text=text[:at]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_calendar_output.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'heat-calendar baseline')
  for p,h in {**r['incumbent_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'heat-calendar source '+p)
  require(reader(PARENT)==projection(),'original native owner bodies')
@@ -97,10 +98,12 @@ def validate(f):
  native=json.loads(f['NATIVE_PREDECESSOR.json']);require(native['baseline']==NATIVE_BASE and native['owner']['qualified']and len(native['controls'])==60,'complete native predecessor')
  return dict(qualified=True,status='ACCEPTED_TEMPERATURE_CALENDAR_OUTPUT_QUALIFIED',optimizations=2,report_schedules=2,days_per_trajectory=3,roundtrips=12,fresh_progressions=8,crash_fresh_progressions=4,crash_recoveries=4,rejected_trials=170,replay_rejections=30,manual_generations_exact=True,production_sources_unchanged=True,full_mc_nut01_closed=False)
 def verify():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_calendar_output.py'))['verify']()
  source();old=legacy();prior=old['verify']();f=capsule();v=validate(f)
  frozen=dict(at=HIST_BASE,status='FROZEN_PREDECESSOR',owner=json.loads(f['PREDECESSOR.json'])['owner'])
  return {**prior,'qualified':True,'thermal_calendar_output':v,'historical_cycle_authority':frozen,'qualification_scope':'EXPLICIT_ACCEPTED_TEMPERATURE_CALENDAR_OUTPUT_WITH_CURRENT_NATIVE_AND_COMPLETE_INCUMBENT_PRESERVATION'}
 def self_test():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('saved_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_saved_calendar_output.py'))['self_test']()
  source();old=legacy();native=old['self_test']();require(len(native)==60,'native controls lost')
  prior=historical()['self_test']();require(len(prior)==53,'incumbent controls lost')
  controls=['native:'+p for p in native]+['incumbent:'+p for p in prior];f=capsule();validate(f)

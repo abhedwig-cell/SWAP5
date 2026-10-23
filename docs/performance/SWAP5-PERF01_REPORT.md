@@ -1,5 +1,12 @@
 # SWAP5-PERF01 runtime investigation
 
+23 October2026 update: the [current matched-kernel comparison](PERF01_CURRENT_431_20261023_RESULT.md)
+rebuilds original4.3.1 and current SWAP5 at O0/O2 and executes96 native processes.
+It retains near-roundoff physical agreement and broadly similar kernel costs;
+the later wet4/retry/accuracy improvements do not establish a complete
+weather/crop job ratio against4.3.1. Earlier tables below retain their original
+historical measurement scope.
+
 **Status:** bounded exact implementation admitted through PR #1335 at `5eec6ae73d3187630f244109380ef6adfadfe631`. Hosted canonical, PERF01, application, NUT and FSI35 checks pass; the merge tree exactly matches the qualified source and final evidence receipt. Baseline `b0c2e94b69d7d21519611af92866fb4dbf713ea2`; reconciled canonical `5ce0f1115a5ea89be54aacaae02ed61ab2ca2696`. The later canonical PR1337 changes two NUT input providers, outside all 178 application and age/preservation build inputs. The actual reactive runner was requalified on their combination with PERF01. See `integration/performance/SWAP5-PERF01_STATUS.json` for the live admission disposition.
 
 ## Main finding
