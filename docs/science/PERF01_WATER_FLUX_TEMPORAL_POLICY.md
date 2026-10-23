@@ -34,6 +34,9 @@ forcing, thermal, implicit pond, Boesten or wider constitutive/root options.
 Retained proposals and the existing atomic ordinary-policy day retry remain
 available; retry changes proposal retention, not this explicit accuracy policy.
 Native input/CLI selection is explicit and default OFF. No restart layout changes.
+The native option requires both `--retain-step-proposal` and explicit
+`--temporal-tolerance .001`; another legacy tolerance is rejected, so the new
+fixed depth/rate budgets cannot silently override a caller's requested budget.
 Different numerical policies may continue physical restart state, but equality is
 claimed only for continuations with identical policy/forcing/parameters.
 
@@ -48,3 +51,9 @@ No new1e-6, RossFast expansion, highest-low-air or unrelated full F-CI is select
 Affected invariants:2,3,5,7,13,22,23,25,26,29,30. New numerical configuration
 is worker/backend configuration, not persistent physical state. A focused PASS
 does not admit this option or rebind older owner evidence to changed providers.
+
+Concurrent PR1405 drainage and PR1406 FCT joint research are preserved from
+canonical `5659a644`. They do not widen this option's domain. Drainage remains
+excluded through the native proposal guard and the backend physical guard.
+The current preservation owner is now `verify_native_drainage.py`; admitting
+this changed shared interface requires its successor reconciliation as well.

@@ -30,6 +30,8 @@ def native(exe,args,stage,marker):
 def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False):
  if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
   raise ValueError('water/flux temporal metric requires frozen native Reference step proposals')
+ if water_flux_temporal and temporal_tolerance!=.001:
+  raise ValueError('water/flux temporal metric requires explicit .001 depth and rate budgets')
  if surface_exfiltration not in ['reject','historical_zero']:raise ValueError('unknown surface exfiltration law')
  if water_conductivity not in ['frozen','picard','picard_continuous']:raise ValueError('unknown water conductivity policy')
  if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
@@ -43,14 +45,15 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
   native(executables['project_reader'],['input.swp','scan'],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
-  paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop']}
+  paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop','pathdrain']}
   for r in references:
-   if r['kind']not in ['met','crop','rain']:continue
-   kind=r['kind'];folder=paths['pathcrop'if kind=='crop'else'pathatm'].replace('\\','/').strip()
+   if r['kind']not in ['met','crop','rain','drain']:continue
+   kind=r['kind'];folder=paths['pathcrop'if kind=='crop'else'pathdrain'if kind=='drain'else'pathatm'].replace('\\','/').strip()
    name=(Path(folder)/r['value'])if folder else Path(r['value'])
    path=resolve_file(swp.parent,str(name));raw=path.read_bytes();sources.append((kind+'_'+r['index'],raw))
-   (stage/({'met':'weather-','crop':'crop-','rain':'rain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain'}[kind])).write_bytes(raw)
+   (stage/({'met':'weather-','crop':'crop-','rain':'rain-','drain':'drain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain','drain':'.dra'}[kind])).write_bytes(raw)
   native(executables['project_reader'],['input.swp','prepare'],stage,b'SWP_NATIVE_PROJECT_PREPARED')
+  drainage=(stage/'drainage.nml').read_text()if(stage/'drainage.nml').exists()else''
   if any(r['kind']=='detailed_rain'for r in references):rain_events=list(csv.DictReader((stage/'rain_events.csv').open()))
   for r in references:
    if r['kind']!='crop':continue
@@ -100,6 +103,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   lines.insert(lines.index('&surface')-1,' bottom_legacy_origin='+repr(seasonal['legacy_origin']))
   lines.insert(lines.index('&surface')-1,' bottom_year_starts='+','.join(map(repr,years)))
  first_root=prepared[0]['root'].strip()
+ if drainage:lines.insert(lines.index('&surface')-1,drainage.rstrip())
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
@@ -152,7 +156,7 @@ def main():
  ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
  ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry')
- ap.add_argument('--water-flux-temporal',action='store_true',help='Optional changed-accuracy water-state/flux metric; requires --retain-step-proposal');a=ap.parse_args()
+ ap.add_argument('--water-flux-temporal',action='store_true',help='Optional changed-accuracy water-state/flux metric; requires --retain-step-proposal and --temporal-tolerance .001');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
  document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal)

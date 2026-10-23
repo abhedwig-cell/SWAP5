@@ -18,6 +18,7 @@ module mod_fmr_b111_pond_joint_application
        restore_matrix_solute_restart,MATRIX_OK
   use mod_solute_mobile_salt_state,only:mobile_salt_state_t
   use mod_solute_compartment_state,only:solute_compartment_state_t
+  use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
   use mod_fmr_b111_matrix_joint_application,only:matrix_joint_result_t,matrix_joint_states_match, &
     JOINT_OK,JOINT_INVALID,JOINT_WATER_REJECTED,JOINT_CHEMICAL_REJECTED,JOINT_COMMIT_REJECTED
   use mod_b111_persistent_pond
@@ -55,6 +56,7 @@ contains
     type(matrix_solute_state_t)::chemical_trial
     type(mobile_salt_state_t)::metric_mobile
     type(solute_compartment_state_t)::metric_companion
+    type(b111_reactive_solute_substep_forcing_t)::metric_chemistry
     real(real64),allocatable::metric_water(:)
     integer(int64)::metric_revision
     class(transaction_state_t),allocatable::candidate_physical
@@ -112,6 +114,11 @@ contains
       if(any(metric_mobile%mass_mg_cm2/=0.0_real64).or.metric_companion%solute_total()/=0.0_real64.or. &
         any(metric_companion%age_amount/=0.0_real64))return
       if(any([supply%rain_c,supply%irrigation_c,supply%runon_c,supply%dry_deposition_rate]/=0.0_real64))return
+      call chemical%configuration(metric_chemistry,metric_revision)
+      if(metric_chemistry%transport_scheme/=0.or.metric_chemistry%temperature_active)return
+      if(any([metric_chemistry%cdrain_mg_cm3,metric_chemistry%cseep_mg_cm3, &
+        metric_chemistry%rain_c_mg_cm3,metric_chemistry%irrigation_c_mg_cm3, &
+        metric_chemistry%runon_c_mg_cm3]/=0.0_real64))return
     end if
     call water%current_time(clock,ok)
     if(.not.ok.or..not.ieee_is_finite(t0).or..not.ieee_is_finite(t1))return

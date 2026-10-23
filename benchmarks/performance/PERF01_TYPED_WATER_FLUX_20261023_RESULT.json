@@ -1,0 +1,60 @@
+{
+  "status": "TYPED_BOUNDED_NATIVE_AND_BOESTEN_COMPOSITION_REPLAY_PASS_OWNER_ADMISSION_PENDING",
+  "qualified": false,
+  "canonically_admitted": false,
+  "native_option_processes": 62,
+  "expected_native_rejections": 10,
+  "actual_day48_restart_cases": 8,
+  "contract_native_processes": 12,
+  "expected_stale_fixture_rejections": 2,
+  "medians": {
+    "O0-base-1x": {
+      "default": 1.116330378994462,
+      "typed": 0.06761018600082025
+    },
+    "O0-base-4x": {
+      "default": 1.363680958005716,
+      "typed": 0.038893249999091495
+    },
+    "O0-stress-1x": {
+      "default": 0.6828302799985977,
+      "typed": 0.08837655000388622
+    },
+    "O0-stress-4x": {
+      "default": 0.46558289200038416,
+      "typed": 0.042596015002345666
+    },
+    "O2-base-1x": {
+      "default": 0.5631810639970354,
+      "typed": 0.026764779999211896
+    },
+    "O2-base-4x": {
+      "default": 0.6265152489941102,
+      "typed": 0.018150313997466583
+    },
+    "O2-stress-1x": {
+      "default": 0.28109908800252015,
+      "typed": 0.03298948999872664
+    },
+    "O2-stress-4x": {
+      "default": 0.21966851799516007,
+      "typed": 0.023178950999863446
+    }
+  },
+  "independent_water_max_mm": 7.658630674090006e-13,
+  "current_drainage_nut_owner": "PENDING_CHANGED_SHARED_INTERFACE_SUCCESSOR",
+  "corruption_controls": [
+    "native/O2-base-1x-typed-0/budget.csv",
+    "native/O0-stress-4x-resume/restart.bin",
+    "native/O2-1x-incumbent-no-proposal/state.csv",
+    "boesten-O0/rejected.bin",
+    "source/src/transaction/mod_transaction_reference.f90",
+    "contracts/RESULT.json"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_EVIDENCE.tar.xz",
+    "sha256": "b1785c2a97d8d6342fa788fb9b5c70572fddf6982d08a8aa678a25740b56d33e",
+    "bytes": 1063216,
+    "members": 2273
+  }
+}

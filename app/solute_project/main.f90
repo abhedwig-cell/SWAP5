@@ -15,6 +15,8 @@ program swap5_native_project_column
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
   use mod_b111_persistent_pond, only: pond_step_t
   use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t
+  use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_DRAMET3
+  use mod_drainage_dramet3_response,only:initialize_dramet3_channel_control,DRAMET3_OK
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED
   use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
@@ -43,6 +45,11 @@ program swap5_native_project_column
   logical :: seasonal_bottom=.false.
   logical :: boesten_evaporation=.false.
   real(real64) :: boesten_cofred=0d0
+  logical :: native_drainage=.false.
+  integer :: drain_table_count=0
+  real(real64) :: drain_resistance=0d0,drain_infiltration_resistance=0d0,drain_spacing_m=0d0,drain_bottom_cm=0d0
+  real(real64) :: drain_legacy_origin=0d0,drain_table_times(1024)=0d0,drain_table_heads(1024)=0d0
+  real(real64) :: drain_anisotropy(MAX_NODES)=0d0,drainage_amount=0d0
   integer :: bottom_year_count=0
   real(real64) :: bottom_amplitude=0d0,bottom_daymax=0d0,bottom_legacy_origin=0d0,bottom_year_starts(10)=0d0
   real(real64) :: bottom_amount
@@ -132,7 +139,9 @@ program swap5_native_project_column
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
-    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred
+    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred, &
+    native_drainage,drain_resistance,drain_infiltration_resistance,drain_spacing_m,drain_bottom_cm,drain_legacy_origin, &
+    drain_table_count,drain_table_times,drain_table_heads,drain_anisotropy
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -258,6 +267,8 @@ program swap5_native_project_column
     .not.continuous_mvg.and..not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
   call require(.not.water_flux_temporal.or.(retain_accepted_step_proposal.and..not.boesten_evaporation), &
     'water/flux temporal metric requires native plain-evaporation proposal route')
+  call require(.not.water_flux_temporal.or.temporal_tolerance==1d-3, &
+    'water/flux temporal metric uses explicit fixed .001 depth and rate budgets')
   call require(swp_water_bootstrap.and.all(root_cm_day==0d0),'native crop forbids prescribed second root sink')
   call require(root_table_points>=2.and.root_table_points<=MAX_ROOT_KNOTS,'root knot count')
   call require(all(ieee_is_finite([maximum_root_depth_cm,root_relative_depth,root_density, &
@@ -348,6 +359,35 @@ program swap5_native_project_column
   end if
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
+  if(native_drainage)then
+    call require(.not.dynamic_temperature.and..not.retain_accepted_step_proposal,'drainage composition outside scope')
+    call require(all(drain_cm_day==0d0),'duplicate drainage owner')
+    call require(drain_table_count>=1.and.drain_table_count<=1024,'drainage table capacity')
+    call require(all(ieee_is_finite([drain_resistance,drain_infiltration_resistance,drain_spacing_m, &
+      drain_bottom_cm,drain_legacy_origin,drain_table_times,drain_table_heads,drain_anisotropy])),'finite drainage')
+    call require(drain_spacing_m>=1d0.and.drain_spacing_m<=1d5,'drain spacing domain')
+    call require(all(drain_anisotropy(:numnod)>=.0001d0).and.all(drain_anisotropy(:numnod)<=1000d0), &
+      'drain anisotropy domain')
+    call require(all(drain_anisotropy(numnod+1:)==0d0),'inactive drainage geometry')
+    p%drainage_response_active=.true.;p%drainage_qbot_smooth_freatic_projection=.true.
+    allocate(p%drainage_response_levels(1),p%drainage_trial_distribution,forcing%drainage_response_controls(1))
+    deallocate(forcing%drainage_flux_by_level)
+    p%drainage_response_levels(1)%variant=FMR_DRAIN_VARIANT_DRAMET3
+    p%drainage_response_levels(1)%dramet3%drain_bottom_cm=drain_bottom_cm
+    p%drainage_response_levels(1)%dramet3%drainage_resistance_day=drain_resistance
+    p%drainage_response_levels(1)%dramet3%infiltration_resistance_day=drain_infiltration_resistance
+    p%drainage_response_levels(1)%dramet3%allocation_mode=3
+    p%drainage_response_levels(1)%dramet3%drain_type=1
+    call initialize_dramet3_channel_control(p%drainage_response_levels(1)%dramet3_channel,0d0,drain_legacy_origin, &
+      drain_table_times(:drain_table_count),drain_table_heads(:drain_table_count),code)
+    call require(code==DRAMET3_OK,'channel initialization')
+    p%drainage_trial_distribution%active_nodes=numnod
+    p%drainage_trial_distribution%dz=dz;p%drainage_trial_distribution%zbotcp=z-.5d0*dz
+    p%drainage_trial_distribution%saturated_conductivity=p%cofgen(3,:)
+    p%drainage_trial_distribution%horizontal_anisotropy_factor=drain_anisotropy(:numnod)
+    ! Historical L1 is metres; DIVDRA geometry and hydraulic view use cm.
+    p%drainage_trial_distribution%drain_spacing=100d0*drain_spacing_m
+  end if
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
   if(boesten_evaporation)then
     p%boesten_evaporation_active=.true.;allocate(p%boesten_evaporation,forcing%boesten_evaporation)
@@ -455,6 +495,7 @@ program swap5_native_project_column
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
   if(seasonal_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
+  if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
   write(u,'(A)')''
   do j=first,stop_after
@@ -562,6 +603,7 @@ program swap5_native_project_column
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
     if(seasonal_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
+    if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
     write(u,'(A)')''
     clock=t1
@@ -610,6 +652,7 @@ program swap5_native_project_column
 contains
   subroutine reset_day_totals()
     bottom_amount=0d0
+    drainage_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
     surface_exfiltration_amount=0d0
     transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
@@ -622,6 +665,7 @@ contains
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
         bottom_amount=bottom_amount+s%bottom_flux*(s%t1-s%t0)
+        drainage_amount=drainage_amount+sum(s%drainage_sink_by_level)*(s%t1-s%t0)
         transpiration_amount=transpiration_amount+sum(s%root_sink)*(s%t1-s%t0)
         if(substep_root_stress)then
           call require(s%substep_root_available,'accepted substep root diagnostics unavailable')

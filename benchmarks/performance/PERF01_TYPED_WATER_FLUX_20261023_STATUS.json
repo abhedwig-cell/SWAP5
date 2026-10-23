@@ -1,24 +1,69 @@
 {
   "work_unit": "PERF01_TYPED_WATER_FLUX",
   "baseline": "57e1b3f2635559df0db0350a96f0e06b2e3b9cc7",
-  "status": "IMPLEMENTED_PENDING_FOCUSED_AND_OWNER_QUALIFICATION",
+  "status": "BOUNDED_NATIVE_TESTS_PASS_CURRENT_OWNER_SUCCESSOR_PENDING",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
-  "authority_paths": ["docs/science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md", "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_boesten.py"],
-  "dependency_surface": ["transaction default assessment dispatch and all extensions", "pond temporal difference", "Reference backend", "native project", "joint zero-tracer guard", "native project CLI", "current native194-provider closure"],
-  "affected_invariants": [2,3,5,7,13,22,23,25,26,29,30],
+  "authority_paths": [
+    "docs/science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md",
+    "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md",
+    "integration/audits/verify_native_boesten.py"
+  ],
+  "dependency_surface": [
+    "transaction default assessment dispatch and all extensions",
+    "pond temporal difference",
+    "Reference backend",
+    "native project",
+    "joint zero-tracer guard",
+    "native project CLI",
+    "current native194-provider closure"
+  ],
+  "affected_invariants": [
+    2,
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25,
+    26,
+    29,
+    30
+  ],
   "interfaces_changed": "Source-compatible default model temporal_assessment; optional typed backend initialization policy; explicit native input/CLI selector",
   "test_selection": {
     "expected_seconds": 240,
     "selected": "O0/O2 direct estimator and incumbent transaction/context/pond contracts, current full native compilation, scoped base/root97day/restart/default physical composition",
     "criteria": "PR1404 unchanged base/root water/runoff/transpiration criteria; default bytes exact; O0/O2 and midpoint restart exact; missing metadata and unsupported inputs reject",
-    "not_selected": ["new1e-6", "RossFast expansion", "highest-low-air", "unrelated full FCI"]
+    "not_selected": [
+      "new1e-6",
+      "RossFast expansion",
+      "highest-low-air",
+      "unrelated full FCI"
+    ]
   },
-  "owning_preservation": "PENDING: changed common transaction/backend source invalidates old exact-source evidence. Focused PASS cannot replace current native/NUT/Boesten and applicable owning admission.",
-  "next_action": "Compile focused contracts, then real native O0/O2 composition and current owner reconciliation",
-  "recovery_point": "work/perf01-typed-water-flux-20261023",
-  "blockers": []
+  "owning_preservation": "PENDING: canonical PR1405 now dispatches through integration/audits/verify_native_drainage.py. Its exact scientific-delta/source guards correctly reject this changed common transaction/backend surface. Existing owning assertions have not been bypassed or rewritten.",
+  "next_action": "Reconcile typed-policy successor with current native drainage/NUT/Boesten and FCT preservation; retain all incumbent owner assertions and freshly execute affected current providers before production admission.",
+  "recovery_point": "work/perf01-typed-water-flux-20261023; local commits and sealed evidence; draft production option, not canonical",
+  "blockers": [],
+  "last_reconciled_head": "5659a644",
+  "tested_physical_checkpoint": "72770e26",
+  "test_controller_checkpoint": "66ae65c2",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_EVIDENCE.tar.xz",
+    "sha256": "b1785c2a97d8d6342fa788fb9b5c70572fddf6982d08a8aa678a25740b56d33e",
+    "bytes": 1063216,
+    "members": 2273
+  },
+  "native_option_processes": 62,
+  "expected_native_input_rejections": 10,
+  "actual_day48_restart_cases": 8,
+  "corruption_controls": 6,
+  "prototype_physical_bytes": "EXACT_ALL_BASE_ROOT_O0_O2_CASES",
+  "incumbent_preservation": "EXACT_NO_PROPOSAL_DEFAULT_AND_PROPOSAL_DEFAULT_NATIVE; CURRENT_BOESTEN_ROOT_POND_SOLUTE_ABA_V3_O0_O2_PASS",
+  "result": "docs/performance/PERF01_TYPED_WATER_FLUX_20261023_RESULT.md"
 }

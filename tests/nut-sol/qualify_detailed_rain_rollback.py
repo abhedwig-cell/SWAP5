@@ -7,6 +7,7 @@ def main():
  out=a.output.resolve();out.mkdir();src=a.fixture.resolve();events=[]
  for folder in ['weather data','crop data']:shutil.copytree(src/folder,out/folder)
  swp=out/'project.swp';swp.write_bytes((src/'project.swp').read_bytes())
+ if(src/'swap.dra').is_file():shutil.copy2(src/'swap.dra',out/'swap.dra')
  for rain in (out/'weather data').glob('andelst_rain.*'):
   lines=[]
   for line in rain.read_text().splitlines():
