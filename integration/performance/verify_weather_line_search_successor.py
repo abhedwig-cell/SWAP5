@@ -33,6 +33,7 @@ def projection():
         text=text[:at]+hook+text[at:]
     return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['retry_source'](reader,changed)
     r=record(reader);require(r['baseline']==BASE,'retry source baseline')
     git('merge-base','--is-ancestor',BASE,'HEAD')
     lines=git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()
@@ -48,6 +49,7 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
             if p not in delta:require(subprocess.run(['git','cat-file','-e',BASE+':'+p],cwd=ROOT,capture_output=True).returncode==0,'unknown caller path '+p)
     return json.loads(reader('integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'))['swp_water_successor']
 def fsi35_successors():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['fsi35_successors']()
     source();rows={p:dict(v)for p,v in record()['frozen_fsi35_successors'].items()}
     for p,row in rows.items():
         if p in PRODUCTION:row['canonical_blob']=git('rev-parse','HEAD:'+p)
@@ -61,6 +63,7 @@ def capsule():
         require(all(m.isfile() and not Path(m.name).is_absolute() and '..'not in Path(m.name).parts for m in ms),'unsafe retry member')
         return {m.name:t.extractfile(m).read()for m in ms}
 def verify():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['verify']()
     source();files=capsule();science=runpy.run_path(str(ROOT/CHECKER))['verify'](files)
     frozen=json.loads(files['frozen-canonical-owner.json'])
     require(frozen['qualified'] and frozen['current_source_tree']==git('rev-parse',BASE+':src') and
@@ -82,6 +85,7 @@ def verify():
         'line_search_retry':science,'fsi35_native':'PASS'if native else'PENDING_SEPARATE_ORIGINAL_NATIVE_GATE',
         'canonically_admitted':False,'default_on':False}
 def self_test():
+    if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_fallow_successor_20261022',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_fallow_output.py'))['self_test']()
     controls=[]
     for p in set(record()['postimages'])|{'src/crop/mod_crop_soil_n_day.f90',RUNNER}:
         try:source(lambda q:(ROOT/q).read_bytes()+(b'!'if q==p else b''))
