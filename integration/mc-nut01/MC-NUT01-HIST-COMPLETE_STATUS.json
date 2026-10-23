@@ -289,6 +289,44 @@
       "source_docs": "PASS",
       "strict_docs": "PASS",
       "full_master_scientific_qualification": false
+    },
+    "regular_limits_successor_20261023": {
+      "baseline": "d6f52d935c0bee6039051fe4e4a7b810df507822",
+      "implemented": true,
+      "persisted": true,
+      "tested": true,
+      "qualified": false,
+      "canonical_admitted": false,
+      "contract": "docs/science/MC_NUT01_FINITE_DONOR_LIMITS_20261023.md",
+      "relevant_paths": [
+        "src/process/mod_b111_soil_n_transport.f90",
+        "tests/nut-mineral/test_negative_limits.f90",
+        "tests/nut-mineral/run_negative_limits.py"
+      ],
+      "dependency_surface": [
+        "src/process/mod_b111_soil_n_transport.f90"
+      ],
+      "next_action": "Publish authorized draft. Before merge, reconcile source/evidence admission chain and requalify affected composition with current canonical HeadCalc.",
+      "blockers": [
+        "Active-crop competing sink allocation remains scientifically unspecified and is not enabled."
+      ],
+      "full_mc_nut01_closed": false,
+      "focused_result": "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_LOCAL_20261023.json",
+      "stage": "LOCAL_NUMERICAL_AND_AFFECTED_CONSUMER_PASS_NOT_ADMITTED",
+      "evidence_index": "integration/audits/evidence/mc-nut01-regular-limits-20261023/INDEX.json",
+      "local_gates": [
+        "516 O0/O2 ODE cases;461 newly accepted;39 corrected accepted-limit cases",
+        "84 incumbent bytes exact;default route bytes exact",
+        "12 mineral owner intervals per optimization with opaque restart and rejection atomicity",
+        "Fresh HIST O0/O2 and56 process continuations",
+        "Four coupled finite-donor calculations and eight independent-process restarts"
+      ],
+      "recovery_point": "Current work/nut-finite-donor-limits-20261023 local HEAD and downloadable aggregate patch/evidence package.",
+      "prior_publication_blocker": "Automatic approval review rejected git push: external publication authorization not recognized. No alternate write attempted.",
+      "publication_authorized": true,
+      "publication_scope": "User explicitly approved publishing this tested change as a draft PR to abhedwig-cell/SWAP5. No canonical admission claimed.",
+      "last_reconciled_upstream": "21871ca2be827bfd7c62cc3927ea822de631d383",
+      "canonical_delta_assessment": "NUT transport implementation unchanged upstream; PERF01 changed src/legacy/b1_10_port/headcalc.f90 and inherited source/evidence owners. Earlier local native tests do not qualify this new composition."
     }
   },
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",
