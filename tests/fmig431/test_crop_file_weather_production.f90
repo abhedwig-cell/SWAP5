@@ -569,7 +569,21 @@ contains
         call read_swap_daily_weather_file(trim(path),1999,1,20+d,wr,st)
         call require(st==SWAP_WEATHER_FILE_OK,'rooted authentic consecutive source record')
         call wr%growth_values(52.0_real64,iday,rad,solar,ok)
+
         call require(ok.and.iday==20+d,'Gregorian DOY from authenticated record')
+        if(j==1) then
+          call wr%values(wd,tmn,tmx,rain,etref,ok)
+          call require(ok,'EXT01 1999 sequential physical source weather available')
+          write(*,'(a,1x,i0,5(1x,es24.16))') 'F_WOF_EXT01_1999_SOURCE_SEQUENCE', &
+               19990120+d,tmn,tmx,rain,etref,rad
+        end if
+        if(j==1.and.d==3) then
+          call wr%values(wd,tmn,tmx,rain,etref,ok)
+          call require(ok,'EXT01 accepted source meteorology available')
+          write(*,'(a,1x,i0,5(1x,es24.16))') 'F_WOF_EXT01_PHYSICAL_SOURCE_WEATHER', &
+               19990123,tmn,tmx,rain,etref,rad
+        end if
+
         call b111_astro_oracle(iday,52.0_real64,rad,expected_solar)
         call require(all(transfer(solar,[0_int64],6)==transfer(expected_solar,[0_int64],6)), &
              'literal source astronomy arithmetic identity')
@@ -625,6 +639,17 @@ contains
                  'grown crop receipt contains its own actual previous accepted root extraction')
             aggregates%actual_root_uptake=crop_view%receipt%actual_root_uptake_integral
             aggregates%potential_transpiration=crop_view%receipt%potential_transpiration_integral
+            if (dayend .eqv. .false.) then
+              if(j==1.and.d==3) then
+                write(*,'(a,2(1x,es24.16))') 'F_WOF_EXT01_ACCEPTED_PAIR', &
+                     aggregates%actual_root_uptake,aggregates%potential_transpiration
+                call require(crop_view%receipt%valid.and.crop_view%receipt%final_revision>=0_int64, &
+                     'EXT01 real event identity must be ready')
+                write(*,'(a,2(1x,i0),2(1x,es24.16))') 'F_WOF_EXT01_ACCEPTED_IDENTITY', &
+                     crop_view%receipt%lineage_id,crop_view%receipt%final_revision, &
+                     crop_view%receipt%t0,crop_view%receipt%t1
+              endif
+            end if
             call expected_growth_from_record(before_owner,prior_wr,d,bundle,update,aggregates,expected_owner)
             call compare_complete_wofost_owners(wo,expected_owner)
             if(d==3) then
@@ -665,6 +690,9 @@ contains
         end do
         if(d<2) call require(uptake==0.0_real64,'pre-emergence root sink is physically zero')
         if(d>=2) call require(uptake>0.0_real64,'emerged crop drives actual nonzero soil extraction')
+        if (dayend .and. j==1 .and. d==2) then
+          write(*,'(a,1x,i0,1x,i0,1x,es24.16)') 'F_WOF_EXT01_REAL_ACCEPTED_UPTAKE',j,d,uptake
+        end if
         total_uptake=total_uptake+uptake
         if(.not.dayend.and.d==2) then
           crop_revision=cs%current_revision()
