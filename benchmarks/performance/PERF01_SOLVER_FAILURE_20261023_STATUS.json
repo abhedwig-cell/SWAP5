@@ -1,0 +1,86 @@
+{
+  "work_unit": "PERF01_NATIVE_SOLVER_FAILURE",
+  "baseline": "3461a520fd2858782058cacb56f3cde606f2a188",
+  "status": "QUALIFIED_RESEARCH_SEPARATE_WATER_STATE_AND_FLUX_BUDGETS",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "Generated four-cell zero-tracer native base and active empirical root-stress O0/O2 research only. Intermediate failed policies retained. Production policy interface not implemented or admitted.",
+  "canonically_admitted": false,
+  "production_changed": false,
+  "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_boesten.py"],
+  "dependency_surface": ["all current native194-provider inputs and artifacts", "current main", "original97day inputs", "HeadCalc", "current native source owner"],
+  "reconciliation": "PR1399 NUT and PR1400 Boesten alter native providers. Reuse only current guarded O0/O2 artifacts after checking all current inputs and object/module hashes. Original HeadCalc and transaction implementation remain exact.",
+  "affected_invariants": [2,5,7,13,23,24,26],
+  "research_question": "Which nonlinear phases and failed line searches cause incumbent proposal/fallback work? Does ending an exhausted nonimproving line search through existing restart/retry reduce complete97day cost?",
+  "candidate": "Generated executable only, frozen conductivity, prescribed bottom flux, existing native zero tracer proposal domain. Earlier rejection never changes acceptance criteria or physical origin; original saturated restart and day fallback retained.",
+  "interim_findings": "Generated early rejection fails1x day18 and4x day7 at O0/O2. Passive observer exact. Failed nonlinear phases consume only about4-5% of HeadCalc time; many successful phases recover after a failed line search. Complete independent temporal component observer to locate converged-but-rejected work.",
+  "additional_selection": {"expected_seconds": 40, "scope": "Passive O0/O2 full97day head/pond/gwl and cellwise water-content L1 differences; identical physical bytes; no new acceptance norm"},
+  "water_metric_research": {
+    "authority": "User prioritises water balance/runoff and permits small head trajectory differences. Research only, distinct changed accuracy comparison.",
+    "metric_cm": "max(sum(abs(theta_full-theta_half)*dz)+abs(pond_full-pond_half),abs(gwl_full-gwl_half))",
+    "budget_cm": 0.001,
+    "criteria": "Existing declared native proposal water/runoff/storage/total evaporation/transpiration limits, exact O0/O2 and actual day48 restart; report failures rather than adjust limits",
+    "scope": "Generated geometry-bound four-cell zero-tracer fixture only. All finite/domain and hard solver/mass gates remain. No production interface or default activation.",
+    "expected_seconds": 40
+  },
+  "active_root_discriminator": {
+    "scope": "Daily full physical states for base and synthetic active empirical drought/oxygen stress. New root profile h3l=-25,h3h=-50,h4=-400,h2=-10, oxygen enabled and substep root stress enabled. No long low-air test.",
+    "expected_seconds": 90,
+    "criteria": "Gross daily water<1e-9mm; daily runoff/storage/transpiration/total evaporation differences<.01mm; season runoff/transpiration differences<.05mm; actual O0/O2 and day48 restart exact. Criteria declared before execution; daily heads/theta observations retained regardless of PASS.",
+    "reason": "Large base speedup passes water criteria but base transpiration is demand limited; test actual root response before considering wider policy claims"
+  },
+  "flux_rate_refinement": {
+    "reason": "Water-state-only metric passes base but fails declared active-root runoff/storage/transpiration limits. Existing real trial outcomes expose integrated root uptake and total external water output for both sibling routes.",
+    "metric": "max(water-state L1, abs(full uptake-sum half uptake), abs(full external output-sum half output))/attempt_dt; existing groundwater guard retained within water-state measure",
+    "budget_cm_per_day": 0.001,
+    "criteria": "Unchanged previously declared base and active-root acceptance criteria; exact O0/O2 and day48 restart. No adjustment after results.",
+    "expected_seconds": 90,
+    "scope": "Generated transaction/provider research only; root outcome unavailable rejects explicitly. First attempt correctly rejects day1 because current native simple/empirical root route does not publish uptake in generic trial metadata. Generated backend now exports its actual unchanged qrot integral; no sink equation changes. Production interfaces, schemas and defaults unchanged. Broader separate runoff/evaporation flux components remain outside these generic outcome fields."
+  },
+  "separate_state_flux_budgets": {
+    "reason": "Dividing the already qualified water-state depth error by dt gives an unnecessarily different state accuracy requirement and loses1x speed. Test separate absolute state and per-day flux budgets, keeping the physical criteria fixed.",
+    "state_budget_cm": 0.001,
+    "uptake_and_total_export_rate_budget_cm_per_day": 0.001,
+    "expected_seconds": 90,
+    "criteria": "Same declared base and active-root limits, O0/O2 and actual day48 restart; all failures retained",
+    "scope": "Generated research only; no production activation"
+  },
+  "final_selected_research_validation": {
+    "scope": "Separate state and flux budgets pass declared base and active-root criteria. Re-run daily physical-state supplement with exact final generated transaction/backend objects; reconstruct pre-failure committed generation for each early-exit rejection.",
+    "expected_seconds": 60,
+    "admission": "Research evidence only. Geometry-bound prototype has no production policy interface and is not a production activation."
+  },
+  "test_selection": {
+    "expected_seconds": 90,
+    "selected": "O0/O2 current ordinary, passive nonlinear phase observer and early-exit research; full97day1x4x,3 O2 timing pairs, day48 restart, independent original-forcing water/runoff and head/evaporation observations",
+    "criteria": "Observer every physical byte exact ordinary. Probe daily gross water<1e-9mm, daily and season runoff<.01mm, daily storage<.01mm, daily total evaporation/transpiration<1e-8mm. O0/O2 and actual day48 restart exact.",
+    "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full FCI"]
+  },
+  "result": "docs/performance/PERF01_SOLVER_FAILURE_20261023_RESULT.md",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_SOLVER_FAILURE_20261023_EVIDENCE.tar.xz",
+    "sha256": "90625298ecde0e8501b5d24f6536163731e00dc1e484dc844baf5e088d60ff64",
+    "bytes": 966088,
+    "members": 1744
+  },
+  "scientific_native_processes": 184,
+  "expected_failed_policy_native_processes": 4,
+  "compile_link_events": 60,
+  "actual_day48_restart_cases": 32,
+  "actual_failed_complete_generation_checks": 4,
+  "research_corruption_controls": 10,
+  "current_native_nut_owner": "PASS_WITH52_CONTROLS",
+  "last_reconciled_head": "779224e5062c19d6536ef42a120e946ca1f65d61",
+  "reconciliation_note": "Concurrent NUT daily-exchange change is outside all194 actual native inputs; every provider/artifact hash rechecked. Concurrent accepted-trace FCT research changes no production input. Existing current owner dispatch and52 controls pass.",
+  "decisions": {
+    "early_failed_line_search": "REJECTED_NATIVE_DAY18_1x_DAY7_4x_AT_O0_O2",
+    "water_only_metric": "BASE_PASS_ACTIVE_ROOT_CRITERIA_FAIL",
+    "state_and_flux_rate_metric": "BASE_WATER_PASS_1x_SLOWER_NOT_SELECTED",
+    "separate_state_depth_and_flux_rate_metric": "BOUNDED_BASE_AND_ACTIVE_ROOT_RESEARCH_CRITERIA_PASS",
+    "production_policy": "UNCHANGED_NO_NEW_OPTION"
+  },
+  "next_action": "Publish research and verify actual merge. Next development is a typed opt-in production metric with geometry, real native uptake metadata, caller exclusions and full owning preservation; separately consider individual surface flux accuracy.",
+  "blockers": []
+}

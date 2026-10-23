@@ -1,0 +1,1584 @@
+{
+  "production_changed": false,
+  "changed_accuracy": true,
+  "stages": {
+    "solver": {
+      "status": "EARLY_REJECTION_REJECTED_CURRENT_NONLINEAR_OBSERVER_O0_O2_EXACT",
+      "events": 26,
+      "failed_events": 4,
+      "event_seconds": 42.04462889698334
+    },
+    "temporal": {
+      "status": "CURRENT_TEMPORAL_COMPONENT_OBSERVER_O0_O2_PHYSICAL_BYTES_EXACT",
+      "events": 10,
+      "failed_events": 0,
+      "event_seconds": 9.598030667002604
+    },
+    "water": {
+      "status": "WATER_METRIC_CHANGED_ACCURACY_O0_O2_RESTART_COMPLETE",
+      "events": 30,
+      "failed_events": 0,
+      "event_seconds": 15.070065329993668
+    },
+    "root": {
+      "status": "DAILY_STATE_AND_ACTIVE_ROOT_STRESS_DISCRIMINATOR_COMPLETE",
+      "events": 36,
+      "failed_events": 0,
+      "event_seconds": 23.12215116599691
+    },
+    "rate-all": {
+      "status": "WATER_METRIC_CHANGED_ACCURACY_O0_O2_RESTART_COMPLETE",
+      "events": 34,
+      "failed_events": 0,
+      "event_seconds": 38.05028309699264
+    },
+    "separate-base": {
+      "status": "WATER_METRIC_CHANGED_ACCURACY_O0_O2_RESTART_COMPLETE",
+      "events": 34,
+      "failed_events": 0,
+      "event_seconds": 33.151528008012974
+    },
+    "separate-stress": {
+      "status": "WATER_METRIC_CHANGED_ACCURACY_O0_O2_RESTART_COMPLETE",
+      "events": 34,
+      "failed_events": 0,
+      "event_seconds": 28.352800425978785
+    },
+    "final-root": {
+      "status": "DAILY_STATE_AND_ACTIVE_ROOT_STRESS_DISCRIMINATOR_COMPLETE",
+      "events": 36,
+      "failed_events": 0,
+      "event_seconds": 19.21641576501861
+    }
+  },
+  "nonlinear": {
+    "O0-1x": {
+      "1": {
+        "calls": 55170.0,
+        "iterations": 252854.0,
+        "backtracks": 264525.0,
+        "failed_lines": 2613.0,
+        "phases_with_failed_lines": 2601.0,
+        "seconds": 1.0224397970000019
+      },
+      "2": {
+        "calls": 1407.0,
+        "iterations": 11256.0,
+        "backtracks": 18472.0,
+        "failed_lines": 1364.0,
+        "phases_with_failed_lines": 1356.0,
+        "seconds": 0.05060332399999999
+      }
+    },
+    "O0-4x": {
+      "1": {
+        "calls": 62870.0,
+        "iterations": 304312.0,
+        "backtracks": 353028.0,
+        "failed_lines": 7127.0,
+        "phases_with_failed_lines": 7123.0,
+        "seconds": 1.3392676430000003
+      },
+      "2": {
+        "calls": 1670.0,
+        "iterations": 13360.0,
+        "backtracks": 24370.0,
+        "failed_lines": 896.0,
+        "phases_with_failed_lines": 880.0,
+        "seconds": 0.06309151700000001
+      }
+    },
+    "O2-1x": {
+      "1": {
+        "calls": 55170.0,
+        "iterations": 252854.0,
+        "backtracks": 264525.0,
+        "failed_lines": 2613.0,
+        "phases_with_failed_lines": 2601.0,
+        "seconds": 0.44746170199999985
+      },
+      "2": {
+        "calls": 1407.0,
+        "iterations": 11256.0,
+        "backtracks": 18472.0,
+        "failed_lines": 1364.0,
+        "phases_with_failed_lines": 1356.0,
+        "seconds": 0.018939219000000004
+      }
+    },
+    "O2-4x": {
+      "1": {
+        "calls": 62870.0,
+        "iterations": 304312.0,
+        "backtracks": 353028.0,
+        "failed_lines": 7127.0,
+        "phases_with_failed_lines": 7123.0,
+        "seconds": 0.536075716999999
+      },
+      "2": {
+        "calls": 1670.0,
+        "iterations": 13360.0,
+        "backtracks": 24370.0,
+        "failed_lines": 896.0,
+        "phases_with_failed_lines": 880.0,
+        "seconds": 0.028569965999999992
+      }
+    }
+  },
+  "temporal": {
+    "O0-1x": {
+      "assessments": 18249,
+      "rejects": 13459,
+      "head_max": 13459,
+      "pond_max": 0,
+      "gwl_max": 0,
+      "water_below_0.0001mm": 3038,
+      "water_below_0.001mm": 6814,
+      "water_below_0.01mm": 10817,
+      "water_below_0.1mm": 13353,
+      "water_identical": 611
+    },
+    "O0-4x": {
+      "assessments": 20687,
+      "rejects": 16460,
+      "head_max": 16460,
+      "pond_max": 0,
+      "gwl_max": 0,
+      "water_below_0.0001mm": 5177,
+      "water_below_0.001mm": 8268,
+      "water_below_0.01mm": 12915,
+      "water_below_0.1mm": 15788,
+      "water_identical": 1285
+    },
+    "O2-1x": {
+      "assessments": 18249,
+      "rejects": 13459,
+      "head_max": 13459,
+      "pond_max": 0,
+      "gwl_max": 0,
+      "water_below_0.0001mm": 3038,
+      "water_below_0.001mm": 6814,
+      "water_below_0.01mm": 10817,
+      "water_below_0.1mm": 13353,
+      "water_identical": 611
+    },
+    "O2-4x": {
+      "assessments": 20687,
+      "rejects": 16460,
+      "head_max": 16460,
+      "pond_max": 0,
+      "gwl_max": 0,
+      "water_below_0.0001mm": 5177,
+      "water_below_0.001mm": 8268,
+      "water_below_0.01mm": 12915,
+      "water_below_0.1mm": 15788,
+      "water_identical": 1285
+    }
+  },
+  "water": {
+    "water-O0-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.4678118090014323
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.0589568360010162
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": -0.3270984316019151
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": 0.32709843160191326
+        }
+      },
+      "native_median": {
+        "ordinary": 1.4678118090014323,
+        "water": 0.0589568360010162
+      },
+      "accepted_halfsteps": 656,
+      "head_difference_cm": 0.07156146220160764
+    },
+    "rate-all-O0-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.1645705569972051
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 1.6618610840014298
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 7.105427357601002e-14,
+          "sum_mm": 2.4868995751603507e-13
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 6.38378239159465e-15,
+          "sum_mm": -9.913944665207453e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.15165250708231237,
+          "sum_mm": -0.13633325948550543
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.15165250708231215,
+          "sum_mm": 0.13633325948549968
+        }
+      },
+      "native_median": {
+        "ordinary": 1.1645705569972051,
+        "water": 1.6618610840014298
+      },
+      "accepted_halfsteps": 13378,
+      "head_difference_cm": 0.0009461148327147839
+    },
+    "separate-base-O0-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.6397181400025147
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.07003546399937477
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": -0.3270984316019151
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": 0.32709843160191326
+        }
+      },
+      "native_median": {
+        "ordinary": 1.6397181400025147,
+        "water": 0.07003546399937477
+      },
+      "accepted_halfsteps": 656,
+      "head_difference_cm": 0.07156146220160764
+    },
+    "separate-stress-O0-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.66105292699649
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.09072649399604416
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true,
+        "season_transpiration": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.005111153867816409,
+          "sum_mm": 0.007681998161629677
+        },
+        "water_end_cm": {
+          "max_mm": 0.006105535651954597,
+          "sum_mm": 0.022347845389667498
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.006105535651946062,
+          "sum_mm": -0.012784845469535882
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.6623635771716662,
+          "sum_mm": -0.897353885612787
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.6623635771716657,
+          "sum_mm": 0.8973538856127863
+        }
+      },
+      "native_median": {
+        "ordinary": 0.66105292699649,
+        "water": 0.09072649399604416
+      },
+      "accepted_halfsteps": 588,
+      "head_difference_cm": 0.03591972538089294
+    },
+    "water-O0-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.7012287780016777
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.04437440099718515
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.270245821882834,
+          "sum_mm": -0.8990693889099276
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.27024582188283364,
+          "sum_mm": 0.8990693889099304
+        }
+      },
+      "native_median": {
+        "ordinary": 1.7012287780016777,
+        "water": 0.04437440099718515
+      },
+      "accepted_halfsteps": 514,
+      "head_difference_cm": 0.05706108917698316
+    },
+    "rate-all-O0-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.3307805679942248
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.8038212090032175
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.626188321310565e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.00785607639860686
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 1.8041124150158794e-15,
+          "sum_mm": 5.063224145507306e-16
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.18019364182586523,
+          "sum_mm": -0.6208439201346491
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.18019364182586517,
+          "sum_mm": 0.6208439201346495
+        }
+      },
+      "native_median": {
+        "ordinary": 1.3307805679942248,
+        "water": 0.8038212090032175
+      },
+      "accepted_halfsteps": 22502,
+      "head_difference_cm": 0.00036363597232025313
+    },
+    "separate-base-O0-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 1.7475345540005947
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.049339784993208013
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.270245821882834,
+          "sum_mm": -0.8990693889099276
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.27024582188283364,
+          "sum_mm": 0.8990693889099304
+        }
+      },
+      "native_median": {
+        "ordinary": 1.7475345540005947,
+        "water": 0.049339784993208013
+      },
+      "accepted_halfsteps": 514,
+      "head_difference_cm": 0.05706108917698316
+    },
+    "separate-stress-O0-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.4790986430016346
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.044065702000807505
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true,
+        "season_transpiration": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.002584903125034399,
+          "sum_mm": -0.0008145819927105058
+        },
+        "water_end_cm": {
+          "max_mm": 0.004929510926281466,
+          "sum_mm": 0.006371982674373555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.004929510926264327,
+          "sum_mm": -0.004114928934839895
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.248496440585336,
+          "sum_mm": -0.2338992809421519
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.24849644058533601,
+          "sum_mm": 0.2338992809421508
+        }
+      },
+      "native_median": {
+        "ordinary": 0.4790986430016346,
+        "water": 0.044065702000807505
+      },
+      "accepted_halfsteps": 472,
+      "head_difference_cm": 0.03528687658046081
+    },
+    "water-O2-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.7534361150028417
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.043771012002252974
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.8300196970012621
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.03652669100119965
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.6894288309995318
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.045341498000198044
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": -0.3270984316019151
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": 0.32709843160191326
+        }
+      },
+      "native_median": {
+        "ordinary": 0.7534361150028417,
+        "water": 0.043771012002252974
+      },
+      "accepted_halfsteps": 656,
+      "head_difference_cm": 0.07156146220160764
+    },
+    "rate-all-O2-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.5930372599978
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.8190091920041596
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.5724033639999107
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.8495133190008346
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.5625034879994928
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.7959804049969534
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 7.105427357601002e-14,
+          "sum_mm": 2.4868995751603507e-13
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 6.38378239159465e-15,
+          "sum_mm": -9.913944665207453e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.15165250708231237,
+          "sum_mm": -0.13633325948550543
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.15165250708231215,
+          "sum_mm": 0.13633325948549968
+        }
+      },
+      "native_median": {
+        "ordinary": 0.5724033639999107,
+        "water": 0.8190091920041596
+      },
+      "accepted_halfsteps": 13378,
+      "head_difference_cm": 0.0009461148327147839
+    },
+    "separate-base-O2-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.7976665829992271
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.0331569740010309
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.72944529200322
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.03821646000142209
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.7709083580048173
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.025635925005190074
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": -0.3270984316019151
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.26871205251802593,
+          "sum_mm": 0.32709843160191326
+        }
+      },
+      "native_median": {
+        "ordinary": 0.7709083580048173,
+        "water": 0.0331569740010309
+      },
+      "accepted_halfsteps": 656,
+      "head_difference_cm": 0.07156146220160764
+    },
+    "separate-stress-O2-1x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.3444892119950964
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.040945273998659104
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.3754583809932228
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.04556758399849059
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.35781906400370644
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.04692876800254453
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true,
+        "season_transpiration": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.005111153867816409,
+          "sum_mm": 0.007681998161629677
+        },
+        "water_end_cm": {
+          "max_mm": 0.006105535651954597,
+          "sum_mm": 0.022347845389667498
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.006105535651946062,
+          "sum_mm": -0.012784845469535882
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.6623635771716662,
+          "sum_mm": -0.897353885612787
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.6623635771716657,
+          "sum_mm": 0.8973538856127863
+        }
+      },
+      "native_median": {
+        "ordinary": 0.35781906400370644,
+        "water": 0.04556758399849059
+      },
+      "accepted_halfsteps": 588,
+      "head_difference_cm": 0.03591972538089294
+    },
+    "water-O2-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.750625027998467
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.021060872000816744
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.7779110789997503
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.028669166000327095
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.7420307360007428
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.022916119996807538
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.270245821882834,
+          "sum_mm": -0.8990693889099276
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.27024582188283364,
+          "sum_mm": 0.8990693889099304
+        }
+      },
+      "native_median": {
+        "ordinary": 0.750625027998467,
+        "water": 0.022916119996807538
+      },
+      "accepted_halfsteps": 514,
+      "head_difference_cm": 0.05706108917698316
+    },
+    "rate-all-O2-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.6571402789995773
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.453771571003017
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.7123893589960062
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.44547423199401237
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.6579800410036114
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.47779374600213487
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.626188321310565e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.00785607639860686
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 1.8041124150158794e-15,
+          "sum_mm": 5.063224145507306e-16
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.18019364182586523,
+          "sum_mm": -0.6208439201346491
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.18019364182586517,
+          "sum_mm": 0.6208439201346495
+        }
+      },
+      "native_median": {
+        "ordinary": 0.6579800410036114,
+        "water": 0.453771571003017
+      },
+      "accepted_halfsteps": 22502,
+      "head_difference_cm": 0.00036363597232025313
+    },
+    "separate-base-O2-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.6831487730014487
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.017751271996530704
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.672495982995315
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.01927366699965205
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.622762919003435
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.02031605599768227
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.270245821882834,
+          "sum_mm": -0.8990693889099276
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.27024582188283364,
+          "sum_mm": 0.8990693889099304
+        }
+      },
+      "native_median": {
+        "ordinary": 0.672495982995315,
+        "water": 0.01927366699965205
+      },
+      "accepted_halfsteps": 514,
+      "head_difference_cm": 0.05706108917698316
+    },
+    "separate-stress-O2-4x": {
+      "samples": [
+        {
+          "kind": "ordinary",
+          "repeat": 0,
+          "seconds": 0.22533883299911395
+        },
+        {
+          "kind": "water",
+          "repeat": 0,
+          "seconds": 0.02981090100365691
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 1,
+          "seconds": 0.2528467490046751
+        },
+        {
+          "kind": "water",
+          "repeat": 1,
+          "seconds": 0.021661525999661535
+        },
+        {
+          "kind": "ordinary",
+          "repeat": 2,
+          "seconds": 0.30099065299873473
+        },
+        {
+          "kind": "water",
+          "repeat": 2,
+          "seconds": 0.025898694999341387
+        }
+      ],
+      "criteria": {
+        "internal_water": true,
+        "runoff_daily": true,
+        "runoff_season": true,
+        "storage": true,
+        "transpiration": true,
+        "total_evaporation": true,
+        "season_transpiration": true
+      },
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.002584903125034399,
+          "sum_mm": -0.0008145819927105058
+        },
+        "water_end_cm": {
+          "max_mm": 0.004929510926281466,
+          "sum_mm": 0.006371982674373555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.004929510926264327,
+          "sum_mm": -0.004114928934839895
+        },
+        "soil_evaporation_cm": {
+          "max_mm": 0.248496440585336,
+          "sum_mm": -0.2338992809421519
+        },
+        "pond_evaporation_cm": {
+          "max_mm": 0.24849644058533601,
+          "sum_mm": 0.2338992809421508
+        }
+      },
+      "native_median": {
+        "ordinary": 0.2528467490046751,
+        "water": 0.025898694999341387
+      },
+      "accepted_halfsteps": 472,
+      "head_difference_cm": 0.03528687658046081
+    }
+  },
+  "root": {
+    "O0-1x-base": {
+      "max_daily_head_cm": 2.202788708537902,
+      "max_daily_theta": 0.00013536908796984992,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O0-1x-base": {
+      "max_daily_head_cm": 2.202788708537902,
+      "max_daily_theta": 0.00013536908796984992,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O0-1x-stress": {
+      "max_daily_head_cm": 1.8595566113796096,
+      "max_daily_theta": 0.00026338421602700723,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.07343426791990237,
+          "sum_mm": -0.16049986526744803
+        },
+        "water_end_cm": {
+          "max_mm": 0.0373829897027278,
+          "sum_mm": 0.046569461474259555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.0924526065507213,
+          "sum_mm": 0.1231168755674261
+        }
+      },
+      "criteria": {
+        "daily_runoff": false,
+        "season_runoff": false,
+        "storage": false,
+        "daily_transpiration": false,
+        "season_transpiration": false,
+        "total_evaporation": true
+      }
+    },
+    "final-O0-1x-stress": {
+      "max_daily_head_cm": 0.15335102059377448,
+      "max_daily_theta": 0.00013498123232957848,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.005111153867816409,
+          "sum_mm": 0.007681998161629677
+        },
+        "water_end_cm": {
+          "max_mm": 0.006105535651954597,
+          "sum_mm": 0.022347845389667498
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.006105535651946062,
+          "sum_mm": -0.012784845469535882
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O0-4x-base": {
+      "max_daily_head_cm": 0.153822899635216,
+      "max_daily_theta": 0.00013801704324400976,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O0-4x-base": {
+      "max_daily_head_cm": 0.153822899635216,
+      "max_daily_theta": 0.00013801704324400976,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O0-4x-stress": {
+      "max_daily_head_cm": 0.23565638783208342,
+      "max_daily_theta": 0.00026537668104820167,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.04173023514937313,
+          "sum_mm": -0.07352976142129652
+        },
+        "water_end_cm": {
+          "max_mm": 0.03762366279158158,
+          "sum_mm": 0.03963736523243
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.04845034348019458,
+          "sum_mm": 0.03590609862855405
+        }
+      },
+      "criteria": {
+        "daily_runoff": false,
+        "season_runoff": false,
+        "storage": false,
+        "daily_transpiration": false,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O0-4x-stress": {
+      "max_daily_head_cm": 0.15335102059377448,
+      "max_daily_theta": 0.0001376042140179834,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.002584903125034399,
+          "sum_mm": -0.0008145819927105058
+        },
+        "water_end_cm": {
+          "max_mm": 0.004929510926281466,
+          "sum_mm": 0.006371982674373555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.004929510926264327,
+          "sum_mm": -0.004114928934839895
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O2-1x-base": {
+      "max_daily_head_cm": 2.202788708537902,
+      "max_daily_theta": 0.00013536908796984992,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O2-1x-base": {
+      "max_daily_head_cm": 2.202788708537902,
+      "max_daily_theta": 0.00013536908796984992,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0,
+          "sum_mm": 0.0
+        },
+        "water_end_cm": {
+          "max_mm": 5.3290705182007514e-14,
+          "sum_mm": -8.881784197001252e-14
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 2.4980018054066022e-15,
+          "sum_mm": -3.2916377956659915e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O2-1x-stress": {
+      "max_daily_head_cm": 1.8595566113796096,
+      "max_daily_theta": 0.00026338421602700723,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.07343426791990237,
+          "sum_mm": -0.16049986526744803
+        },
+        "water_end_cm": {
+          "max_mm": 0.0373829897027278,
+          "sum_mm": 0.046569461474259555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.0924526065507213,
+          "sum_mm": 0.1231168755674261
+        }
+      },
+      "criteria": {
+        "daily_runoff": false,
+        "season_runoff": false,
+        "storage": false,
+        "daily_transpiration": false,
+        "season_transpiration": false,
+        "total_evaporation": true
+      }
+    },
+    "final-O2-1x-stress": {
+      "max_daily_head_cm": 0.15335102059377448,
+      "max_daily_theta": 0.00013498123232957848,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.005111153867816409,
+          "sum_mm": 0.007681998161629677
+        },
+        "water_end_cm": {
+          "max_mm": 0.006105535651954597,
+          "sum_mm": 0.022347845389667498
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.006105535651946062,
+          "sum_mm": -0.012784845469535882
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O2-4x-base": {
+      "max_daily_head_cm": 0.153822899635216,
+      "max_daily_theta": 0.00013801704324400976,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O2-4x-base": {
+      "max_daily_head_cm": 0.153822899635216,
+      "max_daily_theta": 0.00013801704324400976,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.0024793826057067925,
+          "sum_mm": 4.605538173052537e-11
+        },
+        "water_end_cm": {
+          "max_mm": 0.002479382605127256,
+          "sum_mm": -0.007856076397985134
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 5.551115123125783e-16,
+          "sum_mm": -1.3823577699190182e-15
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "O2-4x-stress": {
+      "max_daily_head_cm": 0.23565638783208342,
+      "max_daily_theta": 0.00026537668104820167,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.04173023514937313,
+          "sum_mm": -0.07352976142129652
+        },
+        "water_end_cm": {
+          "max_mm": 0.03762366279158158,
+          "sum_mm": 0.03963736523243
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.04845034348019458,
+          "sum_mm": 0.03590609862855405
+        }
+      },
+      "criteria": {
+        "daily_runoff": false,
+        "season_runoff": false,
+        "storage": false,
+        "daily_transpiration": false,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    },
+    "final-O2-4x-stress": {
+      "max_daily_head_cm": 0.15335102059377448,
+      "max_daily_theta": 0.0001376042140179834,
+      "differences": {
+        "runoff_cm": {
+          "max_mm": 0.002584903125034399,
+          "sum_mm": -0.0008145819927105058
+        },
+        "water_end_cm": {
+          "max_mm": 0.004929510926281466,
+          "sum_mm": 0.006371982674373555
+        },
+        "actual_transpiration_cm": {
+          "max_mm": 0.004929510926264327,
+          "sum_mm": -0.004114928934839895
+        }
+      },
+      "criteria": {
+        "daily_runoff": true,
+        "season_runoff": true,
+        "storage": true,
+        "daily_transpiration": true,
+        "season_transpiration": true,
+        "total_evaporation": true
+      }
+    }
+  },
+  "independent_daily_water_mm": 7.658630674090006e-13,
+  "status": "NONLINEAR_TEMPORAL_AND_CHANGED_ACCURACY_RESEARCH_REPLAY_PASS",
+  "water_only_active_stress_qualified": false,
+  "separate_budget_active_stress_criteria_pass": true,
+  "negative_controls": [
+    "solver/O2-1x-observer-0/state.csv",
+    "solver/O0-4x-early-0/budget.csv",
+    "temporal/O2-1x/temporal_components.csv",
+    "water/O2-4x-resume/restart.bin",
+    "root/O0-1x-stress-water/daily_physical.csv",
+    "rate-all/O2-1x-water-0/budget.csv",
+    "separate-stress/O2-4x-resume/restart.bin",
+    "original/4x.csv",
+    "rollback/O0-1x/restart.bin",
+    "final-root/O2-4x-stress-water/state.csv"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_SOLVER_FAILURE_20261023_EVIDENCE.tar.xz",
+    "sha256": "90625298ecde0e8501b5d24f6536163731e00dc1e484dc844baf5e088d60ff64",
+    "bytes": 966088,
+    "members": 1744
+  }
+}
