@@ -648,3 +648,12 @@ no master row is promoted. Owning contract and actual admission receipt:
 `integration/mc-nut01/single_zero_pool/ADMISSION.json`. Scientific discussion:
 [one stationary organic receiving pool](../science/MC_NUT01_SINGLE_ZERO_POOL_20261023.md).
 
+HIST-INTEGRATION01 day470 successor completes the original-DRA native481-day
+composition at O0/O2 with exact day365 restart. The failed saturated flux/flux
+solve receives one existing mass-guided initial guess for the matched continuous
+MvG/Picard pair; original acceptance and hard mass criteria are unchanged.
+Prior no-DRA481-day outputs remain exact. Current NUT resonance and SOL research
+are reconciled independently. Scope and admission stage:
+`integration/mc-sol01/drainage/DAY470_STATUS.json`. Full original Andelst,
+wet4x day7, macro/Cauchy3/heat and full SOL/NUT remain open. No master promotion.
+
