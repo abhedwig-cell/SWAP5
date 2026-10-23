@@ -262,7 +262,8 @@ contains
     if(f%nondepleting_top)then
       ! Same unconstrained WaterN ODE, with root loss included in qout and
       ! a signed constant production included in the aggregate top sink.
-      ! Accept only if there is no exhaustion: no sink partition is invented.
+      ! Competing constant sinks remain closed after exhaustion. The only
+      ! bounded exception is a sole constant crop sink with no net immobilisation.
       call evaluate_b111_soil_n_negative_boundary(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0, &
            f%wflux_out+tcsf*f%wflux_transp,f%wflux_inbot,f%wflux_intop,f%wflux_inlat, &
            ratecon,max(0d0,producpot),drybd,sorpcoef,cseep, &
@@ -270,15 +271,22 @@ contains
       if(r%status/=B111_NTRANS_OK)return
       ! An empty homogeneous equation stays exactly zero. This is not donor
       ! exhaustion: no prescribed production, boundary loading or top sink
-      ! needs to be partitioned. Keep every genuinely exhausting trial closed.
+      ! needs to be partitioned.
       empty_equilibrium=c0==0d0.and.producpot==0d0.and.ctop==0d0.and. &
         (f%wflux_inbot==0d0.or.cseep==0d0).and.(f%wflux_inlat==0d0.or.clat==0d0)
       if(r%depletion_time<f%dt_day.or.r%top_unmet>0d0.or. &
          (r%concentration_end<=0d0.and..not.empty_equilibrium))then
-        ! A depleted demand trial has a lower end concentration than every
-        ! admissible supply trial. Retain that ordering only for the caller's
-        ! comparison; its concentrations and extraction may never be committed.
+        ! Preserve the selector's exhausted-demand ordering, including zero ties.
         if(present(depleted))depleted=.true.
+        if(ctop==0d0.and.f%nminer_kg_m3>=0d0.and.producpot<0d0)then
+          ! With no prescribed top-N sink and nonnegative net mineralisation,
+          ! the only negative constant term is crop demand. The existing finite
+          ! donor receipt therefore belongs wholly to that crop sink. Restore
+          ! its actual signed production and remove the surrogate top receipt.
+          r%production_actual=r%top_actual_rate/f%depth_m
+          r%top_actual_rate=0d0;r%top_unmet=0d0
+          return
+        end if
         r%status=B111_NTRANS_INVALID;return
       end if
       r%production_actual=producpot

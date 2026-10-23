@@ -27,6 +27,7 @@ def projection(path):
   s=s[:at]+hook+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/crop_only_depletion/COMPOSITION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_crop_depletion_composed.py'))['source'](reader,changed)
  r=record(reader);assert r['base']==BASE and r['typed_predecessor']==TYPED
  git('merge-base','--is-ancestor',BASE,'HEAD');git('merge-base','--is-ancestor',TYPED,'HEAD')
  git('merge-base','--is-ancestor',FCT_BASE,'HEAD')
@@ -105,8 +106,11 @@ def validate(f):
   exact_historical_owner_controls=dict(typed=241,canonical=198),current_FCT=results,
   full_mc_sol01_closed=False,full_mc_nut01_closed=False,default_on=False,
   open_limits='Drainage day470/wet-day7 fail-closed limits unchanged; changed-accuracy bounded option only')
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-nut01/crop_only_depletion/COMPOSITION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_crop_depletion_composed.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-nut01/crop_only_depletion/COMPOSITION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_crop_depletion_composed.py'))['fsi35_successors']()
  source();rows=json.loads(capsule()['frozen/canonical/fsi35.json'])
  # Preserve original historical identities. Only this exact typed source
  # successor may update an actually changed current implementation identity.
@@ -117,6 +121,7 @@ def fsi35_successors():
   if old!=now:assert p in allowed;row['canonical_blob']=now
  return rows
 def self_test():
+ if (ROOT/'integration/mc-nut01/crop_only_depletion/COMPOSITION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_crop_depletion_composed.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()
