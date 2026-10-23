@@ -511,3 +511,152 @@ positive/negative bottom flow. Expected build60s, short feedback60s,
 481-day composition up to1800s. Existing annual evidence remains historical
 until actual application preservation; full F-CI NOT_SELECTED_IMPACT,
 highest low-air NOT_SELECTED_POLICY, RossFast unused.
+
+### Executed HIST-INTEGRATION01 evidence
+
+Both checked O0/O2 native seasonal runs complete481days using original
+1998/1999 weather and the retained constructed12-cell soil/three-crop fixture,
+SINAVE=-.01,SINAMP=.005,SINMAX=150, tolerance1e-3, implicit_upwind,
+picard_continuous and historical_zero exfiltration. Complete endpoints,
+budgets and public restart after day365 are byte-exact across optimizations.
+The independent gross balance includes the actual accepted bottom amount;
+maximum absolute residual6.24e-14cm. Default eight-day physical files retain
+exact incumbent identity. Short seasonal flow crosses zero in both directions.
+Existing LOW02 independent O0/O2 sine/calendar/dry-guard/A-B-A controls pass.
+
+The full original retained Andelst input is available in the existing
+MIGMAC10 gzip files, including swap.swp,swap.bbc,swap.dra,wintcer1/2,
+weather and rain files. The exact reconstructed B1.12 manifest is
+5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e.
+The full original O2 model returns100 with swap.ok and empty swap.err after
+283.27s;481daily outputs plus the initial state reproduce all existing B1.11
+DATE/RAIN/DRN/GWL fields exactly. These original outputs have no BALDEV or
+solute/N fields, so this is no newly certified original hard-mass comparison.
+A reporting-only absent-BALDEV error was repaired by validating retained raw
+files; no historical native rerun or input modification was needed.
+
+The original native SWAP5 attempt rejects SWRAIN3 before publication. Its
+other required compositions are SWCFBS1,SWREDU2,SWMACRO1,SWDRA1,
+external Cauchy SWBOTB3 and SWHEA1/SWCALT2; these remain open in this
+project front end. Original SWSOLU0 does not certify solute or nutrients.
+Kalmthout model archive/NetCDF files were not located by exact-title
+Library searches; this is an access/search result, not proof of absence.
+
+Paired normal97-day fixture timings compare1e-4 and1e-3 in alternating
+order, two executions each. They measure the Python launcher plus native
+child CPU, not isolated solver CPU or general production performance.
+Fourfold historical rain fails water at day6(1e-4) or day8(1e-3), before
+chemical replay. The old constant-bottom control also rejects day8.
+For both seasonal and constant1e-3 cases, the rejected committed binary
+equals a separate accepted-day7 endpoint exactly. This is retained failure
+evidence, not a qualification of this wet profile. No mass/clamp/tolerance
+change or new solver policy was introduced. The earlier repaired PERF01
+wet case remains a different, independently bounded application.
+
+Canonical admission must bind the exact seasonal postimage and the unchanged
+shared src tree. The existing SOL status child historical_integration01_20261023
+and verify_native_seasonal_bottom.py retain the full163-control incumbent
+receipt plus new native/raw corruption controls. No whole master row promotion.
+### Selected refined-year continuation, 23 October 2026
+
+Baseline `c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0`; PR1382 native
+production providers remain unchanged. The composed current source/raw owner
+and all130 current controls pass. Workspace maintenance removed the old native
+executables/compiler. The user authorized a work-directory-only GNU Fortran13
+installation; no system package installation is used. Ubuntu13.3.0 package
+identity and a checked OpenMP compile/link/native smoke are recorded locally.
+
+Select fresh checked native project O0/O2 builds. Execute the existing short
+native preparation/restart/rejection body on O0. Select the existing O2
+41-cell1998 annual body with implicit_upwind, picard_continuous and
+historical_zero. Retain original1e-4 temporal tolerance, original low
+dispersivities, strict daily gross water/solute balances, full versus day180
+split/fresh-process resume bytes and complete literal original fixed/ETpot
+preparation. The existing per-process1800s timeout remains binding; a failure
+or timeout is not a PASS and no physical tolerance is to be weakened.
+
+Scientific question: does the previously qualified98-day refined native prefix
+extend through the complete original forcing year while retaining conservation
+and independent restart? This closes a documented execution-coverage gap;
+it does not establish spatial convergence or the full historical Andelst model.
+No production implementation, physical contract or default changes are selected.
+Existing component science and latest NUT composition are inherited only with
+their unchanged source/raw identities; unrelated component preservation,
+RossFast, broad moving F-CI and highest low-air are NOT_SELECTED_IMPACT/POLICY.
+
+Expected compile/link cost200s; O0 short feedback under30s; O2 annual
+full/split/resume2400s combined, with actual costs reported separately.
+First98-day complete native cost was501.64s, with180.99s split and272.35s
+resume. These are preregistration estimates; completed results follow below.
+
+### Completed refined-year continuation, 23 October 2026
+
+The selected source-unchanged execution passes. Fresh checked O0/O2 closures
+contain194 physical providers and153 original TTUTIL providers; the ordinary
+project bundle reuses193 verified physical objects. O0 short preparation,
+physical execution and independent restart pass. O2 executes the entire365-day
+1998 constructed supported fixture on41 cells, with two crop periods and fallow.
+The independently executed day180 prefix matches every daily field exactly;
+fresh-process continuation matches all185 remaining daily budgets. Final
+`state.csv`, `endpoint.csv` and `restart.bin` are byte-identical to the full run.
+All98 previously qualified daily budget rows remain exact.
+
+The literal original fixed/ETpot preparation gives6570 exact annual values,
+6714 including both fresh short cases. Fourteen negative input/restart cases
+pass. Independent daily, cumulative and endpoint stock reconstruction passes;
+maximum daily water, solute and gross-water residuals are respectively
+2.904e-14cm,2.606e-13mg/cm2 and9.483e-14cm (rounded upwards). Final cell and
+surface stocks remain nonnegative. Original1e-4 temporal tolerance, low
+dispersivities and strict mass gates are unchanged.
+
+Actual native costs are1775.877s full,648.262s split and1154.923s resumed,
+each below the unchanged1800s process limit. There are417026 accepted annual
+substeps; these are local execution measurements, not portable speed claims.
+The execution checkpoint remains `7bde3165791a33120aeef0fc9828a5d790f066f8`,
+with the unchanged compiled source surface of `c2363394`. Later canonical
+`710b4173` adds unrelated NUT/performance work; all213 actual execution inputs
+remain exact. Its current composed source/raw owner and all147 controls pass.
+
+The2197-member source/raw capsule is
+`integration/mc-sol01/evidence/MC_SOL01_REFINED_YEAR_20261023.tar.xz.b64`,
+decoded SHA256 `7dfe7a6cee6666484ebbbc8614a979d8ea86b240f7a46ddb3b66358d27303b4e`.
+It retains the actual checkpoint/plan, compiler identity, generated original
+sources, build/native streams, complete physical generations and its own
+`verify_refined_year.py`. Eleven missing/corrupt/source/false-claim controls pass.
+The separate qualification record is
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json`;
+canonical admission is a separate actual-merge receipt.
+
+This supersedes only the earlier full-refined-year execution-coverage limit.
+It does not establish O0 annual execution, spatial convergence, original full
+Andelst equivalence, general/default historical dispatch or broader heat/snow/
+age/NUT composition. Production/defaults, all frozen capability dispositions,
+full MC-SOL01 and full MC-NUT01 flags remain unchanged.
+
+### Actual refined-year canonical admission, 23 October 2026
+
+PR1388 refined native year is canonically admitted at
+`8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0`; the complete merge tree exactly equals the
+qualified `ce3c27cec3af23dce16958eff3f8c5ec48317208`. Actual-merge capsule validation,
+all11 evidence controls and all163 current NUT preservation controls PASS.
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_ADMISSION_20261023.json`
+owns this admission. Production/defaults, capability dispositions and the
+qualification-time record are unchanged. Spatial convergence, the original full
+Andelst configuration, general historical/default dispatch and full SOL/NUT
+closure remain open.
+
+### Current canonical reconciliation
+
+Reconciled7ae093c5b32b4abfd10a6a37c8113ecffa2cdbb6, including the concurrent
+saturated-flux repair and refined-year admission. The complete193-provider
+current closure was hash verified and the new native application separately
+linked O0/O2. Both complete481-day/full/split/resumed executions were actually
+repeated, with the additional independent daily gross budget assertion.
+O0/O2 and old/current complete budget/state/endpoint/restart bytes are exact.
+The current wet day8 rejection retains exactly the same committed day7 state.
+The saturated-flux repair explicitly excludes Picard, so its successful plain
+MvG wet case does not qualify the failing Picard fixture. The full current
+predecessor owner and18 repair controls pass separately; the earlier163-control
+owner remains explicitly historical. Neither receipt is relabelled as a fresh
+whole NUT model execution. Current actual build/commands/raw artifacts are in
+the resealed existing HIST-INTEGRATION01 capsule.

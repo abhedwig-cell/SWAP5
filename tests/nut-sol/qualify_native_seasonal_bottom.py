@@ -1,5 +1,5 @@
 """Native seasonal SWBOTB2 composition, retained Reference defaults and restart."""
-import argparse,csv,gzip,hashlib,json,runpy,subprocess,sys,time
+import argparse,base64,csv,gzip,hashlib,json,runpy,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -40,11 +40,14 @@ def main():
   for p in ['state.csv','endpoint.csv','restart.bin']:assert (case/'full'/p).read_bytes()==(case/'resumed'/p).read_bytes(),(name,p)
   budget=rows(case/'full/budget.csv');assert len(budget)==(481 if long else 8)
   split=365 if long else 3;assert rows(case/'resumed/budget.csv')==budget[split:]
-  for d in budget:
+  text=(case/'full/input.nml').read_text()
+  audit=json.loads(base64.b64decode(''.join(l.split('=',1)[1]for l in text.splitlines()if l.startswith('! native_project_audit_base64='))))
+  for i,d in enumerate(budget):
    assert abs(d['water_residual_cm'])<1e-10 and abs(d['solute_residual_mg_cm2'])<1e-10
    for substance,unit in [('water','cm'),('solute','mg_cm2')]:assert abs(d[substance+'_end_'+unit]-d[substance+'_start_'+unit]-d[substance+'_in_'+unit]+d[substance+'_out_'+unit])<1e-10
    if amp:
-    gross=d['water_end_cm']-d['water_start_cm']-d['water_in_cm']+d['water_out_cm'];assert abs(gross)<1e-10
+    rain=float(audit['prepared_periods'][0]['rain'][i]['rain_cm_day'])
+    gross=d['water_end_cm']-d['water_start_cm']-rain+d['soil_evaporation_cm']+d['pond_evaporation_cm']+d['runoff_cm']+d['actual_transpiration_cm']-d['bottom_up_cm'];assert abs(gross)<1e-10
     assert abs(d['bottom_up_cm'])<=((.015 if long else amp)+1e-14)
   if name=='default':
    for p in ['state.csv','endpoint.csv','restart.bin','budget.csv']:assert(case/'full'/p).read_bytes()==old['daily/'+opt+'/dry/full/'+p],p

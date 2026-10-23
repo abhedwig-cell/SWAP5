@@ -1,0 +1,79 @@
+{
+  "schema": "SWAP5_MC_SOL01_REFINED_YEAR_ADMISSION_1",
+  "status": "BOUNDED_REFINED_NATIVE_YEAR_CANONICALLY_ADMITTED",
+  "canonically_admitted": true,
+  "pull_request": 1388,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1388",
+  "canonical_merge": "8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0",
+  "qualified_head": "217fc96ebccf5af8257e45aa024f3943f5285ab8",
+  "qualified_complete_tree": "ce3c27cec3af23dce16958eff3f8c5ec48317208",
+  "actual_merge_complete_tree": "ce3c27cec3af23dce16958eff3f8c5ec48317208",
+  "qualification_record": "integration/mc-sol01/MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json",
+  "qualification_record_sha256": "ee13f268e926059b14e7d5117f75941802c44adb698d63d8dce642258b0279ac",
+  "actual_merge_evidence_verification": {
+    "status": "SOURCE_UNCHANGED_REFINED_NATIVE_365_DAY_O2_QUALIFIED",
+    "days": 365,
+    "nodes": 41,
+    "optimizations": "O0 short; O2 complete year",
+    "independent_restart_day": 180,
+    "exact_terminal_files": 3,
+    "exact_prior_prefix_daily_budget_days": 98,
+    "original_annual_exact_values": 6570,
+    "rejection_controls": 14,
+    "original_total_exact_values": 6714,
+    "maxima": {
+      "water_cm": 2.9032332093947844e-14,
+      "solute_mg_cm2": 2.605051591109131e-13,
+      "gross_water_cm": 9.482171992036825e-14
+    },
+    "cumulative_residuals": {
+      "water_cm": -7.105427357601002e-15,
+      "solute_mg_cm2": 3.0393465522138285e-12
+    },
+    "annual_native_seconds": {
+      "full": 1775.876956303,
+      "split": 648.2621390220011,
+      "resumed": 1154.9226620699992
+    },
+    "annual_accepted_substeps": 417026,
+    "incumbent_source_raw_controls": 147,
+    "full_mc_sol01_closed": false,
+    "spatial_convergence": false,
+    "original_Andelst_model": false,
+    "controls": [
+      "missing:annual-O2/result.json",
+      "missing:annual-O2/O2/annual1998/full/budget.csv",
+      "missing:annual-O2/O2/annual1998/resumed/restart.bin",
+      "missing:prior-refined98-budget.csv",
+      "missing:preservation-current.json",
+      "foreign transport",
+      "false:full_mc_sol01_closed",
+      "false:spatial_convergence",
+      "false:original_Andelst_model",
+      "corrupt:annual-O2/O2/annual1998/full/budget.csv",
+      "corrupt:annual-O2/O2/annual1998/resumed/restart.bin"
+    ]
+  },
+  "actual_merge_preservation": {
+    "owner": "integration/audits/verify_nut_historical_output_caller.py",
+    "merge": "8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0",
+    "qualified": true,
+    "controls": 163,
+    "seconds": 30.70309231400097
+  },
+  "production_sources_defaults_tolerances_changed": false,
+  "capability_dispositions_changed": false,
+  "claims": {
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "spatial_convergence": false,
+    "original_Andelst_model": false,
+    "full_historical_default_orchestration": false,
+    "general_heat_snow_age_NUT_composition": false,
+    "portable_performance_claim": false
+  },
+  "next_safe_work": "Source-backed spatial/time accuracy and broader historical/default/heat/snow/age composition, without reclassifying this constructed supported fixture as the original full Andelst model.",
+  "execution_repeated_this_resume": false,
+  "reason": "Unchanged complete recorded execution surface; revalidated source/raw evidence and all current owner controls rather than repeating the expensive annual run.",
+  "hosted_qualification": "NOT_SELECTED_IMPACT: evidence/docs-only delta; no hosted PASS claimed"
+}

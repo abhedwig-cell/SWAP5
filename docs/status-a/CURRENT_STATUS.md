@@ -1,5 +1,50 @@
 # SWAP5 Status-A current status
 
+
+PR1388 refined native year is canonically admitted at
+`8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0`; the complete merge tree exactly equals the
+qualified `ce3c27cec3af23dce16958eff3f8c5ec48317208`. Actual-merge capsule validation,
+all11 evidence controls and all163 current NUT preservation controls PASS.
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_ADMISSION_20261023.json`
+owns this admission. Production/defaults, capability dispositions and the
+qualification-time record are unchanged. Spatial convergence, the original full
+Andelst configuration, general historical/default dispatch and full SOL/NUT
+closure remain open.
+
+
+MC-SOL01 refined native year,23 October2026: the existing explicit supported
+[native project](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md) passes all365
+1998 days on41 cells at O2, with byte-identical independent day180 restart and
+185 continued daily budgets. Fresh O0 short/O2 year builds,6714 original
+preparation values,14 negative cases,147 incumbent and11 new source/raw controls
+pass. No production/default change. The separate
+`MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json` owns this bounded proof;
+actual canonical admission is recorded separately. Earlier full-refined-year
+execution limits below are historical, not spatial convergence or full
+MC-SOL01/MC-NUT01 closure.
+
+
+PR1387 explicit historical saved-output caller is canonically admitted at
+`188f75ef04cd64a5a78ace0aa4b8977e7a130537`,complete merge tree exactly qualified
+`db1143475778b4a4bf302f20a00e20619b01673b`. Actual-merge owner and all163
+original/new controls PASS. The existing historical-caller child and
+`MC_NUT01_HISTORICAL_OUTPUT_CALLER_ADMISSION_20261023.json` own admission.
+Master receipt `40c8ff17d31ca4d3d4e707fd257bbc62c666d3a3` updates nine bounded facets,
+with234 other rows and all243 dispositions exact;20 inheritance controls pass.
+This is an explicitly selected application caller,not a general historical
+SWP/MET/CRP executable or default activation. Active negative allocation and
+automatic snow/persistent-surface N remain open;no full MC-NUT01 promotion.
+
+PERF01 saturated prescribed-flux restart,23 October2026: the
+[complete original-input comparison](../performance/PERF01_NATIVE_431_WEATHER_20261023_RESULT.md)
+now completes97-day1x/4x simple-crop/ETref runs with eight original iterations
+and unchanged hard balances. Fresh O0/O2, actual midpoint restarts, existing
+typed controls and original FSI35 native replay qualify the bounded numerical
+repair. Local source/evidence qualification and actual canonical admission are
+separate fields in `PERF01_NATIVE_431_WEATHER_20261023_STATUS.json`.
+This full application remains much slower than original B1.11 under different
+controllers/checks; no equivalent-accuracy speed claim or full SOL/NUT/master
+promotion. General surface reformulation remains future work.
 MC-NUT01 explicit historical saved-output application caller,23 October2026:
 the [bounded contract](../science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md)
 composes native SNM TRUE startup and committed-state active/harvest/incorporation/
