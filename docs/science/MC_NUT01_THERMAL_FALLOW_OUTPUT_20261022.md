@@ -73,3 +73,26 @@ are byte-identical in publicf4ef44cb. Preserve that independently checked body
 hash and the immutable original native receipt; use the public equivalent source
 for reproducible source checks. Compiler version/bytes and all original native
 assertions remain required. This is source continuity, not a new native execution.
+
+
+## Current retry composition and scratch recovery,23 October2026
+
+Canonical PR1378 at53010691 changes four shared Richards providers. The old
+f4ef44cb capsule remains historical evidence. A fresh331-provider cold O0/O2
+build is selected because previous local builds were lost; expected compile
+480..700seconds, focused cold/thermal saved-output execution below180seconds.
+The new cold and amended thermal fallow drivers execute all existing assertions.
+No equation, tolerance, state owner or default option is changed by this recovery.
+
+The canonical retry physical capsule and its raw assertions remain unchanged.
+Only its exact old codec is projected for that immutable physical observation.
+Fresh complete cold/thermal drivers must bind the new codec, preserve all old
+cold/thermal endpoints and re-execute complete independent-process restart,
+invalid-input and crash recovery. Source callbacks and original assertion bodies
+are preserved behind explicit additive dispatch, with unchanged public return
+shapes. FSI35 terminal evidence is inherited only with exact compiled inputs,
+runner and GNU13.3 version/executable identity; no new broad numerical run.
+
+The36-control composed owner includes six missing-retry-evidence rejections.
+No hosted zero-check observation is counted PASS. Actual canonical admission
+and nine-row master reconciliation are separate from local qualification.

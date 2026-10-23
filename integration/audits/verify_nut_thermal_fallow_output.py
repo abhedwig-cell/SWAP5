@@ -8,6 +8,9 @@ PARENT='integration/audits/verify_nut_saved_output.py'
 PERF='integration/performance/verify_weather_composed_successor.py'
 SELF='integration/audits/verify_nut_thermal_fallow_output.py'
 KEY='thermal_fallow_successor_20261022'
+COMPOSITION_BASE='53010691c79d3e132914ce372059cf873d88b96d'
+RETRY='integration/performance/verify_weather_line_search_successor.py'
+GEN='src/adapter/mod_crop_n_saved_generation.f90'
 SCIENCE=['src','app','tools','tests','examples','reference','.github','integration/audits','integration/performance','integration/diagnostics']
 def sha(b):return hashlib.sha256(b).hexdigest()
 def require(ok,why):
@@ -15,14 +18,14 @@ def require(ok,why):
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def historical(p):return subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT)
 def record(reader=lambda p:(ROOT/p).read_bytes()):return json.loads(reader(STATUS))['extended_output_component_20261021'][KEY]
-def projection(path=PARENT):
+def initial_projection(path=PARENT):
  text=historical(path).decode();condition="'postimages' in json.loads((ROOT/'"+STATUS+"').read_text())['extended_output_component_20261021'].get('"+KEY+"',{})"
  for name,args in [('source','reader,changed'),('verify',''),('self_test','')]:
   offset=text.index('\n',text.index('def '+name+'('))+1
   indent=text[offset:offset+len(text[offset:])-len(text[offset:].lstrip(' '))]
   text=text[:offset]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[offset:]
  return text.encode()
-def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+def initial_source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  r=record(reader);require(r['baseline']==BASE,'saved baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
  require(reader(PARENT)==projection(),'original harvest owner assertions')
@@ -35,6 +38,43 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  require(delta==r['scientific_delta'],'foreign saved-output science')
  require(all(k=='A'or p in [PARENT,PERF,'src/adapter/mod_crop_n_saved_generation.f90'] for p,k in delta.items()),'changed incumbent physical implementation')
  return r
+def composition_bytes(p):return subprocess.check_output(['git','show',COMPOSITION_BASE+':'+p],cwd=ROOT)
+def projection(path=PARENT):
+ if path==PERF:return composition_bytes(PERF)
+ text=composition_bytes(path).decode()
+ condition="'postimages' in json.loads((ROOT/'"+STATUS+"').read_text())['extended_output_component_20261021'].get('"+KEY+"',{})"
+ names=[('source','reader,changed'),('verify',''),('self_test','')]
+ if path==RETRY:names.append(('fsi35_successors',''))
+ for name,args in names:
+  offset=text.index('\n',text.index('def '+name+'('))+1
+  indent=text[offset:offset+len(text[offset:])-len(text[offset:].lstrip(' '))]
+  target='retry_source'if path==RETRY and name=='source'else name
+  text=text[:offset]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+target+"']("+args+")\n"+text[offset:]
+ return text.encode()
+def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ r=record(reader);require(r['baseline']==BASE and r['composition_baseline']==COMPOSITION_BASE,'thermal fallow exact baseline')
+ for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
+ for p in [PARENT,PERF,RETRY]:require(reader(p)==projection(p),'original owner assertions '+p)
+ current=json.loads(reader(STATUS));current['extended_output_component_20261021'].pop(KEY)
+ require(current==json.loads(composition_bytes(STATUS)),'unrelated NUT authority')
+ require(not git('status','--porcelain','--',*SCIENCE),'dirty thermal fallow science')
+ git('merge-base','--is-ancestor',COMPOSITION_BASE,'HEAD')
+ delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',COMPOSITION_BASE,'HEAD','--',*SCIENCE).splitlines()}
+ require(delta==r['scientific_delta'],'foreign thermal fallow science')
+ require(all(k=='A' or p in [PARENT,RETRY,GEN]for p,k in delta.items()),'changed incumbent physical implementation')
+ if changed is not None:
+  for p in changed:
+   if p not in delta:require(subprocess.run(['git','cat-file','-e',COMPOSITION_BASE+':'+p],cwd=ROOT,capture_output=True).returncode==0,'unknown caller source '+p)
+ return r
+def retry_source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ source(reader,changed)
+ return json.loads(reader('integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json'))['swp_water_successor']
+def fsi35_successors():
+ source();retry=runpy.run_path(str(ROOT/RETRY));rows={p:dict(v)for p,v in retry['record']()['frozen_fsi35_successors'].items()}
+ for p,row in rows.items():
+  if p in retry['PRODUCTION']:row['canonical_blob']=git('rev-parse','HEAD:'+p)
+  require(row['canonical_blob']==git('rev-parse','HEAD:'+p),'stale FSI35 successor '+p)
+ return rows
 def capsule():
  r=record();p=ROOT/r['evidence_index'];require(sha(p.read_bytes())==r['evidence_index_sha256'],'saved index')
  index=json.loads(p.read_text());raw=base64.b64decode(b''.join((p.parent/'evidence.tar.xz.b64').read_bytes().split()),validate=True)
@@ -45,6 +85,7 @@ def capsule():
  require(f.keys()==index['members'].keys()and all(sha(v)==index['members'][p]for p,v in f.items()),'saved member inventory')
  return f
 def validate(f):
+ validate_current_build(f)
  def js(p):return json.loads(f[p])
  def envelope(raw):
   require(raw[:8]==b'S5NS0001','saved envelope magic')
@@ -124,17 +165,20 @@ def self_test():
   try:fn()
   except(ValueError,KeyError,AssertionError,UnicodeError,struct.error):controls.append(name);return
   raise ValueError('saved corruption accepted '+name)
- for p in ['src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90','src/adapter/mod_crop_soil_n_thermal_saved_output.f90','src/adapter/mod_crop_ext_saved_residue.f90','src/adapter/mod_crop_n_saved_generation.f90','src/adapter/mod_crop_soil_n_saved_harvest.f90','src/adapter/mod_crop_soil_n_saved_output.f90','src/crop/mod_crop_soil_n_day.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',PARENT,PERF]:
+ for p in ['src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90','src/adapter/mod_crop_soil_n_thermal_saved_output.f90','src/adapter/mod_crop_ext_saved_residue.f90','src/adapter/mod_crop_n_saved_generation.f90','src/adapter/mod_crop_soil_n_saved_harvest.f90','src/adapter/mod_crop_soil_n_saved_output.f90','src/crop/mod_crop_soil_n_day.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',PARENT,PERF,RETRY]:
   reject('source '+p,lambda p=p:source(lambda x:(ROOT/x).read_bytes()+(b'!'if x==p else b'')))
- for p in ['component/result.json','thermal/result.json','thermal/driver.f90','thermal/O0/saved-roundtrip-1','thermal/O2/deferred-continue-3.day-4','PREDECESSOR.json']:
+ for p in ['component/result.json','thermal/result.json','thermal/driver.f90','thermal/O0/saved-roundtrip-1','thermal/O2/deferred-continue-3.day-4','PREDECESSOR.json','build/cold/result.json','build/thermal/result.json','build/cold/0000.stdout','build/thermal/driver.f90']:
   bad=dict(f);bad.pop(p);reject('missing '+p,lambda bad=bad:validate(bad))
  for p in ['thermal/O0/endpoint.stages.saved.failed-stage','thermal/O2/endpoint.stages.deferred.manual-day-3','thermal/O0/endpoint.stages.saved.view-memory-4','thermal/O2/endpoint.stages.saved.phase-3.after-invalid','thermal/O0/crash-after/recovered','thermal/O0/endpoint.stages.saved.environment-day-3']:
   bad=dict(f);bad[p]+=b'!';reject('changed '+p,lambda bad=bad:validate(bad))
  for p in ['cold/O0/endpoint.stages.saved.day-3','cold/O2/endpoint.stages.deferred.manual-day-4']:
   bad=dict(f);bad[p]+=b'!';reject('cold drift '+p,lambda bad=bad:cold_validate(bad))
  bad=dict(record()['scientific_delta']);bad['src/foreign_saved.f90']='A';reject('foreign science',lambda:source(changed=bad))
+ retry=runpy.run_path(str(ROOT/RETRY));rf=retry['capsule']()
+ for p in ['on-season-O2-4x/native/stdout','season-O0-4x/native/stdout','root-substep-transaction/0001.stdout','nut-owner/thermal/O2/output.restart.environment-after','saved-owner/physical/O2/deferred-continue-3.day-4','on-restart-native/stdout']:
+  bad=dict(rf);bad.pop(p);reject('retry missing '+p,lambda bad=bad:retry_physics(bad))
  return controls
-def verify_current_predecessor(native_body_sha256):
+def initial_verify_current_predecessor(native_body_sha256):
     # Preserve the admitted PERF01 raw assertions and public FSI35 source continuity.
     perf = runpy.run_path(str(ROOT / PERF))
     record, evidence = perf['record'], perf['evidence']
@@ -222,6 +266,49 @@ def verify_current_predecessor(native_body_sha256):
             'source_tree': git('rev-parse', 'HEAD:src'), 'qualified': True,
             'qualification_scope': 'CURRENT_BOUNDED_WEATHER_SOL_ROOT_SUBSTEP_NUT_CALENDAR_COMPOSITION',
             'canonically_admitted': False, 'fsi35_native': record().get('fsi35_native', 'PENDING')}
+
+def validate_current_build(f):
+ cold=json.loads(f['build/cold/result.json']);heat=json.loads(f['build/thermal/result.json'])
+ saved=json.loads(f['cold/result.json']);thermal=json.loads(f['thermal/result.json'])
+ require(cold['status']=='NATIVE_TRUE_OUTPUT_PROJECT_O0_O2_FRESH_PASS' and heat['status']=='THERMAL_OUTPUT_ACTUAL_O0_O2_RESTART_ATOMIC_PASS','fresh complete build status')
+ require(saved['cold_proof_sha256']==thermal['cold_proof_sha256']==sha(f['build/cold/result.json']),'complete fresh cold source chain')
+ require(thermal['thermal_proof_sha256']==sha(f['build/thermal/result.json']),'complete fresh heat source chain')
+ for prefix,r in [('build/cold',cold),('build/thermal',heat)]:
+  require(sha(f[prefix+'/driver.f90'])==r['generated_driver_sha256'],'fresh generated driver '+prefix)
+  es=json.loads(f[prefix+'/events.json']);require(all(e['returncode']==0 for e in es),'fresh build native failure '+prefix)
+  for e in es:
+   for stream in ['stdout','stderr']:require(prefix+'/'+e[stream]in f,'missing fresh build raw '+prefix)
+ return True
+def retry_physics(files=None):
+ retry=runpy.run_path(str(ROOT/RETRY));files=retry['capsule']()if files is None else files
+ assessment=json.loads(files['ASSESSMENT.json'])
+ # The frozen codec preimage qualifies only its immutable predecessor run.
+ # Fresh complete cold/thermal runs independently bind the new codec postimage.
+ def physical_reader(p):
+  if p==GEN:
+   before=composition_bytes(p);require(sha(before)==assessment['current_inputs'][p],'codec predecessor identity')
+   require(sha((ROOT/p).read_bytes())==record()['qualified_input_sha256'][p],'fresh codec identity')
+   return before
+  return (ROOT/p).read_bytes()
+ return runpy.run_path(str(ROOT/retry['CHECKER']))['verify'](files,physical_reader)
+def verify_current_predecessor(native_body_sha256):
+ retry=runpy.run_path(str(ROOT/RETRY));proof=retry_physics();f=capsule()
+ frozen=json.loads(f['retry/PREDECESSOR.json'])
+ require(frozen['canonical']==COMPOSITION_BASE and frozen['owner']['qualified'] and len(frozen['controls'])==15,'complete exact retry predecessor')
+ require(frozen['owner']['current_source_tree']==git('rev-parse',COMPOSITION_BASE+':src'),'retry predecessor source tree')
+ require(frozen['owner']['fsi35_native']=='PASS','predecessor native absent')
+ native=retry['record']()['native_fsi35'];raw=(ROOT/native['receipt']).read_bytes()
+ require(sha(raw)==native['sha256'],'current native receipt identity')
+ with tarfile.open(fileobj=io.BytesIO(raw),mode='r:xz')as t:
+  terminal=json.loads(t.extractfile('RESULT.json').read());stdout=t.extractfile('stdout').read()
+ require(terminal['status']=='PASS' and terminal['returncode']==0 and sha(stdout)==terminal['raw_sha256']['stdout'] and b'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS'in stdout,'native terminal')
+ for p,h in terminal['input_sha256'].items():require(sha((ROOT/p).read_bytes())==h,'native compiled input '+p)
+ require(Path('/workspace/scratch/4112bba79f91/compiler-bin/gfortran').read_bytes()==f['compiler/wrapper.sh'],'compiler wrapper identity')
+ perf=runpy.run_path(str(ROOT/PERF))
+ for p,h in perf['record']()['fsi35_native_inheritance']['toolchain_sha256'].items():require(sha(Path(p).read_bytes())==h,'compiler executable identity '+p)
+ compiler=f['compiler/version.txt'].decode()
+ require(subprocess.check_output(['/workspace/scratch/4112bba79f91/compiler-bin/gfortran','--version'],text=True)==compiler==terminal['compiler'],'native compiler identity')
+ return {**frozen['owner'],'line_search_retry':proof,'current_source_tree':git('rev-parse','HEAD:src'),'source_tree':git('rev-parse','HEAD:src'),'qualified':True,'canonically_admitted':False,'qualification_scope':'CURRENT_RETRY_WEATHER_ROOT_NUT_THERMAL_FALLOW_COMPOSITION'}
 
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
