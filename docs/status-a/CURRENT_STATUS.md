@@ -1,5 +1,18 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 accepted-temperature calendar output,23 October2026: the explicit
+immutable-calendar/output composition is locally qualified with actual O0/O2
+thermal physics,three active days,two report schedules,12 roundtrips,eight fresh
+progressions and four crash recoveries. All complete manual generations match;
+170 rejected trials,30 replay rejections and all130 composed source/evidence controls pass.
+Production sources/defaults and full capability dispositions are unchanged.
+Existing HIST-COMPLETE child `thermal_calendar_successor_20261023` and the
+[bounded contract](../science/MC_NUT01_THERMAL_CALENDAR_OUTPUT_20261023.md)
+own scope and admission separately. General/default historical orchestration,
+saved-calendar rotation/fallow composition,negative active allocation and
+automatic snow/persistent-surface N remain open.
+
+
 MC-NUT01 explicit successor/repeated-harvest output,23 October2026:
 PR1381 is admitted at `8dd2561c7f4207034c35e12b6e9c64d24db25213`,whole tree
 exactly qualified `5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8`. The saved-output
