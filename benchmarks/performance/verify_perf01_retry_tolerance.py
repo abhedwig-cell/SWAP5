@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import statistics
 import subprocess
+import sys
 import tarfile
 import tempfile
 from assess_perf01_weather import read, differences, same_physics
@@ -19,7 +20,10 @@ def verify(folder):
     report = json.loads((folder/'RESULT.json').read_text())
     assert report['status'] == 'COMPLETE_BOUNDED_RETRY_ACCURACY_STUDY_O0_O2_RESTART_PASS'
     assert report['source_tree'] == SOURCE_TREE
-    assert subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT,text=True).strip() == SOURCE_TREE
+    assert subprocess.check_output(['git','rev-parse','53010691c79d3e132914ce372059cf873d88b96d:src'],cwd=ROOT,text=True).strip() == SOURCE_TREE
+    closure = subprocess.check_output([sys.executable,str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',
+        'tests/fsi/fsi04_real_headcalc_stubs.f90','src/runtime/mod_fmr_production_application_bootstrap.f90',
+        'src/kernel/mod_kernel_committed_persistence.f90'],cwd=ROOT,text=True).splitlines()
     expected = []
     for rain in [4,1]:
         for repeat in range(3):
@@ -30,6 +34,7 @@ def verify(folder):
     assert [e['label'] for e in report['events']] == expected
     assert all(e['returncode'] == 0 for e in report['events'])
     for opt, meta in report['builds'].items():
+        assert list(meta['sources']) == closure
         assert meta['weather_line_search_retry'] and meta['observe_work']
         generated = {'tests/fsi/fsi04_real_headcalc_stubs.f90': 'grid_stubs.f90',
             'src/runtime/mod_fmr_serialized_multiswap_runtime.f90': 'observed_serial_runtime.f90',

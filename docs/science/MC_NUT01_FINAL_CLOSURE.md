@@ -1,5 +1,25 @@
 # MC-NUT01 final closure review
 
+## Admitted accepted-temperature harvest/fallow output,23 October2026
+
+PR1377 admits the [bounded thermal output successor](MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md)
+at `ddaf00c33da51fb84552b3d59e6f342cff97bf04`, complete merge tree exactly equal
+to qualified `9b7bfa194270283c561eeb0c7840957ef9c8dc18`. Fresh complete331-provider
+cold O0/O2 build,incumbent thermal,cold saved-output and amended thermal fallow
+programs pass. Original6808 literal checks/234 reports per optimization and all
+previous results remain exact. Actual merge owner and36 corruption controls pass;
+source/strict docs pass. The existing HIST-COMPLETE child and admission receipt
+own this bound. Hosted workflows/statuses were not selected and are never PASS.
+
+This covers explicit accepted-temperature harvest,incorporation,retirement and
+subsequent amended fallow output with complete physical/diagnostic-memory restart.
+Successor-crop/rotation and heat-calendar output,general/default historical
+orchestration,active-crop/immobilisation negative allocation,automatic snow/
+persistent-surface N and complete original active trajectories remain open.
+All nine master dispositions remain ACTIVE_MIGRATION. Older dated sections below
+retain their separately bounded historical scope.
+
+
 ## Current output/restart scope,22 October2026
 
 PR1358 canonically admits the [explicit daily output and joint restart route](MC_NUT01_EXTENDED_OUTPUT_CONTRACT_20261021.md)

@@ -94,3 +94,12 @@ procesregistratie en een gewijzigde mediaan.
 Replay: `python -B benchmarks/performance/verify_perf01_retry_tolerance.py
 benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_EVIDENCE.tar.xz`.
 De versiegebonden status onderscheidt dit invoeronderzoek van productiebeleid.
+
+De parallelle NUT-integratie op `db8f2c26e69f0466727aea105b99a76cd14e120f`
+is gereconcilieerd. Haar gewijzigde/nieuwe bronnen liggen buiten de gemeten
+weerclosure. De opnieuw bepaalde geordende lijst van256 providers en alle
+werkelijke bronhashes blijven exact, inclusief de gekwalificeerde waarnemers.
+De oorspronkelijke meetboom blijft afzonderlijk gepind; de huidige grotere
+productieboom wordt niet als destijds gecompileerd voorgesteld. Ruwe replay
+en de actuele toegelaten bron-owner slagen op de samengestelde kandidaat.
+Daarom zijn ongewijzigde native proeven niet opnieuw uitgevoerd.

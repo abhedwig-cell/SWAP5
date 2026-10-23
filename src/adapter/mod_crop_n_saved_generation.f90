@@ -9,6 +9,7 @@ module mod_crop_n_saved_generation
  use mod_kernel_transactions,only:kernel_committed_state_t
  use mod_crop_soil_n_day,only:crop_soil_state_t
  use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
+ use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_parameters_t
  use mod_b111_soil_n_reactive_owner,only:reactive_parameters_t
  use mod_crop_soil_n_configuration,only:crop_n_configuration_t
  use mod_fmr_crop_soil_n_thermal_application,only:soil_n_thermal_template
@@ -111,7 +112,7 @@ contains
   integer::n,u,io,code,close_io,fd,ignored
   logical::ok,ready
   status=CROP_EXT_INVALID
-  if(soil_n_thermal_template(template).or..not.aligned(output,saved))return
+  if(.not.aligned(output,saved))return
   call paths(path,inner,pending,ok);if(.not.ok)return
   call write_crop_n_output_generation(inner,column,template,water_id,water,chemical,output,dates,rows,code)
   if(code/=0)then;call erase(inner);return;end if
@@ -146,7 +147,7 @@ contains
   status=CROP_EXT_OK
  end subroutine
  subroutine read_crop_n_saved_generation(path,column,template,water_id,soil_id,crop_id,p,cp, &
-   water,chemical,output,saved,dates,rows,status)
+   water,chemical,output,saved,dates,rows,status,heat_parameters)
   character(*),intent(in)::path
   type(fmr_logical_column_t),intent(in)::column
   type(fmr_template_t),intent(in)::template
@@ -160,6 +161,7 @@ contains
   character(10),allocatable,intent(inout)::dates(:)
   type(crop_ext_row_t),allocatable,intent(inout)::rows(:)
   integer,intent(out)::status
+  type(fmr_b110_physical_parameters_t),optional,intent(in)::heat_parameters
   type(kernel_committed_state_t)::wt
   type(crop_soil_state_t)::ct
   type(crop_ext_state_t)::ot
@@ -174,7 +176,7 @@ contains
   integer::n,u,io,code,close_io
   logical::ok
   status=CROP_EXT_INVALID
-  if(soil_n_thermal_template(template))return
+  if(soil_n_thermal_template(template).and..not.present(heat_parameters))return
   call paths(path,inner,pending,ok);if(.not.ok)return
   inquire(file=path,size=n,iostat=io);if(io/=0.or.n<244.or.n>MAX_BYTES)return
   allocate(bytes(n-4))
@@ -194,7 +196,7 @@ contains
   if(io/=0)return
   write(u,iostat=io)payload;close(u,iostat=close_io)
   if(io/=0.or.close_io/=0)then;call erase(inner);return;end if
-  call read_crop_n_output_generation(inner,column,template,water_id,soil_id,crop_id,p,cp,wt,ct,ot,dt,rt,code)
+  call read_crop_n_output_generation(inner,column,template,water_id,soil_id,crop_id,p,cp,wt,ct,ot,dt,rt,code,heat_parameters)
   call erase(inner)
   if(code/=0.or..not.aligned(ot,st))return
   water=wt;chemical=ct;output=ot;saved=st
