@@ -12,6 +12,8 @@ program read_swp_project
  real(real64)::soil_factor=1d0,rtim,dayrain,previous,legacy_time
  integer::reduction_mode=0
  real(real64)::cofred=0d0
+ integer::drain_mode=0,nsub
+ character(1024)::drfil,pathdrain=''
  real(real64),allocatable::rain_times(:),rain_amounts(:),event_times(:),event_rates(:)
  integer,allocatable::rain_dd(:),rain_mm(:),rain_yyyy(:)
  real(real64)::tstart,tend,starts(MAX_CROPS),ends(MAX_CROPS),rds,pondmx,rsro,exponent,bottom,amplitude,daymax,fraction
@@ -37,7 +39,14 @@ program read_swp_project
  if(reduction_mode==2)then
   call rdsdor('cofredbo',0d0,1d0,cofred);call require(cofred>0d0,'positive Boesten COFREDBO required')
  end if
- call zero('swdra',3);call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
+ if(rdinqr('swdra'))call rdsinr('swdra',0,2,drain_mode)
+ call require(drain_mode<=1,'extended surface water drainage not selected')
+ if(drain_mode==1)then
+  call rdscha('drfil',drfil);call lowerc(drfil);call safe(drfil)
+  if(rdinqr('pathdrain'))call rdscha('pathdrain',pathdrain)
+  call safe(pathdrain)
+ end if
+ call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
  call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
  call rdsinr('swbotb',1,9,mode);call require(mode==2,'only prescribed SWBOTB2 selected; SWBOTB1 is excluded')
@@ -66,6 +75,7 @@ program read_swp_project
  call rdinne('isoillay',n);call require(n>0.and.n<=MAX_SUB,'grid capacity')
  call rdfinr('isoillay',1,256,layers,MAX_SUB,n);call rdinne('ncomp',m);call require(m==n,'grid counts')
  call rdfinr('ncomp',1,256,counts,MAX_SUB,n);call require(sum(counts(:n))<=256,'node capacity')
+ nsub=n
  call dtdpar(tstart+.1d0,dates,fraction);first_year=dates(1)
  call dtdpar(tend+.1d0,dates,fraction);last_year=dates(1)
  call dtdpst('year-month-day',tstart,start_text);call dtdpst('year-month-day',tend,end_text)
@@ -96,6 +106,10 @@ program read_swp_project
   write(u,'(A)')'kind,index,value'
   write(u,'(A)')'pathatm,0,'//trim(pathatm)
   write(u,'(A)')'pathcrop,0,'//trim(pathcrop)
+  if(drain_mode==1)then
+   write(u,'(A)')'pathdrain,0,'//trim(pathdrain)
+   write(u,'(A)')'drain,1,'//trim(drfil)//'.dra'
+  end if
   do i=1,nyears
    write(u,'(A,I0,A)')'met,',i,','//trim(metnames(i))
   end do
@@ -122,6 +136,7 @@ program read_swp_project
   close(u)
   print '(A)','SWP_NATIVE_PROJECT_SCANNED';stop
  end if
+ if(drain_mode==1)call prepare_drainage()
  ! Normalize only original daily ETref fields; preserve full source bytes outside
  ! this view in the project launcher. Read/validate all files before publication.
  allocate(output(8,100000));output=0d0;total=0
@@ -186,6 +201,55 @@ program read_swp_project
  end do
  print '(A)','SWP_NATIVE_PROJECT_PREPARED'
 contains
+ subroutine prepare_drainage()
+  integer::sw,nn,na,ii,jj,v
+  real(real64)::res,infres,spacing,base,anis(MAX_SUB),dates(1024),heads(1024)
+  call rdinit(74,0,'drain-1.dra')
+  call rdsinr('dramet',1,3,v);call require(v==3,'only DRAMET3 selected')
+  call rdsinr('swdivd',0,1,v);call require(v==1,'native drainage requires explicit DIVDRA')
+  call rdsinr('swdivdinf',0,1,v);call require(v==0,'alternative infiltration distribution not selected')
+  call rdsinr('swdislay',0,2,v);call require(v==0,'adjusted discharge layers not selected')
+  call rdsinr('nrlevs',1,5,v);call require(v==1,'native drainage requires one level')
+  call rdsinr('swintfl',0,1,v);call require(v==0,'interflow not selected')
+  call rdsinr('swallo1',1,3,v);call require(v==3,'native drainage requires drainage-only SWALLO1=3')
+  call rdsinr('swdtyp1',1,2,sw);call require(sw==1,'native drainage requires drain tube')
+  call rdsdor('drares1',10d0,1d5,res);call rdsdor('infres1',0d0,1d5,infres)
+  call rdsdor('l1',1d0,1d5,spacing);call rdsdor('zbotdr1',-10000d0,0d0,base)
+  call rdador('cofani',.0001d0,1000d0,anis,MAX_SUB,na)
+  call require(maxval(layers(:nsub))<=na,'COFANI soil-layer coverage')
+  call rdatim('datowl1',dates,1024,nn);call require(nn>=1,'channel table required')
+  call rdinne('level1',v);call require(v==nn,'channel date/head count')
+  call rdfdor('level1',-10000d0,200d0,heads,1024,v)
+  call require(all(ieee_is_finite(dates(:nn))).and.all(ieee_is_finite(heads(:nn))),'finite channel table')
+  call require(all(dates(2:nn)>dates(:nn-1)),'strict channel calendar')
+  call require(dates(1)<=tstart.and.dates(nn)>=tend+1d0,'complete channel calendar')
+  close(74)
+  open(newunit=u,file='drainage.nml',status='new',action='write')
+  write(u,'(A)')' native_drainage=.true.'
+  write(u,'(A,ES25.16E3)')' drain_resistance=',res
+  write(u,'(A,ES25.16E3)')' drain_infiltration_resistance=',infres
+  write(u,'(A,ES25.16E3)')' drain_spacing_m=',spacing
+  write(u,'(A,ES25.16E3)')' drain_bottom_cm=',base
+  write(u,'(A,ES25.16E3)')' drain_legacy_origin=',tstart
+  write(u,'(A,I0)')' drain_table_count=',nn
+  write(u,'(A)',advance='no')' drain_table_times='
+  do ii=1,nn
+   write(u,'(ES25.16E3,A)',advance='no')dates(ii),','
+  end do
+  write(u,'(A)')''
+  write(u,'(A)',advance='no')' drain_table_heads='
+  do ii=1,nn
+   write(u,'(ES25.16E3,A)',advance='no')heads(ii),','
+  end do
+  write(u,'(A)')''
+  write(u,'(A)',advance='no')' drain_anisotropy='
+  do ii=1,nsub
+   do jj=1,counts(ii)
+    write(u,'(ES25.16E3,A)',advance='no')anis(layers(ii)),','
+   end do
+  end do
+  write(u,'(A)')'';close(u)
+ end subroutine
  subroutine detailed_rain_input()
   ! Original TTUTIL fields and MOD_meteo:LoadRainData interval convention.
   ! Full original rain bytes remain bound by the launcher, including unused tail.

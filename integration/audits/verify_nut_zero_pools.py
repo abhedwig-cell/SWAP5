@@ -20,6 +20,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_drainage.py'))['source'](reader,changed)
  r=record(reader);assert r['source_base']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -109,9 +110,11 @@ def validate(f):
  assert b'reaction rejects after actual crop preparation'in f['failed/obsolete-fixture/runner.log']
  return dict(qualified=True,status='ZERO_RECEIVING_POOL_RATES_O0_O2_QUALIFIED',direct_cases=168,newly_accepted=168,nonzero_byte_exact=24,actual_coupled_runs=10,process_restarts=20,hist_native_processes=78,hist_process_restarts=56,fresh_hist_compiles=48,reused_hist_compiles=606,full_mc_nut01_closed=False,exhausting_selected_solution='OPEN_FAIL_CLOSED',canonically_admitted=False)
 def verify():
+ if (ROOT/'integration/mc-sol01/drainage/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_drainage.py'))['verify']()
  source();prior=predecessor()['verify']();current=validate(capsule())
  return {**prior,**current,'current_NUT_coupled_runs':10,'current_NUT_process_restarts':20,'predecessor_controls':52,'predecessor_scope':'All52 unchanged demand/Boesten controls; three explicitly archived NUT source identities; current direct/HIST/crop proof separate'}
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_drainage.py'))['self_test']()
  source();old=predecessor()['self_test']();assert len(old)==52
  passed=['predecessor:'+p for p in old];f=capsule();validate(f)
  def reject(label,fn):
