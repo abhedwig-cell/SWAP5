@@ -1,7 +1,7 @@
 {
   "work_unit": "PERF01_NATIVE_CROP_STEP_PROPOSAL",
   "baseline": "9d86cdf8f2669880eacbbbceb613f066093b2984",
-  "status": "LOCALLY_QUALIFIED_AWAITING_ACTUAL_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_DEFAULT_OFF_ZERO_TRACER",
   "contract": "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md",
   "default_enabled": false,
   "production_shared_providers_changed": false,
@@ -20,7 +20,7 @@
     "proposal_with_atomic_day_retry": "COMPLETES_BOTH_RESEARCH_ONLY",
     "scope": "Pilot generated application only; not qualified or admitted"
   },
-  "next_action": "Publish final exact composed tree, merge, verify actual whole merge tree and replay current source/raw owner plus24 controls",
+  "next_action": "Bounded optional native proposal complete. Default remains OFF. Wider positive chemistry, seasonal proposal activation and further speed improvements require separate qualification.",
   "implemented": true,
   "persisted": true,
   "tested": true,
@@ -72,7 +72,7 @@
     }
   },
   "native_result": "O0_O2_DEFAULT_BYTES_PROPOSAL_DETERMINISM_DAY48_RESTART_REAL_FAILURE_ATOMICITY_PASS",
-  "recovery_point": "785138b58 composed source; /tmp/perf01-composed-proposal-qualification native PASS; /tmp/perf01-composed-seasonal-O0 and O2",
+  "recovery_point": "2f5e0a9993a5e01ce43d0f12df5f7395da369f54",
   "seasonal_preservation": "FRESH_COMBINED_O0_O2_481_DAY_AND_YEAR365_RESTART_PASS",
   "documentation_checks": {
     "source": "PASS",
@@ -89,5 +89,17 @@
     },
     "overscoped_probe": "ABORTED_NOT_PASS_RETAINED"
   },
-  "nut_limits_preservation": "CURRENT_SOURCE_RAW_FINITE_DONOR_516_CASES_HIST_AND_COUPLED_PASS_WITH45_PREDECESSOR_CONTROLS"
+  "nut_limits_preservation": "CURRENT_SOURCE_RAW_FINITE_DONOR_516_CASES_HIST_AND_COUPLED_PASS_WITH45_PREDECESSOR_CONTROLS",
+  "canonically_admitted": true,
+  "canonical_admission": {
+    "pr": 1394,
+    "merge": "2f5e0a9993a5e01ce43d0f12df5f7395da369f54",
+    "qualified_complete_tree": "069a752484d4ec21fb5cae6fdd0961079e528d41",
+    "actual_complete_tree": "069a752484d4ec21fb5cae6fdd0961079e528d41",
+    "whole_tree_exact": true,
+    "actual_owner": "PASS",
+    "actual_controls": 24,
+    "actual_grid_controls": 6,
+    "receipt": "benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_ACTUAL_MERGE.json"
+  }
 }

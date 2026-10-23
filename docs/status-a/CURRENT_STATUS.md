@@ -1,5 +1,13 @@
 # SWAP5 Status-A current status
 
+PR1394 optional native zero-tracer step proposals are canonically admitted at
+`2f5e0a9993a5e01ce43d0f12df5f7395da369f54`,exact qualified/actual complete tree
+`069a752484d4ec21fb5cae6fdd0961079e528d41`. Actual-merge owner,24 source/raw
+controls and six unchanged grid evidence controls PASS. Default remains OFF.
+Seasonal481-day and current NUT limits authorities are preserved; no whole
+SOL/NUT or wider proposal activation follows. Receipt:
+`PERF01_NATIVE_PROPOSAL_20261023_ACTUAL_MERGE.json`.
+
 
 HIST-INTEGRATION01 seasonal native bottom flux is canonically admitted by
 [PR1392](https://github.com/abhedwig-cell/SWAP5/pull/1392), merge

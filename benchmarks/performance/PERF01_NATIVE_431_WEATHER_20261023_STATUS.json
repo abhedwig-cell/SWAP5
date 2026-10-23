@@ -10,7 +10,7 @@
   "tested": true,
   "qualified": true,
   "recovery_point": "590d3353 production repair followed by 8567bbc4 canonical reconciliation",
-  "next_action": "Finish explicit native proposal successor actual canonical admission; original saturated-flux admission remains intact",
+  "next_action": "Original saturated-flux repair and optional zero-tracer native proposal are canonically admitted. Wider numerical/chemistry/seasonal proposal scope remains separate.",
   "authority_paths": [
     "docs/science/PERF01_SATURATED_FLUX_RESTART.md",
     "integration/performance/authority.py",
@@ -674,7 +674,10 @@
   },
   "native_proposal_successor": {
     "status_record": "benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json",
-    "status": "LOCALLY_QUALIFIED_AWAITING_ACTUAL_CANONICAL_ADMISSION",
-    "scope": "Optional nonthermal native simple-crop zero-tracer proposal with atomic whole-day ordinary-policy retry; default OFF; shared solver/runtime unchanged"
+    "status": "CANONICALLY_ADMITTED_DEFAULT_OFF_ZERO_TRACER",
+    "scope": "Optional nonthermal native simple-crop zero-tracer proposal with atomic whole-day ordinary-policy retry; default OFF; shared solver/runtime unchanged",
+    "merge": "2f5e0a9993a5e01ce43d0f12df5f7395da369f54",
+    "pr": 1394,
+    "complete_tree": "069a752484d4ec21fb5cae6fdd0961079e528d41"
   }
 }
