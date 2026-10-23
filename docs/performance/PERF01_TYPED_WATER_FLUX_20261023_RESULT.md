@@ -2,8 +2,9 @@
 
 Implemented on `work/perf01-typed-water-flux-20261023`, reconciled with canonical
 `5659a644` (PR1405 drainage and PR1406 FCT joint research). Local bounded native
-tests pass. Current owner successor qualification and canonical admission remain
-pending. This is an explicit changed-accuracy option, not a default change or an
+tests pass. Owner qualification against pinned canonical `ef2110c6` now passes;
+later PR1409/1410 reconciliation and canonical admission remain pending.
+This is an explicit changed-accuracy option, not a default change or an
 accuracy-matched comparison to4.3.1.
 
 The [production contract](../science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md) replaces
@@ -68,3 +69,22 @@ organic providers lie outside the actual measured native closure. Complete
 capsule replay rechecks all executed current inputs and passes after that merge.
 Current owner dispatch now reaches `verify_nut_single_zero_pool.py`; its successor
 preservation remains pending. This source reconciliation grants no NUT PASS.
+
+## Pinned owner qualification completed
+
+The current owner replay now passes with all 134 predecessor controls and 241
+combined source/raw/negative controls. Fresh current HIST executes all 78 native
+processes (56 process restarts); 208 affected compiles are fresh and 446 unchanged
+compile closures are reused with exact source, flags, toolchain and artifact
+seals. All original scientific assertions remain unchanged. Current single-zero
+NUT executes 14 coupled cases and 28 process restarts. O0/O2 drainage469 and
+Boesten481 complete and restart files are byte-exact to admitted files. Twelve
+SOL research water traces and 24 actual FCT joint cases pass. Drainage day470
+and wet-day7 remain fail-closed with the complete committed generation intact.
+Full MC-SOL01/MC-NUT01 migration is not closed.
+
+The 3732-member owner capsule preserves this qualification separately from the
+2273-member typed option capsule. A subsequent fetch found canonical
+`247b9f5b`: PR1409 changes two organic providers used by HIST/NUT, while PR1410
+adds reactive FCT research. This later composition is not covered merely by
+the pinned owner PASS and must be reconciled before admission.

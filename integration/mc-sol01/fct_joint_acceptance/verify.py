@@ -109,7 +109,12 @@ def unpack(path,expected):
     manifest=json.loads(f.pop('MANIFEST.json'));assert manifest=={p:sha(v) for p,v in f.items()};return f
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--self-test',action='store_true');a=ap.parse_args()
-    index=json.loads((HERE/'EVIDENCE_INDEX.json').read_text());f=unpack(HERE/'EVIDENCE.tar.xz.b64',index['decoded_sha256'])
-    result=assess(f);assert result==json.loads(f['VERIFICATION.json'])
-    if a.self_test:result['controls']=controls(f)
+    if (ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').is_file():
+        successor=runpy.run_path(str(ROOT/'integration/audits/verify_perf01_typed_water_flux.py'))
+        assert successor['verify']()['qualified']
+        result=successor['fct_assess'](successor['capsule'](),a.self_test)
+    else:
+        index=json.loads((HERE/'EVIDENCE_INDEX.json').read_text());f=unpack(HERE/'EVIDENCE.tar.xz.b64',index['decoded_sha256'])
+        result=assess(f);assert result==json.loads(f['VERIFICATION.json'])
+        if a.self_test:result['controls']=controls(f)
     print(json.dumps(result,indent=2))
