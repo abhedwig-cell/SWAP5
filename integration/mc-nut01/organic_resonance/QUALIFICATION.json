@@ -1,0 +1,66 @@
+{
+  "checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "c79557c667d19ccded53057936668a523a798690bb8b8e7ef94004fac2a3a0b7"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "measured_seconds": {
+    "direct-02": {
+      "compile": 1.8955392450006912,
+      "link": 0.11278395698900567,
+      "common_current": 0.05196693100151606,
+      "zero_current": 0.12258909099909943,
+      "fraction_compile": 0.04130029099906096,
+      "fraction_link": 0.05573664600524353,
+      "fraction_native": 0.0027806680081994273,
+      "invalid": 0.0022103250012150966,
+      "common_previous": 0.052025349003088195,
+      "zero_previous": 0.024463736001052894
+    },
+    "hist-01": {
+      "compile": 70.66266242499114,
+      "link": 0.7633886190014891,
+      "trace_native": 0.00406639799621189,
+      "native": 14.683668453981227,
+      "restart_native": 35.968535211985,
+      "compiler": 0.002427537001494784
+    },
+    "joint-01": {
+      "compile": 22.247871208004653,
+      "link": 0.3865375130044413,
+      "previous_compile": 1.1637107610076782,
+      "previous_link": 0.4262986529938644,
+      "previous_native": 0.404991997005709,
+      "native": 9.434810427985212,
+      "restart_native": 12.402650506002828
+    }
+  },
+  "qualified_head": "a57d8398f268b5f661304c0ed8401e6bdba72353",
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "control_count": 156,
+  "predecessor_controls": 134,
+  "new_controls": 22,
+  "docs": {
+    "source": "PASS",
+    "strict_mkdocs": "PASS"
+  },
+  "full_mc_nut01_closed": false,
+  "remaining_determinant_zero": "OPEN_FAIL_CLOSED_UNCHANGED_FIXTURE"
+}
