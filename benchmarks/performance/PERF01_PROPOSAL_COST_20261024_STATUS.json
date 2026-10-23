@@ -1,0 +1,71 @@
+{
+  "work_unit": "PERF01_NATIVE_PROPOSAL_REMAINING_COST",
+  "baseline": "22cdf5700dbea526c2ef217db20b738048e3eebe",
+  "status": "BOUNDED_RESEARCH_COMPLETE_NO_NEW_PRODUCTION_POLICY",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_scope": "Generated research only: current OFF/ON cost split and three bounded policy discriminators; no production policy admission",
+  "canonically_admitted": false,
+  "production_changed": false,
+  "policy_changed": false,
+  "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_detailed_rain.py"],
+  "dependency_surface": ["all 194 measured native build inputs", "current application", "admitted PR1394 native input/output oracles", "checked O0/O2 compiler and artifacts"],
+  "relevant_paths": ["benchmarks/performance/profile_perf01_proposal_cost.py", "src/runtime/mod_canonical_interval_runtime.f90", "src/transaction/mod_transaction_reference.f90"],
+  "test_selection": {
+    "expected_seconds": 90,
+    "selected": "Generated checked O0/O2 current native relinks; full 97-day OFF/ON 1x/4x; O2 three alternating repeats; exact physical/restart bytes against admitted oracle; regime/rejection/output timers",
+    "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full F-CI", "production numerical policy change"]
+  },
+  "affected_invariants": [2, 5, 7, 13, 23, 26],
+  "research_probe": {
+    "script": "benchmarks/performance/probe_perf01_solver_cap.py",
+    "production_changed": false,
+    "policy": "Generated runtime only: after solver-limited accepted transaction, retain accepted dt without growth until interval ends. All gates, retry limits, defaults and atomic day fallback unchanged.",
+    "criteria": "Existing proposal contract daily gross water<1e-9mm, daily/season runoff<.01mm, daily storage<.01mm, total evaporation/transpiration<1e-8mm; exact O0/O2, default-OFF bytes, actual day48 restart",
+    "expected_seconds": 60,
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
+  "recovery_probe": {
+    "reason": "Fixed accepted-size cap causes 23264 accepted halfsteps on 1x day89 and is much slower. Test bounded <=1.1 growth using the existing temporal-error safety factor, rather than permanent no-growth stagnation.",
+    "production_changed": false,
+    "expected_seconds": 60,
+    "criteria": "Identical to declared solver-cap probe; all existing hard gates and day fallback retained",
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
+  "bounded_recovery_probe": {
+    "reason": "Fixed cap and <=1.1 recovery both hit existing100000 internal-step limit before atomic day retry. Earlier proposal-only rejection can bound this abandoned work without changing acceptance.",
+    "proposal_internal_step_limit": 1024,
+    "selection_basis": "Existing default/proposal maximum per day is506/506 at1x and487/489 at4x;1024 is above both measured ordinary maxima, not an acceptance relaxation.",
+    "production_changed": false,
+    "expected_seconds": 60,
+    "criteria": "Same declared water/runoff/default/restart criteria plus actual full joint before/after bytes on every fallback day at O0/O2",
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
+  "result": "docs/performance/PERF01_PROPOSAL_COST_20261024_RESULT.md",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_PROPOSAL_COST_20261024_EVIDENCE.tar.xz",
+    "sha256": "33555172fb4e620627e6791b14ab4af6c5ee575b59909784b9a416e15f7cd54a",
+    "bytes": 212992,
+    "members": 1510
+  },
+  "completed_native_processes": 120,
+  "completed_compile_link_events": 32,
+  "evidence_negative_controls": 8,
+  "actual_bounded_recovery_joint_rollbacks": 18,
+  "current_owner": "integration/audits/verify_native_detailed_rain.py",
+  "current_owner_result": "PASS_WITH17_CONTROLS",
+  "decisions": {
+    "fixed_cap": "REJECT_PERFORMANCE_100000_STEP_TAIL",
+    "growth_1_1": "REJECT_GENERAL_SPEEDUP_100000_STEP_TAIL_AT1x_DAY18",
+    "bounded_recovery": "NOT_PRODUCTION_RECOMMENDATION_1x_SLOWER_4x_MODEST_GAIN",
+    "default_production_policy": "UNCHANGED"
+  },
+  "last_reconciled_head": "67a21309490a4e5398e619bb28f0414d6d774757",
+  "reconciliation": "Concurrent FCT water/sorption research and its contract note leave every executed production/app/tool input and existing native owners unchanged. No inherited result is relabelled as a new physical run.",
+  "documentation_checks": {"source": "PASS", "strict_build": "PASS"},
+  "recovery_point": "Persisted research scripts and sealed raw evidence on work/perf01-proposal-cost-20261024; actual admission receipt follows separately",
+  "next_action": "Publish bounded research and verify actual merge. Next scientific target is incumbent solver-rejection cause/cost on fallback days, not output tuning or activation of these research policies.",
+  "blockers": []
+}
