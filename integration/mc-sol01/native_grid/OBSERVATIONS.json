@@ -1,0 +1,92 @@
+{
+  "status": "BOUNDED_NATIVE_GRID_OBSERVATIONS_VERIFIED_NOT_NATIVE_ACCURACY_ADMISSION",
+  "observations": {
+    "eight-day": {
+      "completed_grids": [
+        41,
+        82
+      ],
+      "failed_or_censored_grids": [
+        164
+      ],
+      "comparisons": {
+        "41-vs-82": {
+          "soil_total_mass_l1_mg_cm2": 0.41581912279218863,
+          "relative_soil_total_mass_l1": 0.005389187112884541,
+          "water_l1_cm": 0.05935095872310703,
+          "aqueous_concentration_l1": 0.6391192049271472,
+          "maximum_coarse_bin_concentration_difference": 0.0476285393338442
+        }
+      },
+      "initial_stocks": {
+        "1": {
+          "water_cm": 30.861982046758836,
+          "solute_mg_cm2": 76.52935475915154
+        },
+        "2": {
+          "water_cm": 30.86212460265734,
+          "solute_mg_cm2": 76.47954147865694
+        }
+      },
+      "seconds": {
+        "1": 61.19153403299788,
+        "2": 156.17909705700004,
+        "4": 180.1033358700006
+      },
+      "active_crop_days": {
+        "1": 0,
+        "2": 0
+      }
+    },
+    "two-day": {
+      "completed_grids": [
+        41,
+        82,
+        164
+      ],
+      "failed_or_censored_grids": [],
+      "comparisons": {
+        "41-vs-82": {
+          "soil_total_mass_l1_mg_cm2": 0.14354139184991355,
+          "relative_soil_total_mass_l1": 0.0018734855941742537,
+          "water_l1_cm": 0.015764670521600355,
+          "aqueous_concentration_l1": 0.2282008396974912,
+          "maximum_coarse_bin_concentration_difference": 0.03816807063490901
+        },
+        "82-vs-164": {
+          "soil_total_mass_l1_mg_cm2": 0.09444350799239837,
+          "relative_soil_total_mass_l1": 0.001232679625098635,
+          "water_l1_cm": 0.009040329627964638,
+          "aqueous_concentration_l1": 0.15370369668925382,
+          "maximum_coarse_bin_concentration_difference": 0.025629227291058987
+        }
+      },
+      "initial_stocks": {
+        "1": {
+          "water_cm": 30.861982046758836,
+          "solute_mg_cm2": 76.52935475915154
+        },
+        "2": {
+          "water_cm": 30.86212460265734,
+          "solute_mg_cm2": 76.47954147865694
+        },
+        "4": {
+          "water_cm": 30.86216024338418,
+          "solute_mg_cm2": 76.47867657948635
+        }
+      },
+      "seconds": {
+        "1": 19.25338026299869,
+        "2": 50.03914819599959,
+        "4": 127.17557680100072
+      },
+      "active_crop_days": {
+        "1": 0,
+        "2": 0,
+        "4": 0
+      }
+    }
+  },
+  "full_native_grid_convergence": false,
+  "full_mc_sol01_closed": false
+}
