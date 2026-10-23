@@ -32,6 +32,15 @@
     "criteria": "Identical to declared solver-cap probe; all existing hard gates and day fallback retained",
     "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
   },
+  "bounded_recovery_probe": {
+    "reason": "Fixed cap and <=1.1 recovery both hit existing100000 internal-step limit before atomic day retry. Earlier proposal-only rejection can bound this abandoned work without changing acceptance.",
+    "proposal_internal_step_limit": 1024,
+    "selection_basis": "Existing default/proposal maximum per day is506/506 at1x and487/489 at4x;1024 is above both measured ordinary maxima, not an acceptance relaxation.",
+    "production_changed": false,
+    "expected_seconds": 60,
+    "criteria": "Same declared water/runoff/default/restart criteria plus actual full joint before/after bytes on every fallback day at O0/O2",
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
   "next_action": "Profile completed at O2 with exact physical bytes. Persist solver-cap research discriminator then execute checked O0/O2 bounded physical and restart comparisons.",
   "blockers": []
 }
