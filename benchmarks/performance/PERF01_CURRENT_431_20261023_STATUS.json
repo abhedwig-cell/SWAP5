@@ -2,7 +2,10 @@
   "work_unit": "PERF01_CURRENT_MATCHED_431_KERNELS",
   "baseline": "76d2ab9db8c20e976a25bb4c7414f176dd02c5cb",
   "source_tree": "ef90d0d745d85ba4090d22f238ee67dd8606e535",
-  "status": "COMPLETE_CURRENT_MATCHED_KERNEL_RESEARCH_VERIFIED",
+  "status": "CANONICALLY_ADMITTED_CURRENT_MATCHED_KERNEL_RESEARCH",
+  "pull_request": 1384,
+  "actual_merge": "11a14a0dc5285f5579d1ba34a171233a9acdca9a",
+  "admission_receipt": "benchmarks/performance/PERF01_CURRENT_431_ADMISSION_20261023.json",
   "result": "docs/performance/PERF01_CURRENT_431_20261023_RESULT.md",
   "evidence": {
     "path": "benchmarks/performance/PERF01_CURRENT_431_20261023_EVIDENCE.tar.xz",
@@ -32,6 +35,6 @@
   "invariants": "Unchanged physics, conservation, accepted-state and failure/rollback ownership; observation only",
   "production_changed": false,
   "default_changed": false,
-  "research_integrated": false,
-  "next_action": "Integrate exact current kernel evidence and actual merge receipt. A complete SWAP5/SWAP431 weather/crop job ratio remains unqualified."
+  "research_integrated": true,
+  "next_action": "Bounded kernel comparison complete. A complete SWAP5/SWAP431 weather/crop job ratio remains unqualified; general surface reformulation and a universal default tolerance remain separate decisions."
 }
