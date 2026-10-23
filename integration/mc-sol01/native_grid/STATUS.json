@@ -1,0 +1,30 @@
+{
+  "work_unit": "MC-SOL01-NATIVE-GRID01",
+  "baseline": "93c46252217c51cdb50c1bdf223d2d77d551c8fc",
+  "stage": "PLANNED",
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "question": "How does the actual coupled historical-weather nonlinear solute profile change under nested native mesh refinement?",
+  "scope": "Same constructed supported120cm native project and1998 forcing as PR1388; nested41/82/164cells; O2 initial8day discriminating phase, then bounded64days only if measured cost supports it.",
+  "production_changes": false,
+  "selection": {
+    "build": "Fresh checked current O2 project bundle:194 physical plus153 original TTUTIL providers. Previous bundle compiled a different headcalc; no unqualified binary reuse.",
+    "expected_build_seconds": 180,
+    "initial_native": "RUN three8day prefixes with180s per-process cap, source snapshots, initial and final mass/stock/profile comparison. Consider64day extension only after this measured cost.",
+    "inherited_process_science": "No unchanged component rerun; existing process oracles and current source/raw owner remain applicable only with exact identities.",
+    "full_fci": "NOT_SELECTED_IMPACT: new research orchestration only",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED_POLICY"
+  },
+  "constraints": [
+    "all physical/input bytes unchanged except subdivision counts",
+    "original1e-4 temporal tolerance",
+    "hard gross-water and chemical mass gates",
+    "record grid-dependent native initial stock quadrature; do not normalize it away",
+    "compare conservative coarse-cell aggregates, not interpolated point concentrations",
+    "do not infer original full Andelst equivalence or whole native convergence from a short period"
+  ],
+  "next_safe_work": "Build persisted research closure, execute short source-bound prefixes and retain failures/censoring before extending."
+}
