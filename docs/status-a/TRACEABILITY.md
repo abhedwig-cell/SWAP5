@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-SOL01 complete refined native year,23 October2026: the
+[native contract](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md) and
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json`
+bind the unchanged213 execution inputs, checked O0 short/O2 complete365-day
+physical generations, independent day180 restart,6570 annual original
+fixed/ETpot values and exact98-day predecessor. The sealed2197-member capsule
+contains its validator and actual raw build/native/oracle evidence; all147
+incumbent and11 new controls pass. This is execution coverage for the constructed
+supported41-cell fixture, not spatial convergence, the original full Andelst
+model, default dispatch or full SOL/NUT closure. Canonical admission is separate.
+
 PR1387 explicit historical saved-output caller is admitted at
 `188f75ef04cd64a5a78ace0aa4b8977e7a130537`,exact qualified/actual merge tree
 `db1143475778b4a4bf302f20a00e20619b01673b`. Actual-merge source/raw owner

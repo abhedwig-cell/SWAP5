@@ -486,3 +486,79 @@ source/raw corruption controls pass. The durable receipt is
 The numerical proof's own `canonically_admitted=false` remains an immutable
 qualification-time assertion; this separate actual-merge receipt establishes
 the later bounded admission. Full migration flags remain false.
+
+### Selected refined-year continuation, 23 October 2026
+
+Baseline `c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0`; PR1382 native
+production providers remain unchanged. The composed current source/raw owner
+and all130 current controls pass. Workspace maintenance removed the old native
+executables/compiler. The user authorized a work-directory-only GNU Fortran13
+installation; no system package installation is used. Ubuntu13.3.0 package
+identity and a checked OpenMP compile/link/native smoke are recorded locally.
+
+Select fresh checked native project O0/O2 builds. Execute the existing short
+native preparation/restart/rejection body on O0. Select the existing O2
+41-cell1998 annual body with implicit_upwind, picard_continuous and
+historical_zero. Retain original1e-4 temporal tolerance, original low
+dispersivities, strict daily gross water/solute balances, full versus day180
+split/fresh-process resume bytes and complete literal original fixed/ETpot
+preparation. The existing per-process1800s timeout remains binding; a failure
+or timeout is not a PASS and no physical tolerance is to be weakened.
+
+Scientific question: does the previously qualified98-day refined native prefix
+extend through the complete original forcing year while retaining conservation
+and independent restart? This closes a documented execution-coverage gap;
+it does not establish spatial convergence or the full historical Andelst model.
+No production implementation, physical contract or default changes are selected.
+Existing component science and latest NUT composition are inherited only with
+their unchanged source/raw identities; unrelated component preservation,
+RossFast, broad moving F-CI and highest low-air are NOT_SELECTED_IMPACT/POLICY.
+
+Expected compile/link cost200s; O0 short feedback under30s; O2 annual
+full/split/resume2400s combined, with actual costs reported separately.
+First98-day complete native cost was501.64s, with180.99s split and272.35s
+resume. These are preregistration estimates; completed results follow below.
+
+### Completed refined-year continuation, 23 October 2026
+
+The selected source-unchanged execution passes. Fresh checked O0/O2 closures
+contain194 physical providers and153 original TTUTIL providers; the ordinary
+project bundle reuses193 verified physical objects. O0 short preparation,
+physical execution and independent restart pass. O2 executes the entire365-day
+1998 constructed supported fixture on41 cells, with two crop periods and fallow.
+The independently executed day180 prefix matches every daily field exactly;
+fresh-process continuation matches all185 remaining daily budgets. Final
+`state.csv`, `endpoint.csv` and `restart.bin` are byte-identical to the full run.
+All98 previously qualified daily budget rows remain exact.
+
+The literal original fixed/ETpot preparation gives6570 exact annual values,
+6714 including both fresh short cases. Fourteen negative input/restart cases
+pass. Independent daily, cumulative and endpoint stock reconstruction passes;
+maximum daily water, solute and gross-water residuals are respectively
+2.904e-14cm,2.606e-13mg/cm2 and9.483e-14cm (rounded upwards). Final cell and
+surface stocks remain nonnegative. Original1e-4 temporal tolerance, low
+dispersivities and strict mass gates are unchanged.
+
+Actual native costs are1775.877s full,648.262s split and1154.923s resumed,
+each below the unchanged1800s process limit. There are417026 accepted annual
+substeps; these are local execution measurements, not portable speed claims.
+The execution checkpoint remains `7bde3165791a33120aeef0fc9828a5d790f066f8`,
+with the unchanged compiled source surface of `c2363394`. Later canonical
+`710b4173` adds unrelated NUT/performance work; all213 actual execution inputs
+remain exact. Its current composed source/raw owner and all147 controls pass.
+
+The2197-member source/raw capsule is
+`integration/mc-sol01/evidence/MC_SOL01_REFINED_YEAR_20261023.tar.xz.b64`,
+decoded SHA256 `7dfe7a6cee6666484ebbbc8614a979d8ea86b240f7a46ddb3b66358d27303b4e`.
+It retains the actual checkpoint/plan, compiler identity, generated original
+sources, build/native streams, complete physical generations and its own
+`verify_refined_year.py`. Eleven missing/corrupt/source/false-claim controls pass.
+The separate qualification record is
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_QUALIFICATION_20261023.json`;
+canonical admission is a separate actual-merge receipt.
+
+This supersedes only the earlier full-refined-year execution-coverage limit.
+It does not establish O0 annual execution, spatial convergence, original full
+Andelst equivalence, general/default historical dispatch or broader heat/snow/
+age/NUT composition. Production/defaults, all frozen capability dispositions,
+full MC-SOL01 and full MC-NUT01 flags remain unchanged.
