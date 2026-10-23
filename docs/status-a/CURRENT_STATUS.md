@@ -615,3 +615,11 @@ rejects SWMACRO. Scope, raw failures and the qualification owner are in
 `integration/audits/verify_native_drainage.py`. Full original Andelst and full
 SOL/NUT remain open; canonical admission requires the separate exact merge
 receipt. No mastercoverage promotion.
+
+PR #1405 now admits this bounded469-day composition on canonical. Actual merge
+`b80ef71990403310a1b495b69c34c26d6a35a4fa` has complete tree
+`9935b6bc9631c66a6180390ddd63afca0147ce1e`, exactly the qualified tree.
+The separate receipt is `integration/mc-sol01/drainage/ADMISSION.json`.
+This does not admit the failed day470, the failed wet day7, or full original
+Andelst. The next implementation target is Reference nonlinear convergence at
+day470 with the existing hard mass criteria preserved.

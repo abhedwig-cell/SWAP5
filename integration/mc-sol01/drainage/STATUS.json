@@ -5,7 +5,8 @@
   "implemented": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "admission_receipt": "integration/mc-sol01/drainage/ADMISSION.json",
   "invariants": [
     "single physical state owner",
     "accepted qdra provenance",
@@ -19,7 +20,7 @@
     "existing smooth phreatic projection",
     "native Boesten input and V3 restart"
   ],
-  "next_action": "Publish one qualified bounded integration PR and verify exact actual merge tree; full481-day drainage remains blocked at470",
+  "next_action": "Resolve Reference nonlinear convergence at day470 without relaxing mass criteria; then qualify the full481-day drainage composition before original SWMACRO/Cauchy/heat integration",
   "qualification": {
     "owner": "integration/audits/verify_native_drainage.py",
     "current_source_raw_controls": 36,
