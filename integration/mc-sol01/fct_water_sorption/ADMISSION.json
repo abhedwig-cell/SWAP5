@@ -1,0 +1,42 @@
+{
+  "work_unit": "MC-SOL01-FCT-WATER-SORPTION01",
+  "date": "2026-10-23",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_RESEARCH_ONLY",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1397",
+  "canonical_base": "22cdf5700dbea526c2ef217db20b738048e3eebe",
+  "qualified_head": "0832c0cfb8b54b182f561f82ea215dcdfd0d881e",
+  "actual_merge": "fc9a2d5a746d65946861657a946d1c6b4712de26",
+  "qualified_complete_tree": "1457ee6f51442d14576dc8194ce2d36b84224b5b",
+  "actual_merge_complete_tree": "1457ee6f51442d14576dc8194ce2d36b84224b5b",
+  "exact_tree_verified": true,
+  "source_raw_capsule": "integration/mc-sol01/fct_water_sorption/EVIDENCE.tar.xz.b64",
+  "decoded_sha256": "36764e94f77d3dbdd01f540abba9a672c2437ac4660398f7302a289e15ddc4d2",
+  "bytes": 83228,
+  "members": 812,
+  "actual_merge_verification": {
+    "capsule_and_independent_oracles": "PASS",
+    "evidence_controls": 8,
+    "original_composed_owner": "PASS",
+    "original_composed_owner_controls": 17,
+    "prototype_preservation": "PASS_AT_QUALIFIED_EXACT_SAME_TREE",
+    "prototype_controls": 6
+  },
+  "checked_cases": 192,
+  "atomic_rejections": 2880,
+  "off_delegations": 384,
+  "max_mass_residual_mg_cm2": 1.4502288259166107e-15,
+  "docs": {
+    "source_checks": "PASS",
+    "mkdocs_strict": "PASS"
+  },
+  "hosted_actions": "No runs for exact qualified head; intentionally research-only local qualification with skip-ci. No hosted PASS claimed.",
+  "scope": "Prescribed water-balanced pure downward advective single steps, uniform grid/material, changing theta, Freundlich0.5/1/2. Actual production low-order solve and inversion; corrected internal transfers only.",
+  "production_activated": false,
+  "native_qualified": false,
+  "actual_water_trace_qualified": false,
+  "time_series_accuracy_qualified": false,
+  "full_mc_sol01_closed": false,
+  "qualification_record": "integration/mc-sol01/fct_water_sorption/STATUS.json",
+  "next_safe_work": "Replay actual accepted water-solver traces and independently qualify nonlinear transient convergence before any production/native exposure. Additional physics and restart remain separate.",
+  "preservation_policy": "No production source/default/runtime change; full moving F-CI/native year/RossFast NOT_SELECTED_IMPACT/SCOPE, highest-low-air NOT_SELECTED_POLICY."
+}
