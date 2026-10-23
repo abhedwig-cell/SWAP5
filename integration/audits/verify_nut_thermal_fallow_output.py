@@ -52,6 +52,7 @@ def projection(path=PARENT):
   text=text[:offset]+indent+"if "+condition+":return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+target+"']("+args+")\n"+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('cycle_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_cycle_output.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE and r['composition_baseline']==COMPOSITION_BASE,'thermal fallow exact baseline')
  for p,h in {**r['qualified_input_sha256'],**r['postimages']}.items():require(sha(reader(p))==h,'saved postimage '+p)
  for p in [PARENT,PERF,RETRY]:require(reader(p)==projection(p),'original owner assertions '+p)
@@ -153,6 +154,7 @@ def cold_validate(f):
  prior.update({p.replace('cold/','physical/',1):v for p,v in f.items()if p.startswith('cold/')})
  return old['validate'](prior)
 def verify():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('cycle_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_cycle_output.py'))['verify']()
  source();f=capsule();r=validate(f);r['cold_preservation']=cold_validate(f)
  old=runpy.run_path(str(ROOT/PARENT));r['incumbent_saved_output']=old['validate'](old['capsule']())
  prior=verify_current_predecessor(json.loads(f['preservation.json'])['fsi35_original_native_body_sha256'])
@@ -160,6 +162,7 @@ def verify():
  for key in ['current_calendar_nut','current_concurrent_nut','frozen_daily_predecessor']:r[key]=prior[key]
  return r
 def self_test():
+ if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('cycle_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_cycle_output.py'))['self_test']()
  source();f=capsule();validate(f);cold_validate(f);controls=[]
  def reject(name,fn):
   try:fn()

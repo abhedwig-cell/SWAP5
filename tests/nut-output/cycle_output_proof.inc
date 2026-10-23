@@ -1,6 +1,6 @@
  subroutine cycle_config(p)
   type(crop_n_configuration_t),intent(out)::p
-  p=cp;p%harvest%crop_identity=2;p%harvest%crop_end=6d0
+  p=cp;p%harvest%crop_identity=2;p%harvest%crop_end=5d0
  end subroutine
  subroutine cycle_resume_mode()
   type(crop_n_configuration_t)::p
@@ -114,6 +114,12 @@
     if(has)then;dm(1:3)=pending%dry_matter_kg_ha;nn(1:3)=pending%nitrogen_kg_ha;end if
     call restore_crop_ext_saved_residue([real(t+1,real64),dm,nn],ms,code)
     if(emit)then;md=[md,date];mr=[mr,row];end if
+    vw=w;vc=c;vo=o;vs=s;vd=dates;vr=rows
+    call run_crop_soil_n_saved_cycle_day(prefix//'.view-day-'//tag,date,emit,670001_int64,backend,column, &
+     cfg%tiles(1)%template,cfg%tiles(1)%parameters,vw,forcing,cfg%numerical,vc,weather,real(t,real64),real(t+1,real64), &
+     batch,split,senescence,vo,vs,vd,vr,r,code,CYCLE_ENVIRONMENT,csv_path='absent-cycle-dir/view.csv')
+    call require(code==OUTPUT_DAY_VIEW_FAILED.and.r%status==0,'cycle CSV failure retains authoritative generation')
+    call saved_write(prefix//'.view-memory-'//tag,vw,vc,vo,vs,vd,vr)
     call run_crop_soil_n_saved_cycle_day(prefix//'.day-'//tag,date,emit,670001_int64,backend,column, &
      cfg%tiles(1)%template,cfg%tiles(1)%parameters,w,forcing,cfg%numerical,c,weather,real(t,real64),real(t+1,real64), &
      batch,split,senescence,o,s,dates,rows,r,code,CYCLE_ENVIRONMENT,csv_path=prefix//'.csv')

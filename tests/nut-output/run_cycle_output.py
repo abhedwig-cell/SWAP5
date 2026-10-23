@@ -52,7 +52,7 @@ for kind,folder in [('cold','saved'),('heat','thermal-saved')]:
   run([fc,*flags,'-c',d/'driver.f90','-o',driver],b,'driver_compile')
   run([fc,*flags,*objects,obj,driver,'-o',exe],b,'link')
   run([exe,'write',b/'original.restart',b/'endpoint'],b,'actual_native')
-  seeds=sorted(b.glob('*.cycle.seed'));assert len(seeds)==2,(kind,opt,seeds)
+  seeds=sorted(p for p in b.glob('*.cycle.seed')if '.opaque-stages.'not in p.name);assert len(seeds)==2,(kind,opt,seeds)
   report={}
   for seed in seeds:
    prefix=Path(str(seed).removesuffix('.seed'));delayed='deferred'in str(seed)
@@ -65,10 +65,25 @@ for kind,folder in [('cold','saved'),('heat','thermal-saved')]:
     if label!='day-8':assert Path(str(fresh)+'.day-8').read_bytes()==Path(str(prefix)+'.day-8').read_bytes(),('fresh drift',kind,opt,label)
    for before,after in [('before-seed','bad-seed'),('before-seed','failed-seed')]+[(a+'-'+tag,b+'-'+tag)for tag in ['5','6']for a,b in [('before-day','failed-day'),('before-day','invalid-day')]]+[(a+'-'+tag,b+'-'+tag)for tag in ['1','2','3']for a,b in [('before-phase','failed-phase')]]:
     assert Path(str(prefix)+'.'+before).read_bytes()==Path(str(prefix)+'.'+after).read_bytes(),('failed mutation',kind,opt,before,after)
+   for tag in ['5','6']:
+    assert Path(str(prefix)+'.view-day-'+tag).read_bytes()==Path(str(prefix)+'.view-memory-'+tag).read_bytes()==Path(str(prefix)+'.day-'+tag).read_bytes(),'CSV-only cycle view drift'
    report['deferred'if delayed else'saved']={label:sha(Path(str(prefix)+'.'+label))for label in ['seed','day-5','day-6','phase-1','phase-2','phase-3','day-7','day-8']}
+  crashes={}
+  for phase in ['before','after']:
+   case=b/('crash-'+phase);case.mkdir();target=case/'generation'
+   prefix=Path(str(seeds[0]).removesuffix('.seed'));before=Path(str(prefix)+'.seed');after=Path(str(prefix)+'.day-5');target.write_bytes(before.read_bytes())
+   env={**os.environ,'LD_PRELOAD':str(W/'saved/rename-stop.so'),'OUTPUT_TEST_TARGET':str(target),'OUTPUT_TEST_PHASE':phase,'OUTPUT_TEST_RENAME_COUNT':'1'}
+   with(case/'stdout').open('wb')as out,(case/'stderr').open('wb')as err:
+    child=subprocess.Popen([str(exe),'cycle-resume',str(after),str(target),'','roundtrip'],cwd=case,env=env,stdout=out,stderr=err)
+    _,state=os.waitpid(child.pid,os.WUNTRACED);assert os.WIFSTOPPED(state)and os.WSTOPSIG(state)==signal.SIGSTOP
+    child.kill();child.wait();assert child.returncode==-signal.SIGKILL
+   wanted=before if phase=='before'else after;assert target.read_bytes()==wanted.read_bytes(),'cycle crash partial generation'
+   recovered=case/'recovered';run([exe,'cycle-resume',target,recovered,'','roundtrip'],case,'crash_reconstruction');assert recovered.read_bytes()==target.read_bytes()
+   crashes[phase]=dict(returncode=child.returncode,complete=True,sha256=sha(target));(case/'result.json').write_text(json.dumps(crashes[phase])+'\n')
+  report['crashes']=crashes
   results[kind+'-'+opt]=report
 assert results['cold-O0']==results['cold-O2']and results['heat-O0']==results['heat-O2']
 assert all(sha(Path(p))==h for p,h in pinned.items()),'provider artifacts drift'
 for p in ['src/adapter/mod_crop_soil_n_saved_cycle_output.f90','tests/nut-output/run_cycle_output.py','tests/nut-output/cycle_output_proof.inc']:inputs[p]=sha(ROOT/p)
-r=dict(status='COLD_HEAT_TWO_CROP_SAVED_OUTPUT_O0_O2_FRESH_PASS',results=results,events=events,input_sha256=inputs,pinned_artifacts=pinned,generated=generated,provider_count=331,full_mc_nut01_closed=False,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in sorted({e['category']for e in events})})
+r=dict(status='COLD_HEAT_TWO_CROP_SAVED_OUTPUT_O0_O2_FRESH_PASS',results=results,events=events,input_sha256=inputs,pinned_artifacts=pinned,generated=generated,shared_base_provider_count=331,additive_provider_count=1,full_mc_nut01_closed=False,cost_seconds={c:sum(e['seconds']for e in events if e['category']==c)for c in sorted({e['category']for e in events})})
 (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n');print(r['status'])

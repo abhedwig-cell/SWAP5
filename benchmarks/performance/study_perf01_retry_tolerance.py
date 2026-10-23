@@ -15,6 +15,7 @@ ap = argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--build', type=Path, required=True)
 ap.add_argument('--checked-build', type=Path, required=True)
 ap.add_argument('--output', type=Path, required=True)
+ap.add_argument('--profile', choices=['original', 'sensitive'], default='original')
 a = ap.parse_args()
 out = a.output.resolve()
 out.mkdir(parents=True, exist_ok=False)
@@ -34,6 +35,8 @@ for opt, folder in builds.items():
     metadata[opt] = meta
 assert metadata['O0']['sources'] == metadata['O2']['sources']
 report = dict(status='RUNNING', events=[], cases={}, builds=metadata,
+    profile=a.profile,
+    source_context_commit=subprocess.check_output(['git','merge-base','HEAD','origin/integration/f-ci-canonical'],cwd=ROOT,text=True).strip(),
     production_changed=False, retry_option=True, warm_start=False,
     source_tree=subprocess.check_output(['git', 'rev-parse', 'HEAD:src'], cwd=ROOT, text=True).strip(),
     accuracy_comparison='Existing local model-certificate head budgets, not equivalent-accuracy speedup')
@@ -46,7 +49,8 @@ def retain_incomplete():
 atexit.register(retain_incomplete)
 def run(opt, rain, budget, label, restart=False):
     command = [sys.executable, str(ROOT/'benchmarks/performance/run_perf01_warm_weather.py'),
-        '--build', str(builds[opt]), '--output', str(out/label), '--rain', str(rain), '--budget', str(budget)]
+        '--build', str(builds[opt]), '--output', str(out/label), '--rain', str(rain), '--budget', str(budget),
+        '--profile', a.profile]
     if restart:
         command.append('--restart')
     start = time.monotonic()
@@ -83,6 +87,7 @@ for rain in [4,1]:
         m, rows, work = samples[budget,0]
         cpu = [samples[budget,i][0]['user_seconds'] for i in range(3)]
         case[str(budget)] = dict(cpu_seconds=cpu, median_cpu_seconds=statistics.median(cpu),
+            stress_days=m['stress_days'],
             work=m['work'], newton_work=m['newton_work'], totals=m['totals'],
             max_gross_daily_closure_mm=max(samples[budget,i][0]['max_gross_daily_closure_mm'] for i in range(3)),
             differences_vs_1e3=differences(rows,samples[.001,0][1]),
@@ -98,6 +103,9 @@ for rain in [4,1]:
     case['on_1e2_over_on_1e3_cpu'] = case['0.01']['median_cpu_seconds']/case['0.001']['median_cpu_seconds']
     report['cases'][str(rain)] = case
     save()
+if a.profile == 'sensitive':
+    assert report['cases']['1']['0.001']['stress_days'] > 0, 'root stress discriminator inactive'
+    assert report['cases']['1']['0.001']['totals']['stress_deficit_mm'] > 1e-4
 report['status'] = 'COMPLETE_BOUNDED_RETRY_ACCURACY_STUDY_O0_O2_RESTART_PASS'
 save()
 print(report['status'], flush=True)
