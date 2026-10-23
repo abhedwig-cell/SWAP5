@@ -17,6 +17,14 @@
     "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full F-CI", "production numerical policy change"]
   },
   "affected_invariants": [2, 5, 7, 13, 23, 26],
-  "next_action": "Persist instrumentation then run verified native research profiling. Investigate safe next policy only after measured regime costs.",
+  "research_probe": {
+    "script": "benchmarks/performance/probe_perf01_solver_cap.py",
+    "production_changed": false,
+    "policy": "Generated runtime only: after solver-limited accepted transaction, retain accepted dt without growth until interval ends. All gates, retry limits, defaults and atomic day fallback unchanged.",
+    "criteria": "Existing proposal contract daily gross water<1e-9mm, daily/season runoff<.01mm, daily storage<.01mm, total evaporation/transpiration<1e-8mm; exact O0/O2, default-OFF bytes, actual day48 restart",
+    "expected_seconds": 60,
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
+  "next_action": "Profile completed at O2 with exact physical bytes. Persist solver-cap research discriminator then execute checked O0/O2 bounded physical and restart comparisons.",
   "blockers": []
 }
