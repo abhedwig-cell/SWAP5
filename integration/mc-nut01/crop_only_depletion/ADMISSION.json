@@ -1,0 +1,158 @@
+{
+  "workstream": "MC-NUT01",
+  "work_unit": "SOLE_CONSTANT_CROP_SINK_DEPLETION",
+  "pr": 1416,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1416",
+  "canonical_branch": "integration/f-ci-canonical",
+  "baseline": "b65c2b74085b9b666ab60d0a1f685d7297ef5b9e",
+  "qualified_local_head": "7259270a941b2eaebe6eb64e861546d48ef9369a",
+  "published_qualified_head": "a4150fd174289e4c6e127f847e5b5849a814e70e",
+  "qualified_complete_tree": "9c1a3e150be6a7d2026ed123694c610cc4585a34",
+  "actual_merge": "2c00c49a716e79545419407be6670b3df72e138a",
+  "actual_merge_first_parent": "b65c2b74085b9b666ab60d0a1f685d7297ef5b9e",
+  "actual_merge_tree": "9c1a3e150be6a7d2026ed123694c610cc4585a34",
+  "complete_actual_tree_exact": true,
+  "canonically_admitted": true,
+  "actual_merge_checks": {
+    "owner": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_crop_depletion_composed.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.694298961003369,
+      "stdout_sha256": "a6b7ffb23eb5c3a6429101c5a219d02ce24f6379d2f50a6e3461d8d33f6fbc24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "general": {
+      "command": [
+        "python",
+        "-B",
+        "integration/performance/authority.py"
+      ],
+      "returncode": 0,
+      "seconds": 5.127352753006562,
+      "stdout_sha256": "a6b7ffb23eb5c3a6429101c5a219d02ce24f6379d2f50a6e3461d8d33f6fbc24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "history": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_historical_output_caller.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.924088378997112,
+      "stdout_sha256": "a6b7ffb23eb5c3a6429101c5a219d02ce24f6379d2f50a6e3461d8d33f6fbc24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fsi35": {
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,runpy;print(json.dumps(runpy.run_path('integration/performance/authority.py')['fsi35_successors'](),indent=2))"
+      ],
+      "returncode": 0,
+      "seconds": 1.4798066779985675,
+      "stdout_sha256": "457b94c2e305e2ea8136217b454ec82f98662b62b6bfe414b52e726101caf098",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs": {
+      "command": [
+        "python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.18683098100154893,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "mkdocs": {
+      "command": [
+        "python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/281436eb488f/nut-crop-composed-actual-merge/site"
+      ],
+      "returncode": 0,
+      "seconds": 13.94606273699901,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "54b6ccffdd8a90c0aa3243db3830e27f521bac155fa01d3e9e9792f96b91597c"
+    },
+    "controls": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_crop_depletion_composed.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "seconds": 101.87736098200548,
+      "stdout_sha256": "d40dcd32a66d089386e336e715e652a93b100a6882a1742820c6b7dfa643a8ef",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "current_and_peer_controls": 316,
+  "current_crop_controls": 22,
+  "peer_preservation_controls": 163,
+  "composition_source_and_raw_controls": 131,
+  "historical_predecessor_controls": 198,
+  "historical_controls_scope": "Pinned own historical commit with exact raw Git commit/tree/blob proof. Not relabelled current execution.",
+  "scientific_results": {
+    "native": "Fresh208 HIST compile events,446 exact reuses;78 fresh HIST processes including56 restarts;30 fresh coupled runs and60 process restarts",
+    "controls_seconds": "UNKNOWN_NOT_TIMED",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "measured_event_seconds": {
+    "hist": {
+      "compile": 144.76539484090608,
+      "link": 0.6525238250105758,
+      "trace_native": 0.003640172006271314,
+      "native": 12.921410970986472,
+      "restart_native": 32.516693286997906,
+      "compiler": 0.001680447006947361
+    },
+    "joint": {
+      "compile": 18.212917069002287,
+      "link": 0.3110301599954255,
+      "previous_compile": 0.16754307700466597,
+      "previous_link": 0.3094033939996734,
+      "previous_native": 0.2797989749960834,
+      "native": 12.077235777011083,
+      "restart_native": 14.86965679199784
+    }
+  },
+  "current_scope": "Sole constant crop sink with zero prescribed top concentration and nonnegative net mineralisation, after genuine NH4/NO3 depletion. Original NH4-first selection and juvenile uptake identity unchanged.",
+  "preservation": "All384 signed/default direct predecessors and all15 coupled profiles byte exact. Current O0/O2 actual crop/Richards/N30 runs,60 restarts and78 HIST native processes including56 restarts;208 fresh compilations and446 exact bound reuses. Whole N closure and rejection atomicity unchanged.",
+  "reference": "All576 direct cases per optimization match bounded admitted corrected B1 and independent event-constrained ODE. Original immutable WaterN executed separately; B0 variable-capacity/loading defects explicitly retained.",
+  "peer_preservation": "PR1408 typed-water native194/FCT compiled inputs unchanged;62 native typed-option processes inherited only with exact inputs; unchanged peer numerical assertion bodies executed. Historical old daily-N identity explicitly projected, with current NUT physical proof separate.",
+  "portable_historical_checkpoint_is_live_ancestor": false,
+  "full_mc_nut01_closed": false,
+  "mastercoverage_promoted": false,
+  "remaining_open": [
+    "Allocation among competing constant nitrogen sinks after depletion",
+    "Automatic snow/persistent-surface nitrogen",
+    "Full MC-NUT01 closure"
+  ],
+  "hosted_workflow_runs": [],
+  "hosted_status_checks": [],
+  "hosted_empty_check_scope": "NOT_SELECTED_NOT_PASS",
+  "full_FCI": "NOT_SELECTED_IMPACT",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "RossFast": "NOT_SELECTED",
+  "evidence": {
+    "path": "integration/mc-nut01/crop_only_depletion/COMPOSITION.tar.xz.b64",
+    "sha256": "0d9cd5bbdbca4b660106d0df1e86428a4a6905d33e2f881b614a375f8e0732e7",
+    "bytes": 349696,
+    "members": 3500
+  },
+  "receipt_changes": "Metadata only. Numerical sources, all source postimages and sealed current/historical evidence unchanged."
+}

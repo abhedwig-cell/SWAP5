@@ -1,8 +1,8 @@
 {
   "own": "c237fd8817b1840d6fec179711eb0ee3e3bd17c2",
   "peer": "462395b00e8c0234bfc5457d9d1fdf92486a7329",
-  "status": "CURRENT_COMPOSITION_EVIDENCE_SEALED_PENDING_GATES",
-  "canonically_admitted": false,
+  "status": "CURRENT_COMPOSITION_CANONICALLY_ADMITTED",
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "scientific_delta": {
     "integration/audits/reconcile_crop_depletion.py": "A",
@@ -159,5 +159,10 @@
   },
   "selection": "COMPOSITION_CONTRACT.md; original HIST/crop assertions, exact unchanged direct inputs; no full FCI/highest low-air/RossFast selection",
   "historical_own_qualification": "c237fd8817b1840d6fec179711eb0ee3e3bd17c2",
-  "current_physics": "Original current HIST and all30 actual crop profiles. Default endpoint/ledger results exact pre-composition; competing constant sinks and full NUT remain open."
+  "current_physics": "Original current HIST and all30 actual crop profiles. Default endpoint/ledger results exact pre-composition; competing constant sinks and full NUT remain open.",
+  "actual_merge": "2c00c49a716e79545419407be6670b3df72e138a",
+  "actual_merge_tree": "9c1a3e150be6a7d2026ed123694c610cc4585a34",
+  "current_and_peer_controls": 316,
+  "admission": "integration/mc-nut01/crop_only_depletion/ADMISSION.json",
+  "historical_status_scope": "STATUS.json remains immutable own pre-composition qualification. This COMPOSITION.json and ADMISSION.json own current combined admission."
 }

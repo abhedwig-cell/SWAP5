@@ -1,5 +1,18 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 sole crop sink depletion is canonically admitted by
+[PR1416](https://github.com/abhedwig-cell/SWAP5/pull/1416), merge
+`2c00c49a716e79545419407be6670b3df72e138a`, exact qualified complete tree
+`9c1a3e150be6a7d2026ed123694c610cc4585a34`. All316 actual-merge current/peer
+controls and owner/general/history/FSI35/docs gates pass. The current shared-water
+composition retains576 direct cases,384 exact predecessors,30 fresh coupled runs
+and60 restarts,78 fresh HIST processes with56 restarts and208 fresh/446 exact
+reused compilations. The198 older controls are explicitly historical. Admission
+authority is `integration/mc-nut01/crop_only_depletion/ADMISSION.json`;
+`COMPOSITION.json` owns current combined state, while immutable `STATUS.json`
+retains pre-composition qualification. Competing constant sinks, automatic
+snow/persistent-surface nitrogen and full MC-NUT01 remain open. No master promotion.
+
 PERF01's explicit water-state/flux temporal option: production contract
 `docs/science/PERF01_WATER_FLUX_TEMPORAL_POLICY.md`; native62 and current
 NUT/FCT evidence in the versioned typed status and separate live capsules;
