@@ -8304,6 +8304,23 @@
         "inheritance_controls": 20,
         "receipt": "integration/audits/MC_NUT01_THERMAL_CALENDAR_OUTPUT_MASTER_RECONCILIATION_20261023.json"
       }
+    },
+    "historical_caller_successor_20261023": {
+      "work_unit": "MC-NUT01-HISTORICAL-OUTPUT-CALLER",
+      "baseline": "710b41736214bcec80f0fe9bea6660cafa449024",
+      "stage": "IMPLEMENTED_PENDING_NATIVE_QUALIFICATION",
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "contract": "docs/science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md",
+      "relevant_paths": [
+        "src/adapter/mod_crop_soil_n_historical_output_application.f90",
+        "tests/nut-output/run_historical_output_caller.py"
+      ],
+      "dependency_surface": "Unchanged incumbent physical/calendar/output/restart owners; additive application dispatch and staged native TRUE startup only.",
+      "next_action": "Publish checkpoint,compile new controller and real cold/heat/native O0/O2 drivers over exact verified current artifacts; preserve147 incumbent controls; full/default historical activation remains open.",
+      "full_mc_nut01_closed": false
     }
   }
 }
