@@ -88,3 +88,42 @@ The 3732-member owner capsule preserves this qualification separately from the
 `247b9f5b`: PR1409 changes two organic providers used by HIST/NUT, while PR1410
 adds reactive FCT research. This later composition is not covered merely by
 the pinned owner PASS and must be reconciled before admission.
+
+## Live canonical composition,24 October2026
+
+Canonical `03c1c7a4` also contains PR1411 pulse/disk FCT research and PR1412
+singular organic assimilation. The original current NUT recipe completes all
+78 native processes, with 48 fresh compiles and 606 exact unchanged-closure
+reuses from the typed execution. The actual current crop composition completes
+22 coupled runs and 44 separate-process restarts; all original physical,
+chemical-rejection, mass and rollback assertions remain unchanged. A fresh
+observer confirms chemical rejection reaches the original exchange status.
+Reactive FCT and pulse/disk FCT recipes both complete on the current typed
+transaction providers. Their independent original assessments and negative
+controls are separate from execution completion and must pass before admission.
+
+The earlier typed full owner is replayed in an exact isolated worktree. Its
+FCT compiler-path classifier originally failed because the detached worktree
+has a different absolute directory. The replay adapter changes only that
+classifier's root to the recorded build root; every original input-hash,
+closure and physical assertion is retained. The initial validator failure is
+retained in the new evidence, not reported as a scientific failure or PASS.
+The canonical owner and its179 controls are also executed independently at
+the exact canonical checkpoint. These historical controls are distinguished
+from new current source/raw controls; they are not relabelled current runs.
+
+The two changed organic providers and the adjusted chemical rejection fixture
+have no overlap with the actual native194-provider input surface. Full469/481
+and typed62-case proofs are inherited only with every compiled input hash
+unchanged. No unrelated full F-CI, RossFast extension,1e-6 trial or heavy
+low-air test is selected.
+
+The final live composition audit passes147 current source/raw controls,
+including re-executed original canonical successor controls and both original
+FCT negative-control sets. General and historical owner entrypoints pass. The
+unchanged original bounded FSI35 native O0/O2 semantic/oracle runner also passes;
+its exact transaction implementation identity is explicitly registered while
+historical identities and every native assertion remain unchanged. The live
+4369-member capsule and separate live qualification record retain the raw
+executions, earlier validator failures, source hashes and completed gates.
+Canonical admission still requires the actual merge and exact-tree check.

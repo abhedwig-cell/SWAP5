@@ -20,7 +20,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
- if (ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_perf01_typed_water_flux.py'))['source'](reader,changed)
+ if (ROOT/'integration/mc-nut01/organic_resonance/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_resonant_pool.py'))['source'](reader,changed)
  r=record(reader);assert r['source_base']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -120,7 +120,7 @@ def validate(f):
  assert b'optimization drift'in f['failed/optimization-order/runner.log']
  return dict(qualified=True,status='SINGLE_ZERO_RECEIVING_POOL_O0_O2_QUALIFIED',direct_cases=466,newly_accepted=466,incumbent_byte_exact=192,actual_coupled_runs=14,process_restarts=28,hist_native_processes=78,hist_process_restarts=56,fresh_hist_compiles=74,reused_hist_compiles=580,full_mc_nut01_closed=False,exhausting_selected_solution='OPEN_FAIL_CLOSED',canonically_admitted=False)
 def verify():
- if (ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_perf01_typed_water_flux.py'))['verify']()
+ if (ROOT/'integration/mc-nut01/organic_resonance/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_resonant_pool.py'))['verify']()
  source();prior=predecessor()['verify']();current=validate(capsule())
  return {**prior,**current,'current_NUT_coupled_runs':14,'current_NUT_process_restarts':28,'predecessor_controls':111,'predecessor_scope':'All36 drainage and75 zero-pool predecessor controls; three explicitly archived NUT source identities; current direct/HIST/crop proof separate'}
 def zero_pool_controls():
@@ -138,7 +138,7 @@ def zero_pool_controls():
  ns['ROOT']=HistoricalRoot();ns['source']=source
  result=ns['self_test']();assert len(result)==75;return result
 def self_test():
- if (ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_perf01_typed_water_flux.py'))['self_test']()
+ if (ROOT/'integration/mc-nut01/organic_resonance/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_resonant_pool.py'))['self_test']()
  source();old=predecessor()['self_test']();assert len(old)==36
  passed=['drainage:'+p for p in old]+['zero-pool:'+p for p in zero_pool_controls()];f=capsule();validate(f)
  def reject(label,fn):

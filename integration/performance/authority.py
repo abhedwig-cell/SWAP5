@@ -197,6 +197,8 @@ def verify_qualification():
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
 
 def fsi35_successors():
+    if 'live_composition' in json.loads((ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').read_text()):
+        return runpy.run_path(str(ROOT/'integration/audits/verify_perf01_live_composition.py'))['fsi35_successors']()
     if 'evidence' in json.loads((ROOT/'benchmarks/performance/PERF01_WARM_START_20261022_STATUS.json').read_text()).get('source_composition_80db',{}):
         return runpy.run_path(str(ROOT/'integration/performance/verify_weather_composed_successor.py'))['fsi35_successors']()
     if 'fsi35_reconciliation' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()).get('swp_water_successor',{}):
