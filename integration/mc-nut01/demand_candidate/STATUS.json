@@ -1,7 +1,7 @@
 {
   "workstream": "MC-NUT01",
   "baseline": "3461a520fd2858782058cacb56f3cde606f2a188",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_UNUSED_EXHAUSTED_DEMAND_SELECTOR",
   "production_changes": [
     "src/process/mod_b111_soil_n_daily_exchange.f90"
   ],
@@ -28,7 +28,7 @@
     "RossFast": "NOT_SELECTED"
   },
   "full_mc_nut01_closed": false,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "evidence": {
     "path": "integration/mc-nut01/demand_candidate/EVIDENCE.tar.xz.b64",
     "sha256": "ee4c377cb219ff47aaf822a5d1f6655827f81b1dcef1d7496731ab5b88b46d48",
@@ -99,5 +99,11 @@
   },
   "source_commit": "1cd81e239dbd3a28a91871188bedb2d0981e9b44",
   "qualification_scope": "Exhausted unused demand candidates only. Selected supply must remain strictly nondepleted. Original36 Boesten assertions preserved with one narrowly historical NUT source-identity read; current sources have separate fresh direct/HIST/crop/restart proof.",
-  "current_corruption_controls": 52
+  "current_corruption_controls": 52,
+  "canonical_admission": {
+    "pr": 1402,
+    "actual_merge": "78ee6ac377576159dbec1f9521911d715bd7e3f9",
+    "complete_tree": "93eef53cb52c9fbcc3a26770304cb3d5c8aba048",
+    "receipt": "integration/mc-nut01/demand_candidate/ADMISSION.json"
+  }
 }

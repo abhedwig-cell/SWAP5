@@ -1,0 +1,68 @@
+{
+  "status": "CANONICALLY_ADMITTED_UNUSED_EXHAUSTED_DEMAND_SELECTOR",
+  "pr": 1402,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1402",
+  "canonical_branch": "integration/f-ci-canonical",
+  "actual_merge": "78ee6ac377576159dbec1f9521911d715bd7e3f9",
+  "qualified_head": "05a19316a628747f389c00564b1f2d7526545b26",
+  "qualified_local_head": "fa51169834c20c5490df1dccfb80a2e5001ecede",
+  "qualified_complete_tree": "93eef53cb52c9fbcc3a26770304cb3d5c8aba048",
+  "actual_complete_tree": "93eef53cb52c9fbcc3a26770304cb3d5c8aba048",
+  "complete_tree_exact": true,
+  "actual_merge_checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "3a80e51bda7354a0f554ab830dfef9d263496bb251e08a8ef48e7ba65d2fdea6"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "8d0c52b90a8d5dd85787ec718f65e76711c586254774fa9517ac5d88bfb6b12e"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "3a80e51bda7354a0f554ab830dfef9d263496bb251e08a8ef48e7ba65d2fdea6"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "3a80e51bda7354a0f554ab830dfef9d263496bb251e08a8ef48e7ba65d2fdea6"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "control_count": 52,
+  "predecessor_controls": 36,
+  "new_controls": 16,
+  "evidence": {
+    "path": "integration/mc-nut01/demand_candidate/EVIDENCE.tar.xz.b64",
+    "sha256": "ee4c377cb219ff47aaf822a5d1f6655827f81b1dcef1d7496731ab5b88b46d48",
+    "bytes": 221008,
+    "members": 2440,
+    "excluded": "Objects, modules and executables are hashed, not embedded. All raw run/build receipts and native restart bytes retained."
+  },
+  "actual_science": {
+    "direct_cases_per_optimization": 288,
+    "newly_accepted": 144,
+    "incumbent_cases_byte_exact": 144,
+    "default_byte_exact": true,
+    "fresh_HIST_compiles": 654,
+    "fresh_HIST_processes": 78,
+    "fresh_HIST_process_restarts": 56,
+    "actual_coupled_runs": 6,
+    "days_per_run": 8,
+    "separate_process_restarts": 12,
+    "previous_composition_rejection_probes": 2
+  },
+  "hosted_workflows": [],
+  "hosted_statuses": [],
+  "hosted_result": "NOT_SELECTED_NO_HOSTED_RUN_PRESENT",
+  "numerical_rerun_after_merge": "NOT_SELECTED_IDENTICAL_COMPLETE_TREE",
+  "full_mc_nut01_closed": false,
+  "master_promotion": false,
+  "remaining_scope": [
+    "Allocation among competing sinks when the selected physical solution exhausts",
+    "Automatic snow and persistent-surface nitrogen binding",
+    "General full historical NUT migration"
+  ]
+}

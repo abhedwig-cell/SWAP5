@@ -646,3 +646,21 @@ exhaustion, automatic snow/pond N and full MC-NUT01 remain open. No master row i
 promoted. Contract and receipt: `integration/mc-nut01/nondepleting_top/CONTRACT.md`
 and `integration/mc-nut01/nondepleting_top/ADMISSION.json`; scientific discussion:
 [nondepleting competition](../science/MC_NUT01_NONDEPLETING_COMPETITION_20261023.md).
+
+## Post-Status-A MC-NUT01 unused demand candidate, 2026-10-23
+
+PR #1402, actual merge `78ee6ac377576159dbec1f9521911d715bd7e3f9`, admits only
+an exhausted unused demand trial when the selected supply trial is positive and
+nondepleted. This restores the original higher-concentration demand/supply selector
+without introducing allocation after physical exhaustion. The actual complete
+merge tree equals the qualified tree;52 current source/raw controls and four
+NUT/HIST/general/FSI35 entrypoints pass on that merge. GNU13.3 O0/O2 covers288
+direct cases per optimization,144 newly accepted with144 incumbent cases exact,
+654 fresh HIST compilations/78 processes, six actual eight-day Richards/crop/soil
+runs and12 separate-process restarts. The prior production rejects the same
+limited first-day state atomically; the correction accepts it. Existing coupled
+profiles and all default endpoints remain byte-exact. Selected-solution exhaustion,
+snow/persistent-surface N and full NUT remain open; no master row is promoted.
+Contract and actual merge proof: `integration/mc-nut01/demand_candidate/CONTRACT.md`
+and `integration/mc-nut01/demand_candidate/ADMISSION.json`. Scientific discussion:
+[unused demand candidate](../science/MC_NUT01_UNUSED_DEMAND_CANDIDATE_20261023.md).
