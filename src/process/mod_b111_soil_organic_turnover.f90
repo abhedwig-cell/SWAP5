@@ -27,6 +27,7 @@ module mod_b111_soil_organic_turnover
 
   public::evaluate_b111_organic_turnover,b111_decay_fractions,b111_single_zero_response
   public::b111_resonant_response,b111_requires_resonant_response
+  public::b111_singular_response,b111_requires_singular_response
 
 contains
 
@@ -76,6 +77,14 @@ contains
 
     if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64)then
       call b111_single_zero_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
+      if(code/=B111_ORG_TURNOVER_OK)return
+      result%fom_kg_m3=endpoint(:n)
+      result%biomass_kg_m3=endpoint(n+1);result%humus_kg_m3=endpoint(n+2)
+      result%status=B111_ORG_TURNOVER_OK;return
+    end if
+
+    if(b111_requires_singular_response(p))then
+      call b111_singular_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
       if(code/=B111_ORG_TURNOVER_OK)return
       result%fom_kg_m3=endpoint(:n)
       result%biomass_kg_m3=endpoint(n+1);result%humus_kg_m3=endpoint(n+2)
@@ -195,6 +204,32 @@ contains
     integer,intent(out)::status
     status=B111_ORG_TURNOVER_INVALID
     if(.not.b111_requires_resonant_response(p))return
+    call evaluate_linear_pools(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,status)
+  end subroutine
+
+  ! The original receiving equations remain regular when their determinant
+  ! vanishes. Evaluate endpoints and means without inverting that matrix.
+  logical function b111_requires_singular_response(p)result(needed)
+    type(b111_organic_turnover_parameters_t),intent(in)::p
+    real(real64)::p1,p2,p3,p4,denom
+    needed=.false.
+    if(.not.all(ieee_is_finite([p%ratecon_bio,p%ratecon_hum,p%asfa_bio,p%asfa_hum])))return
+    if(min(p%ratecon_bio,p%ratecon_hum)<=0d0)return
+    if(min(p%asfa_bio,p%asfa_hum)<0d0.or.p%asfa_bio+p%asfa_hum>1d0)return
+    p1=(1d0-p%asfa_bio)*p%ratecon_bio;p2=p%asfa_bio*p%ratecon_hum
+    p3=p%asfa_hum*p%ratecon_bio;p4=(1d0-p%asfa_hum)*p%ratecon_hum
+    denom=p2*p3-p1*p4
+    if(.not.ieee_is_finite(denom))return
+    needed=abs(denom)<=1024d0*epsilon(1d0)
+  end function
+
+  subroutine b111_singular_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,status)
+    real(real64),intent(in)::fom0(:),biomass0,humus0,dt
+    type(b111_organic_turnover_parameters_t),intent(in)::p
+    real(real64),allocatable,intent(out)::endpoint(:),mean_pool(:)
+    integer,intent(out)::status
+    status=B111_ORG_TURNOVER_INVALID
+    if(.not.b111_requires_singular_response(p))return
     call evaluate_linear_pools(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,status)
   end subroutine
 
