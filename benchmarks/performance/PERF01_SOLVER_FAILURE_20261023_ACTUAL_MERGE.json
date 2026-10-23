@@ -1,0 +1,72 @@
+{
+  "work_unit": "PERF01_NATIVE_SOLVER_FAILURE",
+  "pr": 1404,
+  "merge": "c3e07888f8768e249566beccc18bc923ff11253a",
+  "published_head": "165c1ae81cfbe838f799baba301b7e0ce5d21543",
+  "published_tree": "54c5a60a7415f4748d5ea18fc700268b82c05672",
+  "canonical_parent": "d3c3486208ba8f4272496bb70f7d1e4b0ad4458e",
+  "qualified_combined_complete_tree": "cb81e387f7e7ec93661e9bcb266ba43c4eb9b1e1",
+  "actual_complete_tree": "cb81e387f7e7ec93661e9bcb266ba43c4eb9b1e1",
+  "whole_tree_exact": true,
+  "canonical_admission_scope": "RESEARCH_EVIDENCE_ONLY_NO_NEW_PRODUCTION_POLICY",
+  "production_changed": false,
+  "production_policy_admitted": false,
+  "changed_accuracy": true,
+  "actual_merge_checks": {
+    "independent_research_capsule_replay": "PASS",
+    "research_corruption_controls": 10,
+    "current_native_owner": "integration/audits/verify_native_boesten.py",
+    "current_native_owner_dispatch": "integration/audits/verify_nut_zero_pools.py",
+    "current_native_owner_result": {
+      "qualified": true,
+      "status": "ZERO_RECEIVING_POOL_RATES_O0_O2_QUALIFIED",
+      "full_original_Andelst": false,
+      "full_mc_sol01_closed": false,
+      "full_mc_nut01_closed": false,
+      "canonically_admitted": false,
+      "frozen_predecessor_controls": 40,
+      "current_NUT_HIST_processes": 78,
+      "current_NUT_coupled_runs": 10,
+      "current_NUT_process_restarts": 20,
+      "direct_cases": 168,
+      "newly_accepted": 168,
+      "actual_coupled_runs": 10,
+      "process_restarts": 20,
+      "hist_native_processes": 78,
+      "exhausting_selected_solution": "OPEN_FAIL_CLOSED",
+      "predecessor_controls": 52,
+      "predecessor_scope": "All52 unchanged demand/Boesten controls; three explicitly archived NUT source identities; current direct/HIST/crop proof separate",
+      "nonzero_byte_exact": 24,
+      "hist_process_restarts": 56,
+      "fresh_hist_compiles": 48,
+      "reused_hist_compiles": 606
+    },
+    "current_native_owner_controls": 75,
+    "all194_executed_native_input_hashes": "EXACT_CURRENT_POSTIMAGES",
+    "documentation_source_checks": "PASS",
+    "strict_mkdocs_build": "PASS",
+    "production_delta_vs_canonical_parent": "EMPTY",
+    "physical_rerun": "NOT_SELECTED_EXECUTED_INPUTS_EXACT_AND_QUALIFIED_COMBINED_WHOLE_TREE_EXACT"
+  },
+  "qualified_research": {
+    "native_processes": 184,
+    "expected_policy_failures": 4,
+    "compile_link_events": 60,
+    "actual_day48_restart_cases": 32,
+    "actual_complete_joint_failed_generation_checks": 4,
+    "capsule": {
+      "path": "benchmarks/performance/PERF01_SOLVER_FAILURE_20261023_EVIDENCE.tar.xz",
+      "sha256": "90625298ecde0e8501b5d24f6536163731e00dc1e484dc844baf5e088d60ff64",
+      "bytes": 966088,
+      "members": 1744
+    }
+  },
+  "scope_limits": [
+    "Generated geometry-bound four-cell zero-tracer native base and active empirical root-stress fixtures only",
+    "Separate absolute water-state depth and uptake/total-export rate budgets change the accuracy metric",
+    "Native timings exclude Python input preparation and publication; no equal-accuracy4.3.1 or regional speed claim",
+    "Soil versus pond evaporation allocation is not independently bounded",
+    "No production option, default or restart schema change; full SOL/NUT migration remains open",
+    "No new1e-6, RossFast expansion, highest-low-air or unrelated full FCI"
+  ]
+}

@@ -7,16 +7,36 @@
   "tested": true,
   "qualified": true,
   "qualification_scope": "Generated four-cell zero-tracer native base and active empirical root-stress O0/O2 research only. Intermediate failed policies retained. Production policy interface not implemented or admitted.",
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "production_changed": false,
-  "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_boesten.py"],
-  "dependency_surface": ["all current native194-provider inputs and artifacts", "current main", "original97day inputs", "HeadCalc", "current native source owner"],
+  "authority_paths": [
+    "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md",
+    "integration/audits/verify_native_boesten.py"
+  ],
+  "dependency_surface": [
+    "all current native194-provider inputs and artifacts",
+    "current main",
+    "original97day inputs",
+    "HeadCalc",
+    "current native source owner"
+  ],
   "reconciliation": "PR1399 NUT and PR1400 Boesten alter native providers. Reuse only current guarded O0/O2 artifacts after checking all current inputs and object/module hashes. Original HeadCalc and transaction implementation remain exact.",
-  "affected_invariants": [2,5,7,13,23,24,26],
+  "affected_invariants": [
+    2,
+    5,
+    7,
+    13,
+    23,
+    24,
+    26
+  ],
   "research_question": "Which nonlinear phases and failed line searches cause incumbent proposal/fallback work? Does ending an exhausted nonimproving line search through existing restart/retry reduce complete97day cost?",
   "candidate": "Generated executable only, frozen conductivity, prescribed bottom flux, existing native zero tracer proposal domain. Earlier rejection never changes acceptance criteria or physical origin; original saturated restart and day fallback retained.",
   "interim_findings": "Generated early rejection fails1x day18 and4x day7 at O0/O2. Passive observer exact. Failed nonlinear phases consume only about4-5% of HeadCalc time; many successful phases recover after a failed line search. Complete independent temporal component observer to locate converged-but-rejected work.",
-  "additional_selection": {"expected_seconds": 40, "scope": "Passive O0/O2 full97day head/pond/gwl and cellwise water-content L1 differences; identical physical bytes; no new acceptance norm"},
+  "additional_selection": {
+    "expected_seconds": 40,
+    "scope": "Passive O0/O2 full97day head/pond/gwl and cellwise water-content L1 differences; identical physical bytes; no new acceptance norm"
+  },
   "water_metric_research": {
     "authority": "User prioritises water balance/runoff and permits small head trajectory differences. Research only, distinct changed accuracy comparison.",
     "metric_cm": "max(sum(abs(theta_full-theta_half)*dz)+abs(pond_full-pond_half),abs(gwl_full-gwl_half))",
@@ -56,7 +76,12 @@
     "expected_seconds": 90,
     "selected": "O0/O2 current ordinary, passive nonlinear phase observer and early-exit research; full97day1x4x,3 O2 timing pairs, day48 restart, independent original-forcing water/runoff and head/evaporation observations",
     "criteria": "Observer every physical byte exact ordinary. Probe daily gross water<1e-9mm, daily and season runoff<.01mm, daily storage<.01mm, daily total evaporation/transpiration<1e-8mm. O0/O2 and actual day48 restart exact.",
-    "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full FCI"]
+    "not_selected": [
+      "new1e-6",
+      "RossFast expansion",
+      "highest low-air",
+      "unrelated full FCI"
+    ]
   },
   "result": "docs/performance/PERF01_SOLVER_FAILURE_20261023_RESULT.md",
   "evidence": {
@@ -71,9 +96,9 @@
   "actual_day48_restart_cases": 32,
   "actual_failed_complete_generation_checks": 4,
   "research_corruption_controls": 10,
-  "current_native_nut_owner": "PASS_WITH52_CONTROLS",
-  "last_reconciled_head": "779224e5062c19d6536ef42a120e946ca1f65d61",
-  "reconciliation_note": "Concurrent NUT daily-exchange change is outside all194 actual native inputs; every provider/artifact hash rechecked. Concurrent accepted-trace FCT research changes no production input. Existing current owner dispatch and52 controls pass.",
+  "current_native_nut_owner": "PASS_WITH75_CONTROLS",
+  "last_reconciled_head": "c3e07888f8768e249566beccc18bc923ff11253a",
+  "reconciliation_note": "PR1403 zero organic receiving-pool rates is preserved. Both changed NUT providers are outside all194 measured native build inputs. Actual-merge capsule replay verifies every executed input; current zero-pool NUT/Boesten owner and75 controls pass.",
   "decisions": {
     "early_failed_line_search": "REJECTED_NATIVE_DAY18_1x_DAY7_4x_AT_O0_O2",
     "water_only_metric": "BASE_PASS_ACTIVE_ROOT_CRITERIA_FAIL",
@@ -81,6 +106,9 @@
     "separate_state_depth_and_flux_rate_metric": "BOUNDED_BASE_AND_ACTIVE_ROOT_RESEARCH_CRITERIA_PASS",
     "production_policy": "UNCHANGED_NO_NEW_OPTION"
   },
-  "next_action": "Publish research and verify actual merge. Next development is a typed opt-in production metric with geometry, real native uptake metadata, caller exclusions and full owning preservation; separately consider individual surface flux accuracy.",
-  "blockers": []
+  "next_action": "Research publication and actual-merge replay complete. Next development unit: typed opt-in production metric with geometry, real native uptake metadata, caller exclusions and full owning preservation; separately consider individual surface flux accuracy.",
+  "blockers": [],
+  "canonical_admission_scope": "RESEARCH_EVIDENCE_ONLY_NO_NEW_PRODUCTION_POLICY",
+  "actual_merge": "c3e07888f8768e249566beccc18bc923ff11253a",
+  "actual_merge_receipt": "benchmarks/performance/PERF01_SOLVER_FAILURE_20261023_ACTUAL_MERGE.json"
 }

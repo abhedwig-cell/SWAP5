@@ -117,6 +117,18 @@ That limit, coarse mesh, zero tracer and bounded root/crop configuration remain
 explicit. No general global-error, positive-solute, seasonal or detailed-rain
 policy qualification is inferred.
 
+## Actual canonical merge
+
+PR1404 merged as `c3e07888f8768e249566beccc18bc923ff11253a`.
+Its complete tree `cb81e387f7e7ec93661e9bcb266ba43c4eb9b1e1` exactly equals
+the locally qualified combination with concurrent PR1403. The latter's two NUT
+organic providers lie outside all194 measured native inputs; every executed
+postimage remains exact. On the actual merge, independent capsule replay and
+all ten corruption controls pass. The current native owner dispatches to the
+zero-pool NUT owner; its physical proof and all75 controls pass. Documentation
+source checks and the strict MkDocs build pass. The canonical receipt records
+this admission of research evidence; no production numerical option is admitted.
+
 ## Recoverability and admission scope
 
 `PERF01_SOLVER_FAILURE_20261023_STATUS.json` owns the recovery point and sealed
