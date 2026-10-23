@@ -25,6 +25,13 @@
     "expected_seconds": 60,
     "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
   },
+  "recovery_probe": {
+    "reason": "Fixed accepted-size cap causes 23264 accepted halfsteps on 1x day89 and is much slower. Test bounded <=1.1 growth using the existing temporal-error safety factor, rather than permanent no-growth stagnation.",
+    "production_changed": false,
+    "expected_seconds": 60,
+    "criteria": "Identical to declared solver-cap probe; all existing hard gates and day fallback retained",
+    "admission": "RESEARCH_ONLY_NOT_PRODUCTION"
+  },
   "next_action": "Profile completed at O2 with exact physical bytes. Persist solver-cap research discriminator then execute checked O0/O2 bounded physical and restart comparisons.",
   "blockers": []
 }

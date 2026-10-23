@@ -15,15 +15,18 @@ def main():
  ap=argparse.ArgumentParser(description=__doc__)
  ap.add_argument('--bundle-prefix',type=Path,required=True);ap.add_argument('--oracle',type=Path,required=True)
  ap.add_argument('--compiler',required=True);ap.add_argument('--output',type=Path,required=True)
+ ap.add_argument('--recovery-factor',type=float,choices=[1.,1.1],default=1.)
  a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  report=dict(status='RUNNING',production_changed=False,policy_changed_in_generated_probe_only=True,
   candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),script_sha256=sha(Path(__file__)),
-  events=[],cases={},builds={},criteria=dict(daily_gross_water_mm=1e-9,daily_runoff_mm=.01,season_runoff_mm=.01,daily_storage_mm=.01,daily_total_evaporation_mm=1e-8,daily_transpiration_mm=1e-8))
+  recovery_factor=a.recovery_factor,events=[],cases={},builds={},criteria=dict(daily_gross_water_mm=1e-9,daily_runoff_mm=.01,season_runoff_mm=.01,daily_storage_mm=.01,daily_total_evaporation_mm=1e-8,daily_transpiration_mm=1e-8))
  def save():(out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n')
  def run(cmd,cwd,label,expected_success=True):
-  cmd=list(map(str,cmd));t=time.perf_counter();r=subprocess.run(cmd,cwd=cwd,capture_output=True,timeout=60)
+  cmd=list(map(str,cmd));t=time.perf_counter()
+  try:r=subprocess.run(cmd,cwd=cwd,capture_output=True,timeout=60)
+  except subprocess.TimeoutExpired as e:r=subprocess.CompletedProcess(cmd,124,e.stdout or b'',e.stderr or b'')
   for stream in ['stdout','stderr']:(out/(label+'.'+stream)).write_bytes(getattr(r,stream))
-  report['events'].append(dict(label=label,command=cmd,seconds=time.perf_counter()-t,returncode=r.returncode));save()
+  report['events'].append(dict(label=label,command=cmd,seconds=time.perf_counter()-t,returncode=r.returncode,terminal='CENSORED'if r.returncode==124 else'COMPLETED'));save()
   if expected_success:r.check_returncode()
   return r
  core=min(os.sched_getaffinity(0));report['core']=core
@@ -42,13 +45,19 @@ def main():
   run([a.compiler,*flags,'-J'+str(folder),ROOT/APP,*objects,archive,'-o',ordinary],folder,opt+'-ordinary-build')
   raw=(ROOT/RUNTIME).read_text();anchor='      cursor = next_cursor'
   assert raw.count(anchor)==1
-  raw=raw.replace(anchor,'''      ! RESEARCH ONLY: after a successful solver-limited transaction, retain
-      ! its accepted size without temporal-only growth for this interval.
+  injection='''      ! RESEARCH ONLY: retain an accepted solver-limited size.
       if(config%retain_accepted_step_proposal.and.solver_limited)then
         proposed_dt=tx%accepted_dt
         proposal_active=ieee_is_finite(proposed_dt).and.proposed_dt>0.0_real64
       end if
-'''+anchor)
+'''
+  if a.recovery_factor>1.:
+   injection=injection.replace('        proposed_dt=tx%accepted_dt','''        proposal_factor=1.1_real64
+        if(tx%temporal_error>0.2025_real64*transaction_policy%temporal_tolerance) &
+          proposal_factor=max(0.5_real64,min(1.1_real64, &
+            0.9_real64*sqrt(transaction_policy%temporal_tolerance/tx%temporal_error)))
+        proposed_dt=tx%accepted_dt*proposal_factor''')
+  raw=raw.replace(anchor,injection+anchor)
   source=folder/'runtime.f90';source.write_text(raw);obj=folder/'runtime.o'
   run([a.compiler,*flags,'-J'+str(folder),'-c',source,'-o',obj],folder,opt+'-runtime-build')
   oldobj=next(e['command'][-1]for e in meta['source_build']['events']if e['category']=='compile'and e['command'][-3].endswith('/'+RUNTIME))
@@ -63,7 +72,7 @@ def main():
      for name in ['input.nml','input.swp']:(case/name).write_bytes((previous/name).read_bytes())
      r=run(['taskset','-c',core,binary,'input.nml','-','97','input.swp'],case,label,False)
      if r.returncode:
-      report['status']='RESEARCH_CANDIDATE_REJECTED';report['failure']=label;save();print(json.dumps(report['failure']));return
+      report['status']='RESEARCH_CANDIDATE_CENSORED'if r.returncode==124 else'RESEARCH_CANDIDATE_REJECTED';report['failure']=label;save();print(json.dumps(report['failure']));return
      assert b'SWAP5_SOLUTE_COLUMN_COMPLETED'in r.stdout
      for name in FILES:
       target=previous if kind=='ordinary'else out/f'{opt}-{rain}x-0-cap'
