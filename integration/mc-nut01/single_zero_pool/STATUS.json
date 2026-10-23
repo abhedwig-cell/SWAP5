@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "baseline": "57e1b3f2635559df0db0350a96f0e06b2e3b9cc7",
   "source_base": "c459429adb976f1d4b0c2a11f58d520909d2ba3c",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_SINGLE_ZERO_RECEIVING_POOL",
   "production_changes": [
     "src/process/mod_b111_soil_organic_turnover.f90",
     "src/process/mod_b111_soil_organic_dissimilation.f90"
@@ -28,7 +28,7 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
   },
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "evidence": {
     "path": "integration/mc-nut01/single_zero_pool/EVIDENCE.tar.xz.b64",
@@ -194,5 +194,11 @@
     "research_joint_acceptance": 1406,
     "source_base": "c459429adb976f1d4b0c2a11f58d520909d2ba3c",
     "publication_base": "5659a644d39e85e740933ad20a964b352fa8b7eb"
+  },
+  "canonical_admission": {
+    "pr": 1407,
+    "actual_merge": "ba2dfc4dd7c681216a5d4afc41f96a2d9fad1cf2",
+    "complete_tree": "c73508410d35ada7244cf49a3e210ae5d24cdb0b",
+    "receipt": "integration/mc-nut01/single_zero_pool/ADMISSION.json"
   }
 }
