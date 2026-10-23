@@ -1,0 +1,16 @@
+name: DIFFICULTY P0B Trial Record
+on:
+  pull_request:
+    paths:
+      - 'src/research/mod_difficulty_trial_record.f90'
+      - 'tests/publication/test_difficulty_trial_record.f90'
+      - 'tests/publication/run_difficulty_p0b_trial_record.sh'
+      - '.github/workflows/difficulty-p0b-trial-record.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify executable TrialDifficultyRecord
+        run: bash tests/publication/run_difficulty_p0b_trial_record.sh
