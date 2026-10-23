@@ -1,0 +1,76 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_BOESTEN_ROOT_POND_SOLUTE",
+  "canonically_admitted": true,
+  "qualified": true,
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1400",
+  "head_commit": "4aff428bf632f95d2d99d7ea6a701450c63204ec",
+  "canonical_base": "4beca65677d3f66b7caebc5246351e7302863f6b",
+  "actual_merge": "b98b7606cab8de8ba5f5bad09b54dc4ee2241c8d",
+  "qualified_complete_tree": "a76d43d7b5a8acc37a60a187104702e427fd827a",
+  "actual_merge_complete_tree": "a76d43d7b5a8acc37a60a187104702e427fd827a",
+  "actual_merge_tree_exact": true,
+  "owner": "integration/audits/verify_native_boesten.py",
+  "source_and_raw_owner": "PASS",
+  "actual_merge_current_controls": 36,
+  "actual_merge_entrypoints": {
+    "native_project_admission.py": 36,
+    "verify_nut_saved_calendar_output.py": 36,
+    "verify_nut_historical_output_caller.py": 36,
+    "verify_nut_nondepleting.py": 36
+  },
+  "predecessor": {
+    "frozen_controls": 40,
+    "includes_original_rain_controls": 17,
+    "exact_source": "4beca65677d3f66b7caebc5246351e7302863f6b",
+    "original_assertion_bodies_preserved": true,
+    "historical_provider_reads_explicit": true
+  },
+  "actual_executions": {
+    "optimization": ["O0", "O2"],
+    "native_historical_days_each": 481,
+    "historical_rain_intervals": 2630,
+    "historical_COFREDBO": 0.79,
+    "separate_process_restart_day": 365,
+    "optimization_and_restart_physical_bytes_exact": true,
+    "max_daily_water_residual_cm": 1.7041923427996153e-14,
+    "max_daily_solute_residual_mg_cm2": 8.642392357316453e-14,
+    "hard_balance_gate": 1e-10,
+    "explicit_temporal_tolerance": 0.001,
+    "V3_pair_CRC_layout_decoder_negatives": true,
+    "chemical_rejection_after_water_trial_and_root_retry_ABA": true,
+    "wet_rejection_day": 7,
+    "wet_successful_intervals_before_rejection": 14,
+    "wet_complete_day6_water_solute_Boesten_restart_exact": true
+  },
+  "NUT_reconciliation": {
+    "PR1399_production_sources_unchanged": true,
+    "fresh_HIST_compile_events": 74,
+    "verified_unchanged_module_closure_compile_reuses": 580,
+    "fresh_HIST_processes": 78,
+    "fresh_coupled_runs": 4,
+    "separate_process_restarts": 8,
+    "all_original_HIST_assertions_and_incumbent_results_exact": true,
+    "NUT_exhaustion_stale_water_rejections_exact": true,
+    "simultaneous_complete_Boesten_NUT_physics_qualified": false
+  },
+  "cost": {
+    "checked_O2_normal_481day_cpu_seconds": 42.528525,
+    "checked_O2_normal_481day_wall_seconds": 42.53105140200205,
+    "checked_O2_failed_wet_prefix_cpu_seconds": 30.884238,
+    "general_speed_claim": false
+  },
+  "docs_source_check": "PASS",
+  "mkdocs_strict": "PASS",
+  "Actions": "NOT_SELECTED_IMPACT; local selected scientific gates completed; zero check-runs on qualified head",
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "mastercoverage_promoted": false,
+  "next_major_step": "Compose original SWDRA/DRA drainage using existing signed multilevel owner and accepted water/solute provenance, preserving Boesten and restart",
+  "remaining_blockers": [
+    "Complete original Andelst SWP explicitly rejects active SWDRA",
+    "Original macropore and Cauchy3 compositions remain unsupported in this native caller",
+    "Original numerical heat/frost composition remains unsupported",
+    "Four-times-wet Picard still rejects day7; failed frozen64day and first Picard270day observations remain retained with exact source postimages"
+  ]
+}

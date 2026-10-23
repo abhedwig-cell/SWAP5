@@ -626,7 +626,11 @@ module closures reused. NUT production sources stay byte-exact to PR1399.
 SWREDU0 preservation inheritance after the final
 Boesten-only guard/keyword refinements is explicit. Original full Andelst now
 reaches unsupported SWDRA; native drainage/macro/Cauchy3/heat and full SOL/NUT
-remain open. Canonical admission requires its separate actual-merge receipt.
+remain open. PR1400 admits the exact qualified complete tree
+`a76d43d7b5a8acc37a60a187104702e427fd827a` at actual merge
+`b98b7606cab8de8ba5f5bad09b54dc4ee2241c8d`;
+`integration/mc-sol01/boesten/ADMISSION.json` records36 controls at four current
+entrypoints and the actual remote merge-tree identity.
 
 ## Post-Status-A bounded MC-NUT01 nondepleting competition, 2026-10-23
 

@@ -780,7 +780,7 @@ needs the existing Boesten owner layout in the pond joint transaction and
 lossless restart; the present BASE-only transaction and S5MJ0001/0002 writer
 explicitly reject this composition. Merely accepting the SWP flag is unsafe.
 
-## Proposed HIST-INTEGRATION01 Boesten continuation
+## HIST-INTEGRATION01 Boesten continuation
 
 Baseline: canonical22cdf5700dbea526c2ef217db20b738048e3eebe, complete tree
 equal to local77bdbf286. Reuse the existing SWREDU2 Boesten physical owner,
@@ -805,7 +805,8 @@ Preserve existing daily/detail-rain and wet-proposal application outputs.
 Full F-CI NOT_SELECTED_IMPACT; highest low-air NOT_SELECTED_POLICY; RossFast
 unused. Mass gates remain1e-10 and explicit temporal tolerance1e-3. Sole
 physical/chemical ownership, candidate publication, rollback and lossless
-restart remain binding. This proposal is not canonical admission.
+restart remain binding. Qualification and canonical admission have separate
+status and actual-merge receipts below.
 
 The actual focused run exposed repeated temporal rejection under the old
 water-only identity metric. For the new plain-Boesten accepted-trace route,
@@ -871,3 +872,10 @@ The original40-control NUT proof is frozen at4beca656; historical input reads
 for the two changed water providers retain that source identity, while the
 fresh current composition proves the new postimage.36 current source/raw
 controls pass. Neither exhausted competing sinks nor full NUT is promoted.
+
+PR1400 canonically admits this bounded composition at actual merge
+`b98b7606cab8de8ba5f5bad09b54dc4ee2241c8d`, exact qualified complete tree
+`a76d43d7b5a8acc37a60a187104702e427fd827a`. Four current owner entrypoints
+each pass36 source/raw controls on that postimage. The receipt is
+`integration/mc-sol01/boesten/ADMISSION.json`; whole original Andelst and the
+remaining drainage/macro/Cauchy3/heat compositions are not admitted.

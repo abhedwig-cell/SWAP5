@@ -533,8 +533,10 @@ macropore/drainage/Cauchy3/numerical heat composition remains open. This does
 not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
 production completion or general performance.
 
-HIST-INTEGRATION01 Boesten continuation is locally qualified in
-`integration/mc-sol01/boesten/STATUS.json`, pending separate canonical receipt.
+HIST-INTEGRATION01 Boesten continuation is canonically admitted by PR1400,
+actual merge `b98b7606cab8de8ba5f5bad09b54dc4ee2241c8d`, exact qualified tree
+`a76d43d7b5a8acc37a60a187104702e427fd827a`. The receipt is
+`integration/mc-sol01/boesten/ADMISSION.json`.
 SWREDU2/COFREDBO uses the existing Boesten SPEV/SAEV physical owner, accepted
 root/water trace and pond-solute transaction. O0/O2 complete481days with the
 original Andelst coefficient0.79, exact day365 restart and V3 pair persistence;
