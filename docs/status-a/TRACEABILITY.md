@@ -404,6 +404,18 @@ tree identity, actual-merge source/native verification and15 controls recorded
 in `benchmarks/performance/PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json`. No master
 capability or general surface-formulation promotion is implied.
 
+The subsequent23 October retry-accuracy study, recorded in
+`benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_RESULT.md`,
+varies only existing1e-3/3e-3/1e-2 input budgets with the admitted option ON.
+Twenty-four native observations, checked O0/O2, day48 reconstruction, exact
+admitted1e-3 predecessor values and five negative evidence controls pass.
+Within that new measurement round,1e-2 cuts median CPU43.6% under1x and47.8%
+under4x; maximum4x daily storage spread is0.01608mm and total runoff shift
+0.001024mm relative to1e-3. This is bounded input-accuracy research, with no
+production/default, physical acceptance or master capability change. Recovery
+and sealed raw evidence are owned by `PERF01_RETRY_TOLERANCE_20261023_STATUS.json`
+under `benchmarks/performance`.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original
