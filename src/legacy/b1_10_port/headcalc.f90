@@ -19,6 +19,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
    use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
+   use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
    use mod_soil_water_solver_contract, only: hydraulic_evaluation_context_t, soil_water_boundary_conditions_t, &
@@ -86,6 +87,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: typed_bottom_invalid, typed_bottom_ok
    logical :: consistent_provider_conductivity
    logical :: corner_retry_available, corner_retry_active
+   logical :: saturated_flux_available, saturated_flux_active, saturated_flux_seed, saturated_flux_seed_ok
+   type(reference_richards_state_binding_t) :: saturated_flux_entry
+   real(8) :: saturated_flux_target
    real(8) :: bottom_dkdh
    real(8) :: typed_bottom_conductance
    logical :: provider_constitutive_active, provider_source_sink_active, provider_root_sink_active
@@ -398,6 +402,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       corner_retry_available = any(state%hm1 >= 0.0d0 .and. state%hm1 <= sqrt(epsilon(1.0d0)))
       if (corner_retry_available) corner_entry_state = state
    end if
+   saturated_flux_available = saturated_flux_restart_admitted()
+   saturated_flux_active = .false.
+   saturated_flux_seed = .false.
 900 continue
 
 !  reset conductivities (state%k, state%kmean) to time level t
@@ -434,8 +441,30 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1.0d0
    end do
 
+   if (saturated_flux_seed) then
+      saturated_flux_seed = .false.
+      call seed_saturated_flux_guess(saturated_flux_seed_ok)
+      if (.not. saturated_flux_seed_ok) then
+         state = saturated_flux_entry
+         state%fldecdt = .true.
+         ctx%control%request_dt_reduction = .true.
+         return
+      end if
+      provider_tuple_valid = .true.
+      provider_tuple_from_candidate = .true.
+      do i = 2, NN
+         fsi_ws%head_gradient(i) = (state%h(i-1)-state%h(i))/grid_disnod(i) + 1d0
+      end do
+   end if
+
 !  calculate vector fsi_ws%residual (first time)
    call vector_F(1)
+   if (saturated_flux_available .and. .not. saturated_flux_active) then
+      saturated_flux_target = dt*sum(fsi_ws%residual(1:NN))
+      saturated_flux_available = .not. state%ftoph .and. saturated_flux_target > 0d0 .and. &
+           ieee_is_finite(saturated_flux_target) .and. all(state%theta(1:NN) == state%thetm1(1:NN))
+      if (saturated_flux_available) saturated_flux_entry = state
+   end if
    if (typed_bottom_invalid) then
       state%fldecdt=.true.
       ctx%control%request_dt_reduction=.true.
@@ -875,6 +904,17 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       iBackTr = 0
       goto 900
    end if
+   if (saturated_flux_available .and. .not. saturated_flux_active) then
+      ! A saturated flux/flux column has no physical storage derivative.
+      ! Try one mass-guided pressure-offset guess after ordinary failure.
+      ! Original frozen K, storage origins and every acceptance gate survive.
+      state = saturated_flux_entry
+      saturated_flux_active = .true.
+      saturated_flux_seed = .true.
+      iBackTr = 0
+      ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
+      goto 900
+   end if
    if (.NOT.fldtmin) then
 
 !     reset soil state variables
@@ -922,6 +962,69 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+logical function saturated_flux_restart_admitted() result(ok)
+   ok = .false.
+   if (.not. provider_constitutive_active .or. .not. provider_dynamic_top_active) return
+   if (swmacro /= 0 .or. swbotb /= 2 .or. swkimpl /= 0 .or. swkmean /= 1) return
+   if (consistent_provider_conductivity .or. picard_conductivity_iteration .or. scale_matrix_area) return
+   if (.not. all(state%hm1(1:NN) >= 0d0)) return
+   select type (provider => evaluation_context%constitutive)
+   type is (b110_default_mvg_provider_t)
+      if (.not. associated(provider%parameters)) return
+      ok = .not. provider%parameters%elastic_storage_active .and. &
+           .not. provider%parameters%ksatexm_extension_enabled .and. &
+           .not. provider%parameters%conductivity_power_tail_enabled .and. &
+           .not. provider%parameters%continuous_saturation_conductivity
+   end select
+end function saturated_flux_restart_admitted
+
+subroutine seed_saturated_flux_guess(ok)
+   logical, intent(out) :: ok
+   real(8) :: left, right, middle, storage_loss
+   integer :: iteration
+   ok = .false.
+   left = minval(state%hm1(1:NN))
+   right = left + 1d0
+   do iteration = 1, 20
+      call evaluate_saturated_flux_shift(right, storage_loss)
+      if (.not. ieee_is_finite(storage_loss)) return
+      if (storage_loss >= saturated_flux_target) exit
+      right = left + 2d0*(right-left)
+   end do
+   if (storage_loss < saturated_flux_target) return
+   do iteration = 1, 40
+      middle = 0.5d0*(left+right)
+      call evaluate_saturated_flux_shift(middle, storage_loss)
+      if (.not. ieee_is_finite(storage_loss)) return
+      if (storage_loss < saturated_flux_target) then
+         left = middle
+      else
+         right = middle
+      end if
+   end do
+   ok = .true.
+end subroutine seed_saturated_flux_guess
+
+subroutine evaluate_saturated_flux_shift(shift, storage_loss)
+   real(8), intent(in) :: shift
+   real(8), intent(out) :: storage_loss
+   integer :: node
+   ! Translate only the trial guess. K/Kmean stay frozen at the origin.
+   state%h(1:NN) = state%hm1(1:NN)-shift
+   ctx%diagnostics%constitutive_evaluations = ctx%diagnostics%constitutive_evaluations + 1
+   ctx%diagnostics%constitutive_candidate_full_evaluations = &
+        ctx%diagnostics%constitutive_candidate_full_evaluations + 1
+   call evaluation_context%constitutive%evaluate(state%h(1:numnod), fsi_ws%provider_theta, &
+        fsi_ws%provider_k, fsi_ws%provider_capacity, fsi_ws%provider_dkdh)
+   state%theta(1:NN) = fsi_ws%provider_theta(1:NN)
+   call evaluation_context%constitutive%evaluate_water_content_increment(state%h(1:numnod), state%hm1(1:numnod), &
+        state%theta(1:numnod), state%thetm1(1:numnod), fsi_ws%provider_water_content_increment(1:numnod))
+   storage_loss = 0d0
+   do node = 1, NN
+      storage_loss = storage_loss-fsi_ws%provider_water_content_increment(node)*grid_dz(node)
+   end do
+end subroutine evaluate_saturated_flux_shift
 
 logical function pond_balance_option_allows()
    if (swmacro == 0) then

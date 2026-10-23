@@ -39,6 +39,7 @@ def projection(path=PARENT):
   text=text[:offset]+hook+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['source'](reader,changed)
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
@@ -200,6 +201,7 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
   independent_policy_contracts=independent_policies(reader),
   frozen_predecessor=frozen,full_historical_migration=False,canonically_admitted=False)
 def fsi35_successors():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['fsi35_successors']()
  source();rows={p:dict(v)for p,v in record()['frozen_fsi35_successors'].items()}
  for p,row in rows.items():
   expected=git('rev-parse',BASE+':'+p);current=git('rev-parse','HEAD:'+p)
@@ -207,6 +209,7 @@ def fsi35_successors():
   if current!=expected:assert p in PRODUCTION;row['canonical_blob']=current
  return rows
 def verify():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['verify']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['verify']()
  source();r=validate(evidence());native=record().get('native_fsi35')
  if native:
@@ -219,6 +222,7 @@ def verify():
  r['current_source_controls']=record().get('source_controls','PENDING_SEPARATE_CONTROLS')
  return r
 def self_test():
+ if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['self_test']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['self_test']()
  source();controls=[]
  for p in set(record()['postimages'])|{'src/crop/mod_crop_soil_n_day.f90','tests/fci/run_fci93_non_m1_fixed_k_qualification.sh'}:
