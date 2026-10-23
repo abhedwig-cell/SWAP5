@@ -8308,7 +8308,7 @@
     "historical_caller_successor_20261023": {
       "work_unit": "MC-NUT01-HISTORICAL-OUTPUT-CALLER",
       "baseline": "710b41736214bcec80f0fe9bea6660cafa449024",
-      "stage": "BLOCKED_EXECUTABLE_PERMISSION_NATIVE_QUALIFICATION_INCOMPLETE",
+      "stage": "EXECUTE_PERMISSION_RESTORED_NATIVE_QUALIFICATION_IN_PROGRESS",
       "implemented": true,
       "persisted": true,
       "tested": false,
@@ -8319,12 +8319,10 @@
         "tests/nut-output/run_historical_output_caller.py"
       ],
       "dependency_surface": "Unchanged incumbent physical/calendar/output/restart owners; additive application dispatch and staged native TRUE startup only.",
-      "next_action": "Obtain explicit user direction before restoring execute permission or resuming blocked executable. Then complete native startup/restart qualification and all163 source/raw controls,exact-tree admission and nine-facet registration. No qualification or admission claimed.",
+      "next_action": "Fresh persisted controller/native O0/O2 matrix with explicit startup save-failure and clock-mismatch rejection; qualify163 controls,exact-tree admission and nine-facet registration. Full historical/default migration remains open.",
       "full_mc_nut01_closed": false,
       "canonically_admitted": false,
-      "blockers": [
-        "Stopped with Python PermissionError [Errno13] for O0/heat/calendar after successful link and actual native run; stat found mode0644,root:root. O0/cold and earlier proof1 heat executable are0755. No chmod/re-execution/alternative path attempted after permission denial."
-      ],
+      "blockers": [],
       "partial_test_status": {
         "baseline_owner_and_controls": "PASS147_AT_EXACT_BASELINE",
         "proof1_cycle_matrix": "COMPLETED_BUT_NO_TERMINAL_RESULT",
@@ -8334,7 +8332,14 @@
         "strict_docs": "UNKNOWN_NOT_CAPTURED"
       },
       "development_evidence_index": "integration/audits/evidence/mc-nut01-historical-output-caller-development-20261023/INDEX.json",
-      "development_evidence_index_sha256": "da376bd98eaedc67f5a72e1582e00ebec278bd6a550ed8644a25f8213421e530"
+      "development_evidence_index_sha256": "da376bd98eaedc67f5a72e1582e00ebec278bd6a550ed8644a25f8213421e530",
+      "permission_recovery": {
+        "user_authorized": true,
+        "target": "historical-caller-build/proof-2/O0/heat/calendar",
+        "prior_mode": "0644",
+        "restored_mode": "0744",
+        "prior_failure_preserved": true
+      }
     }
   }
 }

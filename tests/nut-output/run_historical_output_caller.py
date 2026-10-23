@@ -88,6 +88,19 @@ native=native.replace('read_crop_n_output_generation','read_crop_n_saved_generat
 native=native.replace('actual,diagnostic,dates,rows','actual,diagnostic,saved_memory,dates,rows')
 native=native.replace('run_crop_soil_n_output_day','advance_historical_saved_output').replace('batch,split,policy1,diagnostic,dates,rows,r,code','plan1,split,policy1,diagnostic,saved_memory,dates,rows,dispatch,code')
 native=once(native,"   if(code/=0)print *,'native output day failed'", "   r=dispatch%active\n   call require(dispatch%action==HIST_ACTIVE,'native application chooses active route')\n   if(code/=0)print *,'native output day failed'")
+initial=next(m for m in re.finditer(r'  call initialize_historical_saved_output\((.*?)\)\n',native,re.S)if'plan1,actual,policy1'in m.group(1))
+trial=initial.group(0).replace('plan1,actual,policy1','rejected_plan,rejected,rejected_policy').replace('dates,rows,code','rejected_dates,rejected_rows,code')
+guards=trial.replace("trim(endpoint)//'.startup'","'absent-native-dir/generation'")+"""  call require(code==OUTPUT_DAY_SAVE_FAILED,'native startup save failure rejects publication')
+  call saved_memory%snapshot(v(:9),ready)
+  call require(.not.ready.and..not.rejected%ready().and..not.rejected_plan%ready(), &
+   'failed native save retains physical calendar and saved-memory authority')
+  call diagnostic%snapshot(v(1),v(2:9),v(10:17),ready)
+  call require(all(v==g).and..not.allocated(rejected_dates).and..not.allocated(rejected_rows), &
+   'failed native save retains diagnostic and history authority')
+"""
+guards+=trial.replace('base_day,water_fraction','base_day+.5d0,water_fraction')+"""  call require(code==OUTPUT_DAY_INVALID.and..not.rejected%ready(),'native startup rejects mismatched water clock')
+"""
+native=native[:initial.start()]+guards+native[initial.start():]
 (OUT/'native_output_project.inc').write_text(native)
 source=(COLD/'driver.f90').read_text().replace(' implicit none',' use mod_crop_soil_n_historical_output_application\n implicit none',1)
 (OUT/'native_driver.f90').write_text(source)
