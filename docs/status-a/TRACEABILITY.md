@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 explicit historical saved-output application caller,23 October2026:
+[contract and fixture distinction](../science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md),
+existing HIST-COMPLETE `historical_caller_successor_20261023`,source-bound raw
+capsule and `verify_nut_historical_output_caller.py` own actual native/cold/heat
+O0/O2 startup,state-selected cycle dispatch,restart and crash qualification.
+All147 incumbent assertion bodies and16 new controls remain executed. Complete
+incumbent cycle generations and native TRUE/FALSE physical equality pass;the
+native application uses explicit absolute crop-end rather than the standalone
+relative-date fixture. Local qualification is separate from canonical admission.
+No default/project executable or full MC-NUT01/master closure follows.
+
 PR1385 saved-calendar crop/harvest/fallow is admitted at
 `5f6075ae55d8fbc06259e4e85407db488aa4daf7`,exact qualified/actual merge tree
 `db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e`. Actual-merge source/raw owner
