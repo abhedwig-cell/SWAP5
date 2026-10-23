@@ -11369,13 +11369,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Organic matter and organic nitrogen turnover/mineralisation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Organic matter and organic nitrogen turnover/mineralisation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11396,15 +11396,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11419,7 +11419,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -11845,6 +11846,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -11881,13 +11917,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_mineral_owner.f90",
-        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Owned ammonium/nitrate inventory, sorption capacity and soil-supply limitation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -11908,15 +11944,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -11931,7 +11967,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12357,6 +12394,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -12392,13 +12464,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_calendar_day.f90",
-        "claim": "Fertilizer/manure applications and volatilisation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Fertilizer/manure applications and volatilisation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -12426,15 +12498,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12449,7 +12521,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -12875,6 +12948,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -12914,13 +13022,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_senescence_day.f90",
-        "claim": "Crop residue transfers to organic soil pools. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Crop residue transfers to organic soil pools. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-ORGANIC"
@@ -12943,15 +13051,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -12966,7 +13074,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "implementation_absence_proven_scope": "Incomplete whole historical admitted source route; bounded production algorithms above do exist.",
       "b112_retained_stock_admission_20261017": {
@@ -13412,6 +13521,41 @@
         "summary_exact": true,
         "whole_master_qualified": false,
         "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
       }
     },
     {
@@ -13441,13 +13585,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_crop_soil_n_day.f90",
-        "claim": "Demand/supply coupling and nitrogen-limited crop growth. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Demand/supply coupling and nitrogen-limited crop growth. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -13470,15 +13614,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -13493,7 +13637,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -13919,6 +14064,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -15959,13 +16139,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_daily_exchange.f90",
-        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Temperature- and water-filled-pore-dependent ammonium-to-nitrate transformation. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -15985,15 +16165,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -16008,7 +16188,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16434,6 +16615,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -16475,13 +16691,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_reactive_owner.f90",
-        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Nitrate loss controlled by temperature, wetness and organic respiration activity. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL",
@@ -16502,15 +16718,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -16525,7 +16741,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -16951,6 +17168,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -16989,13 +17241,13 @@
         "established": true,
         "bounded": true,
         "route": "src/process/mod_b111_soil_n_transport.f90",
-        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Analytical ammonium/nitrate concentration and outflow balance with sorption, boundary inputs and crop uptake. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [
         "SW431-NUT-MINERAL"
@@ -17015,15 +17267,15 @@
       "absence_search_scope": "Canonical src/crop, src/process and src/runtime owner/state contracts and full src search, excluding isolated src/legacy; source donor SoilManagement/Wofost_Soil* are not production owners.",
       "resolution_stage": "BOUNDED_PRODUCTION_ADMITTED_FULL_HISTORICAL_SCOPE_OPEN",
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -17038,7 +17290,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -17464,6 +17717,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -17528,13 +17816,13 @@
         "established": true,
         "bounded": true,
         "route": "src/crop/mod_b111_nfixation_policy.f90",
-        "claim": "Biological nitrogen fixation as a separately booked crop N input. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1383 adds Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "claim": "Biological nitrogen fixation as a separately booked crop N input. All earlier bounded process,input,finite-donor,humus,calendar,harvest,cold/thermal saved-output facets remain admitted. PR1385 adds Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "authority": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
-        "bounded_receipt": "mc_nut01_thermal_calendar_output_20261023"
+        "bounded_receipt": "mc_nut01_saved_calendar_output_20261023"
       },
       "restrictions": [
-        "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
-        "Bounded active-crop accepted-temperature calendar output does not establish saved-calendar rotation/fallow,general historical/default orchestration or full master-row closure."
+        "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "Bounded explicit saved-calendar crop/harvest/fallow output does not establish general historical/default orchestration or full master-row closure."
       ],
       "remaining_dependency": [],
       "active_workunit": "MC-NUT01",
@@ -17571,15 +17859,15 @@
         "remaining": "Complete historical selector/parameter activation and full source/application envelope outside the explicit profile; distinct B1.11,corrected B1.12 and WOFOST81 authorities."
       },
       "latest_canonical_bounded_owner": {
-        "head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+        "head": "fd374113e1507243b3a44638eb9f30e95015f518",
         "status": "BOUNDED_RUNTIME_ADMITTED_FULL_SOURCE_CAPABILITY_OPEN",
         "owner_family": "MC-NUT01",
-        "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change. General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change. General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
         "records": [
           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
           "docs/science/MC_NUT01_FINAL_CLOSURE.md"
         ],
-        "latest_scientific_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "latest_scientific_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
         "historical_gross_top_receipt": "historical_gross_top_admission_20261020",
         "accepted_atmosphere_receipt": "accepted_atmosphere_admission_20261020",
         "native_character_receipt": "native_character_admission_20261020",
@@ -17594,7 +17882,8 @@
         "saved_output_receipt": "saved_output_admission_20261022",
         "thermal_fallow_output_receipt": "thermal_fallow_output_admission_20261023",
         "cycle_output_receipt": "cycle_output_admission_20261023",
-        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023"
+        "thermal_calendar_output_receipt": "thermal_calendar_output_admission_20261023",
+        "saved_calendar_output_receipt": "saved_calendar_output_admission_20261023"
       },
       "historical_gross_top_admission_20261020": {
         "pr": 1330,
@@ -18020,6 +18309,41 @@
         ],
         "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
         "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+        "other_rows_exact": 234,
+        "all_dispositions_exact": 243,
+        "summary_exact": true,
+        "whole_master_qualified": false,
+        "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+      },
+      "saved_calendar_output_admission_20261023": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+        "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+        "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+        "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+        "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+        "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+        "canonically_admitted": true,
+        "full_capability": false,
+        "disposition_changed": false,
+        "saved_calendar_output_qualified": true,
+        "full_mc_nut01_closed": false,
+        "capability_ids": [
+          "SW431-NUT-ORGANIC",
+          "SW431-NUT-MINERAL",
+          "SW431-NUT-AMEND",
+          "SW431-NUT-RESIDUE",
+          "SW431-NUT-CROP",
+          "SW431-NUT-NITRIF",
+          "SW431-NUT-DENIT",
+          "SW431-NUT-TRANSPORT",
+          "SW431-NUT-NFIX"
+        ],
+        "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+        "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
         "other_rows_exact": 234,
         "all_dispositions_exact": 243,
         "summary_exact": true,
@@ -23387,6 +23711,41 @@
       "summary_exact": true,
       "whole_master_qualified": false,
       "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+    },
+    "mc_nut01_saved_calendar_output_20261023": {
+      "pr": 1385,
+      "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+      "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+      "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+      "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+      "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+      "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+      "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+      "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+      "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+      "canonically_admitted": true,
+      "full_capability": false,
+      "disposition_changed": false,
+      "saved_calendar_output_qualified": true,
+      "full_mc_nut01_closed": false,
+      "capability_ids": [
+        "SW431-NUT-ORGANIC",
+        "SW431-NUT-MINERAL",
+        "SW431-NUT-AMEND",
+        "SW431-NUT-RESIDUE",
+        "SW431-NUT-CROP",
+        "SW431-NUT-NITRIF",
+        "SW431-NUT-DENIT",
+        "SW431-NUT-TRANSPORT",
+        "SW431-NUT-NFIX"
+      ],
+      "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+      "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
+      "other_rows_exact": 234,
+      "all_dispositions_exact": 243,
+      "summary_exact": true,
+      "whole_master_qualified": false,
+      "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
     }
   },
   "latest_mc_irr01_shared_application_reconciliation": {
@@ -23777,7 +24136,7 @@
       "science_run": false
     }
   },
-  "canonical_locator_head": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+  "canonical_locator_head": "fd374113e1507243b3a44638eb9f30e95015f518",
   "source_inheritance_reconciliation_20261016": {
     "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
     "frozen_source_snapshot": "8b83abec615e4038f59029a264938077c4650a8c",
@@ -26458,6 +26817,41 @@
     ],
     "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
     "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+  },
+  "latest_mc_nut01_saved_calendar_output_20261023": {
+    "pr": 1385,
+    "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+    "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+    "qualified_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json at fd374113e1507243b3a44638eb9f30e95015f518",
+    "scope": "Explicit immutable-calendar saved active-crop output through existing successor initialization,harvest phases and cold/accepted-heat fallow. Complete saved generation carries previous-day organ memory,interval sums,extrema and report history. Independent daily material batches verify original date+1 selection and simultaneous gifts across harvest. One additive adapter;no incumbent physical provider,equation,tolerance,default or schema change.",
+    "qualification": "Actual fresh GNU13.3 O0/O2 current331-provider baseline and nine output-provider closure;two reporting schedules;all complete independent manual generations exact.64 roundtrips,64 fresh progressions,64 old-crop identity rejections,16 real active/first-fallow SIGKILL publication recoveries with16 fresh continuations,1036 rejected trials and216 replay rejections PASS. Actual complete merge tree exact;all130 incumbent plus17 new controls=147 PASS. Current native SOL/NUT/weather/FSI35 and concurrent PR1384 source/raw evidence preserved.",
+    "remaining": "General/default historical dispatch and arbitrary multi-rotation trajectories;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "saved_calendar_output_qualified": true,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "fd374113e1507243b3a44638eb9f30e95015f518",
+    "master_predecessor": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
     "other_rows_exact": 234,
     "all_dispositions_exact": 243,
     "summary_exact": true,

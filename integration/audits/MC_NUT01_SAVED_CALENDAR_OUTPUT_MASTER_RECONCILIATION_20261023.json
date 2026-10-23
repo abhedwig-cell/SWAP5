@@ -1,0 +1,49 @@
+{
+  "work_unit": "MC-NUT01-SAVED-CALENDAR-OUTPUT-MASTER",
+  "baseline": "9efebe0ee5603106b36b52a09ca17f4d827f4f50",
+  "canonical": "fd374113e1507243b3a44638eb9f30e95015f518",
+  "pr": 1385,
+  "scoped_bounded_checks": [
+    "SW431-NUT-ORGANIC",
+    "SW431-NUT-MINERAL",
+    "SW431-NUT-AMEND",
+    "SW431-NUT-RESIDUE",
+    "SW431-NUT-CROP",
+    "SW431-NUT-NITRIF",
+    "SW431-NUT-DENIT",
+    "SW431-NUT-TRANSPORT",
+    "SW431-NUT-NFIX"
+  ],
+  "admission_receipt_locator": "PASS",
+  "other_rows_exact": 234,
+  "all_dispositions_exact": 243,
+  "summary_exact": true,
+  "old_receipts_exact": true,
+  "all_queues_exact": true,
+  "integrity": {
+    "schema": "swap5.coverage_integrity_result.v1",
+    "integrity": "PASS",
+    "ledger_metadata_baseline": "8329752d9c08ec32f31f6248a3eecd05c6c26fc5",
+    "historical_evidence_baseline": "78acf56f931763d2e1d4924b3dea0742f231d2e8",
+    "canonical_locator_head": "fd374113e1507243b3a44638eb9f30e95015f518",
+    "source_members": 63,
+    "capabilities": 243,
+    "dispositions": {
+      "ADMITTED": 112,
+      "ACTIVE_MIGRATION": 92,
+      "SUPERSEDED": 14,
+      "REJECTED": 2,
+      "NOT_APPLICABLE": 20,
+      "QUALIFICATION_ONLY": 3
+    },
+    "denominator_complete": false,
+    "coverage_closed": false,
+    "claim": "Historical evidence/source integrity and pinned later authority locators only; not current-canonical scientific qualification, complete semantic coverage or new admission"
+  },
+  "inheritance_controls": 20,
+  "inheritance_stdout": "",
+  "inheritance_stderr": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.220s\n\nOK\n",
+  "source_changed": false,
+  "full_master_science_qualified": false,
+  "full_mc_nut01_closed": false
+}
