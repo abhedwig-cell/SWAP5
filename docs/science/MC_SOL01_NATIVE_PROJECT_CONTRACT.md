@@ -879,3 +879,23 @@ PR1400 canonically admits this bounded composition at actual merge
 each pass36 source/raw controls on that postimage. The receipt is
 `integration/mc-sol01/boesten/ADMISSION.json`; whole original Andelst and the
 remaining drainage/macro/Cauchy3/heat compositions are not admitted.
+
+### Proposed HIST-INTEGRATION01 native trial-local drainage
+
+The next work unit adds an immutable, optional single-level DIVDRA geometry
+record to the existing Reference parameter owner. Ordinary DRAMET3 owns the
+scalar response; the existing signed spatial-distribution process owns its
+partition. Both evaluate from each actual full/half/retry start view; channel
+levels use that trial's endpoint. Richards consumes this partition exactly
+once and the existing accepted-water trace supplies it to pond/solute. No
+new physical state or restart layout is introduced. The prescribed-bottom
+route uses the existing smooth phreatic projection, not the initial diagnostic
+GWL placeholder. Existing routes with absent geometry retain their guards.
+
+The proposed native input scope is SWDRA1, DRAMET3, NRLEVS1, SWALLO1=3,
+SWDTYP1=1, SWDIVD1, SWDIVDINF0, SWDISLAY0, SWINTFL0. Original DRA source
+bytes and future channel records join the existing input/restart identity.
+L1 is converted from metres to cm; COFANI follows the SWP soil-layer map.
+Boesten, simple ROOT_COMP_OFF roots and implicit upwind solute are the
+selected composition. Heat, macro, infiltration and multilevel composition
+remain outside this work unit. This proposal is not canonical admission.

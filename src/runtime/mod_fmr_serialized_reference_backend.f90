@@ -126,6 +126,8 @@ module mod_fmr_serialized_reference_backend
        FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS3, FMR_DRAIN_VARIANT_ERNST_IPOS4, FMR_DRAIN_VARIANT_ERNST_IPOS5, &
        FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_DRAMET3
+  use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, &
+       drainage_node_transfer_t, drainage_distribution_diagnostics_t, distribute_single_level_signed_divdra, DRAIN_DIST_OK
   use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
        EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
@@ -401,6 +403,9 @@ module mod_fmr_serialized_reference_backend
     ! profile. Default false preserves every previously admitted PM14 route.
     logical :: drainage_qbot_smooth_freatic_projection = .false.
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
+    ! Opt-in single-level trial-local DIVDRA. Geometry is immutable; the
+    ! response scalar and partition are rebuilt from each full/half/retry base.
+    type(drainage_distribution_parameters_t), allocatable :: drainage_trial_distribution
     type(snow_parameters_t), allocatable :: snow
     type(soil_temperature_parameters_t), allocatable :: soil_temperature
   contains
@@ -776,6 +781,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_drainage_response_level_parameters_t), allocatable :: drainage_response_levels(:)
     type(fmr_drainage_response_level_control_t), allocatable :: drainage_response_controls(:)
     type(fmr_drainage_response_diagnostics_t) :: drainage_response_diagnostics
+    type(drainage_distribution_parameters_t), allocatable :: drainage_trial_distribution
     integer :: drainage_response_evaluations = 0
     logical :: drainage_response_window_exchange_available = .false.
     real(real64) :: drainage_response_window_signed_exchange_native = 0.0_real64
@@ -988,6 +994,31 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_rfm_committed_state
 
 contains
+
+  logical function joint_drainage_trace_valid(p) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(process_hydraulic_view_t)::view
+    type(drainage_node_transfer_t)::nodes
+    type(drainage_distribution_diagnostics_t)::d
+    ok=.false.
+    if(.not.p%drainage_response_active.or..not.allocated(p%drainage_trial_distribution))return
+    if(.not.allocated(p%drainage_response_levels))return
+    if(size(p%drainage_response_levels)/=1)return
+    if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
+    if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+    if(.not.p%drainage_qbot_smooth_freatic_projection.or.p%bottom_mode/=2)return
+    if(p%frost_active.or.p%macropore_active.or.p%snow_active.or.p%soil_temperature_active)return
+    if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
+    if(allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
+    call distribute_single_level_signed_divdra(p%drainage_trial_distribution,view,0d0,nodes,d)
+    if(d%status/=DRAIN_DIST_OK)return
+    if(p%drainage_trial_distribution%active_nodes/=p%active_nodes)return
+    if(.not.allocated(p%dz).or..not.allocated(p%z).or..not.allocated(p%cofgen))return
+    if(any(p%drainage_trial_distribution%dz/=p%dz))return
+    if(any(p%drainage_trial_distribution%zbotcp/=p%z-.5_real64*p%dz))return
+    if(any(p%drainage_trial_distribution%saturated_conductivity/=p%cofgen(3,:)))return
+    ok=.true.
+  end function
 
   subroutine fmr_b110_capture_parameter_identity(self,identity,available)
     class(fmr_b110_physical_parameters_t), intent(in) :: self
@@ -2452,7 +2483,8 @@ contains
       end if
     end if
     if (self%model%accepted_water_flux_trace_enabled) then
-      if (parameters%snow_active .or. parameters%drainage_response_active .or. &
+      if (parameters%snow_active .or. (parameters%drainage_response_active.and. &
+          .not.joint_drainage_trace_valid(parameters)) .or. &
           (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
            .not.soil_n_heat_trace) .or. &
           parameters%black_evaporation_active .or. (parameters%boesten_evaporation_active.and. &
@@ -3138,7 +3170,9 @@ contains
              .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &
              .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%frost_active .and. &
-             .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &
+             (.not.parameters%drainage_response_active.or. &
+              (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &
+             .not. parameters%black_evaporation_active .and. &
              .not. parameters%practical_richards_a2c_active .and. &
              .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
              .not. allocated(parameters%bartholomeus) .and. .not. allocated(parameters%micro_de_willigen) .and. &
@@ -3346,7 +3380,8 @@ contains
              .not. allocated(parameters%black_evaporation) .and. allocated(parameters%boesten_evaporation) .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
-             .not. parameters%drainage_response_active .and. &
+             (.not.parameters%drainage_response_active.or. &
+              (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &
              parameters%bottom_mode /= 5
         if (ok) ok = ieee_is_finite(parameters%boesten_evaporation%cofred) .and. &
              parameters%boesten_evaporation%cofred > 0.0_real64 .and. parameters%boesten_evaporation%cofred <= 1.0_real64
@@ -3372,8 +3407,12 @@ contains
       end if
       if (parameters%drainage_qbot_smooth_freatic_projection) then
         ok = ok .and. parameters%drainage_response_active .and. parameters%bottom_mode == 2 .and. &
-             .not. parameters%root_extraction_active .and. .not. parameters%macropore_active
+             (.not.parameters%root_extraction_active.or. &
+              (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &
+             .not. parameters%macropore_active
       end if
+      if(allocated(parameters%drainage_trial_distribution)) &
+        ok=ok.and.self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters)
       if(allocated(parameters%mobile_dispersion))then
         ok=ok.and.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).and..not.parameters%macropore_active
       end if
@@ -3661,6 +3700,9 @@ contains
         self%boesten_evaporation_parameters = parameters%boesten_evaporation
       end if
       self%drainage_response_active = parameters%drainage_response_active
+      if(allocated(self%drainage_trial_distribution))deallocate(self%drainage_trial_distribution)
+      if(allocated(parameters%drainage_trial_distribution)) &
+        self%drainage_trial_distribution=parameters%drainage_trial_distribution
       self%drainage_qbot_smooth_freatic_projection = parameters%drainage_qbot_smooth_freatic_projection
       if (allocated(self%drainage_response_levels)) deallocate(self%drainage_response_levels)
       if (parameters%drainage_response_active .and. allocated(parameters%drainage_response_levels)) then
@@ -5113,6 +5155,18 @@ contains
       self%last_observation%drainage_response_evaluations = self%drainage_response_evaluations
       self%last_observation%drainage_response = self%drainage_response_diagnostics
       if (self%drainage_response_diagnostics%status /= FMR_DRAIN_BIND_OK) return
+      if(allocated(self%drainage_trial_distribution))then
+        block
+          type(drainage_node_transfer_t)::partition
+          type(drainage_distribution_diagnostics_t)::diagnostic
+          ! The existing response owns the scalar. DIVDRA owns its nodal
+          ! partition. Exactly this qdra reaches Richards and its accepted trace.
+          call distribute_single_level_signed_divdra(self%drainage_trial_distribution,hydraulic_start, &
+            sum(self%qdra),partition,diagnostic)
+          if(diagnostic%status/=DRAIN_DIST_OK)return
+          self%qdra(1,:)=partition%soil_to_drain_rate
+        end block
+      end if
     end if
 
     if (self%root_extraction_active) then

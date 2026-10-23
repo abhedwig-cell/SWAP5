@@ -1,0 +1,19 @@
+{
+  "workstream": "MC-SOL01 / ordinary drainage",
+  "work_unit": "HIST-INTEGRATION01 native trial-local DRAMET3 DIVDRA",
+  "baseline": "3461a520fd2858782058cacb56f3cde606f2a188",
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "invariants": ["single physical state owner", "accepted qdra provenance", "joint water/solute publication", "Reference Richards authority", "no mass clamp"],
+  "dependencies": ["existing DRAMET3 scalar", "existing signed DIVDRA", "existing smooth phreatic projection", "native Boesten input and V3 restart"],
+  "next_action": "Compile checked O0/O2 and execute small real joint driver before 481-day qualification",
+  "test_selection": {
+    "focused_joint": "RUN: actual accepted drainage partition, chemical rejection/retry/ABA and source-bound restart; physical process equations unchanged",
+    "native_historical": "RUN after focused PASS: 481 original-weather days with original single-level DRA; water/solute closure, daily drainage and day365 fresh restart",
+    "unchanged_processes": "NOT_SELECTED_IMPACT: no change to DRAMET3 or DIVDRA process equations; existing original-source scientific evidence retained",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT"
+  }
+}
