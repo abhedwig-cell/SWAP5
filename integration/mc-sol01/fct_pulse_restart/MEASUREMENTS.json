@@ -1,0 +1,44 @@
+{
+  "status": "PULSE_AND_FRESH_PROCESS_JOINT_RESTART_O0_O2_QUALIFIED",
+  "pulse": {
+    "status": "ANALYTICAL_MOVING_PULSE_O0_O2_PASS",
+    "cases": 36,
+    "max_mass_residual": 2.3707598384437034e-14,
+    "max_O0_O2_numeric_difference": 0.0,
+    "corrected_to_implicit_mass_l1_ratio": {
+      "40/80": 0.5178828480548551,
+      "40/160": 0.5167522558221416,
+      "40/320": 0.5158550047493147,
+      "80/80": 0.23107400451395116,
+      "80/160": 0.22253037928289937,
+      "80/320": 0.2187790533678729,
+      "160/80": 0.07566387307137805,
+      "160/160": 0.05958928388262466,
+      "160/320": 0.05408567594754978
+    },
+    "corrected_mass_l1": {
+      "40/80": 0.38765152520527374,
+      "40/160": 0.3849923698217662,
+      "40/320": 0.38341362583251837,
+      "80/80": 0.11134024485773496,
+      "80/160": 0.10543999604374059,
+      "80/320": 0.1027753182368337,
+      "160/80": 0.0218635427586416,
+      "160/160": 0.016565884867903582,
+      "160/320": 0.014734958484081847
+    },
+    "qualification_scope": "Linear sorption, homogeneous constant-water advection+mechanical/molecular dispersion+decay; Gaussian cell-average analytical reference. Spatial and temporal error decrease, not general nonlinear/full Richards PDE accuracy."
+  },
+  "disk_cases": 24,
+  "separate_native_runs": 150,
+  "fresh_process_endpoints_byte_exact": 24,
+  "envelope_rejections": 96,
+  "native_corruption_parameter_rejections": 72,
+  "publisher_process_kills": 4,
+  "crash_recoveries_exact": 4,
+  "disk_restart_qualified": true,
+  "fresh_process_restart_qualified": true,
+  "bounded_POSIX_process_crash_publication_qualified": true,
+  "production_activated": false,
+  "full_mc_sol01_closed": false
+}
