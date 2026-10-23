@@ -4,8 +4,10 @@ PR1385 saved-calendar crop/harvest/fallow is admitted at
 `5f6075ae55d8fbc06259e4e85407db488aa4daf7`,exact qualified/actual merge tree
 `db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e`. Actual-merge source/raw owner
 and all147 controls PASS. `saved_calendar_successor_20261023` and
-`MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json` own canonical admission;
-the master receipt remains separate. Older dated calendar/harvest/fallow limits
+`MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json` own canonical admission.
+Master receipt `2b8f378cf98c44516c9161e152425c2accdd80bb` updates nine bounded facets,
+with234 other rows and all243 dispositions exact;20 inheritance controls pass.
+Older dated calendar/harvest/fallow limits
 are historical;general/default dispatch and full MC-NUT01 remain open.
 
 MC-NUT01 saved-calendar output through harvest/fallow,23 October2026:
