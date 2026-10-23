@@ -1,5 +1,14 @@
 # SWAP5 Status-A current status
 
+PR1385 saved-calendar crop/harvest/fallow is canonically admitted at
+`5f6075ae55d8fbc06259e4e85407db488aa4daf7`,complete merge tree exactly qualified
+`db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e`. Actual-merge owner and all147
+original/new controls PASS. The existing saved-calendar child and
+`MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json` own this admission;
+master registration is separate. Older calendar/harvest/fallow limits below are
+historical. General/default orchestration,active negative allocation and automatic
+snow/persistent-surface N remain open;no full MC-NUT01 promotion.
+
 MC-NUT01 saved-calendar crop/harvest/fallow,23 October2026: the
 [bounded continuation](../science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md)
 is locally qualified on current cold/accepted-heat O0/O2 providers. Immutable

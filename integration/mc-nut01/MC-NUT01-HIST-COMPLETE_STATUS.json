@@ -7122,17 +7122,17 @@
       "master_rows_promoted": false
     },
     "saved_calendar_successor_20261023": {
-      "stage": "LOCALLY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER_REGISTRATION",
       "baseline": "c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "contract": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
       "scope": "Explicit immutable-calendar saved active-crop output, existing harvest phases and cold/accepted-heat fallow, with complete saved-generation continuation.",
       "test_selection": "Fresh current331-provider O0/O2 closure once because old current build artifacts disappeared; GNU13.3 restored locally and compile/link checked. Expected fresh cost<420s, explicitly selected real Richards bootstrap. Additional cold/heat two-schedule calendar/harvest/fallow, independent direct physics/manual original diagnostics, all-stage fresh continuation, rejected trials/replay/CSV/rename crashes. Expected additive cost<180s. All130 incumbent controls. Broad FCI/highestlowair/newRossFast/aquifer NOT_SELECTED_IMPACT. No physical/default/schema change.",
-      "next_action": "Publish exact qualified saved-calendar tree,admit safely and verify actual merge,then update nine existing bounded NUT master facets. General/default historical orchestration,active negative allocation and automatic snow/persistent-surface N remain open. No full MC-NUT01 closure.",
+      "next_action": "Register admitted saved-calendar crop/harvest/fallow facet on nine existing NUT master records. Then general historical/default orchestration remains a separate bounded work unit. Active negative allocation and automatic snow/persistent-surface N remain open. Preserve all147 controls and full capability dispositions;no full MC-NUT01 closure.",
       "evidence_index": "integration/audits/evidence/mc-nut01-saved-calendar-output-20261023/INDEX.json",
       "evidence_index_sha256": "cb27be572067290b8dbc23ec67b2255ead683b1a6242a29289ec80202a3a9449",
       "actual_process_result": {
@@ -7706,6 +7706,15 @@
         "impact": "Research controllers/raw evidence and documentation only; no compiled physical input changes.",
         "raw_source_replay": "PASS",
         "native_rerun": "NOT_SELECTED_IMPACT"
+      },
+      "canonical_admission": {
+        "pr": 1385,
+        "canonical_merge": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "qualified_head": "dec7f1d09e0a43601aca690b793237e4b9db0bc3",
+        "qualified_and_actual_merge_tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "whole_tree_exact": true,
+        "actual_merge_controls": 147,
+        "receipt": "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json"
       }
     },
     "thermal_calendar_successor_20261023": {

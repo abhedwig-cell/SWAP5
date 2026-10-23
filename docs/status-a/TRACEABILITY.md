@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+PR1385 saved-calendar crop/harvest/fallow is admitted at
+`5f6075ae55d8fbc06259e4e85407db488aa4daf7`,exact qualified/actual merge tree
+`db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e`. Actual-merge source/raw owner
+and all147 controls PASS. `saved_calendar_successor_20261023` and
+`MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json` own canonical admission;
+the master receipt remains separate. Older dated calendar/harvest/fallow limits
+are historical;general/default dispatch and full MC-NUT01 remain open.
+
 MC-NUT01 saved-calendar output through harvest/fallow,23 October2026:
 [bounded contract](../science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md),existing
 HIST-COMPLETE `saved_calendar_successor_20261023`,source-bound raw capsule and
