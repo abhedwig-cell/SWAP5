@@ -52,3 +52,21 @@ startup. Complete TRUE/FALSE physical bytes, hard mass gates and fresh restart
 remain required. Byte equality to the old relative-date native restart is not
 claimed because its immutable crop configuration is intentionally different.
 The cold/heat crop-cycle generations still must equal the incumbent exactly.
+
+Actual final execution: current GNU13.3 O0/O2 passes all four cold/accepted-heat
+cycle cases and four native startup/restart processes,64 roundtrips,64 fresh
+progressions,64 old-crop identity rejections and16 actual publication crash
+recoveries. Every complete independent cycle generation equals the incumbent.
+Native TRUE/FALSE physical files and fresh complete generations are exact for the
+explicit absolute-date fixture. Save-failure,clock mismatch,wrong boundary duration
+and missing retirement observation reject without caller publication. All147
+incumbent and16 new source/raw corruption controls pass. Failed preparation,
+permission-denied,compiler-binding and invalid relative-date attempts are retained
+as development evidence,never PASS. User-approved execute permission was restored
+only on the named generated test executable; no physical provider was changed.
+
+Measured final provider/driver compilation130.341s,link1.202s and native/restart/
+identity/roundtrip execution26.992s. Crash wall receipts overlap their fresh
+continuations and are not added again. Physics-only time and total engineering
+wall time are UNKNOWN. Exact complete canonical tree and actual-merge controls
+remain a separate admission condition; no hosted workflow PASS is inferred.

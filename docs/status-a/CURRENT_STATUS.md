@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 explicit historical saved-output application caller,23 October2026:
+the [bounded contract](../science/MC_NUT01_HISTORICAL_OUTPUT_CALLER_20261023.md)
+composes native SNM TRUE startup and committed-state active/harvest/incorporation/
+observation-bound retirement/fallow dispatch without another persistent cursor.
+Actual cold/accepted-heat/native O0/O2,64 roundtrips,64 fresh progressions,16 crash
+recoveries and all163 source/raw controls pass. Complete cycle generations equal
+the incumbent;native TRUE/FALSE physical equality uses an explicitly absolute
+harvest schedule. Existing HIST-COMPLETE child `historical_caller_successor_20261023`
+owns local qualification and separate canonical admission. General/default
+historical SWP/MET/CRP executable,negative active allocation and automatic
+snow/persistent-surface N remain open. No full MC-NUT01 capability promotion.
+
 PR1385 saved-calendar crop/harvest/fallow is canonically admitted at
 `5f6075ae55d8fbc06259e4e85407db488aa4daf7`,complete merge tree exactly qualified
 `db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e`. Actual-merge owner and all147
