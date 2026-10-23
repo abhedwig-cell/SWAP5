@@ -20,7 +20,7 @@ prepare,execute=recipe.read_text().split('events=[];pinned={};results={}',1)
 # Preserve the exact incumbent preparation and its source/capsule binding.
 prepare=prepare[prepare.index('sha=lambda'):]
 scope=dict(__file__=str(recipe),ROOT=ROOT,COLD=COLD,OUT=OUT)
-OUT.mkdir(exist_ok=False)
+OUT.mkdir(parents=True,exist_ok=False)
 exec(compile('from pathlib import Path\nimport base64,hashlib,json,os,resource,runpy,signal,subprocess,time\n'+prepare,str(recipe),'exec'),scope)
 def once(text,old,new):
  assert text.count(old)==1,(old,text.count(old))
@@ -69,8 +69,6 @@ execute=execute[:start]+""" for path in providers:
  obj=b/'historical.o';run([fc,*flags,'-c',ROOT/PRODUCTION,'-o',obj],b,'provider_compile');extras.append(obj)
 """+execute[end:]
 scope.update(CALENDAR=CALENDAR,PRODUCTION='src/adapter/mod_crop_soil_n_historical_output_application.f90')
-exec(compile('events=[];pinned={};results={}\n'+execute,str(recipe),'exec'),scope)
-events=scope['events'];run=scope['run'];pinned=scope['pinned']
 # Native SNM TRUE startup now enters the same complete-generation caller.
 native=(ROOT/'tests/nut-output/native_output_project.inc').read_text()
 native=once(native,'  type(soil_n_day_environment_t)::environment','  type(crop_ext_saved_residue_t)::saved_memory\n  type(historical_output_result_t)::dispatch\n  type(soil_n_day_environment_t)::environment')
@@ -81,10 +79,11 @@ def startup(match):
  body=body.replace("'1900-12-30',", "'1900-12-30',trim(endpoint)//'.startup',column,cfg%tiles(1)%template,670001_int64,water,")
  body=body.replace('diagnostic,','diagnostic,saved_memory,')
  return 'call initialize_historical_saved_output('+body+')'
-native=re.sub(r'call initialize_historical_crop_soil_output_owner\((.*?)\)',startup,native,flags=re.S) if False else native
 # Parentheses inside arguments require the closing call/newline boundary.
 native=re.sub(r'call initialize_historical_crop_soil_output_owner\((.*?)\)\n',lambda m:startup(m)+'\n',native,flags=re.S)
-native=once(native,"  call initialize_historical_saved_output(selection,sp,cp,crop,9001_int64,9101_int64, &\n   base_day,water_fraction,'native-output.snm'", "  aw=water\n  call initialize_historical_saved_output(selection,sp,cp,crop,9001_int64,9101_int64, &\n   base_day,water_fraction,'native-output.snm'")
+anchor="  call initialize_historical_saved_output(selection,sp,cp,crop,9001_int64,9101_int64, &\n   base_day,water_fraction,'native-output.snm'"
+assert native.count(anchor)==2
+native=native.replace(anchor,'  aw=water\n'+anchor,1)
 native=native.replace('read_crop_n_output_generation','read_crop_n_saved_generation').replace('write_crop_n_output_generation','write_crop_n_saved_generation')
 native=native.replace('actual,diagnostic,dates,rows','actual,diagnostic,saved_memory,dates,rows')
 native=native.replace('run_crop_soil_n_output_day','advance_historical_saved_output').replace('batch,split,policy1,diagnostic,dates,rows,r,code','plan1,split,policy1,diagnostic,saved_memory,dates,rows,dispatch,code')
@@ -92,6 +91,8 @@ native=once(native,"   if(code/=0)print *,'native output day failed'", "   r=dis
 (OUT/'native_output_project.inc').write_text(native)
 source=(COLD/'driver.f90').read_text().replace(' implicit none',' use mod_crop_soil_n_historical_output_application\n implicit none',1)
 (OUT/'native_driver.f90').write_text(source)
+exec(compile('events=[];pinned={};results={}\n'+execute,str(recipe),'exec'),scope)
+events=scope['events'];run=scope['run'];pinned=scope['pinned']
 native_results={}
 for opt in ['O0','O2']:
  b=OUT/opt;old=COLD/opt;es=json.loads((COLD/'events.json').read_text())
