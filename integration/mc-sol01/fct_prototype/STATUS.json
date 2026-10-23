@@ -1,0 +1,58 @@
+{
+  "work_unit": "MC-SOL01-FCT-PROTOTYPE01",
+  "stage": "QUALIFIED_BOUNDED_RESEARCH_NOT_NATIVE_OR_PRODUCTION",
+  "baseline": "7a498cd61cbfc48154c3872bd61c8e66d32cf7f6",
+  "execution_checkpoint": "cf2a77ccbaf915b0ff0f09c8bcfe2699561550b6",
+  "reconciled_canonical": "c22fe5b2bfad9cd832be4bca34c8fde1ac40cae7",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_activated": false,
+  "native_qualified": false,
+  "nonlinear_Freundlich_qualified": false,
+  "full_mc_sol01_closed": false,
+  "scope": "Research-only conservative internal MUSCL-Hancock flux correction around real positive implicit-upwind process; uniform constant-water downward linear advection only, no physical diffusion/decay/source/crop/age/native support.",
+  "contract": "integration/mc-sol01/fct_prototype/CONTRACT.md",
+  "measurements": "integration/mc-sol01/fct_prototype/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_prototype/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "74c05bfb093073db0b3c7a574443383677795c17596879b17c8b617e0a02196a",
+    "bytes": 107296,
+    "members": 202
+  },
+  "summary": {
+    "status": "BOUNDED_LINEAR_UNIFORM_ADVECTION_FCT_PROTOTYPE_O0_O2_PASS",
+    "profiles": 64,
+    "unsupported_rejections": 288,
+    "maximum_corrected_to_baseline_l1_ratio": 0.6851376231695053,
+    "max_step_mass_residual": 1.7763568394002505e-15,
+    "max_cumulative_mass_residual": 1.5543122344752192e-15,
+    "production_activated": false,
+    "native_qualified": false,
+    "nonlinear_Freundlich_qualified": false,
+    "full_mc_sol01_closed": false
+  },
+  "cost_seconds": 8.13947853100035,
+  "failed_attempt": "Initial O0 sharp320cell execution trapped limiter-ratio overflow. Raw source/streams and checkpoint retained. Fixed by avoiding division where limiter would equal1, not by changing IEEE/balance/positivity gates.",
+  "current_source_raw_preservation": {
+    "owner": "integration/audits/verify_nut_historical_output_caller.py",
+    "qualified": true,
+    "controls": 24,
+    "reconciled_canonical": "c22fe5b2bfad9cd832be4bca34c8fde1ac40cae7"
+  },
+  "evidence_controls": 6,
+  "test_selection": {
+    "real_process": "Checked O0/O2 closure:6 production providers +1 research module;64profiles and288unsupported atomic rejections. Fixed dt=.002;40/80/160/320cells; Gaussian/square; Kf0/.2; q=.25,theta=.25,rho1.3; no diffusion/decay.",
+    "full_fci": "NOT_SELECTED_IMPACT: unchanged production sources/defaults, isolated research code",
+    "full_native": "NOT_SELECTED_SCOPE: correction deliberately rejects changing water, nonlinear sorption and other active physical processes",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED_POLICY"
+  },
+  "next_safe_work": "Design and qualify correction against actual accepted water traces, changing storage and nonlinear sorption before any production/native exposure. Keep tested implicit-upwind path and all original physical guards; no current native benefit inferred.",
+  "initial_source_raw_preservation": {
+    "owner": "integration/audits/verify_nut_historical_output_caller.py",
+    "qualified": true,
+    "controls": 30
+  }
+}
