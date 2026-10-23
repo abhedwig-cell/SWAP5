@@ -19,6 +19,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/demand_candidate/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_demand_candidate.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  assert delta==r['scientific_delta'],'unregistered Boesten scientific delta'
@@ -117,8 +118,11 @@ def validate(f):
   assert wet['complete_days']==6 and wet['completed_segments_before_rejection']==14
   assert f['wet-'+opt+'/prefix/restart.bin']==f['wet-'+opt+'/rejected/diagnostic-rejected.bin']!=f['wet-'+opt+'/rejected/diagnostic-partial-candidate.bin']
  return dict(qualified=True,status='NATIVE_BOESTEN_ROOT_SOLUTE_O0_O2_481_DAY_V3_AND_CURRENT_NUT_QUALIFIED',full_original_Andelst=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False,canonically_admitted=False,frozen_predecessor_controls=40,current_NUT_HIST_processes=78,current_NUT_coupled_runs=4,current_NUT_process_restarts=8)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-nut01/demand_candidate/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_demand_candidate.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-nut01/demand_candidate/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_demand_candidate.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

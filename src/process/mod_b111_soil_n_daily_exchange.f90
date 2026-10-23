@@ -78,7 +78,7 @@ contains
     real(real64)::wavg,root_factor,prod_rate0,producpot,tcsf
     real(real64)::c_demand,c_supply,cav_demand,cav_supply
     real(real64)::supply_demand,supply_supply,remaining_demand
-    logical::juvenile
+    logical::juvenile,demand_depleted
 
     result=b111_soil_n_exchange_result_t()
     if(.not.valid_forcing(f,cnh4_t0,cno3_t0))return
@@ -133,8 +133,8 @@ contains
     else
       producpot=prod_rate0-f%crop_n_demand_kg_m2/f%depth_m
       call run_transport(f,0.0_real64,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand)
-      if(r_demand%status/=B111_NTRANS_OK)then
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand,demand_depleted)
+      if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
@@ -187,8 +187,8 @@ contains
     else
       producpot=prod_rate0-remaining_demand
       call run_transport(f,0.0_real64,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand)
-      if(r_demand%status/=B111_NTRANS_OK)then
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand,demand_depleted)
+      if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
@@ -252,10 +252,12 @@ contains
     result%status=B111_NEXCHANGE_OK
   end subroutine
 
-  subroutine run_transport(f,tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0,r)
+  subroutine run_transport(f,tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0,r,depleted)
     type(b111_soil_n_exchange_forcing_t),intent(in)::f
     real(real64),intent(in)::tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0
     type(b111_soil_n_transport_result_t),intent(out)::r
+    logical,intent(out),optional::depleted
+    if(present(depleted))depleted=.false.
     if(f%nondepleting_top)then
       ! Same unconstrained WaterN ODE, with root loss included in qout and
       ! a signed constant production included in the aggregate top sink.
@@ -266,6 +268,10 @@ contains
            ctop+min(0d0,producpot)*f%depth_m/f%wflux_intop,clat,c0,r)
       if(r%status/=B111_NTRANS_OK)return
       if(r%depletion_time<f%dt_day.or.r%top_unmet>0d0.or.r%concentration_end<=0d0)then
+        ! A depleted demand trial has a lower end concentration than every
+        ! admissible supply trial. Retain that ordering only for the caller's
+        ! comparison; its concentrations and extraction may never be committed.
+        if(present(depleted))depleted=.true.
         r%status=B111_NTRANS_INVALID;return
       end if
       r%production_actual=producpot

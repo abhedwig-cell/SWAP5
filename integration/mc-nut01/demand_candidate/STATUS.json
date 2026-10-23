@@ -1,0 +1,103 @@
+{
+  "workstream": "MC-NUT01",
+  "baseline": "3461a520fd2858782058cacb56f3cde606f2a188",
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "production_changes": [
+    "src/process/mod_b111_soil_n_daily_exchange.f90"
+  ],
+  "contract": "CONTRACT.md",
+  "invariants": [
+    3,
+    7,
+    13,
+    21,
+    23,
+    25,
+    26,
+    30
+  ],
+  "test_selection": {
+    "direct": "O0/O2144 incumbent and additional exhausted unused demand candidates; original WaterN plus independent ODE",
+    "composition": "O0/O2 actual Richards crop N limited by supply,8-day runs and fresh-process restart",
+    "preservation": "Fresh full original HIST compile+78 native processes required because workspace object cache was pruned; exact archived endpoints and current Boesten authority checks",
+    "expected_compile_seconds": 300,
+    "expected_native_seconds": 120,
+    "expensive_gate_justification": "Daily exchange changes all actual crop N paths; lost compiler artifacts prohibit reuse and original integrated owner assertions cover accepted transfer/restart contracts not established by direct formulas alone.",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "full_mc_nut01_closed": false,
+  "canonically_admitted": false,
+  "evidence": {
+    "path": "integration/mc-nut01/demand_candidate/EVIDENCE.tar.xz.b64",
+    "sha256": "ee4c377cb219ff47aaf822a5d1f6655827f81b1dcef1d7496731ab5b88b46d48",
+    "bytes": 221008,
+    "members": 2440,
+    "excluded": "Objects, modules and executables are hashed, not embedded. All raw run/build receipts and native restart bytes retained."
+  },
+  "scientific_delta": {
+    "integration/audits/verify_native_boesten.py": "M",
+    "integration/audits/verify_nut_demand_candidate.py": "A",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "M",
+    "tests/nut-crop/demand_candidate_joint.inc": "A",
+    "tests/nut-crop/run_demand_candidate_joint.py": "A",
+    "tests/nut-reactive/run_demand_candidate.py": "A"
+  },
+  "incumbent_inputs": {
+    "app/solute_crop/read_swp_project.f90": "b8ce63d082a04294d79af42bc67c15d653bc2b36f9d4c733656450f640e49c4e",
+    "app/solute_project/main.f90": "dc0b0d33eb67b18916b3b609ff3545c5cdde810d376f1cbba4f8439f55abda01",
+    "integration/audits/reconcile_boesten_nut.py": "5a6c8f2758877f5dd30f8e8aea349586332e8da00b2b98f93ce97ab9e7b183a8",
+    "integration/audits/verify_nut_nondepleting.py": "3147deb5ca2ce17103094290888d7d8d98f31ad287079f0e0343e273fe593f8a",
+    "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
+    "src/runtime/mod_fmr_b111_matrix_joint_application.f90": "a42209c08c14a2a9fa587f8cdfa735e9e68fc5e273705bf95a54b9e9916dd653",
+    "src/runtime/mod_fmr_b111_pond_joint_application.f90": "2e2518c4f00ae13ab28424bfe086b3076042b248758fe3359e39a015d2310148",
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "82d83551659fc63c8a3fdf6bd25fac07d6d76021f475ef3e4176c1061739a2e1",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "3e48b40c3b7e4f03365033e8c87945104435ce4c451d6251138b956e7f0ef9c2",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh": "f784b2e971ee809d50991ba6f19d8a86cd3ddf422b117fcbf28c64959d3d008f",
+    "tests/nut-sol/preserve_boesten_water.py": "dde4ae7b223880c49cd5455ea6a13c8f109c2da25c0cfc6409784666947a13fa",
+    "tests/nut-sol/qualify_boesten_joint.py": "b3b1a22c5e792cd72acb93593d3642a653a5e6d68ef98a7a35557da5245ff604",
+    "tests/nut-sol/qualify_native_boesten.py": "92462c4458b3b125e7c227e0ce2ea7542c25c6439bdeff4f47b2fb8b8ca7f1a3",
+    "tests/nut-sol/refresh_boesten_physical.py": "fb6aee1e311f43471d75875d2bc94d8b2e7a07020947782f581508a2d4f584f9",
+    "tools/solute/run_project.py": "462d3e814bf731adf7a6c00dffbc9e1d226c3616f87ba9108b8597cae58ff867",
+    "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+    "tests/fapp/test_ppa_wu04b_boesten_process.f90": "cc86b8bda87ffad4adf39efb5aa2abfd981c3a0929c4b92a560445f6a5ddd6bd",
+    "tests/fapp/test_ppa_wu04b_boesten_runtime.f90": "d1cc5b6346cc2780907977debdc63b47ee82246fa3cd8d7aa4c36e643a1a2618",
+    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+    "src/crop/mod_crop_soil_n_day.f90": "051cb408658b5acda61cc5b41259dc621a17ce67aa1ea38f76b4205f327054bb",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "2baeadc13d06b5a7bd7f27acb35f5edcfd5e23b903a773a23f8b7623c386f50a",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "2714f07be491dbd146691b5d7c7859ea194f6fe6780057a75d2ab3c0dad0855a",
+    "integration/mc-nut01/nondepleting_top/STATUS.json": "d0051b57da2fbf29c87f4514dca31466ee367456f88bde4d8050eaa4b6a39aab",
+    "integration/mc-nut01/nondepleting_top/ADMISSION.json": "4e85c9001d8f713ab4483fefc0f581a9e327ef330ec1d94d7e1224e40ebdd4e6"
+  },
+  "postimages": {
+    "docs/science/MC_NUT01_UNUSED_DEMAND_CANDIDATE_20261023.md": "c96261b87f3c647ef99767006242cb6df144186cba4ab7d90a45b385831265cc",
+    "integration/audits/verify_native_boesten.py": "b9d77f9343a47f9f11ebf89ef41aeda60323f4c224d70cde374fa94ea0cdc5da",
+    "integration/audits/verify_nut_demand_candidate.py": "069bd9bec50971e22b7d0222cfc759943c97b163fbed8ac3e67628506ad100e7",
+    "integration/mc-nut01/demand_candidate/CONTRACT.md": "eb029da3724f2626dde62883c65ea6602c5ebfeee85164dba692ef9d03c0bd2e",
+    "integration/mc-nut01/demand_candidate/seal.py": "60632ff1af7f7b946bfc8e0f6f957b043890a7a9d3882950912bc77f225bfd4b",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "eae8e5c2275b2ac67008c08ab24bfd086e5508d7ede8961cef959f242d0c3f85",
+    "tests/nut-crop/demand_candidate_joint.inc": "a00e3f0c3dbe0fac497d9a487d9f2cd90936a03927f058e116aa69523ff5d9fd",
+    "tests/nut-crop/run_demand_candidate_joint.py": "9df98a15469c1c63e726c4f65f2accddd6530d2efcf333110c44d0f336a4e6b7",
+    "tests/nut-reactive/run_demand_candidate.py": "6f1807cbb76fbec2960e332718cb62d3679ddafe8e0375809e31860bb1012045"
+  },
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "results": {
+    "direct_cases_per_optimization": 288,
+    "newly_accepted": 144,
+    "incumbent_cases_byte_exact": 144,
+    "default_byte_exact": true,
+    "fresh_HIST_compiles": 654,
+    "fresh_HIST_processes": 78,
+    "fresh_HIST_process_restarts": 56,
+    "actual_coupled_runs": 6,
+    "days_per_run": 8,
+    "separate_process_restarts": 12,
+    "previous_composition_rejection_probes": 2
+  },
+  "source_commit": "1cd81e239dbd3a28a91871188bedb2d0981e9b44",
+  "qualification_scope": "Exhausted unused demand candidates only. Selected supply must remain strictly nondepleted. Original36 Boesten assertions preserved with one narrowly historical NUT source-identity read; current sources have separate fresh direct/HIST/crop/restart proof.",
+  "current_corruption_controls": 52
+}
