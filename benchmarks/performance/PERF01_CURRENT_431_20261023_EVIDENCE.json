@@ -1,0 +1,903 @@
+{
+  "assessment": {
+    "status": "MATCHED_CURRENT_431_RAW_TRACE_REPLAY_PASS",
+    "native_processes": 96,
+    "physical_rows": 392000,
+    "maximum_historical_head_difference_cm": 5.8051341511600185e-12,
+    "maximum_mass_cm": 4.263256414560601e-14,
+    "O2_summary": [
+      {
+        "opt": "O2",
+        "case": 1,
+        "name": "bare",
+        "days": 30,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 5.684341886080802e-14,
+          "h": 1.3926637620897964e-12,
+          "theta": 1.3322676295501878e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.1616619999999751,
+              0.186559000000028,
+              0.16056900000000296,
+              0.1813769999999993,
+              0.15619400000000058
+            ],
+            "median_cpu_seconds": 0.1616619999999751,
+            "min_cpu_seconds": 0.15619400000000058,
+            "max_cpu_seconds": 0.186559000000028,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 4.084617843611027e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.20694099999999974,
+              0.20969099999999974,
+              0.210599,
+              0.21151099999999928,
+              0.20490699999999945
+            ],
+            "median_cpu_seconds": 0.20969099999999974,
+            "min_cpu_seconds": 0.20490699999999945,
+            "max_cpu_seconds": 0.21151099999999928,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 4.064988363278177e-14
+          }
+        },
+        "current_over_431_cpu": 1.297095173881506
+      },
+      {
+        "opt": "O2",
+        "case": 2,
+        "name": "prescribed_roots",
+        "days": 30,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 4.973799150320701e-14,
+          "h": 1.4068746168049984e-12,
+          "theta": 1.2212453270876722e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.1693150000000076,
+              0.1511950000000202,
+              0.1588430000000129,
+              0.15243500000000362,
+              0.16561600000000934
+            ],
+            "median_cpu_seconds": 0.1588430000000129,
+            "min_cpu_seconds": 0.1511950000000202,
+            "max_cpu_seconds": 0.1693150000000076,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 3.48209959130652e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.1997539999999999,
+              0.19191800000000012,
+              0.19489399999999993,
+              0.18831599999999982,
+              0.19502799999999973
+            ],
+            "median_cpu_seconds": 0.19489399999999993,
+            "min_cpu_seconds": 0.18831599999999982,
+            "max_cpu_seconds": 0.1997539999999999,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 3.570895749233083e-14
+          }
+        },
+        "current_over_431_cpu": 1.2269599541684815
+      },
+      {
+        "opt": "O2",
+        "case": 3,
+        "name": "dry",
+        "days": 1,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 1.0658141036401503e-14,
+          "h": 3.069544618483633e-12,
+          "theta": 4.440892098500626e-16,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.005167999999999985,
+              0.005309000000000003,
+              0.005293999999999998,
+              0.006765000000000002,
+              0.005706000000000008
+            ],
+            "median_cpu_seconds": 0.005309000000000003,
+            "min_cpu_seconds": 0.005167999999999985,
+            "max_cpu_seconds": 0.006765000000000002,
+            "steps": 200,
+            "nonlinear_iterations": 632,
+            "max_mass_cm": 1.7297469880050986e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.005943000000000006,
+              0.005612000000000009,
+              0.006337000000000005,
+              0.00785900000000001,
+              0.005556000000000003
+            ],
+            "median_cpu_seconds": 0.005943000000000006,
+            "min_cpu_seconds": 0.005556000000000003,
+            "max_cpu_seconds": 0.00785900000000001,
+            "steps": 200,
+            "nonlinear_iterations": 632,
+            "max_mass_cm": 1.3744756201250485e-14
+          }
+        },
+        "current_over_431_cpu": 1.1194198530796764
+      },
+      {
+        "opt": "O2",
+        "case": 4,
+        "name": "shallow_head",
+        "days": 1,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 3.182610425200849e-14,
+          "h": 3.979039320256561e-13,
+          "theta": 5.551115123125783e-16,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 6.3651306447809475e-12,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.005851000000000002,
+              0.006809999999999986,
+              0.00585799999999999,
+              0.008170999999999979,
+              0.012768999999999957
+            ],
+            "median_cpu_seconds": 0.006809999999999986,
+            "min_cpu_seconds": 0.005851000000000002,
+            "max_cpu_seconds": 0.012768999999999957,
+            "steps": 200,
+            "nonlinear_iterations": 700,
+            "max_mass_cm": 3.182610425200849e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.007469999999999994,
+              0.006985000000000008,
+              0.007185999999999998,
+              0.0076960000000000015,
+              0.0069400000000000035
+            ],
+            "median_cpu_seconds": 0.007185999999999998,
+            "min_cpu_seconds": 0.0069400000000000035,
+            "max_cpu_seconds": 0.0076960000000000015,
+            "steps": 200,
+            "nonlinear_iterations": 700,
+            "max_mass_cm": 1.734723475976807e-18
+          }
+        },
+        "current_over_431_cpu": 1.0552129221732764
+      },
+      {
+        "opt": "O2",
+        "case": 5,
+        "name": "rain_pulse",
+        "days": 3,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 4.263256414560601e-14,
+          "h": 1.0089706847793423e-12,
+          "theta": 1.1102230246251565e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.016308999999999605,
+              0.017107999999999665,
+              0.016425999999999663,
+              0.017816999999999777,
+              0.016223999999999576
+            ],
+            "median_cpu_seconds": 0.016425999999999663,
+            "min_cpu_seconds": 0.016223999999999576,
+            "max_cpu_seconds": 0.017816999999999777,
+            "steps": 600,
+            "nonlinear_iterations": 1948,
+            "max_mass_cm": 3.4384875589182906e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.020782999999999986,
+              0.023408999999999996,
+              0.02210400000000002,
+              0.02103600000000002,
+              0.01984199999999996
+            ],
+            "median_cpu_seconds": 0.02103600000000002,
+            "min_cpu_seconds": 0.01984199999999996,
+            "max_cpu_seconds": 0.023408999999999996,
+            "steps": 600,
+            "nonlinear_iterations": 1948,
+            "max_mass_cm": 3.527852922985408e-14
+          }
+        },
+        "current_over_431_cpu": 1.280652623888984
+      },
+      {
+        "opt": "O2",
+        "case": 6,
+        "name": "prescribed_drainage",
+        "days": 30,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 4.2632618355714635e-14,
+          "h": 1.5063505998114124e-12,
+          "theta": 1.4432899320127035e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.15623899999999338,
+              0.1629150000000184,
+              0.15373700000000892,
+              0.16449600000002051,
+              0.15794900000000864
+            ],
+            "median_cpu_seconds": 0.15794900000000864,
+            "min_cpu_seconds": 0.15373700000000892,
+            "max_cpu_seconds": 0.16449600000002051,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 3.5635773845688057e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.1786780000000005,
+              0.19745099999999974,
+              0.183424,
+              0.18970899999999988,
+              0.1877799999999997
+            ],
+            "median_cpu_seconds": 0.1877799999999997,
+            "min_cpu_seconds": 0.1786780000000005,
+            "max_cpu_seconds": 0.19745099999999974,
+            "steps": 6000,
+            "nonlinear_iterations": 18001,
+            "max_mass_cm": 3.7893353819346e-14
+          }
+        },
+        "current_over_431_cpu": 1.1888647601440303
+      },
+      {
+        "opt": "O2",
+        "case": 7,
+        "name": "long_balanced",
+        "days": 365,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 1.0,
+          "retry": 0.0,
+          "mass": 6.394884621840902e-14,
+          "h": 5.8051341511600185e-12,
+          "theta": 6.772360450213455e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              1.2524979999985577,
+              1.3012230000007785,
+              1.256974999998309,
+              1.309228000000597,
+              1.289766000001781
+            ],
+            "median_cpu_seconds": 1.289766000001781,
+            "min_cpu_seconds": 1.2524979999985577,
+            "max_cpu_seconds": 1.309228000000597,
+            "steps": 73000,
+            "nonlinear_iterations": 102573,
+            "max_mass_cm": 4.263256414560601e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              1.2444740000000214,
+              1.200407999999987,
+              1.240228999999988,
+              1.2104850000000174,
+              1.2505300000000181
+            ],
+            "median_cpu_seconds": 1.240228999999988,
+            "min_cpu_seconds": 1.200407999999987,
+            "max_cpu_seconds": 1.2505300000000181,
+            "steps": 73000,
+            "nonlinear_iterations": 102571,
+            "max_mass_cm": 4.263256414560601e-14
+          }
+        },
+        "current_over_431_cpu": 0.9615922578190738
+      },
+      {
+        "opt": "O2",
+        "case": 8,
+        "name": "layered_column",
+        "days": 30,
+        "historical_max_abs": {
+          "step": 0.0,
+          "dt": 0.0,
+          "nl": 0.0,
+          "retry": 0.0,
+          "mass": 5.684341886080802e-14,
+          "h": 1.5774048733874224e-12,
+          "theta": 1.7763568394002505e-15,
+          "pond": 0.0,
+          "gwl": 0.0,
+          "top": 0.0,
+          "bottom": 0.0,
+          "root": 0.0,
+          "drain": 0.0
+        },
+        "arms": {
+          "legacy": {
+            "cpu_seconds": [
+              0.16897500000002263,
+              0.16099800000001796,
+              0.15647400000001477,
+              0.15724899999997144,
+              0.16237800000000646
+            ],
+            "median_cpu_seconds": 0.16099800000001796,
+            "min_cpu_seconds": 0.15647400000001477,
+            "max_cpu_seconds": 0.16897500000002263,
+            "steps": 6000,
+            "nonlinear_iterations": 18000,
+            "max_mass_cm": 3.672084337991155e-14
+          },
+          "current": {
+            "cpu_seconds": [
+              0.21485600000000013,
+              0.1895860000000004,
+              0.19556300000000024,
+              0.18777900000000003,
+              0.21325599999999975
+            ],
+            "median_cpu_seconds": 0.19556300000000024,
+            "min_cpu_seconds": 0.18777900000000003,
+            "max_cpu_seconds": 0.21485600000000013,
+            "steps": 6000,
+            "nonlinear_iterations": 18000,
+            "max_mass_cm": 3.936781456381766e-14
+          }
+        },
+        "current_over_431_cpu": 1.2146921079763626
+      }
+    ],
+    "scope": "Matched synthetic fixed-step real kernels only; excludes weather/crop/transaction orchestration",
+    "historical_preserved": {
+      "status": "MATCHED_CURRENT_431_RAW_TRACE_REPLAY_PASS",
+      "native_processes": 96,
+      "physical_rows": 392000,
+      "maximum_historical_head_difference_cm": 5.8051341511600185e-12,
+      "maximum_mass_cm": 4.263256414560601e-14,
+      "O2_summary": [
+        {
+          "opt": "O2",
+          "case": 1,
+          "name": "bare",
+          "days": 30,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 5.684341886080802e-14,
+            "h": 1.3926637620897964e-12,
+            "theta": 1.3322676295501878e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.16792100000001647,
+                0.16137200000000135,
+                0.1671750000000004,
+                0.165112999999999,
+                0.1714890000000243
+              ],
+              "median_cpu_seconds": 0.1671750000000004,
+              "min_cpu_seconds": 0.16137200000000135,
+              "max_cpu_seconds": 0.1714890000000243,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 4.084617843611027e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.20620999999999975,
+                0.20168200000000033,
+                0.20343100000000003,
+                0.18803599999999973,
+                0.18502500000000052
+              ],
+              "median_cpu_seconds": 0.20168200000000033,
+              "min_cpu_seconds": 0.18502500000000052,
+              "max_cpu_seconds": 0.20620999999999975,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 4.064988363278177e-14
+            }
+          },
+          "current_over_431_cpu": 1.2064124420517413
+        },
+        {
+          "opt": "O2",
+          "case": 2,
+          "name": "prescribed_roots",
+          "days": 30,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 4.973799150320701e-14,
+            "h": 1.4068746168049984e-12,
+            "theta": 1.2212453270876722e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.18307799999999697,
+                0.15090900000001387,
+                0.1509750000000068,
+                0.14996800000000987,
+                0.1515360000000158
+              ],
+              "median_cpu_seconds": 0.1509750000000068,
+              "min_cpu_seconds": 0.14996800000000987,
+              "max_cpu_seconds": 0.18307799999999697,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 3.48209959130652e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.19837700000000016,
+                0.19428399999999924,
+                0.18274000000000007,
+                0.18533900000000014,
+                0.2037309999999996
+              ],
+              "median_cpu_seconds": 0.19428399999999924,
+              "min_cpu_seconds": 0.18274000000000007,
+              "max_cpu_seconds": 0.2037309999999996,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 3.570895749233083e-14
+            }
+          },
+          "current_over_431_cpu": 1.2868620632554428
+        },
+        {
+          "opt": "O2",
+          "case": 3,
+          "name": "dry",
+          "days": 1,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 1.0658141036401503e-14,
+            "h": 3.069544618483633e-12,
+            "theta": 4.440892098500626e-16,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.006309,
+                0.006777000000000014,
+                0.0064539999999999945,
+                0.005575999999999998,
+                0.006043999999999987
+              ],
+              "median_cpu_seconds": 0.006309,
+              "min_cpu_seconds": 0.005575999999999998,
+              "max_cpu_seconds": 0.006777000000000014,
+              "steps": 200,
+              "nonlinear_iterations": 632,
+              "max_mass_cm": 1.7297469880050986e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.005996999999999997,
+                0.0065629999999999985,
+                0.0069979999999999955,
+                0.006780999999999984,
+                0.007449999999999997
+              ],
+              "median_cpu_seconds": 0.006780999999999984,
+              "min_cpu_seconds": 0.005996999999999997,
+              "max_cpu_seconds": 0.007449999999999997,
+              "steps": 200,
+              "nonlinear_iterations": 632,
+              "max_mass_cm": 1.3744756201250485e-14
+            }
+          },
+          "current_over_431_cpu": 1.0748137581233133
+        },
+        {
+          "opt": "O2",
+          "case": 4,
+          "name": "shallow_head",
+          "days": 1,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 3.182610425200849e-14,
+            "h": 3.979039320256561e-13,
+            "theta": 5.551115123125783e-16,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 6.3651306447809475e-12,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.006200000000000004,
+                0.0064850000000000185,
+                0.009000999999999999,
+                0.006649000000000007,
+                0.006149000000000007
+              ],
+              "median_cpu_seconds": 0.0064850000000000185,
+              "min_cpu_seconds": 0.006149000000000007,
+              "max_cpu_seconds": 0.009000999999999999,
+              "steps": 200,
+              "nonlinear_iterations": 700,
+              "max_mass_cm": 3.182610425200849e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.008235999999999993,
+                0.010611000000000011,
+                0.009297000000000003,
+                0.006912999999999994,
+                0.007264999999999995
+              ],
+              "median_cpu_seconds": 0.008235999999999993,
+              "min_cpu_seconds": 0.006912999999999994,
+              "max_cpu_seconds": 0.010611000000000011,
+              "steps": 200,
+              "nonlinear_iterations": 700,
+              "max_mass_cm": 1.734723475976807e-18
+            }
+          },
+          "current_over_431_cpu": 1.2700077101002267
+        },
+        {
+          "opt": "O2",
+          "case": 5,
+          "name": "rain_pulse",
+          "days": 3,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 4.263256414560601e-14,
+            "h": 1.0089706847793423e-12,
+            "theta": 1.1102230246251565e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.016542999999999638,
+                0.017169999999999616,
+                0.016309999999999682,
+                0.017236999999999787,
+                0.020693000000000437
+              ],
+              "median_cpu_seconds": 0.017169999999999616,
+              "min_cpu_seconds": 0.016309999999999682,
+              "max_cpu_seconds": 0.020693000000000437,
+              "steps": 600,
+              "nonlinear_iterations": 1948,
+              "max_mass_cm": 3.4384875589182906e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.019886999999999978,
+                0.019073000000000027,
+                0.020134000000000003,
+                0.024429000000000003,
+                0.02574400000000002
+              ],
+              "median_cpu_seconds": 0.020134000000000003,
+              "min_cpu_seconds": 0.019073000000000027,
+              "max_cpu_seconds": 0.02574400000000002,
+              "steps": 600,
+              "nonlinear_iterations": 1948,
+              "max_mass_cm": 3.527852922985408e-14
+            }
+          },
+          "current_over_431_cpu": 1.1726266744321754
+        },
+        {
+          "opt": "O2",
+          "case": 6,
+          "name": "prescribed_drainage",
+          "days": 30,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 4.2632618355714635e-14,
+            "h": 1.5063505998114124e-12,
+            "theta": 1.4432899320127035e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.15970900000002317,
+                0.16652500000000264,
+                0.1629400000000153,
+                0.16356099999999854,
+                0.16327600000002146
+              ],
+              "median_cpu_seconds": 0.16327600000002146,
+              "min_cpu_seconds": 0.15970900000002317,
+              "max_cpu_seconds": 0.16652500000000264,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 3.5635773845688057e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.19359200000000024,
+                0.19501300000000044,
+                0.19610899999999984,
+                0.20298700000000086,
+                0.19967299999999952
+              ],
+              "median_cpu_seconds": 0.19610899999999984,
+              "min_cpu_seconds": 0.19359200000000024,
+              "max_cpu_seconds": 0.20298700000000086,
+              "steps": 6000,
+              "nonlinear_iterations": 18001,
+              "max_mass_cm": 3.7893353819346e-14
+            }
+          },
+          "current_over_431_cpu": 1.2010889536733755
+        },
+        {
+          "opt": "O2",
+          "case": 7,
+          "name": "long_balanced",
+          "days": 365,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 1.0,
+            "retry": 0.0,
+            "mass": 6.394884621840902e-14,
+            "h": 5.8051341511600185e-12,
+            "theta": 6.772360450213455e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                1.3253310000006957,
+                1.4679209999997844,
+                1.4496830000020866,
+                1.3362690000001956,
+                1.437658000001202
+              ],
+              "median_cpu_seconds": 1.437658000001202,
+              "min_cpu_seconds": 1.3253310000006957,
+              "max_cpu_seconds": 1.4679209999997844,
+              "steps": 73000,
+              "nonlinear_iterations": 102573,
+              "max_mass_cm": 4.263256414560601e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                1.3275130000000142,
+                1.391453999999982,
+                1.2851340000000018,
+                1.418295999999995,
+                1.2331630000000071
+              ],
+              "median_cpu_seconds": 1.3275130000000142,
+              "min_cpu_seconds": 1.2331630000000071,
+              "max_cpu_seconds": 1.418295999999995,
+              "steps": 73000,
+              "nonlinear_iterations": 102571,
+              "max_mass_cm": 4.263256414560601e-14
+            }
+          },
+          "current_over_431_cpu": 0.92338581220214
+        },
+        {
+          "opt": "O2",
+          "case": 8,
+          "name": "layered_column",
+          "days": 30,
+          "historical_max_abs": {
+            "step": 0.0,
+            "dt": 0.0,
+            "nl": 0.0,
+            "retry": 0.0,
+            "mass": 5.684341886080802e-14,
+            "h": 1.5774048733874224e-12,
+            "theta": 1.7763568394002505e-15,
+            "pond": 0.0,
+            "gwl": 0.0,
+            "top": 0.0,
+            "bottom": 0.0,
+            "root": 0.0,
+            "drain": 0.0
+          },
+          "arms": {
+            "legacy": {
+              "cpu_seconds": [
+                0.17932500000001747,
+                0.1702300000000042,
+                0.18162399999998344,
+                0.16053500000001306,
+                0.18058700000001404
+              ],
+              "median_cpu_seconds": 0.17932500000001747,
+              "min_cpu_seconds": 0.16053500000001306,
+              "max_cpu_seconds": 0.18162399999998344,
+              "steps": 6000,
+              "nonlinear_iterations": 18000,
+              "max_mass_cm": 3.672084337991155e-14
+            },
+            "current": {
+              "cpu_seconds": [
+                0.2107250000000004,
+                0.1848300000000003,
+                0.19524899999999984,
+                0.19660299999999975,
+                0.1906260000000004
+              ],
+              "median_cpu_seconds": 0.19524899999999984,
+              "min_cpu_seconds": 0.1848300000000003,
+              "max_cpu_seconds": 0.2107250000000004,
+              "steps": 6000,
+              "nonlinear_iterations": 18000,
+              "max_mass_cm": 3.936781456381766e-14
+            }
+          },
+          "current_over_431_cpu": 1.0887996654118546
+        }
+      ],
+      "scope": "Matched synthetic fixed-step real kernels only; excludes weather/crop/transaction orchestration"
+    }
+  },
+  "controls": [
+    "missing stdout",
+    "changed native clock",
+    "changed full physical trace",
+    "changed compiled source",
+    "missing process",
+    "changed median",
+    "changed historical compiled source",
+    "missing historical native clock"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_CURRENT_431_20261023_EVIDENCE.tar.xz",
+    "sha256": "6160ca83cfff989cf3b48669387eab13ebf1ff9f86164a5ae08b60b903c716ae",
+    "bytes": 30561824,
+    "members": 1623,
+    "trace_encoding": "Byte planes after bytewise XOR: original O2 legacy versus prior record, other traces versus same-case original O2 legacy; exact native SHA256 verified after decoding"
+  }
+}
