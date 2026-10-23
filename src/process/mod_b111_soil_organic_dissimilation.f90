@@ -2,7 +2,7 @@ module mod_b111_soil_organic_dissimilation
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b111_soil_organic_turnover, only: b111_organic_turnover_parameters_t, b111_organic_turnover_result_t, &
-       B111_ORG_TURNOVER_OK,b111_decay_fractions
+       B111_ORG_TURNOVER_OK,b111_decay_fractions,b111_single_zero_response
   implicit none
   private
 
@@ -32,6 +32,7 @@ contains
     real(real64)::fom2bio,fom2hum,rhs_bio,rhs_hum,help,loss,average
     integer::code
     integer::fn,n
+    real(real64),allocatable::endpoint(:),mean_pool(:)
 
     result=b111_organic_dissimilation_result_t()
     n=size(fom0)
@@ -62,6 +63,25 @@ contains
         result=b111_organic_dissimilation_result_t();return
       end if
       if(min(result%biomass_average_kg_m3,result%humus_average_kg_m3,result%carbon_dissimilation_kg_m2)<0d0)then
+        result=b111_organic_dissimilation_result_t();return
+      end if
+      result%status=B111_ORG_DISS_OK;return
+    end if
+
+    if(p%ratecon_bio==0.0_real64.or.p%ratecon_hum==0.0_real64)then
+      call b111_single_zero_response(fom0,biomass0,humus0,dt,p,endpoint,mean_pool,code)
+      if(code/=B111_ORG_TURNOVER_OK)return
+      result%biomass_average_kg_m3=mean_pool(n+1);result%humus_average_kg_m3=mean_pool(n+2)
+      do fn=1,n
+        call b111_decay_fractions(p%ratecon_fom(fn)*dt,loss,average,code)
+        if(code/=B111_ORG_TURNOVER_OK)return
+        result%carbon_dissimilation_kg_m2=result%carbon_dissimilation_kg_m2+cfrac_fom(fn)*fom0(fn)*loss* &
+          depth_m*(1d0-p%asfa_fom_bio(fn)-p%asfa_fom_hum(fn))
+      end do
+      result%carbon_dissimilation_kg_m2=result%carbon_dissimilation_kg_m2+dt*depth_m* &
+        (1d0-p%asfa_bio-p%asfa_hum)*(cfrac_biomass*p%ratecon_bio*mean_pool(n+1)+ &
+        cfrac_humus*p%ratecon_hum*mean_pool(n+2))
+      if(.not.ieee_is_finite(result%carbon_dissimilation_kg_m2).or.result%carbon_dissimilation_kg_m2<0d0)then
         result=b111_organic_dissimilation_result_t();return
       end if
       result%status=B111_ORG_DISS_OK;return
