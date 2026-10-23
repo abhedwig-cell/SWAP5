@@ -1,0 +1,1788 @@
+{
+  "status": "PROPOSAL_COST_AND_GENERATED_RECOVERY_RESEARCH_VALIDATED",
+  "production_changed": false,
+  "measured": {
+    "O0": {
+      "1x-off": {
+        "native_seconds": 2.2924100259988336,
+        "profile_seconds": 2.5202882419980597,
+        "headcalc_seconds": 1.751071637,
+        "provider_seconds": 0.5622168680000001,
+        "transaction_controller_seconds": 0.0799590939999999,
+        "joint_orchestration_seconds": 0.10781462399999997,
+        "rejected_seconds": 2.099978816,
+        "output_serialization_seconds": 0.003668389,
+        "input_setup_seconds": 0.002381265,
+        "abandoned_day_seconds": 0.0,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 2.420206156,
+            "rejected_seconds": 2.099978816,
+            "counts": [
+              37371,
+              37371,
+              72455,
+              1352,
+              31041,
+              0,
+              475366,
+              109826,
+              494391,
+              35142,
+              9956,
+              35201
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "1x-on": {
+        "native_seconds": 1.26013753299776,
+        "profile_seconds": 1.2534682940022321,
+        "headcalc_seconds": 0.857385686,
+        "provider_seconds": 0.260789213,
+        "transaction_controller_seconds": 0.036462065999999904,
+        "joint_orchestration_seconds": 0.080483517,
+        "rejected_seconds": 0.894304328,
+        "output_serialization_seconds": 0.002928967,
+        "input_setup_seconds": 0.002629753,
+        "abandoned_day_seconds": 0.01630461,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.02975055,
+            "rejected_seconds": 0.023403901,
+            "counts": [
+              482,
+              482,
+              951,
+              8,
+              377,
+              0,
+              5577,
+              1433,
+              5648,
+              616,
+              194,
+              616
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.154438899,
+            "rejected_seconds": 0.007986537,
+            "counts": [
+              2941,
+              2941,
+              5817,
+              36,
+              138,
+              0,
+              30082,
+              8730,
+              30130,
+              18547,
+              5534,
+              18549
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.725596398,
+            "rejected_seconds": 0.631510071,
+            "counts": [
+              11808,
+              11808,
+              21901,
+              963,
+              9372,
+              0,
+              164703,
+              33709,
+              174928,
+              11590,
+              2946,
+              11642
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.25815385,
+            "rejected_seconds": 0.231403819,
+            "counts": [
+              4404,
+              4404,
+              8252,
+              379,
+              3572,
+              0,
+              63748,
+              12656,
+              72291,
+              3495,
+              906,
+              3498
+            ]
+          }
+        ]
+      },
+      "4x-off": {
+        "native_seconds": 2.081429951998871,
+        "profile_seconds": 1.9048735249962192,
+        "headcalc_seconds": 1.377911566,
+        "provider_seconds": 0.3939809959999998,
+        "transaction_controller_seconds": 0.04908685200000007,
+        "joint_orchestration_seconds": 0.06885938700000005,
+        "rejected_seconds": 1.644023599,
+        "output_serialization_seconds": 0.002830658,
+        "input_setup_seconds": 0.002395567,
+        "abandoned_day_seconds": 0.0,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 1.840677567,
+            "rejected_seconds": 1.644023599,
+            "counts": [
+              32702,
+              32702,
+              63007,
+              1597,
+              27528,
+              0,
+              448141,
+              95709,
+              507521,
+              25640,
+              7154,
+              25693
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "4x-on": {
+        "native_seconds": 1.3809656909943442,
+        "profile_seconds": 1.3661344139982248,
+        "headcalc_seconds": 0.977848543,
+        "provider_seconds": 0.273479589,
+        "transaction_controller_seconds": 0.03586119500000007,
+        "joint_orchestration_seconds": 0.06393808899999986,
+        "rejected_seconds": 1.065633577,
+        "output_serialization_seconds": 0.002670285,
+        "input_setup_seconds": 0.00244581,
+        "abandoned_day_seconds": 0.055619624,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.022251075,
+            "rejected_seconds": 0.01596288,
+            "counts": [
+              297,
+              297,
+              583,
+              7,
+              193,
+              0,
+              3624,
+              880,
+              3862,
+              603,
+              194,
+              603
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.147025855,
+            "rejected_seconds": 0.021359386,
+            "counts": [
+              2961,
+              2961,
+              5747,
+              93,
+              401,
+              0,
+              31562,
+              8623,
+              32098,
+              16849,
+              4934,
+              16861
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.353334654,
+            "rejected_seconds": 0.31577401,
+            "counts": [
+              6026,
+              6026,
+              11411,
+              443,
+              4963,
+              0,
+              91146,
+              17437,
+              107001,
+              4966,
+              1240,
+              4989
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.778048972,
+            "rejected_seconds": 0.712537301,
+            "counts": [
+              13098,
+              13098,
+              24442,
+              1152,
+              10903,
+              0,
+              191340,
+              37540,
+              234437,
+              7815,
+              2086,
+              7825
+            ]
+          }
+        ]
+      }
+    },
+    "O2": {
+      "1x-off": {
+        "native_seconds": 1.102569777998724,
+        "profile_seconds": 1.098965209996095,
+        "headcalc_seconds": 0.726464967,
+        "provider_seconds": 0.269319894,
+        "transaction_controller_seconds": 0.033434623,
+        "joint_orchestration_seconds": 0.053601068000000085,
+        "rejected_seconds": 0.896857865,
+        "output_serialization_seconds": 0.003044711,
+        "input_setup_seconds": 0.002146168,
+        "abandoned_day_seconds": 0.0,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 1.044230093,
+            "rejected_seconds": 0.896857865,
+            "counts": [
+              37371,
+              37371,
+              72455,
+              1352,
+              31041,
+              0,
+              475366,
+              109826,
+              494391,
+              35142,
+              9956,
+              35201
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "1x-on": {
+        "native_seconds": 0.5703466750055668,
+        "profile_seconds": 0.6218894470002851,
+        "headcalc_seconds": 0.395265662,
+        "provider_seconds": 0.14748127599999994,
+        "transaction_controller_seconds": 0.01846559400000003,
+        "joint_orchestration_seconds": 0.044641253999999964,
+        "rejected_seconds": 0.426034278,
+        "output_serialization_seconds": 0.002505061,
+        "input_setup_seconds": 0.002344321,
+        "abandoned_day_seconds": 0.008268527,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.015006901,
+            "rejected_seconds": 0.012085405,
+            "counts": [
+              482,
+              482,
+              951,
+              8,
+              377,
+              0,
+              5577,
+              1433,
+              5648,
+              616,
+              194,
+              616
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.085399776,
+            "rejected_seconds": 0.004294623,
+            "counts": [
+              2941,
+              2941,
+              5817,
+              36,
+              138,
+              0,
+              30082,
+              8730,
+              30130,
+              18547,
+              5534,
+              18549
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.324576301,
+            "rejected_seconds": 0.281367254,
+            "counts": [
+              11808,
+              11808,
+              21901,
+              963,
+              9372,
+              0,
+              164703,
+              33709,
+              174928,
+              11590,
+              2946,
+              11642
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.125710652,
+            "rejected_seconds": 0.111913795,
+            "counts": [
+              4404,
+              4404,
+              8252,
+              379,
+              3572,
+              0,
+              63748,
+              12656,
+              72291,
+              3495,
+              906,
+              3498
+            ]
+          }
+        ]
+      },
+      "4x-off": {
+        "native_seconds": 1.022833991002699,
+        "profile_seconds": 0.9770907530037221,
+        "headcalc_seconds": 0.656240488,
+        "provider_seconds": 0.239367,
+        "transaction_controller_seconds": 0.028127500999999944,
+        "joint_orchestration_seconds": 0.04031768400000002,
+        "rejected_seconds": 0.830818258,
+        "output_serialization_seconds": 0.002349238,
+        "input_setup_seconds": 0.002069445,
+        "abandoned_day_seconds": 0.0,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 0.936835808,
+            "rejected_seconds": 0.830818258,
+            "counts": [
+              32702,
+              32702,
+              63007,
+              1597,
+              27528,
+              0,
+              448141,
+              95709,
+              507521,
+              25640,
+              7154,
+              25693
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "4x-on": {
+        "native_seconds": 0.6870142619955004,
+        "profile_seconds": 0.726175214003888,
+        "headcalc_seconds": 0.48183958,
+        "provider_seconds": 0.170700244,
+        "transaction_controller_seconds": 0.023015187000000048,
+        "joint_orchestration_seconds": 0.03827086099999999,
+        "rejected_seconds": 0.555339814,
+        "output_serialization_seconds": 0.002125528,
+        "input_setup_seconds": 0.002075143,
+        "abandoned_day_seconds": 0.033584932,
+        "regimes": [
+          {
+            "regime": 1,
+            "seconds": 0.0,
+            "rejected_seconds": 0.0,
+            "counts": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "regime": 2,
+            "seconds": 0.009028246,
+            "rejected_seconds": 0.006801402,
+            "counts": [
+              297,
+              297,
+              583,
+              7,
+              193,
+              0,
+              3624,
+              880,
+              3862,
+              603,
+              194,
+              603
+            ]
+          },
+          {
+            "regime": 3,
+            "seconds": 0.079409402,
+            "rejected_seconds": 0.012319409,
+            "counts": [
+              2961,
+              2961,
+              5747,
+              93,
+              401,
+              0,
+              31562,
+              8623,
+              32098,
+              16849,
+              4934,
+              16861
+            ]
+          },
+          {
+            "regime": 4,
+            "seconds": 0.180584357,
+            "rejected_seconds": 0.159910884,
+            "counts": [
+              6026,
+              6026,
+              11411,
+              443,
+              4963,
+              0,
+              91146,
+              17437,
+              107001,
+              4966,
+              1240,
+              4989
+            ]
+          },
+          {
+            "regime": 5,
+            "seconds": 0.406209634,
+            "rejected_seconds": 0.36820099,
+            "counts": [
+              13098,
+              13098,
+              24442,
+              1152,
+              10903,
+              0,
+              191340,
+              37540,
+              234437,
+              7815,
+              2086,
+              7825
+            ]
+          }
+        ]
+      }
+    },
+    "fixed-cap": {
+      "O0-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.5410706090042368,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 17.308567578998918,
+            "fallback_days": [
+              18,
+              61,
+              68,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.5410706090042368,
+          "cap": 17.308567578998918
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 7.105427357601002e-14,
+            "sum_difference_mm": -1.0658141036401503e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.024033253572233668,
+            "sum_difference_mm": -0.013341866231147016
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.024033253571941332,
+            "sum_difference_mm": 0.013341866230845295
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.678369217169802e-13,
+            "sum_difference_mm": -8.895867983221839e-13
+          }
+        },
+        "gross_mm": 8.909539772616881e-13,
+        "accepted_substeps": 36312
+      },
+      "O0-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.777859810004884,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 18.539769128001353,
+            "fallback_days": [
+              7,
+              58,
+              69,
+              74,
+              92,
+              96
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.777859810004884,
+          "cap": 18.539769128001353
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.6004975122996257e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.02556702293665926,
+            "sum_difference_mm": -0.025567006798819576
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.025567022936749048,
+            "sum_difference_mm": 0.025567006798910726
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 2.8227420401094605e-13,
+            "sum_difference_mm": -2.8386147599146483e-13
+          }
+        },
+        "gross_mm": 1.174060848541103e-13,
+        "accepted_substeps": 13126
+      },
+      "O2-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.6004742099976283,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 8.753731329998118,
+            "fallback_days": [
+              18,
+              61,
+              68,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.6126613989981706,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 8.324224244999641,
+            "fallback_days": [
+              18,
+              61,
+              68,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.7654725190004683,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 8.345802024996374,
+            "fallback_days": [
+              18,
+              61,
+              68,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.6126613989981706,
+          "cap": 8.345802024996374
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 7.105427357601002e-14,
+            "sum_difference_mm": -1.0658141036401503e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.024033253572233668,
+            "sum_difference_mm": -0.013341866231147016
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.024033253571941332,
+            "sum_difference_mm": 0.013341866230845295
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.678369217169802e-13,
+            "sum_difference_mm": -8.895867983221839e-13
+          }
+        },
+        "gross_mm": 8.909539772616881e-13,
+        "accepted_substeps": 36312
+      },
+      "O2-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.7921101190004265,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 9.780626214000222,
+            "fallback_days": [
+              7,
+              58,
+              69,
+              74,
+              92,
+              96
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.8099764959988534,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 8.46046916400519,
+            "fallback_days": [
+              7,
+              58,
+              69,
+              74,
+              92,
+              96
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.8129226679957355,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 9.790794696993544,
+            "fallback_days": [
+              7,
+              58,
+              69,
+              74,
+              92,
+              96
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.8099764959988534,
+          "cap": 9.780626214000222
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.6004975122996257e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.02556702293665926,
+            "sum_difference_mm": -0.025567006798819576
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.025567022936749048,
+            "sum_difference_mm": 0.025567006798910726
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 2.8227420401094605e-13,
+            "sum_difference_mm": -2.8386147599146483e-13
+          }
+        },
+        "gross_mm": 1.174060848541103e-13,
+        "accepted_substeps": 13126
+      }
+    },
+    "recovery": {
+      "O0-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.5418381850031437,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 5.3008413599964115,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.5418381850031437,
+          "cap": 5.3008413599964115
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 3.552713678800501e-14,
+            "sum_difference_mm": 1.2434497875801753e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": -0.027714083646369507
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": 0.027714083646369625
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 1.8041124150158794e-15,
+            "sum_difference_mm": -1.857238321467669e-15
+          }
+        },
+        "gross_mm": 4.9682480351975755e-14,
+        "accepted_substeps": 9552
+      },
+      "O0-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.6405681600008393,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 1.7346344479956315,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.6405681600008393,
+          "cap": 1.7346344479956315
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.5756285165480222e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03780096288405671,
+            "sum_difference_mm": -0.046346765108219196
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.037800962884056086,
+            "sum_difference_mm": 0.046346765108221444
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.71445146547012e-16,
+            "sum_difference_mm": 1.089623183347932e-15
+          }
+        },
+        "gross_mm": 3.83026943495679e-14,
+        "accepted_substeps": 7760
+      },
+      "O2-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.6356851250020554,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 2.8834965049973107,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.6415828419994796,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 3.010640548003721,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.6564969030005159,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 2.7871611390000908,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.6415828419994796,
+          "cap": 2.8834965049973107
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 3.552713678800501e-14,
+            "sum_difference_mm": 1.2434497875801753e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": -0.027714083646369507
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": 0.027714083646369625
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 1.8041124150158794e-15,
+            "sum_difference_mm": -1.857238321467669e-15
+          }
+        },
+        "gross_mm": 4.9682480351975755e-14,
+        "accepted_substeps": 9552
+      },
+      "O2-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.7517173029991682,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 0.815838870999869,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.6787048819969641,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 0.7818381010001758,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.923896447995503,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 0.7552812069989159,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.7517173029991682,
+          "cap": 0.7818381010001758
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.5756285165480222e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03780096288405671,
+            "sum_difference_mm": -0.046346765108219196
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.037800962884056086,
+            "sum_difference_mm": 0.046346765108221444
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.71445146547012e-16,
+            "sum_difference_mm": 1.089623183347932e-15
+          }
+        },
+        "gross_mm": 3.83026943495679e-14,
+        "accepted_substeps": 7760
+      }
+    },
+    "bounded-recovery": {
+      "O0-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.4488467570045032,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 1.5635870129990508,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.4488467570045032,
+          "cap": 1.5635870129990508
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 3.552713678800501e-14,
+            "sum_difference_mm": 1.2434497875801753e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": -0.027714083646369507
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": 0.027714083646369625
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 1.8041124150158794e-15,
+            "sum_difference_mm": -1.857238321467669e-15
+          }
+        },
+        "gross_mm": 4.9682480351975755e-14,
+        "accepted_substeps": 9552
+      },
+      "O0-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 1.7006109840003774,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 1.4135515200032387,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 1.7006109840003774,
+          "cap": 1.4135515200032387
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.5756285165480222e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03780096288405671,
+            "sum_difference_mm": -0.046346765108219196
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.037800962884056086,
+            "sum_difference_mm": 0.046346765108221444
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.71445146547012e-16,
+            "sum_difference_mm": 1.089623183347932e-15
+          }
+        },
+        "gross_mm": 3.83026943495679e-14,
+        "accepted_substeps": 7760
+      },
+      "O2-1x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.710383190002176,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 0.7659206259995699,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.6838174959993921,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 0.7448199139980716,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.6970133479990182,
+            "fallback_days": [
+              83
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 0.6643304000026546,
+            "fallback_days": [
+              18,
+              58,
+              61,
+              83,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.6970133479990182,
+          "cap": 0.7448199139980716
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0,
+            "sum_difference_mm": 0.0
+          },
+          "water_end_cm": {
+            "max_daily_mm": 3.552713678800501e-14,
+            "sum_difference_mm": 1.2434497875801753e-13
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": -0.027714083646369507
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.03626719351924837,
+            "sum_difference_mm": 0.027714083646369625
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 1.8041124150158794e-15,
+            "sum_difference_mm": -1.857238321467669e-15
+          }
+        },
+        "gross_mm": 4.9682480351975755e-14,
+        "accepted_substeps": 9552
+      },
+      "O2-4x": {
+        "samples": [
+          {
+            "kind": "ordinary",
+            "repeat": 0,
+            "seconds": 0.7994696240057237,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 0,
+            "seconds": 0.7828980129997944,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 1,
+            "seconds": 0.8295522659973358,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 1,
+            "seconds": 0.6935222839965718,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "ordinary",
+            "repeat": 2,
+            "seconds": 0.7808040899981279,
+            "fallback_days": [
+              7,
+              74,
+              92
+            ]
+          },
+          {
+            "kind": "cap",
+            "repeat": 2,
+            "seconds": 0.7452045160025591,
+            "fallback_days": [
+              7,
+              58,
+              74,
+              92
+            ]
+          }
+        ],
+        "native_median": {
+          "ordinary": 0.7994696240057237,
+          "cap": 0.7452045160025591
+        },
+        "differences": {
+          "runoff_cm": {
+            "max_daily_mm": 7.771561172376096e-12,
+            "sum_difference_mm": -7.854827899222983e-14
+          },
+          "water_end_cm": {
+            "max_daily_mm": 8.029132914089132e-12,
+            "sum_difference_mm": 1.5756285165480222e-11
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.03780096288405671,
+            "sum_difference_mm": -0.046346765108219196
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.037800962884056086,
+            "sum_difference_mm": 0.046346765108221444
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 9.71445146547012e-16,
+            "sum_difference_mm": 1.089623183347932e-15
+          }
+        },
+        "gross_mm": 3.83026943495679e-14,
+        "accepted_substeps": 7760
+      }
+    }
+  },
+  "negative_controls": [
+    "profile-O2/1x-on-0-profile/state.csv",
+    "profile-O0/4x-off-0-profile/regimes.txt",
+    "fixed-cap/O0-1x-resume/restart.bin",
+    "recovery/O2-4x-0-cap/budget.csv",
+    "recovery/O2-1x-default/state.csv",
+    "original/4x.csv",
+    "bounded-recovery/O2-1x-rollback/after-18.bin",
+    "bounded-recovery/O0-4x-resume/restart.bin"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_PROPOSAL_COST_20261024_EVIDENCE.tar.xz",
+    "sha256": "33555172fb4e620627e6791b14ab4af6c5ee575b59909784b9a416e15f7cd54a",
+    "bytes": 212992,
+    "members": 1510
+  }
+}
