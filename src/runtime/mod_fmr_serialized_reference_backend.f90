@@ -2455,7 +2455,9 @@ contains
       if (parameters%snow_active .or. parameters%drainage_response_active .or. &
           (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
            .not.soil_n_heat_trace) .or. &
-          parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+          parameters%black_evaporation_active .or. (parameters%boesten_evaporation_active.and. &
+          (template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
+           parameters%macropore_active.or.allocated(forcing%rutter))) .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
           .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
           self%model%rfm_configuration%enabled .or. &
@@ -3137,7 +3139,7 @@ contains
              .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. parameters%frost_active .and. &
              .not. parameters%drainage_response_active .and. .not. parameters%black_evaporation_active .and. &
-             .not. parameters%boesten_evaporation_active .and. .not. parameters%practical_richards_a2c_active .and. &
+             .not. parameters%practical_richards_a2c_active .and. &
              .not. parameters%root_salinity_active .and. .not. parameters%root_frost%active .and. &
              .not. allocated(parameters%bartholomeus) .and. .not. allocated(parameters%micro_de_willigen) .and. &
              parameters%root_compensation%method == ROOT_COMP_OFF
@@ -3344,10 +3346,18 @@ contains
              .not. allocated(parameters%black_evaporation) .and. allocated(parameters%boesten_evaporation) .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
              .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
-             .not. parameters%drainage_response_active .and. .not. parameters%root_extraction_active .and. &
+             .not. parameters%drainage_response_active .and. &
              parameters%bottom_mode /= 5
         if (ok) ok = ieee_is_finite(parameters%boesten_evaporation%cofred) .and. &
              parameters%boesten_evaporation%cofred > 0.0_real64 .and. parameters%boesten_evaporation%cofred <= 1.0_real64
+        if(parameters%root_extraction_active)then
+          ! New plain joint trace route only. Preserve the older water-only
+          ! exclusion and do not implicitly qualify compensation/oxygen variants.
+          ok=ok.and.self%accepted_water_flux_trace_enabled.and. &
+            parameters%root_compensation%method==ROOT_COMP_OFF.and. &
+            .not.parameters%root_salinity_active.and..not.parameters%root_frost%active.and. &
+            .not.allocated(parameters%bartholomeus).and..not.allocated(parameters%micro_de_willigen)
+        end if
       else
         ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active .and. &
              .not. allocated(parameters%boesten_evaporation) .and. .not. self%boesten_evaporation_active
@@ -6317,6 +6327,29 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    ! New plain-Boesten accepted-trace composition. The older water-only
+    ! certificate/identity route below remains unchanged. Persistent process
+    ! history contributes to the error budget as well as the hydraulic state.
+    if(self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled)then
+      value=huge(0.0_real64)
+      select type(full=>full_state)
+      type is(fmr_b110_boesten_evaporation_state_t)
+        select type(half=>half_state)
+        type is(fmr_b110_boesten_evaporation_state_t)
+          if(.not.all(ieee_is_finite([full%boesten_evaporation%spev,full%boesten_evaporation%saev, &
+            half%boesten_evaporation%spev,half%boesten_evaporation%saev])))return
+          value=fmr_pond_input_temporal_error(full,half)
+          if(self%picard_conductivity_iteration.and.associated(self%hydraulic_parameters))then
+            if(self%hydraulic_parameters%continuous_saturation_conductivity) &
+              value=fmr_weather_surface_temporal_error(self,full,half)
+          end if
+          value=max(value, &
+            abs(full%boesten_evaporation%spev-half%boesten_evaporation%spev), &
+            abs(full%boesten_evaporation%saev-half%boesten_evaporation%saev))
+        end select
+      end select
+      return
+    end if
     if(allocated(self%pond_input))then
       if(self%weather_surface_active)then
         value=fmr_weather_surface_temporal_error(self,full_state,half_state)

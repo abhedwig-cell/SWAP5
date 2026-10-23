@@ -779,3 +779,95 @@ and source/tree identity are recorded in
 needs the existing Boesten owner layout in the pond joint transaction and
 lossless restart; the present BASE-only transaction and S5MJ0001/0002 writer
 explicitly reject this composition. Merely accepting the SWP flag is unsafe.
+
+## Proposed HIST-INTEGRATION01 Boesten continuation
+
+Baseline: canonical22cdf5700dbea526c2ef217db20b738048e3eebe, complete tree
+equal to local77bdbf286. Reuse the existing SWREDU2 Boesten physical owner,
+COFRED process and SPEV/SAEV continuation. Extend accepted water trace access
+only for the plain Boesten layout, compose it with existing pond-solute owners
+and root binding, and preserve the original process equations. No second state
+owner or empirical daily replacement. Reject macropore/Rutter/heat/snow and
+step-proposal combinations in this caller.
+
+S5MJ0003 explicitly carries the Boesten pair and surface chemistry; existing
+S5MJ0001/0002 encodings stay byte-exact. Restore remains tentative until CRC,
+layout, pair domain, water and chemical identity and owner-clock checks pass.
+Rain reporting days retain the already admitted atomic publication boundary.
+
+Select local checked O0/O2: small real coupled driver, original Boesten process
+and water runtime preservation, changed pair wet/dry/ponded paths, independent
+water/solute/gross balances, chemical rejection after successful water trial,
+fresh-process V3 restart and malformed/wrong-layout atomic rejection. Then
+select native8day and481day historical-rain composition if focused results
+support it (expected physical rebuild180s; focused60s; native up to1800s).
+Preserve existing daily/detail-rain and wet-proposal application outputs.
+Full F-CI NOT_SELECTED_IMPACT; highest low-air NOT_SELECTED_POLICY; RossFast
+unused. Mass gates remain1e-10 and explicit temporal tolerance1e-3. Sole
+physical/chemical ownership, candidate publication, rollback and lossless
+restart remain binding. This proposal is not canonical admission.
+
+The actual focused run exposed repeated temporal rejection under the old
+water-only identity metric. For the new plain-Boesten accepted-trace route,
+use the existing pond-water full/half error and the maximum absolute SPEV/SAEV
+full/half difference (all existing centimetre quantities). This tests the
+persistent process continuation as well as the water owner. Original
+Boesten water-only model-certificate/identity behaviour remains unchanged.
+
+Actual frozen-conductivity historical rain completes64days before a later
+interval on day65 rejects (45 intervals completed in that day). Keep this failed
+observation. Select the existing Picard/continuous-MvG numerical route for the
+Boesten composition, with the same1e-3 temporal tolerance and hard budgets;
+no new solver or physical reduction formula. This is a new coupling
+qualification, not inheritance of the earlier SWREDU0 Picard run.
+
+The first Picard observation reaches270 complete days, then rejects on day271
+with zero mass rejections near saturation. Bind the selected continuous-MvG
+Boesten route to the same existing weather-surface temporal measure as the
+admitted continuous-MvG pond route: unsaturated heads, storage and Darcy/pond
+flux differences, augmented here with the Boesten history pair. Keep the
+original plain/frozen metric and the failed observation. No mass threshold,
+process history, concentration or accepted physical state is adjusted.
+
+Actual historical input uses `COFREDBO`, not the internal process field name
+COFRED. The native route reads that original key. The final481day fixture uses
+the original Andelst coefficient0.79; the short independent case uses0.35.
+Both O0/O2 complete and freshly restart with exact physical output. Their
+maximum daily residuals are1.705e-14cm water and8.643e-14mg/cm2 solute, below
+the unchanged1e-10 gates. Whole original Boesten process and water-only
+preservation pass separately; the new plain trace/root route adds chemical
+rollback, retry, ABA, accepted root feedback and V3 CRC/pair/layout rejection.
+Compensation, salinity, frost and mechanistic-oxygen variants remain excluded
+from the new Boesten root composition. The pre-existing root-OFF water route
+keeps its original admission boundary.
+
+Actual four-times-rain Boesten O0/O2 fails on day7 after14 intervals and leaves
+both owners, including SPEV/SAEV, exactly at the independent complete day6
+restart; the partial day candidate has advanced. Failed frozen64day and first
+Picard270day observations remain retained under their actual source identities.
+Full original Andelst input now reaches the explicit SWDRA rejection. Detailed
+rain, CFBS and Boesten admission does not qualify drainage, macropores, Cauchy3,
+numerical heat, full original-model parity, profile accuracy or full SOL/NUT.
+The sealed scope/selection is `integration/mc-sol01/boesten/STATUS.json`;
+canonical admission requires a separate actual-merge receipt.
+
+The matched constructed481day comparison keeps139.6508cm rain unchanged.
+Activating Boesten reduces soil evaporation23.4807 to17.8460cm, increases pond
+evaporation7.1595 to8.2200cm and runoff64.5493 to69.1376cm; transpiration changes
+18.2314 to18.2173cm. The increased wetness/runoff follows the physical reduction
+of bare-soil evaporation, with independent gross budgets closing. This is a
+material process-option effect, not numerical equivalence to SWREDU0 or full
+original Andelst output. A separate checked O2 native observation measures
+42.529CPU/42.531wall seconds for481days and30.884CPU/30.898wall seconds for the
+failed wet prefix. Different physics/durations establish no speed comparison.
+
+Canonical PR1399 NUT progression is reconciled before admission. Its four
+production providers and original assertion bodies remain unchanged. The
+affected two water-provider changes select74 fresh transitive compilations,
+580 verified unchanged module-closure reuses and all78 actual HIST processes;
+all original HIST assertions and incumbent endpoints pass. Four current
+nondepleting Richards/crop/N runs and eight process restarts also pass exactly.
+The original40-control NUT proof is frozen at4beca656; historical input reads
+for the two changed water providers retain that source identity, while the
+fresh current composition proves the new postimage.36 current source/raw
+controls pass. Neither exhausted competing sinks nor full NUT is promoted.

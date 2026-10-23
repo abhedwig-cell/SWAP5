@@ -533,6 +533,20 @@ macropore/drainage/Cauchy3/numerical heat composition remains open. This does
 not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
 production completion or general performance.
 
+HIST-INTEGRATION01 Boesten continuation is locally qualified in
+`integration/mc-sol01/boesten/STATUS.json`, pending separate canonical receipt.
+SWREDU2/COFREDBO uses the existing Boesten SPEV/SAEV physical owner, accepted
+root/water trace and pond-solute transaction. O0/O2 complete481days with the
+original Andelst coefficient0.79, exact day365 restart and V3 pair persistence;
+36 current controls and40 frozen predecessor controls pass, including the17
+original rain controls. Fresh current NUT preservation has78 HIST processes,
+74 selective compilations/580 reused, four coupled runs/eight process restarts.
+The admitted PR1399 NUT sources are unchanged. Original process
+and water-only assertions are preserved. Four-times-rain day7 failure leaves
+the complete day6 water/solute/Boesten generation exact. Full original input
+now rejects SWDRA; drainage/macro/Cauchy3/heat composition remains open. No
+full original-model, full SOL/NUT, accuracy or mastercoverage promotion.
+
 ## Post-Status-A bounded MC-NUT01 nondepleting competition, 2026-10-23
 
 PR #1399, actual merge `b17be3044128cca5fe79c6c44b2e2419bca7f57f`, admits an

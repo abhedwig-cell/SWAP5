@@ -9,7 +9,7 @@ module mod_fmr_b111_matrix_joint_application
        kernel_result_t,kernel_diagnostics_t
   use mod_fmr_serialized_reference_backend,only:fmr_serialized_reference_backend_t, &
        fmr_b110_physical_parameters_t,fmr_b110_physical_forcing_t,fmr_serialized_physical_observation_t, &
-       fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t
+       fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t,fmr_b110_boesten_evaporation_state_t
   use mod_fmr_committed_restart,only:fmr_committed_restart_bundle_t,fmr_export_committed_restart, &
        fmr_restore_committed_restart,FMR_RESTART_OK
   use mod_fmr_b111_matrix_solute_route,only:matrix_solute_state_t,matrix_solute_restart_t, &
@@ -58,6 +58,13 @@ contains
     select type(p=>physical)
     type is(fmr_b110_physical_state_t)
       ok=bounded_physical(p,theta)
+    type is(fmr_b110_boesten_evaporation_state_t)
+      ok=bounded_physical(p,theta)
+      if(.not.all(ieee_is_finite([p%boesten_evaporation%spev,p%boesten_evaporation%saev])))then
+        ok=.false.
+      else
+        ok=ok.and.min(p%boesten_evaporation%spev,p%boesten_evaporation%saev)>=0d0
+      end if
     type is(fmr_b110_temporal_indicator_state_t)
       ok=bounded_physical(p,theta)
     end select

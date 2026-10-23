@@ -6,7 +6,9 @@ module mod_matrix_joint_restart_file
   use mod_kernel_transactions,only:kernel_committed_state_t
   use mod_fmr_runtime_core,only:fmr_logical_column_t,fmr_template_t
   use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_state_t,fmr_b110_temporal_indicator_state_t, &
-       fmr_new_b110_temporal_indicator_committed_state
+       fmr_new_b110_temporal_indicator_committed_state,fmr_b110_boesten_evaporation_state_t, &
+       fmr_new_b110_boesten_evaporation_committed_state
+  use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t
   use mod_fmr_committed_restart,only:fmr_committed_restart_bundle_t,fmr_export_committed_restart, &
        fmr_restore_committed_restart,FMR_RESTART_OK
   use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
@@ -19,6 +21,7 @@ module mod_matrix_joint_restart_file
   private
   character(8),parameter::MAGIC='S5MJ0001'
   character(8),parameter::SURFACE_MAGIC='S5MJ0002'
+  character(8),parameter::BOESTEN_MAGIC='S5MJ0003'
   integer,parameter::MAX_BYTES=10485760
   public::write_matrix_joint_restart_file,read_matrix_joint_restart_file
 contains
@@ -35,6 +38,7 @@ contains
     type(b111_reactive_solute_substep_forcing_t)::p
     type(mobile_salt_state_t)::m
     type(solute_compartment_state_t)::s
+    type(boesten_evaporation_state_t)::pair
     real(real64),allocatable::theta(:),v(:),derivative(:)
     real(real64)::time
     integer(int64)::id,revision
@@ -70,6 +74,9 @@ contains
         if(allocated(derivative))deallocate(derivative)
         allocate(derivative(0))
       end if
+    type is(fmr_b110_boesten_evaporation_state_t)
+      if(.not.surface_enabled)return
+      mode=2;tag=BOESTEN_MAGIC;pair=q%boesten_evaporation;allocate(derivative(0))
     end select
     if(mode<0)return
     open(newunit=u,file=path,access='stream',form='unformatted',status='replace',iostat=io)
@@ -85,6 +92,8 @@ contains
         class is(fmr_b110_physical_state_t)
           write(u,iostat=io)q%pressure_head,q%water_content,q%ponding_depth,q%groundwater_level
         end select
+        if(io/=0)exit writing
+        if(mode==2)write(u,iostat=io)pair%spev,pair%saev
         if(io/=0)exit writing
         if(has_history)write(u,iostat=io)derivative
         if(io/=0)exit writing
@@ -113,6 +122,7 @@ contains
     type(fmr_committed_restart_bundle_t)::b
     type(kernel_committed_state_t)::temporary,water_trial(1)
     type(fmr_b110_physical_state_t)::physical
+    type(boesten_evaporation_state_t)::pair
     type(matrix_solute_state_t)::chemical_trial
     real(real64),allocatable::theta(:),concentration(:),dissolved(:),sorbed(:),derivative(:),v(:),expected(:)
     real(real64)::time,surface_mass
@@ -146,14 +156,23 @@ contains
              mode,n,has_history
         if(io/=0)exit decoding
         io=1
-        if(tag/=MAGIC.and.tag/=SURFACE_MAGIC)exit decoding
-        if(tag==SURFACE_MAGIC.and..not.surface_enabled)exit decoding
-        if(n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
+        if(tag/=MAGIC.and.tag/=SURFACE_MAGIC.and.tag/=BOESTEN_MAGIC)exit decoding
+        if((tag==SURFACE_MAGIC.or.tag==BOESTEN_MAGIC).and..not.surface_enabled)exit decoding
+        if((tag==BOESTEN_MAGIC).neqv.(mode==2))exit decoding
+        if(n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1.and.mode/=2))exit decoding
         if(mode==0.and.has_history)exit decoding
+        if(mode==2.and.has_history)exit decoding
         physical%active_nodes=n
         allocate(physical%pressure_head(n),physical%water_content(n),theta(n),concentration(n),dissolved(n),sorbed(n))
         read(u,iostat=io)physical%pressure_head,physical%water_content,physical%ponding_depth,physical%groundwater_level
         if(io/=0)exit decoding
+        if(mode==2)then
+          read(u,iostat=io)pair%spev,pair%saev
+          if(io/=0)exit decoding
+          io=1
+          if(.not.all(ieee_is_finite([pair%spev,pair%saev])))exit decoding
+          if(min(pair%spev,pair%saev)<0d0)exit decoding
+        end if
         if(has_history)then
           allocate(derivative(n));read(u,iostat=io)derivative
           if(io/=0)exit decoding
@@ -170,6 +189,12 @@ contains
           if(.not.ok)exit decoding
           call temporary%snapshot(r%physical_state,ok)
           if(.not.ok)exit decoding
+        else if(mode==2)then
+          call fmr_new_b110_boesten_evaporation_committed_state(temporary,1_int64,physical,pair,0d0,ok)
+          io=1
+          if(.not.ok)exit decoding
+          call temporary%snapshot(r%physical_state,ok)
+          if(.not.ok)exit decoding
         else
           allocate(r%physical_state,source=physical)
         end if
@@ -180,7 +205,7 @@ contains
         allocate(v(count));read(u,iostat=io)v,theta,concentration,dissolved,sorbed
         if(io/=0)exit decoding
         surface_mass=0.0_real64
-        if(tag==SURFACE_MAGIC)then
+        if(tag==SURFACE_MAGIC.or.tag==BOESTEN_MAGIC)then
           read(u,iostat=io)surface_mass
           if(io/=0)exit decoding
           io=1

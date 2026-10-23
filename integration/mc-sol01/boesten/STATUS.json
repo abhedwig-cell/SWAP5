@@ -1,0 +1,181 @@
+{
+  "workstream": "MC-SOL01",
+  "work_unit": "HIST-INTEGRATION01 native Boesten/root/pond-solute",
+  "baseline": "4beca65677d3f66b7caebc5246351e7302863f6b",
+  "reconciled_canonical": "4beca65677d3f66b7caebc5246351e7302863f6b",
+  "scientific_delta": {
+    "app/solute_crop/read_swp_project.f90": "M",
+    "app/solute_project/main.f90": "M",
+    "integration/audits/reconcile_boesten_nut.py": "A",
+    "integration/audits/verify_native_boesten.py": "A",
+    "integration/audits/verify_nut_nondepleting.py": "M",
+    "src/adapter/mod_matrix_joint_restart_file.f90": "M",
+    "src/runtime/mod_fmr_b111_matrix_joint_application.f90": "M",
+    "src/runtime/mod_fmr_b111_pond_joint_application.f90": "M",
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh": "M",
+    "tests/nut-sol/preserve_boesten_water.py": "A",
+    "tests/nut-sol/qualify_boesten_joint.py": "A",
+    "tests/nut-sol/qualify_native_boesten.py": "A",
+    "tests/nut-sol/refresh_boesten_physical.py": "A",
+    "tools/solute/run_project.py": "M"
+  },
+  "postimages": {
+    "app/solute_crop/read_swp_project.f90": "b8ce63d082a04294d79af42bc67c15d653bc2b36f9d4c733656450f640e49c4e",
+    "app/solute_project/main.f90": "dc0b0d33eb67b18916b3b609ff3545c5cdde810d376f1cbba4f8439f55abda01",
+    "integration/audits/reconcile_boesten_nut.py": "5a6c8f2758877f5dd30f8e8aea349586332e8da00b2b98f93ce97ab9e7b183a8",
+    "integration/audits/verify_native_boesten.py": "1094aed6f638795fa5b0cd2637c94c7287a003796c39b882e89e263d8d1f3c31",
+    "integration/audits/verify_nut_nondepleting.py": "3147deb5ca2ce17103094290888d7d8d98f31ad287079f0e0343e273fe593f8a",
+    "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
+    "src/runtime/mod_fmr_b111_matrix_joint_application.f90": "a42209c08c14a2a9fa587f8cdfa735e9e68fc5e273705bf95a54b9e9916dd653",
+    "src/runtime/mod_fmr_b111_pond_joint_application.f90": "2e2518c4f00ae13ab28424bfe086b3076042b248758fe3359e39a015d2310148",
+    "src/runtime/mod_fmr_process_hydraulic_view_binding.f90": "82d83551659fc63c8a3fdf6bd25fac07d6d76021f475ef3e4176c1061739a2e1",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "3e48b40c3b7e4f03365033e8c87945104435ce4c451d6251138b956e7f0ef9c2",
+    "tests/fapp/run_ppa_wu04b_boesten_evaporation.sh": "f784b2e971ee809d50991ba6f19d8a86cd3ddf422b117fcbf28c64959d3d008f",
+    "tests/nut-sol/preserve_boesten_water.py": "dde4ae7b223880c49cd5455ea6a13c8f109c2da25c0cfc6409784666947a13fa",
+    "tests/nut-sol/qualify_boesten_joint.py": "b3b1a22c5e792cd72acb93593d3642a653a5e6d68ef98a7a35557da5245ff604",
+    "tests/nut-sol/qualify_native_boesten.py": "92462c4458b3b125e7c227e0ce2ea7542c25c6439bdeff4f47b2fb8b8ca7f1a3",
+    "tests/nut-sol/refresh_boesten_physical.py": "fb6aee1e311f43471d75875d2bc94d8b2e7a07020947782f581508a2d4f584f9",
+    "tools/solute/run_project.py": "462d3e814bf731adf7a6c00dffbc9e1d226c3616f87ba9108b8597cae58ff867",
+    "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+    "tests/fapp/test_ppa_wu04b_boesten_process.f90": "cc86b8bda87ffad4adf39efb5aa2abfd981c3a0929c4b92a560445f6a5ddd6bd",
+    "tests/fapp/test_ppa_wu04b_boesten_runtime.f90": "d1cc5b6346cc2780907977debdc63b47ee82246fa3cd8d7aa4c36e643a1a2618",
+    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+    "src/crop/mod_crop_soil_n_day.f90": "051cb408658b5acda61cc5b41259dc621a17ce67aa1ea38f76b4205f327054bb",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "aae7a8e4de8455c118fb37802f2e0c943a891bec84e36920aa70172aceabb322",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "2baeadc13d06b5a7bd7f27acb35f5edcfd5e23b903a773a23f8b7623c386f50a",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "2714f07be491dbd146691b5d7c7859ea194f6fe6780057a75d2ab3c0dad0855a",
+    "integration/mc-nut01/nondepleting_top/STATUS.json": "d0051b57da2fbf29c87f4514dca31466ee367456f88bde4d8050eaa4b6a39aab",
+    "integration/mc-nut01/nondepleting_top/ADMISSION.json": "4e85c9001d8f713ab4483fefc0f581a9e327ef330ec1d94d7e1224e40ebdd4e6"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/boesten/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "e54d9d1e494a052a07546620b612d380a3853e5d96bb1f24f297e7f254dcec57",
+    "bytes": 1656600,
+    "members": 3292
+  },
+  "status": "QUALIFIED_WITH_CURRENT_NUT_PENDING_CANONICAL_ADMISSION",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "qualification": {
+    "owner": "integration/audits/verify_native_boesten.py",
+    "current_source_raw_controls": 36,
+    "frozen_predecessor_controls": 40,
+    "original_rain_controls_included_in_predecessor": 17,
+    "fresh_current_NUT_HIST_processes": 78,
+    "fresh_current_NUT_compiles": 74,
+    "unchanged_closure_compiles_reused": 580,
+    "fresh_current_NUT_coupled_runs": 4,
+    "fresh_current_NUT_process_restarts": 8
+  },
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "test_selection": {
+    "O0_O2": true,
+    "actual_481_day_restart": true,
+    "original_Boesten_process_water": true,
+    "atomic_root_chemical_rejection": true,
+    "within_day_Boesten_failure": true,
+    "malformed_V3_CRC_pair_layout": true,
+    "expected_cold_build_seconds": 180,
+    "expected_native_seconds": 1800,
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "preservation": "Original water gate executed before final root-domain restriction. That restriction preserves its root-OFF path. Fresh native/day8 and new481day/365restart use final compiled source. The prior daily/detail481/wet97proposal executions are retained under subsequent Boesten-only root-domain and COFREDBO keyword refinements; their SWREDU0 paths are unchanged, and final daily8 preservation is fresh.",
+  "physical_comparison": {
+    "rain_supplied_cm": {
+      "SWREDU0": 139.6508,
+      "SWREDU2": 139.6508,
+      "difference": 0.0
+    },
+    "infiltration_cm": {
+      "SWREDU0": 64.60533404832123,
+      "SWREDU2": 59.134399741489695,
+      "difference": -5.470934306831531
+    },
+    "runoff_cm": {
+      "SWREDU0": 64.54930553514428,
+      "SWREDU2": 69.13762485301866,
+      "difference": 4.5883193178743795
+    },
+    "soil_evaporation_cm": {
+      "SWREDU0": 23.480656167093727,
+      "SWREDU2": 17.84601964024327,
+      "difference": -5.634636526850457
+    },
+    "pond_evaporation_cm": {
+      "SWREDU0": 7.159545252732556,
+      "SWREDU2": 8.220014482741773,
+      "difference": 1.0604692300092164
+    },
+    "actual_transpiration_cm": {
+      "SWREDU0": 18.23135125469243,
+      "SWREDU2": 18.21729207598058,
+      "difference": -0.014059178711850251
+    },
+    "bottom_up_cm": {
+      "SWREDU0": -4.816962122667114,
+      "SWREDU2": -4.816869280345783,
+      "difference": 9.28423213313323e-05
+    },
+    "interpretation": "Same constructed soil/crops/CFBS and original rainfall; Boesten COFREDBO=.79 activates physical reduction. Differences are process effects, not a historical original-model parity claim."
+  },
+  "cpu": {
+    "status": "ACTUAL_CPU_OBSERVATIONS_NOT_A_SPEED_COMPARISON",
+    "runs": {
+      "normal": {
+        "command": [
+          "/workspace/scratch/40264571eb43/boesten-historical-O2/column/swap5_solute_project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "returncode": 0,
+        "wall_seconds": 42.53105140200205,
+        "user_cpu_seconds": 42.514531,
+        "system_cpu_seconds": 0.013994,
+        "complete_days": 481,
+        "temporal_tolerance": 0.001
+      },
+      "wet": {
+        "command": [
+          "/workspace/scratch/40264571eb43/boesten-historical-O2/column/swap5_solute_project",
+          "input.nml",
+          "-",
+          "97",
+          "input.swp"
+        ],
+        "returncode": 1,
+        "wall_seconds": 30.898337357000855,
+        "user_cpu_seconds": 30.879925000000007,
+        "system_cpu_seconds": 0.004313000000000001,
+        "complete_days": 6,
+        "temporal_tolerance": 0.001
+      }
+    }
+  },
+  "remaining_blockers": [
+    "Full original input now explicitly rejects SWDRA",
+    "Original macropore and Cauchy3 composition",
+    "Original numerical heat/frost composition",
+    "4x wet run rejects day7 after14 accepted intervals; complete day6 including SPEV/SAEV preserved"
+  ],
+  "NUT_reconciliation": {
+    "predecessor_controls": 40,
+    "included_original_rain_controls": 17,
+    "fresh_HIST_processes": 78,
+    "fresh_HIST_compiles": 74,
+    "unchanged_closure_compiles_reused": 580,
+    "fresh_coupled_runs": 4,
+    "separate_process_restarts": 8,
+    "production_sources_unchanged_from_PR1399": true,
+    "original_assertion_bodies_unchanged": true
+  }
+}
