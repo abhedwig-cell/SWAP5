@@ -2,7 +2,7 @@
   "work_unit": "PERF01_NATIVE_ORIGINAL431_WEATHER_APPLICATION",
   "baseline": "2d38fb2d880611d07c27d76d7f8948be3f750e18",
   "source_tree": "ef90d0d745d85ba4090d22f238ee67dd8606e535",
-  "status": "LOCALLY_QUALIFIED_AWAITING_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED",
   "last_reconciled_head": "188f75ef04cd64a5a78ace0aa4b8977e7a130537",
   "production_source_tree": "f4191d388647d401fb2574b68b530624fe9848c0",
   "implemented": true,
@@ -10,7 +10,7 @@
   "tested": true,
   "qualified": true,
   "recovery_point": "590d3353 production repair followed by 8567bbc4 canonical reconciliation",
-  "next_action": "Final persisted source/control/documentation replay, exact-tree publication and actual canonical admission receipt",
+  "next_action": "Qualify retained step proposals for native crop/soil evaporation through real accepted-state, balance, runoff and restart contracts before enabling.",
   "authority_paths": [
     "docs/science/PERF01_SATURATED_FLUX_RESTART.md",
     "integration/performance/authority.py",
@@ -56,7 +56,7 @@
   "complete_application_caveat": "Constructed simple-crop/ETref/zero-tracer route, not WOFOST/Andelst model; explicit existing historical_zero exfiltration; different controllers/check policies, no equivalent-accuracy ratio claim",
   "default_changed": false,
   "complete_application_ratio": "OBSERVATION_ONLY_CURRENT_ABOUT52_TO55_TIMES_ORIGINAL_IN_THIS_CONFIGURATION",
-  "research_integrated": false,
+  "research_integrated": true,
   "source_successor": {
     "baseline": "188f75ef04cd64a5a78ace0aa4b8977e7a130537",
     "source_tree": "f4191d388647d401fb2574b68b530624fe9848c0",
@@ -604,5 +604,72 @@
   ],
   "blockers": [],
   "executed_production_source_tree": "1d68103734735d8f098e2b50a192e3f81bbce444",
-  "concurrent_predecessor_controls_at_exact_188f": 163
+  "concurrent_predecessor_controls_at_exact_188f": 163,
+  "canonical_admission": {
+    "pr": 1389,
+    "merge": "7ae093c5b32b4abfd10a6a37c8113ecffa2cdbb6",
+    "qualified_complete_tree": "8485b7b391f9256973f66eabd3f629da83f2603d",
+    "actual_complete_tree": "8485b7b391f9256973f66eabd3f629da83f2603d",
+    "whole_tree_exact": true,
+    "actual_owner": {
+      "qualified": true,
+      "status": "BOUNDED_SATURATED_FLUX_RESTART_O0_O2_AND_COMMON_ORIGINAL_INPUT_APPLICATIONS_PASS",
+      "full_application_processes": 16,
+      "days": 97,
+      "midpoint_restart_cases": 2,
+      "typed_control_processes": 12,
+      "fsi35_native": "ORIGINAL_NATIVE_ORACLES_O0_O2_PASS",
+      "predecessor_controls": 147,
+      "concurrent_predecessor_controls": 163,
+      "predecessor_scope": "Actually rerun at exact710b baseline, not relabelled as new-current native execution",
+      "inheritance": "Insertion-only failed-solve refinement; successful original path and excluded provider remain exact; new path independently exercised",
+      "measured_current_O2_seconds": {
+        "1": 1.2372683039975527,
+        "4": 1.087754471001972
+      },
+      "equivalent_accuracy_performance": false,
+      "full_mc_sol01_closed": false,
+      "full_mc_nut01_closed": false,
+      "source_tree": "f4191d388647d401fb2574b68b530624fe9848c0",
+      "current_source_tree": "f4191d388647d401fb2574b68b530624fe9848c0",
+      "qualification_scope": "EXACT_FAILED_SOLVE_REFINEMENT_WITH_UNCHANGED_SUCCESS_PATH_INHERITANCE",
+      "canonically_admitted": false
+    },
+    "actual_negative_controls": [
+      "source src/legacy/b1_10_port/headcalc.f90",
+      "source integration/audits/native_project_admission.py",
+      "source integration/audits/verify_nut_saved_calendar_output.py",
+      "source integration/audits/verify_nut_historical_output_caller.py",
+      "source integration/performance/verify_saturated_flux_successor.py",
+      "source src/crop/mod_crop_soil_n_day.f90",
+      "foreign scientific source",
+      "missing predecessor/owner.stdout",
+      "missing predecessor/controls.stdout",
+      "missing predecessor-composed/owner.stdout",
+      "missing predecessor-composed/controls.stdout",
+      "missing raw/perf01-native-fixed-study/RESULT.json",
+      "missing raw/perf01-native-fixed-O0-study/RESULT.json",
+      "missing raw/perf01-native-fixed-contract-v2/RESULT.json",
+      "missing raw/perf01-native-fixed-direct/RESULT.json",
+      "missing raw/perf01-native-fixed-original-full-fsi35-v2.stdout",
+      "changed raw/perf01-native-fixed-resume4/restart.bin",
+      "changed raw/perf01-native-fixed-resume1/budget.csv"
+    ],
+    "hosted_qualification": "NOT_SELECTED_LOCAL_QUALIFICATION_SUFFICIENT",
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "owner_note": "The source/native verifier hardcodes a local-only admission flag; actual admission is established by PR and exact actual merge tree, not by changing that historical verifier."
+  },
+  "cost_profile": {
+    "status": "COMPLETE_RESEARCH_OBSERVATIONS_BYTE_EXACT_OUTPUTS",
+    "result": "benchmarks/performance/PERF01_NATIVE_COST_20261023_RESULT.json",
+    "evidence": {
+      "path": "benchmarks/performance/PERF01_NATIVE_COST_20261023_EVIDENCE.tar.xz",
+      "sha256": "649a4d529cabd52e4f2b0b85c76c77898f9ad36af1ddb59336636b69f48687fb",
+      "bytes": 122024,
+      "members": 271
+    },
+    "production_changed": false,
+    "next_target": "Qualify retained step proposals for native crop/soil evaporation through real accepted-state, balance, runoff and restart contracts before enabling."
+  }
 }
