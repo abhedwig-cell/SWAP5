@@ -756,6 +756,21 @@ activation, changing-water/nonlinear/source/age/crop/restart/native qualificatio
 or full SOL/NUT closure is inferred. Actual accepted-water coupling remains a
 separate required scientific step.
 
+### Changing-storage correction research,23October2026
+
+`integration/mc-sol01/fct_water_sorption/STATUS.json` qualifies a separate
+research successor with prescribed water-balanced single steps and actual
+Freundlich storage/inversion. Checked O0/O2:192steps,2880atomic rejections and
+384OFF delegations pass; exact constant/zero solutions and independent algebraic
+low/corrected mass oracles pass. Maximum mass residual1.46e-15mg/cm2. Incoming
+mass bounds use the new water content and nonlinear storage; only internal face
+transfers change. The first independent-oracle convergence failure is retained.
+Production sources, defaults, native dispatch and the frozen prototype remain
+unchanged. Prescribed water balance is not replay of an actual accepted water
+trace. Nonlinear transient accuracy, native/restart benefit, active additional
+processes and full MC-SOL01 closure remain unqualified. No earlier pulse-accuracy
+measurement is promoted to this changing-water scope.
+
 PR1396 admits the detailed-rain/CFBS scope above at actual merge
 `ba6b12ec5cff7844bce474e20ef136984a22d5ac`, complete tree
 `93423c229671a4e0a38e3548e1e0fe922ccf2f73`. Actual-merge entrypoint controls
