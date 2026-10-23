@@ -1,0 +1,120 @@
+{
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "qualified_head": "5dd60f638fc98f85cf548caaf352c59c7f87164c",
+  "control_count": 198,
+  "predecessor_controls": 179,
+  "new_controls": 19,
+  "checks": {
+    "owner": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_empty_pool.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.80139371399855,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "controls": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_empty_pool.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "seconds": 16.277105434994155,
+      "stdout_sha256": "7db669996a8e139e0ac6fbb0437e2ea76c7e9036cd700407149c3653444f16f7"
+    },
+    "general": {
+      "command": [
+        "python",
+        "-B",
+        "integration/performance/authority.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.778506040995126,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "history": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_historical_output_caller.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.767066066997359,
+      "stdout_sha256": "43fc0c4c80543c94bc0bcb04669747ad2c0364f805c7e43dcbd5ad7b1f0f0bbd"
+    },
+    "fsi35": {
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,runpy;print(json.dumps(runpy.run_path('integration/performance/authority.py')['fsi35_successors'](),indent=2))"
+      ],
+      "returncode": 0,
+      "seconds": 0.2388783999995212,
+      "stdout_sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    },
+    "docs": {
+      "command": [
+        "python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.25004337299469626,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
+    },
+    "mkdocs": {
+      "command": [
+        "python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "../nut-empty-docsite"
+      ],
+      "returncode": 0,
+      "seconds": 15.661429382998904,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "measured_seconds": {
+    "direct": {
+      "compile": 0.8811491329906858,
+      "link": 0.120896542990522,
+      "common_current": 0.03132571100286441,
+      "default_current": 0.013211724006396253,
+      "zero_current": 0.0067426300010993145,
+      "invalid": 0.0022007599982316606,
+      "common_previous": 0.015935944000375457,
+      "default_previous": 0.023997941993002314,
+      "zero_previous": 0.009383251999679487,
+      "original_compile_link": 0.3041626309932326,
+      "original_native": 0.008700831996975467
+    },
+    "hist": {
+      "compile": 60.66648834300577,
+      "link": 0.6318089809938101,
+      "trace_native": 0.0033577190042706206,
+      "native": 13.856751091007027,
+      "restart_native": 33.81855038597132,
+      "compiler": 0.0018402490022708662
+    },
+    "joint": {
+      "compile": 22.103203208003833,
+      "link": 0.3647195500016096,
+      "previous_compile": 0.18795580900041386,
+      "previous_link": 0.34183524700347334,
+      "previous_native": 0.3886140620088554,
+      "native": 11.55383672901371,
+      "restart_native": 14.608631952003634
+    }
+  },
+  "full_mc_nut01_closed": false,
+  "original_reference": "Unmodified original WaterN confirms zero homogeneous branches; independent DOP853 verifies all96 complete daily selections. No claim that the old daily selector accepts these inputs.",
+  "failed_rounds": "Superseded72-case direct, invalid-fixture indexing failure and wrong zero-load coupled negative retained in sealed evidence; final96-case direct and26-run composition pass."
+}
