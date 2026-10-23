@@ -1,0 +1,35 @@
+{
+  "work_unit": "PERF01_RETRY_ROOT_STRESS_RESEARCH",
+  "baseline": "ead21ff0a325f4d5a96be889c1fec083e7c8ba4d",
+  "status": "COMPLETE_ACTIVE_ROOT_STRESS_INPUT_RESEARCH_VERIFIED",
+  "result": "benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_RESULT.md",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_EVIDENCE.tar.xz",
+    "sha256": "aa46499d7df808b6f70204676a47404567b944a5c1965424193b325f40b8aa60",
+    "bytes": 663448,
+    "members": 217
+  },
+  "native_observations": 24,
+  "rejection_controls": 6,
+  "source_tree_context": "bda16ceab3a21eb7cd2a4c340348aea2d5a41929",
+  "all_256_measured_provider_hashes_and_ordered_closure_exact": true,
+  "prior_original_profile_archive_replay": "PASS",
+  "actual_native_wall_seconds": 59.52326550599946,
+  "stress_days_at_1e3": {"1x": 38, "4x": 5},
+  "on_1e2_over_on_1e3_cpu": {"1x": 0.5867417778042204, "4x": 0.47830877123742477},
+  "question": "Does the existing1e-2 head budget preserve useful water and crop outcomes with head-sensitive root uptake, while reducing work versus1e-3 after the admitted retry repair?",
+  "scope": "Existing sensitive weather fixture hlim3l=-100,hlim3h=-150,hlim4=-500cm; original1x/4x forcing, retry ON, warm OFF; no new production interface or physics",
+  "test_selection": {
+    "expected_seconds": 120,
+    "builds": "Reuse measured O0/O2 executables only after full256-provider closure/source/observer/executable identity; no compile selected for new valid root inputs",
+    "native": "18 serial O2 observations,4 checked endpoint observations,2 day48 close/reconstructions",
+    "discriminator": "Require actual root stress on1x, report activity independently on4x; compare actual transpiration, biomass,LAI,storage,runoff and bottom exchange",
+    "preservation": "Replay complete prior original-profile archive with unchanged original assertions; source owner;5 negative evidence controls",
+    "not_selected": ["new1e-6", "highest low-air", "RossFast expansion", "unchanged-physics broad F-CI"]
+  },
+  "production_changed": false,
+  "default_changed": false,
+  "research_integrated": false,
+  "canonically_admitted_policy": false,
+  "next_action": "Integrate the bounded active-stress evidence and actual merge receipt; no universal default or new physical envelope is selected."
+}

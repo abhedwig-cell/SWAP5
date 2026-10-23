@@ -416,6 +416,15 @@ production/default, physical acceptance or master capability change. Recovery
 and sealed raw evidence are owned by `PERF01_RETRY_TOLERANCE_20261023_STATUS.json`
 under `benchmarks/performance`.
 
+The subsequent active-root-stress discriminator is recorded in
+`benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_RESULT.md` and its
+versioned status/capsule. Existing sensitive inputs activate38/5 stress days
+under1x/4x. All24 native observations, exact O0/O2 and day48 reconstruction,
+original-profile replay and six evidence controls pass. The1e-2 versus1e-3
+median CPU falls41.3%/52.2%; total transpiration shifts0.000494/0.000175mm.
+This adds bounded accuracy evidence with actual crop response, without changing
+production physics, defaults, general surface policy or master dispositions.
+
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
 The [bounded water contract](../science/MC_SOL01_SWP_WATER_CONTRACT.md), original
