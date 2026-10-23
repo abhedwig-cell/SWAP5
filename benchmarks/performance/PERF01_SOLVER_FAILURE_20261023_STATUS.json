@@ -14,6 +14,22 @@
   "affected_invariants": [2,5,7,13,23,24,26],
   "research_question": "Which nonlinear phases and failed line searches cause incumbent proposal/fallback work? Does ending an exhausted nonimproving line search through existing restart/retry reduce complete97day cost?",
   "candidate": "Generated executable only, frozen conductivity, prescribed bottom flux, existing native zero tracer proposal domain. Earlier rejection never changes acceptance criteria or physical origin; original saturated restart and day fallback retained.",
+  "interim_findings": "Generated early rejection fails1x day18 and4x day7 at O0/O2. Passive observer exact. Failed nonlinear phases consume only about4-5% of HeadCalc time; many successful phases recover after a failed line search. Complete independent temporal component observer to locate converged-but-rejected work.",
+  "additional_selection": {"expected_seconds": 40, "scope": "Passive O0/O2 full97day head/pond/gwl and cellwise water-content L1 differences; identical physical bytes; no new acceptance norm"},
+  "water_metric_research": {
+    "authority": "User prioritises water balance/runoff and permits small head trajectory differences. Research only, distinct changed accuracy comparison.",
+    "metric_cm": "max(sum(abs(theta_full-theta_half)*dz)+abs(pond_full-pond_half),abs(gwl_full-gwl_half))",
+    "budget_cm": 0.001,
+    "criteria": "Existing declared native proposal water/runoff/storage/total evaporation/transpiration limits, exact O0/O2 and actual day48 restart; report failures rather than adjust limits",
+    "scope": "Generated geometry-bound four-cell zero-tracer fixture only. All finite/domain and hard solver/mass gates remain. No production interface or default activation.",
+    "expected_seconds": 40
+  },
+  "active_root_discriminator": {
+    "scope": "Daily full physical states for base and synthetic active empirical drought/oxygen stress. New root profile h3l=-25,h3h=-50,h4=-400,h2=-10, oxygen enabled and substep root stress enabled. No long low-air test.",
+    "expected_seconds": 90,
+    "criteria": "Gross daily water<1e-9mm; daily runoff/storage/transpiration/total evaporation differences<.01mm; season runoff/transpiration differences<.05mm; actual O0/O2 and day48 restart exact. Criteria declared before execution; daily heads/theta observations retained regardless of PASS.",
+    "reason": "Large base speedup passes water criteria but base transpiration is demand limited; test actual root response before considering wider policy claims"
+  },
   "test_selection": {
     "expected_seconds": 90,
     "selected": "O0/O2 current ordinary, passive nonlinear phase observer and early-exit research; full97day1x4x,3 O2 timing pairs, day48 restart, independent original-forcing water/runoff and head/evaporation observations",
