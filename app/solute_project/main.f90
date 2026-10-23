@@ -38,6 +38,10 @@ program swap5_native_project_column
   integer :: nodes=4
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
+  logical :: seasonal_bottom=.false.
+  integer :: bottom_year_count=0
+  real(real64) :: bottom_amplitude=0d0,bottom_daymax=0d0,bottom_legacy_origin=0d0,bottom_year_starts(10)=0d0
+  real(real64) :: bottom_amount
   integer :: solute_transport_scheme=0
   logical :: picard_conductivity_iteration=.false.
   logical :: continuous_mvg=.false.
@@ -116,7 +120,8 @@ program swap5_native_project_column
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
-    picard_conductivity_iteration,continuous_mvg
+    picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
+    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -301,6 +306,13 @@ program swap5_native_project_column
   call provider%evaluate(initial%pressure_head,initial%water_content,conductivity,capacity,dkdh)
   initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0
   forcing%top_flux=0d0;forcing%top_head=initial_head;forcing%bottom_flux=bottom_up_cm_day
+  if(seasonal_bottom)then
+    call require(bottom_year_count>=2.and.bottom_year_count<=10,'seasonal bottom calendar capacity')
+    allocate(forcing%legacy_swbotb2_control)
+    call forcing%legacy_swbotb2_control%initialize_sine(0d0,bottom_legacy_origin, &
+      bottom_year_starts(:bottom_year_count),bottom_up_cm_day,bottom_amplitude,bottom_daymax,code)
+    call require(code==B110_SWBOTB2_OK,'seasonal bottom initialization')
+  end if
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
@@ -392,6 +404,7 @@ program swap5_native_project_column
   write(u,'(A)',advance='no')',potential_transpiration_cm,actual_transpiration_cm,drought_reduction_cm,oxygen_reduction_cm'
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
+  if(seasonal_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
   write(u,'(A)')''
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
@@ -450,11 +463,13 @@ program swap5_native_project_column
     call require(abs(result%water%mass%residual)<=1d-10.and.abs(result%chemical%residual)<=1d-10,'balance rejected')
     observation=backend%observation()
     call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
+    bottom_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
     surface_exfiltration_amount=0d0
     transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
+        bottom_amount=bottom_amount+s%bottom_flux*(s%t1-s%t0)
         transpiration_amount=transpiration_amount+sum(s%root_sink)*(s%t1-s%t0)
         if(substep_root_stress)then
           call require(s%substep_root_available,'accepted substep root diagnostics unavailable')
@@ -491,6 +506,7 @@ program swap5_native_project_column
       ',',drought_amount,',',oxygen_amount
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
+    if(seasonal_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
     write(u,'(A)')''
     clock=t1
   end do

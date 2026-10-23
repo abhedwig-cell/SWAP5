@@ -32,6 +32,7 @@ def projection(path):
   text=text[:offset]+hook+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['source'](reader,changed)
  r=record(reader);require(r['baseline']==BASE,'saturated flux baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -118,6 +119,7 @@ def validate(f,reader=lambda p:(ROOT/p).read_bytes()):
   measured_current_O2_seconds={rain:current['cases'][rain]['timing']['current']['wall_seconds']for rain in ['1','4']},
   equivalent_accuracy_performance=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False)
 def verify():
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['verify']()
  source();result=validate(capsule());return{**result,'source_tree':git('rev-parse','HEAD:src'),'current_source_tree':git('rev-parse','HEAD:src'),'qualification_scope':'EXACT_FAILED_SOLVE_REFINEMENT_WITH_UNCHANGED_SUCCESS_PATH_INHERITANCE','canonically_admitted':False}
 def nut_verify():
  result=verify();old=json.loads(capsule()['predecessor-composed/owner.stdout'])
@@ -127,6 +129,7 @@ def fsi35_successors():
  for p,row in rows.items():row['canonical_blob']=git('rev-parse','HEAD:'+p)
  return rows
 def self_test():
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

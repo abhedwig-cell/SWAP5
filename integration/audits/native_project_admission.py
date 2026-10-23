@@ -39,6 +39,7 @@ def projection(path=PARENT):
   text=text[:offset]+hook+text[offset:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['source'](reader,changed)
  if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['source'](reader,changed)
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
@@ -209,6 +210,7 @@ def fsi35_successors():
   if current!=expected:assert p in PRODUCTION;row['canonical_blob']=current
  return rows
 def verify():
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['verify']()
  if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['verify']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['verify']()
  source();r=validate(evidence());native=record().get('native_fsi35')
@@ -222,6 +224,7 @@ def verify():
  r['current_source_controls']=record().get('source_controls','PENDING_SEPARATE_CONTROLS')
  return r
 def self_test():
+ if 'historical_integration01_20261023' in json.loads((ROOT/'integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_seasonal_bottom.py'))['self_test']()
  if 'source_successor' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_431_WEATHER_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['self_test']()
  if 'postimages' in json.loads((ROOT/'integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json').read_text())['extended_output_component_20261021'].get('thermal_calendar_successor_20261023',{}):return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_thermal_calendar_output.py'))['self_test']()
  source();controls=[]

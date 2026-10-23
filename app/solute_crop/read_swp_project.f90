@@ -30,7 +30,7 @@ program read_swp_project
  call rdsinr('swbotb',1,9,mode);call require(mode==2,'only prescribed SWBOTB2 selected; SWBOTB1 is excluded')
  call rdsinr('sw2',1,2,mode);call require(mode==1,'constant prescribed bottom flux required')
  call rdsdor('sinave',-10d0,10d0,bottom);call rdsdor('sinamp',-10d0,10d0,amplitude)
- call rdsdor('sinmax',0d0,366d0,daymax);call require(amplitude==0d0,'seasonal bottom boundary not selected')
+ call rdsdor('sinmax',0d0,366d0,daymax);! Nonzero amplitude is bound to the existing Reference substep control.
  call rdsdor('pondmx',0d0,1000d0,pondmx);call rdsdor('rsro',.001d0,1d0,rsro)
  call rdsdor('rsroexp',.01d0,10d0,exponent);call require(exponent==1d0,'nonlinear runoff exponent not selected')
  call rdsdor('rds',1d0,5000d0,rds)
@@ -78,6 +78,15 @@ program read_swp_project
    write(u,'(A,I0,A)')'crop,',i,','//trim(crops(i))//'.crp'
   end do
   write(u,'(A,ES25.16E3)')'bottom,0,',bottom
+  if(amplitude/=0d0)then
+   write(u,'(A,ES25.16E3)')'bottom_amplitude,0,',amplitude
+   write(u,'(A,ES25.16E3)')'bottom_daymax,0,',daymax
+   write(u,'(A,ES25.16E3)')'legacy_origin,0,',tstart
+   do i=first_year,last_year+1
+    dates=0;dates(1:3)=[i,1,1];call dtardp(dates,0.,fraction)
+    write(u,'(A,I0,A,ES25.16E3)')'year_start,',i-first_year+1,',',fraction
+   end do
+  end if
   write(u,'(A,ES25.16E3)')'pondmax,0,',pondmx
   write(u,'(A,ES25.16E3)')'rsro,0,',rsro
   close(u)

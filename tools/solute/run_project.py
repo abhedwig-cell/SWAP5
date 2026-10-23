@@ -89,6 +89,13 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   ' rain_cm_day='+','.join(r['rain_cm_day']for r in prepared[0]['rain']),
   ' soil_evaporation_cm_day='+','.join(r['soil_evaporation_cm_day']for r in combined),
   ' evaporation_cm_day='+','.join(r['pond_evaporation_cm_day']for r in combined),'/']
+ seasonal={r['kind']:float(r['value'])for r in references if r['kind']in ['bottom_amplitude','bottom_daymax','legacy_origin']}
+ if seasonal:
+  years=[float(r['value'])for r in references if r['kind']=='year_start']
+  lines.insert(lines.index('&surface')-1,' seasonal_bottom=.true.,bottom_year_count='+str(len(years)))
+  lines.insert(lines.index('&surface')-1,' bottom_amplitude='+repr(seasonal['bottom_amplitude'])+',bottom_daymax='+repr(seasonal['bottom_daymax']))
+  lines.insert(lines.index('&surface')-1,' bottom_legacy_origin='+repr(seasonal['legacy_origin']))
+  lines.insert(lines.index('&surface')-1,' bottom_year_starts='+','.join(map(repr,years)))
  first_root=prepared[0]['root'].strip()
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
@@ -117,6 +124,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  lines+=['/']
  audit=dict(schema=1,route='NATIVE_SWP_SIMPLE_CROP_ROTATION_ETREF',original_sources={name:sha(raw)for name,raw in sources},
   normalized_weather_sha256=sha(weather),periods=len(prepared),days=len(combined),profile_index=indices,prepared_periods=prepared)
+ if seasonal:audit['seasonal_bottom']=dict(seasonal,year_starts=years)
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration
