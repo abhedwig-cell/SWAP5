@@ -1,0 +1,25 @@
+{
+  "work_unit": "PERF01_NATIVE_SOLVER_FAILURE",
+  "baseline": "3461a520fd2858782058cacb56f3cde606f2a188",
+  "status": "IMPLEMENTED_RESEARCH_NOT_YET_TESTED",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "production_changed": false,
+  "authority_paths": ["docs/science/PERF01_NATIVE_STEP_PROPOSAL.md", "integration/audits/verify_native_boesten.py"],
+  "dependency_surface": ["all current native194-provider inputs and artifacts", "current main", "original97day inputs", "HeadCalc", "current native source owner"],
+  "reconciliation": "PR1399 NUT and PR1400 Boesten alter native providers. Reuse only current guarded O0/O2 artifacts after checking all current inputs and object/module hashes. Original HeadCalc and transaction implementation remain exact.",
+  "affected_invariants": [2,5,7,13,23,24,26],
+  "research_question": "Which nonlinear phases and failed line searches cause incumbent proposal/fallback work? Does ending an exhausted nonimproving line search through existing restart/retry reduce complete97day cost?",
+  "candidate": "Generated executable only, frozen conductivity, prescribed bottom flux, existing native zero tracer proposal domain. Earlier rejection never changes acceptance criteria or physical origin; original saturated restart and day fallback retained.",
+  "test_selection": {
+    "expected_seconds": 90,
+    "selected": "O0/O2 current ordinary, passive nonlinear phase observer and early-exit research; full97day1x4x,3 O2 timing pairs, day48 restart, independent original-forcing water/runoff and head/evaporation observations",
+    "criteria": "Observer every physical byte exact ordinary. Probe daily gross water<1e-9mm, daily and season runoff<.01mm, daily storage<.01mm, daily total evaporation/transpiration<1e-8mm. O0/O2 and actual day48 restart exact.",
+    "not_selected": ["new1e-6", "RossFast expansion", "highest low-air", "unrelated full FCI"]
+  },
+  "next_action": "Persist generated research runner then execute current verified native closure and inspect actual nonlinear failure phases.",
+  "blockers": []
+}
