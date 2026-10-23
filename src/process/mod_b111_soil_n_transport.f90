@@ -24,6 +24,7 @@ contains
   type(b111_soil_n_transport_result_t),intent(out)::result
   real(real64)::h,h1,h2,positive,requested,a1,a2,b1,b2,lo,hi,mid,candidate,roundoff,tau
   integer::kind,i,code
+  logical::regular_limit
   result=b111_soil_n_transport_result_t();result%status=B111_NTRANS_INVALID
   if(.not.all(ieee_is_finite([dz,dt,wt,w0,qout,qbot,qtop,qlat,rate,production, &
        drybd,sorption,cbot,ctop,clat,c0])))return
@@ -36,9 +37,20 @@ contains
   h2=positive-requested
   roundoff=32d0*epsilon(1d0)*max(abs(h),qout/dz+rate*.5d0*(wt+w0))
   if(abs(h1)<=roundoff)h1=0d0
-  if(abs(h)<1d-8.and.abs(h)>0d0)return
-  if(abs(h1)<1d-8.and.abs(h1)>0d0)return
+  regular_limit=(abs(h)<1d-8.and.abs(h)>0d0).or.(abs(h1)<1d-8.and.abs(h1)>0d0)
+  ! Even above the old dimensional threshold, short/small-loss intervals can
+  ! lose the average through (1-b1)/h1. Treat that measured cancellation too.
+  if(max(abs(h),abs(h1))>0d0)then
+    regular_limit=regular_limit.or.max(abs(h),abs(h1))*dt/(w0+drybd*sorption)<=1d-5
+  end if
   if(abs(h)>0d0.and.abs(h1)>0d0)then
+    regular_limit=regular_limit.or.(abs(h-h1)<=1d-8.and.abs(h-h1)>roundoff)
+  end if
+  if(regular_limit)then
+    ! The original quotient formulas lose precision at these regular limits.
+    ! Class 6 is a bounded convergent power series of the same ODE.
+    kind=6
+  else if(abs(h)>0d0.and.abs(h1)>0d0)then
     if(abs(h-h1)>1d-8)then
       kind=1
     else if(abs(h-h1)<=roundoff)then
@@ -102,6 +114,9 @@ contains
   if(.not.all(ieee_is_finite([avs,hv,hv1,mto,rhbd,t])))return
   if(t<=0d0)return
   select case(iflsol)
+  case(6)
+    call regular_limit_coefficients(mto+rhbd*avs,hv,hv1,t,a1,a2,b1,b2,status)
+    return
   case(1)
     if(abs(hv)<=tiny(1d0).or.abs(hv1)<=tiny(1d0).or.abs(hv-hv1)<=tiny(1d0))return
     base=(mto+rhbd*avs+hv*t)/(mto+rhbd*avs);if(base<=0d0)return
@@ -126,6 +141,38 @@ contains
   case default
     return
   end select
+  if(.not.all(ieee_is_finite([a1,a2,b1,b2])))return
+  status=B111_NTRANS_OK
+ end subroutine
+
+ ! With v=t'/t, x=hv*t/s and y=hv1*t/s, (1+x*v) C'= -y*C+z.
+ ! Coefficients obey n*c_n=-(y+(n-1)*x)*c_(n-1), except c_1=z-y*c_0.
+ ! Integrating the series term by term avoids subtraction of nearly equal
+ ! quotients. Only the explicit finite-donor limit route selects this class.
+ subroutine regular_limit_coefficients(s,h,h1,t,a1,a2,b1,b2,status)
+  real(real64),intent(in)::s,h,h1,t
+  real(real64),intent(out)::a1,a2,b1,b2
+  integer,intent(out)::status
+  real(real64)::x,y,z,an,dn,factor
+  integer::n
+  a1=0d0;a2=0d0;b1=0d0;b2=0d0;status=B111_NTRANS_INVALID
+  if(s<=0d0.or.t<=0d0)return
+  z=t/s;x=h*z;y=h1*z
+  if(.not.all(ieee_is_finite([x,y,z])))return
+  if(max(abs(x),abs(y))>0.125d0)return
+  a1=1d0;b1=1d0;an=1d0;dn=0d0
+  do n=1,64
+    factor=-(y+real(n-1,real64)*x)/real(n,real64)
+    an=factor*an
+    if(n==1)then
+      dn=1d0
+    else
+      dn=factor*dn
+    end if
+    a1=a1+an;b1=b1+an/real(n+1,real64)
+    a2=a2+dn;b2=b2+dn/real(n+1,real64)
+  end do
+  a2=z*a2;b2=z*b2
   if(.not.all(ieee_is_finite([a1,a2,b1,b2])))return
   status=B111_NTRANS_OK
  end subroutine

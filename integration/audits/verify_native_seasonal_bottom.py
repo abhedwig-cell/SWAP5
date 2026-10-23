@@ -22,6 +22,10 @@ def projection(path=PARENT):
   text=text[:at]+hook+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ successor=ROOT/'integration/audits/verify_nut_regular_limits.py'
+ if successor.is_file():
+  owner=__import__('runpy').run_path(str(successor))
+  if owner['enabled']():return owner['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  assert git('rev-parse','HEAD:src')==git('rev-parse',BASE+':src'),'shared physical owner changed'
@@ -83,8 +87,16 @@ def validate(f):
     for p in ['state.csv','endpoint.csv','restart.bin','budget.csv']:assert f[case+'full/'+p]==f['O0/cross_year/full/'+p],'optimization drift'
  return dict(qualified=True,status='NATIVE_SEASONAL_BOTTOM_O0_O2_481_DAY_QUALIFIED',native_daily_observations=994,cross_year_restart_exact=True,optimization_exact=True,incumbent_controls=record()['incumbent_control_count'],full_historical_migration=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False)
 def verify():
+ successor=ROOT/'integration/audits/verify_nut_regular_limits.py'
+ if successor.is_file():
+  owner=__import__('runpy').run_path(str(successor))
+  if owner['enabled']():return owner['verify']()
  source();return {**json.loads(capsule()['predecessor/owner.json']),**validate(capsule()),'qualification_scope':'BOUNDED_NATIVE_SEASONAL_SWBOTB2_CALLER_WITH_SOURCE_EXACT_INCUMBENT','canonically_admitted':False}
 def self_test():
+ successor=ROOT/'integration/audits/verify_nut_regular_limits.py'
+ if successor.is_file():
+  owner=__import__('runpy').run_path(str(successor))
+  if owner['enabled']():return owner['self_test']()
  source();f=capsule();validate(f);controls=['incumbent:'+x for x in json.loads(f['predecessor/controls.json'])]
  def reject(label,fn):
   try:fn()
