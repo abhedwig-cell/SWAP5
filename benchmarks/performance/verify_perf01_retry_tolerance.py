@@ -19,8 +19,10 @@ sha = lambda raw: hashlib.sha256(raw).hexdigest()
 def verify(folder):
     report = json.loads((folder/'RESULT.json').read_text())
     assert report['status'] == 'COMPLETE_BOUNDED_RETRY_ACCURACY_STUDY_O0_O2_RESTART_PASS'
-    assert report['source_tree'] == SOURCE_TREE
-    assert subprocess.check_output(['git','rev-parse','53010691c79d3e132914ce372059cf873d88b96d:src'],cwd=ROOT,text=True).strip() == SOURCE_TREE
+    context = report.get('source_context_commit','53010691c79d3e132914ce372059cf873d88b96d')
+    assert subprocess.check_output(['git','rev-parse',context+':src'],cwd=ROOT,text=True).strip() == report['source_tree']
+    profile = report.get('profile','original')
+    assert profile in ['original','sensitive']
     closure = subprocess.check_output([sys.executable,str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',
         'tests/fsi/fsi04_real_headcalc_stubs.f90','src/runtime/mod_fmr_production_application_bootstrap.f90',
         'src/kernel/mod_kernel_committed_persistence.f90'],cwd=ROOT,text=True).splitlines()
@@ -59,15 +61,20 @@ def verify(folder):
                 opt = 'O0' if label.endswith('checked') else 'O2'
                 assert m['executable_sha256'] == report['builds'][opt]['executable_sha256']
                 assert m['head_budget_cm'] == float(label.split('-')[1])
+                assert m['command'][-1] == profile
                 w = [list(map(int,l.split()[1:])) for l in (folder/label/'native/stdout').read_text().splitlines()
                     if l.startswith('NEWTON_WORK')]
                 assert len(w) == 97 and [v[0] for v in w] == list(range(1,98))
                 metrics[label],rows[label],work[label] = m,r,w
             # The new 1e-3 run must retain the admitted ON physical values and work.
-            raw = old.extractfile(f'on-season-O2-{rain}x/native/daily.csv').read().decode()
-            previous = [{k:float(v) for k,v in row.items()} for row in csv.DictReader(io.StringIO(raw))]
-            for r,s in zip(rows[f'{rain}x-0.001-r0'],previous):
-                assert all(r[k] == v for k,v in s.items() if k != 'core_cpu_s')
+            if profile == 'original':
+                raw = old.extractfile(f'on-season-O2-{rain}x/native/daily.csv').read().decode()
+                previous = [{k:float(v) for k,v in row.items()} for row in csv.DictReader(io.StringIO(raw))]
+                for r,s in zip(rows[f'{rain}x-0.001-r0'],previous):
+                    assert all(r[k] == v for k,v in s.items() if k != 'core_cpu_s')
+            elif rain == 1:
+                assert metrics[f'{rain}x-0.001-r0']['stress_days'] > 0
+                assert metrics[f'{rain}x-0.001-r0']['totals']['stress_deficit_mm'] > 1e-4
             for budget in [.001,.003,.01]:
                 labels = [f'{rain}x-{budget:g}-r{i}' for i in range(3)]
                 ref = labels[0]
@@ -81,6 +88,7 @@ def verify(folder):
                 assert saved['newton_work'] == dict(zip(['jacobians','backtracks','solver_rejections'],
                     [sum(w[i] for w in work[ref]) for i in [1,2,3]]))
                 assert saved['totals'] == metrics[ref]['totals']
+                if 'stress_days' in saved: assert saved['stress_days'] == metrics[ref]['stress_days']
             for budget in [.001,.01]:
                 label, ref = f'{rain}x-{budget:g}-checked', f'{rain}x-{budget:g}-r0'
                 same_physics(rows[label],rows[ref]); assert work[label] == work[ref]
@@ -89,9 +97,11 @@ def verify(folder):
             case = report['cases'][str(rain)]
             ratio = case['0.01']['median_cpu_seconds']/case['0.001']['median_cpu_seconds']
             assert ratio == case['on_1e2_over_on_1e3_cpu']
-            replay[str(rain)] = dict(cpu_ratio=ratio, differences=case['0.01']['differences_vs_1e3'])
+            replay[str(rain)] = dict(cpu_ratio=ratio, differences=case['0.01']['differences_vs_1e3'],
+                stress_days=metrics[f'{rain}x-0.001-r0']['stress_days'],
+                total_stress_deficit_mm=metrics[f'{rain}x-0.001-r0']['totals']['stress_deficit_mm'])
     return dict(status='RAW_REPLAY_O0_O2_RESTART_PREDECESSOR_PASS', native_observations=24, cases=replay,
-        source_tree=SOURCE_TREE, default_changed=False, general_accuracy_guarantee=False)
+        source_tree=report['source_tree'], profile=profile, default_changed=False, general_accuracy_guarantee=False)
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('evidence', type=Path)
