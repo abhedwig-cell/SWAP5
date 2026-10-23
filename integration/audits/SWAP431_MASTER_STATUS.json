@@ -4983,5 +4983,40 @@
     "summary_exact": true,
     "whole_master_qualified": false,
     "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
+  },
+  "mc_nut01_thermal_calendar_output_20261023": {
+    "pr": 1383,
+    "canonical_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+    "qualified_head": "f9431d9603a20b3f937dadb1b8454fdd8949ad23",
+    "qualified_tree": "b07af9a1c85ea8f49c20df535554bc49d4f42643",
+    "authority_at_canonical": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json extended_output_component_20261021",
+    "contract_at_canonical": "docs/science/MC_NUT01_THERMAL_CALENDAR_OUTPUT_20261023.md",
+    "admission_receipt_at_canonical": "integration/mc-nut01/MC_NUT01_THERMAL_CALENDAR_OUTPUT_ADMISSION_20261023.json at f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+    "scope": "Explicit active-crop immutable-calendar output with accepted soil temperature and complete S5NO0001 restart. Existing production dispatch is now qualified as a composition; no production source,equation,tolerance,default or restart-schema change.",
+    "qualification": "Current PR1382 providers GNU13.3 O0/O2,three days with one gift/empty day/two simultaneous gifts,two reporting schedules. All independent manual physical/diagnostic generations exact;12 roundtrips,eight fresh progressions,four process-crash recoveries with fresh continuation,170 rejected trials and30 replay rejections. Actual whole merge tree exact. All53 incumbent,60 current-native and17 new controls=130 PASS. Complete current native SOL/NUT/weather/FSI35 source/raw preservation retained",
+    "remaining": "General/default historical dispatch and full multi-rotation trajectories;saved-calendar active-crop/harvest/fallow composition;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open.",
+    "canonically_admitted": true,
+    "full_capability": false,
+    "disposition_changed": false,
+    "thermal_calendar_output_qualified": true,
+    "full_mc_nut01_closed": false,
+    "capability_ids": [
+      "SW431-NUT-ORGANIC",
+      "SW431-NUT-MINERAL",
+      "SW431-NUT-AMEND",
+      "SW431-NUT-RESIDUE",
+      "SW431-NUT-CROP",
+      "SW431-NUT-NITRIF",
+      "SW431-NUT-DENIT",
+      "SW431-NUT-TRANSPORT",
+      "SW431-NUT-NFIX"
+    ],
+    "canonical_admission_receipt": "f883311e606c9d8c5a43fb35cd5aee56c1148ccc",
+    "master_predecessor": "e547351553a5111e743a289f7254cdae0b3c410f",
+    "other_rows_exact": 234,
+    "all_dispositions_exact": 243,
+    "summary_exact": true,
+    "whole_master_qualified": false,
+    "hosted": "NOT_SELECTED: zero returned workflows/statuses at qualified/actual merge heads;check runs UNKNOWN_NOT_EXPOSED;never PASS"
   }
 }
