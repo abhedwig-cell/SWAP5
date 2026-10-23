@@ -722,3 +722,28 @@ no master row is promoted. Owning contract and actual admission receipt:
 `integration/mc-nut01/single_zero_pool/ADMISSION.json`. Scientific discussion:
 [one stationary organic receiving pool](../science/MC_NUT01_SINGLE_ZERO_POOL_20261023.md).
 
+
+## Post-Status-A MC-NUT01 organic resonance, 2026-10-23
+
+PR #1409, actual merge `5b15885ad079477f31373ed96c9856e9e161fa11`, admits regular
+positive-rate FOM/receiving-eigenvalue resonance and repeated/Jordan receiving
+eigenvalues when the existing determinant guard remains satisfied. The original
+linear equations use the PR1407 matrix endpoint/interval-mean engine only at
+the former eigenvalue/divided-difference rejection boundary. Thresholds, zero-rate
+routes and persistent schemas are unchanged. GNU13.3 O0/O2 covers 972 formerly
+rejected cases against independent ODE/matrix oracles and 658 byte-exact incumbent
+cases. Eighteen actual eight-day water/crop/N runs and 36 process restarts preserve
+active uptake, net immobilisation, whole N balance and exact rejection rollback.
+Original HIST assertions pass with 78 fresh processes including 56 restarts,
+48 affected/transitive compiles and 606 verified unchanged closures; incumbent
+results are exact. All 156 controls, including all 134 predecessor controls, and
+current owner/general/HIST/FSI35 checks pass on the actual merge. Its complete
+tree equals the qualified tree. The existing determinant-zero reaction-stage
+rejection fixture remains exact. Determinant-zero assimilation, selected mineral
+exhaustion allocation, snow/persistent-surface N and full NUT remain open; no
+master row is promoted. Owning contract and actual receipt:
+`integration/mc-nut01/organic_resonance/CONTRACT.md` and
+`integration/mc-nut01/organic_resonance/ADMISSION.json`. Scientific discussion:
+[positive-rate organic resonance](../science/MC_NUT01_ORGANIC_RESONANCE_20261023.md).
+
+

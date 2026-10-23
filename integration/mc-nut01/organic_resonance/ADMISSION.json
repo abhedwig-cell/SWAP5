@@ -1,0 +1,81 @@
+{
+  "status": "CANONICALLY_ADMITTED_POSITIVE_RATE_ORGANIC_RESONANCE",
+  "pr": 1409,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1409",
+  "canonical_branch": "integration/f-ci-canonical",
+  "actual_merge": "5b15885ad079477f31373ed96c9856e9e161fa11",
+  "qualified_head": "837a6a8d8b491e1962040a4876bade621e5c4dcd",
+  "qualified_local_head": "65b71084c023334e5fb883b7fe3e3f55b3afd875",
+  "qualified_complete_tree": "e8d3c491c6d050bb6ff0b670713f04583557e966",
+  "actual_complete_tree": "e8d3c491c6d050bb6ff0b670713f04583557e966",
+  "complete_tree_exact": true,
+  "actual_merge_checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "c79557c667d19ccded53057936668a523a798690bb8b8e7ef94004fac2a3a0b7"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "f1bfa53a378bcfa25aa15bd5aa5661198b6f94de9fa8733cb886b25a1669d29f"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "control_count": 156,
+  "predecessor_controls": 134,
+  "new_controls": 22,
+  "evidence": {
+    "path": "integration/mc-nut01/organic_resonance/EVIDENCE.tar.xz.b64",
+    "sha256": "df851136a77a6a4808959ee14ee907bb545a84ec1e00f486d81c97e023591206",
+    "bytes": 227696,
+    "members": 2878,
+    "excluded": "Objects, modules and executables hashed, not embedded; raw receipts and native restart states retained."
+  },
+  "actual_science": {
+    "direct_cases_per_optimization": 972,
+    "formerly_rejected": 972,
+    "incumbent_cases_byte_exact": 658,
+    "helper_inputs_per_optimization": 13,
+    "fresh_HIST_compiles": 48,
+    "reused_HIST_compiles": 606,
+    "fresh_HIST_processes": 78,
+    "fresh_HIST_process_restarts": 56,
+    "actual_coupled_runs": 18,
+    "days_per_run": 8,
+    "separate_process_restarts": 36,
+    "previous_composition_rejection_probes": 4
+  },
+  "hosted_workflows": [],
+  "hosted_statuses": [],
+  "hosted_result": "NOT_SELECTED_NO_HOSTED_RUN_PRESENT",
+  "numerical_rerun_after_merge": "NOT_SELECTED_IDENTICAL_COMPLETE_TREE",
+  "full_mc_nut01_closed": false,
+  "master_promotion": false,
+  "concurrent_metadata_base": "eb4288359e8208bb2fb03b22c622a68315836455",
+  "concurrent_PR1410": {
+    "scope": "Thirteen isolated reactive-FCT research additions; no production, test or scientific owner changes",
+    "qualified_research_inputs_exact": 181,
+    "research_controls": 8,
+    "research_verifier": "PASS with original recorded compile-root identity projected for portability only; current source reads and all assertions unchanged",
+    "current_NUT_controls": 156,
+    "current_general_and_HIST": "PASS",
+    "strict_docs": "PASS",
+    "numerical_rerun": "NOT_SELECTED_UNCHANGED_INPUTS"
+  },
+  "remaining_scope": [
+    "Determinant-zero assimilation remains outside this route",
+    "Allocation among competing sinks when the selected mineral solution exhausts",
+    "Automatic snow and persistent-surface nitrogen binding",
+    "General full historical NUT migration"
+  ]
+}

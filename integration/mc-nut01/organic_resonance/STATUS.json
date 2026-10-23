@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "baseline": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
   "source_base": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_POSITIVE_RATE_ORGANIC_RESONANCE",
   "production_changes": [
     "src/process/mod_b111_soil_organic_turnover.f90",
     "src/process/mod_b111_soil_organic_dissimilation.f90"
@@ -27,7 +27,7 @@
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
   },
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "evidence": {
     "path": "integration/mc-nut01/organic_resonance/EVIDENCE.tar.xz.b64",
@@ -182,5 +182,11 @@
       "native": 9.434810427985212,
       "restart_native": 12.402650506002828
     }
+  },
+  "canonical_admission": {
+    "pr": 1409,
+    "actual_merge": "5b15885ad079477f31373ed96c9856e9e161fa11",
+    "complete_tree": "e8d3c491c6d050bb6ff0b670713f04583557e966",
+    "receipt": "integration/mc-nut01/organic_resonance/ADMISSION.json"
   }
 }
