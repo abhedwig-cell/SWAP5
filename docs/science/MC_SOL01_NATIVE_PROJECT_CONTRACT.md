@@ -574,3 +574,17 @@ owns this admission. Production/defaults, capability dispositions and the
 qualification-time record are unchanged. Spatial convergence, the original full
 Andelst configuration, general historical/default dispatch and full SOL/NUT
 closure remain open.
+
+### Independent transport accuracy, 23 October 2026
+
+The bounded study in `integration/mc-sol01/transport_accuracy/STATUS.json`
+separates spatial and temporal error of the actual implicit-upwind process.
+All36 checked O0/O2 profiles pass positivity, mass and independent dense/analytic
+oracles. First-order time convergence and decreasing spatial error are observed
+for the tested linear-sorption, small-dispersivity Gaussian cases. However,
+at0.125cm spacing the concentration-peak deficit is still10.2% without sorption
+and5.4% with linear sorption. These are pulse-specific measurements, not errors
+of the native year. Closed mass therefore does not establish profile accuracy.
+The coupled41-cell year remains execution-qualified; native spatial accuracy,
+nonlinear-Freundlich accuracy and full SOL/NUT closure remain open. No production
+source, default or tolerance changes are made.
