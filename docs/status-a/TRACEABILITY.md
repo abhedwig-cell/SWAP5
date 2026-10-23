@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 current thermal harvest/fallow output: the
+[contract](../science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md), existing
+`thermal_fallow_successor_20261022`, source-bound6354-member capsule and
+`verify_nut_thermal_fallow_output.py` own the fresh current331-provider cold
+build,thermal/saved-output proof,36 corruption controls and exact actual PR1377
+merge atddaf00c3. Its admission receipt records unchanged original FSI35 compiled
+inputs/compiler and actual terminal native evidence separately from fresh NUT
+execution. No broad native rerun or complete master-row admission is inferred.
+
+
 MC-SOL01 opt-in hydraulic-substep roots: the
 [contract](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md), existing
 `root_joint_successor/substep_feedback_work`, source-bound

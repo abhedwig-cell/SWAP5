@@ -5021,16 +5021,16 @@
     },
     "thermal_fallow_successor_20261022": {
       "baseline": "f4ef44cb20cfb73ae7a582487790a4eb0292b144",
-      "stage": "CURRENT_RETRY_COMPOSITION_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER_RECEIPT",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonical_admitted": false,
+      "canonical_admitted": true,
       "contract": "docs/science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md",
       "scope": "Explicit actual Richards/accepted-temperature/material/retired-crop chemistry with saved harvest next-day diagnostics, complete certified thermal generation and independent process restart. Cold saved-output bytes preserved.",
       "test_selection": "Persisted contract selects five fresh modules plus source/artifact/flag/compiler-bound unchanged331-provider closure; expected cold plus thermal under300s. Fresh cold full saved-output O0/O2, actual thermal first2 incumbent days plus harvest/retire/2 fallow days, literal original depth-temperature and harvest-addition/previous-day oracles, hard water/whole-N, phase/day restart, rollback/save/view/replay/environment/root/heat-input and parameter identity negatives, four process kills per route. Initial extraction-import error retained NOT_USED; successful development rerun retained separately. Final thermal rerun adds unallocated forcing safety. Exact detached predecessor19 controls retained; broad FCI,highestlowair,newRossFast,aquifer NOT_SELECTED_IMPACT/POLICY.",
-      "next_action": "Publish exact qualified tree; inspect actual hosted checks; merge1377 only with unchanged current canonical science; verify actual merge tree and composed owner; record canonical admission and nine bounded master receipts. Full MC-NUT01 remains open.",
+      "next_action": "Register bounded thermal fallow receipt on the existing nine-row master. Successor-crop/rotation and heat-calendar output,general/default orchestration,active-crop negative allocation and automatic snow/persistent-surface N remain open.",
       "evidence_index": "integration/audits/evidence/mc-nut01-thermal-fallow-output-20261022/INDEX.json",
       "evidence_index_sha256": "650f28dc35a07066beddcd46f162ecc1dd5c6d510c51dd442ad04e5d9259f355",
       "execution_result": {
@@ -5606,7 +5606,7 @@
         "tests/nut-output/thermal_fallow_manual.inc": "5757620ac50109ea3d93738489b2b1d7bf3db53d662d1df481cbe930e7e177ea"
       },
       "current_retry_recovery_20261023": {
-        "stage": "REQUALIFIED_CURRENT_COLD_THERMAL_SOURCE_AND_EVIDENCE",
+        "stage": "CANONICALLY_ADMITTED",
         "canonical": "53010691c79d3e132914ce372059cf873d88b96d",
         "lost_unpublished_local_commit": "8e8caea3289db33cbce3822ac38a9521f17b21c0",
         "restored_from": "652a7f5827a549040739596a9d56e779dfff5516",
@@ -5617,14 +5617,23 @@
         "next_action": "Fresh native project/cold saved-output/thermal saved-output; preserve current retry physical owner with new codec postimage proof, source/evidence controls and strict docs, exact publication and canonical admission.",
         "remote_checkpoint": "88261dde9beb510205ac3b5d2b34db00ed41cea6",
         "fresh_full_build": true,
-        "controls": 36
+        "controls": 36,
+        "canonical_merge": "ddaf00c33da51fb84552b3d59e6f342cff97bf04"
       },
       "composition_baseline": "53010691c79d3e132914ce372059cf873d88b96d",
       "source_owner_controls": 36,
       "qualification_receipt": "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_REQUALIFICATION_20261023.json",
       "source_docs": "PASS",
       "strict_docs": "PASS",
-      "last_reconciled_upstream": "53010691c79d3e132914ce372059cf873d88b96d"
+      "last_reconciled_upstream": "53010691c79d3e132914ce372059cf873d88b96d",
+      "published": true,
+      "qualified_head": "9119ff5ce35610a5890453332a89790140482563",
+      "canonical_merge": "ddaf00c33da51fb84552b3d59e6f342cff97bf04",
+      "qualified_tree": "9b7bfa194270283c561eeb0c7840957ef9c8dc18",
+      "actual_merge_tree": "9b7bfa194270283c561eeb0c7840957ef9c8dc18",
+      "admission_receipt": "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json",
+      "postmerge_owner": "PASS",
+      "postmerge_controls": 36
     },
     "saved_residue_successor_20261022": {
       "baseline": "0be6037b670fdd3cb004ff616b0925291ae56728",

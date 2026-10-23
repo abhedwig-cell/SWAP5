@@ -1,5 +1,18 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 thermal harvest/fallow output,23 October2026: PR1377 is admitted at
+`ddaf00c33da51fb84552b3d59e6f342cff97bf04`, complete merge tree exactly qualified
+`9b7bfa194270283c561eeb0c7840957ef9c8dc18`. The explicit accepted-temperature
+harvest/retirement/amended-fallow route retains original previous-day diagnostic
+memory and complete certified thermal restart. Fresh full cold build and current
+thermal/cold saved-output O0/O2 native proof preserve all previous physical and
+reporting results. Actual-merge composed owner and36 corruption controls PASS.
+Admission and recovery are in the existing HIST-COMPLETE extended-output child
+and `MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json`. Default orchestration,
+successor-crop/rotation and heat-calendar output,active-crop negative allocation
+and automatic snow/persistent-surface N remain open. No full NUT/master promotion.
+
+
 PERF01 explicit weather line-search retry,23 October2026: PR1378 is admitted at
 `a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e`, exactly matching the qualified
 source and complete tree. The [bounded option](../science/PERF01_WEATHER_LINE_SEARCH_RETRY.md)
