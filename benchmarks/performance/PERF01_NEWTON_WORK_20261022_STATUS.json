@@ -1,0 +1,72 @@
+{
+  "workstream": "PERF01 / HY / TX",
+  "work_unit": "FAILED_NEWTON_WORK_AND_STEP_REGROWTH",
+  "baseline": "f4ef44cb20cfb73ae7a582487790a4eb0292b144",
+  "recovery_branch": "research/perf01-newton-work-20261022",
+  "status": "BOUNDED_GENERATED_NEWTON_RESEARCH_QUALIFIED",
+  "production_changed": false,
+  "qualified": true,
+  "canonically_admitted": false,
+  "plan": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_PLAN.md",
+  "interfaces_changed": [],
+  "invariants": "Unchanged physical law, committed origin, water conservation, acceptance criteria, retry and restart authority. Research executables may alter Newton execution only.",
+  "test_selection": {
+    "smallest_real_contract": "Relink generated Newton variants to source-verified current256-provider weather objects; no mock or copied physical solver.",
+    "affected_scope": "97-day1x/4x illustrative Reference/default-MvG weather column, temporal comparison budget1e-3cm, original numerical mass/head criteria.",
+    "expected_compile_link_seconds_each": 10,
+    "expected_screen_native_seconds_total": 60,
+    "expected_followup_seconds": 90,
+    "full_fci": "NOT_SELECTED_GENERATED_RESEARCH_ONLY",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NO_EXPANSION",
+    "new_1e_6_runs": "NOT_SELECTED_USER"
+  },
+  "current_execution": "/tmp/perf01-newton-screen/RESULT.json",
+  "next_action": "Controlled research is complete. Integrate its evidence only. A separate bounded production implementation must retain default behavior outside explicit selection, prove the changed failure/corner/transaction contracts and qualify affected exact source/native admission owners before activation. General surface reformulation and timestep regrowth remain separate.",
+  "research_evidence_integrated": true,
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_EVIDENCE.tar.xz",
+    "sha256": "5cf6ab593db0efe12f6518b8c435b95cf1d48caeefc4ebb1b55614dbc2a6942a",
+    "bytes": 1957072,
+    "members": 560
+  },
+  "rejection_controls": [
+    "missing:paired/4x-0-candidate/native/stdout",
+    "missing:screen/4x-cap8/native/RESULT.json",
+    "missing:wet-restart/native/stdout",
+    "missing:paired-build-candidate/headcalc_experiment.f90",
+    "changed production source"
+  ],
+  "result": "benchmarks/performance/PERF01_NEWTON_WORK_20261022_RESULT.md",
+  "verifier": "benchmarks/performance/verify_perf01_newton_work.py",
+  "measured_cost_categories": {
+    "screen_build_link_seconds": 32.17002650100039,
+    "screening_native_controller_seconds": 38.9614639240026,
+    "serial_paired_controller_seconds": 61.84838299101102,
+    "checked_native_wall_seconds": 25.121301152998058,
+    "direct_link_seconds": 15.661816280000494,
+    "direct_native_seconds": 0.04001695299666608
+  },
+  "outcome": {
+    "selected_variant": "linefail",
+    "serial_alternating_pairs_per_rainfall": 3,
+    "wet4_median_cpu_seconds": [
+      8.601036,
+      5.338343
+    ],
+    "rain1x_median_cpu_seconds": [
+      2.544512,
+      2.125908
+    ],
+    "wet4_storage_spread_mm": 6.828501945221888e-05,
+    "wet4_runoff_difference_mm": 0.0001244730685717488,
+    "checked_optimization_identity": true,
+    "wet35_restart_exact": true,
+    "complete_state_rollback": true,
+    "original_direct_contracts": "O0/O2 PASS",
+    "production_default_changed": false
+  },
+  "research_merge": "17a6c17a478238e5fafc469aa275313bcdf2e184",
+  "research_qualified_tree": "989edea3bee7a6cdcc907003092a7f95d7b15cfa",
+  "production_followup": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_20261022_STATUS.json"
+}

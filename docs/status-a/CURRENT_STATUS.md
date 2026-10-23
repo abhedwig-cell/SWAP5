@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+PERF01 explicit weather line-search retry,23 October2026: PR1378 is admitted at
+`a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e`, exactly matching the qualified
+source and complete tree. The [bounded option](../science/PERF01_WEATHER_LINE_SEARCH_RETRY.md)
+ends an exhausted Newton phase through the existing corner restart or smaller
+transaction step, with all acceptance gates preserved. Actual97-day paired
+median CPU falls34.8% under4x rain and is approximately unchanged under1x.
+Current physical/source preservation and fresh original FSI35 O0/O2 pass;
+the actual-merge receipt is `benchmarks/performance/PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json`.
+The option and warm start remain default OFF. General surface reformulation
+and broader default activation remain separate; no master capability changes.
+
 MC-SOL01 opt-in trial-beginning root stress,22 October2026: the
 [bounded successor](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md) recalculates
 Feddes/empirical oxygen uptake for every full/half/retried Reference water step

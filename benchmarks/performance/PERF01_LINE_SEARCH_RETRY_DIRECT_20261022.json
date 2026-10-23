@@ -1,0 +1,22 @@
+{
+  "status": "TYPED_LINE_SEARCH_OFF_ON_UNSUPPORTED_AND_ORIGINAL_O0_O2_PASS",
+  "providers": 21,
+  "events": 66,
+  "baseline": "17a6c17a478238e5fafc469aa275313bcdf2e184",
+  "source_checkpoint": "7cb01ecc9cc867657f859147e8d78f08d4c1a833",
+  "production_source_sha256": {
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "c2ab4aba640a867f9817ecd783b378e618135eaa751a94fe6a44b061a4e83448",
+    "src/legacy/b1_10_port/headcalc.f90": "21e56c483263557449cecf6019a36eb9f60b904fd44a7fb65f3621c34b3859ea",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "18aa4ebc23b9821724c360549c99dafd4fdeb60c360ac889f72346ec3d7a0d86",
+    "src/solver/mod_soil_water_solver_contract.f90": "19466d764e17cf1bfad84011a83d0bf49c170ca0f09055e83158571351a3e996"
+  },
+  "full_application_qualification": false,
+  "canonically_admitted": false,
+  "retained_failures": "First used3cm stub instead of30cm fixture; second snapshotted theta before test initialization. Both remain FAILED; final original solver assertions and initialized immutable-base checks pass.",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_LINE_SEARCH_RETRY_DIRECT_20261022.tar.xz",
+    "sha256": "e2a301c9ff40b7cb75e7b41be2d5c3b31b8ef4031275f462fc42420d21928f4c",
+    "bytes": 14656,
+    "members": 237
+  }
+}

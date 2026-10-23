@@ -5594,6 +5594,17 @@
         "src/runtime/mod_fmr_crop_soil_n_thermal_fallow.f90": "49fa0dee8d929ede7fc783a963ab9bd4bb2df6513509f58f604bc12dba02bb39",
         "tests/nut-output/run_thermal_fallow_output.py": "2459e3e9ff2db2e0f9a31286fb9c02ca8aba9d2212ba6b90ed214297c7b6e588",
         "tests/nut-output/thermal_fallow_manual.inc": "5757620ac50109ea3d93738489b2b1d7bf3db53d662d1df481cbe930e7e177ea"
+      },
+      "current_retry_recovery_20261023": {
+        "stage": "CHECKPOINT_RESTORED_PENDING_FRESH_CURRENT_EXECUTION",
+        "canonical": "53010691c79d3e132914ce372059cf873d88b96d",
+        "lost_unpublished_local_commit": "8e8caea3289db33cbce3822ac38a9521f17b21c0",
+        "restored_from": "652a7f5827a549040739596a9d56e779dfff5516",
+        "tested": false,
+        "qualified": false,
+        "publication_authorized": true,
+        "selection": "Fresh331-provider cold O0/O2 rebuild required because prior scratch builds unavailable; expected480-700s compile plus focused cold/thermal saved-output <180s. Immutable retry source/raw and actual native FSI35 inherited only with exact source/compiler identities. Full F-CI, highest low-air and RossFast expansion NOT_SELECTED.",
+        "next_action": "Fresh native project/cold saved-output/thermal saved-output; preserve current retry physical owner with new codec postimage proof, source/evidence controls and strict docs, exact publication and canonical admission."
       }
     },
     "saved_residue_successor_20261022": {
