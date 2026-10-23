@@ -6611,6 +6611,19 @@
       "admission_receipt": "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json",
       "master_receipt": "7f71d4a121c6ae06b0461407c537e5d669c590f5",
       "master_rows_promoted": false
+    },
+    "cycle_successor_20261023": {
+      "stage": "IMPLEMENTED_PENDING_LOCAL_QUALIFICATION",
+      "baseline": "ead21ff0a325f4d5a96be889c1fec083e7c8ba4d",
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "canonically_admitted": false,
+      "contract": "docs/science/MC_NUT01_CYCLE_OUTPUT_20261023.md",
+      "scope": "Explicit successor initialization,active saved-output days and repeated harvest,cold/accepted-heat; complete S5NS0001 generation preserved.",
+      "next_action": "Fresh additive provider/driver O0/O2 using source/artifact-bound cold build; complete two-crop lifecycle/physical/source/restart/crash proof,source owner and docs; publish and integrate only after all required gates pass.",
+      "test_selection": "Focused cold/heat real two-crop composition and complete36-control predecessor;expected additional cost<180s. Full FCI/highestlowair/newRossFast/aquifer NOT_SELECTED. No full NUT closure."
     }
   }
 }
