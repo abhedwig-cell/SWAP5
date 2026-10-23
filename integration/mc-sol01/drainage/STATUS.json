@@ -1,0 +1,27 @@
+{
+  "workstream": "MC-SOL01 / ordinary drainage",
+  "work_unit": "HIST-INTEGRATION01 native trial-local DRAMET3 DIVDRA",
+  "baseline": "13604d76cec8b6a34d7f9a2ce3d841989e366b6c",
+  "implemented": true,
+  "tested": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "invariants": ["single physical state owner", "accepted qdra provenance", "joint water/solute publication", "Reference Richards authority", "no mass clamp"],
+  "dependencies": ["existing DRAMET3 scalar", "existing signed DIVDRA", "existing smooth phreatic projection", "native Boesten input and V3 restart"],
+  "next_action": "Seal actual O0/O2 469-day evidence and exact predecessor/current NUT reconciliation, then qualify and integrate bounded scope",
+  "bounded_days": 469,
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "blockers": ["481-day request fails identically at day470 after469 complete days; last solver reaches64 iterations; head tolerance .001 does not repair it", "4x detailed rain fails day7 after14 segments; complete day6 generation preserved", "Full original SWP next rejects SWMACRO; Cauchy3/heat/full original soil/crop composition remains open"],
+  "numerical_corrections": ["Existing profile CALCGWL projection includes typed absence and full saturation", "Derived GWL absent sentinel excluded from temporal state difference; nodal drainage exchange error in cm remains controlled", "Existing Boesten ponding reset applied to wet candidate endpoint in this new composition only; no accepted flux, mass or threshold altered"],
+  "test_selection": {
+    "focused_joint": "RUN: actual accepted drainage partition, chemical rejection/retry/ABA and source-bound restart; physical process equations unchanged",
+    "native_historical": "O0/O2 request481 retained FAILED at470. Qualified candidate469 with original DRA, daily water/solute closure and separate day365 restart",
+    "current_NUT": "Fresh74 affected compiles,580 exact source/flags/module-closure objects reused;78 actual HIST processes and6 actual crop/N runs with12 separate process restarts",
+    "current_SOL_research": "12 actual current Reference water traces exactly preserve all inputs to72 unchanged research replay profiles; no production FCT activation",
+    "unchanged_processes": "NOT_SELECTED_IMPACT: no change to DRAMET3 or DIVDRA process equations; existing original-source scientific evidence retained",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT"
+  }
+}

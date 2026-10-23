@@ -41,14 +41,15 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
   native(executables['project_reader'],['input.swp','scan'],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
-  paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop']}
+  paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop','pathdrain']}
   for r in references:
-   if r['kind']not in ['met','crop','rain']:continue
-   kind=r['kind'];folder=paths['pathcrop'if kind=='crop'else'pathatm'].replace('\\','/').strip()
+   if r['kind']not in ['met','crop','rain','drain']:continue
+   kind=r['kind'];folder=paths['pathcrop'if kind=='crop'else'pathdrain'if kind=='drain'else'pathatm'].replace('\\','/').strip()
    name=(Path(folder)/r['value'])if folder else Path(r['value'])
    path=resolve_file(swp.parent,str(name));raw=path.read_bytes();sources.append((kind+'_'+r['index'],raw))
-   (stage/({'met':'weather-','crop':'crop-','rain':'rain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain'}[kind])).write_bytes(raw)
+   (stage/({'met':'weather-','crop':'crop-','rain':'rain-','drain':'drain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain','drain':'.dra'}[kind])).write_bytes(raw)
   native(executables['project_reader'],['input.swp','prepare'],stage,b'SWP_NATIVE_PROJECT_PREPARED')
+  drainage=(stage/'drainage.nml').read_text()if(stage/'drainage.nml').exists()else''
   if any(r['kind']=='detailed_rain'for r in references):rain_events=list(csv.DictReader((stage/'rain_events.csv').open()))
   for r in references:
    if r['kind']!='crop':continue
@@ -98,6 +99,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   lines.insert(lines.index('&surface')-1,' bottom_legacy_origin='+repr(seasonal['legacy_origin']))
   lines.insert(lines.index('&surface')-1,' bottom_year_starts='+','.join(map(repr,years)))
  first_root=prepared[0]['root'].strip()
+ if drainage:lines.insert(lines.index('&surface')-1,drainage.rstrip())
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
