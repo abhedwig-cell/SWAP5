@@ -1,0 +1,33 @@
+{
+  "work_unit": "MC-SOL01-FCT-JOINT-ACCEPTANCE01",
+  "baseline": "57e1b3f2635559df0db0350a96f0e06b2e3b9cc7",
+  "stage": "QUALIFIED_BOUNDED_JOINT_ACCEPTANCE_CURRENT_DRAINAGE_BACKEND",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_activated": false,
+  "disk_restart_qualified": false,
+  "full_mc_sol01_closed": false,
+  "contract": "integration/mc-sol01/fct_joint_acceptance/CONTRACT.md",
+  "development_result": "24 checked O0/O2 pre-drainage cases retained; fresh current172-provider execution preserves all24 endpoints exactly",
+  "reconciled_canonical": "c459429adb976f1d4b0c2a11f58d520909d2ba3c",
+  "qualification_checkpoint": "2cf65c22ac946a5f8f2082267dcf408998370e9c",
+  "measurements": "integration/mc-sol01/fct_joint_acceptance/MEASUREMENTS.json",
+  "evidence": {
+    "path": "integration/mc-sol01/fct_joint_acceptance/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "852052d3bac8ac31f5ef6a2355d939b1049c8e4763b827b119fce8934efaac68",
+    "bytes": 307016,
+    "members": 850,
+    "controls": 8
+  },
+  "preservation": {"current_owner_qualified": true, "current_owner_controls": 36},
+  "test_selection": {
+    "selected": "172 real provider checked O0/O2 joint water/FCT,40/80cells,0.8/1.2 conductivity,Freundlich0.5/1/2,four0.1daywindows; expected100s,measured88.312s current",
+    "full_fci": "NOT_SELECTED_IMPACT: isolated research; production scientific tree unchanged",
+    "native_year_disk_restart": "NOT_SELECTED_SCOPE",
+    "RossFast_and_highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "qualification_ceiling": "In-process serial joint acceptance/rejection/retry and opaque in-memory committed persistence continuation. No disk/fresh-process/crash-atomic joint persistence, native activation, dispersion, decay, sinks or full MC-SOL01 closure.",
+  "next_safe_work": "Safe bounded research admission with actual-merge source/raw verification, then physical dispersion/decay composition and durable joint restart before any production activation. Admission is recorded separately."
+}
