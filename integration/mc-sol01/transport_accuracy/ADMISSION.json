@@ -1,0 +1,28 @@
+{
+  "status": "BOUNDED_TRANSPORT_ACCURACY_RESEARCH_CANONICALLY_ADMITTED",
+  "canonically_admitted": true,
+  "pull_request": 1390,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1390",
+  "canonical_merge": "21871ca2be827bfd7c62cc3927ea822de631d383",
+  "qualified_head": "d4efdf9b6ac9f0ae9938b8655a32f1b7a3480932",
+  "qualified_complete_tree": "4948a7943a6fb9063cfbec0d88cce41e7a6a1608",
+  "actual_merge_complete_tree": "4948a7943a6fb9063cfbec0d88cce41e7a6a1608",
+  "qualification_record": "integration/mc-sol01/transport_accuracy/STATUS.json",
+  "evidence_sha256": "cd224230bed8b752f0e69aa3d2d00bd47662fe339c862eff0cc24327527aaeac",
+  "actual_merge_capsule_validation": "PASS: all36 source-bound real-production profiles, analytic cell averages, matrix exponential, independent dense backward-Euler oracle, mass/positivity and O0/O2 agreement",
+  "actual_merge_preservation": {
+    "owner": "integration/performance/verify_saturated_flux_successor.py",
+    "controls": 18,
+    "qualified": true,
+    "merge": "21871ca2be827bfd7c62cc3927ea822de631d383",
+    "seconds": 1.3912281040029484
+  },
+  "negative_evidence_controls": 6,
+  "production_default_tolerance_or_owner_changes": false,
+  "full_native_grid_convergence": false,
+  "nonlinear_Freundlich_accuracy": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "next_safe_work": "Qualify profile accuracy on the actual coupled historical trajectory or implement a separately qualified less-diffusive positive conservative transport policy; do not infer concentration accuracy from mass closure.",
+  "hosted_qualification": "NOT_SELECTED_IMPACT: research/docs only; no hosted PASS claimed"
+}
