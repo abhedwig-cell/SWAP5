@@ -673,3 +673,18 @@ of the native year. Closed mass therefore does not establish profile accuracy.
 The coupled41-cell year remains execution-qualified; native spatial accuracy,
 nonlinear-Freundlich accuracy and full SOL/NUT closure remain open. No production
 source, default or tolerance changes are made.
+
+### Actual native nested-grid observations, 23 October 2026
+
+`integration/mc-sol01/native_grid/STATUS.json` records the constructed historical-
+weather project on41/82/164cells with original chemistry and unchanged1e-4
+temporal tolerance. Complete2day constant-bottom nonlinear-solute observations
+give common-bin soil-stock L1 differences0.18735% and0.12327%; these are mesh
+differences, not known-solution errors. The8day41/82difference is0.5389%;164cells
+was explicitly censored at180s. Starting stock quadrature is retained. All
+completed water/solute/gross balances and nonnegative stocks pass. These January
+prefixes have no active crop or runoff and do not qualify full-year accuracy.
+Current seasonal-caller reconciliation keeps the SRC tree exact and freshly
+checks41cell2day state/endpoint/budget equality; historical82/164executions are
+not relabeled. Current owner and30controls pass. Research, source/raw proof and
+claim limits are separate from production/defaults and full SOL/NUT admission.
