@@ -1,0 +1,24 @@
+{
+  "work_unit": "HIST-INTEGRATION01 day470 saturated flux Picard successor",
+  "baseline": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "owned_surface": "Reference headcalc failed-solve initial-guess eligibility only",
+  "interfaces_changed": false,
+  "invariants": ["single physical owner", "Reference authority", "unchanged hard mass", "immutable origin", "atomic rollback", "source-bound restart"],
+  "authority_paths": ["docs/science/PERF01_SATURATED_FLUX_RESTART.md", "integration/mc-sol01/drainage/ADMISSION.json"],
+  "relevant_paths": ["src/legacy/b1_10_port/headcalc.f90", "app/solute_project/main.f90", "src/runtime/mod_fmr_serialized_reference_backend.f90"],
+  "dependency_surface": "Measured native build input manifest and actual current drainage/NUT owner",
+  "test_selection": {
+    "expected_seconds": 280,
+    "selected": "Matched/unmatched real solver driver O0/O2; actual481-day native original-DRA full and365-day split/restart O0/O2; hard water/solute budgets; affected prior481 no-DRA preservation and wet failure rollback; current NUT/FCT closure reconciliation",
+    "existing_evidence": "Existing469-day preimage and failed470 raw retained; all194 native compiled input bytes initially verified unchanged at ef2110 except the new headcalc repair",
+    "not_selected": ["highest low-air", "RossFast", "new1e-6", "unrelated full FCI"]
+  },
+  "diagnostic": "One diagnostic relink reuses checked current194-provider inputs; only two eligibility guards generated differently. Independent day469 restart completes day470 in0.026 seconds. This is diagnostic evidence, not full qualification.",
+  "next_action": "Compile changed headcalc and relink real native; execute full481 O0/O2 and fresh365-day restart comparison",
+  "blockers": []
+}
