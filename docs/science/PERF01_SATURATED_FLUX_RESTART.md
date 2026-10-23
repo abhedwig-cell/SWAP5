@@ -50,3 +50,19 @@ partition difference does not imply a gross water imbalance. Numerical
 controllers and compiler runtime-check policies differ between applications;
 observed timings do not establish equivalent accuracy or portable production
 speed. Complete qualification/admission is recorded by the work-unit status.
+
+## HIST-INTEGRATION01 continuous-MvG Picard successor
+
+The original-DRA native project reaches the same saturated flux/flux degeneracy
+on day470. Diagnostics show alternating saturated and severely dry guesses with
+64 exhausted iterations,246 solver rejections and eventual atomic day failure.
+The matched continuous-MvG/modified-Picard pair may use the existing one-shot
+mass-guided initial-guess restart. Unmatched Picard/plain or frozen/continuous
+combinations remain excluded, as do consistent conductivity, elasticity,
+KSATEXM, power tails, macropores and scaled areas. Ordinary successful solves
+are unchanged. After the failed phase, the original state is restored and the
+existing constitutive storage increment brackets the new pressure offset.
+Picard conductivity continues to refresh in its ordinary iteration loop.
+Physical drainage/root sinks, surface law, all mass/convergence criteria and
+transaction/restart semantics retain their existing owners. Qualification and
+admission of this successor are recorded under `integration/mc-sol01/drainage`.
