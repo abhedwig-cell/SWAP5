@@ -1,5 +1,5 @@
 module mod_contextual_transaction_test
-  use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: iso_fortran_env, only: real64,int64
   use mod_transaction_reference
   implicit none
   private
@@ -21,11 +21,22 @@ module mod_contextual_transaction_test
     procedure :: advance => contextual_advance
     procedure :: storage => contextual_storage
     procedure :: temporal_error => contextual_temporal_error
+    procedure :: storage_accounting_status => contextual_storage_status
     procedure :: capture_attempt_context => contextual_capture
     procedure :: restore_attempt_context => contextual_restore
   end type contextual_model_t
 
 contains
+
+  subroutine contextual_storage_status(self,state,complete,missing_mask)
+    class(contextual_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::state
+    logical,intent(out)::complete
+    integer(int64),intent(out)::missing_mask
+    complete=same_type_as(state,context_state_t()).and.self%legacy_counter>=0
+    missing_mask=TX_MASS_MISSING_UNSPECIFIED
+    if(complete)missing_mask=TX_MASS_MISSING_NONE
+  end subroutine
 
   subroutine clone_context_state(self, copy)
     class(context_state_t), intent(in) :: self
@@ -77,6 +88,8 @@ contains
       outcome%mass_out = delta
       if (self%inject_mass_defect) outcome%mass_out = outcome%mass_out + 1.0e-3_real64
       outcome%solver_ok = .true.
+      outcome%mass_accounting_complete=.true.
+      outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE
     class default
       error stop 'unexpected contextual state'
     end select

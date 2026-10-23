@@ -87,6 +87,7 @@ module mod_transaction_reference
     procedure(advance_iface), deferred :: advance
     procedure(storage_iface), deferred :: storage
     procedure(temporal_error_iface), deferred :: temporal_error
+    procedure :: temporal_assessment => default_temporal_assessment
     procedure :: storage_accounting_status => default_storage_accounting_status
     procedure :: attempt_context_required => default_attempt_context_required
     procedure :: capture_attempt_context => default_capture_attempt_context
@@ -193,6 +194,23 @@ module mod_transaction_reference
   end interface
 
 contains
+
+  real(real64) function default_temporal_assessment(self,full_state,half_state,full_outcome, &
+      half1_outcome,half2_outcome,attempt_dt) result(value)
+    class(transaction_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    type(trial_outcome_t),intent(in)::full_outcome,half1_outcome,half2_outcome
+    real(real64),intent(in)::attempt_dt
+    ! Incumbent models retain their exact state-only comparison. Model-owned
+    ! overrides may assess actual sibling fluxes; the engine retains all gates.
+    value=huge(0.0_real64)
+    if(.not.ieee_is_finite(attempt_dt))return
+    if(attempt_dt<=0.0_real64)return
+    ! Outcome acceptance remains owned by the engine, not this delegate.
+    if(.not.same_type_as(full_outcome,half1_outcome).or..not.same_type_as(full_outcome,half2_outcome)) &
+      error stop 'unreachable temporal outcome type'
+    value=self%temporal_error(full_state,half_state)
+  end function default_temporal_assessment
 
   logical function default_attempt_context_required(self) result(required)
     class(transaction_model_t), intent(in) :: self
@@ -404,7 +422,7 @@ contains
       half_mass_residual = storage_half - storage0 - &
         ((half1_outcome%mass_in + half2_outcome%mass_in) - &
          (half1_outcome%mass_out + half2_outcome%mass_out))
-      terr = model%temporal_error(full_state, half_state)
+      terr = model%temporal_assessment(full_state,half_state,full_outcome,half1_outcome,half2_outcome,attempt_dt)
 
       result%full_mass_residual = full_mass_residual
       result%half_mass_residual = half_mass_residual

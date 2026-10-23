@@ -4,7 +4,8 @@ module mod_fmr_serialized_reference_backend
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, transaction_scratch_scope_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
        TX_TEMPORAL_MODEL_CERTIFICATE
-  use mod_pond_water_temporal_difference,only:evaluate_pond_water_temporal_difference
+  use mod_pond_water_temporal_difference,only:evaluate_pond_water_temporal_difference, &
+    water_flux_temporal_policy_t,evaluate_water_flux_temporal_difference
   use mod_fkt_temporal_indicator_history, only: fkt_temporal_indicator_history_t
   use mod_ppa_wu05_perch19_reduction_controller, only: macropore_reduction_continuation_t
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
@@ -853,6 +854,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: saltslope_cm3_mg = 0.0_real64
     real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
     real(real64) :: temporal_tolerance_cm = 0.0_real64
+    type(water_flux_temporal_policy_t) :: water_flux_temporal
     integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
     type(fmr_c_drain_salt_forcing_t) :: c_drain_salt_forcing
@@ -932,6 +934,7 @@ module mod_fmr_serialized_reference_backend
     procedure :: storage => fmr_serialized_storage
     procedure :: storage_accounting_status => fmr_serialized_storage_accounting_status
     procedure :: temporal_error => fmr_serialized_temporal_identity
+    procedure :: temporal_assessment => fmr_water_flux_temporal_assessment
     procedure :: attempt_context_required => fmr_serialized_attempt_context_required
     procedure :: capture_attempt_context => fmr_serialized_capture_attempt_context
     procedure :: restore_attempt_context => fmr_serialized_restore_attempt_context
@@ -951,6 +954,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_top_sensible_boundary_candidate_t) :: top_sensible_boundary_candidate
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
+    procedure, public :: water_flux_temporal_enabled => fmr_water_flux_temporal_enabled
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
     procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
@@ -2006,12 +2010,15 @@ contains
     end select
   end subroutine prepare_snow_outer_event
 
-  subroutine fmr_serialized_backend_initialize(self, top_boundary)
+  subroutine fmr_serialized_backend_initialize(self, top_boundary,water_flux_temporal)
     class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
     class(top_boundary_provider_t), target, intent(in) :: top_boundary
+    type(water_flux_temporal_policy_t),intent(in),optional::water_flux_temporal
     logical :: selection_ok
     integer :: selection_status
     self%initialized = .false.
+    self%model%water_flux_temporal=water_flux_temporal_policy_t()
+    if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
     self%model%top_boundary => top_boundary
@@ -2045,6 +2052,11 @@ contains
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
+
+  logical function fmr_water_flux_temporal_enabled(self) result(enabled)
+    class(fmr_serialized_reference_backend_t),intent(in)::self
+    enabled=self%model%water_flux_temporal%enabled
+  end function
 
   subroutine fmr_serialized_backend_configure_soil_water_model(self, requested_model_key, ok, status, &
                                                                 asset_root, material_id)
@@ -2418,6 +2430,13 @@ contains
     type(rutter_interval_result_t) :: rutter_result
     type(rutter_diagnostics_t) :: rutter_diagnostics
     class(transaction_state_t), allocatable :: accepted_snapshot
+
+    if(self%model%water_flux_temporal%enabled)then
+      if(.not.water_flux_trial_admitted(self,parameters,forcing,template,config))then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
 
     call self%bottom_thermal_candidate%clear()
     call self%model%bottom_thermal_carrier%clear()
@@ -5657,7 +5676,8 @@ contains
       call select_fmr_bartholomeus_route(self%bartholomeus%selection,oxygen_route,waterfilm_mode)
       publish_root_result=publish_root_result.or.oxygen_route==FMR_BARTHOLOMEUS_ACTIVE
     end if
-    if(self%root_extraction_active.and.publish_root_result) then
+    if((self%root_extraction_active.and.publish_root_result).or.self%water_flux_temporal%enabled) then
+      if(.not.associated(self%qrot))return
       outcome%actual_transpiration_amount=sum(self%qrot)*step_duration
       if(.not.ieee_is_finite(outcome%actual_transpiration_amount).or.outcome%actual_transpiration_amount<0.0_real64) return
       outcome%actual_transpiration_available=.true.
@@ -6322,6 +6342,76 @@ contains
     end select
     if (complete) missing_mask = TX_MASS_MISSING_NONE
   end subroutine fmr_serialized_storage_accounting_status
+
+  logical function water_flux_trial_admitted(self,p,f,t,c) result(ok)
+    class(fmr_serialized_reference_backend_t),intent(in)::self
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    type(fmr_b110_physical_forcing_t),intent(in)::f
+    type(fmr_template_t),intent(in)::t
+    type(canonical_numerical_config_t),intent(in)::c
+    ok=.false.
+    if(.not.self%model%water_flux_temporal%valid())return
+    if(c%transaction%temporal_mode/=TX_TEMPORAL_EXTERNAL_FULL_HALF)return
+    if(.not.ieee_is_finite(c%transaction%temporal_tolerance))return
+    if(c%transaction%temporal_tolerance<=0.0_real64.or.c%transaction%temporal_tolerance>0.001_real64)return
+    if(t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &
+      t%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+      t%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+    if(p%active_nodes/=4.or.p%bottom_mode/=2.or.p%swkimpl/=0.or.p%swsophy/=0)return
+    if(.not.allocated(p%dz))return
+    if(size(p%dz)/=4)return
+    if(.not.all(ieee_is_finite(p%dz)))return
+    if(any(p%dz<=0.0_real64).or.any(p%dz>30.0_real64))return
+    if(abs(sum(p%dz)-30.0_real64)>1.e-12_real64)return
+    if(p%picard_conductivity_iteration.or.p%soil_temperature_active.or.p%frost_active.or. &
+      p%snow_active.or.p%macropore_active.or.p%hysteresis_active.or.p%elasticity_active.or. &
+      p%root_salinity_active.or.p%root_frost%active.or.p%drainage_response_active.or. &
+      p%boesten_evaporation_active.or.p%black_evaporation_active.or.p%tabulated_hydraulics_active.or. &
+      p%direct_retention_active.or.p%extended_model6_active.or.p%conductivity_power_tail_active.or. &
+      p%pdi_vapor_active.or.p%ksatexm_extension_active.or.p%practical_richards_a2c_active)return
+    if(p%root_compensation%method/=ROOT_COMP_OFF.or.allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
+    if(self%model%fixed_weir_surface_water_active.or.self%model%rfm_configuration%enabled)return
+    if(allocated(f%legacy_swbotb2_control).or.allocated(f%rutter).or.allocated(f%weather_surface))return
+    if(.not.allocated(f%pond_input))return
+    if(f%pond_input%implicit_pond_evaporation)return
+    ok=.true.
+  end function
+
+  real(real64) function fmr_water_flux_temporal_assessment(self,full_state,half_state,full_outcome, &
+      half1_outcome,half2_outcome,attempt_dt) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    type(trial_outcome_t),intent(in)::full_outcome,half1_outcome,half2_outcome
+    real(real64),intent(in)::attempt_dt
+    logical::available
+    real(real64)::normalized
+    if(.not.self%water_flux_temporal%enabled)then
+      value=self%temporal_error(full_state,half_state)
+      return
+    end if
+    value=huge(0.0_real64)
+    if(.not.associated(self%soil_parameters))return
+    if(.not.allocated(self%soil_parameters%dz))return
+    select type(full=>full_state)
+    type is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      type is(fmr_b110_physical_state_t)
+        if(full%active_nodes/=half%active_nodes)return
+        if(.not.allocated(full%pressure_head).or..not.allocated(half%pressure_head).or. &
+          .not.allocated(full%water_content).or..not.allocated(half%water_content))return
+        if(size(full%pressure_head)/=full%active_nodes)return
+        call evaluate_water_flux_temporal_difference(self%water_flux_temporal,self%soil_parameters%dz, &
+          full%pressure_head,half%pressure_head,full%water_content,half%water_content, &
+          full%ponding_depth,half%ponding_depth,full%groundwater_level,half%groundwater_level, &
+          [full_outcome%actual_transpiration_available,half1_outcome%actual_transpiration_available, &
+            half2_outcome%actual_transpiration_available], &
+          [full_outcome%actual_transpiration_amount,half1_outcome%actual_transpiration_amount, &
+            half2_outcome%actual_transpiration_amount], &
+          [full_outcome%mass_out,half1_outcome%mass_out,half2_outcome%mass_out],attempt_dt,normalized,available)
+        if(available)value=normalized*self%temporal_tolerance_cm
+      end select
+    end select
+  end function
 
   real(real64) function fmr_serialized_temporal_identity(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self

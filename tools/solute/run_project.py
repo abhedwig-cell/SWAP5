@@ -27,7 +27,9 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False):
+ if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
+  raise ValueError('water/flux temporal metric requires frozen native Reference step proposals')
  if surface_exfiltration not in ['reject','historical_zero']:raise ValueError('unknown surface exfiltration law')
  if water_conductivity not in ['frozen','picard','picard_continuous']:raise ValueError('unknown water conductivity policy')
  if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
@@ -102,6 +104,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
  if retain_step_proposal:lines.insert(lines.index('&surface')-1,' retain_accepted_step_proposal=.true.')
+ if water_flux_temporal:lines.insert(lines.index('&surface')-1,' water_flux_temporal=.true.')
  boesten=[float(r['value'])for r in references if r['kind']=='boesten_cofred']
  if boesten:lines.insert(lines.index('&surface')-1,' boesten_evaporation=.true.,boesten_cofred='+repr(boesten[0]))
  if solute_transport!='reference':
@@ -130,6 +133,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   normalized_weather_sha256=sha(weather),periods=len(prepared),days=len(combined),profile_index=indices,prepared_periods=prepared)
  if seasonal:audit['seasonal_bottom']=dict(seasonal,year_starts=years)
  if boesten:audit['boesten_cofred']=boesten[0]
+ if water_flux_temporal:audit['water_flux_temporal']=True
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration
@@ -147,10 +151,11 @@ def main():
  ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference')
  ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
- ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry');a=ap.parse_args()
+ ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry')
+ ap.add_argument('--water-flux-temporal',action='store_true',help='Optional changed-accuracy water-state/flux metric; requires --retain-step-proposal');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
- document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal)
+ document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal)
  # Keep all audit information inside the already-bound immutable input document;
  # never add an unbound sidecar to the admitted atomic output inventory.
  encoded=base64.b64encode(json.dumps(audit,sort_keys=True).encode()).decode()
