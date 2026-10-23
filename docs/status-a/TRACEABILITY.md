@@ -1,5 +1,17 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+HIST-INTEGRATION01 seasonal native bottom flux is canonically admitted by
+[PR1392](https://github.com/abhedwig-cell/SWAP5/pull/1392), merge
+`03fd18d7d60e423c59e1ecef5661d259f470f69e`, exact qualified complete tree
+`e3cac9919741b40fe29e5cf6555f50ea72aab704`. The existing SOL status child
+`historical_integration01_20261023` and separate
+`integration/mc-sol01/MC_SOL01_HIST_INTEGRATION01_ADMISSION_20261023.json`
+record current O0/O2 481-day/full/restart/gross-budget qualification and30
+source/raw controls. Exact original B1.12 Andelst O2 also completes481days
+and reproduces retained printed water outputs. The original SWAP5 project
+still rejects SWRAIN3; broader process composition and the actual4x-rain
+Picard day8 water rejection remain open. No full SOL/NUT/master promotion.
+
 
 PR1388 refined native year is canonically admitted at
 `8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0`; the complete merge tree exactly equals the

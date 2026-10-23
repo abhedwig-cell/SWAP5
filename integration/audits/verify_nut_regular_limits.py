@@ -7,10 +7,10 @@ and coupled evidence separately qualifies the sole changed numerical branch.
 from pathlib import Path
 import base64,hashlib,io,json,math,subprocess,tarfile
 ROOT=Path(__file__).resolve().parents[2]
-BASE='93c46252217c51cdb50c1bdf223d2d77d551c8fc'
+BASE='f729f0b058434c89009646f2d86bb19027c348fe'
 STATUS='integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json'
 SELF='integration/audits/verify_nut_regular_limits.py'
-PARENT='integration/performance/verify_saturated_flux_successor.py'
+PARENT='integration/audits/verify_native_seasonal_bottom.py'
 TRANSPORT='src/process/mod_b111_soil_n_transport.f90'
 SCIENCE=['src','app','tools','tests','examples','reference','.github','integration/audits','integration/performance','integration/diagnostics']
 sha=lambda b:hashlib.sha256(b).hexdigest()
@@ -23,7 +23,7 @@ def record(reader=lambda p:(ROOT/p).read_bytes()):
 def enabled():return 'admission_candidate'in record()
 def projection():
  text=before(PARENT).decode()
- for name in ['source','verify','nut_verify','self_test','fsi35_successors']:
+ for name in ['source','verify','self_test']:
   offset=text.index('\n',text.index('def '+name+'('))+1
   args='reader,changed'if name=='source'else''
   hook=" successor=ROOT/'"+SELF+"'\n if successor.is_file():\n  owner=__import__('runpy').run_path(str(successor))\n  if owner['enabled']():return owner['"+name+"']("+args+")\n"
@@ -55,12 +55,18 @@ def predecessor():
  ns=dict(__file__=str(ROOT/PARENT),__name__='immutable_saturated_flux_owner')
  exec(compile(before(PARENT),PARENT,'exec'),ns)
  original_validate=ns['validate']
- def historical_reader(p):
-  # Only the numerical transport provider differs in these already executed
-  # builds. Its default procedure and classes1..5 are proved exact above.
-  return before(p)if p==TRANSPORT else(ROOT/p).read_bytes()
- ns['source']=source
- ns['validate']=lambda f:original_validate(f,historical_reader)
+ class HistoricalTransportPath:
+  def read_bytes(self):return before(TRANSPORT)
+ class HistoricalRoot:
+  def __fspath__(self):return str(ROOT)
+  def __truediv__(self,p):return HistoricalTransportPath()if p==TRANSPORT else ROOT/p
+ def validate_historical(f):
+  # The exact archived compiler sources remain historical. Only this one
+  # provider differs; default/classes1..5 and current NUT are proved separately.
+  actual=ns['ROOT'];ns['ROOT']=HistoricalRoot()
+  try:return original_validate(f)
+  finally:ns['ROOT']=actual
+ ns['source']=source;ns['validate']=validate_historical
  return ns
 def capsule():
  e=record()['admission_candidate']['evidence'];p=ROOT/e['index'];index=json.loads(p.read_text())
@@ -128,9 +134,9 @@ def verify():
  source();old=predecessor()['verify']();current=validate(capsule())
  return {**old,**current,'qualification_scope':'BOUNDED_FINITE_DONOR_NUMERICAL_LIMITS_WITH_CURRENT_COMPOSITION_AND_FROZEN_PREDECESSOR_ASSERTIONS','canonically_admitted':False}
 def nut_verify():return verify()
-def fsi35_successors():return predecessor()['fsi35_successors']()
+def fsi35_successors():return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['fsi35_successors']()
 def self_test():
- source();old=predecessor()['self_test']();require(len(old)==18,'incumbent18 assertion controls lost')
+ source();old=predecessor()['self_test']();require(len(old)==30,'incumbent30 seasonal assertion controls lost')
  passed=['predecessor:'+p for p in old];f=capsule();validate(f)
  def reject(label,fn):
   try:fn()

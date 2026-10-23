@@ -487,6 +487,76 @@ The numerical proof's own `canonically_admitted=false` remains an immutable
 qualification-time assertion; this separate actual-merge receipt establishes
 the later bounded admission. Full migration flags remain false.
 
+## HIST-INTEGRATION01 seasonal prescribed bottom successor
+
+Baseline 6a21c4251d48959bde4a99ef5127d4039d5ab952. Proposed, not admitted.
+Native SWBOTB2/SW2=1 nonzero SINAMP now binds the existing
+PPA-LOW02-TIME Reference application control, with original t1900 origin
+and exact January-first calendar knots including the final year sentinel.
+The backend evaluates flux at every trial-start, including rejected/full/half
+trials. No daily-mean sinus approximation or new physics/state owner.
+Zero amplitude preserves the previous generated input and physical path.
+The new optional budget bottom_up_cm sums the actual accepted bottom flux.
+All original SWP bytes and generated calendar bind public restart as before.
+SW2=2, other bottom modes and SWBOTB1 remain rejected here.
+
+Changed owned surface: native project reader, launcher, application only.
+No shared interface/source, reference bytes, crop, SOL or NUT owners change.
+Invariants 2,3,7,9,13,21,23,29 remain. This extends the bounded native
+fixture; it is not full Andelst or general historical project equivalence.
+Select checked O0/O2 builds with hash-verified unchanged193 physical
+providers, independent existing LOW02 oracle, zero-amplitude physical
+preservation, actual seasonal joint budgets/restart across January1 and
+positive/negative bottom flow. Expected build60s, short feedback60s,
+481-day composition up to1800s. Existing annual evidence remains historical
+until actual application preservation; full F-CI NOT_SELECTED_IMPACT,
+highest low-air NOT_SELECTED_POLICY, RossFast unused.
+
+### Executed HIST-INTEGRATION01 evidence
+
+Both checked O0/O2 native seasonal runs complete481days using original
+1998/1999 weather and the retained constructed12-cell soil/three-crop fixture,
+SINAVE=-.01,SINAMP=.005,SINMAX=150, tolerance1e-3, implicit_upwind,
+picard_continuous and historical_zero exfiltration. Complete endpoints,
+budgets and public restart after day365 are byte-exact across optimizations.
+The independent gross balance includes the actual accepted bottom amount;
+maximum absolute residual6.24e-14cm. Default eight-day physical files retain
+exact incumbent identity. Short seasonal flow crosses zero in both directions.
+Existing LOW02 independent O0/O2 sine/calendar/dry-guard/A-B-A controls pass.
+
+The full original retained Andelst input is available in the existing
+MIGMAC10 gzip files, including swap.swp,swap.bbc,swap.dra,wintcer1/2,
+weather and rain files. The exact reconstructed B1.12 manifest is
+5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e.
+The full original O2 model returns100 with swap.ok and empty swap.err after
+283.27s;481daily outputs plus the initial state reproduce all existing B1.11
+DATE/RAIN/DRN/GWL fields exactly. These original outputs have no BALDEV or
+solute/N fields, so this is no newly certified original hard-mass comparison.
+A reporting-only absent-BALDEV error was repaired by validating retained raw
+files; no historical native rerun or input modification was needed.
+
+The original native SWAP5 attempt rejects SWRAIN3 before publication. Its
+other required compositions are SWCFBS1,SWREDU2,SWMACRO1,SWDRA1,
+external Cauchy SWBOTB3 and SWHEA1/SWCALT2; these remain open in this
+project front end. Original SWSOLU0 does not certify solute or nutrients.
+Kalmthout model archive/NetCDF files were not located by exact-title
+Library searches; this is an access/search result, not proof of absence.
+
+Paired normal97-day fixture timings compare1e-4 and1e-3 in alternating
+order, two executions each. They measure the Python launcher plus native
+child CPU, not isolated solver CPU or general production performance.
+Fourfold historical rain fails water at day6(1e-4) or day8(1e-3), before
+chemical replay. The old constant-bottom control also rejects day8.
+For both seasonal and constant1e-3 cases, the rejected committed binary
+equals a separate accepted-day7 endpoint exactly. This is retained failure
+evidence, not a qualification of this wet profile. No mass/clamp/tolerance
+change or new solver policy was introduced. The earlier repaired PERF01
+wet case remains a different, independently bounded application.
+
+Canonical admission must bind the exact seasonal postimage and the unchanged
+shared src tree. The existing SOL status child historical_integration01_20261023
+and verify_native_seasonal_bottom.py retain the full163-control incumbent
+receipt plus new native/raw corruption controls. No whole master row promotion.
 ### Selected refined-year continuation, 23 October 2026
 
 Baseline `c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0`; PR1382 native
@@ -575,6 +645,21 @@ qualification-time record are unchanged. Spatial convergence, the original full
 Andelst configuration, general historical/default dispatch and full SOL/NUT
 closure remain open.
 
+### Current canonical reconciliation
+
+Reconciled7ae093c5b32b4abfd10a6a37c8113ecffa2cdbb6, including the concurrent
+saturated-flux repair and refined-year admission. The complete193-provider
+current closure was hash verified and the new native application separately
+linked O0/O2. Both complete481-day/full/split/resumed executions were actually
+repeated, with the additional independent daily gross budget assertion.
+O0/O2 and old/current complete budget/state/endpoint/restart bytes are exact.
+The current wet day8 rejection retains exactly the same committed day7 state.
+The saturated-flux repair explicitly excludes Picard, so its successful plain
+MvG wet case does not qualify the failing Picard fixture. The full current
+predecessor owner and18 repair controls pass separately; the earlier163-control
+owner remains explicitly historical. Neither receipt is relabelled as a fresh
+whole NUT model execution. Current actual build/commands/raw artifacts are in
+the resealed existing HIST-INTEGRATION01 capsule.
 ### Independent transport accuracy, 23 October 2026
 
 The bounded study in `integration/mc-sol01/transport_accuracy/STATUS.json`
@@ -588,3 +673,18 @@ of the native year. Closed mass therefore does not establish profile accuracy.
 The coupled41-cell year remains execution-qualified; native spatial accuracy,
 nonlinear-Freundlich accuracy and full SOL/NUT closure remain open. No production
 source, default or tolerance changes are made.
+
+### Actual native nested-grid observations, 23 October 2026
+
+`integration/mc-sol01/native_grid/STATUS.json` records the constructed historical-
+weather project on41/82/164cells with original chemistry and unchanged1e-4
+temporal tolerance. Complete2day constant-bottom nonlinear-solute observations
+give common-bin soil-stock L1 differences0.18735% and0.12327%; these are mesh
+differences, not known-solution errors. The8day41/82difference is0.5389%;164cells
+was explicitly censored at180s. Starting stock quadrature is retained. All
+completed water/solute/gross balances and nonnegative stocks pass. These January
+prefixes have no active crop or runoff and do not qualify full-year accuracy.
+Current seasonal-caller reconciliation keeps the SRC tree exact and freshly
+checks41cell2day state/endpoint/budget equality; historical82/164executions are
+not relabeled. Current owner and30controls pass. Research, source/raw proof and
+claim limits are separate from production/defaults and full SOL/NUT admission.

@@ -26,7 +26,7 @@ def main():
  assert sha(base/'swap5_solute_column')==physical['executable_sha256']
  assert all(sha(ROOT/p)==h for p,h in physical['input_sha256'].items())
  assert all(sha(base/p)==h for p,h in physical['generated_input_sha256'].items())
- objects=[Path(e['command'][-1])for e in physical['events'] if e['category']=='compile' and e['command'][-3]!=str(ROOT/'app/solute_crop/main.f90')]
+ objects=[Path(e['command'][-1])for e in physical['events'] if e['category']=='compile' and not e['command'][-3].endswith('/app/solute_crop/main.f90')]
  assert len(objects)==193
  artifacts={str(p):sha(p)for p in objects+[base/'libttutil.a']+list(base.glob('*.mod'))}
  flags=[f for f in physical['flags']if not f.startswith('-J')]+['-I'+str(base)]

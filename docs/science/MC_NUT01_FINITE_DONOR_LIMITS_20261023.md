@@ -106,3 +106,16 @@ The finite-donor/source/current-composition capsule is indexed at
 Canonical admission and actual-merge verification remain separate from this
 qualification. Full MC-NUT01,active competing sinks,immobilisation and automatic
 snow/persistent-surface binding remain open; all master dispositions stay fixed.
+
+
+### Latest seasonal admission reconciliation
+
+Canonicalf729f0b/PR1392 added the481-day seasonal native caller while PR1391
+was being finalized. Its shared SRC is exact to93c46252. Every recorded input
+of both completed current NUT native closures remains byte-exact, so these
+numerical runs are inherited without repetition. The NUT source hook now sits
+on the newest seasonal owner, preserving all30 existing assertions;15 new
+NUT corruption controls give45 combined controls. The SAT/native/history/
+calendar owners retain canonical PR1392 bytes. All current owner entrypoints
+and the FSI35 registry are rechecked on the composed candidate. Earlier33-control
+and original163-control receipts keep their recorded scopes.

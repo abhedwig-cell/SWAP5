@@ -1,0 +1,150 @@
+{
+  "work_unit": "MC-SOL01-NATIVE-GRID01",
+  "baseline": "93c46252217c51cdb50c1bdf223d2d77d551c8fc",
+  "stage": "QUALIFIED_BOUNDED_NATIVE_GRID_OBSERVATIONS_NOT_WHOLE_ACCURACY",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "question": "How does the actual coupled historical-weather nonlinear solute profile change under nested native mesh refinement?",
+  "scope": "Same constructed supported120cm native project and1998 forcing as PR1388; nested41/82/164cells; O2 initial8day discriminating phase, then bounded64days only if measured cost supports it.",
+  "production_changes": false,
+  "selection": {
+    "build": "Fresh checked current O2 project bundle:194 physical plus153 original TTUTIL providers. Previous bundle compiled a different headcalc; no unqualified binary reuse.",
+    "expected_build_seconds": 180,
+    "initial_native": "RUN three8day prefixes with180s per-process cap, source snapshots, initial and final mass/stock/profile comparison. Consider64day extension only after this measured cost.",
+    "inherited_process_science": "No unchanged component rerun; existing process oracles and current source/raw owner remain applicable only with exact identities.",
+    "full_fci": "NOT_SELECTED_IMPACT: new research orchestration only",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED_POLICY",
+    "conditional_shortening": "If164cells reaches180s for8days, retain censoring and select2days on41/82/164cells with the same180s cap. Changes observation horizon only; no numerical/physical relaxation. Estimated combined native cost under300s from actual41/82costs.",
+    "64_day_extension": "NOT_SELECTED_COST: actual8day41/82runs61.19/156.18s, so64days on all3grids would be an unjustified long admission batch before resolving the observed profile sensitivity.",
+    "concurrent_source_reconciliation": "Canonical f729f0b adds native seasonal bottom orchestration while SRC remains exact. Reuse193 verified unchanged physical objects, freshly compile/link the new current caller/readers and repeat41cell2day case; require exact state.csv,endpoint.csv,budget.csv. Retain old41/82/164 observations at their actual execution baseline; no current82/164 rerun or full-native convergence is inferred. Expected extra compile/link/native30s."
+  },
+  "constraints": [
+    "all physical/input bytes unchanged except subdivision counts",
+    "original1e-4 temporal tolerance",
+    "hard gross-water and chemical mass gates",
+    "record grid-dependent native initial stock quadrature; do not normalize it away",
+    "compare conservative coarse-cell aggregates, not interpolated point concentrations",
+    "do not infer original full Andelst equivalence or whole native convergence from a short period"
+  ],
+  "next_safe_work": "Address implicit-upwind profile spreading or select a scientifically justified coupled accuracy envelope. Do not infer year/active-crop convergence from the two-day bare-soil evidence; preserve current seasonal caller and unchanged SRC. No64day/all-year refinement selected from these costs.",
+  "historical_execution_baseline": "93c46252217c51cdb50c1bdf223d2d77d551c8fc",
+  "reconciled_canonical": "f729f0b058434c89009646f2d86bb19027c348fe",
+  "observations": {
+    "status": "BOUNDED_NATIVE_GRID_OBSERVATIONS_VERIFIED_NOT_NATIVE_ACCURACY_ADMISSION",
+    "observations": {
+      "eight-day": {
+        "completed_grids": [
+          41,
+          82
+        ],
+        "failed_or_censored_grids": [
+          164
+        ],
+        "comparisons": {
+          "41-vs-82": {
+            "soil_total_mass_l1_mg_cm2": 0.41581912279218863,
+            "relative_soil_total_mass_l1": 0.005389187112884541,
+            "water_l1_cm": 0.05935095872310703,
+            "aqueous_concentration_l1": 0.6391192049271472,
+            "maximum_coarse_bin_concentration_difference": 0.0476285393338442
+          }
+        },
+        "initial_stocks": {
+          "1": {
+            "water_cm": 30.861982046758836,
+            "solute_mg_cm2": 76.52935475915154
+          },
+          "2": {
+            "water_cm": 30.86212460265734,
+            "solute_mg_cm2": 76.47954147865694
+          }
+        },
+        "seconds": {
+          "1": 61.19153403299788,
+          "2": 156.17909705700004,
+          "4": 180.1033358700006
+        },
+        "active_crop_days": {
+          "1": 0,
+          "2": 0
+        }
+      },
+      "two-day": {
+        "completed_grids": [
+          41,
+          82,
+          164
+        ],
+        "failed_or_censored_grids": [],
+        "comparisons": {
+          "41-vs-82": {
+            "soil_total_mass_l1_mg_cm2": 0.14354139184991355,
+            "relative_soil_total_mass_l1": 0.0018734855941742537,
+            "water_l1_cm": 0.015764670521600355,
+            "aqueous_concentration_l1": 0.2282008396974912,
+            "maximum_coarse_bin_concentration_difference": 0.03816807063490901
+          },
+          "82-vs-164": {
+            "soil_total_mass_l1_mg_cm2": 0.09444350799239837,
+            "relative_soil_total_mass_l1": 0.001232679625098635,
+            "water_l1_cm": 0.009040329627964638,
+            "aqueous_concentration_l1": 0.15370369668925382,
+            "maximum_coarse_bin_concentration_difference": 0.025629227291058987
+          }
+        },
+        "initial_stocks": {
+          "1": {
+            "water_cm": 30.861982046758836,
+            "solute_mg_cm2": 76.52935475915154
+          },
+          "2": {
+            "water_cm": 30.86212460265734,
+            "solute_mg_cm2": 76.47954147865694
+          },
+          "4": {
+            "water_cm": 30.86216024338418,
+            "solute_mg_cm2": 76.47867657948635
+          }
+        },
+        "seconds": {
+          "1": 19.25338026299869,
+          "2": 50.03914819599959,
+          "4": 127.17557680100072
+        },
+        "active_crop_days": {
+          "1": 0,
+          "2": 0,
+          "4": 0
+        }
+      }
+    },
+    "full_native_grid_convergence": false,
+    "full_mc_sol01_closed": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/native_grid/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "ef80471fd65c567071978bcbac699ecd2624b5d60b9989c040eab3336498be93",
+    "bytes": 539944,
+    "members": 1428,
+    "scope": "Complete cold build inputs/generated original providers/streams, actual historical41/82/164 raw runs including censoring, current constant-route bridge, manifests and verifier. Three inherited versioned authority capsules are referenced by exact SHA256 instead of duplicated."
+  },
+  "current_preservation": {
+    "qualified": true,
+    "owner": "integration/audits/verify_native_seasonal_bottom.py",
+    "controls": 30,
+    "seconds": 1.0171719680001843
+  },
+  "negative_controls": 6,
+  "claim_limits": {
+    "full_native_grid_convergence": false,
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "active_crop_grid_qualification": false,
+    "eight_day164_completed": false,
+    "original_full_Andelst_equivalence": false,
+    "portable_performance": false
+  }
+}
