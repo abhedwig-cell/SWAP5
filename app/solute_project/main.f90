@@ -5,6 +5,7 @@ program swap5_native_project_column
   use MOD_grid, only: numnod,z,dz,disnod
   use solute_column_context, only: initialize_column_context
   use mod_transaction_reference, only: transaction_state_t,TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_pond_water_temporal_difference,only:water_flux_temporal_policy_t
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
@@ -78,6 +79,8 @@ program swap5_native_project_column
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
+  logical :: water_flux_temporal=.false.
+  type(water_flux_temporal_policy_t)::water_flux_policy
   logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.
   logical :: historical_zero_solute_exfiltration=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
@@ -132,7 +135,7 @@ program swap5_native_project_column
   namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
-    retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
+    retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
@@ -262,6 +265,10 @@ program swap5_native_project_column
   call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation,'crop combination not admitted')
   call require(.not.retain_accepted_step_proposal.or.(.not.picard_conductivity_iteration.and. &
     .not.continuous_mvg.and..not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
+  call require(.not.water_flux_temporal.or.(retain_accepted_step_proposal.and..not.boesten_evaporation), &
+    'water/flux temporal metric requires native plain-evaporation proposal route')
+  call require(.not.water_flux_temporal.or.temporal_tolerance==1d-3, &
+    'water/flux temporal metric uses explicit fixed .001 depth and rate budgets')
   call require(swp_water_bootstrap.and.all(root_cm_day==0d0),'native crop forbids prescribed second root sink')
   call require(root_table_points>=2.and.root_table_points<=MAX_ROOT_KNOTS,'root knot count')
   call require(all(ieee_is_finite([maximum_root_depth_cm,root_relative_depth,root_density, &
@@ -440,7 +447,8 @@ program swap5_native_project_column
   numerical%retain_accepted_step_proposal=retain_accepted_step_proposal
   numerical%transaction%mass_tolerance=1d-10;numerical%transaction%max_retries=30
   numerical%transaction%retry_scale=0.5d0;numerical%max_committed_substeps=100000
-  call backend%initialize(top)
+  water_flux_policy%enabled=water_flux_temporal
+  call backend%initialize(top,water_flux_policy)
   if(trim(restart_path)/='-')then
     if(dynamic_temperature)then
       call read_pond_thermal_restart(trim(restart_path),column_id,template,p%parameter_set_id,9001_int64, &
