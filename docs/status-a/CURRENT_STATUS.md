@@ -1,5 +1,14 @@
 # SWAP5 Status-A current status
 
+PR1383 accepted-temperature calendar/output is canonically admitted at
+`dce306d7f3a81ecf4662751070aaa4230ad1fbd2`,whole merge tree exactly qualified
+`b07af9a1c85ea8f49c20df535554bc49d4f42643`. Actual-merge owner and all130
+original/native/new source-evidence controls PASS. The admission receipt is
+`MC_NUT01_THERMAL_CALENDAR_OUTPUT_ADMISSION_20261023.json`; master registration
+is separate. Older dated heat-calendar limits remain historical. This active-crop
+composition does not establish saved-calendar harvest/fallow/rotation or full NUT.
+
+
 MC-NUT01 accepted-temperature calendar output,23 October2026: the explicit
 immutable-calendar/output composition is locally qualified with actual O0/O2
 thermal physics,three active days,two report schedules,12 roundtrips,eight fresh

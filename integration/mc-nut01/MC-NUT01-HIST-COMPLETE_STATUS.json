@@ -7122,17 +7122,17 @@
       "master_rows_promoted": false
     },
     "thermal_calendar_successor_20261023": {
-      "stage": "LOCALLY_QUALIFIED_CURRENT_ADMITTED_NATIVE_PENDING_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER_REGISTRATION",
       "baseline": "335e3fc51ea8e5627043c2a75adbbc1008c35a3b",
       "implemented": true,
       "persisted": true,
       "tested": true,
       "qualified": true,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "contract": "docs/science/MC_NUT01_THERMAL_CALENDAR_OUTPUT_20261023.md",
       "scope": "Qualify existing explicit immutable-calendar output dispatch with accepted soil temperature,active crop and complete S5NO0001 continuation. Production providers unchanged.",
       "test_selection": "Actual existing calendar/output/thermal owner composition O0/O2;three days,two reporting schedules,independent physical/manual diagnostics,fresh processes,rejections and rename crashes. Reuse exact current331 providers plus freshly compiled calendar adapter. Expected compile/native<90s. Complete53-control predecessor. Full FCI/highestlowair/newRossFast/aquifer NOT_SELECTED_IMPACT: no physical/state/schema/default change.",
-      "next_action": "Publish exact current-provider-qualified tree,admit through bounded canonical PR,verify actual merge and register nine existing master facets. Preserve all53 original plus60 native plus17 new controls. General/default orchestration,saved-calendar rotation/fallow composition,active negative allocation and automatic snow/persistent-surface N remain open. No full MC-NUT01 closure.",
+      "next_action": "Register bounded accepted-temperature calendar-output facet on nine existing NUT master records,then connect exact receipts. Next separate output composition:saved-calendar active crop/harvest/fallow. General/default orchestration,negative active allocation and automatic snow/persistent-surface N remain open;all full capability dispositions unchanged.",
       "evidence_index": "integration/audits/evidence/mc-nut01-thermal-calendar-output-20261023/INDEX.json",
       "evidence_index_sha256": "28c85daa3846d5fb5818f2ea914adf569785f7102d6ab239e44b4a93b411df87",
       "actual_process_result": {
@@ -7675,7 +7675,16 @@
       },
       "controls": 130,
       "native_predecessor_controls": 60,
-      "historical_cycle_predecessor_controls": 53
+      "historical_cycle_predecessor_controls": 53,
+      "canonical_admission": {
+        "pr": 1383,
+        "canonical_merge": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "qualified_head": "f9431d9603a20b3f937dadb1b8454fdd8949ad23",
+        "qualified_and_actual_merge_tree": "b07af9a1c85ea8f49c20df535554bc49d4f42643",
+        "whole_tree_exact": true,
+        "actual_merge_controls": 130,
+        "receipt": "integration/mc-nut01/MC_NUT01_THERMAL_CALENDAR_OUTPUT_ADMISSION_20261023.json"
+      }
     }
   }
 }
