@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 accepted-temperature calendar/output composition,23 October2026:
+[bounded contract](../science/MC_NUT01_THERMAL_CALENDAR_OUTPUT_20261023.md),
+existing HIST-COMPLETE `thermal_calendar_successor_20261023`,
+`verify_nut_thermal_calendar_output.py` and its source-bound raw capsule own
+actual O0/O2/manual/fresh/crash qualification with all53 incumbent plus60 current native plus17 new
+controls. No production source/schema/default or full capability change.
+Canonical admission is separate from local qualification.
+
 Later bounded MC-SOL01 native project admission (23 October 2026):
 PR1382 / `76d2ab9db8c20e976a25bb4c7414f176dd02c5cb`, exact qualified tree
 `2cef7484b17a836af15fad7767ea1c6b4892b148`. Authority is the
