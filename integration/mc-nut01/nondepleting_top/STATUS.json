@@ -2,7 +2,7 @@
   "workstream": "MC-NUT01",
   "work_unit": "Nondepleting signed top with crop competition",
   "baseline": "67a21309490a4e5398e619bb28f0414d6d774757",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NONDEPLETING_CROP_AND_IMMOBILISATION",
   "invariants": [
     3,
     7,
@@ -32,7 +32,7 @@
   },
   "scientific_scope": "Explicit opt-in, strictly positive end concentrations in every selected/demand/supply branch. Exhaustion rejects transaction. No new sink allocation rule.",
   "full_mc_nut01_closed": false,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "evidence": {
     "path": "integration/mc-nut01/nondepleting_top/EVIDENCE.tar.xz.b64",
     "sha256": "163cd3364ab3fb51daad34e66267d2b5640e7d74dcf2e9f68d73f81d6ebf4b80",
@@ -102,5 +102,11 @@
     ]
   },
   "inherited_scope": "Original17 detailed rain corruption assertions preserved. Original regular-limits archived numerical assertions retained with four explicitly historical provider identity reads. Current changed providers are qualified by fresh O0/O2 physical and default preservation runs.",
-  "current_corruption_controls": 40
+  "current_corruption_controls": 40,
+  "canonical_admission": {
+    "pr": 1399,
+    "actual_merge": "b17be3044128cca5fe79c6c44b2e2419bca7f57f",
+    "complete_tree": "030546a20b810bb6fd719ca3dd6d56912007ef29",
+    "receipt": "integration/mc-nut01/nondepleting_top/ADMISSION.json"
+  }
 }

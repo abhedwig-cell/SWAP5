@@ -612,3 +612,18 @@ preserves both complete day6 states. Full original Andelst still rejects SWREDU2
 macropore/drainage/Cauchy3/numerical heat composition remains open. This does
 not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
 production completion or general performance.
+
+## Post-Status-A bounded MC-NUT01 nondepleting competition, 2026-10-23
+
+PR #1399, actual merge `b17be3044128cca5fe79c6c44b2e2419bca7f57f`, admits an
+explicit nondepleting negative-top aggregate with active crop uptake and actual
+net immobilisation. The actual complete tree is byte-exact to the qualified tree;
+40 source/raw controls and current NUT/HIST/general/FSI35 checks pass on that merge.
+GNU13.3 O0/O2 covers144 daily ODE/original-WaterN cases, four actual eight-day
+Richards/crop/soil runs and eight separate-process restarts. Original HIST
+assertions execute with78 fresh processes and byte-exact incumbent endpoints.
+Exhaustion rejects the whole transaction; competing-sink allocation after
+exhaustion, automatic snow/pond N and full MC-NUT01 remain open. No master row is
+promoted. Contract and receipt: `integration/mc-nut01/nondepleting_top/CONTRACT.md`
+and `integration/mc-nut01/nondepleting_top/ADMISSION.json`; scientific discussion:
+[nondepleting competition](../science/MC_NUT01_NONDEPLETING_COMPETITION_20261023.md).

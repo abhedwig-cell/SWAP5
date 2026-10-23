@@ -1,0 +1,55 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NONDEPLETING_CROP_AND_IMMOBILISATION",
+  "pr": 1399,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1399",
+  "canonical_branch": "integration/f-ci-canonical",
+  "actual_merge": "b17be3044128cca5fe79c6c44b2e2419bca7f57f",
+  "qualified_head": "433a8d6339b524f8d01b914e385fe7084be4e690",
+  "qualified_local_head": "35885ed15afa88cfb65c6f207f145ace8391b377",
+  "qualified_complete_tree": "030546a20b810bb6fd719ca3dd6d56912007ef29",
+  "actual_complete_tree": "030546a20b810bb6fd719ca3dd6d56912007ef29",
+  "complete_tree_exact": true,
+  "actual_merge_checks": {
+    "owner": {
+      "result": "PASS",
+      "sha256": "39eba831279ee023caf5ac3e6bc1c9f5d61db3571c5fbce425cc08c3f2383a4d"
+    },
+    "controls": {
+      "result": "PASS",
+      "sha256": "d71dc7c8a2050e6071cb8b7abc7bb466e7bf57764d168196b3008e7031856eab"
+    },
+    "general": {
+      "result": "PASS",
+      "sha256": "39eba831279ee023caf5ac3e6bc1c9f5d61db3571c5fbce425cc08c3f2383a4d"
+    },
+    "history": {
+      "result": "PASS",
+      "sha256": "39eba831279ee023caf5ac3e6bc1c9f5d61db3571c5fbce425cc08c3f2383a4d"
+    },
+    "fsi35": {
+      "result": "PASS",
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396"
+    }
+  },
+  "control_count": 40,
+  "predecessor_controls": 17,
+  "new_controls": 23,
+  "evidence": {
+    "path": "integration/mc-nut01/nondepleting_top/EVIDENCE.tar.xz.b64",
+    "sha256": "163cd3364ab3fb51daad34e66267d2b5640e7d74dcf2e9f68d73f81d6ebf4b80",
+    "bytes": 202804,
+    "members": 2504,
+    "excluded": "Object/module/executable bytes are explicitly hashed, not embedded; raw executions and build receipts retained."
+  },
+  "hosted_workflows": [],
+  "hosted_statuses": [],
+  "hosted_result": "NOT_SELECTED_NO_HOSTED_RUN_PRESENT",
+  "numerical_rerun_after_merge": "NOT_SELECTED_IDENTICAL_COMPLETE_TREE",
+  "full_mc_nut01_closed": false,
+  "master_promotion": false,
+  "remaining_scope": [
+    "Exhausting competing sink allocation",
+    "Automatic snow and persistent-surface N binding",
+    "General full historical NUT migration"
+  ]
+}
