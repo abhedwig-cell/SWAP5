@@ -15,6 +15,7 @@ ap.add_argument('--output', type=Path, required=True)
 ap.add_argument('--rain', type=int, choices=[1, 4], required=True)
 ap.add_argument('--budget', type=float, default=.001)
 ap.add_argument('--restart', action='store_true')
+ap.add_argument('--profile', choices=['original', 'sensitive'], default='original')
 args = ap.parse_args()
 build, output = args.build.resolve(), args.output.resolve()
 meta = json.loads((build / 'BUILD.json').read_text())
@@ -40,6 +41,7 @@ meta['weather_sha256'] = weather_hash
 cmd = [sys.executable, str(ROOT / 'benchmarks/performance/run_perf01_weather_bound.py'),
        '--build', str(view), '--output', str(output / 'native'), '--budget', str(args.budget),
        '--expected-rain-mm', str(args.rain * 227), '--timeout', '120']
+cmd += ['--profile', args.profile]
 if args.restart:
     cmd += ['--restart']
 subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)

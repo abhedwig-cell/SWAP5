@@ -433,3 +433,47 @@ Owning recovery is the existing `day65_continuation_20261023` child in
 `integration/audits/verify_sol_day65_continuation.py`; its capsule retains source
 versions, actual costs, failed curve-only year, censored obsolete refined year,
 compiler/cache provenance and every current raw scientific observation.
+
+### Canonical composition selection
+
+Published27b630f9 has exact complete tree828bd4c8. Reconcile against canonical
+53010691 without changing the tested production postimage. Complete the missing
+current incumbent water/chemistry/crop and weather preservation programs and
+the independent original FSI35 body; expected1200s. Reuse the exact current
+year/root/NUT evidence only after source and raw validation. The existing
+source owners retain their original assertion bodies and receive only an exact
+registered successor dispatch. Current-source, physical, frozen predecessor,
+FSI35 and actual-merge admission are distinct gates. Invariants3,5,7,13,21,23,25,
+26,29,30 remain binding. Full MC-SOL01 and broader historical default dispatch
+remain outside this bounded admission.
+
+### Current complete qualification, 23 October 2026
+
+The bounded candidate composes canonical `d3986e26`, including the newer NUT
+thermal saved-generation and repeated-harvest owners. Fresh current O0/O2
+incumbent, chemistry, water, daily, ETref, crop/root, transaction and trace
+programs pass (578 native events). Twelve 97-day weather cases, day35 process
+reconstruction, complete off/on rollback and the original immutable FSI35
+O0/O2 body pass. There are 1,320 exact incumbent physical files and twelve
+daily CSV comparisons with every physical field exact; only measured
+`core_cpu_s` is excluded from equality.
+
+The current 331-provider cold closure was rebuilt O0/O2. Current heat, saved
+output and accepted-heat fallow drivers pass, preserving 1,164 canonical
+physical files. The subsequent cold/heat two-crop driver passes all64
+roundtrips,64 fresh progressions and8 crash recoveries. Its only runner change
+allows the existing thermal-saved directory name; all scientific assertions
+remain unchanged. The seven preserved NUT families are cold, thermal,
+calendar, harvest, saved, thermal fallow and repeated harvest. The unchanged
+year/root/transport evidence retains its actual executed source; the earlier
+saved codec preimage is explicitly historical and is superseded by the fresh
+current saved/fallow composition. No old execution is relabelled as current.
+
+The sealed current preservation capsule and original native FSI35 receipt are
+under `integration/audits/evidence/MC_SOL01_NATIVE_ADMISSION_20261023.tar.xz.b64`
+and `MC_SOL01_NATIVE_FSI35_20261023.tar.xz`. The owning current gate is
+`integration/audits/native_project_admission.py`; the earlier day65 gate remains
+an immutable research-snapshot validator. Source registration and corruption
+controls are separate from actual canonical admission. Full MC-SOL01, full
+refined-year/spatial convergence, broader historical heat/snow/default
+activation and full MC-NUT01 remain open.

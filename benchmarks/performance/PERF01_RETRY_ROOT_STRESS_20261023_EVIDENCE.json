@@ -1,0 +1,129 @@
+{
+  "assessment": {
+    "status": "RAW_REPLAY_O0_O2_RESTART_PREDECESSOR_PASS",
+    "native_observations": 24,
+    "cases": {
+      "4": {
+        "cpu_ratio": 0.47830877123742477,
+        "differences": {
+          "storage_mm": {
+            "max_daily_abs": 0.016082420657909324,
+            "end_difference": 0.006621796821903558
+          },
+          "transpiration_mm": {
+            "max_daily_abs": 7.401846626731157e-05,
+            "end_difference": 3.997735475991249e-11,
+            "total_difference": 0.00017509240990441245,
+            "max_cumulative_abs": 0.00017509240990441245
+          },
+          "soil_evaporation_mm": {
+            "max_daily_abs": 1.0888630073000306e-05,
+            "end_difference": -3.9975252708316955e-11,
+            "total_difference": 1.184399740531444e-05,
+            "max_cumulative_abs": 1.186599099180577e-05
+          },
+          "bottom_mm": {
+            "max_daily_abs": 0.020535655923367813,
+            "end_difference": 0.0008961953825099567,
+            "total_difference": -0.007933552345832373,
+            "max_cumulative_abs": 0.016082420657948848
+          },
+          "runoff_mm": {
+            "max_daily_abs": 0.0015649072397589947,
+            "end_difference": 0.0,
+            "total_difference": 0.0011366889310695262,
+            "max_cumulative_abs": 0.0015355995456843036
+          },
+          "stress_deficit_mm": {
+            "max_daily_abs": 7.401618805435994e-05,
+            "end_difference": 0.0,
+            "total_difference": -0.00017506659287112349,
+            "max_cumulative_abs": 0.00017506659287112349
+          },
+          "biomass": {
+            "max_daily_abs": 0.021801734546897933,
+            "end_difference": 0.009700673542283766
+          },
+          "lai": {
+            "max_daily_abs": 0.00013707307591204199,
+            "end_difference": 3.488910274640489e-05
+          },
+          "max_head_cm": 0.049143750455037605,
+          "max_theta": 5.53869632500259e-05
+        },
+        "stress_days": 5,
+        "total_stress_deficit_mm": 0.1554205761459114
+      },
+      "1": {
+        "cpu_ratio": 0.5867417778042204,
+        "differences": {
+          "storage_mm": {
+            "max_daily_abs": 0.008210389224416303,
+            "end_difference": -0.00011924918203476409
+          },
+          "transpiration_mm": {
+            "max_daily_abs": 9.889424453257689e-05,
+            "end_difference": -3.448020682750297e-06,
+            "total_difference": 0.0004943021395953946,
+            "max_cumulative_abs": 0.0004977501602781449
+          },
+          "soil_evaporation_mm": {
+            "max_daily_abs": 1.226492185812944e-06,
+            "end_difference": -2.348421177515402e-10,
+            "total_difference": -9.579495486761434e-06,
+            "max_cumulative_abs": 9.579495486761434e-06
+          },
+          "bottom_mm": {
+            "max_daily_abs": 0.009929831296286551,
+            "end_difference": -2.7232377062924584e-05,
+            "total_difference": -0.00036547346204018893,
+            "max_cumulative_abs": 0.008215095125034932
+          },
+          "runoff_mm": {
+            "max_daily_abs": 0.0,
+            "end_difference": 0.0,
+            "total_difference": 0.0,
+            "max_cumulative_abs": 0.0
+          },
+          "stress_deficit_mm": {
+            "max_daily_abs": 9.889381093630689e-05,
+            "end_difference": 3.44825552023309e-06,
+            "total_difference": -0.00048472264410020886,
+            "max_cumulative_abs": 0.00048817089962044195
+          },
+          "biomass": {
+            "max_daily_abs": 0.03689210824450129,
+            "end_difference": 0.03315113074222609
+          },
+          "lai": {
+            "max_daily_abs": 0.00020306655823532083,
+            "end_difference": 0.00015258578354959695
+          },
+          "max_head_cm": 0.06894123287437992,
+          "max_theta": 5.094012223072486e-05
+        },
+        "stress_days": 38,
+        "total_stress_deficit_mm": 2.8145125888098934
+      }
+    },
+    "source_tree": "bda16ceab3a21eb7cd2a4c340348aea2d5a41929",
+    "profile": "sensitive",
+    "default_changed": false,
+    "general_accuracy_guarantee": false,
+    "raw_replay_seconds": 1.9877494309998838
+  },
+  "controls": [
+    "missing native stdout",
+    "changed physical bytes",
+    "changed observer",
+    "missing native event",
+    "changed median",
+    "changed input profile"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_EVIDENCE.tar.xz",
+    "sha256": "aa46499d7df808b6f70204676a47404567b944a5c1965424193b325f40b8aa60",
+    "bytes": 663448,
+    "members": 217
+  }
+}

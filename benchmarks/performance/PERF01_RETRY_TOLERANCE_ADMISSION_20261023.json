@@ -1,0 +1,47 @@
+{
+  "work_unit": "PERF01_RETRY_TOLERANCE_RESEARCH",
+  "status": "BOUNDED_RESEARCH_INTEGRATED_ACTUAL_MERGE_VERIFIED",
+  "pull_request": 1379,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1379",
+  "published_head": "6f1ef251ba75b739e8cb2fba72cb3f26184ac716",
+  "qualified_candidate_tree": "7a08c3f424f9a253edd1e22b1907068b9f016773",
+  "actual_merge": "f81dc28b43f612b3bdf772b4e72150d9637d2c61",
+  "actual_merge_tree": "7718a1ab338160de0e959bb64bd05a04a872bf43",
+  "actual_merge_source_tree": "bda16ceab3a21eb7cd2a4c340348aea2d5a41929",
+  "historical_measured_source_tree": "8eda6373e2d3b5e083514d550d9ab43c0525126f",
+  "same_complete_tree": false,
+  "composed_delta": {
+    "canonical_parent": "5bdf6a4f855193e164816573ded0fcaf01d2ff8f",
+    "since_reconciled_canonical": "db8f2c26e69f0466727aea105b99a76cd14e120f",
+    "metadata_paths": [
+      "docs/status-a/TRACEABILITY.md",
+      "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json",
+      "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json"
+    ],
+    "meaning": "Concurrent NUT bounded master receipt metadata only; no production source, measured provider, raw research evidence or scientific assertion changed"
+  },
+  "measured_provider_count": 256,
+  "current_ordered_provider_closure_and_all_actual_input_hashes_exact": true,
+  "actual_merge_raw_archive_replay": "PASS",
+  "actual_merge_current_admitted_source_owner": "PASS",
+  "original_daily_hard_balance_reconstruction": "PASS",
+  "exact_repeats_and_work": "PASS",
+  "checked_O0_O2_endpoint_parity": "PASS",
+  "exact_day48_close_reconstruct_both_rainfalls": "PASS",
+  "exact_admitted_1e3_predecessor_physical_work": "PASS",
+  "native_observations": 24,
+  "rejection_controls": 5,
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_EVIDENCE.tar.xz",
+    "sha256": "6645fc4316440da6ad226ff427ea7e47f4b981e66f479e5061b42de262e1287b",
+    "bytes": 700836,
+    "members": 1284
+  },
+  "research_integrated": true,
+  "production_changed_by_this_work": false,
+  "default_changed": false,
+  "canonically_admitted_new_policy": false,
+  "accuracy_interpretation": "Existing explicit1e-2 input gives43.6 percent less medianCPU at1x and47.8 percent at4x versus1e-3 with retry alreadyON. Physical spread is measured between these settings; no independent truth or universal default claim.",
+  "native_rerun_on_merge": "NOT_SELECTED_UNCHANGED_MEASURED_DEPENDENCIES",
+  "master_capability_dispositions_changed_by_this_work": false
+}

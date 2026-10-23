@@ -1,5 +1,34 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 explicit successor/repeated-harvest output,23 October2026:
+PR1381 is admitted at `8dd2561c7f4207034c35e12b6e9c64d24db25213`,whole tree
+exactly qualified `5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8`. The saved-output
+route now preserves previous-day residue diagnostics and history through existing
+physical successor initialization,active cold/heat days,a second harvest and
+following fallow. Actual O0/O2/manual generations,64 independent-process
+progressions,64 roundtrips,64 old-crop identity rejections,eight crash recoveries
+and all53 original/new source-evidence controls pass,including the actual merge.
+Master receipte547351553a5111e743a289f7254cdae0b3c410f updates nine bounded
+facets with234other rows and all243dispositions unchanged;20inheritance controls pass.
+The existing HIST-COMPLETE `cycle_successor_20261023`,cycle-output contract and
+`MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json` own this bounded admission.
+General/default historical orchestration,heat-specific calendar,negative active
+allocation and automatic snow/persistent-surface N remain open. No full NUT/master
+row promotion;older dated harvest-only/fallow-only limits remain historical.
+
+
+MC-NUT01 current thermal harvest/fallow output: the
+[contract](../science/MC_NUT01_THERMAL_FALLOW_OUTPUT_20261022.md), existing
+`thermal_fallow_successor_20261022`, source-bound6354-member capsule and
+`verify_nut_thermal_fallow_output.py` own the fresh current331-provider cold
+build,thermal/saved-output proof,36 corruption controls and exact actual PR1377
+merge atddaf00c3. Existing master receipt995167735ba529fe01c2be429aad97628af63546
+updates nine bounded facets with234other rows and all243dispositions unchanged;
+20inheritance controls pass. Its admission receipt records unchanged original FSI35 compiled
+inputs/compiler and actual terminal native evidence separately from fresh NUT
+execution. No broad native rerun or complete master-row admission is inferred.
+
+
 MC-SOL01 opt-in hydraulic-substep roots: the
 [contract](../science/MC_SOL01_CROP_ROOT_JOINT_CONTRACT.md), existing
 `root_joint_successor/substep_feedback_work`, source-bound
@@ -391,6 +420,27 @@ admitted at `a1f9fb2b6e756c3178c02dda2de8aa2d6160d14e`, with exact qualified
 tree identity, actual-merge source/native verification and15 controls recorded
 in `benchmarks/performance/PERF01_LINE_SEARCH_RETRY_ADMISSION_20261023.json`. No master
 capability or general surface-formulation promotion is implied.
+
+The subsequent23 October retry-accuracy study, recorded in
+`benchmarks/performance/PERF01_RETRY_TOLERANCE_20261023_RESULT.md`,
+varies only existing1e-3/3e-3/1e-2 input budgets with the admitted option ON.
+Twenty-four native observations, checked O0/O2, day48 reconstruction, exact
+admitted1e-3 predecessor values and five negative evidence controls pass.
+Within that new measurement round,1e-2 cuts median CPU43.6% under1x and47.8%
+under4x; maximum4x daily storage spread is0.01608mm and total runoff shift
+0.001024mm relative to1e-3. This is bounded input-accuracy research, with no
+production/default, physical acceptance or master capability change. Recovery
+and sealed raw evidence are owned by `PERF01_RETRY_TOLERANCE_20261023_STATUS.json`
+under `benchmarks/performance`.
+
+The subsequent active-root-stress discriminator is recorded in
+`benchmarks/performance/PERF01_RETRY_ROOT_STRESS_20261023_RESULT.md` and its
+versioned status/capsule. Existing sensitive inputs activate38/5 stress days
+under1x/4x. All24 native observations, exact O0/O2 and day48 reconstruction,
+original-profile replay and six evidence controls pass. The1e-2 versus1e-3
+median CPU falls41.3%/52.2%; total transpiration shifts0.000494/0.000175mm.
+This adds bounded accuracy evidence with actual crop response, without changing
+production physics, defaults, general surface policy or master dispositions.
 
 ### MC-SOL01 native SWP water bootstrap,21 October2026
 
