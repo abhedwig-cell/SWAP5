@@ -1,0 +1,93 @@
+{
+  "work_unit": "PERF01_NATIVE_CROP_STEP_PROPOSAL",
+  "baseline": "9d86cdf8f2669880eacbbbceb613f066093b2984",
+  "status": "LOCALLY_QUALIFIED_AWAITING_ACTUAL_CANONICAL_ADMISSION",
+  "contract": "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md",
+  "default_enabled": false,
+  "production_shared_providers_changed": false,
+  "test_selection": {
+    "native": "Verified O0/O2 existing 194-provider project reuse; default byte preservation; proposal1x/4x97days; O2 repeats; exact day48 restart; actual failed-water before/after joint bytes; unsupported positive tracer rejection",
+    "expected_seconds": 60,
+    "not_selected": [
+      "new1e-6",
+      "highest low-air",
+      "RossFast expansion",
+      "unchanged unrelated full F-CI"
+    ]
+  },
+  "pilot": {
+    "proposal_only": "REJECTS_1x_DAY83_4x_DAY7",
+    "proposal_with_atomic_day_retry": "COMPLETES_BOTH_RESEARCH_ONLY",
+    "scope": "Pilot generated application only; not qualified or admitted"
+  },
+  "next_action": "Publish final exact composed tree, merge, verify actual whole merge tree and replay current source/raw owner plus24 controls",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_EVIDENCE.tar.xz",
+    "sha256": "609d3af04de16360d9471f1bd3c84b7ef23ff57c4ecc6cab6805476cdec5d568",
+    "bytes": 392992,
+    "members": 1139
+  },
+  "source_admission": {
+    "baseline": "9d86cdf8f2669880eacbbbceb613f066093b2984",
+    "postimages": {
+      "app/solute_project/main.f90": "eca6ae90e534d73b210550152feca34964542d66bd1dcdc8a46b9631eeb52254",
+      "tools/solute/run_project.py": "c58379cf99c576cdd4fbc0808383103d5746dd9d14d9f5eaf3776270d1756a6a",
+      "integration/performance/verify_native_proposal_successor.py": "8ac6399dd8c6022b399d446785ebe7068b1b45a05cebe93bce001d035d07c2fe",
+      "benchmarks/performance/qualify_perf01_native_proposal.py": "1a4206fa7a7e247d7e49708eacb63d485f7f24a2b3a63a3faf6c5b80fc03af21",
+      "docs/science/PERF01_NATIVE_STEP_PROPOSAL.md": "26ed97ab51092bd77ac5699083601bd05ed7dad8bd51c4a29c871fe3710d9d5f",
+      "app/solute_crop/read_swp_project.f90": "cc6d676ed28640f2fe2f515252e932b35f27253f2ee865d99bbbeb9b8cbdb00b",
+      "tools/solute/build_project.py": "1313b50de7517ae4a2b171a7d4aa0c0c6c8d0540e28b61e52ed42fe5634cfcfc",
+      "integration/audits/verify_nut_regular_limits.py": "f24201d7f6b27aa9037bdae55a20da1c802f276ab8f7d3d7a728d49a8791dfeb"
+    },
+    "shared_src_tree": "5075f42eba0f261ed30aac7a9f65dda49e520f38",
+    "inheritance": "Shared src byte exact; fresh combined O0/O2 default97 and seasonal481-day source/raw gates with exact predecessor physical outputs. Original source-owner assertions retained verbatim behind additive dispatch.",
+    "native_provider_epoch": "Unchanged194-provider physical closure; admitted NUT soil_n_transport addition is outside every measured native build input. Current NUT direct/HIST/coupled raw assertions also revalidated against current code."
+  },
+  "source_controls": 24,
+  "result": "docs/performance/PERF01_NATIVE_PROPOSAL_20261023_RESULT.md",
+  "observed_O2_seconds": {
+    "O2-1x": {
+      "native": {
+        "off": 1.0405723730000318,
+        "on": 0.5809656550009095
+      },
+      "full_frontend": {
+        "off": 1.3411883919980028,
+        "on": 0.8043775290025224
+      }
+    },
+    "O2-4x": {
+      "native": {
+        "off": 1.0011890940004378,
+        "on": 0.7213005359990348
+      },
+      "full_frontend": {
+        "off": 1.2370900679998158,
+        "on": 0.8935759249980038
+      }
+    }
+  },
+  "native_result": "O0_O2_DEFAULT_BYTES_PROPOSAL_DETERMINISM_DAY48_RESTART_REAL_FAILURE_ATOMICITY_PASS",
+  "recovery_point": "785138b58 composed source; /tmp/perf01-composed-proposal-qualification native PASS; /tmp/perf01-composed-seasonal-O0 and O2",
+  "seasonal_preservation": "FRESH_COMBINED_O0_O2_481_DAY_AND_YEAR365_RESTART_PASS",
+  "documentation_checks": {
+    "source": "PASS",
+    "strict_build": "PASS"
+  },
+  "grid_preservation": {
+    "owner": "integration/mc-sol01/native_grid/verify.py",
+    "controls": 6,
+    "fresh_case": "41cells2days proposalOFF exact state endpoint budget",
+    "evidence": {
+      "decoded_sha256": "9e692c10714b51ba3ba93c252d934ce934db4c97c7191a955f73bd6d088ae6db",
+      "bytes": 882344,
+      "members": 1466
+    },
+    "overscoped_probe": "ABORTED_NOT_PASS_RETAINED"
+  },
+  "nut_limits_preservation": "CURRENT_SOURCE_RAW_FINITE_DONOR_516_CASES_HIST_AND_COUPLED_PASS_WITH45_PREDECESSOR_CONTROLS"
+}

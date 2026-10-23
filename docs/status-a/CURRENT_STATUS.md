@@ -1,5 +1,6 @@
 # SWAP5 Status-A current status
 
+
 HIST-INTEGRATION01 seasonal native bottom flux is canonically admitted by
 [PR1392](https://github.com/abhedwig-cell/SWAP5/pull/1392), merge
 `03fd18d7d60e423c59e1ecef5661d259f470f69e`, exact qualified complete tree
@@ -11,6 +12,15 @@ source/raw controls. Exact original B1.12 Andelst O2 also completes481days
 and reproduces retained printed water outputs. The original SWAP5 project
 still rejects SWRAIN3; broader process composition and the actual4x-rain
 Picard day8 water rejection remain open. No full SOL/NUT/master promotion.
+PERF01 optional native crop step proposals,23 October2026: the
+[bounded result](../performance/PERF01_NATIVE_PROPOSAL_20261023_RESULT.md)
+qualifies unchanged proposal runtime with atomic whole-day ordinary-policy retry
+on water rejection. O0/O2 default bytes,proposal determinism,exact day48 restart,
+eight real failed-trial joint generations and24 source/raw controls pass.
+Observed full project time falls1.341 to0.804s at1x and1.237 to0.894s at4x.
+Default remains OFF;zero tracer only;no shared solver/runtime change or full
+SOL/NUT promotion. Local qualification and actual canonical admission remain
+separate in `PERF01_NATIVE_PROPOSAL_20261023_STATUS.json`.
 
 
 PR1388 refined native year is canonically admitted at
