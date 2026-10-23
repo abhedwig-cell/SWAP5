@@ -1,0 +1,46 @@
+{
+  "status": "BOUNDED_FCT_RESEARCH_PROTOTYPE_CANONICALLY_ADMITTED",
+  "canonically_admitted": true,
+  "pull_request": 1395,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1395",
+  "canonical_merge": "7bfc69e5a33b9f5d6cb370ed473bbeae1b7c2440",
+  "qualified_head": "43b634fd71fbeb907b966862282bb2cc67d433d5",
+  "qualified_complete_tree": "0886ca2f978f8c152f324dd40c71d7e986c4b362",
+  "actual_merge_complete_tree": "0886ca2f978f8c152f324dd40c71d7e986c4b362",
+  "evidence_sha256": "74c05bfb093073db0b3c7a574443383677795c17596879b17c8b617e0a02196a",
+  "actual_merge_proof": {
+    "status": "BOUNDED_LINEAR_UNIFORM_ADVECTION_FCT_PROTOTYPE_O0_O2_PASS",
+    "profiles": 64,
+    "unsupported_rejections": 288,
+    "maximum_corrected_to_baseline_l1_ratio": 0.6851376231695053,
+    "max_step_mass_residual": 1.7763568394002505e-15,
+    "max_cumulative_mass_residual": 1.5543122344752192e-15,
+    "production_activated": false,
+    "native_qualified": false,
+    "nonlinear_Freundlich_qualified": false,
+    "full_mc_sol01_closed": false,
+    "evidence_controls": [
+      "missing corrected profile",
+      "foreign correction source",
+      "negative stock with consistent file hash",
+      "false native qualification",
+      "missing failed execution stream",
+      "failed attempt relabeled success"
+    ]
+  },
+  "actual_merge_preservation": {
+    "owner": "integration/audits/verify_nut_historical_output_caller.py",
+    "qualified": true,
+    "controls": 24
+  },
+  "qualification_record": "integration/mc-sol01/fct_prototype/STATUS.json",
+  "production_activated": false,
+  "native_qualified": false,
+  "nonlinear_Freundlich_qualified": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "production_default_tolerance_or_owner_changes": false,
+  "master_dispositions_changed": false,
+  "next_safe_work": "Separate contract and physical qualification for accepted water traces, changing water, nonlinear sorption and native restart composition before exposing any production/native policy.",
+  "hosted_qualification": "NOT_SELECTED_IMPACT: isolated research module; no hosted PASS claimed"
+}
