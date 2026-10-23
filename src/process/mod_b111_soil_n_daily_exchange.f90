@@ -152,7 +152,7 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(c_demand<c_supply)then
+      if(demand_depleted.or.c_demand<c_supply)then
         result%cnh4_end=c_supply
         result%cnh4_average=cav_supply
         result%nsupply_nh4_kg_m3_day=supply_supply
@@ -206,7 +206,7 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(c_demand<c_supply)then
+      if(demand_depleted.or.c_demand<c_supply)then
         result%cno3_end=c_supply
         result%cno3_average=cav_supply
         result%nsupply_no3_kg_m3_day=supply_supply
@@ -257,6 +257,7 @@ contains
     real(real64),intent(in)::tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0
     type(b111_soil_n_transport_result_t),intent(out)::r
     logical,intent(out),optional::depleted
+    logical::empty_equilibrium
     if(present(depleted))depleted=.false.
     if(f%nondepleting_top)then
       ! Same unconstrained WaterN ODE, with root loss included in qout and
@@ -267,7 +268,13 @@ contains
            ratecon,max(0d0,producpot),drybd,sorpcoef,cseep, &
            ctop+min(0d0,producpot)*f%depth_m/f%wflux_intop,clat,c0,r)
       if(r%status/=B111_NTRANS_OK)return
-      if(r%depletion_time<f%dt_day.or.r%top_unmet>0d0.or.r%concentration_end<=0d0)then
+      ! An empty homogeneous equation stays exactly zero. This is not donor
+      ! exhaustion: no prescribed production, boundary loading or top sink
+      ! needs to be partitioned. Keep every genuinely exhausting trial closed.
+      empty_equilibrium=c0==0d0.and.producpot==0d0.and.ctop==0d0.and. &
+        (f%wflux_inbot==0d0.or.cseep==0d0).and.(f%wflux_inlat==0d0.or.clat==0d0)
+      if(r%depletion_time<f%dt_day.or.r%top_unmet>0d0.or. &
+         (r%concentration_end<=0d0.and..not.empty_equilibrium))then
         ! A depleted demand trial has a lower end concentration than every
         ! admissible supply trial. Retain that ordering only for the caller's
         ! comparison; its concentrations and extraction may never be committed.

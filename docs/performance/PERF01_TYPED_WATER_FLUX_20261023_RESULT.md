@@ -124,6 +124,22 @@ FCT negative-control sets. General and historical owner entrypoints pass. The
 unchanged original bounded FSI35 native O0/O2 semantic/oracle runner also passes;
 its exact transaction implementation identity is explicitly registered while
 historical identities and every native assertion remain unchanged. The live
-4369-member capsule and separate live qualification record retain the raw
+4370-member capsule and separate live qualification record retain the raw
 executions, earlier validator failures, source hashes and completed gates.
 Canonical admission still requires the actual merge and exact-tree check.
+
+PR1414 subsequently added exact empty mineral equilibrium at `1b69c9d9`.
+Its one changed daily-exchange provider has no overlap with actual native194
+or FCT inputs. Only affected current HIST/crop composition is rerun; previous
+live evidence is retained separately. The current empty-pool owner retains its
+original96 direct ODE/original-source checks and198 predecessor controls.
+
+The PR1414 composition passes151 current controls (the earlier commit subject
+mistakenly says148; the versioned result contains the actual151 labels).
+The subsequent canonical FCT-sinks research is preserved by an additional
+current checked execution and its unchanged original independent sink, budget,
+rollback and negative-control assertions. The first execution omitted three
+explicit toolchain identity files required by that owner; this metadata
+validation failure and its complete capture are retained. The recipe is rerun
+with the actual compiler driver, frontend and runtime-library identities; no
+assertion is relaxed and no native result is relabelled.

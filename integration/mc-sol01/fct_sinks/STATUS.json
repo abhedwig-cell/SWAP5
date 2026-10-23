@@ -1,0 +1,20 @@
+{
+  "work_unit": "MC-SOL01-FCT-SINKS01",
+  "baseline": "03c1c7a41d66924e2d974275cd14d4bdc4101047",
+  "stage": "BOUNDED_EXTRACTING_SINK_FCT_O0_O2_QUALIFIED",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "production_activated": false,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/fct_sinks/CONTRACT.md",
+  "qualification_checkpoint": "65b94fdc01bd993288d2a2a6b35fa9fc33d7e3dd",
+  "validator_checkpoint": "c446b299",
+  "measurements": "integration/mc-sol01/fct_sinks/MEASUREMENTS.json",
+  "evidence": {"path": "integration/mc-sol01/fct_sinks/EVIDENCE.tar.xz.b64", "decoded_sha256": "fed61ddd999f9acf524f4122ec8cc3e00a1778fc7069503f425d5e26dd247255", "bytes": 438472, "members": 2294, "controls": 9},
+  "preservation": {"qualification_time_owner_controls": 179, "predecessor_pulse_controls": 8},
+  "current_reconciliation": {"record": "integration/mc-sol01/fct_sinks/CURRENT_RECONCILIATION.json", "canonical": "1b69c9d9", "compiled_and_generation_inputs_exact": 182, "generated_sources_exact": 6, "current_owner_controls": 198, "new_capsule_controls": 9, "concurrent_input_overlap": []},
+  "test_selection": {"process": "11-source checked real production O0/O2;162 cases, independent scalar algebra and finite volumes", "joint": "176-source actual Richards fixed roots/drainage O0/O2;48 cases,4668 primary substeps,960 atomic rejections,192 exact retries,96 exact checkpoint continuation windows", "expected_seconds": 180, "measured_complete_round_seconds": 110.14640897497884, "full_fci": "NOT_SELECTED_IMPACT: isolated research only", "RossFast_highest_low_air_native_year": "NOT_SELECTED_SCOPE_POLICY"},
+  "qualification_ceiling": "Positive prescribed root/drainage extraction, TSCF0/0.5/1, uniform homogeneous material and downward flow in frozen FCT domain; Freundlich0.5/1/2, dispersion/decay and real40/80cell Richards composition. No crop root-demand or head-dependent DRA/DIVDRA generator, new disk/fresh-process sink restart, general coupled-PDE accuracy or production activation.",
+  "next_safe_work": "Publish exact qualified tree; verify published head and actual merge with current owner before separate bounded admission."
+}

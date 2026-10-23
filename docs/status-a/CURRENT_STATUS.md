@@ -699,3 +699,30 @@ remain open. No frozen master row is promoted. Owning contract and actual receip
 `integration/mc-nut01/singular_assimilation/ADMISSION.json`.
 Scientific discussion:
 [regular organic determinant boundary](../science/MC_NUT01_SINGULAR_ASSIMILATION_20261023.md).
+
+## Post-Status-A MC-NUT01 empty mineral equilibrium, 2026-10-24
+
+PR #1414, actual merge `1b69c9d90a5e57b32c24517b1d378eb6d6275071`, admits the exact
+homogeneous WaterN zero solution in the signed-top adapter. Exhausted demand
+candidates lose ties against a valid empty supply candidate. Empty NH4 therefore
+permits valid nitrate uptake; both empty forms supply zero soil N. Exact
+mineralisation/juvenile-demand cancellation is also covered. Genuine selected
+sink exhaustion remains rejected; equations, tolerances and schemas are unchanged.
+GNU13.3 O0/O2 covers96 formerly rejected daily cases against independent DOP853,
+with unmodified original WaterN confirming the homogeneous branch. All288
+incumbent signed/default cases and all11 incumbent coupled profiles remain byte
+exact. Twenty-six actual eight-day Richards/crop/N runs,52 process restarts and
+four old-production rejection probes pass. All original HIST assertions pass in
+78 fresh processes including56 restarts,44 affected/transitive compiles and610
+verified unchanged closures. All198 controls retain all179 predecessor controls;
+owner/general/HIST/FSI35 checks pass on the actual merge. The complete actual tree
+`44294b383deee81d0a27cbf8b41e8c656b2bb0fd` equals the qualified tree.
+Both-empty zero loading cannot be exhausted by water extraction; its first
+chemical negative instead uses invalid temperature after actual water, separate
+from stale-span and hydraulic rejection. All complete rejected-state bytes match.
+Full NUT, genuine competing-sink exhaustion allocation and snow/persistent-surface
+N remain open. No frozen master row is promoted. Contract and actual receipt:
+`integration/mc-nut01/empty_equilibrium/CONTRACT.md` and
+`integration/mc-nut01/empty_equilibrium/ADMISSION.json`.
+Scientific discussion:
+[empty mineral equilibrium](../science/MC_NUT01_EMPTY_EQUILIBRIUM_20261024.md).
