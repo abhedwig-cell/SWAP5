@@ -8308,7 +8308,7 @@
     "historical_caller_successor_20261023": {
       "work_unit": "MC-NUT01-HISTORICAL-OUTPUT-CALLER",
       "baseline": "710b41736214bcec80f0fe9bea6660cafa449024",
-      "stage": "LOCALLY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER_REGISTRATION",
       "implemented": true,
       "persisted": true,
       "tested": true,
@@ -8319,9 +8319,9 @@
         "tests/nut-output/run_historical_output_caller.py"
       ],
       "dependency_surface": "Unchanged incumbent physical/calendar/output/restart owners; additive application dispatch and staged native TRUE startup only.",
-      "next_action": "Publish exact qualified application caller tree;safe canonical admission and actual-merge163 controls;register nine bounded master facets. General/default SWP/MET/CRP executable,negative active allocation and snow/persistent-surface N remain open;no full MC-NUT01 closure.",
+      "next_action": "Register admitted explicit historical saved-output application caller on nine bounded NUT facets. General/default historical SWP/MET/CRP executable and arbitrary input rotation;active-crop/immobilisation negative allocation;automatic snow/persistent-surface N;near-degenerate coefficients remain open. Preserve all163 controls;no full MC-NUT01 closure.",
       "full_mc_nut01_closed": false,
-      "canonically_admitted": false,
+      "canonically_admitted": true,
       "blockers": [],
       "partial_test_status": {
         "baseline_owner_and_controls": "PASS147_AT_EXACT_BASELINE",
@@ -8900,7 +8900,16 @@
         "src/adapter/mod_crop_soil_n_historical_output_application.f90": "0ee52b7fb49aa66db5ccf4b1e642b63daab0723b2f71af45f3d85377a4bfcb74"
       },
       "controls": 163,
-      "validation_seconds": 28.875933088002057
+      "validation_seconds": 28.875933088002057,
+      "canonical_admission": {
+        "pr": 1387,
+        "canonical_merge": "188f75ef04cd64a5a78ace0aa4b8977e7a130537",
+        "qualified_head": "4497c96f3ddd09c9ce541438686fe63bbece1e93",
+        "qualified_and_actual_merge_tree": "db1143475778b4a4bf302f20a00e20619b01673b",
+        "whole_tree_exact": true,
+        "actual_merge_controls": 163,
+        "receipt": "integration/mc-nut01/MC_NUT01_HISTORICAL_OUTPUT_CALLER_ADMISSION_20261023.json"
+      }
     }
   }
 }
