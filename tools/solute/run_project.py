@@ -102,6 +102,8 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
  if retain_step_proposal:lines.insert(lines.index('&surface')-1,' retain_accepted_step_proposal=.true.')
+ boesten=[float(r['value'])for r in references if r['kind']=='boesten_cofred']
+ if boesten:lines.insert(lines.index('&surface')-1,' boesten_evaporation=.true.,boesten_cofred='+repr(boesten[0]))
  if solute_transport!='reference':
   # Keep all old Reference input lines byte-identical except source binding.
   lines.insert(lines.index('&surface')-1,' solute_transport_scheme=1')
@@ -127,6 +129,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  audit=dict(schema=1,route='NATIVE_SWP_SIMPLE_CROP_ROTATION_ETREF',original_sources={name:sha(raw)for name,raw in sources},
   normalized_weather_sha256=sha(weather),periods=len(prepared),days=len(combined),profile_index=indices,prepared_periods=prepared)
  if seasonal:audit['seasonal_bottom']=dict(seasonal,year_starts=years)
+ if boesten:audit['boesten_cofred']=boesten[0]
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration

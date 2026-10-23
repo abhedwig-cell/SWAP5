@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
 BUILD="${RUNNER_TEMP:-${TMPDIR:-/tmp}}/swap5-ppa-wu04b-${GITHUB_RUN_ID:-local}-$$"
 mkdir -p "$BUILD"
-trap 'rm -rf "$BUILD"' EXIT
+if [[ "${SWAP5_KEEP_BUILD:-0}" != "1" ]]; then trap 'rm -rf "$BUILD"' EXIT; fi
 fail(){ echo "PPA_WU04B_GATE_FAIL $*" >&2; exit 1; }
 
 python3 - <<'PY'

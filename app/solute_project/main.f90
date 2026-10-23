@@ -13,6 +13,7 @@ program swap5_native_project_column
   use mod_b110_default_mvg_provider
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
   use mod_b111_persistent_pond, only: pond_step_t
+  use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED
   use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
@@ -39,6 +40,8 @@ program swap5_native_project_column
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
   logical :: seasonal_bottom=.false.
+  logical :: boesten_evaporation=.false.
+  real(real64) :: boesten_cofred=0d0
   integer :: bottom_year_count=0
   real(real64) :: bottom_amplitude=0d0,bottom_daymax=0d0,bottom_legacy_origin=0d0,bottom_year_starts(10)=0d0
   real(real64) :: bottom_amount
@@ -126,7 +129,7 @@ program swap5_native_project_column
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
-    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain
+    bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
   call get_command_argument(1,path)
@@ -215,6 +218,15 @@ program swap5_native_project_column
   call require(min(cdrain_mg_cm3,cseep_mg_cm3,rain_c,irrigation_c,runon_c,dry_mg_cm2_day)>=0d0.and. &
     max(cdrain_mg_cm3,cseep_mg_cm3,rain_c,irrigation_c,runon_c,dry_mg_cm2_day)<=1d6,'invalid source chemistry')
   call require(temporal_tolerance>0d0.and.temporal_tolerance<=1d-3,'invalid temporal tolerance')
+  call require(ieee_is_finite(boesten_cofred),'nonfinite Boesten parameter')
+  if(boesten_evaporation)then
+    call require(boesten_cofred>0d0.and.boesten_cofred<=1d0,'invalid Boesten COFRED')
+    call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation.and. &
+      .not.retain_accepted_step_proposal, &
+      'Boesten numerical/thermal combination not qualified')
+  else
+    call require(boesten_cofred==0d0,'inactive Boesten parameter')
+  end if
   t0=0d0
   do j=1,windows
     call require(all(ieee_is_finite([ends_day(j),rain_cm_day(j),irrigation_cm_day(j),runon_cm_day(j), &
@@ -332,9 +344,16 @@ program swap5_native_project_column
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
-  allocate(forcing%pond_input)
-  forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
-  forcing%pond_input%implicit_pond_evaporation=implicit_pond_evaporation
+  if(boesten_evaporation)then
+    p%boesten_evaporation_active=.true.;allocate(p%boesten_evaporation,forcing%boesten_evaporation)
+    p%boesten_evaporation%cofred=boesten_cofred
+    forcing%boesten_evaporation%ponding_max_cm=pond_max_cm
+    forcing%boesten_evaporation%runoff_resistance_day=runoff_resistance_day
+  else
+    allocate(forcing%pond_input)
+    forcing%pond_input%ponding_max_cm=pond_max_cm;forcing%pond_input%runoff_resistance_day=runoff_resistance_day
+    forcing%pond_input%implicit_pond_evaporation=implicit_pond_evaporation
+  end if
   chemistry%dz_cm=dz;chemistry%theta=initial%water_content
   chemistry%transport_scheme=solute_transport_scheme
   chemistry%bulk_density=spread(bulk_density,1,numnod);chemistry%kf=spread(kf,1,numnod)
@@ -367,6 +386,7 @@ program swap5_native_project_column
   template%template_id=column_id%template_id;template%physics_topology_id=660210_int64
   template%vertical_layout_id=660220_int64;template%state_layout_id=660230_int64
   template%solver_interface_id=660240_int64;template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  if(boesten_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   if(dynamic_temperature)then
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     p%soil_temperature_active=.true.
@@ -393,7 +413,10 @@ program swap5_native_project_column
     end if
     call require(code==JOINT_OK,'restart rejected')
   else
-    if(dynamic_temperature)then
+    if(boesten_evaporation)then
+      call fmr_new_b110_boesten_evaporation_committed_state(water,column_id%column_id,initial, &
+        boesten_evaporation_state_t(),0d0,ok)
+    else if(dynamic_temperature)then
       call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok,parameters=p)
     else
       call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok)
@@ -454,11 +477,19 @@ program swap5_native_project_column
         forcing%substep_root%request%cumulative_root_fraction=crop_input%cumulative_root_fraction
       forcing%root_extraction_sink=0d0
     end if
-    forcing%pond_input%rain_rate_cm_day=rain_cm_day(j)
-    forcing%pond_input%irrigation_rate_cm_day=irrigation_cm_day(j)
-    forcing%pond_input%runon_rate_cm_day=runon_cm_day(j)
-    forcing%pond_input%potential_bare_soil_evaporation_cm_day=soil_evaporation_cm_day(j)
-    forcing%pond_input%potential_pond_evaporation_cm_day=evaporation_cm_day(j)
+    if(boesten_evaporation)then
+      forcing%boesten_evaporation%precipitation_rate_cm_per_day=rain_cm_day(j)
+      forcing%boesten_evaporation%irrigation_rate_cm_per_day=irrigation_cm_day(j)
+      forcing%boesten_evaporation%runon_rate_cm_per_day=runon_cm_day(j)
+      forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
+      forcing%boesten_evaporation%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
+    else
+      forcing%pond_input%rain_rate_cm_day=rain_cm_day(j)
+      forcing%pond_input%irrigation_rate_cm_day=irrigation_cm_day(j)
+      forcing%pond_input%runon_rate_cm_day=runon_cm_day(j)
+      forcing%pond_input%potential_bare_soil_evaporation_cm_day=soil_evaporation_cm_day(j)
+      forcing%pond_input%potential_pond_evaporation_cm_day=evaporation_cm_day(j)
+    end if
     supply=pond_step_t();supply%t0=t0;supply%t1=t1;supply%rain_rate=rain_cm_day(j)
     supply%rain_c=rain_c;supply%irrigation_rate=irrigation_cm_day(j);supply%irrigation_c=irrigation_c
     supply%runon_rate=runon_cm_day(j);supply%runon_c=runon_c;supply%dry_deposition_rate=dry_mg_cm2_day
@@ -486,6 +517,8 @@ program swap5_native_project_column
     if(result%status/=JOINT_OK)then
       write(*,*)'joint status/water/chemical: ',result%status,result%water%status,result%chemical%status
       write(*,*)'rejected window/process/completed:',j,result%chemical%process_status,result%chemical%completed_substeps
+      write(*,*)'rejected attempts/solver/temporal/mass:',result%diagnostics%attempts, &
+        result%diagnostics%solver_rejections,result%diagnostics%temporal_rejections,result%diagnostics%mass_rejections
       write(*,*)'rejected chemical mass:',result%chemical%mass_before,result%chemical%mass_after, &
         result%chemical%external_in,result%chemical%external_out,result%chemical%residual
       call write_matrix_joint_restart_file('diagnostic-rejected.bin',column_id,template,p%parameter_set_id, &
@@ -540,7 +573,7 @@ program swap5_native_project_column
   call require(io==0,'cannot create state output')
   write(u,'(A)')'node,z_cm,dz_cm,head_cm,theta,concentration_mg_cm3,dissolved_mg_cm2,sorbed_mg_cm2'
   select type(q=>physical)
-  type is(fmr_b110_physical_state_t)
+  class is(fmr_b110_physical_state_t)
     do j=1,numnod
       write(u,'(I0,7(",",ES25.17E3))')j,z(j),dz(j),q%pressure_head(j),theta(j), &
         mobile%concentration_mg_cm3(j),mobile%mass_mg_cm2(j),companion%sorbed_matrix_mass(j)
@@ -630,7 +663,12 @@ contains
     do while(cursor<day_end)
       endpoint=min(day_end,rain_ends(idx))
       call require(endpoint>cursor,'nonprogressing detailed rain interval')
-      segment_forcing=forcing;segment_forcing%pond_input%rain_rate_cm_day=rain_rates(idx)
+      segment_forcing=forcing
+      if(boesten_evaporation)then
+        segment_forcing%boesten_evaporation%precipitation_rate_cm_per_day=rain_rates(idx)
+      else
+        segment_forcing%pond_input%rain_rate_cm_day=rain_rates(idx)
+      end if
       segment_supply=supply;segment_supply%t0=cursor;segment_supply%t1=endpoint
       segment_supply%rain_rate=rain_rates(idx)
       call run_pond_joint_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &

@@ -2,7 +2,8 @@ module mod_fmr_process_hydraulic_view_binding
   use mod_transaction_reference, only: transaction_state_t
   use mod_kernel_transactions, only: kernel_committed_state_t
   use mod_process_hydraulic_view, only: process_hydraulic_view_t
-  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t
+  use mod_fmr_serialized_reference_backend, only: fmr_b110_physical_state_t, fmr_b110_temporal_indicator_state_t, &
+       fmr_b110_boesten_evaporation_state_t
   implicit none
   private
 
@@ -31,6 +32,8 @@ contains
       call move_physical_hydraulic_view(physical, view, ok)
     type is (fmr_b110_temporal_indicator_state_t)
       call move_temporal_hydraulic_view(physical, view, ok)
+    type is (fmr_b110_boesten_evaporation_state_t)
+      call move_physical_hydraulic_view(physical%fmr_b110_physical_state_t, view, ok)
     class default
       return
     end select

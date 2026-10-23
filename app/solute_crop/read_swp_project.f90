@@ -10,6 +10,8 @@ program read_swp_project
  integer,allocatable::dd(:),mm(:),yyyy(:)
  real(real64),allocatable::tmn(:),tmx(:),rain(:),etref(:),times(:),output(:,:)
  real(real64)::soil_factor=1d0,rtim,dayrain,previous,legacy_time
+ integer::reduction_mode=0
+ real(real64)::cofred=0d0
  real(real64),allocatable::rain_times(:),rain_amounts(:),event_times(:),event_rates(:)
  integer,allocatable::rain_dd(:),rain_mm(:),rain_yyyy(:)
  real(real64)::tstart,tend,starts(MAX_CROPS),ends(MAX_CROPS),rds,pondmx,rsro,exponent,bottom,amplitude,daymax,fraction
@@ -29,7 +31,12 @@ program read_swp_project
  soil_factor_mode=0
  if(rdinqr('swcfbs'))call rdsinr('swcfbs',0,1,soil_factor_mode)
  if(soil_factor_mode==1)call rdsdor('cfbs',0d0,1.5d0,soil_factor)
- call zero('swmetdetail',1);call zero('swdivide',1);call zero('swredu',2)
+ call zero('swmetdetail',1);call zero('swdivide',1)
+ if(rdinqr('swredu'))call rdsinr('swredu',0,2,reduction_mode)
+ call require(reduction_mode==0.or.reduction_mode==2,'only SWREDU0 or Boesten SWREDU2 selected')
+ if(reduction_mode==2)then
+  call rdsdor('cofredbo',0d0,1d0,cofred);call require(cofred>0d0,'positive Boesten COFREDBO required')
+ end if
  call zero('swdra',3);call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
  call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
@@ -96,6 +103,7 @@ program read_swp_project
    write(u,'(A,I0,A)')'rain,',i,','//trim(rainnames(i))
   end do
   if(rain_mode==3)write(u,'(A)')'detailed_rain,0,1'
+  if(reduction_mode==2)write(u,'(A,ES25.16E3)')'boesten_cofred,0,',cofred
   do i=1,ncrop
    write(u,'(A,I0,A)')'crop,',i,','//trim(crops(i))//'.crp'
   end do
@@ -158,6 +166,8 @@ program read_swp_project
   write(u,'(A,I0)')'SWCFBS=',soil_factor_mode
   if(soil_factor_mode==1)write(u,'(A,ES25.16E3)')'CFBS=',soil_factor
   write(u,'(A,ES25.16E3)')'RDS=',rds
+  ! Preparation emits potential demand only. SWREDU2 is executed against each
+  ! candidate hydraulic state by the existing Boesten physical owner, not here.
   ! Native preparation needs only these explicit flags; physical original SWP
   ! remains separate. Pond factor is read from that original in this same adapter.
   fraction=1.25d0

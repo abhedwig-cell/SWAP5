@@ -613,6 +613,21 @@ macropore/drainage/Cauchy3/numerical heat composition remains open. This does
 not promote the Status-A denominator, whole SOL/NUT, profile accuracy, a wet
 production completion or general performance.
 
+The bounded HIST-INTEGRATION01 Boesten composition is qualified by
+`integration/audits/verify_native_boesten.py` and the sealed
+`integration/mc-sol01/boesten/STATUS.json`. It preserves predecessor assertion
+bodies by exact forwarding projection and separately records actual source,
+Boesten/root/pond-solute rejection/retry/ABA, V3 CRC/pair/layout decoding,
+O0/O2 native481days and day365 restart.36 current controls and40 frozen
+predecessor controls pass (including17 original rain controls). Current PR1399
+NUT preservation freshly executes78 HIST processes and four coupled runs with
+eight process restarts;74 affected compilations are fresh and580 unchanged
+module closures reused. NUT production sources stay byte-exact to PR1399.
+SWREDU0 preservation inheritance after the final
+Boesten-only guard/keyword refinements is explicit. Original full Andelst now
+reaches unsupported SWDRA; native drainage/macro/Cauchy3/heat and full SOL/NUT
+remain open. Canonical admission requires its separate actual-merge receipt.
+
 ## Post-Status-A bounded MC-NUT01 nondepleting competition, 2026-10-23
 
 PR #1399, actual merge `b17be3044128cca5fe79c6c44b2e2419bca7f57f`, admits an
