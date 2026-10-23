@@ -1,0 +1,63 @@
+{
+  "work_unit": "MC-SOL01-FCT-ACCEPTED-TRACE01",
+  "date": "2026-10-23",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_RESEARCH_ONLY",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1401",
+  "qualified_head": "981a97f70dd9acc43737116a16a9a2c46fd54eae",
+  "qualified_canonical_base": "3461a520fd2858782058cacb56f3cde606f2a188",
+  "actual_merge_base": "1796633cdf367f53fefa7df201d8541904577117",
+  "actual_merge": "13604d76cec8b6a34d7f9a2ce3d841989e366b6c",
+  "qualified_complete_tree": "dbd8e15955ddc73fbca267aadfe45a4a025ad459",
+  "actual_merge_complete_tree": "332162e3bade02ad94bcaf0c4aff55c05e8731cc",
+  "complete_tree_equal": false,
+  "work_unit_files_exact": 18,
+  "concurrent_delta": "PR1402 demand-candidate qualification and receipt advanced canonical during merge. All14 concurrent paths are outside qualified water/replay inputs. The new composed owner executes its own admitted source/raw proof.",
+  "qualified_input_overlap_with_concurrent_delta": [],
+  "actual_merge_checks": {
+    "source_bound_capsule": "PASS",
+    "evidence_controls": 12,
+    "composed_owner": "PASS",
+    "composed_owner_controls": 52,
+    "pre_Boesten_to_current_reconciliation": "PASS",
+    "work_unit_files_exact": "PASS",
+    "qualified_input_source_identity": "PASS"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/fct_accepted_trace/EVIDENCE.tar.xz.b64",
+    "decoded_sha256": "662295833db1ecf70e666eb2272152e9f658df5b81a753bb5aafcd3c924309c8",
+    "bytes": 1929368,
+    "members": 869
+  },
+  "summary": {
+    "water_cases": 12,
+    "accepted_water_substeps": 2486,
+    "replays": 72,
+    "late_atomic_rejections": 360,
+    "exact_split_continuations": 72,
+    "max_mass_residual_mg_cm2": 5.3701487997580353e-14,
+    "minimum_corrected_to_low_l1_ratio": 0.118905777192681,
+    "maximum_corrected_to_low_l1_ratio": 0.5856096227439453
+  },
+  "qualification_scope": "Recorded two-day actual Reference carriers, uniform40cm material, downward no-sink advection, positive-background Gaussian and constant control, Freundlich0.5/1/2,Kf0.2. Empirical independent carrier-reference refinement, not rigorous full coupled PDE error bound.",
+  "physical_option": "Existing exact_empty_pond_limit=true for BOTH comparators through exact two-keyword generated research successor.",
+  "actual_water_trace_qualified": true,
+  "time_series_accuracy_qualified": true,
+  "production_activated": false,
+  "native_qualified": false,
+  "full_mc_sol01_closed": false,
+  "qualification_record": "integration/mc-sol01/fct_accepted_trace/STATUS.json",
+  "source_reconciliation": "integration/mc-sol01/fct_accepted_trace/CURRENT_RECONCILIATION.json",
+  "previous_published_proof": "2570ba6f43f67599fd62762e51112535ac316605",
+  "docs": {
+    "source_checks": "PASS",
+    "strict_build": "PASS"
+  },
+  "hosted_actions": "No runs for qualified head. Local research qualification and actual-merge source/raw controls are the selected gates; no hosted CI PASS claimed.",
+  "next_safe_work": "Qualify joint water/chemical trial acceptance and native composition, including physical dispersion/decay and restart, before production activation.",
+  "selections": {
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "native_year": "NOT_SELECTED_SCOPE",
+    "RossFast": "NOT_SELECTED_POLICY",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  }
+}
