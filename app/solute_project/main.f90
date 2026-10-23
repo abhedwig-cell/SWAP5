@@ -14,7 +14,7 @@ program swap5_native_project_column
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
   use mod_b111_persistent_pond, only: pond_step_t
   use mod_fmr_b111_matrix_solute_route
-  use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK
+  use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED
   use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
   use mod_fmr_b111_pond_thermal_application,only:run_pond_thermal_interval
   use mod_pond_thermal_restart_file
@@ -222,9 +222,10 @@ program swap5_native_project_column
   call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &
     .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')
   call require(.not.any(soil_evaporation_cm_day>0d0).or.(.not.dynamic_temperature.and. &
-    .not.retain_accepted_step_proposal.and..not.implicit_pond_evaporation),'soil evaporation combination not qualified')
-  call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation.and. &
-    .not.retain_accepted_step_proposal,'crop combination not admitted')
+    .not.implicit_pond_evaporation),'soil evaporation combination not qualified')
+  call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation,'crop combination not admitted')
+  call require(.not.retain_accepted_step_proposal.or.(.not.picard_conductivity_iteration.and. &
+    .not.continuous_mvg.and..not.seasonal_bottom.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
   call require(swp_water_bootstrap.and.all(root_cm_day==0d0),'native crop forbids prescribed second root sink')
   call require(root_table_points>=2.and.root_table_points<=MAX_ROOT_KNOTS,'root knot count')
   call require(all(ieee_is_finite([maximum_root_depth_cm,root_relative_depth,root_density, &
@@ -338,6 +339,11 @@ program swap5_native_project_column
     call import_column_swp_chemistry(trim(legacy_swp),dz,z,dynamic_temperature,chemistry, &
       concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)
   end if
+  ! Proposal trajectories with positive tracer require separate qualification.
+  call require(.not.retain_accepted_step_proposal.or.(all(concentration_mg_cm3==0d0).and. &
+    initial_pond_mass_mg_cm2==0d0.and.rain_c==0d0.and.irrigation_c==0d0.and.runon_c==0d0.and. &
+    cdrain_mg_cm3==0d0.and.cseep_mg_cm3==0d0.and.dry_mg_cm2_day==0d0), &
+    'native proposal requires zero tracer')
   call require(.not.implicit_pond_evaporation.or.(chemistry%frexp==1d0.and. &
     .not.chemistry%temperature_active),'implicit pond imported chemistry not qualified')
   column_id%column_id=660101_int64;column_id%template_id=660201_int64
@@ -448,6 +454,16 @@ program swap5_native_project_column
       call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
     else
     call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+    end if
+    if(retain_accepted_step_proposal.and.result%status==JOINT_WATER_REJECTED)then
+      ! The failed joint trial leaves both committed states unchanged. Retry
+      ! this complete interval once through the incumbent numerical policy.
+      write(*,*)'SWAP5_PROJECT_STEP_PROPOSAL_FALLBACK',j,result%water%status, &
+        result%diagnostics%attempts,result%diagnostics%solver_rejections, &
+        result%diagnostics%temporal_rejections,result%diagnostics%headcalc_calls
+      numerical%retain_accepted_step_proposal=.false.
+      call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+      numerical%retain_accepted_step_proposal=.true.
     end if
     if(result%status/=JOINT_OK)then
       write(*,*)'joint status/water/chemical: ',result%status,result%water%status,result%chemical%status

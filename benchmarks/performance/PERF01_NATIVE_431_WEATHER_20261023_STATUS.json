@@ -10,7 +10,7 @@
   "tested": true,
   "qualified": true,
   "recovery_point": "590d3353 production repair followed by 8567bbc4 canonical reconciliation",
-  "next_action": "Qualify retained step proposals for native crop/soil evaporation through real accepted-state, balance, runoff and restart contracts before enabling.",
+  "next_action": "Finish explicit native proposal successor actual canonical admission; original saturated-flux admission remains intact",
   "authority_paths": [
     "docs/science/PERF01_SATURATED_FLUX_RESTART.md",
     "integration/performance/authority.py",
@@ -671,5 +671,10 @@
     },
     "production_changed": false,
     "next_target": "Qualify retained step proposals for native crop/soil evaporation through real accepted-state, balance, runoff and restart contracts before enabling."
+  },
+  "native_proposal_successor": {
+    "status_record": "benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json",
+    "status": "LOCALLY_QUALIFIED_AWAITING_ACTUAL_CANONICAL_ADMISSION",
+    "scope": "Optional nonthermal native simple-crop zero-tracer proposal with atomic whole-day ordinary-policy retry; default OFF; shared solver/runtime unchanged"
   }
 }

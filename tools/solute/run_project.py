@@ -27,7 +27,7 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject'):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False):
  if surface_exfiltration not in ['reject','historical_zero']:raise ValueError('unknown surface exfiltration law')
  if water_conductivity not in ['frozen','picard','picard_continuous']:raise ValueError('unknown water conductivity policy')
  if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
@@ -100,6 +100,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
+ if retain_step_proposal:lines.insert(lines.index('&surface')-1,' retain_accepted_step_proposal=.true.')
  if solute_transport!='reference':
   # Keep all old Reference input lines byte-identical except source binding.
   lines.insert(lines.index('&surface')-1,' solute_transport_scheme=1')
@@ -135,10 +136,11 @@ def main():
  ap.add_argument('--temporal-tolerance',type=float,default=1e-4)
  ap.add_argument('--solute-transport',choices=['reference','implicit_upwind'],default='reference')
  ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
- ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject');a=ap.parse_args()
+ ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
+ ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
- document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration)
+ document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal)
  # Keep all audit information inside the already-bound immutable input document;
  # never add an unbound sidecar to the admitted atomic output inventory.
  encoded=base64.b64encode(json.dumps(audit,sort_keys=True).encode()).decode()

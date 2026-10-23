@@ -33,6 +33,7 @@ def procedure(text,name):
  start=text.index(' subroutine '+name+'(')
  return text[start:text.index(' end subroutine',start)+len(' end subroutine')]
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').is_file() and 'source_admission' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_native_proposal_successor.py'))['source'](reader,changed)
  r=record(reader)['admission_candidate'];require(r['baseline']==BASE,'regular limit baseline')
  git('merge-base','--is-ancestor',BASE,'HEAD')
  require(not git('status','--porcelain','--',*SCIENCE),'dirty regular limit science')
@@ -131,11 +132,13 @@ def validate(f):
  require(original['scope']=='FROZEN_ORIGINAL_SOURCE_AND_ASSERTIONS_NOT_CURRENT_NATIVE','historical assertion scope mislabelled')
  return dict(qualified=True,status='FINITE_DONOR_REGULAR_LIMITS_CURRENT_HEADCALC_O0_O2_QUALIFIED',direct_cases_per_optimization=516,original_cases=84,hist_fresh_native_processes=78,hist_process_restarts=56,coupled_runs=4,coupled_fresh_restarts=8,predecessor163_scope='Re-executed on exact original188f source; current composition separately qualified',full_mc_nut01_closed=False)
 def verify():
+ if (ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').is_file() and 'source_admission' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_native_proposal_successor.py'))['verify']()
  source();old=predecessor()['verify']();current=validate(capsule())
  return {**old,**current,'qualification_scope':'BOUNDED_FINITE_DONOR_NUMERICAL_LIMITS_WITH_CURRENT_COMPOSITION_AND_FROZEN_PREDECESSOR_ASSERTIONS','canonically_admitted':False}
 def nut_verify():return verify()
 def fsi35_successors():return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_saturated_flux_successor.py'))['fsi35_successors']()
 def self_test():
+ if (ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').is_file() and 'source_admission' in json.loads((ROOT/'benchmarks/performance/PERF01_NATIVE_PROPOSAL_20261023_STATUS.json').read_text()):return __import__('runpy').run_path(str(ROOT/'integration/performance/verify_native_proposal_successor.py'))['self_test']()
  source();old=predecessor()['self_test']();require(len(old)==30,'incumbent30 seasonal assertion controls lost')
  passed=['predecessor:'+p for p in old];f=capsule();validate(f)
  def reject(label,fn):
