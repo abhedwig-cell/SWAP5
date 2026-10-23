@@ -1,10 +1,11 @@
 """Actual checked O2 CPU observations for the qualified prefix and wet failure."""
 import argparse,csv,json,resource,shutil,subprocess,time
 from pathlib import Path
-p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--normal',type=Path,required=True);p.add_argument('--wet',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir();runs={}
-for label,source,days,rc in [('normal',a.normal,469,0),('wet',a.wet,97,1)]:
+p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--normal',type=Path,required=True);p.add_argument('--wet',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--normal-days',type=int,default=469);a=p.parse_args();out=a.output.resolve();out.mkdir();runs={}
+for label,source,days,rc in [('normal',a.normal,a.normal_days,0),('wet',a.wet,97,1)]:
  stage=out/label;stage.mkdir()
  for name in ['input.nml','input.swp']:shutil.copy2(source/name,stage/name)
+ a.exe.chmod(a.exe.stat().st_mode|0o100)
  cmd=[str(a.exe.resolve()),'input.nml','-',str(days),'input.swp'];before=resource.getrusage(resource.RUSAGE_CHILDREN);t=time.perf_counter();r=subprocess.run(cmd,cwd=stage,capture_output=True,timeout=300);wall=time.perf_counter()-t;after=resource.getrusage(resource.RUSAGE_CHILDREN)
  for k in ['stdout','stderr']:(stage/k).write_bytes(getattr(r,k))
  assert r.returncode==rc

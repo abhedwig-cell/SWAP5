@@ -953,3 +953,17 @@ this does not qualify simultaneous full drainage/NUT/FCT physics. Full
 original SWP now reaches the explicit unsupported SWMACRO gate. The remaining
 macro/Cauchy3/heat/full original soil/crop composition and full SOL/NUT stay
 open. No mastercoverage row is promoted by this bounded continuation.
+
+### Day470 Reference saturated-flux successor
+
+The matched continuous-MvG/modified-Picard route can now use the existing
+mass-guided trial-guess restart after ordinary nonlinear failure. Actual O0/O2
+native original-DRA execution completes481 days with exact day365 process
+restart, exact optimization outputs and unchanged1e-10 water/solute gates.
+The prior no-DRA481-day outputs remain byte exact. The wet4x case still rejects
+day7 atomically. Current NUT78 HIST processes plus18 coupled cases/36 restarts
+and both current FCT research compositions are re-executed independently.
+Source, raw evidence and exact admission authority are
+`integration/mc-sol01/drainage/DAY470_STATUS.json` and its separate admission
+receipt when present. This is a SWAP5 numerical improvement on the bounded
+native soil/simple-crop composition. Full original Andelst remains open.

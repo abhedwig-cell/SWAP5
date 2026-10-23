@@ -1,0 +1,103 @@
+{
+  "work_unit": "HIST-INTEGRATION01 day470 saturated flux Picard successor",
+  "baseline": "eb4288359e8208bb2fb03b22c622a68315836455",
+  "initial_baseline": "ef2110c6b0f1aa315eabb00c3672705b6d51a3bf",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "qualification_owner": "integration/audits/verify_saturated_picard.py",
+  "current_source_raw_controls": 17,
+  "frozen_predecessor_controls": 156,
+  "current_NUT_HIST_processes": 78,
+  "current_NUT_coupled_runs": 18,
+  "current_NUT_process_restarts": 36,
+  "O0_O2_exact": true,
+  "day365_restart_exact": true,
+  "prior_no_DRA481_exact": true,
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS",
+  "canonically_admitted": false,
+  "owned_surface": "Reference headcalc failed-solve initial-guess eligibility only",
+  "interfaces_changed": false,
+  "invariants": [
+    "single physical owner",
+    "Reference authority",
+    "unchanged hard mass",
+    "immutable origin",
+    "atomic rollback",
+    "source-bound restart"
+  ],
+  "authority_paths": [
+    "docs/science/PERF01_SATURATED_FLUX_RESTART.md",
+    "integration/mc-sol01/drainage/ADMISSION.json"
+  ],
+  "relevant_paths": [
+    "src/legacy/b1_10_port/headcalc.f90",
+    "app/solute_project/main.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90"
+  ],
+  "dependency_surface": "Measured native build input manifest and actual current drainage/NUT owner",
+  "test_selection": {
+    "expected_seconds": 280,
+    "selected": "Matched/unmatched real solver driver O0/O2; actual481-day native original-DRA full and365-day split/restart O0/O2; hard water/solute budgets; affected prior481 no-DRA preservation and wet failure rollback; current NUT/FCT closure reconciliation",
+    "existing_evidence": "Existing469-day preimage and failed470 raw retained; all194 native compiled input bytes initially verified unchanged at ef2110 except the new headcalc repair",
+    "not_selected": [
+      "highest low-air",
+      "RossFast",
+      "new1e-6",
+      "unrelated full FCI"
+    ]
+  },
+  "diagnostic": "One diagnostic relink reuses checked current194-provider inputs; only two eligibility guards generated differently. Independent day469 restart completes day470 in0.026 seconds. This is diagnostic evidence, not full qualification.",
+  "last_reconciled_head": "247b9f5b6d9e3da7505fdf85c192b45a1cc41e2a",
+  "current_reconciliation": "PR1409 organic resonance outside every native compiled input; rerun current78 HIST processes using2 fresh HeadCalc compiles and652 verified unchanged closures, then18 actual coupled runs/36 process restarts. PR1410 reactive research freshly rebuilt and executed; original research assertions retained.",
+  "extended_selection": "Current research172-provider joint24 cases and175-provider reactive joint24 plus24 small reactive cases selected because HeadCalc is compiled by these consumers. Expected240 seconds; original assertions and all hard balances unchanged. Frozen156 ancestor controls execute on exact canonical baseline, separately from current physics.",
+  "normal481_CPU_seconds": 47.05725,
+  "wet_failed_prefix_CPU_seconds": 29.167573,
+  "general_speed_claim": false,
+  "bounded_days": 481,
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "next_action": "Seal current physics and original ancestor assertions, verify owner controls, publish one bounded qualified PR and verify actual merge tree",
+  "blockers": [],
+  "scientific_delta": {
+    "integration/audits/verify_nut_resonant_pool.py": "M",
+    "integration/audits/verify_saturated_picard.py": "A",
+    "src/legacy/b1_10_port/headcalc.f90": "M",
+    "tests/nut-sol/measure_native_drainage.py": "M",
+    "tests/nut-sol/preserve_saturated_picard.py": "A",
+    "tests/nut-sol/qualify_saturated_picard.py": "A",
+    "tests/nut-sol/reconcile_saturated_picard_nut.py": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_nut_resonant_pool.py": "5ada86cca12acd8a77caa388dfa80421a5f52341644a9abf9a44888741e303f6",
+    "integration/audits/verify_saturated_picard.py": "3ba9e049ed26c9686aeb3803c7abce32690fd204a80bcd2634f253d8e0fc2dc7",
+    "integration/mc-sol01/drainage/seal_day470.py": "116c220fe2fefe54ca507badeb1a1c5d9b5e5819db6b04146e33d308262cd18b",
+    "src/legacy/b1_10_port/headcalc.f90": "05b587da9910dac6480e74c6c3bd119f89f5467d9f813a2dfe0911a5cebdef9f",
+    "tests/nut-sol/measure_native_drainage.py": "09310093633593811d38b5fd149d3612164c0ca96ab94195873fff0b272cb5c0",
+    "tests/nut-sol/preserve_saturated_picard.py": "3333e3c816bce87e1eb5e6ea91ac31d83f94f24e655ccab1f6f34b8b81a94a69",
+    "tests/nut-sol/qualify_saturated_picard.py": "91019cf853250aa8cd28e325b635800cca8c7ca5953392735c59ee1c388245a5",
+    "tests/nut-sol/reconcile_saturated_picard_nut.py": "379248052b2144ba22ced94b74867c85d4330f647477f7246250bcc0954268e1"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/EVIDENCE_DAY470.tar.xz.b64",
+    "sha256": "7c65b05b78a72e2b410f0d0f1e2515fd413b7e5ba2b8dcbb98bc3662678a482f",
+    "bytes": 4649060,
+    "members": 8428
+  },
+  "metadata_successor": {
+    "head": "247b9f5b6d9e3da7505fdf85c192b45a1cc41e2a",
+    "changed_paths": [
+      "docs/status-a/CURRENT_STATUS.md",
+      "docs/status-a/TRACEABILITY.md",
+      "integration/mc-nut01/organic_resonance/ADMISSION.json",
+      "integration/mc-nut01/organic_resonance/STATUS.json"
+    ],
+    "scientific_inputs_unchanged": true,
+    "qualified_head": "fbe5d8aaead594123cd9ca8dfec24efda9262e3f",
+    "qualified_complete_tree": "8af6e503046c24a7a8e7531a6c71b290bdda96d7",
+    "qualification_inherited_on_exact_scientific_surface": true
+  }
+}

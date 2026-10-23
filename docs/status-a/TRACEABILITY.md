@@ -722,6 +722,14 @@ no master row is promoted. Owning contract and actual admission receipt:
 `integration/mc-nut01/single_zero_pool/ADMISSION.json`. Scientific discussion:
 [one stationary organic receiving pool](../science/MC_NUT01_SINGLE_ZERO_POOL_20261023.md).
 
+HIST-INTEGRATION01 Reference day470 repair is owned by
+`integration/audits/verify_saturated_picard.py`, forwarded through the unchanged
+NUT resonance assertion body. Its DAY470_STATUS.json binds current source and
+raw481-day O0/O2/restart evidence, current78 HIST processes and18 crop/N
+compositions/36 restarts, current FCT research and the separately frozen156
+ancestor controls. The actual merge receipt establishes canonical admission.
+It does not qualify full original Andelst or complete the wet97-day request.
+
 
 ## Post-Status-A MC-NUT01 organic resonance, 2026-10-23
 
