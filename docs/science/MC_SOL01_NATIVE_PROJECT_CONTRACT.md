@@ -562,3 +562,15 @@ It does not establish O0 annual execution, spatial convergence, original full
 Andelst equivalence, general/default historical dispatch or broader heat/snow/
 age/NUT composition. Production/defaults, all frozen capability dispositions,
 full MC-SOL01 and full MC-NUT01 flags remain unchanged.
+
+### Actual refined-year canonical admission, 23 October 2026
+
+PR1388 refined native year is canonically admitted at
+`8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0`; the complete merge tree exactly equals the
+qualified `ce3c27cec3af23dce16958eff3f8c5ec48317208`. Actual-merge capsule validation,
+all11 evidence controls and all163 current NUT preservation controls PASS.
+`integration/mc-sol01/MC_SOL01_REFINED_YEAR_ADMISSION_20261023.json`
+owns this admission. Production/defaults, capability dispositions and the
+qualification-time record are unchanged. Spatial convergence, the original full
+Andelst configuration, general historical/default dispatch and full SOL/NUT
+closure remain open.
