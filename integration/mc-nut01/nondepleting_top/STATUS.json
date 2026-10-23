@@ -1,0 +1,106 @@
+{
+  "workstream": "MC-NUT01",
+  "work_unit": "Nondepleting signed top with crop competition",
+  "baseline": "67a21309490a4e5398e619bb28f0414d6d774757",
+  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "invariants": [
+    3,
+    7,
+    13,
+    21,
+    23,
+    25,
+    26,
+    30
+  ],
+  "contract": "CONTRACT.md",
+  "production_changes": [
+    "src/crop/mod_crop_soil_n_day.f90",
+    "src/process/mod_b111_soil_n_daily_exchange.f90",
+    "src/process/mod_b111_soil_n_reactive_owner.f90",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+  ],
+  "test_selection": {
+    "direct": "O0/O2 actual daily exchange, independent variable-capacity ODE; exhaustion and invalid mode negatives",
+    "composition": "O0/O2 actual Richards/crop/soil-N accepted/rejected days and process restarts",
+    "preservation": "Original HIST runner assertions, exact default outputs; recompile changed providers and transitive consumers only",
+    "expected_native_seconds": 120,
+    "expected_compilation_seconds": 180,
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "RossFast": "NOT_SELECTED",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "scientific_scope": "Explicit opt-in, strictly positive end concentrations in every selected/demand/supply branch. Exhaustion rejects transaction. No new sink allocation rule.",
+  "full_mc_nut01_closed": false,
+  "canonically_admitted": false,
+  "evidence": {
+    "path": "integration/mc-nut01/nondepleting_top/EVIDENCE.tar.xz.b64",
+    "sha256": "163cd3364ab3fb51daad34e66267d2b5640e7d74dcf2e9f68d73f81d6ebf4b80",
+    "bytes": 202804,
+    "members": 2504,
+    "excluded": "Object/module/executable bytes are explicitly hashed, not embedded; raw executions and build receipts retained."
+  },
+  "scientific_delta": {
+    "integration/audits/run_nut_nondepleting_preservation.py": "A",
+    "integration/audits/verify_native_detailed_rain.py": "M",
+    "integration/audits/verify_nut_nondepleting.py": "A",
+    "src/crop/mod_crop_soil_n_day.f90": "M",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "M",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "M",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "M",
+    "tests/nut-crop/nondepleting_joint.inc": "A",
+    "tests/nut-crop/run_nondepleting_joint.py": "A",
+    "tests/nut-reactive/run_nondepleting_exchange.py": "A",
+    "tests/nut-reactive/test_nondepleting_exchange.f90": "A"
+  },
+  "incumbent_inputs": {
+    "app/solute_crop/read_swp_crop.f90": "876beee36582d4eaa4e9b4e98d35a0047e640977519a868e4abf678fa0eeb74f",
+    "app/solute_crop/read_swp_project.f90": "b511c01b5ac5c3b1cf55d66da6336dd731b93a9ce091143c25dea74b6718d846",
+    "app/solute_project/main.f90": "f9ba8618980a2680fada6616ef0469a6a0c4455977fbed318fea48b3cbdd0070",
+    "integration/performance/verify_native_proposal_successor.py": "ab5d6763b7e0885655a387c63b0093cc602d5daa7d66ff2e9dc89e51032c8c3a",
+    "tests/nut-sol/measure_detailed_rain.py": "79f049389c8367171ddf4e2e855808f1fabfb419ae358cc61f0604bba116eeec",
+    "tests/nut-sol/preserve_rain_predecessor.py": "971d89d907a98809e18fefae570bf7003862eea434a6017b1764e29787c8ce0f",
+    "tests/nut-sol/qualify_detailed_rain_rollback.py": "f0e226c5805eb1b8c41189a619b3c1c04274aeb32edd14401c36716c10f664f8",
+    "tests/nut-sol/qualify_native_detailed_rain.py": "10ea96a1e64ba130ff832e03d65d9b0dff293425e1bf5b1ed82182f564e7f3dc",
+    "tools/solute/run_project.py": "281558588cbd512c1214e70ca580ce161477b24c0638b8be2ae1eb0d9814a151"
+  },
+  "postimages": {
+    "integration/audits/run_nut_nondepleting_preservation.py": "a90464d4ff72d47db27ab3c0c73bed9c1b0185c472e8b2c9eaf34dbd3ffccd8d",
+    "integration/audits/verify_native_detailed_rain.py": "b12f01a8638acc7227e2621a8c39359475ed558ac68ef96bc45b012fa14b2939",
+    "integration/audits/verify_nut_nondepleting.py": "cb7194f436defd3af6db7a609e841b47df1a80b9d255ea72ed7739f10e9af8fb",
+    "integration/mc-nut01/nondepleting_top/CONTRACT.md": "267f32af4dae9a6d625a04c50821255017303da70767a18eb503fba0c5e07a47",
+    "integration/mc-nut01/nondepleting_top/seal.py": "ba667aa329429e2df084e897c1ad17e99c125ff9a17d5ccbba905558eefca38a",
+    "src/crop/mod_crop_soil_n_day.f90": "051cb408658b5acda61cc5b41259dc621a17ce67aa1ea38f76b4205f327054bb",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "aae7a8e4de8455c118fb37802f2e0c943a891bec84e36920aa70172aceabb322",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "2baeadc13d06b5a7bd7f27acb35f5edcfd5e23b903a773a23f8b7623c386f50a",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "2714f07be491dbd146691b5d7c7859ea194f6fe6780057a75d2ab3c0dad0855a",
+    "tests/nut-crop/nondepleting_joint.inc": "773f10898075e083bde7f88df84a9b00080325af625291de91889f75c76d900e",
+    "tests/nut-crop/run_nondepleting_joint.py": "aaa87104d53929b2d1611562f5269fc9eff0617c5c1ae8506d507d3100d470e2",
+    "tests/nut-reactive/run_nondepleting_exchange.py": "13de56c002680378f59b777247555c0738a14189a77d338cf06b7f4d7661f39a",
+    "tests/nut-reactive/test_nondepleting_exchange.f90": "2d88240451e4a059f33aa59e22a0cdea90ef99bb4bda3e062ba9b034535fafbc",
+    "docs/science/MC_NUT01_NONDEPLETING_COMPETITION_20261023.md": "31ae3c0b2982f11d799f3c10f76ce72a0efe6133e5d27a0f74e81771d4cc9b69"
+  },
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "source_commit": "2b20a1012db3feda8aabdfb2b9287b080064801a",
+  "results": {
+    "direct_cases_per_optimization": 144,
+    "original_and_independent_ode": true,
+    "default_outputs_byte_exact": true,
+    "HIST_fresh_native": 78,
+    "HIST_restarts": 56,
+    "HIST_fresh_compiles": 46,
+    "HIST_identical_module_closure_compile_reuse": 608,
+    "coupled_runs": 4,
+    "coupled_days_per_run": 8,
+    "separate_process_restarts": 8,
+    "byte_exact_rejection_kinds": [
+      "exhaustion",
+      "stale_environment",
+      "water"
+    ]
+  },
+  "inherited_scope": "Original17 detailed rain corruption assertions preserved. Original regular-limits archived numerical assertions retained with four explicitly historical provider identity reads. Current changed providers are qualified by fresh O0/O2 physical and default preservation runs.",
+  "current_corruption_controls": 40
+}

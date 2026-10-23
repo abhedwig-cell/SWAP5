@@ -172,13 +172,14 @@ contains
   end associate
   if(crop%nitrogen%b112_residue_profile)total=total+sum(crop%nitrogen%retained_dead_n)*1d-4
  end function
- subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment,surface_water,historical_top_water)
+ subroutine advance_crop_soil_day(state,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm,weather,r,environment,surface_water,historical_top_water,nondepleting_top)
   type(crop_soil_state_t),intent(inout)::state
   real(real64),intent(in)::t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,potential_cm
   type(wofost_one_day_forcing_t),intent(in)::weather
   type(crop_soil_receipt_t),intent(out)::r
   type(soil_n_day_environment_t),intent(in),optional::environment
   real(real64),intent(in),optional::surface_water,historical_top_water
+  logical,intent(in),optional::nondepleting_top
   type(wofost_rate_parameter_bundle_t)::common
   type(wofost81_daily_parameter_contract_t)::p81
   type(wofost_accepted_window_aggregates_t)::a
@@ -241,7 +242,7 @@ contains
   d%lai_crit_nupt=state%p%lai_crit_nupt
   soil_trial=state%soil
   r%status=CROP_SOIL_REACTION
-  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d,environment,surface_water,historical_top_water)
+  call advance_reactive_day(soil_trial,t0,t1,water_end,outflow,in_bottom,in_lateral,root_water,r%soil,d,environment,surface_water,historical_top_water,nondepleting_top=nondepleting_top)
   if(r%soil%status/=MINERAL_OK)return
   supply=r%soil%process%exchange%nsupply_total_kg_m2_day
   r%status=CROP_SOIL_APPLY
