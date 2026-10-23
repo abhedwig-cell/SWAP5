@@ -47,3 +47,10 @@ crash-consistent publication remain open. Actual canonical admission is
 recorded separately from this qualification-time result.
 
 Recheck with `python integration/mc-sol01/fct_reactive/verify.py --self-test`.
+
+Current canonical reconciliation: concurrent PR1409 at `5b15885a` changes15
+NUT paths with zero overlap against all181 qualified source/helper inputs.
+Those inputs and all five generated sources remain exact. The capsule and
+eight controls pass on the composed tree; the current composed owner and156
+controls also pass. The134-control capsule receipt above remains the original
+qualification-time proof. `CURRENT_RECONCILIATION.json` records the later state.

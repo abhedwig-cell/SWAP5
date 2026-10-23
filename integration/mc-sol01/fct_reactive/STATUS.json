@@ -24,6 +24,14 @@
     "controls": 8
   },
   "preservation": {"current_owner_qualified": true, "current_owner_controls": 134},
+  "current_reconciliation": {
+    "record": "integration/mc-sol01/fct_reactive/CURRENT_RECONCILIATION.json",
+    "canonical": "5b15885ad079477f31373ed96c9856e9e161fa11",
+    "unchanged_qualified_inputs": 181,
+    "current_owner_controls": 156,
+    "current_owner_qualified": true,
+    "capsule_and_eight_controls_pass": true
+  },
   "test_selection": {
     "small": "10-source checked real reactive closure at O0/O2:24 cases, exact OFF and zero-process delegation, invalid-rate rejection, independent finite-volume equations, analytical mode and temporal refinement",
     "joint": "175-source checked real water/research closure at O0/O2:24 cases,2292 primary substeps,480 rejected trials,96 retries and48 in-memory checkpoint continuation windows",
