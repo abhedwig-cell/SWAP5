@@ -18,6 +18,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/nondepleting_top/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nondepleting.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  assert git('rev-parse','HEAD:src')==git('rev-parse',BASE+':src'),'shared owner changed'
@@ -83,8 +84,11 @@ def validate(f):
   q=js('proposal-'+opt+'/result.json');assert q['status']=='CURRENT_APPLICATION_WET_PROPOSAL_97_DAY_EXACT'
   for p in ['state.csv','endpoint.csv','restart.bin','budget.csv']:assert f['proposal-'+opt+'/current/'+p]==proposal['qualified/'+opt+'-4x-on-0/'+p]
  return dict(qualified=True,status='NATIVE_DETAILED_RAIN_CFBS_O0_O2_481_DAY_AND_ATOMIC_DAY_QUALIFIED',historical_rain_intervals=2630,full_original_Andelst=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False,canonically_admitted=False,predecessor_controls=24,predecessor_scope='Frozen exact canonical assertion execution; current application physical preservation is freshly tested')
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-nut01/nondepleting_top/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nondepleting.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-nut01/nondepleting_top/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nondepleting.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

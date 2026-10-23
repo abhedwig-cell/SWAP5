@@ -2,7 +2,7 @@ module mod_b111_soil_n_daily_exchange
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_b111_soil_n_transport, only: b111_soil_n_transport_result_t, evaluate_b111_soil_n_transport, &
-       evaluate_b111_soil_n_negative_boundary,B111_NTRANS_OK
+       evaluate_b111_soil_n_negative_boundary,B111_NTRANS_OK,B111_NTRANS_INVALID
   implicit none
   private
 
@@ -28,6 +28,7 @@ module mod_b111_soil_n_daily_exchange
     real(real64)::lai_crit_nupt=0.0_real64
     logical::crop_calendar_active=.false.
     logical::finite_donor_top=.false.
+    logical::nondepleting_top=.false.
     real(real64)::drybd=0.0_real64
     real(real64)::sorpcoef=0.0_real64
     real(real64)::ratecon_nitrif=0.0_real64
@@ -234,10 +235,14 @@ contains
     result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
     result%external_output_kg_m2=result%nh4_outflow_kg_m2+result%no3_outflow_kg_m2+ &
          result%nh4_crop_uptake_kg_m2+result%no3_crop_uptake_kg_m2+result%no3_denitrified_kg_m2
-    if(f%finite_donor_top)then
+    if(f%finite_donor_top.or.f%nondepleting_top)then
       result%nh4_boundary_input_kg_m2=(f%cnh4_lat*f%wflux_inlat+f%cnh4_seep*f%wflux_inbot)*f%dt_day
       result%no3_boundary_input_kg_m2=(f%cno3_lat*f%wflux_inlat+f%cno3_seep*f%wflux_inbot)*f%dt_day
       result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
+      if(f%nondepleting_top)then
+        result%top_requested=f%wflux_intop*[f%cnh4_top,f%cno3_top]*f%dt_day
+        result%top_actual=result%top_requested
+      end if
       result%external_output_kg_m2=result%external_output_kg_m2-sum(result%top_actual)
     end if
     if(.not.all(ieee_is_finite([result%cnh4_end,result%cnh4_average,result%cno3_end,result%cno3_average, &
@@ -251,6 +256,22 @@ contains
     type(b111_soil_n_exchange_forcing_t),intent(in)::f
     real(real64),intent(in)::tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0
     type(b111_soil_n_transport_result_t),intent(out)::r
+    if(f%nondepleting_top)then
+      ! Same unconstrained WaterN ODE, with root loss included in qout and
+      ! a signed constant production included in the aggregate top sink.
+      ! Accept only if there is no exhaustion: no sink partition is invented.
+      call evaluate_b111_soil_n_negative_boundary(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0, &
+           f%wflux_out+tcsf*f%wflux_transp,f%wflux_inbot,f%wflux_intop,f%wflux_inlat, &
+           ratecon,max(0d0,producpot),drybd,sorpcoef,cseep, &
+           ctop+min(0d0,producpot)*f%depth_m/f%wflux_intop,clat,c0,r)
+      if(r%status/=B111_NTRANS_OK)return
+      if(r%depletion_time<f%dt_day.or.r%top_unmet>0d0.or.r%concentration_end<=0d0)then
+        r%status=B111_NTRANS_INVALID;return
+      end if
+      r%production_actual=producpot
+      r%top_actual_rate=f%wflux_intop*ctop
+      return
+    end if
     call evaluate_b111_soil_n_transport(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0,f%wflux_out, &
          f%wflux_transp,f%wflux_inbot,f%wflux_intop,f%wflux_inlat,tcsf,ratecon,producpot,drybd,sorpcoef, &
          cseep,ctop,clat,c0,r)
@@ -266,7 +287,14 @@ contains
        f%cnh4_top,f%cnh4_lat,f%cnh4_seep,f%cno3_top,f%cno3_lat]
     ok=all(ieee_is_finite(v)).and.all(ieee_is_finite([f%cno3_seep,cnh4_t0,cno3_t0]))
     if(.not.ok)return
-    if(f%finite_donor_top)then
+    if(f%finite_donor_top.and.f%nondepleting_top)then
+      ok=.false.;return
+    end if
+    if(f%nondepleting_top)then
+      if(f%wflux_intop>=0d0)then
+        ok=.false.;return
+      end if
+    else if(f%finite_donor_top)then
       if(f%crop_calendar_active.or.abs(f%crop_n_demand_kg_m2)>0d0.or.abs(f%wflux_transp)>0d0.or. &
          f%wflux_intop>=0d0.or.f%nminer_kg_m3<0d0)then
         ok=.false.;return

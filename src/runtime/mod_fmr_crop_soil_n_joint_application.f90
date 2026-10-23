@@ -119,7 +119,7 @@ contains
     top=.01d0*amount;status=MINERAL_OK
   end subroutine
 
-  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface,historical_top_water,finite_donor_top)
+  subroutine run_crop_soil_n_joint_interval(backend,column,template,parameters,water,forcing,config,chemical,weather,t0,t1,result,environment,fallow,clean_surface_water,atmospheric_n_surface,historical_top_water,finite_donor_top,nondepleting_top)
     type(fmr_serialized_reference_backend_t),intent(inout)::backend
     type(fmr_logical_column_t),intent(in)::column
     type(fmr_template_t),intent(in)::template
@@ -133,7 +133,7 @@ contains
     type(crop_soil_n_joint_result_t),intent(out)::result
     type(soil_n_day_environment_t),intent(in),optional::environment
     logical,intent(in),optional::fallow,clean_surface_water,atmospheric_n_surface
-    logical,intent(in),optional::finite_donor_top
+    logical,intent(in),optional::finite_donor_top,nondepleting_top
   real(real64),intent(in),optional::historical_top_water
     type(kernel_checkpoint_t)::checkpoint
     type(kernel_candidate_state_t)::candidate
@@ -141,7 +141,7 @@ contains
     type(crop_soil_state_t)::chemical_trial
     type(crop_n_configuration_t)::cp
     integer(int64)::id
-    logical::ok,did_commit,inactive,admit_atmospheric_n,bounded_top
+    logical::ok,did_commit,inactive,admit_atmospheric_n,bounded_top,nondepleting
     integer::status
     real(real64)::clock,gross_top,root_sum,root_error,root_term,root_next
     integer::step
@@ -156,6 +156,8 @@ contains
     result=crop_soil_n_joint_result_t()
     inactive=.false.;if(present(fallow))inactive=fallow
     bounded_top=.false.;if(present(finite_donor_top))bounded_top=finite_donor_top
+    nondepleting=.false.;if(present(nondepleting_top))nondepleting=nondepleting_top
+    if(nondepleting.and.(bounded_top.or.inactive.or..not.present(historical_top_water)))return
     if(bounded_top.and.(.not.inactive.or..not.present(historical_top_water)))return
     if(.not.bounded_template(template))return
     if(inactive)then
@@ -178,8 +180,8 @@ contains
       if(.not.admit_atmospheric_n)return
       if(.not.ieee_is_finite(historical_top_water))return
       if(abs(historical_top_water)>100d0)return
-      if(historical_top_water<0d0.and..not.bounded_top)return
-      if(bounded_top.and.historical_top_water>=0d0)return
+      if(historical_top_water<0d0.and..not.(bounded_top.or.nondepleting))return
+      if((bounded_top.or.nondepleting).and.historical_top_water>=0d0)return
       allocate(top_n_water,source=historical_top_water)
     end if
     if(any(abs(np%mineral%c_top)>0d0).and..not.admit_atmospheric_n)return
@@ -240,7 +242,7 @@ contains
         carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=top_n_water,finite_donor_top=bounded_top)
     else
     call advance_crop_soil_day(chemical_trial,t0,t1,carrier%water_end,carrier%outflow,carrier%in_bottom, &
-      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=top_n_water)
+      carrier%in_lateral,carrier%root_water,forcing%root_potential_transpiration,weather,result%chemical,environment,surface_water=carrier%surface_water,historical_top_water=top_n_water,nondepleting_top=nondepleting)
     end if
     result%status=JOINT_CHEMICAL_REJECTED
     if(result%chemical%status/=CROP_SOIL_OK)then
