@@ -6613,7 +6613,7 @@
       "master_rows_promoted": false
     },
     "cycle_successor_20261023": {
-      "stage": "CANONICALLY_ADMITTED_PENDING_MASTER",
+      "stage": "CANONICALLY_ADMITTED_MASTER_REGISTERED",
       "baseline": "ead21ff0a325f4d5a96be889c1fec083e7c8ba4d",
       "implemented": true,
       "persisted": true,
@@ -6622,7 +6622,7 @@
       "canonically_admitted": true,
       "contract": "docs/science/MC_NUT01_CYCLE_OUTPUT_20261023.md",
       "scope": "Explicit successor initialization,active saved-output days and repeated harvest,cold/accepted-heat; complete S5NS0001 generation preserved.",
-      "next_action": "Register bounded two-crop saved-output admission on the existing nine-row master;then separately select heat-specific calendar or general/default historical orchestration. Negative active-crop/immobilisation allocation and automatic snow/persistent-surface N remain open. No full MC-NUT01 closure.",
+      "next_action": "Two-crop saved-output route is admitted and registered. Next separately owned explicit output gap:heat-specific amendment-calendar composition. General/default historical multi-rotation orchestration,active-crop/immobilisation negative allocation and automatic snow/persistent-surface N remain open. Preserve all53 source/evidence assertions,existing physical providers,complete generation/restart and all full-row dispositions;no full MC-NUT01 closure.",
       "test_selection": "Focused cold/heat real two-crop composition and complete36-control predecessor;expected additional cost<180s. Full FCI/highestlowair/newRossFast/aquifer NOT_SELECTED. No full NUT closure.",
       "evidence_index": "integration/audits/evidence/mc-nut01-cycle-output-20261023/INDEX.json",
       "evidence_index_sha256": "35000095f19608eb155725d230716e0348ee65be4f9dc378fff4c5e463cab74f",
@@ -7117,7 +7117,9 @@
       "qualified_tree": "5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8",
       "actual_merge_tree": "5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8",
       "admission_receipt": "integration/mc-nut01/MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json",
-      "postmerge_controls": 53
+      "postmerge_controls": 53,
+      "master_receipt": "e547351553a5111e743a289f7254cdae0b3c410f",
+      "master_rows_promoted": false
     }
   }
 }
