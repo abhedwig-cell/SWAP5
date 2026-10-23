@@ -896,3 +896,60 @@ PR1400 canonically admits this bounded composition at actual merge
 each pass36 source/raw controls on that postimage. The receipt is
 `integration/mc-sol01/boesten/ADMISSION.json`; whole original Andelst and the
 remaining drainage/macro/Cauchy3/heat compositions are not admitted.
+
+### HIST-INTEGRATION01 native trial-local drainage candidate
+
+The drainage continuation adds an immutable, optional single-level DIVDRA geometry
+record to the existing Reference parameter owner. Ordinary DRAMET3 owns the
+scalar response; the existing signed spatial-distribution process owns its
+partition. Both evaluate from each actual full/half/retry start view; channel
+levels use that trial's endpoint. Richards consumes this partition exactly
+once and the existing accepted-water trace supplies it to pond/solute. No
+new physical state or restart layout is introduced. The prescribed-bottom
+route uses the existing profile CALCGWL projection, including typed absence
+and full saturation, not the initial diagnostic GWL placeholder. The new
+route controls the drainage exchange error in cm rather than differences
+between diagnostic GWL sentinels. It applies the existing Boesten wet reset
+at an actually ponded candidate endpoint, making that event independent of
+full/half subdivision. This is a bounded SWAP5 integration improvement;
+historical time-step-for-time-step numerical equivalence is not claimed.
+Existing routes with absent geometry retain their guards and reset timing.
+
+The bounded native input scope is SWDRA1, DRAMET3, NRLEVS1, SWALLO1=3,
+SWDTYP1=1, SWDIVD1, SWDIVDINF0, SWDISLAY0, SWINTFL0. Original DRA source
+bytes and future channel records join the existing input/restart identity.
+L1 is converted from metres to cm; COFANI follows the SWP soil-layer map.
+Boesten, simple ROOT_COMP_OFF roots and implicit upwind solute are the
+selected composition. Heat, macro, infiltration and multilevel composition
+remain outside this work unit. The original DRA bytes hash to
+`4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface`.
+
+Actual checked O0/O2 executions complete469 days, with exact outputs across
+optimization and separate day365 restart. Maximum daily water residual is
+1.705e-14cm and solute residual1.537e-13mg/cm2 under unchanged1e-10 hard
+budgets and0.001 temporal tolerance. Accepted drainage is27.9038cm. On the
+same469-day constructed soil/simple-crop case, runoff changes68.9268 to
+41.6153cm, infiltration57.5794 to87.6666cm and actual transpiration16.5961 to
+17.5506cm. This is a physical drainage-option change plus the documented
+endpoint event correction; it is not original whole-Andelst equivalence.
+Pressure/soil moisture are checked at the final profile; daily water, root,
+surface and drainage transfers are reconciled independently.
+
+The481-day request fails at day470 in both optimizations after336 attempts,
+246 solver rejections and69 temporal rejections; the last Reference solve
+exhausts64 iterations. A diagnostic0.001 head tolerance does not repair it.
+Its complete committed generation equals an independent469-day run exactly.
+The4x rain97-day request still fails day7 after14 successful rain segments;
+the complete day6 generation equals an independent run, while the unpublished
+partial candidate differs. These are retained failures, not completed runs.
+The previous complete481-day Boesten configuration stays byte-exact. Actual
+checked O2 CPU is52.15s for469 days; the failed wet prefix takes30.49s.
+These single observations establish no general speed advantage.
+
+The owning proof is `integration/audits/verify_native_drainage.py`, with raw
+success/failure/build/source evidence in `integration/mc-sol01/drainage/`.
+Concurrent PR1403 NUT and PR1401/1404 research are reconciled separately;
+this does not qualify simultaneous full drainage/NUT/FCT physics. Full
+original SWP now reaches the explicit unsupported SWMACRO gate. The remaining
+macro/Cauchy3/heat/full original soil/crop composition and full SOL/NUT stay
+open. No mastercoverage row is promoted by this bounded continuation.

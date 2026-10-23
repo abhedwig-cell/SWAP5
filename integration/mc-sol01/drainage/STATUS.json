@@ -1,0 +1,111 @@
+{
+  "workstream": "MC-SOL01 / ordinary drainage",
+  "work_unit": "HIST-INTEGRATION01 native trial-local DRAMET3 DIVDRA",
+  "baseline": "57e1b3f2635559df0db0350a96f0e06b2e3b9cc7",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "invariants": [
+    "single physical state owner",
+    "accepted qdra provenance",
+    "joint water/solute publication",
+    "Reference Richards authority",
+    "no mass clamp"
+  ],
+  "dependencies": [
+    "existing DRAMET3 scalar",
+    "existing signed DIVDRA",
+    "existing smooth phreatic projection",
+    "native Boesten input and V3 restart"
+  ],
+  "next_action": "Publish one qualified bounded integration PR and verify exact actual merge tree; full481-day drainage remains blocked at470",
+  "qualification": {
+    "owner": "integration/audits/verify_native_drainage.py",
+    "current_source_raw_controls": 36,
+    "frozen_predecessor_controls": 75,
+    "current_NUT_HIST_processes": 78,
+    "current_NUT_coupled_runs": 10,
+    "current_NUT_process_restarts": 20,
+    "current_SOL_research_water_traces": 12,
+    "O0_O2_outputs_exact": true,
+    "day365_restart_exact": true,
+    "day470_rollback_exact_to_independent469": true,
+    "prior481_Boesten_outputs_exact": true
+  },
+  "measured_O2_CPU": {
+    "normal469_seconds": 52.146294,
+    "failed_wet_prefix_seconds": 30.494614,
+    "general_speed_claim": false
+  },
+  "bounded_days": 469,
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "blockers": [
+    "481-day request fails identically at day470 after469 complete days; last solver reaches64 iterations; head tolerance .001 does not repair it",
+    "4x detailed rain fails day7 after14 segments; complete day6 generation preserved",
+    "Full original SWP next rejects SWMACRO; Cauchy3/heat/full original soil/crop composition remains open"
+  ],
+  "numerical_corrections": [
+    "Existing profile CALCGWL projection includes typed absence and full saturation",
+    "Derived GWL absent sentinel excluded from temporal state difference; nodal drainage exchange error in cm remains controlled",
+    "Existing Boesten ponding reset applied to wet candidate endpoint in this new composition only; no accepted flux, mass or threshold altered"
+  ],
+  "test_selection": {
+    "focused_joint": "RUN: actual accepted drainage partition, chemical rejection/retry/ABA and source-bound restart; physical process equations unchanged",
+    "native_historical": "O0/O2 request481 retained FAILED at470. Qualified candidate469 with original DRA, daily water/solute closure and separate day365 restart",
+    "current_NUT": "Reconcile admitted PR1403 zero-pool rates: fresh74 affected compiles,580 exact source/flags/module-closure objects reused;78 actual HIST processes and10 actual crop/N runs with20 separate process restarts",
+    "current_SOL_research": "12 actual current Reference water traces exactly preserve all inputs to72 unchanged research replay profiles; no production FCT activation",
+    "unchanged_processes": "NOT_SELECTED_IMPACT: no change to DRAMET3 or DIVDRA process equations; existing original-source scientific evidence retained",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "rossfast": "NOT_SELECTED_IMPACT"
+  },
+  "scientific_delta": {
+    "app/solute_crop/read_swp_project.f90": "M",
+    "app/solute_project/main.f90": "M",
+    "integration/audits/verify_native_drainage.py": "A",
+    "integration/audits/verify_nut_zero_pools.py": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "tests/nut-sol/measure_native_drainage.py": "A",
+    "tests/nut-sol/preserve_drainage_research.py": "A",
+    "tests/nut-sol/qualify_detailed_rain_rollback.py": "M",
+    "tests/nut-sol/qualify_drainage_joint.py": "A",
+    "tests/nut-sol/qualify_native_drainage.py": "A",
+    "tests/nut-sol/reconcile_drainage_nut.py": "A",
+    "tools/solute/run_project.py": "M"
+  },
+  "postimages": {
+    "app/solute_crop/read_swp_project.f90": "e8586055e20a05642809cca7704831900d0efb49fc81b39182c3a8591e5b8cd7",
+    "app/solute_project/main.f90": "a9ace23fa4d0b17fedb4fc6afb92e2068fd215ca2db94580317977b1588e7dcc",
+    "integration/audits/verify_native_drainage.py": "78523c404424e058391d4e157a1916da643fa310cb476aca9202f72600eb1e4b",
+    "integration/audits/verify_nut_zero_pools.py": "622a42bd595c39dd6c38a5ed9b683adab6896119980bd332b86b3215f116ff6c",
+    "integration/mc-nut01/demand_candidate/STATUS.json": "cfdc129a8e035dde09ee263bc5d2efdbbb7cde3cf7d797453a0bd45e871396b4",
+    "integration/mc-nut01/zero_pool_rates/STATUS.json": "cabf60c5dd3fc5194c88a878be4d8a550306f6047fe55b569b0f36435a0d5e72",
+    "integration/mc-sol01/drainage/seal.py": "00b1a008bed34d26d387eab5cca41f86260405abe11743005221f3a41c52e417",
+    "integration/mc-sol01/fct_accepted_trace/EVIDENCE.tar.xz.b64": "6331a1b4cafe094afa933e8d1e0335e7b2dd5a0f8dacfbbf192d346d141f7f4d",
+    "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "eae8e5c2275b2ac67008c08ab24bfd086e5508d7ede8961cef959f242d0c3f85",
+    "src/process/mod_b111_soil_organic_dissimilation.f90": "1649ec87bef29a5c7f60d9e811ce3765e3fa3acd19d03eef2744a2ebd9e3971f",
+    "src/process/mod_b111_soil_organic_turnover.f90": "24e8bc81873eca9d142d532df14b4e50abe267e8e8bfb1fbcfd2e1543f51858e",
+    "src/process/mod_drainage_dramet3_response.f90": "690a80a5a91dcc5f3e02883bf1fd9800e5d0efbab163e6255cac1b1723372976",
+    "src/process/mod_drainage_spatial_distribution.f90": "29dcd8b23ac76b032857202cbd7ae670f26e18cd04a7f85dafb662773f3b6ca6",
+    "src/process/mod_restricted_surface_evaporation.f90": "7f35440dd71189668c0259d44092a1262f8d09791971347fdfd1f7e6cbb2c475",
+    "src/runtime/mod_fmr_b111_pond_solute_route.f90": "0588f949ad78b242826cec22a7090ad9a1527a1a4efda2acd89447f846b0e438",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "23ac5c1d19e74cb4b690f86e080cbca4e9eef4d43245c340a53786d16085bda6",
+    "src/solver/mod_b111_profile_groundwater_projection.f90": "c6f190a8fb28a0cf5aa12909e5de043058f333e1710e77a247f27e6b9ecd7c66",
+    "tests/nut-sol/measure_native_drainage.py": "e0a078cf391592614d87627991fbc9ea986b65129bf110cf4365a6dc9f37fe14",
+    "tests/nut-sol/preserve_drainage_research.py": "74144894e6940f0c62ad85abfa720d22e8ca7acb1f5ad94db7a4d153f43f7f87",
+    "tests/nut-sol/qualify_detailed_rain_rollback.py": "74207ee6632073b77ecdcc1a29236e1977535d9f504d33d4fb909a95c4bc5c24",
+    "tests/nut-sol/qualify_drainage_joint.py": "ade8cfe4a8c72d59ce52aecfd2931a172b5567cf376049d290a01b946d408414",
+    "tests/nut-sol/qualify_native_drainage.py": "85c66e43ff04e18e96f63697e68deb8ad163060937c162486e8ddd2854d8a40f",
+    "tests/nut-sol/reconcile_drainage_nut.py": "8288238f6c5dd715e5fa6b3e7475f2846e0d04e6ee4fc32a4f71e22cf58c91d0",
+    "tools/solute/run_project.py": "8e2d93ebe731e7d60d439224423fc023d2b993966d9c42542a334116ef813fd9"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/EVIDENCE.tar.xz.b64",
+    "sha256": "cbc00b6cf899dcda1ee12a44ef5324779f4f5ebcc514d79dcf22ef8a86ae7c15",
+    "bytes": 4512292,
+    "members": 8311
+  }
+}

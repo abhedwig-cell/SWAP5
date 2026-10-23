@@ -686,3 +686,14 @@ no master row is promoted. Contract and actual admission receipt:
 `integration/mc-nut01/zero_pool_rates/CONTRACT.md` and
 `integration/mc-nut01/zero_pool_rates/ADMISSION.json`. Scientific discussion:
 [zero receiving-pool turnover](../science/MC_NUT01_ZERO_POOL_RATES_20261023.md).
+
+The HIST-INTEGRATION01 original-DRA candidate is owned by
+`integration/audits/verify_native_drainage.py` and
+`integration/mc-sol01/drainage/STATUS.json`. Its evidence binds actual O0/O2
+469-day runs, day365 separate-process restart, positive accepted DRAMET3 and
+exact DIVDRA partitions, chemical rejection/retry/ABA, Boesten wet endpoint
+reset, changed future DRA rejection, identical469-day rollback at the failed
+day470, failed wet-day atomicity, original481-day preservation and actual CPU.
+Current NUT and research carrier reconciliation is separate from the frozen
+ancestor assertions. This bounded evidence does not establish whole original
+Andelst, completed481-day drainage, completed wet97-day execution or full NUT.
