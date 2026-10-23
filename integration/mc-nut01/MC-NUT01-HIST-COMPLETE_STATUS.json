@@ -603,10 +603,17 @@
           "src/process/mod_b111_soil_n_transport.f90"
         ],
         "full_mc_nut01_closed": false,
-        "canonical_admitted": false,
+        "canonical_admitted": true,
         "qualification_receipt": "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_QUALIFICATION_20261023.json"
       },
-      "current_controls": 45
+      "current_controls": 45,
+      "canonical_admission": {
+        "status": "CANONICALLY_ADMITTED_BOUNDED_NUMERICAL_LIMITS",
+        "actual_merge": "09b6734e68ecd3106b39e56dfb451b4404766aa0",
+        "complete_tree": "bb24246e00a9e054afdc2ffc3b3d928671187aa5",
+        "receipt": "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_ADMISSION_20261023.json",
+        "controls": 45
+      }
     }
   },
   "baseline": "a6102e594b8d9114f46ba403a169d5c096770ff4",

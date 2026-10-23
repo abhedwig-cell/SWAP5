@@ -1,0 +1,108 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NUMERICAL_LIMITS",
+  "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1391",
+  "canonical_branch": "integration/f-ci-canonical",
+  "actual_merge": "09b6734e68ecd3106b39e56dfb451b4404766aa0",
+  "published_qualified_head": "f56ad526543f8fa69f3ceb232e39f86fd4e53c8c",
+  "local_qualified_head": "e1e08713782c931d0abc54b1d5d7ddf87316a28f",
+  "qualified_complete_tree": "bb24246e00a9e054afdc2ffc3b3d928671187aa5",
+  "actual_merge_complete_tree": "bb24246e00a9e054afdc2ffc3b3d928671187aa5",
+  "complete_tree_exact": true,
+  "admission_base": "7a498cd61cbfc48154c3872bd61c8e66d32cf7f6",
+  "numerical_source_baseline": "f729f0b058434c89009646f2d86bb19027c348fe",
+  "controls": [
+    "predecessor:incumbent:source src/legacy/b1_10_port/headcalc.f90",
+    "predecessor:incumbent:source integration/audits/native_project_admission.py",
+    "predecessor:incumbent:source integration/audits/verify_nut_saved_calendar_output.py",
+    "predecessor:incumbent:source integration/audits/verify_nut_historical_output_caller.py",
+    "predecessor:incumbent:source integration/performance/verify_saturated_flux_successor.py",
+    "predecessor:incumbent:source src/crop/mod_crop_soil_n_day.f90",
+    "predecessor:incumbent:foreign scientific source",
+    "predecessor:incumbent:missing predecessor/owner.stdout",
+    "predecessor:incumbent:missing predecessor/controls.stdout",
+    "predecessor:incumbent:missing predecessor-composed/owner.stdout",
+    "predecessor:incumbent:missing predecessor-composed/controls.stdout",
+    "predecessor:incumbent:missing raw/perf01-native-fixed-study/RESULT.json",
+    "predecessor:incumbent:missing raw/perf01-native-fixed-O0-study/RESULT.json",
+    "predecessor:incumbent:missing raw/perf01-native-fixed-contract-v2/RESULT.json",
+    "predecessor:incumbent:missing raw/perf01-native-fixed-direct/RESULT.json",
+    "predecessor:incumbent:missing raw/perf01-native-fixed-original-full-fsi35-v2.stdout",
+    "predecessor:incumbent:changed raw/perf01-native-fixed-resume4/restart.bin",
+    "predecessor:incumbent:changed raw/perf01-native-fixed-resume1/budget.csv",
+    "predecessor:source integration/audits/verify_native_seasonal_bottom.py",
+    "predecessor:source integration/audits/verify_nut_historical_output_caller.py",
+    "predecessor:source app/solute_project/main.f90",
+    "predecessor:source app/solute_crop/read_swp_project.f90",
+    "predecessor:source tools/solute/run_project.py",
+    "predecessor:source src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "predecessor:raw O0/cross_year/full/budget.csv",
+    "predecessor:raw O2/cross_year/resumed/restart.bin",
+    "predecessor:raw predecessor/controls.json",
+    "predecessor:raw execution-recipe.py",
+    "predecessor:missing oracle",
+    "predecessor:foreign source",
+    "source src/process/mod_b111_soil_n_transport.f90",
+    "source integration/audits/verify_nut_regular_limits.py",
+    "source integration/audits/verify_native_seasonal_bottom.py",
+    "source integration/audits/run_nut_limits_composition.py",
+    "source tests/nut-mineral/run_negative_limits.py",
+    "foreign source",
+    "missing direct/result.json",
+    "missing direct/checks.json",
+    "missing hist/REUSE.json",
+    "missing hist/result.json",
+    "missing coupled/result.json",
+    "missing incumbent163.json",
+    "changed hist/O0/default.endpoint",
+    "changed coupled/joint-O0/negative-low.endpoint",
+    "changed coupled/joint-O2/negative-high.fresh-6.ledger"
+  ],
+  "control_count": 45,
+  "predecessor_controls": 30,
+  "new_controls": 15,
+  "actual_merge_verification": {
+    "owner": {
+      "sha256": "fb1850ff042b73a3ec6769b23d961eb71048fc05767d26a793a6c5dc39c67584",
+      "result": "PASS"
+    },
+    "controls": {
+      "sha256": "952a57f61ce22889ccf4585e16ddbd3ce43468367c887ad63e4fc3ecc3e7732a",
+      "result": "PASS"
+    },
+    "general": {
+      "sha256": "fb1850ff042b73a3ec6769b23d961eb71048fc05767d26a793a6c5dc39c67584",
+      "result": "PASS"
+    },
+    "history": {
+      "sha256": "fb1850ff042b73a3ec6769b23d961eb71048fc05767d26a793a6c5dc39c67584",
+      "result": "PASS"
+    },
+    "fsi35": {
+      "sha256": "b4b389ba448c3b15268c4f810dbcaf2d81324360d5f3b225b41a05cdc1dec396",
+      "result": "PASS"
+    }
+  },
+  "evidence_index": "integration/audits/evidence/mc-nut01-regular-limits-composition-20261023/INDEX.json",
+  "qualification_receipt": "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_QUALIFICATION_20261023.json",
+  "direct_cases_per_optimization": 516,
+  "hist_fresh_processes": 78,
+  "hist_process_restarts": 56,
+  "coupled_fresh_runs": 4,
+  "coupled_process_restarts": 8,
+  "actual_merge_native_rerun": "NOT_SELECTED_IDENTICAL_COMPLETE_TREE",
+  "hosted_workflows": [],
+  "hosted_statuses": [],
+  "hosted_result": "NOT_SELECTED_NO_HOSTED_RUN_PRESENT",
+  "full_mc_nut01_closed": false,
+  "master_promotion": false,
+  "open_scope": [
+    "Active competing crop sinks and immobilisation allocation",
+    "Automatic snow and persistent surface N binding",
+    "General full historical NUT migration"
+  ],
+  "retained_diagnostic": "SOL portability and exact-summary replay failures retained; no new SOL qualification",
+  "preserved_admissions": [
+    1392,
+    1393
+  ]
+}
