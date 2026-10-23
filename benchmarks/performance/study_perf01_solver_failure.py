@@ -55,7 +55,7 @@ DIAG='''module perf_failure_diag
  end module
 '''
 def observe(raw):
- raw=once(raw,'   implicit none','   use perf_failure_diag,only:failure_record\n   implicit none')
+ raw=once(raw,'   implicit none\n\n   type(a23bu_worker_context_t)', '   use perf_failure_diag,only:failure_record\n   implicit none\n\n   type(a23bu_worker_context_t)')
  raw=once(raw,'   integer                          :: numnod','   integer(8)::pd_started\n   integer::pd_n0,pd_b0,pd_failed\n   real(8)::pd_initial\n   integer                          :: numnod')
  raw=once(raw,'900 continue','''900 continue
    call system_clock(pd_started)
@@ -93,7 +93,7 @@ def main():
  ap.add_argument('--inputs',type=Path,required=True);ap.add_argument('--compiler',required=True);ap.add_argument('--output',type=Path,required=True)
  a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  report=dict(status='RUNNING',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-  script_sha256=sha(Path(__file__)),production_changed=False,events=[],builds={},cases={})
+  script_sha256=sha(Path(__file__)),production_changed=False,events=[],builds={},cases={},failures=[])
  def save():(out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n')
  def run(cmd,cwd,label,required=True):
   cmd=list(map(str,cmd));t=time.perf_counter()
@@ -103,24 +103,24 @@ def main():
   report['events'].append(dict(label=label,command=cmd,seconds=time.perf_counter()-t,returncode=r.returncode));save()
   if required:r.check_returncode()
   return r
- core=min(os.sched_getaffinity(0));report['core']=core
+ core=min(os.sched_getaffinity(0));report['core']=core;fc=['sh',a.compiler]
  for opt in ['O0','O2']:
   bundle=json.loads((Path(str(a.bundle_prefix)+'-'+opt)/'bundle.json').read_text());exe=Path(bundle['exe']);meta=json.loads((exe.parent/'build-complete.json').read_text())
   assert sha(exe)==meta['executable_sha256']
   for p,h in meta['input_sha256'].items():assert sha(ROOT/p)==h,p
   for p,h in meta['reused_artifact_sha256'].items():assert sha(Path(p))==h,p
-  assert subprocess.check_output([a.compiler,'--version'],text=True).splitlines()[0]==meta['compiler']
+  assert subprocess.check_output([*fc,'--version'],text=True).splitlines()[0]==meta['compiler']
   report['builds'][opt]=dict(input_sha256=meta['input_sha256'],reused_artifact_sha256=meta['reused_artifact_sha256'],ordinary_executable_sha256=sha(exe),flags=meta['flags'])
   folder=out/opt;folder.mkdir();flags=[f for f in meta['flags']if not f.startswith('-J')]
   objects=[e['command'][-1]for e in meta['source_build']['events']if e['category']=='compile'and not e['command'][-3].endswith('/app/solute_crop/main.f90')];assert len(objects)==193
   oldobj=next(e['command'][-1]for e in meta['source_build']['events']if e['category']=='compile'and e['command'][-3].endswith('/'+HEAD))
   archive=next(p for p in meta['reused_artifact_sha256']if p.endswith('/libttutil.a'))
   d=folder/'diag.f90';d.write_text(DIAG)
-  run([a.compiler,*flags,'-J'+str(folder),'-c',d,'-o',folder/'diag.o'],folder,opt+'-diag-build')
+  run([*fc,*flags,'-J'+str(folder),'-c',d,'-o',folder/'diag.o'],folder,opt+'-diag-build')
   binaries={'ordinary':exe}
   for kind,source in [('observer',observe((ROOT/HEAD).read_text())),('early',early((ROOT/HEAD).read_text()))]:
    src=folder/(kind+'.f90');src.write_text(source);obj=folder/(kind+'.o')
-   run([a.compiler,'-I'+str(folder),*flags,'-J'+str(folder),'-c',src,'-o',obj],folder,opt+'-'+kind+'-build')
+   run([*fc,'-I'+str(folder),*flags,'-J'+str(folder),'-c',src,'-o',obj],folder,opt+'-'+kind+'-build')
    objs=[str(obj)if p==oldobj else p for p in objects];main=ROOT/APP;extra=[]
    if kind=='observer':
     raw=(ROOT/APP).read_text();raw=once(raw,'  use iso_fortran_env,','  use perf_failure_diag\n  use iso_fortran_env,')
@@ -128,16 +128,17 @@ def main():
     raw=once(raw,'      numerical%retain_accepted_step_proposal=.false.','      diag_app_phase=2\n      numerical%retain_accepted_step_proposal=.false.')
     raw=once(raw,"  print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'","  call failure_report()\n  print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'")
     main=folder/'main.f90';main.write_text(raw);extra=[folder/'diag.o']
-   binary=folder/kind;run([a.compiler,'-I'+str(folder),*flags,'-J'+str(folder),main,*objs,*extra,archive,'-o',binary],folder,opt+'-'+kind+'-link');binaries[kind]=binary
+   binary=folder/kind;run([*fc,'-I'+str(folder),*flags,'-J'+str(folder),main,*objs,*extra,archive,'-o',binary],folder,opt+'-'+kind+'-link');binaries[kind]=binary
   for rain in [1,4]:
-   previous=a.inputs/f'O2-{rain}x-on-0';samples=[]
+   previous=a.inputs/f'O2-{rain}x-on-0';samples=[];case_failed=False
    for rep in range(3 if opt=='O2'else 1):
-    for kind in (['ordinary','early','observer']if rep==0 else['ordinary','early']):
+    for kind in (['ordinary','observer','early']if rep==0 else['ordinary','early']):
+     if kind=='early'and case_failed:continue
      label=f'{opt}-{rain}x-{kind}-{rep}';case=out/label;case.mkdir()
      for n in ['input.nml','input.swp']:(case/n).write_bytes((previous/n).read_bytes())
      r=run(['taskset','-c',core,binaries[kind],'input.nml','-','97','input.swp'],case,label,kind!='early')
      if r.returncode:
-      report['status']='EARLY_REJECTION_RESEARCH_FAILED';report['failure']=label;save();return
+      report['failures'].append(dict(label=label,returncode=r.returncode));case_failed=True;save();continue
      if kind in ['ordinary','observer']:
       target=out/f'{opt}-{rain}x-ordinary-0'
       for n in FILES:assert (case/n).read_bytes()==(target/n).read_bytes(),(label,n)
@@ -145,6 +146,8 @@ def main():
       target=out/f'{opt}-{rain}x-early-0'
       for n in FILES:assert (case/n).read_bytes()==(target/n).read_bytes(),(label,n)
      samples.append(dict(kind=kind,repeat=rep,seconds=report['events'][-1]['seconds']))
+   if case_failed:
+    report['cases'][f'{opt}-{rain}x']=dict(status='EARLY_REJECTION_REJECTED',samples=samples);save();continue
    data=rows(out/f'{opt}-{rain}x-early-0/budget.csv');reference=rows(out/f'{opt}-{rain}x-ordinary-0/budget.csv');assert len(data)==len(reference)==97
    assert max(abs(float(d['water_residual_cm']))for d in data)<1e-10
    diff={k:dict(max_mm=10*max(abs(float(d[k])-float(s[k]))for d,s in zip(data,reference)),sum_mm=10*sum(float(d[k])-float(s[k])for d,s in zip(data,reference)))for k in ['runoff_cm','water_end_cm','actual_transpiration_cm','soil_evaporation_cm','pond_evaporation_cm']}
@@ -160,6 +163,7 @@ def main():
      assert rows(case/'budget.csv')==data[48:]
    report['cases'][f'{opt}-{rain}x']=dict(samples=samples,differences=diff,native_median={k:statistics.median(s['seconds']for s in samples if s['kind']==k)for k in ['ordinary','early']});save()
  for rain in [1,4]:
+  if any(f'O{opt}-{rain}x-early-0'==e['label']for opt in [0,2]for e in report['failures']):continue
   for n in FILES:assert (out/f'O0-{rain}x-early-0'/n).read_bytes()==(out/f'O2-{rain}x-early-0'/n).read_bytes(),(rain,n)
- report['status']='CURRENT_NONLINEAR_OBSERVER_EXACT_EARLY_RESEARCH_O0_O2_RESTART_PASS';save();print(json.dumps(report['cases'],indent=2))
+ report['status']='EARLY_REJECTION_REJECTED_CURRENT_NONLINEAR_OBSERVER_O0_O2_EXACT'if report['failures']else'CURRENT_NONLINEAR_OBSERVER_EXACT_EARLY_RESEARCH_O0_O2_RESTART_PASS';save();print(json.dumps(report['cases'],indent=2))
 if __name__=='__main__':main()
