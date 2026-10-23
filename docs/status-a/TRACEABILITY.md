@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Later bounded MC-SOL01 native project admission (23 October 2026):
+PR1382 / `76d2ab9db8c20e976a25bb4c7414f176dd02c5cb`, exact qualified tree
+`2cef7484b17a836af15fad7767ea1c6b4892b148`. Authority is the
+[native project contract](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md), the
+existing `MC_SOL01_DYNAMIC_DECAY_STATUS.json` source_admission child and
+`integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json`.
+The current source/raw owner, original native FSI35 O0/O2 and60 actual-merge
+corruption controls pass. Defaults and newer NUT owners are preserved; full
+MC-SOL01/full MC-NUT01 and the frozen Status-A denominator remain unchanged.
+
 MC-NUT01 explicit successor/repeated-harvest output,23 October2026:
 PR1381 is admitted at `8dd2561c7f4207034c35e12b6e9c64d24db25213`,whole tree
 exactly qualified `5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8`. The saved-output

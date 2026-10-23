@@ -4128,7 +4128,7 @@
                       },
                       "admission_selection_20261023": {
                         "baseline": "53010691c79d3e132914ce372059cf873d88b96d",
-                        "stage": "MISSING_CURRENT_REFERENCE_PRESERVATION_SELECTED",
+                        "stage": "COMPLETE_CURRENT_QUALIFICATION_AND_ACTUAL_CANONICAL_ADMISSION",
                         "changed_dependency": "Explicit transport/Picard/prepared-curve options add shared parameter and forcing fields and branches in seven production providers; current source ownership must qualify these alongside incumbent weather and joint composition.",
                         "scientific_claim": "Bounded native project and explicit numerical options with hard mass, original authorities, restart and unchanged incumbent default semantics; no full historical model or MC-SOL01 promotion.",
                         "owner": "MC-SOL01 native_project_successor / existing composed source owners",
@@ -4742,7 +4742,8 @@
                           "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2",
                           "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json": "63a2fe3fea08b0a714bd94682666d0f7b18544a8b3abb8cc6fec5778f892b9bb",
                           "integration/performance/authority.py": "37a965786751d3fed443be17499e5809b47153254a054b4808db9145deb16d73",
-                          "integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json": "60311103cbbdf60081b68a0aa7f404da7885e6986180bb51bac72e55a144c48e"
+                          "integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json": "60311103cbbdf60081b68a0aa7f404da7885e6986180bb51bac72e55a144c48e",
+                          "integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json": "a4706f98cfa4a2613b1b21bc16c662ee94dfde090cc8dbd4f93e918e5e957355"
                         },
                         "evidence": {
                           "path": "integration/audits/evidence/MC_SOL01_NATIVE_ADMISSION_20261023.tar.xz.b64",
@@ -4790,10 +4791,10 @@
                         },
                         "qualified_science": true,
                         "qualified_fsi35": true,
-                        "canonically_admitted": false,
+                        "canonically_admitted": true,
                         "scope": "EXPLICIT_NATIVE_PROJECT_AND_NUMERICAL_OPTIONS_WITH_CURRENT_DEFAULT_PRESERVATION",
                         "full_historical_migration": false,
-                        "next_action": "Publish qualified exact tree, reconcile current canonical, safely admit bounded native composition and verify actual merge; full historical migration remains false.",
+                        "next_action": "Full refined year/spatial convergence; broader historical/default and heat/snow/age model composition; full MC-SOL01 and full MC-NUT01 remain open.",
                         "native_fsi35": {
                           "path": "integration/audits/evidence/MC_SOL01_NATIVE_FSI35_20261023.tar.xz",
                           "sha256": "62d9f7615658ff8ba36d040f12f0a0e0336fde39f7061f31cae29f1f17bdf3f8"
@@ -4872,6 +4873,16 @@
                         "qualified_docs": {
                           "source_check": "PASS",
                           "mkdocs_strict": "PASS"
+                        },
+                        "canonical_admission": {
+                          "status": "BOUNDED_NATIVE_PROJECT_CANONICALLY_ADMITTED",
+                          "pull_request": 1382,
+                          "canonical_merge": "76d2ab9db8c20e976a25bb4c7414f176dd02c5cb",
+                          "qualified_head": "f2f35ea86f2ccc81cc2108cbc15a470831dc86cd",
+                          "qualified_complete_tree": "2cef7484b17a836af15fad7767ea1c6b4892b148",
+                          "source_tree": "ef90d0d745d85ba4090d22f238ee67dd8606e535",
+                          "scope": "Explicit bounded native historical project, conservative implicit-upwind transport, Picard continuous conductivity, historical zero-solute exfiltration; preserved defaults and current NUT owners",
+                          "receipt": "integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json"
                         }
                       }
                     },

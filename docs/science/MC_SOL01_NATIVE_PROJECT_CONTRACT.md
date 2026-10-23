@@ -477,3 +477,12 @@ an immutable research-snapshot validator. Source registration and corruption
 controls are separate from actual canonical admission. Full MC-SOL01, full
 refined-year/spatial convergence, broader historical heat/snow/default
 activation and full MC-NUT01 remain open.
+
+Actual bounded canonical admission: PR1382, merge
+`76d2ab9db8c20e976a25bb4c7414f176dd02c5cb`, exact qualified complete tree
+`2cef7484b17a836af15fad7767ea1c6b4892b148`. The actual merge owner and all60
+source/raw corruption controls pass. The durable receipt is
+`integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json`.
+The numerical proof's own `canonically_admitted=false` remains an immutable
+qualification-time assertion; this separate actual-merge receipt establishes
+the later bounded admission. Full migration flags remain false.

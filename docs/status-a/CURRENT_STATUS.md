@@ -371,3 +371,17 @@ pass. This does not expand frozen Status-A or promote full historical/default/
 seasonal, dynamic thermal pond or enabled-proposal/nonlinear scope. See the
 [nonlinear pond contract](../science/MC_SOL01_NONLINEAR_POND_CONTRACT.md) and
 `MC_SOL01_DYNAMIC_DECAY_STATUS.json#nonlinear_pond_successor`.
+
+### Later bounded MC-SOL01 native project admission, 23 October 2026
+
+PR1382 / `76d2ab9db8c20e976a25bb4c7414f176dd02c5cb` admits the explicit
+[native project and numerical policies](../science/MC_SOL01_NATIVE_PROJECT_CONTRACT.md):
+conservative implicit-upwind transport, Picard continuous conductivity and
+historical zero-solute exfiltration. Original native FSI35 O0/O2, complete affected
+incumbent/weather preservation and all60 actual-merge source/raw controls pass.
+The newer NUT thermal/fallow and repeated-harvest owners are preserved with fresh
+current composition. The receipt is
+`integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json`.
+This does not change the frozen Status-A denominator or close full MC-SOL01,
+full refined-year/spatial convergence, broader historical/default heat/snow/age
+composition or full MC-NUT01.
