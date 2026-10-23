@@ -664,3 +664,25 @@ snow/persistent-surface N and full NUT remain open; no master row is promoted.
 Contract and actual merge proof: `integration/mc-nut01/demand_candidate/CONTRACT.md`
 and `integration/mc-nut01/demand_candidate/ADMISSION.json`. Scientific discussion:
 [unused demand candidate](../science/MC_NUT01_UNUSED_DEMAND_CANDIDATE_20261023.md).
+
+## Post-Status-A MC-NUT01 zero receiving-pool rates, 2026-10-23
+
+PR #1403, actual merge `d3c3486208ba8f4272496bb70f7d1e4b0ad4458e`, admits
+the exact regular organic ODE limit when biomass and humus turnover rates are
+both zero. Fresh organic matter may still decay and immobilise mineral N; the
+all-zero organic-rate profile has zero organic N/carbon transfer. GNU13.3 O0/O2
+qualifies 168 formerly rejected cases and 24 byte-exact nonzero cases per
+optimization, ten actual eight-day water/crop/N runs and 20 process restarts.
+Original HIST assertions complete with 48 fresh affected/transitive compiles,
+606 verified unchanged closures, 78 fresh native processes and 56 restarts;
+all incumbent results are exact. The obsolete both-zero rejection input becomes
+unsupported single-zero input, with every rejection/rollback assertion unchanged.
+The initial failure remains sealed. All 75 source/raw controls, including the
+52 unchanged predecessor controls, and current owner/general/HIST/FSI35 checks
+pass on the actual merge, whose full tree equals the qualified tree. Concurrent
+PR1401 research inputs remain exact. Selected mineral exhaustion, single-zero
+organic receiving rates, snow/persistent-surface N and full NUT remain open;
+no master row is promoted. Contract and actual admission receipt:
+`integration/mc-nut01/zero_pool_rates/CONTRACT.md` and
+`integration/mc-nut01/zero_pool_rates/ADMISSION.json`. Scientific discussion:
+[zero receiving-pool turnover](../science/MC_NUT01_ZERO_POOL_RATES_20261023.md).

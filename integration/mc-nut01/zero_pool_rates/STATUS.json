@@ -1,7 +1,7 @@
 {
   "workstream": "MC-NUT01",
   "baseline": "1796633cdf367f53fefa7df201d8541904577117",
-  "status": "LOCALLY_QUALIFIED_PENDING_CANONICAL",
+  "status": "CANONICALLY_ADMITTED_EXACT_ZERO_RECEIVING_POOL_RATES",
   "production_changes": [
     "src/process/mod_b111_soil_organic_turnover.f90",
     "src/process/mod_b111_soil_organic_dissimilation.f90"
@@ -29,7 +29,7 @@
   },
   "public_interface": "Add pure numerical decay-fraction contract in existing turnover module; no state/restart layout changes",
   "full_mc_nut01_closed": false,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "source_base": "779224e5062c19d6536ef42a120e946ca1f65d61",
   "fixture_change": {
     "path": "tests/nut-crop/test_b112_retained_joint.f90",
@@ -163,5 +163,11 @@
       "native": 4.874456237994309,
       "restart_native": 6.136833578981168
     }
+  },
+  "canonical_admission": {
+    "pr": 1403,
+    "actual_merge": "d3c3486208ba8f4272496bb70f7d1e4b0ad4458e",
+    "complete_tree": "3d6c7881bf7febec2a164d1ac08f5b33d23ea62b",
+    "receipt": "integration/mc-nut01/zero_pool_rates/ADMISSION.json"
   }
 }
