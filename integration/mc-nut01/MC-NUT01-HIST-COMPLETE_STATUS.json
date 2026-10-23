@@ -7121,6 +7121,19 @@
       "master_receipt": "e547351553a5111e743a289f7254cdae0b3c410f",
       "master_rows_promoted": false
     },
+    "saved_calendar_successor_20261023": {
+      "stage": "IMPLEMENTED_PENDING_FRESH_CURRENT_BUILD",
+      "baseline": "c2363394a77d9e0f289c7db2f4fcd6f57ff47bc0",
+      "implemented": true,
+      "persisted": true,
+      "tested": false,
+      "qualified": false,
+      "canonically_admitted": false,
+      "contract": "docs/science/MC_NUT01_SAVED_CALENDAR_OUTPUT_20261023.md",
+      "scope": "Explicit immutable-calendar saved active-crop output, existing harvest phases and cold/accepted-heat fallow, with complete saved-generation continuation.",
+      "test_selection": "Fresh current331-provider O0/O2 closure once because old current build artifacts disappeared; GNU13.3 restored locally and compile/link checked. Expected fresh cost<420s, explicitly selected real Richards bootstrap. Additional cold/heat two-schedule calendar/harvest/fallow, independent direct physics/manual original diagnostics, all-stage fresh continuation, rejected trials/replay/CSV/rename crashes. Expected additive cost<180s. All130 incumbent controls. Broad FCI/highestlowair/newRossFast/aquifer NOT_SELECTED_IMPACT. No physical/default/schema change.",
+      "next_action": "Persist adapter and contract, build current providers once, then qualify cold/heat saved-calendar crop/harvest/fallow; preserve130 controls and integrate exact qualified scope. Full NUT remains open."
+    },
     "thermal_calendar_successor_20261023": {
       "stage": "CANONICALLY_ADMITTED_MASTER_REGISTERED",
       "baseline": "335e3fc51ea8e5627043c2a75adbbc1008c35a3b",
