@@ -1,9 +1,9 @@
 {
-  "baseline": "d04a8c3cca1ac9246e66dc913ba588472a5fb78c",
+  "baseline": "43ee311ae4b525afd191a8e38c66a17d9c8b3a17",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "scientific_delta": {
     "app/solute_crop/read_swp_project.f90": "M",
@@ -21,17 +21,18 @@
   "postimages": {
     "app/solute_crop/read_swp_project.f90": "ef46199028879b2de1d13c494dd1c9dda0da3ea770dd8e5dd843c6f332ab8384",
     "app/solute_project/main.f90": "2e44a1c47473fb174754d602634acc4296f08eb4b3566e03102d97eeccd87425",
-    "integration/audits/verify_native_cauchy_current.py": "85b19eb32f21bf3432e1b01623eb44043e1702f7f1c094a0d013148284af1c3d",
+    "integration/audits/verify_native_cauchy_current.py": "b45b75ccddf44c250ee3a8e3eaf2292134fb08b18fc655e29f672f5abb7bb7ca",
     "integration/audits/verify_saturated_picard_current.py": "017fbbe0c42ab4a4e4928b746a034da48243aed9b4a3f49377608f836f98ff63",
     "integration/mc-sol01/drainage/CAUCHY3_CONTRACT.md": "c59d3f7f5a24bf42a3161efe262afd7abab3fc48b197849d61c3bfd00e315ad0",
-    "integration/mc-sol01/drainage/seal_cauchy3_recovery.py": "9d1196fe24deebf49064c916c9f789df625d9de0412fbe2399094faf2b886758",
+    "integration/mc-sol01/drainage/seal_cauchy3_recovery.py": "a2d772d9aa4e1385c1945aa949eb9b474ec7b74fd8f00fc4009172c081539d0c",
     "src/adapter/mod_reference_richards_legacy_binding.f90": "b7c78f0bebc11acb863d6ddee9e6969dd0985faf6c8b293dadf97984d87d4dd3",
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "f67946dc00586e93706e57ee467adfc2466cf07fd3f6c6ff2af8f46f9d0f8035",
     "tests/nut-sol/measure_cauchy3_native.py": "60a1d41848af349a539c9dcd306c7b2476350617e7183cb7b5072e1dd3ce789a",
     "tests/nut-sol/qualify_cauchy_contracts.py": "24ee1ff0626f765fbeee3336eb3b0b349c2f27c8ec3dba30e90e0ea837872eac",
     "tests/nut-sol/qualify_native_cauchy3.py": "764133abf5b4ca2d09e760cc0f8ed07a44e7349f3f67355003bcda9284ec96d7",
     "tests/nut-sol/test_cauchy3_picard.f90": "006263e2213f725e65fc932902f8e44a7ccfce4eacb2c6a69f1c2f089a161a46",
-    "tools/solute/run_project.py": "3f959e14127a1d24c1ad441fe1d38ab13921405eb3ff909afbb4222a00df1c4f"
+    "tools/solute/run_project.py": "3f959e14127a1d24c1ad441fe1d38ab13921405eb3ff909afbb4222a00df1c4f",
+    "integration/mc-sol01/drainage/CAUCHY3_CANONICAL_PEER.json": "69f1db58417f9c6bcb24fa49f20bb4642d64568cee12c8df03cd077b75ce96f4"
   },
   "fresh_evidence": {
     "path": "integration/mc-sol01/drainage/CAUCHY3_RECOVERY_EVIDENCE.tar.xz.b64",
@@ -45,7 +46,7 @@
   "production_build_inputs_original_hashes_exact": true,
   "current_physical_execution": "Fresh O0/O2 BBC481, split365/resume, Robin/Picard and typed contracts, flux481 and wet97 rejection",
   "canonical_peer": "46 controls and original NUT/FCT validators executed at exact canonical base; dated retained proof, not fresh current NUT/FCT model execution",
-  "next_action": "Current owning/source/raw controls, original FSI35, docs and exact actual merge identity before admission",
+  "next_action": "Exact merge-tree identity and actual-merge owner/source/raw replay before admission",
   "selected": [
     "fresh checked O0/O2 BBC481 and restart365",
     "real Picard/typed Robin contracts",
@@ -60,5 +61,15 @@
     "new1e-6",
     "full moving FCI",
     "unchanged NUT/FCT process rebuild"
-  ]
+  ],
+  "owning_controls": 25,
+  "fsi35": {
+    "path": "integration/mc-sol01/drainage/CAUCHY3_RECOVERY_FSI35.log",
+    "sha256": "20d977b7a99adb4e5ae0d64b9ff9962731153ec77bdff191873756f7d38ae8d2",
+    "status": "PASS"
+  },
+  "canonical_peer_latest": "integration/mc-sol01/drainage/CAUCHY3_CANONICAL_PEER.json",
+  "canonical_peer_latest_controls": 86,
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS"
 }

@@ -30,7 +30,7 @@ with tarfile.open(fileobj=stream,mode='w:xz')as t:
 b=stream.getvalue();path=HERE/'CAUCHY3_RECOVERY_EVIDENCE.tar.xz.b64';path.write_bytes(base64.b64encode(b))
 SCIENCE=['src','app','tools','tests','examples','reference','.github','integration/audits','integration/performance','integration/diagnostics']
 delta={l.split('\t')[1]:l.split('\t')[0]for l in subprocess.check_output(['git','diff','--name-status',BASE,'HEAD','--',*SCIENCE],cwd=ROOT,text=True).splitlines()}
-delta.update({l.split('\t')[1]:l.split('\t')[0]for l in subprocess.check_output(['git','diff','--name-status','HEAD','--',*SCIENCE],cwd=ROOT,text=True).splitlines()})
+
 paths=set(delta)|{'integration/mc-sol01/drainage/seal_cauchy3_recovery.py','integration/mc-sol01/drainage/CAUCHY3_CONTRACT.md'}
 r=dict(baseline=BASE,implemented=True,persisted=True,tested=True,qualified=False,canonically_admitted=False,scientific_delta=delta,
  postimages={p:sha((ROOT/p).read_bytes())for p in sorted(paths)},

@@ -3,7 +3,8 @@ import base64,csv,hashlib,io,json,re,subprocess,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 BASE='93f12afe2b76900f32dc10afa56de002c841be86'
-CURRENT_BASE='d04a8c3cca1ac9246e66dc913ba588472a5fb78c'
+CURRENT_BASE='43ee311ae4b525afd191a8e38c66a17d9c8b3a17'
+EVIDENCE_BASE='d04a8c3cca1ac9246e66dc913ba588472a5fb78c'
 RECOVERY='integration/mc-sol01/drainage/CAUCHY3_RECOVERY_QUALIFICATION.json'
 STATUS='integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json'
 PARENT='integration/audits/verify_saturated_picard_current.py'
@@ -108,10 +109,14 @@ def validate_fresh(f):
   for p,h in c['source_sha256'].items():assert sha((ROOT/p).read_bytes())==h
  cpu=js('cpu/result.json');assert cpu['runs']['wet']['returncode']==1 and cpu['runs']['wet']['complete_days']==3
  assert f['cpu/wet/diagnostic-rejected.bin']==historical['wet-prefix3/restart.bin']
- raw=f['canonical-commit.raw'];assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==CURRENT_BASE
- peer=js('canonical-peer.json');assert peer['canonical']==CURRENT_BASE and peer['owner']['qualified'] and len(peer['controls'])==46
+ raw=f['canonical-commit.raw'];assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==EVIDENCE_BASE
+ peer=js('canonical-peer.json');assert peer['canonical']==EVIDENCE_BASE and peer['owner']['qualified'] and len(peer['controls'])==46
  assert peer['scope']=='Retained exact canonical NUT/FCT evidence; no fresh NUT/FCT physical execution claimed'
- return dict(fresh_checked_O0_O2=True,restart365_exact=True,retained_outputs_exact=True,canonical_peer_controls=46)
+ latest=json.loads((ROOT/'integration/mc-sol01/drainage/CAUCHY3_CANONICAL_PEER.json').read_bytes())
+ raw=base64.b64decode(latest['commit_base64'],validate=True)
+ assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==CURRENT_BASE==latest['canonical']
+ assert latest['owner']['qualified'] and len(latest['controls'])==86
+ return dict(fresh_checked_O0_O2=True,restart365_exact=True,retained_outputs_exact=True,canonical_peer_controls=86,earlier_peer_controls=46)
 def verify():
  source();r=validate(capsule());r['recovery']=validate_fresh(fresh_capsule());return r
 def fsi35_successors():
