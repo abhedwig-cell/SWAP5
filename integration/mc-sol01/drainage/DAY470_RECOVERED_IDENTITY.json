@@ -1,0 +1,39 @@
+{
+  "status": "RECOVERED_NATIVE_IDENTITY_AND_RAW_BALANCES_PASS",
+  "canonical": "8c3feb4c6767022e5da379bdea81103429f7635b",
+  "repair_source": "ab799416d45a5f780ed7a5f66a849bedd6fcb5d7",
+  "source_selection": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+  "decoded_evidence_sha256": "5d2f8f15ae77d8d260a1c3280c960c64d37f1e0079a636d30c5737cc6be830e5",
+  "native": {
+    "O0": {
+      "bound_inputs": 198,
+      "input_drift": [],
+      "days": 481,
+      "endpoint_restart_and_budgets": "RETAINED_BYTES_VERIFIED"
+    },
+    "O2": {
+      "bound_inputs": 198,
+      "input_drift": [],
+      "days": 481,
+      "endpoint_restart_and_budgets": "RETAINED_BYTES_VERIFIED"
+    }
+  },
+  "research_input_drift": {
+    "fct_reactive": [],
+    "fct_pulse_restart": [],
+    "fct_sinks": []
+  },
+  "NUT_input_drift": {
+    "hist": [
+      "src/process/mod_b111_soil_n_daily_exchange.f90"
+    ],
+    "joint": [
+      "src/process/mod_b111_soil_n_daily_exchange.f90"
+    ]
+  },
+  "NUT_disposition": "CHANGED_INPUTS_REQUIRE_FRESH_OWNING_QUALIFICATION",
+  "compiler": "UNAVAILABLE; apt-get update denied setgroups/setegid/seteuid",
+  "FSI35_terminal": "UNKNOWN",
+  "exact_merge_qualified": false,
+  "canonically_admitted": false
+}
