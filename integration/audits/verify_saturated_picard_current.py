@@ -20,6 +20,7 @@ def projection():
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  if (ROOT/'integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_cauchy_current.py'))['source'](reader,changed)
+ if (ROOT/'integration/mc-nut01/competing_sinks/QUALIFIED_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_partition.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -63,9 +64,11 @@ def validate(f):
  return dict(qualified=True,status='CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED',bounded_days=481,current_NUT_processes=78,current_NUT_coupled_runs=30,current_NUT_process_restarts=60,frozen_predecessor_controls=316,retained_native_scope=identity['source_selection'],disk=disk,disk_controls=controls,full_original_Andelst=False,full_mc_sol01_closed=False,full_mc_nut01_closed=False,canonically_admitted=False)
 def verify():
  if (ROOT/'integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_cauchy_current.py'))['verify']()
+ if (ROOT/'integration/mc-nut01/competing_sinks/QUALIFIED_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_partition.py'))['verify']()
  source();return validate(capsule())
 def fsi35_successors():
  if (ROOT/'integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_cauchy_current.py'))['fsi35_successors']()
+ if (ROOT/'integration/mc-nut01/competing_sinks/QUALIFIED_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_partition.py'))['fsi35_successors']()
  source();rows=json.loads(capsule()['fsi35.json'])
  for p,row in rows.items():
   assert row['canonical_blob']==git('rev-parse',BASE+':'+p)
@@ -74,6 +77,7 @@ def fsi35_successors():
  return rows
 def self_test():
  if (ROOT/'integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_cauchy_current.py'))['self_test']()
+ if (ROOT/'integration/mc-nut01/competing_sinks/QUALIFIED_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_partition.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

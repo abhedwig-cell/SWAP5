@@ -41,3 +41,17 @@ day4 even at .01, with exact day3 committed rollback. Wet Cauchy production is
 not qualified and no general speed claim follows. Structural surface-switch
 work remains separate. Final admission requires current owning source/raw
 controls, original FSI35, and exact qualified/actual merge-tree identity.
+
+Recovery successor,24 October2026: baseline d04a8c3c. The four lost tests are
+reconstructed sources, with new hashes and fresh checked O0/O2 execution.
+The launcher and all198 production build inputs exactly match the earlier
+executed BBC481 closure. Both fresh481/full/restart and old flux481 bytes match
+immutable evidence. Current NUT production sources are unchanged from the
+canonical peer; its original owner and46 controls execute at that exact peer.
+This remains dated NUT/FCT evidence. The two changed shared-water files only
+extend bottom3 Picard eligibility/private OFF native fields; existing bottom2
+contracts and old flux output are freshly preserved. No current NUT/FCT physical
+re-execution, new physical defaults, macropore or heat admission is claimed.
+The canonical predecessor assertion bodies are retained with four forwarding
+lines to the combined recovered owner. Its original source and raw corruption
+controls are complemented by fresh source/output/peer controls.
