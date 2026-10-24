@@ -91,7 +91,7 @@ contains
     juvenile=f%crop_calendar_active.and.f%dvs<1.0_real64.and.f%lai_crit_nupt>1.0e-2_real64.and. &
          f%lai<f%lai_crit_nupt
     if(juvenile)result%juvenile_factor=(f%lai_crit_nupt-f%lai)/f%lai_crit_nupt
-    if(f%proportional_constant_sinks.and..not.juvenile)return
+    if(f%proportional_constant_sinks.and..not.f%crop_calendar_active)return
 
     ! B1.11 mineralisation amount is converted to a volumetric production rate.
     prod_rate0=f%nminer_kg_m3/f%dt_day
@@ -140,18 +140,23 @@ contains
     else
       producpot=prod_rate0-f%crop_n_demand_kg_m2/f%depth_m
       call run_transport(f,0.0_real64,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand,demand_depleted)
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand,demand_depleted,source_rate=prod_rate0)
       if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
       cav_demand=r_demand%concentration_average
       supply_demand=prod_rate0-r_demand%production_actual
+      if(f%proportional_constant_sinks)then
+        if(supply_demand-f%crop_n_demand_kg_m2/f%depth_m> &
+          64d0*epsilon(1d0)*max(abs(prod_rate0),f%crop_n_demand_kg_m2/f%depth_m))return
+        supply_demand=min(supply_demand,f%crop_n_demand_kg_m2/f%depth_m)
+      end if
 
       producpot=prod_rate0
       tcsf=f%tcsf_n*(wavg+f%drybd*f%sorpcoef)/wavg*root_factor
       call run_transport(f,tcsf,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_supply)
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_supply,source_rate=prod_rate0)
       if(r_supply%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
@@ -159,14 +164,21 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(demand_depleted.or.c_demand<c_supply)then
+      if((f%proportional_constant_sinks.and.supply_supply<supply_demand).or. &
+        (.not.f%proportional_constant_sinks.and.(demand_depleted.or.c_demand<c_supply)))then
+        r_selected=r_supply
         result%cnh4_end=c_supply
         result%cnh4_average=cav_supply
         result%nsupply_nh4_kg_m3_day=supply_supply
       else
+        r_selected=r_demand
         result%cnh4_end=c_demand
         result%cnh4_average=cav_demand
         result%nsupply_nh4_kg_m3_day=supply_demand
+      end if
+      if(f%proportional_constant_sinks)then
+        result%top_actual(1)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(1)=r_selected%top_unmet
       end if
     end if
 
@@ -198,18 +210,23 @@ contains
     else
       producpot=prod_rate0-remaining_demand
       call run_transport(f,0.0_real64,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand,demand_depleted)
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand,demand_depleted,source_rate=prod_rate0)
       if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
       cav_demand=r_demand%concentration_average
       supply_demand=prod_rate0-r_demand%production_actual
+      if(f%proportional_constant_sinks)then
+        if(supply_demand-remaining_demand> &
+          64d0*epsilon(1d0)*max(abs(prod_rate0),remaining_demand))return
+        supply_demand=min(supply_demand,remaining_demand)
+      end if
 
       producpot=prod_rate0
       tcsf=f%tcsf_n*root_factor
       call run_transport(f,tcsf,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_supply)
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_supply,source_rate=prod_rate0)
       if(r_supply%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
@@ -217,14 +234,21 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(demand_depleted.or.c_demand<c_supply)then
+      if((f%proportional_constant_sinks.and.supply_supply<supply_demand).or. &
+        (.not.f%proportional_constant_sinks.and.(demand_depleted.or.c_demand<c_supply)))then
+        r_selected=r_supply
         result%cno3_end=c_supply
         result%cno3_average=cav_supply
         result%nsupply_no3_kg_m3_day=supply_supply
       else
+        r_selected=r_demand
         result%cno3_end=c_demand
         result%cno3_average=cav_demand
         result%nsupply_no3_kg_m3_day=supply_demand
+      end if
+      if(f%proportional_constant_sinks)then
+        result%top_actual(2)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(2)=r_selected%top_unmet
       end if
     end if
 
