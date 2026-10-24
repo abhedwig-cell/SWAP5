@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [multi-pool organic research successor](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#multi-pool-executable-successor)
+now calculates constrained FOM/biomass/humus turnover. O0/O2 each pass96
+configurations at three tolerances, independent ODE/exact-reference checks,
+C/N budgets and split-state continuation. The shared activity of N-consuming
+organic pathways is a proposed rule outside production. Crop/top allocation
+and the full runtime/restart composition remain open.
+
 The [organic limitation investigation](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#executable-path-limited-successor)
 now includes an executable single-FOM/NH4 proposal: first-depletion detection,
 continued biomass mineralisation, constrained FOM turnover and later release.

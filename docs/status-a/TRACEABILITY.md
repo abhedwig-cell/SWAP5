@@ -1,5 +1,14 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 multi-pool organic limitation research is implemented in the existing
+competing-sinks unit and explained in the
+[multi-pool successor](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#multi-pool-executable-successor).
+`MULTIPOOL_CONTRACT.md`, `MULTIPOOL_RESULT.json` and the sealed capsule own96
+configurations/three tolerances per optimization, independent event-driven ODE
+and one-pool exact checks, C/N conservation and continuation. Four corruption
+controls and the earlier failed comparison are retained. Production activation
+and full MC-NUT01 remain open.
+
 MC-NUT01 proposed path-limited single-FOM/NH4 kinetics is implemented in the
 existing competing-sinks unit and documented in the
 [executable successor](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#executable-path-limited-successor).
