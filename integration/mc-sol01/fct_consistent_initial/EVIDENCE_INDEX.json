@@ -1,0 +1,27 @@
+{
+  "sha256": "0d7dc12369881454af1a96c5078c59b108f8ebe19c1f093bd1cecc33b44fbddd",
+  "bytes": 45660,
+  "members": 77,
+  "result": {
+    "status": "CONSISTENT_INITIAL_NATIVE_OBSERVATIONS_PASS",
+    "cases": 6,
+    "initial_water_cm": 35.60032212169341,
+    "initial_solute_mg_cm2": 71.69708429000082,
+    "initial_water_spread_cm": 9.947598300641403e-14,
+    "initial_solute_spread_mg_cm2": 9.947598300641403e-14,
+    "max_water_residual_cm": 1.6847694029806237e-13,
+    "max_solute_residual_mg_cm2": 1.4874990887474293e-13,
+    "O0_O2_difference": 0.0,
+    "profile_total_solute_l1": {
+      "41-82": 0.008197785631549714,
+      "82-164": 0.0034268747049943926
+    },
+    "general_accuracy_qualified": false
+  },
+  "controls": [
+    "missing runs/o0-1/state.csv",
+    "missing runs/o2-4/budget.csv",
+    "missing validation/run.py",
+    "changed shared initial ramp"
+  ]
+}
