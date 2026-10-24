@@ -531,6 +531,8 @@ module mod_fmr_serialized_reference_backend
     type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
+  public :: fmr_macropore_trace_receipt_valid
+
   ! Read-only trial trace of one accepted Richards physical substep. It is
   ! worker observation data, never committed or restart state.
   type, public :: fmr_water_flux_substep_trace_t
@@ -548,10 +550,18 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: converged_irrigation_rate_cm_day = 0.0_real64
     real(real64) :: converged_snowmelt_rate_cm_day = 0.0_real64
     real(real64) :: converged_runon_rate_cm_day = 0.0_real64
+    ! Observation only: amounts cm/column area, rates cm/day. No new state.
+    logical :: macropore_surface_receipt_available = .false.
+    real(real64) :: macropore_requested_cm=0.0_real64,macropore_accepted_cm=0.0_real64,macropore_returned_cm=0.0_real64
+    real(real64) :: macropore_pond_requested_cm=0.0_real64,macropore_pond_accepted_cm=0.0_real64
+    real(real64) :: macropore_pond_returned_cm=0.0_real64,macropore_external_top_cm=0.0_real64
+    real(real64) :: macropore_rapid_outflow_cm=0.0_real64
+    real(real64),allocatable :: macropore_external_outflow_rate(:,:),matrix_area_fraction(:)
     type(mobile_macro_salt_receipt_t), allocatable :: salt_receipt
     real(real64), allocatable :: water_start(:), water_end(:), subsurface_source(:), drainage_sink(:), drainage_sink_by_level(:,:), &
          root_sink(:), macropore_matrix_exchange(:), macropore_matrix_exchange_domain(:,:), &
          macropore_water_start(:,:), macropore_water_end(:,:), macropore_vertical_face_rate(:,:), net_node_source(:)
+    real(real64) :: converged_surface_net_potential_cm_day=0.0_real64,macropore_surface_return_cm=0.0_real64
     real(real64) :: converged_soil_evaporation_cm_day = 0.0_real64
     logical :: substep_root_available = .false.
     real(real64) :: root_potential_cm_day = 0.0_real64
@@ -2517,7 +2527,11 @@ contains
            .not.soil_n_heat_trace) .or. &
           parameters%black_evaporation_active .or. (parameters%boesten_evaporation_active.and. &
           (template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
-           parameters%macropore_active.or.allocated(forcing%rutter))) .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
+           parameters%macropore_active.or.allocated(forcing%rutter)).and. &
+           .not.(parameters%macropore_active.and. &
+             (template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE.or. &
+              template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE).and. &
+             template%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_NONE)) .or. (parameters%frost_active.and.(.not.parameters%root_frost%active.or. &
           .not.parameters%root_salinity_active.or.parameters%frost_bottom%active.or.parameters%frost_drainage%active.or. &
           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
           self%model%rfm_configuration%enabled .or. &
@@ -5811,14 +5825,14 @@ contains
         if (.not. allocated(macropore_result%exchange_rate_node) .or. &
             .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
             .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
-            macropore_result%requested_top_input_cm /= 0.0_real64 .or. &
-            macropore_accepted_top_cm /= 0.0_real64 .or. macropore_result%returned_surface_cm /= 0.0_real64 .or. &
-            macropore_result%covered_internal_transfer_cm /= 0.0_real64 .or. macropore_rapid_outflow_cm /= 0.0_real64) then
+            .not. allocated(macropore_result%external_outflow_rate_domain_cp) .or. &
+            self%macropore_config%geometry%top_node /= 1 .or. &
+            macropore_result%covered_internal_transfer_cm /= 0.0_real64) then
           self%accepted_water_flux_trace_failed = .true.
         else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
              macropore_result%exchange_rate_node,macropore_result%exchange_rate_domain_cp,trace_macro_water_start, &
              macropore_result%macropore_candidate%water_domain_cp, &
-             macropore_result%vertical_flux%vertical_face_rate,salt_receipt=salt_receipt)) then
+             macropore_result%vertical_flux%vertical_face_rate,salt_receipt=salt_receipt,macro_receipt=macropore_result)) then
           self%accepted_water_flux_trace_failed = .true.
         end if
       else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1,salt_receipt=salt_receipt)) then
@@ -5980,7 +5994,8 @@ contains
   end subroutine advance_fmr_mobile_macro_salt_step
 
   logical function append_accepted_water_flux_substep(self,request,solve_result,t0,t1,macropore_exchange, &
-       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate,salt_receipt) result(ok)
+       macropore_exchange_domain,macropore_water_start,macropore_water_end,macropore_vertical_face_rate,salt_receipt, &
+       macro_receipt) result(ok)
     class(fmr_serialized_reference_model_t), intent(inout) :: self
     type(soil_water_solve_request_t), intent(in) :: request
     type(soil_water_solve_result_t), intent(in) :: solve_result
@@ -5990,8 +6005,10 @@ contains
     real(real64), intent(in), optional :: macropore_water_start(:,:),macropore_water_end(:,:)
     real(real64), intent(in), optional :: macropore_vertical_face_rate(:,:)
     type(mobile_macro_salt_receipt_t), intent(in), optional :: salt_receipt
+    type(macropore_runtime_result_t),intent(in),optional :: macro_receipt
     type(fmr_trace_arena_entry_t), allocatable :: grown(:)
     type(fmr_water_flux_substep_trace_t) :: step
+    real(real64)::macro_return_to_pond,macro_requested_rate
     integer :: n, prior, capacity, index
 
     ok = .false.
@@ -6007,6 +6024,15 @@ contains
     if (any(.not. ieee_is_finite(self%qssdi)) .or. any(.not. ieee_is_finite(self%qrot)) .or. &
         any(.not. ieee_is_finite(self%qdra))) return
 
+    allocate(step%matrix_area_fraction(n));step%matrix_area_fraction=1.0_real64
+    if(self%macropore_active)step%matrix_area_fraction=self%macropore_config%matrix_area_fraction
+    macro_return_to_pond=0.0_real64;macro_requested_rate=0.0_real64
+    if(present(macro_receipt))then
+      macro_requested_rate=macro_receipt%pond_requested_top_input_cm/(t1-t0)
+      if(macro_receipt%pond_requested_top_input_cm>0.0_real64) &
+        macro_return_to_pond=macro_receipt%returned_surface_cm
+    end if
+    step%macropore_surface_return_cm=macro_return_to_pond
     step%t0 = t0
     step%t1 = t1
     step%top_flux = solve_result%top_flux
@@ -6028,19 +6054,20 @@ contains
       if (self%workspace%converged_surface_result%ponded_water_evaporation < 0.0_real64 .or. &
           self%workspace%converged_surface_result%runoff_depth < 0.0_real64 .or. &
           self%workspace%converged_surface_result%bare_soil_evaporation < 0.0_real64) return
-      if (abs(self%workspace%converged_surface_result%candidate_ponding_depth-step%pond_end_cm) > &
+      if (abs(self%workspace%converged_surface_result%candidate_ponding_depth+macro_return_to_pond-step%pond_end_cm) > &
           128.0_real64*epsilon(1.0_real64)*max(1.0_real64,abs(step%pond_end_cm))) return
       ! HeadCalc's final dynamic-top balance, checked again at the accepted
       ! transaction carrier rather than trusting a Newton candidate receipt.
       ! qtop is signed (upward positive); runoff is a depth in cm.
       if (.not.ieee_is_finite(self%workspace%converged_surface_result%net_potential_surface_flux)) return
-      if (abs(step%pond_end_cm-step%pond_start_cm - &
+      if (abs(step%pond_end_cm-step%pond_start_cm-macro_return_to_pond - &
           self%workspace%converged_surface_result%net_potential_surface_flux*(t1-t0) + &
           self%workspace%converged_surface_result%runoff_depth - step%top_flux*(t1-t0)) > &
           1.0e-8_real64*max(1.0_real64,abs(step%pond_start_cm),abs(step%pond_end_cm), &
           abs(step%top_flux*(t1-t0)), &
           abs(self%workspace%converged_surface_result%net_potential_surface_flux*(t1-t0)))) return
       step%converged_surface_available = .true.
+      step%converged_surface_net_potential_cm_day=self%workspace%converged_surface_result%net_potential_surface_flux
       step%converged_soil_evaporation_cm_day = self%workspace%converged_surface_result%bare_soil_evaporation
       ! Same accepted observation, retained under both existing API names.
       step%converged_bare_soil_evaporation_cm_day = step%converged_soil_evaporation_cm_day
@@ -6069,7 +6096,7 @@ contains
                self%workspace%snowmelt_rate_cm_day + &
                self%workspace%runon_rate_cm_day - &
                self%workspace%converged_surface_result%bare_soil_evaporation - &
-               self%workspace%converged_surface_result%ponded_water_evaporation)) > &
+               self%workspace%converged_surface_result%ponded_water_evaporation-macro_requested_rate)) > &
               1024.0_real64*epsilon(1.0_real64)*max(1.0_real64, &
               abs(self%workspace%converged_surface_result%net_potential_surface_flux), &
               self%workspace%precipitation_rate_cm_day + &
@@ -6102,6 +6129,7 @@ contains
     allocate(step%macropore_matrix_exchange_domain(0,n))
     allocate(step%macropore_water_start(0,n),step%macropore_water_end(0,n))
     allocate(step%macropore_vertical_face_rate(0,n+1))
+    allocate(step%macropore_external_outflow_rate(0,n))
     step%macropore_matrix_exchange = 0.0_real64
     if(present(macropore_exchange_domain))then
       if(size(macropore_exchange_domain,2)/=n .or. size(macropore_exchange_domain,1)<=0 .or. &
@@ -6122,9 +6150,23 @@ contains
       step%macropore_water_start=macropore_water_start
       step%macropore_water_end=macropore_water_end
       step%macropore_vertical_face_rate=macropore_vertical_face_rate
+      if(.not.present(macro_receipt))return
+      if(.not.allocated(macro_receipt%external_outflow_rate_domain_cp))return
+      step%macropore_external_outflow_rate=macro_receipt%external_outflow_rate_domain_cp
+      step%macropore_surface_receipt_available=.true.
+      step%macropore_requested_cm=macro_receipt%requested_top_input_cm
+      step%macropore_accepted_cm=macro_receipt%accepted_top_input_cm
+      step%macropore_returned_cm=macro_receipt%returned_surface_cm
+      step%macropore_pond_requested_cm=macro_receipt%pond_requested_top_input_cm
+      step%macropore_pond_accepted_cm=macro_receipt%pond_accepted_top_input_cm
+      step%macropore_pond_returned_cm=macro_receipt%pond_returned_surface_cm
+      step%macropore_external_top_cm=macro_receipt%accepted_top_input_cm-macro_receipt%pond_accepted_top_input_cm
+      step%macropore_rapid_outflow_cm=macro_receipt%rapid_external_outflow_cm
+      if(.not.fmr_macropore_trace_receipt_valid(step,n))return
+
       if(maxval(abs((macropore_water_end-macropore_water_start)/(t1-t0) - &
            (macropore_vertical_face_rate(:,1:n)-macropore_vertical_face_rate(:,2:n+1)- &
-           macropore_exchange_domain)))>1.0e-12_real64*max(1.0_real64, &
+           macropore_exchange_domain-step%macropore_external_outflow_rate)))>1.0e-12_real64*max(1.0_real64, &
            maxval(abs(macropore_vertical_face_rate)),maxval(abs(macropore_exchange_domain))))return
     end if
     if (present(macropore_exchange)) then
@@ -6162,6 +6204,43 @@ contains
     self%trace_count=self%trace_count+1
     ok = .true.
   end function append_accepted_water_flux_substep
+
+  logical function fmr_macropore_trace_receipt_valid(step,n) result(ok)
+    type(fmr_water_flux_substep_trace_t),intent(in)::step
+    integer,intent(in)::n
+    integer::nd
+    real(real64)::dt,amounts(8),tol
+    ok=.false.
+    if(.not.allocated(step%matrix_area_fraction).or..not.allocated(step%macropore_external_outflow_rate).or. &
+       .not.allocated(step%macropore_matrix_exchange_domain).or..not.allocated(step%macropore_vertical_face_rate))return
+    if(size(step%matrix_area_fraction)/=n)return
+    if(any(.not.ieee_is_finite(step%matrix_area_fraction)))return
+    if(any(step%matrix_area_fraction<=0.0_real64).or.any(step%matrix_area_fraction>1.0_real64))return
+    nd=size(step%macropore_matrix_exchange_domain,1)
+    if(any(shape(step%macropore_external_outflow_rate)/=[nd,n]).or. &
+       any(shape(step%macropore_vertical_face_rate)/=[nd,n+1]))return
+    if(any(.not.ieee_is_finite(step%macropore_vertical_face_rate)))return
+    if(any(.not.ieee_is_finite(step%macropore_external_outflow_rate)))return
+    if(any(step%macropore_external_outflow_rate<0.0_real64))return
+    amounts=[step%macropore_requested_cm,step%macropore_accepted_cm,step%macropore_returned_cm, &
+      step%macropore_pond_requested_cm,step%macropore_pond_accepted_cm,step%macropore_pond_returned_cm, &
+      step%macropore_external_top_cm,step%macropore_rapid_outflow_cm]
+    if(any(.not.ieee_is_finite(amounts)))return
+    if(any(amounts<0.0_real64))return
+    if(nd==0)then
+      ok=.not.step%macropore_surface_receipt_available.and.all(amounts==0.0_real64);return
+    end if
+    if(.not.step%macropore_surface_receipt_available)return
+    dt=step%t1-step%t0
+    if(.not.ieee_is_finite(dt).or.dt<=0.0_real64)return
+    tol=1.0e-10_real64
+    if(abs(amounts(1)-amounts(2)-amounts(3))>tol.or.abs(amounts(4)-amounts(5)-amounts(6))>tol)return
+    if(amounts(5)>amounts(2)+tol.or.amounts(6)>amounts(3)+tol)return
+    if(abs(amounts(7)+amounts(5)-amounts(2))>tol)return
+    if(abs(sum(step%macropore_vertical_face_rate(:,1))*dt-amounts(2))>tol)return
+    if(abs(sum(step%macropore_external_outflow_rate)*dt-amounts(8))>tol)return
+    ok=.true.
+  end function fmr_macropore_trace_receipt_valid
 
   subroutine materialize_accepted_water_flux_trace(self,t0,t1,ok)
     class(fmr_serialized_reference_model_t),intent(inout)::self
@@ -6227,6 +6306,7 @@ contains
          any(.not.ieee_is_finite(steps(i)%macropore_water_end)) .or. &
          any(steps(i)%macropore_water_start<0.0_real64) .or. any(steps(i)%macropore_water_end<0.0_real64))return
       if(any(.not.ieee_is_finite(steps(i)%macropore_vertical_face_rate)))return
+      if(.not.fmr_macropore_trace_receipt_valid(steps(i),n))return
       if(size(steps(i)%macropore_matrix_exchange_domain,1)>0)then
         if(any(.not.ieee_is_finite(steps(i)%macropore_matrix_exchange_domain)))return
         if(maxval(abs(sum(steps(i)%macropore_matrix_exchange_domain,dim=1)- &
@@ -6235,7 +6315,7 @@ contains
         if(maxval(abs((steps(i)%macropore_water_end-steps(i)%macropore_water_start)/ &
              (steps(i)%t1-steps(i)%t0) - &
              (steps(i)%macropore_vertical_face_rate(:,1:n)-steps(i)%macropore_vertical_face_rate(:,2:n+1)- &
-             steps(i)%macropore_matrix_exchange_domain)))>1.0e-12_real64*max(1.0_real64, &
+             steps(i)%macropore_matrix_exchange_domain-steps(i)%macropore_external_outflow_rate)))>1.0e-12_real64*max(1.0_real64, &
              maxval(abs(steps(i)%macropore_vertical_face_rate)), &
              maxval(abs(steps(i)%macropore_matrix_exchange_domain))))return
       else if(any(abs(steps(i)%macropore_matrix_exchange)>1.0e-14_real64))then
@@ -6531,7 +6611,7 @@ contains
     ! New plain-Boesten accepted-trace composition. The older water-only
     ! certificate/identity route below remains unchanged. Persistent process
     ! history contributes to the error budget as well as the hydraulic state.
-    if(self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled)then
+    if(self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled.and..not.self%macropore_active)then
       value=huge(0.0_real64)
       select type(full=>full_state)
       type is(fmr_b110_boesten_evaporation_state_t)
