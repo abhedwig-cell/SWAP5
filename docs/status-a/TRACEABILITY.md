@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Bounded implicit Cauchy3/macropores is canonically admitted by PR1431,
+merge `bcd6e088a438fa1402387231d04a1a27d3d7ebba`; complete actual/qualified tree
+`8cafa12b7a47386f8ea8a3a2cdc4688e3b339856` is exact. All17 current controls
+and original FSI35 pass. Independent54-case O0/O2 Robin/matrix-area/cell and
+separate stock budgets pass;12 Rutter/Boesten/macro lifecycle runs retain exact
+O0/O2 streams. Current BBC481 and separate365 restart preserve admitted bytes.
+Authority: `integration/mc-sol01/drainage/ANDELST_COMPOSITION_ADMISSION.json`.
+This is the original BBC with bounded constructed profiles. Native full Andelst,
+heat/drainage composition, wet BBC and full SOL/NUT remain open. No master change.
+
+
 MC-NUT01 multi-pool organic limitation research is implemented in the existing
 competing-sinks unit and explained in the
 [multi-pool successor](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#multi-pool-executable-successor).
