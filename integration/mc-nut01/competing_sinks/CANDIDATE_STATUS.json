@@ -1,0 +1,29 @@
+{
+  "status": "PROPORTIONAL_PROCESS_COMPONENT_TESTED_PENDING_DAILY_COUPLING",
+  "cases_per_optimization": 108,
+  "different_crop_receipts": 72,
+  "max_ode_error": 2.7228504282002242e-14,
+  "max_balance_residual": 1.97758476261356e-16,
+  "production_activated": false,
+  "canonically_admitted": false,
+  "source_sha256": {
+    "src/process/mod_b111_soil_n_transport.f90": "f78da10da71df3ec64d48de13bcaa92c01b758d0dd80e5e89cab6ecc0bcf8de2",
+    "src/process/mod_n_constant_sink_partition.f90": "3571ade3d2dab3056ab135768d5c39bf0d5140e0e141fbc3488d789790acd986",
+    "integration/mc-nut01/competing_sinks/research.f90": "ec38353e23e211594f336bd92417393c77dee9f6cc165ce6f782d318a2b75563",
+    "integration/mc-nut01/competing_sinks/run.py": "187737a82dece468aa3bcc2850d4921b7bfc0e45e918a8ed7b09748cba4cbaa4",
+    "integration/mc-nut01/competing_sinks/test_partition.f90": "f289fb1ac6358fad9a9e9159aad113f611bc7e9101c06fcb31132ead8be080b6",
+    "integration/mc-nut01/competing_sinks/CANDIDATE_CONTRACT.md": "eb265d7ddf3136bc6c0b0177e0f3a9efc94e6a000bc349825f68e396c2532742"
+  },
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "qualified_head": "3ba347d1756cd7f1ccae21b8e91ddb6ec14c9ac8",
+  "contract_valid_cases_per_optimization": 56,
+  "contract_negative_cases_per_optimization": 9,
+  "evidence": {
+    "path": "integration/mc-nut01/competing_sinks/CANDIDATE_EVIDENCE.tar.xz.b64",
+    "sha256": "72b1600832fc3ff176f6aa1b38ec301c4164e654438d4c1d14fc8fd0454f3ef8",
+    "bytes": 13196,
+    "members": 26
+  },
+  "daily_coupling": false,
+  "current_whole_NUT_owner_gates": "PENDING_COUPLING_AND_RECONCILIATION"
+}

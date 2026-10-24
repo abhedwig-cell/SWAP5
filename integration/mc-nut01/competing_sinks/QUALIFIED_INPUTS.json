@@ -1,0 +1,81 @@
+{
+  "base": "5ff1486125ec7f5e3433963f49d733f1045e5eac",
+  "scientific_delta": {
+    "integration/audits/verify_nut_partition.py": "A",
+    "integration/audits/verify_saturated_picard_current.py": "M",
+    "src/crop/mod_crop_soil_n_day.f90": "M",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "M",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "M",
+    "src/process/mod_n_constant_sink_partition.f90": "A",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "M"
+  },
+  "postimages": {
+    "integration/audits/verify_nut_crop_depletion_composed.py": "4d6a82553e335cdc396402a0e41f1bb2a3b7b50499b8bdac9e89c600eace542e",
+    "integration/audits/verify_nut_partition.py": "68a5bb39f3a80b37964fcf401e4547116fdc51bb81e0ac1965f0a4c14bf14ac3",
+    "integration/audits/verify_saturated_picard_current.py": "8eeb393857945bb8505b3bce6462e7df45bfa2cdc7a2213ff9b558bf3dd7bd62",
+    "integration/mc-nut01/competing_sinks/CANDIDATE_CONTRACT.md": "eb265d7ddf3136bc6c0b0177e0f3a9efc94e6a000bc349825f68e396c2532742",
+    "integration/mc-nut01/competing_sinks/CANDIDATE_STATUS.json": "9ae06fd93f19cf255b4040d503648d6eb84c8d8a660b514c1b111e57a8ed6b55",
+    "integration/mc-nut01/competing_sinks/CONTRACT.md": "a00a5911faff1da66f5499a98895cf36adc2df17f3ed8bc4061576633c52a8b3",
+    "integration/mc-nut01/competing_sinks/DAILY_CONTRACT.md": "42f3060506df1572e7ff8c1b4ff0a1d9661f56b6c602a2817ff1c66cd547b29e",
+    "integration/mc-nut01/competing_sinks/DAILY_STATUS.json": "1bb7e2aac24f239a9bd8c0a8d13b8c3f6d423fbfb4824bae4d60c2f241e68059",
+    "integration/mc-nut01/competing_sinks/RESULT.json": "cc3e1537d76a599d2278dd3cfce556d6fb12ccebb214ad6adc8c4cd915564198",
+    "integration/mc-nut01/competing_sinks/RUNTIME_CONTRACT.md": "84344133a0efa5ac2d19b86e8d85a4cf11adae8bab0a2bace9102103b2d374ef",
+    "integration/mc-nut01/competing_sinks/RUNTIME_STATUS.json": "c226d252ad3962cf374549a2c80befeedd1aab5ef8eadd2497d7e16805ba1c3b",
+    "integration/mc-nut01/competing_sinks/run.py": "187737a82dece468aa3bcc2850d4921b7bfc0e45e918a8ed7b09748cba4cbaa4",
+    "integration/mc-nut01/competing_sinks/run_daily.py": "5d8253c9565136d416af5525d262ad027c34c986d5c70788f63dabab6f28b1c1",
+    "integration/mc-nut01/competing_sinks/run_default_preservation.py": "9faa2ca09397c353db544fa45ca866c56b798655c8f8fea76b1698135d549e7d",
+    "integration/mc-nut01/competing_sinks/run_hist.py": "2c5c1044a74203297b8ed3ea5b8f27e65a8b86f4b63a9a9613150da637692acc",
+    "integration/mc-nut01/competing_sinks/run_joint.py": "aec52c5bbc3543a7147a9b91fab7ec07ac2855a0b3501375a93bfd832aad9246",
+    "integration/mc-nut01/competing_sinks/seal_qualification.py": "39ec81b17a4507471570231c37ae45cbbcc746450d3568f6a71ea57c5004852b",
+    "integration/mc-sol01/drainage/reconcile_day470_recovery.py": "87f0f2a81a0a7b605e0e434780f140b9b74a8beb1afdb30601dc79e47e07e554",
+    "integration/mc-sol01/drainage/seal_day470_current_canonical.py": "f179d8aa93f8e6b2651375ae4a7f462ea707706cec00a2b3b12249b8817aeca5",
+    "src/crop/mod_crop_soil_n_day.f90": "b04ae650d42cee9eca2f88424d6736eece1784f5d8e1ee3b00efa51d3f56d777",
+    "src/legacy/b1_10_port/headcalc.f90": "05b587da9910dac6480e74c6c3bd119f89f5467d9f813a2dfe0911a5cebdef9f",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "01eaf1c3a7bf800fb23ce2d9642a30b948d9631115070b32e38585579592040e",
+    "src/process/mod_b111_soil_n_reactive_owner.f90": "b3b1a9ca607b9d0e86572e5c4dc8a1a9c38f333f733b1f32140174ac8fa0df29",
+    "src/process/mod_n_constant_sink_partition.f90": "3571ade3d2dab3056ab135768d5c39bf0d5140e0e141fbc3488d789790acd986",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90": "c17049be2c5ae8890d76341db963b6a88632c334a53513c04e4a97c051748398"
+  },
+  "evidence": {
+    "hist": {
+      "path": "integration/mc-nut01/competing_sinks/HIST_EVIDENCE.tar.xz.b64",
+      "sha256": "b66f7f94c4352c24bf12487fc57b2a8260bb1196cc8250f65a076428acd6c6d2",
+      "bytes": 125284,
+      "members": 2071
+    },
+    "daily": {
+      "path": "integration/mc-nut01/competing_sinks/DAILY_EVIDENCE.tar.xz.b64",
+      "sha256": "38832cbb3dfa657065db675b1b2073a758663475eb3da4c267c64148666a182c",
+      "bytes": 129500,
+      "members": 73
+    },
+    "runtime": {
+      "path": "integration/mc-nut01/competing_sinks/RUNTIME_EVIDENCE.tar.xz.b64",
+      "sha256": "edaa053f4a243947817d5aca76ebcafd889835878110137caad1e72e4ffa3998",
+      "bytes": 567060,
+      "members": 2403
+    },
+    "default": {
+      "path": "integration/mc-nut01/competing_sinks/DEFAULT_EVIDENCE.tar.xz.b64",
+      "sha256": "3c081f899fd616dfcf7639e0a92434fba5044d4ac02b1944364b753fbdebc335",
+      "bytes": 94092,
+      "members": 1153
+    },
+    "component": {
+      "path": "integration/mc-nut01/competing_sinks/CANDIDATE_EVIDENCE.tar.xz.b64",
+      "sha256": "72b1600832fc3ff176f6aa1b38ec301c4164e654438d4c1d14fc8fd0454f3ef8",
+      "bytes": 13196,
+      "members": 26
+    }
+  },
+  "status": "EVIDENCE_BOUND_PENDING_OWNER_GATES",
+  "canonically_admitted": false,
+  "full_mc_nut01_closed": false,
+  "historical_predecessor_sources": [
+    "src/process/mod_b111_soil_n_daily_exchange.f90",
+    "src/process/mod_b111_soil_n_reactive_owner.f90",
+    "src/crop/mod_crop_soil_n_day.f90",
+    "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
+  ],
+  "scope": "Explicit juvenile equal-priority top/crop partition. Fresh current HIST78/runtime4+8/default30+60; all predecessor assertion bodies retained with explicit historical source identities. Owning controls and actual merge are separate gates."
+}

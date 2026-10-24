@@ -1,0 +1,27 @@
+{
+  "status": "JUVENILE_DAILY_PROPORTIONAL_O0_O2_PASS",
+  "cases_per_optimization": 1152,
+  "incumbent_byte_exact": 1344,
+  "max_ode_error": 9.73925664665945e-14,
+  "max_mass_residual": 7.077671781985373e-16,
+  "production_activated_by_default": false,
+  "canonically_admitted": false,
+  "input_sha256": {
+    "src/process/mod_n_constant_sink_partition.f90": "3571ade3d2dab3056ab135768d5c39bf0d5140e0e141fbc3488d789790acd986",
+    "src/process/mod_b111_soil_n_transport.f90": "f78da10da71df3ec64d48de13bcaa92c01b758d0dd80e5e89cab6ecc0bcf8de2",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "01eaf1c3a7bf800fb23ce2d9642a30b948d9631115070b32e38585579592040e",
+    "tests/nut-reactive/test_crop_depletion.f90": "213f85de972f2d00addbc487447397b5253a1b406e53c5e7ad7ac3cd8489632d",
+    "integration/mc-nut01/competing_sinks/run_daily.py": "5d8253c9565136d416af5525d262ad027c34c986d5c70788f63dabab6f28b1c1"
+  },
+  "qualified_source_commit": "51b8dc4e41f70685193d583b73698acc900c77dd",
+  "invalid_opt_in_per_optimization": 5,
+  "runtime_coupling": false,
+  "process_restart_qualified": false,
+  "evidence": {
+    "path": "integration/mc-nut01/competing_sinks/DAILY_EVIDENCE.tar.xz.b64",
+    "sha256": "38832cbb3dfa657065db675b1b2073a758663475eb3da4c267c64148666a182c",
+    "bytes": 129500,
+    "members": 73
+  },
+  "next_safe_step": "Update actual runtime forcing and ordered compile closure, execute crop/restart/rejection composition before owner reconciliation and admission"
+}
