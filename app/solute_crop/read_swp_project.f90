@@ -13,7 +13,10 @@ program read_swp_project
  integer::reduction_mode=0
  real(real64)::cofred=0d0
  integer::drain_mode=0,nsub
- character(1024)::drfil,pathdrain=''
+ logical::external_bottom=.false.,bottom_half_cell=.true.
+ integer::bottom_mode=2,bottom_count=0
+ real(real64)::bottom_resistance=0d0,bottom_dates(1024),bottom_heads(1024)
+ character(1024)::drfil,pathdrain='',bbcfil
  real(real64),allocatable::rain_times(:),rain_amounts(:),event_times(:),event_rates(:)
  integer,allocatable::rain_dd(:),rain_mm(:),rain_yyyy(:)
  real(real64)::tstart,tend,starts(MAX_CROPS),ends(MAX_CROPS),rds,pondmx,rsro,exponent,bottom,amplitude,daymax,fraction
@@ -49,10 +52,19 @@ program read_swp_project
  call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
  call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
- call rdsinr('swbotb',1,9,mode);call require(mode==2,'only prescribed SWBOTB2 selected; SWBOTB1 is excluded')
- call rdsinr('sw2',1,2,mode);call require(mode==1,'constant prescribed bottom flux required')
- call rdsdor('sinave',-10d0,10d0,bottom);call rdsdor('sinamp',-10d0,10d0,amplitude)
- call rdsdor('sinmax',0d0,366d0,daymax);! Nonzero amplitude is bound to the existing Reference substep control.
+ external_bottom=.not.rdinqr('swbotb');bottom=0d0;amplitude=0d0;daymax=0d0
+ if(rdinqr('swbbcfile'))then
+  call rdsinr('swbbcfile',0,1,mode);external_bottom=mode==1
+ end if
+ if(external_bottom)then
+  call rdscha('bbcfil',bbcfil);call lowerc(bbcfil);call safe(bbcfil)
+ end if
+ if(.not.external_bottom)then
+  call rdsinr('swbotb',1,9,bottom_mode);call require(bottom_mode==2,'inline bottom requires SWBOTB2; SWBOTB1 is excluded')
+  call rdsinr('sw2',1,2,mode);call require(mode==1,'constant prescribed bottom flux required')
+  call rdsdor('sinave',-10d0,10d0,bottom);call rdsdor('sinamp',-10d0,10d0,amplitude)
+  call rdsdor('sinmax',0d0,366d0,daymax)
+ end if
  call rdsdor('pondmx',0d0,1000d0,pondmx);call rdsdor('rsro',.001d0,1d0,rsro)
  call rdsdor('rsroexp',.01d0,10d0,exponent);call require(exponent==1d0,'nonlinear runoff exponent not selected')
  call rdsdor('rds',1d0,5000d0,rds)
@@ -106,6 +118,7 @@ program read_swp_project
   write(u,'(A)')'kind,index,value'
   write(u,'(A)')'pathatm,0,'//trim(pathatm)
   write(u,'(A)')'pathcrop,0,'//trim(pathcrop)
+  if(external_bottom)write(u,'(A)')'bbc,1,'//trim(bbcfil)//'.bbc'
   if(drain_mode==1)then
    write(u,'(A)')'pathdrain,0,'//trim(pathdrain)
    write(u,'(A)')'drain,1,'//trim(drfil)//'.dra'
@@ -136,7 +149,9 @@ program read_swp_project
   close(u)
   print '(A)','SWP_NATIVE_PROJECT_SCANNED';stop
  end if
+ if(external_bottom)call read_bottom_bbc()
  if(drain_mode==1)call prepare_drainage()
+ if(external_bottom)call write_bottom_control()
  ! Normalize only original daily ETref fields; preserve full source bytes outside
  ! this view in the project launcher. Read/validate all files before publication.
  allocate(output(8,100000));output=0d0;total=0
@@ -201,6 +216,49 @@ program read_swp_project
  end do
  print '(A)','SWP_NATIVE_PROJECT_PREPARED'
 contains
+ subroutine read_bottom_bbc()
+  integer::v,nn
+  real(real64)::shape
+  logical::exists
+  inquire(file='input.bbc',exist=exists);call require(exists,'external BBC required when SWBOTB is absent from SWP')
+  call rdinit(74,0,'input.bbc')
+  call rdsinr('swbotb',1,9,bottom_mode);call require(bottom_mode==3,'external BBC requires Cauchy3; SWBOTB1 is excluded')
+  call rdsinr('swbotb3impl',0,1,v);call require(v==1,'explicit Cauchy3 not selected')
+  call rdsdor('shape_3',0d0,1d0,shape);call require(shape==1d0,'Cauchy3 requires SHAPE_3=1')
+  call rdsinr('swbotb3resvert',0,1,v);bottom_half_cell=v==0
+  call rdsdor('rimlay',0d0,100000d0,bottom_resistance)
+  call rdsinr('sw3',1,2,v);call require(v==2,'native Cauchy3 requires aquifer head table')
+  call rdsinr('sw4',0,1,v);call require(v==0,'additional Cauchy flux not selected')
+  call rdatim('date3',bottom_dates,1024,bottom_count)
+  call rdinne('haquif',nn);call require(nn==bottom_count.and.nn>=2,'Cauchy3 date/head count')
+  call rdfdor('haquif',-10000d0,1000d0,bottom_heads,1024,nn)
+  call require(all(ieee_is_finite(bottom_dates(:nn))).and.all(ieee_is_finite(bottom_heads(:nn))),'finite Cauchy3 table')
+  call require(all(bottom_dates(2:nn)>bottom_dates(:nn-1)),'strict Cauchy3 calendar')
+  ! The existing Cauchy provider owns original AFGEN endpoint holding. Andelst
+  ! deliberately reuses its1998-only head table in1999; retain exact dates and
+  ! heads rather than inventing a second year or a new extrapolation policy.
+  close(74)
+ end subroutine
+ subroutine write_bottom_control()
+  integer::ii
+  open(newunit=u,file='bottom.nml',status='new',action='write')
+  write(u,'(A)')' cauchy3_bottom=.true.'
+  write(u,'(A,L1)')' cauchy3_half_cell=',bottom_half_cell
+  write(u,'(A,ES25.16E3)')' cauchy3_resistance=',bottom_resistance
+  write(u,'(A,ES25.16E3)')' bottom_legacy_origin=',tstart
+  write(u,'(A,I0)')' cauchy3_count=',bottom_count
+  write(u,'(A)',advance='no')' cauchy3_dates='
+  do ii=1,bottom_count
+   write(u,'(ES25.16E3,A)',advance='no')bottom_dates(ii),','
+  end do
+  write(u,'(A)')''
+  write(u,'(A)',advance='no')' cauchy3_heads='
+  do ii=1,bottom_count
+   write(u,'(ES25.16E3,A)',advance='no')bottom_heads(ii),','
+  end do
+  write(u,'(A)')''
+  close(u)
+ end subroutine
  subroutine prepare_drainage()
   integer::sw,nn,na,ii,jj,v
   real(real64)::res,infres,spacing,base,anis(MAX_SUB),dates(1024),heads(1024)

@@ -976,3 +976,31 @@ Physical equations, mass criteria, rollback and restart owners are unchanged.
 The4x-rain case still fails day7 with exact committed day6 state. Full original
 Andelst, macro/Cauchy3/heat and complete SOL/NUT remain open. Canonical admission
 is established only by the separate actual merge receipt; no master row changes.
+
+## Original BBC native composition (bounded qualification)
+
+`SWBBCFILE=1/BBCFIL` now resolves the original BBC through the existing TTUTIL
+scan. Implicit SWBOTB3, SHAPE_3=1, table aquifer heads and SW4=0 use the existing
+Reference Cauchy control and AFGEN endpoint holding. The original365-entry1998
+table is retained through1999. Profile CALCGWL/DRAMET3, detailed original rain,
+Boesten, supported simple crop/root and implicit upwind compose in a complete
+481-day calculation on the explicitly constructed supported soil/crop.
+
+Fresh checked O0/O2 at explicit temporal tolerance .01 have identical four
+physical outputs and exact day365 separate-process continuation. Maximum daily
+water residual is1.31e-13cm and solute6.71e-14mg/cm2; independent gross water
+closure is1.30e-13cm. Previous prescribed-flux481 outputs remain byte exact.
+Over the common311-day .001/.01 comparison, cumulative runoff differs .029mm,
+drainage .052mm; maximum daily storage difference is .179mm and day311 profile
+head .0633cm. Conservation criteria remain1e-10. This is a changed numerical
+accuracy policy, not historical numerical identity.
+
+The .001 BBC run rejects day312 near the top-cell zero-pressure transition.
+Fourfold rain at .01 rejects day4 with exact committed day3 rollback; wet BBC
+production remains unqualified. Matched97-day O2 normal CPU is4.629s; failed wet
+prefix4.298s cannot establish a relative speed claim. Original full Andelst still
+rejects SWMACRO1 and requires macro/heat/full-project composition. Complete
+SOL/NUT and master rows remain open. Owning current source/raw evidence is
+`integration/audits/verify_native_cauchy_current.py` and
+`integration/mc-sol01/drainage/CAUCHY3_QUALIFICATION.json`; actual canonical
+admission requires the separate exact-merge receipt.

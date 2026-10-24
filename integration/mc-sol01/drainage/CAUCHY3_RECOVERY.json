@@ -1,0 +1,35 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original BBC native",
+  "date": "2026-10-24",
+  "implemented": true,
+  "persisted": true,
+  "tested_postimage": "01454f0b8200ab38e375d0d905cd9701b7d9bda0",
+  "qualified_local_tree": "5cd74174c0ceebf12edf5c686d8bdb58721bba29",
+  "current_recovered_postimage_qualified": true,
+  "canonically_admitted": false,
+  "blocker": null,
+  "missing_test_sources": [],
+  "retained_execution": {
+    "days": 481,
+    "O0_O2_four_outputs_exact": true,
+    "split365_resume_exact": true,
+    "max_water_residual_cm": 1.3056656450460835e-13,
+    "max_solute_residual_mg_cm2": 6.708647309547344e-14,
+    "old_flux481_preserved": true,
+    "current_owner_controls": 20,
+    "FSI35": "PASS retained full terminal log",
+    "normal97_CPU_seconds": 4.629035,
+    "wet4x": "day4 rejection; exact committed day3 rollback; NOT QUALIFIED"
+  },
+  "evidence": "integration/mc-sol01/drainage/CAUCHY3_EVIDENCE.tar.xz.b64",
+  "latest_observed_canonical": "43ee311ae4b525afd191a8e38c66a17d9c8b3a17",
+  "next_action": "Exact merge-tree identity and actual-merge owner/source/raw replay before admission",
+  "full_original_Andelst": false,
+  "reconstructed_test_sources": [
+    "tests/nut-sol/measure_cauchy3_native.py",
+    "tests/nut-sol/qualify_cauchy_contracts.py",
+    "tests/nut-sol/qualify_native_cauchy3.py",
+    "tests/nut-sol/test_cauchy3_picard.f90"
+  ],
+  "recovery_qualification": "integration/mc-sol01/drainage/CAUCHY3_RECOVERY_QUALIFICATION.json"
+}

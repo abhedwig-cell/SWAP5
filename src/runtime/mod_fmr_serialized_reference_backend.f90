@@ -1010,7 +1010,16 @@ contains
     if(size(p%drainage_response_levels)/=1)return
     if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
     if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
-    if(.not.p%drainage_qbot_smooth_freatic_projection.or.p%bottom_mode/=2)return
+    select case(p%bottom_mode)
+    case(2)
+      if(.not.p%drainage_qbot_smooth_freatic_projection)return
+    case(3)
+      ! Native implicit Cauchy uses the same existing profile-based CALCGWL
+      ! view below, without enabling prescribed-flux directional projection.
+      if(p%drainage_qbot_smooth_freatic_projection.or.p%swbotb3_explicit_active)return
+    case default
+      return
+    end select
     if(p%frost_active.or.p%macropore_active.or.p%snow_active.or.p%soil_temperature_active)return
     if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
     if(allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
@@ -3175,7 +3184,9 @@ contains
         ! Bounded numerical successor; no implied admission of other physics.
         ok = ok .and. self%soil_water_selection%uses_reference() .and. &
              parameters%swkimpl == 0 .and. parameters%swkmean == 1 .and. parameters%swsophy == 0 .and. &
-             parameters%bottom_mode == 2 .and. parameters%max_iterations == 64 .and. &
+             (parameters%bottom_mode == 2 .or. &
+              (parameters%bottom_mode == 3.and..not.parameters%swbotb3_explicit_active)) .and. &
+             parameters%max_iterations == 64 .and. &
              numerical_config%transaction%temporal_mode == TX_TEMPORAL_EXTERNAL_FULL_HALF .and. &
              .not. numerical_config%accepted_trajectory_direction%requested .and. &
              .not. numerical_config%retain_accepted_step_proposal .and. &
