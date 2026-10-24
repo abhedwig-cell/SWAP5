@@ -1,0 +1,134 @@
+{
+  "work_unit": "HIST-INTEGRATION01 source-owned numeric thermal bootstrap",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1437,
+  "canonical_merge": "44af323084f59428849466f5527d72169104fef9",
+  "first_parent": "de6299171e3b13d8f444993e9bf8893ad15fec72",
+  "published_head": "b1cf7fcd123dfd7e64697bf357e57226606fafb8",
+  "qualified_complete_tree": "d7f822dda23da180ba07efc18eb3356d2404bcf9",
+  "actual_complete_tree": "d7f822dda23da180ba07efc18eb3356d2404bcf9",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_native_heat_bootstrap_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.29377168900100514,
+      "stdout_sha256": "e4a2080f3475b3e90486f9df04ba3a9ed33c69bac52f8a878064a4fc6b4eedf0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_native_heat_bootstrap_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 0.6651946409983793,
+      "stdout_sha256": "1b6d356a4e9e9cbaffdd01a0407a4fa459bee79bcbd9cb1136f92e81873f38e5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 4.271029364004789,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.1828474939975422,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/heat-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 13.6260906230018,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "82fed1870c60e1ac604af7167ac05df0a6c6cd88a69d00e8c91cd199f9bc9af0"
+    }
+  ],
+  "physical_qualification": {
+    "source_nodes": 112,
+    "source_valid_cases_O0_O2": 4,
+    "source_negative_processes": 22,
+    "constructor_negative_assertions": 28,
+    "coupled_cases": 6,
+    "separate_process_restarts": 6,
+    "file_negative_processes": 18,
+    "water_max_cm": 4.508112633194727e-16,
+    "solute_max_mg_cm2": 1.7539366226754227e-13,
+    "O0_O2_all_native_physical_outputs_exact": true,
+    "old_heat_procedure_and_type_bytes_exact": true,
+    "old_water_and_explicit_heat_application_outputs_exact": true
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_EVIDENCE.tar.xz.b64",
+    "sha256": "9cbd270c951d0eed6f5ffbd2c40ffd472bb4179f5964760371d89d497dc90162",
+    "bytes": 1079728,
+    "members": 3168
+  },
+  "current_executed_input_bindings": 201,
+  "current_source_raw_controls": 19,
+  "prior_macro_controls_retained": 17,
+  "preservation_selection": {
+    "old_heat_routines": "Exact byte projection after removing additive source initializer/export; original main versus current file application exact",
+    "NUT_and_macro": "Dated canonical17-control proof retained; no fresh NUT/macro run claimed or selected for unused additive initializer",
+    "FSI35": "All27 executable dependency sources unchanged; select current source boundary only",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "hosted_feedback_record": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_CI_RECONCILIATION.json",
+  "closed_capabilities": [
+    "Original numeric SWHEA1/SWCALT2 heat component input including unchanged original112-node Andelst SWINCO2 thermal initialization",
+    "Original texture mass-to-volume and TTUTIL absolute-depth profile mapped to exact water grid",
+    "Explicit opt-in current file water/heat/solute route at Freundlich0.5/1/2 with native heat input and air/zero-flux boundaries",
+    "Exact fresh-process restart and input-identity rejection, unchanged incumbent water/explicit-heat artifacts"
+  ],
+  "exclusions": [
+    "Full original macro/heat/drainage/crop application",
+    "Analytic or external-table heat boundaries",
+    "Loose historical restart",
+    "Original SWINCO2 native water initialization remains unsupported",
+    "Meteorological air forcing and full original multiyear/native application are not activated by this component importer",
+    "Macropore/drainage/crop/heat lifecycle composition and macrosolute remain excluded"
+  ],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "remaining_supported_scope_closure_blockers": [],
+  "full_original_native_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "defaults_changed": false,
+  "persistent_state_or_restart_schema_changed": false,
+  "receipt_scope": "Final actual-merge receipt only; executed scientific postimages and sealed evidence unchanged. The source owner reports qualification only; this receipt establishes canonical admission."
+}

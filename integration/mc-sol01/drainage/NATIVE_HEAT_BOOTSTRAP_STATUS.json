@@ -4,8 +4,8 @@
   "implemented": true,
   "persisted": true,
   "qualified": true,
-  "canonically_admitted": false,
-  "stage": "SOURCE_COMPONENT_AND_CURRENT_FILE_QUALIFICATION_SEALED",
+  "canonically_admitted": true,
+  "stage": "CANONICALLY_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "contract": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_CONTRACT.md",
   "test_selection": {
     "thermal_bootstrap": {
@@ -26,7 +26,7 @@
     "Analytic or external-table heat boundaries",
     "Loose historical restart"
   ],
-  "next_action": "Validate source/raw controls and docs, publish one coherent PR, verify actual merge and persist separate admission",
+  "next_action": "Supported native heat bootstrap subset closed. Full original native Andelst remains excluded and issue1386 open; no broad research campaign selected.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_EVIDENCE.tar.xz.b64",
     "sha256": "9cbd270c951d0eed6f5ffbd2c40ffd472bb4179f5964760371d89d497dc90162",
@@ -81,5 +81,10 @@
     "full_FCI": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
-  }
+  },
+  "status": "CLOSED WITH EXCLUSIONS",
+  "actual_canonical_merge": "44af323084f59428849466f5527d72169104fef9",
+  "actual_complete_tree": "d7f822dda23da180ba07efc18eb3356d2404bcf9",
+  "exact_qualified_tree_match": true,
+  "remaining_supported_scope_closure_blockers": []
 }

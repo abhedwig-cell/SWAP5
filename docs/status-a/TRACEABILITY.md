@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Native numeric heat bootstrap is canonically admitted by PR1437 at actual merge
+`44af323084f59428849466f5527d72169104fef9`; complete actual/qualified tree
+`d7f822dda23da180ba07efc18eb3356d2404bcf9` is exact. Actual-merge source/raw owner,19
+corruption controls, FSI35 source boundary, source docs and strict MkDocs pass.
+`integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_ADMISSION.json` binds the
+qualification and actual admission; automatic hosted failures remain explicit
+in `NATIVE_HEAT_BOOTSTRAP_CI_RECONCILIATION.json`, without PASS credit.
+
 HIST01 native numeric heat bootstrap,24 October2026: unmodified original
 Andelst thermal initialization maps112 nodes at checked O0/O2 exactly to the
 original temperature.f90 arithmetic and TTUTIL interpolation. Original rounded
