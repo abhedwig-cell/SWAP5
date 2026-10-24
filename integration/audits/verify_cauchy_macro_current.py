@@ -23,6 +23,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/performance/PERF01_PICARD_CORNER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_picard_corner_current.py'))['source'](reader,changed)
  r=record(reader);assert r['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={l.split('\t')[1]:l.split('\t')[0]for l in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  assert delta==r['scientific_delta'] and not git('status','--porcelain','--',*SCIENCE),'unqualified macro successor'
@@ -80,8 +81,11 @@ def validate(f):
   BBC481_exact=True,restart365_exact=True,three_owner_runs=12,retained_parent_controls=25,
   prior_scope='Original parent assertions executed at exact canonical; dated NUT/FCT evidence, no fresh NUT/FCT execution',
   full_original_Andelst=False,heat_drainage_composition=False,wet4x_qualified=False,canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/performance/PERF01_PICARD_CORNER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_picard_corner_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/performance/PERF01_PICARD_CORNER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_picard_corner_current.py'))['fsi35_successors']()
  source();rows=json.loads(capsule()['parent.json'])['fsi35']
  for p,row in rows.items():
   assert row['canonical_blob']==git('rev-parse',BASE+':'+p)
@@ -89,6 +93,7 @@ def fsi35_successors():
   if now!=row['canonical_blob']:assert p in CHANGED;row['canonical_blob']=now
  return rows
 def self_test():
+ if (ROOT/'integration/performance/PERF01_PICARD_CORNER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_picard_corner_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

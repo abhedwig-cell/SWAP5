@@ -75,7 +75,13 @@ if ROUTE in ['boesten','combined','continuous','historical']:
   changed=changed.replace('(.not.picard_conductivity_iteration.and. &','(.true..and. &',1)
   if ROUTE in ['continuous','historical']:changed=changed.replace('.not.continuous_mvg.and.', '.true..and.',1)
   if ROUTE=='historical':
-   changed=changed.replace('.not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0','(solute_transport_scheme==0.or.solute_transport_scheme==1)',1)
+   old_scope='.not.seasonal_bottom.and..not.cauchy3_bottom.and..not.detailed_rain.and.solute_transport_scheme==0'
+   if old_scope in changed:
+    changed=changed.replace(old_scope,'.not.cauchy3_bottom.and.(solute_transport_scheme==0.or.solute_transport_scheme==1)',1)
+   else:
+    old_scope='.not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0'
+    assert changed.count(old_scope)==1
+    changed=changed.replace(old_scope,'(solute_transport_scheme==0.or.solute_transport_scheme==1)',1)
    old_retry="      numerical%retain_accepted_step_proposal=.false.\n      call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)\n      numerical%retain_accepted_step_proposal=.true."
    new_retry="      numerical%retain_accepted_step_proposal=.false.\n      if(detailed_rain)then\n        call run_detailed_rain_day(t0,t1,result)\n      else\n        call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)\n      end if\n      numerical%retain_accepted_step_proposal=.true."
    assert changed.count(old_retry)==1;changed=changed.replace(old_retry,new_retry)

@@ -1,0 +1,53 @@
+{
+  "baseline": "32676715fe351beb548c8791bfda941fac8e031a",
+  "candidate": "d64b9b6e60ac398dccff7ef33c33a2d6b87d0350",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "scientific_delta": {
+    "integration/audits/verify_cauchy_macro_current.py": "M",
+    "integration/audits/verify_picard_corner_current.py": "A",
+    "src/legacy/b1_10_port/headcalc.f90": "M",
+    "tests/fsi/data/picard_corner_1x.dat": "A",
+    "tests/fsi/data/picard_corner_4x.dat": "A",
+    "tests/fsi/test_picard_corner_restart.f90": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_cauchy_macro_current.py": "08750f5a923bf8a99f47602b7afb2fd710d5a2708df651339f95a50711234f62",
+    "integration/audits/verify_picard_corner_current.py": "334da03394be8618b84c73721dab2c9493a76e8f7c5ba70a96f55df84b0e81ac",
+    "src/legacy/b1_10_port/headcalc.f90": "8d40f9bf1791bf3d7331133530891982e5b86c940520ed9b6653386ced5ee4e1",
+    "tests/fsi/data/picard_corner_1x.dat": "5c7b83dd13218b24a5cdde6f347f3acff20736332b1bad5d7523b1a482411b21",
+    "tests/fsi/data/picard_corner_4x.dat": "05e9558ccc00aa2d73dca69128a3bd6b9a4f2662b28deae475670ceb44470a75",
+    "tests/fsi/test_picard_corner_restart.f90": "f8492ccda60d0afcffe949c51aa5317cb7773347cea4fed8562f8f22f3e15fec"
+  },
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_PICARD_CORNER_20261024_EVIDENCE.tar.xz",
+    "sha256": "450877abe247e9c37bd68fee75e505b2d087e0aec9f4adca275e47291df875b8",
+    "bytes": 1163668,
+    "members": 4093
+  },
+  "next_safe_step": "Publish exact qualified source/tree, reconcile live unchanged dependencies, safely merge and verify actual complete tree; no wider policy admission",
+  "scope": "Only same-residual failed near-zero Picard solver restart; no broader endpoint/amount/cap policy admission",
+  "reconciled_canonical": "32676715fe351beb548c8791bfda941fac8e031a",
+  "owning_controls": 12,
+  "fsi35_current_source_and_native": "PASS",
+  "qualification_closeout": {
+    "path": "benchmarks/performance/PERF01_PICARD_CORNER_20261024_CLOSEOUT.tar.xz",
+    "sha256": "02a860aa560ddfa56969d489fd20bb25adb009f4ab70edf7597885fa137d0091",
+    "members": 5
+  },
+  "concurrent_guard_reconciliation": {
+    "path": "benchmarks/performance/PERF01_PICARD_CORNER_20261024_RECONCILIATION.tar.xz",
+    "sha256": "0ee6f9e1eccaa03c89010914215e6eff5cc3188083ebd5467f94903b250b69d7",
+    "members": 48,
+    "qualified": true
+  },
+  "current_composed_closeout": {
+    "path": "benchmarks/performance/PERF01_PICARD_CORNER_20261024_COMPOSED_CLOSEOUT.tar.xz",
+    "sha256": "207fe3710c33ed4d5e274245a2804860d52e92cc72d97e443f40d48da4e02f6a",
+    "members": 5
+  },
+  "whitespace_check": "Code-only PASS; literal captured Fortran fixture records preserved unchanged"
+}
