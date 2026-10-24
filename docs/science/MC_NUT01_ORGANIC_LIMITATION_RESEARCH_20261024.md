@@ -164,3 +164,64 @@ competition or carbon/denitrification feedback. Continuation was tested as a
 physical state split, not a persisted runtime restart. Those compositions and
 scientific selection of the extended allocation rule remain required before
 production activation. Existing production sources and defaults are unchanged.
+
+## Multi-pool executable successor
+
+**Proposed research model outside production.** `mod_multipool_limited_organic.f90`
+extends the experiment to multiple FOM pools, biomass and humus using the
+original donor rates and assimilation fractions. The tested configurations
+have two FOM pools. Stoichiometry determines which donor pathways release N
+and which consume it. Thus FOM may mineralise, while humus or biomass may
+immobilise. All consuming pathways share the same limiting activity when
+mineral N runs out; releasing pathways continue at full activity. This is an
+explicit research assumption about organic pathways. It does not establish
+their priority relative to crop uptake or prescribed boundary sinks.
+
+The native implementation uses positivity-preserving SSPRK2 stages and step
+doubling. Each Euler stage caps consuming activity by its available NH4 plus
+simultaneous mineral release. A donor-rate timestep cap prevents negative
+organic pools. Convex RK combinations preserve positivity and the linear C/N
+invariants; the accepted state uses two half steps without extrapolation.
+The final candidate is checked by the production inventory owner. Nitrate is
+unchanged and carbon fraction is uniformly0.45. Arithmetic domain and failure
+limits are explicit in `MULTIPOOL_CONTRACT.md`.
+
+Fresh O0/O2 each execute96 configurations at three tolerances, giving288
+whole-window results plus split-state continuations. The matrix contains48
+single-FOM configurations checked against PR1430's exact constrained solution,
+and48 two-FOM/biomass/humus configurations. A separately assembled event-driven
+DOP853 ODE checks every endpoint and locates53 depletion/release events.
+At the finest setting64 configurations use the limitation. Invalid-tolerance
+calls return every input pool exactly and zero carbon flux.
+
+| Relative tolerance | Maximum absolute endpoint error |
+| --- | --- |
+| 1e-5 | 6.15e-6 |
+| 1e-7 | 3.83e-7 |
+| 1e-9 | 2.70e-8 |
+
+Errors are compared componentwise in each printed native unit: organic pools
+in kg/m3, NH4 and cumulative carbon in kg/m2. The table's maximum is a scoped
+numerical diagnostic, not a universal error bound from the relative tolerance.
+Both optimizations show the same convergence. Maximum whole N residual is
+1.02e-15 kg/m2 and whole C residual6.72e-15 kg/m2. Finest-setting split-state
+continuation differs by at most9.91e-9 in the corresponding native component.
+O0/O2 endpoint differences are at most5.12e-12; their adaptive step counts
+need not be identical. This is not bit-exact disk/runtime restart evidence.
+
+`MULTIPOOL_RESULT.json` and `MULTIPOOL_EVIDENCE.tar.xz.b64` bind sources,
+compiler/commands, native outputs, independent validation and measured costs.
+Replay with `python integration/mc-nut01/competing_sinks/run_multipool_limited.py --replay`;
+four numerical corruption controls exercise positivity, both budgets and
+continuation assertions. `MULTIPOOL_EARLIER_ROUND.tar.xz.b64` retains an earlier
+cross-optimization assertion failure: both native/ODE validations passed, but
+an extra1e-12 equality bound was too tight for differing adaptive decisions.
+Current qualification instead requires convergence, independent error bounds
+and a separately stated1e-10 optimization comparison. Budget tolerances were
+not relaxed.
+
+This adds an executable multi-pool organic limitation proposal. Production
+sources/interfaces/defaults and earlier proof capsules are unchanged. Crop/top
+sharing, nitrate access, denitrification feedback and the complete runtime
+commit/restart composition remain outside this research contract. The proposal
+therefore does not close or activate full MC-NUT01.

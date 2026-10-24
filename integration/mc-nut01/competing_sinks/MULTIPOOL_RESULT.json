@@ -1,0 +1,77 @@
+{
+  "status": "PROPOSED_MULTIPOOL_LIMITATION_RESEARCH_PASS",
+  "baseline": "9be9a09b9c890a8240490d1f72a99c14c0cf72f8",
+  "production_admitted": false,
+  "tested_commit": "222cab4e14344b365d646e14734938d1765e8a40",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "input_sha256": {
+    "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+    "src/process/mod_b111_soil_organic_turnover.f90": "8d98da9f33e7430433d568ed7d5a246922c1a867c3d95a7fb01b91db6935c3ff",
+    "src/process/mod_b111_soil_organic_dissimilation.f90": "0e56ced911db4bb2ee02341ea0be54a784d0e43017f2b6126ada1413a0243cb8",
+    "integration/mc-nut01/competing_sinks/mod_path_limited_organic.f90": "d409fb5406c093d172f3e02813c2726e45d284b20f6bd24eb7d1abae89a438e7",
+    "integration/mc-nut01/competing_sinks/mod_multipool_limited_organic.f90": "2e07ad005a631dff7972a2b51f3139195b179eb38187f5cb72b5d91c3d23794c",
+    "integration/mc-nut01/competing_sinks/test_multipool_limited.f90": "059bc12f0f2167e2ebfdbea9fcbdc59cb5318f73b3225323e276b14f1cc1761d",
+    "integration/mc-nut01/competing_sinks/run_multipool_limited.py": "204ec972180192b620b49541af325bceecd2063fcc9f3cbd9036997e86ec8e55",
+    "integration/mc-nut01/competing_sinks/MULTIPOOL_CONTRACT.md": "6fe466b19358a9f0aeefa262b3896d32a4ebf5416bcc4d2ab3fa043f07cd2b43"
+  },
+  "results": {
+    "O0": {
+      "cases": 96,
+      "tolerance_levels": [
+        1e-05,
+        1e-07,
+        1e-09
+      ],
+      "max_endpoint_errors": [
+        6.149760331308762e-06,
+        3.8276973512996193e-07,
+        2.6962140298181225e-08
+      ],
+      "one_pool_exact_errors": [
+        1.3583127229654934e-06,
+        3.8276973557405114e-07,
+        2.696217160647052e-08
+      ],
+      "oracle_events": 53,
+      "limited_fine_cases": 64,
+      "max_n_residual": 1.0130785099704553e-15,
+      "max_c_residual": 6.716849298982197e-15,
+      "max_fine_continuation_error": 9.905272546628652e-09,
+      "accepted_fine_steps": 246171,
+      "rejected_fine_steps": 1629
+    },
+    "O2": {
+      "cases": 96,
+      "tolerance_levels": [
+        1e-05,
+        1e-07,
+        1e-09
+      ],
+      "max_endpoint_errors": [
+        6.149760331308762e-06,
+        3.8276973512996193e-07,
+        2.6962140298181225e-08
+      ],
+      "one_pool_exact_errors": [
+        1.3583127229654934e-06,
+        3.8276973557405114e-07,
+        2.696217160647052e-08
+      ],
+      "oracle_events": 53,
+      "limited_fine_cases": 64,
+      "max_n_residual": 6.800116025829084e-16,
+      "max_c_residual": 6.716849298982197e-15,
+      "max_fine_continuation_error": 9.905272546628652e-09,
+      "accepted_fine_steps": 246172,
+      "rejected_fine_steps": 1625
+    }
+  },
+  "optimization_endpoint_difference": 5.117795076614584e-12,
+  "cost_seconds": {
+    "compile": 1.9023911110089102,
+    "link": 0.052886833997035865,
+    "native": 1.447345762000623,
+    "independent_validation": 9.93333987200458
+  },
+  "evidence_sha256": "cc50fe326afdc837472f122aa01f7fab1945e3b3c4bf6636dd2281f3c33af292"
+}
