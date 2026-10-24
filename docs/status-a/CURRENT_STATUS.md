@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [organic limitation investigation](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#executable-path-limited-successor)
+now includes an executable single-FOM/NH4 proposal: first-depletion detection,
+continued biomass mineralisation, constrained FOM turnover and later release.
+O0/O2 each pass96 independent-ODE cases and split-state continuation, with
+closed C/N budgets. The module remains outside production; multiple organic
+pools, crop/top priorities and full runtime composition are not admitted.
+
 BBC481 recovery is canonically admitted by PR1425, merge
 `a2cc7c97dd4c6b1a1005000f9b331d4d4719865e`. The actual complete tree
 `bb8813db36e8dcc0e104e9472244bd0dba2551ff` passes all25 current source/raw

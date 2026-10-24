@@ -93,3 +93,74 @@ and qualify the complete C/N balance, rejection and restart composition. A
 trajectory-aware limitation can be researched next, but is not inferred from
 the current equal-priority mineral partition. Automatic snow/surface N and full
 MC-NUT01 remain open. Existing PR1427 admission is unchanged.
+
+## Executable path-limited successor
+
+**Proposed physical model, tested outside the production path.** The successor
+`mod_path_limited_organic.f90` now implements a continuous limitation for the
+same single-FOM/biomass topology. While NH4 is positive, it calls the unchanged
+production analytic turnover and carbon routines. It locates the first N-zero
+event across the full trajectory, including an interior demand maximum hidden
+by a positive full-window net mineralisation.
+
+At zero NH4 only the N-consuming FOM pathway slows. Biomass mineralisation
+continues and supplies it. With \(c=0.039\), boundary activity is
+\(\min(1,0.08 k_B B/(c k_F F))\). On that boundary
+\(dB/dt=0.001 k_B B/c\) and \(dF/dt=-0.08 k_B B/c\).
+This topology permits an exact constrained segment. When mineral release
+catches the full FOM demand, production kinetics resume. No biomass or no
+biomass turnover means no mineral release and a stalled boundary. This is an
+explicit proposed allocation rule, not a recovered historical identity or an
+accepted priority between crop, top and organic sinks.
+
+The final candidate passes through the actual production pool owner. Carbon
+losses are computed for the same constrained organic trajectory. The interface
+returns its input pools and zero carbon flux for rejected candidates. Its
+bounded input domain is documented in `PATH_LIMITED_CONTRACT.md`.
+
+Fresh O0/O2 builds each compile three production providers, the research module
+and its driver. An independent DOP853 differential-equation model checks96
+configurations per optimization. The cases include zero NH4, zero biomass,
+zero biomass turnover, equal rates and one/ten-day windows:
+
+| Measured quantity | Maximum error or count per optimization |
+| --- | --- |
+| Endpoint disagreement with independent ODE | 1.48e-13 |
+| Depletion/release-time disagreement, days | 3.25e-12 |
+| Whole N budget residual, kg/m2 | 6.94e-18 |
+| Whole C budget residual, kg/m2 | 1.92e-14 |
+| Split-window continuation disagreement | 4.45e-14 |
+| Depletion cases | 54 |
+| Later release from the constraint | 11 |
+| Stalled cases | 30 |
+| Unlimited cases | 42 |
+
+For the PR1429 counterexample with initial NH4=0.005, depletion occurs at
+day0.0142803744011. The constrained day-end has FOM0.175463861895,
+biomass0.0728067017263, effectively zero NH4 and carbon loss0.338278246370.
+It follows a nonnegative N trajectory instead of jumping to a later endpoint
+behind an infeasible mineral deficit.
+
+`PATH_LIMITED_RESULT.json` binds the exact tested sources and
+`PATH_LIMITED_EVIDENCE.tar.xz.b64` contains commands, stdout/stderr, results
+and member hashes. Compile/link/native cost is approximately2.04s; independent
+ODE validation costs2.85s. Replay with
+`python integration/mc-nut01/competing_sinks/run_path_limited_organic.py --replay`.
+The replay also rejects five numerical corruptions. Earlier rounds, including
+an incorrect test expectation corrected before final qualification, are kept
+in `PATH_LIMITED_EARLIER_ROUNDS.tar.xz.b64`.
+
+The canonical delta since PR1429 contains the independently admitted BBC/Cauchy
+and PERF01 work. The current source gate is reached through
+`verify_saturated_picard_current.py`, which delegates to its current Cauchy
+successor. Calling the old nonjuvenile source gate directly correctly rejects
+that newer source envelope; it is no longer the current entry point. The
+PR1429 source-bound numerical replay still passes, and all three production
+providers used here remain exactly unchanged.
+
+This resolves the numerical feasibility of one concrete limitation proposal.
+It does not provide multiple FOM pools, humus turnover, NO3 access, crop/top
+competition or carbon/denitrification feedback. Continuation was tested as a
+physical state split, not a persisted runtime restart. Those compositions and
+scientific selection of the extended allocation rule remain required before
+production activation. Existing production sources and defaults are unchanged.
