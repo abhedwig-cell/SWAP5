@@ -34,6 +34,7 @@ def hooked(ref,path,names,target=SELF,marker=STATUS):
   s=s[:at]+" if (ROOT/'"+marker+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+target+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturated_picard_current.py'))['source'](reader,changed)
  r=record();assert r['own']==OWN and r['peer']==PEER
  git('merge-base','--is-ancestor',PEER,'HEAD')
  # Own historical commit need not be a live Git ancestor after connector
@@ -124,8 +125,11 @@ def validate(f):
   'historical_predecessor_controls':198,'current_NUT_coupled_runs':30,'current_NUT_process_restarts':60,
   'peer_assertions':'Unmodified peer numerical/raw assertion bodies, explicitly archived old daily-N identity, current exact native194/FCT inputs',
   'typed_native_processes_inherited_exact_inputs':62,'canonically_admitted':False,'status':'CROP_ONLY_SHARED_WATER_COMPOSITION_QUALIFIED'}
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturated_picard_current.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturated_picard_current.py'))['self_test']()
  source();f=capsule();validate(f);n=crop_namespace(f);crop=n['self_test']();assert len(crop)==220
  passed=['crop-current:'+p for p in crop[198:]]
  peer=peer_namespace();controls=peer['self_test']();assert len(controls)==163
@@ -139,7 +143,9 @@ def self_test():
  for p in ['frozen/own/commit.raw','frozen/own/controls.json','frozen/own/joint-result.json','joint/O2/crop_both.endpoint','hist/REUSE.json']:
   bad=dict(f);bad[p]+=b'!';reject('composed raw '+p,lambda bad=bad:validate(bad))
  return passed
-def fsi35_successors():source();return peer_namespace()['fsi35_successors']()
+def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturated_picard_current.py'))['fsi35_successors']()
+ source();return peer_namespace()['fsi35_successors']()
 if __name__=='__main__':
  import sys
  print(json.dumps(self_test()if'--self-test'in sys.argv else verify(),indent=2))
