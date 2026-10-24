@@ -1,0 +1,163 @@
+{
+  "baseline": "e96eb58d10f85a4fddfec86317aa782e14b86f42",
+  "closure": [
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_pond_solute_exchange.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_decay.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_sorption.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_compartment_state.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_mobile_salt_state.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_reactive_solute_substep.f90",
+    "/workspace/scratch/8985aaa3b05e/native-domain-probe/corrected_reactive.f90",
+    "/workspace/scratch/8985aaa3b05e/native-domain-probe/storage_successor.f90",
+    "/workspace/scratch/8985aaa3b05e/SWAP5/integration/mc-sol01/fct_reactive/mod_research_composed_fct.f90",
+    "/workspace/scratch/8985aaa3b05e/native-domain-probe/sink_composed.f90",
+    "/workspace/scratch/8985aaa3b05e/native-domain-probe/domain_driver.f90"
+  ],
+  "events": [
+    {
+      "command": [
+        "/workspace/scratch/4112bba79f91/compiler-bin/gfortran",
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J/workspace/scratch/8985aaa3b05e/native-domain-probe/O0",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_pond_solute_exchange.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_decay.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_sorption.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_compartment_state.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_mobile_salt_state.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_reactive_solute_substep.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/corrected_reactive.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/storage_successor.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/integration/mc-sol01/fct_reactive/mod_research_composed_fct.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/sink_composed.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/domain_driver.f90",
+        "-o",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O0/probe"
+      ],
+      "returncode": 0,
+      "seconds": 1.164611559999912,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O0/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "0"
+      ],
+      "returncode": 0,
+      "seconds": 0.001213767000081134,
+      "stdout": " NATIVE_DOMAIN_PROBE           0           0           0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O0/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "1"
+      ],
+      "returncode": 0,
+      "seconds": 0.0009882780000225466,
+      "stdout": " NATIVE_DOMAIN_PROBE           1           0           1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O0/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "2"
+      ],
+      "returncode": 0,
+      "seconds": 0.0013374829998156201,
+      "stdout": " NATIVE_DOMAIN_PROBE           2           0           1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/4112bba79f91/compiler-bin/gfortran",
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-J/workspace/scratch/8985aaa3b05e/native-domain-probe/O2",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_pond_solute_exchange.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_decay.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_solute_sorption.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_compartment_state.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_solute_mobile_salt_state.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/src/process/mod_b111_reactive_solute_substep.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/corrected_reactive.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/storage_successor.f90",
+        "/workspace/scratch/8985aaa3b05e/SWAP5/integration/mc-sol01/fct_reactive/mod_research_composed_fct.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/sink_composed.f90",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/domain_driver.f90",
+        "-o",
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O2/probe"
+      ],
+      "returncode": 0,
+      "seconds": 3.775033037999947,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O2/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "0"
+      ],
+      "returncode": 0,
+      "seconds": 0.001500097999951322,
+      "stdout": " NATIVE_DOMAIN_PROBE           0           0           0\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O2/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "1"
+      ],
+      "returncode": 0,
+      "seconds": 0.0015435729999353498,
+      "stdout": " NATIVE_DOMAIN_PROBE           1           0           1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/workspace/scratch/8985aaa3b05e/native-domain-probe/O2/probe",
+        "0",
+        "1",
+        "1",
+        "1",
+        "4",
+        "2"
+      ],
+      "returncode": 0,
+      "seconds": 0.0009986730001401156,
+      "stdout": " NATIVE_DOMAIN_PROBE           2           0           1\n",
+      "stderr": ""
+    }
+  ],
+  "status": "NATIVE_DOMAIN_GAPS_REPRODUCED_O0_O2"
+}

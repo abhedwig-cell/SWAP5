@@ -1,0 +1,38 @@
+{
+  "workstream": "PERF01",
+  "work_unit": "Historical extension research",
+  "baseline": "aba91da43e12817d09ac54329663ecf38b4e31d0",
+  "status": "RESEARCH_HISTORICAL_DAILY_ACCURACY_FAIL_NO_PRODUCTION_ADMISSION",
+  "production_qualified": false,
+  "production_changed": false,
+  "result": "benchmarks/performance/PERF01_HISTORICAL_20261024_RESULT.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_HISTORICAL_20261024_EVIDENCE.tar.xz",
+    "sha256": "0cc7ad88b89d8ec74410c5b1fdae9143df03c8a9494d3d1f4f4b596d5de658aa",
+    "members": 1337,
+    "bytes": 702956
+  },
+  "publication": {
+    "pr": 1421,
+    "state": "DRAFT_RESEARCH",
+    "branch": "work/perf01-geometry-research-20261024"
+  },
+  "owning_surface": [
+    "benchmarks/performance"
+  ],
+  "invariants": [
+    "hard water/solute balance retained",
+    "whole-day atomic candidate publication",
+    "restart exactness",
+    "positive chemistry fail closed"
+  ],
+  "qualification": {
+    "continuous97_O0_O2": "PASS bounded subset, ordinary fallback route",
+    "restart97": "PASS",
+    "restart481": "PASS",
+    "historical_daily_accuracy": "FAIL",
+    "current_production_owner": "NOT_SELECTED_NO_PRODUCTION_CHANGE",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "next_safe_step": "Preserve bounded production use. Investigate accumulated surface evaporation/runoff and local-to-daily error propagation before any general numerical option expansion; positive chemistry remains excluded."
+}

@@ -1,7 +1,7 @@
 """Research-only geometry screen; production guards and sources stay intact."""
 import csv,hashlib,json,os,subprocess,sys,time
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];ROUTE=os.environ.get('PERF01_RESEARCH_ROUTE','geometry');assert ROUTE in ['geometry','boesten','combined'];OUT=Path('/tmp/perf01-'+ROUTE+'-'+os.environ.get('PERF01_SCREEN_TAG','screen-v7'));OUT.mkdir()
+ROOT=Path(__file__).resolve().parents[2];ROUTE=os.environ.get('PERF01_RESEARCH_ROUTE','geometry');assert ROUTE in ['geometry','boesten','combined','continuous','historical'];OUT=Path('/tmp/perf01-'+ROUTE+'-'+os.environ.get('PERF01_SCREEN_TAG','screen-v7'));OUT.mkdir()
 BASE=Path(os.environ.get('PERF01_SCREEN_BUNDLE','/tmp/perf01-complete-O2'));sys.path.insert(0,str(ROOT/'tools/solute'));import run_project
 sha=lambda b:hashlib.sha256(b).hexdigest()
 meta=json.loads((BASE/'shared/build-complete.json').read_text());bundle=json.loads((BASE/'bundle.json').read_text())
@@ -17,12 +17,17 @@ def run(cmd,cwd,label,required=True):
 source='src/runtime/mod_fmr_serialized_reference_backend.f90';text=(ROOT/source).read_text();start=text.index('  logical function water_flux_trial_admitted(');end=text.index('  end function',start)
 old=text[start:end];new=old.replace('p%active_nodes/=4','(p%active_nodes<2.or.p%active_nodes>64)').replace('size(p%dz)/=4','size(p%dz)/=p%active_nodes').replace('if(abs(sum(p%dz)-30.0_real64)>1.e-12_real64)return','if(sum(p%dz)>200.0_real64)return')
 assert new!=old and new.count('if(')==old.count('if(')
-if ROUTE in ['boesten','combined']:new=new.replace('p%boesten_evaporation_active.or.p%black_evaporation_active','p%black_evaporation_active').replace('t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &','(t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.and.t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION).or. &')
-if ROUTE=='combined':new=new.replace('p%picard_conductivity_iteration.or.p%soil_temperature_active','p%soil_temperature_active')
-if ROUTE in ['boesten','combined']:
+if ROUTE in ['boesten','combined','continuous','historical']:new=new.replace('p%boesten_evaporation_active.or.p%black_evaporation_active','p%black_evaporation_active').replace('t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.or. &','(t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BASE.and.t%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION).or. &')
+if ROUTE in ['combined','continuous','historical']:new=new.replace('p%picard_conductivity_iteration.or.p%soil_temperature_active','p%soil_temperature_active')
+if ROUTE in ['boesten','combined','continuous','historical']:
  new=new.replace('    if(.not.allocated(f%pond_input))return\n    if(f%pond_input%implicit_pond_evaporation)return', '    if(p%boesten_evaporation_active)then\n      if(.not.allocated(f%boesten_evaporation))return\n    else\n      if(.not.allocated(f%pond_input))return\n      if(f%pond_input%implicit_pond_evaporation)return\n    end if')
+if ROUTE=='historical':new=new.replace('allocated(f%legacy_swbotb2_control).or.','')
 text=text[:start]+new+text[end:]
-if ROUTE in ['boesten','combined']:
+if ROUTE=='historical':
+ old_gate='             .not. numerical_config%retain_accepted_step_proposal .and. &'
+ assert text.count(old_gate)==1
+ text=text.replace(old_gate,'             (.not.numerical_config%retain_accepted_step_proposal.or.self%water_flux_temporal%enabled).and. &',1)
+if ROUTE in ['boesten','combined','continuous','historical']:
  at=text.index('  real(real64) function fmr_water_flux_temporal_assessment(');stop=text.index('  end function',at);body=text[at:stop].replace('type is(fmr_b110_physical_state_t)','class is(fmr_b110_physical_state_t)')
  body+='''    if(self%boesten_evaporation_active)then
       select type(bfull=>full_state)
@@ -41,17 +46,46 @@ if ROUTE in ['boesten','combined']:
       end select
     end if
 '''
+ if os.environ.get('PERF01_DRY_HEAD_GUARD')=='1':
+  old_assessment='        if(available)value=normalized*self%temporal_tolerance_cm'
+  new_assessment='''        if(available)then
+          value=normalized*self%temporal_tolerance_cm
+          value=max(value,maxval(abs(full%pressure_head-half%pressure_head), &
+            mask=max(full%pressure_head,half%pressure_head)<0.0_real64))
+        end if'''
+  assert body.count(old_assessment)==1;body=body.replace(old_assessment,new_assessment)
+ if os.environ.get('PERF01_INCUMBENT_GUARD')=='1':
+  old_assessment='        if(available)value=normalized*self%temporal_tolerance_cm'
+  assert body.count(old_assessment)==1
+  body=body.replace(old_assessment,old_assessment+'\n        value=max(value,fmr_weather_surface_temporal_error(self,full_state,half_state))')
  text=text[:at]+body+text[stop:]
 generated=OUT/Path(source).name;generated.write_text(text);r['source_sha256']=meta['input_sha256'];r['generated_sha256']=sha(generated.read_bytes())
 compile=next(e['command']for e in meta['events']if '-c'in e['command']and str(ROOT/source)in e['command']);oldobj=compile[-1];obj=OUT/'backend.o'
 cmd=[str(generated)if x==str(ROOT/source)else str(obj)if x==oldobj else '-J'+str(OUT)if x.startswith('-J')else x for x in compile];run(cmd,OUT,'backend-build')
 assert(OUT/'mod_fmr_serialized_reference_backend.mod').read_bytes()==(BASE/'shared/mod_fmr_serialized_reference_backend.mod').read_bytes(),'changed public interface'
 project=json.loads((BASE/'column/build-complete.json').read_text());link=next(e['command']for e in project['events']if e['category']=='project_compile_link');exe=OUT/'project'
-if ROUTE in ['boesten','combined']:
+if ROUTE in ['boesten','combined','continuous','historical']:
  main=ROOT/'app/solute_project/main.f90';original=main.read_text();changed=original.replace('.not.dynamic_temperature.and..not.implicit_pond_evaporation.and. &\n      .not.retain_accepted_step_proposal','.not.dynamic_temperature.and..not.implicit_pond_evaporation',1).replace('(retain_accepted_step_proposal.and..not.boesten_evaporation)','retain_accepted_step_proposal',1)
  assert changed!=original;generated_main=OUT/'main.f90';generated_main.write_text(changed);link=[str(generated_main)if x==str(main)else x for x in link]
- if ROUTE=='combined':generated_main.write_text(changed.replace('(.not.picard_conductivity_iteration.and. &','(.true..and. &',1))
+ if ROUTE in ['combined','continuous','historical']:
+  changed=changed.replace('(.not.picard_conductivity_iteration.and. &','(.true..and. &',1)
+  if ROUTE in ['continuous','historical']:changed=changed.replace('.not.continuous_mvg.and.', '.true..and.',1)
+  if ROUTE=='historical':
+   changed=changed.replace('.not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0','(solute_transport_scheme==0.or.solute_transport_scheme==1)',1)
+   old_retry="      numerical%retain_accepted_step_proposal=.false.\n      call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)\n      numerical%retain_accepted_step_proposal=.true."
+   new_retry="      numerical%retain_accepted_step_proposal=.false.\n      if(detailed_rain)then\n        call run_detailed_rain_day(t0,t1,result)\n      else\n        call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)\n      end if\n      numerical%retain_accepted_step_proposal=.true."
+   assert changed.count(old_retry)==1;changed=changed.replace(old_retry,new_retry)
+  generated_main.write_text(changed)
+if ROUTE=='historical':
+ joint_source='src/runtime/mod_fmr_b111_pond_joint_application.f90';joint_original=(ROOT/joint_source).read_text();joint_text=joint_original.replace('metric_chemistry%transport_scheme/=0.or.metric_chemistry%temperature_active','(metric_chemistry%transport_scheme/=0.and.metric_chemistry%transport_scheme/=1).or.metric_chemistry%temperature_active',1);assert joint_text!=joint_original
+ joint_generated=OUT/Path(joint_source).name;joint_generated.write_text(joint_text)
+ joint_compile=next(e['command']for e in meta['events']if '-c'in e['command']and str(ROOT/joint_source)in e['command']);joint_oldobj=joint_compile[-1];joint_obj=OUT/'joint.o'
+ joint_cmd=[str(joint_generated)if x==str(ROOT/joint_source)else str(joint_obj)if x==joint_oldobj else '-J'+str(OUT)if x.startswith('-J')else x for x in joint_compile];run(joint_cmd,OUT,'joint-build')
+ assert(OUT/'mod_fmr_b111_pond_joint_application.mod').read_bytes()==(BASE/'shared/mod_fmr_b111_pond_joint_application.mod').read_bytes()
+ link=[str(joint_obj)if x==joint_oldobj else x for x in link]
 cmd=[str(obj)if x==oldobj else str(exe)if x==link[-1]else '-J'+str(OUT)if x.startswith('-J')else x for x in link];run(cmd,OUT,'project-build')
+if os.environ.get('PERF01_BUILD_ONLY')=='1':
+ r['status']='BUILT_RESEARCH_ONLY';r['executable_sha256']=sha(exe.read_bytes());save();print(str(exe));sys.exit(0)
 for cells in map(int,os.environ.get('PERF01_SCREEN_CELLS','8,24').split(',')):
  assert cells in [8,24]
  for rain in [1,4]:
@@ -63,7 +97,8 @@ for cells in map(int,os.environ.get('PERF01_SCREEN_CELLS','8,24').split(',')):
   for arm,on in [('head',False),('flux',True)]:
    d=case/arm;d.mkdir();doc,snapshot,audit,_=run_project.prepare(bundle,case/'swap.swp',.001,surface_exfiltration='historical_zero',retain_step_proposal=True,water_flux_temporal=on)
    (d/'input.nml').write_text(doc);(d/'input.swp').write_bytes(snapshot)
-   if ROUTE in ['boesten','combined']:(d/'input.nml').write_text(doc.replace('&column','&column\n boesten_evaporation=.true.,boesten_cofred=.79'+(',picard_conductivity_iteration=.true.'if ROUTE=='combined'else''),1))
+   if ROUTE in ['boesten','combined','continuous','historical']:(d/'input.nml').write_text(doc.replace('&column','&column\n boesten_evaporation=.true.,boesten_cofred=.79'+(',picard_conductivity_iteration=.true.'if ROUTE in ['combined','continuous','historical']else''),1))
+   if ROUTE=='continuous':(d/'input.nml').write_text((d/'input.nml').read_text().replace('&column','&column\n continuous_mvg=.true.,',1))
    p=run([exe,'input.nml','-','97','input.swp'],d,f'{cells}-{rain}-{arm}',False)
    outcomes[arm]=dict(returncode=p.returncode,seconds=r['events'][-1]['seconds'])
    if p.returncode==0:

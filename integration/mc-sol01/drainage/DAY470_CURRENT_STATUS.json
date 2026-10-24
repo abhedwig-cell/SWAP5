@@ -1,0 +1,49 @@
+{
+  "work_unit": "HIST-INTEGRATION01 current canonical day470 composition",
+  "baseline": "2de14588d192197d547d5287384e0317ad7514b2",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": true,
+  "actual_merge": "b9ce4078722544bb0fc774e2833885cfb5343b18",
+  "actual_and_qualified_tree": "4f3b55652fb284f861b3e6276b1076f5c9458677",
+  "admission_receipt": "integration/mc-sol01/drainage/DAY470_CURRENT_ADMISSION.json",
+  "qualification_owner": "integration/audits/verify_saturated_picard_current.py",
+  "scientific_delta": {
+    "integration/audits/verify_nut_crop_depletion_composed.py": "M",
+    "integration/audits/verify_saturated_picard_current.py": "A",
+    "src/legacy/b1_10_port/headcalc.f90": "M"
+  },
+  "postimages": {
+    "integration/audits/verify_nut_crop_depletion_composed.py": "4d6a82553e335cdc396402a0e41f1bb2a3b7b50499b8bdac9e89c600eace542e",
+    "integration/audits/verify_saturated_picard_current.py": "dbfa64219309dc87f381acedad0b47cb10eb30e7535a692e2ff933a8246a1419",
+    "integration/mc-sol01/drainage/reconcile_day470_recovery.py": "87f0f2a81a0a7b605e0e434780f140b9b74a8beb1afdb30601dc79e47e07e554",
+    "integration/mc-sol01/drainage/seal_day470_current_canonical.py": "f179d8aa93f8e6b2651375ae4a7f462ea707706cec00a2b3b12249b8817aeca5",
+    "src/legacy/b1_10_port/headcalc.f90": "05b587da9910dac6480e74c6c3bd119f89f5467d9f813a2dfe0911a5cebdef9f"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/EVIDENCE_DAY470_CANONICAL.tar.xz.b64",
+    "sha256": "844a93e4790a0f3555ffd0558a9b7acb8715d1df1c88b881e1be3cad8f305b09",
+    "bytes": 668792,
+    "members": 5152
+  },
+  "current_HIST_processes": 78,
+  "current_coupled_runs": 30,
+  "current_process_restarts": 60,
+  "frozen_predecessor_controls": 316,
+  "source_unchanged_native_days": 481,
+  "compiler": "GNU Fortran13.3.0-6ubuntu2~24.04.1; private extraction; cold654 compiles; stack64MiB",
+  "selection": "Affected current HIST/crop exhaustion/restart and new extracting-sink disk consumer; preserve original native481 and three FCT numerical proofs only after exact compiled-input checks.",
+  "not_selected": [
+    "highest low-air",
+    "RossFast expansion",
+    "new1e-6",
+    "unrelated full FCI"
+  ],
+  "current_source_raw_controls": 13,
+  "original_FSI35_native_O0_O2": "PASS",
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS",
+  "next_action": "Bounded481-day original-DRA composition admitted. Next physical work: original Andelst macropore/soil/crop/Cauchy3/heat composition and separate wet4x day7 numerical rejection; full SOL/NUT and master coverage remain open."
+}

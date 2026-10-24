@@ -1,0 +1,234 @@
+{
+  "work_unit": "HIST-INTEGRATION01 day470 successor",
+  "pr": 1413,
+  "canonically_admitted": true,
+  "actual_merge": "b9ce4078722544bb0fc774e2833885cfb5343b18",
+  "actual_tree": "4f3b55652fb284f861b3e6276b1076f5c9458677",
+  "qualified_tree": "4f3b55652fb284f861b3e6276b1076f5c9458677",
+  "exact_postimage": true,
+  "qualified_head": "981fd5aeb8f0b130f1918484cedd26cacdd71c66",
+  "baseline": "2de14588d192197d547d5287384e0317ad7514b2",
+  "actual_merge_owner_routes": {
+    "integration/audits/native_project_admission.py": {
+      "result": {
+        "qualified": true,
+        "status": "CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED",
+        "bounded_days": 481,
+        "current_NUT_processes": 78,
+        "current_NUT_coupled_runs": 30,
+        "current_NUT_process_restarts": 60,
+        "frozen_predecessor_controls": 316,
+        "retained_native_scope": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+        "disk": {
+          "status": "EXTRACTING_SINK_FRESH_PROCESS_RESTART_PASS",
+          "disk_cases": 48,
+          "separate_native_runs": 300,
+          "fresh_process_endpoints_byte_exact": 48,
+          "envelope_rejections": 192,
+          "native_corruption_parameter_rejections": 144,
+          "publisher_process_kills": 8,
+          "crash_recoveries_exact": 8,
+          "production_activated": false,
+          "full_mc_sol01_closed": false
+        },
+        "disk_controls": [
+          "missing disk-O0/case-40-0.8-0.5-0.0/full/payload.bin",
+          "missing disk-O0/case-40-0.8-0.5-0.0/resumed/payload.bin",
+          "missing restart_bridge.f90",
+          "missing source/src/adapter/mod_matrix_joint_restart_file.f90",
+          "missing source/integration/mc-sol01/fct_sinks/generate.py"
+        ],
+        "full_original_Andelst": false,
+        "full_mc_sol01_closed": false,
+        "full_mc_nut01_closed": false,
+        "canonically_admitted": false
+      },
+      "controls": [
+        "source integration/audits/verify_nut_crop_depletion_composed.py",
+        "source integration/audits/verify_saturated_picard_current.py",
+        "source integration/mc-sol01/drainage/reconcile_day470_recovery.py",
+        "source integration/mc-sol01/drainage/seal_day470_current_canonical.py",
+        "source src/legacy/b1_10_port/headcalc.f90",
+        "foreign caller",
+        "raw frozen.json",
+        "raw native-identity.json",
+        "raw hist/result.json",
+        "raw joint/O0/crop_nh4.endpoint",
+        "raw joint/O2/crop_both.fresh-4.ledger",
+        "raw joint/O0/crop_both.restart.exhaust-reject-2",
+        "raw disk/round1/execution.json"
+      ]
+    },
+    "integration/audits/verify_native_boesten.py": {
+      "result": {
+        "qualified": true,
+        "status": "CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED",
+        "bounded_days": 481,
+        "current_NUT_processes": 78,
+        "current_NUT_coupled_runs": 30,
+        "current_NUT_process_restarts": 60,
+        "frozen_predecessor_controls": 316,
+        "retained_native_scope": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+        "disk": {
+          "status": "EXTRACTING_SINK_FRESH_PROCESS_RESTART_PASS",
+          "disk_cases": 48,
+          "separate_native_runs": 300,
+          "fresh_process_endpoints_byte_exact": 48,
+          "envelope_rejections": 192,
+          "native_corruption_parameter_rejections": 144,
+          "publisher_process_kills": 8,
+          "crash_recoveries_exact": 8,
+          "production_activated": false,
+          "full_mc_sol01_closed": false
+        },
+        "disk_controls": [
+          "missing disk-O0/case-40-0.8-0.5-0.0/full/payload.bin",
+          "missing disk-O0/case-40-0.8-0.5-0.0/resumed/payload.bin",
+          "missing restart_bridge.f90",
+          "missing source/src/adapter/mod_matrix_joint_restart_file.f90",
+          "missing source/integration/mc-sol01/fct_sinks/generate.py"
+        ],
+        "full_original_Andelst": false,
+        "full_mc_sol01_closed": false,
+        "full_mc_nut01_closed": false,
+        "canonically_admitted": false
+      },
+      "controls": [
+        "source integration/audits/verify_nut_crop_depletion_composed.py",
+        "source integration/audits/verify_saturated_picard_current.py",
+        "source integration/mc-sol01/drainage/reconcile_day470_recovery.py",
+        "source integration/mc-sol01/drainage/seal_day470_current_canonical.py",
+        "source src/legacy/b1_10_port/headcalc.f90",
+        "foreign caller",
+        "raw frozen.json",
+        "raw native-identity.json",
+        "raw hist/result.json",
+        "raw joint/O0/crop_nh4.endpoint",
+        "raw joint/O2/crop_both.fresh-4.ledger",
+        "raw joint/O0/crop_both.restart.exhaust-reject-2",
+        "raw disk/round1/execution.json"
+      ]
+    },
+    "integration/audits/verify_nut_empty_pool.py": {
+      "result": {
+        "qualified": true,
+        "status": "CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED",
+        "bounded_days": 481,
+        "current_NUT_processes": 78,
+        "current_NUT_coupled_runs": 30,
+        "current_NUT_process_restarts": 60,
+        "frozen_predecessor_controls": 316,
+        "retained_native_scope": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+        "disk": {
+          "status": "EXTRACTING_SINK_FRESH_PROCESS_RESTART_PASS",
+          "disk_cases": 48,
+          "separate_native_runs": 300,
+          "fresh_process_endpoints_byte_exact": 48,
+          "envelope_rejections": 192,
+          "native_corruption_parameter_rejections": 144,
+          "publisher_process_kills": 8,
+          "crash_recoveries_exact": 8,
+          "production_activated": false,
+          "full_mc_sol01_closed": false
+        },
+        "disk_controls": [
+          "missing disk-O0/case-40-0.8-0.5-0.0/full/payload.bin",
+          "missing disk-O0/case-40-0.8-0.5-0.0/resumed/payload.bin",
+          "missing restart_bridge.f90",
+          "missing source/src/adapter/mod_matrix_joint_restart_file.f90",
+          "missing source/integration/mc-sol01/fct_sinks/generate.py"
+        ],
+        "full_original_Andelst": false,
+        "full_mc_sol01_closed": false,
+        "full_mc_nut01_closed": false,
+        "canonically_admitted": false
+      },
+      "controls": [
+        "source integration/audits/verify_nut_crop_depletion_composed.py",
+        "source integration/audits/verify_saturated_picard_current.py",
+        "source integration/mc-sol01/drainage/reconcile_day470_recovery.py",
+        "source integration/mc-sol01/drainage/seal_day470_current_canonical.py",
+        "source src/legacy/b1_10_port/headcalc.f90",
+        "foreign caller",
+        "raw frozen.json",
+        "raw native-identity.json",
+        "raw hist/result.json",
+        "raw joint/O0/crop_nh4.endpoint",
+        "raw joint/O2/crop_both.fresh-4.ledger",
+        "raw joint/O0/crop_both.restart.exhaust-reject-2",
+        "raw disk/round1/execution.json"
+      ]
+    },
+    "integration/audits/verify_saturated_picard_current.py": {
+      "result": {
+        "qualified": true,
+        "status": "CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED",
+        "bounded_days": 481,
+        "current_NUT_processes": 78,
+        "current_NUT_coupled_runs": 30,
+        "current_NUT_process_restarts": 60,
+        "frozen_predecessor_controls": 316,
+        "retained_native_scope": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+        "disk": {
+          "status": "EXTRACTING_SINK_FRESH_PROCESS_RESTART_PASS",
+          "disk_cases": 48,
+          "separate_native_runs": 300,
+          "fresh_process_endpoints_byte_exact": 48,
+          "envelope_rejections": 192,
+          "native_corruption_parameter_rejections": 144,
+          "publisher_process_kills": 8,
+          "crash_recoveries_exact": 8,
+          "production_activated": false,
+          "full_mc_sol01_closed": false
+        },
+        "disk_controls": [
+          "missing disk-O0/case-40-0.8-0.5-0.0/full/payload.bin",
+          "missing disk-O0/case-40-0.8-0.5-0.0/resumed/payload.bin",
+          "missing restart_bridge.f90",
+          "missing source/src/adapter/mod_matrix_joint_restart_file.f90",
+          "missing source/integration/mc-sol01/fct_sinks/generate.py"
+        ],
+        "full_original_Andelst": false,
+        "full_mc_sol01_closed": false,
+        "full_mc_nut01_closed": false,
+        "canonically_admitted": false
+      },
+      "controls": [
+        "source integration/audits/verify_nut_crop_depletion_composed.py",
+        "source integration/audits/verify_saturated_picard_current.py",
+        "source integration/mc-sol01/drainage/reconcile_day470_recovery.py",
+        "source integration/mc-sol01/drainage/seal_day470_current_canonical.py",
+        "source src/legacy/b1_10_port/headcalc.f90",
+        "foreign caller",
+        "raw frozen.json",
+        "raw native-identity.json",
+        "raw hist/result.json",
+        "raw joint/O0/crop_nh4.endpoint",
+        "raw joint/O2/crop_both.fresh-4.ledger",
+        "raw joint/O0/crop_both.restart.exhaust-reject-2",
+        "raw disk/round1/execution.json"
+      ]
+    }
+  },
+  "original_FSI35_native_O0_O2": "PASS",
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS",
+  "bounded_native_days": 481,
+  "native_evidence": "Immutable prior native O0/O2/run365/resume,all198 current input/source identities and daily hard/gross budgets rechecked; no unrelated native rerun claimed",
+  "current_cold_compiles": 654,
+  "current_HIST_processes": 78,
+  "current_coupled_NUT_runs": 30,
+  "current_NUT_process_restarts": 60,
+  "frozen_predecessor_controls": 316,
+  "current_source_raw_controls": 13,
+  "extracting_sink_disk_cases": 48,
+  "full_original_Andelst": false,
+  "full_mc_sol01_closed": false,
+  "full_mc_nut01_closed": false,
+  "master_rows_promoted": 0,
+  "remaining_scientific_limits": [
+    "Wet4x water rejection day7; committed day6 rollback exact",
+    "Original macropores/soil/crop/Cauchy3/heat composition",
+    "Full SOL/NUT scope"
+  ]
+}

@@ -825,3 +825,13 @@ N remain open. No frozen master row is promoted. Contract and actual receipt:
 `integration/mc-nut01/empty_equilibrium/ADMISSION.json`.
 Scientific discussion:
 [empty mineral equilibrium](../science/MC_NUT01_EMPTY_EQUILIBRIUM_20261024.md).
+
+HIST-INTEGRATION01 day470 successor PR1413 is owned by
+`integration/audits/verify_saturated_picard_current.py`. The existing crop/water
+owner forwards without editing its original assertion bodies. Current evidence
+binds the exact repaired HeadCalc blob, all198 native inputs, retained481-day
+O0/O2/restart and hard-balance proof, fresh78 HIST/30 coupled/60 restarted NUT
+processes,48 extracting-sink disk cases,316 pristine predecessor controls and13
+current corruption controls. Original FSI35 is rerun on the composed source.
+Status/evidence: `integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json`.
+The separate actual merge receipt controls admission, not the checkpoint or PR.

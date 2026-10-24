@@ -40,3 +40,11 @@ the complete481-day combined case and current shared-owner preservation remain
 open before a production expansion. No new1e-6 trial, RossFast extension or
 heavy low-air test is selected. The JSON and648-member capsule contain the
 executed sources, inputs, outcomes, failed attempts and exact restart checks.
+
+## Later execution-route correction,24 October2026
+
+The Picard subset triggered97 zero-work preflight rejections per arm and retried
+with ordinary step policy. Its bounded physical evidence remains valid, but it
+does not qualify active Picard retained proposals. See
+`PERF01_HISTORICAL_20261024_RESULT.md` for the full481-day failed daily-accuracy
+comparison and exact route diagnosis. Original evidence capsule is unchanged.

@@ -1,7 +1,7 @@
 """Exact day48 continuation and total evaporation of research Boesten/Picard."""
-import csv,json,subprocess,time
+import csv,json,os,subprocess,time
 from pathlib import Path
-root=Path('/tmp/perf01-combined-screen-v7');r=json.loads((root/'RESULT.json').read_text());checks={}
+root=Path(os.environ.get('PERF01_RESTART_ROOT','/tmp/perf01-combined-screen-v7'));r=json.loads((root/'RESULT.json').read_text());checks={}
 for name in r['cases']:
  case=root/name;full=case/'flux';previous=None;events=[]
  for part,stop in [('half',48),('resume',97)]:
