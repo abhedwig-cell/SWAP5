@@ -1,0 +1,85 @@
+{
+  "work_unit": "HIST-INTEGRATION01 source-owned numeric thermal bootstrap",
+  "baseline": "de6299171e3b13d8f444993e9bf8893ad15fec72",
+  "implemented": true,
+  "persisted": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "stage": "SOURCE_COMPONENT_AND_CURRENT_FILE_QUALIFICATION_SEALED",
+  "contract": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_CONTRACT.md",
+  "test_selection": {
+    "thermal_bootstrap": {
+      "changed_dependency": "Source texture mass-to-volume initialization, original SWP thermal component reader and explicit opt-in file application",
+      "scientific_claim": "Original Andelst heat input maps into real numeric heat providers; current file water/heat/solute generation and restart preserve owner contracts",
+      "owner": "HIST-INTEGRATION01",
+      "authority": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_CONTRACT.md",
+      "expected_seconds": 250,
+      "existing_evidence": "Current heat kernel/codec and old application proofs retained; new initialization/caller inputs require checked O0/O2 component and coupled file execution",
+      "prior_execution": "NONE"
+    },
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "exclusions": [
+    "Full original macro/heat/drainage/crop application",
+    "Analytic or external-table heat boundaries",
+    "Loose historical restart"
+  ],
+  "next_action": "Validate source/raw controls and docs, publish one coherent PR, verify actual merge and persist separate admission",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_EVIDENCE.tar.xz.b64",
+    "sha256": "9cbd270c951d0eed6f5ffbd2c40ffd472bb4179f5964760371d89d497dc90162",
+    "bytes": 1079728,
+    "members": 3168
+  },
+  "current_executed_inputs": 201,
+  "admission_record": "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_ADMISSION.json",
+  "qualification_scope": "112-node original Andelst thermal component and constructed current two-layer coupled file application; not full original hydraulic/crop/macro application",
+  "scientific_delta": {
+    "app/solute_column/main.f90": "M",
+    "app/solute_column/read_swp_heat.f90": "A",
+    "integration/audits/verify_macro_trace_current.py": "M",
+    "src/process/mod_restricted_soil_temperature.f90": "M",
+    "tests/nut-sol/test_swp_heat_bootstrap.f90": "A",
+    "integration/audits/verify_native_heat_bootstrap_current.py": "A",
+    "examples/solute_column/native_heat.nml": "A",
+    "examples/solute_column/layered_heat.swp": "A"
+  },
+  "postimages": {
+    "app/solute_column/main.f90": "2f341d009df6604070414c4cbe5414ea7790be29d2571541c9b76fad155f6a44",
+    "app/solute_column/read_swp_heat.f90": "2d1ac41e3b5e594a1803baab4600abb9eabfebc97473780ad1703d4525d60ae3",
+    "integration/audits/verify_macro_trace_current.py": "f99e592d20888dfc183f727a9c20f00746bb831a67eeea6effb7e5cc5a44b05d",
+    "src/process/mod_restricted_soil_temperature.f90": "24932aeef598a52e2e5f7eb85bd981bb95f48f8d3c86fe2d2d3a7beb7bb1b6d1",
+    "tests/nut-sol/test_swp_heat_bootstrap.f90": "d26045fba240bef25a16880aa4e34a3afef94880d51f3428b7f9fce11a1dfff4",
+    "integration/audits/verify_native_heat_bootstrap_current.py": "e825ffb71002e686c0725de6d500d2938325e0c1b204874da609d98d921f669b",
+    "examples/solute_column/native_heat.nml": "0c347fe74b249635aba43aea32071c04410c44b3329db034205124d4d43bb3ce",
+    "examples/solute_column/layered_heat.swp": "427d4d84cc414244c8cd6248e54160de3d1228f134eb204aae1b7febdb8f8a07",
+    "integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_CONTRACT.md": "6eb0f743f169506ed6a9ae0f5db2b136c6e1be6a1cd82bf9af358054bb98c541",
+    "integration/mc-sol01/drainage/qualify_native_heat_bootstrap.py": "79ab7cb7e476e6d540b53d1db97a8e6b476f2a4399e8aebeb3a6f2d66cba7c35",
+    "integration/mc-sol01/drainage/qualify_native_heat_application.py": "a7c100003e8436b54c4515bb04619e161160d3272e216c4da0426d2e260c5d16",
+    "integration/mc-sol01/drainage/seal_native_heat_bootstrap.py": "9cacc8b0b73b02485a95fe1088fa194da6320f6dfa758a6f58fe5d199bcd6215"
+  },
+  "physical_results": {
+    "source_nodes": 112,
+    "source_valid_cases_O0_O2": 4,
+    "source_negative_processes": 22,
+    "constructor_negative_assertions": 28,
+    "coupled_cases": 6,
+    "separate_process_restarts": 6,
+    "file_negative_processes": 18,
+    "water_max_cm": 4.508112633194727e-16,
+    "solute_max_mg_cm2": 1.7539366226754227e-13,
+    "O0_O2_all_native_physical_outputs_exact": true,
+    "old_heat_procedure_and_type_bytes_exact": true,
+    "old_water_and_explicit_heat_application_outputs_exact": true
+  },
+  "preservation_selection": {
+    "old_heat_routines": "Exact byte projection after removing additive source initializer/export; original main versus current file application exact",
+    "NUT_and_macro": "Dated canonical17-control proof retained; no fresh NUT/macro run claimed or selected for unused additive initializer",
+    "FSI35": "All27 executable dependency sources unchanged; select current source boundary only",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  }
+}

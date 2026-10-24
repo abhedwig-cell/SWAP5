@@ -20,6 +20,7 @@ program swap5_solute_column
   use mod_soil_temperature_contract
   use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
   use mod_column_swp_water,only:import_column_swp_water
+  use mod_column_swp_heat,only:import_column_swp_heat
   use mod_column_swp_chemistry,only:import_column_swp_chemistry
   use mod_matrix_joint_restart_file
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
@@ -46,10 +47,11 @@ program swap5_solute_column
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
-  logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.
+  logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.,swp_heat_bootstrap=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
+  real(real64) :: air_temperature_c(MAX_WINDOWS)=20d0
   type(soil_temperature_field_view_t) :: heat_view
   type(fmr_b110_physical_parameters_t),target :: p
   type(fmr_b110_physical_state_t) :: initial
@@ -74,9 +76,9 @@ program swap5_solute_column
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,dynamic_temperature,freundlich_exponent,reference_concentration, &
-    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap
+    decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,swp_heat_bootstrap
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
-    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
+    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day,air_temperature_c
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -104,6 +106,16 @@ program swap5_solute_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
+  call require(all(ieee_is_finite(air_temperature_c)),'nonfinite air temperature')
+  call require(all(air_temperature_c>=-50d0).and.all(air_temperature_c<=60d0),'air temperature outside application domain')
+  call require(swp_heat_bootstrap.or.all(air_temperature_c==20d0),'air temperature requires native heat bootstrap')
+  if(swp_heat_bootstrap)then
+    call require(swp_water_bootstrap.and.dynamic_temperature.and.len_trim(legacy_swp)>0, &
+      'SWP heat bootstrap requires native water, explicit dynamic heat and --swp')
+    call require(all(initial_temperature_c==20d0),'SWP heat bootstrap forbids a second initial temperature profile')
+    call require(all(surface_temperature_c==20d0),'native air boundary forbids a prescribed surface temperature')
+  end if
+
   if(swp_water_bootstrap)then
     call require(len_trim(legacy_swp)>0,'SWP water bootstrap requires --swp')
     call require(schema==2.and.nodes==0.and.all(cell_thickness_cm==0d0),'SWP water bootstrap forbids a second grid')
@@ -225,11 +237,16 @@ program swap5_solute_column
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     p%soil_temperature_active=.true.
     allocate(p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
+    if(swp_heat_bootstrap)then
+      call import_column_swp_heat(trim(legacy_swp),dz,z,disnod(1:numnod),p%cofgen(2,:), &
+        p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
+    else
     call initialize_soil_temperature_parameters(dz,disnod(1:numnod),p%cofgen(2,:), &
       spread(.3d0,1,numnod),spread(.2d0,1,numnod),spread(.04d0,1,numnod),p%soil_temperature,code)
     call require(code==0,'thermal parameter initialization')
     call initialize_soil_temperature_state(initial_temperature_c(1:numnod),initial%soil_temperature,code)
     call require(code==0,'thermal state initialization')
+    end if
   end if
   numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   numerical%transaction%temporal_tolerance=temporal_tolerance
@@ -293,7 +310,11 @@ program swap5_solute_column
     supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)
     supply%implicit_pond_evaporation=implicit_pond_evaporation
     if(dynamic_temperature)then
+      if(swp_heat_bootstrap)then
+        forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
+      else
       forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
+      end if
       call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
     else
     call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)

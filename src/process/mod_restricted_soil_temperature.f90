@@ -54,6 +54,7 @@ module mod_restricted_soil_temperature
   public :: soil_temperature_state_t, soil_temperature_restart_payload_t, soil_temperature_field_view_t
   public :: soil_temperature_workspace_t, soil_temperature_result_t, soil_temperature_diagnostics_t
   public :: initialize_soil_temperature_parameters, initialize_soil_temperature_state
+  public :: initialize_soil_temperature_from_texture
   public :: trial_restricted_soil_temperature, commit_soil_temperature_state, build_soil_temperature_field_view
   public :: copy_soil_temperature_profile, soil_temperature_at_node, export_soil_temperature_restart
   public :: reconstruct_soil_temperature_restart
@@ -111,6 +112,37 @@ contains
     parameters%initialized=.true.
     if (parameters%ready()) status=SOIL_TEMP_OK
   end subroutine initialize_soil_temperature_parameters
+
+  ! Original SWAP4.3.1 temperature.f90 task1, mineral/organic mass to volume.
+  ! PSAND/PSILT/PCLAY refer to mineral parts; ORGMAT to total dry mass.
+  subroutine initialize_soil_temperature_from_texture(dz_cm,distance_above_cm,theta_sat, &
+       sand,silt,clay,organic,parameters,status)
+    real(real64),intent(in)::dz_cm(:),distance_above_cm(:),theta_sat(:),sand(:),silt(:),clay(:),organic(:)
+    type(soil_temperature_parameters_t),intent(out)::parameters
+    integer,intent(out)::status
+    real(real64),allocatable::fq(:),fc(:),fo(:)
+    real(real64)::dummy,gmineral
+    integer::n,i
+    status=SOIL_TEMP_INVALID_PARAMETERS;n=size(dz_cm)
+    if(n<2.or.size(distance_above_cm)/=n.or.size(theta_sat)/=n.or. &
+       size(sand)/=n.or.size(silt)/=n.or.size(clay)/=n.or.size(organic)/=n)return
+    if(any(.not.ieee_is_finite(theta_sat)).or.any(.not.ieee_is_finite(sand)).or. &
+       any(.not.ieee_is_finite(silt)).or.any(.not.ieee_is_finite(clay)).or. &
+       any(.not.ieee_is_finite(organic)))return
+    if(any(theta_sat<=0.0_real64).or.any(theta_sat>1.0_real64).or. &
+       any(sand<0.0_real64).or.any(sand>1.0_real64).or.any(silt<0.0_real64).or.any(silt>1.0_real64).or. &
+       any(clay<0.0_real64).or.any(clay>1.0_real64).or.any(organic<0.0_real64).or.any(organic>=1.0_real64))return
+    ! Original rounded texture tables are not normalized or forced to sum exactly1.
+    allocate(fq(n),fc(n),fo(n))
+    do i=1,n
+      dummy=organic(i)/(1.0_real64-organic(i))
+      gmineral=(1.0_real64-theta_sat(i))/(0.370_real64+0.714_real64*dummy)
+      fq(i)=(sand(i)+silt(i))*gmineral/2.7_real64
+      fc(i)=clay(i)*gmineral/2.7_real64
+      fo(i)=dummy*gmineral/1.4_real64
+    end do
+    call initialize_soil_temperature_parameters(dz_cm,distance_above_cm,theta_sat,fq,fc,fo,parameters,status)
+  end subroutine initialize_soil_temperature_from_texture
 
   subroutine trial_restricted_soil_temperature(parameters,numerical,forcing,hydraulic_start,hydraulic_end, &
        committed_state,t0,t1,workspace,trial_state,result,diagnostics)

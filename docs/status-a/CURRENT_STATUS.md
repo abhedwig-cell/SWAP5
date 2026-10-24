@@ -1,5 +1,18 @@
 # SWAP5 Status-A current status
 
+HIST01 native numeric heat bootstrap,24 October2026: unmodified original
+Andelst thermal initialization maps112 nodes at checked O0/O2 exactly to the
+original temperature.f90 arithmetic and TTUTIL interpolation. Original rounded
+textures are preserved. The explicit file route imports source texture/profile
+and air/no-flux boundaries; six coupled sorption/heat cases retain exact fresh-
+process restart and incumbent water/explicit-heat outputs. Original SWINCO2 is
+qualified for the thermal component only; the water bootstrap stays SWINCO1.
+Full original native Andelst/macro/heat/drainage remains unadmitted. Local
+qualification and canonical admission are separate in
+`integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_STATUS.json`; the contract
+and checked example are `NATIVE_HEAT_BOOTSTRAP_CONTRACT.md` and
+`examples/solute_column/native_heat.nml`. Supported SOL/NUT closeout is preserved.
+
 External macropore water trace is canonically admitted by PR1436 at actual merge
 `61cfbf6dff2da1109632f7196e4ae0f5f1652526`; complete actual/qualified tree
 `a8b9960278c65ecc7c81d9e4f424a186bc239dd8` is exact. Actual-merge owner,17
