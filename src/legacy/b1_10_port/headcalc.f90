@@ -967,15 +967,19 @@ logical function saturated_flux_restart_admitted() result(ok)
    ok = .false.
    if (.not. provider_constitutive_active .or. .not. provider_dynamic_top_active) return
    if (swmacro /= 0 .or. swbotb /= 2 .or. swkimpl /= 0 .or. swkmean /= 1) return
-   if (consistent_provider_conductivity .or. picard_conductivity_iteration .or. scale_matrix_area) return
+   if (consistent_provider_conductivity .or. scale_matrix_area) return
    if (.not. all(state%hm1(1:NN) >= 0d0)) return
    select type (provider => evaluation_context%constitutive)
    type is (b110_default_mvg_provider_t)
       if (.not. associated(provider%parameters)) return
+      ! HIST-INTEGRATION01: the same failed saturated flux/flux system also
+      ! occurs with continuous MvG and modified Picard conductivity. Only this
+      ! matched pair extends the original frozen/plain domain. The mass-guided
+      ! offset remains a trial guess; Picard refreshes K in the ordinary loop.
+      if (picard_conductivity_iteration .neqv. provider%parameters%continuous_saturation_conductivity) return
       ok = .not. provider%parameters%elastic_storage_active .and. &
            .not. provider%parameters%ksatexm_extension_enabled .and. &
-           .not. provider%parameters%conductivity_power_tail_enabled .and. &
-           .not. provider%parameters%continuous_saturation_conductivity
+           .not. provider%parameters%conductivity_power_tail_enabled
    end select
 end function saturated_flux_restart_admitted
 
