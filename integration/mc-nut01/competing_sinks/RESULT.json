@@ -1,0 +1,20 @@
+{
+  "status": "RESEARCH_ALLOCATION_NONUNIQUENESS_DEMONSTRATED",
+  "cases_per_optimization": 108,
+  "different_crop_receipts": 72,
+  "max_ode_error": 2.7228504282002242e-14,
+  "max_balance_residual": 1.97758476261356e-16,
+  "production_activated": false,
+  "canonically_admitted": false,
+  "source_sha256": {
+    "src/process/mod_b111_soil_n_transport.f90": "f78da10da71df3ec64d48de13bcaa92c01b758d0dd80e5e89cab6ecc0bcf8de2",
+    "integration/mc-nut01/competing_sinks/research.f90": "11407435c8b7606653594b239d59cacc0a74d5e0b8ee0238640b2706573a0205",
+    "integration/mc-nut01/competing_sinks/run.py": "dce28c75a7b4bf155ef358f847acf79f765164e5cfae4bbb34817bc5c9e537c0"
+  },
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "evidence": {
+    "sha256": "1c1ac4f24d9ddf3c11816131785dda222b55a09a533e50b156a51453e833f0ab",
+    "bytes": 6080,
+    "members": 12
+  }
+}
