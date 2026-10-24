@@ -1,0 +1,155 @@
+{
+  "workstream": "MC-NUT01",
+  "unit": "JUVENILE_PROPORTIONAL_CONSTANT_SINKS",
+  "pr": 1422,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1422",
+  "canonical_branch": "integration/f-ci-canonical",
+  "baseline": "a744492ee6fa15b06233de03a6299c93eb1014c3",
+  "published_qualified_head": "76b938efb1a8929840d721ade20afa982e9d6265",
+  "actual_merge": "be31c082a33819f8dba49f303e91245c80274678",
+  "actual_merge_first_parent": "a744492ee6fa15b06233de03a6299c93eb1014c3",
+  "qualified_complete_tree": "32f1aaa0ca54e210f0328ff344c9bb45edfb9fb2",
+  "actual_merge_tree": "32f1aaa0ca54e210f0328ff344c9bb45edfb9fb2",
+  "complete_tree_exact": true,
+  "canonically_admitted": true,
+  "checks": {
+    "owner": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_partition.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.043214291999902,
+      "stdout_sha256": "7dda3b79456cbdb73f1f7239029c98352a43f56314a813d9d6b97b282b991671"
+    },
+    "general": {
+      "command": [
+        "python",
+        "-B",
+        "integration/performance/authority.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.358210635999058,
+      "stdout_sha256": "7dda3b79456cbdb73f1f7239029c98352a43f56314a813d9d6b97b282b991671"
+    },
+    "history": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_historical_output_caller.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.1464604860011605,
+      "stdout_sha256": "7dda3b79456cbdb73f1f7239029c98352a43f56314a813d9d6b97b282b991671"
+    },
+    "fsi35": {
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import runpy,json;print(json.dumps(runpy.run_path('integration/performance/authority.py')['fsi35_successors']()))"
+      ],
+      "returncode": 0,
+      "seconds": 0.9402256939993094,
+      "stdout_sha256": "4092890883b9539d9f6cbe09d7cb8177d845b2cbca4c75386cc45bd52351f4ba"
+    },
+    "docs": {
+      "command": [
+        "python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.24604323800122074,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
+    },
+    "mkdocs": {
+      "command": [
+        "python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/281436eb488f/nut-partition-actual-merge/site"
+      ],
+      "returncode": 0,
+      "seconds": 13.803224553999826,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls": {
+      "command": [
+        "python",
+        "-B",
+        "integration/audits/verify_nut_partition.py",
+        "--self-test"
+      ],
+      "returncode": 0,
+      "seconds": 17.628648511999927,
+      "stdout_sha256": "4b61111f1f18b5097dddd2766ac7b16c3424e22cc209108d1119f0b5f1ef9b62"
+    }
+  },
+  "actual_merge_controls": 46,
+  "historical_predecessor_control_scope": "13 controls replayed through explicitly archived four NUT source identities; older frozen316 historical. Separate current HIST/runtime/default proofs.",
+  "scientific_results": {
+    "daily_cases_per_optimization": 1152,
+    "direct_incumbents_byte_exact": 1344,
+    "HIST_fresh_compiles": 656,
+    "HIST_native_processes": 78,
+    "coupled_runs": 4,
+    "coupled_restarts": 8,
+    "default_coupled_runs": 30,
+    "default_coupled_restarts": 60
+  },
+  "scope": "Explicit default-false juvenile crop/top constant sink proportional sharing after depletion. Gross crop demand, positive mineralisation and nitrification, separate actual/unmet top receipts, NH4-first NO3 coupling.",
+  "default_on": false,
+  "state_schema_changed": false,
+  "full_mc_nut01_closed": false,
+  "mastercoverage_promoted": false,
+  "remaining_open": [
+    "Nonjuvenile competing constant sink allocation",
+    "Organic immobilisation and organic-pool accounting",
+    "Automatic snow/persistent-surface nitrogen",
+    "Full MC-NUT01 closure"
+  ],
+  "evidence": {
+    "hist": {
+      "path": "integration/mc-nut01/competing_sinks/HIST_EVIDENCE.tar.xz.b64",
+      "sha256": "b66f7f94c4352c24bf12487fc57b2a8260bb1196cc8250f65a076428acd6c6d2",
+      "bytes": 125284,
+      "members": 2071
+    },
+    "daily": {
+      "path": "integration/mc-nut01/competing_sinks/DAILY_EVIDENCE.tar.xz.b64",
+      "sha256": "38832cbb3dfa657065db675b1b2073a758663475eb3da4c267c64148666a182c",
+      "bytes": 129500,
+      "members": 73
+    },
+    "runtime": {
+      "path": "integration/mc-nut01/competing_sinks/RUNTIME_EVIDENCE.tar.xz.b64",
+      "sha256": "edaa053f4a243947817d5aca76ebcafd889835878110137caad1e72e4ffa3998",
+      "bytes": 567060,
+      "members": 2403
+    },
+    "default": {
+      "path": "integration/mc-nut01/competing_sinks/DEFAULT_EVIDENCE.tar.xz.b64",
+      "sha256": "3c081f899fd616dfcf7639e0a92434fba5044d4ac02b1944364b753fbdebc335",
+      "bytes": 94092,
+      "members": 1153
+    },
+    "component": {
+      "path": "integration/mc-nut01/competing_sinks/CANDIDATE_EVIDENCE.tar.xz.b64",
+      "sha256": "72b1600832fc3ff176f6aa1b38ec301c4164e654438d4c1d14fc8fd0454f3ef8",
+      "bytes": 13196,
+      "members": 26
+    }
+  },
+  "hosted_workflow_runs": [],
+  "hosted_status_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "full_FCI": "NOT_SELECTED_IMPACT",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "RossFast": "NOT_SELECTED",
+  "receipt_scope": "Metadata only; numerical providers and all sealed current/historical evidence unchanged."
+}

@@ -68,8 +68,8 @@
       "members": 26
     }
   },
-  "status": "EVIDENCE_BOUND_PENDING_OWNER_GATES",
-  "canonically_admitted": false,
+  "status": "CANONICALLY_ADMITTED_JUVENILE_PROPORTIONAL_N_PARTITION",
+  "canonically_admitted": true,
   "full_mc_nut01_closed": false,
   "historical_predecessor_sources": [
     "src/process/mod_b111_soil_n_daily_exchange.f90",
@@ -77,5 +77,8 @@
     "src/crop/mod_crop_soil_n_day.f90",
     "src/runtime/mod_fmr_crop_soil_n_joint_application.f90"
   ],
-  "scope": "Explicit juvenile equal-priority top/crop partition. Fresh current HIST78/runtime4+8/default30+60; all predecessor assertion bodies retained with explicit historical source identities. Owning controls and actual merge are separate gates."
+  "scope": "Explicit juvenile equal-priority top/crop partition. Fresh current HIST78/runtime4+8/default30+60; all predecessor assertion bodies retained with explicit historical source identities. Owning controls and actual merge are separate gates.",
+  "actual_merge": "be31c082a33819f8dba49f303e91245c80274678",
+  "actual_merge_tree": "32f1aaa0ca54e210f0328ff344c9bb45edfb9fb2",
+  "admission": "integration/mc-nut01/competing_sinks/ADMISSION.json"
 }
