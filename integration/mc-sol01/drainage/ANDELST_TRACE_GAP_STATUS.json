@@ -1,0 +1,62 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original Andelst accepted trace",
+  "baseline": "32676715fe351beb548c8791bfda941fac8e031a",
+  "stage": "REPRODUCED_EXTERNAL_MACRO_TRACE_CONTRACT_GAP",
+  "diagnostic_reproduced": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "production_edited": false,
+  "results": {
+    "O0": {
+      "physical_candidate_sha256": "0c026a5f059b706ad1eb16f131045ce4f15c54076f0708a3e7ca6e0f5b66cac4",
+      "physical_candidate_exact": true,
+      "canonical_trace_rejected": true,
+      "gate_only_temporal_rejections": 5,
+      "preserving_metric_still_rejects_missing_trace": true,
+      "no_candidate_published": true
+    },
+    "O2": {
+      "physical_candidate_sha256": "0c026a5f059b706ad1eb16f131045ce4f15c54076f0708a3e7ca6e0f5b66cac4",
+      "physical_candidate_exact": true,
+      "canonical_trace_rejected": true,
+      "gate_only_temporal_rejections": 5,
+      "preserving_metric_still_rejects_missing_trace": true,
+      "no_candidate_published": true
+    }
+  },
+  "findings": [
+    "Canonical rejects requested trace before execution.",
+    "Private first-guard-only counterfactual reaches five temporal rejections without a mass rejection.",
+    "Preserving the already admitted three-owner temporal metric yields an exact physical candidate, but final trace materialization correctly rejects and clears the candidate."
+  ],
+  "relevant_sources": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "b8ee6156d4a64eec8341e9d9e4670f48984f471761ac5c885a772da1694f7902",
+    "integration/mc-sol01/drainage/probe_andelst_trace_gap.py": "7cf7b268bb3ed47dea8853cc209625ed27124efc10620448011c440cb1425cc3"
+  },
+  "source_boundaries": [
+    "fmr_serialized_temporal_identity: plain Boesten/trace branch must not select a different metric for combined macropore state",
+    "fmr_serialized_advance: accepted macro trace explicitly excludes nonzero external top, return, covering and rapid-drain receipts",
+    "fmr_serialized_backend_run_trial: incomplete accepted trace must reject, not publish"
+  ],
+  "next_action": "Design and implement explicit surface-to-macropore accepted/returned/rapid water receipts in the existing trace owner; preserve temporal policy and exact physical results, then qualify source allocation and drainage, heat and native Andelst composition.",
+  "acceptance": [
+    "Observer ON/OFF keeps the physical candidate and temporal policy exact.",
+    "Per-domain macro and matrix stocks plus signed external receipts reconstruct whole-column water independently.",
+    "Returned pond water and rapid drainage are booked once; rejected trials publish no trace/candidate and preserve committed state.",
+    "Snapshot/restart source-window provenance and separate heat/chemistry consumption remain explicit."
+  ],
+  "exclusions": [
+    "No tolerance change",
+    "No clamp",
+    "No SWBOTB1",
+    "No RossFast expansion",
+    "No new1e-6",
+    "No heat/drainage/full-project admission"
+  ],
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ANDELST_TRACE_GAP_EVIDENCE.tar.xz.b64",
+    "sha256": "12e45ae0675c54b2b2ada90ae264756702074b01e77f46046e710fbcb7719d49",
+    "bytes": 68996,
+    "members": 82
+  }
+}
