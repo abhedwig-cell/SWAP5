@@ -5,7 +5,7 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scientific_delta": {
     "integration/audits/verify_cauchy_macro_current.py": "M",
     "integration/audits/verify_picard_corner_current.py": "A",
@@ -28,7 +28,7 @@
     "bytes": 1163668,
     "members": 4093
   },
-  "next_safe_step": "Publish exact qualified source/tree, reconcile live unchanged dependencies, safely merge and verify actual complete tree; no wider policy admission",
+  "next_safe_step": "Use admitted repair for eligible production solves; assess wider fast-policy runoff accuracy separately without changing hard mass/state/restart gates.",
   "scope": "Only same-residual failed near-zero Picard solver restart; no broader endpoint/amount/cap policy admission",
   "reconciled_canonical": "32676715fe351beb548c8791bfda941fac8e031a",
   "owning_controls": 12,
@@ -52,5 +52,7 @@
   "whitespace_check": "Code-only PASS; literal captured Fortran fixture records preserved unchanged",
   "local_qualification_checkpoint": "d64b9b6e60ac398dccff7ef33c33a2d6b87d0350",
   "published_qualified_tree": "437f4f5d970d2b85dd81858943941e60da4a2af0",
-  "publication_scope": "Scientific source postimages and all executed dependency bindings exactly equal the locally qualified repair; earlier local phase IDs remain immutable build metadata."
+  "publication_scope": "Scientific source postimages and all executed dependency bindings exactly equal the locally qualified repair; earlier local phase IDs remain immutable build metadata.",
+  "actual_admission": "integration/performance/PERF01_PICARD_CORNER_ADMISSION.json",
+  "actual_merge": "bc07baebb3b99e5c8d7053874c8b76bb0bec0414"
 }

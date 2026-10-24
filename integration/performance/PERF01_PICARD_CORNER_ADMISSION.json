@@ -1,0 +1,48 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_PICARD_CORNER_SOURCE_REPAIR",
+  "pull_request": 1434,
+  "actual_merge": "bc07baebb3b99e5c8d7053874c8b76bb0bec0414",
+  "actual_first_parent": "1d9fd2d614c8a9b2525311bd8c6e727d40f2eed4",
+  "published_source_commit": "6592565fc5b00f19eb418c00b3dad2f3ae925d77",
+  "published_head": "34fa37b4ea4aca46dd2bace4eef1f980b3069211",
+  "actual_complete_tree": "b5e165bb07f08cc1120f3bb49c82235e5a358a87",
+  "qualified_published_complete_tree": "b5e165bb07f08cc1120f3bb49c82235e5a358a87",
+  "exact_complete_tree_match": true,
+  "actual_merge_checks": {
+    "owner": "PASS",
+    "corruption_controls": 12,
+    "fci93_moving_source_boundary": "PASS",
+    "docs_source": "PASS",
+    "source_native_fsi35_before_merge": "PASS_EXACT_SAME_TREE",
+    "all_capsule_integrity": "PASS"
+  },
+  "physical_scope": "One bounded same-residual consistent-Jacobian retry after a failed eligible near-zero modified-Picard phase; no pressure clipping, changed origin, law, tolerance or persistent state.",
+  "qualification": {
+    "small_real_provider_count": 21,
+    "full481_1x4x_O0_O2": "PASS_EXACT_PHYSICAL_BYTES",
+    "day240_restarts_1x4x": "EXACT",
+    "prior_65day_3day_prefixes": "EXACT",
+    "water_residual_cm_1x": 1.865174681370263e-14,
+    "water_residual_cm_4x": 2.1063012445310392e-14,
+    "BBC481_O0_O2_and_day365_restart": "PREDECESSOR_EXACT",
+    "old_flux481_O0_O2": "PREDECESSOR_EXACT",
+    "Richards_crop_N_runs": 8,
+    "Richards_crop_N_process_restarts": 16,
+    "nonjuvenile_endpoints_ledgers": "PREDECESSOR_EXACT"
+  },
+  "concurrent_reconciliation": {
+    "canonical": "32676715fe351beb548c8791bfda941fac8e031a",
+    "scope": "Two separate mode3/macropore admission guards; nonmacro Picard2 numerical branch unchanged. Recompiled both O0/O2 with identical public compiler interfaces;108 current independent macro cases and two current BBC481 witnesses preserve prior physical bytes.",
+    "preserved_frozen_macro_controls": 17
+  },
+  "not_admitted": [
+    "general Boesten endpoint expansion",
+    "general output-amount fast policy",
+    "capped interval policy",
+    "full MC-SOL01 or MC-NUT01 closure",
+    "master capability promotion"
+  ],
+  "evidence": "benchmarks/performance/PERF01_PICARD_CORNER_20261024_EVIDENCE.tar.xz",
+  "qualification_authority": "integration/performance/PERF01_PICARD_CORNER_STATUS.json",
+  "next_safe_step": "Use admitted repair for eligible production solves; assess wider fast-policy runoff accuracy separately without changing hard mass/state/restart gates."
+}

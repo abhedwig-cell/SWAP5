@@ -1,5 +1,17 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+PERF01's bounded failed near-zero Picard restart is canonically admitted by
+[PR1434](https://github.com/abhedwig-cell/SWAP5/pull/1434), actual merge
+`bc07baebb3b99e5c8d7053874c8b76bb0bec0414`; the complete actual tree
+`b5e165bb07f08cc1120f3bb49c82235e5a358a87` exactly equals the published qualified tree.
+Actual-merge owner,12 corruption controls, current F-SI35 source boundary and
+capsule integrity PASS; complete source/native F-SI35 preservation passed on the
+same tree. The [numerical contract](../science/PERF01_PICARD_CORNER_RESTART.md)
+and `integration/performance/PERF01_PICARD_CORNER_ADMISSION.json` own this bounded
+same-residual solver repair. Current macro/Robin work is preserved. No broader
+Boesten endpoint, output-amount or capped execution policy is activated; no
+SOL/NUT/master closure follows.
+
 Bounded implicit Cauchy3/macropores is canonically admitted by PR1431,
 merge `bcd6e088a438fa1402387231d04a1a27d3d7ebba`; complete actual/qualified tree
 `8cafa12b7a47386f8ea8a3a2cdc4688e3b339856` is exact. All17 current controls
