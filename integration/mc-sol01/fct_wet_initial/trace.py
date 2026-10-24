@@ -1,5 +1,5 @@
 """Private source-generated logging only, original native reference execution."""
-import hashlib,json,os,re,stat,subprocess,time
+import hashlib,json,os,re,runpy,stat,subprocess,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];HERE=Path(__file__).resolve().parent
 def main():
@@ -42,8 +42,12 @@ def main():
              sum1=real(total_depth/real(dt,16),8)
            end block
          end if''')
+ if os.environ.get('SWAP_TRACE_NEIGHBOR')=='1':
+  text=runpy.run_path(str(HERE/'neighbor.py'))['transform'](text)
+  driver=out/'native_driver.f90';d=driver.read_text();assert d.count('supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)')==1
+  driver.write_text(d.replace('supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)','supply%exact_empty_pool_chemistry=.true.'))
  target=out/'headcalc.f90';target.write_text(text);changes[str(src.relative_to(ROOT))]=hashlib.sha256(target.read_bytes()).hexdigest();cmd=[str(target) if x==str(src) else x for x in cmd]
- cmd=['-O0' if x=='-O2' else x for x in cmd];t=time.monotonic();cp=subprocess.run(cmd,cwd=out,capture_output=True,timeout=180)
+ cmd=['-'+os.environ.get('SWAP_TRACE_OPT','O0') if x=='-O2' else x for x in cmd];t=time.monotonic();cp=subprocess.run(cmd,cwd=out,capture_output=True,timeout=180)
  (out/'compile.stdout').write_bytes(cp.stdout);(out/'compile.stderr').write_bytes(cp.stderr);(out/'trace-build.json').write_text(json.dumps(dict(command=cmd,returncode=cp.returncode,seconds=time.monotonic()-t,generated_logging=changes,reader_optimization='O2 immutable archive reused for diagnostic only'),indent=2));assert cp.returncode==0,cp.stderr[-1000:]
  exe=out/'native_fct';exe.chmod(exe.stat().st_mode|stat.S_IXUSR);case=scratch/'wet-initial-diagnostic/o2-uniform-frozen';run=[str(exe),str(case/'input.nml'),'-','4',str(case/'project.swp')];t=time.monotonic();cp=subprocess.run(run,cwd=out,capture_output=True,timeout=180)
  (out/'stdout').write_bytes(cp.stdout);(out/'stderr').write_bytes(cp.stderr);(out/'event.json').write_text(json.dumps(dict(command=run,returncode=cp.returncode,seconds=time.monotonic()-t)));print(cp.stdout.decode())
