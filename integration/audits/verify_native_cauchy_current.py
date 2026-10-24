@@ -21,6 +21,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/ANDELST_COMPOSITION_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_cauchy_macro_current.py'))['source'](reader,changed)
  r=json.loads(reader(RECOVERY));assert r['baseline']==CURRENT_BASE
  git('merge-base','--is-ancestor',CURRENT_BASE,'HEAD')
  delta={s.split('\t')[1]:s.split('\t')[0]for s in git('diff','--name-status',CURRENT_BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -118,8 +119,10 @@ def validate_fresh(f):
  assert latest['owner']['qualified'] and len(latest['controls'])==86
  return dict(fresh_checked_O0_O2=True,restart365_exact=True,retained_outputs_exact=True,canonical_peer_controls=86,earlier_peer_controls=46)
 def verify():
+ if (ROOT/'integration/mc-sol01/drainage/ANDELST_COMPOSITION_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_cauchy_macro_current.py'))['verify']()
  source();r=validate(capsule());r['recovery']=validate_fresh(fresh_capsule());return r
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/ANDELST_COMPOSITION_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_cauchy_macro_current.py'))['fsi35_successors']()
  source();rows=json.loads(capsule()['parent-owner.json'])['fsi35']
  for p,row in rows.items():
   assert row['canonical_blob']==git('rev-parse',BASE+':'+p)
@@ -129,6 +132,7 @@ def fsi35_successors():
    row['canonical_blob']=now
  return rows
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/ANDELST_COMPOSITION_QUALIFICATION.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_cauchy_macro_current.py'))['self_test']()
  source();f=capsule();validate(f);fresh=fresh_capsule();validate_fresh(fresh);passed=[]
  def reject(label,fn):
   try:fn()

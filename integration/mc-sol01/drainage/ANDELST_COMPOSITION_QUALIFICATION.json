@@ -1,0 +1,58 @@
+{
+  "baseline": "9be9a09b9c890a8240490d1f72a99c14c0cf72f8",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "scientific_delta": {
+    "integration/audits/verify_cauchy_macro_current.py": "A",
+    "integration/audits/verify_native_cauchy_current.py": "M",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "tests/nut-sol/test_cauchy3_macropore_oracle.f90": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_cauchy_macro_current.py": "0048aff4e32fc633f88b994524738d00acd79816d691a613d973ad93ea673280",
+    "integration/audits/verify_native_cauchy_current.py": "cc7ef2638b93c0886b49a939a20eef0e2f649d934de2c21b400d250c825a0a4d",
+    "integration/mc-sol01/drainage/ANDELST_COMPOSITION_CONTRACT.md": "6d7cc7a41a546e71606edd9a5c1f83fc10d9824714b4ee83a33bc9a21409a833",
+    "integration/mc-sol01/drainage/ANDELST_COMPOSITION_RESULT.json": "b5ca64b560035eda41a16d46866930a3a9bc897138ed0bee85d0baaf9a657698",
+    "integration/mc-sol01/drainage/probe_andelst_cauchy_macro.py": "19aba5a335af86cef2ebec4eaf4c3f323a3449f0ece0703c524cbec038ba90b2",
+    "integration/mc-sol01/drainage/qualify_andelst_composition.py": "15379a6768f73369d4ec8278fb4f14e8e6dec92dde44780ffaec1316b168b903",
+    "integration/mc-sol01/drainage/seal_andelst_cauchy_macro.py": "441ed60096d203b08ec15e75542600fec8a5d38e0b2b6688f9e68704607d095c",
+    "integration/mc-sol01/drainage/seal_andelst_qualification.py": "2509910b8c0fb29d844212f75965972dcd9e7ba50858b5fc01921bb433a028b9",
+    "src/adapter/mod_reference_richards_legacy_binding.f90": "3d1abe63d883378d4d29563f218e1f6149dc4bc9633e949c7a0159180bd03a94",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "b8ee6156d4a64eec8341e9d9e4670f48984f471761ac5c885a772da1694f7902",
+    "tests/nut-sol/test_cauchy3_macropore_oracle.f90": "93f319e8f9e04e2782a8b47d0abf030c77124c5e1a75a884b2f9a5d2aa1d3a9a"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ANDELST_QUALIFICATION_EVIDENCE.tar.xz.b64",
+    "sha256": "aac4046640f9259d72cbebb2fcf14c75b7c8984c3bcbef350e18dc459e94d7c3",
+    "bytes": 292648,
+    "members": 91
+  },
+  "selected": [
+    "real frozen-Cauchy/macropore independent54 O0/O2",
+    "exact inherited12 original-BBC Rutter/Boesten/macro runs",
+    "fresh current BBC481 and365 restart",
+    "current source/raw corruption controls",
+    "original FSI35"
+  ],
+  "not_selected": [
+    "highest low-air",
+    "RossFast expansion",
+    "new1e-6",
+    "full moving FCI",
+    "unchanged NUT/FCT process rebuild"
+  ],
+  "next_action": "Exact qualified/actual merge identity and current owner replay before bounded admission",
+  "current_controls": 17,
+  "fsi35": {
+    "path": "integration/mc-sol01/drainage/ANDELST_COMPOSITION_FSI35.log",
+    "sha256": "20d977b7a99adb4e5ae0d64b9ff9962731153ec77bdff191873756f7d38ae8d2",
+    "status": "PASS"
+  },
+  "docs_source": "PASS",
+  "mkdocs_strict": "PASS",
+  "last_reconciled_canonical": "9d888c03643427bd7f5426a3bbf470fb5fbf5c4a"
+}
