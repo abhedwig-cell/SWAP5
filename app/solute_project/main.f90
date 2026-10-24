@@ -43,6 +43,9 @@ program swap5_native_project_column
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
   integer :: schema=0,windows=0,u,io,j,k,stop_after,first,code
   logical :: seasonal_bottom=.false.
+  logical :: cauchy3_bottom=.false.,cauchy3_half_cell=.true.
+  integer :: cauchy3_count=0
+  real(real64) :: cauchy3_resistance=0d0,cauchy3_dates(1024)=0d0,cauchy3_heads(1024)=0d0
   logical :: boesten_evaporation=.false.
   real(real64) :: boesten_cofred=0d0
   logical :: native_drainage=.false.
@@ -139,6 +142,7 @@ program swap5_native_project_column
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
     historical_zero_solute_exfiltration, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
+    cauchy3_bottom,cauchy3_half_cell,cauchy3_count,cauchy3_resistance,cauchy3_dates,cauchy3_heads, &
     bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred, &
     native_drainage,drain_resistance,drain_infiltration_resistance,drain_spacing_m,drain_bottom_cm,drain_legacy_origin, &
     drain_table_count,drain_table_times,drain_table_heads,drain_anisotropy
@@ -264,7 +268,7 @@ program swap5_native_project_column
     .not.implicit_pond_evaporation),'soil evaporation combination not qualified')
   call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation,'crop combination not admitted')
   call require(.not.retain_accepted_step_proposal.or.(.not.picard_conductivity_iteration.and. &
-    .not.continuous_mvg.and..not.seasonal_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
+    .not.continuous_mvg.and..not.seasonal_bottom.and..not.cauchy3_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
   call require(.not.water_flux_temporal.or.(retain_accepted_step_proposal.and..not.boesten_evaporation), &
     'water/flux temporal metric requires native plain-evaporation proposal route')
   call require(.not.water_flux_temporal.or.temporal_tolerance==1d-3, &
@@ -335,6 +339,7 @@ program swap5_native_project_column
   p%cofgen(22,:)=-1d6;p%cofgen(23,:)=1d-12
   if(swp_water_bootstrap)p%cofgen=swp_cofgen
   p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%max_iterations=8;p%max_backtracking=4
+  if(cauchy3_bottom)p%bottom_mode=3
   p%picard_conductivity_iteration=picard_conductivity_iteration
   if(picard_conductivity_iteration)p%max_iterations=64
   p%root_extraction_active=.true.
@@ -351,11 +356,19 @@ program swap5_native_project_column
   initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0
   forcing%top_flux=0d0;forcing%top_head=initial_head;forcing%bottom_flux=bottom_up_cm_day
   if(seasonal_bottom)then
+    call require(.not.cauchy3_bottom,'mutually exclusive bottom controls')
     call require(bottom_year_count>=2.and.bottom_year_count<=10,'seasonal bottom calendar capacity')
     allocate(forcing%legacy_swbotb2_control)
     call forcing%legacy_swbotb2_control%initialize_sine(0d0,bottom_legacy_origin, &
       bottom_year_starts(:bottom_year_count),bottom_up_cm_day,bottom_amplitude,bottom_daymax,code)
     call require(code==B110_SWBOTB2_OK,'seasonal bottom initialization')
+  end if
+  if(cauchy3_bottom)then
+    call require(cauchy3_count>=2.and.cauchy3_count<=1024,'Cauchy3 table capacity')
+    allocate(forcing%legacy_swbotb3_implicit_control)
+    call forcing%legacy_swbotb3_implicit_control%initialize_table(0d0,bottom_legacy_origin, &
+      cauchy3_dates(:cauchy3_count),cauchy3_heads(:cauchy3_count),cauchy3_resistance,cauchy3_half_cell,code)
+    call require(code==0,'valid Cauchy3 table control')
   end if
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
@@ -369,7 +382,7 @@ program swap5_native_project_column
     call require(all(drain_anisotropy(:numnod)>=.0001d0).and.all(drain_anisotropy(:numnod)<=1000d0), &
       'drain anisotropy domain')
     call require(all(drain_anisotropy(numnod+1:)==0d0),'inactive drainage geometry')
-    p%drainage_response_active=.true.;p%drainage_qbot_smooth_freatic_projection=.true.
+    p%drainage_response_active=.true.;p%drainage_qbot_smooth_freatic_projection=.not.cauchy3_bottom
     allocate(p%drainage_response_levels(1),p%drainage_trial_distribution,forcing%drainage_response_controls(1))
     deallocate(forcing%drainage_flux_by_level)
     p%drainage_response_levels(1)%variant=FMR_DRAIN_VARIANT_DRAMET3
