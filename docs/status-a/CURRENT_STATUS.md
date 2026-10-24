@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+The [organic-first daily research composition](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#proposed-organic-first-daily-composition)
+now connects limited organic turnover, actual carbon feedback and production
+crop/top/mineral interfaces. O0/O2 each pass24 six-day trajectories,144 daily
+ledger/endpoint checks and144 late-failure whole-state rollback comparisons.
+This is a proposed daily ordering outside production. Scientific selection,
+general forcing/Richards and persisted runtime restart remain open.
+
 Bounded implicit Cauchy3/macropores is canonically admitted by PR1431,
 merge `bcd6e088a438fa1402387231d04a1a27d3d7ebba`; complete actual/qualified tree
 `8cafa12b7a47386f8ea8a3a2cdc4688e3b339856` is exact. All17 current controls

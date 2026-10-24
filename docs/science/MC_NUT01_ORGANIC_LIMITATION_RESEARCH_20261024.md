@@ -225,3 +225,56 @@ sources/interfaces/defaults and earlier proof capsules are unchanged. Crop/top
 sharing, nitrate access, denitrification feedback and the complete runtime
 commit/restart composition remain outside this research contract. The proposal
 therefore does not close or activate full MC-NUT01.
+
+## Proposed organic-first daily composition
+
+The research successor `mod_organic_first_day.f90` now connects the multi-pool
+candidate to the actual production reaction-rate, storage, daily exchange and
+final pool-owner interfaces. It advances the organic suboperator first, uses
+its constrained carbon receipt for denitrification feedback, then advances
+mineral exchange from those organic/mineral endpoints with a zero additional
+mineralisation source. This prevents double counting. The mineral suboperator
+includes the admitted juvenile NH4-first crop demand and proportional crop/top
+sharing. The final owner closes the complete daily N budget against the
+original committed state. Any later failure returns that entire original state.
+
+This is explicitly a proposed operator split over one physical day. It grants
+organic pathways first access to initial NH4 and postpones mineral boundary
+input until the mineral suboperator. It is neither simultaneous kinetics nor
+historical equivalence. Different allocation/order choices need their own
+scientific assessment; numerical closure does not select among them.
+
+Fresh checked O0/O2 builds each compile14 sources, including11 unchanged
+production providers. Twenty-four initial configurations each run six successive
+days, producing144 endpoint/ledger rows per optimization. Cases vary NH4,
+NO3, crop demand and chemical activation. An independent event-driven organic
+ODE followed by independently integrated mineral ODEs checks every organic and
+mineral endpoint, constrained carbon, reaction rates, nitrification/gas loss,
+crop uptake and actual/unmet top receipts. Nitrification input to NO3 uses the
+same daily-average-source convention as the admitted mineral contract. The
+fixture has constant water storage and no roots/lateral/bottom transport; it
+does not qualify a water/Richards composition.
+
+Maximum endpoint/receipt discrepancy is2.03e-8 in the respective printed native
+component, whole N residual2.26e-15 kg/m2 and whole C residual1.24e-15 kg/m2.
+Each optimization contains39 gas-producing days and101 top-limited days.
+An invalid temperature injected after completed organic work on every day
+rejects at the rate seam and returns all input pools exactly. Partial organic
+receipts remain diagnostic, not accepted effects. This is144 late-rejection
+comparisons per optimization; no persisted runtime checkpoint is claimed.
+
+`ORGANIC_FIRST_DAY_CONTRACT.md`, `ORGANIC_FIRST_DAY_RESULT.json` and the sealed
+`ORGANIC_FIRST_DAY_EVIDENCE.tar.xz.b64` own the source-bound result. Replay with
+`python integration/mc-nut01/competing_sinks/run_organic_first_day.py --replay`.
+Four numerical corruption controls are included. Compile/link/native costs
+approximately3.64s and independent validation1.99s. An earlier mineral-oracle
+failure at a negative roundoff residue on the zero-N boundary is retained in
+`ORGANIC_FIRST_DAY_EARLIER_ROUND.tar.xz.b64`; the corrected oracle rejects any
+real deficit before normalising bounded boundary roundoff. Production/numerical
+Fortran code did not change in that correction.
+
+The daily composition is implemented and tested as executable research. The
+existing production route/defaults, prior capsules and owning guards are
+unchanged. Production activation, scientific selection of daily allocation,
+general forcing/root/nonjuvenile coverage, persisted runtime restart, snow
+and full MC-NUT01 remain open.

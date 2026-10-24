@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 proposed organic-first daily composition is owned by the existing
+competing-sinks unit's `ORGANIC_FIRST_DAY_CONTRACT.md`, result and sealed raw
+capsule. The [daily composition description](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#proposed-organic-first-daily-composition)
+binds24 six-day trajectories per optimization to real production exchange/rate/
+storage/inventory interfaces, independent organic/mineral ODEs, hard C/N budgets,
+late whole-state rollback and four numerical controls. It is executable research,
+not a production activation or full MC-NUT01 admission.
+
 Bounded implicit Cauchy3/macropores is canonically admitted by PR1431,
 merge `bcd6e088a438fa1402387231d04a1a27d3d7ebba`; complete actual/qualified tree
 `8cafa12b7a47386f8ea8a3a2cdc4688e3b339856` is exact. All17 current controls

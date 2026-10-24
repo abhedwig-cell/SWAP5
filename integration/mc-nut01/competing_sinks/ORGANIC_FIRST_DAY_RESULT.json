@@ -1,0 +1,56 @@
+{
+  "status": "PROPOSED_ORGANIC_FIRST_DAY_RESEARCH_PASS",
+  "baseline": "9d888c03643427bd7f5426a3bbf470fb5fbf5c4a",
+  "production_admitted": false,
+  "tested_commit": "086999eaac4eb0c56eba40987cc367fd01089ebc",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "compiled_sources_per_optimization": 14,
+  "input_sha256": {
+    "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+    "src/process/mod_b111_soil_organic_turnover.f90": "8d98da9f33e7430433d568ed7d5a246922c1a867c3d95a7fb01b91db6935c3ff",
+    "src/process/mod_b111_soil_n_organic_mineralization_transfer.f90": "9effc43322973f0795212a7a1e0b7daa85e0ab47db6bf58f0e5f17a83659a446",
+    "src/process/mod_b111_soil_n_organic_turnover_transfer.f90": "89c1aa9693ded91a295c4901f3e217b30eea7f38d9e51460e65048a6e7ce0487",
+    "src/process/mod_b111_soil_organic_dissimilation.f90": "0e56ced911db4bb2ee02341ea0be54a784d0e43017f2b6126ada1413a0243cb8",
+    "src/process/mod_b111_soil_n_rate_factors.f90": "6a60fbabb543f0bff7acf18fbd234c6cf73fe52e9894d109328813371b81d66d",
+    "src/process/mod_b111_soil_n_storage_conversion.f90": "ba83005da68fdb8d30f899e48c04e17336469646f4b2971d8fb4c675b4aa43c0",
+    "src/process/mod_n_constant_sink_partition.f90": "3571ade3d2dab3056ab135768d5c39bf0d5140e0e141fbc3488d789790acd986",
+    "src/process/mod_b111_soil_n_transport.f90": "f78da10da71df3ec64d48de13bcaa92c01b758d0dd80e5e89cab6ecc0bcf8de2",
+    "src/process/mod_b111_soil_n_daily_exchange.f90": "2a6dda7de3fb0aa47d7d478d6dd1b21a51bff54224628c5682e0fa8ad1337937",
+    "src/process/mod_b111_soil_n_daily_candidate.f90": "8cc952075a61417678a2dd43bed76d8dbf5ac91784858332d9cb004bcaa2a63b",
+    "integration/mc-nut01/competing_sinks/mod_multipool_limited_organic.f90": "2e07ad005a631dff7972a2b51f3139195b179eb38187f5cb72b5d91c3d23794c",
+    "integration/mc-nut01/competing_sinks/mod_organic_first_day.f90": "94801e473bd23b782058e478ddaac68b3837c018ae8ebf9e3b3ad7381c487e84",
+    "integration/mc-nut01/competing_sinks/test_organic_first_day.f90": "e27709fa3249635ff5cca76be46621388bf108ad3fa46eff9136caf3e9eaa756",
+    "integration/mc-nut01/competing_sinks/run_organic_first_day.py": "72f0484388ceeee6b9b522b4bfb1c8946116f0c21ff666e1a92a08d78930c0cd",
+    "integration/mc-nut01/competing_sinks/run_multipool_limited.py": "204ec972180192b620b49541af325bceecd2063fcc9f3cbd9036997e86ec8e55",
+    "integration/mc-nut01/competing_sinks/ORGANIC_FIRST_DAY_CONTRACT.md": "e9ac3c89cb3ec90ed0c65eab673f5e01de5551a1681e3045b880ee574b945ff7"
+  },
+  "results": {
+    "O0": {
+      "runs": 24,
+      "days_per_run": 6,
+      "rows": 144,
+      "max_component_error": 2.0285349178195133e-08,
+      "max_n_residual": 2.2558249213912307e-15,
+      "max_c_residual": 1.2351231148954867e-15,
+      "gas_days": 39,
+      "top_limited_days": 101
+    },
+    "O2": {
+      "runs": 24,
+      "days_per_run": 6,
+      "rows": 144,
+      "max_component_error": 2.028534679121563e-08,
+      "max_n_residual": 1.1132803666380095e-15,
+      "max_c_residual": 1.2351231148954867e-15,
+      "gas_days": 39,
+      "top_limited_days": 101
+    }
+  },
+  "cost_seconds": {
+    "compile": 2.8857650229983847,
+    "link": 0.05963567799699376,
+    "native": 0.696744368000509,
+    "independent_validation": 1.9911635830030718
+  },
+  "evidence_sha256": "5f7e37dc63cdeb544dbc500bc660b45ae39a2910011181b5fdff057863899417"
+}
