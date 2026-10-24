@@ -23,6 +23,7 @@ def projection():
   s=s[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+s[at:]
  return s.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-nut01/competing_sinks/NONJUVENILE_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nonjuvenile.py'))['source'](reader,changed)
  r=record();assert r['base']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={l.split('\t')[1]:l.split('\t')[0]for l in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  assert delta==r['scientific_delta']and not git('status','--porcelain','--',*SCIENCE)
@@ -103,8 +104,11 @@ def validate(allfiles):
  assert sum(e['category']=='compile'for e in es)==656 and sum(e['category']in ['native','trace_native','restart_native']for e in es)==78
  prior=prior_namespace();p=prior['validate'](prior['capsule']());assert p['qualified']
  return dict(qualified=True,status='PARTITION_CURRENT_DAILY_HIST_RUNTIME_DEFAULT_QUALIFIED',daily_cases=1152,incumbent_byte_exact=1344,HIST_processes=78,coupled_runs=4,coupled_restarts=8,default_coupled_runs=30,default_coupled_restarts=60,historical_predecessor_assertions='Original bodies with four explicitly archived NUT sources; separate fresh current HIST/runtime/default proof',canonically_admitted=False,full_mc_nut01_closed=False)
-def verify():source();return validate(files())
+def verify():
+ if (ROOT/'integration/mc-nut01/competing_sinks/NONJUVENILE_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nonjuvenile.py'))['verify']()
+ source();return validate(files())
 def self_test():
+ if (ROOT/'integration/mc-nut01/competing_sinks/NONJUVENILE_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nonjuvenile.py'))['self_test']()
  source();f=files();validate(f);passed=['predecessor-preserved:'+p for p in prior_namespace()['self_test']()]
  def reject(label,fn):
   try:fn()
@@ -115,7 +119,9 @@ def self_test():
  for label,p in [('daily','current/input.json'),('runtime','current/O0/crop_both.endpoint'),('runtime','current/O2/crop_nh4.fresh-4.ledger'),('default','O0/empty_both.endpoint'),('hist','result.json'),('hist','O0/default.endpoint'),('component','003.stdout')]:
   bad={k:dict(v)for k,v in f.items()};bad[label][p]+=b'!';reject('raw '+label+'/'+p,lambda bad=bad:validate(bad))
  return passed
-def fsi35_successors():source();return prior_namespace()['fsi35_successors']()
+def fsi35_successors():
+ if (ROOT/'integration/mc-nut01/competing_sinks/NONJUVENILE_INPUTS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_nut_nonjuvenile.py'))['fsi35_successors']()
+ source();return prior_namespace()['fsi35_successors']()
 if __name__=='__main__':
  import sys
  print(json.dumps(self_test()if'--self-test'in sys.argv else verify(),indent=2))
