@@ -5,7 +5,10 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
+  "actual_merge": "b9ce4078722544bb0fc774e2833885cfb5343b18",
+  "actual_and_qualified_tree": "4f3b55652fb284f861b3e6276b1076f5c9458677",
+  "admission_receipt": "integration/mc-sol01/drainage/DAY470_CURRENT_ADMISSION.json",
   "qualification_owner": "integration/audits/verify_saturated_picard_current.py",
   "scientific_delta": {
     "integration/audits/verify_nut_crop_depletion_composed.py": "M",
@@ -42,5 +45,5 @@
   "original_FSI35_native_O0_O2": "PASS",
   "docs_source_check": "PASS",
   "docs_strict_build": "PASS",
-  "next_action": "Publish exact qualified composed tree, verify merge preview and actual canonical merge; persist separate admission receipt."
+  "next_action": "Bounded481-day original-DRA composition admitted. Next physical work: original Andelst macropore/soil/crop/Cauchy3/heat composition and separate wet4x day7 numerical rejection; full SOL/NUT and master coverage remain open."
 }
