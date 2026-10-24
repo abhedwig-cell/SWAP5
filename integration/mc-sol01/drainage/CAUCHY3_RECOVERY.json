@@ -1,0 +1,33 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original BBC native",
+  "date": "2026-10-24",
+  "implemented": true,
+  "persisted": true,
+  "tested_postimage": "01454f0b8200ab38e375d0d905cd9701b7d9bda0",
+  "qualified_local_tree": "5cd74174c0ceebf12edf5c686d8bdb58721bba29",
+  "current_recovered_postimage_qualified": false,
+  "canonically_admitted": false,
+  "blocker": "Automated workspace maintenance removed checkout, compiler and all raw scratch during final upload. First12 uploaded blobs and original runtime recovered; launcher reconstructed from exact predecessor. Four newly added test source files were in the interrupted final upload; their blob IDs have not been recovered. Current owner remains fail-closed on their absence and reconstructed launcher identity until verified.",
+  "missing_test_sources": [
+    "tests/nut-sol/measure_cauchy3_native.py",
+    "tests/nut-sol/qualify_cauchy_contracts.py",
+    "tests/nut-sol/qualify_native_cauchy3.py",
+    "tests/nut-sol/test_cauchy3_picard.f90"
+  ],
+  "retained_execution": {
+    "days": 481,
+    "O0_O2_four_outputs_exact": true,
+    "split365_resume_exact": true,
+    "max_water_residual_cm": 1.3056656450460835e-13,
+    "max_solute_residual_mg_cm2": 6.708647309547344e-14,
+    "old_flux481_preserved": true,
+    "current_owner_controls": 20,
+    "FSI35": "PASS retained full terminal log",
+    "normal97_CPU_seconds": 4.629035,
+    "wet4x": "day4 rejection; exact committed day3 rollback; NOT QUALIFIED"
+  },
+  "evidence": "integration/mc-sol01/drainage/CAUCHY3_EVIDENCE.tar.xz.b64",
+  "latest_observed_canonical": "47a50ea0bcf0dd17e4c32e502ee0917e689cb9f8",
+  "next_action": "Recover/recreate four focused test sources, verify launcher SHA256 against qualification postimages, compile fresh and restore exact owning gates, reconcile latest canonical, then qualify exact merge postimage. Do not merge this recovery draft.",
+  "full_original_Andelst": false
+}

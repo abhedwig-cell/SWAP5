@@ -1,0 +1,49 @@
+{
+  "sha256": "7370e45c382f0f02936fff858f0e54df0a763bb9c2a0c50c0417965f7c3b7479",
+  "bytes": 738144,
+  "members": 1912,
+  "result": {
+    "status": "BOUNDED_NATIVE_FCT_AND_FRESH_PROCESS_RESTART_QUALIFIED",
+    "cases": 24,
+    "processes": 96,
+    "exact_restarts": 24,
+    "wrong_policy_rejections": 24,
+    "maxima": {
+      "water": 1.9956855178832056e-14,
+      "solute": 1.6777909356974208e-13
+    },
+    "max_O0_O2_difference": 0.0,
+    "days": 0.4,
+    "original_full_historical_project": false,
+    "production_activated": false
+  },
+  "controls": [
+    "missing native-o0/0.5-0.0-uniform/full/restart.bin",
+    "missing native-o0/0.5-0.0-uniform/resume/state.csv",
+    "missing native-o0/0.5-0.0-uniform/wrong-policy.bin",
+    "missing build-o0/native_driver.f90",
+    "missing PRESERVATION.json",
+    "mixed archived source roots with rebound execution metadata",
+    "wrong policy control replaced by CRC-valid active identity",
+    "lost analytical empty-pool policy with rebound hashes"
+  ],
+  "retained_rounds": [
+    "heterogeneous-domain-round1",
+    "native-fct-complete-o0",
+    "native-fct-complete-o2",
+    "native-fct-diagnostic-run-o0",
+    "native-fct-empty-smoke-o0",
+    "native-fct-empty-smoke-o2",
+    "native-fct-hetero-run-o0",
+    "native-fct-pond-prefix-o0",
+    "native-fct-pond-prefix-o2",
+    "native-fct-runs-O0",
+    "native-fct-runs-O0-round2",
+    "native-fct-runs-o0-round3",
+    "native-fct-signed-run-o0",
+    "native-reference-carrier-run-o0",
+    "native-reference-transition-o0",
+    "native-reference-zero-o0",
+    "signed-domain-round1"
+  ]
+}

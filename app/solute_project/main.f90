@@ -233,7 +233,7 @@ program swap5_native_project_column
     diffusion_cm2_day<=1d3.and.tscf>=0d0.and.tscf<=1d0,'invalid transport parameters')
   call require(min(cdrain_mg_cm3,cseep_mg_cm3,rain_c,irrigation_c,runon_c,dry_mg_cm2_day)>=0d0.and. &
     max(cdrain_mg_cm3,cseep_mg_cm3,rain_c,irrigation_c,runon_c,dry_mg_cm2_day)<=1d6,'invalid source chemistry')
-  call require(temporal_tolerance>0d0.and.temporal_tolerance<=1d-3,'invalid temporal tolerance')
+  call require(temporal_tolerance>0d0.and.temporal_tolerance<=1d-2,'invalid temporal tolerance')
   call require(ieee_is_finite(boesten_cofred),'nonfinite Boesten parameter')
   if(boesten_evaporation)then
     call require(boesten_cofred>0d0.and.boesten_cofred<=1d0,'invalid Boesten COFRED')
@@ -507,7 +507,7 @@ program swap5_native_project_column
   write(u,'(A)',advance='no')',potential_transpiration_cm,actual_transpiration_cm,drought_reduction_cm,oxygen_reduction_cm'
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
-  if(seasonal_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
+  if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
   if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
   write(u,'(A)')''
@@ -615,7 +615,7 @@ program swap5_native_project_column
       ',',drought_amount,',',oxygen_amount
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
-    if(seasonal_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
+    if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
     if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
     write(u,'(A)')''

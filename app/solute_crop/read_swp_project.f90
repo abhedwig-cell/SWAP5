@@ -16,7 +16,7 @@ program read_swp_project
  logical::external_bottom=.false.,bottom_half_cell=.true.
  integer::bottom_mode=2,bottom_count=0
  real(real64)::bottom_resistance=0d0,bottom_dates(1024),bottom_heads(1024)
- character(1024)::drfil,pathdrain=''
+ character(1024)::drfil,pathdrain='',bbcfil
  real(real64),allocatable::rain_times(:),rain_amounts(:),event_times(:),event_rates(:)
  integer,allocatable::rain_dd(:),rain_mm(:),rain_yyyy(:)
  real(real64)::tstart,tend,starts(MAX_CROPS),ends(MAX_CROPS),rds,pondmx,rsro,exponent,bottom,amplitude,daymax,fraction
@@ -53,6 +53,12 @@ program read_swp_project
  call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
  external_bottom=.not.rdinqr('swbotb');bottom=0d0;amplitude=0d0;daymax=0d0
+ if(rdinqr('swbbcfile'))then
+  call rdsinr('swbbcfile',0,1,mode);external_bottom=mode==1
+ end if
+ if(external_bottom)then
+  call rdscha('bbcfil',bbcfil);call lowerc(bbcfil);call safe(bbcfil)
+ end if
  if(.not.external_bottom)then
   call rdsinr('swbotb',1,9,bottom_mode);call require(bottom_mode==2,'inline bottom requires SWBOTB2; SWBOTB1 is excluded')
   call rdsinr('sw2',1,2,mode);call require(mode==1,'constant prescribed bottom flux required')
@@ -107,13 +113,12 @@ program read_swp_project
   end if
  end if
  close(74)
- if(external_bottom)call read_bottom_bbc()
  if(trim(action)=='scan')then
   open(newunit=u,file='project.csv',status='new',action='write')
   write(u,'(A)')'kind,index,value'
   write(u,'(A)')'pathatm,0,'//trim(pathatm)
   write(u,'(A)')'pathcrop,0,'//trim(pathcrop)
-  if(external_bottom)write(u,'(A)')'bbc,1,input.bbc'
+  if(external_bottom)write(u,'(A)')'bbc,1,'//trim(bbcfil)//'.bbc'
   if(drain_mode==1)then
    write(u,'(A)')'pathdrain,0,'//trim(pathdrain)
    write(u,'(A)')'drain,1,'//trim(drfil)//'.dra'
@@ -144,6 +149,7 @@ program read_swp_project
   close(u)
   print '(A)','SWP_NATIVE_PROJECT_SCANNED';stop
  end if
+ if(external_bottom)call read_bottom_bbc()
  if(drain_mode==1)call prepare_drainage()
  if(external_bottom)call write_bottom_control()
  ! Normalize only original daily ETref fields; preserve full source bytes outside

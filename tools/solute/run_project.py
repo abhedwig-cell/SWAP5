@@ -43,15 +43,12 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[];rain_events=[]
  with tempfile.TemporaryDirectory(prefix='swap5-project-input-')as tmp:
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
-  # Original SWAP companion-file convention; physical interpretation stays
-  # with the ordinary TTUTIL project reader. Inline SWBOTB2 remains unchanged.
-  companion=swp.with_suffix('.bbc')
-  if companion.is_file():(stage/'input.bbc').write_bytes(companion.read_bytes())
   native(executables['project_reader'],['input.swp','scan'],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
-  if any(r['kind']=='bbc'for r in references):
-   if not companion.is_file():raise FileNotFoundError(companion)
-   sources.append(('original_bbc',companion.read_bytes()))
+  for r in references:
+   if r['kind']=='bbc':
+    companion=resolve_file(swp.parent,r['value']);raw=companion.read_bytes()
+    (stage/'input.bbc').write_bytes(raw);sources.append(('original_bbc',raw))
   paths={r['kind']:r['value'].strip()for r in references if r['kind']in ['pathatm','pathcrop','pathdrain']}
   for r in references:
    if r['kind']not in ['met','crop','rain','drain']:continue

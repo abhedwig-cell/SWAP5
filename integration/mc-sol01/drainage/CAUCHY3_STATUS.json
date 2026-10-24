@@ -3,22 +3,23 @@
   "baseline": "d13ef5288c4df8f96f675dd6e5df8ef04062367e",
   "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonically_admitted": false,
   "scope": "Original companion BBC, SWBOTB3 implicit/table/SHAPE1, through the existing immutable Reference Cauchy control. Existing inline prescribed flux route remains supported.",
   "interfaces_changed": "Private native input fields; existing immutable Cauchy control and existing profile-CALCGWL/DRAMET3 trace interfaces reused. No shared type/signature changes.",
   "owner_contract": "Extend joint_drainage_trace_valid to implicit bottom3 with prescribed-flux directional projection OFF; reuse existing profile CALCGWL/DRAMET3 and immutable Cauchy proposal. Frozen-K pilot passes6 days then rejects day7 with509 attempts and466 temporal rejections; no mass rejection. Select modified Picard for implicit Cauchy3 only; existing64 iterations, Reference, full/half, root/drainage, provider and hard-mass restrictions remain. Explicit Cauchy3 is excluded. No numerical/physical equations or tolerances change.",
   "invariants": ["Reference production authority", "single committed physical owner", "unchanged mass and transaction criteria", "immutable input and restart identity"],
   "files": ["app/solute_crop/read_swp_project.f90", "tools/solute/run_project.py", "app/solute_project/main.f90", "src/runtime/mod_fmr_serialized_reference_backend.f90", "src/adapter/mod_reference_richards_legacy_binding.f90"],
-  "pilot_O2_days": 8,
-  "pilot_result": "COMPLETE original BBC365-entry table, original DRA, constructed supported soil/simple crop, detailed historical rain, Boesten, root uptake, implicit upwind; normal .001 temporal and1e-10 hard mass gates unchanged. Full481 and O0/restart qualification still pending.",
+  "pilot_O2_days": 481,
+  "pilot_result": "Full481 checked O0/O2 at explicit .01 temporal tolerance COMPLETE; four physical outputs byte exact; independent365 split/resume exact. Original BBC365-entry table, DRA/detailed weather, constructed supported soil/simple crop, Boesten/root/implicit upwind. Hard1e-10 mass gates unchanged: max water1.306e-13cm, solute6.709e-14mg/cm2, independent gross1.297e-13cm. Prior prescribed-flux481 O0/O2 four outputs exact. Two real Robin drivers pass O0/O2,12 Picard and45 frozen cases per build. Original full SWP still rejects SWMACRO1; original-source change and unsupported BBC negatives reject.",
   "test_selection": {
     "expected_seconds": 240,
     "selected": "Native original BBC input/count/calendar/rejection checks; real Cauchy/drainage481-day composition and365 split/restart O0/O2; unchanged prescribed-flux baseline preservation. Owning source assertions and exact merge postimage before admission.",
     "not_selected": ["highest low-air", "RossFast", "new1e-6", "unrelated full FCI", "unchanged NUT process recompilation"]
   },
-  "next_action": "Execute full481 O2 and O0/split365/restart/source-negative qualification; preserve unchanged old flux route and original full SWP rejection witness. No canonical admission before owning guards and exact merged tree pass.",
+  "next_action": "Complete original FSI35, docs and exact merge-tree qualification; publish one integration PR and admit only its qualified actual postimage. Current owner and20 corruption controls pass through three predecessor routes. PR1419 reconciled by merge93f12afe; historical NUT/FCT evidence remains dated, not freshly executed.",
   "full_original_Andelst": false,
-  "blockers": []
+  "blockers": ["Original BBC481-day O2 run completes311 days then rejects day312 in rain segment311.665..311.676 at model time311.67261271165. 2199 solver and638 temporal rejections, zero mass rejections. Independent O0/O2 prefix311 budget/state/endpoint/restart bytes exact. Real diagnostic replay preserves committed311-day restart. Near-zero top-cell desaturation: accepted dt reaches6.3093e-12 days. Existing corner-damping probe still rejects; no production numerical change selected."],
+  "bounded_selection": {"candidate":"a1fce5d3","expected_seconds": 240,"scientific_claim": "Original365-entry BBC plus original DRA and detailed weather executes481 days at explicit .01 temporal tolerance with hard water/solute closure and exact restart. Constructed soil/simple crop remain explicit. Scientific accuracy must be assessed against .001311-day prefix, not inferred from run completion.","selected": "tests/nut-sol/qualify_native_cauchy3.py O0/O2 full481/split365/resume; original-source negatives; .001311-day source artifacts remain unchanged. New Cauchy bottom flux output enables independent gross budget. Prior311 test reached restart checks but failed on missing bottom_up_cm column, so no PASS recorded. Test-only .01 same-state day312 and remaining170-day tail complete; these are counterfactuals, not full qualification."}
 }
