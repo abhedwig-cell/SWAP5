@@ -953,3 +953,26 @@ this does not qualify simultaneous full drainage/NUT/FCT physics. Full
 original SWP now reaches the explicit unsupported SWMACRO gate. The remaining
 macro/Cauchy3/heat/full original soil/crop composition and full SOL/NUT stay
 open. No mastercoverage row is promoted by this bounded continuation.
+
+### Day470 saturated-flux successor,24 October2026
+
+PR1413 extends the existing failed-solve mass-guided trial guess to the matched
+continuous-MvG/modified-Picard pair. The original-DRA native composition now
+completes481 days at O0/O2, with byte-exact endpoints and independent day365
+restart. All198 actually consumed native input/source identities match the
+current composition; retained daily water/solute and independent gross-water
+balances pass the unchanged1e-10 gates. Prior no-DRA481 outputs remain exact.
+This supersedes the day470 failure above for this bounded soil/simple-crop case.
+
+Current affected qualification cold-compiles654 O0/O2 providers and executes78
+HIST processes,30 coupled crop/N runs and60 fresh process restarts. The separate
+extracting-sink research passes48 disk cases and its original corruption checks.
+All316 pristine canonical predecessor controls and13 current source/raw controls
+pass. The original FSI35 O0/O2 native gate also passes. Owning source and evidence:
+`integration/audits/verify_saturated_picard_current.py` and
+`integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json`.
+
+Physical equations, mass criteria, rollback and restart owners are unchanged.
+The4x-rain case still fails day7 with exact committed day6 state. Full original
+Andelst, macro/Cauchy3/heat and complete SOL/NUT remain open. Canonical admission
+is established only by the separate actual merge receipt; no master row changes.

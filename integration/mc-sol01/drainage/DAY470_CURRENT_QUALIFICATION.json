@@ -1,0 +1,64 @@
+{
+  "qualified": true,
+  "canonically_admitted": false,
+  "physical_checkpoint": "f42317ea4e0c8268b62e2358f91a2d344796737d",
+  "owner": {
+    "qualified": true,
+    "status": "CURRENT_NATIVE481_CROP_DEPLETION_AND_SINK_DISK_QUALIFIED",
+    "bounded_days": 481,
+    "current_NUT_processes": 78,
+    "current_NUT_coupled_runs": 30,
+    "current_NUT_process_restarts": 60,
+    "frozen_predecessor_controls": 316,
+    "retained_native_scope": "Canonical bytes plus exactly the already implemented HeadCalc repair; no current compilation claimed",
+    "disk": {
+      "status": "EXTRACTING_SINK_FRESH_PROCESS_RESTART_PASS",
+      "disk_cases": 48,
+      "separate_native_runs": 300,
+      "fresh_process_endpoints_byte_exact": 48,
+      "envelope_rejections": 192,
+      "native_corruption_parameter_rejections": 144,
+      "publisher_process_kills": 8,
+      "crash_recoveries_exact": 8,
+      "production_activated": false,
+      "full_mc_sol01_closed": false
+    },
+    "disk_controls": [
+      "missing disk-O0/case-40-0.8-0.5-0.0/full/payload.bin",
+      "missing disk-O0/case-40-0.8-0.5-0.0/resumed/payload.bin",
+      "missing restart_bridge.f90",
+      "missing source/src/adapter/mod_matrix_joint_restart_file.f90",
+      "missing source/integration/mc-sol01/fct_sinks/generate.py"
+    ],
+    "full_original_Andelst": false,
+    "full_mc_sol01_closed": false,
+    "full_mc_nut01_closed": false,
+    "canonically_admitted": false
+  },
+  "current_controls": [
+    "source integration/audits/verify_nut_crop_depletion_composed.py",
+    "source integration/audits/verify_saturated_picard_current.py",
+    "source integration/mc-sol01/drainage/reconcile_day470_recovery.py",
+    "source integration/mc-sol01/drainage/seal_day470_current_canonical.py",
+    "source src/legacy/b1_10_port/headcalc.f90",
+    "foreign caller",
+    "raw frozen.json",
+    "raw native-identity.json",
+    "raw hist/result.json",
+    "raw joint/O0/crop_nh4.endpoint",
+    "raw joint/O2/crop_both.fresh-4.ledger",
+    "raw joint/O0/crop_both.restart.exhaust-reject-2",
+    "raw disk/round1/execution.json"
+  ],
+  "FSI35": {
+    "status": "PASS",
+    "path": "integration/mc-sol01/drainage/DAY470_CURRENT_FSI35.log",
+    "sha256": "2047f7e6d6896211c6f6cc3ab55e2b056250f2791dc7b97ec3c7612854c879e0"
+  },
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS",
+  "compiler_packages": {
+    "driver_sha256": "82382cb8506616ef7df5b9927694bfaacf97bdfb317b1f995453cc17c96aa071",
+    "development_sha256": "ce0fdf0d9e7eadb33947ca7cdd0fc3477b570603cb721b108c96ebdfbb7cd80a"
+  }
+}
