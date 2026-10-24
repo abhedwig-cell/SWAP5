@@ -1,0 +1,39 @@
+{
+  "status": "CANONICAL_RESEARCH_EVIDENCE_MERGED_NOT_PRODUCTION_ADMISSION",
+  "pull_request": 1424,
+  "actual_merge": "9efc6d3ae532efcc7f6b0f6f8ebc29cdeabe3a14",
+  "actual_first_parent": "a2cc7c97dd4c6b1a1005000f9b331d4d4719865e",
+  "published_head": "e12fd3144be35f8f7eb2e46f484495138a0f707a",
+  "published_tested_tree": "9fdabe00987a56b8c8390ea79cccd3735778657c",
+  "actual_complete_tree": "41c63c696c9190d8eaa9b81d37a5b48e3b79c693",
+  "actual_tree_check": "PASS: local git merge-tree(first_parent,published_head) exactly equals complete actual GitHub merge tree",
+  "benchmark_paths_check": "PASS: all23 benchmark paths identical to published/local validated research candidate",
+  "actual_merge_checks": {
+    "all_three_capsule_manifests": "PASS",
+    "python_syntax": "PASS",
+    "documentation_source": "PASS",
+    "premerge_strict_mkdocs": "PASS",
+    "production_activation": "NONE",
+    "current_production_numerical_qualification": "NOT_RUN_NOT_CLAIMED"
+  },
+  "research_numerical_source_reconciliation": "43ee311ae4b525afd191a8e38c66a17d9c8b3a17",
+  "concurrent_delta": {
+    "workstream": "HIST-INTEGRATION01 BBC/Cauchy3",
+    "preserved": true,
+    "source_paths": [
+      "app/solute_crop/read_swp_project.f90",
+      "app/solute_project/main.f90",
+      "src/adapter/mod_reference_richards_legacy_binding.f90",
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "tools/solute/run_project.py"
+    ],
+    "effect": "Actual combined tree differs from premerge tested tree. Pinned research numerics are preserved immutable historical evidence, not current-owner production qualification after this shared-source delta."
+  },
+  "scientific_result": "Same-state event runoff is interval-sensitive in both arms; complete incumbent guards alone do not remove it. Capped policy NOT_SELECTED: full1x both arms fail day66,4x ordinary fails day4;4x flux completes with exact day240 continuation. Short O0/O2 physical bytes exact. Observed failure bytes exact; near-zero-head solver mechanism still open.",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_EXCHANGE_20261024_EVIDENCE.tar.xz",
+    "sha256": "a7faa0604418b9de232646e33e626443981657811934219f0b5f81ab443f5a9b",
+    "members": 2123
+  },
+  "next_safe_step": "Reconcile current BBC/Cauchy source delta, then use real provider to diagnose saved day66/day4 near-zero-head failures before a source repair. No broad plain-Boesten/output-amount production admission; positive chemistry remains excluded."
+}
