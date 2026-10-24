@@ -1,0 +1,18 @@
+{
+  "stage": "HEADCALC_NONCONVERGENCE_LOCALIZED_NOT_REPAIRED",
+  "last_private_water_time_day": 3.1470990507154185e-06,
+  "last_private_water_time_seconds": 0.27190935798181215,
+  "last_trial_day": 9.312932649707269e-11,
+  "remaining_pond_cm": 0.09838900363479013,
+  "head_range_cm": [
+    -100.00000037975387,
+    -99.00544717120582
+  ],
+  "solver_status": 2,
+  "headcalc_retry_location": "src/legacy/b1_10_port/headcalc.f90:930, exhausted nonlinear convergence path",
+  "headcalc_reductions": 37,
+  "wet_surface_depletion_explanation": false,
+  "table_breakpoint_explanation": "NOT_ESTABLISHED: offset initial heads -101/-99/-110/-90 also reject",
+  "repair_qualified": false,
+  "next_safe_work": "Instrument final nonlinear residual/pressure-head/pond convergence criteria in HeadCalc; retain original heads, pond and tolerances. No retry-budget or acceptance relaxation."
+}
