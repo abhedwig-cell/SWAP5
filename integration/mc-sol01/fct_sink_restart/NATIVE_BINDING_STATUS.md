@@ -1,5 +1,15 @@
 # Native production binding: demonstrated domain gaps
 
+Successor implementation is now in `../fct_native_domain/`. Its96 O0/O2
+process cases accept unequal thickness and surface storage/input/runoff while
+closing independent cell equations within4.519e-15. Production surface exports
+remain exact;96 negative-drain rejections and96 exact retries pass. Maximum
+O0/O2 difference2.221e-16. The indexed source/raw capsule retains both development
+rounds. This resolves the two demonstrated gaps at the small-process boundary;
+actual native trajectory, accuracy/refinement and restart-policy binding are
+still pending. The historical diagnostic below remains unchanged evidence for
+the predecessor, not a rejection result for the new implementation.
+
 Based on canonical2de14588. This record supersedes any suggestion that dispatch
 activation alone completes native FCT support. The actual native caller is
 `app/solute_project/main.f90`, which invokes `run_pond_joint_interval` and
