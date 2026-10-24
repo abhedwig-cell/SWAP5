@@ -87,6 +87,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    logical :: typed_bottom_invalid, typed_bottom_ok
    logical :: consistent_provider_conductivity
    logical :: corner_retry_available, corner_retry_active
+   logical :: picard_corner_available, picard_corner_active
+   type(reference_richards_state_binding_t) :: picard_corner_entry
    logical :: saturated_flux_available, saturated_flux_active, saturated_flux_seed, saturated_flux_seed_ok
    type(reference_richards_state_binding_t) :: saturated_flux_entry
    real(8) :: saturated_flux_target
@@ -402,6 +404,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       corner_retry_available = any(state%hm1 >= 0.0d0 .and. state%hm1 <= sqrt(epsilon(1.0d0)))
       if (corner_retry_available) corner_entry_state = state
    end if
+   picard_corner_available = picard_corner_restart_admitted()
+   picard_corner_active = .false.
+   if (picard_corner_available) picard_corner_entry = state
    saturated_flux_available = saturated_flux_restart_admitted()
    saturated_flux_active = .false.
    saturated_flux_seed = .false.
@@ -898,6 +903,18 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    state%numbit = solver_numbit
 
 !  Convergence could not been reached
+   if (picard_corner_available .and. .not. picard_corner_active) then
+      ! Picard already evaluates candidate K(h) in this domain. Near h=0,
+      ! omitting its steep slope can prevent convergence even as dt shrinks.
+      ! Retry the SAME residual with the existing consistent Jacobian only
+      ! after ordinary failure. Never change the physical storage origin.
+      state = picard_corner_entry
+      picard_corner_active = .true.
+      consistent_provider_conductivity = .true.
+      iBackTr = 0
+      ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
+      goto 900
+   end if
    if (corner_retry_available .and. .not. corner_retry_active) then
       state = corner_entry_state
       corner_retry_active = .true.
@@ -962,6 +979,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 contains
+
+logical function picard_corner_restart_admitted() result(ok)
+   ok = .false.
+   if (legacy_state_binding .or. .not. provider_constitutive_active .or. &
+       .not. provider_dynamic_top_active .or. .not. picard_conductivity_iteration) return
+   if (consistent_provider_conductivity .or. scale_matrix_area) return
+   if (swmacro /= 0 .or. swbotb /= 2 .or. swkimpl /= 0 .or. swkmean /= 1) return
+   if (.not. any(abs(state%hm1(1:NN)) <= sqrt(epsilon(1d0)))) return
+   select type (provider => evaluation_context%constitutive)
+   type is (b110_default_mvg_provider_t)
+      if (.not. associated(provider%parameters)) return
+      ok = provider%parameters%continuous_saturation_conductivity .and. &
+           .not. provider%parameters%elastic_storage_active .and. &
+           .not. provider%parameters%ksatexm_extension_enabled .and. &
+           .not. provider%parameters%conductivity_power_tail_enabled
+   end select
+end function picard_corner_restart_admitted
 
 logical function saturated_flux_restart_admitted() result(ok)
    ok = .false.

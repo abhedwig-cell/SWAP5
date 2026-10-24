@@ -18,6 +18,7 @@ def main():
     ap.add_argument('--stop', type=int, default=153)
     ap.add_argument('--cap-day', type=float, required=True)
     ap.add_argument('--output', type=Path, required=True)
+    ap.add_argument('--arms', choices=['both', 'head'], default='both')
     a = ap.parse_args()
     assert 0 < a.cap_day <= .1
     out = a.output.resolve()
@@ -67,6 +68,8 @@ def main():
            '-J' + str(out) if x.startswith('-J') else x for x in link]
     assert run(cmd, out, 'build') == 0
     for arm, source in [('head', a.head_input), ('flux', a.flux_input)]:
+        if a.arms == 'head' and arm != 'head':
+            continue
         case = out / arm
         case.mkdir()
         for n in ['input.nml', 'input.swp']:
