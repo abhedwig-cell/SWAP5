@@ -1,0 +1,268 @@
+{
+  "status": "OBSERVATIONAL_ANALYSIS_NOT_ADMISSION",
+  "production_changed": false,
+  "daily_limit_mm": 0.01,
+  "cases": {
+    "retained": {
+      "inputs": {
+        "head": "6c97fd9d6bbb23ae9f05d00a4b4413ce3ad65e82a0a8f2c5b8af15a5a701ab87",
+        "flux": "444b882ff41f14668ffc83222d3374b42f491ca31127b148814f673aa3ca6cae"
+      },
+      "metrics": {
+        "runoff_cm": {
+          "reference_total_mm": 691.3762485301866,
+          "candidate_total_mm": 691.3091433906576,
+          "final_cumulative_difference_mm": -0.06710513952898023,
+          "max_abs_cumulative_difference_mm": 0.06710527081620532,
+          "max_abs_daily_difference_mm": 0.056793898779633034,
+          "days_over_limit": 11
+        },
+        "actual_transpiration_cm": {
+          "reference_total_mm": 182.1729207598058,
+          "candidate_total_mm": 182.1443512591176,
+          "final_cumulative_difference_mm": -0.028569500688223663,
+          "max_abs_cumulative_difference_mm": 0.02856950068823199,
+          "max_abs_daily_difference_mm": 0.006532096552718913,
+          "days_over_limit": 0
+        },
+        "soil_evaporation_cm": {
+          "reference_total_mm": 178.4601964024327,
+          "candidate_total_mm": 178.2409246967159,
+          "final_cumulative_difference_mm": -0.21927170571680643,
+          "max_abs_cumulative_difference_mm": 0.22145108529727625,
+          "max_abs_daily_difference_mm": 0.13162030706379582,
+          "days_over_limit": 2
+        },
+        "pond_evaporation_cm": {
+          "reference_total_mm": 82.20014482741772,
+          "candidate_total_mm": 82.51339012129888,
+          "final_cumulative_difference_mm": 0.313245293881168,
+          "max_abs_cumulative_difference_mm": 0.31635869328184263,
+          "max_abs_daily_difference_mm": 0.18802901009113682,
+          "days_over_limit": 3
+        }
+      },
+      "runoff_occurrence_change_days": [],
+      "storage_final_difference_mm": -0.00027286476488086464,
+      "max_storage_difference_mm": 0.06217132365769373,
+      "largest_daily_runoff_differences": [
+        {
+          "day": 447,
+          "difference_mm": -0.05679389877963306,
+          "reference_mm": 0.7127789612644144
+        },
+        {
+          "day": 468,
+          "difference_mm": -0.0468433504141863,
+          "reference_mm": 7.341141008617095
+        },
+        {
+          "day": 278,
+          "difference_mm": 0.028995093772235803,
+          "reference_mm": 1.3801174250693724
+        },
+        {
+          "day": 340,
+          "difference_mm": 0.016872825795128804,
+          "reference_mm": 0.32052589251947977
+        },
+        {
+          "day": 343,
+          "difference_mm": -0.01685116897460981,
+          "reference_mm": 5.072827025996332
+        },
+        {
+          "day": 245,
+          "difference_mm": 0.01435829666567301,
+          "reference_mm": 9.891341575098737
+        },
+        {
+          "day": 246,
+          "difference_mm": -0.01255033301385211,
+          "reference_mm": 40.660556888789245
+        },
+        {
+          "day": 302,
+          "difference_mm": 0.01178999426988847,
+          "reference_mm": 11.335948553927604
+        }
+      ],
+      "head_whole_period_water_closure_mm": -2.1316282072803006e-13,
+      "flux_whole_period_water_closure_mm": 2.4868995751603507e-13
+    },
+    "dry_head": {
+      "inputs": {
+        "head": "6c97fd9d6bbb23ae9f05d00a4b4413ce3ad65e82a0a8f2c5b8af15a5a701ab87",
+        "flux": "2eb098ddc3426de161cebd6a63f837b077dadf691db681fb69211fe340a2d77e"
+      },
+      "metrics": {
+        "runoff_cm": {
+          "reference_total_mm": 691.3762485301866,
+          "candidate_total_mm": 691.3790511153175,
+          "final_cumulative_difference_mm": 0.002802585130842746,
+          "max_abs_cumulative_difference_mm": 0.018482501570936782,
+          "max_abs_daily_difference_mm": 0.016872825795128776,
+          "days_over_limit": 8
+        },
+        "actual_transpiration_cm": {
+          "reference_total_mm": 182.1729207598058,
+          "candidate_total_mm": 182.1721602468456,
+          "final_cumulative_difference_mm": -0.0007605129602079805,
+          "max_abs_cumulative_difference_mm": 0.0007605129602088687,
+          "max_abs_daily_difference_mm": 0.0003978603455296881,
+          "days_over_limit": 0
+        },
+        "soil_evaporation_cm": {
+          "reference_total_mm": 178.4601964024327,
+          "candidate_total_mm": 178.4648801995077,
+          "final_cumulative_difference_mm": 0.00468379707496764,
+          "max_abs_cumulative_difference_mm": 0.004684322417567562,
+          "max_abs_daily_difference_mm": 0.0039419887508031215,
+          "days_over_limit": 0
+        },
+        "pond_evaporation_cm": {
+          "reference_total_mm": 82.20014482741772,
+          "candidate_total_mm": 82.19345368873927,
+          "final_cumulative_difference_mm": -0.006691138678454468,
+          "max_abs_cumulative_difference_mm": 0.006691889167880073,
+          "max_abs_daily_difference_mm": 0.005631412501147848,
+          "days_over_limit": 0
+        }
+      },
+      "runoff_occurrence_change_days": [],
+      "storage_final_difference_mm": 5.132588967171614e-06,
+      "max_storage_difference_mm": 0.016867619036702308,
+      "largest_daily_runoff_differences": [
+        {
+          "day": 340,
+          "difference_mm": 0.016872825795128804,
+          "reference_mm": 0.32052589251947977
+        },
+        {
+          "day": 343,
+          "difference_mm": -0.01685116897460981,
+          "reference_mm": 5.072827025996332
+        },
+        {
+          "day": 246,
+          "difference_mm": -0.01255033301385211,
+          "reference_mm": 40.660556888789245
+        },
+        {
+          "day": 245,
+          "difference_mm": 0.01222824662507449,
+          "reference_mm": 9.891341575098737
+        },
+        {
+          "day": 302,
+          "difference_mm": 0.01178999426988847,
+          "reference_mm": 11.335948553927604
+        },
+        {
+          "day": 303,
+          "difference_mm": -0.011786312116566222,
+          "reference_mm": 14.20403203709492
+        },
+        {
+          "day": 299,
+          "difference_mm": -0.011080416508656987,
+          "reference_mm": 4.7048416414938306
+        },
+        {
+          "day": 298,
+          "difference_mm": 0.011068109076002308,
+          "reference_mm": 4.746707979633934
+        }
+      ],
+      "head_whole_period_water_closure_mm": -2.1316282072803006e-13,
+      "flux_whole_period_water_closure_mm": 3.907985046680551e-13
+    },
+    "incumbent_plus": {
+      "inputs": {
+        "head": "6c97fd9d6bbb23ae9f05d00a4b4413ce3ad65e82a0a8f2c5b8af15a5a701ab87",
+        "flux": "2f306734320fca6b3f2aadb9014f57b0fff07bddf811ae56b39b588c81998b31"
+      },
+      "metrics": {
+        "runoff_cm": {
+          "reference_total_mm": 691.3762485301866,
+          "candidate_total_mm": 691.3759206858122,
+          "final_cumulative_difference_mm": -0.0003278443744557692,
+          "max_abs_cumulative_difference_mm": 0.016364882802644476,
+          "max_abs_daily_difference_mm": 0.016872825795128776,
+          "days_over_limit": 8
+        },
+        "actual_transpiration_cm": {
+          "reference_total_mm": 182.1729207598058,
+          "candidate_total_mm": 182.1725782562663,
+          "final_cumulative_difference_mm": -0.0003425035395127965,
+          "max_abs_cumulative_difference_mm": 0.0008555893642707198,
+          "max_abs_daily_difference_mm": 0.0005130858247603398,
+          "days_over_limit": 0
+        },
+        "soil_evaporation_cm": {
+          "reference_total_mm": 178.4601964024327,
+          "candidate_total_mm": 178.4585716291117,
+          "final_cumulative_difference_mm": -0.0016247733210076887,
+          "max_abs_cumulative_difference_mm": 0.0016361811001784146,
+          "max_abs_daily_difference_mm": 0.002137169059542199,
+          "days_over_limit": 0
+        },
+        "pond_evaporation_cm": {
+          "reference_total_mm": 82.20014482741772,
+          "candidate_total_mm": 82.20246593216208,
+          "final_cumulative_difference_mm": 0.0023211047443655883,
+          "max_abs_cumulative_difference_mm": 0.0023374015717684627,
+          "max_abs_daily_difference_mm": 0.0030530986564891727,
+          "days_over_limit": 0
+        }
+      },
+      "runoff_occurrence_change_days": [],
+      "storage_final_difference_mm": 5.171223307343098e-06,
+      "max_storage_difference_mm": 0.016867619036702308,
+      "largest_daily_runoff_differences": [
+        {
+          "day": 340,
+          "difference_mm": 0.016872825795128804,
+          "reference_mm": 0.32052589251947977
+        },
+        {
+          "day": 343,
+          "difference_mm": -0.01685116897460981,
+          "reference_mm": 5.072827025996332
+        },
+        {
+          "day": 246,
+          "difference_mm": -0.012550333014571535,
+          "reference_mm": 40.660556888789245
+        },
+        {
+          "day": 245,
+          "difference_mm": 0.012363725187090058,
+          "reference_mm": 9.891341575098737
+        },
+        {
+          "day": 302,
+          "difference_mm": 0.01178999426988847,
+          "reference_mm": 11.335948553927604
+        },
+        {
+          "day": 303,
+          "difference_mm": -0.011786312116566222,
+          "reference_mm": 14.20403203709492
+        },
+        {
+          "day": 299,
+          "difference_mm": -0.011080416508656987,
+          "reference_mm": 4.7048416414938306
+        },
+        {
+          "day": 298,
+          "difference_mm": 0.011068109076002308,
+          "reference_mm": 4.746707979633934
+        }
+      ],
+      "head_whole_period_water_closure_mm": -2.1316282072803006e-13,
+      "flux_whole_period_water_closure_mm": 4.263256414560601e-13
+    }
+  }
+}
