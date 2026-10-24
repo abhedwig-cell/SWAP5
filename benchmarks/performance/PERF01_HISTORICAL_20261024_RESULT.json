@@ -1,0 +1,1106 @@
+{
+  "status": "RESEARCH_HISTORICAL_DAILY_ACCURACY_FAIL_NO_PRODUCTION_ADMISSION",
+  "canonical_baseline": "aba91da43e12817d09ac54329663ecf38b4e31d0",
+  "production_changed": false,
+  "production_qualified": false,
+  "continuous_97": {
+    "8-1": {
+      "head": {
+        "returncode": 0,
+        "seconds": 4.429694098999789,
+        "max_water_residual_cm": 1.1657341758564144e-14
+      },
+      "flux": {
+        "returncode": 0,
+        "seconds": 0.3257475930004148,
+        "max_water_residual_cm": 1.6209256159527285e-14
+      },
+      "max_daily_difference_mm": {
+        "runoff_cm": 0.0026214180367936657,
+        "water_end_cm": 0.002621418037236367,
+        "actual_transpiration_cm": 1.1102230246251565e-15,
+        "soil_evaporation_cm": 0.15412219371684063,
+        "pond_evaporation_cm": 0.15412219371684027
+      },
+      "physical_screen_pass": true
+    },
+    "8-4": {
+      "head": {
+        "returncode": 0,
+        "seconds": 2.9619435859995065,
+        "max_water_residual_cm": 8.881784197001252e-15
+      },
+      "flux": {
+        "returncode": 0,
+        "seconds": 0.3164705540002615,
+        "max_water_residual_cm": 9.103828801926284e-15
+      },
+      "max_daily_difference_mm": {
+        "runoff_cm": 0.0024793856749194543,
+        "water_end_cm": 0.0024793856752580723,
+        "actual_transpiration_cm": 5.551115123125783e-16,
+        "soil_evaporation_cm": 0.5660492081929063,
+        "pond_evaporation_cm": 0.5660492081929064
+      },
+      "physical_screen_pass": true
+    },
+    "24-1": {
+      "head": {
+        "returncode": 0,
+        "seconds": 22.891052154000135,
+        "max_water_residual_cm": 1.9498291869979312e-14
+      },
+      "flux": {
+        "returncode": 0,
+        "seconds": 1.2641066229998614,
+        "max_water_residual_cm": 3.372302437298913e-14
+      },
+      "max_daily_difference_mm": {
+        "runoff_cm": 0.002898410708347815,
+        "water_end_cm": 0.0028984107088092514,
+        "actual_transpiration_cm": 1.1102230246251565e-15,
+        "soil_evaporation_cm": 0.15292424934130294,
+        "pond_evaporation_cm": 0.15292424934130294
+      },
+      "physical_screen_pass": true
+    },
+    "24-4": {
+      "head": {
+        "returncode": 0,
+        "seconds": 17.87706849300048,
+        "max_water_residual_cm": 1.9498291869979312e-14
+      },
+      "flux": {
+        "returncode": 0,
+        "seconds": 1.1185860360001243,
+        "max_water_residual_cm": 3.372302437298913e-14
+      },
+      "max_daily_difference_mm": {
+        "runoff_cm": 0.0024811630103482862,
+        "water_end_cm": 0.002481163010799037,
+        "actual_transpiration_cm": 5.551115123125783e-16,
+        "soil_evaporation_cm": 0.5870233057257117,
+        "pond_evaporation_cm": 0.5870233057257113
+      },
+      "physical_screen_pass": true
+    }
+  },
+  "O0_O2_identity": {
+    "8-1": {
+      "head": {
+        "budget.csv": true,
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      },
+      "flux": {
+        "budget.csv": true,
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      }
+    },
+    "8-4": {
+      "head": {
+        "budget.csv": true,
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      },
+      "flux": {
+        "budget.csv": true,
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      }
+    }
+  },
+  "restart97": {
+    "8-1": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.3140303780000977,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "/tmp/perf01-continuous-current-v1/8-1/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.03152733499973692,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 2.7755575615628914e-15
+    },
+    "8-4": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.3198777389998213,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "/tmp/perf01-continuous-current-v1/8-4/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.014750375999938115,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 6.938893903907228e-16
+    },
+    "24-1": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 1.3466450650003026,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "/tmp/perf01-continuous-current-v1/24-1/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.1263805680000587,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 4.9960036108132044e-15
+    },
+    "24-4": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 1.3264233879999665,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-continuous-current-v1/project",
+            "input.nml",
+            "/tmp/perf01-continuous-current-v1/24-4/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.02962262399978499,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 2.220446049250313e-15
+    }
+  },
+  "restart481": {
+    "status": "ACTUAL_DAY240_RESTART_EXACT",
+    "accuracy_qualified": false,
+    "full_case": "/tmp/perf01-historical-incumbent-stages-v1/detailed/flux",
+    "events": [
+      {
+        "command": [
+          "/tmp/perf01-historical-incumbent-v1/project",
+          "input.nml",
+          "-",
+          "240",
+          "input.swp"
+        ],
+        "seconds": 9.046350444000382,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/tmp/perf01-historical-incumbent-v1/project",
+          "input.nml",
+          "/tmp/perf01-historical-restart-v1/half/restart.bin",
+          "481",
+          "input.swp"
+        ],
+        "seconds": 19.399878897000235,
+        "returncode": 0
+      }
+    ],
+    "identity": {
+      "state.csv": true,
+      "endpoint.csv": true,
+      "restart.bin": true
+    },
+    "continued_days": 241
+  },
+  "historical": {
+    "initial": {
+      "status": "RESEARCH_STAGES_COMPLETED",
+      "cases": {
+        "static": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/static/head",
+            "returncode": 1,
+            "seconds": 0.005761901999903785,
+            "fallback_days": 0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/static/flux",
+            "returncode": 1,
+            "seconds": 0.006538827999975183,
+            "fallback_days": 0
+          }
+        },
+        "seasonal": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/seasonal/head",
+            "returncode": 1,
+            "seconds": 0.007524493999881088,
+            "fallback_days": 0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/seasonal/flux",
+            "returncode": 1,
+            "seconds": 0.0073666070002218476,
+            "fallback_days": 0
+          }
+        },
+        "detailed": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/detailed/head",
+            "returncode": 0,
+            "seconds": 34.04971478900006,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.7041923427996153e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v1/detailed/flux",
+            "returncode": "TIMEOUT120",
+            "seconds": 120.0101153810001,
+            "fallback_days": 301
+          }
+        }
+      }
+    },
+    "ordinary_fallback": {
+      "status": "RESEARCH_STAGES_COMPLETED",
+      "cases": {
+        "static": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v3/static/head",
+            "returncode": 0,
+            "seconds": 24.250257270000475,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.84297022087776e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v3/static/flux",
+            "returncode": 0,
+            "seconds": 2.2366487300005247,
+            "fallback_days": 481,
+            "max_water_residual_cm": 1.840194663316197e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.028984143690680142,
+            "water_end_cm": 0.05615142256601757,
+            "actual_transpiration_cm": 0.01050912129124816,
+            "soil_evaporation_cm": 0.13101998598722117,
+            "pond_evaporation_cm": 0.18717140855317227,
+            "total_evaporation_cm": 0.0561514225659511
+          },
+          "physical_screen_pass": false
+        },
+        "seasonal": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v3/seasonal/head",
+            "returncode": 0,
+            "seconds": 23.055243281000003,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.765254609153999e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v3/seasonal/flux",
+            "returncode": 0,
+            "seconds": 2.185168691999934,
+            "fallback_days": 481,
+            "max_water_residual_cm": 1.7430501486614958e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.25231178190254777,
+            "water_end_cm": 0.3659658132460919,
+            "actual_transpiration_cm": 0.041860508992843104,
+            "soil_evaporation_cm": 0.8536450781250006,
+            "pond_evaporation_cm": 1.21949296875,
+            "total_evaporation_cm": 0.3658478906249993
+          },
+          "physical_screen_pass": false
+        }
+      }
+    },
+    "retained": {
+      "status": "RESEARCH_STAGES_COMPLETED",
+      "cases": {
+        "static": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/static/head",
+            "returncode": 0,
+            "seconds": 22.203105180999955,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.84297022087776e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/static/flux",
+            "returncode": 0,
+            "seconds": 0.8775269819998357,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.9047263766225342e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.025967929669912238,
+            "water_end_cm": 0.05615142256601757,
+            "actual_transpiration_cm": 0.010216973502076461,
+            "soil_evaporation_cm": 0.13101998598722117,
+            "pond_evaporation_cm": 0.18717140855317227,
+            "total_evaporation_cm": 0.0561514225659511
+          },
+          "physical_screen_pass": false
+        },
+        "seasonal": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/seasonal/head",
+            "returncode": 0,
+            "seconds": 21.65926879499966,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.765254609153999e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/seasonal/flux",
+            "returncode": 0,
+            "seconds": 0.9200362650008174,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.995625886763719e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.2523119331004908,
+            "water_end_cm": 0.36596595722492964,
+            "actual_transpiration_cm": 0.041860516212162566,
+            "soil_evaporation_cm": 0.8536450781250006,
+            "pond_evaporation_cm": 1.21949296875,
+            "total_evaporation_cm": 0.3658478906249993
+          },
+          "physical_screen_pass": false
+        },
+        "detailed": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/detailed/head",
+            "returncode": 0,
+            "seconds": 33.6679765480003,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.7041923427996153e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/detailed/flux",
+            "returncode": 0,
+            "seconds": 21.411843707000116,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.582067810090848e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.05679389877963306,
+            "water_end_cm": 0.06217132365769373,
+            "actual_transpiration_cm": 0.006532096552718941,
+            "soil_evaporation_cm": 0.13162030706379582,
+            "pond_evaporation_cm": 0.18802901009113687,
+            "total_evaporation_cm": 0.05640870302734101
+          },
+          "physical_screen_pass": false
+        }
+      }
+    },
+    "dry_head": {
+      "status": "RESEARCH_STAGES_COMPLETED",
+      "cases": {
+        "static": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/static/head",
+            "returncode": 0,
+            "seconds": 22.924454107999736,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.84297022087776e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/static/flux",
+            "returncode": 0,
+            "seconds": 4.142777134000426,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.3655743202889425e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.03476032597538037,
+            "water_end_cm": 0.05615142256601757,
+            "actual_transpiration_cm": 0.0006051618254460838,
+            "soil_evaporation_cm": 0.13101998598722117,
+            "pond_evaporation_cm": 0.18717140855317227,
+            "total_evaporation_cm": 0.0561514225659511
+          },
+          "physical_screen_pass": false
+        },
+        "seasonal": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/seasonal/head",
+            "returncode": 0,
+            "seconds": 21.21745113900033,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.765254609153999e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/seasonal/flux",
+            "returncode": 0,
+            "seconds": 4.480947070000184,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.4925560787304448e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.12966342783662488,
+            "water_end_cm": 0.08689434034508281,
+            "actual_transpiration_cm": 0.000576039010767109,
+            "soil_evaporation_cm": 0.22803819261031233,
+            "pond_evaporation_cm": 0.32576884658616045,
+            "total_evaporation_cm": 0.09773065397584817
+          },
+          "physical_screen_pass": false
+        },
+        "detailed": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/detailed/head",
+            "returncode": 0,
+            "seconds": 33.69574482600001,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.7041923427996153e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-hybrid-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-hybrid-stages-v1/detailed/flux",
+            "returncode": 0,
+            "seconds": 31.938887873000567,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.5126788710517758e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.016872825795128804,
+            "water_end_cm": 0.016867619036702308,
+            "actual_transpiration_cm": 0.00039786034552971583,
+            "soil_evaporation_cm": 0.0039419887508031215,
+            "pond_evaporation_cm": 0.005631412501147792,
+            "total_evaporation_cm": 0.0016894237503447401
+          },
+          "physical_screen_pass": false
+        }
+      }
+    },
+    "incumbent_plus": {
+      "status": "RESEARCH_STAGES_COMPLETED",
+      "cases": {
+        "detailed": {
+          "head": {
+            "command": [
+              "/tmp/perf01-historical-current-v2/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-stages-v4/detailed/head",
+            "returncode": 0,
+            "seconds": 33.6679765480003,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.7041923427996153e-14,
+            "max_solute_residual_mg_cm2": 0.0,
+            "reused_exact_input_reference": "/tmp/perf01-historical-stages-v4/detailed/head"
+          },
+          "flux": {
+            "command": [
+              "/tmp/perf01-historical-incumbent-v1/project",
+              "input.nml",
+              "-",
+              "481",
+              "input.swp"
+            ],
+            "folder": "/tmp/perf01-historical-incumbent-stages-v1/detailed/flux",
+            "returncode": 0,
+            "seconds": 31.01579587299966,
+            "fallback_days": 0,
+            "max_water_residual_cm": 1.5126788710517758e-14,
+            "max_solute_residual_mg_cm2": 0.0
+          },
+          "max_daily_difference_mm": {
+            "runoff_cm": 0.016872825795128804,
+            "water_end_cm": 0.016867619036702308,
+            "actual_transpiration_cm": 0.0005130858247603606,
+            "soil_evaporation_cm": 0.002137169059542171,
+            "pond_evaporation_cm": 0.0030530986564891727,
+            "total_evaporation_cm": 0.0009159295969470363
+          },
+          "physical_screen_pass": false
+        }
+      }
+    }
+  },
+  "work": {
+    "head": {
+      "segments": 3085,
+      "totals": {
+        "attempts": 221986,
+        "solver_rejections": 2596,
+        "temporal_rejections": 178295,
+        "mass_rejections": 0,
+        "headcalc_calls": 662697,
+        "nonlinear_iterations": 4677207,
+        "linear_solves": 4677207,
+        "accepted_substeps": 41095
+      },
+      "top_days_by_headcalc": [
+        {
+          "day": 3,
+          "attempts": 7373,
+          "solver_rejections": 328,
+          "temporal_rejections": 6008,
+          "mass_rejections": 0,
+          "headcalc_calls": 21751,
+          "nonlinear_iterations": 209914,
+          "linear_solves": 209914,
+          "accepted_substeps": 1037
+        },
+        {
+          "day": 236,
+          "attempts": 6579,
+          "solver_rejections": 572,
+          "temporal_rejections": 5060,
+          "mass_rejections": 0,
+          "headcalc_calls": 18889,
+          "nonlinear_iterations": 231348,
+          "linear_solves": 231348,
+          "accepted_substeps": 947
+        },
+        {
+          "day": 65,
+          "attempts": 5034,
+          "solver_rejections": 120,
+          "temporal_rejections": 3845,
+          "mass_rejections": 0,
+          "headcalc_calls": 14948,
+          "nonlinear_iterations": 139602,
+          "linear_solves": 139602,
+          "accepted_substeps": 1069
+        },
+        {
+          "day": 158,
+          "attempts": 4461,
+          "solver_rejections": 90,
+          "temporal_rejections": 3609,
+          "mass_rejections": 0,
+          "headcalc_calls": 13288,
+          "nonlinear_iterations": 112495,
+          "linear_solves": 112495,
+          "accepted_substeps": 762
+        },
+        {
+          "day": 149,
+          "attempts": 3909,
+          "solver_rejections": 24,
+          "temporal_rejections": 3228,
+          "mass_rejections": 0,
+          "headcalc_calls": 11697,
+          "nonlinear_iterations": 92077,
+          "linear_solves": 92077,
+          "accepted_substeps": 657
+        },
+        {
+          "day": 476,
+          "attempts": 3706,
+          "solver_rejections": 111,
+          "temporal_rejections": 3045,
+          "mass_rejections": 0,
+          "headcalc_calls": 10982,
+          "nonlinear_iterations": 92590,
+          "linear_solves": 92590,
+          "accepted_substeps": 550
+        },
+        {
+          "day": 66,
+          "attempts": 3694,
+          "solver_rejections": 135,
+          "temporal_rejections": 2831,
+          "mass_rejections": 0,
+          "headcalc_calls": 10911,
+          "nonlinear_iterations": 143354,
+          "linear_solves": 143354,
+          "accepted_substeps": 728
+        },
+        {
+          "day": 63,
+          "attempts": 3646,
+          "solver_rejections": 69,
+          "temporal_rejections": 2995,
+          "mass_rejections": 0,
+          "headcalc_calls": 10853,
+          "nonlinear_iterations": 87522,
+          "linear_solves": 87522,
+          "accepted_substeps": 582
+        },
+        {
+          "day": 5,
+          "attempts": 3547,
+          "solver_rejections": 51,
+          "temporal_rejections": 2827,
+          "mass_rejections": 0,
+          "headcalc_calls": 10596,
+          "nonlinear_iterations": 78168,
+          "linear_solves": 78168,
+          "accepted_substeps": 669
+        },
+        {
+          "day": 7,
+          "attempts": 2999,
+          "solver_rejections": 16,
+          "temporal_rejections": 2437,
+          "mass_rejections": 0,
+          "headcalc_calls": 8976,
+          "nonlinear_iterations": 60378,
+          "linear_solves": 60378,
+          "accepted_substeps": 546
+        },
+        {
+          "day": 62,
+          "attempts": 2917,
+          "solver_rejections": 49,
+          "temporal_rejections": 2263,
+          "mass_rejections": 0,
+          "headcalc_calls": 8692,
+          "nonlinear_iterations": 58245,
+          "linear_solves": 58245,
+          "accepted_substeps": 605
+        },
+        {
+          "day": 211,
+          "attempts": 2648,
+          "solver_rejections": 43,
+          "temporal_rejections": 2165,
+          "mass_rejections": 0,
+          "headcalc_calls": 7883,
+          "nonlinear_iterations": 53773,
+          "linear_solves": 53773,
+          "accepted_substeps": 440
+        }
+      ]
+    },
+    "flux": {
+      "segments": 3085,
+      "totals": {
+        "attempts": 489686,
+        "solver_rejections": 202,
+        "temporal_rejections": 8382,
+        "mass_rejections": 0,
+        "headcalc_calls": 1468778,
+        "nonlinear_iterations": 4533649,
+        "linear_solves": 4533649,
+        "accepted_substeps": 481102
+      },
+      "top_days_by_headcalc": [
+        {
+          "day": 246,
+          "attempts": 33987,
+          "solver_rejections": 0,
+          "temporal_rejections": 243,
+          "mass_rejections": 0,
+          "headcalc_calls": 101961,
+          "nonlinear_iterations": 306014,
+          "linear_solves": 306014,
+          "accepted_substeps": 33744
+        },
+        {
+          "day": 285,
+          "attempts": 28780,
+          "solver_rejections": 0,
+          "temporal_rejections": 87,
+          "mass_rejections": 0,
+          "headcalc_calls": 86340,
+          "nonlinear_iterations": 259109,
+          "linear_solves": 259109,
+          "accepted_substeps": 28693
+        },
+        {
+          "day": 257,
+          "attempts": 27978,
+          "solver_rejections": 0,
+          "temporal_rejections": 245,
+          "mass_rejections": 0,
+          "headcalc_calls": 83934,
+          "nonlinear_iterations": 251903,
+          "linear_solves": 251903,
+          "accepted_substeps": 27733
+        },
+        {
+          "day": 301,
+          "attempts": 23493,
+          "solver_rejections": 0,
+          "temporal_rejections": 207,
+          "mass_rejections": 0,
+          "headcalc_calls": 70479,
+          "nonlinear_iterations": 211523,
+          "linear_solves": 211523,
+          "accepted_substeps": 23286
+        },
+        {
+          "day": 302,
+          "attempts": 15188,
+          "solver_rejections": 0,
+          "temporal_rejections": 99,
+          "mass_rejections": 0,
+          "headcalc_calls": 45564,
+          "nonlinear_iterations": 136770,
+          "linear_solves": 136770,
+          "accepted_substeps": 15089
+        },
+        {
+          "day": 353,
+          "attempts": 15082,
+          "solver_rejections": 0,
+          "temporal_rejections": 138,
+          "mass_rejections": 0,
+          "headcalc_calls": 45246,
+          "nonlinear_iterations": 135795,
+          "linear_solves": 135795,
+          "accepted_substeps": 14944
+        },
+        {
+          "day": 300,
+          "attempts": 13080,
+          "solver_rejections": 0,
+          "temporal_rejections": 149,
+          "mass_rejections": 0,
+          "headcalc_calls": 39240,
+          "nonlinear_iterations": 117763,
+          "linear_solves": 117763,
+          "accepted_substeps": 12931
+        },
+        {
+          "day": 360,
+          "attempts": 11260,
+          "solver_rejections": 0,
+          "temporal_rejections": 53,
+          "mass_rejections": 0,
+          "headcalc_calls": 33780,
+          "nonlinear_iterations": 101389,
+          "linear_solves": 101389,
+          "accepted_substeps": 11207
+        },
+        {
+          "day": 303,
+          "attempts": 11054,
+          "solver_rejections": 0,
+          "temporal_rejections": 148,
+          "mass_rejections": 0,
+          "headcalc_calls": 33162,
+          "nonlinear_iterations": 99530,
+          "linear_solves": 99530,
+          "accepted_substeps": 10906
+        },
+        {
+          "day": 245,
+          "attempts": 10168,
+          "solver_rejections": 0,
+          "temporal_rejections": 103,
+          "mass_rejections": 0,
+          "headcalc_calls": 30504,
+          "nonlinear_iterations": 91585,
+          "linear_solves": 91585,
+          "accepted_substeps": 10065
+        },
+        {
+          "day": 252,
+          "attempts": 10076,
+          "solver_rejections": 0,
+          "temporal_rejections": 52,
+          "mass_rejections": 0,
+          "headcalc_calls": 30228,
+          "nonlinear_iterations": 90753,
+          "linear_solves": 90753,
+          "accepted_substeps": 10024
+        },
+        {
+          "day": 283,
+          "attempts": 9806,
+          "solver_rejections": 0,
+          "temporal_rejections": 130,
+          "mass_rejections": 0,
+          "headcalc_calls": 29418,
+          "nonlinear_iterations": 88308,
+          "linear_solves": 88308,
+          "accepted_substeps": 9676
+        }
+      ]
+    }
+  },
+  "detailed_work_totals": {
+    "head": {
+      "days": 481,
+      "accepted_substeps": 82190,
+      "runoff_cm": 69.13762485301866,
+      "max_water_residual_cm": 1.7041923427996153e-14
+    },
+    "flux": {
+      "days": 481,
+      "accepted_substeps": 962204,
+      "runoff_cm": 69.13091433906577,
+      "max_water_residual_cm": 1.582067810090848e-14
+    }
+  },
+  "fallback_correction": {
+    "published_combined": {
+      "8-1": {
+        "head": 97,
+        "flux": 97
+      },
+      "8-4": {
+        "head": 97,
+        "flux": 97
+      },
+      "24-1": {
+        "head": 97,
+        "flux": 97
+      },
+      "24-4": {
+        "head": 97,
+        "flux": 97
+      }
+    },
+    "current_continuous": {
+      "8-1": {
+        "head": 97,
+        "flux": 97
+      },
+      "8-4": {
+        "head": 97,
+        "flux": 97
+      },
+      "24-1": {
+        "head": 97,
+        "flux": 97
+      },
+      "24-4": {
+        "head": 97,
+        "flux": 97
+      }
+    }
+  },
+  "limitation": "Historical input has positive chemistry; all historical comparison runs explicitly zero CPRE/CDRAIN/CMLTB. Daily acceptance limit0.01mm remains unmet. Native times single observations, some overlapping build/research processes; not portable speed estimates.",
+  "next_safe_step": "Preserve bounded production use. Investigate accumulated surface evaporation/runoff and local-to-daily error propagation before any general numerical option expansion; positive chemistry remains excluded.",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_HISTORICAL_20261024_EVIDENCE.tar.xz",
+    "sha256": "0cc7ad88b89d8ec74410c5b1fdae9143df03c8a9494d3d1f4f4b596d5de658aa",
+    "members": 1337,
+    "bytes": 702956
+  }
+}

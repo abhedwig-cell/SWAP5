@@ -1,0 +1,421 @@
+{
+  "status": "RESEARCH_GEOMETRY_BOESTEN_PICARD_O2_AND_SELECTED_O0_PASS",
+  "production_qualified": false,
+  "production_changed": false,
+  "scope": "120cm8/24 cells; zero tracer; lookup hydraulics; prescribed bottom; full97day1x/4x. O0 eight-cell subset byte-exact to O2; O2 combined day48 restart exact.",
+  "cases": {
+    "geometry": {
+      "8-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 0.7829326500000207,
+          "max_water_residual_cm": 1.3850032232198828e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.057099561000086396,
+          "max_water_residual_cm": 1.7263968032921184e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002297085920871522,
+          "water_end_cm": 0.0022970859208726324,
+          "actual_transpiration_cm": 1.3877787807814457e-15
+        },
+        "physical_screen_pass": true
+      },
+      "8-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 0.8506595550002203,
+          "max_water_residual_cm": 1.2406742300186124e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.05806086999973559,
+          "max_water_residual_cm": 9.103828801926284e-15
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382594823276,
+          "water_end_cm": 0.0024793825949132042,
+          "actual_transpiration_cm": 6.938893903907228e-16
+        },
+        "physical_screen_pass": true
+      },
+      "24-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 3.0327829329999076,
+          "max_water_residual_cm": 1.950523076388322e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.15068839900004605,
+          "max_water_residual_cm": 2.6617597015388128e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.006893622814591882,
+          "water_end_cm": 0.006893622814629907,
+          "actual_transpiration_cm": 8.326672684688674e-16
+        },
+        "physical_screen_pass": true
+      },
+      "24-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 4.0727102509999895,
+          "max_water_residual_cm": 1.950523076388322e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.13787599499983116,
+          "max_water_residual_cm": 2.6617597015388128e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382610010017,
+          "water_end_cm": 0.002479382610403036,
+          "actual_transpiration_cm": 6.938893903907228e-16
+        },
+        "physical_screen_pass": true
+      }
+    },
+    "boesten": {
+      "8-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 0.8477685469997596,
+          "max_water_residual_cm": 1.2413681194090032e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.062160526999832655,
+          "max_water_residual_cm": 1.7263968032921184e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.0022970859210895422,
+          "water_end_cm": 0.0022970859208726324,
+          "actual_transpiration_cm": 1.3877787807814457e-15,
+          "soil_evaporation_cm": 0.07731977502136798,
+          "pond_evaporation_cm": 0.07731977502136742
+        },
+        "physical_screen_pass": true
+      },
+      "8-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 0.8886812900000223,
+          "max_water_residual_cm": 1.2413681194090032e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.06067285400013134,
+          "max_water_residual_cm": 7.993605777301127e-15
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382594823276,
+          "water_end_cm": 0.0024793825949132042,
+          "actual_transpiration_cm": 8.326672684688674e-16,
+          "soil_evaporation_cm": 0.17472320834640492,
+          "pond_evaporation_cm": 0.17472320834640515
+        },
+        "physical_screen_pass": true
+      },
+      "24-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 3.2794627930002207,
+          "max_water_residual_cm": 1.9498291869979312e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.15622792099975413,
+          "max_water_residual_cm": 2.661065812148422e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.006893622814700823,
+          "water_end_cm": 0.006893622814629907,
+          "actual_transpiration_cm": 1.1102230246251565e-15,
+          "soil_evaporation_cm": 0.07731932647642464,
+          "pond_evaporation_cm": 0.07731932647642378
+        },
+        "physical_screen_pass": true
+      },
+      "24-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 4.653260789000342,
+          "max_water_residual_cm": 1.9498291869979312e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.20383839500027534,
+          "max_water_residual_cm": 2.661065812148422e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382610010017,
+          "water_end_cm": 0.002479382610403036,
+          "actual_transpiration_cm": 2.220446049250313e-15,
+          "soil_evaporation_cm": 0.10007090199579112,
+          "pond_evaporation_cm": 0.1000709019957911
+        },
+        "physical_screen_pass": true
+      }
+    },
+    "combined": {
+      "8-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 2.924634087999948,
+          "max_water_residual_cm": 1.1907141939104804e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.24573585300004197,
+          "max_water_residual_cm": 1.6209256159527285e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.0026180264404748743,
+          "water_end_cm": 0.0026180264409703113,
+          "actual_transpiration_cm": 6.938893903907228e-16,
+          "soil_evaporation_cm": 0.0773189779201177,
+          "pond_evaporation_cm": 0.07731897792011806
+        },
+        "physical_screen_pass": true
+      },
+      "8-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 2.3608121470001606,
+          "max_water_residual_cm": 8.881784197001252e-15
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.20759149000014077,
+          "max_water_residual_cm": 9.103828801926284e-15
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382614690717,
+          "water_end_cm": 0.002479382614879455,
+          "actual_transpiration_cm": 5.551115123125783e-16,
+          "soil_evaporation_cm": 0.10007137717987935,
+          "pond_evaporation_cm": 0.10007137717987935
+        },
+        "physical_screen_pass": true
+      },
+      "24-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 15.063866899000004,
+          "max_water_residual_cm": 1.9498291869979312e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.7581135139998878,
+          "max_water_residual_cm": 3.372302437298913e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.00689174872653367,
+          "water_end_cm": 0.0068917487266162425,
+          "actual_transpiration_cm": 1.1102230246251565e-15,
+          "soil_evaporation_cm": 0.15292424934130294,
+          "pond_evaporation_cm": 0.15292424934130294
+        },
+        "physical_screen_pass": true
+      },
+      "24-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 12.131916175000242,
+          "max_water_residual_cm": 1.9498291869979312e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.6641798919999928,
+          "max_water_residual_cm": 3.372302437298913e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.0025135661822917044,
+          "water_end_cm": 0.0025135661825714806,
+          "actual_transpiration_cm": 8.326672684688674e-16,
+          "soil_evaporation_cm": 0.14790642240979152,
+          "pond_evaporation_cm": 0.14790642240979146
+        },
+        "physical_screen_pass": true
+      }
+    },
+    "O0": {
+      "8-1": {
+        "head": {
+          "returncode": 0,
+          "seconds": 6.245070424999994,
+          "max_water_residual_cm": 1.1907141939104804e-14
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.403980176999994,
+          "max_water_residual_cm": 1.6209256159527285e-14
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.0026180264404748743,
+          "water_end_cm": 0.0026180264409703113,
+          "actual_transpiration_cm": 6.938893903907228e-16,
+          "soil_evaporation_cm": 0.0773189779201177,
+          "pond_evaporation_cm": 0.07731897792011806
+        },
+        "physical_screen_pass": true
+      },
+      "8-4": {
+        "head": {
+          "returncode": 0,
+          "seconds": 4.74027549099992,
+          "max_water_residual_cm": 8.881784197001252e-15
+        },
+        "flux": {
+          "returncode": 0,
+          "seconds": 0.42587602899993726,
+          "max_water_residual_cm": 9.103828801926284e-15
+        },
+        "max_daily_difference_mm": {
+          "runoff_cm": 0.002479382614690717,
+          "water_end_cm": 0.002479382614879455,
+          "actual_transpiration_cm": 5.551115123125783e-16,
+          "soil_evaporation_cm": 0.10007137717987935,
+          "pond_evaporation_cm": 0.10007137717987935
+        },
+        "physical_screen_pass": true
+      }
+    }
+  },
+  "restarts": {
+    "8-1": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.20630329699997674,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "/tmp/perf01-combined-screen-v7/8-1/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.024476978000166127,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 2.7755575615628914e-15
+    },
+    "8-4": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.18515873200021815,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "/tmp/perf01-combined-screen-v7/8-4/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.017121358000167675,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 1.6653345369377348e-15
+    },
+    "24-1": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.6401999939998859,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "/tmp/perf01-combined-screen-v7/24-1/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.07364864200008014,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 4.9960036108132044e-15
+    },
+    "24-4": {
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "-",
+            "48",
+            "input.swp"
+          ],
+          "seconds": 0.5991936989998976,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-combined-screen-v7/project",
+            "input.nml",
+            "/tmp/perf01-combined-screen-v7/24-4/half/restart.bin",
+            "97",
+            "input.swp"
+          ],
+          "seconds": 0.016671280000082334,
+          "returncode": 0
+        }
+      ],
+      "restart_exact": true,
+      "max_total_evaporation_difference_mm": 1.6653345369377348e-15
+    }
+  },
+  "open_scope": [
+    "continuous MvG Picard",
+    "seasonal historical forcing",
+    "implicit solute transport",
+    "positive chemistry",
+    "full481day combined project",
+    "current production owner qualification"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_GEOMETRY_BOESTEN_20261024_EVIDENCE.tar.xz",
+    "sha256": "8777e6049d2807b6a1984ec1ee3a39d3f42d54100501bc048158a82a59b1df2f",
+    "members": 648
+  },
+  "later_execution_route_correction": {
+    "date": "2026-10-24",
+    "authority": "PERF01_HISTORICAL_20261024_RESULT.json",
+    "combined_picard_route": "97 preflight rejections per arm followed by ordinary-policy fallback; physical subset result stands, active Picard retained proposals not qualified",
+    "immutable_raw_evidence_unchanged": true
+  }
+}
