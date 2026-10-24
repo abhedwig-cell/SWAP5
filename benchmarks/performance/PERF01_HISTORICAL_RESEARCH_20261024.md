@@ -63,3 +63,9 @@ assessment. This retains ALL incumbent local acceptance criteria, not a selected
 copy. Only retained step proposals can improve speed under this conservative
 variant. Test the full detailed481-day case first. Do not infer successful wider
 accuracy or production admission from faster failed variants.
+
+24 October follow-up: select one481-day4x detailed-rain comparison, zero tracer,
+using the already generated active-retention executable. Scale both daily totals
+and detailed rates, retain event times and ET. Native cap120s per arm; preserve
+failures. This discriminates saturated surface-switch behaviour absent from the
+1x practical interpretation. No production admission or changed acceptance limit.
