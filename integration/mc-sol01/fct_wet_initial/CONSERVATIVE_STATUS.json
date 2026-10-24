@@ -1,0 +1,17 @@
+{
+  "stage": "CONSERVATIVE_QUAD_RESIDUAL_CANDIDATE_REJECTED",
+  "repaired": false,
+  "production_changed": false,
+  "method": "Private generated HeadCalc total residual formed in real(16) from cell storage/source/sink and top/bottom fluxes; interior fluxes cancel analytically. Original thresholds and all local/transaction checks unchanged.",
+  "last_residual_depth_cm": -4.4267751853032283e-16,
+  "last_threshold_depth_cm": 2.8e-16,
+  "same_last_accepted_time": "3.1470990507154185e-6day",
+  "same_retry_counts": [
+    86,
+    37,
+    46
+  ],
+  "next_safe_work": "Measure attainable residuals for neighboring representable head vectors. Any candidate must satisfy unchanged local equations and independent joint mass gates. Do not promote failed quadrature candidate.",
+  "evidence_sha256": "92d3722e3e80d9c72cdbaaef99819bc26e29b75b395d90ddde51664850f49ce4",
+  "evidence_bytes": 126460
+}
