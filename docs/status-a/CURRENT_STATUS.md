@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 explicit juvenile proportional crop/top-N sharing is admitted by
+[PR1422](https://github.com/abhedwig-cell/SWAP5/pull/1422), actual merge
+`be31c082a33819f8dba49f303e91245c80274678`, exact qualified/actual full tree
+`32f1aaa0ca54e210f0328ff344c9bb45edfb9fb2`. All46 actual-merge source/raw
+controls and owner/general/history/FSI35/docs/strict-build gates pass. Evidence
+includes1152 O0/O2 direct cases,1344 exact predecessors,656 fresh compilations
+and78 original HIST processes,4 coupled runs/8 restarts and30 default coupled
+runs/60 restarts, all15 default profiles byte exact. Default remains false.
+Current authority: `integration/mc-nut01/competing_sinks/ADMISSION.json` and
+`QUALIFIED_INPUTS.json`. Nonjuvenile/organic-immobilisation allocation,
+snow/persistent-surface N and full MC-NUT01 remain open; no master promotion.
+
 MC-NUT01 sole crop sink depletion is canonically admitted by
 [PR1416](https://github.com/abhedwig-cell/SWAP5/pull/1416), merge
 `2c00c49a716e79545419407be6670b3df72e138a`, exact qualified complete tree

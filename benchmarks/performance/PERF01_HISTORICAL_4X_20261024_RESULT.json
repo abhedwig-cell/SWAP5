@@ -1,0 +1,77 @@
+{
+  "status": "RESEARCH_4X_EXECUTION_LIMIT",
+  "production_qualified": false,
+  "forcing_transformation": "Multiply prepared daily rain and every detailed event rate by4; retain event endpoints, ET, crop, soils and seasonal bottom. Embedded original weather remains provenance, not transformed weather.",
+  "events": [
+    {
+      "arm": "head",
+      "command": [
+        "/tmp/perf01-historical-current-v2/project",
+        "input.nml",
+        "-",
+        "481",
+        "input.swp"
+      ],
+      "returncode": 1,
+      "seconds": 36.129042276999826,
+      "exe_sha256": "ffaf687525dc4498211ca9659745f77e95c98d42e20389bd56fa86618754217a",
+      "completed_days": 145
+    },
+    {
+      "arm": "flux",
+      "command": [
+        "/tmp/perf01-historical-current-v2/project",
+        "input.nml",
+        "-",
+        "481",
+        "input.swp"
+      ],
+      "returncode": "TIMEOUT120",
+      "seconds": 120.02778641800069,
+      "exe_sha256": "ffaf687525dc4498211ca9659745f77e95c98d42e20389bd56fa86618754217a",
+      "completed_days": 0
+    }
+  ],
+  "cases": {
+    "head": {
+      "arm": "head",
+      "command": [
+        "/tmp/perf01-historical-current-v2/project",
+        "input.nml",
+        "-",
+        "481",
+        "input.swp"
+      ],
+      "returncode": 1,
+      "seconds": 36.129042276999826,
+      "exe_sha256": "ffaf687525dc4498211ca9659745f77e95c98d42e20389bd56fa86618754217a",
+      "completed_days": 145
+    },
+    "flux": {
+      "arm": "flux",
+      "command": [
+        "/tmp/perf01-historical-current-v2/project",
+        "input.nml",
+        "-",
+        "481",
+        "input.swp"
+      ],
+      "returncode": "TIMEOUT120",
+      "seconds": 120.02778641800069,
+      "exe_sha256": "ffaf687525dc4498211ca9659745f77e95c98d42e20389bd56fa86618754217a",
+      "completed_days": 0,
+      "completed_days_interpretation": "Published CSV rows only; buffered or internal progress at timeout is UNKNOWN."
+    }
+  },
+  "rollback": {
+    "status": "DAY146_REJECTION_COMMITTED_CHECK",
+    "seconds": 37.119728819001466,
+    "returncode": 0,
+    "day145_restart_equals_day146_rejected_committed": true
+  },
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_HISTORICAL_4X_20261024_EVIDENCE.tar.xz",
+    "sha256": "ff8bf6634528644dccf4fdac031ce33f395b522ab4d74a6c76eecde26f2c0be9",
+    "members": 26
+  }
+}
