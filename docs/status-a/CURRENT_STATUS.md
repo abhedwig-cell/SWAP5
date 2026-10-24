@@ -751,3 +751,12 @@ N remain open. No frozen master row is promoted. Contract and actual receipt:
 `integration/mc-nut01/empty_equilibrium/ADMISSION.json`.
 Scientific discussion:
 [empty mineral equilibrium](../science/MC_NUT01_EMPTY_EQUILIBRIUM_20261024.md).
+
+HIST-INTEGRATION01 PR1413 qualifies the existing mass-guided failed-solve restart
+for the matched continuous-MvG/Picard pair. The bounded native original-DRA run
+completes481 days with exact O0/O2 outputs and day365 restart. Current affected
+NUT78 HIST processes,30 coupled runs/60 restarts and48 sink disk cases pass;
+316 frozen predecessor controls,13 current controls and original FSI35 pass.
+Authority: `integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json` and its
+separate actual merge admission receipt. Full original Andelst and wet4x day7
+remain open; no frozen master row is promoted.

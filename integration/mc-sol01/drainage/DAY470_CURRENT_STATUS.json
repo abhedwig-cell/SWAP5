@@ -4,7 +4,7 @@
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "qualification_owner": "integration/audits/verify_saturated_picard_current.py",
   "scientific_delta": {
@@ -38,5 +38,9 @@
     "new1e-6",
     "unrelated full FCI"
   ],
-  "next_action": "Execute current owner, corruption controls, original FSI35 and exact latest merge postimage; admission receipt only after actual merge."
+  "current_source_raw_controls": 13,
+  "original_FSI35_native_O0_O2": "PASS",
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS",
+  "next_action": "Publish exact qualified composed tree, verify merge preview and actual canonical merge; persist separate admission receipt."
 }
