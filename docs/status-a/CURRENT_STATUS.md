@@ -1,5 +1,12 @@
 # SWAP5 Status-A current status
 
+MC-NUT01 organic limitation research now has a
+[native production counterexample and explicit next contract](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md).
+O0/O2 each cover2001 kinetic activities and six daily candidates. Equal N
+budgets admit different organic/carbon endpoints; naive mineral clipping fails
+the actual pool-owner budget. This is research evidence, not organic-limitation
+admission. Production and the existing PR1427 boundary are unchanged.
+
 MC-NUT01 nonjuvenile proportional crop/top-N selection is admitted by
 [PR1427](https://github.com/abhedwig-cell/SWAP5/pull/1427), merge
 `29d2402cf5160c852875c08d13b1804c9ac5c002`, exact qualified/actual full tree

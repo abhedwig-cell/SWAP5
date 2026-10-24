@@ -1,5 +1,12 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 organic limitation research is documented in the
+[24 October investigation](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md).
+The existing competing-sinks unit owns `ORGANIC_CONSTRAINT_CONTRACT.md`, the
+native driver/runner, `ORGANIC_CONSTRAINT_RESULT.json`, its sealed raw capsule
+and the source-bound replay with11 corruption controls. This evidence diagnoses
+the missing organic C/N limitation policy; it does not change PR1427 admission.
+
 MC-NUT01 nonjuvenile proportional crop/top-N selection is admitted by
 [PR1427](https://github.com/abhedwig-cell/SWAP5/pull/1427), merge
 `29d2402cf5160c852875c08d13b1804c9ac5c002`, exact qualified/actual full tree
