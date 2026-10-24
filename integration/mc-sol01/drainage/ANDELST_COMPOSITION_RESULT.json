@@ -1,0 +1,43 @@
+{
+  "scalar_contracts_O0_O2_canonical_stdout_exact": true,
+  "status": "BOUNDED_ORIGINAL_BBC_THREE_OWNER_PHYSICAL_PASS",
+  "results": {
+    "O0": {
+      "trial-canonical-mode2": 1,
+      "trial-candidate-mode1": 0,
+      "trial-candidate-mode2": 0,
+      "trial-candidate-mode3": 0,
+      "replay-canonical-mode2": 1,
+      "replay-candidate-mode1": 0,
+      "replay-candidate-mode2": 0,
+      "replay-candidate-mode3": 0
+    },
+    "O2": {
+      "trial-canonical-mode2": 1,
+      "trial-candidate-mode1": 0,
+      "trial-candidate-mode2": 0,
+      "trial-candidate-mode3": 0,
+      "replay-canonical-mode2": 1,
+      "replay-candidate-mode1": 0,
+      "replay-candidate-mode2": 0,
+      "replay-candidate-mode3": 0
+    }
+  },
+  "physical_candidate_sources_exact": true,
+  "O0_O2_six_stdout_byte_exact": true,
+  "max_observed_water_residual_cm": 2.3722343533982837e-16,
+  "canonical_original_BBC_preflight_rejection_preserved": true,
+  "incumbent_three_owner_stdout_exact": true,
+  "original_assertion_bodies_retained": true,
+  "heat_drainage_negative_controls_retained": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "full_original_Andelst": false,
+  "blocker": "Native bootstrap and combined thermal/drainage state/execution contracts remain absent; this is only original BBC plus constructed four-cell MIGMAC10 composition",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ANDELST_COMPOSITION_EVIDENCE.tar.xz.b64",
+    "sha256": "cd94090594a2ceb95fb7cef6dfac6e85d40d4d0596c895581f929f45b0e088d2",
+    "bytes": 144204,
+    "members": 280
+  }
+}

@@ -2642,7 +2642,9 @@ contains
           (parameters%boesten_evaporation_active .neqv. composed_rutter_boesten_macro) .or. &
           parameters%drainage_response_active .or. parameters%elasticity_active .or. &
           parameters%direct_retention_active .or. allocated(parameters%bartholomeus) .or. &
-          (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7) .or. &
+          (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7 .and. &
+           .not.(composed_rutter_boesten_macro.and.parameters%bottom_mode==3.and. &
+             .not.parameters%swbotb3_explicit_active)) .or. &
           .not. self%model%soil_water_selection%uses_reference()) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
@@ -6587,7 +6589,8 @@ contains
       return
     end if
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
-        self%bottom_mode /= 2 .and. self%bottom_mode /= 8) then
+        self%bottom_mode /= 2 .and. self%bottom_mode /= 8 .and. &
+        .not.(self%bottom_mode==3.and.self%rutter_active.and.self%macropore_active)) then
       value = huge(0.0_real64)
       return
     end if
