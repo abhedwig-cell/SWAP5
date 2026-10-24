@@ -99,3 +99,20 @@ Select one full1x paired comparison on the SAME endpoint correction to separate
 changed physical history semantics from numerical metric differences. This does
 not admit output-amount policy or widen production. Report event occurrence and
 large relative daily differences, not only small whole-period ratios.
+
+Refinement selection: candidate PR1424 at e3347ac5, production admission still
+OPEN. Current canonical47a50ea0 includes separate NUT implementation changes;
+this numerical discriminator stays on the original pinned research source and
+must not be called current-canonical production qualification. Recovered GNU13.3
+exact compiler version. Select one output-amount budget0.0001cm, keeping all
+other budgets, Boesten endpoint correction, forcing and hard mass gates fixed.
+Reason: reduce4x daily event discrepancy8.4% while measuring speed cost. No1e-6.
+Immediate first2/day146 O2 then full481-day1x/4x flux only against retained exact
+endpoint-corrected head outputs. Native cap120s. Short O0/O2 identity and disk
+restart if completed. Existing strict0.01mm FAIL is not relaxed or relabelled.
+
+Output-only refinement completes but does not improve4x event error (~0.639mm),
+so it is NOT selected as a better candidate. Next single discriminator tightens
+only water storage budget to0.0001cm, returns output amount to0.001cm, preserves
+uptake/GWL/history/mass controls. Same two full runs, no repeated reference run.
+This tests storage sensitivity, not a production accuracy concession.

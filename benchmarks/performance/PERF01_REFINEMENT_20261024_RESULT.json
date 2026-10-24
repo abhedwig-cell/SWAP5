@@ -1,0 +1,600 @@
+{
+  "status": "REFINEMENTS_NOT_SELECTED_NO_PRODUCTION_ADMISSION",
+  "production_changed": false,
+  "production_qualified": false,
+  "baseline": "e3347ac5e46fa077a28e2261da2771ee35e4a4ed",
+  "output_only": {
+    "status": "REFINEMENT_COMPLETED",
+    "production_qualified": false,
+    "output_amount_budget_cm": 0.0001,
+    "events": [
+      {
+        "command": [
+          "/tmp/perf01-output-tight-O2/project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "seconds": 1.5907582330000878,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/tmp/perf01-output-tight-O2/project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "seconds": 4.561103517000447,
+        "returncode": 0
+      }
+    ],
+    "cases": {
+      "1": {
+        "metrics": {
+          "runoff_cm": {
+            "max_daily_mm": 0.05659770513499168,
+            "total_mm": -0.07836701037294733,
+            "max_cumulative_mm": 0.07836713656418812
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 0.005253372013998628,
+            "total_mm": -0.01866455714767083,
+            "max_cumulative_mm": 0.01866455714767194
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.13162030706379582,
+            "total_mm": -0.22219388030325118,
+            "max_cumulative_mm": 0.2243728187240089
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.18802901009113687,
+            "total_mm": 0.3174198290046523,
+            "max_cumulative_mm": 0.32053259817716595
+          }
+        },
+        "native_seconds": 1.5907582330000878,
+        "reference_sha256": "e33d0eb1c4bf160ff49d7fe9e9a3f8e81b32d0e0b3242edf1b7a74994cb3c832",
+        "max_storage_mm": 0.06197512999307264,
+        "max_water_residual_cm": 1.582067810090848e-14,
+        "runoff_occurrence_changes": [],
+        "largest_runoff_differences": [
+          {
+            "day": 447,
+            "head_mm": 0.7127789612644144,
+            "flux_mm": 0.6561812561294228
+          },
+          {
+            "day": 468,
+            "head_mm": 7.341141008617095,
+            "flux_mm": 7.294297655401362
+          },
+          {
+            "day": 278,
+            "head_mm": 1.3801174250693724,
+            "flux_mm": 1.3991043103252068
+          },
+          {
+            "day": 340,
+            "head_mm": 0.32052589251947977,
+            "flux_mm": 0.33682814695154245
+          },
+          {
+            "day": 343,
+            "head_mm": 5.072827025996332,
+            "flux_mm": 5.0565459925396175
+          }
+        ]
+      },
+      "4": {
+        "metrics": {
+          "runoff_cm": {
+            "max_daily_mm": 0.6390388056353691,
+            "total_mm": -0.7381988873404196,
+            "max_cumulative_mm": 0.745317860656975
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 0.005291462725630358,
+            "total_mm": -0.01831051449163619,
+            "max_cumulative_mm": 0.01831051449163619
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.4869883192934744,
+            "total_mm": -1.0543829065345778,
+            "max_cumulative_mm": 1.3757611745807607
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.6956975989906777,
+            "total_mm": 1.8111626388432205,
+            "max_cumulative_mm": 2.270274450337755
+          }
+        },
+        "native_seconds": 4.561103517000447,
+        "reference_sha256": "9fa35e2ff3b88b7d41fe9232b0a1eab73bda68a2348976dedd333302ad4b3230",
+        "max_storage_mm": 0.631095978728311,
+        "max_water_residual_cm": 1.479372180313021e-14,
+        "runoff_occurrence_changes": [
+          {
+            "day": 199,
+            "head_mm": 0.11749910306020643,
+            "flux_mm": 0.0
+          }
+        ],
+        "largest_runoff_differences": [
+          {
+            "day": 152,
+            "head_mm": 7.582651211014101,
+            "flux_mm": 8.22169001664947
+          },
+          {
+            "day": 153,
+            "head_mm": 20.384294315579346,
+            "flux_mm": 19.749029297054015
+          },
+          {
+            "day": 198,
+            "head_mm": 5.738707661167477,
+            "flux_mm": 6.1982251545000615
+          },
+          {
+            "day": 149,
+            "head_mm": 33.94802303692684,
+            "flux_mm": 33.582660574227965
+          },
+          {
+            "day": 202,
+            "head_mm": 11.546775982448391,
+            "flux_mm": 11.230706449467597
+          }
+        ]
+      }
+    }
+  },
+  "storage_only": {
+    "status": "REFINEMENT_COMPLETED",
+    "production_qualified": false,
+    "build_result": {
+      "state_budget_cm": 0.0001,
+      "output_amount_budget_cm": 0.001,
+      "status": "OUTPUT_AMOUNT_RESEARCH_COMPLETED",
+      "production_qualified": false,
+      "contract": "Explicit output amount budget in cm; existing uptake rate,water,GWL and Boesten history budgets unchanged",
+      "cases": {
+        "first2": {
+          "returncode": 0,
+          "published_days": 2,
+          "max_water_residual_cm": 9.083012120214562e-15
+        },
+        "day146": {
+          "returncode": 0,
+          "published_days": 1,
+          "max_water_residual_cm": 1.2712053631958042e-14
+        }
+      },
+      "events": [
+        {
+          "label": "compile",
+          "command": [
+            "/workspace/scratch/413315cd3a86/compiler/bin/gfortran",
+            "-O2",
+            "-std=f2008",
+            "-ffree-line-length-none",
+            "-fopenmp",
+            "-fbacktrace",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-J/tmp/perf01-state-tight-O2",
+            "-I/tmp/perf01-historical-current-O2/shared",
+            "-fcheck=all",
+            "-c",
+            "/tmp/perf01-state-tight-O2/mod_pond_water_temporal_difference.f90",
+            "-o",
+            "/tmp/perf01-state-tight-O2/metric.o"
+          ],
+          "returncode": 0,
+          "seconds": 0.1207058820000384
+        },
+        {
+          "label": "link",
+          "command": [
+            "/workspace/scratch/413315cd3a86/compiler/bin/gfortran",
+            "-O2",
+            "-std=f2008",
+            "-ffree-line-length-none",
+            "-fopenmp",
+            "-fbacktrace",
+            "-ffpe-trap=invalid,zero,overflow",
+            "-I/tmp/perf01-historical-current-O2/shared",
+            "-fcheck=all",
+            "-I/tmp/perf01-historical-current-O2/shared",
+            "-J/tmp/perf01-state-tight-O2",
+            "/tmp/perf01-historical-endpoint-v1/main.f90",
+            "/tmp/perf01-historical-current-O2/shared/0000.o",
+            "/tmp/perf01-historical-current-O2/shared/0001.o",
+            "/tmp/perf01-historical-current-O2/shared/0002.o",
+            "/tmp/perf01-historical-current-O2/shared/0003.o",
+            "/tmp/perf01-historical-current-O2/shared/0004.o",
+            "/tmp/perf01-historical-current-O2/shared/0005.o",
+            "/tmp/perf01-historical-current-O2/shared/0006.o",
+            "/tmp/perf01-state-tight-O2/metric.o",
+            "/tmp/perf01-historical-current-O2/shared/0008.o",
+            "/tmp/perf01-historical-current-O2/shared/0009.o",
+            "/tmp/perf01-historical-current-O2/shared/0010.o",
+            "/tmp/perf01-historical-current-O2/shared/0011.o",
+            "/tmp/perf01-historical-current-O2/shared/0012.o",
+            "/tmp/perf01-historical-current-O2/shared/0013.o",
+            "/tmp/perf01-historical-current-O2/shared/0014.o",
+            "/tmp/perf01-historical-current-O2/shared/0015.o",
+            "/tmp/perf01-historical-current-O2/shared/0016.o",
+            "/tmp/perf01-historical-current-O2/shared/0017.o",
+            "/tmp/perf01-historical-current-O2/shared/0018.o",
+            "/tmp/perf01-historical-current-O2/shared/0019.o",
+            "/tmp/perf01-historical-current-O2/shared/0020.o",
+            "/tmp/perf01-historical-current-O2/shared/0021.o",
+            "/tmp/perf01-historical-current-O2/shared/0022.o",
+            "/tmp/perf01-historical-current-O2/shared/0023.o",
+            "/tmp/perf01-historical-current-O2/shared/0024.o",
+            "/tmp/perf01-historical-current-O2/shared/0025.o",
+            "/tmp/perf01-historical-current-O2/shared/0026.o",
+            "/tmp/perf01-historical-current-O2/shared/0027.o",
+            "/tmp/perf01-historical-current-O2/shared/0028.o",
+            "/tmp/perf01-historical-current-O2/shared/0029.o",
+            "/tmp/perf01-historical-current-O2/shared/0030.o",
+            "/tmp/perf01-historical-current-O2/shared/0031.o",
+            "/tmp/perf01-historical-current-O2/shared/0032.o",
+            "/tmp/perf01-historical-current-O2/shared/0033.o",
+            "/tmp/perf01-historical-current-O2/shared/0034.o",
+            "/tmp/perf01-historical-current-O2/shared/0035.o",
+            "/tmp/perf01-historical-current-O2/shared/0036.o",
+            "/tmp/perf01-historical-current-O2/shared/0037.o",
+            "/tmp/perf01-historical-current-O2/shared/0038.o",
+            "/tmp/perf01-historical-current-O2/shared/0039.o",
+            "/tmp/perf01-historical-current-O2/shared/0040.o",
+            "/tmp/perf01-historical-current-O2/shared/0041.o",
+            "/tmp/perf01-historical-current-O2/shared/0042.o",
+            "/tmp/perf01-historical-current-O2/shared/0043.o",
+            "/tmp/perf01-historical-current-O2/shared/0044.o",
+            "/tmp/perf01-historical-current-O2/shared/0045.o",
+            "/tmp/perf01-historical-current-O2/shared/0046.o",
+            "/tmp/perf01-historical-current-O2/shared/0047.o",
+            "/tmp/perf01-historical-current-O2/shared/0048.o",
+            "/tmp/perf01-historical-current-O2/shared/0049.o",
+            "/tmp/perf01-historical-current-O2/shared/0050.o",
+            "/tmp/perf01-historical-current-O2/shared/0051.o",
+            "/tmp/perf01-historical-current-O2/shared/0052.o",
+            "/tmp/perf01-historical-current-O2/shared/0053.o",
+            "/tmp/perf01-historical-current-O2/shared/0054.o",
+            "/tmp/perf01-historical-current-O2/shared/0055.o",
+            "/tmp/perf01-historical-current-O2/shared/0056.o",
+            "/tmp/perf01-historical-current-O2/shared/0057.o",
+            "/tmp/perf01-historical-current-O2/shared/0058.o",
+            "/tmp/perf01-historical-current-O2/shared/0059.o",
+            "/tmp/perf01-historical-current-O2/shared/0060.o",
+            "/tmp/perf01-historical-current-O2/shared/0061.o",
+            "/tmp/perf01-historical-current-O2/shared/0062.o",
+            "/tmp/perf01-historical-current-O2/shared/0063.o",
+            "/tmp/perf01-historical-current-O2/shared/0064.o",
+            "/tmp/perf01-historical-current-O2/shared/0065.o",
+            "/tmp/perf01-historical-current-O2/shared/0066.o",
+            "/tmp/perf01-historical-current-O2/shared/0067.o",
+            "/tmp/perf01-historical-current-O2/shared/0068.o",
+            "/tmp/perf01-historical-current-O2/shared/0069.o",
+            "/tmp/perf01-historical-current-O2/shared/0070.o",
+            "/tmp/perf01-historical-current-O2/shared/0071.o",
+            "/tmp/perf01-historical-current-O2/shared/0072.o",
+            "/tmp/perf01-historical-current-O2/shared/0073.o",
+            "/tmp/perf01-historical-current-O2/shared/0074.o",
+            "/tmp/perf01-historical-current-O2/shared/0075.o",
+            "/tmp/perf01-historical-current-O2/shared/0076.o",
+            "/tmp/perf01-historical-current-O2/shared/0077.o",
+            "/tmp/perf01-historical-current-O2/shared/0078.o",
+            "/tmp/perf01-historical-current-O2/shared/0079.o",
+            "/tmp/perf01-historical-current-O2/shared/0080.o",
+            "/tmp/perf01-historical-current-O2/shared/0081.o",
+            "/tmp/perf01-historical-current-O2/shared/0082.o",
+            "/tmp/perf01-historical-current-O2/shared/0083.o",
+            "/tmp/perf01-historical-current-O2/shared/0084.o",
+            "/tmp/perf01-historical-current-O2/shared/0085.o",
+            "/tmp/perf01-historical-current-O2/shared/0086.o",
+            "/tmp/perf01-historical-current-O2/shared/0087.o",
+            "/tmp/perf01-historical-current-O2/shared/0088.o",
+            "/tmp/perf01-historical-current-O2/shared/0089.o",
+            "/tmp/perf01-historical-current-O2/shared/0090.o",
+            "/tmp/perf01-historical-current-O2/shared/0091.o",
+            "/tmp/perf01-historical-current-O2/shared/0092.o",
+            "/tmp/perf01-historical-current-O2/shared/0093.o",
+            "/tmp/perf01-historical-current-O2/shared/0094.o",
+            "/tmp/perf01-historical-current-O2/shared/0095.o",
+            "/tmp/perf01-historical-current-O2/shared/0096.o",
+            "/tmp/perf01-historical-current-O2/shared/0097.o",
+            "/tmp/perf01-historical-current-O2/shared/0098.o",
+            "/tmp/perf01-historical-current-O2/shared/0099.o",
+            "/tmp/perf01-historical-current-O2/shared/0100.o",
+            "/tmp/perf01-historical-current-O2/shared/0101.o",
+            "/tmp/perf01-historical-current-O2/shared/0102.o",
+            "/tmp/perf01-historical-current-O2/shared/0103.o",
+            "/tmp/perf01-historical-current-O2/shared/0104.o",
+            "/tmp/perf01-historical-current-O2/shared/0105.o",
+            "/tmp/perf01-historical-current-O2/shared/0106.o",
+            "/tmp/perf01-historical-current-O2/shared/0107.o",
+            "/tmp/perf01-historical-current-O2/shared/0108.o",
+            "/tmp/perf01-historical-current-O2/shared/0109.o",
+            "/tmp/perf01-historical-current-O2/shared/0110.o",
+            "/tmp/perf01-historical-current-O2/shared/0111.o",
+            "/tmp/perf01-historical-current-O2/shared/0112.o",
+            "/tmp/perf01-historical-current-O2/shared/0113.o",
+            "/tmp/perf01-historical-current-O2/shared/0114.o",
+            "/tmp/perf01-historical-current-O2/shared/0115.o",
+            "/tmp/perf01-historical-current-O2/shared/0116.o",
+            "/tmp/perf01-historical-current-O2/shared/0117.o",
+            "/tmp/perf01-historical-current-O2/shared/0118.o",
+            "/tmp/perf01-historical-current-O2/shared/0119.o",
+            "/tmp/perf01-historical-current-O2/shared/0120.o",
+            "/tmp/perf01-historical-current-O2/shared/0121.o",
+            "/tmp/perf01-historical-current-O2/shared/0122.o",
+            "/tmp/perf01-historical-current-O2/shared/0123.o",
+            "/tmp/perf01-historical-current-O2/shared/0124.o",
+            "/tmp/perf01-historical-current-O2/shared/0125.o",
+            "/tmp/perf01-historical-current-O2/shared/0126.o",
+            "/tmp/perf01-historical-current-O2/shared/0127.o",
+            "/tmp/perf01-historical-current-O2/shared/0128.o",
+            "/tmp/perf01-historical-current-O2/shared/0129.o",
+            "/tmp/perf01-historical-current-O2/shared/0130.o",
+            "/tmp/perf01-historical-current-O2/shared/0131.o",
+            "/tmp/perf01-historical-current-O2/shared/0132.o",
+            "/tmp/perf01-historical-current-O2/shared/0133.o",
+            "/tmp/perf01-historical-current-O2/shared/0134.o",
+            "/tmp/perf01-historical-current-O2/shared/0135.o",
+            "/tmp/perf01-historical-current-O2/shared/0136.o",
+            "/tmp/perf01-historical-current-O2/shared/0137.o",
+            "/tmp/perf01-historical-current-O2/shared/0138.o",
+            "/tmp/perf01-historical-current-O2/shared/0139.o",
+            "/tmp/perf01-historical-current-O2/shared/0140.o",
+            "/tmp/perf01-historical-current-O2/shared/0141.o",
+            "/tmp/perf01-historical-current-O2/shared/0142.o",
+            "/tmp/perf01-historical-current-O2/shared/0143.o",
+            "/tmp/perf01-historical-current-O2/shared/0144.o",
+            "/tmp/perf01-historical-current-O2/shared/0145.o",
+            "/tmp/perf01-historical-current-O2/shared/0146.o",
+            "/tmp/perf01-historical-current-O2/shared/0147.o",
+            "/tmp/perf01-historical-current-O2/shared/0148.o",
+            "/tmp/perf01-historical-current-O2/shared/0149.o",
+            "/tmp/perf01-historical-current-O2/shared/0150.o",
+            "/tmp/perf01-historical-current-O2/shared/0151.o",
+            "/tmp/perf01-historical-current-O2/shared/0152.o",
+            "/tmp/perf01-historical-current-O2/shared/0153.o",
+            "/tmp/perf01-historical-current-O2/shared/0154.o",
+            "/tmp/perf01-historical-current-O2/shared/0155.o",
+            "/tmp/perf01-historical-current-O2/shared/0156.o",
+            "/tmp/perf01-historical-current-O2/shared/0157.o",
+            "/tmp/perf01-historical-current-O2/shared/0158.o",
+            "/tmp/perf01-historical-current-O2/shared/0159.o",
+            "/tmp/perf01-historical-current-O2/shared/0160.o",
+            "/tmp/perf01-historical-endpoint-v1/backend.o",
+            "/tmp/perf01-historical-current-O2/shared/0162.o",
+            "/tmp/perf01-historical-current-O2/shared/0163.o",
+            "/tmp/perf01-historical-current-O2/shared/0164.o",
+            "/tmp/perf01-historical-current-O2/shared/0165.o",
+            "/tmp/perf01-historical-current-O2/shared/0166.o",
+            "/tmp/perf01-historical-current-O2/shared/0167.o",
+            "/tmp/perf01-historical-current-O2/shared/0168.o",
+            "/tmp/perf01-historical-current-O2/shared/0169.o",
+            "/tmp/perf01-historical-current-O2/shared/0170.o",
+            "/tmp/perf01-historical-current-O2/shared/0171.o",
+            "/tmp/perf01-historical-current-O2/shared/0172.o",
+            "/tmp/perf01-historical-current-O2/shared/0173.o",
+            "/tmp/perf01-historical-endpoint-v1/joint.o",
+            "/tmp/perf01-historical-current-O2/shared/0175.o",
+            "/tmp/perf01-historical-current-O2/shared/0176.o",
+            "/tmp/perf01-historical-current-O2/shared/0177.o",
+            "/tmp/perf01-historical-current-O2/shared/0178.o",
+            "/tmp/perf01-historical-current-O2/shared/0179.o",
+            "/tmp/perf01-historical-current-O2/shared/0180.o",
+            "/tmp/perf01-historical-current-O2/shared/0181.o",
+            "/tmp/perf01-historical-current-O2/shared/0182.o",
+            "/tmp/perf01-historical-current-O2/shared/0183.o",
+            "/tmp/perf01-historical-current-O2/shared/0184.o",
+            "/tmp/perf01-historical-current-O2/shared/0185.o",
+            "/tmp/perf01-historical-current-O2/shared/0186.o",
+            "/tmp/perf01-historical-current-O2/shared/0187.o",
+            "/tmp/perf01-historical-current-O2/shared/0188.o",
+            "/tmp/perf01-historical-current-O2/shared/0189.o",
+            "/tmp/perf01-historical-current-O2/shared/0190.o",
+            "/tmp/perf01-historical-current-O2/shared/0191.o",
+            "/tmp/perf01-historical-current-O2/shared/0192.o",
+            "/tmp/perf01-historical-current-O2/shared/libttutil.a",
+            "-o",
+            "/tmp/perf01-state-tight-O2/project"
+          ],
+          "returncode": 0,
+          "seconds": 4.262659970998357
+        },
+        {
+          "label": "first2",
+          "command": [
+            "/tmp/perf01-state-tight-O2/project",
+            "input.nml",
+            "-",
+            "2",
+            "input.swp"
+          ],
+          "returncode": 0,
+          "seconds": 0.672623393998947
+        },
+        {
+          "label": "day146",
+          "command": [
+            "/tmp/perf01-state-tight-O2/project",
+            "input.nml",
+            "/tmp/perf01-historical-4x-v1/head-stop145/restart.bin",
+            "146",
+            "input.swp"
+          ],
+          "returncode": 0,
+          "seconds": 0.6802191349997884
+        }
+      ]
+    },
+    "events": [
+      {
+        "command": [
+          "/tmp/perf01-state-tight-O2/project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "seconds": 4.5548996289981005,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/tmp/perf01-state-tight-O2/project",
+          "input.nml",
+          "-",
+          "481",
+          "input.swp"
+        ],
+        "seconds": 7.329183974998159,
+        "returncode": 1
+      }
+    ],
+    "cases": {
+      "1": {
+        "metrics": {
+          "runoff_cm": {
+            "max_daily_mm": 0.0566860173590511,
+            "total_mm": -0.07838968068797643,
+            "max_cumulative_mm": 0.08151078015680635
+          },
+          "actual_transpiration_cm": {
+            "max_daily_mm": 0.005249865223819136,
+            "total_mm": -0.017703577935241032,
+            "max_cumulative_mm": 0.017703577935241865
+          },
+          "soil_evaporation_cm": {
+            "max_daily_mm": 0.13162030706379582,
+            "total_mm": -0.2235843134617905,
+            "max_cumulative_mm": 0.22421990296667593
+          },
+          "pond_evaporation_cm": {
+            "max_daily_mm": 0.18802901009113687,
+            "total_mm": 0.3194061620883103,
+            "max_cumulative_mm": 0.3203141470952928
+          }
+        },
+        "native_seconds": 4.5548996289981005,
+        "reference_sha256": "e33d0eb1c4bf160ff49d7fe9e9a3f8e81b32d0e0b3242edf1b7a74994cb3c832",
+        "max_storage_mm": 0.06138027474847263,
+        "max_water_residual_cm": 1.547373340571312e-14,
+        "runoff_occurrence_changes": [],
+        "largest_runoff_differences": [
+          {
+            "day": 447,
+            "head_mm": 0.7127789612644144,
+            "flux_mm": 0.6560929439053633
+          },
+          {
+            "day": 468,
+            "head_mm": 7.341141008617095,
+            "flux_mm": 7.292761197527376
+          },
+          {
+            "day": 278,
+            "head_mm": 1.3801174250693724,
+            "flux_mm": 1.3984640874994938
+          },
+          {
+            "day": 340,
+            "head_mm": 0.32052589251947977,
+            "flux_mm": 0.3367115286138211
+          },
+          {
+            "day": 343,
+            "head_mm": 5.072827025996332,
+            "flux_mm": 5.056646315354321
+          }
+        ]
+      }
+    }
+  },
+  "selected_output_only_O0_O2": "BYTE_EXACT",
+  "restarts": {
+    "1": {
+      "status": "ACTUAL_DAY240_RESTART_EXACT",
+      "accuracy_qualified": false,
+      "full_case": "/tmp/perf01-amount-refinement/1",
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-output-tight-O2/project",
+            "input.nml",
+            "-",
+            "240",
+            "input.swp"
+          ],
+          "seconds": 1.3751053060004779,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-output-tight-O2/project",
+            "input.nml",
+            "/tmp/perf01-tight-restart1/half/restart.bin",
+            "481",
+            "input.swp"
+          ],
+          "seconds": 0.32969191300071543,
+          "returncode": 0
+        }
+      ],
+      "identity": {
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      },
+      "continued_days": 241
+    },
+    "4": {
+      "status": "ACTUAL_DAY240_RESTART_EXACT",
+      "accuracy_qualified": false,
+      "full_case": "/tmp/perf01-amount-refinement/4",
+      "events": [
+        {
+          "command": [
+            "/tmp/perf01-output-tight-O2/project",
+            "input.nml",
+            "-",
+            "240",
+            "input.swp"
+          ],
+          "seconds": 3.6034923200022604,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "/tmp/perf01-output-tight-O2/project",
+            "input.nml",
+            "/tmp/perf01-tight-restart4/half/restart.bin",
+            "481",
+            "input.swp"
+          ],
+          "seconds": 0.6563109029993939,
+          "returncode": 0
+        }
+      ],
+      "identity": {
+        "state.csv": true,
+        "endpoint.csv": true,
+        "restart.bin": true
+      },
+      "continued_days": 241
+    }
+  },
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_REFINEMENT_20261024_EVIDENCE.tar.xz",
+    "sha256": "e4506abd5c419899647d6bc550ae410b7d2335f0338244a941a72e7720de672c",
+    "members": 159
+  }
+}
