@@ -1,0 +1,20 @@
+{
+  "status": "RESEARCH_FULL481_1X4X_COMPLETES_NOT_PRODUCTION_ADMITTED",
+  "baseline": "5ff1486125ec7f5e3433963f49d733f1045e5eac",
+  "production_changed": false,
+  "production_qualified": false,
+  "result": "benchmarks/performance/PERF01_ENDPOINT_20261024_RESULT.json",
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_ENDPOINT_20261024_EVIDENCE.tar.xz",
+    "sha256": "cc29a09162ee708bc597ad9da3f848007848510f1ef9684d3378b3da560630dc",
+    "members": 282
+  },
+  "next_safe_step": "Qualify explicit plain-Boesten endpoint semantics and opt-in external-output amount policy against declared practical application accuracy; retain strict screen FAIL and positive-chemistry exclusion.",
+  "qualification": {
+    "full481_1x4x": "COMPLETED_HARD_BALANCES_PASS",
+    "selected_O0_O2": "BYTE_EXACT",
+    "actual_day240_restarts": "BYTE_EXACT_1X4X",
+    "daily_001mm": "FAIL",
+    "production_owner": "OPEN"
+  }
+}

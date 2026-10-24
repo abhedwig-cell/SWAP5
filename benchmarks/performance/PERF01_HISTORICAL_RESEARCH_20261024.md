@@ -69,3 +69,33 @@ using the already generated active-retention executable. Scale both daily totals
 and detailed rates, retain event times and ET. Native cap120s per arm; preserve
 failures. This discriminates saturated surface-switch behaviour absent from the
 1x practical interpretation. No production admission or changed acceptance limit.
+
+4x isolation selection: generated observations before/after detailed rain
+segments and every10000 metric assessments. Replay rejected day146 from retained
+day145 disk state and flux first day only,20s cap each. No repeated long trial.
+All original error components/physical calculations remain unchanged. Expected
+backend build under60s; no production qualification from diagnostic build.
+
+Discriminating numerical experiment: external-output integrated difference
+budget0.001cm instead of rate0.001cm/day, keeping uptake-rate,storage,GWL and
+Boesten history checks. Explicit research-only contract; not production policy.
+The large measured flux metric on day2 is output-rate dominated. Select first2
+4x days and day146 continuation only,30s cap. All hard mass gates stay unchanged.
+
+Confirmed day146 mechanism: Boesten SPEV/SAEV full sibling retain~0.11568cm
+while half sibling resets to zero as ponding appears. Hydraulic error tends to
+zero; history discrepancy does not. Existing production already implements an
+endpoint reset through the real Boesten process for the drainage composition.
+Research next reuses that identical event-complete block for plain Boesten,
+removing only its drainage prerequisite in generated source. Water/evaporation
+fluxes are not recomputed. This changes history event semantics and requires
+owner qualification before any production expansion. Select direct day146 replay
+first, then at most one bounded full4x comparison if the replay passes.
+
+Endpoint variant replay146 now passes for head and output-amount flux. Full4x
+481 days pass hard daily mass checks; timings46.05s/3.40s are single observations.
+Select O0/O2 first2/day146 byte identity and exact day2404x restart; both PASS.
+Select one full1x paired comparison on the SAME endpoint correction to separate
+changed physical history semantics from numerical metric differences. This does
+not admit output-amount policy or widen production. Report event occurrence and
+large relative daily differences, not only small whole-period ratios.

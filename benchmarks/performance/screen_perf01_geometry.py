@@ -59,6 +59,10 @@ if ROUTE in ['boesten','combined','continuous','historical']:
   assert body.count(old_assessment)==1
   body=body.replace(old_assessment,old_assessment+'\n        value=max(value,fmr_weather_surface_temporal_error(self,full_state,half_state))')
  text=text[:at]+body+text[stop:]
+if os.environ.get('PERF01_BOESTEN_ENDPOINT')=='1':
+ old_endpoint='        if(allocated(self%drainage_trial_distribution).and. &\n           solve_result%candidate_state%ponding_depth>BOESTEN_EVAP_PONDING_CLASSIFICATION_CM)then'
+ assert text.count(old_endpoint)==1
+ text=text.replace(old_endpoint,'        if(solve_result%candidate_state%ponding_depth>BOESTEN_EVAP_PONDING_CLASSIFICATION_CM)then')
 generated=OUT/Path(source).name;generated.write_text(text);r['source_sha256']=meta['input_sha256'];r['generated_sha256']=sha(generated.read_bytes())
 compile=next(e['command']for e in meta['events']if '-c'in e['command']and str(ROOT/source)in e['command']);oldobj=compile[-1];obj=OUT/'backend.o'
 cmd=[str(generated)if x==str(ROOT/source)else str(obj)if x==oldobj else '-J'+str(OUT)if x.startswith('-J')else x for x in compile];run(cmd,OUT,'backend-build')
