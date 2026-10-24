@@ -75,6 +75,8 @@ module mod_macropore_single_column_runtime
     type(soil_water_solve_result_t) :: matrix_result
     type(macropore_continuation_state_t) :: macropore_candidate
     type(vertical_flux_reconstruction_result_t) :: vertical_flux
+    ! Read-only converged external sink used by accepted-water trace consumers.
+    real(real64),allocatable :: external_outflow_rate_domain_cp(:,:)
     real(real64),allocatable :: exchange_rate_domain_cp(:,:)
     real(real64),allocatable :: exchange_rate_node(:)
   end type macropore_runtime_result_t
@@ -498,6 +500,7 @@ contains
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
+      result%external_outflow_rate_domain_cp=vertical_request%external_outflow_rate
       call reconstruct_vertical_flux(vertical_request,result%vertical_flux)
       if(.not.result%vertical_flux%valid)then
         result%status=MACRO_RUNTIME_FAILED
@@ -641,6 +644,7 @@ contains
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
+    result%external_outflow_rate_domain_cp=vertical_request%external_outflow_rate
     call reconstruct_vertical_flux(vertical_request,result%vertical_flux)
     if(.not.result%vertical_flux%valid)then
       result%status=MACRO_RUNTIME_FAILED

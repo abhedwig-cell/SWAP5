@@ -37,6 +37,7 @@ def projection():
 
 
 def source(reader=lambda p: (ROOT / p).read_bytes(), changed=None):
+    if (ROOT/'integration/mc-sol01/drainage/MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_trace_current.py'))['source'](reader,changed)
     record = json.loads(reader(STATUS))
     assert record['baseline'] == BASE
     git('merge-base', '--is-ancestor', BASE, 'HEAD')
@@ -175,11 +176,13 @@ def reconciliation():
 
 
 def verify():
+    if (ROOT/'integration/mc-sol01/drainage/MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_trace_current.py'))['verify']()
     source()
     return validate(capsule())
 
 
 def fsi35_successors():
+    if (ROOT/'integration/mc-sol01/drainage/MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_trace_current.py'))['fsi35_successors']()
     source()
     reconciliation()
     # The latest macro owner is the predecessor of the registered source map.
@@ -195,6 +198,7 @@ def fsi35_successors():
 
 
 def self_test():
+    if (ROOT/'integration/mc-sol01/drainage/MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_trace_current.py'))['self_test']()
     source()
     f = capsule()
     validate(f)

@@ -1,0 +1,86 @@
+{
+  "work_unit": "HIST-INTEGRATION01 external macropore water trace",
+  "baseline": "2d21939f285615818ba94352187d40abe2466d8e",
+  "stage": "CURRENT_NATIVE_AND_RETAINED_QUALIFICATION_SEALED",
+  "implemented": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/MACRO_TRACE_CONTRACT.md",
+  "test_selection": {
+    "macro_trace": {
+      "changed_dependency": "Additive read-only macro external receipts in runtime result and accepted trace; unchanged physical equations/state/temporal policy",
+      "scientific_claim": "Uncovered external top/return/pond/rapid water trace and exact physical/restart invariance",
+      "owner": "HIST-INTEGRATION01",
+      "authority": "integration/mc-sol01/drainage/MACRO_TRACE_CONTRACT.md",
+      "expected_seconds": 240,
+      "existing_evidence": "Retain original macro/Rutter/Boesten/Cauchy source-bound receipts; changed observation interface requires fresh checked O0/O2 transitive consumers",
+      "prior_execution": "FAILED",
+      "diagnosis": "Pilot original Rutter trial/replay passed. First full driver incorrectly used Cauchy for the original pond fixture, then source checks exposed pond request/return omissions in trace-only surface validation. Preserve all failed rounds; restore original pond boundary and explicitly bind producer pond transfer and net surface receipt without changing physical laws."
+    },
+    "full_fci": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "current_NUT_preservation": {
+      "changed_dependency": "Public read-only FMR observation type and trace validation; rebuild real transitive NUT consumers",
+      "scientific_claim": "Existing Richards/crop/N eight-day trajectories and exact separate-process continuation unchanged",
+      "owner": "HIST-INTEGRATION01 and MC-NUT01",
+      "authority": "integration/mc-sol01/drainage/MACRO_TRACE_CONTRACT.md",
+      "expected_seconds": 180,
+      "existing_evidence": "PR1434 eight current runs/16 restarts; reexecute same original production recipes for changed compiler interface",
+      "prior_execution": "NONE"
+    }
+  },
+  "remaining_exclusions": [
+    "covering transfers",
+    "new chemistry/heat/snow/full original Andelst activation"
+  ],
+  "next_action": "Validate current source/raw controls and strict docs, safely publish/merge and verify actual canonical tree; full native Andelst remains excluded",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/MACRO_TRACE_EVIDENCE.tar.xz.b64",
+    "sha256": "63954fda8ec90aea5b4cfe5fb438704d192e8cb88aa26ed762d3da9bcd512694",
+    "bytes": 1647608,
+    "members": 4439
+  },
+  "source_bound_executed_inputs": 358,
+  "scientific_delta": {
+    "integration/audits/verify_picard_corner_current.py": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "M",
+    "tests/nut-sol/macro_trace_checks.inc": "A",
+    "integration/audits/verify_macro_trace_current.py": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_picard_corner_current.py": "7ee907ccf68cd8a0c796f65564f1e1457691e2475eb14277e56d8132c5fadb85",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "2011676bf706b77297a00366f60646b26280cec73adf7c0e5a754805d00082df",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "bfbd5c5299470e41a18a277e2a379e57f669e83b083982ca4f1b105e634bdb7d",
+    "tests/nut-sol/macro_trace_checks.inc": "d4c5dbf8cc189ac3f4f7ea5a0f5bece5840d4552513aa770ca926e820e854441",
+    "integration/audits/verify_macro_trace_current.py": "1f1392b9a1a9088dac55690adad529d922b00823d1f3aa1ef6ab27d7df6066d0",
+    "integration/mc-sol01/drainage/qualify_macro_trace.py": "5e799702ccea9d0f7b0fe4240b70ccfce7125d5aecf1b5dd646ed8b4123fe29f",
+    "integration/mc-sol01/drainage/preserve_macro_trace_bbc.py": "b6c9b797ca7cbeb60ea0b6db557985ee633183993a916525dd2600e72b2c905e",
+    "integration/mc-sol01/drainage/seal_macro_trace.py": "78cbce58641c6617938d1068b0bbebf36b307959910603be7ca20603bb57495d",
+    "integration/mc-sol01/drainage/MACRO_TRACE_CONTRACT.md": "41166ba7d6a2ce6644079b83d0d77b81f6eb1d0a532222f7cb785108d791852e"
+  },
+  "physical_results": {
+    "configurations_O0_O2": 20,
+    "native_processes": 40,
+    "per_optimization_checked_substeps": 74,
+    "per_optimization_receipt_corruption_assertions": 592,
+    "macro_cell_max_residual_cm": 1.0842021724855044e-19,
+    "matrix_max_residual_cm": 1.8632014334163394e-16,
+    "declared_boundary_column_max_residual_cm": 1.889323929509662e-16,
+    "BBC481_O0_O2_exact": true,
+    "BBC_restart365_exact": true,
+    "NUT_coupled_runs": 8,
+    "NUT_separate_process_restarts": 16,
+    "NUT_predecessor_endpoints_ledgers_exact": true,
+    "original_replay_retry_rollback_restart_assertions_retained": true
+  },
+  "qualification_checks": {
+    "owner": "PASS at148e2b198",
+    "source_raw_corruption_controls": 17,
+    "fsi35_27_executable_sources": "UNCHANGED; current verify-only source boundary PASS; no fresh native replay claimed",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS"
+  },
+  "qualification_record_scope": "This is the qualification-time record. Actual canonical admission is separately recorded after merge.",
+  "admission_record": "integration/mc-sol01/drainage/MACRO_TRACE_ADMISSION.json"
+}

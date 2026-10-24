@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+HIST-INTEGRATION01 external macropore water trace,24 October2026: current checked
+O0/O2 original trial/replay covers20 configurations and40 native processes.
+ObserverON/OFF original streams and O0/O2 receipts are exact. Explicit accepted/
+returned/pond/rapid receipts close per-domain, matrix and declared-boundary
+budgets; eight receipt corruption controls execute per checked substep. Current
+eight coupled N runs/16 separate-process restarts and BBC481/day365 continuation
+remain predecessor-exact. This is a bounded water observation repair; covering,
+macrosolute, heat and native full Andelst remain excluded. Qualification and
+actual canonical admission remain distinct in
+`integration/mc-sol01/drainage/MACRO_TRACE_STATUS.json`. Existing supported
+MC-NUT01/MC-SOL01 closeout and excluded migration counts are unchanged.
+
 Current work-package decision,24 October2026: **MC-NUT01 and MC-SOL01 are CLOSED WITH EXCLUSIONS** under the programme-owner's supported-historical-scope instruction. The [definitive closeout](../science/MC_NUT01_SOL01_CLOSURE_20261024.md) and its linked decision/evidence receipt own that status and explicit exclusions. Earlier full-envelope BLOCKED/open statements below remain historical evidence or excluded-variant restrictions; they do not reopen the closed supported work packages. Full4.3.1 equivalence is not established, excluded functions are not migrated, and no whole master capability row is promoted. Production, defaults, scientific contracts and immutable evidence are unchanged.
 
 PERF01's bounded failed near-zero Picard restart is canonically admitted by
