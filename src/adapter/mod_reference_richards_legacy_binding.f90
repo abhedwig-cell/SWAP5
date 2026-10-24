@@ -582,7 +582,7 @@ contains
     end if
     if (request%boundary%bottom_mode == 3) then
        route = 'resistive-bottom-domain-deferred'
-       if (request%physical%macropore_active .or. request%request_interface_sensitivity) return
+       if (request%request_interface_sensitivity) return
        n=request%parameters%active_nodes
        if (n < 2) return
        if (any(.not. ieee_is_finite(request%parameters%z))) return
