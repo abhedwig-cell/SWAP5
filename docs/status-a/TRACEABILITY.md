@@ -1,5 +1,18 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+BBC481 recovery is canonically admitted by PR1425, merge
+`a2cc7c97dd4c6b1a1005000f9b331d4d4719865e`. The actual complete tree
+`bb8813db36e8dcc0e104e9472244bd0dba2551ff` passes all25 current source/raw
+controls; concurrent organic research adds no BBC executable dependency.
+Fresh checked O0/O2 complete481days, exact day365 restart and physical outputs,
+old flux481 bytes, hard water/solute/gross budgets and original FSI35 pass.
+The launcher and198 executable inputs match retained qualification. Original
+canonical NUT86 controls remain dated peer evidence, not fresh NUT execution.
+Authority: `integration/mc-sol01/drainage/CAUCHY3_RECOVERY_ADMISSION.json`.
+Constructed soil/simple crop remain explicit; original full Andelst, macro/heat,
+full SOL/NUT and wet4x (day4 rejection, exact day3 rollback) remain open.
+
+
 MC-NUT01 organic limitation research is documented in the
 [24 October investigation](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md).
 The existing competing-sinks unit owns `ORGANIC_CONSTRAINT_CONTRACT.md`, the
