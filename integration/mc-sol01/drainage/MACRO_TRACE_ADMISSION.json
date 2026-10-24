@@ -1,0 +1,129 @@
+{
+  "work_unit": "HIST-INTEGRATION01 uncovered external macropore water trace",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1436,
+  "canonical_merge": "61cfbf6dff2da1109632f7196e4ae0f5f1652526",
+  "first_parent": "2d21939f285615818ba94352187d40abe2466d8e",
+  "published_head": "6bf48cda4fe95b8b62e1850ba48652ba83d1b042",
+  "qualified_complete_tree": "a8b9960278c65ecc7c81d9e4f424a186bc239dd8",
+  "actual_complete_tree": "a8b9960278c65ecc7c81d9e4f424a186bc239dd8",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_macro_trace_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.5074567859992385,
+      "stdout_sha256": "75b705a1b09b54ce2c84f5ce8faa5a26a91b2d444f14285aee19089294c7436f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_macro_trace_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 1.0561066929949448,
+      "stdout_sha256": "57964f9dc07cbe1d8df4b1faaf18bd5ee9e0e7750b921354407b1f3d7e79b40d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 6.297270451999793,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.19010610999976052,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/macro-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 14.939477555002668,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b17c62c124f8bfca50d71321a7549cccf6c11cbc00494b6226b4706acbf440aa"
+    }
+  ],
+  "physical_qualification": {
+    "configurations_O0_O2": 20,
+    "native_processes": 40,
+    "per_optimization_checked_substeps": 74,
+    "per_optimization_receipt_corruption_assertions": 592,
+    "macro_cell_max_residual_cm": 1.0842021724855044e-19,
+    "matrix_max_residual_cm": 1.8632014334163394e-16,
+    "declared_boundary_column_max_residual_cm": 1.889323929509662e-16,
+    "BBC481_O0_O2_exact": true,
+    "BBC_restart365_exact": true,
+    "NUT_coupled_runs": 8,
+    "NUT_separate_process_restarts": 16,
+    "NUT_predecessor_endpoints_ledgers_exact": true,
+    "original_replay_retry_rollback_restart_assertions_retained": true
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/MACRO_TRACE_EVIDENCE.tar.xz.b64",
+    "sha256": "63954fda8ec90aea5b4cfe5fb438704d192e8cb88aa26ed762d3da9bcd512694",
+    "bytes": 1647608,
+    "members": 4439
+  },
+  "current_source_raw_controls": 17,
+  "retained_parent_controls": 12,
+  "current_executed_input_bindings": 358,
+  "FSI35": "27 executable dependencies unchanged; actual-merge verify-only PASS; original accepted native proof retained, no fresh native replay",
+  "full_FCI": "NOT_SELECTED_IMPACT",
+  "highest_low_air": "NOT_SELECTED_POLICY",
+  "RossFast": "NOT_SELECTED",
+  "hosted_checks_at_publication": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "closed_capabilities": [
+    "Uncovered macro top requested/accepted/returned receipts",
+    "Existing pond requested/accepted/returned donor with exactly-once surface correction",
+    "Per-domain/cell rapid external outflow observation and conservative accepted trace",
+    "Observer-ON/OFF original physical stream identity, retained retry/rollback/persistence/FMR restart and current NUT/BBC exact continuation"
+  ],
+  "exclusions": [
+    "Covering transfer between different macro/matrix cells",
+    "Macrosolute, heat, snow, new native full original Andelst activation",
+    "New atmospheric allocation law or complete historical equivalence"
+  ],
+  "production_physical_equations_changed": false,
+  "defaults_changed": false,
+  "persistent_state_or_restart_schema_changed": false,
+  "observation_interface_changed": true,
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "receipt_scope": "Final actual-merge admission record only. No executable/evidence/test postimage changed after the qualified merge."
+}

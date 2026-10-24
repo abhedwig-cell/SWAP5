@@ -1,10 +1,10 @@
 {
   "work_unit": "HIST-INTEGRATION01 external macropore water trace",
   "baseline": "2d21939f285615818ba94352187d40abe2466d8e",
-  "stage": "CURRENT_NATIVE_AND_RETAINED_QUALIFICATION_SEALED",
+  "stage": "CANONICALLY_ADMITTED_UNCOVERED_EXTERNAL_WATER_TRACE",
   "implemented": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/MACRO_TRACE_CONTRACT.md",
   "test_selection": {
     "macro_trace": {
@@ -33,7 +33,7 @@
     "covering transfers",
     "new chemistry/heat/snow/full original Andelst activation"
   ],
-  "next_action": "Validate current source/raw controls and strict docs, safely publish/merge and verify actual canonical tree; full native Andelst remains excluded",
+  "next_action": "NONE in admitted water-trace subset. Issue1386 retains original native macro/heat/bootstrap and covering/composed domains; no automatic full SOL/NUT promotion.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/MACRO_TRACE_EVIDENCE.tar.xz.b64",
     "sha256": "63954fda8ec90aea5b4cfe5fb438704d192e8cb88aa26ed762d3da9bcd512694",
@@ -82,5 +82,12 @@
     "mkdocs_strict": "PASS"
   },
   "qualification_record_scope": "This is the qualification-time record. Actual canonical admission is separately recorded after merge.",
-  "admission_record": "integration/mc-sol01/drainage/MACRO_TRACE_ADMISSION.json"
+  "admission_record": "integration/mc-sol01/drainage/MACRO_TRACE_ADMISSION.json",
+  "actual_admission": {
+    "pr": 1436,
+    "merge": "61cfbf6dff2da1109632f7196e4ae0f5f1652526",
+    "qualified_actual_tree": "a8b9960278c65ecc7c81d9e4f424a186bc239dd8",
+    "exact_tree": true,
+    "receipt": "integration/mc-sol01/drainage/MACRO_TRACE_ADMISSION.json"
+  }
 }

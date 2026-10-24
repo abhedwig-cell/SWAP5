@@ -1,5 +1,14 @@
 # SWAP5 Status-A current status
 
+External macropore water trace is canonically admitted by PR1436 at actual merge
+`61cfbf6dff2da1109632f7196e4ae0f5f1652526`; complete actual/qualified tree
+`a8b9960278c65ecc7c81d9e4f424a186bc239dd8` is exact. Actual-merge owner,17
+source/raw controls, unchanged27-provider FSI35 source boundary, docs and strict
+MkDocs pass. `integration/mc-sol01/drainage/MACRO_TRACE_ADMISSION.json` owns
+this CLOSED WITH EXCLUSIONS water-only subset. Native full original Andelst,
+covering, macrosolute/heat/snow and full historical equivalence remain excluded.
+Prior qualification-only wording below retains its dated meaning.
+
 HIST-INTEGRATION01 external macropore water trace,24 October2026: current checked
 O0/O2 original trial/replay covers20 configurations and40 native processes.
 ObserverON/OFF original streams and O0/O2 receipts are exact. Explicit accepted/
