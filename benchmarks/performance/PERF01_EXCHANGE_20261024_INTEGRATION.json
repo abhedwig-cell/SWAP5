@@ -1,0 +1,47 @@
+{
+  "status": "RESEARCH_EVIDENCE_READY_FOR_CANONICAL_NOT_PRODUCTION_ADMISSION",
+  "candidate": "322a848815b7602f33a93a339a3f92bcfb47e9f3",
+  "reconciled_canonical": "43ee311ae4b525afd191a8e38c66a17d9c8b3a17",
+  "unchanged_physical_build_inputs": 197,
+  "changed_paths": [
+    "benchmarks/performance/PERF01_ENDPOINT_20261024_EVIDENCE.tar.xz",
+    "benchmarks/performance/PERF01_ENDPOINT_20261024_RESULT.json",
+    "benchmarks/performance/PERF01_ENDPOINT_20261024_RESULT.md",
+    "benchmarks/performance/PERF01_ENDPOINT_20261024_STATUS.json",
+    "benchmarks/performance/PERF01_EXCHANGE_20261024_EVIDENCE.tar.xz",
+    "benchmarks/performance/PERF01_EXCHANGE_20261024_RESULT.json",
+    "benchmarks/performance/PERF01_EXCHANGE_20261024_RESULT.md",
+    "benchmarks/performance/PERF01_HISTORICAL_RESEARCH_20261024.md",
+    "benchmarks/performance/PERF01_REFINEMENT_20261024_EVIDENCE.tar.xz",
+    "benchmarks/performance/PERF01_REFINEMENT_20261024_RESULT.json",
+    "benchmarks/performance/PERF01_REFINEMENT_20261024_RESULT.md",
+    "benchmarks/performance/isolate_perf01_4x.py",
+    "benchmarks/performance/observe_perf01_segment_failure.py",
+    "benchmarks/performance/screen_perf01_amount_refinement.py",
+    "benchmarks/performance/screen_perf01_endpoint.py",
+    "benchmarks/performance/screen_perf01_geometry.py",
+    "benchmarks/performance/screen_perf01_output_amount.py",
+    "benchmarks/performance/seal_perf01_endpoint.py",
+    "benchmarks/performance/seal_perf01_exchange_research.py",
+    "benchmarks/performance/seal_perf01_refinement.py",
+    "benchmarks/performance/study_perf01_exchange_guard.py",
+    "benchmarks/performance/study_perf01_segment_refinement.py"
+  ],
+  "evidence": {
+    "path": "benchmarks/performance/PERF01_EXCHANGE_20261024_EVIDENCE.tar.xz",
+    "sha256": "a7faa0604418b9de232646e33e626443981657811934219f0b5f81ab443f5a9b",
+    "members": 2123
+  },
+  "checks": {
+    "capsule_manifests": "PASS",
+    "current_source_binding": "PASS",
+    "O0_O2_selected_physical_bytes": "PASS",
+    "completed4x_day240_restart": "PASS",
+    "failed_observation_physical_identity": "PASS",
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "production_owner": "NOT_QUALIFIED",
+    "full_fci": "NOT_SELECTED_BENCHMARK_ONLY_NO_PRODUCTION_DELTA"
+  },
+  "next_safe_step": "Diagnose exact saved near-zero-head solver failures before production repair or plain-Boesten/output-amount expansion"
+}

@@ -116,3 +116,64 @@ so it is NOT selected as a better candidate. Next single discriminator tightens
 only water storage budget to0.0001cm, returns output amount to0.001cm, preserves
 uptake/GWL/history/mass controls. Same two full runs, no repeated reference run.
 This tests storage sensitivity, not a production accuracy concession.
+
+Exchange discriminator successor, current canonical d04a8c3c reconciled in
+PR1424. All197 original physical-build inputs are unchanged by that canonical
+delta, including all solver, process, transaction and project providers. Perform
+fresh checked O2 build with the recovered local GNU13.3 toolchain rather than
+inherit object/test PASS. Keep the original endpoint correction and0.001cm
+output-amount research contract. Generate three sibling variants: dry-head only,
+actual incumbent Darcy assessment excluding only its dry-head term, and complete
+incumbent assessment. Use the same actual day145 restart and4x rain input through
+day153 to isolate the largest runoff event from accumulated initial differences.
+This is generated research, not a production change, new tolerance concession,
+or production-owner admission. Existing daily0.01mm failure remains immutable.
+Each build expected under30s, each8-day continuation under30s; retain failed or
+censored results. If a useful discriminator completes, select full481-day1x/4x,
+short O0/O2 and actual restart checks for that variant with original hard mass,
+zero tracer and rejection guards. No new1e-6/RossFast/heavy low-air run.
+
+All three common-day145 continuations retain approximately0.6358mm day152 runoff
+shift, including the complete incumbent assessment. Therefore missing dry-head
+or Darcy terms do not explain that local event discrepancy. Select constant-rain
+interval caps0.04,0.02,0.01day on both head and guarded flux research routes,
+through day153 from the same restart. Preserve every original rainfall event,
+rate and integrated input: split within events; advance the event cursor only
+when its true end is reached. This tests numerical interval dependence of BOTH
+references rather than assuming the uncapped head trajectory is exact. Same
+hard mass gates and source, no production modification or tolerance relaxation.
+Expected compile/link under10s and each8-day native run under30s; cap120s retains
+censored/failed outputs. Invariants7/9/13/23/25 apply unchanged. Any selected full
+run requires actual O0/O2 and restart checks; short event results alone do not
+qualify a production policy.
+
+The first naive cursor+cap research driver leaves artificial final intervals of
+1.99e-13day(.04cap) and9.09e-13day(.01cap) at day150. These trigger solver rejection
+in the flux arm; original failed outputs are retained as DRIVER_PARTITION_FAILURE,
+not a physical failure of production. Correct only the experimental partition:
+equal subdivisions of each remaining true rain event, with its last endpoint
+exact. Re-run the same declared3 caps, retaining each original failed capture.
+No physical event, forcing or acceptance guard is removed.
+
+Balanced interval results complete both arms at all three caps. The uncapped
+ordinary reference is itself interval-sensitive: day152 runoff7.582651mm becomes
+7.993475mm at0.01day; guarded flux8.218462mm becomes7.994689mm. These observations
+invalidate treating the initial0.636mm cross-route difference as an established
+error against exact truth. They do not establish global order or equivalence.
+Select full481-day1x/4x at0.01day cap for both arms and all original daily hard
+water/zero-chemistry checks, then short8-day O0/O2 identity and actual day240
+continuations for both flux trajectories. Inspect daily/cumulative runoff,
+occurrence, storage, uptake and total evaporation without changing the original
+0.01mm screen. Each full native run expected under60s, capped120s. Native timing
+under concurrent build work is a single observation, not paired speed evidence.
+
+The full balanced0.01day policy is NOT selected for release: both1x arms reject
+day66;4x ordinary head rejects day4. The4x flux arm alone completes481days in a
+single27s observation. These failures are not tiny partition tails: independently
+reconstructed minimum request durations are0.0055day(day66) and0.001day(day4).
+Select measurement-only original HeadCalc rejection observations plus the exact
+failed segment clock/rain rate for those two rejected head runs. No equations,
+iteration limits, solver tolerances or accepted-state semantics change. Require
+identical accepted daily bytes and rejected partial-candidate bytes to the
+unobserved originals. Expected each replay under30s, cap120s. Preserve failure;
+this measurement is diagnostic evidence, not qualification of a fix.

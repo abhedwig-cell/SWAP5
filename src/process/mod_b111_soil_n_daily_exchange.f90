@@ -1,6 +1,7 @@
 module mod_b111_soil_n_daily_exchange
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  use mod_n_constant_sink_partition,only:partition_n_constant_sinks
   use mod_b111_soil_n_transport, only: b111_soil_n_transport_result_t, evaluate_b111_soil_n_transport, &
        evaluate_b111_soil_n_negative_boundary,B111_NTRANS_OK,B111_NTRANS_INVALID
   implicit none
@@ -29,6 +30,7 @@ module mod_b111_soil_n_daily_exchange
     logical::crop_calendar_active=.false.
     logical::finite_donor_top=.false.
     logical::nondepleting_top=.false.
+    logical::proportional_constant_sinks=.false.
     real(real64)::drybd=0.0_real64
     real(real64)::sorpcoef=0.0_real64
     real(real64)::ratecon_nitrif=0.0_real64
@@ -89,6 +91,7 @@ contains
     juvenile=f%crop_calendar_active.and.f%dvs<1.0_real64.and.f%lai_crit_nupt>1.0e-2_real64.and. &
          f%lai<f%lai_crit_nupt
     if(juvenile)result%juvenile_factor=(f%lai_crit_nupt-f%lai)/f%lai_crit_nupt
+    if(f%proportional_constant_sinks.and..not.f%crop_calendar_active)return
 
     ! B1.11 mineralisation amount is converted to a volumetric production rate.
     prod_rate0=f%nminer_kg_m3/f%dt_day
@@ -122,29 +125,38 @@ contains
       producpot=prod_rate0-result%juvenile_factor*f%crop_n_demand_kg_m2/f%depth_m
       tcsf=f%tcsf_n*(wavg+f%drybd*f%sorpcoef)/wavg*(1.0_real64-result%juvenile_factor)*root_factor
       call run_transport(f,tcsf,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_selected)
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_selected,source_rate=prod_rate0)
       if(r_selected%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       result%cnh4_end=r_selected%concentration_end
       result%cnh4_average=r_selected%concentration_average
+      if(f%proportional_constant_sinks)then
+        result%top_actual(1)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(1)=r_selected%top_unmet
+      end if
       result%nsupply_nh4_kg_m3_day=tcsf*f%wflux_transp*result%cnh4_average/f%depth_m + &
            prod_rate0-r_selected%production_actual
     else
       producpot=prod_rate0-f%crop_n_demand_kg_m2/f%depth_m
       call run_transport(f,0.0_real64,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand,demand_depleted)
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_demand,demand_depleted,source_rate=prod_rate0)
       if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
       cav_demand=r_demand%concentration_average
       supply_demand=prod_rate0-r_demand%production_actual
+      if(f%proportional_constant_sinks)then
+        if(supply_demand-f%crop_n_demand_kg_m2/f%depth_m> &
+          64d0*epsilon(1d0)*max(abs(prod_rate0),f%crop_n_demand_kg_m2/f%depth_m))return
+        supply_demand=min(supply_demand,f%crop_n_demand_kg_m2/f%depth_m)
+      end if
 
       producpot=prod_rate0
       tcsf=f%tcsf_n*(wavg+f%drybd*f%sorpcoef)/wavg*root_factor
       call run_transport(f,tcsf,f%ratecon_nitrif,producpot,f%drybd,f%sorpcoef, &
-           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_supply)
+           f%cnh4_seep,f%cnh4_top,f%cnh4_lat,cnh4_t0,r_supply,source_rate=prod_rate0)
       if(r_supply%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
@@ -152,14 +164,21 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(demand_depleted.or.c_demand<c_supply)then
+      if((f%proportional_constant_sinks.and.supply_supply<supply_demand).or. &
+        (.not.f%proportional_constant_sinks.and.(demand_depleted.or.c_demand<c_supply)))then
+        r_selected=r_supply
         result%cnh4_end=c_supply
         result%cnh4_average=cav_supply
         result%nsupply_nh4_kg_m3_day=supply_supply
       else
+        r_selected=r_demand
         result%cnh4_end=c_demand
         result%cnh4_average=cav_demand
         result%nsupply_nh4_kg_m3_day=supply_demand
+      end if
+      if(f%proportional_constant_sinks)then
+        result%top_actual(1)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(1)=r_selected%top_unmet
       end if
     end if
 
@@ -176,29 +195,38 @@ contains
       producpot=prod_rate0-result%juvenile_factor*remaining_demand
       tcsf=f%tcsf_n*(1.0_real64-result%juvenile_factor)*root_factor
       call run_transport(f,tcsf,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_selected)
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_selected,source_rate=prod_rate0)
       if(r_selected%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       result%cno3_end=r_selected%concentration_end
       result%cno3_average=r_selected%concentration_average
+      if(f%proportional_constant_sinks)then
+        result%top_actual(2)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(2)=r_selected%top_unmet
+      end if
       result%nsupply_no3_kg_m3_day=tcsf*f%wflux_transp*result%cno3_average/f%depth_m + &
            prod_rate0-r_selected%production_actual
     else
       producpot=prod_rate0-remaining_demand
       call run_transport(f,0.0_real64,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand,demand_depleted)
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_demand,demand_depleted,source_rate=prod_rate0)
       if(r_demand%status/=B111_NTRANS_OK.and..not.demand_depleted)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
       c_demand=r_demand%concentration_end
       cav_demand=r_demand%concentration_average
       supply_demand=prod_rate0-r_demand%production_actual
+      if(f%proportional_constant_sinks)then
+        if(supply_demand-remaining_demand> &
+          64d0*epsilon(1d0)*max(abs(prod_rate0),remaining_demand))return
+        supply_demand=min(supply_demand,remaining_demand)
+      end if
 
       producpot=prod_rate0
       tcsf=f%tcsf_n*root_factor
       call run_transport(f,tcsf,f%ratecon_denitr,producpot,0.0_real64,0.0_real64, &
-           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_supply)
+           f%cno3_seep,f%cno3_top,f%cno3_lat,cno3_t0,r_supply,source_rate=prod_rate0)
       if(r_supply%status/=B111_NTRANS_OK)then
         result%status=B111_NEXCHANGE_TRANSPORT_FAILED;return
       end if
@@ -206,14 +234,21 @@ contains
       cav_supply=r_supply%concentration_average
       supply_supply=tcsf*f%wflux_transp*cav_supply/f%depth_m
 
-      if(demand_depleted.or.c_demand<c_supply)then
+      if((f%proportional_constant_sinks.and.supply_supply<supply_demand).or. &
+        (.not.f%proportional_constant_sinks.and.(demand_depleted.or.c_demand<c_supply)))then
+        r_selected=r_supply
         result%cno3_end=c_supply
         result%cno3_average=cav_supply
         result%nsupply_no3_kg_m3_day=supply_supply
       else
+        r_selected=r_demand
         result%cno3_end=c_demand
         result%cno3_average=cav_demand
         result%nsupply_no3_kg_m3_day=supply_demand
+      end if
+      if(f%proportional_constant_sinks)then
+        result%top_actual(2)=r_selected%top_actual_rate*f%dt_day
+        result%top_unmet(2)=r_selected%top_unmet
       end if
     end if
 
@@ -241,7 +276,7 @@ contains
       result%external_input_kg_m2=result%nh4_boundary_input_kg_m2+result%no3_boundary_input_kg_m2
       if(f%nondepleting_top)then
         result%top_requested=f%wflux_intop*[f%cnh4_top,f%cno3_top]*f%dt_day
-        result%top_actual=result%top_requested
+        if(.not.f%proportional_constant_sinks)result%top_actual=result%top_requested
       end if
       result%external_output_kg_m2=result%external_output_kg_m2-sum(result%top_actual)
     end if
@@ -252,13 +287,36 @@ contains
     result%status=B111_NEXCHANGE_OK
   end subroutine
 
-  subroutine run_transport(f,tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0,r,depleted)
+  subroutine run_transport(f,tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0,r,depleted,source_rate)
     type(b111_soil_n_exchange_forcing_t),intent(in)::f
     real(real64),intent(in)::tcsf,ratecon,producpot,drybd,sorpcoef,cseep,ctop,clat,c0
     type(b111_soil_n_transport_result_t),intent(out)::r
     logical,intent(out),optional::depleted
+    real(real64),intent(in),optional::source_rate
+    real(real64)::request(2),actual(2),unmet(2),gross_crop
+    integer::partition_status
     logical::empty_equilibrium
     if(present(depleted))depleted=.false.
+    if(f%proportional_constant_sinks)then
+      r=b111_soil_n_transport_result_t();r%status=B111_NTRANS_INVALID
+      if(.not.present(source_rate))return
+      if(source_rate<0d0.or.producpot>source_rate)return
+      gross_crop=source_rate-producpot
+      request=[-f%wflux_intop*ctop,gross_crop*f%depth_m]
+      call evaluate_b111_soil_n_negative_boundary(f%depth_m,f%dt_day,f%wfrac_t,f%wfrac_t0, &
+        f%wflux_out+tcsf*f%wflux_transp,f%wflux_inbot,f%wflux_intop,f%wflux_inlat, &
+        ratecon,source_rate,drybd,sorpcoef,cseep, &
+        ctop+gross_crop*f%depth_m/(-f%wflux_intop),clat,c0,r)
+      if(r%status/=B111_NTRANS_OK)return
+      call partition_n_constant_sinks(request,f%dt_day,r%depletion_time, &
+        -r%top_actual_rate*f%dt_day,actual,unmet,partition_status)
+      if(partition_status/=0)then
+        r%status=B111_NTRANS_INVALID;return
+      end if
+      r%production_actual=source_rate-actual(2)/(f%depth_m*f%dt_day)
+      r%top_actual_rate=-actual(1)/f%dt_day;r%top_unmet=unmet(1)
+      return
+    end if
     if(f%nondepleting_top)then
       ! Same unconstrained WaterN ODE, with root loss included in qout and
       ! a signed constant production included in the aggregate top sink.
@@ -308,6 +366,11 @@ contains
        f%cnh4_top,f%cnh4_lat,f%cnh4_seep,f%cno3_top,f%cno3_lat]
     ok=all(ieee_is_finite(v)).and.all(ieee_is_finite([f%cno3_seep,cnh4_t0,cno3_t0]))
     if(.not.ok)return
+    if(f%proportional_constant_sinks)then
+      if(.not.f%nondepleting_top.or.f%finite_donor_top.or.f%nminer_kg_m3<0d0)then
+        ok=.false.;return
+      end if
+    end if
     if(f%finite_donor_top.and.f%nondepleting_top)then
       ok=.false.;return
     end if

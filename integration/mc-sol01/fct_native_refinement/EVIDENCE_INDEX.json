@@ -1,0 +1,299 @@
+{
+  "sha256": "e98308d51cb8c4be3f112ba4b96523316eb0b73eeaa59b3f34e9c558ccfc1392",
+  "bytes": 439756,
+  "members": 1400,
+  "result": {
+    "status": "BOUNDED_NATIVE_REFINEMENT_OBSERVATIONS_AND_FOUR_DAY_RESTART_VERIFIED",
+    "cases": 18,
+    "processes": 30,
+    "exact_four_day_restarts": 6,
+    "maxima": {
+      "water": 1.9956855178832056e-14,
+      "solute": 5.79657930812813e-13
+    },
+    "O0_O2_difference": 0.0,
+    "spatial": {
+      "41-82": {
+        "water_l1_cm": 0.007269095095902123,
+        "dissolved_l1_mg_cm2": 0.03778820664440899,
+        "sorbed_l1_mg_cm2": 0.026328961083991603,
+        "total_solute_l1_mg_cm2": 0.06409728508698787
+      },
+      "82-164": {
+        "water_l1_cm": 0.003914710795497545,
+        "dissolved_l1_mg_cm2": 0.005181430475500043,
+        "sorbed_l1_mg_cm2": 0.0017095196670495472,
+        "total_solute_l1_mg_cm2": 0.00688788363167081
+      }
+    },
+    "temporal": {
+      "0.001-0.0005": {
+        "water_l1_cm": 8.828293667473286e-05,
+        "dissolved_l1_mg_cm2": 6.873086085112945e-05,
+        "sorbed_l1_mg_cm2": 4.984944497743449e-06,
+        "total_solute_l1_mg_cm2": 7.062691930515008e-05
+      },
+      "0.0005-0.00025": {
+        "water_l1_cm": 6.66709114213182e-05,
+        "dissolved_l1_mg_cm2": 5.19379210799642e-05,
+        "sorbed_l1_mg_cm2": 3.1160648246431055e-06,
+        "total_solute_l1_mg_cm2": 5.3337169009737284e-05
+      }
+    },
+    "initial_stocks": {
+      "1": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892
+      },
+      "2": {
+        "initial_water_cm": 30.96212460265734,
+        "initial_solute_mg_cm2": 70.90485949828312
+      },
+      "4": {
+        "initial_water_cm": 30.962160243384183,
+        "initial_solute_mg_cm2": 70.90486291221644
+      }
+    },
+    "case_summaries": {
+      "('o0', 'pilot', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675883,
+          "total_solute_mg_cm2": 70.96244908176888
+        },
+        "accepted_substeps": 948.0
+      },
+      "('o0', 'refinement', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675883,
+          "total_solute_mg_cm2": 70.96244908176888
+        },
+        "accepted_substeps": 948.0
+      },
+      "('o0', 'refinement', 2, 0.001, 1.0)": {
+        "initial_water_cm": 30.96212460265734,
+        "initial_solute_mg_cm2": 70.90485949828312,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96290460265734,
+          "total_solute_mg_cm2": 70.90428132479256
+        },
+        "accepted_substeps": 1576.0
+      },
+      "('o0', 'refinement', 4, 0.001, 1.0)": {
+        "initial_water_cm": 30.962160243384183,
+        "initial_solute_mg_cm2": 70.90486291221644,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96294024338419,
+          "total_solute_mg_cm2": 70.90428484979202
+        },
+        "accepted_substeps": 2478.0
+      },
+      "('o0', 'refinement', 1, 0.0005, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675884,
+          "total_solute_mg_cm2": 70.96244908119866
+        },
+        "accepted_substeps": 1344.0
+      },
+      "('o0', 'refinement', 1, 0.00025, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.962762046758836,
+          "total_solute_mg_cm2": 70.96244908075862
+        },
+        "accepted_substeps": 1932.0
+      },
+      "('o0', 'duration', 1, 0.001, 0.5)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 76.54935475915154,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 76.5435561975232
+        },
+        "accepted_substeps": 1316.0
+      },
+      "('o0', 'duration', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 70.95722017012429
+        },
+        "accepted_substeps": 1316.0
+      },
+      "('o0', 'duration', 1, 0.001, 2.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 61.57743206741894,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 61.57161231265867
+        },
+        "accepted_substeps": 1316.0
+      },
+      "('o2', 'pilot', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675883,
+          "total_solute_mg_cm2": 70.96244908176888
+        },
+        "accepted_substeps": 948.0
+      },
+      "('o2', 'refinement', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675883,
+          "total_solute_mg_cm2": 70.96244908176888
+        },
+        "accepted_substeps": 948.0
+      },
+      "('o2', 'refinement', 2, 0.001, 1.0)": {
+        "initial_water_cm": 30.96212460265734,
+        "initial_solute_mg_cm2": 70.90485949828312,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96290460265734,
+          "total_solute_mg_cm2": 70.90428132479256
+        },
+        "accepted_substeps": 1576.0
+      },
+      "('o2', 'refinement', 4, 0.001, 1.0)": {
+        "initial_water_cm": 30.962160243384183,
+        "initial_solute_mg_cm2": 70.90486291221644,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96294024338419,
+          "total_solute_mg_cm2": 70.90428484979202
+        },
+        "accepted_substeps": 2478.0
+      },
+      "('o2', 'refinement', 1, 0.0005, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96276204675884,
+          "total_solute_mg_cm2": 70.96244908119866
+        },
+        "accepted_substeps": 1344.0
+      },
+      "('o2', 'refinement', 1, 0.00025, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 0.4,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.962762046758836,
+          "total_solute_mg_cm2": 70.96244908075862
+        },
+        "accepted_substeps": 1932.0
+      },
+      "('o2', 'duration', 1, 0.001, 0.5)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 76.54935475915154,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 76.5435561975232
+        },
+        "accepted_substeps": 1316.0
+      },
+      "('o2', 'duration', 1, 0.001, 1.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 70.96303206741892,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 70.95722017012429
+        },
+        "accepted_substeps": 1316.0
+      },
+      "('o2', 'duration', 1, 0.001, 2.0)": {
+        "initial_water_cm": 30.961982046758838,
+        "initial_solute_mg_cm2": 61.57743206741894,
+        "endpoint": {
+          "time_day": 4.0,
+          "pond_cm": 0.0,
+          "pond_solute_mg_cm2": 0.0,
+          "total_water_cm": 30.96978204675883,
+          "total_solute_mg_cm2": 61.57161231265867
+        },
+        "accepted_substeps": 1316.0
+      }
+    },
+    "cost": {
+      "o0": {
+        "build_seconds": 28.74898079200284,
+        "native_seconds": 52.597990742997354
+      },
+      "o2": {
+        "build_seconds": 81.63501219800855,
+        "native_seconds": 27.08743210400462
+      }
+    },
+    "general_native_accuracy": false,
+    "historical_forcing": false,
+    "production_activated": false
+  },
+  "controls": [
+    "missing duration-o0/f1-d4.0-t0.001-e0.5/resume/state.csv",
+    "missing duration-o0/f1-d4.0-t0.001-e0.5/full/restart.bin",
+    "missing OWNER.json",
+    "missing build-o0/native_driver.f90",
+    "unscaled refinement drainage",
+    "changed layer boundary",
+    "changed fine sorbed profile",
+    "lost exact empty limit"
+  ]
+}
