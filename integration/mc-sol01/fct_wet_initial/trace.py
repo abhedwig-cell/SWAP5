@@ -17,6 +17,8 @@ def main():
  for i,line in enumerate(lines,1):
   if re.search(r'(?i)state%fldecdt\s*=\s*\.true\.',line):text+=f"      write(*,*)'TRACE_HEADCALC_REDUCTION',{i}\n"
   text+=line
+ anchor='!     in case of macropores\n      if (swmacro == 1) then\n         if (IcTopMp == 1) then';assert text.count(anchor)==1
+ text=text.replace(anchor,"      write(*,*)'TRACE_CRITERIA',maxval(abs(fsi_ws%residual(1:NN))),CritDevBalCp, &\n       maxval(abs(state%h(1:NN)-fsi_ws%old_head(1:NN))),CritDevh1Cp,CritDevh2Cp,flnonconv,flnonconv3\n      write(*,*)'TRACE_TOTAL',sum1,CritDevBalTot,dt,sum1*dt\n"+anchor)
  target=out/'headcalc.f90';target.write_text(text);changes[str(src.relative_to(ROOT))]=hashlib.sha256(target.read_bytes()).hexdigest();cmd=[str(target) if x==str(src) else x for x in cmd]
  cmd=['-O0' if x=='-O2' else x for x in cmd];t=time.monotonic();cp=subprocess.run(cmd,cwd=out,capture_output=True,timeout=180)
  (out/'compile.stdout').write_bytes(cp.stdout);(out/'compile.stderr').write_bytes(cp.stderr);(out/'trace-build.json').write_text(json.dumps(dict(command=cmd,returncode=cp.returncode,seconds=time.monotonic()-t,generated_logging=changes,reader_optimization='O2 immutable archive reused for diagnostic only'),indent=2));assert cp.returncode==0,cp.stderr[-1000:]
