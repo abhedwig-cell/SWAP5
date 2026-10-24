@@ -1,0 +1,20 @@
+{
+  "result": {
+    "status": "PRE_CHEMISTRY_HYDRAULIC_REJECTION_REPRODUCED_IN_ORIGINAL_NATIVE",
+    "native_policy_cases": 12,
+    "completed": 6,
+    "water_rejected": 6,
+    "original_reference_water_rejection_exact": true,
+    "O0_O2_diagnostic_and_successful_profile_bytes_equal": true,
+    "maxima": {
+      "water": 1.9956855178832056e-14,
+      "solute": 1.0965783402844265e-13
+    },
+    "root_cause_fully_identified": false,
+    "production_repair_qualified": false
+  },
+  "evidence_sha256": "aa18ec32d3127fe92dc304e33e854f060e79b2f8f9294e7544f28ee17103a5c7",
+  "evidence_bytes": 336920,
+  "canonically_admitted": false,
+  "next_safe_work": "Trace accepted water time and final failing trial around wet-surface depletion in original water owner; do not modify FCT chemistry or relax guards."
+}
