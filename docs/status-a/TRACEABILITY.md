@@ -1,5 +1,7 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Current work-package decision,24 October2026: **MC-NUT01 and MC-SOL01 are CLOSED WITH EXCLUSIONS** under the programme-owner's supported-historical-scope instruction. The [definitive closeout](../science/MC_NUT01_SOL01_CLOSURE_20261024.md) and its linked decision/evidence receipt own that status and explicit exclusions. Earlier full-envelope BLOCKED/open statements below remain historical evidence or excluded-variant restrictions; they do not reopen the closed supported work packages. Full4.3.1 equivalence is not established, excluded functions are not migrated, and no whole master capability row is promoted. Production, defaults, scientific contracts and immutable evidence are unchanged.
+
 PERF01's bounded failed near-zero Picard restart is canonically admitted by
 [PR1434](https://github.com/abhedwig-cell/SWAP5/pull/1434), actual merge
 `bc07baebb3b99e5c8d7053874c8b76bb0bec0414`; the complete actual tree

@@ -1,0 +1,722 @@
+{
+  "decision_date": "2026-10-24",
+  "authority": "Explicit programme-owner instruction: definitive closure of demonstrably supported historical scope; exclusions never count as migrated",
+  "baseline_canonical": "5929fd3aa136529f0aa69a187faedc472796841e",
+  "baseline_tree": "4dd4fc97544dba62226382cd114600a4f343abed",
+  "closure_document": "docs/science/MC_NUT01_SOL01_CLOSURE_20261024.md",
+  "decision_kind": "Work-package closeout with explicit exclusions, not full historical migration or new scientific admission",
+  "MC-NUT01": {
+    "status": "CLOSED WITH EXCLUSIONS",
+    "remaining_implementation_blockers_within_supported_scope": [],
+    "remaining_evidence_blockers_within_supported_scope": [],
+    "closed_capabilities": [
+      "Bounded original eight-FOM/biomass/humus organic turnover and mineralisation/immobilisation with sufficient mineral availability, including admitted zero/resonant coefficient limits",
+      "NH4/NO3 mineral ownership, sorption, analytical transport, nitrification and denitrification in admitted carrier domains",
+      "Source-derived SNM initialisation, material labels and grammar, integer-day amendments and qualified humus timestamp semantics",
+      "Source-selected crop uptake/fixation, residue return/retention, harvest/fallow/successor cycle and explicit saved-calendar/output caller, including admitted numeric-temperature variants",
+      "Corrected finite-donor fallow and sole-crop depletion; explicit default-false juvenile/nonjuvenile proportional crop/top sharing in admitted nonnegative-mineralisation domain",
+      "Joint water/crop/N balances, rejected-state rollback and exact persisted continuation within the named qualified routes"
+    ],
+    "exclusions": [
+      {
+        "variant": "Mineral-deficient organic immobilisation and its priority against crop/top sinks",
+        "gap": "Missing accepted physical allocation contract and production implementation; PR1429/1430/1432 research and unmerged1433 are not historical migration",
+        "type": "SCIENTIFIC_CONTRACT_AND_IMPLEMENTATION"
+      },
+      {
+        "variant": "Automatic snow/persistent-surface nitrogen and unrestricted historical gross-carrier combinations",
+        "gap": "Missing fully qualified production binding; unmerged1323 one-node/day prototype is not an admission",
+        "type": "IMPLEMENTATION_AND_COMPOSITION_EVIDENCE"
+      },
+      {
+        "variant": "General/default original SWP/MET/CRP/SNM executable, unrestricted grammar/subdaily amendments, whole original active multiyear equivalence",
+        "gap": "Only explicitly selected callers/input domains and bounded trajectories are admitted; no complete application/equivalence proof",
+        "type": "IMPLEMENTATION_AND_EVIDENCE"
+      },
+      {
+        "variant": "Literal legacy negative loading after donor exhaustion",
+        "gap": "Retained original-main counterexample violates N conservation; admitted corrected finite-donor subsets do not establish literal legacy equivalence",
+        "type": "REPRODUCIBLE_REFERENCE_CONFLICT"
+      }
+    ]
+  },
+  "MC-SOL01": {
+    "status": "CLOSED WITH EXCLUSIONS",
+    "remaining_implementation_blockers_within_supported_scope": [],
+    "remaining_evidence_blockers_within_supported_scope": [],
+    "closed_capabilities": [
+      "Admitted dissolved matrix transport with signed water/root/drain/bottom receipts and external typed bottom concentrations",
+      "Freundlich sorption exponent0.5..2 and source-order decay, including separately qualified accepted numeric-heat matrix/pond combinations",
+      "Reference pond mass with rain/irrigation/deposition, runon/runoff/infiltration and no evaporative solute export; explicitly accepted SWAP5 surface formulation",
+      "Bounded soil/pond water-age route with accepted input and exactly-once handoff, excluding complete evaporative dry-down of positive pond age",
+      "Explicit original SWP chemistry/water/MET/simple-crop application, detailed rain, Boesten/root/DRA/seasonal-flux and BBC481 subsets under their precise contracts",
+      "Joint water/solute balances, rollback and exact disk restart in named admitted routes"
+    ],
+    "exclusions": [
+      {
+        "variant": "Dynamic aquifer solute/SWBR and macrosolute combinations rejected by original input authority",
+        "gap": "Aquifer lacks accepted physical owner; original reader excludes macropore-solute combination. Water-only macro/Cauchy admission is not solute admission",
+        "type": "EXCLUDED_HISTORICAL_VARIANTS"
+      },
+      {
+        "variant": "Freundlich outside0.5..2, analytic heat, snow/exfiltration chemistry and arbitrary age/reactive/N combinations",
+        "gap": "Missing admitted implementations/composition qualification; separate admitted combinations are not a Cartesian product",
+        "type": "IMPLEMENTATION_AND_COMPOSITION_EVIDENCE"
+      },
+      {
+        "variant": "Complete evaporative dry-down with positive surface water age",
+        "gap": "Retained no-evaporative-age-export convention leaves age stock without water carrier",
+        "type": "REPRODUCIBLE_SCIENTIFIC_CONFLICT"
+      },
+      {
+        "variant": "Full original Andelst/default/general application, combined native heat/drainage/macropore lifecycle and wet BBC",
+        "gap": "Bounded constructed soil/simple crop only; retained wet-BBC day4 rejection at .01 with exact day3 rollback. New Picard1x/4x481 proof is a different configuration and does not remove this exclusion",
+        "type": "IMPLEMENTATION_AND_COMPOSITION_EVIDENCE"
+      },
+      {
+        "variant": "FCT/general spatial accuracy, wet uniform-head private solver, plain-Boesten endpoint/fast output-amount/capped policies",
+        "gap": "Research receipts and unmerged1428 are not production/historical admission or a general accuracy proof",
+        "type": "MISSING_PRODUCTION_ADMISSION_AND_EVIDENCE"
+      }
+    ]
+  },
+  "open_PR_reconciliation": {
+    "1303": "Superseded donor: only clean PR1304 is admitted; close unmerged donor, preserve branch",
+    "1373": "Superseded native/research donor: clean PR1382 and later receipts own admission; close unmerged donor, preserve branch",
+    "1323": "Excluded unmerged surface-N prototype; parked, not migrated",
+    "1428": "Excluded unmerged private wet/solver research; parked, not migrated",
+    "1433": "Excluded unmerged organic-first research proposal; parked, not migrated",
+    "1072": "Master remains separate; no whole-row promotion or denominator change"
+  },
+  "evidence": {
+    "current_owner_command": "python -B integration/audits/verify_picard_corner_current.py",
+    "current_owner_result": {
+      "qualified": true,
+      "status": "BOUNDED_PICARD_CORNER_SOURCE_AND_COMPOSITION_QUALIFIED",
+      "source_repair": true,
+      "direct_provider_count": 21,
+      "full481_1x4x_O0_O2": true,
+      "actual_day240_restarts": true,
+      "original_BBC_and_flux_exact": true,
+      "current_NUT_coupled_runs": 8,
+      "current_NUT_process_restarts": 16,
+      "plain_Boesten_endpoint_admitted": false,
+      "wider_output_amount_policy_admitted": false,
+      "capped_interval_policy_admitted": false,
+      "full_mc_sol01_closed": false,
+      "full_mc_nut01_closed": false
+    },
+    "current_corruption_controls": [
+      "source integration/audits/verify_cauchy_macro_current.py",
+      "source integration/audits/verify_picard_corner_current.py",
+      "source src/legacy/b1_10_port/headcalc.f90",
+      "source tests/fsi/data/picard_corner_1x.dat",
+      "source tests/fsi/data/picard_corner_4x.dat",
+      "source tests/fsi/test_picard_corner_restart.f90",
+      "foreign caller",
+      "raw raw/corner-small-v3/RESULT.json",
+      "raw raw/corner-full4x-O2/head/budget.csv",
+      "raw raw/corner-restart1x/resume/restart.bin",
+      "raw raw/corner-bbc-O0/full/state.csv",
+      "raw raw/corner-nut-nonjuvenile/O0/crop_both.fresh-4.ledger"
+    ],
+    "fsi35_source_map": {
+      "src/solver/mod_b110_default_mvg_provider.f90": {
+        "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+        "canonical_blob": "a27fb1680d66dae704486e165fa39ff39f698110"
+      },
+      "src/solver/mod_reference_richards_temporal_indicator.f90": {
+        "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+        "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+      },
+      "src/legacy/b1_10_port/headcalc.f90": {
+        "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+        "canonical_blob": "5a734398c1172ceacb0142c4bdbaf94092141057"
+      },
+      "src/adapter/mod_reference_richards_legacy_binding.f90": {
+        "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+        "canonical_blob": "9e11a4f614627175c84fa6228eb7f2e71fd5ded5"
+      },
+      "src/transaction/mod_transaction_reference.f90": {
+        "historical_blob": "33a0880325be36116dcbb781006b6283da5dac69",
+        "canonical_blob": "0a5ce4d122037048ab9372acdeae447cc085f2d3"
+      },
+      "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
+        "historical_blob": "abe2d699017300e890eeb69a56448bb071660d2d",
+        "canonical_blob": "d6f3cf5b8d49a937d919520eea88faf62457eadf"
+      },
+      "src/solver/mod_b110_dynamic_top_boundary_provider.f90": {
+        "historical_blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae",
+        "canonical_blob": "fd6c160d82191044a2d391af3d5bd0554a21bdc2"
+      },
+      "src/solver/mod_soil_water_solver_contract.f90": {
+        "historical_blob": "7b16c3fcf58179f1491104a1dce3279010b4178a",
+        "canonical_blob": "fbf992e965639f8f0ea0aef17a61138ad501b57e"
+      },
+      "src/solver/mod_b110_default_mvg_directional_provider.f90": {
+        "historical_blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3",
+        "canonical_blob": "ddc767fc0dff62d83a646dd68a16e97f5702efb4"
+      }
+    },
+    "current_qualification_inputs": 358,
+    "numerical_reexecution": "NOT_SELECTED_IMPACT: closure changes descriptive documents/decision receipt only; executed production/scientific input surface is unchanged",
+    "retained_science": "PR1434 O0/O2 full4811x/4x and day240 restarts; original BBC/flux481 exact and day365 restart;8 current NUT coupled runs/16 exact restarts; separate macro108cases and BBC481 reconciliation; original FSI35 native proof retained",
+    "nut_N_max_daily_residual_kg_m2": 2.293087594806842e-17,
+    "nut_N_max_cumulative_residual_kg_m2": 5.0873984658219434e-15,
+    "water_and_solute_hard_daily_budget": 1e-10,
+    "nut_hard_daily_kg_m2": 1e-12,
+    "nut_hard_cumulative_kg_m2": 1e-10,
+    "owning_records_sha256": {
+      "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json": "74ae154153d7695ed2f3718f6a352832caf7db6527a833ea58c27fd2eee33115",
+      "integration/performance/PERF01_PICARD_CORNER_ADMISSION.json": "ffee038f8670f95830ecf78a035221f3df6f2f27222dc9da64a056c7d23df562",
+      "integration/mc-nut01/competing_sinks/NONJUVENILE_ADMISSION.json": "0221c1331b5392fc6052fec22d196961c40d4834964b716f5a7503e1600a3b1f",
+      "integration/mc-nut01/crop_only_depletion/ADMISSION.json": "2ad9471ad0690ad851302984f7ea0f62e662cfb976bb3a07016523dd3349a1e9",
+      "integration/mc-sol01/drainage/CAUCHY3_RECOVERY_ADMISSION.json": "9c9b8e7098e15b759fabcbd3dd2f9f93683071fec418dcd0ef6dfe272b88de4f",
+      "integration/mc-sol01/drainage/ANDELST_COMPOSITION_ADMISSION.json": "8431cf8d052d6be80d2e128ea0e7a3f72252b0aa02ce3103e95ca6d5449648e8",
+      "integration/mc-sol01/boesten/ADMISSION.json": "facb008436269dac09bb7174f0710a14665a3908917ffa3d62a4a328b99605b9",
+      "integration/mc-sol01/MC_SOL01_REFINED_YEAR_ADMISSION_20261023.json": "456c4194ae9dde46dd90b460388559241832bc825096105f3d82bc937bc0e7b6",
+      "integration/mc-sol01/MC_SOL01_HIST_INTEGRATION01_ADMISSION_20261023.json": "4dc9603a6c4d9e9cde4829122148c4eab32e896d3ed7523f73036e5c1d7fbe21",
+      "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json": "7c17e201fc3b7641a762d6576b82e5cfc849a7201d12667385f4f91d3f041b99",
+      "integration/mc-nut01/MC_NUT01_OUTPUT_GENERATION_ADMISSION_20261021.json": "bed04cc95dd65ccb143de6d79ea6c2c588f2cb77822ec753f2115c173fd0b97a",
+      "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_ADMISSION_20261023.json": "57907d0b259d73cfbcca341eaa60e0a097d32d564162b724aa7e815023d0d349",
+      "integration/mc-nut01/MC_NUT01_CALENDAR_OUTPUT_ADMISSION_20261022.json": "18acf563a42f684d3728f7403b7a8def0ba61e02b86cf810bff3a4f6595549b2",
+      "integration/mc-nut01/MC_NUT01_NATIVE_OUTPUT_START_ADMISSION_20261022.json": "fd31a65e56380f313cc01b57ae75d8603b6a1e291fcf0dfd51e2bca1b83d0a42",
+      "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json": "1d865fdebdfb842cf421f1a7d1cb160adc7880b0518a650e57d8622591db2e97",
+      "integration/mc-nut01/MC_NUT01_THERMAL_CALENDAR_OUTPUT_ADMISSION_20261023.json": "51dd19ebe309b70ff574eb6a99b55ea80b4cb53471129c714f9f4e35b0be45d6",
+      "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json": "e3c9d7498a36233d9ac2ebc3d4199980a29014ba7913b117d6ed21a8b9488f57",
+      "integration/mc-nut01/MC_NUT01_HISTORICAL_OUTPUT_CALLER_ADMISSION_20261023.json": "204d9a347c4e80bef2c2026f5607b6045ca17a96e58dac7646f2873e88ecc405",
+      "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json": "ffd911d59b8df8794e1ba129889af855c4884dff3e7a6bb0018145732eac6760",
+      "integration/mc-nut01/MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json": "88b2766f403bd0436285a4a9434a16b90cafb9d8e6754ee1f5cf9b27551ecf59",
+      "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json": "f69e66dd7d855fab46cd0473fb77239396254605e65fc320624601bd6a04371c",
+      "integration/mc-nut01/demand_candidate/ADMISSION.json": "407538276ba00ef999a7ab5b443fa22e19bce00e96014f04d2ded93d8b700f7f",
+      "integration/mc-nut01/single_zero_pool/ADMISSION.json": "7e1560b39b7223475caaca7b26889f18af30b2e45ff697de54ee05eb98f7d93b",
+      "integration/mc-nut01/empty_equilibrium/ADMISSION.json": "4e8c1569850aff18413e4615223a97d19f487fc2992029c3b15c93c99766a823",
+      "integration/mc-nut01/organic_resonance/ADMISSION.json": "6ca87ef999ec9bde27db498b521c84153aa05b19616d1e0ee37f7a2408b2eae2",
+      "integration/mc-nut01/competing_sinks/ADMISSION.json": "36d68f6fea661eb8fa37f8f9405f8cd7760b513ad03cd38de06e8a6b42fa2144",
+      "integration/mc-nut01/zero_pool_rates/ADMISSION.json": "e3a171c44d29fc7ed684518b51154099653e81cb4767652c3961fd19a4178254",
+      "integration/mc-nut01/nondepleting_top/ADMISSION.json": "4e85c9001d8f713ab4483fefc0f581a9e327ef330ec1d94d7e1224e40ebdd4e6",
+      "integration/mc-nut01/singular_assimilation/ADMISSION.json": "42492889f122a7633652f0ff60d7a490bc65dc1b343f0cc0a6cc01e57f0e0371",
+      "integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json": "a4706f98cfa4a2613b1b21bc16c662ee94dfde090cc8dbd4f93e918e5e957355",
+      "integration/mc-sol01/fct_joint_acceptance/ADMISSION.json": "65bb0e010029c086ff478e6d0123fe9105a739c716fc11dc6bd2ce5eac00870e",
+      "integration/mc-sol01/fct_pulse_restart/ADMISSION.json": "aa0b99cb03b11bd1e41a215817789f7cdd066255c26c7e3c72bef2ffe2376673",
+      "integration/mc-sol01/fct_accepted_trace/ADMISSION.json": "3e393a40bb308903f9bc4626116677700c6385b5e810cee9c4afd6ca4b7e3738",
+      "integration/mc-sol01/drainage/ADMISSION.json": "f3a36b4b0d6048f579f462e3cf92664d009b8b3028f3d11036bccb63745c1d9e",
+      "integration/mc-sol01/drainage/DAY470_CURRENT_ADMISSION.json": "5b6311c985508723717386a1d4f27818225726b7415782cda288404cd84a7678",
+      "integration/mc-sol01/detailed_rain/ADMISSION.json": "5aae79d01cb2f5a918e37f9abb14c109c2b604653ba7b473cd8297e96e543ffd",
+      "integration/mc-sol01/fct_native_domain/ADMISSION.json": "fcf9b2e03cbe314fc345d286e83273bcbec55f986185cec1056212fc68833253",
+      "integration/mc-sol01/fct_prototype/ADMISSION.json": "3933beab07c58110ef5afad326335cf3444be495eb06cc1eb876dc187903fe6a",
+      "integration/mc-sol01/fct_sinks/ADMISSION.json": "8c20164a9454647f2d6eb7c2c89a5ff3593b6499453aa06b9df5e1dd84c33edb",
+      "integration/mc-sol01/fct_reactive/ADMISSION.json": "b3f627c75908aaac815fbe99fbd64d7a775a9c626bcc82c508e93a136c6a4822",
+      "integration/mc-sol01/fct_native_refinement/ADMISSION.json": "e099ef8f079abb200c32a6e4e99a4a07bd851185cee10bbf140a4965c41a4869",
+      "integration/mc-sol01/fct_water_sorption/ADMISSION.json": "8e3ea4de389faee6fe1537dcc752a412a46418b61d7e02a787d5d036329a5cb1",
+      "integration/mc-sol01/native_grid/ADMISSION.json": "927d7786ae0fd15f880e98c2e4dc46db559a51895132fb936a380e95fbcec1eb",
+      "integration/mc-sol01/fct_sink_restart/ADMISSION.json": "05ba5d907f9e9b9db85ed22062c14dcee9e1daf3a2cdcdee566da855ce4d107a",
+      "integration/mc-sol01/fct_consistent_initial/ADMISSION.json": "f9d363bd8c0d4ebef229f6648d7878037367c0c8e5cc9b67c7c1cf027721d3a7",
+      "integration/mc-sol01/transport_accuracy/ADMISSION.json": "9eb5563a54ea99f14750345b2f364a6c34799b0bd758f49eb4c41c61f3ca6f79"
+    },
+    "canonical_admission_ancestry": [
+      {
+        "commit": "01a053f93f9c6548278df503a4cfea5424c84fce",
+        "tree": "ca5e120539ed17a09d4bef2a4396ba5fd87f7243",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.atmospheric_n_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "0391d3cb70094c538df983086f6d3f8298912fcb",
+        "tree": "84b7e8530412128bb692c22c7bf190693659fea8",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.humus_timestamp_20261021:canonical_merge"
+        ]
+      },
+      {
+        "commit": "03daf601446ba1bdc56c6d436fb09fbc904ea66b",
+        "tree": "55cf7de94b625443c5b37e6e598f72c2069e893f",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.material_label_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "03fd18d7d60e423c59e1ecef5661d259f470f69e",
+        "tree": "e3cac9919741b40fe29e5cf6555f50ea72aab704",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.historical_integration01_20261023:canonical_merge",
+          "integration/mc-sol01/MC_SOL01_HIST_INTEGRATION01_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "04e59af76e8d4a1564058067ec6b8f3cf977f376",
+        "tree": "a6a4c5ab0a3cb508c0f0cfbb44e329d0f629f424",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.daily_meteo_successor.etref_successor:canonical_merge",
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.daily_meteo_successor.etref_successor.admission:canonical_merge"
+        ]
+      },
+      {
+        "commit": "05b7fefc061013bdfff9d1f8c92dce853af23714",
+        "tree": "03edf153b1b1fd420a01f6a8f379eb5c3f055866",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.saved_residue_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_SAVED_OUTPUT_ADMISSION_20261022.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "09b6734e68ecd3106b39e56dfb451b4404766aa0",
+        "tree": "bb24246e00a9e054afdc2ffc3b3d928671187aa5",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.negative_reference_candidate_20261021.regular_limits_successor_20261023.canonical_admission:actual_merge",
+          "integration/mc-nut01/MC_NUT01_REGULAR_LIMITS_ADMISSION_20261023.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "13604d76cec8b6a34d7f9a2ce3d841989e366b6c",
+        "tree": "332162e3bade02ad94bcaf0c4aff55c05e8731cc",
+        "records": [
+          "integration/mc-sol01/fct_accepted_trace/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "142ef684f57abf879d37b3902a1f9c7fd60ada7d",
+        "tree": "efae631297e7309646e945b35658c0952f20f86d",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.native_startup_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_NATIVE_OUTPUT_START_ADMISSION_20261022.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "14fbefdec245462580f961d073605ffbbcd3e72e",
+        "tree": "7ab180aa7b19527b55ff149ab850805196aa06b7",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.fsi35_reconciliation:canonical_merge",
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "188f75ef04cd64a5a78ace0aa4b8977e7a130537",
+        "tree": "db1143475778b4a4bf302f20a00e20619b01673b",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.historical_caller_successor_20261023.canonical_admission:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_HISTORICAL_OUTPUT_CALLER_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "1b69c9d90a5e57b32c24517b1d378eb6d6275071",
+        "tree": "44294b383deee81d0a27cbf8b41e8c656b2bb0fd",
+        "records": [
+          "integration/mc-nut01/empty_equilibrium/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "21871ca2be827bfd7c62cc3927ea822de631d383",
+        "tree": "4948a7943a6fb9063cfbec0d88cce41e7a6a1608",
+        "records": [
+          "integration/mc-sol01/transport_accuracy/ADMISSION.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "236ec864c2b2fbad4de6379a7e32451605f38e3c",
+        "tree": "44d9eac839f78a99f2534b4db1868233cd35c66f",
+        "records": [
+          "integration/mc-sol01/fct_consistent_initial/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "24868384b276b838ee704cff5535aad3bdb4a9c9",
+        "tree": "60c1808d47b790f2006debd36a3c386155b80ebb",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.gash_interception_successor:canonical_merge",
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.gash_interception_successor.qualification_actions:canonical_merge"
+        ]
+      },
+      {
+        "commit": "29d2402cf5160c852875c08d13b1804c9ac5c002",
+        "tree": "0a661279fb63d10ce7399abd7caf025353e457f0",
+        "records": [
+          "integration/mc-nut01/competing_sinks/NONJUVENILE_ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "2c00c49a716e79545419407be6670b3df72e138a",
+        "tree": "9c1a3e150be6a7d2026ed123694c610cc4585a34",
+        "records": [
+          "integration/mc-nut01/crop_only_depletion/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "2f418b72a9605b47024138eab3086a890ec80bdc",
+        "tree": "8ed671b05917ce2ee7ebcdc5d685101d50a72ff4",
+        "records": [
+          "integration/mc-sol01/fct_sinks/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "30be55796107ea05d40aac0ea182f2218613af8b",
+        "tree": "e780618eb8b950addce392347181c0d8a78381b0",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.negative_reference_candidate_20261021:canonical_merge",
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.gross_net_completion_blocker.bounded_resolution_20261021:canonical_merge"
+        ]
+      },
+      {
+        "commit": "3e415558e04943a724b86c04f9870378933158f5",
+        "tree": "19185afb146e3976fc10fc9bb12da5a763d23e90",
+        "records": [
+          "integration/mc-sol01/fct_sink_restart/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "48cb945235a86d7a793f9e73c393cb57c051dd0c",
+        "tree": "11aa820c9b7d26808804f98373baa8d76ee01a00",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.daily_meteo_successor:canonical_merge",
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.daily_meteo_successor.admission:canonical_merge"
+        ]
+      },
+      {
+        "commit": "49bba843210b49c58c991a23f67f52888895582f",
+        "tree": "e0637b6a2c5acab5683dbe01d59b88bb06681ef9",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.joint_generation_successor:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_OUTPUT_GENERATION_ADMISSION_20261021.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "5b15885ad079477f31373ed96c9856e9e161fa11",
+        "tree": "e8d3c491c6d050bb6ff0b670713f04583557e966",
+        "records": [
+          "integration/mc-nut01/organic_resonance/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "5f6075ae55d8fbc06259e4e85407db488aa4daf7",
+        "tree": "db957d225aa6bf5a0bd4b9ac705c65a8c7a47c0e",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.saved_calendar_successor_20261023.canonical_admission:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_SAVED_CALENDAR_OUTPUT_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "6a2985776d2f242572725d8c18489260296c6732",
+        "tree": "723f1e2a56cdc1b26addf8149a272ce160144cf5",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.accepted_atmosphere_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "6fb4cdda3a03abfe90eb1616ebb9be2c8c08182d",
+        "tree": "59e264be5f994f3dbe618bb30fba0e2e8045d299",
+        "records": [
+          "integration/mc-sol01/fct_reactive/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "74516db1bc4e9a74f167610f3940fd818853aced",
+        "tree": "fc9a95191e1f1655864d203e21a898e76ab04874",
+        "records": [
+          "integration/mc-sol01/native_grid/ADMISSION.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "76d2ab9db8c20e976a25bb4c7414f176dd02c5cb",
+        "tree": "2cef7484b17a836af15fad7767ea1c6b4892b148",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_water_successor.daily_meteo_successor.etref_successor.simple_crop_preparation_successor.root_joint_successor.substep_feedback_work.native_project_successor.positive_transport_successor.saturation_surface_continuation_20261022.day65_continuation_20261023.source_admission.canonical_admission:canonical_merge",
+          "integration/mc-sol01/MC_SOL01_NATIVE_PROJECT_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "78ee6ac377576159dbec1f9521911d715bd7e3f9",
+        "tree": "93eef53cb52c9fbcc3a26770304cb3d5c8aba048",
+        "records": [
+          "integration/mc-nut01/demand_candidate/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "7bfc69e5a33b9f5d6cb370ed473bbeae1b7c2440",
+        "tree": "0886ca2f978f8c152f324dd40c71d7e986c4b362",
+        "records": [
+          "integration/mc-sol01/fct_prototype/ADMISSION.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "7d04b00778684ff662ec36715b7b3e9654b8fb73",
+        "tree": "f39a3b06d30b4c56020a5afb27d4e27a2322ee11",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8066b06a6383bfbd1cd82bcbc3b8b22b41eb9cb0",
+        "tree": "ce3c27cec3af23dce16958eff3f8c5ec48317208",
+        "records": [
+          "integration/mc-sol01/MC_SOL01_REFINED_YEAR_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "829bfabade71a3e3156914275d2b3fdc65c29112",
+        "tree": "d1e38a06c876869b09e722ab7ad5945a9b888a59",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.humus_experiment_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8422c2a8ac3158b0d74f77b1155936fdc435b792",
+        "tree": "1b22027e3b3e4620a7fcb9b7b16caedaded09bc9",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.native_character_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8bf52bf23277d193039ea5162e7100b6889bc7c0",
+        "tree": "7769423445a9b046c2981d1105fb45fb25b00f43",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.bounded_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8dd2561c7f4207034c35e12b6e9c64d24db25213",
+        "tree": "5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.cycle_successor_20261023:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_CYCLE_OUTPUT_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8e0a07f43e814bbb634e04855fa5ed6e5372f3b0",
+        "tree": "347fefb591499051267481c999b839180c8d65d1",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.nonlinear_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "8fabce512cc6347815fff591650be198c0ce213f",
+        "tree": "0c88b177460712b96d4a7e466bdfb43ffd7c5b91",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.nonlinear_pond_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "969aa918f0104546ec4ca2372feccf37b0145627",
+        "tree": "c071dff714021f317c7f18aebda6a71d42b22180",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.thermal_pond_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "a2cc7c97dd4c6b1a1005000f9b331d4d4719865e",
+        "tree": "bb8813db36e8dcc0e104e9472244bd0dba2551ff",
+        "records": [
+          "integration/mc-sol01/drainage/CAUCHY3_RECOVERY_ADMISSION.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "aba91da43e12817d09ac54329663ecf38b4e31d0",
+        "tree": "66a71a3a586cd83a17d3ea8315d9e63f0202604f",
+        "records": [
+          "integration/mc-sol01/fct_native_domain/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "b17be3044128cca5fe79c6c44b2e2419bca7f57f",
+        "tree": "030546a20b810bb6fd719ca3dd6d56912007ef29",
+        "records": [
+          "integration/mc-nut01/nondepleting_top/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "b4001c0b2033052ad2a203b41f49c85be5a611dd",
+        "tree": "95dd1c4616353abf5f8b9e983cf69eb78e687814",
+        "records": [
+          "integration/mc-nut01/singular_assimilation/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "b98b7606cab8de8ba5f5bad09b54dc4ee2241c8d",
+        "tree": "a76d43d7b5a8acc37a60a187104702e427fd827a",
+        "records": [
+          "integration/mc-sol01/boesten/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "b9ce4078722544bb0fc774e2833885cfb5343b18",
+        "tree": "4f3b55652fb284f861b3e6276b1076f5c9458677",
+        "records": [
+          "integration/mc-sol01/drainage/DAY470_CURRENT_ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "ba2dfc4dd7c681216a5d4afc41f96a2d9fad1cf2",
+        "tree": "c73508410d35ada7244cf49a3e210ae5d24cdb0b",
+        "records": [
+          "integration/mc-nut01/single_zero_pool/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "bc07baebb3b99e5c8d7053874c8b76bb0bec0414",
+        "tree": "b5e165bb07f08cc1120f3bb49c82235e5a358a87",
+        "records": [
+          "integration/performance/PERF01_PICARD_CORNER_ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "bcd6e088a438fa1402387231d04a1a27d3d7ebba",
+        "tree": "8cafa12b7a47386f8ea8a3a2cdc4688e3b339856",
+        "records": [
+          "integration/mc-sol01/drainage/ANDELST_COMPOSITION_ADMISSION.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "bcf7a497d131d858b61e9ebbb7ec6dbc23fa6c8b",
+        "tree": "80e824ba4deb20eff7cd3cd85249d71d6cdec54a",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_reader_successor.fsi35_reconciliation:canonical_merge"
+        ]
+      },
+      {
+        "commit": "be31c082a33819f8dba49f303e91245c80274678",
+        "tree": "32f1aaa0ca54e210f0328ff344c9bb45edfb9fb2",
+        "records": [
+          "integration/mc-nut01/competing_sinks/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "c11cbebe65d04572d548164764d4cbcfe8154be6",
+        "tree": "23adfc8d5c3cc59174350e0f821ebda705982ae1",
+        "records": [
+          "integration/mc-sol01/fct_pulse_restart/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "d118bcf1cacf7462cf62c27141cf306d7a4a52fb",
+        "tree": "661da011d0c276ea878707149feff7e5cb0dabdd",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.historical_gross_top_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "d3c3486208ba8f4272496bb70f7d1e4b0ad4458e",
+        "tree": "3d6c7881bf7febec2a164d1ac08f5b33d23ea62b",
+        "records": [
+          "integration/mc-nut01/zero_pool_rates/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "d79217149734928e957015bace05d78a5ba7905a",
+        "tree": "33e707b5fbbf0463c5b7b93df35d9bf10c2057f4",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.calendar_output_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_CALENDAR_OUTPUT_ADMISSION_20261022.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "d7b891759a8c378ba0367e1a1a112c684712199f",
+        "tree": "8551b67e02b4c1b5d1bfec60ea7846dd7bb082bc",
+        "records": [
+          "integration/audits/MC_SOL01_DYNAMIC_DECAY_STATUS.json.swp_reader_successor:canonical_merge"
+        ]
+      },
+      {
+        "commit": "dce306d7f3a81ecf4662751070aaa4230ad1fbd2",
+        "tree": "b07af9a1c85ea8f49c20df535554bc49d4f42643",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.thermal_calendar_successor_20261023.canonical_admission:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_THERMAL_CALENDAR_OUTPUT_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "ddaf00c33da51fb84552b3d59e6f342cff97bf04",
+        "tree": "9b7bfa194270283c561eeb0c7840957ef9c8dc18",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.thermal_fallow_successor_20261022.current_retry_recovery_20261023:canonical_merge",
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.thermal_fallow_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_THERMAL_FALLOW_OUTPUT_ADMISSION_20261023.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "efa6532631696fc74d1be742bfc6f4d030dd5dac",
+        "tree": "0fd28044d80ef8996e6c0c78443010658de5ee95",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.harvest_generation_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_HARVEST_OUTPUT_ADMISSION_20261022.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "f29d91857855200651234deedb07b03845881d07",
+        "tree": "f92553a48110a1f72ba360a16261bc0c9fcaed97",
+        "records": [
+          "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json.extended_output_component_20261021.thermal_output_successor_20261022:canonical_merge",
+          "integration/mc-nut01/MC_NUT01_THERMAL_OUTPUT_ADMISSION_20261022.json:canonical_merge"
+        ]
+      },
+      {
+        "commit": "f8884165b65798a74758a17ef33723e5a3e3af93",
+        "tree": "572bc64b244a801b5452380a9dcfe5219c79952a",
+        "records": [
+          "integration/mc-sol01/fct_native_refinement/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "fc71ff211f3695d81aa92e83492ffd9b4b7f3de1",
+        "tree": "e33376d584a27fccd59b70ed477c31e611e93d6a",
+        "records": [
+          "integration/mc-sol01/fct_joint_acceptance/ADMISSION.json:actual_merge"
+        ]
+      },
+      {
+        "commit": "fc9a2d5a746d65946861657a946d1c6b4712de26",
+        "tree": "1457ee6f51442d14576dc8194ce2d36b84224b5b",
+        "records": [
+          "integration/mc-sol01/fct_water_sorption/ADMISSION.json:actual_merge"
+        ]
+      }
+    ],
+    "mutable_navigation_record": "integration/mc-nut01/MC-NUT01-HIST-COMPLETE_STATUS.json"
+  },
+  "production_changed": false,
+  "defaults_changed": false,
+  "interfaces_or_restart_schemas_changed": false,
+  "full_historical_migration": false,
+  "excluded_capabilities_counted_as_migrated": false,
+  "mastercoverage_promoted": false,
+  "integration": {
+    "state": "CLOSED_WITH_EXCLUSIONS_EFFECTIVE_ON_VERIFIED_CANONICAL_MERGE",
+    "required": "Actual merged tree must equal qualified candidate tree, followed by current owner/control/docs checks; final commit is the merge carrying this record",
+    "local_candidate_checks": [
+      {
+        "name": "owner",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "integration/audits/verify_picard_corner_current.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.4781162450017291,
+        "stdout_sha256": "0facb22f2cd06e16df62e5bd8b8a4707a3e3ae6aa3af862a6b79811cc8c5b133"
+      },
+      {
+        "name": "controls",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "-c",
+          "import runpy,json;m=runpy.run_path('integration/audits/verify_picard_corner_current.py'); print(json.dumps({'controls':m['self_test'](),'fsi35':m['fsi35_successors']()}))"
+        ],
+        "returncode": 0,
+        "seconds": 1.187270943999465,
+        "stdout_sha256": "04435a0ad1ff38781c435f9c09c6f31a0ca3a8c5806b4c2062976f4239be96b7"
+      },
+      {
+        "name": "docs",
+        "command": [
+          "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.17703042599896435,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee"
+      }
+    ],
+    "docs_strict": "PASS; unchanged descriptive/scientific input surface; final candidate strict build retained in PR validation"
+  }
+}
