@@ -18,6 +18,7 @@ def projection():
   text=text[:at]+hook+text[at:]
  return text.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_heat_bootstrap_current.py'))['source'](reader,changed)
  r=json.loads(reader(STATUS));assert r['baseline']==BASE
  git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
@@ -81,13 +82,17 @@ def validate(f):
    for day in [2,5]:
     for kind in ['exhaust','stale','water']:assert f[label+'/'+key+'.restart.before-'+str(day)]==f[label+'/'+key+'.restart.'+kind+'-reject-'+str(day)]
  return dict(qualified=True,status='EXTERNAL_MACRO_WATER_TRACE_AND_CURRENT_COMPOSITION_QUALIFIED',macro_configurations=20,macro_native_processes=40,observer_physical_stdout_exact=True,O0_O2_macro_receipts_exact=True,independent_cell_and_declared_boundary_budgets=True,receipt_negative_controls_per_substep=8,original_BBC481_and365_restart_exact=True,current_NUT_runs=8,current_NUT_separate_process_restarts=16,covering_admitted=False,full_original_Andelst=False,macrosolute_or_heat_admitted=False,full_historical_migration=False,canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_heat_bootstrap_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_heat_bootstrap_current.py'))['fsi35_successors']()
  source();f=capsule();r=json.loads(f['parent/proof.json'])['fsi35']
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),'changed FSI35 executable dependency'
  return r
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_HEAT_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_heat_bootstrap_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

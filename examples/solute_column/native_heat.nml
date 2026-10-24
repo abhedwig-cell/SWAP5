@@ -1,0 +1,13 @@
+! Native SWP water bootstrap; explicit prescribed forcing, no meteo/crop claim.
+&column
+ schema=2, nodes=0, swp_water_bootstrap=.true., swp_heat_bootstrap=.true., dynamic_temperature=.true.
+ initial_pond_cm=.5, initial_pond_mass_mg_cm2=.25
+ root_cm_day=4*.0001, drain_cm_day=4*.0001, bottom_up_cm_day=-.1
+ pond_max_cm=.50001, runoff_resistance_day=.001
+/
+&surface
+ windows=3, ends_day=.001,.002,.003
+ air_temperature_c=20.,2.,15.
+ rain_cm_day=3*.25, irrigation_cm_day=3*.25, runon_cm_day=3*.5
+ evaporation_cm_day=3*.05, irrigation_c=.375, runon_c=3.
+/
