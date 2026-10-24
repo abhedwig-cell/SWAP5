@@ -1,5 +1,13 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+MC-NUT01 proposed path-limited single-FOM/NH4 kinetics is implemented in the
+existing competing-sinks unit and documented in the
+[executable successor](../science/MC_NUT01_ORGANIC_LIMITATION_RESEARCH_20261024.md#executable-path-limited-successor).
+`PATH_LIMITED_CONTRACT.md`, `PATH_LIMITED_RESULT.json` and its sealed capsule
+bind96 O0/O2 cases, independent event-driven ODE assertions, whole C/N budgets,
+state continuation and five numerical controls. This is executable research,
+not an additional production capability or full MC-NUT01 admission.
+
 BBC481 recovery is canonically admitted by PR1425, merge
 `a2cc7c97dd4c6b1a1005000f9b331d4d4719865e`. The actual complete tree
 `bb8813db36e8dcc0e104e9472244bd0dba2551ff` passes all25 current source/raw

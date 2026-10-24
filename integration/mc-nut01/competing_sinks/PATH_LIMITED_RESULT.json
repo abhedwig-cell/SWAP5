@@ -1,0 +1,71 @@
+{
+  "status": "PROPOSED_SINGLE_FOM_PATH_LIMITATION_RESEARCH_PASS",
+  "baseline": "9efc6d3ae532efcc7f6b0f6f8ebc29cdeabe3a14",
+  "production_admitted": false,
+  "tested_commit": "063e75fd887c820f7163fa2bfdc21cd725d52e37",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "input_sha256": {
+    "src/process/mod_soil_n_pool_state.f90": "de79a88df9e0c37855ebe065d56c32be1a2adc7945775f572e86917bccffb854",
+    "src/process/mod_b111_soil_organic_turnover.f90": "8d98da9f33e7430433d568ed7d5a246922c1a867c3d95a7fb01b91db6935c3ff",
+    "src/process/mod_b111_soil_organic_dissimilation.f90": "0e56ced911db4bb2ee02341ea0be54a784d0e43017f2b6126ada1413a0243cb8",
+    "integration/mc-nut01/competing_sinks/mod_path_limited_organic.f90": "d409fb5406c093d172f3e02813c2726e45d284b20f6bd24eb7d1abae89a438e7",
+    "integration/mc-nut01/competing_sinks/test_path_limited_organic.f90": "c3e325b719ee6ad3efbf07d265691c97f5bd3f286a483eff56ad1df94ecb8e3d",
+    "integration/mc-nut01/competing_sinks/run_path_limited_organic.py": "f5eacdc7fb7163eae53c203fee8daa007701d9a94cf994c88a205ac826f8e0e7",
+    "integration/mc-nut01/competing_sinks/PATH_LIMITED_CONTRACT.md": "22fe6a39737059321541c3966d7c4682617e7a56edc479e8817bfc28424c67cc"
+  },
+  "results": {
+    "O0": {
+      "cases": 96,
+      "endpoint_max_error": 1.4799272918253337e-13,
+      "event_max_error": 3.2438496333497824e-12,
+      "max_n_residual": 6.938893903907228e-18,
+      "max_c_residual": 1.915134717478395e-14,
+      "max_continuation_error": 4.446443213623752e-14,
+      "counts": {
+        "depleted": 54,
+        "released": 11,
+        "stalled": 30,
+        "unlimited": 42
+      },
+      "hidden_depletion_endpoint": [
+        0.17546386189482965,
+        0.07280670172631462,
+        8.673617379884035e-19,
+        0.33827824637048504,
+        0.014280374401088182,
+        -1.0,
+        0.9857196255989118
+      ]
+    },
+    "O2": {
+      "cases": 96,
+      "endpoint_max_error": 1.4799272918253337e-13,
+      "event_max_error": 3.2438496333497824e-12,
+      "max_n_residual": 6.938893903907228e-18,
+      "max_c_residual": 1.915134717478395e-14,
+      "max_continuation_error": 4.446443213623752e-14,
+      "counts": {
+        "depleted": 54,
+        "released": 11,
+        "stalled": 30,
+        "unlimited": 42
+      },
+      "hidden_depletion_endpoint": [
+        0.17546386189482965,
+        0.07280670172631462,
+        8.673617379884035e-19,
+        0.33827824637048504,
+        0.014280374401088182,
+        -1.0,
+        0.9857196255989118
+      ]
+    }
+  },
+  "cost_seconds": {
+    "compile": 1.4499786400047014,
+    "link": 0.05208611400303198,
+    "native": 0.5397678169974824,
+    "independent_validation": 2.849188559997856
+  },
+  "evidence_sha256": "ca8ab3f9778fad2aa3ae236d2c3308b9017b6590c70fc3cdd25f01f6e16158c1"
+}
