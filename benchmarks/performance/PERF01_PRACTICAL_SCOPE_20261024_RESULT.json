@@ -1,0 +1,62 @@
+{
+  "status": "REFERENCE_481_PASS_FLUX_UNSUPPORTED_CONFIGURATION_REJECTED",
+  "checkpoint": "af0e850093b086937772461bf9a6d4bbb3dc1dbc",
+  "events": [
+    {
+      "label": "reference",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/413315cd3a86/SWAP5/tools/solute/run_project.py",
+        "/tmp/perf01-practical-scope/project/project.swp",
+        "--bundle",
+        "/tmp/perf01-complete-O2",
+        "--temporal-tolerance",
+        ".001",
+        "--solute-transport",
+        "implicit_upwind",
+        "--water-conductivity",
+        "picard_continuous",
+        "--surface-exfiltration",
+        "historical_zero",
+        "--output",
+        "/tmp/perf01-practical-scope/reference"
+      ],
+      "seconds": 39.303937773999905,
+      "returncode": 0
+    },
+    {
+      "label": "flux",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "/workspace/scratch/413315cd3a86/SWAP5/tools/solute/run_project.py",
+        "/tmp/perf01-practical-scope/project/project.swp",
+        "--bundle",
+        "/tmp/perf01-complete-O2",
+        "--temporal-tolerance",
+        ".001",
+        "--solute-transport",
+        "implicit_upwind",
+        "--water-conductivity",
+        "picard_continuous",
+        "--surface-exfiltration",
+        "historical_zero",
+        "--output",
+        "/tmp/perf01-practical-scope/flux",
+        "--retain-step-proposal",
+        "--water-flux-temporal"
+      ],
+      "seconds": 0.042940656000155286,
+      "returncode": 1
+    }
+  ],
+  "reference": {
+    "days": 481,
+    "max_water_residual_cm": 1.7041923427996153e-14,
+    "runoff_cm": 69.13762485301866
+  },
+  "practical_option_qualified": false,
+  "speed_ratio": null,
+  "blocker": "Historical project uses implicit-upwind solute transport, continuous Picard conductivity and Boesten evaporation. Flux policy additionally restricts geometry to four cells totaling30cm. Qualification expansion required before practical use."
+}

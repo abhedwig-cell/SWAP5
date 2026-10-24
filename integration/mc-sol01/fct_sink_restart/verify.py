@@ -8,6 +8,14 @@ def assessor():
  s=(HERE.parent/'fct_pulse_restart/verify.py').read_text().split('def controls(files):')[0]
  s=replace(s,"assert len(r['closures']['pulse'])==10 and len(r['closures']['disk'])==181","assert len(r['closures']['disk'])==182")
  s=replace(s,'assert len(builds)==4','assert len(builds)==2')
+ s=replace(s,'        for p in sources:\n', '        archive_roots=set()\n        for p in sources:\n')
+ s=replace(s,"            if path.is_relative_to(ROOT):assert str(path.relative_to(ROOT)) in r['inputs']\n            else:assert path.name in generated", '''            matches=[p for p in r['inputs'] if path.as_posix().endswith('/'+p)]
+            if matches:
+                assert len(matches)==1
+                archive_roots.add(path.as_posix()[:-len(matches[0])])
+            else:
+                assert path.name in generated and path.parent==Path(cmd[-1]).parent.parent
+        assert len(archive_roots)==1''')
  s=replace(s,"    accuracy=runpy.run_path(str(HERE/'accuracy.py'))['compare'](r['pulse_cases'],lambda p:files[latest+'/'+p])","    assert not r['pulse_cases']")
  s=s.replace("HERE/'checkpoint.py'","HERE.parent/'fct_pulse_restart/checkpoint.py'")
  s=replace(s,"c['factor'],c['exponent']);","c['factor'],c['exponent'],c['uptake']);")
