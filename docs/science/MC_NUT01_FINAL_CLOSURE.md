@@ -1,5 +1,7 @@
 # MC-NUT01 final closure review
 
+Current work-package decision,24 October2026: **MC-NUT01 and MC-SOL01 are CLOSED WITH EXCLUSIONS** under the programme-owner's supported-historical-scope instruction. The [definitive closeout](MC_NUT01_SOL01_CLOSURE_20261024.md) and its linked decision/evidence receipt own that status and explicit exclusions. Earlier full-envelope BLOCKED/open statements below remain historical evidence or excluded-variant restrictions; they do not reopen the closed supported work packages. Full4.3.1 equivalence is not established, excluded functions are not migrated, and no whole master capability row is promoted. Production, defaults, scientific contracts and immutable evidence are unchanged.
+
 MC-NUT01 explicit successor/repeated-harvest output,23 October2026:
 PR1381 is admitted at `8dd2561c7f4207034c35e12b6e9c64d24db25213`,whole tree
 exactly qualified `5e82fd55ed9b8220ddd3b4fac6a2cb5e1ce79ed8`. The saved-output

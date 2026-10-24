@@ -1,5 +1,7 @@
 # MC-SOL01 final closure
 
+Current work-package decision,24 October2026: **MC-NUT01 and MC-SOL01 are CLOSED WITH EXCLUSIONS** under the programme-owner's supported-historical-scope instruction. The [definitive closeout](docs/science/MC_NUT01_SOL01_CLOSURE_20261024.md) and its linked decision/evidence receipt own that status and explicit exclusions. Earlier full-envelope BLOCKED/open statements below remain historical evidence or excluded-variant restrictions; they do not reopen the closed supported work packages. Full4.3.1 equivalence is not established, excluded functions are not migrated, and no whole master capability row is promoted. Production, defaults, scientific contracts and immutable evidence are unchanged.
+
 Current dynamic thermal pond/file admission, 21 October 2026: PR1348 is
 canonically admitted at `969aa918f0104546ec4ca2372feccf37b0145627`, source tree
 `2d8a57b8ac5de5712fd520bf040468e5899c0540`. The existing numeric endpoint heat,
