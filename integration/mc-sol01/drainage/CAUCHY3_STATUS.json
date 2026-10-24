@@ -10,13 +10,15 @@
   "interfaces_changed": "Private native input fields; existing immutable Cauchy control and existing profile-CALCGWL/DRAMET3 trace interfaces reused. No shared type/signature changes.",
   "owner_contract": "Extend joint_drainage_trace_valid to implicit bottom3 with prescribed-flux directional projection OFF; reuse existing profile CALCGWL/DRAMET3 and immutable Cauchy proposal. Frozen-K pilot passes6 days then rejects day7 with509 attempts and466 temporal rejections; no mass rejection. Select modified Picard for implicit Cauchy3 only; existing64 iterations, Reference, full/half, root/drainage, provider and hard-mass restrictions remain. Explicit Cauchy3 is excluded. No numerical/physical equations or tolerances change.",
   "invariants": ["Reference production authority", "single committed physical owner", "unchanged mass and transaction criteria", "immutable input and restart identity"],
-  "files": ["app/solute_crop/read_swp_project.f90", "tools/solute/run_project.py", "app/solute_project/main.f90"],
+  "files": ["app/solute_crop/read_swp_project.f90", "tools/solute/run_project.py", "app/solute_project/main.f90", "src/runtime/mod_fmr_serialized_reference_backend.f90", "src/adapter/mod_reference_richards_legacy_binding.f90"],
+  "pilot_O2_days": 8,
+  "pilot_result": "COMPLETE original BBC365-entry table, original DRA, constructed supported soil/simple crop, detailed historical rain, Boesten, root uptake, implicit upwind; normal .001 temporal and1e-10 hard mass gates unchanged. Full481 and O0/restart qualification still pending.",
   "test_selection": {
     "expected_seconds": 240,
     "selected": "Native original BBC input/count/calendar/rejection checks; real Cauchy/drainage481-day composition and365 split/restart O0/O2; unchanged prescribed-flux baseline preservation. Owning source assertions and exact merge postimage before admission.",
     "not_selected": ["highest low-air", "RossFast", "new1e-6", "unrelated full FCI", "unchanged NUT process recompilation"]
   },
-  "next_action": "Compile native O2 bundle; execute unchanged original full SWP rejection witness and bounded original BBC physical run; address actual failures without disabling required original options.",
+  "next_action": "Execute full481 O2 and O0/split365/restart/source-negative qualification; preserve unchanged old flux route and original full SWP rejection witness. No canonical admission before owning guards and exact merged tree pass.",
   "full_original_Andelst": false,
   "blockers": []
 }
