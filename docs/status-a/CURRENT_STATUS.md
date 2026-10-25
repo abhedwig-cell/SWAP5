@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+Native numeric heat/crop project is canonically admitted by PR1442 at
+actual merge `79179df7e91c4f29613cd5684cfefddaccbb5a47`; qualified/actual tree
+`5b5debbb80fbdf4b1794bae00f13144b8c698c61` matches exactly. Actual-merge
+source/raw owner,17 corruption controls, unchanged FSI35 source boundary and
+source/strict docs pass. Four native481-day heat/crop cases and four exact day365
+restarts are qualified; affected preservation was freshly executed. The narrow
+numeric heat/substep-Feddes admission guard is the only runtime delta; no equation,
+state layout or restart schema change. The supported subset is CLOSED WITH
+EXCLUSIONS in `integration/mc-sol01/drainage/PROJECT_HEAT_ADMISSION.json`.
+Boesten/drainage/Cauchy/Picard with heat and full original Andelst remain excluded.
+MC-NUT01/MC-SOL01 remain CLOSED WITH EXCLUSIONS; no hosted PASS/full migration claim.
+
 Native numeric heat now executes with the project crop calendar, accepted
 substep Feddes root stress, detailed rainfall and ordinary soil/pond evaporation.
 Four checked O0/O2 cases complete481 days with four exact day365 process restarts,

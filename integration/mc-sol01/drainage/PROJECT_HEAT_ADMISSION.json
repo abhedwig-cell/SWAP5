@@ -1,0 +1,144 @@
+{
+  "work_unit": "HIST-INTEGRATION01 native numeric heat/crop project",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1442,
+  "canonical_merge": "79179df7e91c4f29613cd5684cfefddaccbb5a47",
+  "first_parent": "3ebf19fad6027e174341302d64c22585d47b91bc",
+  "published_head": "4c1b8975d0eafaf85d4967c493cf14a0c8d0613c",
+  "qualified_complete_tree": "5b5debbb80fbdf4b1794bae00f13144b8c698c61",
+  "actual_complete_tree": "5b5debbb80fbdf4b1794bae00f13144b8c698c61",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_project_heat_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 1.5234377829983714,
+      "stdout_sha256": "f631eb9d136e5f604bdf473e0110e5a96a2bcf2ae00fece91ce898b862260438",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_project_heat_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 3.0063373379998666,
+      "stdout_sha256": "3f4b6b6675f765bff36e44516134ba183f63f41890ce1ec2bfd097def083e3c9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 16.00621851699907,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.2555644800013397,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/heat-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 15.754459104002308,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b0e4254ada5da2b34d91a794b61385fbefe41da2b28f1558a77060c6436e8a9d"
+    }
+  ],
+  "physical_qualification": {
+    "source_nodes": 12,
+    "heat_crop_cases": 4,
+    "days_per_case": 481,
+    "fresh_heat_process_restarts": 4,
+    "rejected_heat_processes": 16,
+    "water_max_cm": 1.6492016086111505e-14,
+    "solute_max_mg_cm2": 1.3133938381315602e-13,
+    "observed_heat_max_j_cm2": 1.9042545318370685e-12,
+    "current_project_preservation_cases": 4,
+    "current_column_cases": 12,
+    "current_preservation_restarts": 16,
+    "default_project_artifact_comparisons": 8,
+    "physical_equations_unchanged": true,
+    "runtime_change": "EXACT_NUMERIC_HEAT_SUBSTEP_FEDDES_GUARD_ONLY"
+  },
+  "O0_O2_exact": true,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/PROJECT_HEAT_EVIDENCE.tar.xz.b64",
+    "sha256": "1bcdeedb2382fd8ede6d516e9b478c6bc354316b6b713e6f9ace09d702360915",
+    "bytes": 4935084,
+    "members": 4974
+  },
+  "current_source_raw_controls": 17,
+  "closed_capabilities": [
+    "Original numeric heat texture/profile plus native daily weather mean air forcing on the exact project calendar",
+    "Constructed12-node original detailed-rain project with three simple crop periods, trial-beginning substep Feddes and ordinary soil/pond evaporation",
+    "Freundlich0.5/2 and source temperature-dependent decay: four O0/O2 cases complete481 days with four exact separate-process day365 thermal restarts",
+    "Fresh affected BBC481 project and source KSATEXM/hydrostatic heat column assertions, including sixteen preservation restarts and eight exact default project artifacts"
+  ],
+  "exclusions": [
+    "Boesten/heat",
+    "Native drainage/heat",
+    "Picard/heat",
+    "Full original Andelst macropore/heat/crop composition",
+    "SWBOTB1",
+    "Loose historical restart",
+    "Cauchy3 with heat",
+    "Analytic heat on native project route"
+  ],
+  "remaining_supported_scope_implementation_blockers": [],
+  "remaining_supported_scope_evidence_blockers": [],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "runtime_change": "Exact numeric-heat/accepted-water-trace/external-chemistry/frozen-conductivity substep-Feddes admission guard; every other runtime byte unchanged",
+  "physical_equations_unchanged": true,
+  "compiled_runtime_module_interface_exact": true,
+  "restart_schema_unchanged": true,
+  "full_original_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "energy_contract": "Existing1e-9 J/cm2 process energy gate at every heat step; observed_heat_residual_j_cm2 is maximum exposed last accepted step per rain segment, not a whole-day energy sum.",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current native O0/O2 and owning checks selected locally, no hosted PASS claimed; [skip ci] avoids unchanged broad suites.",
+  "hosted_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "preservation_selection": {
+    "affected_current_project": "Four BBC481 cases/four exact day365 restarts, full original source/raw assertions and eight exact default artifacts",
+    "affected_current_column": "Twelve KSATEXM/hydrostatic heat cases/twelve exact restarts, real original source import and incumbent exact outputs",
+    "unchanged_physics": "All scientific equations unchanged; exact whole-runtime source projection excludes only the new narrowly qualified admission guard",
+    "FSI35": "27 executable source dependencies unchanged; actual-merge source-only gate passed, no fresh native run",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "receipt_scope": "Actual-merge admission. Final receipt/status/docs do not alter scientific postimages or sealed evidence; source/raw owner reports qualification separately from admission."
+}

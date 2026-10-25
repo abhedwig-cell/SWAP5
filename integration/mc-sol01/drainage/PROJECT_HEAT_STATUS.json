@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 native numeric heat/crop project",
   "baseline": "3ebf19fad6027e174341302d64c22585d47b91bc",
-  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "Explicit native numeric heat on existing project route. Source texture/profile and daily original weather mean air temperature drive the unchanged restricted thermal provider. Existing crop rotation, substep root stress, detailed rain, ordinary pond/soil evaporation, typed heat/solute transaction and exact thermal restart owners are reused. No source physics/solver or restart schema change. Boesten, native drainage, Picard, snow/macropore and full original Andelst remain excluded. Existing runtime substep-Feddes exclusion is replaced only for numeric heat with accepted water trace, external chemistry and frozen conductivity. All equations and state layouts are unchanged; source guard projection binds the exact change.",
   "invariants": [
     2,
@@ -33,18 +33,18 @@
     "RossFast": "NOT_SELECTED"
   },
   "remaining_implementation_blockers": [],
-  "remaining_evidence_blockers": [
-    "Actual canonical merge/postimage validation"
-  ],
+  "remaining_evidence_blockers": [],
   "exclusions": [
     "Boesten/heat",
     "Native drainage/heat",
     "Picard/heat",
     "Full original Andelst macropore/heat/crop composition",
     "SWBOTB1",
-    "Loose historical restart"
+    "Loose historical restart",
+    "Cauchy3 with heat",
+    "Analytic heat on native project route"
   ],
-  "next_action": "Validate current source/raw controls and docs; integrate exact tree and verify actual merge",
+  "next_action": "Supported native numeric heat/crop project closed. Boesten/drainage/Cauchy/Picard/heat and full original macropore lifecycle remain separately excluded, never counted migrated.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/PROJECT_HEAT_EVIDENCE.tar.xz.b64",
     "sha256": "1bcdeedb2382fd8ede6d516e9b478c6bc354316b6b713e6f9ace09d702360915",
@@ -89,5 +89,7 @@
     "runtime_change": "EXACT_NUMERIC_HEAT_SUBSTEP_FEDDES_GUARD_ONLY"
   },
   "admission_record": "integration/mc-sol01/drainage/PROJECT_HEAT_ADMISSION.json",
-  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current native O0/O2 and owning checks selected locally, no hosted PASS claimed; [skip ci] avoids unchanged broad suites."
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current native O0/O2 and owning checks selected locally, no hosted PASS claimed; [skip ci] avoids unchanged broad suites.",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "canonical_merge": "79179df7e91c4f29613cd5684cfefddaccbb5a47"
 }
