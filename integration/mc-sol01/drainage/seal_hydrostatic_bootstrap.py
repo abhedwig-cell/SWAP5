@@ -9,7 +9,7 @@ def addtree(root,prefix):
   if p.suffix in ['.o','.mod','.a']or b.startswith(b'\x7fELF'):omitted[name]=dict(bytes=len(b),sha256=sha(b));continue
   files[name]=b
 for opt in ['O0','O2']:
- path=SCRATCH/('hydrostatic-qualified-'+opt);r=json.loads((path/'RESULT.json').read_text());assert r['status']=='HYDROSTATIC_SOURCE_HEAT_FILE_RESTART_AND_INCUMBENT_PASS';addtree(path,'proof-'+opt);addtree(SCRATCH/('hydrostatic-build-final-'+opt),'build-'+opt)
+ path=SCRATCH/('hydrostatic-qualified-v2-'+opt);r=json.loads((path/'RESULT.json').read_text());assert r['status']=='HYDROSTATIC_SOURCE_HEAT_FILE_RESTART_AND_INCUMBENT_PASS';addtree(path,'proof-'+opt);addtree(SCRATCH/('hydrostatic-build-complete-'+opt),'build-'+opt)
  for p,h in r['input_sha256'].items():
   b=(ROOT/p).read_bytes();assert sha(b)==h,p;files['executed/'+p]=b
  for name in ['incumbent-0.5','incumbent-1.0','incumbent-2.0','incumbent-water','incumbent-explicit-heat']:
@@ -18,6 +18,7 @@ for opt in ['O0','O2']:
   for p in r['results'][name]:files['incumbent-'+opt+'/'+name+'/'+p]=(path/'predecessor'/case/directory/p).read_bytes()
 for p in sorted(SCRATCH.glob('hydrostatic-proof*')):
  if p.is_dir():addtree(p,'earlier-rounds/'+p.name)
+for opt in ['O0','O2']:addtree(SCRATCH/('hydrostatic-qualified-'+opt),'earlier-rounds/hydrostatic-qualified-'+opt)
 for p in sorted(SCRATCH.glob('hydrostatic-build*')):
  if p.is_dir()and'-final-'not in p.name:addtree(p,'earlier-rounds/'+p.name)
 files['parent/proof.json']=(SCRATCH/'hydrostatic-parent-proof.json').read_bytes();files['parent/owner.py']=subprocess.check_output(['git','show',BASE+':integration/audits/verify_native_heat_bootstrap_current.py'],cwd=ROOT);files['parent/commit.raw']=subprocess.check_output(['git','cat-file','commit',BASE],cwd=ROOT)

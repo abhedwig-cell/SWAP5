@@ -38,6 +38,8 @@ for name,g,exponent in [('below',-4.,.5),('intersect',-2.,1.),('shallow',-.5,2.)
  case=out/('app-'+name);case.mkdir();source=case/'input.nml';swp=case/'source.swp';swp.write_text(hydro(g).replace('FREXP=0.5','FREXP='+str(exponent)));source.write_text(nmlbase.replace('initial_pond_cm=.5','initial_pond_cm=0.'))
  common=[sys.executable,'-B',runner,'--exe',build/'swap5_solute_column','--input',source,'--swp',swp]
  for label,extra in [('full',[]),('split',['--stop-after','1']),('resumed',['--restart',case/'split'])]:run(common+['--output',case/label]+extra,name+'-'+label)
+ for label in ['full','split','resumed']:
+  stdout=(case/label/'stdout').read_text();match=re.search(r'SWP_HYDROSTATIC_INITIAL_GROUNDWATER_CM=\s*([-+\d.Ee]+)',stdout);assert match and float(match[1])==g,'committed initial groundwater differs from source GWLI'
  names=['restart.bin','state.csv','temperature.csv','endpoint.csv']
  for f in names:assert(case/'full'/f).read_bytes()==(case/'resumed'/f).read_bytes(),(name,f)
  budget=read(case/'full/budget.csv');assert len(budget)==3 and read(case/'resumed/budget.csv')==budget[1:]
