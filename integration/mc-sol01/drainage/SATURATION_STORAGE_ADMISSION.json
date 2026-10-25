@@ -1,0 +1,128 @@
+{
+  "work_unit": "HIST-INTEGRATION01 rational saturation storage repair",
+  "baseline": "3f1b2e5eca5881e5e6739686aa1338dc9ebd5267",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Stable rational saturation-crossing storage and original112-node30-day matrix interaction; not full original migration",
+  "pr": 1445,
+  "actual_merge": "5f56919be19ffb692ae5a5162507263c38c46743",
+  "published_head": "7517383db55b76e4bc9bcaae9dcc2889e5b50b7d",
+  "published_tree": "7f1a1862441a33578a47ab5425d7207c0f8bd9d5",
+  "actual_tree": "7f1a1862441a33578a47ab5425d7207c0f8bd9d5",
+  "qualified_complete_tree_exact": true,
+  "physical_results": {
+    "cases": 2,
+    "days": 30,
+    "nodes": 112,
+    "source_layers": 8,
+    "exact_day9_restarts": 2,
+    "direct_real128_cases": 1728,
+    "component_link_provider_objects": 2,
+    "reused_native_providers_per_optimization": 192,
+    "public_modules_exact": true,
+    "water_max_cm": 2.839395385478838e-14,
+    "solute_max_mg_cm2": 2.5951463200613034e-13,
+    "observed_heat_max_j_cm2": 2.1259438653942198e-11
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/SATURATION_STORAGE_EVIDENCE.tar.xz.b64",
+    "sha256": "a2aa00db184fef0f6301bb1112c0cf56bcb03cdbc0c4e6b1316c90389c1bf129",
+    "bytes": 1288420,
+    "members": 543
+  },
+  "preservation": {
+    "path": "integration/mc-sol01/drainage/SATURATION_STORAGE_PRESERVATION.json",
+    "sha256": "be9fecb0d2db51bd4754998930a63e410b8d34bb62a32f33471d8e0c1fbf189d",
+    "current_FCI93_FSI35_native_O0_O2": true
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "5f56919be19ffb692ae5a5162507263c38c46743",
+    "actual_tree": "7f1a1862441a33578a47ab5425d7207c0f8bd9d5",
+    "qualified_complete_tree_exact": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "owner",
+        "command": [
+          "python",
+          "-B",
+          "integration/audits/verify_saturation_storage_current.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.45677633000013884,
+        "stdout_sha256": "384cabc6fd5bc98644a95ff7628c0789d0992e4db4359f6505fa771010044948",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "controls",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json; print(json.dumps(runpy.run_path('integration/audits/verify_saturation_storage_current.py')['self_test']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.9181992810008524,
+        "stdout_sha256": "05fa49ce3615631ee3d479efd75c594b54c805c241c07abb133d8f2f51c492d9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fsi35_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json; print(json.dumps(runpy.run_path('integration/audits/verify_saturation_storage_current.py')['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.4280706610006746,
+        "stdout_sha256": "e918f3625e9b4b5edaa72f058bc5d6c329d3bc2c3b591a501ce23b3b0b1ef19d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.23737738599811564,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_docs",
+        "command": [
+          "python",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/f2a33ff85190/storage-actual-site"
+        ],
+        "returncode": 0,
+        "seconds": 15.036967133997678,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e06e379236104e86961b8376d323e390b32aa1b750511067fac698113c6a5240"
+      }
+    ]
+  },
+  "production_change": "One guarded arithmetic branch in existing MvG provider; identical retention equation",
+  "solver_equations_tolerances_defaults_and_restart_unchanged": true,
+  "full481_qualified": false,
+  "full_original_Andelst": false,
+  "exclusions": [
+    "Full481-day original native acceptance remains unqualified; censored attempts are not PASS",
+    "Original native macro/Rutter composition remains excluded and unmigrated",
+    "Supplied chemistry fixture is not original SWSOLU0 reference equivalence",
+    "Outside guarded continuous/rational/nonelastic crossing the provider keeps predecessor arithmetic"
+  ],
+  "supported_work_packages": {
+    "MC-NUT01": "CLOSED WITH EXCLUSIONS",
+    "MC-SOL01": "CLOSED WITH EXCLUSIONS"
+  },
+  "supported_closure_authority": "integration/mc-sol01/MC_NUT01_SOL01_CLOSURE_20261024.json",
+  "hosted_checks": "NOT_SELECTED_IMPACT: actual current local scientific and owning native O0/O2 gates; no hosted PASS",
+  "historical_counterexample": "PR1444 remains accurate predecessor evidence. Its day10 rejection is resolved for the bounded current30-day interaction."
+}

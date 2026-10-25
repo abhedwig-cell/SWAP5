@@ -1,12 +1,12 @@
 {
   "work_unit": "HIST-INTEGRATION01 rational saturation storage repair",
   "baseline": "3f1b2e5eca5881e5e6739686aa1338dc9ebd5267",
-  "stage": "SOURCE_BOUND_BOUNDED_QUALIFICATION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "production_delta": [
     "src/solver/mod_b110_default_mvg_provider.f90"
   ],
@@ -17,11 +17,9 @@
     21,
     23
   ],
-  "next_action": "Run current owning controls and affected F-SI35, integrate exact tree and verify actual merge",
+  "next_action": "Supported arithmetic repair is closed. Do not count excluded macro/Rutter or full481 original application as migrated.",
   "recovery_point": "Pinned canonical plus exact provider arithmetic repair and contract",
-  "remaining_blockers": [
-    "Actual canonical admission and merge/postimage checks"
-  ],
+  "remaining_blockers": [],
   "evidence": {
     "path": "integration/mc-sol01/drainage/SATURATION_STORAGE_EVIDENCE.tar.xz.b64",
     "sha256": "a2aa00db184fef0f6301bb1112c0cf56bcb03cdbc0c4e6b1316c90389c1bf129",
@@ -63,5 +61,13 @@
   },
   "full481_qualified": false,
   "full_original_Andelst": false,
-  "admission_record": "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json"
+  "admission_record": "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json",
+  "actual_merge": "5f56919be19ffb692ae5a5162507263c38c46743",
+  "actual_tree": "7f1a1862441a33578a47ab5425d7207c0f8bd9d5",
+  "preservation_record": {
+    "path": "integration/mc-sol01/drainage/SATURATION_STORAGE_PRESERVATION.json",
+    "sha256": "be9fecb0d2db51bd4754998930a63e410b8d34bb62a32f33471d8e0c1fbf189d",
+    "current_FCI93_FSI35_native_O0_O2": true
+  },
+  "last_reconciled_head": "5f56919be19ffb692ae5a5162507263c38c46743"
 }
