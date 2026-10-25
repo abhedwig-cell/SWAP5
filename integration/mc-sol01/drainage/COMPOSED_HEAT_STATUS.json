@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 numeric heat/Boesten/drainage/Cauchy project",
   "baseline": "d6378c7ac492a9e051b04468b814be6d1d54d121",
-  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "Extend existing numeric heat joint transaction to the existing Boesten physical state family, DRAMET3/Cauchy and explicit Picard choices. Persist exact SPEV/SAEV together with heat via additive S5PT0002 payload; original S5PT0001 and nonheat restarts unchanged. Reuse all equations and existing state owners. No new physical model or kernel state type.",
   "interfaces_changed": "Existing Boesten constructor gains optional parameters argument for certified initial heat identity; existing Boesten restart state family accepts its already inherited numeric heat payload. Thermal file reader/writer recognizes additive Boesten+heat tag S5PT0002, preserving old tags/bytes.",
   "invariants": [
@@ -29,9 +29,7 @@
     "RossFast": "NOT_SELECTED"
   },
   "remaining_implementation_blockers": [],
-  "remaining_evidence_blockers": [
-    "Actual canonical merge/postimage validation"
-  ],
+  "remaining_evidence_blockers": [],
   "exclusions": [
     "Full original native macropore/heat/crop lifecycle",
     "Analytic heat",
@@ -40,7 +38,7 @@
     "Loose historical restart",
     "Active KSATEXM/Picard"
   ],
-  "next_action": "Validate source/raw owner and docs; integrate exact tree and verify actual canonical merge",
+  "next_action": "Supported composed numeric heat/Boesten/DRAMET3/Cauchy/Picard project closed. Full original native macropore lifecycle and remaining excluded variants stay separate, never counted migrated.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/COMPOSED_HEAT_EVIDENCE.tar.xz.b64",
     "sha256": "c8728d0ecaefc8d9cba778ef14d69fcacdcbce7e6edb0628b391785afa876bbb",
@@ -109,5 +107,7 @@
     }
   },
   "admission_record": "integration/mc-sol01/drainage/COMPOSED_HEAT_ADMISSION.json",
-  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current local O0/O2 native qualification and owning source gates; [skip ci] avoids unchanged broad suites, no hosted PASS claimed."
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current local O0/O2 native qualification and owning source gates; [skip ci] avoids unchanged broad suites, no hosted PASS claimed.",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "canonical_merge": "bb98505dd243f39198a8aace16362b7e0dbab762"
 }

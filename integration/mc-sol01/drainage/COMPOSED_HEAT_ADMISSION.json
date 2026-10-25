@@ -1,0 +1,161 @@
+{
+  "work_unit": "HIST-INTEGRATION01 numeric heat/Boesten/drainage/Cauchy project",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1443,
+  "canonical_merge": "bb98505dd243f39198a8aace16362b7e0dbab762",
+  "first_parent": "d6378c7ac492a9e051b04468b814be6d1d54d121",
+  "published_head": "ec8c8a631b163c01a6eb3a16c9feb48e96d9453e",
+  "qualified_complete_tree": "e9fb38ca3817f32009c267109189cd9db3244259",
+  "actual_complete_tree": "e9fb38ca3817f32009c267109189cd9db3244259",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_composed_heat_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 2.156889976002276,
+      "stdout_sha256": "af53578df4c38bdd95072866a1eaf8bd8debf00fe77e2c0637c35af71e1550d3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_composed_heat_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 7.626601848001883,
+      "stdout_sha256": "9517b846db69afcd9ddf8f171716fb201368793c745dcd30181aefb95474699a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 18.796047443000134,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.2524821320002957,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/composed-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 21.653556725999806,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "28a7640cfd3356a1fe10f1a4711b926325c9413fc72553ea5432ff2e9c77c70d"
+    }
+  ],
+  "physical_qualification": {
+    "source_nodes": 12,
+    "cases": 4,
+    "days_per_case": 481,
+    "exact_restarts": 4,
+    "typed_pair_controls": 14,
+    "real_joint_rollback_retry_cases": 2,
+    "rejected_project_processes": 16,
+    "water_max_cm": 1.3545154581295904e-13,
+    "solute_max_mg_cm2": 6.468436897222318e-14,
+    "observed_heat_max_j_cm2": 1.0862422072932532e-12,
+    "fresh_preservation_cases": 20,
+    "fresh_preservation_restarts": 20,
+    "old_thermal_format_exact": true,
+    "equations_unchanged": true,
+    "committed_boesten_pair": {
+      "full": [
+        0.3829205158310727,
+        0.3829205158310727
+      ],
+      "split": [
+        0.08824346999999448,
+        0.08824346999999448
+      ],
+      "resumed": [
+        0.3829205158310727,
+        0.3829205158310727
+      ]
+    }
+  },
+  "O0_O2_exact": true,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/COMPOSED_HEAT_EVIDENCE.tar.xz.b64",
+    "sha256": "c8728d0ecaefc8d9cba778ef14d69fcacdcbce7e6edb0628b391785afa876bbb",
+    "bytes": 4228480,
+    "members": 5649
+  },
+  "current_source_raw_controls": 24,
+  "closed_capabilities": [
+    "Native numeric heat with existing Boesten evaporation and evolving SPEV/SAEV under the existing state owner",
+    "DRAMET3 drainage plus implicit source BBC/Cauchy3 and explicit Picard continuous conductivity with heat and trial-beginning substep Feddes",
+    "Constructed12-node original detailed weather/DRA/BBC and three simple crop periods, source temperature-dependent decay and Freundlich0.5/2: four checked481-day cases with four exact independent-process day365 restarts",
+    "Additive S5PT0002 persists exact heat and Boesten pair; original S5PT0001 heat-project outputs and nonheat generations remain byte exact",
+    "Real staged chemical-overdraw rollback retains water/heat/Boesten generation exactly and smaller retry advances; initialized destinations and old nonthermal writer cannot lose heat"
+  ],
+  "exclusions": [
+    "Full original native macropore/heat/crop lifecycle",
+    "Analytic heat",
+    "Snow/frost compositions",
+    "SWBOTB1",
+    "Loose historical restart",
+    "Active KSATEXM/Picard"
+  ],
+  "remaining_supported_scope_implementation_blockers": [],
+  "remaining_supported_scope_evidence_blockers": [],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "physical_equations_unchanged": true,
+  "kernel_state_classes_unchanged": true,
+  "kernel_restart_schema_unchanged": true,
+  "legacy_file_formats_unchanged": true,
+  "additive_file_format": "S5PT0002: existing Boesten template, exact SPEV/SAEV plus heat, CRC and immutable COFRED/heat/chemistry binding",
+  "source_compatible_constructor_extension": "Optional final parameters argument; all affected compiled consumers rebuilt",
+  "project_link_shared_objects": 193,
+  "project_link_source_units": 2,
+  "full_original_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "energy_contract": "Existing1e-9 J/cm2 energy gate applies per step. Observed heat residual is maximum exposed last accepted step per rain segment, not a whole-day energy sum.",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current local O0/O2 native qualification and owning source gates; [skip ci] avoids unchanged broad suites, no hosted PASS claimed.",
+  "hosted_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "preservation_selection": {
+    "affected_current_owners": "Twenty fresh heat-project/nonheat BBC/column cases and twenty exact restarts; full original scientific raw assertions retained",
+    "old_heat_format": "All four previous481-day heat-project physical outputs and incumbent column outputs exact; old S5PT0001 bytes unchanged",
+    "negative_domain_reconciliation": "Previously unqualified Boesten/drainage/Picard heat cases now positive composed gates. Invalid COFRED, extended drainage and Picard/proposal remain negative; no old rejection is presented as migration",
+    "FSI35": "27 executable source dependencies unchanged; actual-merge source-only gate passed, no fresh native run",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "receipt_scope": "Actual-merge admission. Final receipt/status/docs do not alter scientific postimages or sealed proof. Qualification owner reports qualification separately from admission."
+}

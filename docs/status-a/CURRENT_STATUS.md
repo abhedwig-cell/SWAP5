@@ -1,5 +1,18 @@
 # SWAP5 Status-A current status
 
+Boesten/drainage/Cauchy/Picard with numeric heat is canonically admitted by
+PR1443 at actual merge `bb98505dd243f39198a8aace16362b7e0dbab762`; qualified/
+actual tree `e9fb38ca3817f32009c267109189cd9db3244259` matches exactly. Actual-
+merge source/raw owner,24 corruption controls, unchanged FSI35 source boundary
+and source/strict docs pass. Four481-day cases/four exact day365 restarts,
+fourteen typed pair controls and two real full-state rollback/retry cases pass.
+Additive S5PT0002 preserves heat and evolving SPEV/SAEV; old S5PT0001 remains
+byte exact. `integration/mc-sol01/drainage/COMPOSED_HEAT_ADMISSION.json` closes
+this subset WITH EXCLUSIONS and supersedes the earlier Boesten/drainage/Cauchy/
+Picard heat exclusions only inside the qualified constructed project domain.
+The full original native macropore/heat/crop lifecycle is still excluded;
+MC-NUT01/MC-SOL01 remain CLOSED WITH EXCLUSIONS, without full migration credit.
+
 Numeric heat now composes with Boesten evaporation, DRAMET3 drainage and
 implicit BBC/Cauchy3/Picard on the existing native twelve-node crop project.
 Four checked O0/O2 cases complete481 days with four exact day365 restarts;
