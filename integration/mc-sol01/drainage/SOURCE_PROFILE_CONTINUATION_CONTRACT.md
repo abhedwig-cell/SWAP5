@@ -35,3 +35,7 @@ against365->366->367 in separate native processes, including second-period
 reactivation. Compare both daily budget rows and final restart/state/endpoint/
 temperature bytes exactly. This is a two-day overlap, not a duplicate481-day
 qualification and not full original crop-model equivalence.
+
+Actual interruption: workspace maintenance removed the final unpersisted run and
+exact executable/compiler objects. Qualify only the surviving367-day chain and
+exact year replay; retain481 as unqualified. No model rejection is inferred.

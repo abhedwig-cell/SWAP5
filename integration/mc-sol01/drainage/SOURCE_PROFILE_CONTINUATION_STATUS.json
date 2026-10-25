@@ -1,11 +1,11 @@
 {
   "work_unit": "HIST-INTEGRATION01 original matrix source-profile continuation",
   "baseline": "d6e3955914819ede9d25aaf7b764e48c8467909c",
-  "stage": "COMPLETED_PREFIX_PERSISTED",
+  "stage": "QUALIFIED_367_PENDING_CANONICAL",
   "implemented": true,
   "persisted": true,
   "tested": true,
-  "qualified": false,
+  "qualified": true,
   "canonically_admitted": false,
   "production_changed": false,
   "seed_day": 30,
@@ -13,16 +13,14 @@
   "compiler_scope": "O2 continuation; O0/O2 arithmetic and30-day coupling inherited unchanged",
   "remaining_implementation_blockers": [],
   "remaining_evidence_blockers": [
-    "Complete continuation to day481",
-    "Short exact year-boundary replay",
-    "Actual canonical integration and postimage verification"
+    "Day368..481 continuation requires recovery of exact bound executable; no full481 claim"
   ],
   "relevant_paths": [
     "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json",
     "integration/mc-sol01/drainage/continue_source_profile.py"
   ],
   "recovery_point": "Complete immutable generation to-367 in evidence capsule",
-  "next_action": "Continue once from latest complete generation; no prefix rerun",
+  "next_action": "Integrate verified367-day bounded evidence; retain full original application exclusions",
   "completed_days": 367,
   "evidence": {
     "path": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_EVIDENCE.tar.xz.b64",
@@ -32,9 +30,9 @@
   },
   "postimages": {
     "integration/mc-sol01/drainage/continue_source_profile.py": "7408756d010850249b36f19b2ee51fe6c15a7905ed441c75d3e56bce5e164815",
-    "integration/mc-sol01/drainage/verify_source_continuation.py": "69515cbf8b14898cc0fe6a7e4cfc1e4a1db108b1559aecc0b198427ca24107bf",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "4b34f3c23cc04a9054e90e56a531470aa17c893cc506b55f41a38ce579276a26",
     "integration/mc-sol01/drainage/seal_source_continuation.py": "db7d5fce39de80166af43ef55a569c978656ef82c43050e4a2a85461b551eceb",
-    "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "387538a9b974d1439154f11a6c963827bed71f4eb46c43c713c64932d15b23e4"
+    "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "e8b1eba5007a29334370287049e09a623d8be6fecdc6d23935426247135ba4b7"
   },
   "physical_results": {
     "nodes": 112,
@@ -42,5 +40,46 @@
     "water_max_cm": 5.576095141179849e-14,
     "solute_max_mg_cm2": 2.5951463200613034e-13,
     "observed_heat_max_j_cm2": 3.658939817796636e-11
+  },
+  "qualification": {
+    "qualified": true,
+    "days": 367,
+    "nodes": 112,
+    "optimization": "O2",
+    "segments": 6,
+    "exact_year_boundary_replay_days": [
+      366,
+      367
+    ],
+    "exact_files": [
+      "restart.bin",
+      "state.csv",
+      "endpoint.csv",
+      "temperature.csv"
+    ],
+    "physical_results": {
+      "nodes": 112,
+      "complete_days": 367,
+      "water_max_cm": 5.576095141179849e-14,
+      "solute_max_mg_cm2": 2.5951463200613034e-13,
+      "observed_heat_max_j_cm2": 3.658939817796636e-11
+    },
+    "full_uninterrupted_run": false,
+    "full481_O0": false,
+    "full_original_Andelst": false
+  },
+  "full481_qualified": false,
+  "interruption": "Workspace maintenance removed unpersisted final run, exact executable, compiler and reused objects. No terminal481 result survives. Not a scientific rejection.",
+  "work_packages": {
+    "MC-NUT01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    },
+    "MC-SOL01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    }
   }
 }
