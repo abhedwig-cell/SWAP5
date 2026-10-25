@@ -85,6 +85,8 @@ program swap5_native_project_column
   logical :: water_flux_temporal=.false.
   type(water_flux_temporal_policy_t)::water_flux_policy
   logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.
+  logical :: swp_native_hydraulics=.false.
+  real(real64) :: swp_source_pond=-1d0,swp_source_groundwater=-2d0
   logical :: historical_zero_solute_exfiltration=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
@@ -140,7 +142,7 @@ program swap5_native_project_column
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
-    historical_zero_solute_exfiltration, &
+    historical_zero_solute_exfiltration,swp_native_hydraulics, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
     cauchy3_bottom,cauchy3_half_cell,cauchy3_count,cauchy3_resistance,cauchy3_dates,cauchy3_heads, &
     bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred, &
@@ -191,12 +193,26 @@ program swap5_native_project_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
+  call require(.not.swp_native_hydraulics.or.swp_water_bootstrap,'native hydraulics requires SWP water bootstrap')
   if(swp_water_bootstrap)then
     call require(len_trim(legacy_swp)>0,'SWP water bootstrap requires --swp')
     call require(schema==2.and.nodes==0.and.all(cell_thickness_cm==0d0),'SWP water bootstrap forbids a second grid')
     call require(initial_head==-75d0.and.theta_r==.032d0.and.theta_s==.423d0.and.ksat_cm_day==.00475d0.and. &
       alpha_per_cm==.0135d0.and.vg_n==1.455d0.and.pore_l==.365d0,'SWP water bootstrap forbids hydraulic overrides')
-    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen)
+    if(swp_native_hydraulics)then
+      ! The project adapter has already resolved and validated the external BBC.
+      ! Initialization uses that same physical bottom owner, without a second file.
+      call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen, &
+        source_pond=swp_source_pond,initial_bottom_mode=merge(3,2,cauchy3_bottom), &
+        source_groundwater=swp_source_groundwater,allow_ksatexm=.true.)
+      if(swp_source_pond>=0d0)then
+        call require(initial_pond_cm==0d0,'SWINCO2 forbids a second initial pond depth')
+        call require(any(swp_heads < -1d-5),'fully saturated SWINCO2 project execution is not qualified')
+        initial_pond_cm=swp_source_pond
+      end if
+    else
+      call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen)
+    end if
   end if
   call require(nodes>=2.and.nodes<=MAX_NODES,'invalid node count')
   call require(all(ieee_is_finite(cell_thickness_cm)),'nonfinite grid')
@@ -338,6 +354,7 @@ program swap5_native_project_column
   p%cofgen(10,:)=ksat_cm_day;p%cofgen(11,:)=0.999d0;p%cofgen(12,:)=0.99d0*ksat_cm_day
   p%cofgen(22,:)=-1d6;p%cofgen(23,:)=1d-12
   if(swp_water_bootstrap)p%cofgen=swp_cofgen
+  p%ksatexm_extension_active=swp_native_hydraulics.and.any(p%cofgen(10,:)>p%cofgen(3,:))
   p%bottom_mode=2;p%swkimpl=0;p%swkmean=1;p%max_iterations=8;p%max_backtracking=4
   if(cauchy3_bottom)p%bottom_mode=3
   p%picard_conductivity_iteration=picard_conductivity_iteration
@@ -346,7 +363,7 @@ program swap5_native_project_column
   initial%active_nodes=numnod;initial%pressure_head=spread(initial_head,1,numnod)
   if(swp_water_bootstrap)initial%pressure_head=swp_heads
   allocate(initial%water_content(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
-  call initialize_b110_default_mvg_parameters(hp,p%cofgen)
+  call initialize_b110_default_mvg_parameters(hp,p%cofgen,enable_ksatexm_extension=p%ksatexm_extension_active)
   if(continuous_mvg)then
     hp%continuous_saturation_conductivity=.true.
     p%prepared_default_mvg=hp;p%prepared_default_mvg_available=.true.
@@ -354,6 +371,7 @@ program swap5_native_project_column
   call bind_b110_default_mvg_provider(provider,hp,ends_day(1))
   call provider%evaluate(initial%pressure_head,initial%water_content,conductivity,capacity,dkdh)
   initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0
+  if(swp_native_hydraulics)initial%groundwater_level=swp_source_groundwater
   forcing%top_flux=0d0;forcing%top_head=initial_head;forcing%bottom_flux=bottom_up_cm_day
   if(seasonal_bottom)then
     call require(.not.cauchy3_bottom,'mutually exclusive bottom controls')

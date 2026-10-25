@@ -27,7 +27,7 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False):
  if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
   raise ValueError('water/flux temporal metric requires frozen native Reference step proposals')
  if water_flux_temporal and temporal_tolerance!=.001:
@@ -110,6 +110,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  first_root=prepared[0]['root'].strip()
  if drainage:lines.insert(lines.index('&surface')-1,drainage.rstrip())
  if bottom_control:lines.insert(lines.index('&surface')-1,bottom_control.rstrip())
+ if native_hydraulics:lines.insert(lines.index('&surface')-1,' swp_native_hydraulics=.true.')
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
@@ -144,6 +145,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if seasonal:audit['seasonal_bottom']=dict(seasonal,year_starts=years)
  if boesten:audit['boesten_cofred']=boesten[0]
  if water_flux_temporal:audit['water_flux_temporal']=True
+ if native_hydraulics:audit['native_hydraulics']=True
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration
@@ -162,10 +164,11 @@ def main():
  ap.add_argument('--water-conductivity',choices=['frozen','picard','picard_continuous'],default='frozen')
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
  ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry')
+ ap.add_argument('--native-hydraulics',action='store_true',help='Explicit source hydrostatic/KSATEXM bootstrap with the prepared native bottom owner')
  ap.add_argument('--water-flux-temporal',action='store_true',help='Optional changed-accuracy water-state/flux metric; requires --retain-step-proposal and --temporal-tolerance .001');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
- document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal)
+ document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal,a.native_hydraulics)
  # Keep all audit information inside the already-bound immutable input document;
  # never add an unbound sidecar to the admitted atomic output inventory.
  encoded=base64.b64encode(json.dumps(audit,sort_keys=True).encode()).decode()
