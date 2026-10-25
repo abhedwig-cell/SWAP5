@@ -1,0 +1,79 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original KSATEXM input",
+  "baseline": "7afa86335ed18c1f2365151d16f39385bf39d9e7",
+  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "qualified": true,
+  "canonically_admitted": false,
+  "contract": "Explicit default-false swp_ksatexm_bootstrap activates original input KSATEXM construction (readswap hthr=-2 cm) and existing provider/runtime flag. No source physics, solver policy or restart schema changes. Old input excludes KSATEXM unless explicitly selected. Values at or below KSATFIT retain default MvG source behavior. Source pond/GWLI semantics remain. Explicit opt-in also selects original LEXP range [-25,50] already read by TTUTIL and supported by unchanged provider. Original Andelst LEXP includes -14.455; its KSATEXM equals KSATFIT in every layer, so it qualifies the source no-op branch, not active enhanced conductivity. Original112-node real-provider checks are required; no full original application claim.",
+  "invariants": [
+    2,
+    3,
+    7,
+    13,
+    21,
+    23,
+    25,
+    29
+  ],
+  "test_selection": {
+    "changed_inputs": [
+      "app/solute_column/read_swp_water.f90",
+      "app/solute_column/main.f90"
+    ],
+    "immediate": "Original-input component mapping and actual existing KSATEXM provider at O0/O2",
+    "composition": "Real explicit file water/heat/solute budgets, separate process restart and unchanged old-route artifacts",
+    "expected_seconds": 250,
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "exclusions": [
+    "Full original Andelst macro/drainage/crop lifecycle",
+    "External BBC application staging",
+    "Fully saturated file initialization",
+    "Elasticity or power-tail combinations"
+  ],
+  "next_action": "Validate sealed source/raw controls and docs, integrate exact tree, verify actual merge",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/KSATEXM_INPUT_EVIDENCE.tar.xz.b64",
+    "sha256": "26229259cf06b206205b997caf3e9f0a062a57d9c40721f44f266302e1d847d5",
+    "bytes": 2216500,
+    "members": 3726
+  },
+  "scientific_delta": {
+    "app/solute_column/main.f90": "M",
+    "app/solute_column/read_swp_water.f90": "M",
+    "examples/solute_column/ksatexm_heat.nml": "A",
+    "examples/solute_column/ksatexm_heat.swp": "A",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "M",
+    "tests/nut-sol/test_ksatexm_input.f90": "A",
+    "integration/audits/verify_ksatexm_input_current.py": "A"
+  },
+  "postimages": {
+    "app/solute_column/main.f90": "68c01224038d79f9012640d048e695b4b9205f816d3e84f96366908c1da3f64d",
+    "app/solute_column/read_swp_water.f90": "fe5b81f295eae92da2a8c7a2c348f16a1a77d52a8e24f4f4ce22b629fb86af8d",
+    "examples/solute_column/ksatexm_heat.nml": "8da5a1ac9cabe51dc658efa9f9a0427ba9a1c7ab2740d61babda8627871bed34",
+    "examples/solute_column/ksatexm_heat.swp": "ce10500461ef83543c25be3a607c1f0a00f395c79e349d48daa9d9af70c43d19",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "5a12239fa0af4f5821185d023b2bd93b4e0e41a74d653bc4a98d41d649d3ac34",
+    "tests/nut-sol/test_ksatexm_input.f90": "f4c37388aa575baed5f61f969811494741a35dc125f9d7c0aaab2d1e46aa73b9",
+    "integration/audits/verify_ksatexm_input_current.py": "3614610831d8b5e9f4d222cd15a4acacf04f9cfb165afa8a3422f2c3300cece1",
+    "integration/mc-sol01/drainage/qualify_ksatexm_input.py": "8fee5b891868d486237a6623b9f7b24b85593f14378306b9d3266d20b84757b5",
+    "integration/mc-sol01/drainage/seal_ksatexm_input.py": "598000dadcb0ff5a037526651a5831207421a23abf531ed37831578842aeeaf0"
+  },
+  "physical_results": {
+    "source_nodes": 112,
+    "source_original_KSATEXM_equals_KSATFIT": true,
+    "coupled_cases": 6,
+    "fresh_process_restarts": 6,
+    "new_rejected_processes": 22,
+    "water_max_cm": 2.347297703431117e-16,
+    "solute_max_mg_cm2": 5.0949099539981946e-15,
+    "inherited_current_cases": 6,
+    "inherited_current_restarts": 6,
+    "inherited_current_rejections": 38,
+    "incumbent_artifact_comparisons": 10,
+    "all_process_solver_sources_unchanged": true
+  },
+  "admission_record": "integration/mc-sol01/drainage/KSATEXM_INPUT_ADMISSION.json",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current O0/O2 native and source qualification run locally; [skip ci] avoids repeated unchanged broad suites, no hosted PASS claimed."
+}

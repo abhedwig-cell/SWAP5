@@ -38,12 +38,15 @@ contains
     source_pond=max(gwli,0d0)
   end subroutine initialize_column_hydrostatic_water
 
-  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode,source_groundwater)
+  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode,source_groundwater,allow_ksatexm)
     character(*),intent(in)::path
     integer,intent(out)::nodes
     real(real64),intent(out)::width(:)
     real(real64),allocatable,intent(out)::heads(:),cofgen(:,:)
     real(real64),optional,intent(out)::source_pond
+    logical,optional,intent(in)::allow_ksatexm
+    logical::ksatexm_selected
+    real(real64)::ksatexm(256),help,relsatthr,term1,ksatthr
     integer,optional,intent(in)::initial_bottom_mode
     real(real64),optional,intent(out)::source_groundwater
     integer::nsub,nlay,i,j,k,mode,nhead,pos,initial_mode,bottom_mode
@@ -79,7 +82,9 @@ contains
       call rdsinr('swsophy',-1,1,mode);call require(mode==0,'hydraulic tables not selected')
     end if
     call require(.not.rdinqr('swap_soils_db'),'external soil database not selected')
-    call require(.not.rdinqr('ksatexm'),'KSATEXM extension not selected')
+    ksatexm_selected=.false.
+    if(present(allow_ksatexm))ksatexm_selected=allow_ksatexm
+    call require(.not.rdinqr('ksatexm').or.ksatexm_selected,'KSATEXM extension not selected')
     call require(.not.rdinqr('h_power'),'conductivity power tail not selected')
     call require(.not.rdinqr('elas'),'elastic storage not selected')
     call rdinne('isublay',nsub)
@@ -115,10 +120,13 @@ contains
     else
       call rdfdor('ksat',1d-5,1d5,ksat,256,nlay)
     end if
+    ksatexm=-999d0
+    if(ksatexm_selected.and.rdinqr('ksatexm'))call rdfdor('ksatexm',1d-5,1d5,ksatexm,256,nlay)
     call require(all(osat(:nlay)>ores(:nlay)),'invalid retention limits')
     ! Keep the current application's numerical envelope rather than broadening it.
     call require(all(alfa(:nlay)<=1d0).and.all(npar(:nlay)<=5d0).and. &
-      all(abs(lexp(:nlay))<=10d0).and.all(ksat(:nlay)<=1d4),'hydraulics outside application envelope')
+      (ksatexm_selected.or.all(abs(lexp(:nlay))<=10d0)).and.all(ksat(:nlay)<=1d4), &
+      'hydraulics outside application envelope')
     if(initial_mode==1)then
     call require(.not.rdinqr('h'),'deprecated ZI/H needs separate qualification')
     call rdinne('htb',nhead)
@@ -143,6 +151,16 @@ contains
         cofgen(1:6,k)=[ores(j),osat(j),ksat(j),alfa(j),lexp(j),npar(j)]
         cofgen(7,k)=1d0-1d0/npar(j);cofgen(8,k)=alfa(j);cofgen(9,k)=entry(j)
         cofgen(10,k)=-999d0;cofgen(14,k)=1d0;cofgen(16,k)=1d0;cofgen(21,k)=0.1d0
+        ! Original readswap.f90 parameter assembly, hthr=-2 cm.
+        if(ksatexm(j)>ksat(j))then
+          help=abs(-2d0*cofgen(4,k))**cofgen(6,k)
+          help=(1d0+help)**cofgen(7,k)
+          relsatthr=1d0/help
+          term1=(1d0-relsatthr**(1d0/cofgen(7,k)))**cofgen(7,k)
+          ksatthr=cofgen(3,k)*(relsatthr**cofgen(5,k))*(1d0-term1)*(1d0-term1)
+          call require(ieee_is_finite(ksatthr).and.ksatthr<ksatexm(j),'invalid KSATEXM threshold')
+          cofgen(10:12,k)=[ksatexm(j),relsatthr,ksatthr]
+        end if
       end do
     end do
     if(initial_mode==2)call initialize_column_hydrostatic_water(width(:nodes),gwli,bottom_mode,heads,source_pond)
