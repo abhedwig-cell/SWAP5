@@ -1,10 +1,10 @@
 {
   "work_unit": "HIST-INTEGRATION01 original matrix source-profile continuation",
   "baseline": "d6e3955914819ede9d25aaf7b764e48c8467909c",
-  "stage": "SELECTED_CONTINUATION_FROM_ADMITTED_DAY30",
+  "stage": "COMPLETED_PREFIX_PERSISTED",
   "implemented": true,
-  "persisted": false,
-  "tested": false,
+  "persisted": true,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "production_changed": false,
@@ -13,14 +13,34 @@
   "compiler_scope": "O2 continuation; O0/O2 arithmetic and30-day coupling inherited unchanged",
   "remaining_implementation_blockers": [],
   "remaining_evidence_blockers": [
-    "Native continuous-ledger source-profile continuation through481",
-    "Exact selected year-boundary restart replay",
-    "Actual canonical admission"
+    "Complete continuation to day481",
+    "Short exact year-boundary replay",
+    "Actual canonical integration and postimage verification"
   ],
   "relevant_paths": [
     "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json",
     "integration/mc-sol01/drainage/continue_source_profile.py"
   ],
-  "recovery_point": "Admitted day30 generation and original full481 forcing in prior immutable capsule",
-  "next_action": "Continue actual O2 day30 generation to90, retain complete generation, persist and proceed"
+  "recovery_point": "Complete immutable generation to-90 in evidence capsule",
+  "next_action": "Continue once from latest complete generation; no prefix rerun",
+  "completed_days": 90,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_EVIDENCE.tar.xz.b64",
+    "sha256": "2751a934ee0a83fadaaf22b644c9b1c351eb979fa3017a93d7e91a93d3f58f6d",
+    "bytes": 305204,
+    "members": 28
+  },
+  "postimages": {
+    "integration/mc-sol01/drainage/continue_source_profile.py": "7408756d010850249b36f19b2ee51fe6c15a7905ed441c75d3e56bce5e164815",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "970bbdd4752265d41970d65ca2275eeac088602b727bbf438e7cd7aac6d5427d",
+    "integration/mc-sol01/drainage/seal_source_continuation.py": "6f8c1139f8f75f20e9774387f180b34acf70b4e97f345e197fec56b9464270f7",
+    "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "6a1a979ebcfbe8d29a0b07bfb616bd07a762664b8c2217aad617e567f8e569d5"
+  },
+  "physical_results": {
+    "nodes": 112,
+    "complete_days": 90,
+    "water_max_cm": 5.0681681074138396e-14,
+    "solute_max_mg_cm2": 2.5951463200613034e-13,
+    "observed_heat_max_j_cm2": 2.1259438653942198e-11
+  }
 }
