@@ -1,11 +1,14 @@
 """Replay the sealed continuation evidence; never launch native calculations."""
-import base64,csv,hashlib,io,json,subprocess,tarfile
+import base64,csv,hashlib,io,json,runpy,subprocess,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];D=Path('integration/mc-sol01/drainage');sha=lambda b:hashlib.sha256(b).hexdigest()
 def rows(b):return list(csv.DictReader(io.StringIO(b.decode())))
 def validate(f):
  r=json.loads(f['RESULT.json']);assert r['status']=='CONTINUATION_SEGMENT_PASS' and r['completed_days']==481 and r['optimization']=='O2'
- assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert all(e['returncode']==0 for e in r['events'])
+ assert r['baseline']=='d6e3955914819ede9d25aaf7b764e48c8467909c'
+ inherited=runpy.run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'));assert inherited['verify']()['qualified'];accepted=inherited['capsule']()
+ for p in [n for n in f if n.startswith('seed/')]:assert f[p]==accepted['native-O2/full/'+p[5:]],p
+ assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
  def generation(prefix,end,parent):
   m=json.loads(f[prefix+'/manifest.json']);assert m['status']=='COMPLETE' and m['returncode']==0 and m['stop_after']==end
@@ -18,7 +21,7 @@ def validate(f):
  m=generation('seed',30,None);assert m['files']['restart.bin']==r['seed_restart_sha256'];parent=r['seed_restart_sha256'];start=30;allrows=rows(f['seed/budget.csv']);assert len(allrows)==30
  for s in r['segments']:
   assert s['start']==start and 0<s['end']-start<=120;m=generation(s['folder'],s['end'],parent)
-  assert s['parent_restart_sha256']==parent and s['restart_sha256']==m['files']['restart.bin']
+  assert s['parent_restart_sha256']==parent and s['restart_sha256']==m['files']['restart.bin'] and s['native_seconds']==m['native_seconds']
   extra=rows(f[s['folder']+'/budget.csv']);assert [int(x['window'])for x in extra]==list(range(start+1,s['end']+1))
   assert float(extra[0]['water_start_cm'])==float(allrows[-1]['water_end_cm']) and float(extra[0]['solute_start_mg_cm2'])==float(allrows[-1]['solute_end_mg_cm2'])
   allrows+=extra;parent=m['files']['restart.bin'];start=s['end']
@@ -28,6 +31,7 @@ def validate(f):
   assert abs(float(x['potential_transpiration_cm'])-float(x['actual_transpiration_cm'])-float(x['drought_reduction_cm'])-float(x['oxygen_reduction_cm']))<1e-12
   assert 0<=float(x['observed_heat_residual_j_cm2'])<=1e-9
   gross=float(x['water_end_cm'])-float(x['water_start_cm'])-float(x['rain_supplied_cm'])+float(x['runoff_cm'])+float(x['soil_evaporation_cm'])+float(x['pond_evaporation_cm'])+float(x['actual_transpiration_cm'])-float(x['bottom_up_cm'])+float(x['drainage_cm']);assert abs(gross)<1e-10
+ assert r['physical_results']==dict(nodes=112,complete_days=481,water_max_cm=max(abs(float(x['water_residual_cm']))for x in allrows),solute_max_mg_cm2=max(abs(float(x['solute_residual_mg_cm2']))for x in allrows),observed_heat_max_j_cm2=max(float(x['observed_heat_residual_j_cm2'])for x in allrows))
  s365=next(s for s in r['segments']if s['end']==365);s367=next(s for s in r['segments']if s['end']==367)
  replay=generation('year-replay',367,s365['restart_sha256']);assert replay['native_seconds']>0
  assert rows(f['year-replay/budget.csv'])==[x for x in allrows if 365<int(x['window'])<=367]
