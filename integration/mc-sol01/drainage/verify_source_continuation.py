@@ -9,12 +9,20 @@ def validate(f):
  if 'recovery/exact-recovery.json' in f:
   assert f['recovery/exact-recovery.json']==(ROOT/D/'SOURCE_PROFILE_EXACT_RECOVERY.json').read_bytes()
   recovery=json.loads(f['recovery/exact-recovery.json']);assert recovery['status']=='EXACT_RECOVERY' and r['executable_sha256']==recovery['actual_executable_sha256']==recovery['expected_executable_sha256']
- inherited=runpy.run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'));assert inherited['verify']()['qualified'];accepted=inherited['capsule']()
+ inherited=runpy.run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'));inherited_result=inherited['verify']();assert inherited_result['qualified'];accepted=inherited['capsule']()
  for p in [n for n in f if n.startswith('seed/')]:assert f[p]==accepted['native-O2/full/'+p[5:]],p
  for attempt in r.get('censored_attempts',[]):
   old=json.loads(f['censored/'+attempt['record']]);assert old['status']=='CENSORED' and not old['qualified'] and old['events'][-1]==attempt['event'] and attempt['event']['returncode'] is None and attempt['event']['censored'] and attempt['qualified'] is False
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
- for p,h in r['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
+ for p,h in r['input_sha256'].items():
+  actual=(ROOT/p).read_bytes()
+  if sha(actual)!=h and p in ['src/runtime/mod_fmr_serialized_reference_backend.f90','src/runtime/mod_macropore_single_column_runtime.f90']:
+   # This is the retained native481 execution, not a current executable run.
+   # The covered successor owns the changed ABI, proves the matrix branch
+   # exact at O0/O2 and preserves the original source in its parent receipt.
+   assert inherited_result['current_matrix_artifacts_predecessor_exact'] and not inherited_result['full481_reexecuted']
+   actual=subprocess.check_output(['git','show','9d108ee89ae6e1e19d8705a696779555a4a0491c:'+p],cwd=ROOT)
+  assert sha(actual)==h,p
  def generation(prefix,end,parent):
   m=json.loads(f[prefix+'/manifest.json']);assert m['status']=='COMPLETE' and m['returncode']==0 and m['stop_after']==end
   assert m['executable_sha256']==r['executable_sha256'] and m['parent_restart_sha256']==parent

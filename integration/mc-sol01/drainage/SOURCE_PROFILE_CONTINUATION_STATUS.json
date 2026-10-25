@@ -28,7 +28,7 @@
   },
   "postimages": {
     "integration/mc-sol01/drainage/continue_source_profile.py": "7408756d010850249b36f19b2ee51fe6c15a7905ed441c75d3e56bce5e164815",
-    "integration/mc-sol01/drainage/verify_source_continuation.py": "0edb0bfd04e7a4f3a7be39c29f28439262c23d837f2377125c6bc9856eef1b9d",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "c1fa4816575fbc5189258f8a2f8a3f404af7197dc16ea7a43fe92360ba7995f9",
     "integration/mc-sol01/drainage/seal_source_continuation.py": "801275b487ced11e6b09dae0a68ada58617a01b3dbcde59f6c228172bc2c5ae5",
     "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "bcba2a920e3c5012fc799c92c0e260f47d39cac30a1c2372c9e3b114f14ebe4c",
     "integration/mc-sol01/drainage/SOURCE_PROFILE_EXACT_RECOVERY.json": "1e3168e9e019c2c1f1f0170ba7e72f4e726fdb72ab5ef41108f207216d3c72a5"
@@ -108,5 +108,10 @@
   "actual_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
   "published_head": "230082534cf30d5100459e42cc9c5870afd4d7bd",
   "published_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
-  "last_reconciled_head": "474bf54cc39d4759d5e32fe345711b963b413b7e"
+  "last_reconciled_head": "474bf54cc39d4759d5e32fe345711b963b413b7e",
+  "runtime_successor": {
+    "authority": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json",
+    "scope": "Retain original481-day execution as predecessor; current O0/O2 matrix/heat/drain/crop artifacts exact over five-day differential branch test",
+    "full481_reexecuted": false
+  }
 }

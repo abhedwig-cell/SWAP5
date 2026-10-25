@@ -552,6 +552,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: converged_runon_rate_cm_day = 0.0_real64
     ! Observation only: amounts cm/column area, rates cm/day. No new state.
     logical :: macropore_surface_receipt_available = .false.
+    integer :: macropore_top_node=1,covered_donor_node=0
+    real(real64),allocatable :: covered_top_input_domain_cm(:)
     real(real64) :: macropore_requested_cm=0.0_real64,macropore_accepted_cm=0.0_real64,macropore_returned_cm=0.0_real64
     real(real64) :: macropore_pond_requested_cm=0.0_real64,macropore_pond_accepted_cm=0.0_real64
     real(real64) :: macropore_pond_returned_cm=0.0_real64,macropore_external_top_cm=0.0_real64
@@ -5843,9 +5845,7 @@ contains
         if (.not. allocated(macropore_result%exchange_rate_node) .or. &
             .not. allocated(macropore_result%exchange_rate_domain_cp) .or. &
             .not. allocated(macropore_result%vertical_flux%vertical_face_rate) .or. &
-            .not. allocated(macropore_result%external_outflow_rate_domain_cp) .or. &
-            self%macropore_config%geometry%top_node /= 1 .or. &
-            macropore_result%covered_internal_transfer_cm /= 0.0_real64) then
+            .not. allocated(macropore_result%external_outflow_rate_domain_cp)) then
           self%accepted_water_flux_trace_failed = .true.
         else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1, &
              macropore_result%exchange_rate_node,macropore_result%exchange_rate_domain_cp,trace_macro_water_start, &
@@ -6027,6 +6027,7 @@ contains
     type(fmr_trace_arena_entry_t), allocatable :: grown(:)
     type(fmr_water_flux_substep_trace_t) :: step
     real(real64)::macro_return_to_pond,macro_requested_rate
+    real(real64),allocatable::covering_sink(:)
     integer :: n, prior, capacity, index
 
     ok = .false.
@@ -6147,7 +6148,7 @@ contains
     allocate(step%macropore_matrix_exchange_domain(0,n))
     allocate(step%macropore_water_start(0,n),step%macropore_water_end(0,n))
     allocate(step%macropore_vertical_face_rate(0,n+1))
-    allocate(step%macropore_external_outflow_rate(0,n))
+    allocate(step%macropore_external_outflow_rate(0,n),step%covered_top_input_domain_cm(0))
     step%macropore_matrix_exchange = 0.0_real64
     if(present(macropore_exchange_domain))then
       if(size(macropore_exchange_domain,2)/=n .or. size(macropore_exchange_domain,1)<=0 .or. &
@@ -6162,8 +6163,26 @@ contains
       if(any(.not.ieee_is_finite(macropore_water_start)).or.any(.not.ieee_is_finite(macropore_water_end)))return
       if(any(.not.ieee_is_finite(macropore_vertical_face_rate)))return
       if(any(macropore_water_start<0.0_real64).or.any(macropore_water_end<0.0_real64))return
-      if(maxval(abs(sum(macropore_exchange_domain,dim=1)-macropore_exchange))> &
+      if(.not.present(macro_receipt))return
+      step%macropore_top_node=self%macropore_config%geometry%top_node
+      step%covered_donor_node=macro_receipt%covered_donor_node
+      step%covered_top_input_domain_cm=spread(0.0_real64,1,size(macropore_exchange_domain,1))
+      if(allocated(macro_receipt%covered_top_input_domain_cm)) &
+        step%covered_top_input_domain_cm=macro_receipt%covered_top_input_domain_cm
+      if(size(step%covered_top_input_domain_cm)/=size(macropore_exchange_domain,1))return
+      if(any(.not.ieee_is_finite(step%covered_top_input_domain_cm)).or. &
+         any(step%covered_top_input_domain_cm<0.0_real64))return
+      if(abs(sum(step%covered_top_input_domain_cm)-macro_receipt%covered_internal_transfer_cm)>1.0e-12_real64)return
+      allocate(covering_sink(n));covering_sink=0.0_real64
+      if(step%macropore_top_node>1)then
+        if(step%macropore_top_node>n.or.step%covered_donor_node/=step%macropore_top_node-1)return
+        covering_sink(step%covered_donor_node)=sum(step%covered_top_input_domain_cm)/(t1-t0)
+      else
+        if(step%covered_donor_node/=0.or.any(step%covered_top_input_domain_cm/=0.0_real64))return
+      end if
+      if(maxval(abs(sum(macropore_exchange_domain,dim=1)-covering_sink-macropore_exchange))> &
          1.0e-12_real64*max(1.0_real64,maxval(abs(macropore_exchange))))return
+      step%macropore_matrix_exchange=macropore_exchange
       step%macropore_matrix_exchange_domain=macropore_exchange_domain
       step%macropore_water_start=macropore_water_start
       step%macropore_water_end=macropore_water_end
@@ -6182,10 +6201,7 @@ contains
       step%macropore_rapid_outflow_cm=macro_receipt%rapid_external_outflow_cm
       if(.not.fmr_macropore_trace_receipt_valid(step,n))return
 
-      if(maxval(abs((macropore_water_end-macropore_water_start)/(t1-t0) - &
-           (macropore_vertical_face_rate(:,1:n)-macropore_vertical_face_rate(:,2:n+1)- &
-           macropore_exchange_domain-step%macropore_external_outflow_rate)))>1.0e-12_real64*max(1.0_real64, &
-           maxval(abs(macropore_vertical_face_rate)),maxval(abs(macropore_exchange_domain))))return
+      if(.not.fmr_macropore_trace_cell_balance_valid(step,n))return
     end if
     if (present(macropore_exchange)) then
       if (size(macropore_exchange) /= n .or. any(.not. ieee_is_finite(macropore_exchange))) return
@@ -6226,8 +6242,9 @@ contains
   logical function fmr_macropore_trace_receipt_valid(step,n) result(ok)
     type(fmr_water_flux_substep_trace_t),intent(in)::step
     integer,intent(in)::n
-    integer::nd
-    real(real64)::dt,amounts(8),tol
+    integer::nd,top_node
+    real(real64)::dt,amounts(8),tol,covered
+    real(real64),allocatable::matrix_exchange(:)
     ok=.false.
     if(.not.allocated(step%matrix_area_fraction).or..not.allocated(step%macropore_external_outflow_rate).or. &
        .not.allocated(step%macropore_matrix_exchange_domain).or..not.allocated(step%macropore_vertical_face_rate))return
@@ -6249,16 +6266,63 @@ contains
       ok=.not.step%macropore_surface_receipt_available.and.all(amounts==0.0_real64);return
     end if
     if(.not.step%macropore_surface_receipt_available)return
+    top_node=step%macropore_top_node
+    if(top_node<1.or.top_node>n.or..not.allocated(step%covered_top_input_domain_cm))return
+    if(size(step%covered_top_input_domain_cm)/=nd)return
+    if(any(.not.ieee_is_finite(step%covered_top_input_domain_cm)).or.any(step%covered_top_input_domain_cm<0.0_real64))return
+    covered=sum(step%covered_top_input_domain_cm)
+    if(top_node==1)then
+      if(step%covered_donor_node/=0.or.covered/=0.0_real64)return
+    else
+      if(step%covered_donor_node/=top_node-1.or.any(amounts(1:7)/=0.0_real64))return
+      if(.not.allocated(step%macropore_water_start).or..not.allocated(step%macropore_water_end))return
+      if(any(shape(step%macropore_water_start)/=[nd,n]).or.any(shape(step%macropore_water_end)/=[nd,n]))return
+      if(any(step%macropore_water_start(:,:top_node-1)/=0.0_real64).or. &
+         any(step%macropore_water_end(:,:top_node-1)/=0.0_real64).or. &
+         any(step%macropore_vertical_face_rate(:,:top_node-1)/=0.0_real64))return
+    end if
     dt=step%t1-step%t0
     if(.not.ieee_is_finite(dt).or.dt<=0.0_real64)return
+    if(.not.allocated(step%macropore_matrix_exchange))return
+    if(size(step%macropore_matrix_exchange)/=n.or.any(.not.ieee_is_finite(step%macropore_matrix_exchange_domain)).or. &
+       any(.not.ieee_is_finite(step%macropore_matrix_exchange)))return
+    matrix_exchange=sum(step%macropore_matrix_exchange_domain,dim=1)
+    if(top_node>1)then
+      matrix_exchange(step%covered_donor_node)=matrix_exchange(step%covered_donor_node)-covered/dt
+      if(any(step%macropore_matrix_exchange_domain(:,:top_node-1)/=0.0_real64).or. &
+         any(step%macropore_external_outflow_rate(:,:top_node-1)/=0.0_real64))return
+    end if
+    if(maxval(abs(matrix_exchange-step%macropore_matrix_exchange))> &
+       1.0e-12_real64*max(1.0_real64,maxval(abs(matrix_exchange))))return
     tol=1.0e-10_real64
     if(abs(amounts(1)-amounts(2)-amounts(3))>tol.or.abs(amounts(4)-amounts(5)-amounts(6))>tol)return
     if(amounts(5)>amounts(2)+tol.or.amounts(6)>amounts(3)+tol)return
     if(abs(amounts(7)+amounts(5)-amounts(2))>tol)return
-    if(abs(sum(step%macropore_vertical_face_rate(:,1))*dt-amounts(2))>tol)return
+    if(abs(sum(step%macropore_vertical_face_rate(:,top_node))*dt-amounts(2)-covered)>tol)return
     if(abs(sum(step%macropore_external_outflow_rate)*dt-amounts(8))>tol)return
     ok=.true.
   end function fmr_macropore_trace_receipt_valid
+
+  logical function fmr_macropore_trace_cell_balance_valid(step,n) result(ok)
+    type(fmr_water_flux_substep_trace_t),intent(in)::step
+    integer,intent(in)::n
+    integer::k,nd
+    real(real64)::dt
+    ok=.false.
+    if(.not.fmr_macropore_trace_receipt_valid(step,n))return
+    k=step%macropore_top_node;dt=step%t1-step%t0
+    nd=size(step%macropore_matrix_exchange_domain,1)
+    if(nd<=0.or..not.allocated(step%macropore_water_start).or..not.allocated(step%macropore_water_end))return
+    if(any(shape(step%macropore_water_start)/=[nd,n]).or.any(shape(step%macropore_water_end)/=[nd,n]))return
+    if(any(.not.ieee_is_finite(step%macropore_water_start)).or.any(.not.ieee_is_finite(step%macropore_water_end)))return
+    ! No macro control volume exists above k; its entry face belongs to cell k.
+    if(maxval(abs((step%macropore_water_end(:,k:n)-step%macropore_water_start(:,k:n))/dt- &
+      (step%macropore_vertical_face_rate(:,k:n)-step%macropore_vertical_face_rate(:,k+1:n+1)- &
+       step%macropore_matrix_exchange_domain(:,k:n)-step%macropore_external_outflow_rate(:,k:n))))> &
+       1.0e-12_real64*max(1.0_real64,maxval(abs(step%macropore_vertical_face_rate)), &
+       maxval(abs(step%macropore_matrix_exchange_domain))))return
+    ok=.true.
+  end function fmr_macropore_trace_cell_balance_valid
 
   subroutine materialize_accepted_water_flux_trace(self,t0,t1,ok)
     class(fmr_serialized_reference_model_t),intent(inout)::self
@@ -6326,16 +6390,9 @@ contains
       if(any(.not.ieee_is_finite(steps(i)%macropore_vertical_face_rate)))return
       if(.not.fmr_macropore_trace_receipt_valid(steps(i),n))return
       if(size(steps(i)%macropore_matrix_exchange_domain,1)>0)then
-        if(any(.not.ieee_is_finite(steps(i)%macropore_matrix_exchange_domain)))return
-        if(maxval(abs(sum(steps(i)%macropore_matrix_exchange_domain,dim=1)- &
-             steps(i)%macropore_matrix_exchange))>1.0e-12_real64* &
-             max(1.0_real64,maxval(abs(steps(i)%macropore_matrix_exchange))))return
-        if(maxval(abs((steps(i)%macropore_water_end-steps(i)%macropore_water_start)/ &
-             (steps(i)%t1-steps(i)%t0) - &
-             (steps(i)%macropore_vertical_face_rate(:,1:n)-steps(i)%macropore_vertical_face_rate(:,2:n+1)- &
-             steps(i)%macropore_matrix_exchange_domain-steps(i)%macropore_external_outflow_rate)))>1.0e-12_real64*max(1.0_real64, &
-             maxval(abs(steps(i)%macropore_vertical_face_rate)), &
-             maxval(abs(steps(i)%macropore_matrix_exchange_domain))))return
+        ! Cross-cell donor/domain identities are checked by the same receipt
+        ! validator used when each accepted substep was appended.
+        if(.not.fmr_macropore_trace_cell_balance_valid(steps(i),n))return
       else if(any(abs(steps(i)%macropore_matrix_exchange)>1.0e-14_real64))then
         return
       end if

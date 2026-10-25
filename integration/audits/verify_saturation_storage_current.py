@@ -12,6 +12,7 @@ def projection(path):
   at=t.index('\n',start)+1;t=t[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[at:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_covered_macro_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert not git('status','--porcelain','--','src','app','tools','tests','examples','reference','.github','integration/audits');assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--','src','app','tools','tests','examples','reference','.github','integration/audits').splitlines()};assert delta==s['scientific_delta'];assert reader(PARENT)==projection(PARENT)and reader(COUNTER)==projection(COUNTER)
  old=subprocess.check_output(['git','show',BASE+':'+PROVIDER],cwd=ROOT);now=reader(PROVIDER)
@@ -47,10 +48,14 @@ def validate(f):
    gross=float(row['water_end_cm'])-float(row['water_start_cm'])-float(row['rain_supplied_cm'])+float(row['runoff_cm'])+float(row['soil_evaporation_cm'])+float(row['pond_evaporation_cm'])+float(row['actual_transpiration_cm'])-float(row['bottom_up_cm'])+float(row['drainage_cm']);assert abs(gross)<1e-10
  assert results[0]==results[1]
  return dict(qualified=True,repair='Stable rational saturation-crossing storage, unchanged physical equation',direct_real128_cases=1728,source_layers=8,linked_component_provider_objects=2,coupled_cases=2,days_per_case=30,exact_day9_restarts=2,full481_qualified=False,full_original_Andelst=False,old_accepted_evidence='Preserved as predecessor execution on unchanged branches; not freshly executed',canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_covered_macro_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_covered_macro_current.py'))['fsi35_successors']()
  source();rows=json.loads(capsule()['parent/proof.json'])['fsi35'];rows[PROVIDER]=dict(rows[PROVIDER],canonical_blob=git('rev-parse','HEAD:'+PROVIDER),authority=STATUS);return rows
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_covered_macro_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()
