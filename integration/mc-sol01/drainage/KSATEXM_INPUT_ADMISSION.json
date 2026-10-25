@@ -1,0 +1,136 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original KSATEXM input",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1440,
+  "canonical_merge": "885f5d9fa9c2f36c76d937a5e201e737c4555d5b",
+  "first_parent": "7afa86335ed18c1f2365151d16f39385bf39d9e7",
+  "published_head": "078f77bdc67f7e498c08c950b3b96256b6b6fbbb",
+  "qualified_complete_tree": "8094c85e221415233fa9fa0f14549dc047a386c2",
+  "actual_complete_tree": "8094c85e221415233fa9fa0f14549dc047a386c2",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_ksatexm_input_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.5539361940009258,
+      "stdout_sha256": "7d637f3fec2fbe6f3958713fa20be3817e4172ebca3edacaf4b04a826957a88f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_ksatexm_input_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 0.9994183969993173,
+      "stdout_sha256": "c049a8abb29e2203e779074dfd50164803bd31b1a8dc34d90ae05ce4a3baeb23",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 8.53517536199979,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.2192872499999794,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/ksatexm-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 16.659376723000605,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "bc2bb041893532b71f6bb2fc22b36fc9410c701c5cbd629a8ebaa4e7dc876c75"
+    }
+  ],
+  "physical_qualification": {
+    "source_nodes": 112,
+    "source_original_KSATEXM_equals_KSATFIT": true,
+    "coupled_cases": 6,
+    "fresh_process_restarts": 6,
+    "new_rejected_processes": 22,
+    "water_max_cm": 2.347297703431117e-16,
+    "solute_max_mg_cm2": 5.0949099539981946e-15,
+    "inherited_current_cases": 6,
+    "inherited_current_restarts": 6,
+    "inherited_current_rejections": 38,
+    "incumbent_artifact_comparisons": 10,
+    "all_process_solver_sources_unchanged": true
+  },
+  "O0_O2_exact": true,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/KSATEXM_INPUT_EVIDENCE.tar.xz.b64",
+    "sha256": "26229259cf06b206205b997caf3e9f0a062a57d9c40721f44f266302e1d847d5",
+    "bytes": 2216500,
+    "members": 3726
+  },
+  "current_source_raw_controls": 14,
+  "closed_capabilities": [
+    "Explicit default-false original KSATEXM input and source threshold construction at h=-2 cm using existing hydraulic provider/runtime",
+    "Original112-node Andelst parameter input including original LEXP domain; all original KSATEXM rows equal KSATFIT, qualifying the source no-op branch only",
+    "Below/equal/active conductivity coupled water/heat/solute file cases; active branch changes physical stream and separate-process restart is exact",
+    "Current hydrostatic water/heat route and ten incumbent artifact comparisons retained exactly"
+  ],
+  "exclusions": [
+    "Full original Andelst macro/drainage/crop lifecycle",
+    "External BBC application staging",
+    "Fully saturated file initialization",
+    "Elasticity or power-tail combinations",
+    "SWBOTB1",
+    "Loose historical restart"
+  ],
+  "remaining_supported_scope_closure_blockers": [],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "all_process_solver_sources_unchanged": true,
+  "restart_schema_unchanged": true,
+  "default_input_envelope_unchanged": true,
+  "full_original_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current O0/O2 native and source qualification run locally; [skip ci] avoids repeated unchanged broad suites, no hosted PASS claimed.",
+  "hosted_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "preservation_selection": {
+    "FSI35": "27 executable source dependencies unchanged; actual-merge source-only boundary passed, no fresh native run",
+    "NUT_and_macro": "Accepted existing physics and persistence source unchanged; retained evidence reused within its accepted scope",
+    "hydrostatic": "Fresh current O0/O2 qualification: six cases, six exact restarts,38 rejections and ten exact incumbent comparisons",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "receipt_scope": "Actual-merge admission; final receipt/status/docs do not alter scientific postimages or sealed evidence. Source/raw owner reports qualification separately from this admission decision."
+}

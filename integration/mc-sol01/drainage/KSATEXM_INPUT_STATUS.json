@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 original KSATEXM input",
   "baseline": "7afa86335ed18c1f2365151d16f39385bf39d9e7",
-  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "Explicit default-false swp_ksatexm_bootstrap activates original input KSATEXM construction (readswap hthr=-2 cm) and existing provider/runtime flag. No source physics, solver policy or restart schema changes. Old input excludes KSATEXM unless explicitly selected. Values at or below KSATFIT retain default MvG source behavior. Source pond/GWLI semantics remain. Explicit opt-in also selects original LEXP range [-25,50] already read by TTUTIL and supported by unchanged provider. Original Andelst LEXP includes -14.455; its KSATEXM equals KSATFIT in every layer, so it qualifies the source no-op branch, not active enhanced conductivity. Original112-node real-provider checks are required; no full original application claim.",
   "invariants": [
     2,
@@ -33,7 +33,7 @@
     "Fully saturated file initialization",
     "Elasticity or power-tail combinations"
   ],
-  "next_action": "Validate sealed source/raw controls and docs, integrate exact tree, verify actual merge",
+  "next_action": "Supported subset closed; no remaining functional or evidence blocker within this scope. Full original integration remains separately open with explicit exclusions.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/KSATEXM_INPUT_EVIDENCE.tar.xz.b64",
     "sha256": "26229259cf06b206205b997caf3e9f0a062a57d9c40721f44f266302e1d847d5",
@@ -75,5 +75,7 @@
     "all_process_solver_sources_unchanged": true
   },
   "admission_record": "integration/mc-sol01/drainage/KSATEXM_INPUT_ADMISSION.json",
-  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current O0/O2 native and source qualification run locally; [skip ci] avoids repeated unchanged broad suites, no hosted PASS claimed."
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current O0/O2 native and source qualification run locally; [skip ci] avoids repeated unchanged broad suites, no hosted PASS claimed.",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "canonical_merge": "885f5d9fa9c2f36c76d937a5e201e737c4555d5b"
 }

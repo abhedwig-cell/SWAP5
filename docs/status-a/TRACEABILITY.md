@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Original KSATEXM input is canonically admitted by PR1440 at actual merge
+`885f5d9fa9c2f36c76d937a5e201e737c4555d5b`; qualified/actual complete tree
+`8094c85e221415233fa9fa0f14549dc047a386c2` matches exactly. Actual-merge
+source/raw owner,14 corruption controls,27-dependency FSI35 source boundary,
+source docs and strict MkDocs pass. This subset is CLOSED WITH EXCLUSIONS;
+`integration/mc-sol01/drainage/KSATEXM_INPUT_ADMISSION.json` binds admission.
+This supersedes the earlier KSATEXM-import exclusion only inside its explicit
+opt-in domain. Original Andelst equal-KSATEXM rows prove source no-op input;
+the full original application remains excluded. MC-NUT01/MC-SOL01 remain
+CLOSED WITH EXCLUSIONS. No hosted PASS or full migration is claimed.
+
 HIST01 original KSATEXM input,25 October2026: explicit default-false
 `swp_ksatexm_bootstrap` selects original threshold assembly at h=-2 cm and the
 existing provider/runtime option. Original112-node Andelst water parameter input
