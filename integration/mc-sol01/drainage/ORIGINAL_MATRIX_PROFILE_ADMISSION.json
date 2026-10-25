@@ -1,0 +1,138 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original matrix profile interaction",
+  "baseline": "146823954f2a24e43b6e007591ef2876331daa9d",
+  "pr": 1444,
+  "actual_merge": "6a562683a72c4f2118c7752b0101d69097e6b210",
+  "published_head": "9195b488a37b6b265b72b62d3b5b77923531410c",
+  "published_tree": "f73f846428a16d6357cde8f67e4c9f80422e1b6a",
+  "actual_tree": "f73f846428a16d6357cde8f67e4c9f80422e1b6a",
+  "complete_tree_exact": true,
+  "admission": "CANONICAL_COUNTEREXAMPLE_ONLY",
+  "full_original_application": "BLOCKED",
+  "full481_qualified": false,
+  "new_physical_migrations": 0,
+  "production_unchanged": true,
+  "supported_work_packages": {
+    "MC-NUT01": "CLOSED WITH EXCLUSIONS",
+    "MC-SOL01": "CLOSED WITH EXCLUSIONS"
+  },
+  "supported_closure_authority": "integration/mc-sol01/MC_NUT01_SOL01_CLOSURE_20261024.json",
+  "unchanged_composed_heat_authority": "integration/mc-sol01/drainage/COMPOSED_HEAT_ADMISSION.json",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ORIGINAL_MATRIX_PROFILE_EVIDENCE.tar.xz.b64",
+    "sha256": "b089cc4f427a80dd68f832d8c922f5a412f8f45606800a7ad5fe40e1b4c016a7",
+    "bytes": 1190108,
+    "members": 332
+  },
+  "observed_blockers": [
+    {
+      "kind": "REPRODUCED_TECHNICAL",
+      "capability": "Full original matrix profile/heat/crop481",
+      "observed": {
+        "window": 10,
+        "completed_rain_segments": 0,
+        "attempts": 324,
+        "solver_rejections": 134,
+        "temporal_rejections": 175,
+        "mass_rejections": 0,
+        "thermal_status": 0
+      },
+      "reproduced": [
+        "O0 full",
+        "O2 full",
+        "O0 independent day9 restart",
+        "O2 independent day9 restart"
+      ]
+    },
+    {
+      "kind": "MISSING_IMPLEMENTATION",
+      "capability": "Original native macropore and Rutter interception composition",
+      "note": "Neither excluded selector is counted as migrated"
+    }
+  ],
+  "negative_qualification": {
+    "optimizations": 2,
+    "independent_day9_restart_reproductions": 2,
+    "accepted_days": 9,
+    "required_days": 481,
+    "failed_generations_published": 0,
+    "committed_state_byte_exact": true,
+    "source_raw_controls": 6
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "6a562683a72c4f2118c7752b0101d69097e6b210",
+    "actual_tree": "f73f846428a16d6357cde8f67e4c9f80422e1b6a",
+    "published_qualified_tree_matches": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "counterexample_owner",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_original_matrix_profile.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.32629086499946425,
+        "stdout_sha256": "a6da72800753c5bdf1f5df98eb39e2aee21b1905334b5e5a4d26826deafc4f70",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "counterexample_controls",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_original_matrix_profile.py",
+          "--self-test"
+        ],
+        "returncode": 0,
+        "seconds": 0.44995061400186387,
+        "stdout_sha256": "0e76aeb0b85e919c7d397767012246becbc2a7a42bf64e7d38b8205cde30093b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "preserved_owner_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json; m=runpy.run_path('integration/audits/verify_composed_heat_current.py'); m['source'](); print(json.dumps(m['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 1.7287420840002596,
+        "stdout_sha256": "adaad24357eb7a6c2c4a1b38f40c97a70d3901456eeab7b7efe41ed514486a94",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.2262191490008263,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_docs",
+        "command": [
+          "python",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/f2a33ff85190/matrix-postimage-site"
+        ],
+        "returncode": 0,
+        "seconds": 18.39949536000131,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a5e2e655903a16eb7cca381b868cd7abdccf2dea279ecd6ebb9d48cd2bf4f094"
+      }
+    ]
+  },
+  "excluded_suites": "NOT_SELECTED_IMPACT: unchanged production/component/solver/native dependencies; no hosted PASS claimed",
+  "next_action": "Retain supported closeout; full original application cannot be counted migrated. An owning solver repair plus original native macro/Rutter composition is required before full acceptance."
+}
