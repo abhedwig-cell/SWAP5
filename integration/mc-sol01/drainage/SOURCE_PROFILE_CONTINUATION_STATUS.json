@@ -21,25 +21,25 @@
     "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json",
     "integration/mc-sol01/drainage/continue_source_profile.py"
   ],
-  "recovery_point": "Complete immutable generation to-90 in evidence capsule",
+  "recovery_point": "Complete immutable generation to-180 in evidence capsule",
   "next_action": "Continue once from latest complete generation; no prefix rerun",
-  "completed_days": 90,
+  "completed_days": 180,
   "evidence": {
     "path": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_EVIDENCE.tar.xz.b64",
-    "sha256": "2751a934ee0a83fadaaf22b644c9b1c351eb979fa3017a93d7e91a93d3f58f6d",
-    "bytes": 305204,
-    "members": 28
+    "sha256": "c93a8fa0b17ff8bce3b7a9d3866cb7fac272c542c4d25269993c9fbd6688fbb3",
+    "bytes": 337044,
+    "members": 42
   },
   "postimages": {
     "integration/mc-sol01/drainage/continue_source_profile.py": "7408756d010850249b36f19b2ee51fe6c15a7905ed441c75d3e56bce5e164815",
     "integration/mc-sol01/drainage/verify_source_continuation.py": "970bbdd4752265d41970d65ca2275eeac088602b727bbf438e7cd7aac6d5427d",
-    "integration/mc-sol01/drainage/seal_source_continuation.py": "6f8c1139f8f75f20e9774387f180b34acf70b4e97f345e197fec56b9464270f7",
+    "integration/mc-sol01/drainage/seal_source_continuation.py": "776dae411fef5f637ae86473e0604d9bd2cfbdb0f1b7c1b7c49067257868b154",
     "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "6a1a979ebcfbe8d29a0b07bfb616bd07a762664b8c2217aad617e567f8e569d5"
   },
   "physical_results": {
     "nodes": 112,
-    "complete_days": 90,
-    "water_max_cm": 5.0681681074138396e-14,
+    "complete_days": 180,
+    "water_max_cm": 5.262457136723242e-14,
     "solute_max_mg_cm2": 2.5951463200613034e-13,
     "observed_heat_max_j_cm2": 2.1259438653942198e-11
   }

@@ -10,6 +10,8 @@ def main():
  generation('seed',Path(r['seed']))
  for s in r['segments']:generation(s['folder'],out/s['folder'])
  if(out/'year-replay').exists():generation('year-replay',out/'year-replay')
+ for n in ['inherited-owner.json','inherited-controls.json']:
+  if(out/n).is_file():f[n]=(out/n).read_bytes()
  for p in sorted(out.glob('to-*.*')):
   if p.is_file():f['events/'+p.name]=p.read_bytes()
  for n in ['continue_source_profile.py','verify_source_continuation.py','seal_source_continuation.py','SOURCE_PROFILE_CONTINUATION_CONTRACT.md']:f['executed/'+str(D/n)]=(ROOT/D/n).read_bytes()
