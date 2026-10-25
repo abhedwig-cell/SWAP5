@@ -1,5 +1,20 @@
 # SWAP5 Status-A current architecture
 
+Original112-node full-profile integration now has a reproducible technical
+blocker, without changing production: checked O0/O2 reject window10 with
+324attempts,134solver/175temporal rejections, zero mass rejections and thermal
+status0. Independent native day9 generations and fresh-process restarts reproduce
+the rejection with byte-exact committed water/heat/solute/Boesten state and no
+failed published generation. A focused existing frozen policy also rejects on
+day3. The exact solver cause is not yet established. Nine accepted days are not
+481-day qualification. Macro and Rutter selectors were explicitly excluded from
+this matrix projection and remain unmigrated. The counterexample and six raw/
+source controls are owned by
+`integration/mc-sol01/drainage/ORIGINAL_MATRIX_PROFILE_STATUS.json` and its
+companion verifier/contract. MC-NUT01 and MC-SOL01 remain CLOSED WITH EXCLUSIONS;
+the full original native application is BLOCKED, with no additional migration
+credit and no weakening of mass, restart or acceptance criteria.
+
 Date: 2026-09-16
 
 This page describes the architecture that is current for the admitted Status-A baseline. It is deliberately narrower than older target-architecture documents. Target documents remain useful design history, but they do not establish that a future layer, API or execution mode is already admitted.

@@ -1,5 +1,20 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Original112-node full-profile integration now has a reproducible technical
+blocker, without changing production: checked O0/O2 reject window10 with
+324attempts,134solver/175temporal rejections, zero mass rejections and thermal
+status0. Independent native day9 generations and fresh-process restarts reproduce
+the rejection with byte-exact committed water/heat/solute/Boesten state and no
+failed published generation. A focused existing frozen policy also rejects on
+day3. The exact solver cause is not yet established. Nine accepted days are not
+481-day qualification. Macro and Rutter selectors were explicitly excluded from
+this matrix projection and remain unmigrated. The counterexample and six raw/
+source controls are owned by
+`integration/mc-sol01/drainage/ORIGINAL_MATRIX_PROFILE_STATUS.json` and its
+companion verifier/contract. MC-NUT01 and MC-SOL01 remain CLOSED WITH EXCLUSIONS;
+the full original native application is BLOCKED, with no additional migration
+credit and no weakening of mass, restart or acceptance criteria.
+
 Boesten/drainage/Cauchy/Picard with numeric heat is canonically admitted by
 PR1443 at actual merge `bb98505dd243f39198a8aace16362b7e0dbab762`; qualified/
 actual tree `e9fb38ca3817f32009c267109189cd9db3244259` matches exactly. Actual-
