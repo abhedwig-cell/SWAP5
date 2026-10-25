@@ -30,3 +30,23 @@ step per rain segment, not a daily energy sum; each step retains its existing
 Rutter selections plus foreign profile/crop restart must reject atomically.
 No new solver/component/framework, broad FCI, highest low-air or research runs.
 The complete original macro/interception/native lifecycle remains excluded.
+
+## Actual result and stopping boundary
+
+Both checked optimizations reject window10 before its first rain segment:
+324attempts,134solver and175temporal rejections, zero mass rejections and
+thermal status0. An independent native day9 generation serializes exactly to
+both original rejected/partial diagnostics. A fresh process reading that day9
+restart reproduces the same rejection and exact committed bytes. These are
+negative qualification results; nine accepted days do not qualify481 days.
+A focused existing frozen-conductivity selection also rejects, on day3; its raw
+failure is retained, without portable timing or alternative-policy PASS credit.
+
+Original complete lifecycle status is therefore BLOCKED by this reproducible
+technical failure in addition to missing native macro/Rutter composition. The
+exact solver cause beyond the observed solver/temporal rejection counts is not
+established. No tolerance, retry count, mass gate, physical selector or process
+equation is changed to force closure. Fixing the general difficult-profile
+solver envelope would need its existing owning scientific contract; an excluded
+full application does not reopen supported MC-NUT01/MC-SOL01 closeout. No new
+solver research, framework or migration campaign is selected by this evidence.
