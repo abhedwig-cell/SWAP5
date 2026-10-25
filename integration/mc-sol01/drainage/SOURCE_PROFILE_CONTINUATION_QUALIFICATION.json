@@ -1,0 +1,40 @@
+{
+  "baseline": "d6e3955914819ede9d25aaf7b764e48c8467909c",
+  "qualified": true,
+  "qualification": {
+    "qualified": true,
+    "days": 481,
+    "nodes": 112,
+    "optimization": "O2",
+    "segments": 8,
+    "exact_year_boundary_replay_days": [
+      366,
+      367
+    ],
+    "exact_files": [
+      "restart.bin",
+      "state.csv",
+      "endpoint.csv",
+      "temperature.csv"
+    ],
+    "physical_results": {
+      "nodes": 112,
+      "complete_days": 481,
+      "water_max_cm": 5.576095141179849e-14,
+      "solute_max_mg_cm2": 2.5951463200613034e-13,
+      "observed_heat_max_j_cm2": 3.658939817796636e-11
+    },
+    "full_uninterrupted_run": false,
+    "full481_O0": false,
+    "full_original_Andelst": false
+  },
+  "canonically_admitted": false,
+  "production_changed": false,
+  "recovery": {
+    "executable_sha256": "50bf341ce55f708db4f4cbf974cdcf03aa8216ebce4f9cc0ffddb300614ee9d0",
+    "all_reused_artifact_checks": 406,
+    "binary_published": false
+  },
+  "publication_blocked": false,
+  "publication_authorized": true
+}

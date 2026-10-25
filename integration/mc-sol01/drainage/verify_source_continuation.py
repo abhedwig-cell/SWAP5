@@ -6,8 +6,13 @@ def rows(b):return list(csv.DictReader(io.StringIO(b.decode())))
 def validate(f):
  r=json.loads(f['RESULT.json']);assert r['status']=='CONTINUATION_SEGMENT_PASS' and r['completed_days'] in [367,481] and r['optimization']=='O2'
  assert r['baseline']=='d6e3955914819ede9d25aaf7b764e48c8467909c'
+ if 'recovery/exact-recovery.json' in f:
+  assert f['recovery/exact-recovery.json']==(ROOT/D/'SOURCE_PROFILE_EXACT_RECOVERY.json').read_bytes()
+  recovery=json.loads(f['recovery/exact-recovery.json']);assert recovery['status']=='EXACT_RECOVERY' and r['executable_sha256']==recovery['actual_executable_sha256']==recovery['expected_executable_sha256']
  inherited=runpy.run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'));assert inherited['verify']()['qualified'];accepted=inherited['capsule']()
  for p in [n for n in f if n.startswith('seed/')]:assert f[p]==accepted['native-O2/full/'+p[5:]],p
+ for attempt in r.get('censored_attempts',[]):
+  old=json.loads(f['censored/'+attempt['record']]);assert old['status']=='CENSORED' and not old['qualified'] and old['events'][-1]==attempt['event'] and attempt['event']['returncode'] is None and attempt['event']['censored'] and attempt['qualified'] is False
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
  def generation(prefix,end,parent):
@@ -25,6 +30,9 @@ def validate(f):
   extra=rows(f[s['folder']+'/budget.csv']);assert [int(x['window'])for x in extra]==list(range(start+1,s['end']+1))
   assert float(extra[0]['water_start_cm'])==float(allrows[-1]['water_end_cm']) and float(extra[0]['solute_start_mg_cm2'])==float(allrows[-1]['solute_end_mg_cm2'])
   allrows+=extra;parent=m['files']['restart.bin'];start=s['end']
+ for name,data in f.items():
+  if name.startswith('censored/to-481.pending-') and name.endswith('/budget.csv'):
+   diagnostic=rows(data);assert diagnostic and all(x==allrows[int(x['window'])-1] for x in diagnostic),name
  assert start==r['completed_days'] and allrows==r['all_budget'] and [int(x['window'])for x in allrows]==list(range(1,r['completed_days']+1))
  for x in allrows:
   assert abs(float(x['water_residual_cm']))<1e-10 and abs(float(x['solute_residual_mg_cm2']))<1e-10
@@ -46,7 +54,11 @@ def capsule():
  assert json.loads(f.pop('MANIFEST.json'))=={p:sha(b)for p,b in f.items()};return f
 def self_test():
  f=capsule();validate(f);passed=[]
- for p in ['RESULT.json','seed/restart.bin','to-367/budget.csv','year-replay/restart.bin','to-367/state.csv']:
+ targets=['RESULT.json','seed/restart.bin','to-367/budget.csv','year-replay/restart.bin','to-367/state.csv']
+ if 'recovery/exact-recovery.json' in f:targets+=['recovery/exact-recovery.json']
+ if json.loads(f['RESULT.json'])['completed_days']==481:targets+=['to-481/budget.csv','to-481/restart.bin']
+ targets+=[p for p in f if p.startswith('censored/') and (p.endswith('.json') or p.endswith('/budget.csv'))]
+ for p in targets:
   bad=dict(f);bad[p]+=b'!'
   try:validate(bad)
   except (AssertionError,ValueError,KeyError,UnicodeError):passed.append(p);continue
