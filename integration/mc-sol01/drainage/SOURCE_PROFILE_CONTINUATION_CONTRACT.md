@@ -27,3 +27,11 @@ to demonstrate exact continuation; do not substitute a PR merge for science.
 One O2 complete chain is not an uninterrupted-run or full O0 equivalence claim.
 No full original macro/Rutter or original SWSOLU0 chemical equivalence follows.
 No rebuild, broad FCI, new process variant, low-air, RossFast or1e-6 run.
+
+The unchanged original SWP dates are1 January1998 through26 April1999.
+Source simple-crop periods are1 January1998..20 August1998 and
+1 January1999..26 April1999. The selected year control compares365->367
+against365->366->367 in separate native processes, including second-period
+reactivation. Compare both daily budget rows and final restart/state/endpoint/
+temperature bytes exactly. This is a two-day overlap, not a duplicate481-day
+qualification and not full original crop-model equivalence.
