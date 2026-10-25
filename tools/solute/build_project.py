@@ -50,9 +50,10 @@ def main():
   meta=json.loads((exe.parent/'build-complete.json').read_text());assert meta['status']=='BUILT' and sha(exe)==meta['executable_sha256']
   assert all(sha(ROOT/p)==h for p,h in meta['input_sha256'].items())
  column=out/'column';column.mkdir();exe=column/'swap5_solute_project';driver=ROOT/'app/solute_project/main.f90'
- run(fc+flags+['-J'+str(column),driver,*objects,base/'libttutil.a','-o',exe],column,'project_compile_link')
+ heat_reader=ROOT/'app/solute_column/read_swp_heat.f90'
+ run(fc+flags+['-J'+str(column),heat_reader,driver,*objects,base/'libttutil.a','-o',exe],column,'project_compile_link')
  inputs={p:h for p,h in physical['input_sha256'].items()if p!='app/solute_crop/main.f90'}
- inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [driver,*common]})
+ inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [driver,heat_reader,*common]})
  meta=dict(status='BUILT',candidate=candidate,compiler_command=fc,compiler=physical['compiler'],flags=flags+['-J'+str(column)],
   provider_count=194,reused_provider_objects=193,input_sha256=inputs,generated_input_sha256={},
   source_build=physical,reused_artifact_sha256=artifacts,executable_sha256=sha(exe),events=events)

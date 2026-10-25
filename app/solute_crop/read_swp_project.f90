@@ -23,8 +23,13 @@ program read_swp_project
  character(1024)::swp,action,metfil,pathatm,pathcrop,crops(MAX_CROPS),filename,crp,metnames(8),rainnames(8),rainfil
  character(16)::start_text,end_text,a,b,index_text,ext
  logical::rdinqr
+ logical::native_heat=.false.
+ character(32)::heat_option
  type(crop_calendar_t)::calendar
  call get_command_argument(1,swp);call get_command_argument(2,action)
+ call get_command_argument(3,heat_option)
+ call require(len_trim(heat_option)==0.or.trim(heat_option)=='native-heat','unknown project reader option')
+ native_heat=trim(heat_option)=='native-heat'
  call require(trim(action)=='scan'.or.trim(action)=='prepare','scan or prepare required')
  call rdinit(74,0,trim(swp))
  call rdstim('tstart',tstart);call rdstim('tend',tend)
@@ -50,7 +55,13 @@ program read_swp_project
   call safe(pathdrain)
  end if
  call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
- call zero('swmacro',1);call zero('swsnow',1);call zero('swhea',2);call zero('swfrost',1)
+ call zero('swmacro',1);call zero('swsnow',1);call zero('swfrost',1)
+ if(native_heat)then
+  call rdsinr('swhea',0,2,mode);call require(mode==1,'native numeric project requires SWHEA1')
+  call rdsinr('swcalt',1,2,mode);call require(mode==2,'native numeric project requires SWCALT2')
+ else
+  call zero('swhea',2)
+ end if
  call zero('swtill',1);call zero('swcropsnm',1);call zero('swpondmx',1)
  external_bottom=.not.rdinqr('swbotb');bottom=0d0;amplitude=0d0;daymax=0d0
  if(rdinqr('swbbcfile'))then
@@ -187,6 +198,14 @@ program read_swp_project
   write(u,'(3(I0,1X),4(ES25.16E3,1X))')nint(output(2:4,i)),output(5:8,i)
  end do
  close(u)
+ if(native_heat)then
+  open(newunit=u,file='air.csv',status='new',action='write')
+  write(u,'(A)')'t1900,air_temperature_c'
+  do i=1,total
+   write(u,'(ES25.16E3,A,ES25.16E3)')output(1,i),',',.5d0*(output(5,i)+output(6,i))
+  end do
+  close(u)
+ end if
  do k=1,ncrop
   write(index_text,'(I0)')k;filename='period-'//trim(index_text)//'.swp'
   open(newunit=u,file=trim(filename),status='new',action='write')
