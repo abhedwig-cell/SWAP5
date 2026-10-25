@@ -26,15 +26,18 @@ out-of-domain branches. Public .mod identity must remain exact; compile only
 the changed provider and relink actual consumers using source/compiler/flags/
 artifact-bound predecessor objects. Retain compilation, native and check costs.
 
-Select the original matrix481-day route at O0/O2 and independent day365 restart;
-expected up to1800s per native process, explicitly selected for the historical
-crop/year lifecycle missed by the old12-node profile. Bounded execution must
-retain failed/censored results; do not repeat completed unchanged commands.
+Select the original matrix30-day route at O0/O2 and independent day9 restart.
+The initial full481 selection is superseded after measured full-profile cost;
+retain censored executions, never count them as completed or failed science.
+The repair admits stable arithmetic and the affected saturation/drydown
+interaction, not full481 migration. The original full application remains
+excluded. Existing481-day12-node application proof is inherited only for
+unchanged branches and bound to its actual predecessor execution.
 Check exact endpoints/temperature/SPEV/SAEV/restart and resumed budget tail,
 water and solute1e-10, independent gross water1e-10, roots1e-12 and existing
 per-step energy1e-9. Original macro/Rutter remain explicitly excluded; chemical
-input is the supplied fixture, not historical SWSOLU0 equivalence. Do not claim
-full original equivalence or migration if this repaired subset passes.
-Retain admitted old component/application evidence on unchanged branches;
-run affected current source/raw owners and proportional selected controls.
+input is the supplied fixture, not historical SWSOLU0 equivalence. Retain
+compilation, native and validation costs; focused native timeout1800s is a
+censoring bound, never qualification credit.
+Run affected current source/raw owners and proportional selected controls.
 No broad FCI, new1e-6, heavy low-air, RossFast or new process/framework campaign.

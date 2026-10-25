@@ -3,6 +3,7 @@ import argparse,base64,csv,hashlib,io,json,runpy,subprocess,tarfile,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];BASE='146823954f2a24e43b6e007591ef2876331daa9d';D='integration/mc-sol01/drainage/';STATUS=D+'ORIGINAL_MATRIX_PROFILE_STATUS.json';sha=lambda b:hashlib.sha256(b).hexdigest()
 def source(reader=lambda p:(ROOT/p).read_bytes()):
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['source'](reader)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE and s['stage']=='REPRODUCED_TECHNICAL_BLOCKER'and not s['qualified']
  assert not subprocess.check_output(['git','diff',BASE,'HEAD','--','src','app','tools','tests','examples','reference','.github','integration/audits'],cwd=ROOT)
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -49,8 +50,11 @@ def validate(f):
  frozen=next(p[:-len('stdout')]for p in f if p.startswith('frozen/full.pending-')and p.endswith('/stdout'));assert b'rejected window/process/completed:           3           0           0'in f[frozen+'stdout']
  return dict(status='BLOCKER_EVIDENCE_VERIFIED',reproduced_optimizations=2,separate_process_reproductions=2,prefix_days=9,prefix_nodes=112,failed_generation_publications=0,committed_state_byte_exact=True,original_full_profile_qualified=False,production_unchanged=True,work_packages='MC-NUT01/MC-SOL01 remain CLOSED WITH EXCLUSIONS')
 
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['verify']()
+ source();return validate(capsule())
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()
