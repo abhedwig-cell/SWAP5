@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 original hydrostatic water bootstrap",
   "baseline": "a44c346216b67a2b9db4acbcfa18c229442648a9",
-  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "stage": "CANONICALLY_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_CONTRACT.md",
   "test_selection": {
     "changed_inputs": [
@@ -74,6 +74,11 @@
   "original_hydraulic_KSATEXM_import": false,
   "full_original_Andelst": false,
   "admission_record": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_ADMISSION.json",
-  "next_action": "Verify sealed owner/controls/docs, publish coherent implementation and check actual canonical merge",
-  "hosted_checks_selection": "NOT_SELECTED_IMPACT: selected local source/numeric/admission gates executed; [skip ci] avoids repeating unchanged automatic broad suites. No hosted PASS claimed."
+  "next_action": "Supported hydrostatic water/heat initialization subset closed. Original KSATEXM hydraulic import, external BBC staging and full macro/drainage/crop lifecycle remain excluded; full-original issue1386 stays open.",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: selected local source/numeric/admission gates executed; [skip ci] avoids repeating unchanged automatic broad suites. No hosted PASS claimed.",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "actual_canonical_merge": "9351bd42e17055e0eed41835fb1185d033507944",
+  "actual_complete_tree": "8877de2161134d6d86a440321a59198775e9f2e8",
+  "exact_qualified_tree_match": true,
+  "remaining_supported_scope_closure_blockers": []
 }

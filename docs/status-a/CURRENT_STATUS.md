@@ -1,5 +1,14 @@
 # SWAP5 Status-A current status
 
+Hydrostatic water/heat initialization is canonically admitted by PR1438/1439
+at corrected actual merge `9351bd42e17055e0eed41835fb1185d033507944`. Complete
+actual/qualified tree `8877de2161134d6d86a440321a59198775e9f2e8` is exact. Actual-merge
+source/raw owner,17 controls, FSI35 source boundary and source/strict docs pass.
+Actual initial groundwater metadata is source GWLI, not the old constant -2 cm.
+`integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_ADMISSION.json` binds this
+CLOSED WITH EXCLUSIONS subset. No hosted PASS is claimed; unchanged broad suites
+were not selected. Full original KSATEXM/BBC/macro/crop application stays excluded.
+
 HIST01 hydrostatic initialization successor,25 October2026: SWINCO2 now maps
 original GWLI into pressure heads and source pond through the existing input
 adapter. Original112-node Andelst water/heat initialization is component proof

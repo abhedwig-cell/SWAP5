@@ -1,0 +1,145 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original hydrostatic water bootstrap",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "prs": [
+    1438,
+    1439
+  ],
+  "canonical_merge": "9351bd42e17055e0eed41835fb1185d033507944",
+  "first_parent": "a9c84c99ced5a4aa35158931daa9dafd83fdd4e5",
+  "published_head": "f06e2ad0c59ad5c68fe217331c33eedef5994899",
+  "qualified_complete_tree": "8877de2161134d6d86a440321a59198775e9f2e8",
+  "actual_complete_tree": "8877de2161134d6d86a440321a59198775e9f2e8",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_hydrostatic_bootstrap_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.37170519099890953,
+      "stdout_sha256": "07b5038c6f6f605d113cf082ac164521e9de1714fe42ec73f71490739bfd390c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_hydrostatic_bootstrap_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 0.733539410000958,
+      "stdout_sha256": "c6593957bb86079f6665a12f6132960c4c9e2f4349d57477f07df25141963924",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 5.185910601001524,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.22734575499634957,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/hydrostatic-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 12.950456224003574,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "61907b967e307724a39984bd2cc945b2f9eefe9c51c23140258b03ea4b9ff9ab"
+    }
+  ],
+  "physical_qualification": {
+    "source_cases": 18,
+    "source_negative_processes": 22,
+    "coupled_cases": 6,
+    "fresh_process_restarts": 6,
+    "file_negative_processes": 16,
+    "incumbent_comparisons": 10,
+    "water_max_cm": 2.2616457318047622e-16,
+    "solute_max_mg_cm2": 1.0699451849678632e-13,
+    "O0_O2_exact": true,
+    "original_hydrostatic_and_heat_component_nodes": 112
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_EVIDENCE.tar.xz.b64",
+    "sha256": "583b88b1d263fb59ee4e84a8b9ace0a2ece754d1d67bbefce1e792b115c2f176",
+    "bytes": 2155680,
+    "members": 3305
+  },
+  "current_executed_input_bindings": 202,
+  "current_source_raw_controls": 17,
+  "predecessor_controls_retained": 19,
+  "closed_capabilities": [
+    "Original hydrostatic GWLI-to-pressure-head and source pond initialization",
+    "Actual initialized water groundwater metadata equals source GWLI exactly",
+    "Original112-node Andelst grid/GWLI with real numeric heat input as component proof",
+    "Bounded inline-bottom file water/heat/solute execution with an unsaturated node and exact independent-process restart",
+    "Five incumbent application cases at each optimization preserve all physical/restart artifacts exactly"
+  ],
+  "exclusions": [
+    "SWBOTB1",
+    "Loose historical restart",
+    "Full original macropore/drainage/crop/heat application",
+    "Fully saturated file initialization",
+    "Original KSATEXM hydraulic import",
+    "External BBC file staging/orchestration",
+    "Fully saturated file initialization",
+    "Original KSATEXM hydraulic import",
+    "External BBC file staging/orchestration"
+  ],
+  "remaining_supported_scope_closure_blockers": [],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "all_process_solver_sources_unchanged": true,
+  "restart_schema_unchanged": true,
+  "SWINCO1_defaults_and_outputs_unchanged": true,
+  "fully_saturated_file_execution": false,
+  "original_hydraulic_KSATEXM_import": false,
+  "full_original_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "preservation_selection": {
+    "FSI35": "27 executable source dependencies unchanged; actual-merge source-only boundary passed, no fresh native run",
+    "NUT_and_macro": "Existing admitted physics and persistence source unchanged; retained exact accepted evidence within its scope",
+    "previous_heat_file_application": "Ten direct incumbent comparisons, byte-exact artifacts; no untested cross-product claimed",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: selected local source/numeric/admission gates executed; [skip ci] avoids repeating unchanged automatic broad suites. No hosted PASS claimed.",
+  "hosted_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "initial_merge_note": "PR1438 was followed by actual-water groundwater initialization correction PR1439. Scientific admission binds the corrected complete tree and its current raw proof, not the predecessor tree.",
+  "receipt_scope": "Actual-merge evidence only. Final receipt/status/docs changes do not change executed scientific postimages or sealed evidence."
+}
