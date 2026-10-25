@@ -1,5 +1,18 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Native numeric heat now executes with the project crop calendar, accepted
+substep Feddes root stress, detailed rainfall and ordinary soil/pond evaporation.
+Four checked O0/O2 cases complete481 days with four exact day365 process restarts,
+including source temperature-dependent decay and Freundlich0.5/2. Original daily
+weather mean air temperature is bound to the native calendar. Source/runtime
+change is the exact numeric heat/root admission guard only; all other runtime
+bytes and all physical equations remain unchanged. Fresh affected preservation
+covers four BBC481 project cases and twelve column cases, with sixteen restarts
+and eight exact default project artifact comparisons. Boesten/drainage/Picard
+with heat and the full original Andelst macro lifecycle remain excluded.
+`integration/mc-sol01/drainage/PROJECT_HEAT_STATUS.json` separates qualification
+and actual canonical admission; its companion contract defines energy reporting.
+
 Native project hydraulic bootstrap is canonically admitted by PR1441 at
 actual merge `5303806142e9f30659b1ba867cc75f024e0694e1`; qualified/actual tree
 `2700a542e47d1272e0828c5b254ecb6ff4aad417` matches exactly. Actual-merge

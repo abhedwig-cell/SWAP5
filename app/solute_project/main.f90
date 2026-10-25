@@ -89,6 +89,7 @@ program swap5_native_project_column
   logical :: swp_native_hydraulics=.false.
   logical :: swp_heat_bootstrap=.false.
   real(real64) :: air_temperature_c(MAX_WINDOWS)=20d0
+  real(real64) :: observed_heat_residual_j_cm2=0d0
   real(real64) :: swp_source_pond=-1d0,swp_source_groundwater=-2d0
   logical :: historical_zero_solute_exfiltration=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
@@ -546,6 +547,7 @@ program swap5_native_project_column
   if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
   if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
+  if(dynamic_temperature)write(u,'(A)',advance='no')',observed_heat_residual_j_cm2'
   write(u,'(A)')''
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
@@ -662,6 +664,7 @@ program swap5_native_project_column
     if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
     if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
+    if(dynamic_temperature)write(u,'(A,ES25.17E3)',advance='no')',',observed_heat_residual_j_cm2
     write(u,'(A)')''
     clock=t1
   end do
@@ -708,6 +711,7 @@ program swap5_native_project_column
   print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'
 contains
   subroutine reset_day_totals()
+    observed_heat_residual_j_cm2=0d0
     bottom_amount=0d0
     drainage_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
@@ -718,6 +722,12 @@ contains
   subroutine accumulate_fluxes(observation)
     type(fmr_serialized_physical_observation_t),intent(in)::observation
     integer::k
+    if(dynamic_temperature)then
+      call require(observation%soil_temperature_executed.and. &
+        observation%soil_temperature_energy_accounting_complete,'accepted heat energy certificate unavailable')
+      observed_heat_residual_j_cm2=max(observed_heat_residual_j_cm2, &
+        abs(observation%soil_temperature_energy_residual_j_cm2))
+    end if
     accepted_count=accepted_count+size(observation%accepted_water_flux_substeps)
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
