@@ -1,12 +1,12 @@
 {
   "work_unit": "HIST-INTEGRATION01 original matrix source-profile continuation",
   "baseline": "d6e3955914819ede9d25aaf7b764e48c8467909c",
-  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "production_changed": false,
   "seed_day": 30,
   "target_day": 481,
@@ -18,7 +18,7 @@
     "integration/mc-sol01/drainage/continue_source_profile.py"
   ],
   "recovery_point": "Complete immutable generation to-481 in evidence capsule",
-  "next_action": "Publish authorized candidate, integrate into canonical, and verify actual merged tree.",
+  "next_action": "This bounded481-day matrix extension is closed. Retain macro/Rutter, full481 O0, uninterrupted-run and full original equivalence exclusions.",
   "completed_days": 481,
   "evidence": {
     "path": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_EVIDENCE.tar.xz.b64",
@@ -96,13 +96,17 @@
       }
     }
   },
-  "remaining_integration_blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
+  "remaining_integration_blockers": [],
   "canonical_predecessor": {
     "sha": "dbb46e0b4604192ecf6df3d162e4a7d71dc53ddd",
     "qualified_days": 367,
     "canonically_admitted": true
   },
-  "publication_authorized": true
+  "publication_authorized": true,
+  "admission_record": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_ADMISSION.json",
+  "actual_merge": "474bf54cc39d4759d5e32fe345711b963b413b7e",
+  "actual_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
+  "published_head": "230082534cf30d5100459e42cc9c5870afd4d7bd",
+  "published_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
+  "last_reconciled_head": "474bf54cc39d4759d5e32fe345711b963b413b7e"
 }

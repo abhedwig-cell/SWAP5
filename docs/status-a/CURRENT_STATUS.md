@@ -13,9 +13,12 @@ arithmetic,30-day coupling, rollback and FCI93/FSI35 proof remain unchanged.
 This is a locally qualified O2 segmented chain, not an uninterrupted run,
 full481-day O0 proof or original4.3.1 equivalence. Macro/Rutter and original
 SWSOLU0 chemical equivalence remain excluded. MC-NUT01/MC-SOL01 remain CLOSED
-WITH EXCLUSIONS. Explicit publication authorization has been received after the earlier automatic
-approval rejection. Canonical admission and exact-merge checks are pending.
-The canonical predecessor dbb46e0b admits367 days. Qualification, recovery and
+WITH EXCLUSIONS. PR1447 canonically admits this bounded481-day chain at actual merge
+`474bf54cc39d4759d5e32fe345711b963b413b7e`. Qualified, published and actual
+complete tree `1a3fcb0395b143df24be1e418fba68f45c6f1a8d` matches exactly.
+Actual-merge owner/ten corruption controls, FSI35 source, docs and strict MkDocs
+pass. No hosted numerical PASS is claimed. The367-day predecessor is retained
+as historical evidence; this extension is CLOSED WITH EXCLUSIONS. Qualification, recovery and
 admission status are separate in
 `integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_STATUS.json`.
 

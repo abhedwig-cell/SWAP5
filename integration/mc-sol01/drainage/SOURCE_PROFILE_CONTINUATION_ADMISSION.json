@@ -1,0 +1,136 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original matrix source-profile continuation",
+  "baseline": "d6e3955914819ede9d25aaf7b764e48c8467909c",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Original112-node/eight-layer source matrix481-day checked O2 segmented chain; not full original application equivalence",
+  "pr": 1447,
+  "actual_merge": "474bf54cc39d4759d5e32fe345711b963b413b7e",
+  "published_head": "230082534cf30d5100459e42cc9c5870afd4d7bd",
+  "published_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
+  "actual_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
+  "qualified_local_candidate": "12caad51473b68efd61c2a82f38113ff16fd109e",
+  "qualified_complete_tree_exact": true,
+  "physical_results": {
+    "nodes": 112,
+    "complete_days": 481,
+    "water_max_cm": 5.576095141179849e-14,
+    "solute_max_mg_cm2": 2.5951463200613034e-13,
+    "observed_heat_max_j_cm2": 3.658939817796636e-11
+  },
+  "qualification": {
+    "qualified": true,
+    "days": 481,
+    "nodes": 112,
+    "optimization": "O2",
+    "segments": 8,
+    "exact_year_boundary_replay_days": [
+      366,
+      367
+    ],
+    "exact_files": [
+      "restart.bin",
+      "state.csv",
+      "endpoint.csv",
+      "temperature.csv"
+    ],
+    "physical_results": {
+      "nodes": 112,
+      "complete_days": 481,
+      "water_max_cm": 5.576095141179849e-14,
+      "solute_max_mg_cm2": 2.5951463200613034e-13,
+      "observed_heat_max_j_cm2": 3.658939817796636e-11
+    },
+    "full_uninterrupted_run": false,
+    "full481_O0": false,
+    "full_original_Andelst": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_EVIDENCE.tar.xz.b64",
+    "sha256": "f76a687fa32440d21ae2753659bc957ad0371d2a79a0db8753783a792ad8e6ef",
+    "bytes": 510472,
+    "members": 117
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "474bf54cc39d4759d5e32fe345711b963b413b7e",
+    "actual_tree": "1a3fcb0395b143df24be1e418fba68f45c6f1a8d",
+    "qualified_complete_tree_exact": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "owner_and_controls",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_source_continuation.py"
+        ],
+        "returncode": 0,
+        "seconds": 11.165322893000848,
+        "stdout_sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fsi35_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json; print(json.dumps(runpy.run_path('integration/audits/verify_saturation_storage_current.py')['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.5117504810041282,
+        "stdout_sha256": "e918f3625e9b4b5edaa72f058bc5d6c329d3bc2c3b591a501ce23b3b0b1ef19d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.27355509900371544,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/6719f15c908a/actual481-site"
+        ],
+        "returncode": 0,
+        "seconds": 16.82732837000367,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "68994f26e3fe7c515d1dff7769522a2eca88e12d2334a44d925c44042dff30bf"
+      }
+    ]
+  },
+  "production_changed": false,
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "Original macro/Rutter application",
+    "Full481-day O0 proof",
+    "Full uninterrupted-run proof",
+    "Original SWSOLU0 chemical equivalence",
+    "Full original SWAP4.3.1 application equivalence"
+  ],
+  "hosted_numerical_pass_claimed": false,
+  "work_packages": {
+    "MC-NUT01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    },
+    "MC-SOL01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    }
+  }
+}
