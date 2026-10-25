@@ -39,3 +39,24 @@ qualification and not full original crop-model equivalence.
 Actual interruption: workspace maintenance removed the final unpersisted run and
 exact executable/compiler objects. Qualify only the surviving367-day chain and
 exact year replay; retain481 as unqualified. No model rejection is inferred.
+
+Recovery successor, 25 October2026: replaying the retained exact build commands
+with the identical compiler and source is permitted solely to recover the bound
+executable. No native continuation is eligible unless its SHA256 exactly equals
+the admitted executable identity. This is artifact recovery, not a new numerical
+candidate or permission to inherit evidence across changed executable bytes.
+Retain the measured recovery report in the sealed evidence capsule and bind
+its expected and recovered executable identities on every evidence replay.
+The executable is local only. Its binary is not included in publication.
+
+Cost-based reselection after the 900s censored367->481 attempt: no completed
+generation survived that interval, so it gains no migration credit. Retain its
+record and observed budget as censored diagnostics. Re-execute only the
+unpublished interval as367->427 and427->481, each capped at900s. The admitted
+1..367 prefix is never repeated; the complete427 generation is sealed before
+the final segment. No physical, executable, forcing or tolerance change.
+
+The complete daily rows retained from the censored longer attempt are also
+compared byte-for-byte as parsed CSV against the segmented successor over their
+common interval. This is an intermediate-output continuation control only;
+it does not turn the censored attempt into a terminal native PASS.

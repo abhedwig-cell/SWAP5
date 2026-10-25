@@ -1,19 +1,23 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-Original112-node matrix continuation is qualified through367 days at checked O2,
-including the source1998 crop, subsequent fallow and1999 second-crop activation.
-Six immutable continuation segments inherit the admitted day30 seed. Two daily
-budgets and four final physical artifacts are byte exact for365->367 versus
-365->366->367. Maximum water/solute residuals are5.58e-14cm/2.60e-13mg/cm2.
-The last-observed heat residual maximum is3.66e-11J/cm2, not a daily energy sum.
-Production code, forcing, executable and tolerances were unchanged. Earlier O0/O2
-arithmetic,30-day interaction, rollback and FCI93/FSI35 evidence is inherited.
-Workspace maintenance removed the unpersisted final481 run, exact executable and
-compiler objects; no481 result is claimed and this is not a scientific rejection.
-Macro/Rutter and full original application/equivalence remain excluded.
-MC-NUT01 and MC-SOL01 remain CLOSED WITH EXCLUSIONS, with no implementation or
-evidence blockers inside their admitted boundary. Qualification and actual merge
-are separately recorded in `integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_STATUS.json`.
+Original112-node source matrix chain now completes481 days at checked O2,
+with the original1998 crop/fallow and1999 second-crop activation. The previously
+admitted367-day chain is extended once through481 without rerunning its prefix.
+The exact executable SHA256 was recovered; all406 reused artifacts match their
+recorded hashes. Production equations, forcing, state, compiler flags and
+tolerances are unchanged. Maximum water/solute residuals are
+5.576e-14cm/2.595e-13mg/cm2; the last-observed
+heat residual maximum is3.659e-11J/cm2, not a daily energy sum.
+The exact365->367 versus365->366->367 year-boundary replay and prior O0/O2
+arithmetic,30-day coupling, rollback and FCI93/FSI35 proof remain unchanged.
+This is a locally qualified O2 segmented chain, not an uninterrupted run,
+full481-day O0 proof or original4.3.1 equivalence. Macro/Rutter and original
+SWSOLU0 chemical equivalence remain excluded. MC-NUT01/MC-SOL01 remain CLOSED
+WITH EXCLUSIONS. Explicit publication authorization has been received after the earlier automatic
+approval rejection. Canonical admission and exact-merge checks are pending.
+The canonical predecessor dbb46e0b admits367 days. Qualification, recovery and
+admission status are separate in
+`integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_STATUS.json`.
 
 
 Stable rational retention storage now removes the original-profile day10
