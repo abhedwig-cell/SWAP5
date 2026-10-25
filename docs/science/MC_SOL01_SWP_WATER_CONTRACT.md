@@ -1,5 +1,7 @@
 # MC-SOL01 native SWP water bootstrap
 
+Later bounded SWINCO2 successor: see `integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json` and its linked contract/admission. The older exclusions below retain their historical meaning for the original SWINCO1 admission. Full original hydraulic/whole-project equivalence is not promoted.
+
 Canonically admitted bounded route through PR1362 and PR1363. Baseline48a59396d7e7745cf99ad4b1003cd84c946e3e3f.
 
 An explicit `swp_water_bootstrap=.true.` in the column namelist selects original

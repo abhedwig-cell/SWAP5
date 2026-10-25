@@ -49,6 +49,7 @@ program swap5_solute_column
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
   logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.,swp_heat_bootstrap=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
+  real(real64) :: swp_source_pond=-1d0
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
   real(real64) :: air_temperature_c(MAX_WINDOWS)=20d0
@@ -121,7 +122,12 @@ program swap5_solute_column
     call require(schema==2.and.nodes==0.and.all(cell_thickness_cm==0d0),'SWP water bootstrap forbids a second grid')
     call require(initial_head==-75d0.and.theta_r==.032d0.and.theta_s==.423d0.and.ksat_cm_day==.00475d0.and. &
       alpha_per_cm==.0135d0.and.vg_n==1.455d0.and.pore_l==.365d0,'SWP water bootstrap forbids hydraulic overrides')
-    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen)
+    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen,swp_source_pond)
+    if(swp_source_pond>=0d0)then
+      call require(initial_pond_cm==0d0,'SWINCO2 forbids a second initial pond depth')
+      call require(any(swp_heads < -1d-5),'fully saturated SWINCO2 file execution is not qualified')
+      initial_pond_cm=swp_source_pond
+    end if
   end if
   call require(nodes>=2.and.nodes<=MAX_NODES,'invalid node count')
   call require(all(ieee_is_finite(cell_thickness_cm)),'nonfinite grid')

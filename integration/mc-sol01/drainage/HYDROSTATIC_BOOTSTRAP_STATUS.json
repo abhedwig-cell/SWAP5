@@ -1,0 +1,76 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original hydrostatic water bootstrap",
+  "baseline": "a44c346216b67a2b9db4acbcfa18c229442648a9",
+  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "qualified": true,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_CONTRACT.md",
+  "test_selection": {
+    "changed_inputs": [
+      "app/solute_column/read_swp_water.f90",
+      "app/solute_column/main.f90"
+    ],
+    "scientific_claim": "Original SWINCO2 groundwater/pond/head construction plus existing numeric heat and file restart",
+    "expected_seconds": 250,
+    "reuse": "Unchanged checked191-provider builds and original TTUTIL; source input hashes verified before object reuse",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "exclusions": [
+    "SWBOTB1",
+    "Loose historical restart",
+    "Full original macropore/drainage/crop/heat application",
+    "Fully saturated file initialization",
+    "Original KSATEXM hydraulic import",
+    "External BBC file staging/orchestration"
+  ],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "scientific_delta": {
+    "app/solute_column/main.f90": "M",
+    "app/solute_column/read_swp_water.f90": "M",
+    "examples/solute_column/hydrostatic_heat.nml": "A",
+    "examples/solute_column/hydrostatic_heat.swp": "A",
+    "integration/audits/verify_native_heat_bootstrap_current.py": "M",
+    "tests/nut-sol/test_hydrostatic_bootstrap.f90": "A",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "A"
+  },
+  "postimages": {
+    "app/solute_column/main.f90": "a2c3589dabcd171d3b39303b67b103ea3137556c2ad0b73e999ece41f7d9c99d",
+    "app/solute_column/read_swp_water.f90": "2238064340b3da296cdaab69f5e98aacd16654cfc85e83ae672ffb63ce29c683",
+    "examples/solute_column/hydrostatic_heat.nml": "2bcbd0da09ea999423a48837c455027187c5f806cd25bbdc92c0088c6f6d7fff",
+    "examples/solute_column/hydrostatic_heat.swp": "91f1717caa55f10c7ac5ed76b2872a6641fe3140d17f286f9aec35fe0de94722",
+    "integration/audits/verify_native_heat_bootstrap_current.py": "4411ade19a6f607702b45f24d7e7d49419fed3b08110ab0d72168d61138ac831",
+    "tests/nut-sol/test_hydrostatic_bootstrap.f90": "e299fc3e84ba9e72300482965be66ee673376780982d7804eb3887d9953f04a6",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "5f03b3410eb1d9b7e2d7444e6bdd2beda62661da1e9d6e1c024a638abfeb0d22",
+    "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_CONTRACT.md": "3faf809250b5b447f9b0da33d9bfcfa6b5372711668ee61b45380ee5f996c6f2",
+    "integration/mc-sol01/drainage/qualify_hydrostatic_bootstrap.py": "08f0f73dd5a28d3990c8210b97aa3d40881d9c245cc75b54e54a3ed574aefba2",
+    "integration/mc-sol01/drainage/seal_hydrostatic_bootstrap.py": "30ba951e79cc6125e9ae530738c376b616588f41cc12fb2f0dc6278435beb930"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_EVIDENCE.tar.xz.b64",
+    "sha256": "d85bb7a50d972182064cc9910d386200fee687393603d2d44f96275f74259cae",
+    "bytes": 2123776,
+    "members": 2217
+  },
+  "current_executed_inputs": 202,
+  "physical_results": {
+    "source_cases": 18,
+    "source_negative_processes": 22,
+    "coupled_cases": 6,
+    "fresh_process_restarts": 6,
+    "file_negative_processes": 16,
+    "incumbent_comparisons": 10,
+    "water_max_cm": 2.2616457318047622e-16,
+    "solute_max_mg_cm2": 1.0699451849678632e-13,
+    "O0_O2_exact": true,
+    "original_hydrostatic_and_heat_component_nodes": 112
+  },
+  "fully_saturated_file_execution": false,
+  "original_hydraulic_KSATEXM_import": false,
+  "full_original_Andelst": false,
+  "admission_record": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_ADMISSION.json",
+  "next_action": "Verify sealed owner/controls/docs, publish coherent implementation and check actual canonical merge",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: selected local source/numeric/admission gates executed; [skip ci] avoids repeating unchanged automatic broad suites. No hosted PASS claimed."
+}

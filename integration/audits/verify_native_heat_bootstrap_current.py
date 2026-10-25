@@ -23,6 +23,7 @@ def preserved_heat(reader):
  rest=(text[:a]+text[z:]).replace('  public :: initialize_soil_temperature_from_texture\n','',1)
  assert rest==subprocess.check_output(['git','show',BASE+':'+HEAT],cwd=ROOT,text=True),'pre-existing heat procedure/type changed'
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_hydrostatic_bootstrap_current.py'))['source'](reader,changed)
  r=json.loads(reader(STATUS));assert r['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  assert delta==r['scientific_delta'],'foreign native heat delta'
@@ -71,12 +72,15 @@ def validate(f):
  for target,member in [('examples/solute_column/native_heat.nml','app-O2/bootstrap-0.5/input.nml'),('examples/solute_column/layered_heat.swp','app-O2/bootstrap-0.5/source.swp')]:assert(ROOT/target).read_bytes()==f[member],'example differs from executed input'
  return dict(qualified=True,status='SOURCE_NATIVE_NUMERIC_HEAT_BOOTSTRAP_AND_FILE_RESTART_QUALIFIED',original_Andelst_heat_nodes=112,source_O0_O2_exact=True,source_negative_processes=22,constructor_negative_assertions=28,coupled_cases=6,fresh_process_restarts=6,file_negative_processes=18,incumbent_water_and_explicit_heat_exact=True,old_heat_procedures_types_exact=True,full_original_native_Andelst=False,macropore_or_drainage_heat_composition=False,full_historical_migration=False,canonically_admitted=False)
 def verify():
+ if (ROOT/'integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_hydrostatic_bootstrap_current.py'))['verify']()
  source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_hydrostatic_bootstrap_current.py'))['fsi35_successors']()
  source();r=json.loads(capsule()['parent/proof.json'])['fsi35'];deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),'changed FSI35 executable source'
  return r
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_hydrostatic_bootstrap_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()
