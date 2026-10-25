@@ -28,8 +28,8 @@ def native(exe,args,stage,marker):
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
 def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False):
- if native_heat and (not native_hydraulics or water_conductivity!='frozen' or retain_step_proposal or water_flux_temporal):
-  raise ValueError('native heat requires explicit native hydraulics and ordinary frozen Reference execution')
+ if native_heat and (not native_hydraulics or retain_step_proposal or water_flux_temporal):
+  raise ValueError('native heat requires explicit native hydraulics and ordinary Reference execution')
  if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
   raise ValueError('water/flux temporal metric requires frozen native Reference step proposals')
  if water_flux_temporal and temporal_tolerance!=.001:

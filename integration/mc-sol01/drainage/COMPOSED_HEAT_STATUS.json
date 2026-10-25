@@ -1,0 +1,24 @@
+{
+  "work_unit": "HIST-INTEGRATION01 numeric heat/Boesten/drainage/Cauchy project",
+  "baseline": "d6378c7ac492a9e051b04468b814be6d1d54d121",
+  "stage": "IMPLEMENTATION_PENDING",
+  "qualified": false,
+  "canonically_admitted": false,
+  "contract": "Extend existing numeric heat joint transaction to the existing Boesten physical state family, DRAMET3/Cauchy and explicit Picard choices. Persist exact SPEV/SAEV together with heat via additive S5PT0002 payload; original S5PT0001 and nonheat restarts unchanged. Reuse all equations and existing state owners. No new physical model or kernel state type.",
+  "interfaces_changed": "Existing Boesten constructor gains optional parameters argument for certified initial heat identity; existing Boesten restart state family accepts its already inherited numeric heat payload. Thermal file reader/writer recognizes additive Boesten+heat tag S5PT0002, preserving old tags/bytes.",
+  "invariants": [2,3,4,7,13,21,23,25,29,30],
+  "test_selection": {
+    "immediate": "Real typed Boesten/heat restart exact round-trip, pair/parameter/CRC corruption, rejected destination unchanged, old format byte preservation",
+    "composition": "Original detailed weather/DRA/BBC/simple crop481-day O0/O2 with numeric heat plus Boesten and Picard/Cauchy; exact day365 restart and hard water/solute/energy/root reconciliation",
+    "preservation": "Changed-state/admission consumers rebuilt; fresh affected project heat, BBC and column raw assertions; unaffected equations inherited only through exact source projections",
+    "expected_seconds": 600,
+    "expensive_justification": "The new persisted Boesten+heat composition must span wet/dry memory, three crop periods and year boundary, with exact independent-process day365 restart. Short component tests do not establish that lifecycle.",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "remaining_implementation_blockers": ["Existing runtime/thermal-joint guards reject the combination", "Thermal file format does not carry Boesten SPEV/SAEV"],
+  "remaining_evidence_blockers": ["Current typed persistence and coupled original-forcing lifecycle proof"],
+  "exclusions": ["Full original native macropore/heat/crop lifecycle", "Analytic heat", "Snow/frost compositions", "SWBOTB1", "Loose historical restart", "Active KSATEXM/Picard"],
+  "next_action": "Implement one coherent existing-owner composition, persist, compile and qualify before canonical admission"
+}

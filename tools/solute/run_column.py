@@ -49,7 +49,7 @@ def main():
         expected_files = {'input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr'}
         if swp:
             expected_files.add('input.swp')
-        if (directory / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
+        if (directory / 'restart.bin').read_bytes()[:8] in (b'S5PT0001', b'S5PT0002'):
             expected_files.add('temperature.csv')
         if set(parent.get('files', {})) != expected_files:
             raise ValueError('invalid restart manifest inventory')
@@ -86,7 +86,7 @@ def main():
     for cache in stage.glob('inputrd$*.tmp'):
         cache.unlink()
     names = ['input.nml', 'restart.bin', 'budget.csv', 'state.csv', 'endpoint.csv', 'stdout', 'stderr']
-    if (stage / 'restart.bin').read_bytes()[:8] == b'S5PT0001':
+    if (stage / 'restart.bin').read_bytes()[:8] in (b'S5PT0001', b'S5PT0002'):
         names.append('temperature.csv')
     if swp:
         names.append('input.swp')

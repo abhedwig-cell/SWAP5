@@ -15,6 +15,7 @@ module mod_pond_thermal_restart_file
  use mod_solute_compartment_state,only:solute_compartment_state_t
  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
   initialize_soil_temperature_state
+ use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t
  use mod_age_joint_restart_file,only:crc32
  implicit none
  private
@@ -51,6 +52,12 @@ contains
     h%f_quartz,h%f_clay,h%f_organic,h%fkk_qco_dry,h%fk_qco_dry,h%fkk_qco_wet,h%fk_qco_wet, &
     h%analytic_mean_temperature_c,h%analytic_amplitude_c,h%analytic_reference_day,h%analytic_damping_depth_cm]
   end associate
+  if(p%boesten_evaporation_active)then
+   if(.not.allocated(p%boesten_evaporation))then
+    deallocate(v);return
+   end if
+   v=[v,-53020002d0,p%boesten_evaporation%cofred]
+  end if
  end function
  integer function synchronize(path)result(st)
   character(*),intent(in)::path
@@ -89,10 +96,15 @@ contains
   integer(int64)::id,revision
   integer(int8),allocatable::a(:)
   integer::u,io,code,n,slash
-  logical::ok,history,opened
+  logical::ok,history,opened,boesten
+  character(8)::tag
+  type(boesten_evaporation_state_t)::pair
   character(:),allocatable::pending,parent
   status=1
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
+  boesten=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+  if(boesten.neqv.parameters%boesten_evaporation_active)return
+  tag='S5PT0001';if(boesten)tag='S5PT0002'
   if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
   if(.not.pond_thermal_states_match(water,chemical))return
   call water%certified_parameter_identity(identity,ok);if(.not.ok)return
@@ -107,7 +119,12 @@ contains
   ! This format carries the physical water/heat state with no continuation history.
   select type(q=>b%records(1)%physical_state)
   type is(fmr_b110_physical_state_t)
+   if(boesten)return
    history=.false.
+   call build_soil_temperature_field_view(q%soil_temperature,heat,code)
+  type is(fmr_b110_boesten_evaporation_state_t)
+   if(.not.boesten)return
+   history=.false.;pair=q%boesten_evaporation
    call build_soil_temperature_field_view(q%soil_temperature,heat,code)
   class default
    return
@@ -117,14 +134,16 @@ contains
   open(newunit=u,file=pending,access='stream',form='unformatted',status='new',iostat=io);if(io/=0)return
   writing:block
    associate(r=>b%records(1))
-    write(u,iostat=io)'S5PT0001',b%schema_version,b%parameter_set_identity,r%schema_version,r%kernel_schema_version, &
+    write(u,iostat=io)tag,b%schema_version,b%parameter_set_identity,r%schema_version,r%kernel_schema_version, &
      r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
      n,history,identity%parameter_set_id,size(hv),hv
     if(io/=0)exit writing
     select type(q=>r%physical_state)
-    type is(fmr_b110_physical_state_t)
+    class is(fmr_b110_physical_state_t)
      write(u,iostat=io)q%pressure_head,q%water_content,q%ponding_depth,q%groundwater_level,heat%temperature_c
     end select
+    if(io/=0)exit writing
+    if(boesten)write(u,iostat=io)pair%spev,pair%saev
     if(io/=0)exit writing
     if(history)write(u,iostat=io)derivative
     if(io/=0)exit writing
@@ -176,10 +195,13 @@ contains
   integer(int64)::id,revision,physical_id
   character(8)::tag
   integer::u,io,n,count,code
-  logical::ok,history
+  logical::ok,history,boesten
+  type(boesten_evaporation_state_t)::pair
   status=1
   if(water%ready().or.chemical%ready())return
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
+  boesten=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+  if(boesten.neqv.parameters%boesten_evaporation_active)return
   if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
   expected=matrix_parameter_vector(p);want_heat=heat_vector(parameters)
   if(.not.allocated(expected).or..not.allocated(want_heat))return
@@ -196,7 +218,8 @@ contains
      n,history,physical_id,count
     if(io/=0)exit decoding
     io=1
-    if(tag/='S5PT0001'.or.n<1.or.n>256.or.n/=parameters%active_nodes)exit decoding
+    if(n<1.or.n>256.or.n/=parameters%active_nodes)exit decoding
+    if((boesten.and.tag/='S5PT0002').or.(.not.boesten.and.tag/='S5PT0001'))exit decoding
     if(physical_id/=parameters%parameter_set_id.or.count/=size(want_heat))exit decoding
     allocate(hv(count));read(u,iostat=io)hv;if(io/=0)exit decoding
     io=1
@@ -206,11 +229,17 @@ contains
     allocate(physical%pressure_head(n),physical%water_content(n),temperature(n),theta(n),concentration(n),dissolved(n),sorbed(n))
     read(u,iostat=io)physical%pressure_head,physical%water_content,physical%ponding_depth,physical%groundwater_level,temperature
     if(io/=0)exit decoding
+    if(boesten)read(u,iostat=io)pair%spev,pair%saev
+    if(io/=0)exit decoding
     allocate(physical%soil_temperature)
     call initialize_soil_temperature_state(temperature,physical%soil_temperature,io);if(io/=0)exit decoding
     io=1
     if(history)exit decoding
-    call fmr_new_b110_committed_state(temporary,column%column_id,physical,0d0,ok)
+    if(boesten)then
+     call fmr_new_b110_boesten_evaporation_committed_state(temporary,column%column_id,physical,pair,0d0,ok,parameters)
+    else
+     call fmr_new_b110_committed_state(temporary,column%column_id,physical,0d0,ok)
+    end if
     io=1;if(.not.ok)exit decoding
     call temporary%snapshot(r%physical_state,ok);if(.not.ok)exit decoding
     read(u,iostat=io)id,revision,time,count;if(io/=0)exit decoding
