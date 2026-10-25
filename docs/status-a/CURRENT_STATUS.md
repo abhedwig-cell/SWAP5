@@ -1,5 +1,21 @@
 # SWAP5 Status-A current status
 
+Original112-node matrix continuation is qualified through367 days at checked O2,
+including the source1998 crop, subsequent fallow and1999 second-crop activation.
+Six immutable continuation segments inherit the admitted day30 seed. Two daily
+budgets and four final physical artifacts are byte exact for365->367 versus
+365->366->367. Maximum water/solute residuals are5.58e-14cm/2.60e-13mg/cm2.
+The last-observed heat residual maximum is3.66e-11J/cm2, not a daily energy sum.
+Production code, forcing, executable and tolerances were unchanged. Earlier O0/O2
+arithmetic,30-day interaction, rollback and FCI93/FSI35 evidence is inherited.
+Workspace maintenance removed the unpersisted final481 run, exact executable and
+compiler objects; no481 result is claimed and this is not a scientific rejection.
+Macro/Rutter and full original application/equivalence remain excluded.
+MC-NUT01 and MC-SOL01 remain CLOSED WITH EXCLUSIONS, with no implementation or
+evidence blockers inside their admitted boundary. Qualification and actual merge
+are separately recorded in `integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_STATUS.json`.
+
+
 Stable rational retention storage now removes the original-profile day10
 cancellation failure without changing an equation, solver, tolerance, public
 interface, state layout or default. The guarded provider difference avoids
