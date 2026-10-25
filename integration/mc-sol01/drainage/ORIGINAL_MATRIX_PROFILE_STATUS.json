@@ -1,0 +1,25 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original matrix profile interaction",
+  "baseline": "146823954f2a24e43b6e007591ef2876331daa9d",
+  "stage": "IMPLEMENTED_QUALIFICATION_SELECTION",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "production_edited": false,
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [
+    "Source-bound original112-node O0/O2 full481/day365 interaction and actual canonical postimage"
+  ],
+  "excluded_implementation": [
+    "Original native macropore/heat/interception lifecycle",
+    "Original SWSOLU0 has no historical chemical reference; added chemical input is explicit"
+  ],
+  "next_action": "Run selected native O0/O2 original matrix projection; preserve rejected and censored results",
+  "relevant_paths": [
+    "integration/mc-sol01/drainage/COMPOSED_HEAT_ADMISSION.json",
+    "integration/mc-sol01/drainage/qualify_original_matrix_profile.py"
+  ],
+  "recovery_point": "Pinned canonical plus this qualification contract and runner"
+}
