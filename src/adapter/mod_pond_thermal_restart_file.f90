@@ -231,6 +231,11 @@ contains
     if(io/=0)exit decoding
     if(boesten)read(u,iostat=io)pair%spev,pair%saev
     if(io/=0)exit decoding
+    if(boesten)then
+     io=1
+     if(.not.all(ieee_is_finite([pair%spev,pair%saev])))exit decoding
+     if(min(pair%spev,pair%saev)<0d0)exit decoding
+    end if
     allocate(physical%soil_temperature)
     call initialize_soil_temperature_state(temperature,physical%soil_temperature,io);if(io/=0)exit decoding
     io=1

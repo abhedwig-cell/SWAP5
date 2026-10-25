@@ -1,5 +1,18 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Numeric heat now composes with Boesten evaporation, DRAMET3 drainage and
+implicit BBC/Cauchy3/Picard on the existing native twelve-node crop project.
+Four checked O0/O2 cases complete481 days with four exact day365 restarts;
+SPEV/SAEV evolves and is persisted exactly with heat under additive S5PT0002.
+Existing S5PT0001 heat-project artifacts remain byte exact. Two real chemical-
+overdraft controls reject already staged water/heat/Boesten state byte exactly,
+then accept a smaller retry. Fourteen typed pair/CRC/parameter controls pass.
+Fresh affected preservation covers twenty cases and twenty exact restarts.
+No equation, kernel state class or balance tolerance changes. Original full
+macropore/heat/crop lifecycle remains excluded. Qualification/admission are
+separate in `integration/mc-sol01/drainage/COMPOSED_HEAT_STATUS.json`; the
+companion contract defines the additive file format and owner interfaces.
+
 Native numeric heat/crop project is canonically admitted by PR1442 at
 actual merge `79179df7e91c4f29613cd5684cfefddaccbb5a47`; qualified/actual tree
 `5b5debbb80fbdf4b1794bae00f13144b8c698c61` matches exactly. Actual-merge

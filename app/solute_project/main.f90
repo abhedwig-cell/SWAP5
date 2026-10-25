@@ -713,6 +713,12 @@ program swap5_native_project_column
     error stop 'unexpected physical owner'
   end select
   print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'
+  if(dynamic_temperature.and.boesten_evaporation)then
+    select type(q=>physical)
+    type is(fmr_b110_boesten_evaporation_state_t)
+      write(*,'(A,2(1X,ES25.17E3))')'SWAP5_COMMITTED_BOESTEN_PAIR=',q%boesten_evaporation%spev,q%boesten_evaporation%saev
+    end select
+  end if
 contains
   subroutine reset_day_totals()
     observed_heat_residual_j_cm2=0d0
