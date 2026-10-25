@@ -1,23 +1,74 @@
 {
   "work_unit": "HIST-INTEGRATION01 project hydraulic bootstrap",
   "baseline": "3f184a488bce19bfcabf9c349cbff0d836b8cfeb",
-  "stage": "IMPLEMENTATION_PENDING",
-  "qualified": false,
+  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "qualified": true,
   "canonically_admitted": false,
   "contract": "Connect existing source hydrostatic/KSATEXM import to the existing project crop/drainage/Cauchy owners through explicit default-false native hydraulic opt-in. Resolve initial bottom mode from already prepared Cauchy control, never invent inline bottom data or reread BBC through the kernel. Preserve default SWINCO1 route exactly. Source GWLI owns initial groundwater and source pond. No physics equation, solver policy, mass tolerance or restart schema change.",
   "owner": "HIST-INTEGRATION01 native project adapter; existing serialized Reference, crop rotation, DRAMET3 and immutable BBC Cauchy owners",
-  "invariants": [2,3,7,13,21,23,25,29],
-  "remaining_implementation_blockers": ["Project main does not pass source pond/resolved bottom mode/GWLI or select existing KSATEXM provider"],
-  "remaining_evidence_blockers": ["Current O0/O2 source bootstrap plus BBC/drainage/crop composition, exact independent-process restart and default output preservation"],
+  "invariants": [
+    2,
+    3,
+    7,
+    13,
+    21,
+    23,
+    25,
+    29
+  ],
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [
+    "Actual canonical merge/postimage validation"
+  ],
   "test_selection": {
     "immediate": "Existing real source/provider driver evidence reused: column import and physical equations unchanged; compile actual project caller",
-    "composition": "Below/equal/active KSATEXM and hydrostatic source on native BBC/DRA/simple crop route O0/O2, full/split/restart; invalid ownership/source negatives",
+    "composition": "Below/equal KSATEXM plus hydrostatic source native BBC/DRA/simple crop O0/O2,481 days and day365 split/restart. Active Picard combination retained as an explicit rejected variant. Reuse completed unchanged below/equal invocations from the retained failed active attempt.",
     "preservation": "Unchanged default BBC481 physical artifacts versus same-source baseline, current source/raw owner, corruption controls, FSI35 source boundary and docs",
     "expected_seconds": 300,
     "full_FCI": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "RossFast": "NOT_SELECTED"
   },
-  "exclusions": ["Full original Andelst macropore/heat/crop lifecycle", "Fully saturated file initialization", "Elasticity or power-tail combinations", "SWBOTB1", "Loose historical restart"],
-  "next_action": "Implement and persist coherent project caller/launcher block, compile O0/O2, qualify and admit exact canonical merge"
+  "exclusions": [
+    "Full original Andelst macropore/heat/crop lifecycle",
+    "Fully saturated file initialization",
+    "Elasticity or power-tail combinations",
+    "SWBOTB1",
+    "Loose historical restart",
+    "Active KSATEXM above KSATFIT with Picard/Cauchy/drainage: actual unchanged runtime rejects before the first physical trial"
+  ],
+  "next_action": "Validate source/raw owner and docs; integrate exact tree and verify actual merge before admission",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/PROJECT_HYDRAULICS_EVIDENCE.tar.xz.b64",
+    "sha256": "26f5e77debbc7e699c09d2db603fb5498a3035cb1f7eef0e3057c3dc2cff742d",
+    "bytes": 1894332,
+    "members": 574
+  },
+  "scientific_delta": {
+    "app/solute_project/main.f90": "M",
+    "integration/audits/verify_ksatexm_input_current.py": "M",
+    "integration/audits/verify_project_hydraulics_current.py": "A",
+    "tools/solute/run_project.py": "M"
+  },
+  "postimages": {
+    "app/solute_project/main.f90": "bc84f243b8478c0704c88c2b7978b54ffdc57473d16d4abec68f2a3e9d92a7a6",
+    "integration/audits/verify_ksatexm_input_current.py": "b046f8a72c8637ad9aaf1b35a254e66289373f829c2f868247cb55d19bcc2f91",
+    "integration/audits/verify_project_hydraulics_current.py": "34887820c35549bb87ed561f2956bcd3e9e89713ced6b586637c233fe6151567",
+    "tools/solute/run_project.py": "7cb8e78346cd89320f6220ba2ba22d24f005047ad7b159f035c31053e6fdd4a7",
+    "integration/mc-sol01/drainage/qualify_project_hydraulics.py": "793ed8bc9e70ef6616eb69666395898274ef2e8b98797879029ace611860c945",
+    "integration/mc-sol01/drainage/seal_project_hydraulics.py": "2c3fe873470f5db178d0f107bd9956abe20ea191397c9dc6b5dc6353234285fa"
+  },
+  "physical_results": {
+    "source_nodes": 12,
+    "cases": 4,
+    "days_per_case": 481,
+    "fresh_process_restarts": 4,
+    "rejected_processes": 20,
+    "default_artifact_comparisons": 8,
+    "water_max_cm": 1.0966227925734984e-13,
+    "solute_max_mg_cm2": 6.758222453884244e-14,
+    "all_process_solver_sources_unchanged": true
+  },
+  "admission_record": "integration/mc-sol01/drainage/PROJECT_HYDRAULICS_ADMISSION.json",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: native local O0/O2 qualification; [skip ci] avoids unchanged broad suites. No hosted PASS claimed."
 }

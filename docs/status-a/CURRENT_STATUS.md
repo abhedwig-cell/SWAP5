@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+Native project hydraulic bootstrap: source SWINCO2/GWLI and KSATEXM no-op
+input now connect to the existing BBC/Cauchy3, DRAMET3, detailed rain, Boesten
+and simple crop-rotation route through explicit `--native-hydraulics`.
+Four checked O0/O2 cases complete481 days with four exact day365 process
+restarts; eight default physical artifacts equal the independently built
+canonical predecessor. Active KSATEXM above KSATFIT plus Picard remains rejected
+by the unchanged runtime before the first trial; both failed attempts are kept.
+This is a constructed12-node project, not full original Andelst.
+`integration/mc-sol01/drainage/PROJECT_HYDRAULICS_STATUS.json` separates
+qualification from actual canonical admission; the companion contract documents
+usage and scope. NUT/SOL remain CLOSED WITH EXCLUSIONS.
+
 Original KSATEXM input is canonically admitted by PR1440 at actual merge
 `885f5d9fa9c2f36c76d937a5e201e737c4555d5b`; qualified/actual complete tree
 `8094c85e221415233fa9fa0f14549dc047a386c2` matches exactly. Actual-merge
