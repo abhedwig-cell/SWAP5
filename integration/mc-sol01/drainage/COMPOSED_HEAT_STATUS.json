@@ -1,0 +1,113 @@
+{
+  "work_unit": "HIST-INTEGRATION01 numeric heat/Boesten/drainage/Cauchy project",
+  "baseline": "d6378c7ac492a9e051b04468b814be6d1d54d121",
+  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "qualified": true,
+  "canonically_admitted": false,
+  "contract": "Extend existing numeric heat joint transaction to the existing Boesten physical state family, DRAMET3/Cauchy and explicit Picard choices. Persist exact SPEV/SAEV together with heat via additive S5PT0002 payload; original S5PT0001 and nonheat restarts unchanged. Reuse all equations and existing state owners. No new physical model or kernel state type.",
+  "interfaces_changed": "Existing Boesten constructor gains optional parameters argument for certified initial heat identity; existing Boesten restart state family accepts its already inherited numeric heat payload. Thermal file reader/writer recognizes additive Boesten+heat tag S5PT0002, preserving old tags/bytes.",
+  "invariants": [
+    2,
+    3,
+    4,
+    7,
+    13,
+    21,
+    23,
+    25,
+    29,
+    30
+  ],
+  "test_selection": {
+    "immediate": "Real typed Boesten/heat restart exact round-trip, pair/parameter/CRC corruption, rejected destination unchanged, old format byte preservation",
+    "composition": "Original detailed weather/DRA/BBC/simple crop481-day O0/O2 with numeric heat plus Boesten and Picard/Cauchy; exact day365 restart and hard water/solute/energy/root reconciliation",
+    "preservation": "Changed-state/admission consumers rebuilt; fresh affected project heat, BBC and column raw assertions; unaffected equations inherited only through exact source projections",
+    "expected_seconds": 600,
+    "expensive_justification": "The new persisted Boesten+heat composition must span wet/dry memory, three crop periods and year boundary, with exact independent-process day365 restart. Short component tests do not establish that lifecycle.",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [
+    "Actual canonical merge/postimage validation"
+  ],
+  "exclusions": [
+    "Full original native macropore/heat/crop lifecycle",
+    "Analytic heat",
+    "Snow/frost compositions",
+    "SWBOTB1",
+    "Loose historical restart",
+    "Active KSATEXM/Picard"
+  ],
+  "next_action": "Validate source/raw owner and docs; integrate exact tree and verify actual canonical merge",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/COMPOSED_HEAT_EVIDENCE.tar.xz.b64",
+    "sha256": "c8728d0ecaefc8d9cba778ef14d69fcacdcbce7e6edb0628b391785afa876bbb",
+    "bytes": 4228480,
+    "members": 5649
+  },
+  "scientific_delta": {
+    "app/solute_project/main.f90": "M",
+    "integration/audits/verify_composed_heat_current.py": "A",
+    "integration/audits/verify_project_heat_current.py": "M",
+    "src/adapter/mod_pond_thermal_restart_file.f90": "M",
+    "src/runtime/mod_fmr_b111_pond_thermal_application.f90": "M",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "tests/nut-sol/test_composed_heat_restart.f90": "A",
+    "tests/nut-sol/test_composed_heat_rollback.f90": "A",
+    "tools/solute/run_column.py": "M",
+    "tools/solute/run_project.py": "M"
+  },
+  "postimages": {
+    "app/solute_project/main.f90": "071af3f55ae39c879057a800c60c0977a07d03c2b709df9d84554cdcac4935af",
+    "integration/audits/verify_composed_heat_current.py": "0163a20a17b9e2882c587f7921ee0cc8532b6bc218c132b782908771777cc9f9",
+    "integration/audits/verify_project_heat_current.py": "8d3bc38998d395da4257bcd60c5ad4f5e243cfa0b1cb00e70f9645dfa2ee89d0",
+    "src/adapter/mod_pond_thermal_restart_file.f90": "86f8e26a8da5cf43cee33fd3646a1ee48ee5140f84b4e95a15e83bd2facab6fc",
+    "src/runtime/mod_fmr_b111_pond_thermal_application.f90": "b75819640fe9a9811a845a824ffae322f8be0caa38a0984399844f2b0dafbafc",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "cc410050f765784eb9e2807ad7ab72ddc02623f27e07ad6cde2c87916f0d6313",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "b44150934b32f210e1ed54c6343767d59b0ee4cf3dc50ecfb7ae2f83693e331c",
+    "tests/nut-sol/test_composed_heat_restart.f90": "5fa16a51369c6b0ea919b50b7a39d4c04f023780d02e7bb8eace3b4219ec0f01",
+    "tests/nut-sol/test_composed_heat_rollback.f90": "bd593224d60156e1d2919460ce8ae46454b159215af8f0ce0deee7cad2713f7a",
+    "tools/solute/run_column.py": "0050e7151fe1308e8f8978cd1508f3a82d1b5a81fc48e28f9a3931a9f3ed0d04",
+    "tools/solute/run_project.py": "b51675cf8107c31d730accae3cfb7dd30cf653513fb79fa95ccf1d3292bd1992",
+    "integration/mc-sol01/drainage/qualify_composed_heat.py": "40ff19e7b5d964609a1d31cd6d56a98d4ce07c223a025525cc66d458216af606",
+    "integration/mc-sol01/drainage/qualify_composed_rollback.py": "4dfd3fe0e3deb85ef3b94f302ae34f0fc56eab71a816f228f561bd9c85b75817",
+    "integration/mc-sol01/drainage/prepare_composed_heat_build.py": "0962086d83a15853bf9d088ce6d03e0be9fa0e14727c2dc32b55efd2f3e0e5ed",
+    "integration/mc-sol01/drainage/seal_composed_heat.py": "487ca226e8c6b3f9b731efec2ee4575ffe3d8d660246cd88c97e76fcb6c27404",
+    "integration/mc-sol01/drainage/qualify_project_heat.py": "b3d0e3f3a6ad60513972bcefba6271ea8785a742518503f0221081497d6dd9da"
+  },
+  "physical_results": {
+    "source_nodes": 12,
+    "cases": 4,
+    "days_per_case": 481,
+    "exact_restarts": 4,
+    "typed_pair_controls": 14,
+    "real_joint_rollback_retry_cases": 2,
+    "rejected_project_processes": 16,
+    "water_max_cm": 1.3545154581295904e-13,
+    "solute_max_mg_cm2": 6.468436897222318e-14,
+    "observed_heat_max_j_cm2": 1.0862422072932532e-12,
+    "fresh_preservation_cases": 20,
+    "fresh_preservation_restarts": 20,
+    "old_thermal_format_exact": true,
+    "equations_unchanged": true,
+    "committed_boesten_pair": {
+      "full": [
+        0.3829205158310727,
+        0.3829205158310727
+      ],
+      "split": [
+        0.08824346999999448,
+        0.08824346999999448
+      ],
+      "resumed": [
+        0.3829205158310727,
+        0.3829205158310727
+      ]
+    }
+  },
+  "admission_record": "integration/mc-sol01/drainage/COMPOSED_HEAT_ADMISSION.json",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: current local O0/O2 native qualification and owning source gates; [skip ci] avoids unchanged broad suites, no hosted PASS claimed."
+}

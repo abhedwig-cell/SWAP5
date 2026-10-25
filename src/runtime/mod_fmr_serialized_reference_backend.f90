@@ -1030,7 +1030,11 @@ contains
     case default
       return
     end select
-    if(p%frost_active.or.p%macropore_active.or.p%snow_active.or.p%soil_temperature_active)return
+    if(p%frost_active.or.p%macropore_active.or.p%snow_active)return
+    if(p%soil_temperature_active)then
+      if(.not.allocated(p%soil_temperature))return
+      if(p%soil_temperature%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
+    end if
     if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
     if(allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
     call distribute_single_level_signed_divdra(p%drainage_trial_distribution,view,0d0,nodes,d)
@@ -1877,13 +1881,14 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_black_evaporation_committed_state
 
-  subroutine fmr_new_b110_boesten_evaporation_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok)
+  subroutine fmr_new_b110_boesten_evaporation_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok, parameters)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     type(boesten_evaporation_state_t), intent(in) :: boesten_state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
+    type(fmr_b110_physical_parameters_t),intent(in),optional::parameters
     class(transaction_state_t), allocatable :: carrier
 
     ok = .false.
@@ -1895,7 +1900,7 @@ contains
       call copy_b110_physical_state(state, typed_carrier)
       typed_carrier%boesten_evaporation = boesten_state
     end select
-    call committed%initialize(lineage_id, carrier, ok, initial_time)
+    call committed%initialize(lineage_id, carrier, ok, initial_time, parameters)
   end subroutine fmr_new_b110_boesten_evaporation_committed_state
 
   subroutine fmr_new_b110_boesten_macropore_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok)
@@ -2514,7 +2519,9 @@ contains
     if(present(trace_accepted_soil_n_heat))soil_n_heat_trace=trace_accepted_soil_n_heat
     if(soil_n_heat_trace)then
       if(.not.self%model%accepted_water_flux_trace_enabled.or..not.parameters%soil_temperature_active.or. &
-         parameters%frost_active.or.template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.or. &
+         parameters%frost_active.or.(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.and. &
+         .not.(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.and. &
+         parameters%boesten_evaporation_active)).or. &
          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)then
         call reject_backend_trial(result,candidate,diagnostics)
         return
@@ -2759,7 +2766,8 @@ contains
       if ((template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION .and. &
            template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
            template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
-          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          parameters%snow_active .or. (parameters%soil_temperature_active.and. &
+          template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
@@ -3215,7 +3223,8 @@ contains
              .not. parameters%extended_model6_active .and. .not. parameters%pdi_vapor_active .and. &
              .not. parameters%elasticity_active .and. .not. parameters%hysteresis_active .and. &
              .not. parameters%macropore_active .and. .not. parameters%snow_active .and. &
-             .not. parameters%soil_temperature_active .and. .not. parameters%frost_active .and. &
+             (.not.parameters%soil_temperature_active.or.self%accepted_water_flux_trace_enabled) .and. &
+             .not. parameters%frost_active .and. &
              (.not.parameters%drainage_response_active.or. &
               (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &
              .not. parameters%black_evaporation_active .and. &
@@ -3425,7 +3434,8 @@ contains
         ok = ok .and. .not. self%black_evaporation_active .and. self%boesten_evaporation_active .and. &
              .not. allocated(parameters%black_evaporation) .and. allocated(parameters%boesten_evaporation) .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
-             .not. parameters%soil_temperature_active .and. .not. self%fixed_weir_surface_water_active .and. &
+             (.not.parameters%soil_temperature_active.or.self%accepted_water_flux_trace_enabled) .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
              (.not.parameters%drainage_response_active.or. &
               (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &
              parameters%bottom_mode /= 5
@@ -3855,11 +3865,10 @@ contains
         if (self%root_compensation%method /= ROOT_COMP_OFF.or.self%root_salinity_active.or.self%root_frost%active) return
         ! Numeric heat uses the same hydraulic Feddes trial-beginning view.
         ! Admit it only on the joint accepted-trace route, with chemistry
-        ! outside the water state and no alternate conductivity iteration.
+        ! outside the water state; admitted Picard uses this same hydraulic view.
         if (self%soil_temperature_active) then
           if (.not.self%accepted_water_flux_trace_enabled.or. &
-              self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
-              self%picard_conductivity_iteration) return
+              self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE) return
           if(self%soil_temperature_parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
         end if
         if (self%frost_active.or.self%rutter_active.or.self%snow_active) return

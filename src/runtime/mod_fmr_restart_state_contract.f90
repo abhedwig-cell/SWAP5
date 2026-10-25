@@ -98,7 +98,9 @@ contains
         if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) return
         select type (state)
         type is (fmr_b110_boesten_evaporation_state_t)
-          matches = .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
+          matches = .not. allocated(state%snow)
+          if(allocated(state%soil_temperature))matches=matches.and.state%soil_temperature%ready().and. &
+            state%soil_temperature%node_count()==state%active_nodes
         class default
           matches = .false.
         end select

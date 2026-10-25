@@ -203,8 +203,7 @@ program swap5_native_project_column
   if(swp_heat_bootstrap)then
     call require(swp_native_hydraulics.and.dynamic_temperature,'native heat requires native hydraulics and dynamic heat')
     call require(all(initial_temperature_c==20d0).and.all(surface_temperature_c==20d0),'duplicate native heat owner')
-    call require(.not.boesten_evaporation.and..not.native_drainage.and..not.picard_conductivity_iteration.and. &
-      .not.continuous_mvg.and..not.cauchy3_bottom.and..not.retain_accepted_step_proposal, &
+    call require(.not.retain_accepted_step_proposal, &
       'native heat project composition not selected')
   end if
   call require(.not.swp_native_hydraulics.or.swp_water_bootstrap,'native hydraulics requires SWP water bootstrap')
@@ -267,7 +266,7 @@ program swap5_native_project_column
   call require(ieee_is_finite(boesten_cofred),'nonfinite Boesten parameter')
   if(boesten_evaporation)then
     call require(boesten_cofred>0d0.and.boesten_cofred<=1d0,'invalid Boesten COFRED')
-    call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation.and. &
+    call require((.not.dynamic_temperature.or.swp_heat_bootstrap).and..not.implicit_pond_evaporation.and. &
       .not.retain_accepted_step_proposal, &
       'Boesten numerical/thermal combination not qualified')
   else
@@ -405,7 +404,7 @@ program swap5_native_project_column
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
   if(native_drainage)then
-    call require(.not.dynamic_temperature.and..not.retain_accepted_step_proposal,'drainage composition outside scope')
+    call require((.not.dynamic_temperature.or.swp_heat_bootstrap).and..not.retain_accepted_step_proposal,'drainage composition outside scope')
     call require(all(drain_cm_day==0d0),'duplicate drainage owner')
     call require(drain_table_count>=1.and.drain_table_count<=1024,'drainage table capacity')
     call require(all(ieee_is_finite([drain_resistance,drain_infiltration_resistance,drain_spacing_m, &
@@ -478,7 +477,7 @@ program swap5_native_project_column
   template%solver_interface_id=660240_int64;template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   if(boesten_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   if(dynamic_temperature)then
-    template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+    if(.not.boesten_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     p%soil_temperature_active=.true.
     allocate(p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
     if(swp_heat_bootstrap)then
@@ -510,8 +509,13 @@ program swap5_native_project_column
     call require(code==JOINT_OK,'restart rejected')
   else
     if(boesten_evaporation)then
-      call fmr_new_b110_boesten_evaporation_committed_state(water,column_id%column_id,initial, &
-        boesten_evaporation_state_t(),0d0,ok)
+      if(dynamic_temperature)then
+        call fmr_new_b110_boesten_evaporation_committed_state(water,column_id%column_id,initial, &
+          boesten_evaporation_state_t(),0d0,ok,p)
+      else
+        call fmr_new_b110_boesten_evaporation_committed_state(water,column_id%column_id,initial, &
+          boesten_evaporation_state_t(),0d0,ok)
+      end if
     else if(dynamic_temperature)then
       call fmr_new_b110_committed_state(water,column_id%column_id,initial,0d0,ok,parameters=p)
     else
@@ -709,6 +713,12 @@ program swap5_native_project_column
     error stop 'unexpected physical owner'
   end select
   print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'
+  if(dynamic_temperature.and.boesten_evaporation)then
+    select type(q=>physical)
+    type is(fmr_b110_boesten_evaporation_state_t)
+      write(*,'(A,2(1X,ES25.17E3))')'SWAP5_COMMITTED_BOESTEN_PAIR=',q%boesten_evaporation%spev,q%boesten_evaporation%saev
+    end select
+  end if
 contains
   subroutine reset_day_totals()
     observed_heat_residual_j_cm2=0d0
