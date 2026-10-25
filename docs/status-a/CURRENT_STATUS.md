@@ -1,5 +1,19 @@
 # SWAP5 Status-A current status
 
+HIST01 original KSATEXM input,25 October2026: explicit default-false
+`swp_ksatexm_bootstrap` selects original threshold assembly at h=-2 cm and the
+existing provider/runtime option. Original112-node Andelst water parameter input
+is read without removing KSATEXM; its equal KSATFIT/KSATEXM rows select source
+no-op behavior. The opt-in accepts original LEXP input range; default envelope
+is preserved. Six actual coupled cases and six independent-process restarts
+pass at O0/O2; below/equal branches are identical and active conductivity changes
+the physical stream. Fresh current hydrostatic preservation retains six cases,
+six restarts and ten exact incumbent artifact comparisons. No src process or
+solver source changed. Qualification/admission are distinct in
+`integration/mc-sol01/drainage/KSATEXM_INPUT_STATUS.json`. Checked example:
+`examples/solute_column/ksatexm_heat.nml` and matching SWP. Full original
+BBC/macro/drainage/crop/heat execution remains excluded; NUT/SOL closeout stands.
+
 Hydrostatic water/heat initialization is canonically admitted by PR1438/1439
 at corrected actual merge `9351bd42e17055e0eed41835fb1185d033507944`. Complete
 actual/qualified tree `8877de2161134d6d86a440321a59198775e9f2e8` is exact. Actual-merge

@@ -18,6 +18,7 @@ def projection():
   t=t[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[at:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/KSATEXM_INPUT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_ksatexm_input_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={line.split('\t')[1]:line.split('\t')[0]for line in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()}
  assert delta==s['scientific_delta'],'foreign hydrostatic delta'
@@ -68,12 +69,15 @@ def validate(f):
  for name,p in [('hydrostatic_heat.nml','input.nml'),('hydrostatic_heat.swp','source.swp')]:assert(ROOT/'examples/solute_column'/name).read_bytes()==f['proof-O2/app-intersect/'+p]
  return dict(qualified=True,source_cases=18,original_hydrostatic_and_heat_component_nodes=112,source_negative_processes=22,coupled_cases=6,fresh_process_restarts=6,file_negative_processes=16,incumbent_artifacts_exact=True,all_process_solver_sources_unchanged=True,full_original_Andelst=False,fully_saturated_file_execution=False,canonically_admitted=False)
 def verify():
+ if (ROOT/'integration/mc-sol01/drainage/KSATEXM_INPUT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_ksatexm_input_current.py'))['verify']()
  source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/KSATEXM_INPUT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_ksatexm_input_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path'])
  return json.loads(capsule()['parent/proof.json'])['fsi35']
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/KSATEXM_INPUT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_ksatexm_input_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()
