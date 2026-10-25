@@ -38,13 +38,14 @@ contains
     source_pond=max(gwli,0d0)
   end subroutine initialize_column_hydrostatic_water
 
-  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode)
+  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode,source_groundwater)
     character(*),intent(in)::path
     integer,intent(out)::nodes
     real(real64),intent(out)::width(:)
     real(real64),allocatable,intent(out)::heads(:),cofgen(:,:)
     real(real64),optional,intent(out)::source_pond
     integer,optional,intent(in)::initial_bottom_mode
+    real(real64),optional,intent(out)::source_groundwater
     integer::nsub,nlay,i,j,k,mode,nhead,pos,initial_mode,bottom_mode
     integer::ids(256),layers(256),counts(256),models(256)
     real(real64)::height(256),ores(256),osat(256),alfa(256),npar(256),lexp(256),ksat(256),entry(256)
@@ -54,6 +55,7 @@ contains
     call rdinit(73,0,trim(path))
     ! Extensions need their own physical owner; never silently downgrade them.
     if(present(source_pond))source_pond=-1d0
+    if(present(source_groundwater))source_groundwater=-2d0
     call rdsinr('swinco',1,3,initial_mode)
     call require(initial_mode/=3,'loose historical restart not selected')
     if(initial_mode==2)then
@@ -70,6 +72,7 @@ contains
       call require(bottom_mode/=1,'SWBOTB1 time-table initialization excluded')
       call rdsdor('gwli',-10000d0,1000d0,gwli)
       call require(ieee_is_finite(gwli),'nonfinite GWLI')
+      if(present(source_groundwater))source_groundwater=gwli
     end if
     call rdsinr('swhyst',0,2,mode);call require(mode==0,'hysteresis not selected')
     if(rdinqr('swsophy'))then

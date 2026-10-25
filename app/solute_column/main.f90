@@ -50,6 +50,7 @@ program swap5_solute_column
   logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.,swp_heat_bootstrap=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
   real(real64) :: swp_source_pond=-1d0
+  real(real64) :: swp_source_groundwater=-2d0
   real(real64) :: freundlich_exponent=1d0,reference_concentration=1d0,decay_rate_day=0d0,gamma_temperature=0.05d0
   real(real64) :: initial_temperature_c(MAX_NODES)=20d0,surface_temperature_c(MAX_WINDOWS)=20d0
   real(real64) :: air_temperature_c(MAX_WINDOWS)=20d0
@@ -122,7 +123,8 @@ program swap5_solute_column
     call require(schema==2.and.nodes==0.and.all(cell_thickness_cm==0d0),'SWP water bootstrap forbids a second grid')
     call require(initial_head==-75d0.and.theta_r==.032d0.and.theta_s==.423d0.and.ksat_cm_day==.00475d0.and. &
       alpha_per_cm==.0135d0.and.vg_n==1.455d0.and.pore_l==.365d0,'SWP water bootstrap forbids hydraulic overrides')
-    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen,swp_source_pond)
+    call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen,swp_source_pond, &
+      source_groundwater=swp_source_groundwater)
     if(swp_source_pond>=0d0)then
       call require(initial_pond_cm==0d0,'SWINCO2 forbids a second initial pond depth')
       call require(any(swp_heads < -1d-5),'fully saturated SWINCO2 file execution is not qualified')
@@ -205,7 +207,8 @@ program swap5_solute_column
   call initialize_b110_default_mvg_parameters(hp,p%cofgen)
   call bind_b110_default_mvg_provider(provider,hp,ends_day(1))
   call provider%evaluate(initial%pressure_head,initial%water_content,conductivity,capacity,dkdh)
-  initial%ponding_depth=initial_pond_cm;initial%groundwater_level=-2d0
+  initial%ponding_depth=initial_pond_cm;initial%groundwater_level=swp_source_groundwater
+  if(swp_source_pond>=0d0)write(*,'(A,ES25.17E3)')'SWP_HYDROSTATIC_INITIAL_GROUNDWATER_CM=',initial%groundwater_level
   forcing%top_flux=0d0;forcing%top_head=initial_head;forcing%bottom_flux=bottom_up_cm_day
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)

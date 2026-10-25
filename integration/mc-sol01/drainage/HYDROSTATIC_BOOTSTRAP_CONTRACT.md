@@ -18,6 +18,10 @@ caller must receive the pond output so surface inventory cannot be lost.
 The file caller refuses nonzero namelist pond overrides in SWINCO2, then takes
 the source pond. Its solute surface stock remains explicit existing input.
 SWINCO1 retains its existing unsaturated HTB and namelist pond contracts.
+The source groundwater output also initializes the actual physical water state;
+it must never retain the file application's old constant -2 cm. Actual file
+stdout records this initialization, and each full/split/resumed run must match
+the source GWLI exactly. SWINCO1 retains its original -2 cm state convention.
 
 Original Andelst stores SWBOTB in a separate BBC file. A component caller may
 pass that explicitly resolved original bottom mode through the optional input;

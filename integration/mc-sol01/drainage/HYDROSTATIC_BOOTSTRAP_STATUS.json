@@ -23,6 +23,9 @@
     "Full original macropore/drainage/crop/heat application",
     "Fully saturated file initialization",
     "Original KSATEXM hydraulic import",
+    "External BBC file staging/orchestration",
+    "Fully saturated file initialization",
+    "Original KSATEXM hydraulic import",
     "External BBC file staging/orchestration"
   ],
   "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
@@ -32,27 +35,27 @@
     "app/solute_column/read_swp_water.f90": "M",
     "examples/solute_column/hydrostatic_heat.nml": "A",
     "examples/solute_column/hydrostatic_heat.swp": "A",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "A",
     "integration/audits/verify_native_heat_bootstrap_current.py": "M",
-    "tests/nut-sol/test_hydrostatic_bootstrap.f90": "A",
-    "integration/audits/verify_hydrostatic_bootstrap_current.py": "A"
+    "tests/nut-sol/test_hydrostatic_bootstrap.f90": "A"
   },
   "postimages": {
-    "app/solute_column/main.f90": "a2c3589dabcd171d3b39303b67b103ea3137556c2ad0b73e999ece41f7d9c99d",
-    "app/solute_column/read_swp_water.f90": "2238064340b3da296cdaab69f5e98aacd16654cfc85e83ae672ffb63ce29c683",
+    "app/solute_column/main.f90": "1f3965aa0e6d376502f3ab1ef9b393df1ab674ee98c1ab89e372fb9ecdddfa5d",
+    "app/solute_column/read_swp_water.f90": "d15c0f18368262a648182fbe9eb1507e2e869992303b875d5d50249baa42f1a1",
     "examples/solute_column/hydrostatic_heat.nml": "2bcbd0da09ea999423a48837c455027187c5f806cd25bbdc92c0088c6f6d7fff",
     "examples/solute_column/hydrostatic_heat.swp": "91f1717caa55f10c7ac5ed76b2872a6641fe3140d17f286f9aec35fe0de94722",
+    "integration/audits/verify_hydrostatic_bootstrap_current.py": "de2ea0e65999d28ed4bb79bac024d71de094cafaf4f42a9f3a4b0f37b80262e7",
     "integration/audits/verify_native_heat_bootstrap_current.py": "4411ade19a6f607702b45f24d7e7d49419fed3b08110ab0d72168d61138ac831",
     "tests/nut-sol/test_hydrostatic_bootstrap.f90": "e299fc3e84ba9e72300482965be66ee673376780982d7804eb3887d9953f04a6",
-    "integration/audits/verify_hydrostatic_bootstrap_current.py": "5f03b3410eb1d9b7e2d7444e6bdd2beda62661da1e9d6e1c024a638abfeb0d22",
-    "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_CONTRACT.md": "3faf809250b5b447f9b0da33d9bfcfa6b5372711668ee61b45380ee5f996c6f2",
-    "integration/mc-sol01/drainage/qualify_hydrostatic_bootstrap.py": "08f0f73dd5a28d3990c8210b97aa3d40881d9c245cc75b54e54a3ed574aefba2",
-    "integration/mc-sol01/drainage/seal_hydrostatic_bootstrap.py": "30ba951e79cc6125e9ae530738c376b616588f41cc12fb2f0dc6278435beb930"
+    "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_CONTRACT.md": "c0486063db1bac657bd75a5701a0cc2650f0d6b12e8f30e12bcdc541fb65ed01",
+    "integration/mc-sol01/drainage/qualify_hydrostatic_bootstrap.py": "14fb2df3e0a2d57682bc9a952666852ad367031b202025b67934dc35fac48cd8",
+    "integration/mc-sol01/drainage/seal_hydrostatic_bootstrap.py": "b5651221ff0358b79e6fbc9c152840ae1c82fc8d7e03ddfc5e15d7e2cb780948"
   },
   "evidence": {
     "path": "integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_EVIDENCE.tar.xz.b64",
-    "sha256": "d85bb7a50d972182064cc9910d386200fee687393603d2d44f96275f74259cae",
-    "bytes": 2123776,
-    "members": 2217
+    "sha256": "583b88b1d263fb59ee4e84a8b9ace0a2ece754d1d67bbefce1e792b115c2f176",
+    "bytes": 2155680,
+    "members": 3305
   },
   "current_executed_inputs": 202,
   "physical_results": {

@@ -52,6 +52,9 @@ def validate(f):
   if opt=='O2':assert r['results']==js('proof-O0/RESULT.json')['results'],'O0/O2 drift'
   for name in ['below','intersect','shallow']:
    c=prefix+'app-'+name+'/';result=r['results']['app-'+name]
+   expected_gwl={'below':-4.,'intersect':-2.,'shallow':-.5}[name]
+   for label in ['full','split','resumed']:
+    match=re.search(rb'SWP_HYDROSTATIC_INITIAL_GROUNDWATER_CM=\s*([-+\d.Ee]+)',f[c+label+'/stdout']);assert match and float(match[1])==expected_gwl
    for p,h in result['files'].items():assert sha(f[c+'full/'+p])==h and f[c+'full/'+p]==f[c+'resumed/'+p]
    budget=csvrows(c+'full/budget.csv');assert len(budget)==3 and csvrows(c+'resumed/budget.csv')==budget[1:]
    assert abs(float(budget[0]['water_start_cm'])-result['water_initial_independent'])<2e-13
