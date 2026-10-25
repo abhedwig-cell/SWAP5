@@ -1,0 +1,27 @@
+{
+  "work_unit": "HIST-INTEGRATION01 rational saturation storage repair",
+  "baseline": "3f1b2e5eca5881e5e6739686aa1338dc9ebd5267",
+  "stage": "IMPLEMENTED_UNQUALIFIED",
+  "implemented": true,
+  "persisted": false,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "production_delta": [
+    "src/solver/mod_b110_default_mvg_provider.f90"
+  ],
+  "contract": "integration/mc-sol01/drainage/SATURATION_STORAGE_CONTRACT.md",
+  "invariants": [
+    7,
+    13,
+    21,
+    23
+  ],
+  "next_action": "Bind one-provider rebuild; run high-precision direct contract and original481/day365 O0/O2; retain failures and admit only proven subset",
+  "recovery_point": "Pinned canonical plus exact provider arithmetic repair and contract",
+  "remaining_blockers": [
+    "Direct high-precision O0/O2 qualification",
+    "Original481/day365 lifecycle O0/O2 qualification",
+    "Current owner/source controls and actual merge verification"
+  ]
+}
