@@ -1,0 +1,67 @@
+{
+  "work_unit": "HIST-INTEGRATION01 rational saturation storage repair",
+  "baseline": "3f1b2e5eca5881e5e6739686aa1338dc9ebd5267",
+  "stage": "SOURCE_BOUND_BOUNDED_QUALIFICATION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "production_delta": [
+    "src/solver/mod_b110_default_mvg_provider.f90"
+  ],
+  "contract": "integration/mc-sol01/drainage/SATURATION_STORAGE_CONTRACT.md",
+  "invariants": [
+    7,
+    13,
+    21,
+    23
+  ],
+  "next_action": "Run current owning controls and affected F-SI35, integrate exact tree and verify actual merge",
+  "recovery_point": "Pinned canonical plus exact provider arithmetic repair and contract",
+  "remaining_blockers": [
+    "Actual canonical admission and merge/postimage checks"
+  ],
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/SATURATION_STORAGE_EVIDENCE.tar.xz.b64",
+    "sha256": "a2aa00db184fef0f6301bb1112c0cf56bcb03cdbc0c4e6b1316c90389c1bf129",
+    "bytes": 1288420,
+    "members": 543
+  },
+  "scientific_delta": {
+    "integration/audits/verify_composed_heat_current.py": "M",
+    "integration/audits/verify_saturation_storage_current.py": "A",
+    "src/solver/mod_b110_default_mvg_provider.f90": "M",
+    "tests/nut-sol/test_rational_saturation_storage.f90": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_composed_heat_current.py": "bc4823679bde17d9839ae4f4ed880f0e326206e91006adcc52143ff9e13ec544",
+    "integration/audits/verify_saturation_storage_current.py": "198d61bdfb046a2772d5ac19cf590cb8251e818daeb1d99259b781ffab97f5e5",
+    "src/solver/mod_b110_default_mvg_provider.f90": "86fdb41f2bc116bd5bd8584732f0ecaadb5251d1961d7d26ea6bda94c4026af9",
+    "tests/nut-sol/test_rational_saturation_storage.f90": "a67c03db75bb2d44b33db791d646936db025711d27cfb77533c393a8387fe052",
+    "integration/mc-sol01/drainage/SATURATION_STORAGE_CONTRACT.md": "1447a8bc714c40961c1d7c00ac6c896ff8e5090df6efb3f590664e5451254944",
+    "integration/mc-sol01/drainage/SATURATION_STORAGE_PRESERVATION.json": "be9fecb0d2db51bd4754998930a63e410b8d34bb62a32f33471d8e0c1fbf189d",
+    "integration/mc-sol01/drainage/qualify_saturation_profile.py": "ab9c4c0f4aed56f9cb017449b7b09bef71a1277dcec87cfe777405069b9ac32c",
+    "integration/mc-sol01/drainage/qualify_saturation_component.py": "13822fdebe39e54f1612dd3c704f822bcb8f293e12a15a0cd4c037d5ca818802",
+    "integration/mc-sol01/drainage/rebuild_saturation_storage.py": "f08c72252c831da954ef68cfaeabfe273869d9ed4d6c1a15c72fd4d4489c556d",
+    "integration/mc-sol01/drainage/seal_saturation_storage.py": "8dcb1785c6aa4b2b3ab4567f99768999d07e7b2a2bcac78f850e91f504dce2d6",
+    "integration/mc-sol01/drainage/verify_original_matrix_profile.py": "93371b8d96f30253939bd0baf671b25172fc10a8be1772441190fa2e887b150f"
+  },
+  "physical_results": {
+    "cases": 2,
+    "days": 30,
+    "nodes": 112,
+    "source_layers": 8,
+    "exact_day9_restarts": 2,
+    "direct_real128_cases": 1728,
+    "component_link_provider_objects": 2,
+    "reused_native_providers_per_optimization": 192,
+    "public_modules_exact": true,
+    "water_max_cm": 2.839395385478838e-14,
+    "solute_max_mg_cm2": 2.5951463200613034e-13,
+    "observed_heat_max_j_cm2": 2.1259438653942198e-11
+  },
+  "full481_qualified": false,
+  "full_original_Andelst": false,
+  "admission_record": "integration/mc-sol01/drainage/SATURATION_STORAGE_ADMISSION.json"
+}

@@ -219,6 +219,16 @@ contains
         ! subtract two rounded theta_s values when one sibling crosses h=0.
         increment(i)=self%parameters%cofgen(27,i)* &
           (min(pressure_head(i),0.0_real64)-min(previous_pressure_head(i),0.0_real64))
+      else if(self%parameters%continuous_saturation_conductivity.and..not.self%parameters%elastic_storage_active.and. &
+          self%parameters%cofgen(9,i)<=B110_H_CRIT.and. &
+          min(pressure_head(i),previous_pressure_head(i))>=1.05_real64*self%parameters%cofgen(9,i).and. &
+          max(pressure_head(i),previous_pressure_head(i))>=0.0_real64)then
+        ! Same rational retention increment, evaluated without subtracting
+        ! rounded theta_s values when the sibling crosses saturation.
+        increment(i)=self%parameters%cofgen(42,i)* &
+          (min(pressure_head(i),0.0_real64)-min(previous_pressure_head(i),0.0_real64))/ &
+          ((1.0_real64+self%parameters%cofgen(41,i)*min(pressure_head(i),0.0_real64))* &
+           (1.0_real64+self%parameters%cofgen(41,i)*min(previous_pressure_head(i),0.0_real64)))
       else
         increment(i) = b110_watcon_increment(self%parameters%cofgen(:,i), pressure_head(i), &
              previous_pressure_head(i), water_content(i), previous_water_content(i))

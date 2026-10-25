@@ -1,5 +1,20 @@
 # SWAP5 Status-A current status
 
+Stable rational retention storage now removes the original-profile day10
+cancellation failure without changing an equation, solver, tolerance, public
+interface, state layout or default. The guarded provider difference avoids
+subtracting two rounded theta_s values. Independent real128 retention checks
+cover864 drying/wetting cases per checked optimization using all eight source
+soil rows; the actual component links two production provider objects. The
+bounded original112-node matrix/heat/drain/Boesten/simple-crop interaction is
+selected for30 days and exact day9 process continuation at O0/O2. This qualifies
+the arithmetic repair and affected interaction only. Full481 attempts are
+censored after cost-based reselection and receive no full-migration credit.
+Macro and Rutter remain explicitly excluded. MC-NUT01 and MC-SOL01 retain
+CLOSED WITH EXCLUSIONS. Qualification and actual canonical admission are
+separate in `integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json`.
+Earlier day10 failure statements below remain predecessor evidence.
+
 Original112-node full-profile integration now has a reproducible technical
 blocker, without changing production: checked O0/O2 reject window10 with
 324attempts,134solver/175temporal rejections, zero mass rejections and thermal

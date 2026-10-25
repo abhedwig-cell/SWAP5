@@ -22,6 +22,7 @@ def outside_routines(t,names):
   t=t[:m.start()]+'! COMPOSITION '+name+'\n'+t[m.start()+end.end():]
  return t
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'];assert {p for p in delta if p.startswith('src/')}==set(ROUTINES)
  assert not git('status','--porcelain','--',*SCIENCE);assert reader(PARENT)==projection()
@@ -71,12 +72,16 @@ def validate(f):
     independent=float(row['water_end_cm'])-float(row['water_start_cm'])-float(row['rain_supplied_cm'])+float(row['runoff_cm'])+float(row['soil_evaporation_cm'])+float(row['pond_evaporation_cm'])+float(row['actual_transpiration_cm'])-float(row['bottom_up_cm'])+float(row['drainage_cm']);assert abs(independent)<1e-10
    if name=='boesten':assert result['committed_pairs']['full']==result['committed_pairs']['resumed']and min(result['committed_pairs']['full']+result['committed_pairs']['split'])>=0
  return dict(qualified=True,composed_heat_cases=4,days_per_case=481,exact_composed_restarts=4,typed_pair_controls=14,real_joint_rollback_retry_cases=2,source_equations_unchanged=True,fresh_preservation=dict(heat_project_cases=4,nonheat_project_cases=4,column_cases=12,exact_restarts=20),old_thermal_format_exact=True,full_original_Andelst=False,canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path'])
  return json.loads(capsule()['composed-parent/proof.json'])['fsi35']
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/SATURATION_STORAGE_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_saturation_storage_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()
