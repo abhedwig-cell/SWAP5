@@ -13,6 +13,7 @@ def projection():
   at=t.index('\n',start)+1;t=t[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[at:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HYDRAULICS_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_hydraulics_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'];assert not any(p.startswith('src/')for p in delta)
  assert {p for p in delta if p.startswith('app/')}=={'app/solute_column/main.f90','app/solute_column/read_swp_water.f90'}
@@ -48,12 +49,15 @@ def validate(f):
  for name,p in [('ksatexm_heat.nml','input.nml'),('ksatexm_heat.swp','source.swp')]:assert(ROOT/'examples/solute_column'/name).read_bytes()==f['ksatexm-O2/active/'+p]
  return dict(qualified=True,source_nodes=112,source_original_KSATEXM_equals_KSATFIT=True,new_coupled_cases=6,new_exact_process_restarts=6,rejected_new_processes=22,current_hydrostatic_preservation=inherited,all_process_solver_sources_unchanged=True,full_original_Andelst=False,canonically_admitted=False)
 def verify():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HYDRAULICS_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_hydraulics_current.py'))['verify']()
  source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HYDRAULICS_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_hydraulics_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path'])
  return json.loads(capsule()['ksatexm-parent/proof.json'])['fsi35']
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HYDRAULICS_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_hydraulics_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()
