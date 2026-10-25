@@ -1,5 +1,17 @@
 # SWAP5 Status-A current status
 
+HIST01 hydrostatic initialization successor,25 October2026: SWINCO2 now maps
+original GWLI into pressure heads and source pond through the existing input
+adapter. Original112-node Andelst water/heat initialization is component proof
+only; KSATEXM hydraulic import and the full original application remain excluded.
+Six checked O0/O2 coupled water/heat/solute cases retain exact separate-process
+restart and unchanged five incumbent application cases per optimization. Fully
+saturated file starts reject; the original failed water-status2 trial is retained.
+Qualification/admission are separate in
+`integration/mc-sol01/drainage/HYDROSTATIC_BOOTSTRAP_STATUS.json`. The executed
+example is `examples/solute_column/hydrostatic_heat.nml` with its matching SWP.
+No process/solver source or restart schema changes; NUT/SOL closeout stands.
+
 Native numeric heat bootstrap is canonically admitted by PR1437 at actual merge
 `44af323084f59428849466f5527d72169104fef9`; complete actual/qualified tree
 `d7f822dda23da180ba07efc18eb3356d2404bcf9` is exact. Actual-merge source/raw owner,19
