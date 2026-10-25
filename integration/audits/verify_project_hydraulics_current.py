@@ -12,6 +12,7 @@ def projection():
   at=t.index('\n',start)+1;t=t[:at]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[at:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_heat_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta']
  assert set(delta)=={'app/solute_project/main.f90','tools/solute/run_project.py',PARENT,SELF};assert not git('status','--porcelain','--',*SCIENCE)
@@ -27,7 +28,7 @@ def capsule():
  assert json.loads(f.pop('MANIFEST.json'))=={p:sha(b)for p,b in f.items()};return f
 def validate(f):
  # Reuse accepted unchanged column/provider/heat evidence without another run.
- old=runpy.run_path(str(ROOT/PARENT));inherited=old['validate'](old['capsule']());assert inherited['qualified']
+ old=runpy.run_path(str(ROOT/PARENT));inherited=old['validate']({**f,**{p[len('column-inherited/'):]:b for p,b in f.items()if p.startswith('column-inherited/')}});assert inherited['qualified']
  parent=json.loads(f['parent/proof.json']);assert parent['owner']['qualified']and len(parent['controls'])==14
  raw=f['parent/commit.raw'];assert hashlib.sha1(b'commit '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==BASE
  for opt in ['O0','O2']:
@@ -51,12 +52,16 @@ def validate(f):
   for p,h in r['results']['default']['files'].items():assert sha(f[prefix+'default/'+p])==h and f[prefix+'default/'+p]==f[prefix+'baseline/'+p]
   assert f[prefix+'default/budget.csv']==f[prefix+'baseline/budget.csv']
  return dict(qualified=True,current_cases=4,days_per_case=481,exact_process_restarts=4,rejected_processes=20,default_artifact_comparisons=8,unchanged_column_qualification=inherited,full_original_Andelst=False,canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_heat_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_heat_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path'])
  return json.loads(capsule()['parent/proof.json'])['fsi35']
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/PROJECT_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_project_heat_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

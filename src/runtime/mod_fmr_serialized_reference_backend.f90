@@ -3853,7 +3853,16 @@ contains
         if (any(forcing%root_extraction_sink /= 0.0_real64)) return
         if (allocated(self%micro_de_willigen).or.allocated(self%bartholomeus)) return
         if (self%root_compensation%method /= ROOT_COMP_OFF.or.self%root_salinity_active.or.self%root_frost%active) return
-        if (self%soil_temperature_active.or.self%frost_active.or.self%rutter_active.or.self%snow_active) return
+        ! Numeric heat uses the same hydraulic Feddes trial-beginning view.
+        ! Admit it only on the joint accepted-trace route, with chemistry
+        ! outside the water state and no alternate conductivity iteration.
+        if (self%soil_temperature_active) then
+          if (.not.self%accepted_water_flux_trace_enabled.or. &
+              self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+              self%picard_conductivity_iteration) return
+          if(self%soil_temperature_parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
+        end if
+        if (self%frost_active.or.self%rutter_active.or.self%snow_active) return
         if (self%rfm_configuration%enabled.or.self%macropore_active.or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl /= 0) return
         if (allocated(forcing%root_potential_sink).or.allocated(forcing%crop_oxygen)) return

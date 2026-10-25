@@ -27,7 +27,9 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False):
+ if native_heat and (not native_hydraulics or water_conductivity!='frozen' or retain_step_proposal or water_flux_temporal):
+  raise ValueError('native heat requires explicit native hydraulics and ordinary frozen Reference execution')
  if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
   raise ValueError('water/flux temporal metric requires frozen native Reference step proposals')
  if water_flux_temporal and temporal_tolerance!=.001:
@@ -43,7 +45,8 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[];rain_events=[]
  with tempfile.TemporaryDirectory(prefix='swap5-project-input-')as tmp:
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
-  native(executables['project_reader'],['input.swp','scan'],stage,b'SWP_NATIVE_PROJECT_SCANNED')
+  heat_args=['native-heat']if native_heat else[]
+  native(executables['project_reader'],['input.swp','scan',*heat_args],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
   for r in references:
    if r['kind']=='bbc':
@@ -56,7 +59,8 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
    name=(Path(folder)/r['value'])if folder else Path(r['value'])
    path=resolve_file(swp.parent,str(name));raw=path.read_bytes();sources.append((kind+'_'+r['index'],raw))
    (stage/({'met':'weather-','crop':'crop-','rain':'rain-','drain':'drain-'}[kind]+r['index']+{'met':'.met','crop':'.crp','rain':'.rain','drain':'.dra'}[kind])).write_bytes(raw)
-  native(executables['project_reader'],['input.swp','prepare'],stage,b'SWP_NATIVE_PROJECT_PREPARED')
+  native(executables['project_reader'],['input.swp','prepare',*heat_args],stage,b'SWP_NATIVE_PROJECT_PREPARED')
+  air=list(csv.DictReader((stage/'air.csv').open()))if native_heat else[]
   drainage=(stage/'drainage.nml').read_text()if(stage/'drainage.nml').exists()else''
   bottom_control=(stage/'bottom.nml').read_text()if(stage/'bottom.nml').exists()else''
   if any(r['kind']=='detailed_rain'for r in references):rain_events=list(csv.DictReader((stage/'rain_events.csv').open()))
@@ -111,6 +115,11 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if drainage:lines.insert(lines.index('&surface')-1,drainage.rstrip())
  if bottom_control:lines.insert(lines.index('&surface')-1,bottom_control.rstrip())
  if native_hydraulics:lines.insert(lines.index('&surface')-1,' swp_native_hydraulics=.true.')
+ if native_heat:
+  temperatures={float(r['t1900']):r['air_temperature_c']for r in air}
+  if len(temperatures)!=len(air):raise ValueError('duplicate native air temperature dates')
+  lines.insert(lines.index('&surface')-1,' swp_heat_bootstrap=.true.,dynamic_temperature=.true.')
+  lines.insert(lines.index('&surface')+1,' air_temperature_c='+','.join(temperatures[float(r['t1900'])]for r in combined))
  if water_conductivity in ['picard','picard_continuous']:lines.insert(lines.index('&surface')-1,' picard_conductivity_iteration=.true.')
  if water_conductivity=='picard_continuous':lines.insert(lines.index('&surface')-1,' continuous_mvg=.true.')
  if surface_exfiltration=='historical_zero':lines.insert(lines.index('&surface')-1,' historical_zero_solute_exfiltration=.true.')
@@ -146,6 +155,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if boesten:audit['boesten_cofred']=boesten[0]
  if water_flux_temporal:audit['water_flux_temporal']=True
  if native_hydraulics:audit['native_hydraulics']=True
+ if native_heat:audit['native_heat']=dict(air_temperature='original daily (TMIN+TMAX)/2',days=len(combined))
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
  if surface_exfiltration!='reject':audit['surface_exfiltration']=surface_exfiltration
@@ -165,10 +175,11 @@ def main():
  ap.add_argument('--surface-exfiltration',choices=['reject','historical_zero'],default='reject')
  ap.add_argument('--retain-step-proposal',action='store_true',help='Optional zero-tracer crop step proposals with atomic ordinary-policy retry')
  ap.add_argument('--native-hydraulics',action='store_true',help='Explicit source hydrostatic/KSATEXM bootstrap with the prepared native bottom owner')
+ ap.add_argument('--native-heat',action='store_true',help='Source numeric heat and original daily mean air temperature; requires --native-hydraulics')
  ap.add_argument('--water-flux-temporal',action='store_true',help='Optional changed-accuracy water-state/flux metric; requires --retain-step-proposal and --temporal-tolerance .001');a=ap.parse_args()
  if a.output.exists():raise FileExistsError(a.output)
  bundle=json.loads((a.bundle/'bundle.json'if a.bundle.is_dir()else a.bundle).read_text())
- document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal,a.native_hydraulics)
+ document,snapshot,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,a.solute_transport,a.water_conductivity,a.surface_exfiltration,a.retain_step_proposal,a.water_flux_temporal,a.native_hydraulics,a.native_heat)
  # Keep all audit information inside the already-bound immutable input document;
  # never add an unbound sidecar to the admitted atomic output inventory.
  encoded=base64.b64encode(json.dumps(audit,sort_keys=True).encode()).decode()

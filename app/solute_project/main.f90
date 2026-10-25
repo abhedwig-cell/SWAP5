@@ -25,6 +25,7 @@ program swap5_native_project_column
   use mod_soil_temperature_contract
   use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
   use mod_column_swp_water,only:import_column_swp_water
+  use mod_column_swp_heat,only:import_column_swp_heat
   use mod_column_swp_chemistry,only:import_column_swp_chemistry
   use mod_matrix_joint_restart_file
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t
@@ -86,6 +87,9 @@ program swap5_native_project_column
   type(water_flux_temporal_policy_t)::water_flux_policy
   logical :: implicit_pond_evaporation=.false.,swp_water_bootstrap=.false.
   logical :: swp_native_hydraulics=.false.
+  logical :: swp_heat_bootstrap=.false.
+  real(real64) :: air_temperature_c(MAX_WINDOWS)=20d0
+  real(real64) :: observed_heat_residual_j_cm2=0d0
   real(real64) :: swp_source_pond=-1d0,swp_source_groundwater=-2d0
   logical :: historical_zero_solute_exfiltration=.false.
   real(real64),allocatable :: swp_heads(:),swp_cofgen(:,:)
@@ -142,14 +146,14 @@ program swap5_native_project_column
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
     decay_rate_day,gamma_temperature,initial_temperature_c,implicit_pond_evaporation,swp_water_bootstrap,solute_transport_scheme, &
-    historical_zero_solute_exfiltration,swp_native_hydraulics, &
+    historical_zero_solute_exfiltration,swp_native_hydraulics,swp_heat_bootstrap, &
     picard_conductivity_iteration,continuous_mvg,seasonal_bottom,bottom_year_count, &
     cauchy3_bottom,cauchy3_half_cell,cauchy3_count,cauchy3_resistance,cauchy3_dates,cauchy3_heads, &
     bottom_amplitude,bottom_daymax,bottom_legacy_origin,bottom_year_starts,detailed_rain,boesten_evaporation,boesten_cofred, &
     native_drainage,drain_resistance,drain_infiltration_resistance,drain_spacing_m,drain_bottom_cm,drain_legacy_origin, &
     drain_table_count,drain_table_times,drain_table_heads,drain_anisotropy
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
-    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day
+    rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day,air_temperature_c
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -193,6 +197,16 @@ program swap5_native_project_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
+  call require(all(ieee_is_finite(air_temperature_c)),'nonfinite air temperature')
+  call require(all(air_temperature_c>=-50d0).and.all(air_temperature_c<=60d0),'air temperature outside domain')
+  call require(swp_heat_bootstrap.or.all(air_temperature_c==20d0),'air forcing requires native heat')
+  if(swp_heat_bootstrap)then
+    call require(swp_native_hydraulics.and.dynamic_temperature,'native heat requires native hydraulics and dynamic heat')
+    call require(all(initial_temperature_c==20d0).and.all(surface_temperature_c==20d0),'duplicate native heat owner')
+    call require(.not.boesten_evaporation.and..not.native_drainage.and..not.picard_conductivity_iteration.and. &
+      .not.continuous_mvg.and..not.cauchy3_bottom.and..not.retain_accepted_step_proposal, &
+      'native heat project composition not selected')
+  end if
   call require(.not.swp_native_hydraulics.or.swp_water_bootstrap,'native hydraulics requires SWP water bootstrap')
   if(swp_water_bootstrap)then
     call require(len_trim(legacy_swp)>0,'SWP water bootstrap requires --swp')
@@ -280,9 +294,9 @@ program swap5_native_project_column
   call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')
   call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &
     .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')
-  call require(.not.any(soil_evaporation_cm_day>0d0).or.(.not.dynamic_temperature.and. &
+  call require(.not.any(soil_evaporation_cm_day>0d0).or.((.not.dynamic_temperature.or.swp_heat_bootstrap).and. &
     .not.implicit_pond_evaporation),'soil evaporation combination not qualified')
-  call require(.not.dynamic_temperature.and..not.implicit_pond_evaporation,'crop combination not admitted')
+  call require((.not.dynamic_temperature.or.swp_heat_bootstrap).and..not.implicit_pond_evaporation,'crop combination not admitted')
   call require(.not.retain_accepted_step_proposal.or.(.not.picard_conductivity_iteration.and. &
     .not.continuous_mvg.and..not.seasonal_bottom.and..not.cauchy3_bottom.and..not.detailed_rain.and.solute_transport_scheme==0),'native proposal numerical combination not qualified')
   call require(.not.water_flux_temporal.or.(retain_accepted_step_proposal.and..not.boesten_evaporation), &
@@ -467,11 +481,16 @@ program swap5_native_project_column
     template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     p%soil_temperature_active=.true.
     allocate(p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
+    if(swp_heat_bootstrap)then
+      call import_column_swp_heat(trim(legacy_swp),dz,z,disnod(1:numnod),p%cofgen(2,:), &
+        p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
+    else
     call initialize_soil_temperature_parameters(dz,disnod(1:numnod),p%cofgen(2,:), &
       spread(.3d0,1,numnod),spread(.2d0,1,numnod),spread(.04d0,1,numnod),p%soil_temperature,code)
     call require(code==0,'thermal parameter initialization')
     call initialize_soil_temperature_state(initial_temperature_c(1:numnod),initial%soil_temperature,code)
     call require(code==0,'thermal state initialization')
+    end if
   end if
   numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   numerical%transaction%temporal_tolerance=temporal_tolerance
@@ -528,6 +547,7 @@ program swap5_native_project_column
   if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
   if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
+  if(dynamic_temperature)write(u,'(A)',advance='no')',observed_heat_residual_j_cm2'
   write(u,'(A)')''
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
@@ -574,10 +594,11 @@ program swap5_native_project_column
     supply%exact_empty_pool_chemistry=any(soil_evaporation_cm_day>0d0)
     supply%implicit_pond_evaporation=implicit_pond_evaporation
     supply%historical_zero_solute_exfiltration=historical_zero_solute_exfiltration
+    if(swp_heat_bootstrap)forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
     if(detailed_rain)then
       call run_detailed_rain_day(t0,t1,result)
     else if(dynamic_temperature)then
-      forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
+      if(.not.swp_heat_bootstrap)forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
       call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
     else
     call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
@@ -599,8 +620,15 @@ program swap5_native_project_column
         result%diagnostics%solver_rejections,result%diagnostics%temporal_rejections,result%diagnostics%mass_rejections
       write(*,*)'rejected chemical mass:',result%chemical%mass_before,result%chemical%mass_after, &
         result%chemical%external_in,result%chemical%external_out,result%chemical%residual
-      call write_matrix_joint_restart_file('diagnostic-rejected.bin',column_id,template,p%parameter_set_id, &
-        water,solute,code,allow_surface_mass=.true.)
+      if(dynamic_temperature)then
+        observation=backend%observation()
+        write(*,*)'rejected thermal status:',observation%soil_temperature_status
+        call write_pond_thermal_restart('diagnostic-rejected.bin',column_id,template,p%parameter_set_id, &
+          p,water,solute,code)
+      else
+        call write_matrix_joint_restart_file('diagnostic-rejected.bin',column_id,template,p%parameter_set_id, &
+          water,solute,code,allow_surface_mass=.true.)
+      end if
       call require(code==JOINT_OK,'rejected committed-state diagnostic export failed')
     end if
     call require(result%status==JOINT_OK,'joint interval rejected')
@@ -636,6 +664,7 @@ program swap5_native_project_column
     if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
     if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
+    if(dynamic_temperature)write(u,'(A,ES25.17E3)',advance='no')',',observed_heat_residual_j_cm2
     write(u,'(A)')''
     clock=t1
   end do
@@ -682,6 +711,7 @@ program swap5_native_project_column
   print '(A)','SWAP5_SOLUTE_COLUMN_COMPLETED'
 contains
   subroutine reset_day_totals()
+    observed_heat_residual_j_cm2=0d0
     bottom_amount=0d0
     drainage_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
@@ -692,6 +722,12 @@ contains
   subroutine accumulate_fluxes(observation)
     type(fmr_serialized_physical_observation_t),intent(in)::observation
     integer::k
+    if(dynamic_temperature)then
+      call require(observation%soil_temperature_executed.and. &
+        observation%soil_temperature_energy_accounting_complete,'accepted heat energy certificate unavailable')
+      observed_heat_residual_j_cm2=max(observed_heat_residual_j_cm2, &
+        abs(observation%soil_temperature_energy_residual_j_cm2))
+    end if
     accepted_count=accepted_count+size(observation%accepted_water_flux_substeps)
     do k=1,size(observation%accepted_water_flux_substeps)
       associate(s=>observation%accepted_water_flux_substeps(k))
@@ -752,13 +788,23 @@ contains
       end if
       segment_supply=supply;segment_supply%t0=cursor;segment_supply%t1=endpoint
       segment_supply%rain_rate=rain_rates(idx)
-      call run_pond_joint_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &
-        candidate_solute,segment_supply,cursor,endpoint,part)
+      if(dynamic_temperature)then
+        call run_pond_thermal_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &
+          candidate_solute,segment_supply,cursor,endpoint,part)
+      else
+        call run_pond_joint_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &
+          candidate_solute,segment_supply,cursor,endpoint,part)
+      end if
       if(part%status/=JOINT_OK)then
         day_result=part
         write(*,*)'detailed rain completed intervals:',rain_segments_completed
-        call write_matrix_joint_restart_file('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
-          candidate_water,candidate_solute,diagnostic_status,allow_surface_mass=.true.)
+        if(dynamic_temperature)then
+          call write_pond_thermal_restart('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
+            p,candidate_water,candidate_solute,diagnostic_status)
+        else
+          call write_matrix_joint_restart_file('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
+            candidate_water,candidate_solute,diagnostic_status,allow_surface_mass=.true.)
+        end if
         call require(diagnostic_status==JOINT_OK,'partial day diagnostic')
         return
       end if
