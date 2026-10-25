@@ -1,5 +1,15 @@
 # SWAP5 Status-A current status
 
+Native project hydraulic bootstrap is canonically admitted by PR1441 at
+actual merge `5303806142e9f30659b1ba867cc75f024e0694e1`; qualified/actual tree
+`2700a542e47d1272e0828c5b254ecb6ff4aad417` matches exactly. Actual-merge
+source/raw owner,11 corruption controls, FSI35 source boundary and source/strict
+docs pass. `integration/mc-sol01/drainage/PROJECT_HYDRAULICS_ADMISSION.json`
+closes this supported subset WITH EXCLUSIONS. The previous external-BBC staging
+gap is removed for this native project route; the separate heat-column route
+does not acquire BBC orchestration. Active KSATEXM/Picard and the full original
+macro/heat/crop application remain excluded. No hosted PASS/full migration claim.
+
 Native project hydraulic bootstrap: source SWINCO2/GWLI and KSATEXM no-op
 input now connect to the existing BBC/Cauchy3, DRAMET3, detailed rain, Boesten
 and simple crop-rotation route through explicit `--native-hydraulics`.

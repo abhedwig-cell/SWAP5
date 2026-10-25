@@ -1,0 +1,135 @@
+{
+  "work_unit": "HIST-INTEGRATION01 project hydraulic bootstrap",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "pr": 1441,
+  "canonical_merge": "5303806142e9f30659b1ba867cc75f024e0694e1",
+  "first_parent": "3f184a488bce19bfcabf9c349cbff0d836b8cfeb",
+  "published_head": "0cf7f075275e0c50cf42443e73273820aa7f65e3",
+  "qualified_complete_tree": "2700a542e47d1272e0828c5b254ecb6ff4aad417",
+  "actual_complete_tree": "2700a542e47d1272e0828c5b254ecb6ff4aad417",
+  "exact_complete_tree_match": true,
+  "canonically_admitted": true,
+  "actual_postimage_checks": [
+    {
+      "name": "owner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "integration/audits/verify_project_hydraulics_current.py"
+      ],
+      "returncode": 0,
+      "seconds": 1.2335705980003695,
+      "stdout_sha256": "8e3be6ec3c03f3b5075656473546833d34e8a3b7fffab5ecba6d513bd34039f8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "-c",
+        "import runpy,json;m=runpy.run_path('integration/audits/verify_project_hydraulics_current.py');print(json.dumps(m['self_test']()))"
+      ],
+      "returncode": 0,
+      "seconds": 3.316608315999474,
+      "stdout_sha256": "547f8489a0f029347f54113feb36c21a8ea88184fc18e494b4f8fdd212dae5c0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fsi35_source",
+      "command": [
+        "bash",
+        "tests/fci/run_fci93_non_m1_fixed_k_qualification.sh",
+        "--verify-only"
+      ],
+      "returncode": 0,
+      "seconds": 10.291233521998947,
+      "stdout_sha256": "a7bffc22672808798ca95b32ef23d3fa3a321e8abe77e812a5feebdd5a410e5e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-B",
+        "tools/docs/check_docs.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.1957458039978519,
+      "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "strict_mkdocs",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "mkdocs",
+        "build",
+        "--strict",
+        "--site-dir",
+        "/workspace/scratch/f2a33ff85190/project-actual-site"
+      ],
+      "returncode": 0,
+      "seconds": 15.119328344000678,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2c11d31fefb021bd0e303f51bd1e2c88d671c87960038424724c8e98ce4de150"
+    }
+  ],
+  "physical_qualification": {
+    "source_nodes": 12,
+    "cases": 4,
+    "days_per_case": 481,
+    "fresh_process_restarts": 4,
+    "rejected_processes": 20,
+    "default_artifact_comparisons": 8,
+    "water_max_cm": 1.0966227925734984e-13,
+    "solute_max_mg_cm2": 6.758222453884244e-14,
+    "all_process_solver_sources_unchanged": true
+  },
+  "O0_O2_exact": true,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/PROJECT_HYDRAULICS_EVIDENCE.tar.xz.b64",
+    "sha256": "26f5e77debbc7e699c09d2db603fb5498a3035cb1f7eef0e3057c3dc2cff742d",
+    "bytes": 1894332,
+    "members": 574
+  },
+  "current_source_raw_controls": 11,
+  "closed_capabilities": [
+    "Explicit native project hydrostatic GWLI/pond/initial groundwater with already resolved BBC Cauchy3 bottom owner",
+    "Source KSATEXM at or below KSATFIT no-op mapping through native project input; original source hydraulic provider reused",
+    "Constructed12-node coupled original BBC/DRA/detailed rain/Boesten/simple crop rotation: four O0/O2 cases complete481 days and four day365 separate-process restarts exactly",
+    "Eight default physical artifacts equal independently built canonical predecessor"
+  ],
+  "exclusions": [
+    "Full original Andelst macropore/heat/crop lifecycle",
+    "Fully saturated file initialization",
+    "Elasticity or power-tail combinations",
+    "SWBOTB1",
+    "Loose historical restart",
+    "Active KSATEXM above KSATFIT with Picard/Cauchy/drainage: actual unchanged runtime rejects before the first physical trial"
+  ],
+  "remaining_supported_scope_implementation_blockers": [],
+  "remaining_supported_scope_evidence_blockers": [],
+  "MC_NUT01_status": "CLOSED WITH EXCLUSIONS",
+  "MC_SOL01_status": "CLOSED WITH EXCLUSIONS",
+  "all_process_solver_sources_unchanged": true,
+  "restart_schema_unchanged": true,
+  "full_original_Andelst": false,
+  "full_historical_migration": false,
+  "mastercoverage_promoted": false,
+  "active_KSATEXM_Picard_composition": "REJECTED_BY_EXISTING_ADMISSION_GUARD: water101, before physical trial; both initial O0/O2 failures retained",
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: native local O0/O2 qualification; [skip ci] avoids unchanged broad suites. No hosted PASS claimed.",
+  "hosted_checks": [],
+  "empty_hosted_checks": "NOT_SELECTED_NOT_PASS",
+  "preservation_selection": {
+    "FSI35": "27 executable dependencies unchanged; actual-merge source-only gate passed, no fresh native run",
+    "column_heat_NUT_macro": "Unchanged dependencies, accepted evidence reused and original column raw assertions validated without new numerical execution",
+    "default_BBC481": "Independent exact predecessor executable; budget/state/endpoint/restart artifacts byte exact",
+    "unchanged_supported_project_cases": "Completed invocations reused by source/executable/manifest/raw artifact identity after the retained initial active failure",
+    "full_FCI": "NOT_SELECTED_IMPACT",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "RossFast": "NOT_SELECTED"
+  },
+  "receipt_scope": "Actual-merge evidence; final metadata does not alter scientific postimages or sealed proof. Qualification owner reports qualification separately from admission."
+}

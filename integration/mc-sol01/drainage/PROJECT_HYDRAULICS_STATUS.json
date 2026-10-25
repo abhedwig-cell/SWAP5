@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 project hydraulic bootstrap",
   "baseline": "3f184a488bce19bfcabf9c349cbff0d836b8cfeb",
-  "stage": "SOURCE_BOUND_QUALIFICATION_SEALED",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "Connect existing source hydrostatic/KSATEXM import to the existing project crop/drainage/Cauchy owners through explicit default-false native hydraulic opt-in. Resolve initial bottom mode from already prepared Cauchy control, never invent inline bottom data or reread BBC through the kernel. Preserve default SWINCO1 route exactly. Source GWLI owns initial groundwater and source pond. No physics equation, solver policy, mass tolerance or restart schema change.",
   "owner": "HIST-INTEGRATION01 native project adapter; existing serialized Reference, crop rotation, DRAMET3 and immutable BBC Cauchy owners",
   "invariants": [
@@ -17,9 +17,7 @@
     29
   ],
   "remaining_implementation_blockers": [],
-  "remaining_evidence_blockers": [
-    "Actual canonical merge/postimage validation"
-  ],
+  "remaining_evidence_blockers": [],
   "test_selection": {
     "immediate": "Existing real source/provider driver evidence reused: column import and physical equations unchanged; compile actual project caller",
     "composition": "Below/equal KSATEXM plus hydrostatic source native BBC/DRA/simple crop O0/O2,481 days and day365 split/restart. Active Picard combination retained as an explicit rejected variant. Reuse completed unchanged below/equal invocations from the retained failed active attempt.",
@@ -37,7 +35,7 @@
     "Loose historical restart",
     "Active KSATEXM above KSATFIT with Picard/Cauchy/drainage: actual unchanged runtime rejects before the first physical trial"
   ],
-  "next_action": "Validate source/raw owner and docs; integrate exact tree and verify actual merge before admission",
+  "next_action": "Supported project bootstrap subset closed. Full original/native composition and active KSATEXM/Picard remain separately excluded, never counted migrated.",
   "evidence": {
     "path": "integration/mc-sol01/drainage/PROJECT_HYDRAULICS_EVIDENCE.tar.xz.b64",
     "sha256": "26f5e77debbc7e699c09d2db603fb5498a3035cb1f7eef0e3057c3dc2cff742d",
@@ -70,5 +68,7 @@
     "all_process_solver_sources_unchanged": true
   },
   "admission_record": "integration/mc-sol01/drainage/PROJECT_HYDRAULICS_ADMISSION.json",
-  "hosted_checks_selection": "NOT_SELECTED_IMPACT: native local O0/O2 qualification; [skip ci] avoids unchanged broad suites. No hosted PASS claimed."
+  "hosted_checks_selection": "NOT_SELECTED_IMPACT: native local O0/O2 qualification; [skip ci] avoids unchanged broad suites. No hosted PASS claimed.",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "canonical_merge": "5303806142e9f30659b1ba867cc75f024e0694e1"
 }
