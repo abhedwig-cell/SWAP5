@@ -1,0 +1,63 @@
+{
+  "work_unit": "HIST-INTEGRATION01 covered macropore water trace",
+  "baseline": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 8,
+    "current_NUT_separate_process_restarts": 16,
+    "current_matrix_days": 5,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": false
+  },
+  "negative_controls": [
+    "source integration/audits/verify_covered_macro_current.py",
+    "source integration/audits/verify_saturation_storage_current.py",
+    "source integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md",
+    "source integration/mc-sol01/drainage/preserve_covered_matrix.py",
+    "source integration/mc-sol01/drainage/qualify_covered_macro_trace.py",
+    "source integration/mc-sol01/drainage/rebuild_covered_macro.py",
+    "source integration/mc-sol01/drainage/seal_covered_macro.py",
+    "source integration/mc-sol01/drainage/verify_source_continuation.py",
+    "source src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "source src/runtime/mod_macropore_single_column_runtime.f90",
+    "source tests/nut-sol/covered_macro_trace_checks.inc",
+    "foreign caller",
+    "raw covered-O0/RESULT.json",
+    "raw covered-O2/wet1-trace1.stdout",
+    "raw counter/O0/wet1-trace0.stdout",
+    "raw uncovered-O2/RESULT.json",
+    "raw nut-joint/result.json",
+    "raw matrix/RESULT.json",
+    "raw parent/commit.raw"
+  ],
+  "physical_results": {
+    "positive_internal_transfer_cm": 1.2800063350648031e-08,
+    "macro_active_cell_max_residual_cm": 0.0,
+    "matrix_max_residual_cm": 3.384829557274585e-12,
+    "combined_column_max_residual_cm": 3.3848357274860892e-12
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_EVIDENCE.tar.xz.b64",
+    "sha256": "9a1de437588acf1dee8ca536c95b4c8fec51c0f682d93c87771a94bd90e84bae",
+    "bytes": 2603644,
+    "members": 2588
+  },
+  "canonically_admitted": false
+}

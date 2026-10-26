@@ -1,5 +1,20 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Covered matrix-to-macropore accepted-water receipts are locally qualified at
+checked O0/O2. Explicit donor-node/domain amounts repair the active-domain
+entry face and receipt validation without changing water equations, committed
+state, temporal/mass tolerances or default policy. A short positive-transfer
+interface probe and dry covered controls retain the original rollback/replay/
+FMR restore assertions and exact traceON/OFF physical output. Twelve receipt
+corruption controls execute per observed substep. Twenty uncovered macro/Rutter
+configurations, eight current Richards/crop/N runs and sixteen fresh-process
+restarts reproduce accepted results. Current original112-node matrix/heat/drain/
+crop five-day artifacts are exact against independent predecessor O0/O2 builds.
+The full481-day execution remains its preserved predecessor, not a fresh current
+executable run. Full original macro/Rutter/heat and macro chemistry remain
+excluded; MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. Actual canonical
+admission is pending in `integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json`.
+
 Original112-node source matrix chain now completes481 days at checked O2,
 with the original1998 crop/fallow and1999 second-crop activation. The previously
 admitted367-day chain is extended once through481 without rerunning its prefix.

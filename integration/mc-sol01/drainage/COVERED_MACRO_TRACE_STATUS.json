@@ -1,0 +1,103 @@
+{
+  "work_unit": "HIST-INTEGRATION01 covered macropore water trace",
+  "baseline": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
+  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "implemented": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md",
+  "remaining_blockers": [
+    "Canonical admission and exact merged-postimage verification"
+  ],
+  "test_selection": {
+    "candidate": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
+    "groups": {
+      "covered_macro": {
+        "changed_dependency": "Covered internal transfer vertical reconstruction and accepted cross-cell trace ownership; additive runtime observation ABI",
+        "scientific_claim": "Positive matrix donor -> covered macro top closes actual production cell/column budgets and retains trace independence and restart",
+        "owner": "HIST-INTEGRATION01",
+        "authority": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md",
+        "expected_seconds": 450,
+        "existing_evidence": "Uncovered macro/Rutter trace already admitted. No positive covered receipt proof; requires new actual native counterexample and successor. Source481 proof retained as predecessor only.",
+        "prior_execution": "NONE"
+      },
+      "current_composition_preservation": {
+        "changed_dependency": "Additive shared macropore result and accepted-water trace ABI; changed modules and actual consumers rebuilt",
+        "scientific_claim": "Current actual crop/N eight-day ledgers and process restart are exact; native112-node matrix heat/drain/crop five-day artifacts equal independent predecessor builds",
+        "owner": "HIST-INTEGRATION01 and existing MC-NUT01 composition owners",
+        "authority": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md and MACRO_TRACE_CONTRACT.md qualification selection",
+        "expected_seconds": 350,
+        "existing_evidence": "Prior matrix481 and macro/NUT capsules retained as dated predecessors. Select current same-input short differential default branch plus original eight-day NUT recipes. No long low-air or full481 rerun.",
+        "prior_execution": "NONE"
+      }
+    }
+  },
+  "tested": true,
+  "scientific_delta": {
+    "integration/audits/verify_covered_macro_current.py": "A",
+    "integration/audits/verify_saturation_storage_current.py": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "M",
+    "tests/nut-sol/covered_macro_trace_checks.inc": "A"
+  },
+  "postimages": {
+    "integration/audits/verify_covered_macro_current.py": "bd0eaa2fc7f73239e604910e67485c79c2ce7975f19b5d7cf4ad310817b28bd0",
+    "integration/audits/verify_saturation_storage_current.py": "1e7b8b4fdcbbf960f654a9507347e8ca01f22b0921ce60d77f39bee0f1eced21",
+    "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md": "0558d5188b12b0d0f04cbb06b6693d90db720b6a030bf99cc646523cfc66cc98",
+    "integration/mc-sol01/drainage/preserve_covered_matrix.py": "ea661fc33d6a43b9f818451f7eb378b55200023db0ab1662cc276ab58709de53",
+    "integration/mc-sol01/drainage/qualify_covered_macro_trace.py": "11a16a05374a5259fe95b67370dec14e078c4e3bac8558056982d3eb375b45fb",
+    "integration/mc-sol01/drainage/rebuild_covered_macro.py": "3a6312bb2975570a53631e845edcfe1ce0bb87ef449e28969682e19a64f7c90f",
+    "integration/mc-sol01/drainage/seal_covered_macro.py": "e6d58e6c524de311f5b82934125a84f8d739a08e3b3036630b5ca7d7dedaefd6",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "c1fa4816575fbc5189258f8a2f8a3f404af7197dc16ea7a43fe92360ba7995f9",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "e4f6e5a5fc432ce3b7e8088ba77362ea587df63d363c337fe9047ef0abefc0be",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "09d58c4e9b0b0a72f10211dcedf302e71c410c58191da5106c024a3ddac035b6",
+    "tests/nut-sol/covered_macro_trace_checks.inc": "1326dc02ad6e5b5449be267f676eeb11a6a028741ff96fd52af3d528032e2dd8"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_EVIDENCE.tar.xz.b64",
+    "sha256": "9a1de437588acf1dee8ca536c95b4c8fec51c0f682d93c87771a94bd90e84bae",
+    "bytes": 2603644,
+    "members": 2588
+  },
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 8,
+    "current_NUT_separate_process_restarts": 16,
+    "current_matrix_days": 5,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": false
+  },
+  "recovery_point": "Persisted complete covered receipt evidence and current preservation",
+  "next_action": "Verify owning source/raw gates, integrate candidate and verify actual canonical merge. Do not claim full original application.",
+  "physical_results": {
+    "positive_internal_transfer_cm": 1.2800063350648031e-08,
+    "macro_active_cell_max_residual_cm": 0.0,
+    "matrix_max_residual_cm": 3.384829557274585e-12,
+    "combined_column_max_residual_cm": 3.3848357274860892e-12
+  },
+  "qualification_checks": {
+    "owner_and_source_raw_negative_controls": 19,
+    "fsi35_source": "PASS; unchanged executable dependencies",
+    "retained481_owner": "PASS as predecessor with current matrix branch differential proof",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "hosted_numerical_pass_claimed": false
+  }
+}

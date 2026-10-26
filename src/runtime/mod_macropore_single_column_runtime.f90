@@ -63,6 +63,8 @@ module mod_macropore_single_column_runtime
     real(real64) :: pond_returned_surface_cm=0.0_real64
     real(real64) :: rapid_external_outflow_cm=0.0_real64
     real(real64) :: covered_internal_transfer_cm=0.0_real64
+    integer :: covered_donor_node=0
+    real(real64),allocatable :: covered_top_input_domain_cm(:)
     logical :: inner_richards_exchange_used=.false.
     logical :: matrix_source_area_partition_used=.false.
     real(real64) :: inner_initial_exchange_rate_cm_per_day=0.0_real64
@@ -429,6 +431,8 @@ contains
           return
         end if
         result%covered_internal_transfer_cm=sum(covered_domain_cm)
+        result%covered_donor_node=geometry_config%top_node-1
+        result%covered_top_input_domain_cm=covered_domain_cm
         call apply_internal_covered_top_transfer(result%macropore_candidate,geometry,geometry_config%top_node, &
              covered_domain_cm,base_request%parameters%z,base_request%parameters%dz,candidate_view,ok)
         if(.not.ok)then
@@ -500,6 +504,10 @@ contains
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
+      ! The covering provider already committed this internal top input to the
+      ! macro candidate. Reconstruct its real incoming face, not a bottom leak.
+      if(allocated(result%covered_top_input_domain_cm)) &
+        vertical_request%top_inflow_rate=vertical_request%top_inflow_rate+result%covered_top_input_domain_cm/dt
       result%external_outflow_rate_domain_cp=vertical_request%external_outflow_rate
       call reconstruct_vertical_flux(vertical_request,result%vertical_flux)
       if(.not.result%vertical_flux%valid)then
