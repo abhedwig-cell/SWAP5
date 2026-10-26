@@ -5,13 +5,10 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/MACRO_HEAT_CONTRACT.md",
-  "blockers": [
-    "Actual canonical merge and postimage verification",
-    "Original native macro input/dispatch remains excluded"
-  ],
-  "next_action": "Admit bounded runtime, verify actual merge; continue original native input mapping separately",
+  "blockers": [],
+  "next_action": "Native SWMACRO/SWINTER3 import and application, retaining original SWSOLU0; do not repeat qualified short runtime closure",
   "test_selection": {
     "candidate": "043e92ac319d3a3b8ca40b57e995be60db91679a",
     "groups": {
@@ -26,7 +23,7 @@
       }
     }
   },
-  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "scientific_delta": {
     "integration/audits/verify_covered_macro_current.py": "M",
     "integration/audits/verify_macro_heat_current.py": "A",
@@ -75,7 +72,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -87,5 +84,13 @@
     "prior_NUT_evidence_retained": true,
     "file_macro_heat_restart": false
   },
-  "recovery_point": "Complete fresh O0/O2 thermal and nonthermal production proof"
+  "recovery_point": "PR1449 actual merge and exact qualified tree independently verified",
+  "remaining_migration_blockers": [
+    "Original native SWMACRO configuration/bootstrap and dispatch",
+    "Original SWINTER3 canopy preparation/source-window and daily application",
+    "Active-root/response-drainage macro/heat composition and file restart"
+  ],
+  "admission": "integration/mc-sol01/drainage/MACRO_HEAT_ADMISSION.json",
+  "actual_merge": "8a0d53b511e7f3be01ffbbba37f49f98a0855a63",
+  "qualified_complete_tree": "8459e7ec9a761113b3071cb5d0276dcb34fc2a39"
 }

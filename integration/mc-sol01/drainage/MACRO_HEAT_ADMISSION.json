@@ -1,0 +1,99 @@
+{
+  "work_unit": "HIST-INTEGRATION01 macro/Rutter/numeric heat",
+  "baseline": "043e92ac319d3a3b8ca40b57e995be60db91679a",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Existing four-node one-domain Rutter/Boesten/macropore/numeric heat with no active roots or response drainage; typed in-memory FMR restart",
+  "pr": 1449,
+  "actual_merge": "8a0d53b511e7f3be01ffbbba37f49f98a0855a63",
+  "published_head": "89c652841ff9eb6f64880f75259ed6afcf662698",
+  "qualified_complete_tree": "8459e7ec9a761113b3071cb5d0276dcb34fc2a39",
+  "actual_tree": "8459e7ec9a761113b3071cb5d0276dcb34fc2a39",
+  "qualified_complete_tree_exact": true,
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 5,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": true,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/MACRO_HEAT_EVIDENCE.tar.xz.b64",
+    "sha256": "d2103cac399d204935f710bc5af80e784187d6d08948b3c8e14dae4267a81432",
+    "bytes": 1216772,
+    "members": 467
+  },
+  "actual_postimage_validation": {
+    "working_tree_clean": true,
+    "owner_controls": 19,
+    "retained481_predecessor_validated": true,
+    "fsi35_dependencies_unchanged": 27,
+    "docs": true,
+    "mkdocs_strict": true,
+    "raw_logs": {
+      "actual-heat-owner.json": {
+        "sha256": "6e2e1097ff58d0301a60d039f86e0787aa7a6ce1a799815b1e7b56e34cb2d5de",
+        "bytes": 2341
+      },
+      "actual-retained481.json": {
+        "sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "bytes": 963
+      },
+      "actual-fsi35.json": {
+        "sha256": "dab8ae2ce961557b14a0c2d6ca71154768b84c53a20b6f1ecd896a5622a9715e",
+        "bytes": 124
+      },
+      "actual-docs.stdout": {
+        "sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "bytes": 36
+      },
+      "actual-mkdocs.stderr": {
+        "sha256": "b5cc009c3f89b5b0e3c7a5b84928209dfaed522c78997ecd2eebd58927fd5f4f",
+        "bytes": 69549
+      }
+    }
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "Full original native Andelst application and original SWMACRO/SWINTER input dispatch",
+    "Active roots or response drainage with combined macro/heat",
+    "Macro chemistry",
+    "File publication of combined macro/heat restart",
+    "Multi-domain or covered thermal composition",
+    "Long-duration thermal temporal convergence and daily energy sums",
+    "Fresh full481 O0/O2 run or complete SWAP4.3.1 equivalence"
+  ],
+  "work_packages": {
+    "MC-NUT01": "CLOSED WITH EXCLUSIONS",
+    "MC-SOL01": "CLOSED WITH EXCLUSIONS"
+  },
+  "hosted_numerical_pass_claimed": false
+}

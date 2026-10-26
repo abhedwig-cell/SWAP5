@@ -1,7 +1,9 @@
 # SWAP5 Status-A current status
 
 The bounded Reference Rutter/Boesten/macropore/numeric-heat runtime is now
-locally qualified at checked O0/O2. The existing temperature state is advanced
+canonically admitted at checked O0/O2 by PR1449. Actual merge
+`8a0d53b511e7f3be01ffbbba37f49f98a0855a63` has complete tree
+`8459e7ec9a761113b3071cb5d0276dcb34fc2a39`, exactly matching qualification. The existing temperature state is advanced
 alongside the original water owners and retained exactly through typed FMR
 restart, rollback and smaller retry. Six configurations/twelve native processes
 pass; eight additional invalid heat configurations per process reject atomically.
@@ -12,9 +14,9 @@ The original112-node matrix/heat/drain/crop five-day differential is byte exact.
 Prior481-day and nutrient evidence remain dated, without a new execution claim.
 Native SWMACRO input/dispatch, full original Andelst, macro chemistry, response
 drainage/active-root thermal composition and file macro/heat restart publication
-remain excluded. MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. Qualification and
-canonical admission are separate in
-`integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json`.
+remain excluded. MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. Actual-merge owner/19 controls, retained481 evidence, unchanged27-dependency
+FSI35 source and strict docs pass. Admission authority:
+`integration/mc-sol01/drainage/MACRO_HEAT_ADMISSION.json`.
 
 Covered matrix-to-macropore accepted-water receipts are canonically admitted at
 checked O0/O2. Explicit donor-node/domain amounts repair the active-domain
