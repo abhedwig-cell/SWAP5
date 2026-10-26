@@ -2,7 +2,7 @@
 import argparse,hashlib,json,os,resource,subprocess,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];BASE='043e92ac319d3a3b8ca40b57e995be60db91679a';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
-p=argparse.ArgumentParser();p.add_argument('--build',type=Path,required=True);p.add_argument('--proof',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir();b=json.loads((a.build/'build-complete.json').read_text())
+p=argparse.ArgumentParser();p.add_argument('--baseline',default=BASE);p.add_argument('--build',type=Path,required=True);p.add_argument('--proof',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();BASE=a.baseline;out=a.output.resolve();out.mkdir();b=json.loads((a.build/'build-complete.json').read_text())
 for p,h in b['input_sha256'].items():assert hashlib.sha256(subprocess.check_output(['git','show',BASE+':'+p],cwd=ROOT)).hexdigest()==h,p
 resource.setrlimit(resource.RLIMIT_STACK,(64*1024*1024,resource.getrlimit(resource.RLIMIT_STACK)[1]))
 objects=[e['command'][-1]for e in b['events']if e['category']=='compile'][:-1];driver=a.proof.resolve()/'replay.f90';target=out/'replay.f90';target.write_bytes(driver.read_bytes());flags=[x for x in b['flags']if not x.startswith('-J')];exe=out/'replay';events=[]
