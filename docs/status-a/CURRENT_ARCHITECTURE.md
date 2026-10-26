@@ -1,6 +1,6 @@
 # SWAP5 Status-A current architecture
 
-Original Rutter crop/ETref preparation is locally qualified in an explicit
+Original Rutter crop/ETref preparation is canonically admitted by PR1450 in an explicit
 `native-rutter` reader mode. Two original crop periods and the intervening fallow
 cover481 days. At O0/O2,864 cases per optimization match the actual archived
 ETpot body bit for bit; ordinary crop-demand output is predecessor-exact. Original
@@ -13,9 +13,11 @@ The existing INT13 transfer of capacity loss to the surface remains an explicit
 SWAP5 reference difference. Metadata preparation projects SWMACRO to zero only
 to obtain the crop/weather views; no macro-disabled water calculation is labelled
 original. Original SWSOLU0 and CRP/weather/rain bytes are retained. Full original
-macro/heat/root/drainage application and file restart remain open. Qualification
-and actual canonical admission are recorded separately in
-`integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json`.
+macro/heat/root/drainage application and file restart remain open. Actual merge
+`6736ed408e19acea867f78b10c98e193af3d775c` has complete qualified tree
+`97ff3cb53ee07e13a897bb409aad91bcd0267676` exactly. Current21 source/raw controls,
+retained481 owner, unchanged27-dependency FSI35 source and strict docs pass.
+Admission: `integration/mc-sol01/drainage/NATIVE_RUTTER_ADMISSION.json`.
 
 The bounded Reference Rutter/Boesten/macropore/numeric-heat runtime is now
 canonically admitted at checked O0/O2 by PR1449. Actual merge

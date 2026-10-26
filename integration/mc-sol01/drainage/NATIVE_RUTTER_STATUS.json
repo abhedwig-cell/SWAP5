@@ -1,18 +1,16 @@
 {
   "work_unit": "HIST-INTEGRATION01 original native Rutter forcing",
   "baseline": "e15d5ffd1b28701eb96da7ae817f85c47a15a597",
-  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/NATIVE_RUTTER_CONTRACT.md",
-  "blockers": [
-    "Actual canonical merge and exact postimage verification"
-  ],
-  "next_action": "Admit original forcing preparation; continue original macro bootstrap without repeating accepted ET/Rutter component proof",
-  "recovery_point": "O0/O2 original ETpot864 cases, two original crops and481-day detailed-source composition",
+  "blockers": [],
+  "next_action": "Original MACROGEOM/MACROINIT source configuration/bootstrap, then whole-water SWSOLU0 orchestration and root/drainage/file-restart composition; do not repeat admitted Rutter source proof",
+  "recovery_point": "PR1450 actual merge and exact qualified tree independently verified",
   "scientific_delta": {
     "app/solute_crop/read_swp_crop.f90": "M",
     "integration/audits/verify_macro_heat_current.py": "M",
@@ -64,7 +62,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -90,5 +88,8 @@
   "remaining_migration_blockers": [
     "Native original SWMACRO configuration and bootstrap",
     "Native whole-water SWSOLU0 Rutter/macro/heat/root/drainage dispatch and file restart"
-  ]
+  ],
+  "admission": "integration/mc-sol01/drainage/NATIVE_RUTTER_ADMISSION.json",
+  "actual_merge": "6736ed408e19acea867f78b10c98e193af3d775c",
+  "qualified_complete_tree": "97ff3cb53ee07e13a897bb409aad91bcd0267676"
 }
