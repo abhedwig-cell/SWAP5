@@ -18,7 +18,13 @@ predecessor-byte-exact. The retained481 owner passes without a new481-day run.
 NUT01/SOL01 remain CLOSED WITH EXCLUSIONS; no broad F-CI, low-air or RossFast
 extension is claimed. Seasonal/full431 identity and variable-surface-conductivity
 projects remain excluded. Earlier five-day development runs were censored before
-the final source-partition correction; final longer-run cost is initially UNKNOWN.
+the final source-partition correction. A separate current O2 continuation now
+completes a recoverable1.77day source-event checkpoint in21.6s after day1. The
+remaining day2 is CENSORED at90s, with completed-window diagnostics through1.94day,
+7904 reported attempts/6661 temporal/226 solver rejections and no mass rejections.
+It does not qualify day2 or seasonal execution. The exact executable and1.77day
+file are retained in `NATIVE_WATER_LONGER_EVIDENCE.tar.xz.b64`; that successor
+is tested diagnostic/recovery evidence, not a new numerical admission.
 The earlier blocks below retain their dated evidence; their no-native-dispatch,
 no-file-restart and dry-only-tip statements are superseded only within this scope.
 Actual merge `7e2e82750176836afe78ef90785ae1d879c6d9f3` has complete qualified tree

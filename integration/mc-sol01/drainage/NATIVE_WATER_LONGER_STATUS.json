@@ -1,9 +1,9 @@
 {
   "work_unit": "HIST-INTEGRATION01 current source-partition longer native probe",
   "baseline": "7e2e82750176836afe78ef90785ae1d879c6d9f3",
-  "stage": "SELECTED_PENDING_EXECUTION",
+  "stage": "BLOCKED_EXECUTION_COST_AFTER_RECOVERABLE_1_77_DAY",
   "implemented": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "canonically_admitted": false,
   "parent_admission": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_ADMISSION.json",
@@ -34,5 +34,70 @@
     }
   ],
   "recovery_point": "Qualified O2 day-prefix/restart.bin in NATIVE_WATER_APPLICATION_EVIDENCE archive",
-  "next_action": "Execute first source-event segment, then resume through day2 only after a complete recoverable checkpoint"
+  "next_action": "Diagnose source-event timestep/retry cost near1.94day using retained native output before selecting a bounded execution-policy change; preserve solver, temporal and1e-10cm mass gates. Do not rerun unchanged prefix or broad F-CI/low-air/RossFast.",
+  "results": {
+    "status": "LONGER_SOURCE_STAGE1_COMPLETE_STAGE2_CENSORED",
+    "baseline": "7e2e82750176836afe78ef90785ae1d879c6d9f3",
+    "execution_canonical": "cf4e8e001d2746bd0bab34a5907b839af1de1eb1",
+    "source_unmodified": true,
+    "optimization": "O2",
+    "qualified": false,
+    "canonically_admitted": false,
+    "complete_recoverable_time": 1.7699999999967986,
+    "last_reported_accepted_window": 1.9400000000023283,
+    "day2_complete": false,
+    "stages": [
+      {
+        "stage": 1,
+        "status": "COMPLETE",
+        "seconds": 21.620998575999693,
+        "last_reported_event_end": 1.7699999999967986,
+        "attempts": 5112,
+        "solver_rejections": 0,
+        "temporal_rejections": 4288,
+        "mass_rejections": 0,
+        "manifest_sha256": "b6df232da280e3a25496892a1b4b74f59bf0f3c4eee996e5aa240d728bc4cdc7"
+      },
+      {
+        "stage": 2,
+        "status": "CENSORED",
+        "seconds": 90.01655704899895,
+        "last_reported_event_end": 1.9400000000023283,
+        "attempts": 7904,
+        "solver_rejections": 226,
+        "temporal_rejections": 6661,
+        "mass_rejections": 0,
+        "manifest_sha256": "3aacf24dae19014a61370ab8744d758ee6de20266b01a34e9df5bdd3ad9498ef"
+      }
+    ],
+    "executable_sha256": "b45a7e4daca96b371e400251422abcce701648d1412dd8c558da5cd764bfd641",
+    "checkpoint_sha256": "49c5950171bdb013e97956edda57ef599d998027bb2a2c36da08eab2a6dc6f30",
+    "binding_sha256": "825b39fcd73c1a970cc251e68bec1b0151dcbe98551998e65322bbbde9e09779",
+    "year_restart": false,
+    "seasonal": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/NATIVE_WATER_LONGER_EVIDENCE.tar.xz.b64",
+    "sha256": "b79880d35ebcc5428847b4f84324f0b5885131de7aaa9600a06ecb8a6e278216",
+    "bytes": 1733840,
+    "members": 39
+  },
+  "blockers": [
+    "Day2 is not completed within the selected90s remaining-interval budget; no identical repeat selected",
+    "Seasonal macro/Rutter/heat execution, positive committed source pond transfer and year-boundary file replay remain unqualified"
+  ],
+  "recovery": {
+    "executable_member": "recovery/swap5_native_water_O2",
+    "executable_sha256": "b45a7e4daca96b371e400251422abcce701648d1412dd8c558da5cd764bfd641",
+    "checkpoint_member": "stage1/restart.bin",
+    "checkpoint_sha256": "49c5950171bdb013e97956edda57ef599d998027bb2a2c36da08eab2a6dc6f30",
+    "prepared_input_members": [
+      "stage1/input.nml",
+      "stage1/input.swp",
+      "stage1/macro.nml"
+    ],
+    "binding": "825b39fcd73c1a970cc251e68bec1b0151dcbe98551998e65322bbbde9e09779",
+    "clock": 1.7699999999967986,
+    "procedure": "Verify capsule/member hashes; chmod755 recovered executable; copy prepared inputs into a fresh empty directory and call exact executable input.nml <absolute recovered stage1/restart.bin> 2 input.swp macro.nml <binding>. Same-platform only. Existing files must not be overwritten."
+  }
 }
